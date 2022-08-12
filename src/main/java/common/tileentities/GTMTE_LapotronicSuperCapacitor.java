@@ -5,11 +5,11 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
-import com.google.common.eventbus.Subscribe;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import common.Blocks;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
@@ -26,7 +26,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.math.BigDecimal;
@@ -36,7 +35,9 @@ import java.util.*;
 
 import static com.google.common.math.LongMath.pow;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static java.lang.Math.max;
 
 public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_LapotronicSuperCapacitor> implements IGlobalWirelessEnergy {
     private enum TopState {
@@ -48,14 +49,20 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
     private boolean wireless_mode = false;
     private boolean not_processed_lsc = true;
 
+    private long uhv_cap_count = 0;
+
+    private int counter = 1;
+
+    private long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
+
     private enum Capacitor {
-        IV(2, BigInteger.valueOf(600000000L), BigInteger.valueOf(600000000L)),
-        LuV(3, BigInteger.valueOf(6000000000L), BigInteger.valueOf(6000000000L)),
-        ZPM(4, BigInteger.valueOf(60000000000L), BigInteger.valueOf(60000000000L)),
-        UV(5, BigInteger.valueOf(600000000000L), BigInteger.valueOf(600000000000L)),
-        UHV(6, BigInteger.valueOf(100000000000L), MAX_LONG),
-        None(0, BigInteger.ZERO, BigInteger.ZERO),
-        EV(1, BigInteger.valueOf(60000000L), BigInteger.valueOf(60000000L));
+        IV(  2, BigInteger.valueOf(IV_cap_storage),  BigInteger.valueOf(IV_cap_storage)),
+        LuV( 3, BigInteger.valueOf(LuV_cap_storage), BigInteger.valueOf(LuV_cap_storage)),
+        ZPM( 4, BigInteger.valueOf(ZPM_cap_storage), BigInteger.valueOf(ZPM_cap_storage)),
+        UV(  5, BigInteger.valueOf(UV_cap_storage),  BigInteger.valueOf(UV_cap_storage)),
+        UHV( 6, BigInteger.valueOf(UHV_cap_storage), BigInteger.valueOf(UHV_cap_storage)),
+        None(0, BigInteger.ZERO,                     BigInteger.ZERO),
+        EV(  1, BigInteger.valueOf(EV_cap_storage),  BigInteger.valueOf(EV_cap_storage));
 
         private final int minimalGlassTier;
 		private final BigInteger passiveDischargeValue;
@@ -117,9 +124,9 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 					ofHatchAdder(GTMTE_LapotronicSuperCapacitor::addBottomHatches, CASING_TEXTURE_ID, 1),
 					onElementPass(te -> te.casingAmount++, ofBlock(LSC_PART, CASING_META))
 			))
-			.addElement('g', BorosilicateGlass.ofBoroGlass((byte) -1, (te, t) -> te.glasTier = t, te -> te.glasTier))
+			.addElement('g', BorosilicateGlass.ofBoroGlass((byte) -1, (te, t) -> te.glassTier = t, te -> te.glassTier))
 			.addElement('c', ofChain(
-					onlyIf(te -> te.topState != TopState.NotTop, onElementPass(te -> te.topState = TopState.Top, BorosilicateGlass.ofBoroGlass((byte) -1, (te, t) -> te.glasTier = t, te -> te.glasTier))),
+					onlyIf(te -> te.topState != TopState.NotTop, onElementPass(te -> te.topState = TopState.Top, BorosilicateGlass.ofBoroGlass((byte) -1, (te, t) -> te.glassTier = t, te -> te.glassTier))),
 					onlyIf(te -> te.topState != TopState.Top, onElementPass(te -> te.topState = TopState.NotTop,
 							ofBlockAdder(GTMTE_LapotronicSuperCapacitor::addStorageCell, LSC_PART, 1)
 					))
@@ -147,7 +154,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 	private BigInteger outputLastTick = BigInteger.ZERO;
 	private int repairStatusCache = 0;
 
-	private byte glasTier = -1;
+	private byte glassTier = -1;
 	private int casingAmount = 0;
 	private TopState topState = TopState.MayBeTop;
 
@@ -231,7 +238,11 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 	private boolean addStorageCell(Block block, int meta) {
 		if (block != LSC_PART || meta == 0) return false;
 		capacitors[meta - 1]++;
-		return true;
+
+        if (meta == 5) {
+            uhv_cap_count++;
+        }
+        return true;
 	}
 
 	@Override
@@ -239,16 +250,19 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType("Battery Buffer")
             .addInfo("Power storage structure. Does not charge batteries or tools, however.")
-            .addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
-            .addInfo("Exception: Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
-            .addInfo("purposes of passive loss calculation. The full capacity is counted towards the")
-            .addInfo("actual power capacity.")
-            .addSeparator()
-            .addInfo("Wireless mode can be enabled with a left click with a screwdriver.")
+            .addInfo("Loses energy equal to 1% of the total capacity every 24 hours. Capped")
+            .addInfo("at " + EnumChatFormatting.RED + GT_Utility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap) + EnumChatFormatting.GRAY + "EU/t passive loss per " + GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.GRAY + " capacitor.")
             .addSeparator()
             .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier")
             .addInfo("UV-tier glass required for TecTech Laser Hatches")
             .addInfo("Add more or better capacitors to increase capacity")
+            .addSeparator()
+            .addInfo("Wireless mode can be enabled by right clicking with a screwdriver.")
+            .addInfo("This mode can only be enabled if you have a UHV capacitor in the multiblock.")
+            .addInfo("When enabled every " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(LSC_time_between_wireless_rebalance_in_ticks) + EnumChatFormatting.GRAY + " ticks the LSC will attempt to re-balance against your")
+            .addInfo("wireless EU network. If there is less than " + EnumChatFormatting.RED + GT_Utility.formatNumbers(LSC_wireless_eu_cap) + EnumChatFormatting.GRAY + "EU in the LSC")
+            .addInfo("it will withdraw from the network and add it. If there is more it will add it to the network")
+            .addInfo("and remove it from the internal EU storage.")
             .addSeparator()
             .beginVariableStructureBlock(5, 5, 4, 18, 5, 5, false)
 		.addStructureInfo("Modular height of 4-18 blocks.")
@@ -283,7 +297,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 				"MultiblockDisplay.png");
 	}
 
-    private String user_name;
     private String global_energy_user_uuid;
 
     @Override
@@ -293,39 +306,15 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
         // On first tick (aTick restarts from 0 upon world reload).
         if (not_processed_lsc && tileEntity.isServerSide()) {
             // Add user to wireless network.
+            LoadGlobalEnergyInfo(tileEntity.getWorld());
             StrongCheckOrAddUser(tileEntity.getOwnerUuid(), tileEntity.getOwnerName());
 
             // Get team UUID.
-            user_name = tileEntity.getOwnerName();
             global_energy_user_uuid = GetUUIDFromUsername(tileEntity.getOwnerName());
-//
-//            int existing_lsc_amount = LSC_ownership_map.getOrDefault(global_energy_user_uuid, 0);
-//
-//            // Add them to the ownership map.
-//            LSC_ownership_map.put(global_energy_user_uuid, existing_lsc_amount + 1);
-//
-//            System.out.println("TEST1234 " + tileEntity.getOwnerName());
-//            System.out.println("TEST1234 " + global_energy_user_uuid);
-//            System.out.println("TEST1234 " + LSC_ownership_map.get(GetUUIDFromUsername(tileEntity.getOwnerName())));
+
             not_processed_lsc = false;
         }
     }
-
-//    private static HashMap<String, Integer> LSC_ownership_map = new HashMap<>(100, 0.9f);
-
-//    @Override
-//    public void onRemoval() {
-//        super.onRemoval();
-//
-//        if (getBaseMetaTileEntity().isServerSide()) {
-//
-//            // Get number of LSC controllers in world.
-//            int existing_lsc_amount = LSC_ownership_map.get(global_energy_user_uuid);
-//
-//            // Update the map.
-//            LSC_ownership_map.put(global_energy_user_uuid, existing_lsc_amount - 1);
-//        }
-//    }
 
 	@Override
 	public boolean isCorrectMachinePart(ItemStack stack) {
@@ -343,6 +332,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        uhv_cap_count = 0;
 
         StrongCheckOrAddUser(thisController.getOwnerUuid(), thisController.getOwnerName());
 
@@ -379,14 +369,14 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 		for (int highestGlassTier = capacitors.length - 1; highestGlassTier >= 0; highestGlassTier--) {
             int highestCapacitor = Capacitor.getIndexFromGlassTier(highestGlassTier);
 			if (capacitors[highestCapacitor] > 0) {
-				if (Capacitor.VALUES[highestCapacitor].getMinimalGlassTier() > glasTier)
+				if (Capacitor.VALUES[highestCapacitor].getMinimalGlassTier() > glassTier)
 					return false;
 				break;
 			}
 		}
 
 		// Glass has to be at least UV-tier to allow TT Laser hatches
-		if (glasTier < 8) {
+		if (glassTier < 8) {
 			if(mEnergyTunnelsTT.size() > 0 || mDynamoTunnelsTT.size() > 0)
 				return false;
 		}
@@ -423,6 +413,10 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 		inputLastTick = BigInteger.ZERO;
 		outputLastTick = BigInteger.ZERO;
 
+        long temp_stored = 0L;
+        long temp_inputLastTick = 0L;
+        long temp_outputLastTick = 0L;
+
 		// Draw energy from GT hatches
 		for(GT_MetaTileEntity_Hatch_Energy eHatch : super.mEnergyHatches) {
 			if(eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
@@ -431,10 +425,11 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 			final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
-				stored = stored.add(BigInteger.valueOf(power));
-				inputLastTick = inputLastTick.add(BigInteger.valueOf(power));
+                temp_stored += power;
+                temp_inputLastTick += power;
 			}
 		}
+
 		// Output energy to GT hatches
 		for(GT_MetaTileEntity_Hatch_Dynamo eDynamo : super.mDynamoHatches){
 			if(eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()){
@@ -443,8 +438,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 			final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
 			if(power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
-				stored = stored.subtract(BigInteger.valueOf(power));
-				outputLastTick = outputLastTick.add(BigInteger.valueOf(power));
+                temp_stored -= power;
+                temp_outputLastTick += power;
 			}
 		}
 
@@ -456,8 +451,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 			final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
-				stored = stored.add(BigInteger.valueOf(power));
-				inputLastTick = inputLastTick.add(BigInteger.valueOf(power));
+                temp_stored += power;
+                temp_inputLastTick += power;
 			}
 		}
 
@@ -469,8 +464,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 			final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
 			if(power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
-				stored = stored.subtract(BigInteger.valueOf(power));
-				outputLastTick = outputLastTick.add(BigInteger.valueOf(power));
+                temp_stored -= power;
+                temp_outputLastTick += power;
 			}
 		}
 
@@ -483,8 +478,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 			final long power = getPowerToDraw(ttLaserWattage);
 			if(eHatch.getEUVar() >= power) {
 				eHatch.setEUVar(eHatch.getEUVar() - power);
-				stored = stored.add(BigInteger.valueOf(power));
-				inputLastTick = inputLastTick.add(BigInteger.valueOf(power));
+                temp_stored += power;
+                temp_inputLastTick += power;
 			}
 		}
 
@@ -497,8 +492,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 			final long power = getPowerToPush(ttLaserWattage);
 			if(power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
-				stored = stored.subtract(BigInteger.valueOf(power));
-				outputLastTick = outputLastTick.add(BigInteger.valueOf(power));
+                temp_stored -= power;
+                temp_outputLastTick += power;
 			}
 		}
 
@@ -507,7 +502,11 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 		if(super.getRepairStatus() != repairStatusCache) {
 			passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
 		}
-		stored = stored.subtract(passiveDischargeAmount);
+
+		temp_stored -= passiveDischargeAmount.longValue();
+        stored = stored.add(BigInteger.valueOf(temp_stored));
+
+        // Check that the machine has positive EU stored.
 		stored = (stored.compareTo(BigInteger.ZERO) <= 0) ? BigInteger.ZERO : stored;
 
 		IGregTechTileEntity tBMTE = this.getBaseMetaTileEntity();
@@ -515,40 +514,32 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 		tBMTE.injectEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), inputLastTick.longValue(), 1L);
 		tBMTE.drainEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), outputLastTick.longValue(), 1L);
 
-        if (wireless_mode && ((counter++ % 20) == 0)) {
-            System.out.println("TEST1");
+        if (uhv_cap_count <= 0) {
+            wireless_mode = false;
+        }
 
+        // Every LSC_time_between_wireless_rebalance_in_ticks check against wireless network for re-balancing.
+        if (wireless_mode && (counter++ == LSC_time_between_wireless_rebalance_in_ticks)) {
+
+            // Reset tick counter.
             counter = 1;
 
-            BigInteger transferred_eu = stored.subtract(LSC_wireless_max_stored_eu);
+            // Find difference.
+            BigInteger transferred_eu = stored.subtract(LSC_wireless_eu_cap.multiply(BigInteger.valueOf(uhv_cap_count)));
 
-            System.out.println("TEST2 " + transferred_eu);
 
+            // If that difference can be added then do so.
             if (addEUToGlobalEnergyMap(global_energy_user_uuid, transferred_eu)) {
-                System.out.println("TEST3");
-                stored = LSC_wireless_max_stored_eu;
+                // If it succeeds there was sufficient energy so set the internal capacity as such.
+                stored = LSC_wireless_eu_cap.multiply(BigInteger.valueOf(uhv_cap_count));
             }
-
-//            // If EU inside LSC is > 100 trillion EU then dump excess into wireless network.
-//            if (stored.compareTo(LSC_wireless_max_stored_eu) >= 0) {
-//                addEUToGlobalEnergyMap(global_energy_user_uuid, stored.subtract(LSC_wireless_max_stored_eu));
-//            } else {
-//                System.out.println("TEST2");
-//                // If the user has sufficient energy then withdraw it from the energy net and add it to the LSC.
-//                if (addEUToGlobalEnergyMap(global_energy_user_uuid, stored.subtract(LSC_wireless_max_stored_eu))) {
-//                    System.out.println("TEST4: " + stored.subtract(LSC_wireless_max_stored_eu));
-//                    stored = LSC_wireless_max_stored_eu;
-//                }
-//            }
         }
+
+        inputLastTick = BigInteger.valueOf(temp_inputLastTick);
+        outputLastTick = BigInteger.valueOf(temp_outputLastTick);
 
 		return true;
 	}
-
-    // 100 Trillion EU.
-    private static BigInteger LSC_wireless_max_stored_eu = BigInteger.valueOf(pow(10L,14));
-
-    private int counter = 1;
 
 	/**
 	 * To be called whenever the maintenance status changes or the capacity was recalculated
@@ -558,8 +549,10 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 	 */
 	private BigInteger recalculateLossWithMaintenance(int repairStatus) {
 		repairStatusCache = repairStatus;
-		return new BigDecimal(passiveDischargeAmount)
-				.multiply(BigDecimal.valueOf(1.0D + 0.2D * (getIdealStatus() - repairStatus))).toBigInteger();
+
+        // Maximum of 100,000 EU/t drained per UHV cell.
+
+        return capacity.divide(BigInteger.valueOf(100L * 86400L * 20L)).min(BigInteger.valueOf(max_passive_drain_eu_per_tick_per_uhv_cap * max(1, uhv_cap_count))).multiply(BigInteger.valueOf(getIdealStatus() - repairStatus + 1));
 	}
 
 	/**
@@ -602,6 +595,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 				? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
 				: EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
         ll.add("Wireless mode: " + (wireless_mode ? "enabled." : "disabled."));
+        ll.add("UHV Capacitors detected: " + uhv_cap_count);
         ll.add("---------------------------------------------");
 
 		final String[] a = new String[ll.size()];
@@ -706,7 +700,12 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        wireless_mode = !wireless_mode;
-        GT_Utility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wireless_mode ? "enabled." : "disabled."));
+        if (uhv_cap_count != 0) {
+            wireless_mode = !wireless_mode;
+            GT_Utility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wireless_mode ? "enabled." : "disabled."));
+        } else {
+            GT_Utility.sendChatToPlayer(aPlayer, "Wireless mode cannot be enabled without at least 1 " + GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.GRAY + " capacitor.");
+            wireless_mode = false;
+        }
     }
 }
