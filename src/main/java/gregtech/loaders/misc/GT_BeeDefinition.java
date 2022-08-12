@@ -2854,7 +2854,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         },
         template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
         dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(KRYPTON, SNOWQUEEN, 6);
+            IBeeMutationCustom tMutation = dis.registerMutation(KRYPTON, SNOWQUEEN, 2);
             tMutation.restrictTemperature(ICY);}
 
     ),
