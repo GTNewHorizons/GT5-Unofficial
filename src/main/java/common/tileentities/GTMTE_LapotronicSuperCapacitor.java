@@ -242,6 +242,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 		tt.addMachineType("Energy Storage")
             .addInfo("Loses energy equal to 1% of the total capacity every 24 hours. Capped")
             .addInfo("at " + EnumChatFormatting.RED + GT_Utility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap) + EnumChatFormatting.GRAY + "EU/t passive loss per " + GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.GRAY + " capacitor.")
+            .addInfo("Passive loss is multiplied by the number of maintenance issues present.")
             .addSeparator()
             .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier.")
             .addInfo(GT_Values.TIER_COLORS[8] + GT_Values.VN[8] + EnumChatFormatting.GRAY + "-tier glass required for " + EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.GRAY + " Laser Hatches.")
