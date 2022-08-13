@@ -35,12 +35,13 @@ public class IB_LapotronicEnergyUnit extends ItemBlock {
 		return super.getUnlocalizedName() + "." + stack.getItemDamage();
 	}
 
-    // 5 minutes, 5 mins * 60s * 20 ticks.
-    public static long LSC_time_between_wireless_rebalance_in_ticks = 5L*60L*20L;
+    // 5 Minutes, 5 mins * 60s * 20 ticks.
+    public static long LSC_time_between_wireless_rebalance_in_ticks = 5L * 60L * 20L;
 
-    // 100 Trillion EU.
-    public static BigInteger LSC_wireless_eu_cap = BigInteger.valueOf(pow(10L,14));
+    // 60 Trillion EU.
+    public static BigInteger LSC_wireless_eu_cap = BigInteger.valueOf(60 * pow(10,12));
 
+    // 10 Billion EU/t
     private static BigInteger UHV_cap_eu_per_tick = LSC_wireless_eu_cap.divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
     public static long EV_cap_storage  = 60_000_000L;
