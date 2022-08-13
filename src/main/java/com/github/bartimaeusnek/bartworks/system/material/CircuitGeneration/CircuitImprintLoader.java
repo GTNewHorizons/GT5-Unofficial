@@ -42,6 +42,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -94,7 +96,7 @@ public class CircuitImprintLoader {
 
             CircuitImprintLoader.recipeTagMap.put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
 
-            if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))) {
+            if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))||circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(FluidRegistry.getFluid("molten.indalloy140"), 0))) {
                 GT_Recipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null)
                     BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).addRecipe(newRecipe);
