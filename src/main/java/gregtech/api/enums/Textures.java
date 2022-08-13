@@ -9,6 +9,9 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
@@ -1973,6 +1976,7 @@ public class Textures {
          */
         public static ITexture[][] casingTexturePages = new ITexture[128][];//page holder so we don't make an short long array
         public static final int ERROR_TEXTURE_INDEX = (1 << 7) + 97;
+        private static final Map<ITexture, Integer> reverseMap = new HashMap<>();
 
         static {
             for (byte i = 0; i < MACHINE_CASINGS.length; i++)
@@ -1999,11 +2003,18 @@ public class Textures {
         }
 
         public static void setCasingTextureForId(int id, ITexture iTexture) {
-            casingTexturePages[(id >> 7) & 0x7f][id & 0x7f] = iTexture;
+            casingTexturePages[(byte) ((id >> 7) & 0x7f)][(byte) (id & 0x7f)] = iTexture;
+            reverseMap.put(iTexture, id);
         }
 
         public static void setCasingTexture(byte page, byte index, ITexture iTexture) {
             casingTexturePages[page][index] = iTexture;
+            reverseMap.put(iTexture, (page << 7) + index);
+        }
+
+        public static int getTextureIndex(ITexture texture) {
+            Integer id = reverseMap.get(texture);
+            return id == null ? ERROR_TEXTURE_INDEX : id;
         }
 
         @Override
