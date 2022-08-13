@@ -46,8 +46,10 @@ import java.awt.*;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -892,7 +894,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         private int mCachedRecipesVersion = -1;
         @Nullable
         private SoftReference<List<CachedDefaultRecipe>> mCachedRecipes;
-        private ArrayList<Range<Integer>> mTierIndexes;
+        private Map<Byte, Range<Integer>> mTierIndexes;
         private Range<Byte> mTierRange;
 
         public int getCachedRecipesVersion() {
@@ -920,7 +922,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
 
         private void computeTierIndexes() {
-            mTierIndexes = new ArrayList<>(GT_Values.V.length);
+            // Holds 16 elements without rehashing
+            mTierIndexes = new HashMap<>(GT_Values.V.length + 1, 1f);
             assert mCachedRecipes != null;
             Iterator<CachedDefaultRecipe> iterator = Objects.requireNonNull(mCachedRecipes.get()).iterator();
 
@@ -934,7 +937,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 byte recipeTier = GT_Utility.getTier(recipe.mRecipe.mEUt / GT_NEI_DefaultHandler.this.mRecipeMap.mAmperage);
                 if (recipeTier != previousTier) {
                     if (maxIndex != -1) {
-                        mTierIndexes.set(previousTier, Range.between(minIndex, maxIndex));
+                        mTierIndexes.put(previousTier, Range.between(minIndex, maxIndex));
                     } else {
                         lowestTier = recipeTier;
                     }
@@ -944,7 +947,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 maxIndex = index;
                 index++;
                 if (!iterator.hasNext()) {
-                    mTierIndexes.set(recipeTier, Range.between(minIndex, maxIndex));
+                    mTierIndexes.put(recipeTier, Range.between(minIndex, maxIndex));
                     mTierRange = Range.between(lowestTier, recipeTier);
                 }
             }
