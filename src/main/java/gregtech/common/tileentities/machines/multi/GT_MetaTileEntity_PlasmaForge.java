@@ -126,7 +126,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         .addShape(STRUCTURE_PIECE_MAIN, structure_string)
         .addElement('C', ofCoil(GT_MetaTileEntity_PlasmaForge::setCoilLevel, GT_MetaTileEntity_PlasmaForge::getCoilLevel))
         .addElement('b', buildHatchAdder(GT_MetaTileEntity_PlasmaForge.class)
-            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy)
+            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy, Maintenance)
             .casingIndex(DIM_INJECTION_CASING)
             .dot(3)
             .buildAndChain(GregTech_API.sBlockCasings1, DIM_INJECTION_CASING))
