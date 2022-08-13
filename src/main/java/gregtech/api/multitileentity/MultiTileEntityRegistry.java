@@ -1,7 +1,7 @@
 package gregtech.api.multitileentity;
 
 import appeng.core.CreativeTab;
-import com.mitchej123.hodgepodge.core.util.ItemStackMap;
+import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -29,7 +29,9 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 
 public class MultiTileEntityRegistry {
     private static final HashMap<String, MultiTileEntityRegistry> NAMED_REGISTRIES = new HashMap<>();
-    private static final ItemStackMap<MultiTileEntityRegistry> REGISTRIES = new ItemStackMap<>();
+
+    // TODO: NBT sensitive or not?  Starting with not for now
+    private static final ItemStackMap<MultiTileEntityRegistry> REGISTRIES = new ItemStackMap<>(false);
     private static final HashSet<Class<?>> sRegisteredTileEntities = new HashSet<>();
 
     public HashMap<Short, CreativeTab> mCreativeTabs = new HashMap<>();
