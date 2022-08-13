@@ -203,11 +203,6 @@ public class GT_Mod implements IGT_Mod {
             }
         }
 
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-            MinecraftForge.EVENT_BUS.register(new ExtraIcons());
-            jsonGuiColors = new GT_JsonLoader("textures/guiColors.json");
-        }
-
         Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
         GT_PreLoad.initCompat();
         GT_PreLoad.createLogFiles(aEvent.getModConfigurationDirectory().getParentFile(), tMainConfig);
@@ -465,7 +460,7 @@ public class GT_Mod implements IGT_Mod {
         GT_PostLoad.identifyAnySteam();
 
         achievements = new GT_Achievements();
-        
+
         ReverseShapedRecipe.runReverseRecipes();
         ReverseShapelessRecipe.runReverseRecipes();
 
