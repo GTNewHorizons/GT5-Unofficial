@@ -9,14 +9,11 @@ import gnu.trove.set.hash.TIntHashSet;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.common.blocks.GT_Item_Machines;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
@@ -24,7 +21,6 @@ import net.minecraft.world.World;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -41,6 +37,7 @@ public class GT_HatchElementBuilder<T> {
     private Supplier<String> mHatchItemType;
     private Predicate<? super T> mReject, mBuiltinReject;
     private boolean mCacheHint;
+    private boolean mNoStop;
 
     private GT_HatchElementBuilder() {
     }
@@ -183,6 +180,16 @@ public class GT_HatchElementBuilder<T> {
         return this;
     }
     // endregion
+
+    public GT_HatchElementBuilder<T> continueIfSuccess() {
+        mNoStop = true;
+        return this;
+    }
+
+    public GT_HatchElementBuilder<T> stopIfSuccess() {
+        mNoStop = false;
+        return this;
+    }
     // endregion
 
     // region intermediate
@@ -297,7 +304,7 @@ public class GT_HatchElementBuilder<T> {
                     chatter.accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
                     return PlaceResult.REJECT;
                 }
-                return StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT ? PlaceResult.ACCEPT_STOP : PlaceResult.REJECT;
+                return StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT ? (mNoStop ? PlaceResult.ACCEPT : PlaceResult.ACCEPT_STOP) : PlaceResult.REJECT;
             }
         };
     }
