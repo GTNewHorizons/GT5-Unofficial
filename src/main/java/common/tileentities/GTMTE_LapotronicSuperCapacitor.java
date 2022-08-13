@@ -602,6 +602,9 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
             ? EnumChatFormatting.GREEN + "enabled" + EnumChatFormatting.RESET
             : EnumChatFormatting.RED + "disabled" + EnumChatFormatting.RESET));
         ll.add(GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.RESET + " Capacitors detected: " + uhv_cap_count);
+        if (uhv_cap_count > 0) {
+            ll.add("Total wireless EU: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(getUserEU(global_energy_user_uuid)));
+        }
         ll.add("---------------------------------------------");
 
 		final String[] a = new String[ll.size()];
