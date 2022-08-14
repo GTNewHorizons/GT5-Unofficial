@@ -75,6 +75,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
     private YottaFluidTank host;
     private AENetworkProxy gridProxy = null;
     private int priority;
+    private byte ticksSinceUpdate;
     private AccessRestriction readMode = AccessRestriction.READ_WRITE;
     private final AccessRestriction[] AEModes = new AccessRestriction[] {
         AccessRestriction.NO_ACCESS, AccessRestriction.READ, AccessRestriction.WRITE, AccessRestriction.READ_WRITE
@@ -224,21 +225,25 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        IGridNode node = getGridNode(null);
-        if (node != null) {
-            IGrid grid = node.getGrid();
-            if (grid != null) {
-                grid.postEvent(new MENetworkCellArrayUpdate());
-                IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
-                if (storageGrid == null) {
-                    node.getGrid().postEvent(new MENetworkStorageEvent(null, StorageChannel.FLUIDS));
-                } else {
-                    node.getGrid()
-                            .postEvent(
-                                    new MENetworkStorageEvent(storageGrid.getFluidInventory(), StorageChannel.FLUIDS));
+        ticksSinceUpdate++;
+        if (ticksSinceUpdate > 20) {
+            IGridNode node = getGridNode(null);
+            if (node != null) {
+                IGrid grid = node.getGrid();
+                if (grid != null) {
+                    grid.postEvent(new MENetworkCellArrayUpdate());
+                    IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
+                    if (storageGrid == null) {
+                        node.getGrid().postEvent(new MENetworkStorageEvent(null, StorageChannel.FLUIDS));
+                    } else {
+                        node.getGrid()
+                                .postEvent(new MENetworkStorageEvent(
+                                        storageGrid.getFluidInventory(), StorageChannel.FLUIDS));
+                    }
+                    node.getGrid().postEvent(new MENetworkCellArrayUpdate());
                 }
-                node.getGrid().postEvent(new MENetworkCellArrayUpdate());
             }
+            ticksSinceUpdate = 0;
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
