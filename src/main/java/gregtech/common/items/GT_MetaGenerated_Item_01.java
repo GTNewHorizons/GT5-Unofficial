@@ -651,6 +651,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(ItemList.ItemFilter_Export.get(1L), TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)), new GT_Cover_ItemFilter(true));
         ItemList.ItemFilter_Import.set(addItem(271,"Item Filter Cover (Import)", "Right click with an item to set filter (Only supports Import Mode)"));
         GregTech_API.registerCover(ItemList.ItemFilter_Import.get(1L), TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)), new GT_Cover_ItemFilter(false));
+        ItemList.Cover_FluidLimiter.set(addItem(272, "Fluid Limiter Cover", "Limits fluid input depending on fill level"));
+        GregTech_API.registerCover(ItemList.Cover_FluidLimiter.get(1L), TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)), new GT_Cover_FluidLimiter());
+
+
 
         ItemList.Conveyor_Module_LV.set(addItem(630, "Conveyor Module (LV)", "1 stack every 20 secs (as Cover)", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)));
         ItemList.Conveyor_Module_MV.set(addItem(631, "Conveyor Module (MV)", "1 stack every 5 secs (as Cover)", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 2L)));
@@ -851,9 +855,11 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(ItemList.Cover_PlayerDetector.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_ACTIVITYDETECTOR), TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build())), new GT_Cover_PlayerDetector());
         GregTech_API.registerCover(ItemList.Cover_FluidStorageMonitor.get(1L), TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0), new GT_Cover_FluidStorageMonitor());
 
+
         ItemList.Cover_Screen.set(addItem(tLastID = 740, "Computer Monitor Cover", "Displays Data and GUI", new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1L)));
         ItemList.Cover_Crafting.set(addItem(tLastID = 744, "Crafting Table Cover", "Better than a wooden Workbench", new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L)));
         ItemList.Cover_Drain.set(addItem(tLastID = 745, "Drain Module Cover", "Absorbs Fluids and collects Rain", new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
+
 
         ItemList.Cover_Shutter.set(addItem(tLastID = 749, "Shutter Module Cover", "Blocks Inventory/Tank Side. Use together with Machine Controller.", new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)));
 
