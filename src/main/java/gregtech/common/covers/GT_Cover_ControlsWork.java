@@ -18,9 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_ControlsWork extends GT_CoverBehavior {
-
-    private final int textColor = GuiColors.coverControlsWork.getColor();
-
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if (!makeSureOnlyOne(aSide, aTileEntity)) return 0;
@@ -164,6 +161,8 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
+
+        private final int textColor = GuiColors.coverControlsWork.getColor();
 
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

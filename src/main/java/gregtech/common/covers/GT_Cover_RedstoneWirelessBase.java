@@ -24,8 +24,6 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     private static final int PUBLIC_MASK = 0x0000FFFF;
     private static final int CHECKBOX_MASK = 0x00010000;
 
-    private final int textColor = GuiColors.coverRedstoneWirelessBase.getColor();
-
     @Override
     public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
         GregTech_API.sWirelessRedstone.put(aCoverVariable, (byte) 0);
@@ -162,6 +160,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
+        private final int textColor = GuiColors.coverRedstoneWirelessBase.getColor();
 
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

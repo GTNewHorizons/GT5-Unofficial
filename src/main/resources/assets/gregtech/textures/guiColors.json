@@ -32,7 +32,7 @@
 
 	"GT5U.gui.color.boiler": "404040",
 	"GT5U.gui.color.bronzeBlastFurnace": "404040",
-	"GT5U.gui.color.fusionReactor": "FF00000",
+	"GT5U.gui.color.fusionReactor": "FF0000",
 	"GT5U.gui.color.industrialApiary": "404040",
 	"GT5U.gui.color.microwaveEnergyTransmitter": "FAFAFF",
 	"GT5U.gui.color.primitiveBlastFurnace": "404040",
@@ -48,7 +48,7 @@
 	"GT5U.gui.color.screenText": "FF222222",
 
 	"GT5U.gui.color.NEIText": "FF000000",
-	
+
 	"GT5U.gui.color.coverArm": "FF555555",
 	"GT5U.gui.color.coverControlsWork": "FF555555",
 	"GT5U.gui.color.coverConveyor": "FF555555",

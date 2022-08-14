@@ -39,8 +39,6 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     private static final int CONVERTED_BIT = 0x80000000;
     private static final int INVERT_BIT = 0x40000000;
 
-    private final int textColor = GuiColors.coverItemMeter.getColor();
-
     public GT_Cover_ItemMeter() {
         super(ItemMeterData.class);
     }
@@ -289,6 +287,8 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         private final String ALL = GT_Utility.trans("ALL", "All");
 		private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
 		private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
+
+        private final int textColor = GuiColors.coverItemMeter.getColor();
 
 		public GUI(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

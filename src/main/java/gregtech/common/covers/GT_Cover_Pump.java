@@ -19,7 +19,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class GT_Cover_Pump extends GT_CoverBehavior{
     public final int mTransferRate;
-    private final int textColor = GuiColors.coverPump.getColor();
 
     public GT_Cover_Pump(int aTransferRate) {
         this.mTransferRate = aTransferRate;
@@ -186,6 +185,8 @@ public class GT_Cover_Pump extends GT_CoverBehavior{
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
+
+        private final int textColor = GuiColors.coverPump.getColor();
 
         public GT_PumpGUICover(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
