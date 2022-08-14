@@ -24,9 +24,61 @@ import net.minecraftforge.common.config.Configuration;
 
 public class Config {
 
-    public static void syncronizeConfiguration(File configFile) {
+    private static class Categories {
+        public static final String mobHandler = "MobHandler";
+    }
+
+    public static boolean mobHandlerEnabled = true;
+    public static boolean includeEmptyMobs = true;
+    public static String[] mobBlacklist;
+    public static File configFile;
+
+    public static void init(File configFile) {
+        Config.configFile = configFile;
+    }
+
+    public static void synchronizeConfiguration() {
         Configuration configuration = new Configuration(configFile);
         configuration.load();
+
+        mobHandlerEnabled = configuration
+                .get(
+                        Categories.mobHandler,
+                        "Enabled",
+                        true,
+                        "Enable \"Mob Drops\" NEI page and Extreme Extermination Chamber")
+                .getBoolean();
+        includeEmptyMobs = configuration
+                .get(Categories.mobHandler, "IncludeEmptyMobs", true, "Include mobs that have no drops in NEI")
+                .getBoolean();
+        mobBlacklist = configuration
+                .get(
+                        Categories.mobHandler,
+                        "MobBlacklist",
+                        new String[] {
+                            "Giant",
+                            "Thaumcraft.TravelingTrunk",
+                            "chisel.snowman",
+                            "OpenBlocks.Luggage",
+                            "OpenBlocks.MiniMe",
+                            "SpecialMobs.SpecialCreeper",
+                            "SpecialMobs.SpecialZombie",
+                            "SpecialMobs.SpecialPigZombie",
+                            "SpecialMobs.SpecialSlime",
+                            "SpecialMobs.SpecialSkeleton",
+                            "SpecialMobs.SpecialEnderman",
+                            "SpecialMobs.SpecialCaveSpider",
+                            "SpecialMobs.SpecialGhast",
+                            "SpecialMobs.SpecialWitch",
+                            "SpecialMobs.SpecialSpider",
+                            "TwilightForest.HydraHead",
+                            "TwilightForest.RovingCube",
+                            "TwilightForest.Harbinger Cube",
+                            "TwilightForest.Adherent",
+                            "SpecialMobs.SpecialSilverfish",
+                        },
+                        "These mobs will be skipped when generating recipe map")
+                .getStringList();
 
         if (configuration.hasChanged()) {
             configuration.save();

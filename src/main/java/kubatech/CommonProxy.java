@@ -19,14 +19,22 @@
 
 package kubatech;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
+import kubatech.commands.CommandConfig;
+import kubatech.commands.CommandHandler;
+import kubatech.commands.CommandHelp;
+import kubatech.loaders.RecipeLoader;
 
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
-        Config.syncronizeConfiguration(event.getSuggestedConfigurationFile());
+        kubatech.info("Initializing ! Version: " + Tags.VERSION);
 
-        kubatech.info("I am " + Tags.MODNAME + " at version " + Tags.VERSION);
+        Config.init(event.getSuggestedConfigurationFile());
+        Config.synchronizeConfiguration();
+        RecipeLoader.addRecipes();
+        FMLCommonHandler.instance().bus().register(new FMLEventHandler());
     }
 
     public void init(FMLInitializationEvent event) {}
@@ -35,7 +43,13 @@ public class CommonProxy {
 
     public void serverAboutToStart(FMLServerAboutToStartEvent event) {}
 
-    public void serverStarting(FMLServerStartingEvent event) {}
+    public void serverStarting(FMLServerStartingEvent event) {
+        RecipeLoader.addRecipesLate();
+        CommandHandler cmd = new CommandHandler();
+        cmd.addCommand(new CommandHelp());
+        cmd.addCommand(new CommandConfig());
+        event.registerServerCommand(cmd);
+    }
 
     public void serverStarted(FMLServerStartedEvent event) {}
 

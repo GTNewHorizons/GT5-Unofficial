@@ -1,5 +1,32 @@
 // Add your dependencies here
 
 dependencies {
+    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.78:dev")
+    compile("com.github.GTNewHorizons:EnderCore:0.2.6:dev")
+    compile("com.github.GTNewHorizons:EnderIO:2.3.1.29:dev")
+    compile("com.github.GTNewHorizons:Infernal-Mobs:1.7.5-GTNH:dev")
+    compileOnly("com.github.GTNewHorizons:BloodMagic:1.3.10:dev")
+    {
+        transitive = false
+    }
+    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
+    {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.2.9:dev")
+    {
+        transitive = false
+    }
+    runtime("com.github.GTNewHorizons:Baubles:1.0.1.14:dev")
+    runtime("curse.maven:cofh-core-69162:2388751")
 
+    // For testing
+    //runtime("com.github.GTNewHorizons:OpenBlocks:1.6.9-GTNH:dev")
+    //runtime("com.github.GTNewHorizons:CraftTweaker:3.2.9:dev")
+    //compile("com.github.GTNewHorizons:SpecialMobs:3.3.12:dev")
+    //compile("com.github.GTNewHorizons:twilightforest:2.3.8.15:dev")
+    //compile("com.github.GTNewHorizons:EnderZoo:1.0.23:dev")
+    //runtime("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
+    //runtime("com.github.GTNewHorizons:BloodMagic:1.3.10:dev")
+    //compile("curse.maven:witchery-69673:2234410")
 }

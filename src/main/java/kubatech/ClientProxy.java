@@ -20,15 +20,23 @@
 package kubatech;
 
 import cpw.mods.fml.common.event.*;
+import kubatech.api.utils.ModUtils;
+import kubatech.loaders.MobRecipeLoader;
+import kubatech.nei.IMCForNEI;
+import net.minecraftforge.common.MinecraftForge;
 
+@SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
+        ModUtils.isClientSided = true;
         super.preInit(event);
     }
 
     public void init(FMLInitializationEvent event) {
         super.init(event);
+        IMCForNEI.IMCSender();
+        MinecraftForge.EVENT_BUS.register(MobRecipeLoader.instance);
     }
 
     public void postInit(FMLPostInitializationEvent event) {
