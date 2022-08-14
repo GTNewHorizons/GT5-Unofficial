@@ -199,6 +199,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         final ItemStack inputStack = input.getItemStack();
         if (inputStack == null)
             return null;
+        if (getBaseMetaTileEntity() == null)
+            return input;
         if (mode != appeng.api.config.Actionable.SIMULATE)
             getBaseMetaTileEntity().markDirty();
         ItemStack storedStack = getItemStack();
@@ -240,6 +242,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Optional.Method(modid = "appliedenergistics2")
     public appeng.api.storage.data.IAEItemStack extractItems(final appeng.api.storage.data.IAEItemStack request, final appeng.api.config.Actionable mode, final appeng.api.networking.security.BaseActionSource src) {
         if (request.isSameType(getItemStack())) {
+            if (getBaseMetaTileEntity() == null)
+                return null;
             if (mode != appeng.api.config.Actionable.SIMULATE)
                 getBaseMetaTileEntity().markDirty();
             if (request.getStackSize() >= getItemCount()) {
