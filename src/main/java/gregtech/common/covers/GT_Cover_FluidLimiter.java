@@ -82,16 +82,18 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
 
     private float getFillLevelInputSlots(IFluidHandler fh) {
         FluidTankInfo[] tankInfo = fh.getTankInfo(ForgeDirection.UNKNOWN);
-        long tMax = 0;
-        long tUsed = 0;
+        long tMax;
+        long tUsed;
         if(tankInfo != null) {
+            //0 Because we acces first slot only
             FluidTankInfo inputSlot = tankInfo[0];
-            tMax = inputSlot.capacity;
             if(inputSlot.fluid != null) {
+                tMax = inputSlot.capacity;
                 tUsed = inputSlot.fluid.amount;
+                return (float) tUsed / (float) tMax;
             }
         }
-        return (float) tUsed / (float) tMax;
+        return 0F;
     }
 
 
