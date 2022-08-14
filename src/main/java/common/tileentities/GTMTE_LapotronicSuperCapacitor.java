@@ -555,7 +555,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
         // Passive loss is multiplied by number of maintenance issues.
         long total_passive_loss = uhv_cap_multiplier * (getIdealStatus() - repairStatus + 1);
 
-
         // Maximum of 100,000 EU/t drained per UHV cell. The logic is 1% of EU capacity should be drained every 86400 seconds (1 day).
         return total_passive_loss;
 	}
@@ -603,9 +602,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
             ? EnumChatFormatting.GREEN + "enabled" + EnumChatFormatting.RESET
             : EnumChatFormatting.RED + "disabled" + EnumChatFormatting.RESET));
         ll.add(GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.RESET + " Capacitors detected: " + uhv_cap_count);
-        if (uhv_cap_count > 0) {
-            ll.add("Total wireless EU: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(getUserEU(global_energy_user_uuid)));
-        }
+        ll.add("Total wireless EU: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(getUserEU(global_energy_user_uuid)));
+        ll.add("Wireless Network EU/t: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(getUserEU(global_energy_user_uuid)));
         ll.add("---------------------------------------------");
 
 		final String[] a = new String[ll.size()];
