@@ -7,15 +7,16 @@ import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Because Forge fucked this one up royally.
  */
 public class GT_FluidStack extends FluidStack {
-    private static final Collection<GT_FluidStack> sAllFluidStacks = new ArrayList<GT_FluidStack>(5000);
+    private static final Collection<GT_FluidStack> sAllFluidStacks = Collections.newSetFromMap(new WeakHashMap<>(10000));
     private static volatile boolean lock = false;
     private Fluid mFluid;
 
@@ -68,7 +69,7 @@ public class GT_FluidStack extends FluidStack {
         }
         return new GT_FluidStack(this);
     }
-    
+
     @Override
     public String toString() {
     	return String.format("GT_FluidStack: %s x %s, ID:%s", this.amount, this.getFluid().getName(), this.getFluidID());
