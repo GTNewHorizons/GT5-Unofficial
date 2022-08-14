@@ -3,8 +3,6 @@ package gregtech.api.interfaces;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.IGT_HatchAdder;
 
@@ -60,6 +58,7 @@ public interface IHatchElement<T> {
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .dot(aDot)
+            .continueIfSuccess()
             .build();
     }
 
@@ -70,6 +69,7 @@ public interface IHatchElement<T> {
             .casingIndex(aCasingIndex)
             .dot(aDot)
             .shouldSkip(aShouldSkip)
+            .continueIfSuccess()
             .build();
     }
 }
