@@ -101,6 +101,7 @@ import static gregtech.api.enums.GT_Values.MOD_ID_FR;
         guiFactory = "gregtech.client.GT_GuiFactory",
         dependencies = " required-after:IC2;" +
                 " required-after:structurelib;" +
+                " required-after:gtnhlib;" +
                 " after:dreamcraft;" +
                 " after:Forestry;" +
                 " after:PFAAGeologica;" +
