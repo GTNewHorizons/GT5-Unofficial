@@ -35,7 +35,6 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilter.ItemFilterData> {
 
     private final boolean mExport;
-    private final int textColor = GuiColors.coverItemFilter.getColor();
 
     public GT_Cover_ItemFilter(boolean isExport) {
         super(ItemFilterData.class);
@@ -220,6 +219,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
+
+        private final int textColor = GuiColors.coverItemFilter.getColor();
 
         public GUI(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

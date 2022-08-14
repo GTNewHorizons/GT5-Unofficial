@@ -41,10 +41,6 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     private final int ANY_INPUT_FILTER_OUTPUT = 6;  //  110
     private final int ANY_INPUT_INVERT_OUTPUT = 7;  //  111
 
-    private final int 
-        textColor = GuiColors.coverFluidFilter.getColor(),
-        textColorFluidFilterName = GuiColors.coverFluidFilterName.getColor();
-
     public GT_Cover_Fluidfilter() {
         super(FluidFilterData.class);
     }
@@ -208,6 +204,10 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
+
+        private final int
+            textColor = GuiColors.coverFluidFilter.getColor(),
+            textColorFluidFilterName = GuiColors.coverFluidFilterName.getColor();
 
         public GT_FluidFilterGUICover(byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

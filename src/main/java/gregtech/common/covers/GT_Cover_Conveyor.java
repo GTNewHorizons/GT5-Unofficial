@@ -21,8 +21,6 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
     public final int mTickRate;
     private final int mMaxStacks;
 
-    private final int textColor = GuiColors.coverPlayerDetector.getColor();
-
     public GT_Cover_Conveyor(int aTickRate) {
         this.mTickRate = aTickRate;
         this.mMaxStacks = 1;
@@ -162,6 +160,8 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
+
+        private final int textColor = GuiColors.coverPlayerDetector.getColor();
 
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

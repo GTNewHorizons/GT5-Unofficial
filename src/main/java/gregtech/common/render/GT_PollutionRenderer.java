@@ -47,7 +47,7 @@ public class GT_PollutionRenderer {
     private static final short[] liquidColor = {160, 200, 10};
     private static final short[] foliageColor = {160, 80, 15};
 
-    private final int textColor = GuiColors.pollutionRenderer.getColor();
+    private final GuiColors textColor = GuiColors.pollutionRenderer;
 
     //TODO need to soft update some blocks, grass and leaves does more often than liquid it looks like.
 
@@ -248,7 +248,7 @@ public class GT_PollutionRenderer {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, 0, off, textColor);
+        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, 0, off, textColor.getColor());
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
     }

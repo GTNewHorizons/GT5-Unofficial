@@ -50,9 +50,6 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 	private static final int TICK_RATE_BITMASK = (TICK_RATE_MAX - TICK_RATE_MIN) << SPEED_LENGTH;
 
 	public final int mTransferRate;
-	private final int 
-		textColor = GuiColors.coverFluidRegulator.getColor(),
-		textColorWarn = GuiColors.coverFluidRegulatorWarn.getColor();
 	private boolean allowFluid = false;
 
 	public GT_Cover_FluidRegulator(int aTransferRate) {
@@ -359,6 +356,10 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 		private static final int spaceY = 18;
 
 		private boolean warn = false;
+
+        private final int
+            textColor = GuiColors.coverFluidRegulator.getColor(),
+            textColorWarn = GuiColors.coverFluidRegulatorWarn.getColor();
 
 		public GUI(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, ICoverable aTileEntity) {
 			super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

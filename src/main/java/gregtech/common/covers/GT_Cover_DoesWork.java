@@ -16,9 +16,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_DoesWork extends GT_CoverBehavior {
-
-    private final int textColor = GuiColors.coverDoesWork.getColor();
-
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
@@ -123,6 +120,8 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
+
+        private final int textColor = GuiColors.coverDoesWork.getColor();
 
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

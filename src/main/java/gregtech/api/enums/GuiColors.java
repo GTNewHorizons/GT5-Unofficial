@@ -78,6 +78,7 @@ public enum GuiColors {
 
     GuiColors(final int hex) {
         this.defaultColor = hex;
+        this.color = hex;
     }
 
     public void reload(Function<String, String> l) {

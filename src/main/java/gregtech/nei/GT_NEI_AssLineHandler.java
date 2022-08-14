@@ -47,7 +47,7 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
      * Can be referenced from cached recipes.
      */
     public static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
-    private final int textColor = GuiColors.NEIText.getColor();
+    private final GuiColors textColor = GuiColors.NEIText;
 
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
@@ -245,66 +245,66 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
         String[] recipeDesc = recipe.getNeiDesc();
         if (recipeDesc == null) {
             if (tEUt != 0) {
-                drawText(10, 73, trans("152","Total: ") + GT_Utility.formatNumbers((long) tDuration * tEUt) + " EU", textColor);
-                drawText(10, 83, trans("153","Usage: ") + GT_Utility.formatNumbers(tEUt) + " EU/t", textColor);
+                drawText(10, 73, trans("152","Total: ") + GT_Utility.formatNumbers((long) tDuration * tEUt) + " EU", textColor.getColor());
+                drawText(10, 83, trans("153","Usage: ") + GT_Utility.formatNumbers(tEUt) + " EU/t", textColor.getColor());
                 if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
                     int voltage = tEUt / this.mRecipeMap.mAmperage;
                     byte tier = GT_Utility.getTier(voltage);
                     if (tier < 0 || tier >= 16) {
-                        drawText(10, 93, trans("154", "Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU", textColor);
+                        drawText(10, 93, trans("154", "Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU", textColor.getColor());
                     } else {
-                        drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU (" + GT_Values.VN[tier] + ")", textColor);
+                        drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU (" + GT_Values.VN[tier] + ")", textColor.getColor());
                     }
-                    drawText(10, 103, trans("155","Amperage: ") + GT_Utility.formatNumbers(this.mRecipeMap.mAmperage), textColor);
+                    drawText(10, 103, trans("155","Amperage: ") + GT_Utility.formatNumbers(this.mRecipeMap.mAmperage), textColor.getColor());
                 } else {
-                    drawText(10, 93, trans("156","Voltage: unspecified"), textColor);
-                    drawText(10, 103, trans("157","Amperage: unspecified"), textColor);
+                    drawText(10, 93, trans("156","Voltage: unspecified"), textColor.getColor());
+                    drawText(10, 103, trans("157","Amperage: unspecified"), textColor.getColor());
                 }
             }
             if (tDuration > 0) {
-                drawText(10, 113, trans("158","Time: ") + GT_Utility.formatNumbers(0.05d * tDuration) + trans("161"," secs"), textColor);
+                drawText(10, 113, trans("158","Time: ") + GT_Utility.formatNumbers(0.05d * tDuration) + trans("161"," secs"), textColor.getColor());
             }
             int tSpecial = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
             boolean specialDrew = false;
             if (tSpecial == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
-                drawText(10, 123, trans("159","Needs Low Gravity"), textColor);
+                drawText(10, 123, trans("159","Needs Low Gravity"), textColor.getColor());
                 specialDrew = true;
             } else if (tSpecial == -200 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-                drawText(10, 123, trans("160","Needs Cleanroom"), textColor);
+                drawText(10, 123, trans("160","Needs Cleanroom"), textColor.getColor());
                 specialDrew = true;
             } else if (tSpecial == -201) {
-                drawText(10, 123, trans("206","Scan for Assembly Line"), textColor);
+                drawText(10, 123, trans("206","Scan for Assembly Line"), textColor.getColor());
                 specialDrew = true;
             } else if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
-                drawText(10, 123, this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(tSpecial * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, textColor);
+                drawText(10, 123, this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(tSpecial * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, textColor.getColor());
                 specialDrew = true;
             }
             int y = 123 + (specialDrew ? 10 : 0);
             if (GT_Mod.gregtechproxy.mNEIRecipeOwner) {
                 if (recipe.owners.size() > 1) {
-                    drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("226", "Original Recipe by: ") + recipe.owners.get(0).getName(), textColor);
+                    drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("226", "Original Recipe by: ") + recipe.owners.get(0).getName(), textColor.getColor());
                     y += 10;
                     for (int i = 1; i < recipe.owners.size(); i++) {
-                        drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("227", "Modified by: ") + recipe.owners.get(i).getName(), textColor);
+                        drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("227", "Modified by: ") + recipe.owners.get(i).getName(), textColor.getColor());
                         y += 10;
                     }
                 } else if (recipe.owners.size() > 0) {
-                    drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("225", "Recipe by: ") + recipe.owners.get(0).getName(), textColor);
+                    drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("225", "Recipe by: ") + recipe.owners.get(0).getName(), textColor.getColor());
                     y += 10;
                 }
             }
             if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null && !recipe.stackTraces.isEmpty()) {
-                drawText(10, y, "stackTrace:", textColor);
+                drawText(10, y, "stackTrace:", textColor.getColor());
                 y += 10;
                 for (StackTraceElement stackTrace : recipe.stackTraces.get(0)) {
-                    drawText(10, y, stackTrace.toString(), textColor);
+                    drawText(10, y, stackTrace.toString(), textColor.getColor());
                     y += 10;
                 }
             }
         } else {
             int i = 0;
             for (String descLine : recipeDesc) {
-                drawText(10, 73 + 10 * i, descLine, textColor);
+                drawText(10, 73 + 10 * i, descLine, textColor.getColor());
                 i++;
             }
         }

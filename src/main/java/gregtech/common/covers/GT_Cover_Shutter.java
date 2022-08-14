@@ -17,8 +17,6 @@ import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_Shutter extends GT_CoverBehavior {
 
-    private final int textColor = GuiColors.coverShutter.getColor();
-
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
@@ -128,6 +126,8 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
+
+        private final int textColor = GuiColors.coverShutter.getColor();
 
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

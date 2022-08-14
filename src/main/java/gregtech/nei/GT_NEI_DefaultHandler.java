@@ -69,7 +69,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     private String mRecipeName; // Name of the handler displayed on top
     private NEIHandlerAbsoluteTooltip mRecipeNameTooltip;
     private static final int RECIPE_NAME_WIDTH = 140;
-    private final int textColor = GuiColors.NEIText.getColor();
+    private final GuiColors textColor = GuiColors.NEIText;
 
      /**
      * Static version of {@link TemplateRecipeHandler#cycleticks}.
@@ -524,7 +524,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     protected void drawLine(int lineNumber, String line) {
-        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, textColor);
+        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, textColor.getColor());
     }
 
     protected int getDescriptionYOffset() {

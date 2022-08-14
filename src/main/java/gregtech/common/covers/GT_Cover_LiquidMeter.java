@@ -30,8 +30,6 @@ import java.util.Arrays;
 
 public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMeter.LiquidMeterData> {
 
-    private final int textColor = GuiColors.coverLiquidMeter.getColor();
-
     public GT_Cover_LiquidMeter() {
         super(LiquidMeterData.class);
     }
@@ -233,6 +231,8 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
 
         private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
         private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
+
+        private final int textColor = GuiColors.coverLiquidMeter.getColor();
 
         public GUI(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

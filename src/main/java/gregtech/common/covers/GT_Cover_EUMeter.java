@@ -30,9 +30,6 @@ import javax.annotation.Nullable;
 import java.util.function.Function;
 
 public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMeterData> {
-
-    private final int textColor = GuiColors.coverEUMeter.getColor();
-
     public GT_Cover_EUMeter() {
         super(EUMeterData.class);
     }
@@ -375,6 +372,8 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
         private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
         private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
+
+        private final int textColor = GuiColors.coverEUMeter.getColor();
 
         public GUI(byte aSide, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

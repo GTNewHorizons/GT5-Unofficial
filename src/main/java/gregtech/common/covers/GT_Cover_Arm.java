@@ -28,8 +28,6 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     protected static final int SLOT_ID_MIN = 0;
     protected static final int CONVERTED_BIT = 0x80000000;
 
-    private final int textColor = GuiColors.coverArm.getColor();
-
     public GT_Cover_Arm(int aTickRate) {
         this.mTickRate = aTickRate;
     }
@@ -248,6 +246,8 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
         private int internalSlotID, adjacentSlotID;
 
         private final int maxIntSlot, maxAdjSlot;
+
+        private final int textColor = GuiColors.coverArm.getColor();
 
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
