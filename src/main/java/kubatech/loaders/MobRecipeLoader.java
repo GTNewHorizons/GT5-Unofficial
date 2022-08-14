@@ -618,7 +618,11 @@ public class MobRecipeLoader {
                 // No constructor ?
                 LOG.info("Entity " + k + " doesn't have constructor, skipping");
                 return;
-            } catch (Exception ex) {
+            } catch (NoClassDefFoundError ex) {
+                // Its using classes from Client ? Then it's not important to include
+                LOG.info("Entity " + k + " is using undefined classes, skipping");
+                return;
+            } catch (Throwable ex) {
                 ex.printStackTrace();
                 return;
             }
