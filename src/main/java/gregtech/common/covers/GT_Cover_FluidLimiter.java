@@ -5,6 +5,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
@@ -44,6 +46,11 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
 
     @Override
     protected boolean letsFluidInImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+       IGregTechTileEntity gregTile =  aTileEntity.getIGregTechTileEntity(aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord());
+       if(gregTile.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Input){
+           return true;
+       }
+
         return allowsFluidIn(aCoverVariable, aTileEntity);
     }
 
