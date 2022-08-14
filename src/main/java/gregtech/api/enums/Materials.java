@@ -2176,7 +2176,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     private static void addDensityValues(Materials aMaterial, String aConfigPath) {
         aMaterial.mDensityMultiplier = GregTech_API.sMaterialProperties.get(aConfigPath, "DensityMultiplier", aMaterial.mDensityMultiplier);
         aMaterial.mDensityDivider = GregTech_API.sMaterialProperties.get(aConfigPath, "DensityDivider", aMaterial.mDensityDivider);
-        aMaterial.mDensity = GregTech_API.sMaterialProperties.get(aConfigPath, "Density", (M * aMaterial.mDensityMultiplier) / aMaterial.mDensityDivider != 0 ? aMaterial.mDensityDivider : 1);
+        aMaterial.mDensity = (long) GregTech_API.sMaterialProperties.get(aConfigPath, "Density", ((double) M * aMaterial.mDensityMultiplier) / (aMaterial.mDensityDivider != 0 ? aMaterial.mDensityDivider : 1));
     }
 
     private static void addColorValues(Materials aMaterial, String aConfigPath) {
