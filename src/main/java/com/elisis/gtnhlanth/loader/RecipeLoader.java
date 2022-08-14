@@ -192,14 +192,14 @@ public class RecipeLoader {
 
         // SeaweedConcentrate
         GT_Values.RA.addMixerRecipe(
-                WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 1),
+                WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 2),
                 null,
                 null,
                 null,
-                Materials.DilutedSulfuricAcid.getFluid(600),
-                WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(600),
-                Materials.Calcite.getDustSmall(2),
-                300,
+                Materials.DilutedSulfuricAcid.getFluid(1200),
+                WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(1200),
+                Materials.Calcite.getDust(1),
+                600,
                 240);
 
         // SeaweedConcentrate * 4
@@ -380,12 +380,12 @@ public class RecipeLoader {
         // CHAIN BEGIN
         // MONAZITE
         RecipeAdder.instance.DigesterRecipes.addDigesterRecipe(
-                new FluidStack[] {Materials.NitricAcid.getFluid(350)},
-                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Monazite, 1)},
-                WerkstoffMaterialPool.MuddyRareEarthMonaziteSolution.getFluidOrGas(200),
-                new ItemStack[] {Materials.SiliconDioxide.getDustSmall(2)},
+                new FluidStack[] {Materials.NitricAcid.getFluid(700)},
+                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Monazite, 2)},
+                WerkstoffMaterialPool.MuddyRareEarthMonaziteSolution.getFluidOrGas(400),
+                new ItemStack[] {Materials.SiliconDioxide.getDust(1)},
                 1920,
-                200,
+                400,
                 800);
 
         RecipeAdder.instance.DissolutionTankRecipes.addDissolutionTankRecipe(
@@ -393,7 +393,7 @@ public class RecipeLoader {
                     Materials.Water.getFluid(10000),
                     WerkstoffMaterialPool.MuddyRareEarthMonaziteSolution.getFluidOrGas(1000)
                 },
-                new ItemStack[] {Materials.Saltpeter.getDust(1)},
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(1), Materials.Saltpeter.getDust(1)},
                 WerkstoffMaterialPool.DilutedRareEarthMonaziteMud.getFluidOrGas(11000),
                 new ItemStack[] {
                     WerkstoffMaterialPool.HafniaZirconiaBlend.get(OrePrefixes.dustTiny, 4),
@@ -402,6 +402,22 @@ public class RecipeLoader {
                 },
                 480,
                 900,
+                10);
+
+        RecipeAdder.instance.DissolutionTankRecipes.addDissolutionTankRecipe(
+                new FluidStack[] {
+                    Materials.Water.getFluid(90000),
+                    WerkstoffMaterialPool.MuddyRareEarthMonaziteSolution.getFluidOrGas(9000)
+                },
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(9), Materials.Saltpeter.getDust(9)},
+                WerkstoffMaterialPool.DilutedRareEarthMonaziteMud.getFluidOrGas(99000),
+                new ItemStack[] {
+                    WerkstoffMaterialPool.HafniaZirconiaBlend.get(OrePrefixes.dust, 4),
+                    WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 9),
+                    Materials.Monazite.getDust(2)
+                },
+                480,
+                8100,
                 10);
 
         GT_Recipe.GT_Recipe_Map.sSifterRecipes.addRecipe(
@@ -742,12 +758,12 @@ public class RecipeLoader {
 
         // BASTNASITE (god help me)
         RecipeAdder.instance.DigesterRecipes.addDigesterRecipe(
-                new FluidStack[] {Materials.NitricAcid.getFluid(350)},
-                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Bastnasite, 1)},
-                WerkstoffMaterialPool.MuddyRareEarthBastnasiteSolution.getFluidOrGas(200),
-                new ItemStack[] {Materials.SiliconDioxide.getDustSmall(2)},
+                new FluidStack[] {Materials.NitricAcid.getFluid(700)},
+                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Bastnasite, 2)},
+                WerkstoffMaterialPool.MuddyRareEarthBastnasiteSolution.getFluidOrGas(400),
+                new ItemStack[] {Materials.SiliconDioxide.getDust(1)},
                 1920,
-                200,
+                400,
                 800);
 
         GT_Values.RA.addCrackingRecipe(
@@ -901,13 +917,13 @@ public class RecipeLoader {
 
         // Nd RE
         GT_Values.RA.addChemicalRecipe(
-                WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 1),
+                WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 2),
                 null,
-                Materials.HydrochloricAcid.getFluid(1000),
+                Materials.HydrochloricAcid.getFluid(2000),
                 null,
-                WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dustSmall, 2),
-                WerkstoffMaterialPool.NeodymiumOxide.get(OrePrefixes.dustSmall, 2),
-                450,
+                WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 1),
+                WerkstoffMaterialPool.NeodymiumOxide.get(OrePrefixes.dust, 1),
+                900,
                 800);
 
         // Sm RE
@@ -932,13 +948,13 @@ public class RecipeLoader {
                 480);
 
         GT_Values.RA.addBlastRecipe(
-                WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 2),
-                Materials.Calcium.getDust(1),
+                WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 8),
+                Materials.Calcium.getDust(4),
                 null,
-                WerkstoffMaterialPool.CalciumFluoride.getFluidOrGas(3000),
-                Materials.Holmium.getDustSmall(1),
-                WerkstoffMaterialPool.SamariumTerbiumMixture.get(OrePrefixes.dust, 1),
-                400,
+                WerkstoffMaterialPool.CalciumFluoride.getFluidOrGas(12000),
+                Materials.Holmium.getDust(1),
+                WerkstoffMaterialPool.SamariumTerbiumMixture.get(OrePrefixes.dust, 4),
+                1600,
                 1920,
                 1200);
 
@@ -953,13 +969,13 @@ public class RecipeLoader {
                 480);
 
         GT_Values.RA.addChemicalRecipe(
-                WerkstoffMaterialPool.NitratedSamariumTerbiumMixture.get(OrePrefixes.dust, 1),
-                Materials.Copper.getDustSmall(1),
+                WerkstoffMaterialPool.NitratedSamariumTerbiumMixture.get(OrePrefixes.dust, 4),
+                Materials.Copper.getDust(1),
                 null,
                 null,
-                WerkstoffMaterialPool.TerbiumNitrate.get(OrePrefixes.dustSmall, 2),
-                WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dustSmall, 2), // Potentially make only Samarium
-                800,
+                WerkstoffMaterialPool.TerbiumNitrate.get(OrePrefixes.dust, 2),
+                WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 2), // Potentially make only Samarium
+                3200,
                 1920);
 
         GT_Values.RA.addChemicalRecipe(
@@ -1050,6 +1066,16 @@ public class RecipeLoader {
                 WerkstoffMaterialPool.Butanediol.getFluidOrGas(1000),
                 null,
                 900,
+                1920);
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] {
+                    GT_Utility.getIntegratedCircuit(9), WerkstoffMaterialPool.MoTeOCatalyst.get(OrePrefixes.dust, 1)
+                },
+                new FluidStack[] {Materials.Butane.getGas(9000)},
+                new FluidStack[] {WerkstoffMaterialPool.Butanediol.getFluidOrGas(9000)},
+                null,
+                8100,
                 1920);
 
         // Moly-Te-Oxide Catalyst

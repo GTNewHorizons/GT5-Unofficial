@@ -34,7 +34,7 @@ public class RecipeAdder {
             StatCollector.translateToLocal("tile.recipe.disstank"),
             null,
             "gtnhlanth:textures/gui/Disstank",
-            1,
+            2,
             3,
             1,
             1,
