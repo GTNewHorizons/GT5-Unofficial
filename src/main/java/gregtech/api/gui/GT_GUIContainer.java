@@ -1,11 +1,16 @@
 package gregtech.api.gui;
 
+import gregtech.api.util.ColorsMetadataSection;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
+
+import java.io.IOException;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
@@ -20,11 +25,27 @@ public class GT_GUIContainer extends GuiContainer {
 
     public ResourceLocation mGUIbackground;
 
+    public ColorsMetadataSection cmSection;
+
     public String mGUIbackgroundPath;
 
     public GT_GUIContainer(Container aContainer, String aGUIbackground) {
         super(aContainer);
         mGUIbackground = new ResourceLocation(mGUIbackgroundPath = aGUIbackground);
+        loadTextureMetaData();
+    }
+
+    private void loadTextureMetaData() {
+        try {
+            IResource mGUIbackgroundResource = Minecraft.getMinecraft().getResourceManager().getResource(mGUIbackground);
+            if (mGUIbackgroundResource.hasMetadata()) {
+                cmSection = (ColorsMetadataSection) mGUIbackgroundResource.getMetadata("colors");
+            }
+        } catch (IOException ignore) {}
+    }
+
+    protected int getTextColorOrDefault(String textType, int defaultColor) {
+        return cmSection != null ? cmSection.getTextColorOrDefault(textType, defaultColor) : defaultColor;
     }
 
     public int getLeft() {

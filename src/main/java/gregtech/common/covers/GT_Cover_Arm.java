@@ -1,7 +1,6 @@
 package gregtech.common.covers;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
@@ -247,7 +246,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
 
         private final int maxIntSlot, maxAdjSlot;
 
-        private final int textColor = GuiColors.coverArm.getColor();
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
 
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

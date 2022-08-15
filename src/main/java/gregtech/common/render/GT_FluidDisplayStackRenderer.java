@@ -1,7 +1,6 @@
 package gregtech.common.render;
 
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GuiColors;
 import gregtech.api.enums.ItemList;
 import gregtech.common.items.GT_FluidDisplayItem;
 import net.minecraft.client.Minecraft;
@@ -16,8 +15,6 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
 public class GT_FluidDisplayStackRenderer implements IItemRenderer {
-
-    private final GuiColors textColor = GuiColors.fluidDisplayStackRenderer;
 
     public GT_FluidDisplayStackRenderer() {
         MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), this);
@@ -92,7 +89,7 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glScalef(smallTextScale, smallTextScale, 1.0f);
 
-            fontRender.drawString( amountString, 0, (int) (16/smallTextScale) - fontRender.FONT_HEIGHT + 1, textColor.getColor(), true);
+            fontRender.drawString( amountString, 0, (int) (16/smallTextScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
             GL11.glScalef(1f, 1f, 1f);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
         }
