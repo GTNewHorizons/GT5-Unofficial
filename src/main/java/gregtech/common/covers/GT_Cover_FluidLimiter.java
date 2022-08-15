@@ -184,7 +184,7 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         private final FluidLimiterData coverVariable;
         private final GT_GuiIntegerTextBox thresholdBox;
 
-
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
 
         public GUI(byte aSide, int aCoverID, FluidLimiterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
@@ -203,7 +203,7 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString("Percent threshold", startX, startY + spaceY * 2 - 35, 0xFF555555);
+            this.getFontRenderer().drawString("Percent threshold", startX, startY + spaceY * 2 - 35, textColor);
         }
 
         @Override

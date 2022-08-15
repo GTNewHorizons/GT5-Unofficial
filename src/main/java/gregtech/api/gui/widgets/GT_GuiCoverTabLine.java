@@ -35,7 +35,7 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
     // Not sure there's a point in JIT translation but that's what this is
     private String[] translatedSides;
     private IGregTechTileEntity tile;
-    private Dyes colorization;
+    private int colorization;
 
     /**
      * Let's you access an IGregTechTileEntity's covers as tabs on the GUI's sides
@@ -58,7 +58,7 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
      */
     public GT_GuiCoverTabLine(GT_GUIContainerMetaTile_Machine gui,  int tabLineLeft, int tabLineTop, int tabHeight,
             int tabWidth, int tabSpacing, DisplayStyle xDir, DisplayStyle yDir, DisplayStyle displayMode,
-            GT_GuiTabIconSet tabBackground, IGregTechTileEntity tile, Dyes colorization) {
+            GT_GuiTabIconSet tabBackground, IGregTechTileEntity tile, int colorization) {
         super(gui, 6, tabLineLeft, tabLineTop, tabHeight, tabWidth, tabSpacing, xDir, yDir, displayMode, tabBackground);
         this.tile = tile;
         this.colorization = colorization;
@@ -81,7 +81,7 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
     @Override
     protected void drawBackground(float parTicks, int mouseX, int mouseY) {
         // Apply this tile's coloration to draw the background
-        GL11.glColor3ub((byte) colorization.mRGBa[0], (byte) colorization.mRGBa[1], (byte) colorization.mRGBa[2]);
+        GL11.glColor3ub((byte) ((colorization >> 16) & 0xFF), (byte) ((colorization >> 8) & 0xFF), (byte) (colorization & 0xFF));
         super.drawBackground(parTicks, mouseX, mouseY);
     }
 

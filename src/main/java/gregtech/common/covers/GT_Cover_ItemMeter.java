@@ -4,7 +4,6 @@ import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
@@ -288,7 +287,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
 		private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
 		private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
-        private final int textColor = GuiColors.coverItemMeter.getColor();
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
 
 		public GUI(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

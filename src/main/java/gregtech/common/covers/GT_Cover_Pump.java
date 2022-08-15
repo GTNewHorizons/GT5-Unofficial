@@ -1,7 +1,6 @@
 package gregtech.common.covers;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
@@ -186,7 +185,7 @@ public class GT_Cover_Pump extends GT_CoverBehavior{
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private final int textColor = GuiColors.coverPump.getColor();
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
 
         public GT_PumpGUICover(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));

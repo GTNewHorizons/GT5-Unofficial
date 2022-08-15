@@ -64,7 +64,6 @@ import gregtech.loaders.load.GT_SonictronLoader;
 import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
-import gregtech.loaders.misc.GT_JsonLoader;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
 import gregtech.nei.IMCForNEI;
@@ -156,9 +155,6 @@ public class GT_Mod implements IGT_Mod {
     public static final String aTextGeneral = "general";
     public static final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
-
-    @SideOnly(Side.CLIENT)
-    public static GT_JsonLoader jsonGuiColors;
 
     static {
         if ((509 != GregTech_API.VERSION) || (509 != GT_ModHandler.VERSION) || (509 != GT_OreDictUnificator.VERSION) || (509 != GT_Recipe.VERSION) || (509 != GT_Utility.VERSION) || (509 != GT_RecipeRegistrator.VERSION) || (509 != Element.VERSION) || (509 != Materials.VERSION) || (509 != OrePrefixes.VERSION)) {

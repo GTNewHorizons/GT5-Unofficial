@@ -1,6 +1,5 @@
 package gregtech.common.gui;
 
-import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
@@ -18,7 +17,7 @@ public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTi
         GT_GuiIcon.TAB_NORMAL_BRICK,
         GT_GuiIcon.TAB_HIGHLIGHT_BRICK,
         GT_GuiIcon.TAB_DISABLED_BRICK);
-    private final int textColor = GuiColors.primitiveBlastFurnace.getColor();
+    private final int textColor = this.getTextColorOrDefault("title", 0x404040);
 
     public GT_GUIContainer_PrimitiveBlastFurnace(InventoryPlayer inventoryPlayer, IGregTechTileEntity tileEntity,
             String name, String aNEI) {

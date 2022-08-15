@@ -1,6 +1,5 @@
 package gregtech.common.gui;
 
-import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
@@ -10,7 +9,9 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_Teleporter extends GT_GUIContainerMetaTile_Machine {
     
-    private final int textColor = GuiColors.teleporter.getColor();
+    private final int
+        textColor = this.getTextColorOrDefault("text", 0xFAFAFF),
+        textColorTitle = this.getTextColorOrDefault("text", 0xFAFAFF);
 
     public GT_GUIContainer_Teleporter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(new GT_Container_Teleporter(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "Teleporter.png");
@@ -18,7 +19,7 @@ public class GT_GUIContainer_Teleporter extends GT_GUIContainerMetaTile_Machine 
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.fontRendererObj.drawString("Teleporter", 46, 8, 16448255);
+        this.fontRendererObj.drawString("Teleporter", 46, 8, textColorTitle);
         if (this.mContainer != null) {
             this.fontRendererObj.drawString("X: " + GT_Utility.parseNumberToString(((GT_Container_Teleporter) this.mContainer).mTargetX), 46, 16, textColor);
             this.fontRendererObj.drawString("Y: " + GT_Utility.parseNumberToString(((GT_Container_Teleporter) this.mContainer).mTargetY), 46, 24, textColor);

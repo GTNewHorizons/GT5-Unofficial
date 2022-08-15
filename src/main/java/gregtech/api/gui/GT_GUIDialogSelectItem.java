@@ -1,6 +1,5 @@
 package gregtech.api.gui;
 
-import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
@@ -18,7 +17,7 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
 	public static final int UNSELECTED = -1;
 	private static final int cols = 9;
 	private static final int rows = 3;
-	private final int textColor = GuiColors.dialogSelectItem.getColor();
+	private final int textColor = this.getTextColorOrDefault("text",0xff555555);
 	private final GuiScreen parent;
 	private final Consumer<ItemStack> selectedCallback;
 	// passed in stack
