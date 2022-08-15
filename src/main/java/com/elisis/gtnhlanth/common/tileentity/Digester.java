@@ -41,12 +41,12 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 
     private HeatingCoilLevel heatLevel;
 
-    private IStructureDefinition<Digester> multiDefinition = StructureDefinition.<Digester>builder()
+    private final IStructureDefinition<Digester> multiDefinition = StructureDefinition.<Digester>builder()
             .addShape(mName, transpose(new String[][] {
-                {"-------", "-ttttt-", "-t---t-", "-t---t-", "-t---t-", "-ttttt-", "-------"},
-                {"--ttt--", "-t---t-", "t-----t", "t-----t", "t-----t", "-t---t-", "--ttt--"},
-                {"-tccct-", "tc---ct", "c-----c", "c-----c", "c-----c", "tc---ct", "-tccct-"},
-                {"-tt~tt-", "thhhhht", "thsssht", "thsssht", "thsssht", "thhhhht", "-ttttt-"},
+                {"       ", " ttttt ", " t---t ", " t---t ", " t---t ", " ttttt ", "       "},
+                {"  ttt  ", " t---t ", "t-----t", "t-----t", "t-----t", " t---t ", "  ttt  "},
+                {" tccct ", "tc---ct", "c-----c", "c-----c", "c-----c", "tc---ct", " tccct "},
+                {" tt~tt ", "thhhhht", "thsssht", "thsssht", "thsssht", "thhhhht", " ttttt "},
             }))
             .addElement(
                     't',
@@ -93,14 +93,14 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-        GT_Log.out.print("in checkRecipe\n");
+        GT_Log.out.print("Digester: in checkRecipe\n");
 
         ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
         FluidStack[] tFluidInputArray = tFluidInputs.toArray(new FluidStack[0]);
         ItemStack[] tItems = this.getStoredInputs().toArray(new ItemStack[0]);
         long tVoltage = this.getMaxInputVoltage();
 
-        GT_Log.out.print(Arrays.toString(mInventory));
+        GT_Log.out.print("Digester: " + Arrays.toString(mInventory));
 
         // Collection<GT_Recipe> tRecipes = RecipeAdder.instance.DigesterRecipes.mRecipeList;
         GT_Recipe tRecipe = RecipeAdder.instance.DigesterRecipes.findRecipe(

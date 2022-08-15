@@ -37,13 +37,13 @@ import net.minecraftforge.fluids.FluidStack;
 public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<DissolutionTank>
         implements IConstructable, ISecondaryDescribable {
 
-    private IStructureDefinition<DissolutionTank> multiDefinition = StructureDefinition.<DissolutionTank>builder()
+    private final IStructureDefinition<DissolutionTank> multiDefinition = StructureDefinition.<DissolutionTank>builder()
             .addShape(mName, transpose(new String[][] {
-                {"-sss-", "sssss", "sssss", "sssss", "-sss-"},
+                {" sss ", "sssss", "sssss", "sssss", " sss "},
                 {"sgggs", "g---g", "g---g", "g---g", "sgggs"},
                 {"sgggs", "g---g", "g---g", "g---g", "sgggs"},
                 {"ss~ss", "shhhs", "shhhs", "shhhs", "sssss"},
-                {"s---s", "-----", "-----", "-----", "s---s"}
+                {"s   s", "     ", "     ", "     ", "s   s"}
             }))
             .addElement(
                     's',
@@ -82,11 +82,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
     }
 
     private boolean addGlass(Block block, int meta) {
-        if (block != ItemRegistry.bw_glasses[0]) {
-            return false;
-        } else {
-            return true;
-        }
+        return block == ItemRegistry.bw_glasses[0];
     }
 
     @Override
