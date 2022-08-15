@@ -521,6 +521,14 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         return false;
     }
 
+    protected void drawLine(int lineNumber, String line) {
+        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
+    }
+
+    protected int getDescriptionYOffset() {
+        return 73;
+    }
+
     public static class GT_RectHandler
         implements IContainerInputHandler, IContainerTooltipHandler {
         @Override
