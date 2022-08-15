@@ -100,7 +100,7 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
         ItemStack[] tItems = this.getStoredInputs().toArray(new ItemStack[0]);
         long tVoltage = this.getMaxInputVoltage();
 
-        GT_Log.out.print("Digester: "+ Arrays.toString(mInventory));
+        GT_Log.out.print("Digester: " + Arrays.toString(mInventory));
 
         // Collection<GT_Recipe> tRecipes = RecipeAdder.instance.DigesterRecipes.mRecipeList;
         GT_Recipe tRecipe = RecipeAdder.instance.DigesterRecipes.findRecipe(
