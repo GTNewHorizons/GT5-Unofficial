@@ -607,7 +607,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
         ll.add("Wireless Network EU/t: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(getUserEU(global_energy_user_uuid)));
         ll.add("---------------------------------------------");
 
-        printDebug();
 		final String[] a = new String[ll.size()];
 		return ll.toArray(a);
 	}
