@@ -33,11 +33,6 @@ public class GT_MetaTileEntity_OreDrillingPlant2 extends GT_MetaTileEntity_OreDr
     }
 
     @Override
-    protected String getCasingName() {
-        return "Stable Titanium Machine";
-    }
-
-    @Override
     protected Materials getFrameMaterial() {
         return Materials.Titanium;
     }

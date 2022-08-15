@@ -450,6 +450,7 @@ public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_En
 
     protected abstract ItemList getCasingBlockItem();
 
+    @Deprecated
     protected String getCasingName() {
         return null;
     }

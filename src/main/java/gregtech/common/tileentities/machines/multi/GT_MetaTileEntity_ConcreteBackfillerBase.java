@@ -24,7 +24,7 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
     }
 
     protected GT_Multiblock_Tooltip_Builder createTooltip(String aStructureName) {
-        String casings = getCasingName() != null ? getCasingName() : "Casing";
+        String casings = getCasingBlockItem().get(0).getDisplayName();
 
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType("Concrete Backfiller")
