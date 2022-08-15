@@ -3,7 +3,6 @@ package gregtech.api.util;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,12 +11,9 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static gregtech.api.enums.GT_Values.E;
 
@@ -41,6 +37,19 @@ public class GT_LanguageManager {
 	public static String[]
 		FACES = {FACE_BOTTOM, FACE_TOP, FACE_LEFT, FACE_FRONT, FACE_RIGHT, FACE_BACK, FACE_NONE};
 
+    private static Map<String, String> stringTranslateLanguageList = null;
+
+    static {
+        try {
+            Field fieldStringTranslateLanguageList = ReflectionHelper.findField(net.minecraft.util.StringTranslate.class, "languageList", "field_74816_c");
+            Field fieldStringTranslateInstance = ReflectionHelper.findField(net.minecraft.util.StringTranslate.class, "instance", "field_74817_a");
+            //noinspection unchecked
+            stringTranslateLanguageList = (Map<String, String>) fieldStringTranslateLanguageList.get(fieldStringTranslateInstance.get(null));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 	public static String addStringLocalization(String aKey, String aEnglish) {
         return addStringLocalization(aKey, aEnglish, true);
@@ -52,6 +61,7 @@ public class GT_LanguageManager {
             aEnglish = writeToLangFile(aKey, aEnglish);
             if (!LANGMAP.containsKey(aKey)) {
                 LANGMAP.put(aKey, aEnglish);
+                addToMCLangList(aKey, aEnglish);
             }
         }
         TEMPMAP.put(aKey.trim(), aEnglish);
@@ -62,6 +72,7 @@ public class GT_LanguageManager {
                 Property tProperty = sEnglishFile.get("LanguageFile", aKey, aEnglish);
                 aEnglish = tProperty.getString();
                 LANGMAP.put(aKey, aEnglish);
+                addToMCLangList(aKey, aEnglish);
             } else aEnglish = LANGMAP.get(aKey);
         }
         return aEnglish;
@@ -400,19 +411,9 @@ public class GT_LanguageManager {
 		addStringLocalization(FACE_NONE,    "None");
     }
 
-    @SuppressWarnings("rawtypes, unchecked")
-    public static void propagateLocalizationServerSide() {
-        if (!GT_Values.GT.isServerSide())
-            return;
-        try {
-            Field languageList = ReflectionHelper.findField(net.minecraft.util.StringTranslate.class, "languageList", "field_74816_c");
-            Field instance = ReflectionHelper.findField(net.minecraft.util.StringTranslate.class, "instance", "field_74817_a");
-            Object m = languageList.get(instance.get(null));
-            if (!(m instanceof Map))
-                return;
-            ((Map)m).putAll(LANGMAP);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
+    private static void addToMCLangList(String aKey, String aEnglish) {
+        if (stringTranslateLanguageList != null) {
+            stringTranslateLanguageList.put(aKey, aEnglish);
         }
     }
 }

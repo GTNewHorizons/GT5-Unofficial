@@ -31,11 +31,6 @@ public class GT_MetaTileEntity_ConcreteBackfiller2 extends GT_MetaTileEntity_Con
     }
 
     @Override
-    protected String getCasingName() {
-        return "Stable Titanium Machine";
-    }
-
-    @Override
     protected Materials getFrameMaterial() {
         return Materials.Titanium;
     }
