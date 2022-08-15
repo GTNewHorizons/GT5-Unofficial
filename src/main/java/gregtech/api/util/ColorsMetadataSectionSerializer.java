@@ -41,14 +41,14 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
             enableGuiTint = JsonUtils.getJsonObjectBooleanFieldValueOrDefault(guiTints, "enableGuiTintWhenPainted", true);
 
             for (Dyes dye : Dyes.values()) {
-                hexGuiTintMap.put(dye.mName, GT_Util.getRGBHex(dye.getRGBA()));
+                hexGuiTintMap.put(dye.mName, GT_Util.toHexString(dye.getRGBA()));
             }
 
             for (String key : hexGuiTintMap.keySet()) {
                 if (enableGuiTint) {
                     hexGuiTintMap.replace(key, JsonUtils.getJsonObjectStringFieldValueOrDefault(guiTints, key, hexGuiTintMap.get(key)));
                 } else {
-                    hexGuiTintMap.replace(key, GT_Util.getRGBHex(Dyes.dyeWhite.getRGBA()));
+                    hexGuiTintMap.replace(key, GT_Util.toHexString(Dyes.dyeWhite.getRGBA()));
                 }
             }
         }

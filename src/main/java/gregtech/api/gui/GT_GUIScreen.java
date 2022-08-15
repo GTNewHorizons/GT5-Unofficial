@@ -1,21 +1,19 @@
 package gregtech.api.gui;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
 import gregtech.api.gui.widgets.GT_GuiTooltipManager;
 import gregtech.api.gui.widgets.GT_GuiTooltipManager.GT_IToolTipRenderer;
 import gregtech.api.interfaces.IGuiScreen;
-import gregtech.api.util.ColorsMetadataSection;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -33,24 +31,26 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	protected int gui_height = 107;
 	protected int guiTop, guiLeft;
 	protected boolean drawButtons = true;
+
     private ResourceLocation mGUIbackgroundLocation;
-    private ColorsMetadataSection cmSection;
-	private final int textColor;
 	private GuiButton selectedButton;
+    private GT_GUIColorOverride colorOverride;
+    private final int textColor;
+    private final static String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
+
 	public String header;
 	public GT_GuiFakeItemButton headerIcon;
-
 
 	protected List<IGuiElement> elements = new ArrayList<>();
 	protected List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
 
 	public GT_GUIScreen(int width, int height, String header) {
-		this.gui_width = width;
+        this.gui_width = width;
 		this.gui_height = height;
 		this.header = header;
 		this.headerIcon = new GT_GuiFakeItemButton(this, 5, 5, null);
-        this.mGUIbackgroundLocation = new ResourceLocation("gregtech:textures/gui/GuiCover.png");
-        loadTextureMetaData();
+        this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
+        this.colorOverride = new GT_GUIColorOverride(guiTexturePath);
         this.textColor = getTextColorOrDefault("title", 0xFF222222);
 	}
 
@@ -76,17 +76,8 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 
 	protected abstract void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height);
 
-    private void loadTextureMetaData() {
-        try {
-            IResource mGUIbackgroundResource = Minecraft.getMinecraft().getResourceManager().getResource(mGUIbackgroundLocation);
-            if (mGUIbackgroundResource.hasMetadata()) {
-                cmSection = (ColorsMetadataSection) mGUIbackgroundResource.getMetadata("colors");
-            }
-        } catch (IOException ignore) {}
-    }
-
     protected int getTextColorOrDefault(String textType, int defaultColor) {
-        return cmSection != null ? cmSection.getTextColorOrDefault(textType, defaultColor) : defaultColor;
+        return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 
 	public void onMouseWheel(int x, int y, int delta) {

@@ -15,7 +15,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -51,7 +50,6 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
      */
     public static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
     private String mRecipeName;
-    private int overrideTextColor = -1;
 
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
@@ -67,10 +65,6 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
         List<GT_Recipe> result = new ArrayList<>(this.mRecipeMap.mRecipeList);
         Collections.sort(result);
         return result;
-    }
-
-    public void drawText(int aX, int aY, String aString, int aColor) {
-        Minecraft.getMinecraft().fontRenderer.drawString(aString, aX, aY, overrideTextColor != -1 ? overrideTextColor : aColor);
     }
 
     @Override
@@ -207,21 +201,9 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
     public String getRecipeName() {
         if (mRecipeName == null) {
             mRecipeName = GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
-            overrideTextColor = getOverrideTextColor();
+            updateOverrideTextColor();
         }
         return mRecipeName;
-    }
-
-    private int getOverrideTextColor() {
-        int neiTextColor = -1;
-        try {
-            IResource mGUIbackgroundResource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(this.mRecipeMap.mNEIGUIPath));
-            if (mGUIbackgroundResource.hasMetadata()) {
-                ColorsMetadataSection cmSection = (ColorsMetadataSection) mGUIbackgroundResource.getMetadata("colors");
-                if (cmSection != null) neiTextColor = cmSection.getTextColorOrDefault("nei",-1);
-            }
-        } catch (IOException ignore) {}
-        return neiTextColor;
     }
 
     @Override

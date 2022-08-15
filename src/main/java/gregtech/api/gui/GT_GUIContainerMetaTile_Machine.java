@@ -122,13 +122,12 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
      */
     private int getColorization() {
         Dyes dye = Dyes.dyeWhite;
-        if (this.cmSection != null) {
-            if (this.cmSection.sGuiTintingEnabled()) {
+        if (this.colorOverride.sLoaded()) {
+            if (this.colorOverride.sGuiTintingEnabled()) {
                 dye = getDyeFromIndex(mContainer.mTileEntity.getColorization());
-                return this.cmSection.getGuiTintOrDefault(dye.mName, GT_Util.getRGBInt(dye.getRGBA()));
+                return this.colorOverride.getGuiTintOrDefault(dye.mName, GT_Util.getRGBInt(dye.getRGBA()));
             }
-        }
-        else if (GregTech_API.sColoredGUI) {
+        } else if (GregTech_API.sColoredGUI) {
             if (GregTech_API.sMachineMetalGUI) {
                 dye = Dyes.MACHINE_METAL;
             } else if (mContainer != null && mContainer.mTileEntity != null) {

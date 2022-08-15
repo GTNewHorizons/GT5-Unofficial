@@ -1,10 +1,8 @@
 package gregtech.api.gui;
 
-import gregtech.api.util.ColorsMetadataSection;
-import net.minecraft.client.Minecraft;
+import gregtech.api.gui.GT_GUIColorOverride;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.resources.IResource;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
@@ -25,27 +23,18 @@ public class GT_GUIContainer extends GuiContainer {
 
     public ResourceLocation mGUIbackground;
 
-    public ColorsMetadataSection cmSection;
+    public GT_GUIColorOverride colorOverride;
 
     public String mGUIbackgroundPath;
 
     public GT_GUIContainer(Container aContainer, String aGUIbackground) {
         super(aContainer);
         mGUIbackground = new ResourceLocation(mGUIbackgroundPath = aGUIbackground);
-        loadTextureMetaData();
-    }
-
-    private void loadTextureMetaData() {
-        try {
-            IResource mGUIbackgroundResource = Minecraft.getMinecraft().getResourceManager().getResource(mGUIbackground);
-            if (mGUIbackgroundResource.hasMetadata()) {
-                cmSection = (ColorsMetadataSection) mGUIbackgroundResource.getMetadata("colors");
-            }
-        } catch (IOException ignore) {}
+        colorOverride = new GT_GUIColorOverride(aGUIbackground);
     }
 
     protected int getTextColorOrDefault(String textType, int defaultColor) {
-        return cmSection != null ? cmSection.getTextColorOrDefault(textType, defaultColor) : defaultColor;
+        return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 
     public int getLeft() {
