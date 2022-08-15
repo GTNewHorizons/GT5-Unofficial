@@ -483,34 +483,28 @@ public class RECIPES_Machines {
 	}
 
 	private static void multiForgeHammer() {
-		
+
 		CORE.RA.addSixSlotAssemblingRecipe(
 				new ItemStack[] {
-						CI.getTieredGTPPMachineCasing(4, 1), 
+						ItemUtils.getSimpleStack(CI.machineHull_IV, 2),
 						ItemList.Machine_IV_Hammer.get(1),
 						CI.getPlate(4, 8),
 						CI.getBolt(5, 32),
 						ELEMENT.getInstance().ZIRCONIUM.getFineWire(32),
 						ItemUtils.getItemStackOfAmountFromOreDict("circuitElite", 4)
-				}, 
+				},
 				CI.getTieredFluid(4, 144 * 12),
-				GregtechItemList.Controller_IndustrialForgeHammer.get(1), 
+				GregtechItemList.Controller_IndustrialForgeHammer.get(1),
 				20 * 30,
 				MaterialUtils.getVoltageForTier(5));
-		
-		CORE.RA.addSixSlotAssemblingRecipe(
-				new ItemStack[] {
-						CI.getTieredGTPPMachineCasing(3, 1),
-						ItemList.Casing_HeatProof.get(1),
-						CI.getPlate(4, 2),
-						CI.getBolt(4, 8),
-						ALLOY.BABBIT_ALLOY.getFineWire(16),
-						ItemUtils.getItemStackOfAmountFromOreDict("circuitGood", 4)
-				}, 
-				CI.getTieredFluid(4, 144 * 2),
-				GregtechItemList.Casing_IndustrialForgeHammer.get(1), 
-				20 * 30,
-				MaterialUtils.getVoltageForTier(4));
+
+		GT_ModHandler.addCraftingRecipe(GregtechItemList.Casing_IndustrialForgeHammer.get(1),
+				CI.bitsd,
+				new Object[]{"IBI", "HCH", "IHI",
+						'I', CI.getPlate(4, 1),
+						'B', ALLOY.BABBIT_ALLOY.getPlate(1),
+						'C', ItemList.Casing_HeatProof.get(1),
+						'H', ALLOY.HASTELLOY_X.getRod(1)});
 		
 	}
 
