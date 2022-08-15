@@ -2014,9 +2014,9 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void compressorRecipes() {
-		GT_ModHandler.addCompressionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallClay", 4),
+		GT_ModHandler.addCompressionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustClay", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("plateClay", 1));
-		GT_ModHandler.addCompressionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallMeatRaw", 4),
+		GT_ModHandler.addCompressionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("plateMeatRaw", 1));
 		GT_ModHandler.addCompressionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 9),
 				ItemUtils.getItemStackOfAmountFromOreDict("blockMeatRaw", 1));

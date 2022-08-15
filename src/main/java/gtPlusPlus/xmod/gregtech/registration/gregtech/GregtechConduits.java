@@ -385,32 +385,34 @@ public class GregtechConduits {
 				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1));
 
 		if (pipeIngot != null && ItemUtils.checkForInvalidItems(pipeIngot)) {
+			// 1 Clay Plate = 1 Clay Dust = 2 Clay Ball
+			int inputMultiplier = materialName.equals("Clay") ? 2 : 1;
 			GT_Values.RA.addExtruderRecipe(
-					ItemUtils.getSimpleStack(pipeIngot, 1),
+					ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
 					ItemList.Shape_Extruder_Pipe_Tiny.get(0),
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("pipe"+"Tiny"+output, 2),
 					5, eut);
 
 			GT_Values.RA.addExtruderRecipe(
-					ItemUtils.getSimpleStack(pipeIngot, 1),
+					ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
 					ItemList.Shape_Extruder_Pipe_Small.get(0),
 					ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1),
 					10, eut);
 
 			GT_Values.RA.addExtruderRecipe(
-					ItemUtils.getSimpleStack(pipeIngot, 3),
+					ItemUtils.getSimpleStack(pipeIngot, 3 * inputMultiplier),
 					ItemList.Shape_Extruder_Pipe_Medium.get(0),
 					ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1),
 					1*20, eut);
 
 			GT_Values.RA.addExtruderRecipe(
-					ItemUtils.getSimpleStack(pipeIngot, 6),
+					ItemUtils.getSimpleStack(pipeIngot, 6 * inputMultiplier),
 					ItemList.Shape_Extruder_Pipe_Large.get(0),
 					ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1),
 					2*20, eut);
 
 			GT_Values.RA.addExtruderRecipe(
-					ItemUtils.getSimpleStack(pipeIngot, 12),
+					ItemUtils.getSimpleStack(pipeIngot, 12 * inputMultiplier),
 					ItemList.Shape_Extruder_Pipe_Huge.get(0),
 					ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1),
 					4*20, eut);
