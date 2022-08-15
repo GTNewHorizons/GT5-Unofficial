@@ -420,7 +420,6 @@ public class GT_Mod implements IGT_Mod {
         new GT_ExtremeDieselFuelLoader().run();
         GT_TooltipEventHandler.init();
         MinecraftForge.EVENT_BUS.register(new GT_TooltipEventHandler());
-        GT_LanguageManager.propagateLocalizationServerSide();
 
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered.
