@@ -11,7 +11,7 @@ public class GT_GUIContainer_Teleporter extends GT_GUIContainerMetaTile_Machine 
     
     private final int
         textColor = this.getTextColorOrDefault("text", 0xFAFAFF),
-        textColorTitle = this.getTextColorOrDefault("text", 0x404040);
+        textColorTitle = this.getTextColorOrDefault("text", 0xFAFAFF);
 
     public GT_GUIContainer_Teleporter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(new GT_Container_Teleporter(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "Teleporter.png");

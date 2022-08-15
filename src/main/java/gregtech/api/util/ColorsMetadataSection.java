@@ -56,15 +56,6 @@ public class ColorsMetadataSection implements IMetadataSection {
     }
 
     public boolean sGuiTintingEnabled() {
-        if (!GregTech_API.sColoredGUI) return false;
         return this.guiTintEnabled;
-    }
-
-    public Map<String, String> getHexColorMap() {
-        return this.hexTextColors;
-    }
-
-    public String getHexColorOrDefault(String key, String defaultHex) {
-        return this.hexTextColors.get(key).isEmpty() ? defaultHex : this.hexTextColors.get(key);
     }
 }

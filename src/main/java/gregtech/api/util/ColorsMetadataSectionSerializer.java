@@ -46,7 +46,6 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
 
             for (String key : hexGuiTintMap.keySet()) {
                 if (enableGuiTint) {
-                    GT_Log.out.println("GuiTints: replacing " + hexGuiTintMap.get(key) + " -> " + JsonUtils.getJsonObjectStringFieldValueOrDefault(guiTints, key, hexGuiTintMap.get(key)) + "(" + key + ")");
                     hexGuiTintMap.replace(key, JsonUtils.getJsonObjectStringFieldValueOrDefault(guiTints, key, hexGuiTintMap.get(key)));
                 } else {
                     hexGuiTintMap.replace(key, GT_Util.getRGBHex(Dyes.dyeWhite.getRGBA()));
