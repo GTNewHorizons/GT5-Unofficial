@@ -5,7 +5,6 @@ import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GT_Packet_SetLockedFluid;
@@ -26,12 +25,9 @@ public class GT_GUIContainer_OutputHatch extends GT_GUIContainerMetaTile_Machine
 
     private final String mName;
     private final int 
-        textColorTitle = GuiColors.outputHatchTitle.getColor(),
-        textColorInventory = GuiColors.outputHatchInventory.getColor(),
-        textColorAmount = GuiColors.outputHatchAmount.getColor(),
-        textColorAmountValue = GuiColors.outputHatchValue.getColor(),
-        textColorFluidName = GuiColors.outputHatchFluidName.getColor(),
-        textColorLockedFluid = GuiColors.outputHatchLockedFluid.getColor();
+        textColor = this.getTextColorOrDefault("text", 0xFAFAFF),
+        textColorTitle = this.getTextColorOrDefault("title", 0x404040),
+        textColorValue = this.getTextColorOrDefault("value", 0xFAFAFF);
 
     public GT_GUIContainer_OutputHatch(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
         super(new GT_Container_OutputHatch(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "OutputHatch.png");
@@ -40,15 +36,15 @@ public class GT_GUIContainer_OutputHatch extends GT_GUIContainerMetaTile_Machine
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, textColorInventory);
+        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, textColorTitle);
         fontRendererObj.drawString(mName, 8, 6, textColorTitle);
         if (mContainer != null) {
-            fontRendererObj.drawString("Liquid Amount", 10, 20, textColorAmount);
-            fontRendererObj.drawString(GT_Utility.parseNumberToString(((GT_Container_OutputHatch) mContainer).mContent), 10, 30, textColorAmountValue);
-            fontRendererObj.drawString("Locked Fluid", 101, 20, textColorAmount);
+            fontRendererObj.drawString("Liquid Amount", 10, 20, textColor);
+            fontRendererObj.drawString(GT_Utility.parseNumberToString(((GT_Container_OutputHatch) mContainer).mContent), 10, 30, textColorValue);
+            fontRendererObj.drawString("Locked Fluid", 101, 20, textColor);
             ItemStack tLockedDisplayStack = (ItemStack) mContainer.getInventory().get(3);
             String fluidName = tLockedDisplayStack == null ? "None" : tLockedDisplayStack.getDisplayName();
-            fontRendererObj.drawString(fluidName, 101, 30, textColorFluidName);
+            fontRendererObj.drawString(fluidName, 101, 30, textColorValue);
         }
     }
 

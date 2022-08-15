@@ -1,7 +1,6 @@
 package gregtech.api.gui;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -41,7 +40,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         GT_GuiIcon.TAB_NORMAL_STEEL,
         GT_GuiIcon.TAB_HIGHLIGHT_STEEL,
         GT_GuiIcon.TAB_DISABLED_STEEL);
-    private final int textColor = GuiColors.basicMachine.getColor();
+    private final int textColor = this.getTextColorOrDefault("title", 0x404040);
     public final String
             mName,
             mNEI;

@@ -2,7 +2,6 @@ package gregtech.common.gui;
 
 import forestry.api.apiculture.*;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
@@ -19,7 +18,6 @@ import java.util.Arrays;
 
 public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Machine {
 
-
     private static final String
         BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
         UNUSED_SLOT_TOOLTIP = "GT5U.machines.unused_slot.tooltip",
@@ -32,9 +30,12 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         INFO_TOOLTIP = "GT5U.machines.industrialapiary.info.tooltip",
         INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip",
         UPGRADE_TOOLTIP = "GT5U.machines.industrialapiary.upgradeslot.tooltip"
-            ;
+        ;
 
-    private final int textColor = GuiColors.industrialApiary.getColor();
+    private final int
+        textColor = this.getTextColorOrDefault("text", 0x404040),
+        textColorTitle = this.getTextColorOrDefault("title", 0x404040),
+        textColorValue = this.getTextColorOrDefault("value", 0x404040);
 
     GT_GuiTooltip mErrorStatesTooltip;
     GT_GuiTooltip mSpeedToggleTooltip;
@@ -117,9 +118,9 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString("Ind. Apiary", 8, 4, textColor);
+        this.fontRendererObj.drawString("Ind. Apiary", 8, 4, textColorTitle);
         this.fontRendererObj.drawString("x", 30, 63, textColor);
-        this.fontRendererObj.drawString((1 << getContainer().mSpeed) + "", 26, 72, textColor);
+        this.fontRendererObj.drawString((1 << getContainer().mSpeed) + "", 26, 72, textColorValue);
     }
 
     @Override

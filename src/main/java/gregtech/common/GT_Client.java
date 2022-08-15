@@ -27,6 +27,8 @@ import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.ColorsMetadataSection;
+import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_PlayedSound;
@@ -39,7 +41,6 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
 import gregtech.loaders.ExtraIcons;
-import gregtech.loaders.misc.GT_JsonLoader;
 import gregtech.loaders.preload.GT_PreLoad;
 import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
@@ -401,10 +402,7 @@ public class GT_Client extends GT_Proxy
         super.onPreLoad();
 
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
-        GT_Mod.jsonGuiColors = new GT_JsonLoader("textures/guiColors.json");
-        for (GuiColors value : GuiColors.values()) {
-            GT_Mod.jsonGuiColors.registerReloadListener(l -> value.reload(l::getString));
-        }
+        Minecraft.getMinecraft().getResourcePackRepository().rprMetadataSerializer.registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
 
         final String[] arr = {
                 "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321", "Goshen_Ithilien", "manf", "Bimgo", "leagris",

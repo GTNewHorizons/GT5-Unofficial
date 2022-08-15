@@ -15,7 +15,6 @@ import codechicken.nei.recipe.RecipeCatalysts;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.GuiColors;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -33,9 +32,11 @@ import gregtech.common.power.UnspecifiedEUPower;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.Range;
 import org.lwjgl.opengl.GL11;
@@ -43,6 +44,7 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
+import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,7 +71,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     private String mRecipeName; // Name of the handler displayed on top
     private NEIHandlerAbsoluteTooltip mRecipeNameTooltip;
     private static final int RECIPE_NAME_WIDTH = 140;
-    private final GuiColors textColor = GuiColors.NEIText;
 
      /**
      * Static version of {@link TemplateRecipeHandler#cycleticks}.
@@ -119,10 +120,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             cacheHolder.setCachedRecipesVersion(GT_Mod.gregtechproxy.getReloadCount());
         }
         return cache;
-    }
-
-    public static void drawText(int aX, int aY, String aString, int aColor) {
-        Minecraft.getMinecraft().fontRenderer.drawString(aString, aX, aY, aColor);
     }
 
     @Override
@@ -262,6 +259,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     public String getRecipeName() {
         if (mRecipeName == null) {
             mRecipeName = computeRecipeName();
+            updateOverrideTextColor();
         }
         return mRecipeName;
     }
@@ -524,7 +522,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     protected void drawLine(int lineNumber, String line) {
-        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, textColor.getColor());
+        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
     }
 
     protected int getDescriptionYOffset() {

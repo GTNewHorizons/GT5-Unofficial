@@ -1,13 +1,12 @@
 package gregtech.common.gui;
 
-import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_Regulator extends GT_GUIContainerMetaTile_Machine {
 
-    private final int textColor = GuiColors.regulator.getColor();
+    private final int textColor = this.getTextColorOrDefault("text", 0xFAFAFF);
 
     public GT_GUIContainer_Regulator(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(new GT_Container_Regulator(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/Regulator.png");
