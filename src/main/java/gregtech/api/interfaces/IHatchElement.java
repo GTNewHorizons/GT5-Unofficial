@@ -1,5 +1,6 @@
 package gregtech.api.interfaces;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -71,6 +72,48 @@ public interface IHatchElement<T> {
             .shouldSkip(aShouldSkip)
             .continueIfSuccess()
             .build();
+    }
+
+    default <T2 extends T> IHatchElement<T2> or(IHatchElement<? super T2> fallback) {
+        return new HatchElementEither<>(this, fallback);
+    }
+}
+
+class HatchElementEither<T> implements IHatchElement<T> {
+    private final IHatchElement<? super T> first, second;
+    private ImmutableList<? extends Class<? extends IMetaTileEntity>> mMteClasses;
+    private String name;
+
+    HatchElementEither(IHatchElement<? super T> first, IHatchElement<? super T> second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    @Override
+    public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+        if (mMteClasses == null)
+            mMteClasses = ImmutableList.<Class<? extends IMetaTileEntity>>builder()
+                .addAll(first.mteClasses())
+                .addAll(second.mteClasses())
+                .build();
+        return mMteClasses;
+    }
+
+    @Override
+    public IGT_HatchAdder<? super T> adder() {
+        return ((t, te, i) -> first.adder().apply(t, te, i) || second.adder().apply(t, te, i));
+    }
+
+    @Override
+    public String name() {
+        if (name == null)
+            name = first.name() + " or " + second.name();
+        return name;
+    }
+
+    @Override
+    public long count(T t) {
+        return first.count(t) + second.count(t);
     }
 }
 

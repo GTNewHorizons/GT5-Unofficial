@@ -212,7 +212,8 @@ public class GT_HatchElementBuilder<T> {
 
     public GT_HatchElementBuilder<T> hatchId(int aId) {
         return hatchItemFilter(c -> is -> GT_Utility.isStackValid(is) && is.getItem() instanceof GT_Item_Machines && is.getItemDamage() == aId)
-            .cacheHint(() -> "of id " + aId);
+            .cacheHint(() -> "of id " + aId)
+            .shouldSkip((BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null && t.getMetaTileID() == aId);
     }
 
     public GT_HatchElementBuilder<T> hatchIds(int... aIds) {
@@ -283,8 +284,12 @@ public class GT_HatchElementBuilder<T> {
             private String getHint() {
                 if (mHint != null) return mHint;
                 String tHint = mHatchItemType.get();
-                if (mCacheHint)
+                if (mCacheHint) {
                     mHint = tHint;
+                    if (mHint != null)
+                        // yeet the getter, since its product is retrieved and cached
+                        mHatchItemType = null;
+                }
                 return tHint;
             }
 
