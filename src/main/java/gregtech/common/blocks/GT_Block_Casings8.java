@@ -2,11 +2,9 @@ package gregtech.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_RenderingWorld;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
@@ -20,14 +18,12 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
 
     //WATCH OUT FOR TEXTURE ID's
     public GT_Block_Casings8() {
-        super(GT_Item_Casings8.class, "gt.blockcasings8", GT_Material_Casings.INSTANCE);
+        super(GT_Item_Casings8.class, "gt.blockcasings8", GT_Material_Casings.INSTANCE, 10);
         /*
          * DO NOT USE INDEX 15 !
          * USED HERE: https://github.com/GTNewHorizons/Electro-Magic-Tools/pull/17
          */
-        for (int i = 0; i < 10; i = (i + 1)) {
-            Textures.BlockIcons.casingTexturePages[1][i+48] = TextureFactory.of(this, i);
-        }
+
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Chemically Inert Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "PTFE Pipe Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Mining Neutronium Casing");
@@ -49,6 +45,11 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Advanced_Iridium.set(new ItemStack(this, 1, 7));
         ItemList.Casing_Magical.set(new ItemStack(this, 1, 8));
         ItemList.Casing_TurbineGasAdvanced.set(new ItemStack(this, 1, 9));
+    }
+
+    @Override
+    public int getTextureIndex(int aMeta) {
+        return (1 << 7) | (aMeta + 48);
     }
 
     @Override

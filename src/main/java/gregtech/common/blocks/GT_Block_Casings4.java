@@ -6,7 +6,6 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_RenderingWorld;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
@@ -34,10 +33,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
     public static boolean mConnectedMachineTextures = true;
 
     public GT_Block_Casings4() {
-        super(GT_Item_Casings4.class, "gt.blockcasings4", GT_Material_Casings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            Textures.BlockIcons.casingTexturePages[0][i + 48] = TextureFactory.of(this, i);
-        }
+        super(GT_Item_Casings4.class, "gt.blockcasings4", GT_Material_Casings.INSTANCE, 16);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Robust Tungstensteel Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Clean Stainless Steel Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Stable Titanium Machine Casing");
@@ -72,6 +68,11 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
 
         GT_Mod.gregtechproxy.mCTMBlockCache.put(this, (byte) 6, true);
         GT_Mod.gregtechproxy.mCTMBlockCache.put(this, (byte) 8, true);
+    }
+
+    @Override
+    public int getTextureIndex(int aMeta) {
+        return aMeta + 48;
     }
 
     @Override

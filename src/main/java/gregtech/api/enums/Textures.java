@@ -9,6 +9,9 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
@@ -1964,8 +1967,16 @@ public class Textures {
         public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
         /**
          * by Default pages are null
+         * page 0:  0-63 GT casing 1-4, 64-127 GT++
+         * page 1:  0-15 GT casing 5, 22-26 GS dyson swarm, 48-57 GT casing 8, 63 EMT, 80-95 GT reinforced blocks,
+         *          96 casing 2 meta 6, 97 error casing
+         * page 8:  0-111 TecTech, 112-127 GT casing 6
+         * page 12: 0-127 GlodBlock
+         * page 42: 0-126 glee8e, 127 KekzTech LSC base
          */
         public static ITexture[][] casingTexturePages = new ITexture[128][];//page holder so we don't make an short long array
+        public static final int ERROR_TEXTURE_INDEX = (1 << 7) + 97;
+        private static final Map<ITexture, Integer> reverseMap = new HashMap<>();
 
         static {
             for (byte i = 0; i < MACHINE_CASINGS.length; i++)
@@ -1978,6 +1989,7 @@ public class Textures {
             //adds some known pages, modders also can do it...
             GT_Utility.addTexturePage((byte) 1);
             GT_Utility.addTexturePage((byte) 8);
+            setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);
         }
 
         protected IIcon mIcon;
@@ -1991,11 +2003,18 @@ public class Textures {
         }
 
         public static void setCasingTextureForId(int id, ITexture iTexture) {
-            casingTexturePages[(id >> 7) & 0x7f][id & 0x7f] = iTexture;
+            casingTexturePages[(byte) ((id >> 7) & 0x7f)][(byte) (id & 0x7f)] = iTexture;
+            reverseMap.put(iTexture, id);
         }
 
         public static void setCasingTexture(byte page, byte index, ITexture iTexture) {
             casingTexturePages[page][index] = iTexture;
+            reverseMap.put(iTexture, (page << 7) + index);
+        }
+
+        public static int getTextureIndex(ITexture texture) {
+            Integer id = reverseMap.get(texture);
+            return id == null ? ERROR_TEXTURE_INDEX : id;
         }
 
         @Override
