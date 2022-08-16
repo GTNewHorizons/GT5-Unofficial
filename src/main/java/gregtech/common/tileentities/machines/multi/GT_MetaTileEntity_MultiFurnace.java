@@ -144,14 +144,22 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
         for (ItemStack item : tInputList) {
             ItemStack smeltedOutput = GT_ModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
-                outputStackSizes.add(item.stackSize);
-                smeltedOutputs.add(smeltedOutput);
+                int outputStackSize = smeltedOutput.stackSize * item.stackSize;
+                while (outputStackSize > 0) {
+                    smeltedOutputs.add(smeltedOutput.copy());
+                    if (outputStackSize >= 64) {
+                        outputStackSizes.add(64);
+                        outputStackSize -= 64;
+                    } else {
+                        outputStackSizes.add(outputStackSize);
+                        break;
+                    }
+                }
                 if (item.stackSize < (tMaxParrallel - tCurrenParrallel)) {
                     tCurrenParrallel += item.stackSize;
                     item.stackSize = 0;
                 } else {
                     item.stackSize = (tCurrenParrallel + item.stackSize) - tMaxParrallel;
-                    tCurrenParrallel = tMaxParrallel;
                     break;
                 }
             }
@@ -162,9 +170,8 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
         this.mOutputItems = new ItemStack[smeltedOutputs.size()];
         for (int i = 0; i < this.mOutputItems.length; i++) {
             ItemStack tNewStack = smeltedOutputs.get(i);
-            int size = Math.min(Math.min(tCurrenParrallel, outputStackSizes.get(i)), 64);
+            int size = Math.min(outputStackSizes.get(i), 64);
             tNewStack.stackSize = size;
-            tCurrenParrallel -= size;
             this.mOutputItems[i] = tNewStack;
         }
 
