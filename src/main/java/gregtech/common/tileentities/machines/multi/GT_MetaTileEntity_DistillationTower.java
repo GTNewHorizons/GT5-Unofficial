@@ -90,12 +90,6 @@ public class GT_MetaTileEntity_DistillationTower extends GT_MetaTileEntity_Enhan
                 onElementPass(t -> t.onTopLayerFound(true), ofBlock(GregTech_API.sBlockCasings4, 1)),
                 isAir()
             ))
-            .addElement('C', ofChain(
-                onElementPass(t -> t.onTopLayerFound(false), ofHatchAdder(GT_MetaTileEntity_DistillationTower::addOutputToMachineList, CASING_INDEX, 3)),
-                onElementPass(t -> t.onTopLayerFound(false), ofHatchAdder(GT_MetaTileEntity_DistillationTower::addMaintenanceToMachineList, CASING_INDEX, 3)),
-                onElementPass(t -> t.onTopLayerFound(true), ofBlock(GregTech_API.sBlockCasings4, 1)),
-                isAir()
-            ))
             .build();
     }
 
@@ -336,6 +330,7 @@ public class GT_MetaTileEntity_DistillationTower extends GT_MetaTileEntity_Enhan
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
         mHeight = 0;
         int built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
