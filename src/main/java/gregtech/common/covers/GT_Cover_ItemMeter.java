@@ -287,6 +287,8 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
 		private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
 		private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
+
 		public GUI(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
@@ -317,9 +319,9 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 3, 4 + startY, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("254", "Detect slot#"), startX + spaceX * 3, 4 + startY + spaceY, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, 0xFF555555);
+            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 3, 4 + startY, textColor);
+			this.getFontRenderer().drawString(GT_Utility.trans("254", "Detect slot#"), startX + spaceX * 3, 4 + startY + spaceY, textColor);
+			this.getFontRenderer().drawString(GT_Utility.trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, textColor);
         }
 
         @Override

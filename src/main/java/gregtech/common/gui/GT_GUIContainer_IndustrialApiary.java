@@ -18,7 +18,6 @@ import java.util.Arrays;
 
 public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Machine {
 
-
     private static final String
         BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
         UNUSED_SLOT_TOOLTIP = "GT5U.machines.unused_slot.tooltip",
@@ -29,9 +28,14 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         SPEED_TOOLTIP = "GT5U.machines.industrialapiary.speed.tooltip",
         SPEED_LOCKED_TOOLTIP = "GT5U.machines.industrialapiary.speedlocked.tooltip",
         INFO_TOOLTIP = "GT5U.machines.industrialapiary.info.tooltip",
-        INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip"
-            ;
+        INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip",
+        UPGRADE_TOOLTIP = "GT5U.machines.industrialapiary.upgradeslot.tooltip"
+        ;
 
+    private final int
+        textColor = this.getTextColorOrDefault("text", 0x404040),
+        textColorTitle = this.getTextColorOrDefault("title", 0x404040),
+        textColorValue = this.getTextColorOrDefault("value", 0x404040);
 
     GT_GuiTooltip mErrorStatesTooltip;
     GT_GuiTooltip mSpeedToggleTooltip;
@@ -57,6 +61,7 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         addToolTip(mInfoTooltip = new GT_GuiTooltip(new Rectangle(this.guiLeft + 163, guiTop + 5, 6, 17)));
 
         addToolTip(new GT_GuiSlotTooltip(getContainer().slotCancelProcess, mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP)));
+        getContainer().slotUpgrade.forEach(s->addToolTip(new GT_GuiSlotTooltip(s, mTooltipCache.getData(UPGRADE_TOOLTIP))));
 
 
         addToolTip(new GT_GuiSlotTooltip(getContainer().slotItemTransferToggle, mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP)));
@@ -113,9 +118,9 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString("Ind. Apiary", 8, 4, 4210752);
-        this.fontRendererObj.drawString("x", 30, 63, 4210752);
-        this.fontRendererObj.drawString((1 << getContainer().mSpeed) + "", 26, 72, 4210752);
+        this.fontRendererObj.drawString("Ind. Apiary", 8, 4, textColorTitle);
+        this.fontRendererObj.drawString("x", 30, 63, textColor);
+        this.fontRendererObj.drawString((1 << getContainer().mSpeed) + "", 26, 72, textColorValue);
     }
 
     @Override

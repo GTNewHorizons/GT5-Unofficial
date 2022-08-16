@@ -78,7 +78,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-        getProxy();
+        getProxy().onReady();
     }
 
     @Override
@@ -135,8 +135,9 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy((IGridProxyable)getBaseMetaTileEntity(), "proxy", ItemList.Hatch_Output_Bus_ME.get(1), true);
-                gridProxy.onReady();
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+                if (getBaseMetaTileEntity().getWorld() != null)
+                    gridProxy.setOwner(getBaseMetaTileEntity().getWorld().getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
             }
         }
         return this.gridProxy;
@@ -205,6 +206,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 items.appendTag(tag);
             }
             aNBT.setTag("cachedItems", items);
+            gridProxy.writeToNBT(aNBT);
         }
     }
 
@@ -231,6 +233,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                     itemCache.add(s);
                 }
             }
+            getProxy().readFromNBT(aNBT);
         }
     }
 

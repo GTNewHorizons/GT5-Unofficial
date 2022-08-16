@@ -133,7 +133,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
 
     private static final ArrayListMultimap<GT_ItemStack, ItemStack> outputHardOverrides;
 
-    private static final Set<GT_ItemStack> blackList;
+    private static final Set<GT_ItemStack> blackList = new HashSet<>();
 
     public static Set<GT_ItemStack> getBlackList() {
         return blackList;
@@ -142,15 +142,41 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     static {
         outputHardOverrides = ArrayListMultimap.create();
         outputHardOverrides.put(new GT_ItemStack(new ItemStack(Blocks.torch,6)), new ItemStack(Items.stick));
-        blackList = new HashSet<>();
-        blackList.add(new GT_ItemStack(ItemList.Casing_Coil_Superconductor.get(1L)));
-        blackList.add(new GT_ItemStack(Materials.Graphene.getDust(1)));
-        blackList.add(new GT_ItemStack(ItemList.Circuit_Parts_Vacuum_Tube.get(1L)));
-        blackList.add(new GT_ItemStack(ItemList.Schematic.get(1L)));
-        blackList.add(new GT_ItemStack(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 0)));
-        blackList.add(new GT_ItemStack(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 736)));
-        blackList.add(new GT_ItemStack(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 816)));
-        blackList.add(new GT_ItemStack(IC2Items.getItem("mixedMetalIngot")));
+        addBlacklist(ItemList.Casing_Coil_Superconductor.get(1L));
+        addBlacklist(Materials.Graphene.getDust(1));
+        addBlacklist(ItemList.Circuit_Parts_Vacuum_Tube.get(1L));
+        addBlacklist(ItemList.Schematic.get(1L));
+        addBlacklist(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 0));
+        addBlacklist(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 736));
+        addBlacklist(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 816));
+        addBlacklist(IC2Items.getItem("mixedMetalIngot"));
+        addBlacklist(GT_ModHandler.getModItem("Railcraft", "machine.alpha", 1L, 14));
+        // region transformer
+        // Temporary solution for cable dupe
+        // Maybe we can mark assembler recipes as "cannot disassemble"
+        // and only disassemble crafting recipes in the future
+        // Also `getIC2Item` doesn't work, maybe loading order?
+        addBlacklist(ItemList.Transformer_MV_LV.get(1L));
+        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 3));
+        addBlacklist(ItemList.Transformer_HV_MV.get(1L));
+        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 4));
+        addBlacklist(ItemList.Transformer_EV_HV.get(1L));
+        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 5));
+        addBlacklist(ItemList.Transformer_IV_EV.get(1L));
+        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 6));
+        // endregion transformer
+    }
+
+    public static void addBlacklist(ItemStack stack) {
+        blackList.add(new GT_ItemStack(stack));
+    }
+
+    private boolean isCircuit(ItemStack stack) {
+        ItemData data = GT_OreDictUnificator.getAssociation(stack);
+        if (data != null) {
+            return data.mPrefix == OrePrefixes.circuit;
+        }
+        return false;
     }
 
     private boolean compareToUnpacker(ItemStack is){
@@ -172,6 +198,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
 
         if (
                 is.getItem() instanceof GT_MetaGenerated_Tool
+                || isCircuit(is)
                 || blackList.stream().anyMatch(t -> GT_Utility.areStacksEqual(t.toStack(), is, true))
                 || compareToUnpacker(is)
         )

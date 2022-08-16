@@ -25,7 +25,7 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
 
     protected GT_Multiblock_Tooltip_Builder createTooltip(String aStructureName) {
         String casings = getCasingBlockItem().get(0).getDisplayName();
-        
+
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType("Concrete Backfiller")
 		.addInfo("Controller Block for the " + aStructureName)
@@ -36,8 +36,8 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
 		.addSeparator()
 		.beginStructureBlock(3, 7, 3, false)
 		.addController("Front bottom")
-		.addStructureInfo(casings + " form the 3x1x3 Base")
-		.addOtherStructurePart(casings, " 1x3x1 pillar above the center of the base (2 minimum total)")
+        .addOtherStructurePart(casings, "form the 3x1x3 Base")
+		.addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
 		.addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
 		.addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1)
 		.addMaintenanceHatch("Any base casing", 1)

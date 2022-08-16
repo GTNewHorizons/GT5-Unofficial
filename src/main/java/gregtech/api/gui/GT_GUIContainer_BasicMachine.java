@@ -40,13 +40,14 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         GT_GuiIcon.TAB_NORMAL_STEEL,
         GT_GuiIcon.TAB_HIGHLIGHT_STEEL,
         GT_GuiIcon.TAB_DISABLED_STEEL);
+    private final int textColor = this.getTextColorOrDefault("title", 0x404040);
     public final String
             mName,
             mNEI;
     public final byte
             mProgressBarDirection,
             mProgressBarAmount;
-
+    
     // Tooltip localization keys
     private static final String
         GHOST_CIRCUIT_TOOLTIP = "GT5U.machines.select_circuit.tooltip",
@@ -168,7 +169,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        fontRendererObj.drawString(mName, 8, 4, 4210752);
+        fontRendererObj.drawString(mName, 8, 4, textColor);
     }
 
     @Override

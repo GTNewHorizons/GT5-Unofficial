@@ -159,6 +159,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
 
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
@@ -177,8 +178,8 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(GT_Utility.trans("246", "Frequency"),  startX + spaceX*4, 4+startY+spaceY*0, 0xFF555555);
-            this.getFontRenderer().drawString(GT_Utility.trans("601", "Use Private Frequency"), startX + spaceX * 1, startY + spaceY * 2 + 4, 0xFF555555);
+            this.getFontRenderer().drawString(GT_Utility.trans("246", "Frequency"),  startX + spaceX*4, 4+startY+spaceY*0, textColor);
+            this.getFontRenderer().drawString(GT_Utility.trans("601", "Use Private Frequency"), startX + spaceX * 1, startY + spaceY * 2 + 4, textColor);
         }
 
         @Override

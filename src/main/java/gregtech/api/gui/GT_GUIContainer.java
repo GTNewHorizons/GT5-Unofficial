@@ -1,11 +1,14 @@
 package gregtech.api.gui;
 
+import gregtech.api.gui.GT_GUIColorOverride;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
+
+import java.io.IOException;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
@@ -20,11 +23,18 @@ public class GT_GUIContainer extends GuiContainer {
 
     public ResourceLocation mGUIbackground;
 
+    public GT_GUIColorOverride colorOverride;
+
     public String mGUIbackgroundPath;
 
     public GT_GUIContainer(Container aContainer, String aGUIbackground) {
         super(aContainer);
         mGUIbackground = new ResourceLocation(mGUIbackgroundPath = aGUIbackground);
+        colorOverride = new GT_GUIColorOverride(aGUIbackground);
+    }
+
+    protected int getTextColorOrDefault(String textType, int defaultColor) {
+        return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 
     public int getLeft() {

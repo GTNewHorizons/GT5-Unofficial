@@ -120,6 +120,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         aNBT.setBoolean("mLockedSpeed", mLockedSpeed);
         if(usedQueen != null)
             aNBT.setTag("usedQueen", usedQueen.writeToNBT(new NBTTagCompound()));
+        aNBT.setBoolean("retrievingPollenInThisOperation", retrievingPollenInThisOperation);
+        aNBT.setInteger("pollinationDelay", pollinationDelay);
     }
 
     @Override
@@ -129,10 +131,13 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         mLockedSpeed = aNBT.getBoolean("mLockedSpeed");
         if(aNBT.hasKey("usedQueen"))
             usedQueen = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("usedQueen"));
+        retrievingPollenInThisOperation =  aNBT.getBoolean("retrievingPollenInThisOperation");
+        pollinationDelay = aNBT.getInteger("pollinationDelay");
     }
 
     boolean retrievingPollenInThisOperation = false;
     IIndividual retrievedpollen = null;
+    int pollinationDelay = 100;
 
     @Override
     public int checkRecipe() {
@@ -207,21 +212,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     }
 
                 int i = 0;
-                for(Map.Entry<GT_Utility.ItemId, Float> entry : drops.entrySet())
-                {
-                    ItemStack s = dropstacks.get(entry.getKey()).copy();
-                    s.stackSize = entry.getValue().intValue() + (getWorld().rand.nextFloat() < (entry.getValue() - (float) entry.getValue().intValue()) ? 1 : 0);
-                    if(s.stackSize > 0 && i < 7)
-                        while(true) {
-                            if (s.stackSize <= s.getMaxStackSize()) {
-                                this.mOutputItems[i++] = s;
-                                break;
-                            } else
-                                this.mOutputItems[i++] = s.splitStack(s.getMaxStackSize());
-                            if(i >= 7)
-                                break;
-                        }
-                }
+                int imax = mOutputItems.length;
 
                 IApiaristTracker breedingTracker = beeRoot.getBreedingTracker(getWorld(), getOwner());
 
@@ -230,35 +221,56 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     NBTTagCompound nbttagcompound = new NBTTagCompound();
                     queen.writeToNBT(nbttagcompound);
                     convert.setTagCompound(nbttagcompound);
-                    this.mOutputItems[7] = convert;
+                    this.mOutputItems[i++] = convert;
                 }
                 else {
                     IBee b = bee.spawnPrincess(this);
                     if(b != null){
                         ItemStack princess = beeRoot.getMemberStack(b, EnumBeeType.PRINCESS.ordinal());
                         breedingTracker.registerPrincess(b);
-                        this.mOutputItems[7] = princess;
+                        this.mOutputItems[i++] = princess;
                     }
                     IBee[] d = bee.spawnDrones(this);
                     if(d != null && d.length > 0) {
-                        ItemStack drone = beeRoot.getMemberStack(d[0], EnumBeeType.DRONE.ordinal());
-                        drone.stackSize = d.length;
-                        breedingTracker.registerDrone(d[0]);
-                        this.mOutputItems[8] = drone;
+                        HashMap<GT_Utility.ItemId, ItemStack> drones = new HashMap<>(d.length);
+                        for(IBee dr : d) {
+                            ItemStack drone = beeRoot.getMemberStack(dr, EnumBeeType.DRONE.ordinal());
+                            breedingTracker.registerDrone(dr);
+                            GT_Utility.ItemId drid = GT_Utility.ItemId.createNoCopy(drone);
+                            if(drones.containsKey(drid)) drones.get(drid).stackSize += drone.stackSize;
+                            else {
+                                this.mOutputItems[i++] = drone;
+                                drones.put(drid, drone);
+                            }
+                        }
                     }
                 }
 
+                int imin = i;
+
                 setQueen(null);
 
+                for(Map.Entry<GT_Utility.ItemId, Float> entry : drops.entrySet())
+                {
+                    ItemStack s = dropstacks.get(entry.getKey()).copy();
+                    s.stackSize = entry.getValue().intValue() + (getWorld().rand.nextFloat() < (entry.getValue() - (float) entry.getValue().intValue()) ? 1 : 0);
+                    if(s.stackSize > 0 && i < imax)
+                        while(true) {
+                            if (s.stackSize <= s.getMaxStackSize()) {
+                                this.mOutputItems[i++] = s;
+                                break;
+                            } else
+                                this.mOutputItems[i++] = s.splitStack(s.getMaxStackSize());
+                            if(i >= imax)
+                                break;
+                        }
+                }
+
                 for(ItemStack s : pollen.values())
-                    if(i < 7)
+                    if(i < imax)
                         this.mOutputItems[i++] = s;
                     else
                         break;
-
-
-
-
 
                 // Overclock
 
@@ -269,8 +281,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 int actualdivider = useddivider;
                 this.mMaxProgresstime /= Math.min(actualdivider, timemaxdivider);
                 actualdivider /= Math.min(actualdivider, timemaxdivider);
-                for(i--; i >= 0; i--)
+                for(i--; i >= imin; i--)
                     this.mOutputItems[i].stackSize *= actualdivider;
+
+                pollinationDelay = Math.max((int)(this.mMaxProgresstime / cycles), 20); // don't run too often
 
                 this.mProgresstime = 0;
                 this.mEUt = (int)((float)baseEUtUsage * this.energyMod * useddivider);
@@ -281,6 +295,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             }
             else {
                 // Breeding time
+
+                retrievingPollenInThisOperation = true; // Don't pollinate when breeding
+
                 this.mMaxProgresstime = 100;
                 this.mProgresstime = 0;
                 int useddivider = Math.min(100, 1 << this.mSpeed);
@@ -398,11 +415,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     if(usedQueenBee == null)
                         usedQueenBee = beeRoot.getMember(usedQueen);
                     effectData = usedQueenBee.doEffect(effectData, this);
-                    if(!retrievingPollenInThisOperation && floweringMod > 0f)
+                    if(!retrievingPollenInThisOperation && floweringMod > 0f && this.mProgresstime % pollinationDelay == 0)
                     {
                         if(retrievedpollen == null)
                             retrievedpollen = usedQueenBee.retrievePollen(this);
-                        if(usedQueenBee.pollinateRandom(this, retrievedpollen) || this.mProgresstime % 100 == 0)
+                        if(retrievedpollen != null && (usedQueenBee.pollinateRandom(this, retrievedpollen) || this.mProgresstime % (pollinationDelay * 5) == 0))
                             retrievedpollen = null;
                     }
                 }
@@ -422,7 +439,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     for (int i = 0; i < mOutputItems.length; i++)
                         if(mOutputItems[i] != null)
                             for (int j = 0; j < mOutputItems.length; j++) {
-                                if(isAutomated)
+                                if(j == 0 && isAutomated)
                                 {
                                     if(beeRoot.isMember(mOutputItems[i], EnumBeeType.QUEEN.ordinal()) || beeRoot.isMember(mOutputItems[i], EnumBeeType.PRINCESS.ordinal())) {
                                         if(aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[i]))
@@ -432,6 +449,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                                         if(aBaseMetaTileEntity.addStackToSlot(drone, mOutputItems[i]))
                                             break;
                                 }
+                                else if(i == 0 && j == 0 && beeRoot.isMember(mOutputItems[0], EnumBeeType.QUEEN.ordinal()))
+                                    if(aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[0]))
+                                        break;
                                 if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot() + ((j + i) % mOutputItems.length), mOutputItems[i]))
                                     break;
                             }
@@ -587,7 +607,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     @Override
     public EnumTemperature getTemperature() {
-        return EnumTemperature.getFromValue(getBiome().temperature + temperatureMod);
+        if(BiomeHelper.isBiomeHellish(getBiome()))
+            return EnumTemperature.HELLISH;
+        return
+            EnumTemperature.getFromValue(getBiome().temperature + temperatureMod);
     }
 
     @Override

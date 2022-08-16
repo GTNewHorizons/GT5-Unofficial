@@ -219,6 +219,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
+
         public GUI(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
@@ -234,8 +236,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(GT_Utility.trans("317", "Filter: "),    startX + spaceX*0, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("318", "Check Mode"),  startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("317", "Filter: "),    startX + spaceX*0, 3+startY+spaceY*1, textColor);
+            this.fontRendererObj.drawString(GT_Utility.trans("318", "Check Mode"),  startX + spaceX*2, 3+startY+spaceY*0, textColor);
         }
 
         @Override

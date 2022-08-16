@@ -120,6 +120,8 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
+
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
@@ -144,8 +146,8 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
                 s2 = GT_Utility.trans("INVERTED", "Inverted");
             else
                 s2 = GT_Utility.trans("NORMAL", "Normal");
-            this.fontRendererObj.drawString(s1,  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(s2,  startX + spaceX*3, 4+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString(s1,  startX + spaceX*3, 4+startY+spaceY*0, textColor);
+            this.fontRendererObj.drawString(s2,  startX + spaceX*3, 4+startY+spaceY*1, textColor);
         }
 
         @Override

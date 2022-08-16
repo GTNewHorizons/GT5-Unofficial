@@ -5,13 +5,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_BronzeBlastFurnace extends GT_GUIContainerMetaTile_Machine {
+
+    private final int textColor = this.getTextColorOrDefault("title", 0x404040);
+
     public GT_GUIContainer_BronzeBlastFurnace(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(new GT_Container_BronzeBlastFurnace(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/BronzeBlastFurnace.png");
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.fontRendererObj.drawString("Bronze Blast Furnace", 8, 4, 4210752);
+        this.fontRendererObj.drawString("Bronze Blast Furnace", 8, 4, textColor);
     }
 
     @Override

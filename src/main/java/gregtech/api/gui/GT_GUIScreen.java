@@ -1,6 +1,7 @@
 package gregtech.api.gui;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
@@ -18,6 +19,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,19 +31,27 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	protected int gui_height = 107;
 	protected int guiTop, guiLeft;
 	protected boolean drawButtons = true;
+
+    private ResourceLocation mGUIbackgroundLocation;
 	private GuiButton selectedButton;
+    private GT_GUIColorOverride colorOverride;
+    private final int textColor;
+    private final static String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
+
 	public String header;
 	public GT_GuiFakeItemButton headerIcon;
-
 
 	protected List<IGuiElement> elements = new ArrayList<>();
 	protected List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
 
 	public GT_GUIScreen(int width, int height, String header) {
-		this.gui_width = width;
+        this.gui_width = width;
 		this.gui_height = height;
 		this.header = header;
 		this.headerIcon = new GT_GuiFakeItemButton(this, 5, 5, null);
+        this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
+        this.colorOverride = new GT_GUIColorOverride(guiTexturePath);
+        this.textColor = getTextColorOrDefault("title", 0xFF222222);
 	}
 
 	@Override
@@ -65,6 +75,10 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	}
 
 	protected abstract void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height);
+
+    protected int getTextColorOrDefault(String textType, int defaultColor) {
+        return colorOverride.getTextColorOrDefault(textType, defaultColor);
+    }
 
 	public void onMouseWheel(int x, int y, int delta) {
 	}
@@ -120,12 +134,12 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	public void drawBackground(int mouseX, int mouseY, float parTicks) {
 		short[] color = Dyes.MACHINE_METAL.getRGBA();
 		GL11.glColor3ub((byte) color[0], (byte) color[1], (byte) color[2]);
-		this.mc.renderEngine.bindTexture(new ResourceLocation("gregtech:textures/gui/GuiCover.png"));
+		this.mc.renderEngine.bindTexture(mGUIbackgroundLocation);
 		drawTexturedModalRect(guiLeft, guiTop, 0,0, gui_width, gui_height);
 	}
 
 	public void drawExtras(int mouseX, int mouseY, float parTicks) {
-		this.fontRendererObj.drawString(header, 25, 9, 0xFF222222);
+		this.fontRendererObj.drawString(header, 25, 9, textColor);
 	}
 
 	@Override

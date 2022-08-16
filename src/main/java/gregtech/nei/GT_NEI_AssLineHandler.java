@@ -22,14 +22,17 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_WithAlt;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -46,6 +49,7 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
      * Can be referenced from cached recipes.
      */
     public static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
+    private String mRecipeName;
 
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
@@ -61,10 +65,6 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
         List<GT_Recipe> result = new ArrayList<>(this.mRecipeMap.mRecipeList);
         Collections.sort(result);
         return result;
-    }
-
-    public static void drawText(int aX, int aY, String aString, int aColor) {
-        Minecraft.getMinecraft().fontRenderer.drawString(aString, aX, aY, aColor);
     }
 
     @Override
@@ -199,7 +199,11 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
 
     @Override
     public String getRecipeName() {
-        return GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
+        if (mRecipeName == null) {
+            mRecipeName = GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
+            updateOverrideTextColor();
+        }
+        return mRecipeName;
     }
 
     @Override
@@ -249,7 +253,7 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
                     int voltage = tEUt / this.mRecipeMap.mAmperage;
                     byte tier = GT_Utility.getTier(voltage);
                     if (tier < 0 || tier >= 16) {
-                        drawText(10, 93, trans("154", "Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU", 0xFFFF0000);
+                        drawText(10, 93, trans("154", "Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU", 0xFF000000);
                     } else {
                         drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU (" + GT_Values.VN[tier] + ")", 0xFF000000);
                     }

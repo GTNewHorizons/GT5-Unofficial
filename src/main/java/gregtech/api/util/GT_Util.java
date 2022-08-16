@@ -132,6 +132,10 @@ public class GT_Util {
         return aColors == null ? 16777215 : (aColors[0]) << 16 | (aColors[1] << 8) | aColors[2] | (aColors[3] << 24);
     }
 
+    public static String toHexString(short[] aColors) {
+        return aColors == null ? "FFFFFF" : Integer.toHexString((aColors[0] << 16) | (aColors[1] << 8) | aColors[2]);
+    }
+
     public static int getRGBInt(short aR, short aG, short aB) {
         return (aR << 16) | (aG << 8) | aB;
     }

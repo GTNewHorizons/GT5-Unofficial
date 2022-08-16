@@ -231,6 +231,8 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
         private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
+
         public GUI(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
@@ -254,8 +256,8 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 1, 4 + startY + spaceY * 0, 0xFF555555);
-            this.getFontRenderer().drawString(GT_Utility.trans("222", "Fluid threshold"), startX + spaceX * 5 - 10, startY + spaceY * 1 + 4, 0xFF555555);
+            this.fontRendererObj.drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 1, 4 + startY + spaceY * 0, textColor);
+            this.getFontRenderer().drawString(GT_Utility.trans("222", "Fluid threshold"), startX + spaceX * 5 - 10, startY + spaceY * 1 + 4, textColor);
         }
 
         @Override

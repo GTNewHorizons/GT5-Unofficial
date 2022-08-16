@@ -37,13 +37,13 @@ import java.util.regex.Pattern;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.MOD_ID_AE;
 
-@SuppressWarnings("ALL")
 public class GT_PreLoad {
     public static void sortToTheEnd() {
         if (GT_Mod.gregtechproxy.mSortToTheEnd) {
             try {
                 GT_FML_LOGGER.info("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
                 LoadController tLoadController = (LoadController) GT_Utility.getFieldContent(Loader.instance(), "modController", true, true);
+                assert tLoadController != null;
                 List<ModContainer> tModList = tLoadController.getActiveModList();
                 List<ModContainer> tNewModsList = new ArrayList<>();
                 ModContainer tGregTech = null;
@@ -59,7 +59,7 @@ public class GT_PreLoad {
                 if (tGregTech != null) {
                     tNewModsList.add(tGregTech);
                 }
-                GT_Utility.getField(tLoadController, "activeModList", true, true).set(tLoadController, tNewModsList);
+                Objects.requireNonNull(GT_Utility.getField(tLoadController, "activeModList", true, true)).set(tLoadController, tNewModsList);
             } catch (Throwable e) {
                 GT_Mod.logStackTrace(e);
             }
@@ -112,7 +112,7 @@ public class GT_PreLoad {
         GT_Log.mLogFile = new File(parentFile, "logs/GregTech.log");
         if (!GT_Log.mLogFile.exists()) {
             try {
-                GT_Log.mLogFile.createNewFile();
+                final boolean ignored = GT_Log.mLogFile.createNewFile();
             } catch (Throwable ignored) {}
         }
         try {
@@ -123,7 +123,7 @@ public class GT_PreLoad {
             GT_Log.mOreDictLogFile = new File(parentFile, "logs/OreDict.log");
             if (!GT_Log.mOreDictLogFile.exists()) {
                 try {
-                    GT_Log.mOreDictLogFile.createNewFile();
+                    final boolean ignored = GT_Log.mOreDictLogFile.createNewFile();
                 } catch (Throwable ignored) {}
             }
             try {
@@ -145,7 +145,7 @@ public class GT_PreLoad {
             GT_Log.mExplosionLog = new File(parentFile, "logs/Explosion.log");
             if (!GT_Log.mExplosionLog.exists()) {
                 try {
-                    GT_Log.mExplosionLog.createNewFile();
+                    final boolean ignored = GT_Log.mExplosionLog.createNewFile();
                 } catch (Throwable ignored) {}
             }
             try {
@@ -157,7 +157,7 @@ public class GT_PreLoad {
             GT_Log.mPlayerActivityLogFile = new File(parentFile, "logs/PlayerActivity.log");
             if (!GT_Log.mPlayerActivityLogFile.exists()) {
                 try {
-                    GT_Log.mPlayerActivityLogFile.createNewFile();
+                    final boolean ignored = GT_Log.mPlayerActivityLogFile.createNewFile();
                 } catch (Throwable ignored) {}
             }
             try {
@@ -175,7 +175,7 @@ public class GT_PreLoad {
         final File globalDir = new File("scripts");
         if (globalDir.exists()) {
             final List<String> scripts = new ArrayList<>();
-            for (File file : globalDir.listFiles()) {
+            for (File file : Objects.requireNonNull(globalDir.listFiles())) {
                 if (file.getName().endsWith(".zs")) {
                     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                         String line;
@@ -294,8 +294,8 @@ public class GT_PreLoad {
     public static void adjustScrap() {
         GT_FML_LOGGER.info("GT_Mod: Removing all original Scrapbox Drops.");
         try {
-            GT_Utility.getField("ic2.core.item.ItemScrapbox$Drop", "topChance", true, true).set(null, 0);
-            ((List) GT_Utility.getFieldContent(GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true), "drops", true, true)).clear();
+            Objects.requireNonNull(GT_Utility.getField("ic2.core.item.ItemScrapbox$Drop", "topChance", true, true)).set(null, 0);
+            ((List<?>) Objects.requireNonNull(GT_Utility.getFieldContent(GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true), "drops", true, true))).clear();
         } catch (Throwable e) {
             if (GT_Values.D1) {
                 e.printStackTrace(GT_Log.err);
@@ -341,9 +341,6 @@ public class GT_PreLoad {
             System.out.close();
             System.err.close();
         }
-        /*if (tMainConfig.get(aTextGeneral, "disable_STDERR", false).getBoolean(false)) {
-            System.err.close();
-        }*/
         GregTech_API.sMachineExplosions = tMainConfig.get("machines", "machines_explosion_damage", true).getBoolean(false);
         GregTech_API.sMachineFlammable = tMainConfig.get("machines", "machines_flammable", true).getBoolean(false);
         GregTech_API.sMachineNonWrenchExplosions = tMainConfig.get("machines", "explosions_on_nonwrenching", true).getBoolean(false);
@@ -517,12 +514,12 @@ public class GT_PreLoad {
     }
 
     public static void loadClientConfig() {
-        String SBdye0 = "ColorModulation.";
+        final String sBDye0 = "ColorModulation.";
         Arrays.stream(Dyes.values()).filter(tDye -> (tDye != Dyes._NULL) && (tDye.mIndex < 0)).forEach(tDye -> {
-                String SBdye1 = SBdye0 + tDye;
-                tDye.mRGBa[0] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "R", tDye.mOriginalRGBa[0]))));
-                tDye.mRGBa[1] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "G", tDye.mOriginalRGBa[1]))));
-                tDye.mRGBa[2] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "B", tDye.mOriginalRGBa[2]))));
+                String sBDye1 = sBDye0 + tDye;
+                tDye.mRGBa[0] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "R", tDye.mOriginalRGBa[0]))));
+                tDye.mRGBa[1] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "G", tDye.mOriginalRGBa[1]))));
+                tDye.mRGBa[2] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(sBDye1, "B", tDye.mOriginalRGBa[2]))));
             }
         );
         GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion = GregTech_API.sClientDataFile.get("render", "TileAmbientOcclusion", true);

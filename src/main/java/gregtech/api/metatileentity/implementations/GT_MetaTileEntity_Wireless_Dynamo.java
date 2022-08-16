@@ -4,21 +4,18 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import java.math.BigInteger;
 
 import static gregtech.GT_Mod.gregtechproxy;
 import static gregtech.api.enums.GT_Values.*;
 
-public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo implements IGlobalWirelessEnergy {
+public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
 
-    private static final long ticks_between_energy_addition = 100L*20L;
-    private static final long number_of_energy_additions = 2L;
-    private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(2L * V[mTier] * ticks_between_energy_addition);
     private String owner_uuid;
     private String owner_name;
 
@@ -82,16 +79,14 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
 
     @Override
     public long maxEUStore() {
-        return V[mTier] * number_of_energy_additions * ticks_between_energy_addition;
+        return totalStorage(V[mTier]);
     }
 
     @Override
     public String[] getDescription() {
-        String uuid = gregtechproxy.getThePlayer().getUniqueID().toString();
         return new String[] {
-//            "Transmits " + EnumChatFormatting.RED + GT_Utility.formatNumbers(eu_transferred_per_operation/V[mTier]) + EnumChatFormatting.GRAY + " A of " + TIER_COLORS[mTier] + VN[mTier] + EnumChatFormatting.GRAY + " through trans-dimensional space every " + EnumChatFormatting.RED + GT_Utility.formatNumbers(ticks_between_energy_addition) + EnumChatFormatting.GRAY + " ticks.",
-            EnumChatFormatting.GRAY + "Does not connect to wires.",
-            EnumChatFormatting.GRAY + "There is currently " + EnumChatFormatting.RED + GT_Utility.formatNumbers(GlobalEnergy.getOrDefault(uuid, BigInteger.ZERO)) + EnumChatFormatting.GRAY + " EU in your network.",
+            EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+            EnumChatFormatting.GRAY + "Does not connect to wires. This block accepts EU into the network.",
             AuthorColen
         };
     }
@@ -131,15 +126,15 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
 
                 // Attempt to load in map from file.
                 if (GlobalEnergy.size() == 0)
-                    IGlobalWirelessEnergy.super.LoadGlobalEnergyInfo(aBaseMetaTileEntity.getWorld());
+                    loadGlobalEnergyInfo(aBaseMetaTileEntity.getWorld());
 
-                IGlobalWirelessEnergy.super.StrongCheckOrAddUser(owner_uuid, owner_name);
+                strongCheckOrAddUser(owner_uuid, owner_name);
 
             }
 
             // Every ticks_between_energy_addition ticks change the energy content of the machine.
             if (aTick % ticks_between_energy_addition == 0L) {
-                IGlobalWirelessEnergy.super.addEUToGlobalEnergyMap(owner_uuid, getEUVar());
+                addEUToGlobalEnergyMap(owner_uuid, getEUVar());
                 setEUVar(0L);
             }
         }

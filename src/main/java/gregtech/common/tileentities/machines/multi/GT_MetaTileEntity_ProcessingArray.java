@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -7,6 +8,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -34,6 +36,9 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
@@ -447,6 +452,11 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    protected List<IHatchElement<? super GT_MetaTileEntity_CubicMultiBlockBase<?>>> getAllowedHatches() {
+        return ImmutableList.of(InputHatch, OutputHatch, InputBus, OutputBus, Muffler, Maintenance, Energy, ExoticEnergy);
     }
 
     @Override

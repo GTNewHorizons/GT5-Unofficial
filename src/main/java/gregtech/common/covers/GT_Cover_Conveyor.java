@@ -160,6 +160,8 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
+
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
@@ -179,9 +181,9 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(GT_Utility.trans("229", "Import/Export"),  startX + spaceX*3, 3+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("230", "Conditional"),     startX + spaceX*3, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("231", "Enable Input"),   startX + spaceX*3, 3+startY+spaceY*2, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("229", "Import/Export"),  startX + spaceX*3, 3+startY+spaceY*0, textColor);
+            this.fontRendererObj.drawString(GT_Utility.trans("230", "Conditional"),     startX + spaceX*3, 3+startY+spaceY*1, textColor);
+            this.fontRendererObj.drawString(GT_Utility.trans("231", "Enable Input"),   startX + spaceX*3, 3+startY+spaceY*2, textColor);
         }
 
         @Override

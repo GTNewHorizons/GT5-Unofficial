@@ -1004,14 +1004,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     }
 
     public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        return addInputBusToMachineList(aTileEntity, aBaseCasingIndex) ||
+            addInputHatchToMachineList(aTileEntity, aBaseCasingIndex);
+    }
+
+    public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        return addOutputBusToMachineList(aTileEntity, aBaseCasingIndex) ||
+            addOutputHatchToMachineList(aTileEntity, aBaseCasingIndex);
+    }
+
+    public boolean addInputBusToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-        }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
@@ -1020,17 +1025,36 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         return false;
     }
 
-    public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+    public boolean addOutputBusToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        }
+        return false;
+    }
+
+    public boolean addInputHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        }
+        return false;
+    }
+
+    public boolean addOutputHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
         }
         return false;
     }
@@ -1159,5 +1183,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         tag.setInteger("maxProgress", mMaxProgresstime/20);
         tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
 
+    }
+
+    public List<GT_MetaTileEntity_Hatch> getExoticEnergyHatches() {
+        return mExoticEnergyHatches;
     }
 }

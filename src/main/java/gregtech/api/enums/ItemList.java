@@ -551,6 +551,7 @@ public enum ItemList implements IItemContainer {
     Upgrade_Muffler,
     Upgrade_SteamEngine,
     Upgrade_Lock,
+    Cover_FluidLimiter,
     Cover_Controller,
     Cover_ActivityDetector,
     Cover_FluidDetector,

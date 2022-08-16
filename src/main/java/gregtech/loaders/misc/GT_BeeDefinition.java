@@ -48,7 +48,6 @@ import static gregtech.api.enums.GT_Values.MOD_ID;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 import static gregtech.loaders.misc.GT_BeeDefinitionReference.*;
 
-@SuppressWarnings("ALL")
 /**
  * Bride Class for Lambdas
  */
@@ -669,9 +668,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             beeSpecies.setHasEffect();
         },
         template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.NORMAL),
-        dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, GOLD, 10);
-        }
+        dis -> dis.registerMutation(REDSTONE, GOLD, 10)
     ),
     SUNNARIUM(GT_BranchDefinition.RAREMETAL, "Sunnarium", false, new Color(0xFFBC5E), new Color(0xE5CA2A),
         beeSpecies -> {
@@ -824,9 +821,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             beeSpecies.setTemperature(HOT);
         },
         template -> AlleleHelper.instance.set(template, SPEED, Speed.NORMAL),
-        dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(ASH, PEAT, 15);
-        }
+        dis -> dis.registerMutation(ASH, PEAT, 15)
     ),
 
     //IC2
@@ -1400,9 +1395,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOW);
             AlleleHelper.instance.set(template, NOCTURNAL, true);
         },
-        dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(DIAMOND, DIVIDED, 10);
-        }
+        dis -> dis.registerMutation(DIAMOND, DIVIDED, 10)
     ),
     SPARKELING(GT_BranchDefinition.THAUMIC, "NetherStar", true, new Color(0x7A007A), new Color(0xFFFFFF),
             beeSpecies -> {
@@ -2820,21 +2813,6 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             tMutation.restrictTemperature(ICY);
         }
     ),
-    // Xenon bee, Humidity: normal, Temperature: Icy, Parents: Argon & Deimos, Mutationrate: 6%, Combrate: 50%
-    XENON(GT_BranchDefinition.NOBLEGAS, "Xenon", false, new Color(0x8A97B0), new Color(0x160822),
-        beeSpecies -> {
-            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.XENON), 0.35f);
-            beeSpecies.setHumidity(EnumHumidity.NORMAL);
-            beeSpecies.setTemperature(ICY);
-            beeSpecies.setNocturnal();
-            beeSpecies.setHasEffect();
-        },
-        template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
-        dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(ARGON, HYDRA, 6);
-            tMutation.restrictTemperature(ICY);}
-
-    ),
     // Neon bee, Humidity: normal, Temperature: Icy, Parents: Xenon & Ceres, Mutationrate: 6%, Combrate: 50%
     NEON(GT_BranchDefinition.NOBLEGAS, "Neon", false, new Color(0xFFC826), new Color(0xFF7200),
         beeSpecies -> {
@@ -2846,7 +2824,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         },
         template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
         dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(XENON, URGHAST, 6);
+            IBeeMutationCustom tMutation = dis.registerMutation(ARGON, HYDRA, 6);
             tMutation.restrictTemperature(ICY);}
 
     ),
@@ -2861,7 +2839,22 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         },
         template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
         dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(NEON, SNOWQUEEN, 4);
+            IBeeMutationCustom tMutation = dis.registerMutation(NEON, URGHAST, 4);
+            tMutation.restrictTemperature(ICY);}
+
+    ),
+    // Xenon bee, Humidity: normal, Temperature: Icy, Parents: Argon & Deimos, Mutationrate: 6%, Combrate: 50%
+    XENON(GT_BranchDefinition.NOBLEGAS, "Xenon", false, new Color(0x8A97B0), new Color(0x160822),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.XENON), 0.35f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(ICY);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        },
+        template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
+        dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(KRYPTON, SNOWQUEEN, 2);
             tMutation.restrictTemperature(ICY);}
 
     ),
@@ -3046,9 +3039,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             beeSpecies.setHasEffect();
         },
         template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
-        dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, MYSTERIOUSCRYSTAL, 5);
-        }
+        dis -> dis.registerMutation(INFINITYCATALYST, MYSTERIOUSCRYSTAL, 5)
     ),
     //Endgame bees
     JAEGERMEISTER(GT_BranchDefinition.ENDGAME, "JaegerMeister", false, new Color(0x05AD18), new Color(0xE7DAC3),
@@ -3106,7 +3097,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         }
     }
 
-    protected static IAlleleBeeEffect getEffect(byte modid, String name) {
+    static IAlleleBeeEffect getEffect(byte modid, String name) {
         String s;
         switch (modid) {
             case EXTRABEES:
@@ -3129,7 +3120,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         return (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
     }
 
-    protected static IAlleleFlowers getFlowers(byte modid, String name) {
+    static IAlleleFlowers getFlowers(byte modid, String name) {
         String s;
         switch (modid) {
             case EXTRABEES:
@@ -3152,7 +3143,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         return (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
     }
 
-    protected static IAlleleBeeSpecies getSpecies(byte modid, String name) {
+    private static IAlleleBeeSpecies getSpecies(byte modid, String name) {
         String s;
         switch (modid) {
             case EXTRABEES:
@@ -3181,15 +3172,15 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }
 
 
-    protected final void setSpeciesProperties(GT_AlleleBeeSpecies beeSpecies) {
+    private void setSpeciesProperties(GT_AlleleBeeSpecies beeSpecies) {
         this.mSpeciesProperties.accept(beeSpecies);
     }
 
-    protected final void setAlleles(IAllele[] template) {
+    private void setAlleles(IAllele[] template) {
         this.mAlleles.accept(template);
     }
 
-    protected final void registerMutations() {
+    private void registerMutations() {
         this.mMutations.accept(this);
     }
 
@@ -3205,40 +3196,40 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         BeeManager.beeRoot.registerTemplate(template);
     }
 
-    protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance) {
+    private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance) {
         return registerMutation(parent1, parent2, chance, 1f);
     }
 
-    protected final IBeeMutationCustom registerMutation(GT_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance) {
+    private IBeeMutationCustom registerMutation(GT_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance) {
         return registerMutation(parent1, parent2, chance, 1f);
     }
 
-    protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GT_BeeDefinition parent2, int chance) {
+    private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GT_BeeDefinition parent2, int chance) {
         return registerMutation(parent1, parent2, chance, 1f);
     }
 
-    protected final IBeeMutationCustom registerMutation(GT_BeeDefinition parent1, GT_BeeDefinition parent2, int chance) {
+    private IBeeMutationCustom registerMutation(GT_BeeDefinition parent1, GT_BeeDefinition parent2, int chance) {
         return registerMutation(parent1, parent2, chance, 1f);
     }
 
     /**
-     * Diese neue Funtion erlaubt Mutationsraten unter 1%. Setze dazu die Mutationsrate als Bruch mit chance / chancedivider
-     * This new function allows Mutation percentages under 1%. Set them as a fraction with chance / chancedivider
+     * Diese neue Funtion erlaubt Mutationsraten unter 1%. Setze dazu die Mutationsrate als Bruch mit chance / chanceDivider
+     * This new function allows Mutation percentages under 1%. Set them as a fraction with chance / chanceDivider
      */
-    protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance, float chancedivider) {
-        return new GT_Bee_Mutation(parent1, parent2, this.getTemplate(), chance, chancedivider);
+    private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance, float chanceDivider) {
+        return new GT_Bee_Mutation(parent1, parent2, this.getTemplate(), chance, chanceDivider);
     }
 
-    protected final IBeeMutationCustom registerMutation(GT_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance, float chancedivider) {
-        return registerMutation(parent1.species, parent2, chance, chancedivider);
+    private IBeeMutationCustom registerMutation(GT_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance, float chanceDivider) {
+        return registerMutation(parent1.species, parent2, chance, chanceDivider);
     }
 
-    protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GT_BeeDefinition parent2, int chance, float chancedivider) {
-        return registerMutation(parent1, parent2.species, chance, chancedivider);
+    private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GT_BeeDefinition parent2, int chance, float chanceDivider) {
+        return registerMutation(parent1, parent2.species, chance, chanceDivider);
     }
 
-    protected final IBeeMutationCustom registerMutation(GT_BeeDefinition parent1, GT_BeeDefinition parent2, int chance, float chancedivider) {
-        return registerMutation(parent1.species, parent2, chance, chancedivider);
+    private IBeeMutationCustom registerMutation(GT_BeeDefinition parent1, GT_BeeDefinition parent2, int chance, float chanceDivider) {
+        return registerMutation(parent1.species, parent2, chance, chanceDivider);
     }
 
     @Override
@@ -3259,9 +3250,5 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     @Override
     public final ItemStack getMemberStack(EnumBeeType beeType) {
         return BeeManager.beeRoot.getMemberStack(getIndividual(), beeType.ordinal());
-    }
-
-    public final IBeeDefinition getRainResist() {
-        return new BeeVariation.RainResist(this);
     }
 }

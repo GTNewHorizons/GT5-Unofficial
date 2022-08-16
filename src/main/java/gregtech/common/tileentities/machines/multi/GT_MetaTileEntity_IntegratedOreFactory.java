@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -18,6 +20,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -29,11 +32,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
-public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IntegratedOreFactory> {
+public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IntegratedOreFactory> implements ISurvivalConstructable {
 
     private static final int CASING_INDEX1 = 183;
     private static final int CASING_INDEX2 = 49;
@@ -66,10 +71,28 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         .addElement('x', ofBlock(GregTech_API.sBlockCasings2, 3))
         .addElement('p', ofBlock(GregTech_API.sBlockCasings2, 15))
         .addElement('t', ofFrame(Materials.TungstenSteel))
-        .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_IntegratedOreFactory::addButtonHatchToMachineList, CASING_INDEX1, 1, GregTech_API.sBlockCasings8, 7))
-        .addElement('I', ofHatchAdderOptional(GT_MetaTileEntity_IntegratedOreFactory::addSolidInputToMachineList, CASING_INDEX1, 2, GregTech_API.sBlockCasings8, 7))
-        .addElement('W', ofHatchAdderOptional(GT_MetaTileEntity_IntegratedOreFactory::addFluidInputToMachineList, CASING_INDEX2, 3, GregTech_API.sBlockCasings4, 1))
-        .addElement('O', ofHatchAdderOptional(GT_MetaTileEntity_IntegratedOreFactory::addOutputToMachineList, CASING_INDEX2, 4, GregTech_API.sBlockCasings4, 1))
+        .addElement('E', buildHatchAdder(GT_MetaTileEntity_IntegratedOreFactory.class)
+            .atLeast(Energy, Maintenance)
+            .casingIndex(CASING_INDEX1)
+            .dot(1)
+            .buildAndChain(GregTech_API.sBlockCasings8, 7)
+        )
+        .addElement('I', buildHatchAdder(GT_MetaTileEntity_IntegratedOreFactory.class)
+            .atLeast(InputBus)
+            .casingIndex(CASING_INDEX1)
+            .dot(2)
+            .buildAndChain(GregTech_API.sBlockCasings8, 7)
+        )
+        .addElement('W', buildHatchAdder(GT_MetaTileEntity_IntegratedOreFactory.class)
+            .atLeast(InputHatch, Muffler)
+            .casingIndex(CASING_INDEX1)
+            .dot(3)
+            .buildAndChain(GregTech_API.sBlockCasings4, 1))
+        .addElement('O', buildHatchAdder(GT_MetaTileEntity_IntegratedOreFactory.class)
+            .atLeast(OutputBus, OutputHatch)
+            .casingIndex(CASING_INDEX2)
+            .dot(4)
+            .buildAndChain(GregTech_API.sBlockCasings4, 1))
         .build();
 
     private static final HashSet<Integer> isCrushedOre = new HashSet<>();
@@ -120,34 +143,6 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
 
     public GT_MetaTileEntity_IntegratedOreFactory(String aName) {
         super(aName);
-    }
-
-    public boolean addButtonHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        }
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
-        }
-        return false;
-    }
-
-    public boolean addSolidInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
-        }
-        return false;
     }
 
     public boolean addFluidInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -203,6 +198,12 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 8, 9, 1);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 8, 9, 1, elementBudget, source, actor, false, true);
     }
 
     @Override
