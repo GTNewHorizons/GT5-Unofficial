@@ -76,11 +76,12 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         if (!voidBreak) {
-            if (mFluid != null && mFluid.amount > 0)
+            if (mFluid != null && mFluid.amount > 0) {
                 aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+            }
+            aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
         }
         super.setItemNBT(aNBT);
-        aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
     }
 
 
