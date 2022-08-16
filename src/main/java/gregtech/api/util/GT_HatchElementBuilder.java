@@ -195,7 +195,8 @@ public class GT_HatchElementBuilder<T> {
     // region intermediate
     public GT_HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
         return hatchItemFilter(c -> is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is)))
-            .cacheHint(() -> "of class " + clazz.getSimpleName());
+            .cacheHint(() -> "of class " + clazz.getSimpleName())
+            .shouldSkip((BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> clazz.isInstance(t.getMetaTileEntity()));
     }
 
     @SafeVarargs
@@ -221,7 +222,8 @@ public class GT_HatchElementBuilder<T> {
         if (aIds.length == 1) return hatchId(aIds[0]);
         TIntCollection coll = aIds.length < 16 ? new TIntArrayList(aIds) : new TIntHashSet(aIds);
         return hatchItemFilter(c -> is -> GT_Utility.isStackValid(is) && is.getItem() instanceof GT_Item_Machines && coll.contains(is.getItemDamage()))
-            .cacheHint(() -> Arrays.stream(coll.toArray()).mapToObj(String::valueOf).collect(Collectors.joining(" or ", "of id ", "")));
+            .cacheHint(() -> Arrays.stream(coll.toArray()).mapToObj(String::valueOf).collect(Collectors.joining(" or ", "of id ", "")))
+            .shouldSkip((BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null && coll.contains(t.getMetaTileID()));
     }
 
     //endregion
