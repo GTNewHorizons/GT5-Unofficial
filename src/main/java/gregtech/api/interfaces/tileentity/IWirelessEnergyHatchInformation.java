@@ -1,7 +1,5 @@
 package gregtech.api.interfaces.tileentity;
 
-import static gregtech.api.enums.GT_Values.V;
-
 public interface IWirelessEnergyHatchInformation {
 
     // This interface is solely for usage by wireless hatches/dynamos.

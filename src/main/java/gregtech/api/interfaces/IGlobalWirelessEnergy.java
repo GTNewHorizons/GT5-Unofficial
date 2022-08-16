@@ -112,7 +112,7 @@ public interface IGlobalWirelessEnergy {
         createStorageIfNotExist(world_name);
         loadGlobalEnergyMap(world);
         loadGlobalEnergyName(world);
-        LoadGlobalEnergyTeam(world);
+        loadGlobalEnergyTeam(world);
     }
 
     default void loadGlobalEnergyMap(World world) {
@@ -149,7 +149,7 @@ public interface IGlobalWirelessEnergy {
         }
     }
 
-    default void LoadGlobalEnergyTeam(World world) {
+    default void loadGlobalEnergyTeam(World world) {
         try {
             Path path = Paths.get("./saves/" + world.getWorldInfo().getWorldName() + "/"
                 + GlobalEnergyFolderName + "/" + GlobalEnergyTeamFileName + ".txt").toAbsolutePath();

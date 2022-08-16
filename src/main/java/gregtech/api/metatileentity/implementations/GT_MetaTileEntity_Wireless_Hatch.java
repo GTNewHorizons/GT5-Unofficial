@@ -18,7 +18,7 @@ import static gregtech.api.enums.GT_Values.*;
 
 public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_Energy implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
 
-    private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(V[mTier] * ticks_between_energy_addition);
+    private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(2 * V[mTier] * ticks_between_energy_addition);
     private final long eu_transferred_per_operation_long = eu_transferred_per_operation.longValue();
 
     private String owner_uuid;
