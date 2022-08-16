@@ -10,21 +10,26 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.Sys;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -142,8 +147,6 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
         return new GT_MetaTileEntity_EM_bhg(mName);
     }
 
-
-
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return structureCheck_EM("main", 16, 16, 0);
@@ -186,6 +189,34 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
         TimeAccelerationFieldMetadata = -1;
         structureBuild_EM("main", 16, 16, 0, stackSize, hintsOnly);
     }
+
+    /**
+     * CAREFUL!!! it calls most of the callbacks, like everything else in here
+     */
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPreTick(aBaseMetaTileEntity, aTick);
+
+        if (aTick % 20 == 0) {
+
+            for (GT_MetaTileEntity_Hatch_Input input_hatch : mInputHatches) {
+                FluidStack tmp_fluid = input_hatch.getFluid();
+
+                if (tmp_fluid == null) {
+                    continue;
+                }
+
+                if (tmp_fluid.isFluidEqual(hydrogen)) {
+                    hydrogen_total += input_hatch.getFluidAmount();
+                    input_hatch.setFillableStack(null);
+                }
+            }
+        }
+    }
+
+    FluidStack hydrogen = Materials.Hydrogen.getGas(1);
+
+    long hydrogen_total = 0;
 
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
