@@ -9,14 +9,11 @@ import gnu.trove.set.hash.TIntHashSet;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.common.blocks.GT_Item_Machines;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
@@ -24,7 +21,6 @@ import net.minecraft.world.World;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -41,6 +37,7 @@ public class GT_HatchElementBuilder<T> {
     private Supplier<String> mHatchItemType;
     private Predicate<? super T> mReject, mBuiltinReject;
     private boolean mCacheHint;
+    private boolean mNoStop;
 
     private GT_HatchElementBuilder() {
     }
@@ -183,12 +180,23 @@ public class GT_HatchElementBuilder<T> {
         return this;
     }
     // endregion
+
+    public GT_HatchElementBuilder<T> continueIfSuccess() {
+        mNoStop = true;
+        return this;
+    }
+
+    public GT_HatchElementBuilder<T> stopIfSuccess() {
+        mNoStop = false;
+        return this;
+    }
     // endregion
 
     // region intermediate
     public GT_HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
         return hatchItemFilter(c -> is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is)))
-            .cacheHint(() -> "of class " + clazz.getSimpleName());
+            .cacheHint(() -> "of class " + clazz.getSimpleName())
+            .shouldSkip((BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> clazz.isInstance(t.getMetaTileEntity()));
     }
 
     @SafeVarargs
@@ -205,7 +213,8 @@ public class GT_HatchElementBuilder<T> {
 
     public GT_HatchElementBuilder<T> hatchId(int aId) {
         return hatchItemFilter(c -> is -> GT_Utility.isStackValid(is) && is.getItem() instanceof GT_Item_Machines && is.getItemDamage() == aId)
-            .cacheHint(() -> "of id " + aId);
+            .cacheHint(() -> "of id " + aId)
+            .shouldSkip((BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null && t.getMetaTileID() == aId);
     }
 
     public GT_HatchElementBuilder<T> hatchIds(int... aIds) {
@@ -213,7 +222,8 @@ public class GT_HatchElementBuilder<T> {
         if (aIds.length == 1) return hatchId(aIds[0]);
         TIntCollection coll = aIds.length < 16 ? new TIntArrayList(aIds) : new TIntHashSet(aIds);
         return hatchItemFilter(c -> is -> GT_Utility.isStackValid(is) && is.getItem() instanceof GT_Item_Machines && coll.contains(is.getItemDamage()))
-            .cacheHint(() -> Arrays.stream(coll.toArray()).mapToObj(String::valueOf).collect(Collectors.joining(" or ", "of id ", "")));
+            .cacheHint(() -> Arrays.stream(coll.toArray()).mapToObj(String::valueOf).collect(Collectors.joining(" or ", "of id ", "")))
+            .shouldSkip((BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null && coll.contains(t.getMetaTileID()));
     }
 
     //endregion
@@ -276,8 +286,12 @@ public class GT_HatchElementBuilder<T> {
             private String getHint() {
                 if (mHint != null) return mHint;
                 String tHint = mHatchItemType.get();
-                if (mCacheHint)
+                if (mCacheHint) {
                     mHint = tHint;
+                    if (mHint != null)
+                        // yeet the getter, since its product is retrieved and cached
+                        mHatchItemType = null;
+                }
                 return tHint;
             }
 
@@ -297,7 +311,7 @@ public class GT_HatchElementBuilder<T> {
                     chatter.accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
                     return PlaceResult.REJECT;
                 }
-                return StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT ? PlaceResult.ACCEPT_STOP : PlaceResult.REJECT;
+                return StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT ? (mNoStop ? PlaceResult.ACCEPT : PlaceResult.ACCEPT_STOP) : PlaceResult.REJECT;
             }
         };
     }
