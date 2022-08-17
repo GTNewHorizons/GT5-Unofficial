@@ -1,6 +1,7 @@
 package kubatech.client.effect;
 
 import static net.minecraft.client.renderer.entity.RenderManager.*;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW_STACK_DEPTH;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -127,16 +128,25 @@ public class EntityRenderer extends EntityFX {
         GL11.glColor4f(1f, 1f, 1f, 1F);
         RenderHelper.enableStandardItemLighting();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        int stackdepth = GL11.glGetInteger(GL_MODELVIEW_STACK_DEPTH);
         GL11.glPushMatrix();
         GL11.glTranslatef(
                 (float) (this.posX - renderPosX), (float) (this.posY - renderPosY), (float) (this.posZ - renderPosZ));
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         float desiredScale = MobUtils.getDesiredScale(entityToRender, 2f);
         if (desiredScale < 1f) GL11.glScalef(desiredScale, desiredScale, desiredScale);
+        try {
+            instance.renderEntityWithPosYaw(entityToRender, 0f, 0f, 0f, f1, p_147936_2_);
+        } catch (Throwable ex) {
+            Tessellator tes = Tessellator.instance;
+            try {
+                tes.draw();
+            } catch (Exception ignored) {
+            }
+        }
 
-        instance.renderEntityWithPosYaw(entityToRender, 0f, 0f, 0f, f1, p_147936_2_);
-
-        GL11.glPopMatrix();
+        stackdepth -= GL11.glGetInteger(GL_MODELVIEW_STACK_DEPTH);
+        if (stackdepth < 0) for (; stackdepth < 0; stackdepth++) GL11.glPopMatrix();
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_COLOR_MATERIAL);

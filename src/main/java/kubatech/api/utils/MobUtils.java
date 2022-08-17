@@ -17,6 +17,16 @@ public class MobUtils {
 
     @SideOnly(Side.CLIENT)
     public static float getDesiredScale(EntityLiving e, float desiredHeight) {
+        return getDesiredScale(getMobHeight(e), desiredHeight);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static float getDesiredScale(float entityHeight, float desiredHeight) {
+        return desiredHeight / entityHeight;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static float getMobHeight(EntityLiving e) {
         try {
             if (mainmodelfield == null) {
                 mainmodelfield = RendererLivingEntity.class.getDeclaredField(
@@ -49,7 +59,7 @@ public class MobUtils {
                     }
                 }
             }
-            return desiredHeight / eheight;
+            return eheight;
         } catch (Exception ex) {
             return 1f;
         }

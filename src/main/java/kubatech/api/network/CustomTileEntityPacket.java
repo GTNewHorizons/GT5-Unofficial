@@ -59,6 +59,10 @@ public class CustomTileEntityPacket implements IMessage {
         addData(bytes);
     }
 
+    public void addData(boolean data) {
+        customdata.writeBoolean(data);
+    }
+
     public void getData(byte[] bytes) {
         customdata.readBytes(bytes);
     }
@@ -75,6 +79,10 @@ public class CustomTileEntityPacket implements IMessage {
 
     public String getDataString() {
         return new String(getData(getDataInt()), StandardCharsets.UTF_8);
+    }
+
+    public boolean getDataBoolean() {
+        return customdata.readBoolean();
     }
 
     @Override

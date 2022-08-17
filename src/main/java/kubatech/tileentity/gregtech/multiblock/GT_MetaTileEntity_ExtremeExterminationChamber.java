@@ -130,9 +130,13 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                                             1)))
                     .addElement(
                             'g',
-                            LoaderReference.Bartworks
-                                    ? BorosilicateGlass.ofBoroGlassAnyTier()
-                                    : ofBlock(Blocks.glass, 0))
+                            ofChain(
+                                    onElementPass(
+                                            t -> t.mGlasDetected = true,
+                                            LoaderReference.Bartworks
+                                                    ? BorosilicateGlass.ofBoroGlassAnyTier()
+                                                    : ofBlock(Blocks.glass, 0)),
+                                    ofBlock(GregTech_API.sBlockCasings2, 0)))
                     .addElement(
                             's',
                             LoaderReference.ExtraUtilities
@@ -144,8 +148,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     private TileEntity tileAltar = null;
     private boolean isInRitualMode = false;
     private int mCasing = 0;
+    private boolean mGlasDetected = false;
 
     private EntityRenderer entityRenderer = null;
+    private boolean renderEntity = false;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -266,7 +272,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide()) {
-            if (aBaseMetaTileEntity.isActive() && aTick % 40 == 0) {
+            if (renderEntity && aBaseMetaTileEntity.isActive() && aTick % 40 == 0) {
                 setupEntityRenderer(aBaseMetaTileEntity, 40);
             }
         }
@@ -275,12 +281,21 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     @SideOnly(Side.CLIENT)
     @Override
     public void HandleCustomPacket(CustomTileEntityPacket message) {
-        String mobType = message.getDataString();
-        MobRecipeLoader.MobRecipe r = MobNameToRecipeMap.get(mobType);
-        if (r != null) {
-            if (entityRenderer == null) setupEntityRenderer(getBaseMetaTileEntity(), 40);
-            entityRenderer.setEntity(r.entity);
-        } else entityRenderer.setEntity(null);
+        if (message.getDataBoolean()) {
+            renderEntity = true;
+            String mobType = message.getDataString();
+            MobRecipeLoader.MobRecipe r = MobNameToRecipeMap.get(mobType);
+            if (r != null) {
+                if (entityRenderer == null) setupEntityRenderer(getBaseMetaTileEntity(), 40);
+                entityRenderer.setEntity(r.entity);
+            } else entityRenderer.setEntity(null);
+        } else {
+            renderEntity = false;
+            if (entityRenderer != null) {
+                entityRenderer.setDead();
+                entityRenderer = null;
+            }
+        }
     }
 
     @Override
@@ -392,7 +407,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
         if (mobPacket == null) mobPacket = new CustomTileEntityPacket((TileEntity) this.getBaseMetaTileEntity(), null);
         mobPacket.resetHelperData();
-        mobPacket.addData(mobType);
+        mobPacket.addData(mGlasDetected);
+        if (mGlasDetected) mobPacket.addData(mobType);
         mobPacket.sendToAllAround(16);
 
         return true;
@@ -430,6 +446,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mGlasDetected = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
         if (mCasing < 10 || mMaintenanceHatches.size() != 1 || mEnergyHatches.size() == 0) return false;
         if (isInRitualMode) connectToRitual();
