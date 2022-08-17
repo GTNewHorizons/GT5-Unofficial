@@ -20,9 +20,11 @@
 package kubatech.api.utils;
 
 import cpw.mods.fml.common.Loader;
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
+import cpw.mods.fml.common.ModContainer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.*;
+import javax.xml.bind.DatatypeConverter;
 import net.minecraft.launchwrapper.Launch;
 
 public class ModUtils {
@@ -46,5 +48,26 @@ public class ModUtils {
                 .findAny()
                 .orElse(emptyEntry)
                 .getValue();
+    }
+
+    private static String modListVersion = null;
+
+    public static String getModListVersion() {
+        if (modListVersion != null) return modListVersion;
+        ArrayList<ModContainer> modlist = (ArrayList<ModContainer>)
+                ((ArrayList<ModContainer>) Loader.instance().getActiveModList()).clone();
+        String sortedList = modlist.stream()
+                .filter(m -> m.getMod() != null)
+                .sorted(Comparator.comparing(ModContainer::getModId))
+                .collect(String::new, (a, b) -> a += b.getModId() + b.getVersion(), (a, b) -> a += ", " + b);
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            modListVersion = DatatypeConverter.printHexBinary(md.digest(sortedList.getBytes(StandardCharsets.UTF_8)))
+                    .toUpperCase();
+            return modListVersion;
+        } catch (Exception e) {
+            modListVersion = sortedList;
+            return sortedList;
+        }
     }
 }
