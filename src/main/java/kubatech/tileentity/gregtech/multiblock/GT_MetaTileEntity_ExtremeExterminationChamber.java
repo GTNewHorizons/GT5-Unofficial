@@ -21,8 +21,10 @@ package kubatech.tileentity.gregtech.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static kubatech.api.Variables.Author;
+import static kubatech.api.Variables.StructureHologram;
 
 import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentRegistry;
 import WayofTime.alchemicalWizardry.api.event.RitualRunEvent;
@@ -40,11 +42,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -104,11 +108,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             StructureDefinition.<GT_MetaTileEntity_ExtremeExterminationChamber>builder()
                     .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
                         {"ccccc", "ccccc", "ccccc", "ccccc", "ccccc"},
-                        {"cgggc", "g---g", "g---g", "g---g", "cgggc"},
-                        {"cgggc", "g---g", "g---g", "g---g", "cgggc"},
-                        {"cgggc", "g---g", "g---g", "g---g", "cgggc"},
-                        {"cgggc", "g---g", "g---g", "g---g", "cgggc"},
-                        {"cgggc", "gsssg", "gsssg", "gsssg", "cgggc"},
+                        {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                        {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                        {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                        {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                        {"fgggf", "gsssg", "gsssg", "gsssg", "fgggf"},
                         {"CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
                     }))
                     .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0)))
@@ -130,13 +134,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                                             1)))
                     .addElement(
                             'g',
-                            ofChain(
-                                    onElementPass(
-                                            t -> t.mGlasDetected = true,
-                                            LoaderReference.Bartworks
-                                                    ? BorosilicateGlass.ofBoroGlassAnyTier()
-                                                    : ofBlock(Blocks.glass, 0)),
-                                    ofBlock(GregTech_API.sBlockCasings2, 0)))
+                            LoaderReference.Bartworks
+                                    ? BorosilicateGlass.ofBoroGlass(
+                                            (byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier)
+                                    : onElementPass(t -> t.mGlassTier = 100, ofBlock(Blocks.glass, 0)))
+                    .addElement('f', ofFrame(Materials.Steel))
                     .addElement(
                             's',
                             LoaderReference.ExtraUtilities
@@ -148,7 +150,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     private TileEntity tileAltar = null;
     private boolean isInRitualMode = false;
     private int mCasing = 0;
-    private boolean mGlasDetected = false;
+    private byte mGlassTier = 0;
+    private boolean mAnimationEnabled = false;
 
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
@@ -157,12 +160,16 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("isInRitualMode", isInRitualMode);
+        aNBT.setBoolean("mAnimationEnabled", mAnimationEnabled);
+        aNBT.setByte("mGlassTier", mGlassTier);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isInRitualMode = aNBT.getBoolean("isInRitualMode");
+        mAnimationEnabled = aNBT.getBoolean("mAnimationEnabled");
+        mGlassTier = aNBT.getByte("mGlassTier");
     }
 
     @Override
@@ -175,6 +182,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Powered Spawner")
                 .addInfo("Controller block for Extreme Extermination Chamber")
+                .addInfo(Author)
                 .addInfo("Spawns and Exterminates monsters for you")
                 .addInfo("Base energy usage: 2,000 EU/t")
                 .addInfo("Recipe time is based on mob health")
@@ -184,11 +192,15 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addInfo("You can enable ritual mode with a screwdriver")
                 .addInfo("When in ritual mode and Well Of Suffering ritual is built directly on the machine in center")
                 .addInfo("The mobs will start to buffer and die very slowly by a ritual")
-                .addInfo(Author)
+                .addInfo("You can disable mob animation with a soldering iron")
+                .addInfo(StructureHologram)
                 .addSeparator()
                 .beginStructureBlock(5, 7, 5, true)
                 .addController("Front Bottom Center")
                 .addCasingInfo("Solid Steel Machine Casing", 10)
+                .addOtherStructurePart("Borosilicate Glass", "All walls without corners")
+                .addStructureInfo("The glass tier limits the Energy Input tier")
+                .addOtherStructurePart("Steel Frame Box", "All vertical corners (except top and bottom)")
                 .addOutputBus("Any casing", 1)
                 .addOutputHatch("Any casing", 1)
                 .addEnergyHatch("Any casing", 1)
@@ -315,6 +327,15 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         }
     }
 
+    @Override
+    public boolean onSolderingToolRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ)) return true;
+        mAnimationEnabled = !mAnimationEnabled;
+        GT_Utility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disableds"));
+        return true;
+    }
+
     @SuppressWarnings("unused")
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onRitualPerform(RitualRunEvent event) {
@@ -407,8 +428,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
         if (mobPacket == null) mobPacket = new CustomTileEntityPacket((TileEntity) this.getBaseMetaTileEntity(), null);
         mobPacket.resetHelperData();
-        mobPacket.addData(mGlasDetected);
-        if (mGlasDetected) mobPacket.addData(mobType);
+        mobPacket.addData(mAnimationEnabled);
+        if (mAnimationEnabled) mobPacket.addData(mobType);
         mobPacket.sendToAllAround(16);
 
         return true;
@@ -446,9 +467,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mGlasDetected = false;
+        mGlassTier = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
         if (mCasing < 10 || mMaintenanceHatches.size() != 1 || mEnergyHatches.size() == 0) return false;
+        if (mGlassTier < 8)
+            for (GT_MetaTileEntity_Hatch_Energy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
         if (isInRitualMode) connectToRitual();
         return true;
     }
