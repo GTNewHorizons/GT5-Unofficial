@@ -33,7 +33,7 @@ public class GT_HatchElementBuilder<T> {
     private int mCasingIndex = -1;
     private int mDot = -1;
     private BiPredicate<? super T, ? super IGregTechTileEntity> mShouldSkip;
-    private Function<? super T, ? extends Predicate<ItemStack>> mHatchItemFilter;
+    private BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> mHatchItemFilter;
     private Supplier<String> mHatchItemType;
     private Predicate<? super T> mReject, mBuiltinReject;
     private boolean mCacheHint;
@@ -148,14 +148,27 @@ public class GT_HatchElementBuilder<T> {
 
     public GT_HatchElementBuilder<T> hatchItemFilter(Function<? super T, ? extends Predicate<ItemStack>> aHatchItemFilter) {
         if (aHatchItemFilter == null) throw new IllegalArgumentException();
-        mHatchItemFilter = aHatchItemFilter;
+        mHatchItemFilter = (t, s) -> aHatchItemFilter.apply(t);
         return this;
     }
 
     public GT_HatchElementBuilder<T> hatchItemFilterAnd(Function<? super T, ? extends Predicate<ItemStack>> aHatchItemFilter) {
         if (aHatchItemFilter == null) throw new IllegalArgumentException();
-        Function<? super T, ? extends Predicate<ItemStack>> tOldFilter = mHatchItemFilter;
-        mHatchItemFilter = t -> tOldFilter.apply(t).and(aHatchItemFilter.apply(t));
+        BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> tOldFilter = mHatchItemFilter;
+        mHatchItemFilter = (t, s) -> tOldFilter.apply(t, s).and(aHatchItemFilter.apply(t));
+        return this;
+    }
+
+    public GT_HatchElementBuilder<T> hatchItemFilter(BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> aHatchItemFilter) {
+        if (aHatchItemFilter == null) throw new IllegalArgumentException();
+        mHatchItemFilter = aHatchItemFilter;
+        return this;
+    }
+
+    public GT_HatchElementBuilder<T> hatchItemFilterAnd(BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> aHatchItemFilter) {
+        if (aHatchItemFilter == null) throw new IllegalArgumentException();
+        BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> tOldFilter = mHatchItemFilter;
+        mHatchItemFilter = (t, s) -> tOldFilter.apply(t, s).and(aHatchItemFilter.apply(t, s));
         return this;
     }
 
@@ -305,7 +318,7 @@ public class GT_HatchElementBuilder<T> {
                 if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, actor))
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
-                ItemStack taken = s.takeOne(mHatchItemFilter.apply(t), true);
+                ItemStack taken = s.takeOne(mHatchItemFilter.apply(t, trigger), true);
                 if (GT_Utility.isStackInvalid(taken)) {
                     String type = getHint();
                     chatter.accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
