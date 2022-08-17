@@ -294,7 +294,7 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
 		public static final GT_Recipe_Map_Fuel sSemiFluidLiquidFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gtpp.recipe.semifluidgeneratorfuels", "Semifluid Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
 
 		// Flotation Cell
-		public static final GTPP_Recipe_Map_Internal sFlotationCellRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gtpp.recipe.flotationcell", "Flotation Cell", null, RES_PATH_GUI + "basicmachines/LFTR", 6, 4, 1, 1, 1, "Ore Key: ", 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sFlotationCellRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gtpp.recipe.flotationcell", "Flotation Cell", null, RES_PATH_GUI + "basicmachines/LFTR", 6, 4, 1, 1, 1, "", 1, E, true, true);
 
 		// Tree Growth Simulator
 		public static final GTPP_Recipe_Map_Internal sTreeSimFakeRecipes = new GTPP_Recipe_Map_MultiNoCell(new HashSet<GT_Recipe>(100), "gtpp.recipe.treefarm", "Tree Growth Simulator", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 1, 0, 1, "", 1, "", false, true);

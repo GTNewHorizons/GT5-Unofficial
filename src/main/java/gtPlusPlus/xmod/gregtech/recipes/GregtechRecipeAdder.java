@@ -1723,7 +1723,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	public boolean addFlotationRecipe(Material aMat, ItemStack aXanthate, FluidStack[] aInputFluids, FluidStack[] aOutputFluids, int aTime, int aEU) {
 
 		FlotationRecipeHandler.registerOreType(aMat);
-		int aSpecialValue = FlotationRecipeHandler.getHashForMaterial(aMat);
 
 		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sFlotationCellRecipes.mRecipeList.size();
 		int aSize2 = aSize;		
@@ -1746,7 +1745,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				aOutputFluids,
 				aTime,
 				aEU,
-				aSpecialValue); 
+				0);
 
 		GTPP_Recipe.GTPP_Recipe_Map.sFlotationCellRecipes.add(aRecipe);
 		aSize = GTPP_Recipe.GTPP_Recipe_Map.sFlotationCellRecipes.mRecipeList.size();

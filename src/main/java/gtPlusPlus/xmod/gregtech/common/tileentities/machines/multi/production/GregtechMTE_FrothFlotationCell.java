@@ -8,8 +8,11 @@ import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import gregtech.api.interfaces.IIconContainer;
+import gtPlusPlus.core.material.Material;
+import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -65,6 +68,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Process that milled ore!")
+				.addInfo("You can only ever process one type of material per controller")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 9, 3, true)
@@ -275,26 +279,37 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
 		
 		/*
 		 * 
-		 * Material Hash checks
+		 * Material checks
 		 * Makes sure we can only ever use one type of material in this flotation cell.
+		 * We used to depend on Alk's hash, but it's unreliable and user-hostile
+		 * So we're using unlocalized name of material now.
 		 * 
 		 */
-		int aExpectedMaterialHash;
-		// Set the hash of expected material type
-		if (mLockedOreType == -1) {
-			mLockedOreType = FlotationRecipeHandler.getHashForMaterial(FlotationRecipeHandler.getMaterialOfMilledProduct(FlotationRecipeHandler.findMilledStack(aRecipe)));
+		Material foundMaterial = FlotationRecipeHandler.getMaterialOfMilledProduct(FlotationRecipeHandler.findMilledStack(tRecipe));
+		String foundMaterialName = null;
+		if (foundMaterial != null) {
+			foundMaterialName = foundMaterial.getUnlocalizedName();
 		}
-		// Set the hash for this recipe check
-		aExpectedMaterialHash = mLockedOreType;
-		
-		// Compute hash of current inputs
-		int aFoundMaterialHash = FlotationRecipeHandler.getHashForMaterial(FlotationRecipeHandler.getMaterialOfMilledProduct(FlotationRecipeHandler.findMilledStack(aItemInputs)));
-		
-		// Check hashes match
-		if (aExpectedMaterialHash != aFoundMaterialHash) {
+
+		if (foundMaterialName == null) {
+			log("Did not find material from Milled Ore.");
+			ItemStack milledStack = FlotationRecipeHandler.findMilledStack(tRecipe);
+			if (milledStack != null) {
+				log("Found stack: " + milledStack.getDisplayName());
+			}
+			return false;
+		}
+
+		// Set material locked for this controller
+		if (lockedMaterialName == null) {
+			lockedMaterialName = foundMaterialName;
+		}
+
+		// Check material match
+		if (!Objects.equals(lockedMaterialName, foundMaterialName)) {
 			log("Did not find the correct milled type.");
-			log("Found: "+aFoundMaterialHash);
-			log("Expected: "+mLockedOreType);
+			log("Found: "+foundMaterialName);
+			log("Expected: "+lockedMaterialName);
 			return false;
 		}
 		
@@ -432,12 +447,12 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
 	 * Handle NBT
 	 */
 
-	private int mLockedOreType = -1;
+	private String lockedMaterialName = null;
 
 	@Override
 	public void setItemNBT(NBTTagCompound aNBT) {
-		if (mLockedOreType != -1) {
-			aNBT.setInteger("mLockedOreType", mLockedOreType);			
+		if (lockedMaterialName != null) {
+			aNBT.setString("lockedMaterialName", lockedMaterialName);
 		}
 		super.setItemNBT(aNBT);
 	}
@@ -445,24 +460,23 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		if (mLockedOreType != -1) {
-			aNBT.setInteger("mLockedOreType", mLockedOreType);
+		if (lockedMaterialName != null) {
+			aNBT.setString("lockedMaterialName", lockedMaterialName);
 		}
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		mLockedOreType = aNBT.getInteger("mLockedOreType");
-		if (mLockedOreType == 0) {
-			mLockedOreType = -1;
+		if (aNBT.hasKey("lockedMaterialName", Constants.NBT.TAG_STRING)) {
+			lockedMaterialName = aNBT.getString("lockedMaterialName");
 		}
 	}
 
 	@Override
 	public String[] getExtraInfoData() {
 		return new String[] {
-				"Locked Ore Type: " + mLockedOreType
+				"Locked material: " + lockedMaterialName
 		};
 	}
 }
