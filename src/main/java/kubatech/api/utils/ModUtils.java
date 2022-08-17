@@ -59,7 +59,11 @@ public class ModUtils {
         String sortedList = modlist.stream()
                 .filter(m -> m.getMod() != null)
                 .sorted(Comparator.comparing(ModContainer::getModId))
-                .collect(String::new, (a, b) -> a += b.getModId() + b.getVersion(), (a, b) -> a += ", " + b);
+                .collect(
+                        StringBuilder::new,
+                        (a, b) -> a.append(b.getModId()).append(b.getVersion()),
+                        (a, b) -> a.append(", ").append(b))
+                .toString();
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             modListVersion = DatatypeConverter.printHexBinary(md.digest(sortedList.getBytes(StandardCharsets.UTF_8)))
