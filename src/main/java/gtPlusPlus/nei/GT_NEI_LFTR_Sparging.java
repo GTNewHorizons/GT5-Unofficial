@@ -26,6 +26,7 @@ import gregtech.api.util.GasSpargingRecipe;
 import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
