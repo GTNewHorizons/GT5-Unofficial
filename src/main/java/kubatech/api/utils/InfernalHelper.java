@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
+@SuppressWarnings("unchecked")
 public class InfernalHelper {
     private static Method isClassAllowed = null;
 

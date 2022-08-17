@@ -24,8 +24,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
-import kubatech.network.LoadConfigHandler;
-import kubatech.network.LoadConfigPacket;
+import kubatech.api.network.CustomTileEntityPacket;
+import kubatech.api.network.LoadConfigPacket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,7 +44,8 @@ public class kubatech {
     public static final SimpleNetworkWrapper NETWORK = new SimpleNetworkWrapper(Tags.MODID);
 
     static {
-        NETWORK.registerMessage(new LoadConfigHandler(), LoadConfigPacket.class, 0, Side.CLIENT);
+        NETWORK.registerMessage(new LoadConfigPacket.Handler(), LoadConfigPacket.class, 0, Side.CLIENT);
+        NETWORK.registerMessage(new CustomTileEntityPacket.Handler(), CustomTileEntityPacket.class, 1, Side.CLIENT);
     }
 
     private static final Logger LOG = LogManager.getLogger(Tags.MODID);

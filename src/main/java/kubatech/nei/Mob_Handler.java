@@ -39,9 +39,9 @@ import kubatech.api.LoaderReference;
 import kubatech.api.utils.FastRandom;
 import kubatech.api.utils.InfernalHelper;
 import kubatech.api.utils.ModUtils;
-import kubatech.common.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
 import kubatech.kubatech;
 import kubatech.loaders.MobRecipeLoader;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -277,7 +277,6 @@ public class Mob_Handler extends TemplateRecipeHandler {
 
         GL11.glPushMatrix();
 
-        ItemStack s = getIngredientStacks(recipe).get(0).item;
         try {
             EntityLiving e = currentrecipe.mob;
             float eheight = e.height;

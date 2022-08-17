@@ -17,7 +17,7 @@
  *
  */
 
-package kubatech.common.tileentity.gregtech.multiblock;
+package kubatech.tileentity.gregtech.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -31,10 +31,13 @@ import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
 import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
 import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
@@ -49,11 +52,16 @@ import java.util.HashMap;
 import java.util.Random;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
+import kubatech.api.network.CustomTileEntityPacket;
+import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.FastRandom;
 import kubatech.api.utils.ReflectionHelper;
+import kubatech.client.effect.EntityRenderer;
 import kubatech.loaders.MobRecipeLoader;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -66,7 +74,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_ExtremeExterminationChamber
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber> {
+        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber>
+        implements CustomTileEntityPacketHandler {
 
     public static final HashMap<String, MobRecipeLoader.MobRecipe> MobNameToRecipeMap = new HashMap<>();
     public final Random rand = new FastRandom();
@@ -83,6 +92,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     @Override
     public void onRemoval() {
         if (LoaderReference.BloodMagic) MinecraftForge.EVENT_BUS.unregister(this);
+        if (getBaseMetaTileEntity().isClientSide()) entityRenderer.setDead();
     }
 
     private static final String WellOfSufferingRitualName = "AW013Suffering";
@@ -94,11 +104,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             StructureDefinition.<GT_MetaTileEntity_ExtremeExterminationChamber>builder()
                     .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
                         {"ccccc", "ccccc", "ccccc", "ccccc", "ccccc"},
-                        {"ccccc", "c---c", "c---c", "c---c", "ccccc"},
-                        {"ccccc", "c---c", "c---c", "c---c", "ccccc"},
-                        {"ccccc", "c---c", "c---c", "c---c", "ccccc"},
-                        {"ccccc", "c---c", "c---c", "c---c", "ccccc"},
-                        {"ccccc", "csssc", "csssc", "csssc", "ccccc"},
+                        {"cgggc", "g---g", "g---g", "g---g", "cgggc"},
+                        {"cgggc", "g---g", "g---g", "g---g", "cgggc"},
+                        {"cgggc", "g---g", "g---g", "g---g", "cgggc"},
+                        {"cgggc", "g---g", "g---g", "g---g", "cgggc"},
+                        {"cgggc", "gsssg", "gsssg", "gsssg", "cgggc"},
                         {"CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
                     }))
                     .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0)))
@@ -119,6 +129,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                                             CASING_INDEX,
                                             1)))
                     .addElement(
+                            'g',
+                            LoaderReference.Bartworks
+                                    ? BorosilicateGlass.ofBoroGlassAnyTier()
+                                    : ofBlock(Blocks.glass, 0))
+                    .addElement(
                             's',
                             LoaderReference.ExtraUtilities
                                     ? ofBlock(Block.getBlockFromName("ExtraUtilities:spike_base_diamond"), 0)
@@ -129,6 +144,9 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     private TileEntity tileAltar = null;
     private boolean isInRitualMode = false;
     private int mCasing = 0;
+
+    @SideOnly(Side.CLIENT)
+    private EntityRenderer entityRenderer = null;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -227,9 +245,43 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         return true;
     }
 
+    @SideOnly(Side.CLIENT)
+    private void setupEntityRenderer(IGregTechTileEntity aBaseMetaTileEntity, int time) {
+        if (entityRenderer == null) {
+            ChunkCoordinates coords = this.getBaseMetaTileEntity().getCoords();
+            int[] abc = new int[] {0, -2, 2};
+            int[] xyz = new int[] {0, 0, 0};
+            this.getExtendedFacing().getWorldOffset(abc, xyz);
+            xyz[0] += coords.posX;
+            xyz[1] += coords.posY;
+            xyz[2] += coords.posZ;
+            entityRenderer = new EntityRenderer(aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], time);
+        } else {
+            entityRenderer.setDead();
+            entityRenderer = new EntityRenderer(entityRenderer, time);
+        }
+        Minecraft.getMinecraft().effectRenderer.addEffect(entityRenderer);
+    }
+
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isClientSide()) {
+            if (aBaseMetaTileEntity.isActive() && aTick % 40 == 0) {
+                setupEntityRenderer(aBaseMetaTileEntity, 40);
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void HandleCustomPacket(CustomTileEntityPacket message) {
+        String mobType = message.getDataString();
+        MobRecipeLoader.MobRecipe r = MobNameToRecipeMap.get(mobType);
+        if (r != null) {
+            if (entityRenderer == null) setupEntityRenderer(getBaseMetaTileEntity(), 40);
+            entityRenderer.setEntity(r.entity);
+        } else entityRenderer.setEntity(null);
     }
 
     @Override
@@ -288,14 +340,14 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                                         * (effect.canDrainReagent(
                                                         event.mrs,
                                                         ReagentRegistry.offensaReagent,
-                                                        ReflectionHelper.getField(effect, "offensaDrain", true, 3),
+                                                        ReflectionHelper.getField(effect, "offensaDrain", 3),
                                                         true)
                                                 ? 2
                                                 : 1)
                                         * (effect.canDrainReagent(
                                                         event.mrs,
                                                         ReagentRegistry.tenebraeReagent,
-                                                        ReflectionHelper.getField(effect, "tennebraeDrain", true, 5),
+                                                        ReflectionHelper.getField(effect, "tennebraeDrain", 5),
                                                         true)
                                                 ? 2
                                                 : 1),
@@ -306,8 +358,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         }
     }
 
+    private CustomTileEntityPacket mobPacket = null;
+
     @Override
     public boolean checkRecipe(ItemStack aStack) {
+        if (getBaseMetaTileEntity().isClientSide()) return false;
         if (aStack == null) return false;
 
         if (aStack.getItem() != poweredSpawnerItem) return false;
@@ -335,6 +390,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         if (this.mEUt > 0) this.mEUt = -this.mEUt;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
+
+        if (mobPacket == null) mobPacket = new CustomTileEntityPacket((TileEntity) this.getBaseMetaTileEntity(), null);
+        mobPacket.resetHelperData();
+        mobPacket.addData(mobType);
+        mobPacket.sendToAllAround(16);
 
         return true;
     }

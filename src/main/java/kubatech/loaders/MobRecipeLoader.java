@@ -21,7 +21,7 @@ package kubatech.loaders;
 
 import static kubatech.api.utils.ModUtils.isClientSided;
 import static kubatech.api.utils.ModUtils.isDeobfuscatedEnvironment;
-import static kubatech.common.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber.MobNameToRecipeMap;
+import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber.MobNameToRecipeMap;
 
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import atomicstryker.infernalmobs.common.MobModifier;
@@ -39,10 +39,10 @@ import java.util.stream.Collectors;
 import kubatech.Config;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
+import kubatech.api.network.LoadConfigPacket;
 import kubatech.api.utils.InfernalHelper;
-import kubatech.common.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
 import kubatech.nei.Mob_Handler;
-import kubatech.network.LoadConfigPacket;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.entity.IEntityDefinition;
 import minetweaker.api.item.IItemStack;
@@ -102,6 +102,7 @@ public class MobRecipeLoader {
         public final boolean alwaysinfernal;
         public static droplist infernaldrops;
         public final boolean isPeacefulAllowed;
+        public final EntityLiving entity;
 
         @SuppressWarnings("unchecked")
         public MobRecipe copy() {
@@ -111,7 +112,8 @@ public class MobRecipeLoader {
                     mMaxDamageChance,
                     infernalityAllowed,
                     alwaysinfernal,
-                    isPeacefulAllowed);
+                    isPeacefulAllowed,
+                    entity);
         }
 
         private MobRecipe(
@@ -120,13 +122,15 @@ public class MobRecipeLoader {
                 int mMaxDamageChance,
                 boolean infernalityAllowed,
                 boolean alwaysinfernal,
-                boolean isPeacefulAllowed) {
+                boolean isPeacefulAllowed,
+                EntityLiving entity) {
             this.mOutputs = mOutputs;
             this.mDuration = mDuration;
             this.mMaxDamageChance = mMaxDamageChance;
             this.infernalityAllowed = infernalityAllowed;
             this.alwaysinfernal = alwaysinfernal;
             this.isPeacefulAllowed = isPeacefulAllowed;
+            this.entity = entity;
         }
 
         @SuppressWarnings("unchecked")
@@ -185,6 +189,7 @@ public class MobRecipeLoader {
             mMaxDamageChance = maxdamagechance;
             // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
             mDuration = 55 + 10 + (((int) e.getMaxHealth() / 5) * 10);
+            entity = e;
         }
 
         public ItemStack[] generateOutputs(Random rnd, GT_MetaTileEntity_ExtremeExterminationChamber MTE) {
@@ -460,7 +465,7 @@ public class MobRecipeLoader {
     }
 
     private static class dropCollector {
-        HashMap<GT_Utility.ItemId, Integer> damagableChecker = new HashMap<>();
+        final HashMap<GT_Utility.ItemId, Integer> damagableChecker = new HashMap<>();
         private boolean booksAlwaysRandomlyEnchanted = false;
 
         public void addDrop(droplist fdrops, ArrayList<EntityItem> listToParse, double chance) {
@@ -552,6 +557,7 @@ public class MobRecipeLoader {
                 return false;
             }
 
+            @SuppressWarnings("rawtypes")
             @Override
             public List getEntitiesWithinAABB(Class p_72872_1_, AxisAlignedBB p_72872_2_) {
                 return new ArrayList();
@@ -727,7 +733,7 @@ public class MobRecipeLoader {
 
             try {
                 Class<?> cl = e.getClass();
-                boolean detectedException = false;
+                boolean detectedException;
                 do {
                     detectedException = false;
                     try {
@@ -894,6 +900,7 @@ public class MobRecipeLoader {
 
             MobRecipe recipe = v.recipe;
             if (recipe != null) recipe = recipe.copy();
+            @SuppressWarnings("unchecked")
             ArrayList<MobDrop> drops = (ArrayList<MobDrop>) v.drops.clone();
 
             // MT Scripts should already be loaded here
@@ -922,6 +929,7 @@ public class MobRecipeLoader {
             GeneralMappedMob v = GeneralMobList.get(k);
             MobRecipe recipe = v.recipe;
             if (recipe != null) recipe = recipe.copy();
+            @SuppressWarnings("unchecked")
             ArrayList<MobDrop> drops = (ArrayList<MobDrop>) v.drops.clone();
 
             // MT Scripts should already be loaded here

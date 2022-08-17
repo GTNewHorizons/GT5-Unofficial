@@ -73,8 +73,9 @@ public class CommandHelp extends CommandBase {
     @Override
     public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
         p_71515_1_.addChatMessage(new ChatComponentText(POSSIBLE_COMMANDS.get()));
-        CommandHandler.commands.values().forEach(c -> {
-            p_71515_1_.addChatMessage(new ChatComponentText("/kubatech " + c.getCommandUsage(p_71515_1_)));
-        });
+        CommandHandler.commands
+                .values()
+                .forEach(c ->
+                        p_71515_1_.addChatMessage(new ChatComponentText("/kubatech " + c.getCommandUsage(p_71515_1_))));
     }
 }

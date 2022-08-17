@@ -22,9 +22,9 @@ package kubatech.commands;
 import static kubatech.commands.CommandConfig.Translations.*;
 
 import kubatech.Config;
+import kubatech.api.network.LoadConfigPacket;
 import kubatech.kubatech;
 import kubatech.loaders.MobRecipeLoader;
-import kubatech.network.LoadConfigPacket;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;

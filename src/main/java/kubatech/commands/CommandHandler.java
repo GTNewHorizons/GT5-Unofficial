@@ -74,6 +74,7 @@ public class CommandHandler extends CommandBase {
         return "kubatech " + USAGE.get();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public List getCommandAliases() {
         return aliases;

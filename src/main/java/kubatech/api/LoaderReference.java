@@ -9,4 +9,5 @@ public class LoaderReference {
     public static final boolean InfernalMobs = Loader.isModLoaded("InfernalMobs");
     public static final boolean Thaumcraft = Loader.isModLoaded("Thaumcraft");
     public static final boolean MineTweaker = Loader.isModLoaded("MineTweaker3");
+    public static final boolean Bartworks = Loader.isModLoaded("bartworks");
 }
