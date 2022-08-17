@@ -346,7 +346,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     @Override
-    public GT_Multiblock_Tooltip_Builder createTooltip() {
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addInfo("Nothing special just override me")
                 .toolTipFinisher(TEC_MARK_GENERAL);
