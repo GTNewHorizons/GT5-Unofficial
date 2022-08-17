@@ -57,7 +57,7 @@ public class GT_HatchElementBuilder<T> {
         if (elements == null || elements.length == 0) throw new IllegalArgumentException();
         return adder(Arrays.stream(elements).map(e -> e.adder().rebrand()).reduce(IGT_HatchAdder::orElse).get())
             .hatchClasses(Arrays.stream(elements).map(IHatchElement::mteClasses).flatMap(Collection::stream).collect(Collectors.toList()))
-            .cacheHint(() -> Arrays.stream(elements).map(IHatchElement::name).collect(Collectors.joining(" or ", "of type ", "")));
+            .cacheHint(() -> Arrays.stream(elements).map(IHatchElement::name).sorted().collect(Collectors.joining(" or ", "of type ", "")));
     }
 
     /**
@@ -99,7 +99,7 @@ public class GT_HatchElementBuilder<T> {
                 .collect(Collectors.toList())))
             .shouldReject(obj -> elements.entrySet().stream().allMatch(e-> e.getKey().count(obj) >= e.getValue().longValue()))
             .shouldSkip((BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null && list.stream().anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())))
-            .cacheHint(() -> elements.keySet().stream().map(IHatchElement::name).collect(Collectors.joining(" or ", "of type ", "")));
+            .cacheHint(() -> elements.keySet().stream().map(IHatchElement::name).sorted().collect(Collectors.joining(" or ", "of type ", "")));
     }
     //endregion
 
@@ -220,7 +220,7 @@ public class GT_HatchElementBuilder<T> {
     public final GT_HatchElementBuilder<T> hatchClasses(List<? extends Class<? extends IMetaTileEntity>> classes) {
         List<? extends Class<? extends IMetaTileEntity>> list = new ArrayList<>(classes);
         return hatchItemFilter(obj -> GT_StructureUtility.filterByMTEClass(list))
-            .cacheHint(() -> list.stream().map(Class::getSimpleName).collect(Collectors.joining(" or ", "of class ", "")))
+            .cacheHint(() -> list.stream().map(Class::getSimpleName).sorted().collect(Collectors.joining(" or ", "of class ", "")))
             .shouldSkip((BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null && list.stream().anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())));
     }
 
@@ -235,7 +235,7 @@ public class GT_HatchElementBuilder<T> {
         if (aIds.length == 1) return hatchId(aIds[0]);
         TIntCollection coll = aIds.length < 16 ? new TIntArrayList(aIds) : new TIntHashSet(aIds);
         return hatchItemFilter(c -> is -> GT_Utility.isStackValid(is) && is.getItem() instanceof GT_Item_Machines && coll.contains(is.getItemDamage()))
-            .cacheHint(() -> Arrays.stream(coll.toArray()).mapToObj(String::valueOf).collect(Collectors.joining(" or ", "of id ", "")))
+            .cacheHint(() -> Arrays.stream(coll.toArray()).sorted().mapToObj(String::valueOf).collect(Collectors.joining(" or ", "of id ", "")))
             .shouldSkip((BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null && coll.contains(t.getMetaTileID()));
     }
 
@@ -299,6 +299,9 @@ public class GT_HatchElementBuilder<T> {
             private String getHint() {
                 if (mHint != null) return mHint;
                 String tHint = mHatchItemType.get();
+                if (tHint == null) return "?";
+                // TODO move this to some .lang instead of half ass it into the crappy gt lang file
+                tHint = GT_LanguageManager.addStringLocalization("Hatch_Type_" + tHint.replace(' ', '_'), tHint);
                 if (mCacheHint) {
                     mHint = tHint;
                     if (mHint != null)
