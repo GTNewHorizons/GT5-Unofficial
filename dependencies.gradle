@@ -13,7 +13,7 @@ dependencies {
 
     compileOnly('com.github.GTNewHorizons:OpenModularTurrets:2.2.11-247:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:OpenComputers:1.7.5.23-GTNH:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:GTplusplus:1.7.32:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:GTplusplus:1.7.65-pre:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-94-GTNH:dev') {transitive=false}
 
     compileOnly('curse.maven:cofh-lib-220333:2388748') {transitive=false}
