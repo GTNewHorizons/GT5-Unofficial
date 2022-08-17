@@ -4,8 +4,8 @@
 // also being more explicit about what is depended on.
 
 dependencies {
-    compile("com.github.GTNewHorizons:StructureLib:1.1.0:dev")
-    compile("com.github.GTNewHorizons:NotEnoughItems:2.2.19-GTNH:dev")
+    compile("com.github.GTNewHorizons:StructureLib:1.1.3:dev")
+    compile("com.github.GTNewHorizons:NotEnoughItems:2.2.20-GTNH:dev")
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.3:dev")
     compile("com.github.GTNewHorizons:waila:1.5.18:dev")
 
@@ -37,7 +37,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:harvestcraft:1.0.12-GTNH:dev") {
         transitive = false
     }
-    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-92-GTNH:dev") {
+    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-94-GTNH:dev") {
         transitive = false
     }
     compile("com.github.GTNewHorizons:Chisel:2.10.8-GTNH:dev") {
@@ -64,7 +64,7 @@ dependencies {
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Avaritia:1.22:dev") {
+    compileOnly("com.github.GTNewHorizons:Avaritia:1.28:dev") {
         transitive = false
     }
     compileOnly("com.google.auto.value:auto-value-annotations:1.8.2") {
