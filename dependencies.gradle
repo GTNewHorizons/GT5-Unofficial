@@ -6,7 +6,7 @@ dependencies {
 	compile('com.github.GTNewHorizons:StructureLib:1.1.3:dev')
 	compile('com.github.GTNewHorizons:bartworks:0.5.69-pre:dev')
 	compile('com.github.GTNewHorizons:NotEnoughItems:2.2.20-GTNH:dev')
-	compile('com.github.GTNewHorizons:TecTech:5.0.17-pre:dev')
+	compile('com.github.GTNewHorizons:TecTech:5.0.19-pre:dev')
 
 	compile('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
 	compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
