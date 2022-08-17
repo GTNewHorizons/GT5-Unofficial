@@ -601,7 +601,9 @@ public class MobRecipeLoader {
                                             .newInstance(new Object[] {f});
                             ArrayList<MobDrop> drops = entry.getValue();
                             drops.forEach(MobDrop::reconstructStack);
-                            GeneralMobList.put(entry.getKey(), new GeneralMappedMob(e, new MobRecipe(e, drops), drops));
+                            GeneralMobList.put(
+                                    entry.getKey(),
+                                    new GeneralMappedMob(e, drops.size() != 0 ? new MobRecipe(e, drops) : null, drops));
                         } catch (Exception ignored) {
                         }
                     }
