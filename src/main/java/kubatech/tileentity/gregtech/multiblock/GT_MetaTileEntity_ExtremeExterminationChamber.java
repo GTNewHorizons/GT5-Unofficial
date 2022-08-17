@@ -145,7 +145,6 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     private boolean isInRitualMode = false;
     private int mCasing = 0;
 
-    @SideOnly(Side.CLIENT)
     private EntityRenderer entityRenderer = null;
 
     @Override
