@@ -139,18 +139,20 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
         int mVolatage = GT_Utility.safeInt(getMaxInputVoltage());
         int tMaxParrallel = 8 * this.mLevel;
         int tCurrenParrallel = 0;
-        ArrayList<ItemStack> smeltedOutputs = new ArrayList<ItemStack>();
-        ArrayList<Integer> outputStackSizes = new ArrayList<Integer>();
+        ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
+        ArrayList<Integer> outputStackSizes = new ArrayList<>();
         for (ItemStack item : tInputList) {
             ItemStack smeltedOutput = GT_ModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
                 smeltedOutputs.add(smeltedOutput);
-                outputStackSizes.add(smeltedOutput.stackSize * item.stackSize);
-                if (item.stackSize < (tMaxParrallel - tCurrenParrallel)) {
+                if (item.stackSize <= (tMaxParrallel - tCurrenParrallel)) {
                     tCurrenParrallel += item.stackSize;
+                    outputStackSizes.add(smeltedOutput.stackSize * item.stackSize);
                     item.stackSize = 0;
                 } else {
-                    item.stackSize = (tCurrenParrallel + item.stackSize) - tMaxParrallel;
+                    int remainingStackSize = tCurrenParrallel + item.stackSize - tMaxParrallel;
+                    outputStackSizes.add(smeltedOutput.stackSize * (item.stackSize - remainingStackSize));
+                    item.stackSize = remainingStackSize;
                     break;
                 }
             }
