@@ -79,7 +79,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 		tt.addMachineType(getMachineType())
 		.addInfo("Controller Block for the Industrial Rock Breaker")
 		.addInfo("Speed: 200% | Eu Usage: 75% | Parallel: Tier x 8")
-		.addInfo("Circuit goes in the Input Bus or GUI slot")
+		.addInfo("Circuit goes in the GUI slot")
 		.addInfo("1 = cobble, 2 = stone, 3 = obsidian")
 		.addInfo("Supply Water/Lava")
 		.addPollutionAmount(getPollutionPerSecond(null))
