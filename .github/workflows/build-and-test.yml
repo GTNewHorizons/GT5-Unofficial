@@ -12,4 +12,4 @@ jobs:
     uses: GTNewHorizons/GTNH-Actions-Workflows/.github/workflows/build-and-test.yml@master
     secrets: inherit
     with:
-      timeout: 90
+      timeout: 120
