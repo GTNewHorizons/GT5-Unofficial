@@ -350,6 +350,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         }
     }
 
+    protected boolean checkRecipe()
+    {
+        startRecipeProcessing();
+        boolean result = checkRecipe(mInventory[1]);
+        endRecipeProcessing();
+        return result;
+    }
+
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
             if (onRunningTick(mInventory[1])) {
@@ -375,7 +383,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                     mProgresstime = 0;
                     mMaxProgresstime = 0;
                     mEfficiencyIncrease = 0;
-                    if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe(mInventory[1]);
+                    if (aBaseMetaTileEntity.isAllowedToWork()) {
+                        checkRecipe();
+                    }
                     if (mOutputFluids != null && mOutputFluids.length > 0) {
                         if (mOutputFluids.length > 1) {
                             try {
@@ -390,7 +400,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()) {
 
                 if (aBaseMetaTileEntity.isAllowedToWork()) {
-                    if(checkRecipe(mInventory[1])) {
+                    if (checkRecipe()) {
                         markDirty();
                     }
                 }
@@ -904,6 +914,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses)
             if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
+    }
+
+    protected void startRecipeProcessing()
+    {
+        for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses)
+            if (isValidMetaTileEntity(tHatch)) tHatch.startRecipeProcessing();
+    }
+
+    protected void endRecipeProcessing()
+    {
+        for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses)
+            if (isValidMetaTileEntity(tHatch)) tHatch.endRecipeProcessing();
     }
 
     protected static <T extends GT_MetaTileEntity_Hatch> T identifyHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex, Class<T> clazz) {
