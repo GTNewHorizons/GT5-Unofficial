@@ -1,9 +1,13 @@
 package gregtech.common.tileentities.machines.multi;
 
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.*;
+import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -13,24 +17,31 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Single_Recipe_Check;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeChemicalReactor> {
+public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeChemicalReactor> implements ISurvivalConstructable {
     private static final int CASING_INDEX = 176;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_LargeChemicalReactor> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_LargeChemicalReactor>builder()
@@ -40,34 +51,21 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
                     {"ccc", "cxc", "ccc"},
             }))
             .addElement('P', ofBlock(GregTech_API.sBlockCasings8, 1))
-            .addElement('c', ofChain(
-                    ofHatchAdder(GT_MetaTileEntity_LargeChemicalReactor::addInputToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(GT_MetaTileEntity_LargeChemicalReactor::addOutputToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(GT_MetaTileEntity_LargeChemicalReactor::addMaintenanceToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(GT_MetaTileEntity_LargeChemicalReactor::addEnergyInputToMachineList, CASING_INDEX, 1),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCasingAdded, ofBlock(GregTech_API.sBlockCasings8, 0))
+            .addElement('c', buildHatchAdder(GT_MetaTileEntity_LargeChemicalReactor.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCasingAdded, ofBlock(GregTech_API.sBlockCasings8, 0))
             ))
-            .addElement('x', ofChain(
-                    ofHatchAdder(GT_MetaTileEntity_LargeChemicalReactor::addInputToMachineList, CASING_INDEX, 2),
-                    ofHatchAdder(GT_MetaTileEntity_LargeChemicalReactor::addOutputToMachineList, CASING_INDEX, 2),
-                    ofHatchAdder(GT_MetaTileEntity_LargeChemicalReactor::addMaintenanceToMachineList, CASING_INDEX, 2),
-                    ofHatchAdder(GT_MetaTileEntity_LargeChemicalReactor::addEnergyInputToMachineList, CASING_INDEX, 2),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 0)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 1)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 2)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 3)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 4)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 5)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 6)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 7)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 8)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 9)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 10)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 11)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 12)),
-                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 13)),
+            .addElement('x', buildHatchAdder(GT_MetaTileEntity_LargeChemicalReactor.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(
+                    CoilStructureElement.INSTANCE,
                     onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCasingAdded, ofBlock(GregTech_API.sBlockCasings8, 0))
-            ))
+                )
+            )
             .build();
 
     private int mCasingAmount;
@@ -238,6 +236,54 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
+        mCoilAmount = 0;
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        mCoilAmount = 0;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
+    }
+
+    private enum CoilStructureElement implements IStructureElement<GT_MetaTileEntity_LargeChemicalReactor> {
+        INSTANCE;
+
+        @Override
+        public boolean check(GT_MetaTileEntity_LargeChemicalReactor t, World world, int x, int y, int z) {
+            Block block = world.getBlock(x, y, z);
+            if (block instanceof IHeatingCoil && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) != HeatingCoilLevel.None) {
+                return t.mCoilAmount++ == 0;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public boolean spawnHint(GT_MetaTileEntity_LargeChemicalReactor t, World world, int x, int y, int z, ItemStack trigger) {
+            StructureLibAPI.hintParticle(world, x, y, z, GregTech_API.sBlockCasings5, 0);
+            return true;
+        }
+
+        @Override
+        public boolean placeBlock(GT_MetaTileEntity_LargeChemicalReactor t, World world, int x, int y, int z, ItemStack trigger) {
+            if (t.mCoilAmount > 0) return false;
+            boolean b = world.setBlock(x, y, z, GregTech_API.sBlockCasings5, 0, 3);
+            if (b) t.mCoilAmount++;
+            return b;
+        }
+
+        @Override
+        public PlaceResult survivalPlaceBlock(GT_MetaTileEntity_LargeChemicalReactor t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+            if (t.mCoilAmount > 0) return PlaceResult.SKIP;
+            if (check(t, world, x, y,z)) return PlaceResult.SKIP;
+            if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, actor)) return PlaceResult.REJECT;
+            ItemStack result = s.takeOne(ItemStackPredicate.from(GregTech_API.sBlockCasings5), true);
+            if (result == null) return PlaceResult.REJECT;
+            PlaceResult ret = StructureUtility.survivalPlaceBlock(result, ItemStackPredicate.NBTMode.EXACT, null, true, world, x, y, z, s, actor, chatter);
+            if (ret == PlaceResult.ACCEPT) t.mCoilAmount++;
+            return ret;
+        }
     }
 }
