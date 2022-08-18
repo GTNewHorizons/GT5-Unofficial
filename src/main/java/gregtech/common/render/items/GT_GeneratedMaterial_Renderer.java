@@ -110,6 +110,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer, IRegularMat
         GL11.glEnable(GL11.GL_BLEND);
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
     }
 
