@@ -53,7 +53,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer, IRegularMat
         if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
             IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
             if (fluidIcon != null) {
-                renderFluidContainer(type, aFluid, fluidIcon, tOverlay);
+                renderContainedFluid(type, aFluid, fluidIcon, tOverlay);
             }
         }
     }
@@ -81,7 +81,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer, IRegularMat
         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    public void renderFluidContainer(ItemRenderType type, FluidStack tFluid, IIcon fluidIcon, IIcon overlay) {
+    public void renderContainedFluid(ItemRenderType type, FluidStack tFluid, IIcon fluidIcon, IIcon overlay) {
         enableBlendingItemTexture();
 
         int tColor = tFluid.getFluid().getColor(tFluid);
@@ -95,14 +95,12 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer, IRegularMat
         }
         GL11.glDepthFunc(GL11.GL_LEQUAL);
 
-        if (overlay != null) {
-            GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
-            if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                GT_RenderUtil.renderItemIcon(overlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-            } else {
-                ItemRenderer.renderItemIn2D(Tessellator.instance, overlay.getMaxU(), overlay.getMinV(), overlay.getMinU(), overlay.getMaxV(), overlay.getIconWidth(), overlay.getIconHeight(), 0.0625F);
-            }
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
+        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+            GT_RenderUtil.renderItemIcon(overlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+        } else {
+            ItemRenderer.renderItemIn2D(Tessellator.instance, overlay.getMaxU(), overlay.getMinV(), overlay.getMinU(), overlay.getMaxV(), overlay.getIconWidth(), overlay.getIconHeight(), 0.0625F);
         }
 
         GL11.glDisable(GL11.GL_BLEND);

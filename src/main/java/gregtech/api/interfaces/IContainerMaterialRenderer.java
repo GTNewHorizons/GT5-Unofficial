@@ -6,5 +6,5 @@ import net.minecraftforge.fluids.FluidStack;
 
 public interface IContainerMaterialRenderer {
 
-    void renderFluidContainer(IItemRenderer.ItemRenderType type, FluidStack tFluid, IIcon fluidIcon, IIcon overlay);
+    void renderContainedFluid(IItemRenderer.ItemRenderType type, FluidStack tFluid, IIcon fluidIcon, IIcon overlay);
 }
