@@ -55,10 +55,10 @@ public class AsmConfig {
 			Property prop;	
 			
 			//Debug			
-			prop = config.get("debug", "disableAllLogging", false);
+			prop = config.get("debug", "disableAllLogging", true);
 			prop.comment = "Disables ALL logging from GT++.";
 			prop.setLanguageKey("gtpp.disableAllLogging").setRequiresMcRestart(false);
-			disableAllLogging = prop.getBoolean(false);
+			disableAllLogging = prop.getBoolean(true);
 			propOrderDebug.add(prop.getName());
 			
 			prop = config.get("debug", "debugMode", false);
