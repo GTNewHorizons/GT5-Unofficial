@@ -10,6 +10,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -158,6 +159,11 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
         return GregTech_API.sGeneratedMaterials[aMetaData % 1000] == null ? null : getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData % 1000]);
+    }
+
+    @Override
+    public GT_GeneratedMaterial_Renderer getMaterialRenderer(int aMetaData) {
+        return GregTech_API.sGeneratedMaterials[aMetaData % 1000] == null ? null : GregTech_API.sGeneratedMaterials[aMetaData % 1000].renderer;
     }
 
     @Override

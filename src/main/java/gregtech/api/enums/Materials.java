@@ -3,7 +3,6 @@ package gregtech.api.enums;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
@@ -12,6 +11,7 @@ import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import net.minecraft.enchantment.Enchantment;
@@ -928,6 +928,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             mRGBa = new short[]{255, 255, 255, 0},
             mMoltenRGBa = new short[]{255, 255, 255, 0};
     public TextureSet mIconSet;
+    public GT_GeneratedMaterial_Renderer renderer;
     public List<MaterialStack> mMaterialList = new ArrayList<>();
     public List<Materials>
             mOreByProducts = new ArrayList<>(),
