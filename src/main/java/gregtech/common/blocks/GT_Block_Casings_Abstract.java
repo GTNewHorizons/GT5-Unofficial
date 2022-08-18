@@ -3,7 +3,9 @@ package gregtech.common.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Textures;
 import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -21,13 +23,20 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
+public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block implements gregtech.api.interfaces.IHasIndexedTexture {
     public GT_Block_Casings_Abstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
         super(aItemClass, aName, aMaterial);
         setStepSound(soundTypeMetal);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GregTech_API.registerMachineBlock(this, -1);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
+    }
+
+    public GT_Block_Casings_Abstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial, int aMaxMeta) {
+        this(aItemClass, aName, aMaterial);
+        for (int i = 0; i < aMaxMeta; i++) {
+            Textures.BlockIcons.setCasingTextureForId(getTextureIndex(i), TextureFactory.of(this, i));
+        }
     }
 
     @Override
@@ -116,5 +125,13 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
             ItemStack aStack = new ItemStack(aItem, 1, i);
             if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
         }
+    }
+
+    /**
+     * Provide a fallback to subclasses in addons.
+     */
+    @Override
+    public int getTextureIndex(int aMeta) {
+        return Textures.BlockIcons.ERROR_TEXTURE_INDEX;
     }
 }

@@ -15,12 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
     public GT_Block_Casings2() {
-        super(GT_Item_Casings2.class, "gt.blockcasings2", GT_Material_Casings.INSTANCE);
-        for (int i = 0; i < 16; i++) {
-            if (i != 6) {
-                Textures.BlockIcons.casingTexturePages[0][(i + 16)] = TextureFactory.of(this, i);
-            }
-        }
+        super(GT_Item_Casings2.class, "gt.blockcasings2", GT_Material_Casings.INSTANCE, 96);
         //Special handler for Pyrolyse Oven Casing on hatches...
         Textures.BlockIcons.casingTexturePages[0][22] = TextureFactory.of(Block.getBlockFromItem(ItemList.Casing_ULV.get(1).getItem()), 0, ForgeDirection.UNKNOWN, Dyes.MACHINE_METAL.mRGBa);
 
@@ -56,8 +51,12 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Pipe_Steel.set(new ItemStack(this, 1, 13));
         ItemList.Casing_Pipe_Titanium.set(new ItemStack(this, 1, 14));
         ItemList.Casing_Pipe_TungstenSteel.set(new ItemStack(this, 1, 15));
-        
-}
+    }
+
+    @Override
+    public int getTextureIndex(int aMeta) {
+        return aMeta == 6 ? ((1 << 7) + 96) : aMeta + 16;
+    }
 
     @Override
     public IIcon getIcon(int aSide, int aMeta) {

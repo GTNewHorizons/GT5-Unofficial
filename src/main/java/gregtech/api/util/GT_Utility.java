@@ -18,6 +18,7 @@ import gregtech.api.enums.*;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.interfaces.IHasIndexedTexture;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
@@ -3244,6 +3245,12 @@ public class GT_Utility {
         if (aUseStackSize) base = base * 31 + aStack.amount;
         if (aUseNBT) base = base * 31 + Objects.hashCode(aStack.tag);
         return base;
+    }
+
+    public static int getCasingTextureIndex(Block block, int meta) {
+        if (block instanceof IHasIndexedTexture)
+            return ((IHasIndexedTexture) block).getTextureIndex(meta);
+        return Textures.BlockIcons.ERROR_TEXTURE_INDEX;
     }
 
     @AutoValue
