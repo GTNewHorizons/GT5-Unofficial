@@ -6,26 +6,19 @@ import java.util.HashMap;
 
 public class GT_ProcessingArray_Manager {
 
-    private static final HashMap<Integer, String> mMetaKeyMap = new HashMap<Integer, String>();
-    private static final HashMap<String, GT_Recipe_Map> mRecipeCache = new HashMap<String, GT_Recipe_Map>();
-
-    public static boolean registerRecipeMapForMeta(int aMeta, GT_Recipe_Map aMap) {
-        if (aMeta < 0 || aMeta > Short.MAX_VALUE || aMap == null) {
-            return false;
+    private static final HashMap<String, GT_Recipe_Map> mRecipeSaves = new HashMap<String, GT_Recipe_Map>();
+    //Adds recipe Maps to the PA using the machines unlocalized name.
+    //Example: basicmachine.electrolyzer, with its recipe map will add the  electrolyzer's recipe map to the PA
+    public static void addRecipeMapToPA(String aMachineName, GT_Recipe_Map aMap) {
+        if (aMachineName != null) {
+            mRecipeSaves.put(aMachineName, aMap);
         }
-        if (mMetaKeyMap.containsKey(aMeta)) {
-            return false;
-        }
-        String aMapNameKey = aMap.mUnlocalizedName;
-        mMetaKeyMap.put(aMeta, aMapNameKey);
-        if (!mRecipeCache.containsKey(aMapNameKey)) {
-            mRecipeCache.put(aMapNameKey, aMap);
-        }
-        return true;
     }
-
-    public static GT_Recipe_Map getRecipeMapForMeta(int aMeta) {
-        return mRecipeCache.get(mMetaKeyMap.get(aMeta));
+    //Allows the PA to extract the recipe map for the machine inside it.
+    public static GT_Recipe_Map giveRecipeMap(String aMachineName) {
+        if (aMachineName != null) {
+            return mRecipeSaves.get(aMachineName);
+        }
+        return null;
     }
-
 }

@@ -20,6 +20,7 @@ import gregtech.api.util.GT_ProcessingArray_Manager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Single_Recipe_Check_Processing_Array;
+import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -142,10 +143,13 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
     }
     */
 
+    //Gets the recipe map for the given machine through its unlocalized name
     @Override
     public GT_Recipe_Map getRecipeMap() {
         if (isCorrectMachinePart(mInventory[1])) {
-            return GT_ProcessingArray_Manager.getRecipeMapForMeta(mInventory[1].getItemDamage());
+            int length = mInventory[1].getUnlocalizedName().length();
+            String aMachineName = mInventory[1].getUnlocalizedName().substring(17,length-8);
+            return GT_ProcessingArray_Manager.giveRecipeMap(aMachineName);
         }
         return null;
     }
@@ -177,68 +181,31 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
             mMachineName = mInventory[1].getUnlocalizedName();
         }
 
-        int machineTier = 0;
-
         if (mLastRecipe == null) {
-            try {
-                int length = mMachineName.length();
-
-                machineTier = Integer.parseInt(mMachineName.substring(length - 2));
-
-            } catch (NumberFormatException ignored) {
-                /* do nothing */
-            }
-
-            switch (machineTier) {
-                default:
-                    tTier = 0;
-                    mMult = 0;//*1
-                    break;
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                case 9:
-                    tTier = machineTier;
-                    mMult = 0;//*1
-                    break;
-                case 10:
-                    if (downtierUEV) {
-                        tTier = 9;
-                        mMult = 2;//u need 4x less machines and they will use 4x less power
-                    } else {
-                        tTier = machineTier;
-                        mMult = 0;//*1
-                    }
-                    break;
-                case 11:
-                    if (downtierUEV) {
-                        tTier = 9;
-                        mMult = 4;//u need 16x less machines and they will use 16x less power
-                    } else {
-                        tTier = machineTier;
-                        mMult = 0;//*1
-                    }
-                    break;
-                case 12:
-                case 13:
-                case 14:
-                case 15:
-                    if (downtierUEV) {
-                        tTier = 9;
-                        mMult = 6;//u need 64x less machines and they will use 64x less power
-                    } else {
-                        tTier = machineTier;
-                        mMult = 0;//*1
-                    }
-                    break;
+            IMetaTileEntity aMachine = GT_Item_Machines.getMetaTileEntity(mInventory[1]);
+            if (aMachine!=null)
+                tTier = ((GT_MetaTileEntity_TieredMachineBlock) aMachine).mTier;
+            mMult = 0;
+            if (downtierUEV && tTier>9){
+                switch(tTier){
+                    default:
+                        tTier=0;
+                        break;
+                    case 10:
+                        tTier=9;
+                        mMult=2; //Parallels are 4x as strong and require 4x less EU/t
+                    case 11:
+                        tTier=9;
+                        mMult=4; //Parallels are 16x as strong and require 16x less EU/t
+                    case 12:
+                    case 13:
+                    case 14:
+                    case 15:
+                        tTier=9;
+                        mMult=6; //Parallels are 64x as strong and require 64x less EU/t
+                }
             }
         }
-
         ArrayList<FluidStack> tFluidList = getStoredFluids();
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
         if (mSeparate) {
