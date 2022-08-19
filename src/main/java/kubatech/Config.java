@@ -32,9 +32,15 @@ public class Config {
     public static boolean includeEmptyMobs = true;
     public static String[] mobBlacklist;
     public static File configFile;
+    public static File configDirectory;
 
     public static void init(File configFile) {
-        Config.configFile = configFile;
+        configDirectory = new File(configFile, Tags.MODID);
+        Config.configFile = new File(configDirectory, Tags.MODID + ".cfg");
+    }
+
+    public static File getConfigFile(String file) {
+        return new File(configDirectory, file);
     }
 
     public static void synchronizeConfiguration() {

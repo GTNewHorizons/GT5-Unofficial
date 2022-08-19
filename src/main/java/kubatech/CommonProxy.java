@@ -31,7 +31,7 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         kubatech.info("Initializing ! Version: " + Tags.VERSION);
 
-        Config.init(event.getSuggestedConfigurationFile());
+        Config.init(event.getModConfigurationDirectory());
         Config.synchronizeConfiguration();
         RecipeLoader.addRecipes();
         FMLCommonHandler.instance().bus().register(new FMLEventHandler());

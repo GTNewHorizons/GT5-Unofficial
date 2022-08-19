@@ -26,20 +26,28 @@ import static kubatech.common.tileentity.gregtech.multiblock.GT_MetaTileEntity_E
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import atomicstryker.infernalmobs.common.MobModifier;
 import atomicstryker.infernalmobs.common.mods.api.ModifierLoader;
+import com.google.common.io.Files;
+import com.google.gson.Gson;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_DummyWorld;
+import java.io.File;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 import kubatech.Config;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
+import kubatech.api.utils.GSONUtils;
 import kubatech.api.utils.InfernalHelper;
+import kubatech.api.utils.ModUtils;
 import kubatech.common.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
 import kubatech.nei.Mob_Handler;
 import kubatech.network.LoadConfigPacket;
@@ -259,7 +267,10 @@ public class MobRecipeLoader {
             Infernal
         }
 
+        @GSONUtils.SkipGSON
         public ItemStack stack;
+
+        public NBTTagCompound reconstructableStack;
         public DropType type;
         public int chance;
         public Integer enchantable;
@@ -268,10 +279,15 @@ public class MobRecipeLoader {
         public MobDrop(
                 ItemStack stack, DropType type, int chance, Integer enchantable, HashMap<Integer, Integer> damages) {
             this.stack = stack;
+            this.reconstructableStack = stack.writeToNBT(new NBTTagCompound());
             this.type = type;
             this.chance = chance;
             this.enchantable = enchantable;
             this.damages = damages;
+        }
+
+        public void reconstructStack() {
+            this.stack = ItemStack.loadItemStackFromNBT(this.reconstructableStack);
         }
     }
 
@@ -539,7 +555,12 @@ public class MobRecipeLoader {
 
     public static final HashMap<String, GeneralMappedMob> GeneralMobList = new HashMap<>();
 
-    @SuppressWarnings("unchecked")
+    private static class MobRecipeLoaderCacheStructure {
+        String version;
+        Map<String, ArrayList<MobDrop>> moblist;
+    }
+
+    @SuppressWarnings({"unchecked", "UnstableApiUsage"})
     public static void generateMobRecipeMap() {
 
         if (alreadyGenerated) return;
@@ -561,6 +582,48 @@ public class MobRecipeLoader {
 
         fakeRand frand = new fakeRand();
         f.rand = frand;
+
+        File cache = Config.getConfigFile("MobRecipeLoader.cache");
+        Gson gson = GSONUtils.GSON_BUILDER.create();
+
+        if (cache.exists()) {
+            LOG.info("Parsing Cached map");
+            Reader reader = null;
+            try {
+                reader = Files.newReader(cache, StandardCharsets.UTF_8);
+                MobRecipeLoaderCacheStructure s = gson.fromJson(reader, MobRecipeLoaderCacheStructure.class);
+                if (s.version.equals(ModUtils.getModListVersion())) {
+                    for (Map.Entry<String, ArrayList<MobDrop>> entry : s.moblist.entrySet()) {
+                        try {
+                            EntityLiving e =
+                                    (EntityLiving) ((Class<?>) EntityList.stringToClassMapping.get(entry.getKey()))
+                                            .getConstructor(new Class[] {World.class})
+                                            .newInstance(new Object[] {f});
+                            ArrayList<MobDrop> drops = entry.getValue();
+                            drops.forEach(MobDrop::reconstructStack);
+                            GeneralMobList.put(
+                                    entry.getKey(),
+                                    new GeneralMappedMob(e, drops.size() != 0 ? new MobRecipe(e, drops) : null, drops));
+                        } catch (Exception ignored) {
+                        }
+                    }
+                    LOG.info("Parsed cached map, skipping generation");
+                    return;
+                } else {
+                    LOG.info("Cached map version mismatch, generating a new one");
+                }
+            } catch (Exception ignored) {
+                LOG.info("There was an exception while parsing cached map, generating a new one");
+            } finally {
+                if (reader != null)
+                    try {
+                        reader.close();
+                    } catch (Exception ignored) {
+                    }
+            }
+        } else {
+            LOG.info("Cached map doesn't exist, generating a new one");
+        }
 
         isInGenerationProcess = true;
 
@@ -878,6 +941,27 @@ public class MobRecipeLoader {
         LOG.info("Recipe map generated ! It took " + time + "ms");
 
         isInGenerationProcess = false;
+
+        LOG.info("Saving generated map to file");
+        MobRecipeLoaderCacheStructure s = new MobRecipeLoaderCacheStructure();
+        s.version = ModUtils.getModListVersion();
+        s.moblist = new HashMap<>();
+        GeneralMobList.forEach((k, v) -> s.moblist.put(k, v.drops));
+        Writer writer = null;
+        try {
+            writer = Files.newWriter(cache, StandardCharsets.UTF_8);
+            gson.toJson(s, writer);
+            writer.flush();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (writer != null)
+                try {
+                    writer.close();
+                } catch (Exception ignored) {
+                }
+        }
     }
 
     public static void processMobRecipeMap() {
