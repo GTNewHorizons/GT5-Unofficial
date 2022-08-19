@@ -455,7 +455,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
 
         if (GregTech_API.mAE2) {
             ItemList.Hatch_Output_Bus_ME.set(new GT_MetaTileEntity_Hatch_OutputBus_ME(2710, "hatch.output_bus.me", "Output Bus (ME)").getStackForm(1L));
-            ItemList.Hatch_Input_Bus_ME.set(new GT_MetaTileEntity_Hatch_InputBus_ME(2711, "hatch.input_bus.me", "Input Bus (ME)").getStackForm(1L));
+            ItemList.Hatch_Input_Bus_ME.set(new GT_MetaTileEntity_Hatch_InputBus_ME(2711, "hatch.input_bus.me", "Stocking Input Bus (ME)").getStackForm(1L));
             //ItemList.Hatch_CraftingInput_Bus_ME.set(new GT_MetaTileEntity_Hatch_CraftingInputBus_ME(2712, "hatch.crafting_input_bus.me", "Crafting Input Bus (ME)").getStackForm(1L));
         }
 

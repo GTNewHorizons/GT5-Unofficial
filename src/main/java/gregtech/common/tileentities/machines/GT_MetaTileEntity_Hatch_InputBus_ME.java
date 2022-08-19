@@ -44,7 +44,9 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private boolean processingRecipe = false;
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 1, SLOT_COUNT * 2 + 1, new String[] {
-            "Advanced item input for Multiblocks", "Retrieves directly from ME"
+            "Advanced item input for Multiblocks",
+            "Retrieves directly from ME",
+            "Keeps 9 item types in stock"
         });
         disableSort = true;
     }
