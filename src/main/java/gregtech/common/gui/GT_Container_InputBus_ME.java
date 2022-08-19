@@ -29,7 +29,7 @@ public class GT_Container_InputBus_ME  extends GT_ContainerMetaTile_Machine {
         for (int z = 0; z < 2; ++z)
             for (int y = 0; y < 4; ++y)
                 for (int x = 0; x < 4; ++x)
-                    addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, x + y * 4,
+                    addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, x + y * 4 + z * 16,
                         LEFT_OFFSET + x * SLOT_SIZE + z * 90, TOP_OFFSET + y * SLOT_SIZE, false, true, 1));
         addSlotToContainer(slotCircuit = new GT_Slot_Render(mTileEntity, CIRCUIT_SLOT, 153, 63));
     }

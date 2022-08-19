@@ -36,7 +36,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
 public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus {
-    private static final int SLOT_COUNT = 9;
+    private static final int SLOT_COUNT = 16;
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
     private ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
@@ -46,7 +46,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         super(aID, aName, aNameRegional, 1, SLOT_COUNT * 2 + 1, new String[] {
             "Advanced item input for Multiblocks",
             "Retrieves directly from ME",
-            "Keeps 9 item types in stock"
+            "Keeps 16 item types in stock"
         });
         disableSort = true;
     }
@@ -192,10 +192,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     this.shadowInventory[aIndex] = result.getItemStack();
                     this.savedStackSizes[aIndex] = this.shadowInventory[aIndex].stackSize;
                     //Show that the request was successful
-                    this.setInventorySlotContents(aIndex + 9, GT_Utility.copyAmount(1L, new Object[] {result.getItemStack()}));
+                    this.setInventorySlotContents(aIndex + SLOT_COUNT, GT_Utility.copyAmount(1L, new Object[] {result.getItemStack()}));
                     return this.shadowInventory[aIndex];
                 } else {
-                    this.setInventorySlotContents(aIndex + 9, null);
+                    //Request failed
+                    this.setInventorySlotContents(aIndex + SLOT_COUNT, null);
                     return null;
                 }
             }
@@ -204,7 +205,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             }
             return null;
         } else {
-            this.setInventorySlotContents(aIndex + 9, null);
+            //AE available but no items requested
+            this.setInventorySlotContents(aIndex + SLOT_COUNT, null);
         }
         return mInventory[aIndex];
     }
