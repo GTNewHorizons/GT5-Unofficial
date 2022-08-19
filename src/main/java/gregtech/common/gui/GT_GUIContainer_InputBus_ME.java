@@ -33,6 +33,11 @@ public class GT_GUIContainer_InputBus_ME  extends GT_GUIContainerMetaTile_Machin
         drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
     }
 
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        this.getFontRenderer().drawString("Input Bus (ME)", 8, 4, this.getTextColorOrDefault("title", 0x404040));
+    }
+    
     private void onCircuitSelected(ItemStack selected) {
         GT_Values.NW.sendToServer(new GT_Packet_SetConfigurationCircuit_Bus(mContainer.mTileEntity, selected));
         // we will not do any validation on client side

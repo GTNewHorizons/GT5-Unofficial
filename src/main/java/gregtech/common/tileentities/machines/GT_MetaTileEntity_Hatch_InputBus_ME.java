@@ -30,26 +30,27 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.GT_Container_InputBus_ME;
 import gregtech.common.gui.GT_GUIContainer_InputBus_ME;
+import gregtech.api.util.GT_Utility;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
 public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus {
-    private static final int SLOT_COUNT = 16;
+    private static final int SLOT_COUNT = 9;
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
-    private ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
-    private int[] savedStackSizes = new int[SLOT_COUNT];
+    private ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT * 2];
+    private int[] savedStackSizes = new int[SLOT_COUNT * 2];
     private boolean processingRecipe = false;
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 1, SLOT_COUNT + 1, new String[] {
+        super(aID, aName, aNameRegional, 1, SLOT_COUNT * 2 + 1, new String[] {
             "Advanced item input for Multiblocks", "Retrieves directly from ME"
         });
         disableSort = true;
     }
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, SLOT_COUNT + 1, aDescription, aTextures);
+        super(aName, aTier, SLOT_COUNT * 2 + 1, aDescription, aTextures);
         disableSort = true;
     }
 
@@ -182,13 +183,16 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public int getCircuitSlot() { return SLOT_COUNT; }
+    public int getCircuitSlot() { return SLOT_COUNT * 2; }
 
     @Override
     public ItemStack getStackInSlot(int aIndex) {
         if (!processingRecipe)
             return super.getStackInSlot(aIndex);
         if (aIndex < 0 && aIndex > mInventory.length)
+            return null;
+        if (aIndex >= SLOT_COUNT && aIndex < SLOT_COUNT * 2)
+            //Display slots
             return null;
         if (aIndex == getCircuitSlot())
             return mInventory[aIndex];
@@ -202,14 +206,23 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 IAEItemStack request = AEItemStack.create(mInventory[aIndex]);
                 request.setStackSize(Integer.MAX_VALUE);
                 IAEItemStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
-                this.shadowInventory[aIndex] = result.getItemStack();
-                this.savedStackSizes[aIndex] = this.shadowInventory[aIndex].stackSize;
-                return this.shadowInventory[aIndex];
+                if (result != null) {
+                    this.shadowInventory[aIndex] = result.getItemStack();
+                    this.savedStackSizes[aIndex] = this.shadowInventory[aIndex].stackSize;
+                    //Show that the request was successful
+                    this.setInventorySlotContents(aIndex + 9, GT_Utility.copyAmount(1L, new Object[] {result.getItemStack()}));
+                    return this.shadowInventory[aIndex];
+                } else {
+                    this.setInventorySlotContents(aIndex + 9, null);
+                    return null;
+                }
             }
             catch( final GridAccessException ignored )
             {
             }
             return null;
+        } else {
+            this.setInventorySlotContents(aIndex + 9, null);
         }
         return mInventory[aIndex];
     }

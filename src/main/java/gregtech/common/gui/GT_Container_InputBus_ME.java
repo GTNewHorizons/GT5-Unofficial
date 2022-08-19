@@ -15,10 +15,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 
 public class GT_Container_InputBus_ME  extends GT_ContainerMetaTile_Machine {
-    private static final int LEFT_OFFSET = 54;
-    private static final int TOP_OFFSET = 10;
-    private static final int SLOT_SIZE = 17;
-    public static final int CIRCUIT_SLOT = 16;
+    private static final int LEFT_OFFSET = 8;
+    private static final int TOP_OFFSET = 15;
+    private static final int SLOT_SIZE = 18;
+    public static final int CIRCUIT_SLOT = 18;
     private Runnable circuitSlotClickCallback;
     GT_Slot_Render slotCircuit;
     public GT_Container_InputBus_ME(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -26,15 +26,16 @@ public class GT_Container_InputBus_ME  extends GT_ContainerMetaTile_Machine {
     }
     @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-        for (int x = 0; x < 4; ++x)
-            for (int y = 0; y < 4; ++y)
-                addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, x * 4 + y,
+        for (int y = 0; y < 2; ++y)
+            for (int x = 0; x < 9; ++x)
+                addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, x + y * 9,
                     LEFT_OFFSET + x * SLOT_SIZE, TOP_OFFSET + y * SLOT_SIZE, false, true, 1));
         addSlotToContainer(slotCircuit = new GT_Slot_Render(mTileEntity, CIRCUIT_SLOT, 153, 63));
     }
+
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-        if (aSlotIndex < CIRCUIT_SLOT) {
+        if (aSlotIndex >= 0 && aSlotIndex < 9) {
             Slot tSlot = (Slot) this.inventorySlots.get(aSlotIndex);
             if (tSlot != null) {
                 if (this.mTileEntity.getMetaTileEntity() == null)
@@ -49,6 +50,7 @@ public class GT_Container_InputBus_ME  extends GT_ContainerMetaTile_Machine {
                 return null;
             }
         }
+
         else if (aSlotIndex == CIRCUIT_SLOT && aMouseclick < 2) {
             ItemStack newCircuit;
             if (aShifthold == 1) {
