@@ -39,8 +39,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private static final int SLOT_COUNT = 9;
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
-    private ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT * 2];
-    private int[] savedStackSizes = new int[SLOT_COUNT * 2];
+    private ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
+    private int[] savedStackSizes = new int[SLOT_COUNT];
     private boolean processingRecipe = false;
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 1, SLOT_COUNT * 2 + 1, new String[] {
@@ -160,26 +160,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public void updateSlots() {
-        if (!GregTech_API.mAE2 && !processingRecipe)
-            return;
-        for (int i = 0; i < SLOT_COUNT; ++i) {
-            if (savedStackSizes[i] != 0) {
-                if (shadowInventory[i] == null || shadowInventory[i].stackSize < savedStackSizes[i]) {
-                    AENetworkProxy proxy = getProxy();
-                    try {
-                        IMEMonitor<IAEItemStack> sg = proxy.getStorage().getItemInventory();
-                        IAEItemStack request = AEItemStack.create(mInventory[i]);
-                        request.setStackSize(savedStackSizes[i] - shadowInventory[i].stackSize);
-                        sg.extractItems(request, Actionable.MODULATE, getRequestSource());
-                    }
-                    catch( final GridAccessException ignored )
-                    {
-                    }
-                }
-                savedStackSizes[i] = 0;
-                shadowInventory[i] = null;
-            }
-        }
     }
 
     @Override
@@ -246,6 +226,25 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     public void endRecipeProcessing() {
+        if (GregTech_API.mAE2) {
+            for (int i = 0; i < SLOT_COUNT; ++i) {
+                if (savedStackSizes[i] != 0) {
+                    if (shadowInventory[i] == null || shadowInventory[i].stackSize < savedStackSizes[i]) {
+                        AENetworkProxy proxy = getProxy();
+                        try {
+                            IMEMonitor<IAEItemStack> sg = proxy.getStorage().getItemInventory();
+                            IAEItemStack request = AEItemStack.create(mInventory[i]);
+                            request.setStackSize(savedStackSizes[i] - shadowInventory[i].stackSize);
+                            sg.extractItems(request, Actionable.MODULATE, getRequestSource());
+                        }
+                        catch (final GridAccessException ignored) {
+                        }
+                    }
+                    savedStackSizes[i] = 0;
+                    shadowInventory[i] = null;
+                }
+            }
+        }
         processingRecipe = false;
     }
 
