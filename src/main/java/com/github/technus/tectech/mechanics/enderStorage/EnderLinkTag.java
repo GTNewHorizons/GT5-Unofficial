@@ -1,6 +1,7 @@
 package com.github.technus.tectech.mechanics.enderStorage;
 
 import com.google.common.base.Objects;
+
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -13,9 +14,7 @@ public class EnderLinkTag implements Serializable {
         this.player = player;
     }
 
-    public String getFrequency() {
-        return frequency;
-    }
+    public String getFrequency() { return frequency; }
 
     public UUID getUUID() {
         return player;
@@ -26,7 +25,8 @@ public class EnderLinkTag implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EnderLinkTag that = (EnderLinkTag) o;
-        return Objects.equal(frequency, that.frequency) && Objects.equal(player, that.player);
+        return Objects.equal(frequency, that.frequency) &&
+                Objects.equal(player, that.player);
     }
 
     @Override

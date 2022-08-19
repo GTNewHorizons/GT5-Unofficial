@@ -12,8 +12,9 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class GT_Container_DebugPowerGenerator extends GT_ContainerMetaTile_Machine {
-    public int EUT = 0, AMP = 0;
+public class GT_Container_DebugPowerGenerator
+        extends GT_ContainerMetaTile_Machine {
+    public int EUT=0,AMP=0;
 
     public GT_Container_DebugPowerGenerator(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -49,8 +50,7 @@ public class GT_Container_DebugPowerGenerator extends GT_ContainerMetaTile_Machi
         }
         Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
-            GT_MetaTileEntity_DebugPowerGenerator dpg =
-                    (GT_MetaTileEntity_DebugPowerGenerator) mTileEntity.getMetaTileEntity();
+            GT_MetaTileEntity_DebugPowerGenerator dpg = (GT_MetaTileEntity_DebugPowerGenerator) mTileEntity.getMetaTileEntity();
             switch (aSlotIndex) {
                 case 0:
                     dpg.EUT -= aShifthold == 1 ? 512 : 64;
@@ -100,10 +100,9 @@ public class GT_Container_DebugPowerGenerator extends GT_ContainerMetaTile_Machi
                 case 15:
                     dpg.AMP *= aShifthold == 1 ? 16 : 2;
                     break;
-                default:
-                    return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+                default: return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
             }
-            dpg.producing = (long) AMP * EUT >= 0;
+            dpg.producing=(long)AMP*EUT>=0;
             return null;
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -116,11 +115,10 @@ public class GT_Container_DebugPowerGenerator extends GT_ContainerMetaTile_Machi
             return;
         }
 
-        GT_MetaTileEntity_DebugPowerGenerator dpg =
-                (GT_MetaTileEntity_DebugPowerGenerator) mTileEntity.getMetaTileEntity();
-        EUT = dpg.EUT;
-        AMP = dpg.AMP;
-        dpg.producing = (long) AMP * EUT >= 0;
+        GT_MetaTileEntity_DebugPowerGenerator dpg = (GT_MetaTileEntity_DebugPowerGenerator) mTileEntity.getMetaTileEntity();
+        EUT=dpg.EUT;
+        AMP=dpg.AMP;
+        dpg.producing =(long)AMP*EUT>=0;
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;

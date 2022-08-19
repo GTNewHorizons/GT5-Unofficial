@@ -12,15 +12,11 @@ import net.minecraft.world.WorldServer;
 public class CommonProxy implements IGuiHandler {
     public void registerRenderInfo() {}
 
-    public void em_particle(IGregTechTileEntity aMuffler, byte facing) {} // CUTE!
-
-    public void pollutor_particle(IGregTechTileEntity aPollutor, byte facing) {} // CUTE!
-
-    public void em_particle(World w, double x, double y, double z) {}
-
-    public void pollutor_particle(World w, double x, double y, double z) {}
-
-    public void renderAABB(World w, AxisAlignedBB box) {}
+    public void em_particle(IGregTechTileEntity aMuffler, byte facing) {}//CUTE!
+    public void pollutor_particle(IGregTechTileEntity aPollutor, byte facing) {}//CUTE!
+    public void em_particle(World w,double x, double y, double z){}
+    public void pollutor_particle(World w,double x, double y, double z){}
+    public void renderAABB(World w,AxisAlignedBB box){}
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -40,15 +36,14 @@ public class CommonProxy implements IGuiHandler {
         MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText(str));
     }
 
-    public void printInchat(String... strings) {}
+    public void printInchat(String... strings){}
 
-    public void playSound(IGregTechTileEntity base, String name) {}
+    public void playSound(IGregTechTileEntity base,String name){}
 
     public String getUUID(String name) {
-        for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
-            for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer
-                        && ((EntityPlayer) o).getGameProfile().getName().equals(name)) {
+        for(WorldServer worldServer:MinecraftServer.getServer().worldServers){
+            for(Object o:worldServer.playerEntities){
+                if(o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile().getName().equals(name)){
                     return ((EntityPlayer) o).getGameProfile().getId().toString();
                 }
             }
@@ -57,10 +52,9 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public boolean isOnlineName(String name) {
-        for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
-            for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer
-                        && ((EntityPlayer) o).getGameProfile().getName().equals(name)) {
+        for(WorldServer worldServer:MinecraftServer.getServer().worldServers){
+            for(Object o:worldServer.playerEntities){
+                if(o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile().getName().equals(name)){
                     return true;
                 }
             }
@@ -69,14 +63,9 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public boolean isOnlineUUID(String uuid) {
-        for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
-            for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer
-                        && ((EntityPlayer) o)
-                                .getGameProfile()
-                                .getId()
-                                .toString()
-                                .equals(uuid)) {
+        for(WorldServer worldServer:MinecraftServer.getServer().worldServers){
+            for(Object o:worldServer.playerEntities){
+                if(o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile().getId().toString().equals(uuid)){
                     return true;
                 }
             }
@@ -84,11 +73,11 @@ public class CommonProxy implements IGuiHandler {
         return false;
     }
 
-    public EntityPlayer getPlayer() {
+    public EntityPlayer getPlayer(){
         return null;
     }
 
-    public boolean isThePlayer(EntityPlayer player) {
+    public boolean isThePlayer(EntityPlayer player){
         return false;
     }
 }

@@ -9,13 +9,14 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
  */
 public class Behaviour_Electrolyzer implements GT_MetaTileEntity_EM_machine.IBehaviour {
     final int tier;
-
-    public Behaviour_Electrolyzer(int tier) {
-        this.tier = tier;
+    public Behaviour_Electrolyzer(int tier){
+        this.tier=tier;
     }
 
     @Override
-    public void parametersInstantiation(GT_MetaTileEntity_EM_machine te, Parameters parameters) {}
+    public void parametersInstantiation(GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+
+    }
 
     @Override
     public boolean checkParametersInAndSetStatuses(GT_MetaTileEntity_EM_machine te, Parameters parameters) {
@@ -23,8 +24,7 @@ public class Behaviour_Electrolyzer implements GT_MetaTileEntity_EM_machine.IBeh
     }
 
     @Override
-    public MultiblockControl<EMInstanceStackMap[]> process(
-            EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+    public MultiblockControl<EMInstanceStackMap[]> process(EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
         return null;
     }
 }

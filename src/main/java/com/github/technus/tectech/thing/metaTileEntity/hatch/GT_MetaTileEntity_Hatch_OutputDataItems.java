@@ -1,7 +1,5 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import com.github.technus.tectech.mechanics.dataTransport.InventoryDataPacket;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
@@ -18,15 +16,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-public class GT_MetaTileEntity_Hatch_OutputDataItems
-        extends GT_MetaTileEntity_Hatch_DataConnector<InventoryDataPacket> {
+import static net.minecraft.util.StatCollector.translateToLocal;
+
+public class GT_MetaTileEntity_Hatch_OutputDataItems extends GT_MetaTileEntity_Hatch_DataConnector<InventoryDataPacket> {
     public GT_MetaTileEntity_Hatch_OutputDataItems(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "");
-        TT_Utility.setTier(aTier, this);
+        TT_Utility.setTier(aTier,this);
     }
 
-    public GT_MetaTileEntity_Hatch_OutputDataItems(
-            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_OutputDataItems(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -122,7 +120,7 @@ public class GT_MetaTileEntity_Hatch_OutputDataItems
     }
 
     @Override
-    public IConnectsToDataPipe getNext(IConnectsToDataPipe source /*==this*/) {
+    public IConnectsToDataPipe getNext(IConnectsToDataPipe source/*==this*/) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         byte color = base.getColorization();
         if (color < 0) {
@@ -133,13 +131,12 @@ public class GT_MetaTileEntity_Hatch_OutputDataItems
             return null;
         }
         IMetaTileEntity meta = next.getMetaTileEntity();
-        if (meta instanceof GT_MetaTileEntity_Pipe_Data) {
+        if (meta instanceof GT_MetaTileEntity_Pipe_Data){
             ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
             return (IConnectsToDataPipe) meta;
-        } else if (meta instanceof GT_MetaTileEntity_Hatch_InputDataItems
-                && ((GT_MetaTileEntity_Hatch_InputDataItems) meta).getColorization() == color
-                && ((GT_MetaTileEntity_Hatch_InputDataItems) meta)
-                        .canConnectData(GT_Utility.getOppositeSide(base.getFrontFacing()))) {
+        }else if (meta instanceof GT_MetaTileEntity_Hatch_InputDataItems &&
+                ((GT_MetaTileEntity_Hatch_InputDataItems) meta).getColorization()==color &&
+                ((GT_MetaTileEntity_Hatch_InputDataItems) meta).canConnectData(GT_Utility.getOppositeSide(base.getFrontFacing()))) {
             return (IConnectsToDataPipe) meta;
         }
         return null;
@@ -147,12 +144,11 @@ public class GT_MetaTileEntity_Hatch_OutputDataItems
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            CommonValues.TEC_MARK_EM,
-            translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"), // ItemStack Data Output for Multiblocks
-            translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"), // High speed fibre optics connector.
-            EnumChatFormatting.AQUA
-                    + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") // Must be painted to work
+        return new String[]{
+                CommonValues.TEC_MARK_EM,
+                translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),//ItemStack Data Output for Multiblocks
+                translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),//High speed fibre optics connector.
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2")//Must be painted to work
         };
     }
 }

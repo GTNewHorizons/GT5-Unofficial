@@ -12,8 +12,9 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class GT_Container_BuckConverter extends GT_ContainerMetaTile_Machine {
-    public int EUT = 0, AMP = 0;
+public class GT_Container_BuckConverter
+        extends GT_ContainerMetaTile_Machine {
+    public int EUT=0,AMP=0;
 
     public GT_Container_BuckConverter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -99,10 +100,9 @@ public class GT_Container_BuckConverter extends GT_ContainerMetaTile_Machine {
                 case 15:
                     buck.AMP *= aShifthold == 1 ? 16 : 2;
                     break;
-                default:
-                    return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+                default: return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
             }
-            buck.getBaseMetaTileEntity().setActive((long) AMP * EUT >= 0);
+            buck.getBaseMetaTileEntity().setActive((long)AMP*EUT>=0);
             return null;
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -116,9 +116,9 @@ public class GT_Container_BuckConverter extends GT_ContainerMetaTile_Machine {
         }
 
         GT_MetaTileEntity_BuckConverter buck = (GT_MetaTileEntity_BuckConverter) mTileEntity.getMetaTileEntity();
-        EUT = buck.EUT;
-        AMP = buck.AMP;
-        buck.getBaseMetaTileEntity().setActive((long) AMP * EUT >= 0);
+        EUT=buck.EUT;
+        AMP=buck.AMP;
+        buck.getBaseMetaTileEntity().setActive((long)AMP*EUT>=0);
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
