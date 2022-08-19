@@ -3794,6 +3794,10 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         //NaCl + H2SO4 = NaHSO4 + HCl
         GT_Values.RA.addChemicalRecipe(Materials.Salt.getDust(2), GT_Utility.getIntegratedCircuit(1), Materials.SulfuricAcid.getFluid(1000), Materials.HydrochloricAcid.getFluid(1000), Materials.SodiumBisulfate.getDust(7), 60);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(9),Materials.Salt.getDust(18)}, new FluidStack[]{Materials.SulfuricAcid.getFluid(9000)}, new FluidStack[]{Materials.HydrochloricAcid.getFluid(9000)}, new ItemStack[]{Materials.SodiumBisulfate.getDust(63)}, 135, 120);
+        //NaOH + H2SO4 = NaHSO4 + H2O
+        GT_Values.RA.addChemicalRecipe(Materials.SodiumHydroxide.getDust(3),GT_Utility.getIntegratedCircuit(1), Materials.SulfuricAcid.getFluid(1000), Materials.Water.getFluid(1000),Materials.SodiumBisulfate.getDust(7), 60);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(9),Materials.SodiumHydroxide.getDust(27)}, new FluidStack[]{Materials.SulfuricAcid.getFluid(9000)}, new FluidStack[]{Materials.Water.getFluid(9000)}, new ItemStack[]{Materials.SodiumBisulfate.getDust(63)}, 135, 120);
         //2NaHSO4 = 2H + Na2S2O8
         GT_Values.RA.addElectrolyzerRecipe(Materials.SodiumBisulfate.getDust(14), Materials.Empty.getCells(2), null, Materials.SodiumPersulfate.getFluid(1000), Materials.Hydrogen.getCells(2), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 600, 30);
 
