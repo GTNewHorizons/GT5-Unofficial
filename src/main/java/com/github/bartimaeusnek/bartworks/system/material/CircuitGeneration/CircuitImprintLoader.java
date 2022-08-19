@@ -42,6 +42,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -96,11 +97,13 @@ public class CircuitImprintLoader {
 
             CircuitImprintLoader.recipeTagMap.put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
 
-            if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))||circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(FluidRegistry.getFluid("molten.indalloy140"), 0))) {
+            Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null ? FluidRegistry.getFluid("molten.indalloy140") : FluidRegistry.getFluid("molten.solderingalloy");
+
+            if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))||circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderIndalloy, 0))) {
                 GT_Recipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null)
                     BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).addRecipe(newRecipe);
-                    addCutoffRecipeToSets(toRem,toAdd,circuitRecipe);
+                addCutoffRecipeToSets(toRem,toAdd,circuitRecipe);
             } else {
                 if (circuitRecipe.mEUt > BW_Util.getTierVoltage(ConfigHandler.cutoffTier))
                     toRem.add(circuitRecipe);

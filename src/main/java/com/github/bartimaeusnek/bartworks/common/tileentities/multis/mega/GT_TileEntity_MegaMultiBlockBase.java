@@ -7,20 +7,33 @@ import com.github.bartimaeusnek.bartworks.util.MegaUtils;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.LowPowerLaser;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import cpw.mods.fml.common.Optional;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IGT_HatchAdder;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
+import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_Values.V;
 
 @Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
@@ -293,4 +306,67 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         return 10000;
     }
 
+    protected enum TTEnabledEnergyHatchElement implements IHatchElement<GT_TileEntity_MegaMultiBlockBase<?>> {
+        INSTANCE;
+
+        private static final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
+
+        static {
+            ImmutableList.Builder<Class<? extends IMetaTileEntity>> builder = ImmutableList.<Class<? extends IMetaTileEntity>>builder()
+                .addAll(Energy.mteClasses());
+            if (LoaderReference.tectech)
+                builder.add(GT_MetaTileEntity_Hatch_EnergyMulti.class);
+            mteClasses = builder.build();
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGT_HatchAdder<? super GT_TileEntity_MegaMultiBlockBase<?>> adder() {
+            return GT_TileEntity_MegaMultiBlockBase::addEnergyInputToMachineList;
+        }
+
+        @Override
+        public long count(GT_TileEntity_MegaMultiBlockBase<?> t) {
+            return t.mEnergyHatches.size() + t.TTTunnels.size() + t.TTMultiAmp.size();
+        }
+    }
+
+    protected static class StructureElementAirNoHint<T> implements IStructureElement<T> {
+        private static final StructureElementAirNoHint<?> INSTANCE = new StructureElementAirNoHint<>();
+        @SuppressWarnings("unchecked")
+        public static <T> IStructureElement<T> getInstance() {
+            return (IStructureElement<T>) INSTANCE;
+        }
+        private StructureElementAirNoHint() {}
+        @Override
+        public boolean check(T o, World world, int x, int y, int z) {
+            return world.isAirBlock(x, y, z);
+        }
+
+        @Override
+        public boolean spawnHint(T o, World world, int x, int y, int z, ItemStack trigger) {
+            if (world.blockExists(x, y, z) && ! world.isAirBlock(x, y, z))
+                // hint if this is obstructed. in case *someone* ever finish the transparent rendering
+                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), StructureLibAPI.HINT_BLOCK_META_AIR);
+            return true;
+        }
+
+        @Override
+        public boolean placeBlock(T o, World world, int x, int y, int z, ItemStack trigger) {
+            world.setBlockToAir(x, y, z);
+            return true;
+        }
+
+        @Override
+        public PlaceResult survivalPlaceBlock(T o, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+            if (check(o, world, x, y, z)) return PlaceResult.SKIP;
+            if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, actor)) return PlaceResult.REJECT;
+            world.setBlock(x, y, z, Blocks.air, 0, 2);
+            return PlaceResult.ACCEPT;
+        }
+    }
 }

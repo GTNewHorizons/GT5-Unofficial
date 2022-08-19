@@ -26,8 +26,10 @@ import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
@@ -42,6 +44,7 @@ import gregtech.api.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
@@ -49,6 +52,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -62,9 +66,11 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GT_Values.*;
 
 @SuppressWarnings({"unused","RedundantSuppression"})
@@ -679,7 +685,8 @@ public class BW_Util {
     }
 
     public static <T> IStructureElement<T> ofGlassTiered(byte mintier, byte maxtier, byte notset, BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots){
-        return new IStructureElementNoPlacement<T>(){
+        return new IStructureElement<T>() {
+            private final IStructureElement<T> placementDelegate = BorosilicateGlass.ofBoroGlass(notset, mintier, maxtier, setter, getter);
             @Override
             public boolean check(T te, World world, int x, int y, int z) {
                 if(world.isAirBlock(x, y, z))
@@ -702,6 +709,16 @@ public class BW_Util {
             public boolean spawnHint(T te, World world, int x, int y, int z, ItemStack itemStack) {
                 StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), aDots - 1);
                 return true;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return placementDelegate.placeBlock(t, world, x, y, z, trigger);
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                return placementDelegate.survivalPlaceBlock(t, world, x, y, z, trigger, s, actor, chatter);
             }
         };
     }

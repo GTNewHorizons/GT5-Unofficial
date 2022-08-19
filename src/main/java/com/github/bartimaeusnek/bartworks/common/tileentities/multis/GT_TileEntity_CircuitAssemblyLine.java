@@ -27,6 +27,8 @@ import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.Circ
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
@@ -43,6 +45,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -54,10 +57,12 @@ import java.util.HashSet;
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_CircuitAssemblyLine> {
+public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_CircuitAssemblyLine> implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = 16;
 
@@ -75,21 +80,17 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
                     {"g", "l", "g"},
                     {"b", "I", "b"},
             }))
-            .addElement('G', ofChain(
-                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addEnergyInputToMachineList, CASING_INDEX, 1), //grate machine casings
-                    ofBlock(GregTech_API.sBlockCasings3, 10)))
+            .addElement('G', buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class)
+                .atLeast(Energy).casingIndex(CASING_INDEX).dot(1).buildAndChain(GregTech_API.sBlockCasings3, 10))
             .addElement('g', ofGlassTieredMixed((byte)4, (byte)127, 5))
             .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 5)) //assembling line casings
-            .addElement('b', ofChain(
-                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addMaintenanceToMachineList, CASING_INDEX, 2),
-                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputHatchToMachineList, CASING_INDEX, 2),
-                    ofBlock(GregTech_API.sBlockCasings2, 0)
-            ))
-            .addElement('i', ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputToMachineList, CASING_INDEX, 3))
-            .addElement('I', ofChain(
-                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputToMachineList, CASING_INDEX, 4),
-                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addOutputToMachineList, CASING_INDEX, 4)
-            ))
+            .addElement('b', buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class)
+                .atLeast(InputHatch, Maintenance).casingIndex(CASING_INDEX).dot(2).buildAndChain(GregTech_API.sBlockCasings2, 0)
+            )
+            .addElement('i', InputBus.newAny(CASING_INDEX, 3))
+            .addElement('I', buildHatchAdder(GT_TileEntity_CircuitAssemblyLine.class)
+                .atLeast(InputHatch, InputBus, OutputBus).casingIndex(CASING_INDEX).dot(2).buildAndChain(GregTech_API.sBlockCasings2, 0)
+            )
             .build();
 
     @Override
@@ -377,6 +378,20 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
         for(int i = 1; i < tLength; ++i) {
             this.buildPiece(STRUCTURE_PIECE_NEXT, stackSize, hintsOnly, -i, 0, 0);
         }
+    }
 
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        int built;
+        built = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 0, 0, elementBudget, source, actor, false, true);
+        if (built >= 0) return built;
+        int tLength = Math.min(stackSize.stackSize + 1, 7);
+
+        for (int i = 1; i < tLength; ++i) {
+            built = survivialBuildPiece(STRUCTURE_PIECE_NEXT, stackSize, -i, 0, 0, elementBudget, source, actor, false, true);
+            if (built >= 0) return built;
+        }
+        return -1;
     }
 }

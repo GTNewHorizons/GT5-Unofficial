@@ -25,11 +25,12 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.Optional;
@@ -46,6 +47,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -60,22 +62,35 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTI
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 @Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
-public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaBlastFurnace> {
+public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaBlastFurnace> implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = 11;
     private static final IStructureDefinition<GT_TileEntity_MegaBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_MegaBlastFurnace>builder()
             .addShape("main", createShape())
-            .addElement('t', ofHatchAdderOptional(GT_TileEntity_MegaBlastFurnace::addOutputHatchToTopList, CASING_INDEX, 1, GregTech_API.sBlockCasings1, CASING_INDEX))
-            .addElement('m', ofHatchAdder(GT_TileEntity_MegaBlastFurnace::addMufflerToMachineList, CASING_INDEX, 2))
+            .addElement('=', StructureElementAirNoHint.getInstance())
+            .addElement('t',
+                buildHatchAdder(GT_TileEntity_MegaBlastFurnace.class)
+                    .atLeast(OutputHatch.withAdder(GT_TileEntity_MegaBlastFurnace::addOutputHatchToTopList).withCount(t -> t.mPollutionOutputHatches.size()))
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX)
+            )
+            .addElement('m', Muffler.newAny(CASING_INDEX, 2))
             .addElement('C', ofCoil(GT_TileEntity_MegaBlastFurnace::setCoilLevel, GT_TileEntity_MegaBlastFurnace::getCoilLevel))
             .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glasTier = t, te -> te.glasTier))
-            .addElement('b', ofHatchAdderOptional(GT_TileEntity_MegaBlastFurnace::addBottomHatch, CASING_INDEX, 3, GregTech_API.sBlockCasings1, CASING_INDEX))
+            .addElement('b', buildHatchAdder(GT_TileEntity_MegaBlastFurnace.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, TTEnabledEnergyHatchElement.INSTANCE)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX)
+            )
             .build();
 
     private static String[][] createShape() {
@@ -93,7 +108,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
         raw[1] = new String[15];
         String allGlass   = "ggggggggggggggg";
         String allCoil    = "gCCCCCCCCCCCCCg";
-        String middleLine = "gC-----------Cg";
+        String middleLine = "gC===========Cg";
         raw[1][0] = allGlass;
         raw[1][1] = allCoil;
         raw[1][13] = allCoil;
@@ -378,6 +393,15 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece("main", stackSize, hintsOnly, 7, 17, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+        glasTier = 0;
+        setCoilLevel(HeatingCoilLevel.None);
+        return survivialBuildPiece("main", stackSize, 7, 17, 0, realBudget, source, actor, false, true);
     }
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {

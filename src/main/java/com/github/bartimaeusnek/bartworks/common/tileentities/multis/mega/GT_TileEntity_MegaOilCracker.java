@@ -28,6 +28,8 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.Optional;
@@ -45,6 +47,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -57,12 +60,14 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTI
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.*;
 
 @Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
-public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaOilCracker> {
+public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaOilCracker> implements ISurvivalConstructable {
     private static final int CASING_INDEX = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_TileEntity_MegaOilCracker> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_MegaOilCracker>builder()
@@ -78,20 +83,19 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
         }))
         .addElement('c', ofCoil(GT_TileEntity_MegaOilCracker::setCoilLevel, GT_TileEntity_MegaOilCracker::getCoilLevel))
         .addElement('p', ofBlock(GregTech_API.sBlockCasings4, 1))
-        .addElement('l', ofChain(
+        .addElement('l', ofChain( // TODO figure out what to do with this
             ofHatchAdder(GT_TileEntity_MegaOilCracker::addLeftHatchToMachineList, CASING_INDEX, 2)
         ))
         .addElement('r', ofChain(
             ofHatchAdder(GT_TileEntity_MegaOilCracker::addRightHatchToMachineList, CASING_INDEX, 3)
         ))
-        .addElement('m', ofChain(
-            ofHatchAdder(GT_TileEntity_MegaOilCracker::addEnergyInputToMachineList, CASING_INDEX, 1),
-            ofHatchAdder(GT_TileEntity_MegaOilCracker::addMaintenanceToMachineList, CASING_INDEX, 1),
-            ofBlock(GregTech_API.sBlockCasings4, 1)
-        ))
-        .addElement('M', ofChain(
-            ofHatchAdder(GT_TileEntity_MegaOilCracker::addMiddleInputToMachineList, CASING_INDEX, 4)
-        ))
+        .addElement('m', buildHatchAdder(GT_TileEntity_MegaOilCracker.class)
+            .atLeast(TTEnabledEnergyHatchElement.INSTANCE, Maintenance)
+            .casingIndex(CASING_INDEX)
+            .dot(1)
+            .buildAndChain(GregTech_API.sBlockCasings4, 1)
+        )
+        .addElement('M', InputHatch.withAdder(GT_TileEntity_MegaOilCracker::addMiddleInputToMachineList).newAny(CASING_INDEX, 4))
         .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glasTier = t, te -> te.glasTier))
         .build();
     private byte glasTier;
@@ -242,6 +246,12 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
         buildPiece(STRUCTURE_PIECE_MAIN,aStack,aHintsOnly,6,6,0);
     }
 
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 6, 6, 0, realBudget, source, actor, false, true);
+    }
     // -------------- TEC TECH COMPAT ----------------
 
     @Override

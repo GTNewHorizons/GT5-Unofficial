@@ -28,6 +28,8 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.Optional;
@@ -42,6 +44,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -55,13 +58,15 @@ import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.ha
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 @Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
-public class GT_TileEntity_MegaChemicalReactor extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaChemicalReactor> {
+public class GT_TileEntity_MegaChemicalReactor extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaChemicalReactor> implements ISurvivalConstructable {
 
     private byte glasTier;
 
@@ -187,7 +192,13 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_TileEntity_MegaMultiBl
         buildPiece(STRUCTURE_PIECE_MAIN,aStack,aHintsOnly,2,2,0);
     }
 
-    // -------------- TEC TECH COMPAT ----------------
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, realBudget, source, actor, false, true);
+    }
+// -------------- TEC TECH COMPAT ----------------
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -230,13 +241,17 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_TileEntity_MegaMultiBl
             }))
             .addElement('p', ofBlock(GregTech_API.sBlockCasings8, 1))
             .addElement('t', ofBlock(GregTech_API.sBlockCasings8, 0))
-            .addElement('d', ofChain(
-                    ofHatchAdder(GT_TileEntity_MegaChemicalReactor::addInputToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(GT_TileEntity_MegaChemicalReactor::addOutputToMachineList, CASING_INDEX, 1),
+            .addElement('d', buildHatchAdder(GT_TileEntity_MegaChemicalReactor.class)
+                    .atLeast(InputBus, InputHatch, OutputBus, OutputHatch)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(GregTech_API.sBlockCasings8, 0)
+            )
+            .addElement('r', Maintenance.newAny(CASING_INDEX, 2))
+            .addElement('e', ofChain(
+                    TTEnabledEnergyHatchElement.INSTANCE.newAny(CASING_INDEX, 3),
                     ofBlock(GregTech_API.sBlockCasings8, 0)
             ))
-            .addElement('r', ofHatchAdder(GT_TileEntity_MegaChemicalReactor::addMaintenanceToMachineList, CASING_INDEX, 2))
-            .addElement('e', ofHatchAdderOptional(GT_TileEntity_MegaChemicalReactor::addEnergyInputToMachineList, CASING_INDEX, 3, GregTech_API.sBlockCasings8, 0))
             .addElement('c', ofBlock(GregTech_API.sBlockCasings4, 7))
             .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glasTier = t, te -> te.glasTier))
             .build();
