@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import appeng.util.Platform;
 import gregtech.GT_Mod;
 import gregtech.api.gui.*;
 import gregtech.api.interfaces.ITexture;
@@ -32,6 +33,10 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_Hatch_InputBus(int id, String name, String nameRegional, int tier) {
         this(id, name, nameRegional, tier, getSlots(tier));
+    }
+
+    protected GT_MetaTileEntity_Hatch_InputBus(int id, String name, String nameRegional, int tier, int slots, String[] description) {
+        super(id, name, nameRegional, tier, slots, description);
     }
 
     public GT_MetaTileEntity_Hatch_InputBus(int id, String name, String nameRegional, int tier, int slots) {
@@ -247,5 +252,11 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
             if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get_nocopy(aStack), mInventory[i]))
                 return i == aIndex;
         return mInventory[aIndex] == null;
+    }
+
+    public void startRecipeProcessing() {
+    }
+
+    public void endRecipeProcessing() {
     }
 }

@@ -358,7 +358,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                 mEfficiency = 0;
             if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
-                checkRecipe(mInventory[1]);
+                checkRecipe();
             }
             if (mUpdated) {
                 mUpdate = 50;
@@ -403,14 +403,14 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                             }
                             this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                             if (aBaseMetaTileEntity.isAllowedToWork())
-                                checkRecipe(mInventory[1]);
+                                checkRecipe();
                         }
                     } else {
                         if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                             turnCasingActive(mMaxProgresstime > 0);
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
-                                if (checkRecipe(mInventory[1])) {
+                                if (checkRecipe()) {
                                     if (this.mEUStore < this.mLastRecipe.mSpecialValue - this.mEUt) {
                                         criticalStopMachine();
                                     }

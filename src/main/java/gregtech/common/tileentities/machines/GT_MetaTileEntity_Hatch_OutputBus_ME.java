@@ -38,6 +38,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
 
 public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatch_OutputBus {
     private BaseActionSource requestSource = null;
@@ -67,7 +68,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_ME_HATCH)};
+        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_ME_HATCH_ACTIVE)};
     }
 
     @Override
@@ -146,6 +147,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     @Override
     @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {
+        if (getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getTimer() > 1) {
+            gridProxy = null;
+            getProxy();
+        }
     }
 
     @Optional.Method(modid = "appliedenergistics2")

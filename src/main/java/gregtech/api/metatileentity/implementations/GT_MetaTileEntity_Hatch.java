@@ -179,4 +179,6 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
     }
 
     //To change to other page -> use the setter method -> updateTexture
+
+    public int getCircuitSlot() { return -1; }
 }
