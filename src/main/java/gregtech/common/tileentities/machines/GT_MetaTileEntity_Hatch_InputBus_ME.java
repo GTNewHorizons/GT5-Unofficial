@@ -40,7 +40,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
     private ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
-    private IAEItemStack[] viewInventory = new IAEItemStack[SLOT_COUNT];
     private int[] savedStackSizes = new int[SLOT_COUNT];
     private boolean processingRecipe = false;
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
@@ -55,17 +54,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     public GT_MetaTileEntity_Hatch_InputBus_ME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, SLOT_COUNT * 2 + 1, aDescription, aTextures);
         disableSort = true;
-    }
-
-    public IAEItemStack getViewItem(int aIndex) {
-        if (aIndex > 0 && aIndex < SLOT_COUNT) {
-            return viewInventory[aIndex];
-        }
-        return null;
-    }
-
-    public int getSlotCount() {
-        return SLOT_COUNT;
     }
 
     @Override
@@ -202,7 +190,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 IAEItemStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
                 if (result != null) {
                     this.shadowInventory[aIndex] = result.getItemStack();
-                    this.viewInventory[aIndex] = result;
                     this.savedStackSizes[aIndex] = this.shadowInventory[aIndex].stackSize;
                     //Show that the request was successful
                     this.setInventorySlotContents(aIndex + SLOT_COUNT, GT_Utility.copyAmount(
