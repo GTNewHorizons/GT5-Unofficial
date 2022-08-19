@@ -18,6 +18,7 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -250,6 +251,13 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
      * @return the Icon the Material is going to be rendered with.
      */
     public IIconContainer getIconContainer(int aMetaData) {
+        return null;
+    }
+
+    /**
+     * @return the Custom renderer of the Material with offset < 32000
+     */
+    public GT_GeneratedMaterial_Renderer getMaterialRenderer(int aMetaData) {
         return null;
     }
 
