@@ -45,11 +45,6 @@ public class GT_TileEntity_VoidMiners  {
         }
 
         @Override
-        protected String getCasingName() {
-            return "UV Machine Casing";
-        }
-
-        @Override
         protected Materials getFrameMaterial() {
             return Materials.Europium;
         }
@@ -81,11 +76,6 @@ public class GT_TileEntity_VoidMiners  {
         }
 
         @Override
-        protected String getCasingName() {
-            return "Mining Black Plutonium Casing";
-        }
-
-        @Override
         protected Materials getFrameMaterial() {
             return Materials.BlackPlutonium;
         }
@@ -114,11 +104,6 @@ public class GT_TileEntity_VoidMiners  {
         @Override
         protected ItemList getCasingBlockItem() {
             return ItemList.Casing_MiningNeutronium;
-        }
-
-        @Override
-        protected String getCasingName() {
-            return "Mining Neutronium Casing";
         }
 
         @Override

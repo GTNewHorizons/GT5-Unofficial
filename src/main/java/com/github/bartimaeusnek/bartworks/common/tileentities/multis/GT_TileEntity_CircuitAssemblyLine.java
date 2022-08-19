@@ -276,7 +276,8 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
         }
     }
 
-    private boolean addInputHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+    @Override
+    public boolean addInputHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
         } else {

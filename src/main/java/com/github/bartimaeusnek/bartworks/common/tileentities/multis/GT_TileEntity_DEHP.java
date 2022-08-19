@@ -106,7 +106,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        String casings = getCasingName() != null ? getCasingName() : "Casing";
+        String casings = getCasingBlockItem().get(0).getDisplayName();
         tt.addMachineType("Geothermal Heat Pump")
                 .addInfo("Consumes " + GT_Values.V[this.mTier + 2] + "EU/t")
                 .addInfo("Has 4 Modes, use the Screwdriver to change them:");
@@ -124,8 +124,8 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
         tt.addSeparator()
                 .beginStructureBlock(3, 7, 3, false)
                 .addController("Front bottom")
-                .addStructureInfo(casings + " form the 3x1x3 Base")
-                .addOtherStructurePart(casings, " 1x3x1 pillar above the center of the base (2 minimum total)")
+                .addOtherStructurePart(casings, "form the 3x1x3 Base")
+                .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
                 .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
                 .addEnergyHatch(VN[getMinTier()] + "+, Any base casing")
                 .addMaintenanceHatch("Any base casing")
@@ -139,11 +139,6 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     @Override
     protected ItemList getCasingBlockItem() {
         return ItemList.Casing_HeatProof;
-    }
-
-    @Override
-    protected String getCasingName() {
-        return "Heat Proof Machine Casing";
     }
 
     @Override
