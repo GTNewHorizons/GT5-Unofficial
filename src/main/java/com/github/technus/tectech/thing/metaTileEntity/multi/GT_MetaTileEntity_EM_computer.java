@@ -10,11 +10,14 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -22,12 +25,16 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.IGT_HatchAdder;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
@@ -36,6 +43,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -43,7 +51,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM implements ISurvivalConstructable {
     //region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
 
@@ -87,8 +95,11 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             .addElement('B', ofBlock(sBlockCasingsTT, 1))
             .addElement('C', ofBlock(sBlockCasingsTT, 2))
             .addElement('D', ofBlock(sBlockCasingsTT, 3))
-            .addElement('A', ofHatchAdderOptional(GT_MetaTileEntity_EM_computer::addToMachineList, textureOffset + 1, 1, sBlockCasingsTT, 1))
-            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_computer::addRackToMachineList, textureOffset + 3, 2, sBlockCasingsTT, 3))
+            .addElement('A', classicHatches(textureOffset + 1, 1, sBlockCasingsTT, 1))
+            .addElement('E', ofChain(
+                    RackHatchElement.INSTANCE.newAny(textureOffset + 3, 2),
+                    ofBlock(sBlockCasingsTT, 3)
+            ))
             .build();
     //endregion
 
@@ -407,6 +418,25 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        int built;
+        built = survivialBuildPiece("front", stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
+        if (built >= 0) return built;
+        built = survivialBuildPiece("cap", stackSize, 1, 2, -1, elementBudget, source, actor, false, true);
+        if (built >= 0) return built;
+
+        byte offset = -2;
+        for (int rackSlices = Math.min(stackSize.stackSize, 12); rackSlices > 0; rackSlices--) {
+            built = survivialBuildPiece("slice", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
+            if (built >= 0) return built;
+        }
+        built = survivialBuildPiece("cap", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
+        if (built >= 0) return built;
+        return survivialBuildPiece("back", stackSize, 1, 2, offset, elementBudget, source, actor, false, true);
+    }
+
+    @Override
     public IStructureDefinition<GT_MetaTileEntity_EM_computer> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
@@ -414,5 +444,24 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
+    }
+
+    private enum RackHatchElement implements IHatchElement<GT_MetaTileEntity_EM_computer> {
+        INSTANCE;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(GT_MetaTileEntity_Hatch_Rack.class);
+        }
+
+        @Override
+        public IGT_HatchAdder<? super GT_MetaTileEntity_EM_computer> adder() {
+            return GT_MetaTileEntity_EM_computer::addRackToMachineList;
+        }
+
+        @Override
+        public long count(GT_MetaTileEntity_EM_computer t) {
+            return t.eRacks.size();
+        }
     }
 }

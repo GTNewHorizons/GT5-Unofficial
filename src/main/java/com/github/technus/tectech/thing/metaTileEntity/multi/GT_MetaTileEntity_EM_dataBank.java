@@ -10,16 +10,21 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.IGT_HatchAdder;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -27,6 +32,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -35,10 +43,10 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockBase_EM implements ISurvivalConstructable {
     //region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_OutputDataItems> eStacksDataOutputs = new ArrayList<>();
     private final ArrayList<IInventory>                              eDataAccessHatches = new ArrayList<>();
@@ -61,8 +69,15 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
             }))
             .addElement('A', ofBlock(sBlockCasingsTT, 1))
             .addElement('B', ofBlock(sBlockCasingsTT, 2))
-            .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_dataBank::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
-            .addElement('D', ofHatchAdderOptional(GT_MetaTileEntity_EM_dataBank::addDataBankHatchToMachineList, textureOffset + 1, 2, sBlockCasingsTT, 1))
+            .addElement('C', classicHatches(textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('D', buildHatchAdder(GT_MetaTileEntity_EM_dataBank.class)
+                    .atLeast(DataBankHatches.OutboundConnector, DataBankHatches.InboundConnector)
+                    .casingIndex(textureOffset + 1)
+                    .dot(2)
+                    .buildAndChain(
+                            DataBankHatches.DataStick.newAny(textureOffset + 1, 2),
+                            ofBlock(sBlockCasingsTT, 1)
+                    ))
             .build();
     //endregion
 
@@ -195,6 +210,12 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece("main", stackSize, 2, 1, 0, elementBudget, source, actor, false, true);
+    }
+
+    @Override
     public IStructureDefinition<GT_MetaTileEntity_EM_dataBank> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
@@ -202,5 +223,43 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
+    }
+
+    private enum DataBankHatches implements IHatchElement<GT_MetaTileEntity_EM_dataBank> {
+        DataStick(GT_MetaTileEntity_Hatch_DataAccess.class) {
+            @Override
+            public long count(GT_MetaTileEntity_EM_dataBank t) {
+                return t.eDataAccessHatches.size();
+            }
+        },
+        OutboundConnector(GT_MetaTileEntity_Hatch_OutputDataItems.class) {
+            @Override
+            public long count(GT_MetaTileEntity_EM_dataBank t) {
+                return t.eStacksDataOutputs.size();
+            }
+        },
+        InboundConnector(GT_MetaTileEntity_Hatch_InputDataItems.class) {
+            @Override
+            public long count(GT_MetaTileEntity_EM_dataBank t) {
+                return t.eDataAccessHatches.size();
+            }
+        };
+
+        private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
+
+        @SafeVarargs
+        DataBankHatches(Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGT_HatchAdder<? super GT_MetaTileEntity_EM_dataBank> adder() {
+            return GT_MetaTileEntity_EM_dataBank::addDataBankHatchToMachineList;
+        }
     }
 }

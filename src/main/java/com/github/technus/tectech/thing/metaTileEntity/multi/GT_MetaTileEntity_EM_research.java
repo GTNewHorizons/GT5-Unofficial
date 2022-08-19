@@ -7,10 +7,13 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -18,10 +21,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -32,18 +32,24 @@ import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting.crafter;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.DynamoMulti;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.EnergyMulti;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine.machine;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.CommonValues.VN;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -52,7 +58,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM implements ISurvivalConstructable {
     //region variables
     private final        ArrayList<GT_MetaTileEntity_Hatch_Holder> eHolders = new ArrayList<>();
     private              GT_Recipe.GT_Recipe_AssemblyLine          tRecipe;
@@ -88,8 +94,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             .addElement('A', ofBlock(sBlockCasingsTT, 1))
             .addElement('B', ofBlock(sBlockCasingsTT, 2))
             .addElement('C', ofBlock(sBlockCasingsTT, 3))
-            .addElement('D', ofHatchAdderOptional(GT_MetaTileEntity_EM_research::addClassicToMachineList, textureOffset + 1, 1, sBlockCasingsTT, 1))
-            .addElement('E', ofHatchAdder(GT_MetaTileEntity_EM_research::addHolderToMachineList, 3, 2))
+            .addElement('D', classicHatches(textureOffset + 1, 1, sBlockCasingsTT, 1))
+            .addElement('E', HolderHatchElement.INSTANCE.newAny(3, 2))
             .build();
     //endregion
 
@@ -584,6 +590,12 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece("main", stackSize, 1, 3, 4, elementBudget, source, actor, false, true);
+    }
+
+    @Override
     public IStructureDefinition<GT_MetaTileEntity_EM_research> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
@@ -591,5 +603,24 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
+    }
+
+    private enum HolderHatchElement implements IHatchElement<GT_MetaTileEntity_EM_research> {
+        INSTANCE;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(GT_MetaTileEntity_Hatch_Holder.class);
+        }
+
+        @Override
+        public IGT_HatchAdder<? super GT_MetaTileEntity_EM_research> adder() {
+            return GT_MetaTileEntity_EM_research::addHolderToMachineList;
+        }
+
+        @Override
+        public long count(GT_MetaTileEntity_EM_research t) {
+            return t.eHolders.size();
+        }
     }
 }

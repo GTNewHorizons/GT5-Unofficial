@@ -18,40 +18,67 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.blocks.GT_Item_Machines;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.*;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.DynamoMulti;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.EnergyMulti;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.Param;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable, ITeslaConnectable {
+public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements ISurvivalConstructable, ITeslaConnectable {
     //Interface fields
     private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = MultimapBuilder.treeKeys().linkedListValues().build();
     private final HashSet<ThaumSpark>                        sparkList    = new HashSet<>();
@@ -131,15 +158,59 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             .addElement('A', ofBlock(sBlockCasingsBA0, 6))
             .addElement('B', ofBlock(sBlockCasingsBA0, 7))
             .addElement('C', ofBlock(sBlockCasingsBA0, 8))
-            .addElement('D', defer(t -> ofBlock(sBlockCasingsBA0, t.getCoilWindingMeta())))
-            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_TM_teslaCoil::addCapacitorToMachineList, textureOffset + 16 + 6, 1, sBlockCasingsBA0, 6))
-            .addElement('F', ofHatchAdder(GT_MetaTileEntity_TM_teslaCoil::addFrameToMachineList, 0, 2))
-            .build();
+            .addElement('D', ofBlocksTiered(
+                    (block, meta) -> block != sBlockCasingsBA0 ? -1 : meta <= 5 ? meta : meta == 9 ? 6 : -1,
+                    IntStream.range(0, 6).map(tier -> tier == 5 ? 9 : tier).mapToObj(meta -> Pair.of(sBlockCasingsBA0, meta)).collect(Collectors.toList()),
+                    -1,
+                    (t, v) -> t.mTier = v,
+                    t -> t.mTier))
+            .addElement('E', buildHatchAdder(GT_MetaTileEntity_TM_teslaCoil.class)
+                    .atLeast(CapacitorHatchElement.INSTANCE, EnergyMulti, Energy, DynamoMulti, Dynamo, InputHatch, OutputHatch, Param, Maintenance)
+                    .dot(1)
+                    .casingIndex(textureOffset + 16 +6)
+                    .buildAndChain(sBlockCasingsBA0, 6))
+            .addElement('F', new IStructureElement<GT_MetaTileEntity_TM_teslaCoil>() {
+                private IIcon[] mIcons;
 
-    public int getCoilWindingMeta() {
-        Vec3Impl xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 1));
-        return this.getBaseMetaTileEntity().getMetaIDOffset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
-    }
+                @Override
+                public boolean check(GT_MetaTileEntity_TM_teslaCoil t, World world, int x, int y, int z) {
+                    TileEntity tBase = world.getTileEntity(x, y, z);
+                    if (tBase instanceof BaseMetaPipeEntity) {
+                        BaseMetaPipeEntity tPipeBase = (BaseMetaPipeEntity) tBase;
+                        if (tPipeBase.isInvalidTileEntity()) return false;
+                        return tPipeBase.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame;
+                    }
+                    return false;
+                }
+
+                @Override
+                public boolean spawnHint(GT_MetaTileEntity_TM_teslaCoil t, World world, int x, int y, int z, ItemStack trigger) {
+                    if (mIcons == null) {
+                        mIcons = new IIcon[6];
+                        Arrays.fill(mIcons, Materials._NULL.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon());
+                    }
+                    StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, Materials._NULL.mRGBa);
+                    return true;
+                }
+
+                @Override
+                public boolean placeBlock(GT_MetaTileEntity_TM_teslaCoil t, World world, int x, int y, int z, ItemStack trigger) {
+                    ItemStack tFrameStack = GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1);
+                    if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
+                        return false;
+                    ItemBlock tFrameStackItem = (ItemBlock) tFrameStack.getItem();
+                    return tFrameStackItem.placeBlockAt(tFrameStack, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tFrameStack));
+                }
+
+                @Override
+                public PlaceResult survivalPlaceBlock(GT_MetaTileEntity_TM_teslaCoil t, World world, int x, int y, int z, ItemStack trigger, IItemSource source, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                    if (check(t, world, x, y, z)) return PlaceResult.SKIP;
+                    ItemStack tFrameStack = source.takeOne(s -> GT_Item_Machines.getMetaTileEntity(s) instanceof GT_MetaPipeEntity_Frame, true);
+                    if (tFrameStack == null) return PlaceResult.REJECT;
+                    return StructureUtility.survivalPlaceBlock(tFrameStack, ItemStackPredicate.NBTMode.IGNORE_KNOWN_INSIGNIFICANT_TAGS, null, false, world, x, y, z, source, actor, chatter);
+                }
+            })
+            .build();
     //endregion
 
     //region parameters
@@ -346,22 +417,17 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
+            if (isValidMetaTileEntity(cap)) {
                 cap.getBaseMetaTileEntity().setActive(false);
             }
         }
         eCapacitorHatches.clear();
 
-        Vec3Impl xyzOffsets;
-        xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 1));
-        mTier = iGregTechTileEntity.getMetaIDOffset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
-        if (mTier == 9) {
-            mTier = 6;
-        }//Hacky remap because the ZPM coils were added later
+        mTier = -1;
 
         if (structureCheck_EM("main", 3, 16, 0)) {
             for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
-                if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
+                if (isValidMetaTileEntity(cap)) {
                     cap.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
                 }
             }
@@ -715,6 +781,12 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece("main", stackSize, 3, 16, 0, elementBudget, source, actor, false, true);
+    }
+
+    @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
@@ -811,5 +883,24 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             return true;
         }
         return false;
+    }
+
+    private enum CapacitorHatchElement implements IHatchElement<GT_MetaTileEntity_TM_teslaCoil> {
+        INSTANCE;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(GT_MetaTileEntity_Hatch_Capacitor.class);
+        }
+
+        @Override
+        public IGT_HatchAdder<? super GT_MetaTileEntity_TM_teslaCoil> adder() {
+            return GT_MetaTileEntity_TM_teslaCoil::addCapacitorToMachineList;
+        }
+
+        @Override
+        public long count(GT_MetaTileEntity_TM_teslaCoil gt_metaTileEntity_tm_teslaCoil) {
+            return gt_metaTileEntity_tm_teslaCoil.eCapacitorHatches.size();
+        }
     }
 }

@@ -7,6 +7,8 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -15,6 +17,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -23,15 +26,20 @@ import net.minecraft.util.ResourceLocation;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.DynamoMulti;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.EnergyMulti;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTech_API.sBlockCasings1;
+import static gregtech.api.enums.GT_HatchElement.Dynamo;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_MultiblockBase_EM implements ISurvivalConstructable {
     //region structure
     private static final String[]                                               description          = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
@@ -45,10 +53,11 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
                     {"111", "111", "111",},
             })
             .addElement('0', ofBlock(sBlockCasings1, 15))
-            .addElement('1', ofChain(
-                    ofHatchAdder(GT_MetaTileEntity_EM_transformer::addEnergyIOToMachineList, textureOffset, 1),
-                    onElementPass(t -> t.casingCount++, ofBlock(sBlockCasingsTT, 0))
-            ))
+            .addElement('1', buildHatchAdder(GT_MetaTileEntity_EM_transformer.class)
+                    .atLeast(Energy, EnergyMulti, Dynamo, DynamoMulti)
+                    .casingIndex(textureOffset)
+                    .dot(1)
+                    .buildAndChain(onElementPass(t -> t.casingCount++, ofBlock(sBlockCasingsTT, 0))))
             .build();
     private              int                                                    casingCount          = 0;
 
@@ -170,6 +179,12 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece("main", stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
     }
 
     @Override
