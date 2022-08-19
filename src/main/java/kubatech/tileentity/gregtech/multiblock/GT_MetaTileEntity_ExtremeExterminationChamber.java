@@ -419,7 +419,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             this.mEUt /= 4;
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 5000)};
         } else {
-            calculateOverclockedNessMulti(this.mEUt, this.mMaxProgresstime, 2, getMaxInputVoltage());
+            calculatePerfectOverclockedNessMulti(this.mEUt, this.mMaxProgresstime, 2, getMaxInputVoltage());
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 120)};
         }
         if (this.mEUt > 0) this.mEUt = -this.mEUt;
