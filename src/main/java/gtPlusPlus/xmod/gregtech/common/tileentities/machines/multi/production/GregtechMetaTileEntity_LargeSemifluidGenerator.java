@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
@@ -11,23 +13,34 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_LargeSemifluidGenerator> {
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.Dynamo;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTDynamo;
+
+public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_LargeSemifluidGenerator> implements ISurvivalConstructable {
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_LargeSemifluidGenerator> STRUCTURE_DEFINITION = null;
@@ -167,11 +180,11 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 					}))
 					.addElement(
 							'C',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_LargeSemifluidGenerator::addLargeSemifluidGeneratorList, getCasingTextureIndex(), 1
-									),
-									onElementPass(
+							buildHatchAdder(GregtechMetaTileEntity_LargeSemifluidGenerator.class)
+									.atLeast(Muffler, InputHatch, Maintenance)
+									.casingIndex(getCasingTextureIndex())
+									.dot(1)
+									.buildAndChain(onElementPass(
 											x -> ++x.mCasing,
 											ofBlock(
 													getCasingBlock(), getCasingMeta()
@@ -193,9 +206,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 					)
 					.addElement(
 							'M',
-							ofHatchAdder(
-									GregtechMetaTileEntity_LargeSemifluidGenerator::addLargeSemifluidGeneratorBackList, getCasingTextureIndex(), 2
-							)
+							Dynamo.or(TTDynamo).newAny(getCasingTextureIndex(), 2)
 					)
 					.build();
 		}
@@ -205,6 +216,12 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
 		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
+	}
+
+	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
 	}
 
 	@Override

@@ -1,13 +1,16 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -22,6 +25,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IGT_HatchAdder;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
@@ -39,13 +43,10 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.gui.*;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -53,11 +54,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -66,7 +67,10 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+
 
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
@@ -2597,29 +2601,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	}
 
 	@Override
-	public boolean depleteInput(final FluidStack aLiquid) {
-		if (aLiquid == null) {
-			return false;
-		}
-		for (final GT_MetaTileEntity_Hatch_Input tHatch : this.mInputHatches) {
-			tHatch.mRecipeMap = this.getRecipeMap();
-			if (isValidMetaTileEntity(tHatch)) {
-				FluidStack tLiquid = tHatch.getFluid();
-				if (tLiquid == null || !tLiquid.isFluidEqual(aLiquid) || tLiquid.amount < aLiquid.amount) {
-					continue;
-				}
-				tLiquid = tHatch.drain(aLiquid.amount, false);
-				if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
-					tLiquid = tHatch.drain(aLiquid.amount, true);
-					return tLiquid != null && tLiquid.amount >= aLiquid.amount;
-				}
-				continue;
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public void onServerStart() {
 		super.onServerStart();
 		tryTickWaitTimerDown();
@@ -2650,6 +2631,11 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	}
 
 	//Only support to use meta to tier
+
+	/**
+	 * accept meta [0, maxMeta)
+	 * @param maxMeta exclusive
+	 */
 	public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiConsumer<T, Integer> aSetTheFuckingMeta, Function<T, Integer> aGetTheFuckingMeta, int maxMeta) {
 		return addTieredBlock(aBlock, (t, i) -> {
 					aSetTheFuckingMeta.accept(t, i);
@@ -2658,6 +2644,11 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		);
 	}
 
+	/**
+	 *
+	 * @param minMeta inclusive
+	 * @param maxMeta exclusive
+	 */
 	public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiConsumer<T, Integer> aSetTheFuckingMeta, Function<T, Integer> aGetTheFuckingMeta, int minMeta, int maxMeta) {
 		return addTieredBlock(aBlock, (t, i) -> {
 					aSetTheFuckingMeta.accept(t, i);
@@ -2666,6 +2657,11 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		);
 	}
 
+	/**
+	 *
+	 * @param minMeta inclusive
+	 * @param maxMeta exclusive
+	 */
 	public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiPredicate<T, Integer> aSetTheFuckingMeta, Function<T, Integer> aGetTheFuckingMeta, int minMeta, int maxMeta) {
 
 		return new IStructureElement<T>() {
@@ -2702,6 +2698,17 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 				if (meta + minMeta >= maxMeta) meta = maxMeta - 1 - minMeta;
 				return meta + minMeta;
 			}
+
+			@Override
+			public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+				if (world.getBlock(x, y, z) == aBlock) {
+					if (world.getBlockMetadata(x, y, z) == getMeta(trigger)) {
+						return PlaceResult.SKIP;
+					}
+					return PlaceResult.REJECT;
+				}
+				return StructureUtility.survivalPlaceBlock(aBlock, getMeta(trigger), world, x, y, z, s, actor, chatter);
+			}
 		};
 	}
 
@@ -2731,5 +2738,66 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 
 	protected int getCasingTextureId() {
 		return 0;
+	}
+
+	public enum GTPPHatchElement implements IHatchElement<GregtechMeta_MultiBlockBase<?>> {
+		AirIntake(GregtechMeta_MultiBlockBase::addAirIntakeToMachineList, GT_MetaTileEntity_Hatch_AirIntake.class) {
+			@Override
+			public long count(GregtechMeta_MultiBlockBase<?> t) {
+				return t.mAirIntakes.size();
+			}
+		},
+		ControlCore(GregtechMeta_MultiBlockBase::addControlCoreToMachineList, GT_MetaTileEntity_Hatch_ControlCore.class) {
+			@Override
+			public long count(GregtechMeta_MultiBlockBase<?> t) {
+				return t.mControlCoreBus.size();
+			}
+		},
+		TTDynamo(GregtechMeta_MultiBlockBase::addMultiAmpDynamoToMachineList, "com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti") {
+			@Override
+			public long count(GregtechMeta_MultiBlockBase<?> t) {
+				return t.mTecTechDynamoHatches.size();
+			}
+		},
+		TTEnergy(GregtechMeta_MultiBlockBase::addMultiAmpEnergyToMachineList, "com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti") {
+			@Override
+			public long count(GregtechMeta_MultiBlockBase<?> t) {
+				return t.mTecTechEnergyHatches.size();
+			}
+		},
+		;
+
+		@SuppressWarnings("unchecked")
+		private static <T> Class<T> retype(Class<?> clazz) {
+			return (Class<T>) clazz;
+		}
+
+		private final List<? extends Class<? extends IMetaTileEntity>> mMteClasses;
+		private final IGT_HatchAdder<? super GregtechMeta_MultiBlockBase<?>> mAdder;
+
+		@SafeVarargs
+		GTPPHatchElement(IGT_HatchAdder<? super GregtechMeta_MultiBlockBase<?>> aAdder, Class<? extends IMetaTileEntity>... aMteClasses) {
+			this.mMteClasses = Arrays.asList(aMteClasses);
+			this.mAdder = aAdder;
+		}
+
+		GTPPHatchElement(IGT_HatchAdder<? super GregtechMeta_MultiBlockBase<?>> aAdder, String... aClassNames) {
+			this.mMteClasses = Arrays.stream(aClassNames)
+					.map(ReflectionUtils::getClass)
+					.filter(Objects::nonNull)
+					.<Class<? extends IMetaTileEntity>>map(GTPPHatchElement::retype)
+					.collect(Collectors.toList());
+			this.mAdder = aAdder;
+		}
+
+		@Override
+		public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+			return mMteClasses;
+		}
+
+		@Override
+		public IGT_HatchAdder<? super GregtechMeta_MultiBlockBase<?>> adder() {
+			return mAdder;
+		}
 	}
 }

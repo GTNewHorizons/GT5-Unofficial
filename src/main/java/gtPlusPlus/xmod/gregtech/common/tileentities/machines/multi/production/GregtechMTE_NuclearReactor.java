@@ -1,27 +1,18 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
 import java.util.Collection;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
@@ -35,11 +26,21 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<GregtechMTE_NuclearReactor> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
+
+public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<GregtechMTE_NuclearReactor> implements ISurvivalConstructable {
 
 	protected int mFuelRemaining = 0;
 
@@ -200,43 +201,55 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
 					.addElement(
 							'C',
 							ofChain(
-									ofHatchAdder(
-											GregtechMTE_NuclearReactor::addNuclearReactorEdgeList, TAE.GTPP_INDEX(12), 1
-											),
+									buildHatchAdder(GregtechMTE_NuclearReactor.class)
+											.atLeast(Maintenance)
+											.casingIndex(TAE.GTPP_INDEX(12))
+											.dot(1)
+											.build(),
+									buildHatchAdder(GregtechMTE_NuclearReactor.class)
+											.atLeast(InputHatch, OutputHatch)
+											.adder(GregtechMTE_NuclearReactor::addNuclearReactorEdgeList)
+											.hatchItemFilterAnd(t -> filterByMTETier(5, Integer.MAX_VALUE))
+											.casingIndex(TAE.GTPP_INDEX(12))
+											.dot(1)
+											.build(),
+									buildHatchAdder(GregtechMTE_NuclearReactor.class)
+											.atLeast(Dynamo)
+											.adder(GregtechMTE_NuclearReactor::addNuclearReactorEdgeList)
+											.hatchItemFilterAnd(t -> filterByMTETier(5, 6))
+											.casingIndex(TAE.GTPP_INDEX(12))
+											.dot(1)
+											.build(),
 									onElementPass(
 											x -> ++x.mCasing,
 											ofBlock(
 													ModBlocks.blockCasingsMisc, 12
-													)
 											)
 									)
 							)
+					)
 					.addElement(
 							'X',
-							ofChain(
-									ofHatchAdder(
-											GregtechMTE_NuclearReactor::addNuclearReactorTopList, TAE.GTPP_INDEX(12), 2
-											),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													ModBlocks.blockCasingsMisc, 12
-													)
-											)
-									)
-							)
+							buildHatchAdder(GregtechMTE_NuclearReactor.class)
+									.atLeast(Muffler)
+									.adder(GregtechMTE_NuclearReactor::addNuclearReactorTopList)
+									.hatchItemFilterAnd(t -> filterByMTETier(5, Integer.MAX_VALUE))
+									.casingIndex(TAE.GTPP_INDEX(12))
+									.dot(1)
+									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12)))
+					)
 					.addElement(
 							'O',
 							ofBlock(
 									ModBlocks.blockCasingsMisc, 12
-									)
 							)
+					)
 					.addElement(
 							'G',
 							ofBlock(
 									ModBlocks.blockCasingsMisc, 13
-									)
 							)
+					)
 					.build();
 		}
 		return STRUCTURE_DEFINITION;
@@ -245,6 +258,12 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
 		buildPiece(mName , stackSize, hintsOnly, 3, 3, 0);
+	}
+
+	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 3, 3, 0, elementBudget, source, actor, false, true);
 	}
 
 	@Override

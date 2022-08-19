@@ -1,31 +1,21 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.*;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GasSpargingRecipe;
-import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -34,48 +24,66 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_SpargeTower> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
+public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_SpargeTower> implements ISurvivalConstructable {
 
 	protected static final String STRUCTURE_PIECE_BASE = "base";
 	protected static final String STRUCTURE_PIECE_LAYER = "layer";
 	protected static final String STRUCTURE_PIECE_LAYER_HINT = "layerHint";
 	protected static final String STRUCTURE_PIECE_TOP_HINT = "topHint";
-	private static final IStructureDefinition<GregtechMetaTileEntity_SpargeTower> STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SpargeTower>builder()
-			.addShape(STRUCTURE_PIECE_BASE, transpose(new String[][]{
-				{"b~b", "bbb", "bbb"},
-			}))
-			.addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][]{
-				{"lll", "lcl", "lll"}
-			}))
-			.addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][]{
-				{"lll", "l-l", "lll"}
-			}))
-			.addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][]{
-				{"lll", "lll", "lll"}
-			}))
-			.addElement('b', ofChain(
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addEnergyInputToMachineList, getCasingIndex(), 1),
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addInputToMachineList, getCasingIndex(), 1),
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList, getCasingIndex(), 1),
-					onElementPass(GregtechMetaTileEntity_SpargeTower::onCasingFound, ofBlock(ModBlocks.blockCasings5Misc, 4))
-					))
-			.addElement('l', ofChain(
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addEnergyInputToMachineList, getCasingIndex(), 2),
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addLayerOutputHatch, getCasingIndex(), 2),
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList, getCasingIndex(), 2),
-					onElementPass(GregtechMetaTileEntity_SpargeTower::onCasingFound, ofBlock(ModBlocks.blockCasings5Misc, 4))
-					))
-			.addElement('c', ofChain(
-					onElementPass(t -> t.onTopLayerFound(false), ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addOutputToMachineList, getCasingIndex(), 3)),
-					onElementPass(t -> t.onTopLayerFound(false), ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList, getCasingIndex(), 3)),
-					onElementPass(t -> t.onTopLayerFound(true), ofBlock(ModBlocks.blockCasings5Misc, 4)),
-					isAir()
-					))
-			.build();
+	private static final IStructureDefinition<GregtechMetaTileEntity_SpargeTower> STRUCTURE_DEFINITION;
+
+	static {
+		IHatchElement<GregtechMetaTileEntity_SpargeTower> layeredOutputHatch = OutputHatch
+				.withCount(GregtechMetaTileEntity_SpargeTower::getCurrentLayerOutputHatchCount)
+				.withAdder(GregtechMetaTileEntity_SpargeTower::addLayerOutputHatch);
+		STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SpargeTower>builder()
+				.addShape(STRUCTURE_PIECE_BASE, transpose(new String[][]{
+						{"b~b", "bbb", "bbb"},
+				}))
+				.addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][]{
+						{"lll", "lcl", "lll"}
+				}))
+				.addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][]{
+						{"lll", "l-l", "lll"}
+				}))
+				.addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][]{
+						{"lll", "lll", "lll"}
+				}))
+				.addElement('b', buildHatchAdder(GregtechMetaTileEntity_SpargeTower.class)
+						.atLeast(Energy, InputHatch, InputBus, Maintenance)
+						.casingIndex(getCasingIndex())
+						.dot(1)
+						.buildAndChain(onElementPass(GregtechMetaTileEntity_SpargeTower::onCasingFound, ofBlock(ModBlocks.blockCasings5Misc, 4)))
+				)
+				.addElement('l', ofChain(
+						buildHatchAdder(GregtechMetaTileEntity_SpargeTower.class)
+								.atLeast(layeredOutputHatch)
+								.casingIndex(getCasingIndex())
+								.dot(2)
+								.build(),
+						ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addEnergyInputToMachineList, getCasingIndex(), 2),
+						ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList, getCasingIndex(), 2),
+						onElementPass(GregtechMetaTileEntity_SpargeTower::onCasingFound, ofBlock(ModBlocks.blockCasings5Misc, 4))
+				))
+				.addElement('c', ofChain(
+						onElementPass(t -> t.onTopLayerFound(false), ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addOutputToMachineList, getCasingIndex(), 3)),
+						onElementPass(t -> t.onTopLayerFound(false), ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList, getCasingIndex(), 3)),
+						onElementPass(t -> t.onTopLayerFound(true), ofBlock(ModBlocks.blockCasings5Misc, 4)),
+						isAir()
+				))
+				.build();
+	}
 
 	protected final List<List<GT_MetaTileEntity_Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
 	protected int mHeight;
@@ -260,6 +268,10 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 		}
 	}
 
+	protected int getCurrentLayerOutputHatchCount() {
+		return mOutputHatchesByLayer.size() < mHeight ? 0 : mOutputHatchesByLayer.get(mHeight - 1).size();
+	}
+
 	protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null || aTileEntity.isDead() || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output)) {
 			Logger.INFO("Bad Output Hatch");
@@ -360,6 +372,22 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 			buildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, hintsOnly, 1, i, 0);
 		}
 		buildPiece(STRUCTURE_PIECE_TOP_HINT, stackSize, hintsOnly, 1, tTotalHeight - 1, 0);
+	}
+
+	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		mHeight = 0;
+		int built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, source, actor, false, true);
+		if (built >= 0) return built;
+		int tTotalHeight = 8; // min 2 output layer, so at least 1 + 2 height
+		for (int i = 1; i < tTotalHeight - 1; i++) {
+			mHeight = i;
+			built = survivialBuildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, source, actor, false, true);
+			if (built >= 0) return built;
+		}
+		mHeight = tTotalHeight;
+		return survivialBuildPiece(STRUCTURE_PIECE_TOP_HINT, stackSize, 1, tTotalHeight - 1, 0, elementBudget, source, actor, false, true);
 	}
 
 	@Override

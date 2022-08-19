@@ -1,32 +1,27 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gtPlusPlus.core.lib.CORE;
-import org.apache.commons.lang3.ArrayUtils;
-
 import gregtech.api.enums.TAE;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -37,14 +32,25 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIco
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
 
-public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IsaMill> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
+
+public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IsaMill> implements ISurvivalConstructable {
 
 	protected boolean boostEu = false;
 	private int mCasing;
@@ -53,7 +59,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 	private static final IIconContainer frontFaceActive = new CustomIcon("iconsets/Grinder/GRINDER_ACTIVE5");
 	private static final IIconContainer frontFace = new CustomIcon("iconsets/Grinder/GRINDER5");
 
-	private ArrayList<GT_MetaTileEntity_Hatch_MillingBalls> mMillingBallBuses = new ArrayList<GT_MetaTileEntity_Hatch_MillingBalls>();
+	private final ArrayList<GT_MetaTileEntity_Hatch_MillingBalls> mMillingBallBuses = new ArrayList<GT_MetaTileEntity_Hatch_MillingBalls>();
 	private static final DamageSource mIsaMillDamageSource = new DamageSource("gtpp.grinder").setDamageBypassesArmor();
 
 	public GregtechMetaTileEntity_IsaMill(int aID, String aName, String aNameRegional) {
@@ -100,9 +106,18 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 					.addElement(
 							'C',
 							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_IsaMill::addToMachineList, getCasingTextureIndex(), 1
-									),
+									buildHatchAdder(GregtechMetaTileEntity_IsaMill.class)
+											.adder(GregtechMetaTileEntity_IsaMill::addMillingBallsHatch)
+											.hatchClass(GT_MetaTileEntity_Hatch_MillingBalls.class)
+											.shouldReject(t -> !t.mMillingBallBuses.isEmpty())
+											.casingIndex(getCasingTextureIndex())
+											.dot(1)
+											.build(),
+									buildHatchAdder(GregtechMetaTileEntity_IsaMill.class)
+											.atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+											.casingIndex(getCasingTextureIndex())
+											.dot(1)
+											.build(),
 									onElementPass(
 											x -> ++x.mCasing,
 											ofBlock(
@@ -131,6 +146,12 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
 		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
+	}
+
+	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
 	}
 
 	@Override
@@ -163,6 +184,18 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 	@Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
 		return getMaxEfficiency(aStack) > 0;
+	}
+
+	private boolean addMillingBallsHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MillingBalls) {
+				return addToMachineListInternal(mMillingBallBuses, aMetaTileEntity, aBaseCasingIndex);
+			}
+		}
+		return false;
 	}
 
 	@Override

@@ -1,22 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
@@ -25,12 +15,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -47,10 +31,20 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
+
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase<GregtechMTE_ElementalDuplicator> {
 
-	private ArrayList<GT_MetaTileEntity_Hatch_ElementalDataOrbHolder> mReplicatorDataOrbHatches = new ArrayList<GT_MetaTileEntity_Hatch_ElementalDataOrbHolder>();
+	private final ArrayList<GT_MetaTileEntity_Hatch_ElementalDataOrbHolder> mReplicatorDataOrbHatches = new ArrayList<GT_MetaTileEntity_Hatch_ElementalDataOrbHolder>();
 	private static final int CASING_TEXTURE_ID = TAE.getIndexFromPage(0, 3);
 	private int mCasing = 0;
 
@@ -143,7 +137,19 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 					.addElement('g', ofBlock(getCasingBlock3(), getCasingMeta5()))					
 					.addElement('c', lazy(t -> onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
 					.addElement('h', lazy(t -> ofChain(
-							ofHatchAdder(GregtechMTE_ElementalDuplicator::addGenericHatch, getCasingTextureIndex(), 1),
+							buildHatchAdder(GregtechMTE_ElementalDuplicator.class)
+									.atLeast(InputHatch, OutputBus, OutputHatch, Maintenance, Muffler, Energy)
+									.casingIndex(getCasingTextureIndex())
+									.dot(1)
+									.build()
+							,
+							buildHatchAdder(GregtechMTE_ElementalDuplicator.class)
+									.hatchClass(GT_MetaTileEntity_Hatch_ElementalDataOrbHolder.class)
+									.adder(GregtechMTE_ElementalDuplicator::addDataOrbHatch)
+									.casingIndex(getCasingTextureIndex())
+									.dot(1)
+									.build()
+							,
 							onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))
 							)))
 					.build();	
@@ -215,7 +221,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 		return 8;
 	}
 
-	public final boolean addGenericHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+	private boolean addDataOrbHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
 		} 
@@ -224,25 +230,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 			if (aMetaTileEntity == null) {
 				return false;
 			}
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_ElementalDataOrbHolder) {
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_ElementalDataOrbHolder) {
 				try {
 					((GT_MetaTileEntity_Hatch_ElementalDataOrbHolder) aMetaTileEntity).mRecipeMap = getRecipeMap();            
 					return addToMachineListInternal(mReplicatorDataOrbHatches, aMetaTileEntity, aBaseCasingIndex);

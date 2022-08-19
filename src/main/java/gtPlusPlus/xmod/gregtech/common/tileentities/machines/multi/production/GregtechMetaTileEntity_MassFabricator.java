@@ -1,38 +1,48 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-import java.util.*;
-
-import gregtech.api.interfaces.IIconContainer;
-import org.apache.commons.lang3.ArrayUtils;
-
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TAE;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MatterFab;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
 
-public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_MassFabricator> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
+
+public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_MassFabricator> implements ISurvivalConstructable {
 
 	public static int sUUAperUUM = 1;
 	public static int sUUASpeedBonus = 4;
@@ -199,17 +209,11 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 					}))
 					.addElement(
 							'C',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_MassFabricator::addMassFabricatorList, TAE.GTPP_INDEX(9), 1
-									),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													ModBlocks.blockCasingsMisc, 9
-											)
-									)
-							)
+							buildHatchAdder(GregtechMetaTileEntity_MassFabricator.class)
+									.atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+									.casingIndex(TAE.GTPP_INDEX(9))
+									.dot(1)
+									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 9)))
 					)
 					.addElement(
 							'H',
@@ -234,33 +238,15 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, source, actor, false, true);
+	}
+
+	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		return checkPiece(mName, 2, 3, 0) && mCasing >= 40 && checkHatch();
-	}
-
-	public final boolean addMassFabricatorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		return false;
 	}
 
 	@Override

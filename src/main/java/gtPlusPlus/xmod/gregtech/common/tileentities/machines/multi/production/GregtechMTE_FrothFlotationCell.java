@@ -1,46 +1,43 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import gregtech.api.interfaces.IIconContainer;
-import gtPlusPlus.core.material.Material;
-import net.minecraftforge.common.util.Constants;
-import org.apache.commons.lang3.ArrayUtils;
-
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
 
-public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<GregtechMTE_FrothFlotationCell> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
+
+public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<GregtechMTE_FrothFlotationCell> implements ISurvivalConstructable {
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMTE_FrothFlotationCell> STRUCTURE_DEFINITION = null;
@@ -141,17 +138,11 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
 					})
 					.addElement(
 							'C',
-							ofChain(
-									ofHatchAdder(
-											GregtechMTE_FrothFlotationCell::addFrothFlotationCellList, TAE.getIndexFromPage(2, 1), 1
-									),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													ModBlocks.blockCasings3Misc, 1
-											)
-									)
-							)
+							buildHatchAdder(GregtechMTE_FrothFlotationCell.class)
+									.atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+									.casingIndex(TAE.GTPP_INDEX(1))
+									.dot(1)
+									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1)))
 					)
 					.addElement(
 							'F',
@@ -176,29 +167,15 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
 	}
 
 	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 3, 3, 0, elementBudget, source, actor, false, true);
+	}
+
+	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		return checkPiece(mName, 3,  3, 0) && mCasing >= 68 - 4 && checkHatch();
-	}
-
-	public final boolean addFrothFlotationCellList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -283,7 +260,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
 		 * Makes sure we can only ever use one type of material in this flotation cell.
 		 * We used to depend on Alk's hash, but it's unreliable and user-hostile
 		 * So we're using unlocalized name of material now.
-		 * 
+		 *
 		 */
 		Material foundMaterial = FlotationRecipeHandler.getMaterialOfMilledProduct(FlotationRecipeHandler.findMilledStack(tRecipe));
 		String foundMaterialName = null;

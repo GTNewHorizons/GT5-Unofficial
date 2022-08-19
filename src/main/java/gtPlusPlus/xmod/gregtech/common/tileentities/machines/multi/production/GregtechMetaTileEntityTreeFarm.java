@@ -1,6 +1,12 @@
 
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.annotation.Nonnull;
+
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import forestry.api.arboriculture.EnumTreeChromosome;
@@ -15,7 +21,6 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
@@ -29,19 +34,21 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTEnergy;
 
-public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntityTreeFarm> {
+public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntityTreeFarm> implements ISurvivalConstructable {
 
 	public static int CASING_TEXTURE_ID;
 	public static String mCasingName = "Sterile Farm Casing";
@@ -235,17 +242,21 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 	@Override
 	public IStructureDefinition<GregtechMetaTileEntityTreeFarm> getStructureDefinition() {
 		if (STRUCTURE_DEFINITION == null) {
-			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntityTreeFarm>builder().addShape(mName, transpose(new String[][]{{"CCC", "CCC", "CCC"}, {"C~C", "C-C", "CCC"}, {"CCC", "CCC", "CCC"},})).addElement('C', ofChain(ofHatchAdder(GregtechMetaTileEntityTreeFarm::addTreeFarmList, CASING_TEXTURE_ID, 1), onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 15)))).build();
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntityTreeFarm>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "CCC", "CCC"},
+							{"C~C", "C-C", "CCC"},
+							{"CCC", "CCC", "CCC"},
+					}))
+					.addElement('C', buildHatchAdder(GregtechMetaTileEntityTreeFarm.class)
+							.atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(TTEnergy), Muffler)
+							.casingIndex(CASING_TEXTURE_ID)
+							.dot(1)
+							.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 15)))
+					)
+					.build();
 		}
 		return STRUCTURE_DEFINITION;
-	}
-
-	public final boolean addTreeFarmList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			return addToMachineList(aTileEntity, aBaseCasingIndex);
-		}
 	}
 
 	@Override
@@ -469,7 +480,13 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
 		buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
 	}
-	
+
+	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
+	}
+
 	public static void mapSaplingToLog(String aSapling, ItemStack aLog) {
 		ItemStack aSaplingStack = ItemUtils.getItemStackFromFQRN(aSapling, 1);
 		if (aSaplingStack != null && aLog != null) {

@@ -1,42 +1,22 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_Values.E;
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import gregtech.api.interfaces.IIconContainer;
-import org.apache.commons.lang3.ArrayUtils;
-
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TAE;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.api.util.GTPP_Recipe;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
@@ -44,12 +24,24 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
 
-public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialRockBreaker> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
+
+public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialRockBreaker> implements ISurvivalConstructable {
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialRockBreaker> STRUCTURE_DEFINITION = null;
@@ -110,24 +102,18 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 					}))
 					.addElement(
 							'C',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_IndustrialRockBreaker::addRockBreakerList, TAE.GTPP_INDEX(16), 1
-											),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													ModBlocks.blockCasings2Misc, 0
-													)
-											)
-									)
-							)
+							buildHatchAdder(GregtechMetaTileEntity_IndustrialRockBreaker.class)
+									.atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
+									.casingIndex(TAE.GTPP_INDEX(16))
+									.dot(1)
+									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0)))
+						)
 					.addElement(
 							'H',
 							ofBlock(
 									ModBlocks.blockCasings2Misc, 11
-									)
 							)
+					)
 					.build();
 		}
 		return STRUCTURE_DEFINITION;
@@ -136,6 +122,12 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
 		buildPiece(mName , stackSize, hintsOnly, 1, 3, 0);
+	}
+
+	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, source, actor, false, true);
 	}
 
 	@Override
@@ -148,32 +140,9 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 		return aCheckPiece && aCasingCount && aCheckHatch;
 	}
 
-	public final boolean addRockBreakerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		return false;
-	}
-
-
 	@Override
 	public String getSound() {
-		return GregTech_API.sSoundList.get(Integer.valueOf(208));
+		return GregTech_API.sSoundList.get(208);
 	}
 
 	@Override

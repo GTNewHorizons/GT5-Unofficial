@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.TAE;
@@ -7,20 +9,27 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Refinery> {
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
+
+public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Refinery> implements ISurvivalConstructable {
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_Refinery> STRUCTURE_DEFINITION = null;
@@ -115,22 +124,13 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 		return 0;
 	}
 
-	public final boolean addRefineryList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+	@Override
+	public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
 		} else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler && ((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity).mTier >= 6) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler && ((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity).mTier >= 6) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 		}
@@ -154,9 +154,18 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 					.addElement(
 							'X',
 							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_Refinery::addRefineryList, TAE.GTPP_INDEX(18), 1
-									),
+									buildHatchAdder(GregtechMetaTileEntity_Refinery.class)
+											.atLeast(Energy, Maintenance, OutputHatch, OutputBus, InputHatch)
+											.casingIndex(TAE.GTPP_INDEX(18))
+											.dot(1)
+											.build(),
+									buildHatchAdder(GregtechMetaTileEntity_Refinery.class)
+											.atLeast(Muffler)
+											.adder(GregtechMetaTileEntity_Refinery::addMufflerToMachineList)
+											.hatchItemFilterAnd(t -> filterByMTETier(6, Integer.MAX_VALUE))
+											.casingIndex(TAE.GTPP_INDEX(18))
+											.dot(1)
+											.build(),
 									onElementPass(
 											x -> ++x.mCasing,
 											ofBlock(
@@ -191,6 +200,12 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
 		buildPiece(mName , stackSize, hintsOnly, 1, 7, 0);
+	}
+
+	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 1, 7, 0, elementBudget, source, actor, false, true);
 	}
 
 	@Override

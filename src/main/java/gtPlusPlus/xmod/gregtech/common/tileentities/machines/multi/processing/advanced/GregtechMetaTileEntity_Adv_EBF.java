@@ -1,41 +1,47 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofCoil;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
-import org.apache.commons.lang3.ArrayUtils;
-
 import gregtech.api.enums.TAE;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
 
-public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_EBF> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofCoil;
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
+
+public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_EBF> implements ISurvivalConstructable {
 
 	public static int CASING_TEXTURE_ID;
 	public static String mHotFuelName = "Blazing Pyrotheum";
@@ -43,7 +49,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 	public static String mHatchName = "Pyrotheum Hatch";
 	private IStructureDefinition<GregtechMetaTileEntity_Adv_EBF> STRUCTURE_DEFINITION = null;
 	private int mCasing;
-	private boolean mHaveHatch;
+	private final ArrayList<GT_MetaTileEntity_Hatch_CustomFluidBase> mPyrotheumHatches = new ArrayList<>();
 
 	private HeatingCoilLevel mHeatingCapacity;
 	private boolean isBussesSeparate = false;
@@ -104,9 +110,17 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 					.addElement(
 							'C',
 							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_Adv_EBF::addAdvEBFList, CASING_TEXTURE_ID, 1
-											),
+									buildHatchAdder(GregtechMetaTileEntity_Adv_EBF.class)
+											.adder(GregtechMetaTileEntity_Adv_EBF::addPyrotheumHatch)
+											.hatchId(968)
+											.casingIndex(CASING_TEXTURE_ID)
+											.dot(1)
+											.build(),
+									buildHatchAdder(GregtechMetaTileEntity_Adv_EBF.class)
+											.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+											.casingIndex(CASING_TEXTURE_ID)
+											.dot(1)
+											.build(),
 									onElementPass(
 											x -> ++x.mCasing,
 											ofBlock(
@@ -119,8 +133,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 							'H',
 							ofCoil(
 									GregtechMetaTileEntity_Adv_EBF::setCoilLevel, GregtechMetaTileEntity_Adv_EBF::getCoilLevel
-									)
 							)
+					)
 					.build();
 		}
 		return STRUCTURE_DEFINITION;
@@ -132,36 +146,55 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		mCasing = 0;
-		mHaveHatch = false;
-		setCoilLevel(HeatingCoilLevel.None);
-		return checkPiece(mName, 1, 3, 0) && mCasing >= 9 && mHaveHatch && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, source, actor, false, true);
 	}
 
-	public final boolean addAdvEBFList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		mPyrotheumHatches.clear();
+		setCoilLevel(HeatingCoilLevel.None);
+		return checkPiece(mName, 1, 3, 0) && mCasing >= 9 && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
+	}
+
+	@Override
+	public boolean checkHatch() {
+		return super.checkHatch() || !mPyrotheumHatches.isEmpty();
+	}
+
+	private boolean addPyrotheumHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
 		} else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CustomFluidBase && aMetaTileEntity.getBaseMetaTileEntity().getMetaTileID() == 968) {
-				mHaveHatch = true;
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
+				return addToMachineListInternal(mPyrotheumHatches, aTileEntity, aBaseCasingIndex);
 			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
+		}
+		return false;
+	}
+
+	@Override
+	public void updateSlots() {
+		for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : mPyrotheumHatches)
+			if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
+		super.updateSlots();
+	}
+
+	private boolean depleteFuel(int aAmount) {
+		for (final GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : this.mPyrotheumHatches) {
+			if (isValidMetaTileEntity(tHatch)) {
+				FluidStack tLiquid = tHatch.getFluid();
+				if (tLiquid == null || tLiquid.amount < aAmount) {
+					continue;
+				}
+				tLiquid = tHatch.drain(aAmount, false);
+				if (tLiquid != null && tLiquid.amount >= aAmount) {
+					tLiquid = tHatch.drain(aAmount, true);
+					return tLiquid != null && tLiquid.amount >= aAmount;
+				}
 			}
 		}
 		return false;

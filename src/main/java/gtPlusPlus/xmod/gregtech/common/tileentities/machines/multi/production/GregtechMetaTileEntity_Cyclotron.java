@@ -2,18 +2,19 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.IonParticles;
@@ -22,16 +23,20 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Cyclotron> {
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+
+public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Cyclotron> implements ISurvivalConstructable {
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_Cyclotron> STRUCTURE_DEFINITION = null;
@@ -159,17 +164,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 					}))
 					.addElement(
 							'h',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_Cyclotron::addCyclotronList, 44, 1
-									),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													getCasing(), getCasingMeta()
-											)
-									)
-							)
+							buildHatchAdder(GregtechMetaTileEntity_Cyclotron.class)
+									.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
+									.casingIndex(44)
+									.dot(1)
+									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta())))
 					)
 					.addElement(
 							'c',
@@ -188,36 +187,18 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	}
 
 	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 7, 1, 12, elementBudget, source, actor, false, true);
+	}
+
+	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		return checkPiece(mName, 7, 1, 12) && mCasing >= 40 && checkHatch();
 	}
 
-	public final boolean addCyclotronList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus && ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mTier >= 5){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output && ((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity).mTier >= 5) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy && ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).mTier >= 5){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus && ((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity).mTier >= 5) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler && ((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity).mTier >= 5) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input && ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mTier >= 5) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		return false;
-	}
-
-	public Block getCasing() {
+	public Block getCasingBlock() {
 		return ModBlocks.blockCasings2Misc;
 	}
 

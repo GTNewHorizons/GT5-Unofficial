@@ -1,16 +1,11 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
 import java.util.ArrayList;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -20,11 +15,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -33,7 +25,6 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -42,6 +33,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,14 +41,20 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
-public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_LargerTurbineBase> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTDynamo;
+
+public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_LargerTurbineBase> implements ISurvivalConstructable {
 
 	protected int baseEff = 0;
 	protected int optFlow = 0;
 	protected double realOptFlow = 0;
 	protected int storedFluid = 0;
 	protected int counter = 0;
-	protected int mCasing;
 	protected boolean mFastMode = false;
 	protected double mufflerReduction = 1;
 
@@ -144,16 +142,24 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 						{"ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc"},
 					}))						
 
-					.addElement('c', lazy(t -> onElementPass(x -> ++x.mCasing, ofBlock(t.getCasingBlock(), t.getCasingMeta()))))
+					.addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
 					.addElement('s', lazy(t -> ofBlock(t.getCasingBlock(), t.getTurbineShaftMeta())))
-					.addElement('t', lazy(t -> ofHatchAdder(GregtechMetaTileEntity_LargerTurbineBase::addTurbineHatch, t.getCasingTextureIndex(), 1)))
-					.addElement('h', lazy(t -> ofChain(
-							ofHatchAdder(GregtechMetaTileEntity_LargerTurbineBase::addGenericHatch, t.getCasingTextureIndex(), 4),
-							onElementPass(x -> ++x.mCasing, ofBlock(t.getCasingBlock(), t.getCasingMeta()))
-							)))
-					.addElement('m', lazy(t -> ofChain(
-							ofHatchAdder(GregtechMetaTileEntity_LargerTurbineBase::addMuffler, t.getCasingTextureIndex(), 7),
-							onElementPass(x -> ++x.mCasing, ofBlock(t.getCasingBlock(), t.getCasingMeta())))))
+					.addElement('t', lazy(t -> buildHatchAdder(GregtechMetaTileEntity_LargerTurbineBase.class)
+							.adder(GregtechMetaTileEntity_LargerTurbineBase::addTurbineHatch)
+							.hatchClass(GT_MetaTileEntity_Hatch_Turbine.class)
+							.casingIndex(t.getCasingTextureIndex())
+							.dot(1)
+							.build()))
+					.addElement('h', lazy(t -> buildHatchAdder(GregtechMetaTileEntity_LargerTurbineBase.class)
+							.atLeast(InputBus, InputHatch, OutputHatch, Dynamo.or(TTDynamo), Maintenance)
+							.casingIndex(t.getCasingTextureIndex())
+							.dot(4)
+							.buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
+					.addElement('m', lazy(t -> buildHatchAdder(GregtechMetaTileEntity_LargerTurbineBase.class)
+							.atLeast(Muffler)
+							.casingIndex(t.getCasingTextureIndex())
+							.dot(7)
+							.buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
 					.build();
 		}
 	};
@@ -194,14 +200,11 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		if (requiresOutputHatch()) {
 			this.mOutputHatches.clear();
 		}
-		mCasing = 0;
-
-		boolean aStructure = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);	
-		boolean aCasingCount = mCasing >= 360;
-		log("Structure Check: "+aStructure);	
-		if (!aCasingCount || 
-				mTurbineRotorHatches.size() != 12 ||
-				mMaintenanceHatches.size() != 1 || 
+		// we do not check for casing count here. the bare minimal is 372 but we only require 360
+		boolean aStructure = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
+		log("Structure Check: "+aStructure);
+		if (mTurbineRotorHatches.size() != 12 ||
+				mMaintenanceHatches.size() != 1 ||
 				(mDynamoHatches.size() < 1 && mTecTechDynamoHatches.size() < 1) ||
 				(requiresMufflers() && mMufflerHatches.size() != 4) ||
 				mInputBusses.size() < 1 ||
@@ -214,18 +217,23 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 					", Muffler: "+mMufflerHatches.size()+
 					", Input Buses: "+mInputBusses.size()+
 					", Input Hatches: "+mInputHatches.size()+
-					", Output Hatches: "+mOutputHatches.size()+
-					", Casing Count: "+aCasingCount+" | Found: "+mCasing);
+					", Output Hatches: "+mOutputHatches.size());
 			return false;
 		}		
 		mufflerReduction = getMufflerReduction();
-		log("Built "+this.getLocalName()+" with "+mCasing+"/360 casings.");
 		return aStructure;
 	}
 
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
 		buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 3, 0);
+	}
+
+	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 2);
+		return survivialBuildPiece(mName, stackSize, 1, 3, 3, realBudget, source, actor, false, true);
 	}
 
 	public boolean addTurbineHatch(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
@@ -251,49 +259,6 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 			}
 		}
 		log("Bad Turbine Housing");
-		return false;
-	}
-
-	public final boolean addMuffler(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		return false;
-	}
-
-	public final boolean addGenericHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} 
-		else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (LoadedMods.TecTech) {
-				if (isThisHatchMultiDynamo(aMetaTileEntity)) {
-					return addToMachineList(aTileEntity, aBaseCasingIndex);
-				}
-			}
-		}
-		log("Bad Hatch");
 		return false;
 	}
 

@@ -1,40 +1,33 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMolecularTransformer> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+
+public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMolecularTransformer> implements ISurvivalConstructable {
 
 	private static final int CASING_TEXTURE_ID = 48;
 	private int mCasing = 0;
@@ -85,11 +78,10 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 	
 
 	private static final String STRUCTURE_PIECE_MAIN = "main";
-	private IStructureDefinition<GregtechMetaTileEntity_IndustrialMolecularTransformer> STRUCTURE_DEFINITION = null;
+	private static IStructureDefinition<GregtechMetaTileEntity_IndustrialMolecularTransformer> STRUCTURE_DEFINITION = null;
 	
 	@Override
 	public IStructureDefinition<GregtechMetaTileEntity_IndustrialMolecularTransformer> getStructureDefinition() {
-		STRUCTURE_DEFINITION = null;
 		if (STRUCTURE_DEFINITION == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialMolecularTransformer>builder()
 					.addShape(STRUCTURE_PIECE_MAIN, (new String[][]{
@@ -108,11 +100,13 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 					.addElement('e', ofBlock(getCasingBlock2(), 0))
 					.addElement('f', ofBlock(getCasingBlock2(), 4))
 					.addElement('c', ofBlock(getCoilBlock(), 3))
-					.addElement('t', lazy(t -> onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock3(), getTungstenCasingMeta()))))
-					.addElement('h', lazy(t -> ofChain(
-							ofHatchAdder(GregtechMetaTileEntity_IndustrialMolecularTransformer::addGenericHatch, getCasingTextureIndex(), 1),
-							onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock3(), getTungstenCasingMeta()))
-							)))
+					.addElement('t', ofBlock(getCasingBlock3(), getTungstenCasingMeta()))
+					.addElement('h', buildHatchAdder(GregtechMetaTileEntity_IndustrialMolecularTransformer.class)
+							.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+							.casingIndex(getCasingTextureIndex())
+							.dot(1)
+							.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock3(), getTungstenCasingMeta())))
+					)
 					.build();	
 		}
 		return STRUCTURE_DEFINITION;
@@ -120,7 +114,13 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 	
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
-		buildPiece(STRUCTURE_PIECE_MAIN , stackSize, hintsOnly, 3, 3, 0);
+		buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 3, 0);
+	}
+
+	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, elementBudget, source, actor, false, true);
 	}
 
 	@Override
@@ -130,7 +130,8 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 		if (this.mInputBusses.size() != 1 || this.mOutputBusses.size() != 1 || this.mEnergyHatches.size() != 1) {
 			return false;
 		}
-		return aDidBuild && mCasing >= 40 && checkHatch();
+		// there are 16 slot that only allow casing, so we subtract this from the grand total required
+		return aDidBuild && mCasing >= 40 - 16 && checkHatch();
 	}	
 
 	protected static int getCasingTextureIndex() {
@@ -167,32 +168,6 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 	
 	protected static int getTungstenCasingMeta() {
 		return 0;
-	}
-
-	public final boolean addGenericHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} 
-		else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		log("Bad Hatch");
-		return false;
 	}
 
 	@Override

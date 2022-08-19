@@ -1,20 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.RoundingMode;
-import java.util.function.Predicate;
+import java.util.function.Consumer;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
-import gregtech.api.enums.*;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TAE;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -37,20 +30,29 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_PowerSubStation;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_PowerSubStation;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_PowerSubStationController> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_HatchElement.Dynamo;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTDynamo;
+import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTEnergy;
+
+public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_PowerSubStationController> implements ISurvivalConstructable {
 
 	private static enum TopState {
 		MayBeTop,
@@ -228,14 +230,15 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 					}))
 					.addElement(
 							'C',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_PowerSubStationController::addPowerSubStationList, TAE.GTPP_INDEX(24), 1
-											),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													ModBlocks.blockCasings2Misc, 8
+							buildHatchAdder(GregtechMetaTileEntity_PowerSubStationController.class)
+									.atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
+									.casingIndex(TAE.GTPP_INDEX(24))
+									.dot(1)
+									.buildAndChain(
+											onElementPass(
+													x -> ++x.mCasing,
+													ofBlock(
+															ModBlocks.blockCasings2Misc, 8
 													)
 											)
 									)
@@ -315,6 +318,15 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
 				return world.setBlock(x, y, z, getBlockFromTier(getIndex(trigger.stackSize)), getMetaFromTier(getIndex(trigger.stackSize)), 3);
 			}
+
+			@Override
+			public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+				Block block = world.getBlock(x, y, z);
+				int meta = world.getBlockMetadata(x, y, z);
+				int tier = getCellTier(block, meta);
+				if (tier >= 0) return PlaceResult.SKIP;
+				return StructureUtility.survivalPlaceBlock(getBlockFromTier(getIndex(trigger.stackSize)), getMetaFromTier(getIndex(trigger.stackSize)), world, x, y, z, s, actor, chatter);
+			}
 		};
 	}
 
@@ -333,6 +345,20 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		log("Building "+(layer - 1));
 		buildPiece(mName + "top", stackSize, hintsOnly, 2, layer - 1, 0);
 		log("Built "+(layer - 1));
+	}
+
+	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		int layer = Math.min(stackSize.stackSize + 3, 18);
+		int built;
+		built = survivialBuildPiece(mName + "bottom", stackSize, 2, 0, 0, elementBudget, source, actor, false, true);
+		if (built >= 0) return built;
+		for (int i = 1; i < layer - 1; i++) {
+			built = survivialBuildPiece(mName + "mid", stackSize, 2, i, 0, elementBudget, source, actor, false, true);
+			if (built >= 0) return built;
+		}
+		return survivialBuildPiece(mName + "top", stackSize, 2, layer - 1, 0, elementBudget, source, actor, false, true);
 	}
 
 	@Override

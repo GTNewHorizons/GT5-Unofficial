@@ -1,15 +1,16 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
@@ -19,17 +20,21 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Entity_ThermalBoiler> {
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+
+public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Entity_ThermalBoiler> implements ISurvivalConstructable {
 	
 	private int mCasing;
 	private IStructureDefinition<GT4Entity_ThermalBoiler> STRUCTURE_DEFINITION = null;
@@ -275,17 +280,11 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
 					}))
 					.addElement(
 							'C',
-							ofChain(
-									ofHatchAdder(
-											GT4Entity_ThermalBoiler::addThermalBoilerList, TAE.getIndexFromPage(0, 1), 1
-									),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													ModBlocks.blockCasings2Misc, 11
-											)
-									)
-							)
+							buildHatchAdder(GT4Entity_ThermalBoiler.class)
+									.atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+									.casingIndex(TAE.getIndexFromPage(0, 1))
+									.dot(1)
+									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 11)))
 					)
 					.build();
 		}
@@ -298,31 +297,15 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
 	}
 
 	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
+	}
+
+	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
-	}
-
-	public final boolean addThermalBoilerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		return false;
 	}
 
 	public void damageFilter(){

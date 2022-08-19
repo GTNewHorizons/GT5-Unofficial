@@ -1,27 +1,34 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
 import java.util.Random;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GregtechMetaTileEntity_IndustrialSifter extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialSifter> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+
+public class GregtechMetaTileEntity_IndustrialSifter extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialSifter> implements ISurvivalConstructable {
 	
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialSifter> STRUCTURE_DEFINITION = null;
@@ -80,17 +87,11 @@ public class GregtechMetaTileEntity_IndustrialSifter extends GregtechMeta_MultiB
 					}))
 					.addElement(
 							'C',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_IndustrialSifter::addIndustrialSifterList, TAE.GTPP_INDEX(21), 1
-									),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													ModBlocks.blockCasings2Misc, 5
-											)
-									)
-							)
+							buildHatchAdder(GregtechMetaTileEntity_IndustrialSifter.class)
+									.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+									.casingIndex(TAE.GTPP_INDEX(21))
+									.dot(1)
+									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 5)))
 					)
 					.addElement(
 							'M',
@@ -109,33 +110,15 @@ public class GregtechMetaTileEntity_IndustrialSifter extends GregtechMeta_MultiB
 	}
 
 	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 2, 2, 0, elementBudget, source, actor, false, true);
+	}
+
+	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		return checkPiece(mName, 2, 2, 0) && mCasing >= 35 && mOutputBusses.size() >= 4 && checkHatch();
-	}
-
-	public final boolean addIndustrialSifterList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-		}
-		}
-		return false;
 	}
 
 	@Override

@@ -1,25 +1,14 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -31,11 +20,18 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-public class GregtechMetaTileEntity_IndustrialArcFurnace extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialArcFurnace> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+
+public class GregtechMetaTileEntity_IndustrialArcFurnace extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialArcFurnace> implements ISurvivalConstructable {
 
 	//862
 	private static final int mCasingTextureID = TAE.getIndexFromPage(3, 3);
@@ -109,17 +105,11 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends GregtechMeta_Mu
 					})
 					.addElement(
 							'C',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_IndustrialArcFurnace::addIndustrialArcFurnaceList, mCasingTextureID, 1
-									),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													ModBlocks.blockCasings4Misc, 3
-											)
-									)
-							)
+							buildHatchAdder(GregtechMetaTileEntity_IndustrialArcFurnace.class)
+									.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+									.casingIndex(getCasingTextureIndex())
+									.dot(1)
+									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings4Misc, 3)))
 					)
 					.build();
 		}
@@ -136,39 +126,25 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends GregtechMeta_Mu
 		mMufflerHatches.clear();
 	}
 
-	public final boolean addIndustrialArcFurnaceList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
+	private int getSizeFromHint(ItemStack stackSize) {
+		switch (stackSize.stackSize) {
+			case 1: return  3;
+			case 2: return  5;
+			default: return  7;
 		}
-		return false;
 	}
 
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
-		int size;
-		switch (stackSize.stackSize) {
-			case 1: size = 3; break;
-			case 2: size = 5; break;
-			default: size = 7; break;
-		}
+		int size = getSizeFromHint(stackSize);
 		buildPiece(mName + size, stackSize, hintsOnly, (size - 1) / 2, (size - 1) / 2, 0);
+	}
+
+	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		int size = getSizeFromHint(stackSize);
+		return survivialBuildPiece(mName + size, stackSize,  (size - 1) / 2, (size - 1) / 2, 0, elementBudget, source, actor, false, true);
 	}
 
 	@Override

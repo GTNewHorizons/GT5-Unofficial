@@ -1,20 +1,18 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.ConcurrentHashSet;
-import gtPlusPlus.api.objects.data.ConcurrentSet;
-import gtPlusPlus.api.objects.data.FlexiblePair;
-import gtPlusPlus.api.objects.data.Triplet;
+import gtPlusPlus.api.objects.data.*;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusOutput;
@@ -24,13 +22,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
-public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBlockBase {
+public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMultiBase<T>> extends GregtechMeta_MultiBlockBase<T> {
 	
 	public ArrayList<GT_MetaTileEntity_Hatch_Steam_BusInput> mSteamInputs = new ArrayList<GT_MetaTileEntity_Hatch_Steam_BusInput>();
 	public ArrayList<GT_MetaTileEntity_Hatch_Steam_BusOutput> mSteamOutputs = new ArrayList<GT_MetaTileEntity_Hatch_Steam_BusOutput>();
@@ -90,8 +86,8 @@ public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBloc
 		if (tMap == null) {
 			return false;
 		}        
-		ItemStack[] aItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
-		FluidStack[] aFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);		
+		ItemStack[] aItemInputs = tItems.toArray(new ItemStack[0]);
+		FluidStack[] aFluidInputs = tFluids.toArray(new FluidStack[0]);
 		GT_Recipe tRecipe = tMap.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[1], null, null, aItemInputs);
 		if (tRecipe == null) {
 			log("BAD RETURN - 1");
@@ -211,7 +207,7 @@ public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBloc
 		for (ItemStack tS : tOutputItems) {
 			if (tS.stackSize > 0) tSList.add(tS);
 		}
-		tOutputItems = tSList.toArray(new ItemStack[tSList.size()]);
+		tOutputItems = tSList.toArray(new ItemStack[0]);
 
 		// Commit outputs
 		this.mOutputItems = tOutputItems;
@@ -685,8 +681,7 @@ public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBloc
 	@Override
     public boolean depleteInput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
-        for (GT_MetaTileEntity_Hatch_Input tHatch : mSteamInputFluids) {
-            tHatch.mRecipeMap = getRecipeMap();
+        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : mSteamInputFluids) {
             if (isValidMetaTileEntity(tHatch)) {
                 FluidStack tLiquid = tHatch.getFluid();
                 if (tLiquid != null && tLiquid.isFluidEqual(aLiquid)) {
@@ -706,8 +701,7 @@ public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBloc
         if (GT_Utility.isStackInvalid(aStack)) return false;
         FluidStack aLiquid = GT_Utility.getFluidForFilledItem(aStack, true);
         if (aLiquid != null) return depleteInput(aLiquid);
-        for (GT_MetaTileEntity_Hatch_Input tHatch : mSteamInputFluids) {
-            tHatch.mRecipeMap = getRecipeMap();
+        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : mSteamInputFluids) {
             if (isValidMetaTileEntity(tHatch)) {
                 if (GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(0))) {
                     if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
@@ -736,8 +730,7 @@ public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBloc
 	@Override
     public ArrayList<FluidStack> getStoredFluids() {
         ArrayList<FluidStack> rList = new ArrayList<FluidStack>();
-        for (GT_MetaTileEntity_Hatch_Input tHatch : mSteamInputFluids) {
-            tHatch.mRecipeMap = getRecipeMap();
+        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : mSteamInputFluids) {
             if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
                 rList.add(tHatch.getFillableStack());
             }
@@ -800,7 +793,7 @@ public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBloc
 
 	@Override
     public void updateSlots() {
-        for (GT_MetaTileEntity_Hatch_Input tHatch : mSteamInputFluids)
+        for (GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : mSteamInputFluids)
             if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
         for (GT_MetaTileEntity_Hatch_Steam_BusInput tHatch : mSteamInputs)
             if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();

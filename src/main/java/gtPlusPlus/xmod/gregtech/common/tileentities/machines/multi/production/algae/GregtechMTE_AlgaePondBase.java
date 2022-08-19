@@ -1,46 +1,53 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.algae;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_AlgaeFarm;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
 
-public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<GregtechMTE_AlgaePondBase> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
+
+public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<GregtechMTE_AlgaePondBase> implements ISurvivalConstructable {
 
 	private int mLevel = -1;
 	private int mCasing;
@@ -115,9 +122,11 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 					.addElement(
 							'C',
 							ofChain(
-									ofHatchAdder(
-											GregtechMTE_AlgaePondBase::addAlgaePondBaseList, TAE.getIndexFromPage(1, 15), 1
-									),
+									buildHatchAdder(GregtechMTE_AlgaePondBase.class)
+											.atLeast(InputHatch, InputBus, OutputBus)
+											.casingIndex(TAE.getIndexFromPage(1, 15))
+											.dot(1)
+											.build(),
 									onElementPass(
 											x -> ++x.mCasing,
 											addTieredBlock(
@@ -143,6 +152,12 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 	}
 
 	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 4, 2, 0, elementBudget, source, actor, false, true);
+	}
+
+	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		mLevel = 0;
@@ -151,25 +166,6 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 		if (checkPiece(mName, 4, 2, 0) && mCasing >= 64 && checkMeta > 0) {
 			mLevel = checkMeta - 1;
 			return mLevel <= minTierOfHatch;
-		}
-		return false;
-	}
-
-	public final boolean addAlgaePondBaseList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				minTierOfHatch = Math.min(minTierOfHatch, ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mTier);
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				minTierOfHatch = Math.min(minTierOfHatch, ((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity).mTier);
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				minTierOfHatch = Math.min(minTierOfHatch, ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mTier);
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
 		}
 		return false;
 	}

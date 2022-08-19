@@ -1,20 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
 import java.util.ArrayList;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -28,13 +25,23 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.TileEntitySolarHeater;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_SolarTower> {
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+
+public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_SolarTower> implements ISurvivalConstructable {
 
 	//862
 	private static final int mCasingTextureID = TAE.getIndexFromPage(3, 9);
@@ -95,11 +102,12 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
 	private static final String STRUCTURE_PIECE_TOWER = "tower";
 	private static final String STRUCTURE_PIECE_TOP = "top";
 
-	private static final String SOLAR_HEATER_RING_1 = "ring1";
-	private static final String SOLAR_HEATER_RING_2 = "ring2";
-	private static final String SOLAR_HEATER_RING_3 = "ring3";
-	private static final String SOLAR_HEATER_RING_4 = "ring4";
-	private static final String SOLAR_HEATER_RING_5 = "ring5";
+	private static final String[] STRUCTURE_PIECE_SOLAR_HEATER_RING = {"ring1", "ring2", "ring3", "ring4", "ring5"};
+	private static final String SOLAR_HEATER_RING_1 = STRUCTURE_PIECE_SOLAR_HEATER_RING[0];
+	private static final String SOLAR_HEATER_RING_2 = STRUCTURE_PIECE_SOLAR_HEATER_RING[1];
+	private static final String SOLAR_HEATER_RING_3 = STRUCTURE_PIECE_SOLAR_HEATER_RING[2];
+	private static final String SOLAR_HEATER_RING_4 = STRUCTURE_PIECE_SOLAR_HEATER_RING[3];
+	private static final String SOLAR_HEATER_RING_5 = STRUCTURE_PIECE_SOLAR_HEATER_RING[4];
 
 	private static final ClassValue<IStructureDefinition<GregtechMetaTileEntity_SolarTower>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GregtechMetaTileEntity_SolarTower>>() {
 		@Override
@@ -280,16 +288,22 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
 							"     ggggggggggggggggggggg     ", 
 						}}))
 
-					.addElement('g', lazy(t -> ofHatchAdder(GregtechMetaTileEntity_SolarTower::addSolarHeater, 0, 1)))
+					.addElement('g', lazy(t -> buildHatchAdder(GregtechMetaTileEntity_SolarTower.class)
+							.hatchClass(TileEntitySolarHeater.class)
+							.adder(GregtechMetaTileEntity_SolarTower::addSolarHeater)
+							.casingIndex(0)
+							.dot(1)
+							.build()))
 					.addElement('t', lazy(t -> onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta()))))
 					.addElement('i', lazy(t -> onElementPass(x -> ++x.mCasing2, ofBlock(t.getCasingBlock(), t.getCasingMeta2()))))
 					.addElement('s', lazy(t -> onElementPass(x -> ++x.mCasing3, ofBlock(t.getCasingBlock(), t.getCasingMeta3()))))
 					.addElement('c', lazy(t -> onElementPass(x -> ++x.mCasing4, ofBlock(t.getCasingBlock2(), t.getCasingMeta4()))))
-					.addElement('h', lazy(t -> ofChain(
-							ofHatchAdder(GregtechMetaTileEntity_SolarTower::addGenericHatch, t.getCasingTextureIndex(), 2),
-							onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta())))))
-
-
+					.addElement('h', lazy(t -> buildHatchAdder(GregtechMetaTileEntity_SolarTower.class)
+							.atLeast(InputHatch, OutputHatch, Maintenance)
+							.casingIndex(t.getCasingTextureIndex())
+							.dot(2)
+							.buildAndChain(onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta()))))
+					)
 					.build();
 		}
 	};
@@ -365,28 +379,37 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
 	}
 
 	@Override
-	public IStructureDefinition<GregtechMetaTileEntity_SolarTower> getStructureDefinition() {
-		return STRUCTURE_DEFINITION.get(getClass());
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		int built;
+		int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 2);
+		// Tower
+		built = survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, realBudget, source, actor, false, true);
+		if (built >= 0) return built;
+		built = survivialBuildPiece(STRUCTURE_PIECE_TOWER, stackSize, 1, 1, -7, realBudget, source, actor, false, true);
+		if (built >= 0) return built;
+		built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 5, 5, -22, realBudget, source, actor, false, true);
+		if (built >= 0) return built;
+
+		//Solar Heaters
+		if (stackSize.stackSize < 1) return -1;
+		built = survivialBuildPiece(SOLAR_HEATER_RING_1, stackSize, 7, 7, -27, realBudget, source, actor, false, true);
+		if (built >= 0) return built;
+		if (stackSize.stackSize < 2) return -1;
+		built = survivialBuildPiece(SOLAR_HEATER_RING_2, stackSize, 9, 9, -27, realBudget, source, actor, false, true);
+		if (built >= 0) return built;
+		if (stackSize.stackSize < 3) return -1;
+		built = survivialBuildPiece(SOLAR_HEATER_RING_3, stackSize, 11, 11, -27, realBudget, source, actor, false, true);
+		if (built >= 0) return built;
+		if (stackSize.stackSize < 4) return -1;
+		built = survivialBuildPiece(SOLAR_HEATER_RING_4, stackSize, 13, 13, -27, realBudget, source, actor, false, true);
+		if (built >= 0) return built;
+		if (stackSize.stackSize < 5) return -1;
+		return survivialBuildPiece(SOLAR_HEATER_RING_5, stackSize, 15, 15, -27, realBudget, source, actor, false, true);
 	}
 
-	public final boolean addGenericHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} 
-		else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		log("Bad Hatch");
-		return false;
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_SolarTower> getStructureDefinition() {
+		return STRUCTURE_DEFINITION.get(getClass());
 	}
 
 	@Override
@@ -511,14 +534,12 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity instanceof TileEntitySolarHeater) {
 				TileEntitySolarHeater mTile = (TileEntitySolarHeater) aMetaTileEntity;
-				if (mTile != null) {							
-					if (!mTile.hasSolarTower() && mTile.canSeeSky()) {
-						//Logger.INFO("Found Solar Reflector, Injecting Data.");
-						mTile.setSolarTower(this);
-						return this.mSolarHeaters.add(mTile);
-					}
+				if (!mTile.hasSolarTower() && mTile.canSeeSky()) {
+					//Logger.INFO("Found Solar Reflector, Injecting Data.");
+					mTile.setSolarTower(this);
+					return this.mSolarHeaters.add(mTile);
 				}
-			}	
+			}
 		}
 		return false;
 	}

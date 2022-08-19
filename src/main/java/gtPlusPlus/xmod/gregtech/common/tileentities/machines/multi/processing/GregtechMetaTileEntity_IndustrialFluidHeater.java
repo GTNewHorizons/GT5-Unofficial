@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -15,13 +16,17 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_IndustrialFluidHeater extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialFluidHeater> {
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+
+public class GregtechMetaTileEntity_IndustrialFluidHeater extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialFluidHeater> implements ISurvivalConstructable {
 
 	private int mCasing1;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialFluidHeater> STRUCTURE_DEFINITION = null;
@@ -81,17 +86,23 @@ public class GregtechMetaTileEntity_IndustrialFluidHeater extends GregtechMeta_M
 							{" X~X ", "X---X", "X---X", "X---X", " XXX "},
 							{" BBB ", "BBBBB", "BBBBB", "BBBBB", " BBB "},
 					}))
-					
-					.addElement('B', ofChain(
-									ofHatchAdder(GregtechMetaTileEntity_IndustrialFluidHeater::addIndustrialFluidHeaterInputList, getCasingTextureIndex(), 1),
-									onElementPass(x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2()))))
-					
+					.addElement(
+							'B',
+							buildHatchAdder(GregtechMetaTileEntity_IndustrialFluidHeater.class)
+									.atLeast(InputBus, InputHatch, Maintenance, Energy, Muffler)
+									.casingIndex(getCasingTextureIndex())
+									.dot(1)
+									.buildAndChain(onElementPass(x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2())))
+					)
 					.addElement('X', ofBlock(getCasingBlock1(), getCasingMeta1()))
-					
-					.addElement('T', ofChain(
-							ofHatchAdder(GregtechMetaTileEntity_IndustrialFluidHeater::addIndustrialFluidHeaterOutputList, getCasingTextureIndex(), 1),
-							onElementPass(x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2()))))
-					
+					.addElement(
+							'T',
+							buildHatchAdder(GregtechMetaTileEntity_IndustrialFluidHeater.class)
+									.atLeast(OutputBus, OutputHatch, Maintenance, Energy, Muffler)
+									.casingIndex(getCasingTextureIndex())
+									.dot(1)
+									.buildAndChain(onElementPass(x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2())))
+					)
 					.build();
 		}
 		return STRUCTURE_DEFINITION;
@@ -103,61 +114,17 @@ public class GregtechMetaTileEntity_IndustrialFluidHeater extends GregtechMeta_M
 	}
 
 	@Override
+	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+		if (mMachine) return -1;
+		return survivialBuildPiece(mName, stackSize, 2, 4, 0, elementBudget, source, actor, false, true);
+	}
+
+	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing1 = 0;
 		boolean didBuild = checkPiece(mName, 2, 4, 0);
 		log("Built? "+didBuild+", "+mCasing1);
 		return didBuild && mCasing1 >= 34 && checkHatch();
-	}
-
-	public final boolean addIndustrialFluidHeaterInputList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		}
-		else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} 
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} 
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} 
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		return false;
-	}
-	
-	public final boolean addIndustrialFluidHeaterOutputList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} 
-		else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} 
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} 
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		return false;
 	}
 
 	@Override

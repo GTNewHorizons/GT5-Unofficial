@@ -1,44 +1,48 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import gregtech.GT_Mod;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
 
-public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_Hatch_Input {
+
+import static gregtech.api.enums.Textures.BlockIcons.FLUID_IN_SIGN;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
+
+public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_Hatch {
 
 	public final Fluid mLockedFluid;
 	public final int mFluidCapacity;
+	protected FluidStack mLockedStack = null;
+	protected String mTempMod = null;
 
 	public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount, final int aID, final String aName, final String aNameRegional) {
-		super(aID, aName, aNameRegional, 6);
-		this.mRecipeMap = null;
+		super(aID, aName, aNameRegional, 6, 3, new String[]{
+				"Fluid Input for Multiblocks",
+				"Capacity: " + GT_Utility.formatNumbers(aAmount) + "L"});
 		this.mLockedFluid = aFluid;
 		this.mFluidCapacity = aAmount;
 	}
 
 	public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount,  final String aName, final String aDescription,
 			final ITexture[][][] aTextures) {
-		super(aName, 6, aDescription, aTextures);
-		this.mRecipeMap = null;
+		super(aName, 6, 3, aDescription, aTextures);
 		this.mLockedFluid = aFluid;
 		this.mFluidCapacity = aAmount;
 	}
 
 	public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount,  final String aName, final String[] aDescription, final ITexture[][][] aTextures) {
-		super(aName, 6, aDescription[0], aTextures);
-		this.mRecipeMap = null;
+		super(aName, 6, 3, aDescription[0], aTextures);
 		this.mLockedFluid = aFluid;
 		this.mFluidCapacity = aAmount;
 	}
@@ -46,32 +50,97 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
 			final ItemStack aStack) {
 		if (aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
-            if (this.mRecipeMap == null)
-                return true;
             FluidStack fs = GT_Utility.getFluidForFilledItem(aStack, true);
-            if (fs != null && fs.getFluid() == this.mLockedFluid)
-                return true;
+			return fs != null && fs.getFluid() == this.mLockedFluid;
         }
         return false;
 	}
 
-	public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_PUMP)};
+	@Override
+	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+		return aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 1;
 	}
 
-	public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_PUMP)};
+	@Override
+	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
+		return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch ?
+				new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN)} :
+				new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN)};
+	}
+
+	@Override
+	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
+		return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch ?
+				new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN)} :
+				new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN)};
+	}
+
+	@Override
+	public boolean isSimpleMachine() {
+		return true;
+	}
+
+	@Override
+	public boolean isFacingValid(byte aFacing) {
+		return true;
+	}
+
+	@Override
+	public boolean isAccessAllowed(EntityPlayer aPlayer) {
+		return true;
+	}
+
+	@Override
+	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+		if (aBaseMetaTileEntity.isClientSide()) return true;
+		aBaseMetaTileEntity.openGUI(aPlayer);
+		return true;
+	}
+
+	@Override
+	public boolean doesFillContainers() {
+		//return true;
+		return false;
+	}
+
+	@Override
+	public boolean doesEmptyContainers() {
+		return true;
+	}
+
+	@Override
+	public boolean canTankBeFilled() {
+		return true;
+	}
+
+	@Override
+	public boolean canTankBeEmptied() {
+		return true;
+	}
+
+	@Override
+	public boolean displaysItemStack() {
+		return true;
+	}
+
+	@Override
+	public boolean displaysStackSize() {
+		return false;
+	}
+
+	public void updateSlots() {
+		if (mInventory[getInputSlot()] != null && mInventory[getInputSlot()].stackSize <= 0)
+			mInventory[getInputSlot()] = null;
+	}
+
+	@Override
+	public int getTankPressure() {
+		return -100;
 	}
 
 	public int getCapacity() {
 		return this.mFluidCapacity;
 	}
-
-	protected FluidStack mLockedStack = null;
-	protected Integer mLockedTemp = null;
-	protected String mTempMod = null;
 
 	@Override
 	public String[] getDescription() {		
@@ -84,7 +153,7 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 			aFluidTemp = mLockedFluid.getTemperature();
 			mTempMod = mLockedFluid.getName();
 		}
-		if (mTempMod.toLowerCase().equals("steam")) {
+		if (mTempMod.equalsIgnoreCase("steam")) {
 			isSteam = true;
 		}
 		
@@ -112,13 +181,12 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 			aColour = EnumChatFormatting.RED;
 		}
 		String aFluidName = "Accepted Fluid: " + aColour + (mLockedStack != null ? mLockedStack.getLocalizedName() : "Empty") + EnumChatFormatting.RESET;
-		String[] s2 = new String[]{
+		return new String[]{
 				"Fluid Input for "+(isSteam ? "Steam " : "")+"Multiblocks",
 				"Capacity: " + getCapacity()+"L",
 				aFluidName,
 				CORE.GT_Tooltip
-		};		
-		return s2;
+		};
 	}
 
 	public boolean isFluidInputAllowed(final FluidStack aFluid) {
@@ -126,6 +194,6 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 	}
 
 	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return (MetaTileEntity) new GT_MetaTileEntity_Hatch_CustomFluidBase(this.mLockedFluid, this.mFluidCapacity, this.mName, this.mDescription,	this.mTextures);
+		return new GT_MetaTileEntity_Hatch_CustomFluidBase(this.mLockedFluid, this.mFluidCapacity, this.mName, this.mDescription,	this.mTextures);
 	}
 }
