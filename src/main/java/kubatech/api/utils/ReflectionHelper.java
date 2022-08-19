@@ -25,7 +25,8 @@ import java.util.HashMap;
 public class ReflectionHelper {
     private static final HashMap<String, HashMap<String, Field>> fields = new HashMap<>();
 
-    public static <T> T getField(Object obj, String fieldName, boolean useBasicTypes, T defaultvalue) {
+    @SuppressWarnings("unchecked")
+    public static <T> T getField(Object obj, String fieldName, T defaultvalue) {
         Class<?> cl = obj.getClass();
         String clName = cl.getName();
         HashMap<String, Field> classmap = fields.computeIfAbsent(clName, s -> new HashMap<>());
@@ -52,11 +53,7 @@ public class ReflectionHelper {
         }
     }
 
-    public static <T> T getField(Object obj, String fieldName, boolean useBasicTypes) {
-        return getField(obj, fieldName, useBasicTypes, null);
-    }
-
     public static <T> T getField(Object obj, String fieldName) {
-        return getField(obj, fieldName, true, null);
+        return getField(obj, fieldName, null);
     }
 }

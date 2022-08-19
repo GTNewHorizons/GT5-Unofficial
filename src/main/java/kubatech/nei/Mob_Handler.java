@@ -38,19 +38,15 @@ import java.util.List;
 import kubatech.api.LoaderReference;
 import kubatech.api.utils.FastRandom;
 import kubatech.api.utils.InfernalHelper;
+import kubatech.api.utils.MobUtils;
 import kubatech.api.utils.ModUtils;
-import kubatech.common.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
 import kubatech.kubatech;
 import kubatech.loaders.MobRecipeLoader;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityList;
@@ -277,39 +273,11 @@ public class Mob_Handler extends TemplateRecipeHandler {
 
         GL11.glPushMatrix();
 
-        ItemStack s = getIngredientStacks(recipe).get(0).item;
         try {
             EntityLiving e = currentrecipe.mob;
-            float eheight = e.height;
-            float ewidth = e.width;
 
-            Render r = RenderManager.instance.getEntityRenderObject(e);
-            if (r instanceof RendererLivingEntity && mainmodelfield != null) {
-                ModelBase mainmodel = (ModelBase) mainmodelfield.get(r);
-                for (Object box : mainmodel.boxList) {
-                    if (box instanceof ModelRenderer) {
-                        float minY = 999f;
-                        float minX = 999f;
-                        float maxY = -999f;
-                        float maxX = -999f;
-                        for (Object cube : ((ModelRenderer) box).cubeList) {
-                            if (cube instanceof ModelBox) {
-                                if (minY > ((ModelBox) cube).posY1) minY = ((ModelBox) cube).posY1;
-                                if (minX > ((ModelBox) cube).posX1) minX = ((ModelBox) cube).posX1;
-                                if (maxY < ((ModelBox) cube).posY2) maxY = ((ModelBox) cube).posY2;
-                                if (maxX < ((ModelBox) cube).posX2) maxX = ((ModelBox) cube).posX2;
-                            }
-                        }
-                        float cubeheight = (maxY - minY) / 10f;
-                        float cubewidth = (maxX - minX) / 10f;
-                        if (eheight < cubeheight) eheight = cubeheight;
-                        if (ewidth < cubewidth) ewidth = cubewidth;
-                    }
-                }
-            }
-
-            int desiredheight = 27;
-            int scaled = (int) (desiredheight / eheight);
+            float eheight = MobUtils.getMobHeight(e);
+            float scaled = MobUtils.getDesiredScale(eheight, 27);
             //
             // int maxwidth = 15;
             // scaled = (int) Math.min(scaled, maxwidth / ewidth);
@@ -318,7 +286,12 @@ public class Mob_Handler extends TemplateRecipeHandler {
             e.setPosition(mc.thePlayer.posX + 5, mc.thePlayer.posY, mc.thePlayer.posZ);
             // ARGS: x, y, scale, rot, rot, entity
             GuiInventory.func_147046_a(
-                    mobx, moby, scaled, (float) (x + mobx) - mouseX, (float) (y + moby - eheight * scaled) - mouseZ, e);
+                    mobx,
+                    moby,
+                    Math.round(scaled),
+                    (float) (x + mobx) - mouseX,
+                    (float) (y + moby - eheight * scaled) - mouseZ,
+                    e);
         } catch (Throwable ex) {
             Tessellator tes = Tessellator.instance;
             try {

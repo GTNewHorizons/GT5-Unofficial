@@ -25,7 +25,7 @@ import gregtech.api.util.GT_ModHandler;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.enums.ItemList;
-import kubatech.common.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.LogManager;

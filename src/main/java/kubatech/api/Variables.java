@@ -23,4 +23,8 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class Variables {
     public static final String Author = "Author: " + EnumChatFormatting.GOLD + "kuba6000";
+    public static final String StructureHologram =
+            "To see the structure, use a " + EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech"
+                    + EnumChatFormatting.RESET + "" + EnumChatFormatting.GRAY + " Blueprint on the Controller!";
+    ;
 }
