@@ -321,12 +321,12 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
             new RackComponent(ItemList.NandChip.get(1), 2, 6, 0, 750, true);//Primitive Circuit
             new RackComponent(ItemList.Circuit_Biowarecomputer.get(1), 40, 26, -.35F, 5900, true);
             new RackComponent(ItemList.Circuit_Biowaresupercomputer.get(1), 42, 30, -.4F, 6200, true);
-            new RackComponent(ItemList.Circuit_Biomainframe.get(1), 40, 28, -.4F, 6000, true);//UHV Circuit
+            new RackComponent(ItemList.Circuit_Biomainframe.get(1), 44, 28, -.4F, 6000, true);//UEV Circuit
             new RackComponent(ItemList.Circuit_Bioprocessor.get(1), 34, 20, -.35F, 5800, true); 
             
             new RackComponent("dreamcraft:item.HighEnergyCircuitParts", 3, 2, -.1f, 9001, true);
             new RackComponent("dreamcraft:item.HighEnergyFlowCircuit", 24, 16, -.25f, 10000, true);
-            new RackComponent("dreamcraft:item.NanoCircuit", 48, 35, -.45f, 8000, true);
+            new RackComponent("dreamcraft:item.NanoCircuit", 50, 35, -.45f, 8000, true);
             new RackComponent("dreamcraft:item.PikoCircuit", 64, 40, -.5f, 8500, true);
             new RackComponent("dreamcraft:item.QuantumCircuit", 128, 48, -.6f, 9000, true);
         }
