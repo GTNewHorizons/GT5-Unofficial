@@ -1,32 +1,31 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
-import com.github.technus.tectech.util.TT_Utility;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-
-import java.lang.reflect.Array;
-import java.util.*;
-
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.AVOGADRO_CONSTANT;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_EPSILON;
 import static com.github.technus.tectech.util.DoubleCount.ulpSigned;
 import static com.github.technus.tectech.util.TT_Utility.packNBT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+import com.github.technus.tectech.util.TT_Utility;
+import java.lang.reflect.Array;
+import java.util.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+
 public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? extends IEMStack>>, Cloneable {
-    NavigableMap<IEMDefinition,T> getBackingMap();
+    NavigableMap<IEMDefinition, T> getBackingMap();
 
     IEMMapRead<T> clone();
 
-    default Set<Map.Entry<IEMDefinition, T>> entrySet(){
+    default Set<Map.Entry<IEMDefinition, T>> entrySet() {
         return getBackingMap().entrySet();
     }
 
-    default Set<IEMDefinition> keySet(){
+    default Set<IEMDefinition> keySet() {
         return getBackingMap().keySet();
     }
 
@@ -38,27 +37,27 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
         return keySet().toArray(array);
     }
 
-    default Collection<T> values(){
+    default Collection<T> values() {
         return getBackingMap().values();
     }
 
     @SuppressWarnings("unchecked")
-    default T[] valuesToArray(){
-        return valuesToArray((T[]) Array.newInstance(getType(),size()));
+    default T[] valuesToArray() {
+        return valuesToArray((T[]) Array.newInstance(getType(), size()));
     }
 
-    default T[] valuesToArray(T[] array){
+    default T[] valuesToArray(T[] array) {
         return values().toArray(array);
     }
 
     Class<T> getType();
 
-    //Getters
-    default T getFirst(){
+    // Getters
+    default T getFirst() {
         return getBackingMap().firstEntry().getValue();
     }
 
-    default T getLast(){
+    default T getLast() {
         return getBackingMap().lastEntry().getValue();
     }
 
@@ -71,11 +70,11 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
     }
 
     default T getNaturallySorted(int pos) {
-        if(pos<0 || pos>=size()){
-            throw new IndexOutOfBoundsException("Index was: "+pos+" size was: "+size());
+        if (pos < 0 || pos >= size()) {
+            throw new IndexOutOfBoundsException("Index was: " + pos + " size was: " + size());
         }
         for (Map.Entry<IEMDefinition, T> entry : entrySet()) {
-            if(pos==0){
+            if (pos == 0) {
                 return entry.getValue();
             }
             pos--;
@@ -98,30 +97,36 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
 
     default String[] getElementalInfo() {
         String[] info = new String[size()];
-        int      i    = 0;
+        int i = 0;
         for (Map.Entry<IEMDefinition, T> entry : entrySet()) {
             T instance = entry.getValue();
-            info[i++] = EnumChatFormatting.BLUE + instance.getDefinition().getLocalizedName() + " " + EnumChatFormatting.AQUA + instance.getDefinition().getSymbol() + EnumChatFormatting.RESET +
-                    " " + translateToLocal("tt.keyword.short.amount") + ": " + EnumChatFormatting.GREEN + TT_Utility.formatNumberExp(instance.getAmount() / AVOGADRO_CONSTANT) + " " + translateToLocal("tt.keyword.unit.mol") + EnumChatFormatting.RESET +
-                    " " + translateToLocal("tt.keyword.short.charge") + ": " + EnumChatFormatting.GREEN + TT_Utility.formatNumberExp(instance.getCharge()) + " " + translateToLocal("tt.keyword.unit.charge") + EnumChatFormatting.RESET;
+            info[i++] = EnumChatFormatting.BLUE + instance.getDefinition().getLocalizedName() + " "
+                    + EnumChatFormatting.AQUA + instance.getDefinition().getSymbol() + EnumChatFormatting.RESET + " "
+                    + translateToLocal("tt.keyword.short.amount") + ": " + EnumChatFormatting.GREEN
+                    + TT_Utility.formatNumberExp(instance.getAmount() / AVOGADRO_CONSTANT) + " "
+                    + translateToLocal("tt.keyword.unit.mol") + EnumChatFormatting.RESET + " "
+                    + translateToLocal("tt.keyword.short.charge") + ": " + EnumChatFormatting.GREEN
+                    + TT_Utility.formatNumberExp(instance.getCharge()) + " "
+                    + translateToLocal("tt.keyword.unit.charge") + EnumChatFormatting.RESET;
         }
         return info;
     }
 
-    //NBT
+    // NBT
     default NBTTagCompound toNBT(EMDefinitionsRegistry registry) {
-        return packNBT(t -> t.toNBT(registry),valuesToArray());
+        return packNBT(t -> t.toNBT(registry), valuesToArray());
     }
 
     @Override
-    default int compareTo(IEMMapRead<? extends IEMStack> o) {//this actually compares rest
+    default int compareTo(IEMMapRead<? extends IEMStack> o) { // this actually compares rest
         int sizeDiff = size() - o.size();
         if (sizeDiff != 0) {
             return sizeDiff;
         }
 
-        Iterator<Map.Entry<IEMDefinition, T>>                            iterator  = entrySet().iterator();
-        Iterator<? extends Map.Entry<IEMDefinition, ? extends IEMStack>> iteratorO = o.entrySet().iterator();
+        Iterator<Map.Entry<IEMDefinition, T>> iterator = entrySet().iterator();
+        Iterator<? extends Map.Entry<IEMDefinition, ? extends IEMStack>> iteratorO =
+                o.entrySet().iterator();
 
         while (iterator.hasNext()) {
             int result = iterator.next().getValue().compareTo(iteratorO.next().getValue());
@@ -147,17 +152,18 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
             return lenDiff;
         }
 
-        Iterator<Map.Entry<IEMDefinition, T>>                            iterator  = entrySet().iterator();
-        Iterator<? extends Map.Entry<IEMDefinition, ? extends IEMStack>> iteratorO = o.entrySet().iterator();
+        Iterator<Map.Entry<IEMDefinition, T>> iterator = entrySet().iterator();
+        Iterator<? extends Map.Entry<IEMDefinition, ? extends IEMStack>> iteratorO =
+                o.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            T        first  = iterator.next().getValue();
+            T first = iterator.next().getValue();
             IEMStack second = iteratorO.next().getValue();
-            int      result = first.compareTo(second);
+            int result = first.compareTo(second);
             if (result != 0) {
                 return result;
             }
-            result=Double.compare(first.getAmount(),second.getAmount());
+            result = Double.compare(first.getAmount(), second.getAmount());
             if (result != 0) {
                 return result;
             }
@@ -165,23 +171,23 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
         return 0;
     }
 
-    default double getMass(){
-        double mass=0;
+    default double getMass() {
+        double mass = 0;
         for (Map.Entry<IEMDefinition, T> entry : entrySet()) {
-            mass+=entry.getValue().getMass();
+            mass += entry.getValue().getMass();
         }
         return mass;
     }
 
-    default long getCharge(){
-        long charge=0;
+    default long getCharge() {
+        long charge = 0;
         for (Map.Entry<IEMDefinition, T> entry : entrySet()) {
-            charge+=entry.getValue().getCharge();
+            charge += entry.getValue().getCharge();
         }
         return charge;
     }
 
-    //Tests
+    // Tests
     default boolean containsKey(IEMDefinition def) {
         return getBackingMap().containsKey(def);
     }
@@ -214,12 +220,12 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
     }
 
     default boolean containsAmountExact(IEMStack stack) {
-        return containsAmountExact(stack.getDefinition(),stack.getAmount());
+        return containsAmountExact(stack.getDefinition(), stack.getAmount());
     }
 
     default boolean containsAllAmountsExact(IEMStack... stacks) {
         for (IEMStack stack : stacks) {
-            if(!containsAmountExact(stack)){
+            if (!containsAmountExact(stack)) {
                 return false;
             }
         }
@@ -228,7 +234,7 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
 
     default boolean containsAllAmountsExact(IEMMapRead<? extends IEMStack> container) {
         for (Map.Entry<IEMDefinition, ? extends IEMStack> entry : container.entrySet()) {
-            if(!containsAmountExact(entry.getValue())){
+            if (!containsAmountExact(entry.getValue())) {
                 return false;
             }
         }
@@ -236,20 +242,20 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
     }
 
     default boolean containsAmount(IEMDefinition def, double amountToConsume) {
-        double amountRequired=amountToConsume- EM_COUNT_EPSILON;
-        if(amountRequired==amountToConsume){
-            amountRequired-=ulpSigned(amountRequired);
+        double amountRequired = amountToConsume - EM_COUNT_EPSILON;
+        if (amountRequired == amountToConsume) {
+            amountRequired -= ulpSigned(amountRequired);
         }
-        return containsAmountExact(def,amountRequired);
+        return containsAmountExact(def, amountRequired);
     }
 
     default boolean containsAmount(IEMStack stack) {
-        return containsAmount(stack.getDefinition(),stack.getAmount());
+        return containsAmount(stack.getDefinition(), stack.getAmount());
     }
 
     default boolean containsAllAmounts(IEMStack... stacks) {
         for (IEMStack stack : stacks) {
-            if(!containsAmount(stack)){
+            if (!containsAmount(stack)) {
                 return false;
             }
         }
@@ -258,7 +264,7 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
 
     default boolean containsAllAmounts(IEMMapRead<? extends IEMStack> container) {
         for (Map.Entry<IEMDefinition, ? extends IEMStack> entry : container.entrySet()) {
-            if(!containsAmount(entry.getValue())){
+            if (!containsAmount(entry.getValue())) {
                 return false;
             }
         }
@@ -273,7 +279,7 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
         return !isEmpty();
     }
 
-    default boolean isEmpty(){
+    default boolean isEmpty() {
         return getBackingMap().isEmpty();
     }
 }

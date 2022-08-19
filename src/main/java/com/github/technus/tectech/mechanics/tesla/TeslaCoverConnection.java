@@ -1,10 +1,10 @@
 package com.github.technus.tectech.mechanics.tesla;
 
+import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove;
+
 import com.google.common.base.Objects;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
-import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove;
 
 public class TeslaCoverConnection implements ITeslaConnectableSimple {
     private final IGregTechTileEntity IGT;
@@ -13,9 +13,7 @@ public class TeslaCoverConnection implements ITeslaConnectableSimple {
 
     public TeslaCoverConnection(IGregTechTileEntity IGT, byte teslaReceptionCapability) {
         this.IGT = IGT;
-        this.pos = new Vec3Impl(IGT.getXCoord(),
-                                IGT.getYCoord(),
-                                IGT.getZCoord());
+        this.pos = new Vec3Impl(IGT.getXCoord(), IGT.getYCoord(), IGT.getZCoord());
 
         this.teslaReceptionCapability = teslaReceptionCapability;
     }
@@ -52,10 +50,10 @@ public class TeslaCoverConnection implements ITeslaConnectableSimple {
 
     @Override
     public boolean teslaInjectEnergy(long teslaVoltageInjected) {
-        //Same as in the microwave transmitters, this does not account for amp limits
+        // Same as in the microwave transmitters, this does not account for amp limits
         boolean output = false;
 
-        if (!IGT.isDead()){
+        if (!IGT.isDead()) {
             output = IGT.injectEnergyUnits((byte) 1, teslaVoltageInjected, 1L) > 0L;
         } else {
             teslaSimpleNodeSetRemove(this);

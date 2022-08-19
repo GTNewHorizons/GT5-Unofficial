@@ -1,5 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Holder;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Holder;
 import com.github.technus.tectech.util.CommonValues;
@@ -18,8 +20,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 /**
  * Created by Tec on 03.04.2017.
  */
@@ -29,7 +29,7 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_Hatch_Holder(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, "");
-        TT_Utility.setTier(aTier,this);
+        TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_Holder(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -46,12 +46,12 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_H_ACTIVE)};
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(EM_H_ACTIVE)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_H)};
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(EM_H)};
     }
 
     @Override
@@ -96,7 +96,10 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Holder(aPlayerInventory, aBaseMetaTileEntity, translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"));//Object Holder
+        return new GT_GUIContainer_Holder(
+                aPlayerInventory,
+                aBaseMetaTileEntity,
+                translateToLocal("gt.blockmachines.hatch.holder.tier.09.name")); // Object Holder
     }
 
     @Override
@@ -104,11 +107,11 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        //if(aBaseMetaTileEntity.isActive())
+        // if(aBaseMetaTileEntity.isActive())
         //    aPlayer.addChatComponentMessage(new ChatComponentText("It is still active..."));
-        //else if(heat>0)
+        // else if(heat>0)
         //    aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
-        //else
+        // else
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
@@ -120,10 +123,11 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.hatch.holder.desc.0"),//For Research Station
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.holder.desc.1")//Advanced Holding Mechanism!
+        return new String[] {
+            CommonValues.TEC_MARK_EM,
+            translateToLocal("gt.blockmachines.hatch.holder.desc.0"), // For Research Station
+            EnumChatFormatting.AQUA
+                    + translateToLocal("gt.blockmachines.hatch.holder.desc.1") // Advanced Holding Mechanism!
         };
     }
 }

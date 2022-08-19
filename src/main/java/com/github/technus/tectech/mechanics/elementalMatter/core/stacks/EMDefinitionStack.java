@@ -1,17 +1,17 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.null__;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import net.minecraft.nbt.NBTTagCompound;
-
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.null__;
 
 /**
  * Created by danie_000 on 20.11.2016.
  */
 public final class EMDefinitionStack implements IEMStack {
     private final IEMDefinition definition;
-    private final double        amount;
+    private final double amount;
 
     public EMDefinitionStack(IEMDefinition def, double amount) {
         definition = def == null ? null__ : def;
@@ -20,20 +20,20 @@ public final class EMDefinitionStack implements IEMStack {
 
     @Override
     public EMDefinitionStack clone() {
-        return this;//IMMUTABLE
+        return this; // IMMUTABLE
     }
 
     @Override
     public EMDefinitionStack mutateAmount(double newAmount) {
-        if(getAmount() == newAmount){
+        if (getAmount() == newAmount) {
             return this;
         }
-        return new EMDefinitionStack(getDefinition(), newAmount);//IMMUTABLE
+        return new EMDefinitionStack(getDefinition(), newAmount); // IMMUTABLE
     }
 
     @Override
     public IEMDefinition getDefinition() {
-        return definition;//IMMUTABLE
+        return definition; // IMMUTABLE
     }
 
     @Override
@@ -48,10 +48,8 @@ public final class EMDefinitionStack implements IEMStack {
         return nbt;
     }
 
-    public static EMDefinitionStack fromNBT(EMDefinitionsRegistry registry,NBTTagCompound nbt) {
-        return new EMDefinitionStack(
-                registry.fromNBT(nbt.getCompoundTag("d")),
-                nbt.getLong("q")+nbt.getDouble("Q"));
+    public static EMDefinitionStack fromNBT(EMDefinitionsRegistry registry, NBTTagCompound nbt) {
+        return new EMDefinitionStack(registry.fromNBT(nbt.getCompoundTag("d")), nbt.getLong("q") + nbt.getDouble("Q"));
     }
 
     @Override
@@ -65,7 +63,7 @@ public final class EMDefinitionStack implements IEMStack {
         return false;
     }
 
-    //Amount shouldn't be hashed if this is just indicating amount and not structure
+    // Amount shouldn't be hashed if this is just indicating amount and not structure
     @Override
     public int hashCode() {
         return getDefinition().hashCode();

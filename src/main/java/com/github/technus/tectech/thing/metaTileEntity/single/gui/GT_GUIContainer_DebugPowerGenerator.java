@@ -1,12 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.single.gui;
 
+import static com.github.technus.tectech.util.CommonValues.VN;
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+
 import com.github.technus.tectech.util.TT_Utility;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
-
-import static com.github.technus.tectech.util.CommonValues.VN;
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_DebugPowerGenerator extends GT_GUIContainerMetaTile_Machine {
     public GT_GUIContainer_DebugPowerGenerator(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -19,9 +19,10 @@ public class GT_GUIContainer_DebugPowerGenerator extends GT_GUIContainerMetaTile
         if (mContainer != null) {
             GT_Container_DebugPowerGenerator dpg = (GT_Container_DebugPowerGenerator) mContainer;
             fontRendererObj.drawString("EUT: " + dpg.EUT, 46, 24, 16448255);
-            fontRendererObj.drawString("TIER: " + VN[TT_Utility.getTier(dpg.EUT<0?-dpg.EUT:dpg.EUT)], 46, 32, 16448255);
+            fontRendererObj.drawString(
+                    "TIER: " + VN[TT_Utility.getTier(dpg.EUT < 0 ? -dpg.EUT : dpg.EUT)], 46, 32, 16448255);
             fontRendererObj.drawString("AMP: " + dpg.AMP, 46, 40, 16448255);
-            fontRendererObj.drawString("SUM: " + (long)dpg.AMP*dpg.EUT, 46, 48, 16448255);
+            fontRendererObj.drawString("SUM: " + (long) dpg.AMP * dpg.EUT, 46, 48, 16448255);
         }
     }
 

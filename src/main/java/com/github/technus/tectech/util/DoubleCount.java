@@ -1,9 +1,9 @@
 package com.github.technus.tectech.util;
 
-import java.util.Arrays;
-
 import static java.lang.Math.abs;
 import static java.lang.Math.ulp;
+
+import java.util.Arrays;
 
 public class DoubleCount {
     /**
@@ -26,7 +26,7 @@ public class DoubleCount {
         } else {
             switch (probabilities.length) {
                 default: {
-                    int      size   = probabilities.length;
+                    int size = probabilities.length;
                     double[] output = new double[size];
                     size--;
                     double remaining = count, previous = probabilities[size], probability, out;
@@ -39,14 +39,15 @@ public class DoubleCount {
                         output[i] = out;
 
                         if (previous < probability) {
-                            throw new ArithmeticException("Malformed probability order: " + Arrays.toString(probabilities));
+                            throw new ArithmeticException(
+                                    "Malformed probability order: " + Arrays.toString(probabilities));
                         }
                         previous = probability;
                         if (probability >= 1) {
                             break;
                         }
                     }
-                    if (remaining * count < 0) {//overshoot
+                    if (remaining * count < 0) { // overshoot
                         finishIt(size, output, remaining);
                     } else {
                         output[size] = remaining;
@@ -54,9 +55,9 @@ public class DoubleCount {
                     return output;
                 }
                 case 1:
-                    return new double[]{count};
+                    return new double[] {count};
                 case 0:
-                    return probabilities;//empty array at hand...
+                    return probabilities; // empty array at hand...
             }
         }
     }
@@ -81,8 +82,8 @@ public class DoubleCount {
     }
 
     public static double div(double count, double divisor) {
-        if (count == 0 || abs(divisor) == 1 || abs(count)==abs(divisor)) {
-            return count/divisor;
+        if (count == 0 || abs(divisor) == 1 || abs(count) == abs(divisor)) {
+            return count / divisor;
         } else {
             double result = count / divisor;
             return result - ulpSigned(result);
@@ -90,8 +91,8 @@ public class DoubleCount {
     }
 
     public static double mul(double count, double multiplier) {
-        if (count == 0 || multiplier == 0 || abs(multiplier)==1 || abs(count)==1) {
-            return count*multiplier;
+        if (count == 0 || multiplier == 0 || abs(multiplier) == 1 || abs(count) == 1) {
+            return count * multiplier;
         } else {
             double result = count * multiplier;
             return result - ulpSigned(result);
@@ -103,7 +104,7 @@ public class DoubleCount {
             return count - value;
         } else {
             double result = count - value;
-            if(result==count||result==value){
+            if (result == count || result == value) {
                 return result;
             }
             return result - ulpSigned(result);
@@ -115,7 +116,7 @@ public class DoubleCount {
             return count + value;
         } else {
             double result = count + value;
-            if(result==count||result==value){
+            if (result == count || result == value) {
                 return result;
             }
             return result - ulpSigned(result);

@@ -1,5 +1,8 @@
 package com.github.technus.tectech.thing.block;
 
+import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -11,9 +14,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -51,10 +51,10 @@ public final class QuantumGlassBlock extends BlockBase {
         return false;
     }
 
-    //@Override
-    //public boolean canRenderInPass(int pass) {
+    // @Override
+    // public boolean canRenderInPass(int pass) {
     //    return true;
-    //}
+    // }
 
     @Override
     public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
@@ -74,9 +74,11 @@ public final class QuantumGlassBlock extends BlockBase {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
+    public boolean shouldSideBeRendered(
+            IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
         Block block = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_);
-        return block != this;// && super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_);
+        return block != this; // && super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_,
+        // p_149646_5_);
     }
 
     @Override
@@ -102,7 +104,6 @@ public final class QuantumGlassBlock extends BlockBase {
         if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
             GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
-
     }
 
     @Override

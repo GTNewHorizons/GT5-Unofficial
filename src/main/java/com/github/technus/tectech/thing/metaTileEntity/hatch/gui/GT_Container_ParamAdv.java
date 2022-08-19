@@ -15,7 +15,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
-    public int pointer=0;
+    public int pointer = 0;
     public int param = 0;
     public double value1d = 0;
     public double value0d = 0;
@@ -62,8 +62,8 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
             boolean doStuff = true;
             GT_MetaTileEntity_Hatch_Param paramH = (GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity();
-            int columnPointer=paramH.pointer &0xff;
-            boolean secondRow=(paramH.pointer &0x0100)!=0;
+            int columnPointer = paramH.pointer & 0xff;
+            boolean secondRow = (paramH.pointer & 0x0100) != 0;
             switch (aSlotIndex) {
                 case 0:
                     paramH.param -= aShifthold == 1 ? 16 : 4;
@@ -91,13 +91,13 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                         }
                     } else {
                         if (secondRow) {
-                            long temp=Double.doubleToLongBits(paramH.value1D);
-                            temp |= 1L << (long)columnPointer;
-                            paramH.value1D=Double.longBitsToDouble(temp);
+                            long temp = Double.doubleToLongBits(paramH.value1D);
+                            temp |= 1L << (long) columnPointer;
+                            paramH.value1D = Double.longBitsToDouble(temp);
                         } else {
-                            long temp=Double.doubleToLongBits(paramH.value0D);
-                            temp |= 1L << (long)columnPointer;
-                            paramH.value0D=Double.longBitsToDouble(temp);
+                            long temp = Double.doubleToLongBits(paramH.value0D);
+                            temp |= 1L << (long) columnPointer;
+                            paramH.value0D = Double.longBitsToDouble(temp);
                         }
                     }
                     break;
@@ -127,13 +127,13 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                         }
                     } else {
                         if (secondRow) {
-                            long temp=Double.doubleToLongBits(paramH.value1D);
-                            temp &= ~(1L << (long)columnPointer);
-                            paramH.value1D=Double.longBitsToDouble(temp);
+                            long temp = Double.doubleToLongBits(paramH.value1D);
+                            temp &= ~(1L << (long) columnPointer);
+                            paramH.value1D = Double.longBitsToDouble(temp);
                         } else {
-                            long temp=Double.doubleToLongBits(paramH.value0D);
-                            temp &= ~(1L << (long)columnPointer);
-                            paramH.value0D=Double.longBitsToDouble(temp);
+                            long temp = Double.doubleToLongBits(paramH.value0D);
+                            temp &= ~(1L << (long) columnPointer);
+                            paramH.value0D = Double.longBitsToDouble(temp);
                         }
                     }
                     break;
@@ -155,8 +155,8 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                     }
                     break;
                 case 11:
-                    paramH.value0D=paramH.input0D;
-                    paramH.value1D=paramH.input1D;
+                    paramH.value0D = paramH.input0D;
+                    paramH.value1D = paramH.input1D;
                     break;
                 case 12:
                     paramH.param += aShifthold == 1 ? 2 : 1;
@@ -184,13 +184,13 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                         }
                     } else {
                         if (secondRow) {
-                            long temp=Double.doubleToLongBits(paramH.value1D);
-                            temp ^= 1L << (long)columnPointer;
-                            paramH.value1D=Double.longBitsToDouble(temp);
+                            long temp = Double.doubleToLongBits(paramH.value1D);
+                            temp ^= 1L << (long) columnPointer;
+                            paramH.value1D = Double.longBitsToDouble(temp);
                         } else {
-                            long temp=Double.doubleToLongBits(paramH.value0D);
-                            temp ^= 1L << (long)columnPointer;
-                            paramH.value0D=Double.longBitsToDouble(temp);
+                            long temp = Double.doubleToLongBits(paramH.value0D);
+                            temp ^= 1L << (long) columnPointer;
+                            paramH.value0D = Double.longBitsToDouble(temp);
                         }
                     }
                     break;
@@ -198,14 +198,14 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                     doStuff = false;
             }
             if (doStuff) {
-                IGregTechTileEntity base=paramH.getBaseMetaTileEntity();
-                TecTech.proxy.playSound(base,"fx_click");
-                if(columnPointer>=64) {
+                IGregTechTileEntity base = paramH.getBaseMetaTileEntity();
+                TecTech.proxy.playSound(base, "fx_click");
+                if (columnPointer >= 64) {
                     columnPointer = 63;
-                } else if(columnPointer<0) {
+                } else if (columnPointer < 0) {
                     columnPointer = 0;
                 }
-                paramH.pointer=secondRow?columnPointer+0x100:columnPointer;
+                paramH.pointer = secondRow ? columnPointer + 0x100 : columnPointer;
                 if (paramH.param > 9) {
                     paramH.param = 9;
                 } else if (paramH.param < -1) {
@@ -231,12 +231,12 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
-            TT_Utility.sendInteger(param,this,var1,100);
-            TT_Utility.sendDouble(value0d,this,var1,102);
-            TT_Utility.sendDouble(value1d,this,var1, 106);
-            TT_Utility.sendDouble(input0d,this,var1, 110);
-            TT_Utility.sendDouble(input1d,this,var1, 114);
-            TT_Utility.sendInteger(pointer,this,var1,118);
+            TT_Utility.sendInteger(param, this, var1, 100);
+            TT_Utility.sendDouble(value0d, this, var1, 102);
+            TT_Utility.sendDouble(value1d, this, var1, 106);
+            TT_Utility.sendDouble(input0d, this, var1, 110);
+            TT_Utility.sendDouble(input1d, this, var1, 114);
+            TT_Utility.sendInteger(pointer, this, var1, 118);
         }
     }
 
@@ -247,35 +247,35 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
         switch (par1) {
             case 100:
             case 101:
-                param= TT_Utility.receiveInteger(param,100,par1,par2);
+                param = TT_Utility.receiveInteger(param, 100, par1, par2);
                 return;
             case 102:
             case 103:
             case 104:
             case 105:
-                value0d =Double.longBitsToDouble(value0l= TT_Utility.receiveLong(value0l,102,par1,par2));
+                value0d = Double.longBitsToDouble(value0l = TT_Utility.receiveLong(value0l, 102, par1, par2));
                 return;
             case 106:
             case 107:
             case 108:
             case 109:
-                value1d =Double.longBitsToDouble(value1l= TT_Utility.receiveLong(value1l,106,par1,par2));
+                value1d = Double.longBitsToDouble(value1l = TT_Utility.receiveLong(value1l, 106, par1, par2));
                 return;
             case 110:
             case 111:
             case 112:
             case 113:
-                input0d =Double.longBitsToDouble(input0l= TT_Utility.receiveLong(input0l,110,par1,par2));
+                input0d = Double.longBitsToDouble(input0l = TT_Utility.receiveLong(input0l, 110, par1, par2));
                 return;
             case 114:
             case 115:
             case 116:
             case 117:
-                input1d =Double.longBitsToDouble(input1l= TT_Utility.receiveLong(input1l,114,par1,par2));
+                input1d = Double.longBitsToDouble(input1l = TT_Utility.receiveLong(input1l, 114, par1, par2));
                 return;
             case 118:
             case 119:
-                pointer= TT_Utility.receiveInteger(pointer,118,par1,par2);
+                pointer = TT_Utility.receiveInteger(pointer, 118, par1, par2);
                 return;
             default:
         }

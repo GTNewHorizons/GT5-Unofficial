@@ -6,6 +6,7 @@ import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -15,21 +16,33 @@ import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import java.util.List;
-
 public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine {
     public final String mName;
     public final String mNEI;
     public final byte mProgressBarDirection;
     public final byte mProgressBarAmount;
-    private ItemStack stack=null;
+    private ItemStack stack = null;
 
-    public GT_GUIContainer_DataReader(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aNEI) {
+    public GT_GUIContainer_DataReader(
+            InventoryPlayer aInventoryPlayer,
+            IGregTechTileEntity aTileEntity,
+            String aName,
+            String aTextureFile,
+            String aNEI) {
         this(aInventoryPlayer, aTileEntity, aName, aTextureFile, aNEI, (byte) 0, (byte) 1);
     }
 
-    public GT_GUIContainer_DataReader(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aNEI, byte aProgressBarDirection, byte aProgressBarAmount) {
-        super(new GT_Container_DataReader(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/basicmachines/" + aTextureFile);
+    public GT_GUIContainer_DataReader(
+            InventoryPlayer aInventoryPlayer,
+            IGregTechTileEntity aTileEntity,
+            String aName,
+            String aTextureFile,
+            String aNEI,
+            byte aProgressBarDirection,
+            byte aProgressBarAmount) {
+        super(
+                new GT_Container_DataReader(aInventoryPlayer, aTileEntity),
+                "gregtech:textures/gui/basicmachines/" + aTextureFile);
         this.mProgressBarDirection = aProgressBarDirection;
         this.mProgressBarAmount = (byte) Math.max(1, aProgressBarAmount);
         this.mName = aName;
@@ -41,17 +54,21 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
     public void drawScreen(int mouseX, int mouseY, float par3) {
         super.drawScreen(mouseX, mouseY, par3);
         if (mContainer != null) {
-            if (mContainer.mTileEntity != null && mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DataReader) {
-                GT_MetaTileEntity_DataReader reader = (GT_MetaTileEntity_DataReader) mContainer.mTileEntity.getMetaTileEntity();
-                renderDataTooltips(mouseX,mouseY,reader.mTier);
+            if (mContainer.mTileEntity != null
+                    && mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DataReader) {
+                GT_MetaTileEntity_DataReader reader =
+                        (GT_MetaTileEntity_DataReader) mContainer.mTileEntity.getMetaTileEntity();
+                renderDataTooltips(mouseX, mouseY, reader.mTier);
             }
         }
     }
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         if (mContainer != null) {
-            if (mContainer.mTileEntity != null && mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DataReader) {
-                GT_MetaTileEntity_DataReader reader = (GT_MetaTileEntity_DataReader) mContainer.mTileEntity.getMetaTileEntity();
+            if (mContainer.mTileEntity != null
+                    && mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DataReader) {
+                GT_MetaTileEntity_DataReader reader =
+                        (GT_MetaTileEntity_DataReader) mContainer.mTileEntity.getMetaTileEntity();
                 if (renderDataFG(mouseX, mouseY, reader.mTier)) {
                     return;
                 }
@@ -72,7 +89,16 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
 
             if (this.mContainer.mMaxProgressTime > 0) {
                 int tSize = this.mProgressBarDirection < 2 ? 20 : 18;
-                int tProgress = Math.max(1, Math.min(tSize * this.mProgressBarAmount, (this.mContainer.mProgressTime > 0 ? 1 : 0) + this.mContainer.mProgressTime * tSize * this.mProgressBarAmount / this.mContainer.mMaxProgressTime)) % (tSize + 1);
+                int tProgress = Math.max(
+                                1,
+                                Math.min(
+                                        tSize * this.mProgressBarAmount,
+                                        (this.mContainer.mProgressTime > 0 ? 1 : 0)
+                                                + this.mContainer.mProgressTime
+                                                        * tSize
+                                                        * this.mProgressBarAmount
+                                                        / this.mContainer.mMaxProgressTime))
+                        % (tSize + 1);
                 switch (this.mProgressBarDirection) {
                     case 0:
                         this.drawTexturedModalRect(x + 78, y + 152, 176, 0, tProgress, 18);
@@ -84,7 +110,8 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
                         this.drawTexturedModalRect(x + 78, y + 152, 176, 0, 20, tProgress);
                         break;
                     case 3:
-                        this.drawTexturedModalRect(x + 78, y + 152 + 18 - tProgress, 176, 18 - tProgress, 20, tProgress);
+                        this.drawTexturedModalRect(
+                                x + 78, y + 152 + 18 - tProgress, 176, 18 - tProgress, 20, tProgress);
                         break;
                     case 4:
                         tProgress = 20 - tProgress;
@@ -100,13 +127,16 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
                         break;
                     case 7:
                         tProgress = 18 - tProgress;
-                        this.drawTexturedModalRect(x + 78, y + 152 + 18 - tProgress, 176, 18 - tProgress, 20, tProgress);
+                        this.drawTexturedModalRect(
+                                x + 78, y + 152 + 18 - tProgress, 176, 18 - tProgress, 20, tProgress);
                 }
             }
         }
         if (mContainer != null) {
-            if (mContainer.mTileEntity != null && mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DataReader) {
-                GT_MetaTileEntity_DataReader reader = (GT_MetaTileEntity_DataReader) mContainer.mTileEntity.getMetaTileEntity();
+            if (mContainer.mTileEntity != null
+                    && mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DataReader) {
+                GT_MetaTileEntity_DataReader reader =
+                        (GT_MetaTileEntity_DataReader) mContainer.mTileEntity.getMetaTileEntity();
                 renderDataBG(reader.getStackInSlot(reader.getOutputSlot()), mouseX, mouseY, x, y, reader.mTier);
             }
         }
@@ -125,11 +155,11 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
                 }
             }
         }
-        stack=thing;
+        stack = thing;
     }
 
     private boolean renderDataFG(int mouseX, int mouseY, byte mTier) {
-        if(stack==null){
+        if (stack == null) {
             return false;
         }
         for (GT_MetaTileEntity_DataReader.IDataRender render :
@@ -143,7 +173,7 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
     }
 
     private boolean renderDataTooltips(int mouseX, int mouseY, byte mTier) {
-        if(stack==null){
+        if (stack == null) {
             return false;
         }
         for (GT_MetaTileEntity_DataReader.IDataRender render :
@@ -185,10 +215,10 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
     public void renderTooltipSimple(int mouseX, int mouseY, GT_Slot_Holo slot, ItemStack itemStack) {
         int x = slot.xDisplayPosition + (width - xSize) / 2;
         int y = slot.yDisplayPosition + (height - ySize) / 2;
-        if (mouseX >= x && mouseY >= y && mouseX <= x+16 && mouseY <= y+16 ) {
-            List strings=itemStack.getTooltip(Minecraft.getMinecraft().thePlayer, false);
-            if(strings.size()>0){
-                strings.set(0,itemStack.getRarity().rarityColor+(String)strings.get(0));
+        if (mouseX >= x && mouseY >= y && mouseX <= x + 16 && mouseY <= y + 16) {
+            List strings = itemStack.getTooltip(Minecraft.getMinecraft().thePlayer, false);
+            if (strings.size() > 0) {
+                strings.set(0, itemStack.getRarity().rarityColor + (String) strings.get(0));
             }
             hoveringText(strings, mouseX, mouseY, fontRendererObj);
         }
@@ -197,7 +227,7 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
     private void hoveringText(List strings, int x, int y, FontRenderer font) {
         if (!strings.isEmpty()) {
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            //RenderHelper.disableStandardItemLighting();
+            // RenderHelper.disableStandardItemLighting();
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
             int k = 0;
@@ -227,16 +257,16 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
                 y2 = this.height - i1 - 6;
             }
 
-            //this.zLevel = 300.0F;
-            //itemRender.zLevel = 300.0F;
-            int j1 = 0xf0001040;//bg
+            // this.zLevel = 300.0F;
+            // itemRender.zLevel = 300.0F;
+            int j1 = 0xf0001040; // bg
             this.drawGradientRect(x2 - 3, y2 - 4, x2 + k + 3, y2 - 3, j1, j1);
             this.drawGradientRect(x2 - 3, y2 + i1 + 3, x2 + k + 3, y2 + i1 + 4, j1, j1);
             this.drawGradientRect(x2 - 3, y2 - 3, x2 + k + 3, y2 + i1 + 3, j1, j1);
             this.drawGradientRect(x2 - 4, y2 - 3, x2 - 3, y2 + i1 + 3, j1, j1);
             this.drawGradientRect(x2 + k + 3, y2 - 3, x2 + k + 4, y2 + i1 + 3, j1, j1);
-            int k1 = 0x500040ff;//border bright
-            int l1 = (k1 & 0xfefefe) >> 1 | k1 & 0xff000000;//border dark???
+            int k1 = 0x500040ff; // border bright
+            int l1 = (k1 & 0xfefefe) >> 1 | k1 & 0xff000000; // border dark???
             this.drawGradientRect(x2 - 3, y2 - 3 + 1, x2 - 3 + 1, y2 + i1 + 3 - 1, k1, l1);
             this.drawGradientRect(x2 + k + 2, y2 - 3 + 1, x2 + k + 3, y2 + i1 + 3 - 1, k1, l1);
             this.drawGradientRect(x2 - 3, y2 - 3, x2 + k + 3, y2 - 3 + 1, k1, k1);
@@ -253,11 +283,11 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
                 y2 += 10;
             }
 
-            //this.zLevel = 0.0F;
-            //itemRender.zLevel = 0.0F;
+            // this.zLevel = 0.0F;
+            // itemRender.zLevel = 0.0F;
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            //RenderHelper.enableStandardItemLighting();
+            // RenderHelper.enableStandardItemLighting();
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         }
     }

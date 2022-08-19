@@ -10,15 +10,15 @@ import net.minecraftforge.fluids.FluidStack;
  * Created by Tec on 02.03.2017.
  */
 public class EMRecipe<T> implements Comparable<EMRecipe<T>> {
-    private final int                         ID;
-    private final EMConstantStackMap             inEM;
+    private final int ID;
+    private final EMConstantStackMap inEM;
     private final IEMMapRead<? extends IEMStack> outEM;
-    private final ItemStack[]                    outItems;
+    private final ItemStack[] outItems;
     private final FluidStack[] outFluids;
-    private       T     extension;
+    private T extension;
 
     public EMRecipe(
-            EMConstantStackMap inEM,//not null plz
+            EMConstantStackMap inEM, // not null plz
             int id,
             IEMMapRead<? extends IEMStack> outEM,
             ItemStack[] outItems,
@@ -27,7 +27,7 @@ public class EMRecipe<T> implements Comparable<EMRecipe<T>> {
         this.outEM = outEM;
         this.outItems = outItems;
         this.outFluids = outFluids;
-        ID = id;//allows multiple recipes with the same input EM,so u can actually extend...
+        ID = id; // allows multiple recipes with the same input EM,so u can actually extend...
     }
 
     public EMRecipe<T> extend(T data) {
@@ -38,7 +38,7 @@ public class EMRecipe<T> implements Comparable<EMRecipe<T>> {
     @Override
     public int compareTo(EMRecipe<T> o) {
         int compare = getInEM().compareTo(o.getInEM());
-        if(compare!=0) {
+        if (compare != 0) {
             return compare;
         }
         return Integer.compare(getID(), o.getID());

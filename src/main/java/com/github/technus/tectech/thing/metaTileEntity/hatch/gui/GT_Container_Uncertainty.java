@@ -14,7 +14,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_Uncertainty extends GT_ContainerMetaTile_Machine {
-    public short[] matrix = new short[]{500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500};
+    public short[] matrix =
+            new short[] {500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500};
     public byte selection = -1, mode = 0, status = -128;
 
     public GT_Container_Uncertainty(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -51,10 +52,11 @@ public class GT_Container_Uncertainty extends GT_ContainerMetaTile_Machine {
         }
         Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
-            GT_MetaTileEntity_Hatch_Uncertainty catH = (GT_MetaTileEntity_Hatch_Uncertainty) mTileEntity.getMetaTileEntity();
+            GT_MetaTileEntity_Hatch_Uncertainty catH =
+                    (GT_MetaTileEntity_Hatch_Uncertainty) mTileEntity.getMetaTileEntity();
             if (aSlotIndex < 16 && catH.matrix != null) {
-                IGregTechTileEntity base=catH.getBaseMetaTileEntity();
-                TecTech.proxy.playSound(base,"fx_click");
+                IGregTechTileEntity base = catH.getBaseMetaTileEntity();
+                TecTech.proxy.playSound(base, "fx_click");
                 if (catH.selection == -1) {
                     catH.selection = (byte) aSlotIndex;
                 } else {
@@ -63,7 +65,6 @@ public class GT_Container_Uncertainty extends GT_ContainerMetaTile_Machine {
                     catH.matrix[aSlotIndex] = temp;
                     catH.selection = -1;
                 }
-
             }
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);

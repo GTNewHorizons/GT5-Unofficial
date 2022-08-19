@@ -7,8 +7,8 @@ import com.github.technus.avrClone.registerPackages.IRegisterBit;
 import com.github.technus.avrClone.registerPackages.RegisterPackageSync;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
-public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity,SidedRedstone> {
-    public static final RSINT RSINT =new RSINT();
+public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, SidedRedstone> {
+    public static final RSINT RSINT = new RSINT();
 
     public SidedRedstone(int offset) {
         super(offset, Register.values().length);
@@ -22,39 +22,40 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity,Sided
     }
 
     @Override
-    public void preSync(AvrCore core,IGregTechTileEntity iGregTechTileEntity) {
-        int addr=this.getOffset();
-        int sides=0;
-        for(byte i=0;i<6;i++){
-            int val=iGregTechTileEntity.getInternalInputRedstoneSignal(i);
-            sides|=(val > 0?1:0)<<i;
-            core.setDataValue(addr++,iGregTechTileEntity.getInputRedstoneSignal(i));
-            core.setDataValue(addr++,val);
+    public void preSync(AvrCore core, IGregTechTileEntity iGregTechTileEntity) {
+        int addr = this.getOffset();
+        int sides = 0;
+        for (byte i = 0; i < 6; i++) {
+            int val = iGregTechTileEntity.getInternalInputRedstoneSignal(i);
+            sides |= (val > 0 ? 1 : 0) << i;
+            core.setDataValue(addr++, iGregTechTileEntity.getInputRedstoneSignal(i));
+            core.setDataValue(addr++, val);
             addr++;
         }
         int sidesOld = core.getDataValue(Register.PNEW.getAddress(this));
-        core.setDataValue(Register.POLD.getAddress(this),sidesOld);
-        core.setDataValue(Register.PNEW.getAddress(this),sides);
+        core.setDataValue(Register.POLD.getAddress(this), sidesOld);
+        core.setDataValue(Register.PNEW.getAddress(this), sides);
 
-        if(core.getInterruptEnable()) {
-            int pcint=core.getDataValue(Register.PCINT.getAddress(this));
-            int changesDetected=0;
-            switch (pcint&0b1100){//PCISC1 PCISC0
-                case 0b0000://low
-                    changesDetected= ~sides & core.getDataValue(Register.PCMSK.getAddress(this));
+        if (core.getInterruptEnable()) {
+            int pcint = core.getDataValue(Register.PCINT.getAddress(this));
+            int changesDetected = 0;
+            switch (pcint & 0b1100) { // PCISC1 PCISC0
+                case 0b0000: // low
+                    changesDetected = ~sides & core.getDataValue(Register.PCMSK.getAddress(this));
                     break;
-                case 0b0100://any
-                    changesDetected= (sides ^ sidesOld) & core.getDataValue(Register.PCMSK.getAddress(this));
+                case 0b0100: // any
+                    changesDetected = (sides ^ sidesOld) & core.getDataValue(Register.PCMSK.getAddress(this));
                     break;
-                case 0b1000://falling
-                    changesDetected= ~sides & sidesOld & core.getDataValue(Register.PCMSK.getAddress(this));
+                case 0b1000: // falling
+                    changesDetected = ~sides & sidesOld & core.getDataValue(Register.PCMSK.getAddress(this));
                     break;
-                case 0b1100://rising
-                    changesDetected= sides & ~sidesOld & core.getDataValue(Register.PCMSK.getAddress(this));
+                case 0b1100: // rising
+                    changesDetected = sides & ~sidesOld & core.getDataValue(Register.PCMSK.getAddress(this));
                     break;
             }
 
-            core.setDataValue(Register.PCFR.getAddress(this),
+            core.setDataValue(
+                    Register.PCFR.getAddress(this),
                     core.getDataValue(Register.PCFR.getAddress(this) | changesDetected));
 
             if (changesDetected > 0) {
@@ -66,43 +67,64 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity,Sided
     }
 
     @Override
-    public void postSync(AvrCore core,IGregTechTileEntity iGregTechTileEntity) {
-        int addr=this.getOffset();
-        for(byte i=0;i<6;i++){
-            iGregTechTileEntity.setOutputRedstoneSignal(i,(byte)core.getDataValue(addr));//allows edge detection hack?
-            addr+=3;
+    public void postSync(AvrCore core, IGregTechTileEntity iGregTechTileEntity) {
+        int addr = this.getOffset();
+        for (byte i = 0; i < 6; i++) {
+            iGregTechTileEntity.setOutputRedstoneSignal(
+                    i, (byte) core.getDataValue(addr)); // allows edge detection hack?
+            addr += 3;
         }
     }
 
-    public enum Register implements IRegister<SidedRedstone>{
-        PIN0,PINT0,PORT0,
-        PIN1,PINT1,PORT1,
-        PIN2,PINT2,PORT2,
-        PIN3,PINT3,PORT3,
-        PIN4,PINT4,PORT4,
-        PIN5,PINT5,PORT5,
-        PCMSK,PCFR,PCINT,PNEW,POLD;
+    public enum Register implements IRegister<SidedRedstone> {
+        PIN0,
+        PINT0,
+        PORT0,
+        PIN1,
+        PINT1,
+        PORT1,
+        PIN2,
+        PINT2,
+        PORT2,
+        PIN3,
+        PINT3,
+        PORT3,
+        PIN4,
+        PINT4,
+        PORT4,
+        PIN5,
+        PINT5,
+        PORT5,
+        PCMSK,
+        PCFR,
+        PCINT,
+        PNEW,
+        POLD;
 
         public final int relativeOffset;
 
-        Register(){
-            this.relativeOffset =ordinal();
+        Register() {
+            this.relativeOffset = ordinal();
         }
 
         @Override
         public int getAddress(SidedRedstone registerPackage) {
-            return registerPackage.getOffset()+relativeOffset;
+            return registerPackage.getOffset() + relativeOffset;
         }
     }
 
-    public enum RegisterBitsPCMSK implements IRegisterBit<SidedRedstone>{
-        PCINT0,PCINT1,PCINT2,PCINT3,PCINT4,PCINT5;
+    public enum RegisterBitsPCMSK implements IRegisterBit<SidedRedstone> {
+        PCINT0,
+        PCINT1,
+        PCINT2,
+        PCINT3,
+        PCINT4,
+        PCINT5;
+        private final int bit, mask;
 
-        private final int bit,mask;
-
-        RegisterBitsPCMSK(){
-            bit=ordinal();
-            mask=1<<bit;
+        RegisterBitsPCMSK() {
+            bit = ordinal();
+            mask = 1 << bit;
         }
 
         @Override
@@ -121,14 +143,18 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity,Sided
         }
     }
 
-    public enum RegisterBitsPCFR implements IRegisterBit<SidedRedstone>{
-        PCF0,PCF1,PCF2,PCF3,PCF4,PCF5;
+    public enum RegisterBitsPCFR implements IRegisterBit<SidedRedstone> {
+        PCF0,
+        PCF1,
+        PCF2,
+        PCF3,
+        PCF4,
+        PCF5;
+        private final int bit, mask;
 
-        private final int bit,mask;
-
-        RegisterBitsPCFR(){
-            bit=ordinal();
-            mask=1<<bit;
+        RegisterBitsPCFR() {
+            bit = ordinal();
+            mask = 1 << bit;
         }
 
         @Override
@@ -147,14 +173,16 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity,Sided
         }
     }
 
-    public enum RegisterBitsPCINT implements IRegisterBit<SidedRedstone>{
-        PCIF,PCEN,PCISC0,PCISC1;
+    public enum RegisterBitsPCINT implements IRegisterBit<SidedRedstone> {
+        PCIF,
+        PCEN,
+        PCISC0,
+        PCISC1;
+        private final int bit, mask;
 
-        private final int bit,mask;
-
-        RegisterBitsPCINT(){
-            bit=ordinal();
-            mask=1<<bit;
+        RegisterBitsPCINT() {
+            bit = ordinal();
+            mask = 1 << bit;
         }
 
         @Override
@@ -173,14 +201,18 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity,Sided
         }
     }
 
-    public enum RegisterBitsPNEW implements IRegisterBit<SidedRedstone>{
-        PNEW0,PNEW1,PNEW2,PNEW3,PNEW4,PNEW5;
+    public enum RegisterBitsPNEW implements IRegisterBit<SidedRedstone> {
+        PNEW0,
+        PNEW1,
+        PNEW2,
+        PNEW3,
+        PNEW4,
+        PNEW5;
+        private final int bit, mask;
 
-        private final int bit,mask;
-
-        RegisterBitsPNEW(){
-            bit=ordinal();
-            mask=1<<bit;
+        RegisterBitsPNEW() {
+            bit = ordinal();
+            mask = 1 << bit;
         }
 
         @Override
@@ -199,14 +231,18 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity,Sided
         }
     }
 
-    public enum RegisterBitsPOLD implements IRegisterBit<SidedRedstone>{
-        POLD0,POLD1,POLD2,POLD3,POLD4,POLD5;
+    public enum RegisterBitsPOLD implements IRegisterBit<SidedRedstone> {
+        POLD0,
+        POLD1,
+        POLD2,
+        POLD3,
+        POLD4,
+        POLD5;
+        private final int bit, mask;
 
-        private final int bit,mask;
-
-        RegisterBitsPOLD(){
-            bit=ordinal();
-            mask=1<<bit;
+        RegisterBitsPOLD() {
+            bit = ordinal();
+            mask = 1 << bit;
         }
 
         @Override
@@ -225,7 +261,7 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity,Sided
         }
     }
 
-    public static class RSINT implements IInterrupt<SidedRedstone>{
+    public static class RSINT implements IInterrupt<SidedRedstone> {
         @Override
         public int getVector() {
             return 1;
@@ -233,14 +269,15 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity,Sided
 
         @Override
         public boolean getTrigger(AvrCore core, SidedRedstone registerPackage) {
-            return (core.getDataValue(Register.PCINT.getAddress(registerPackage))&1)==1;
+            return (core.getDataValue(Register.PCINT.getAddress(registerPackage)) & 1) == 1;
         }
 
         @Override
         public void setTrigger(AvrCore core, SidedRedstone registerPackage, boolean value) {
-            int val=core.getDataValue(Register.PCINT.getAddress(registerPackage));
-            core.setDataValue(Register.PCINT.getAddress(registerPackage),
-                    value?val|RegisterBitsPCINT.PCIF.mask:val&~RegisterBitsPCINT.PCIF.mask);
+            int val = core.getDataValue(Register.PCINT.getAddress(registerPackage));
+            core.setDataValue(
+                    Register.PCINT.getAddress(registerPackage),
+                    value ? val | RegisterBitsPCINT.PCIF.mask : val & ~RegisterBitsPCINT.PCIF.mask);
         }
 
         @Override

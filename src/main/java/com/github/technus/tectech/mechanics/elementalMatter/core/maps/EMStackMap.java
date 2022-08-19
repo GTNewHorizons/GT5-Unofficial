@@ -2,7 +2,6 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
-
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -18,7 +17,7 @@ abstract class EMStackMap<T extends IEMStack> implements IEMMapRead<T> {
     }
 
     protected EMStackMap(NavigableMap<IEMDefinition, T> map) {
-        this.backingMap =map;
+        this.backingMap = map;
     }
 
     @Override
@@ -31,7 +30,7 @@ abstract class EMStackMap<T extends IEMStack> implements IEMMapRead<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj){
+        if (this == obj) {
             return true;
         }
         if (obj instanceof IEMMapRead) {
@@ -41,7 +40,7 @@ abstract class EMStackMap<T extends IEMStack> implements IEMMapRead<T> {
     }
 
     @Override
-    public int hashCode() {//Hash only definitions to compare contents not amounts or data
+    public int hashCode() { // Hash only definitions to compare contents not amounts or data
         int hash = -(size() << 4);
         for (Map.Entry<IEMDefinition, T> entry : entrySet()) {
             hash += entry.getValue().getDefinition().hashCode();
