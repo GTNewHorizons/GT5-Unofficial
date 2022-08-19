@@ -1413,7 +1413,7 @@ public class DreamCraftRecipeLoader {
             if (Loader.isModLoaded("DraconicEvolution")) {
                 // DE Schematics Cores Tier 1
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
-                        GT_ModHandler.getModItem("EMT", "EMTItems", 1, 16),
+                        GT_ModHandler.getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 9),
                         500_000,
                         1024,
                         1_000_000,
@@ -1486,7 +1486,7 @@ public class DreamCraftRecipeLoader {
                         new FluidStack[] {
                                 Materials.SpaceTime.getMolten(14400L), Materials.Void.getMolten(230400L),
                         },
-                        GT_ModHandler.getModItem("EMT", "EMTItems", 1, 18),
+                        GT_ModHandler.getModItem("EMT", "EMTItems", 1, 19),
                         72000,
                         32_000_000);
             }
