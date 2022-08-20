@@ -291,7 +291,8 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
 					.addElement('g', lazy(t -> buildHatchAdder(GregtechMetaTileEntity_SolarTower.class)
 							.hatchClass(TileEntitySolarHeater.class)
 							.adder(GregtechMetaTileEntity_SolarTower::addSolarHeater)
-							.casingIndex(0)
+							// use a positive casing index to make adder builder happy
+							.casingIndex(1)
 							.dot(1)
 							.build()))
 					.addElement('t', lazy(t -> onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta()))))
