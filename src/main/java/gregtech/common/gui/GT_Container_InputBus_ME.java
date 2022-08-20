@@ -10,9 +10,11 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.GregTech_API;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
+import gregtech.api.gui.GT_Slot_Holo_ME;
 import gregtech.api.gui.GT_Slot_Render;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 
 public class GT_Container_InputBus_ME  extends GT_ContainerMetaTile_Machine {
     private static final int LEFT_OFFSET = 8;
@@ -26,12 +28,18 @@ public class GT_Container_InputBus_ME  extends GT_ContainerMetaTile_Machine {
     }
     @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-        for (int z = 0; z < 2; ++z)
-            for (int y = 0; y < 4; ++y)
-                for (int x = 0; x < 4; ++x)
-                    addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, x + y * 4 + z * 16,
-                        LEFT_OFFSET + x * SLOT_SIZE + z * 90, TOP_OFFSET + y * SLOT_SIZE, false, true, 1));
-        addSlotToContainer(slotCircuit = new GT_Slot_Render(mTileEntity, CIRCUIT_SLOT, 153, 63));
+        for (int y = 0; y < 4; ++y)
+            for (int x = 0; x < 4; ++x)
+                addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, x + y * 4,
+                    LEFT_OFFSET + x * SLOT_SIZE, TOP_OFFSET + y * SLOT_SIZE, false, true, 1));
+        for (int y = 0; y < 4; ++y)
+            for (int x = 0; x < 4; ++x) {
+                GT_Slot_Holo_ME slot = new GT_Slot_Holo_ME(this.mTileEntity, x + y * 4 + 16,
+                    LEFT_OFFSET + x * SLOT_SIZE + 90, TOP_OFFSET + y * SLOT_SIZE, false, true);
+                //slot.setEnabled(false); should it be highlightable?
+                addSlotToContainer(slot);
+            }
+        addSlotToContainer(slotCircuit = new GT_Slot_Render(mTileEntity, CIRCUIT_SLOT, 80, 63));
     }
 
     @Override
@@ -47,6 +55,11 @@ public class GT_Container_InputBus_ME  extends GT_ContainerMetaTile_Machine {
                 }
                 else {
                     tSlot.putStack(GT_Utility.copyAmount(1L, new Object[] {tStack}));
+                }
+                if (mTileEntity.isServerSide()) {
+                    ItemStack newInfo = ((GT_MetaTileEntity_Hatch_InputBus_ME) mTileEntity.getMetaTileEntity()).updateInformationSlot(aSlotIndex, tStack);
+                    ((Slot) this.inventorySlots.get(aSlotIndex + 16)).putStack(newInfo);
+                    detectAndSendChanges();
                 }
                 return null;
             }

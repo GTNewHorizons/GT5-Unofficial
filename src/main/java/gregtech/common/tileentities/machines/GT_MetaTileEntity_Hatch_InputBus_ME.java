@@ -4,10 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
@@ -121,6 +123,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     public void saveNBTData(NBTTagCompound aNBT)
     {
         super.saveNBTData(aNBT);
+        int[] sizes = new int[16];
+        for (int i = 0; i < 16; ++i)
+            sizes[i] = mInventory[i + 16] == null ? 0 : mInventory[i + 16].stackSize;
+        aNBT.setIntArray("sizes", sizes);
         if (GregTech_API.mAE2) {
             gridProxy.writeToNBT(aNBT);
         }
@@ -129,6 +135,18 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        if (aNBT.hasKey("sizes")) {
+            int[] sizes = aNBT.getIntArray("sizes");
+            if (sizes.length == 16) {
+                for (int i = 0; i < 16; ++i) {
+                    if (sizes[i] != 0 && mInventory[i] != null) {
+                        ItemStack s = mInventory[i].copy();
+                        s.stackSize = sizes[i];
+                        mInventory[i + 16] = s;
+                    }
+                }
+            }
+        }
         if (GregTech_API.mAE2) {
             getProxy().readFromNBT(aNBT);
         }
@@ -191,10 +209,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 if (result != null) {
                     this.shadowInventory[aIndex] = result.getItemStack();
                     this.savedStackSizes[aIndex] = this.shadowInventory[aIndex].stackSize;
-                    //Show that the request was successful
-                    this.setInventorySlotContents(aIndex + SLOT_COUNT, GT_Utility.copyAmount(
-                        this.shadowInventory[aIndex].stackSize > 64 ? 64 : this.shadowInventory[aIndex].stackSize,
-                         new Object[] {result.getItemStack()}));
+                    this.setInventorySlotContents(aIndex + SLOT_COUNT, this.shadowInventory[aIndex]);
                     return this.shadowInventory[aIndex];
                 } else {
                     //Request failed
@@ -235,13 +250,16 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (GregTech_API.mAE2) {
             for (int i = 0; i < SLOT_COUNT; ++i) {
                 if (savedStackSizes[i] != 0) {
-                    if (shadowInventory[i] == null || shadowInventory[i].stackSize < savedStackSizes[i]) {
+                    ItemStack oldStack = shadowInventory[i];
+                    if (oldStack == null || oldStack.stackSize < savedStackSizes[i]) {
                         AENetworkProxy proxy = getProxy();
                         try {
                             IMEMonitor<IAEItemStack> sg = proxy.getStorage().getItemInventory();
                             IAEItemStack request = AEItemStack.create(mInventory[i]);
-                            request.setStackSize(savedStackSizes[i] - shadowInventory[i].stackSize);
+                            request.setStackSize(savedStackSizes[i] - (oldStack == null ? 0 : oldStack.stackSize));
                             sg.extractItems(request, Actionable.MODULATE, getRequestSource());
+                            proxy.getEnergy().extractAEPower(request.getStackSize(), Actionable.MODULATE, PowerMultiplier.CONFIG);
+                            setInventorySlotContents(i + SLOT_COUNT, oldStack);
                         }
                         catch (final GridAccessException ignored) {
                         }
@@ -252,6 +270,35 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             }
         }
         processingRecipe = false;
+    }
+
+    public ItemStack updateInformationSlot(int aIndex, ItemStack aStack) {
+        if (GregTech_API.mAE2 && aIndex >= 0 && aIndex < SLOT_COUNT) {
+            if (aStack == null) {
+                super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+                return null;
+            }
+            else {
+                AENetworkProxy proxy = getProxy();
+                if (!proxy.isActive()) {
+                    super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+                    return null;
+                }
+                try {
+                    IMEMonitor<IAEItemStack> sg = proxy.getStorage().getItemInventory();
+                    IAEItemStack request = AEItemStack.create(mInventory[aIndex]);
+                    request.setStackSize(Integer.MAX_VALUE);
+                    IAEItemStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+                    ItemStack s = (result != null) ? result.getItemStack() : null;
+                    setInventorySlotContents(aIndex + SLOT_COUNT, s);
+                    return s;
+                }
+                catch (final GridAccessException ignored) {
+                }
+                return null;
+            }
+        }
+        return null;
     }
 
     @Override
