@@ -13,8 +13,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class GT_Container_DebugPollutor
-        extends GT_ContainerMetaTile_Machine {
+public class GT_Container_DebugPollutor extends GT_ContainerMetaTile_Machine {
     public int pollution;
     public float anomaly;
     private int anomalyInt;
@@ -103,12 +102,13 @@ public class GT_Container_DebugPollutor
                 case 15:
                     dpg.anomaly *= aShifthold == 1 ? 16 : 2;
                     break;
-                default: return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+                default:
+                    return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
             }
-            if(dpg.anomaly==Float.POSITIVE_INFINITY){
-                dpg.anomaly=Float.MAX_VALUE;
-            }else if (dpg.anomaly==Float.NEGATIVE_INFINITY){
-                dpg.anomaly=-Float.MAX_VALUE;
+            if (dpg.anomaly == Float.POSITIVE_INFINITY) {
+                dpg.anomaly = Float.MAX_VALUE;
+            } else if (dpg.anomaly == Float.NEGATIVE_INFINITY) {
+                dpg.anomaly = -Float.MAX_VALUE;
             }
             return null;
         }
@@ -123,14 +123,14 @@ public class GT_Container_DebugPollutor
         }
 
         GT_MetaTileEntity_DebugPollutor dpg = (GT_MetaTileEntity_DebugPollutor) mTileEntity.getMetaTileEntity();
-        pollution =dpg.pollution;
-        anomaly =dpg.anomaly;
-        anomalyInt=Float.floatToIntBits(anomaly);
+        pollution = dpg.pollution;
+        anomaly = dpg.anomaly;
+        anomalyInt = Float.floatToIntBits(anomaly);
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
-            TT_Utility.sendInteger(pollution,this,var1,100);
-            TT_Utility.sendFloat(anomaly,this,var1,102);
+            TT_Utility.sendInteger(pollution, this, var1, 100);
+            TT_Utility.sendFloat(anomaly, this, var1, 102);
         }
     }
 
@@ -141,11 +141,11 @@ public class GT_Container_DebugPollutor
         switch (par1) {
             case 100:
             case 101:
-                pollution = TT_Utility.receiveInteger(pollution,100,par1,par2);
+                pollution = TT_Utility.receiveInteger(pollution, 100, par1, par2);
                 break;
             case 102:
             case 103:
-                anomaly = Float.intBitsToFloat(anomalyInt= TT_Utility.receiveInteger(anomalyInt,102,par1,par2));
+                anomaly = Float.intBitsToFloat(anomalyInt = TT_Utility.receiveInteger(anomalyInt, 102, par1, par2));
                 break;
         }
     }

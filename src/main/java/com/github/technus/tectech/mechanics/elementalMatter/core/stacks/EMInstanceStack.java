@@ -1,19 +1,5 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
-import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecayResult;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
-import com.github.technus.tectech.util.TT_Utility;
-import net.minecraft.client.Minecraft;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.ArrayList;
-
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.AVOGADRO_CONSTANT;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
@@ -24,21 +10,34 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecayResult;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.util.TT_Utility;
+import java.util.ArrayList;
+import net.minecraft.client.Minecraft;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.nbt.NBTTagCompound;
+
 /**
  * Created by danie_000 on 22.10.2016.
  */
 public final class EMInstanceStack implements IEMStack {
     public static int MIN_MULTIPLE_DECAY_CALLS = 4, MAX_MULTIPLE_DECAY_CALLS = 16;
-    public static double DECAY_CALL_PER = EM_COUNT_PER_MATERIAL_AMOUNT;//todo
+    public static double DECAY_CALL_PER = EM_COUNT_PER_MATERIAL_AMOUNT; // todo
 
     private final IEMDefinition definition;
-    private       double        amount;
+    private double amount;
 
     private double age;
-    //energy - if positive then particle should try to decay
-    private long   energy;
-    //byte color; 0=Red 1=Green 2=Blue 0=Cyan 1=Magenta 2=Yellow, else ignored (-1 - uncolorable)
-    private int    color;
+    // energy - if positive then particle should try to decay
+    private long energy;
+    // byte color; 0=Red 1=Green 2=Blue 0=Cyan 1=Magenta 2=Yellow, else ignored (-1 - uncolorable)
+    private int color;
     private double lifeTime;
     private double lifeTimeMult;
 
@@ -58,7 +57,7 @@ public final class EMInstanceStack implements IEMStack {
         definition = defSafe == null ? null__ : defSafe;
         if (getDefinition().hasColor()) {
             this.color = (byte) TecTech.RANDOM.nextInt(getDefinition().getMaxColors());
-        } else {//transforms colorable??? into proper color
+        } else { // transforms colorable??? into proper color
             this.color = getDefinition().getMaxColors();
         }
         this.lifeTimeMult = lifeTimeMult;
@@ -68,7 +67,7 @@ public final class EMInstanceStack implements IEMStack {
         this.setAmount(amount);
     }
 
-    //Clone proxy
+    // Clone proxy
     private EMInstanceStack(EMInstanceStack stack) {
         definition = stack.getDefinition();
         color = stack.color;
@@ -125,14 +124,14 @@ public final class EMInstanceStack implements IEMStack {
         return color;
     }
 
-    public void setColor(int color) {//does not allow changing magic element
+    public void setColor(int color) { // does not allow changing magic element
         if (this.color < 0 || this.color > 2 || color < 0 || color >= 3) {
             return;
         }
         this.color = color;
     }
 
-    public void nextColor() {//does not allow changing magic element
+    public void nextColor() { // does not allow changing magic element
         if (definition.hasColor()) {
             color = (byte) TecTech.RANDOM.nextInt(definition.getMaxColors());
         }
@@ -143,7 +142,7 @@ public final class EMInstanceStack implements IEMStack {
     }
 
     public void setLifeTimeMultiplier(double mult) {
-        if (mult <= 0) //since infinity*0=nan
+        if (mult <= 0) // since infinity*0=nan
         {
             throw new IllegalArgumentException("multiplier must be >0");
         }
@@ -176,7 +175,7 @@ public final class EMInstanceStack implements IEMStack {
     }
 
     public EMDecayResult decay() {
-        return decay(1D, getAge(), 0);//try to decay without changes
+        return decay(1D, getAge(), 0); // try to decay without changes
     }
 
     public EMDecayResult decay(double apparentAge, long postEnergize) {
@@ -193,7 +192,8 @@ public final class EMInstanceStack implements IEMStack {
         EMDecayResult output;
         if (getDefinition().usesMultipleDecayCalls(energy)) {
             double amountTemp = getAmount();
-            int    decayCnt   = (int) min(MAX_MULTIPLE_DECAY_CALLS, max(getAmount() / DECAY_CALL_PER, MIN_MULTIPLE_DECAY_CALLS));
+            int decayCnt =
+                    (int) min(MAX_MULTIPLE_DECAY_CALLS, max(getAmount() / DECAY_CALL_PER, MIN_MULTIPLE_DECAY_CALLS));
             setAmount(div(getAmount(), decayCnt));
             decayCnt--;
 
@@ -226,24 +226,43 @@ public final class EMInstanceStack implements IEMStack {
             setLifeTimeMultiplier(getLifeTimeMultiplier());
             return decayCompute(getDefinition().getEnergyInducedDecay(energy), lifeTimeMult, -1D, newEnergyLevel);
         } else if (getDefinition().getRawTimeSpan(energy) < 0) {
-            return null;//return null, decay cannot be achieved
+            return null; // return null, decay cannot be achieved
         } else if (getDefinition().isTimeSpanHalfLife()) {
-            return exponentialDecayCompute(energy > 0 ? getDefinition().getEnergyInducedDecay(energy) : getDefinition().getDecayArray(), lifeTimeMult, -1D, newEnergyLevel);
+            return exponentialDecayCompute(
+                    energy > 0
+                            ? getDefinition().getEnergyInducedDecay(energy)
+                            : getDefinition().getDecayArray(),
+                    lifeTimeMult,
+                    -1D,
+                    newEnergyLevel);
         } else {
             if (1 > lifeTime) {
-                return decayCompute(energy > 0 ? getDefinition().getEnergyInducedDecay(energy) : getDefinition().getNaturalDecayInstant(), lifeTimeMult, 0D, newEnergyLevel);
+                return decayCompute(
+                        energy > 0
+                                ? getDefinition().getEnergyInducedDecay(energy)
+                                : getDefinition().getNaturalDecayInstant(),
+                        lifeTimeMult,
+                        0D,
+                        newEnergyLevel);
             } else if (apparentAge > lifeTime) {
-                return decayCompute(energy > 0 ? getDefinition().getEnergyInducedDecay(energy) : getDefinition().getDecayArray(), lifeTimeMult, 0D, newEnergyLevel);
+                return decayCompute(
+                        energy > 0
+                                ? getDefinition().getEnergyInducedDecay(energy)
+                                : getDefinition().getDecayArray(),
+                        lifeTimeMult,
+                        0D,
+                        newEnergyLevel);
             }
         }
-        return null;//return null since decay cannot be achieved
+        return null; // return null since decay cannot be achieved
     }
 
-    //Use to get direct decay output providing correct decay array
-    private EMDecayResult exponentialDecayCompute(EMDecay[] decays, double lifeTimeMult, double newProductsAge, long newEnergyLevel) {
-        double newAmount = div(getAmount(), Math.pow(2D, 1D/* 1 second */ / lifeTime));
+    // Use to get direct decay output providing correct decay array
+    private EMDecayResult exponentialDecayCompute(
+            EMDecay[] decays, double lifeTimeMult, double newProductsAge, long newEnergyLevel) {
+        double newAmount = div(getAmount(), Math.pow(2D, 1D /* 1 second */ / lifeTime));
 
-        //if(definition.getSymbol().startsWith("U ")) {
+        // if(definition.getSymbol().startsWith("U ")) {
         //    System.out.println("newAmount = " + newAmount);
         //    System.out.println("amountRemaining = " + amountRemaining);
         //    for(cElementalDecay decay:decays){
@@ -252,14 +271,14 @@ public final class EMInstanceStack implements IEMStack {
         //            System.out.println("stack = " + stack.getDefinition().getSymbol() + " " + stack.amount);
         //        }
         //    }
-        //}
+        // }
         if (newAmount == getAmount()) {
             newAmount -= ulpSigned(newAmount);
         } else if (newAmount < 1) {
             return decayCompute(decays, lifeTimeMult, newProductsAge, newEnergyLevel);
         }
 
-        //split to non decaying and decaying part
+        // split to non decaying and decaying part
         double amount = this.getAmount();
         this.setAmount(this.getAmount() - newAmount);
         EMDecayResult products = decayCompute(decays, lifeTimeMult, newProductsAge, newEnergyLevel);
@@ -271,19 +290,25 @@ public final class EMInstanceStack implements IEMStack {
         return products;
     }
 
-    //Use to get direct decay output providing correct decay array
-    private EMDecayResult decayCompute(EMDecay[] decays, double lifeTimeMult, double newProductsAge, long newEnergyLevel) {
+    // Use to get direct decay output providing correct decay array
+    private EMDecayResult decayCompute(
+            EMDecay[] decays, double lifeTimeMult, double newProductsAge, long newEnergyLevel) {
         if (decays == null) {
-            return null;//Can not decay so it won't
+            return null; // Can not decay so it won't
         }
         boolean makesEnergy = getDefinition().decayMakesEnergy(energy);
-        double  mass        = getMass();
+        double mass = getMass();
         if (decays.length == 0) {
             return makesEnergy ? null : new EMDecayResult(new EMInstanceStackMap(), mass, 0);
-            //provide non null 0 length array for annihilation
-        } else if (decays.length == 1) {//only one type of decay :D, doesn't need dead end
+            // provide non null 0 length array for annihilation
+        } else if (decays.length == 1) { // only one type of decay :D, doesn't need dead end
             if (decays[0] == deadEnd) {
-                return makesEnergy ? null : new EMDecayResult(decays[0].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, getAmount()), mass, 0);
+                return makesEnergy
+                        ? null
+                        : new EMDecayResult(
+                                decays[0].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, getAmount()),
+                                mass,
+                                0);
             }
             EMInstanceStackMap output = decays[0].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, getAmount());
             if (newProductsAge < 0) {
@@ -305,14 +330,14 @@ public final class EMInstanceStack implements IEMStack {
                 }
             }
             if (energy <= 0 && output.getMass() > mass) {
-                return null;//no energy usage to decay
+                return null; // no energy usage to decay
             }
             return new EMDecayResult(new EMInstanceStackMap(), mass, makesEnergy ? output.getMass() - mass : 0);
         } else {
-            EMDecayResult      totalOutput     = new EMDecayResult(new EMInstanceStackMap(), getMass(), 0);
-            EMInstanceStackMap output          = totalOutput.getOutput(), results;
-            int                differentDecays = decays.length;
-            double[]           probabilities   = new double[differentDecays];
+            EMDecayResult totalOutput = new EMDecayResult(new EMInstanceStackMap(), getMass(), 0);
+            EMInstanceStackMap output = totalOutput.getOutput(), results;
+            int differentDecays = decays.length;
+            double[] probabilities = new double[differentDecays];
             for (int i = 0; i < probabilities.length; i++) {
                 probabilities[i] = decays[i].getProbability();
             }
@@ -323,10 +348,10 @@ public final class EMInstanceStack implements IEMStack {
                 Minecraft.getMinecraft().crashed(new CrashReport("Decay failed for: " + this, e));
                 return null;
             }
-            //long amountRemaining = this.amount, amount = this.amount;
-            //float remainingProbability = 1D;
-//
-            //for (int i = 0; i < differentDecays; i++) {
+            // long amountRemaining = this.amount, amount = this.amount;
+            // float remainingProbability = 1D;
+            //
+            // for (int i = 0; i < differentDecays; i++) {
             //    if (decays[i].probability >= 1D) {
             //        long thisDecayAmount = (long) Math.floor(remainingProbability * (double) amount);
             //        if (thisDecayAmount > 0) {
@@ -355,9 +380,9 @@ public final class EMInstanceStack implements IEMStack {
             //    if(remainingProbability<=0) {
             //        break;
             //    }
-            //}
+            // }
 
-            //for (int i = 0; i < amountRemaining; i++) {
+            // for (int i = 0; i < amountRemaining; i++) {
             //    double rand = TecTech.RANDOM.nextDouble();
             //    for (int j = 0; j < differentDecays; j++) {//looking for the thing it decayed into
             //        rand -= decays[j].probability;
@@ -366,7 +391,7 @@ public final class EMInstanceStack implements IEMStack {
             //            break;
             //        }
             //    }
-            //}
+            // }
 
             if (getDefinition().decayMakesEnergy(energy)) {
                 for (int i = differentDecays - 1; i >= 0; i--) {
@@ -405,7 +430,7 @@ public final class EMInstanceStack implements IEMStack {
                 }
             }
             if (energy <= 0 && output.getMass() > getMass()) {
-                return null;//no energy usage to decay
+                return null; // no energy usage to decay
             }
             return totalOutput;
         }
@@ -415,20 +440,20 @@ public final class EMInstanceStack implements IEMStack {
         if (instances == null) {
             return this;
         }
-        //returns with the definition from the first object passed
+        // returns with the definition from the first object passed
         double energyTotal = getEnergySettingCost(0, energy);
-        long   maxEnergy   = energy;
-        long   minEnergy   = energy;
+        long maxEnergy = energy;
+        long minEnergy = energy;
 
         for (EMInstanceStack instance : instances) {
-            //if (instance != null && compareTo(instance) == 0) {
+            // if (instance != null && compareTo(instance) == 0) {
             setAmount(add(getAmount(), instance.getAmount()));
             energyTotal += instance.getEnergySettingCost(0, instance.energy);
             maxEnergy = max(instance.energy, maxEnergy);
             minEnergy = min(instance.energy, maxEnergy);
             lifeTimeMult = min(lifeTimeMult, instance.lifeTimeMult);
             setAge(max(getAge(), instance.getAge()));
-            //}
+            // }
         }
 
         if (energyTotal >= 0) {
@@ -453,20 +478,20 @@ public final class EMInstanceStack implements IEMStack {
         if (instances == null) {
             return this;
         }
-        //returns with the definition from the first object passed
+        // returns with the definition from the first object passed
         double energyTotal = getEnergySettingCost(0, energy);
-        long   maxEnergy   = energy;
-        long   minEnergy   = energy;
+        long maxEnergy = energy;
+        long minEnergy = energy;
 
         for (EMInstanceStack instance : instances) {
-            //if (instance != null && compareTo(instance) == 0) {
+            // if (instance != null && compareTo(instance) == 0) {
             setAmount(getAmount() + instance.getAmount());
             energyTotal += instance.getEnergySettingCost(0, instance.energy);
             maxEnergy = max(instance.energy, maxEnergy);
             minEnergy = min(instance.energy, maxEnergy);
             lifeTimeMult = min(lifeTimeMult, instance.lifeTimeMult);
             setAge(max(getAge(), instance.getAge()));
-            //}
+            // }
         }
 
         if (energyTotal >= 0) {
@@ -498,35 +523,40 @@ public final class EMInstanceStack implements IEMStack {
             lines.add(translateToLocal("tt.keyword.scan.life_mult") + " = " + lifeTimeMult);
         }
         if (TT_Utility.areBitsSet(SCAN_GET_AGE, capabilities)) {
-            lines.add(translateToLocal("tt.keyword.scan.age") + " = " + getAge() + " " + translateToLocal("tt.keyword.unit.time"));
+            lines.add(translateToLocal("tt.keyword.scan.age") + " = " + getAge() + " "
+                    + translateToLocal("tt.keyword.unit.time"));
         }
         if (TT_Utility.areBitsSet(SCAN_GET_COLOR_VALUE, capabilities)) {
             lines.add(translateToLocal("tt.keyword.scan.color") + " = " + color);
         }
         if (TT_Utility.areBitsSet(SCAN_GET_ENERGY, capabilities)) {
-            lines.add(translateToLocal("tt.keyword.scan.energy") + " = " + getDefinition().getEnergyDiffBetweenStates(0, energy) + " " + translateToLocal("tt.keyword.unit.energy"));
+            lines.add(translateToLocal("tt.keyword.scan.energy") + " = "
+                    + getDefinition().getEnergyDiffBetweenStates(0, energy) + " "
+                    + translateToLocal("tt.keyword.unit.energy"));
         }
         if (TT_Utility.areBitsSet(SCAN_GET_ENERGY_LEVEL, capabilities)) {
             lines.add(translateToLocal("tt.keyword.scan.energyLevel") + " = " + energy);
         }
         if (TT_Utility.areBitsSet(SCAN_GET_AMOUNT, capabilities)) {
-            lines.add(translateToLocal("tt.keyword.scan.amount") + " = " + getAmount() / AVOGADRO_CONSTANT + " " + translateToLocal("tt.keyword.unit.mol"));
+            lines.add(translateToLocal("tt.keyword.scan.amount") + " = " + getAmount() / AVOGADRO_CONSTANT + " "
+                    + translateToLocal("tt.keyword.unit.mol"));
         }
 
         scanContents(lines, getDefinition().getSubParticles(), 1, detailsOnDepthLevels);
     }
 
-    private void scanContents(ArrayList<String> lines, EMConstantStackMap definitions, int depth, int[] detailsOnDepthLevels) {
+    private void scanContents(
+            ArrayList<String> lines, EMConstantStackMap definitions, int depth, int[] detailsOnDepthLevels) {
         if (definitions != null && depth < detailsOnDepthLevels.length) {
             int deeper = depth + 1;
             for (EMDefinitionStack definitionStack : definitions.valuesToArray()) {
-                lines.add("");//def separator
+                lines.add(""); // def separator
                 if (TT_Utility.areBitsSet(SCAN_GET_DEPTH_LEVEL, detailsOnDepthLevels[depth])) {
-                    lines.add(translateToLocal("tt.keyword.scan.depth") +" = " + depth);
+                    lines.add(translateToLocal("tt.keyword.scan.depth") + " = " + depth);
                 }
                 getDefinition().addScanResults(lines, detailsOnDepthLevels[depth], energy, TecTech.definitionsRegistry);
                 if (TT_Utility.areBitsSet(SCAN_GET_AMOUNT, detailsOnDepthLevels[depth])) {
-                    lines.add(translateToLocal("tt.keyword.scan.count")+" = " + definitionStack.getAmount());
+                    lines.add(translateToLocal("tt.keyword.scan.count") + " = " + definitionStack.getAmount());
                 }
                 scanContents(lines, definitionStack.getDefinition().getSubParticles(), deeper, detailsOnDepthLevels);
             }
@@ -566,7 +596,8 @@ public final class EMInstanceStack implements IEMStack {
         return false;
     }
 
-    //Amount shouldn't be hashed if this is just indicating amount and not structure, DOES NOT CARE ABOUT creativeTabTecTech INFO
+    // Amount shouldn't be hashed if this is just indicating amount and not structure, DOES NOT CARE ABOUT
+    // creativeTabTecTech INFO
     @Override
     public int hashCode() {
         return getDefinition().hashCode();
@@ -574,7 +605,9 @@ public final class EMInstanceStack implements IEMStack {
 
     @Override
     public String toString() {
-        return getDefinition().toString() + ' ' + getAmount() / AVOGADRO_CONSTANT + " " + translateToLocal("tt.keyword.unit.mol") + " " + getMass() + " "+translateToLocal("tt.keyword.unit.mass");
+        return getDefinition().toString() + ' ' + getAmount() / AVOGADRO_CONSTANT + " "
+                + translateToLocal("tt.keyword.unit.mol") + " " + getMass() + " "
+                + translateToLocal("tt.keyword.unit.mass");
     }
 
     public void setAmount(double amount) {

@@ -9,15 +9,14 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstance
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by danie_000 on 30.12.2017.
@@ -37,16 +36,19 @@ public class EMGive implements ICommand {
             if (args.length < 3) {
                 sender.addChatMessage(new ChatComponentText(getCommandUsage(sender)));
             } else {
-                TecTech.LOGGER.info("Spawninig EM for " + ((EntityPlayerMP) sender).getDisplayName() + " - " + Arrays.toString(args));
+                TecTech.LOGGER.info("Spawninig EM for " + ((EntityPlayerMP) sender).getDisplayName() + " - "
+                        + Arrays.toString(args));
 
-                ArrayList<String> list   = new ArrayList<>(Arrays.asList(args));
-                String            energy = list.remove(0);
+                ArrayList<String> list = new ArrayList<>(Arrays.asList(args));
+                String energy = list.remove(0);
 
                 EMDefinitionStack def = getDefinitionStack(TecTech.definitionsRegistry, list);
                 if (def != null) {
                     EMInstanceStack instanceStack = new EMInstanceStack(def, 1, 0, Long.parseLong(energy));
 
-                    sender.addChatMessage(new ChatComponentText(instanceStack.getDefinition().getSymbol() + " - " + instanceStack.getDefinition().getLocalizedName()));
+                    sender.addChatMessage(
+                            new ChatComponentText(instanceStack.getDefinition().getSymbol() + " - "
+                                    + instanceStack.getDefinition().getLocalizedName()));
 
                     EMInstanceStackMap instanceMap = new EMInstanceStackMap(instanceStack);
 

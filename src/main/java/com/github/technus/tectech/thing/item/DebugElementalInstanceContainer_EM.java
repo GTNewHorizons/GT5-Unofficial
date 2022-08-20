@@ -1,5 +1,12 @@
 package com.github.technus.tectech.thing.item;
 
+import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.TecTech.creativeTabEM;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.*;
+import static cpw.mods.fml.relauncher.Side.CLIENT;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
@@ -14,6 +21,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import java.util.Collections;
+import java.util.List;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,16 +33,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-
-import java.util.Collections;
-import java.util.List;
-
-import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.TecTech.creativeTabEM;
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.*;
-import static cpw.mods.fml.relauncher.Side.CLIENT;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -50,9 +49,19 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        NBTTagCompound tNBT        = aStack.getTagCompound();
-        TileEntity     tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+    public boolean onItemUseFirst(
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int aSide,
+            float hitX,
+            float hitY,
+            float hitZ) {
+        NBTTagCompound tNBT = aStack.getTagCompound();
+        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {
             aStack.stackSize = 1;
             if (tTileEntity instanceof IGregTechTileEntity) {
@@ -61,7 +70,8 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
                     EMInstanceStackMap content = ((IEMContainer) metaTE).getContentHandler();
                     if (tNBT.hasKey("content")) {
                         try {
-                            content.putUnifyAll(EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry, tNBT.getCompoundTag("content")));
+                            content.putUnifyAll(EMInstanceStackMap.fromNBT(
+                                    TecTech.definitionsRegistry, tNBT.getCompoundTag("content")));
                         } catch (EMException e) {
                             if (DEBUG_MODE) {
                                 e.printStackTrace();
@@ -101,18 +111,20 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("content")) {
-                aList.add(translateToLocal("item.em.debugContainer.desc.0") + ": ");//Contains
-                EMInstanceStackMap content = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry, tNBT.getCompoundTag("content"));
+                aList.add(translateToLocal("item.em.debugContainer.desc.0") + ": "); // Contains
+                EMInstanceStackMap content =
+                        EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry, tNBT.getCompoundTag("content"));
                 Collections.addAll(aList, content.getElementalInfo());
             } else {
-                aList.add(translateToLocal("item.em.debugContainer.desc.1"));//Container for elemental matter
+                aList.add(translateToLocal("item.em.debugContainer.desc.1")); // Container for elemental matter
             }
-            aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.debugContainer.desc.2"));//Right click on elemental hatches
+            aList.add(EnumChatFormatting.BLUE
+                    + translateToLocal("item.em.debugContainer.desc.2")); // Right click on elemental hatches
         } catch (Exception e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
             }
-            aList.add(translateToLocal("item.em.debugContainer.desc.3"));//---Unexpected Termination---
+            aList.add(translateToLocal("item.em.debugContainer.desc.3")); // ---Unexpected Termination---
         }
     }
 
@@ -127,11 +139,20 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
         for (IEMDefinition definition : TecTech.definitionsRegistry.getStacksRegisteredForDisplay()) {
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName() + " " + 1 + " " + translateToLocal("tt.keyword.unit.mbMols")),
+            list.add(setContent(
+                    new ItemStack(this)
+                            .setStackDisplayName(definition.getLocalizedName() + " " + 1 + " "
+                                    + translateToLocal("tt.keyword.unit.mbMols")),
                     new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_MATERIAL_AMOUNT))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName() + " " + 1 + " " + translateToLocal("tt.keyword.unit.itemMols")),
+            list.add(setContent(
+                    new ItemStack(this)
+                            .setStackDisplayName(definition.getLocalizedName() + " " + 1 + " "
+                                    + translateToLocal("tt.keyword.unit.itemMols")),
                     new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_ITEM))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName() + " " + 1000 + " " + translateToLocal("tt.keyword.unit.mbMols")),
+            list.add(setContent(
+                    new ItemStack(this)
+                            .setStackDisplayName(definition.getLocalizedName() + " " + 1000 + " "
+                                    + translateToLocal("tt.keyword.unit.mbMols")),
                     new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_1k))));
         }
     }

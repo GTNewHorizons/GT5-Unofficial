@@ -1,5 +1,9 @@
 package com.github.technus.tectech.thing.item;
 
+import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.avrClone.AvrCore;
 import com.github.technus.avrClone.instructions.InstructionRegistry;
 import com.github.technus.avrClone.memory.program.ProgramMemory;
@@ -12,6 +16,10 @@ import dan200.computercraft.api.filesystem.IWritableMount;
 import dan200.computercraft.api.media.IMedia;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -22,22 +30,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-
-import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.TecTech.creativeTabTecTech;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
-@Optional.InterfaceList(
-        {@Optional.Interface(iface="dan200.computercraft.api.media.IMedia",modid = "ComputerCraft"),
-        @Optional.Interface(iface="li.cil.oc.api.fs.FileSystem",modid="OpenComputers")})
+@Optional.InterfaceList({
+    @Optional.Interface(iface = "dan200.computercraft.api.media.IMedia", modid = "ComputerCraft"),
+    @Optional.Interface(iface = "li.cil.oc.api.fs.FileSystem", modid = "OpenComputers")
+})
 public class AvrProgrammer extends Item implements IMedia {
-    public static AvrProgrammer INSTANCE=new AvrProgrammer();
+    public static AvrProgrammer INSTANCE = new AvrProgrammer();
 
-    private AvrProgrammer(){
+    private AvrProgrammer() {
         setMaxStackSize(1);
         setHasSubtypes(true);
         setUnlocalizedName("em.programmer");
@@ -46,9 +46,19 @@ public class AvrProgrammer extends Item implements IMedia {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            ItemStack stack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int side,
+            float hitX,
+            float hitY,
+            float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if(tTileEntity==null || aPlayer instanceof FakePlayer) {
+        if (tTileEntity == null || aPlayer instanceof FakePlayer) {
             return aPlayer instanceof EntityPlayerMP;
         }
         if (aPlayer instanceof EntityPlayerMP) {
@@ -56,12 +66,12 @@ public class AvrProgrammer extends Item implements IMedia {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                 if (metaTE instanceof GT_MetaTileEntity_MicroController) {
                     if (aPlayer.isSneaking()) {
-                        if(stack.stackTagCompound.hasKey("pgm")) {
+                        if (stack.stackTagCompound.hasKey("pgm")) {
                             NBTTagCompound pgm = stack.stackTagCompound.getCompoundTag("pgm");
                             if (pgm.hasKey("instructions")) {
                                 AvrCore core = ((GT_MetaTileEntity_MicroController) metaTE).core;
-                                InstructionRegistry registry = InstructionRegistry.REGISTRIES.
-                                        get(pgm.getString("instructionRegistry"));
+                                InstructionRegistry registry =
+                                        InstructionRegistry.REGISTRIES.get(pgm.getString("instructionRegistry"));
                                 if (registry != null) {
                                     core.setProgramMemory(new ProgramMemory(
                                             registry,
@@ -73,9 +83,9 @@ public class AvrProgrammer extends Item implements IMedia {
                             }
                         }
                     } else {
-                        NBTTagCompound tag=new NBTTagCompound();
+                        NBTTagCompound tag = new NBTTagCompound();
                         metaTE.saveNBTData(tag);
-                        stack.stackTagCompound.setTag("avr",tag.getCompoundTag("avr"));
+                        stack.stackTagCompound.setTag("avr", tag.getCompoundTag("avr"));
                     }
                     return true;
                 }
@@ -84,27 +94,29 @@ public class AvrProgrammer extends Item implements IMedia {
         return false;
     }
 
-    public void writeToProgrammer(ItemStack stack,InstructionRegistry registry, boolean immersive, List<String> strings) throws Exception{
-        writeToProgrammer(stack,new ProgramMemory(registry,immersive,strings));
+    public void writeToProgrammer(
+            ItemStack stack, InstructionRegistry registry, boolean immersive, List<String> strings) throws Exception {
+        writeToProgrammer(stack, new ProgramMemory(registry, immersive, strings));
     }
 
-    public void writeToProgrammer(ItemStack stack,InstructionRegistry registry, boolean immersive, String... strings)throws Exception{
-        writeToProgrammer(stack,new ProgramMemory(registry,immersive,strings));
+    public void writeToProgrammer(ItemStack stack, InstructionRegistry registry, boolean immersive, String... strings)
+            throws Exception {
+        writeToProgrammer(stack, new ProgramMemory(registry, immersive, strings));
     }
 
     public void writeToProgrammer(ItemStack stack, ProgramMemory programMemory) {
-        NBTTagCompound pgm=new NBTTagCompound();
-        pgm.setIntArray("instructions",programMemory.instructions);
-        pgm.setIntArray("param0",programMemory.param0);
-        pgm.setIntArray("param1",programMemory.param1);
-        pgm.setBoolean("immersive",programMemory.immersiveOperands);
-        pgm.setString("instructionRegistry",programMemory.registry.toString());
-        stack.stackTagCompound.setTag("pgm",pgm);
+        NBTTagCompound pgm = new NBTTagCompound();
+        pgm.setIntArray("instructions", programMemory.instructions);
+        pgm.setIntArray("param0", programMemory.param0);
+        pgm.setIntArray("param1", programMemory.param1);
+        pgm.setBoolean("immersive", programMemory.immersiveOperands);
+        pgm.setString("instructionRegistry", programMemory.registry.toString());
+        stack.stackTagCompound.setTag("pgm", pgm);
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-        if(world.isRemote){
+        if (world.isRemote) {
             player.openGui(TecTech.instance, ModGuiHandler.PROGRAMMER_DISPLAY_SCREEN_ID, world, 0, 0, 0);
         }
         return itemStack;
@@ -114,11 +126,12 @@ public class AvrProgrammer extends Item implements IMedia {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         if (aStack.stackTagCompound.hasKey("avr")) {
             NBTTagCompound avr = aStack.stackTagCompound.getCompoundTag("avr");
-            aList.add(translateToLocal("item.em.programmer.desc.0") + ": " + avr.getInteger("programCounter"));//Current PC
-            aList.add(translateToLocal("item.em.programmer.desc.1") + ": " + avr.getBoolean("awoken"));//Awoken
-            aList.add(translateToLocal("item.em.programmer.desc.2") + ": " + avr.getBoolean("active"));//Active
-            aList.add(translateToLocal("item.em.programmer.desc.3") + ": " + avr.getBoolean("debugRun"));//Debug
-            aList.add(translateToLocal("item.em.programmer.desc.4") + ": " + avr.getBoolean("delay"));//Delay
+            aList.add(translateToLocal("item.em.programmer.desc.0") + ": "
+                    + avr.getInteger("programCounter")); // Current PC
+            aList.add(translateToLocal("item.em.programmer.desc.1") + ": " + avr.getBoolean("awoken")); // Awoken
+            aList.add(translateToLocal("item.em.programmer.desc.2") + ": " + avr.getBoolean("active")); // Active
+            aList.add(translateToLocal("item.em.programmer.desc.3") + ": " + avr.getBoolean("debugRun")); // Debug
+            aList.add(translateToLocal("item.em.programmer.desc.4") + ": " + avr.getBoolean("delay")); // Delay
         }
     }
 
@@ -158,9 +171,9 @@ public class AvrProgrammer extends Item implements IMedia {
 
             @Override
             public void delete(String s) throws IOException {
-                if("avr".equals(s)) {
+                if ("avr".equals(s)) {
                     itemStack.stackTagCompound.removeTag("avr");
-                }else {
+                } else {
                     throw new IOException("Cannot remove file!");
                 }
             }
@@ -177,7 +190,7 @@ public class AvrProgrammer extends Item implements IMedia {
 
             @Override
             public long getRemainingSpace() throws IOException {
-                return 1024000-getSize("avr");
+                return 1024000 - getSize("avr");
             }
 
             @Override
@@ -191,13 +204,11 @@ public class AvrProgrammer extends Item implements IMedia {
             }
 
             @Override
-            public void list(String s, List<String> list) throws IOException {
-
-            }
+            public void list(String s, List<String> list) throws IOException {}
 
             @Override
             public long getSize(String s) throws IOException {
-                return "avr".equals(s)?1:0;
+                return "avr".equals(s) ? 1 : 0;
             }
 
             @Override
@@ -209,7 +220,7 @@ public class AvrProgrammer extends Item implements IMedia {
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        ItemStack stack=new ItemStack(item, 1, 0);
+        ItemStack stack = new ItemStack(item, 1, 0);
         stack.setTagCompound(new NBTTagCompound());
         list.add(stack);
     }

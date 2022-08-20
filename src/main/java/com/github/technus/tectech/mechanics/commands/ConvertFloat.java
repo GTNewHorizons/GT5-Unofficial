@@ -1,18 +1,17 @@
 package com.github.technus.tectech.mechanics.commands;
 
 import com.github.technus.tectech.util.TT_Utility;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ConvertFloat implements ICommand {
-    ArrayList<String> aliases=new ArrayList<>();
+    ArrayList<String> aliases = new ArrayList<>();
 
-    public ConvertFloat(){
+    public ConvertFloat() {
         aliases.add("convert_float");
         aliases.add("c_f");
     }
@@ -20,17 +19,17 @@ public class ConvertFloat implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         if (!sender.getEntityWorld().isRemote) {
-            if(args.length == 1) {
-                try{
-                    float value=Float.parseFloat(args[0]);
-                    sender.addChatMessage(new ChatComponentText(
-                            EnumChatFormatting.AQUA.toString()+ EnumChatFormatting.BOLD +
-                                    TT_Utility.intBitsToShortString(Float.floatToIntBits(value))+" "+
-                                    EnumChatFormatting.RESET+EnumChatFormatting.BLUE +value));
-                }catch (Exception e){
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED+"Invalid Float "+args[0]));
+            if (args.length == 1) {
+                try {
+                    float value = Float.parseFloat(args[0]);
+                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA.toString()
+                            + EnumChatFormatting.BOLD + TT_Utility.intBitsToShortString(Float.floatToIntBits(value))
+                            + " " + EnumChatFormatting.RESET
+                            + EnumChatFormatting.BLUE + value));
+                } catch (Exception e) {
+                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Invalid Float " + args[0]));
                 }
-            }else{
+            } else {
                 sender.addChatMessage(new ChatComponentText(getCommandUsage(sender)));
             }
         }
@@ -63,7 +62,7 @@ public class ConvertFloat implements ICommand {
 
     @Override
     public int compareTo(Object o) {
-        if(o instanceof ICommand){
+        if (o instanceof ICommand) {
             return getCommandName().compareTo(((ICommand) o).getCommandName());
         }
         return 0;

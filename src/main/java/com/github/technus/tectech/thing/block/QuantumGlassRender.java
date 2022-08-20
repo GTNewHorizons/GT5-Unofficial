@@ -18,7 +18,7 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         Tessellator tessellator = Tessellator.instance;
         GL11.glPushMatrix();
-        //Get icons from custom register (useful for renderers and fluids)
+        // Get icons from custom register (useful for renderers and fluids)
         IIcon side = QuantumGlassBlock.stuff;
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, -1.0F, 0.0F);
@@ -49,9 +49,8 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
-                                    Block block, int modelId,
-                                    RenderBlocks renderer) {
+    public boolean renderWorldBlock(
+            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
         renderer.renderStandardBlock(block, x, y, z);
         Tessellator tes = Tessellator.instance;
@@ -62,42 +61,47 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
         IIcon side = QuantumGlassBlock.stuff;
         GL11.glDisable(GL11.GL_CULL_FACE);
 
-        //South
+        // South
         if (world.getBlock(x, y, z + 1).getClass() != QuantumGlassBlock.class) {
-            tes.addVertexWithUV(x, y, z + 0.999, side.getMinU(), side.getMaxV()); //0.999 instead of 1 for fighting (textures overlapping)
+            tes.addVertexWithUV(
+                    x,
+                    y,
+                    z + 0.999,
+                    side.getMinU(),
+                    side.getMaxV()); // 0.999 instead of 1 for fighting (textures overlapping)
             tes.addVertexWithUV(x, y + 1, z + 0.999, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 1, z + 0.999, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y, z + 0.999, side.getMaxU(), side.getMaxV());
         }
-        //East
+        // East
         if (world.getBlock(x + 1, y, z).getClass() != QuantumGlassBlock.class) {
             tes.addVertexWithUV(x + 0.999, y, z + 1, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x + 0.999, y + 1, z + 1, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 0.999, y + 1, z, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 0.999, y, z, side.getMaxU(), side.getMaxV());
         }
-        //North
+        // North
         if (world.getBlock(x, y, z - 1).getClass() != QuantumGlassBlock.class) {
             tes.addVertexWithUV(x + 1, y, z + 0.001, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x + 1, y + 1, z + 0.001, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x, y + 1, z + 0.001, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x, y, z + 0.001, side.getMaxU(), side.getMaxV());
         }
-        //West
+        // West
         if (world.getBlock(x - 1, y, z).getClass() != QuantumGlassBlock.class) {
             tes.addVertexWithUV(x + 0.001, y, z, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x + 0.001, y + 1, z, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 0.001, y + 1, z + 1, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 0.001, y, z + 1, side.getMaxU(), side.getMaxV());
         }
-        //Top
+        // Top
         if (world.getBlock(x, y + 1, z).getClass() != QuantumGlassBlock.class) {
             tes.addVertexWithUV(x, y + 0.999, z + 1, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x, y + 0.999, z, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 0.999, z, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 0.999, z + 1, side.getMaxU(), side.getMaxV());
         }
-        //Bottom
+        // Bottom
         if (world.getBlock(x, y - 1, z).getClass() != QuantumGlassBlock.class) {
             tes.addVertexWithUV(x, y + 0.001, z, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x, y + 0.001, z + 1, side.getMinU(), side.getMinV());

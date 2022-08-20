@@ -1,5 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.relauncher.Side;
@@ -15,27 +17,28 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 public class GT_MetaTileEntity_Hatch_CreativeMaintenance extends GT_MetaTileEntity_Hatch_Maintenance {
     private static Textures.BlockIcons.CustomIcon face;
 
     public GT_MetaTileEntity_Hatch_CreativeMaintenance(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-        TT_Utility.setTier(aTier,this);
+        TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_CreativeMaintenance(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_CreativeMaintenance(
+            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures, false);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                CommonValues.BASS_MARK,
-                translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.0"),//For automatically maintaining Multiblocks
-                translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.1"),//Does fix everything but itself.
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.2")//Fixing is for plebs!
+        return new String[] {
+            CommonValues.BASS_MARK,
+            translateToLocal(
+                    "gt.blockmachines.debug.tt.maintenance.desc.0"), // For automatically maintaining Multiblocks
+            translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.1"), // Does fix everything but itself.
+            EnumChatFormatting.AQUA
+                    + translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.2") // Fixing is for plebs!
         };
     }
 
@@ -48,22 +51,24 @@ public class GT_MetaTileEntity_Hatch_CreativeMaintenance extends GT_MetaTileEnti
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(face)};
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(face)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(face)};
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(face)};
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_CreativeMaintenance(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_Hatch_CreativeMaintenance(
+                this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        this.mWrench = this.mScrewdriver = this.mSoftHammer = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
+        this.mWrench =
+                this.mScrewdriver = this.mSoftHammer = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
     }
 
     @Override

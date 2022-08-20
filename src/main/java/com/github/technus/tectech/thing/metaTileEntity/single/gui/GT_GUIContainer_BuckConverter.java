@@ -1,12 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.single.gui;
 
+import static com.github.technus.tectech.util.CommonValues.VN;
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+
 import com.github.technus.tectech.util.TT_Utility;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
-
-import static com.github.technus.tectech.util.CommonValues.VN;
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_BuckConverter extends GT_GUIContainerMetaTile_Machine {
     public GT_GUIContainer_BuckConverter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -19,9 +19,10 @@ public class GT_GUIContainer_BuckConverter extends GT_GUIContainerMetaTile_Machi
         if (mContainer != null) {
             GT_Container_BuckConverter buck = (GT_Container_BuckConverter) mContainer;
             fontRendererObj.drawString("EUT: " + buck.EUT, 46, 24, 16448255);
-            fontRendererObj.drawString("TIER: " + VN[TT_Utility.getTier(buck.EUT<0?-buck.EUT:buck.EUT)], 46, 32, 16448255);
+            fontRendererObj.drawString(
+                    "TIER: " + VN[TT_Utility.getTier(buck.EUT < 0 ? -buck.EUT : buck.EUT)], 46, 32, 16448255);
             fontRendererObj.drawString("AMP: " + buck.AMP, 46, 40, 16448255);
-            fontRendererObj.drawString("SUM: " + (long)buck.AMP*buck.EUT, 46, 48, 16448255);
+            fontRendererObj.drawString("SUM: " + (long) buck.AMP * buck.EUT, 46, 48, 16448255);
         }
     }
 

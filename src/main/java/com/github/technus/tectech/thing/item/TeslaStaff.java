@@ -1,21 +1,19 @@
 package com.github.technus.tectech.thing.item;
 
+import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.thing.CustomItemList.teslaStaff;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.util.CommonValues;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Utility;
+import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import java.util.List;
-
-import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.thing.CustomItemList.teslaStaff;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 
 public final class TeslaStaff extends Item {
     public static TeslaStaff INSTANCE;

@@ -1,5 +1,17 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_collider;
 
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.github.technus.tectech.util.DoubleCount.add;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition;
@@ -29,31 +41,18 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import java.util.HashMap;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.HashMap;
-
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
-import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
-import static com.github.technus.tectech.util.DoubleCount.add;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    //region variables
+    // region variables
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenON_Slave;
@@ -61,145 +60,163 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     protected static final byte FUSE_MODE = 0, COLLIDE_MODE = 1;
     private static double MASS_TO_EU_INSTANT;
-    private static int    STARTUP_COST, KEEPUP_COST;
+    private static int STARTUP_COST, KEEPUP_COST;
 
-    protected byte            eTier = 0;
+    protected byte eTier = 0;
     protected EMInstanceStack stack;
-    private   long            plasmaEnergy;
+    private long plasmaEnergy;
 
     protected boolean started = false;
-    //endregion
+    // endregion
 
-    //region collision handlers
-    public static final HashMap<Long, IColliderHandler>            FUSE_HANDLERS           = new HashMap<>();
+    // region collision handlers
+    public static final HashMap<Long, IColliderHandler> FUSE_HANDLERS = new HashMap<>();
     public static final HashMap<String, IPrimitiveColliderHandler> PRIMITIVE_FUSE_HANDLERS = new HashMap<>();
 
     static {
-        FUSE_HANDLERS.put(((long) EMAtomDefinition.getClassTypeStatic() << 16) | EMAtomDefinition.getClassTypeStatic(), new IColliderHandler() {
-            @Override
-            public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
-                try {
-                    EMDefinitionStackMap defs = new EMDefinitionStackMap();
-                    defs.putUnifyAllExact(in1.getDefinition().getSubParticles());
-                    defs.putUnifyAllExact(in2.getDefinition().getSubParticles());
-                    EMAtomDefinition atom = new EMAtomDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
-                    out.putUnify(new EMInstanceStack(atom, Math.min(in1.getAmount(), in2.getAmount())));
-                } catch (Exception e) {
-                    out.putUnifyAll(in1, in2);
-                    return;
-                }
-                if (in1.getAmount() > in2.getAmount()) {
-                    out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
-                } else if (in2.getAmount() > in1.getAmount()) {
-                    out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
-                }
-            }
+        FUSE_HANDLERS.put(
+                ((long) EMAtomDefinition.getClassTypeStatic() << 16) | EMAtomDefinition.getClassTypeStatic(),
+                new IColliderHandler() {
+                    @Override
+                    public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
+                        try {
+                            EMDefinitionStackMap defs = new EMDefinitionStackMap();
+                            defs.putUnifyAllExact(in1.getDefinition().getSubParticles());
+                            defs.putUnifyAllExact(in2.getDefinition().getSubParticles());
+                            EMAtomDefinition atom = new EMAtomDefinition(
+                                    defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
+                            out.putUnify(new EMInstanceStack(atom, Math.min(in1.getAmount(), in2.getAmount())));
+                        } catch (Exception e) {
+                            out.putUnifyAll(in1, in2);
+                            return;
+                        }
+                        if (in1.getAmount() > in2.getAmount()) {
+                            out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
+                        } else if (in2.getAmount() > in1.getAmount()) {
+                            out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
+                        }
+                    }
 
-            @Override
-            public byte getRequiredTier() {
-                return 1;
-            }
-        });
+                    @Override
+                    public byte getRequiredTier() {
+                        return 1;
+                    }
+                });
         registerSimpleAtomFuse(EMHadronDefinition.getClassTypeStatic());
         registerSimpleAtomFuse(EMComplexAspectDefinition.getClassTypeStatic());
         registerSimpleAtomFuse(EMPrimitiveTemplate.getClassTypeStatic());
 
-        FUSE_HANDLERS.put(((long) EMHadronDefinition.getClassTypeStatic() << 16) | EMHadronDefinition.getClassTypeStatic(), new IColliderHandler() {
-            @Override
-            public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
-                try {
-                    EMDefinitionStackMap defs = new EMDefinitionStackMap();
-                    defs.putUnifyAllExact(in1.getDefinition().getSubParticles());
-                    defs.putUnifyAllExact(in2.getDefinition().getSubParticles());
-                    EMHadronDefinition hadron = new EMHadronDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
-                    out.putUnify(new EMInstanceStack(hadron, Math.min(in1.getAmount(), in2.getAmount())));
-                } catch (Exception e) {
-                    out.putUnifyAll(in1, in2);
-                    return;
-                }
-                if (in1.getAmount() > in2.getAmount()) {
-                    out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
-                } else if (in2.getAmount() > in1.getAmount()) {
-                    out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
-                }
-            }
+        FUSE_HANDLERS.put(
+                ((long) EMHadronDefinition.getClassTypeStatic() << 16) | EMHadronDefinition.getClassTypeStatic(),
+                new IColliderHandler() {
+                    @Override
+                    public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
+                        try {
+                            EMDefinitionStackMap defs = new EMDefinitionStackMap();
+                            defs.putUnifyAllExact(in1.getDefinition().getSubParticles());
+                            defs.putUnifyAllExact(in2.getDefinition().getSubParticles());
+                            EMHadronDefinition hadron = new EMHadronDefinition(
+                                    defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
+                            out.putUnify(new EMInstanceStack(hadron, Math.min(in1.getAmount(), in2.getAmount())));
+                        } catch (Exception e) {
+                            out.putUnifyAll(in1, in2);
+                            return;
+                        }
+                        if (in1.getAmount() > in2.getAmount()) {
+                            out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
+                        } else if (in2.getAmount() > in1.getAmount()) {
+                            out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
+                        }
+                    }
 
-            @Override
-            public byte getRequiredTier() {
-                return 2;
-            }
-        });
-        FUSE_HANDLERS.put(((long) EMHadronDefinition.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(), new IColliderHandler() {
-            @Override
-            public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
-                try {
-                    EMDefinitionStackMap defs = new EMDefinitionStackMap();
-                    defs.putUnifyAllExact(in1.getDefinition().getSubParticles());
-                    defs.putUnifyExact(in2.getDefinition().getStackForm(1));
-                    EMHadronDefinition hadron = new EMHadronDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
-                    out.putUnify(new EMInstanceStack(hadron, Math.min(in1.getAmount(), in2.getAmount())));
-                } catch (Exception e) {
-                    out.putUnifyAll(in1, in2);
-                    return;
-                }
-                if (in1.getAmount() > in2.getAmount()) {
-                    out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
-                } else if (in2.getAmount() > in1.getAmount()) {
-                    out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
-                }
-            }
+                    @Override
+                    public byte getRequiredTier() {
+                        return 2;
+                    }
+                });
+        FUSE_HANDLERS.put(
+                ((long) EMHadronDefinition.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(),
+                new IColliderHandler() {
+                    @Override
+                    public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
+                        try {
+                            EMDefinitionStackMap defs = new EMDefinitionStackMap();
+                            defs.putUnifyAllExact(in1.getDefinition().getSubParticles());
+                            defs.putUnifyExact(in2.getDefinition().getStackForm(1));
+                            EMHadronDefinition hadron = new EMHadronDefinition(
+                                    defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
+                            out.putUnify(new EMInstanceStack(hadron, Math.min(in1.getAmount(), in2.getAmount())));
+                        } catch (Exception e) {
+                            out.putUnifyAll(in1, in2);
+                            return;
+                        }
+                        if (in1.getAmount() > in2.getAmount()) {
+                            out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
+                        } else if (in2.getAmount() > in1.getAmount()) {
+                            out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
+                        }
+                    }
 
-            @Override
-            public byte getRequiredTier() {
-                return 2;
-            }
-        });
+                    @Override
+                    public byte getRequiredTier() {
+                        return 2;
+                    }
+                });
 
         registerSimpleAspectFuse(EMComplexAspectDefinition.getClassTypeStatic());
         registerSimpleAspectFuse(EMPrimitiveTemplate.getClassTypeStatic());
 
-        FUSE_HANDLERS.put(((long) EMPrimitiveTemplate.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(), new IColliderHandler() {
-            @Override
-            public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
-                IPrimitiveColliderHandler collisionHandler = PRIMITIVE_FUSE_HANDLERS.get(in1.getDefinition().getClass().getName() + '\0' + in2.getDefinition().getClass().getName());
-                if (collisionHandler != null) {
-                    collisionHandler.collide(in2, in1, out);
-                } else {
-                    out.putUnifyAll(in1, in2);
-                }
-            }
+        FUSE_HANDLERS.put(
+                ((long) EMPrimitiveTemplate.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(),
+                new IColliderHandler() {
+                    @Override
+                    public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
+                        IPrimitiveColliderHandler collisionHandler = PRIMITIVE_FUSE_HANDLERS.get(
+                                in1.getDefinition().getClass().getName()
+                                        + '\0'
+                                        + in2.getDefinition().getClass().getName());
+                        if (collisionHandler != null) {
+                            collisionHandler.collide(in2, in1, out);
+                        } else {
+                            out.putUnifyAll(in1, in2);
+                        }
+                    }
 
-            @Override
-            public byte getRequiredTier() {
-                return 2;
-            }
-        });
+                    @Override
+                    public byte getRequiredTier() {
+                        return 2;
+                    }
+                });
 
-        PRIMITIVE_FUSE_HANDLERS.put(EMQuarkDefinition.class.getName() + '\0' + EMQuarkDefinition.class.getName(), (in1, in2, out) -> {
-            try {
-                EMDefinitionStackMap defs = new EMDefinitionStackMap();
-                defs.putUnifyExact(in1.getDefinition().getStackForm(1));
-                defs.putUnifyExact(in2.getDefinition().getStackForm(1));
-                EMHadronDefinition hadron = new EMHadronDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
-                out.putUnify(new EMInstanceStack(hadron, Math.min(in1.getAmount(), in2.getAmount())));
-            } catch (Exception e) {
-                out.putUnifyAll(in1, in2);
-                return;
-            }
-            if (in1.getAmount() > in2.getAmount()) {
-                out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
-            } else if (in2.getAmount() > in1.getAmount()) {
-                out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
-            }
-        });
-        PRIMITIVE_FUSE_HANDLERS.put(EMPrimalAspectDefinition.class.getName() + '\0' + EMPrimalAspectDefinition.class.getName(), (in1, in2, out) -> {
-            if (fuseAspects(in1, in2, out)) return;
-            if (in1.getAmount() > in2.getAmount()) {
-                out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
-            } else if (in2.getAmount() > in1.getAmount()) {
-                out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
-            }
-        });
+        PRIMITIVE_FUSE_HANDLERS.put(
+                EMQuarkDefinition.class.getName() + '\0' + EMQuarkDefinition.class.getName(), (in1, in2, out) -> {
+                    try {
+                        EMDefinitionStackMap defs = new EMDefinitionStackMap();
+                        defs.putUnifyExact(in1.getDefinition().getStackForm(1));
+                        defs.putUnifyExact(in2.getDefinition().getStackForm(1));
+                        EMHadronDefinition hadron =
+                                new EMHadronDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
+                        out.putUnify(new EMInstanceStack(hadron, Math.min(in1.getAmount(), in2.getAmount())));
+                    } catch (Exception e) {
+                        out.putUnifyAll(in1, in2);
+                        return;
+                    }
+                    if (in1.getAmount() > in2.getAmount()) {
+                        out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
+                    } else if (in2.getAmount() > in1.getAmount()) {
+                        out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
+                    }
+                });
+        PRIMITIVE_FUSE_HANDLERS.put(
+                EMPrimalAspectDefinition.class.getName() + '\0' + EMPrimalAspectDefinition.class.getName(),
+                (in1, in2, out) -> {
+                    if (fuseAspects(in1, in2, out)) return;
+                    if (in1.getAmount() > in2.getAmount()) {
+                        out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
+                    } else if (in2.getAmount() > in1.getAmount()) {
+                        out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
+                    }
+                });
     }
 
     private static boolean fuseAspects(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
@@ -207,7 +224,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             EMDefinitionStackMap defs = new EMDefinitionStackMap();
             defs.putUnifyExact(in1.getDefinition().getStackForm(1));
             defs.putUnifyExact(in2.getDefinition().getStackForm(1));
-            EMComplexAspectDefinition aspect = new EMComplexAspectDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
+            EMComplexAspectDefinition aspect =
+                    new EMComplexAspectDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
             out.putUnify(new EMInstanceStack(aspect, Math.min(in1.getAmount(), in2.getAmount())));
         } catch (Exception e) {
             out.putUnifyAll(in1, in2);
@@ -217,55 +235,59 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     private static void registerSimpleAspectFuse(int classTypeStatic) {
-        FUSE_HANDLERS.put(((long) EMComplexAspectDefinition.getClassTypeStatic() << 16) | classTypeStatic, new IColliderHandler() {
-            @Override
-            public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
-                if (fuseAspects(in1, in2, out)) return;
-                if (in1.getAmount() > in2.getAmount()) {
-                    out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
-                } else if (in2.getAmount() > in1.getAmount()) {
-                    out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
-                }
-            }
+        FUSE_HANDLERS.put(
+                ((long) EMComplexAspectDefinition.getClassTypeStatic() << 16) | classTypeStatic,
+                new IColliderHandler() {
+                    @Override
+                    public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
+                        if (fuseAspects(in1, in2, out)) return;
+                        if (in1.getAmount() > in2.getAmount()) {
+                            out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
+                        } else if (in2.getAmount() > in1.getAmount()) {
+                            out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
+                        }
+                    }
 
-            @Override
-            public byte getRequiredTier() {
-                return 1;
-            }
-        });
+                    @Override
+                    public byte getRequiredTier() {
+                        return 1;
+                    }
+                });
     }
 
     private static void registerSimpleAtomFuse(int classTypeStatic) {
-        FUSE_HANDLERS.put(((long) EMAtomDefinition.getClassTypeStatic() << 16) | classTypeStatic, new IColliderHandler() {
-            @Override
-            public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
-                try {
-                    EMDefinitionStackMap defs = new EMDefinitionStackMap();
-                    defs.putUnifyAllExact(in1.getDefinition().getSubParticles());
-                    defs.putUnifyExact(in2.getDefinition().getStackForm(1));
-                    EMAtomDefinition atom = new EMAtomDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
-                    out.putUnify(new EMInstanceStack(atom, Math.min(in1.getAmount(), in2.getAmount())));
-                } catch (Exception e) {
-                    out.putUnifyAll(in1, in2);
-                    return;
-                }
-                if (in1.getAmount() > in2.getAmount()) {
-                    out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
-                } else if (in2.getAmount() > in1.getAmount()) {
-                    out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
-                }
-            }
+        FUSE_HANDLERS.put(
+                ((long) EMAtomDefinition.getClassTypeStatic() << 16) | classTypeStatic, new IColliderHandler() {
+                    @Override
+                    public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
+                        try {
+                            EMDefinitionStackMap defs = new EMDefinitionStackMap();
+                            defs.putUnifyAllExact(in1.getDefinition().getSubParticles());
+                            defs.putUnifyExact(in2.getDefinition().getStackForm(1));
+                            EMAtomDefinition atom = new EMAtomDefinition(
+                                    defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
+                            out.putUnify(new EMInstanceStack(atom, Math.min(in1.getAmount(), in2.getAmount())));
+                        } catch (Exception e) {
+                            out.putUnifyAll(in1, in2);
+                            return;
+                        }
+                        if (in1.getAmount() > in2.getAmount()) {
+                            out.putUnify(new EMInstanceStack(in1.getDefinition(), in1.getAmount() - in2.getAmount()));
+                        } else if (in2.getAmount() > in1.getAmount()) {
+                            out.putUnify(new EMInstanceStack(in2.getDefinition(), in2.getAmount() - in1.getAmount()));
+                        }
+                    }
 
-            @Override
-            public byte getRequiredTier() {
-                return 1;
-            }
-        });
+                    @Override
+                    public byte getRequiredTier() {
+                        return 1;
+                    }
+                });
     }
-    //endregion
+    // endregion
 
-    //region parameters
-    protected            Parameters.Group.ParameterIn                   mode;
+    // region parameters
+    protected Parameters.Group.ParameterIn mode;
     private static final IStatusFunction<GT_MetaTileEntity_EM_collider> MODE_STATUS = (base_EM, p) -> {
         if (base_EM.isMaster()) {
             double mode = p.get();
@@ -280,64 +302,231 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         }
         return STATUS_OK;
     };
-    private static final INameFunction<GT_MetaTileEntity_EM_collider>   MODE_NAME   = (base_EM, p) -> {
+    private static final INameFunction<GT_MetaTileEntity_EM_collider> MODE_NAME = (base_EM, p) -> {
         if (base_EM.isMaster()) {
             double mode = p.get();
             if (mode == FUSE_MODE) {
-                return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.0");//Mode: Fuse
+                return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.0"); // Mode: Fuse
             } else if (mode == COLLIDE_MODE) {
-                return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.1");//Mode: Collide
+                return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.1"); // Mode: Collide
             }
-            return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.2");//Mode: Undefined
+            return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.2"); // Mode: Undefined
         }
-        return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.3");//Currently Slaves...
+        return translateToLocal("gt.blockmachines.multimachine.em.collider.mode.3"); // Currently Slaves...
     };
-    //endregion
+    // endregion
 
-    //region structure
-    //use multi A energy inputs, use less power the longer it runs
-    private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.0"),//1 - Classic Hatches or High Power Casing
-            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.1"),//2 - Elemental Input Hatches or Molecular Casing
-            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.2"),//3 - Elemental Output Hatches or Molecular Casing
-            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.3"),//4 - Elemental Overflow Hatches or Molecular Casing
-            translateToLocal("gt.blockmachines.multimachine.em.collider.hint.4"),//General - Another Controller facing opposite direction
+    // region structure
+    // use multi A energy inputs, use less power the longer it runs
+    private static final String[] description = new String[] {
+        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+        translateToLocal(
+                "gt.blockmachines.multimachine.em.collider.hint.0"), // 1 - Classic Hatches or High Power Casing
+        translateToLocal(
+                "gt.blockmachines.multimachine.em.collider.hint.1"), // 2 - Elemental Input Hatches or Molecular Casing
+        translateToLocal(
+                "gt.blockmachines.multimachine.em.collider.hint.2"), // 3 - Elemental Output Hatches or Molecular Casing
+        translateToLocal(
+                "gt.blockmachines.multimachine.em.collider.hint.3"), // 4 - Elemental Overflow Hatches or Molecular
+        // Casing
+        translateToLocal(
+                "gt.blockmachines.multimachine.em.collider.hint.4"), // General - Another Controller facing opposite
+        // direction
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION = IStructureDefinition
-            .<GT_MetaTileEntity_EM_collider>builder()
-            .addShape("tier1", transpose(new String[][]{
-                    {"         A A A         ", "        AAAAAAA        ", "      bbbbIIIbbbb      ", "     bAAAAAAAAAAAb     ", "    bAAAA     AAAAb    ", "   bAAA         AAAb   ", "  bAAA           AAAb  ", "  bAA             AAb  ", " AbAA             AAbA ", "AAbA               AbAA", " AIA               AIA ", "AAIA               AIAA", " AIA               AIA ", "AAbA               AbAA", " AbAA             AAbA ", "  bAA             AAb  ", "  bAAA           AAAb  ", "   bAAA         AAAb   ", "    bAAAAbJJJbAAAAb    ", "     bAHHbbbbbHHAb     ", "      bbbbGFGbbbb      "},
-                    {"         AAAAA         ", "       AADDDDDAA       ", "      cDDeeeeeDDc      ", "     cDeeDDDDDeeDc     ", "    cDeDD     DDeDc    ", "   cDeD         DeDc   ", "  cDeD           DeDc  ", " ADeD             DeDA ", " ADeD             DeDA ", "ADeD               DeDA", "ADeD               DeDA", "ADeD               DeDA", "ADeD               DeDA", "ADeD               DeDA", " ADeD             DeDA ", " ADeD             DeDA ", "  cDeD           DeDc  ", "   cDeD         DeDc   ", "    cDeDDbJ~JbDDeDc    ", "     cDeeDDDDDeeDc     ", "      cDDeeeeeDDc      "},
-                    {"         A A A         ", "        AAAAAAA        ", "      bbbbIIIbbbb      ", "     bAAAAAAAAAAAb     ", "    bAAAA     AAAAb    ", "   bAAA         AAAb   ", "  bAAA           AAAb  ", "  bAA             AAb  ", " AbAA             AAbA ", "AAbA               AbAA", " AIA               AIA ", "AAIA               AIAA", " AIA               AIA ", "AAbA               AbAA", " AbAA             AAbA ", "  bAA             AAb  ", "  bAAA           AAAb  ", "   bAAA         AAAb   ", "    bAAAAbJJJbAAAAb    ", "     bAHHbbbbbHHAb     ", "      bbbbGFGbbbb      "}
-            }))
-            .addShape("tier2", transpose(new String[][]{
-                    {"         A A A         ", "        AAAAAAA        ", "      BBBBIIIBBBB      ", "     BAAAAAAAAAAAB     ", "    BAAAA     AAAAB    ", "   BAAA         AAAB   ", "  BAAA           AAAB  ", "  BAA             AAB  ", " ABAA             AABA ", "AABA               ABAA", " AIA               AIA ", "AAIA               AIAA", " AIA               AIA ", "AABA               ABAA", " ABAA             AABA ", "  BAA             AAB  ", "  BAAA           AAAB  ", "   BAAA         AAAB   ", "    BAAAABJJJBAAAAB    ", "     BAHHBBBBBHHAB     ", "      BBBBGFGBBBB      "},
-                    {"         AAAAA         ", "       AADDDDDAA       ", "      CDDEEEEEDDC      ", "     CDEEDDDDDEEDC     ", "    CDEDD     DDEDC    ", "   CDED         DEDC   ", "  CDED           DEDC  ", " ADED             DEDA ", " ADED             DEDA ", "ADED               DEDA", "ADED               DEDA", "ADED               DEDA", "ADED               DEDA", "ADED               DEDA", " ADED             DEDA ", " ADED             DEDA ", "  CDED           DEDC  ", "   CDED         DEDC   ", "    CDEDDBJ~JBDDEDC    ", "     CDEEDDDDDEEDC     ", "      CDDEEEEEDDC      "},
-                    {"         A A A         ", "        AAAAAAA        ", "      BBBBIIIBBBB      ", "     BAAAAAAAAAAAB     ", "    BAAAA     AAAAB    ", "   BAAA         AAAB   ", "  BAAA           AAAB  ", "  BAA             AAB  ", " ABAA             AABA ", "AABA               ABAA", " AIA               AIA ", "AAIA               AIAA", " AIA               AIA ", "AABA               ABAA", " ABAA             AABA ", "  BAA             AAB  ", "  BAAA           AAAB  ", "   BAAA         AAAB   ", "    BAAAABJJJBAAAAB    ", "     BAHHBBBBBHHAB     ", "      BBBBGFGBBBB      "}
-            }))
-            .addElement('A', ofBlock(sBlockCasingsTT, 4))
-            .addElement('b', ofBlock(sBlockCasingsTT, 4))
-            .addElement('B', ofBlock(sBlockCasingsTT, 5))
-            .addElement('c', ofBlock(sBlockCasingsTT, 4))
-            .addElement('C', ofBlock(sBlockCasingsTT, 6))
-            .addElement('D', ofBlock(sBlockCasingsTT, 7))
-            .addElement('e', ofBlock(sBlockCasingsTT, 8))
-            .addElement('E', ofBlock(sBlockCasingsTT, 9))
-            .addElement('I', ofBlock(QuantumGlassBlock.INSTANCE, 0))
-            .addElement('J', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
-            .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalInputToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
-            .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList, textureOffset + 4, 3, sBlockCasingsTT, 4))
-            .addElement('G', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList, textureOffset + 4, 4, sBlockCasingsTT, 4))
-            .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION =
+            IStructureDefinition.<GT_MetaTileEntity_EM_collider>builder()
+                    .addShape("tier1", transpose(new String[][] {
+                        {
+                            "         A A A         ",
+                            "        AAAAAAA        ",
+                            "      bbbbIIIbbbb      ",
+                            "     bAAAAAAAAAAAb     ",
+                            "    bAAAA     AAAAb    ",
+                            "   bAAA         AAAb   ",
+                            "  bAAA           AAAb  ",
+                            "  bAA             AAb  ",
+                            " AbAA             AAbA ",
+                            "AAbA               AbAA",
+                            " AIA               AIA ",
+                            "AAIA               AIAA",
+                            " AIA               AIA ",
+                            "AAbA               AbAA",
+                            " AbAA             AAbA ",
+                            "  bAA             AAb  ",
+                            "  bAAA           AAAb  ",
+                            "   bAAA         AAAb   ",
+                            "    bAAAAbJJJbAAAAb    ",
+                            "     bAHHbbbbbHHAb     ",
+                            "      bbbbGFGbbbb      "
+                        },
+                        {
+                            "         AAAAA         ",
+                            "       AADDDDDAA       ",
+                            "      cDDeeeeeDDc      ",
+                            "     cDeeDDDDDeeDc     ",
+                            "    cDeDD     DDeDc    ",
+                            "   cDeD         DeDc   ",
+                            "  cDeD           DeDc  ",
+                            " ADeD             DeDA ",
+                            " ADeD             DeDA ",
+                            "ADeD               DeDA",
+                            "ADeD               DeDA",
+                            "ADeD               DeDA",
+                            "ADeD               DeDA",
+                            "ADeD               DeDA",
+                            " ADeD             DeDA ",
+                            " ADeD             DeDA ",
+                            "  cDeD           DeDc  ",
+                            "   cDeD         DeDc   ",
+                            "    cDeDDbJ~JbDDeDc    ",
+                            "     cDeeDDDDDeeDc     ",
+                            "      cDDeeeeeDDc      "
+                        },
+                        {
+                            "         A A A         ",
+                            "        AAAAAAA        ",
+                            "      bbbbIIIbbbb      ",
+                            "     bAAAAAAAAAAAb     ",
+                            "    bAAAA     AAAAb    ",
+                            "   bAAA         AAAb   ",
+                            "  bAAA           AAAb  ",
+                            "  bAA             AAb  ",
+                            " AbAA             AAbA ",
+                            "AAbA               AbAA",
+                            " AIA               AIA ",
+                            "AAIA               AIAA",
+                            " AIA               AIA ",
+                            "AAbA               AbAA",
+                            " AbAA             AAbA ",
+                            "  bAA             AAb  ",
+                            "  bAAA           AAAb  ",
+                            "   bAAA         AAAb   ",
+                            "    bAAAAbJJJbAAAAb    ",
+                            "     bAHHbbbbbHHAb     ",
+                            "      bbbbGFGbbbb      "
+                        }
+                    }))
+                    .addShape("tier2", transpose(new String[][] {
+                        {
+                            "         A A A         ",
+                            "        AAAAAAA        ",
+                            "      BBBBIIIBBBB      ",
+                            "     BAAAAAAAAAAAB     ",
+                            "    BAAAA     AAAAB    ",
+                            "   BAAA         AAAB   ",
+                            "  BAAA           AAAB  ",
+                            "  BAA             AAB  ",
+                            " ABAA             AABA ",
+                            "AABA               ABAA",
+                            " AIA               AIA ",
+                            "AAIA               AIAA",
+                            " AIA               AIA ",
+                            "AABA               ABAA",
+                            " ABAA             AABA ",
+                            "  BAA             AAB  ",
+                            "  BAAA           AAAB  ",
+                            "   BAAA         AAAB   ",
+                            "    BAAAABJJJBAAAAB    ",
+                            "     BAHHBBBBBHHAB     ",
+                            "      BBBBGFGBBBB      "
+                        },
+                        {
+                            "         AAAAA         ",
+                            "       AADDDDDAA       ",
+                            "      CDDEEEEEDDC      ",
+                            "     CDEEDDDDDEEDC     ",
+                            "    CDEDD     DDEDC    ",
+                            "   CDED         DEDC   ",
+                            "  CDED           DEDC  ",
+                            " ADED             DEDA ",
+                            " ADED             DEDA ",
+                            "ADED               DEDA",
+                            "ADED               DEDA",
+                            "ADED               DEDA",
+                            "ADED               DEDA",
+                            "ADED               DEDA",
+                            " ADED             DEDA ",
+                            " ADED             DEDA ",
+                            "  CDED           DEDC  ",
+                            "   CDED         DEDC   ",
+                            "    CDEDDBJ~JBDDEDC    ",
+                            "     CDEEDDDDDEEDC     ",
+                            "      CDDEEEEEDDC      "
+                        },
+                        {
+                            "         A A A         ",
+                            "        AAAAAAA        ",
+                            "      BBBBIIIBBBB      ",
+                            "     BAAAAAAAAAAAB     ",
+                            "    BAAAA     AAAAB    ",
+                            "   BAAA         AAAB   ",
+                            "  BAAA           AAAB  ",
+                            "  BAA             AAB  ",
+                            " ABAA             AABA ",
+                            "AABA               ABAA",
+                            " AIA               AIA ",
+                            "AAIA               AIAA",
+                            " AIA               AIA ",
+                            "AABA               ABAA",
+                            " ABAA             AABA ",
+                            "  BAA             AAB  ",
+                            "  BAAA           AAAB  ",
+                            "   BAAA         AAAB   ",
+                            "    BAAAABJJJBAAAAB    ",
+                            "     BAHHBBBBBHHAB     ",
+                            "      BBBBGFGBBBB      "
+                        }
+                    }))
+                    .addElement('A', ofBlock(sBlockCasingsTT, 4))
+                    .addElement('b', ofBlock(sBlockCasingsTT, 4))
+                    .addElement('B', ofBlock(sBlockCasingsTT, 5))
+                    .addElement('c', ofBlock(sBlockCasingsTT, 4))
+                    .addElement('C', ofBlock(sBlockCasingsTT, 6))
+                    .addElement('D', ofBlock(sBlockCasingsTT, 7))
+                    .addElement('e', ofBlock(sBlockCasingsTT, 8))
+                    .addElement('E', ofBlock(sBlockCasingsTT, 9))
+                    .addElement('I', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+                    .addElement(
+                            'J',
+                            ofHatchAdderOptional(
+                                    GT_MetaTileEntity_EM_collider::addClassicToMachineList,
+                                    textureOffset,
+                                    1,
+                                    sBlockCasingsTT,
+                                    0))
+                    .addElement(
+                            'H',
+                            ofHatchAdderOptional(
+                                    GT_MetaTileEntity_EM_collider::addElementalInputToMachineList,
+                                    textureOffset + 4,
+                                    2,
+                                    sBlockCasingsTT,
+                                    4))
+                    .addElement(
+                            'F',
+                            ofHatchAdderOptional(
+                                    GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList,
+                                    textureOffset + 4,
+                                    3,
+                                    sBlockCasingsTT,
+                                    4))
+                    .addElement(
+                            'G',
+                            ofHatchAdderOptional(
+                                    GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList,
+                                    textureOffset + 4,
+                                    4,
+                                    sBlockCasingsTT,
+                                    4))
+                    .build();
 
     @Override
     public IStructureDefinition<GT_MetaTileEntity_EM_collider> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
 
-    //endregion
+    // endregion
 
     public GT_MetaTileEntity_EM_collider(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -348,65 +537,72 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     public static void setValues(int heliumPlasmaValue) {
-        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / (1.75893000478707E07 * EM_COUNT_PER_MATERIAL_AMOUNT);//mass diff
+        double MASS_TO_EU_PARTIAL =
+                heliumPlasmaValue / (1.75893000478707E07 * EM_COUNT_PER_MATERIAL_AMOUNT); // mass diff
         MASS_TO_EU_INSTANT = MASS_TO_EU_PARTIAL * 20;
         STARTUP_COST = -heliumPlasmaValue * 10000;
         KEEPUP_COST = -heliumPlasmaValue;
     }
 
-    protected double fuse(GT_MetaTileEntity_EM_collider partner) {///CAN MAKE EU
-        if (partner.stack != null && stack != null) {//todo add single event mode as an option
-            boolean check = stack.getDefinition().fusionMakesEnergy(stack.getEnergy()) &&
-                    partner.stack.getDefinition().fusionMakesEnergy(partner.stack.getEnergy());
+    protected double fuse(GT_MetaTileEntity_EM_collider partner) { // /CAN MAKE EU
+        if (partner.stack != null && stack != null) { // todo add single event mode as an option
+            boolean check = stack.getDefinition().fusionMakesEnergy(stack.getEnergy())
+                    && partner.stack.getDefinition().fusionMakesEnergy(partner.stack.getEnergy());
 
-            EMInstanceStack stack2  = partner.stack;
-            double          preMass = add(stack2.getMass(), stack.getMass());
-            //System.out.println("preMass = " + preMass);
+            EMInstanceStack stack2 = partner.stack;
+            double preMass = add(stack2.getMass(), stack.getMass());
+            // System.out.println("preMass = " + preMass);
 
             EMInstanceStackMap map = new EMInstanceStackMap();
-            IColliderHandler   colliderHandler;
-            if (stack2.getDefinition().getMatterMassType() > stack.getDefinition().getMatterMassType()) {//always bigger first
-                colliderHandler = FUSE_HANDLERS.get((stack2.getDefinition().getMatterMassType() << 16) | stack.getDefinition().getMatterMassType());
+            IColliderHandler colliderHandler;
+            if (stack2.getDefinition().getMatterMassType()
+                    > stack.getDefinition().getMatterMassType()) { // always bigger first
+                colliderHandler = FUSE_HANDLERS.get((stack2.getDefinition().getMatterMassType() << 16)
+                        | stack.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             } else {
-                colliderHandler = FUSE_HANDLERS.get((stack.getDefinition().getMatterMassType() << 16) | stack2.getDefinition().getMatterMassType());
+                colliderHandler = FUSE_HANDLERS.get((stack.getDefinition().getMatterMassType() << 16)
+                        | stack2.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             }
             for (EMInstanceStack newStack : map.valuesToArray()) {
                 check &= newStack.getDefinition().fusionMakesEnergy(newStack.getEnergy());
             }
-            //System.out.println("outputEM[0].getMass() = " + outputEM[0].getMass());
-            outputEM = new EMInstanceStackMap[]{map};
+            // System.out.println("outputEM[0].getMass() = " + outputEM[0].getMass());
+            outputEM = new EMInstanceStackMap[] {map};
 
             partner.stack = stack = null;
-            //System.out.println("check = " + check);
-            //System.out.println("preMass-map.getMass() = " + (preMass - map.getMass()));
+            // System.out.println("check = " + check);
+            // System.out.println("preMass-map.getMass() = " + (preMass - map.getMass()));
             return check ? preMass - map.getMass() : Math.min(preMass - map.getMass(), 0);
         }
         return 0;
     }
 
-    protected double collide(GT_MetaTileEntity_EM_collider partner) {//DOES NOT MAKE EU!
-        if (partner.stack != null && stack != null) {//todo add single event mode as an option
-            EMInstanceStack stack2  = partner.stack;
-            double          preMass = stack2.getMass() + stack.getMass();
-            //System.out.println("preMass = " + preMass);
+    protected double collide(GT_MetaTileEntity_EM_collider partner) { // DOES NOT MAKE EU!
+        if (partner.stack != null && stack != null) { // todo add single event mode as an option
+            EMInstanceStack stack2 = partner.stack;
+            double preMass = stack2.getMass() + stack.getMass();
+            // System.out.println("preMass = " + preMass);
 
             EMInstanceStackMap map = new EMInstanceStackMap();
-            IColliderHandler   colliderHandler;
-            if (stack2.getDefinition().getMatterMassType() > stack.getDefinition().getMatterMassType()) {//always bigger first
-                colliderHandler = FUSE_HANDLERS.get((stack2.getDefinition().getMatterMassType() << 16) | stack.getDefinition().getMatterMassType());
+            IColliderHandler colliderHandler;
+            if (stack2.getDefinition().getMatterMassType()
+                    > stack.getDefinition().getMatterMassType()) { // always bigger first
+                colliderHandler = FUSE_HANDLERS.get((stack2.getDefinition().getMatterMassType() << 16)
+                        | stack.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             } else {
-                colliderHandler = FUSE_HANDLERS.get((stack.getDefinition().getMatterMassType() << 16) | stack2.getDefinition().getMatterMassType());
+                colliderHandler = FUSE_HANDLERS.get((stack.getDefinition().getMatterMassType() << 16)
+                        | stack2.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             }
-            //System.out.println("outputEM[0].getMass() = " + outputEM[0].getMass());
-            outputEM = new EMInstanceStackMap[]{map};
+            // System.out.println("outputEM[0].getMass() = " + outputEM[0].getMass());
+            outputEM = new EMInstanceStackMap[] {map};
 
             partner.stack = stack = null;
-            //System.out.println("check = " + check);
-            //System.out.println("preMass-map.getMass() = " + (preMass - map.getMass()));
+            // System.out.println("check = " + check);
+            // System.out.println("preMass-map.getMass() = " + (preMass - map.getMass()));
             return Math.min(preMass - map.getMass(), 0);
         }
         return 0;
@@ -417,24 +613,25 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             colliderHandler.collide(stack2, stack, map);
         } else {
             map.putUnifyAll(stack, stack2);
-            outputEM = new EMInstanceStackMap[]{map};
+            outputEM = new EMInstanceStackMap[] {map};
             return true;
         }
         return false;
     }
 
     protected GT_MetaTileEntity_EM_collider getPartner() {
-        IGregTechTileEntity iGregTechTileEntity    = getBaseMetaTileEntity();
-        int                 xDir                   = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
-        int                 yDir                   = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
-        int                 zDir                   = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
+        IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
+        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
+        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
+        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
         IGregTechTileEntity gregTechBaseTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir, yDir, zDir);
         if (gregTechBaseTileEntity != null) {
             IMetaTileEntity gregTechMetaTileEntity = gregTechBaseTileEntity.getMetaTileEntity();
-            return gregTechMetaTileEntity instanceof GT_MetaTileEntity_EM_collider &&
-                    ((GT_MetaTileEntity_EM_collider) gregTechMetaTileEntity).mMachine &&
-                    gregTechBaseTileEntity.getBackFacing() == iGregTechTileEntity.getFrontFacing() ?
-                    (GT_MetaTileEntity_EM_collider) gregTechMetaTileEntity : null;
+            return gregTechMetaTileEntity instanceof GT_MetaTileEntity_EM_collider
+                            && ((GT_MetaTileEntity_EM_collider) gregTechMetaTileEntity).mMachine
+                            && gregTechBaseTileEntity.getBackFacing() == iGregTechTileEntity.getFrontFacing()
+                    ? (GT_MetaTileEntity_EM_collider) gregTechMetaTileEntity
+                    : null;
         }
         return null;
     }
@@ -460,7 +657,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             stack.nextColor();
             return null;
         } else {
-            stack = newInstances.getOutput().removeKey(newInstances.getOutput().getLast().getDefinition());
+            stack = newInstances
+                    .getOutput()
+                    .removeKey(newInstances.getOutput().getLast().getDefinition());
             return newInstances.getOutput();
         }
     }
@@ -487,7 +686,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             eTier = 0;
             return false;
         }
-        if (structureCheck_EM("tier"+eTier, 11, 1, 18)) {
+        if (structureCheck_EM("tier" + eTier, 11, 1, 18)) {
             return true;
         }
         eTier = 0;
@@ -509,7 +708,12 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                         continue;
                     }
                     stack = container.removeKey(container.getFirst().getDefinition());
-                    long eut = KEEPUP_COST + (long) (KEEPUP_COST * Math.abs(stack.getMass() / EMAtomDefinition.getSomethingHeavy().getMass())) / 2;
+                    long eut = KEEPUP_COST
+                            + (long) (KEEPUP_COST
+                                            * Math.abs(stack.getMass()
+                                                    / EMAtomDefinition.getSomethingHeavy()
+                                                            .getMass()))
+                                    / 2;
                     if (eut < Integer.MIN_VALUE + 7) {
                         return false;
                     }
@@ -551,7 +755,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                     makeEU(fuse(partner));
                     break;
                 case COLLIDE_MODE:
-                    collide(partner);//todo
+                    collide(partner); // todo
                     break;
                 default: {
                     outputEM = new EMInstanceStackMap[2];
@@ -580,20 +784,45 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.collider.name"))   // Machine Type: Matter Collider
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.0"))  // Controller block of the Matter Collider
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.1"))  // This machine needs a mirrored copy of it to work
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.2"))  // One needs to be set to 'Fuse Mode' and the other to 'Collide Mode'
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.3"))  // Fuses two elemental matter to create another (and power)
+        tt.addMachineType(translateToLocal(
+                        "gt.blockmachines.multimachine.em.collider.name")) // Machine Type: Matter Collider
+                .addInfo(translateToLocal(
+                        "gt.blockmachines.multimachine.em.collider.desc.0")) // Controller block of the Matter Collider
+                .addInfo(translateToLocal(
+                        "gt.blockmachines.multimachine.em.collider.desc.1")) // This machine needs a mirrored
+                // copy of it to work
+                .addInfo(translateToLocal(
+                        "gt.blockmachines.multimachine.em.collider.desc.2")) // One needs to be set to 'Fuse
+                // Mode' and the other to 'Collide
+                // Mode'
+                .addInfo(translateToLocal(
+                        "gt.blockmachines.multimachine.em.collider.desc.3")) // Fuses two elemental matter to
+                // create another (and power)
                 .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
                 .addSeparator()
                 .beginStructureBlock(21, 3, 23, false)
-                .addOtherStructurePart(translateToLocal("gt.blockmachines.multimachine.em.collider.name"), translateToLocal("gt.blockmachines.multimachine.em.collider.Structure.AdditionalCollider"), 2) // Matter Collider: Needs another Matter Collider that is mirrored to this one
-                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalInput"), translateToLocal("tt.keyword.Structure.AnyMolecularCasing2D"), 2) // Elemental Input Hatch: Any Molecular Casing with 2 dots
-                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalOutput"), translateToLocal("tt.keyword.Structure.AnyMolecularCasing3D"), 2) // Elemental Output Hatch: Any Molecular Casing with 3 dots
-                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalOverflow"), translateToLocal("tt.keyword.Structure.AnyMolecularCasing4D"), 2) // Elemental Overflow Hatch: Any Molecular Casing with 4 dots
-                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any High Power Casing
-                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance Hatch: Any High Power Casing
+                .addOtherStructurePart(
+                        translateToLocal("gt.blockmachines.multimachine.em.collider.name"),
+                        translateToLocal("gt.blockmachines.multimachine.em.collider.Structure.AdditionalCollider"),
+                        2) // Matter Collider: Needs another Matter Collider that is mirrored to this one
+                .addOtherStructurePart(
+                        translateToLocal("tt.keyword.Structure.ElementalInput"),
+                        translateToLocal("tt.keyword.Structure.AnyMolecularCasing2D"),
+                        2) // Elemental Input Hatch: Any Molecular Casing with 2 dots
+                .addOtherStructurePart(
+                        translateToLocal("tt.keyword.Structure.ElementalOutput"),
+                        translateToLocal("tt.keyword.Structure.AnyMolecularCasing3D"),
+                        2) // Elemental Output Hatch: Any Molecular Casing with 3 dots
+                .addOtherStructurePart(
+                        translateToLocal("tt.keyword.Structure.ElementalOverflow"),
+                        translateToLocal("tt.keyword.Structure.AnyMolecularCasing4D"),
+                        2) // Elemental Overflow Hatch: Any Molecular Casing with 4 dots
+                .addEnergyHatch(
+                        translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"),
+                        1) // Energy Hatch: Any High Power Casing
+                .addMaintenanceHatch(
+                        translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"),
+                        1) // Maintenance Hatch: Any High Power Casing
                 .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
     }
@@ -609,15 +838,27 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         if (aSide == aFacing) {
             if (aFacing % 2 == 0) {
-                return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF)};
+                return new ITexture[] {
+                    Textures.BlockIcons.casingTexturePages[texturePage][4],
+                    new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF)
+                };
             } else {
-                return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedExtendedFacingTexture(aActive ? ScreenON_Slave : ScreenOFF_Slave)};
+                return new ITexture[] {
+                    Textures.BlockIcons.casingTexturePages[texturePage][4],
+                    new TT_RenderedExtendedFacingTexture(aActive ? ScreenON_Slave : ScreenOFF_Slave)
+                };
             }
         }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4]};
+        return new ITexture[] {Textures.BlockIcons.casingTexturePages[texturePage][4]};
     }
 
     @Override
@@ -636,7 +877,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("eTier", eTier);//collider tier
+        aNBT.setByte("eTier", eTier); // collider tier
         aNBT.setBoolean("eStarted", started);
         if (stack != null) {
             aNBT.setTag("eStack", stack.toNBT(TecTech.definitionsRegistry));
@@ -647,7 +888,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        eTier = aNBT.getByte("eTier");//collider tier
+        eTier = aNBT.getByte("eTier"); // collider tier
         started = aNBT.getBoolean("eStarted");
         if (aNBT.hasKey("eStack")) {
             stack = EMInstanceStack.fromNBT(TecTech.definitionsRegistry, aNBT.getCompoundTag("eStack"));
@@ -687,17 +928,19 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
         IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int                 xDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
-        int                 yDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
-        int                 zDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
+        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
+        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
+        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
         if (hintsOnly) {
-            StructureLibAPI.hintParticle(iGregTechTileEntity.getWorld(),
+            StructureLibAPI.hintParticle(
+                    iGregTechTileEntity.getWorld(),
                     iGregTechTileEntity.getXCoord() + xDir,
                     iGregTechTileEntity.getYCoord() + yDir,
                     iGregTechTileEntity.getZCoord() + zDir,
-                    StructureLibAPI.getBlockHint(), 12);
+                    StructureLibAPI.getBlockHint(),
+                    12);
         }
-        structureBuild_EM("tier"+(((trigger.stackSize-1)%2)+1), 11, 1, 18, trigger, hintsOnly);
+        structureBuild_EM("tier" + (((trigger.stackSize - 1) % 2) + 1), 11, 1, 18, trigger, hintsOnly);
     }
 
     @Override

@@ -33,10 +33,14 @@ public class GT_Container_Capacitor extends GT_ContainerMetaTile_Machine {
     }
 
     @Override
-    public int getSlotCount() { return 16; }
+    public int getSlotCount() {
+        return 16;
+    }
 
     @Override
-    public int getShiftClickSlotCount() { return getSlotCount(); }
+    public int getShiftClickSlotCount() {
+        return getSlotCount();
+    }
 
     @Override
     public void detectAndSendChanges() {

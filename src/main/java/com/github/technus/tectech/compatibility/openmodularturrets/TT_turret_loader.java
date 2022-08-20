@@ -16,7 +16,9 @@ public class TT_turret_loader implements Runnable {
     public void run() {
         TurretHeadRenderEM turretHeadRenderEM = new TurretHeadRenderEM();
         ClientRegistry.bindTileEntitySpecialRenderer(TileTurretHeadEM.class, turretHeadRenderEM);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TurretHeadEM.INSTANCE), new TurretHeadItemRenderEM(turretHeadRenderEM, new TileTurretHeadEM()));
+        MinecraftForgeClient.registerItemRenderer(
+                Item.getItemFromBlock(TurretHeadEM.INSTANCE),
+                new TurretHeadItemRenderEM(turretHeadRenderEM, new TileTurretHeadEM()));
 
         RenderingRegistry.registerEntityRenderingHandler(projectileEM.class, new projectileRenderEM());
     }

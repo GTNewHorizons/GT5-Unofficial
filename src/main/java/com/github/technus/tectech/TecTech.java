@@ -1,5 +1,7 @@
 package com.github.technus.tectech;
 
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.TecTechConfig;
 import com.github.technus.tectech.loader.gui.CreativeTabEM;
@@ -27,21 +29,21 @@ import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 import gregtech.GT_Mod;
 import gregtech.common.GT_Proxy;
-import net.minecraftforge.common.MinecraftForge;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Iterator;
+import net.minecraftforge.common.MinecraftForge;
 
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-
-@Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION,
-        dependencies = "required-after:Forge@[10.13.4.1614,);" +
-                "required-after:YAMCore@[0.5.70,);" + "required-after:structurelib;" +
-                "after:ComputerCraft;" + "after:OpenComputers;" +
-                "required-after:gregtech;" + "after:dreamcraft;" +
-                "after:appliedenergistics2;" + "after:CoFHCore;" + "after:Thaumcraft;")
+@Mod(
+        modid = Reference.MODID,
+        name = Reference.NAME,
+        version = Reference.VERSION,
+        dependencies = "required-after:Forge@[10.13.4.1614,);" + "required-after:YAMCore@[0.5.70,);"
+                + "required-after:structurelib;" + "after:ComputerCraft;"
+                + "after:OpenComputers;" + "required-after:gregtech;"
+                + "after:dreamcraft;" + "after:appliedenergistics2;"
+                + "after:CoFHCore;" + "after:Thaumcraft;")
 public class TecTech {
     @SidedProxy(clientSide = Reference.CLIENTSIDE, serverSide = Reference.SERVERSIDE)
     public static CommonProxy proxy;
@@ -49,20 +51,20 @@ public class TecTech {
     @Mod.Instance(Reference.MODID)
     public static TecTech instance;
 
-    public static final XSTR               RANDOM = XSTR.XSTR_INSTANCE;
-    public static final LogHelper          LOGGER = new LogHelper(Reference.MODID);
-    public static       CreativeTabTecTech creativeTabTecTech;
-    public static       CreativeTabEM      creativeTabEM;
+    public static final XSTR RANDOM = XSTR.XSTR_INSTANCE;
+    public static final LogHelper LOGGER = new LogHelper(Reference.MODID);
+    public static CreativeTabTecTech creativeTabTecTech;
+    public static CreativeTabEM creativeTabEM;
 
     private static IngameErrorLog moduleAdminErrorLogs;
-    public static  TecTechConfig  configTecTech;
+    public static TecTechConfig configTecTech;
 
-    public static ChunkDataHandler  chunkDataHandler;
-    public static AnomalyHandler    anomalyHandler;
+    public static ChunkDataHandler chunkDataHandler;
+    public static AnomalyHandler anomalyHandler;
     public static PlayerPersistence playerPersistence;
 
-    public static final EMDefinitionsRegistry    definitionsRegistry = new EMDefinitionsRegistry();
-    public static final EMTransformationRegistry transformationInfo  = new EMTransformationRegistry();
+    public static final EMDefinitionsRegistry definitionsRegistry = new EMDefinitionsRegistry();
+    public static final EMTransformationRegistry transformationInfo = new EMTransformationRegistry();
 
     /**
      * For Loader.isModLoaded checks during the runtime
@@ -85,8 +87,8 @@ public class TecTech {
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         LOGGER.setDebugOutput(true);
 
-        configTecTech = new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME,
-                Reference.MODID);
+        configTecTech =
+                new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME, Reference.MODID);
 
         if (!configTecTech.LoadConfig()) {
             LOGGER.error(Reference.MODID + " could not load its config file. Things are going to be weird!");
@@ -172,9 +174,7 @@ public class TecTech {
                     }
 
                     @Override
-                    public void clear() {
-
-                    }
+                    public void clear() {}
 
                     @Override
                     public boolean retainAll(Collection c) {
@@ -199,7 +199,6 @@ public class TecTech {
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 LOGGER.error(Reference.MODID + " could not disable material loading!");
             }
-
         }
 
         MainLoader.load(definitionsRegistry);

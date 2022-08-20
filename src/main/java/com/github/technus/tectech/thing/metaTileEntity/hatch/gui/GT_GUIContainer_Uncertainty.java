@@ -1,13 +1,13 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.font.TecTechFontRender;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
-
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_Uncertainty extends GT_GUIContainerMetaTile_Machine {
     public GT_GUIContainer_Uncertainty(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -37,76 +37,45 @@ public class GT_GUIContainer_Uncertainty extends GT_GUIContainerMetaTile_Machine
             y += 33;
             int state = ((GT_Container_Uncertainty) mContainer).status;
             switch (((GT_Container_Uncertainty) mContainer).mode) {
-                case 1://ooo oxo ooo
-                    drawTexturedModalRect(x + 12, y + 12,
-                            rU + (state == 0 ? 76 : 12),
-                            Vs + 12, 10, 10);
+                case 1: // ooo oxo ooo
+                    drawTexturedModalRect(x + 12, y + 12, rU + (state == 0 ? 76 : 12), Vs + 12, 10, 10);
                     break;
-                case 2://ooo xox ooo
-                    drawTexturedModalRect(x, y + 12,
-                            rU + ((state & 1) == 0 ? 64 : 0),
-                            Vs + 12, 10, 10);
-                    drawTexturedModalRect(x + 24, y + 12,
-                            rU + ((state & 2) == 0 ? 88 : 24),
-                            Vs + 12, 10, 10);
+                case 2: // ooo xox ooo
+                    drawTexturedModalRect(x, y + 12, rU + ((state & 1) == 0 ? 64 : 0), Vs + 12, 10, 10);
+                    drawTexturedModalRect(x + 24, y + 12, rU + ((state & 2) == 0 ? 88 : 24), Vs + 12, 10, 10);
                     break;
-                case 3://oxo xox oxo
-                    drawTexturedModalRect(x + 12, y,
-                            rU + ((state & 1) == 0 ? 76 : 12),
-                            Vs, 10, 10);
-                    drawTexturedModalRect(x, y + 12,
-                            rU + ((state & 2) == 0 ? 64 : 0),
-                            Vs + 12, 10, 10);
-                    drawTexturedModalRect(x + 24, y + 12,
-                            rU + ((state & 4) == 0 ? 88 : 24),
-                            Vs + 12, 10, 10);
-                    drawTexturedModalRect(x + 12, y + 24,
-                            rU + ((state & 8) == 0 ? 76 : 12),
-                            Vs + 24, 10, 10);
+                case 3: // oxo xox oxo
+                    drawTexturedModalRect(x + 12, y, rU + ((state & 1) == 0 ? 76 : 12), Vs, 10, 10);
+                    drawTexturedModalRect(x, y + 12, rU + ((state & 2) == 0 ? 64 : 0), Vs + 12, 10, 10);
+                    drawTexturedModalRect(x + 24, y + 12, rU + ((state & 4) == 0 ? 88 : 24), Vs + 12, 10, 10);
+                    drawTexturedModalRect(x + 12, y + 24, rU + ((state & 8) == 0 ? 76 : 12), Vs + 24, 10, 10);
                     break;
-                case 4://xox ooo xox
-                    drawTexturedModalRect(x, y,
-                            rU + ((state & 1) == 0 ? 64 : 0),
-                            Vs, 10, 10);
-                    drawTexturedModalRect(x + 24, y,
-                            rU + ((state & 2) == 0 ? 88 : 24),
-                            Vs, 10, 10);
-                    drawTexturedModalRect(x, y + 24,
-                            rU + ((state & 4) == 0 ? 64 : 0),
-                            Vs + 24, 10, 10);
-                    drawTexturedModalRect(x + 24, y + 24,
-                            rU + ((state & 8) == 0 ? 88 : 24),
-                            Vs + 24, 10, 10);
+                case 4: // xox ooo xox
+                    drawTexturedModalRect(x, y, rU + ((state & 1) == 0 ? 64 : 0), Vs, 10, 10);
+                    drawTexturedModalRect(x + 24, y, rU + ((state & 2) == 0 ? 88 : 24), Vs, 10, 10);
+                    drawTexturedModalRect(x, y + 24, rU + ((state & 4) == 0 ? 64 : 0), Vs + 24, 10, 10);
+                    drawTexturedModalRect(x + 24, y + 24, rU + ((state & 8) == 0 ? 88 : 24), Vs + 24, 10, 10);
                     break;
-                case 5://xox oxo xox
-                    drawTexturedModalRect(x, y,
-                            rU + ((state & 1) == 0 ? 64 : 0),
-                            Vs, 10, 10);
-                    drawTexturedModalRect(x + 24, y,
-                            rU + ((state & 2) == 0 ? 88 : 24),
-                            Vs, 10, 10);
-                    drawTexturedModalRect(x + 12, y + 12,
-                            rU + ((state & 4) == 0 ? 76 : 12),
-                            Vs + 12, 10, 10);
-                    drawTexturedModalRect(x, y + 24,
-                            rU + ((state & 8) == 0 ? 64 : 0),
-                            Vs + 24, 10, 10);
-                    drawTexturedModalRect(x + 24, y + 24,
-                            rU + ((state & 16) == 0 ? 88 : 24),
-                            Vs + 24, 10, 10);
+                case 5: // xox oxo xox
+                    drawTexturedModalRect(x, y, rU + ((state & 1) == 0 ? 64 : 0), Vs, 10, 10);
+                    drawTexturedModalRect(x + 24, y, rU + ((state & 2) == 0 ? 88 : 24), Vs, 10, 10);
+                    drawTexturedModalRect(x + 12, y + 12, rU + ((state & 4) == 0 ? 76 : 12), Vs + 12, 10, 10);
+                    drawTexturedModalRect(x, y + 24, rU + ((state & 8) == 0 ? 64 : 0), Vs + 24, 10, 10);
+                    drawTexturedModalRect(x + 24, y + 24, rU + ((state & 16) == 0 ? 88 : 24), Vs + 24, 10, 10);
                     break;
             }
             x -= 6;
             y -= 6;
             for (int i = 0; i < 16; i++) {
                 if (TecTech.RANDOM.nextInt(1000) < ((GT_Container_Uncertainty) mContainer).matrix[i]) {
-                    drawTexturedModalRect(x + 12 * (i / 4), y + 12 * (i % 4), fU + 12 * (i / 4), V + 12 * (i % 4), 10, 10);
+                    drawTexturedModalRect(
+                            x + 12 * (i / 4), y + 12 * (i % 4), fU + 12 * (i / 4), V + 12 * (i % 4), 10, 10);
                 }
             }
             if (((GT_Container_Uncertainty) mContainer).selection > -1) {
                 int sel = ((GT_Container_Uncertainty) mContainer).selection;
-                drawTexturedModalRect(x + 12 * (sel / 4), y + 12 * (sel % 4),
-                        bU + 12 * (sel / 4), V + 12 * (sel % 4), 10, 10);
+                drawTexturedModalRect(
+                        x + 12 * (sel / 4), y + 12 * (sel % 4), bU + 12 * (sel / 4), V + 12 * (sel % 4), 10, 10);
             }
         }
     }

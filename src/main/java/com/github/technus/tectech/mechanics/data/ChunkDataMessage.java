@@ -19,69 +19,66 @@ public class ChunkDataMessage implements IMessage {
     NBTTagCompound data;
     IChunkMetaDataHandler handler;
 
-    public ChunkDataMessage(){}
+    public ChunkDataMessage() {}
 
     @Override
     public void fromBytes(ByteBuf pBuffer) {
         NBTTagCompound tag = ByteBufUtils.readTag(pBuffer);
         worldId = tag.getInteger("wId");
-        chunk=new ChunkCoordIntPair(
-                tag.getInteger("posx"),
-                tag.getInteger("posz"));
-        handler = TecTech.chunkDataHandler.getChunkMetaDataHandler(
-                tag.getString("handle"));
-        if(tag.hasKey("data")){
-            data=tag.getCompoundTag("data");
+        chunk = new ChunkCoordIntPair(tag.getInteger("posx"), tag.getInteger("posz"));
+        handler = TecTech.chunkDataHandler.getChunkMetaDataHandler(tag.getString("handle"));
+        if (tag.hasKey("data")) {
+            data = tag.getCompoundTag("data");
         }
     }
 
     @Override
     public void toBytes(ByteBuf pBuffer) {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("wId",worldId);
-        tag.setInteger("posx",chunk.chunkXPos);
-        tag.setInteger("posz",chunk.chunkZPos);
-        tag.setString("handle",handler.getTagName());
-        if(data!=null){
-            tag.setTag("data",data);
+        tag.setInteger("wId", worldId);
+        tag.setInteger("posx", chunk.chunkXPos);
+        tag.setInteger("posz", chunk.chunkZPos);
+        tag.setString("handle", handler.getTagName());
+        if (data != null) {
+            tag.setTag("data", data);
         }
         ByteBufUtils.writeTag(pBuffer, tag);
     }
 
     public static class ChunkDataQuery extends ChunkDataMessage {
-        public ChunkDataQuery() {
-        }
+        public ChunkDataQuery() {}
+
         public ChunkDataQuery(ChunkEvent.Load aEvent, IChunkMetaDataHandler handler) {
-            worldId=aEvent.world.provider.dimensionId;
-            chunk=aEvent.getChunk().getChunkCoordIntPair();
-            this.handler=handler;
+            worldId = aEvent.world.provider.dimensionId;
+            chunk = aEvent.getChunk().getChunkCoordIntPair();
+            this.handler = handler;
         }
     }
 
     public static class ChunkDataData extends ChunkDataMessage {
-        public ChunkDataData() {
+        public ChunkDataData() {}
+
+        public ChunkDataData(int worldId, ChunkCoordIntPair chunk, IChunkMetaDataHandler handler) {
+            this.worldId = worldId;
+            this.chunk = chunk;
+            this.handler = handler;
+            this.data = TecTech.chunkDataHandler.getChunkData(handler, worldId, chunk);
         }
 
-        public ChunkDataData(int worldId, ChunkCoordIntPair chunk, IChunkMetaDataHandler handler){
-            this.worldId=worldId;
-            this.chunk=chunk;
-            this.handler=handler;
-            this.data=TecTech.chunkDataHandler.getChunkData(handler,worldId,chunk);
-        }
-
-        public ChunkDataData(ChunkDataQuery query){
-            worldId=query.worldId;
-            chunk=query.chunk;
-            handler=query.handler;
-            data=TecTech.chunkDataHandler.getChunkData(handler,worldId,chunk);
+        public ChunkDataData(ChunkDataQuery query) {
+            worldId = query.worldId;
+            chunk = query.chunk;
+            handler = query.handler;
+            data = TecTech.chunkDataHandler.getChunkData(handler, worldId, chunk);
         }
     }
 
     public static class ClientHandler extends AbstractClientMessageHandler<ChunkDataData> {
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, ChunkDataData pMessage, MessageContext pCtx) {
-            if(TT_Utility.checkChunkExist(pPlayer.worldObj,pMessage.chunk)){
-                TecTech.chunkDataHandler.putChunkData(pMessage.handler, pMessage.worldId,pMessage.chunk, pMessage.data);
+            if (TT_Utility.checkChunkExist(pPlayer.worldObj, pMessage.chunk)) {
+                TecTech.chunkDataHandler.putChunkData(
+                        pMessage.handler, pMessage.worldId, pMessage.chunk, pMessage.data);
             }
             return null;
         }

@@ -1,12 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static org.lwjgl.opengl.GL11.*;
+
 import com.github.technus.tectech.font.TecTechFontRender;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
-
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
-import static org.lwjgl.opengl.GL11.*;
 
 public class GT_GUIContainer_UncertaintyAdv extends GT_GUIContainerMetaTile_Machine {
     protected static final short sX = 52, sY = 33, bU = 0, rU = 70, fU = 192, V = 210, Vs = 216;
@@ -37,26 +37,26 @@ public class GT_GUIContainer_UncertaintyAdv extends GT_GUIContainerMetaTile_Mach
             y += sY;
             int state = ((GT_Container_Uncertainty) mContainer).status;
             switch (((GT_Container_Uncertainty) mContainer).mode) {
-                case 1://ooo oxo ooo
+                case 1: // ooo oxo ooo
                     drawTexturedModalRect(x + 12, y + 12, rU + (state == 0 ? 76 : 12), Vs + 12, 10, 10);
                     break;
-                case 2://ooo xox ooo
+                case 2: // ooo xox ooo
                     drawTexturedModalRect(x, y + 12, rU + ((state & 1) == 0 ? 64 : 0), Vs + 12, 10, 10);
                     drawTexturedModalRect(x + 24, y + 12, rU + ((state & 2) == 0 ? 88 : 24), Vs + 12, 10, 10);
                     break;
-                case 3://oxo xox oxo
+                case 3: // oxo xox oxo
                     drawTexturedModalRect(x + 12, y, rU + ((state & 1) == 0 ? 76 : 12), Vs, 10, 10);
                     drawTexturedModalRect(x, y + 12, rU + ((state & 2) == 0 ? 64 : 0), Vs + 12, 10, 10);
                     drawTexturedModalRect(x + 24, y + 12, rU + ((state & 4) == 0 ? 88 : 24), Vs + 12, 10, 10);
                     drawTexturedModalRect(x + 12, y + 24, rU + ((state & 8) == 0 ? 76 : 12), Vs + 24, 10, 10);
                     break;
-                case 4://xox ooo xox
+                case 4: // xox ooo xox
                     drawTexturedModalRect(x, y, rU + ((state & 1) == 0 ? 64 : 0), Vs, 10, 10);
                     drawTexturedModalRect(x + 24, y, rU + ((state & 2) == 0 ? 88 : 24), Vs, 10, 10);
                     drawTexturedModalRect(x, y + 24, rU + ((state & 4) == 0 ? 64 : 0), Vs + 24, 10, 10);
                     drawTexturedModalRect(x + 24, y + 24, rU + ((state & 8) == 0 ? 88 : 24), Vs + 24, 10, 10);
                     break;
-                case 5://xox ooo xox
+                case 5: // xox ooo xox
                     drawTexturedModalRect(x, y, rU + ((state & 1) == 0 ? 64 : 0), Vs, 10, 10);
                     drawTexturedModalRect(x + 24, y, rU + ((state & 2) == 0 ? 88 : 24), Vs, 10, 10);
                     drawTexturedModalRect(x + 12, y + 12, rU + ((state & 4) == 0 ? 76 : 12), Vs + 12, 10, 10);
@@ -78,7 +78,8 @@ public class GT_GUIContainer_UncertaintyAdv extends GT_GUIContainerMetaTile_Mach
             glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             if (((GT_Container_Uncertainty) mContainer).selection > -1) {
                 int sel = ((GT_Container_Uncertainty) mContainer).selection;
-                drawTexturedModalRect(x + 12 * (sel / 4), y + 12 * (sel % 4), bU + 12 * (sel / 4), V + 12 * (sel % 4), 10, 10);
+                drawTexturedModalRect(
+                        x + 12 * (sel / 4), y + 12 * (sel % 4), bU + 12 * (sel / 4), V + 12 * (sel % 4), 10, 10);
             }
         }
     }

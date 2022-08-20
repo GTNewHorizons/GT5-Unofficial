@@ -1,5 +1,7 @@
 package com.github.technus.tectech.thing.block;
 
+import static com.github.technus.tectech.Reference.MODID;
+
 import com.github.technus.tectech.thing.tileEntity.ReactorSimTileEntity;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -16,8 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import static com.github.technus.tectech.Reference.MODID;
 
 /**
  * Created by danie_000 on 30.09.2017.
@@ -63,7 +63,7 @@ public class ReactorSimBlock extends Block implements ITileEntityProvider {
     public static void run() {
         INSTANCE = new ReactorSimBlock();
         GameRegistry.registerBlock(INSTANCE, ReactorSimItem.class, INSTANCE.getUnlocalizedName());
-        GameRegistry.registerTileEntity(ReactorSimTileEntity.class,MODID+"_reactorSim");
+        GameRegistry.registerTileEntity(ReactorSimTileEntity.class, MODID + "_reactorSim");
     }
 
     @Override
@@ -72,21 +72,22 @@ public class ReactorSimBlock extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float a, float b, float c) {
-        if(entityPlayer.isSneaking()) {
+    public boolean onBlockActivated(
+            World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float a, float b, float c) {
+        if (entityPlayer.isSneaking()) {
             return false;
         } else {
-            TileEntity te = world.getTileEntity(x,y,z);
-            return te instanceof IHasGui && (!IC2.platform.isSimulating() || IC2.platform.launchGui(entityPlayer, (IHasGui) te));
+            TileEntity te = world.getTileEntity(x, y, z);
+            return te instanceof IHasGui
+                    && (!IC2.platform.isSimulating() || IC2.platform.launchGui(entityPlayer, (IHasGui) te));
         }
     }
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block srcBlock) {
-        TileEntity te = world.getTileEntity(x,y,z);
-        if(te instanceof TileEntityBlock) {
-            ((TileEntityBlock)te).onNeighborUpdate(srcBlock);
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof TileEntityBlock) {
+            ((TileEntityBlock) te).onNeighborUpdate(srcBlock);
         }
-
     }
 }

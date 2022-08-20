@@ -16,7 +16,7 @@ public abstract class EMComplexTemplate implements IEMDefinition {
 
     @Override
     public final EMComplexTemplate clone() {
-        return this;//IMMUTABLE
+        return this; // IMMUTABLE
     }
 
     @Override
@@ -25,14 +25,14 @@ public abstract class EMComplexTemplate implements IEMDefinition {
         if (classCompare != 0) {
             return classCompare;
         }
-        //that allows neat check if the same thing and
-        //top hierarchy amount can be used to store amount info
+        // that allows neat check if the same thing and
+        // top hierarchy amount can be used to store amount info
         return getSubParticles().compareWithAmountsInternal(o.getSubParticles());
     }
 
     @Override
     public final boolean equals(Object obj) {
-        if(this==obj) {
+        if (this == obj) {
             return true;
         }
         if (obj instanceof IEMDefinition) {
@@ -45,22 +45,23 @@ public abstract class EMComplexTemplate implements IEMDefinition {
     }
 
     @Override
-    public int hashCode() {//Internal amounts should be also hashed
+    public int hashCode() { // Internal amounts should be also hashed
         int hash = -(getSubParticles().size() << 16);
         for (EMDefinitionStack stack : getSubParticles().valuesToArray()) {
-            int amount=(int) stack.getAmount();
-            hash += ((amount & 0x1) == 0 ? -amount : amount) * (stack.getDefinition().hashCode()<<4);
+            int amount = (int) stack.getAmount();
+            hash += ((amount & 0x1) == 0 ? -amount : amount)
+                    * (stack.getDefinition().hashCode() << 4);
         }
         return hash;
     }
 
     @Override
     public String toString() {
-        return getLocalizedName()+ " " + getSymbol();
+        return getLocalizedName() + " " + getSymbol();
     }
 
     public NBTTagCompound toNBT(EMDefinitionsRegistry registry) {
-        return registry.indirectToNBT(getTagValue(),getSubParticles());
+        return registry.indirectToNBT(getTagValue(), getSubParticles());
     }
 
     protected abstract String getTagValue();

@@ -4,8 +4,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstance
 
 public class EMDecayResult {
     private final EMInstanceStackMap output;
-    private       double massAffected;
-    private       double massDiff;
+    private double massAffected;
+    private double massDiff;
 
     public EMDecayResult(EMInstanceStackMap output, double massAffected, double massDiff) {
         this.output = output;

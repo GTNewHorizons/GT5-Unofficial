@@ -5,7 +5,7 @@ import java.io.*;
 public final class Converter {
     private Converter() {}
 
-    public static void writeInts(int [] array,ByteArrayOutputStream byteArrayOutputStream) {
+    public static void writeInts(int[] array, ByteArrayOutputStream byteArrayOutputStream) {
         try {
             DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
             for (int i = 0; i < array.length; i++) {
@@ -17,7 +17,7 @@ public final class Converter {
         }
     }
 
-    public static void readInts(ByteArrayInputStream byteArrayInputStream,int[] array) {
+    public static void readInts(ByteArrayInputStream byteArrayInputStream, int[] array) {
         try {
             DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream);
             for (int i = 0; i < array.length; i++) {

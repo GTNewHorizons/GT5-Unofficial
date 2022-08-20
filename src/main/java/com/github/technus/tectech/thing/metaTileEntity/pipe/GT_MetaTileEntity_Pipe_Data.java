@@ -1,5 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.pipe.IActivePipe;
@@ -28,15 +31,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 /**
  * Created by Tec on 26.02.2017.
  */
 public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConnectsToDataPipe, IActivePipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
-    private static Textures.BlockIcons.CustomIcon EMbar,EMbarActive;
+    private static Textures.BlockIcons.CustomIcon EMbar, EMbarActive;
     public byte connectionCount = 0;
 
     private boolean active;
@@ -64,8 +64,18 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(getActive()?EMbarActive:EMbar, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aConnections,
+            byte aColorIndex,
+            boolean aConnected,
+            boolean aRedstone) {
+        return new ITexture[] {
+            new GT_RenderedTexture(EMpipe),
+            new GT_RenderedTexture(
+                    getActive() ? EMbarActive : EMbar, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))
+        };
     }
 
     @Override
@@ -80,12 +90,12 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
 
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
-        active=nbtTagCompound.getBoolean("eActive");
+        active = nbtTagCompound.getBoolean("eActive");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound nbtTagCompound) {
-        nbtTagCompound.setBoolean("eActive",active);
+        nbtTagCompound.setBoolean("eActive", active);
     }
 
     @Override
@@ -100,18 +110,22 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.pipe.datastream.desc.0"),//Advanced data transmission
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.pipe.datastream.desc.1"),//Don't stare at the beam!
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.2"),//Must be painted to work
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.3")//Do not cross or split
+        return new String[] {
+            CommonValues.TEC_MARK_EM,
+            translateToLocal("gt.blockmachines.pipe.datastream.desc.0"), // Advanced data transmission
+            EnumChatFormatting.AQUA.toString()
+                    + EnumChatFormatting.BOLD
+                    + translateToLocal("gt.blockmachines.pipe.datastream.desc.1"), // Don't stare at the beam!
+            EnumChatFormatting.AQUA
+                    + translateToLocal("gt.blockmachines.pipe.datastream.desc.2"), // Must be painted to work
+            EnumChatFormatting.AQUA
+                    + translateToLocal("gt.blockmachines.pipe.datastream.desc.3") // Do not cross or split
         };
     }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        if(aBaseMetaTileEntity.isClientSide()){
+        if (aBaseMetaTileEntity.isClientSide()) {
             NetworkDispatcher.INSTANCE.sendToServer(new PipeActivityMessage.PipeActivityQuery(this));
         }
         onPostTick(aBaseMetaTileEntity, 31);
@@ -121,20 +135,21 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
-                if(TecTech.RANDOM.nextInt(15)==0) {
-                    NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                if (TecTech.RANDOM.nextInt(15) == 0) {
+                    NetworkDispatcher.INSTANCE.sendToAllAround(
+                            new PipeActivityMessage.PipeActivityData(this),
                             aBaseMetaTileEntity.getWorld().provider.dimensionId,
                             aBaseMetaTileEntity.getXCoord(),
                             aBaseMetaTileEntity.getYCoord(),
                             aBaseMetaTileEntity.getZCoord(),
                             256);
                 }
-                if(active){
-                    active=false;
+                if (active) {
+                    active = false;
                 }
                 mConnections = 0;
                 connectionCount = 0;
-                byte myColor=aBaseMetaTileEntity.getColorization();
+                byte myColor = aBaseMetaTileEntity.getColorization();
                 if (aBaseMetaTileEntity.getColorization() < 0) {
                     return;
                 }
@@ -146,18 +161,18 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
                         if (tColor != myColor) {
                             continue;
                         }
-                        if(((IConnectsToDataPipe) tTileEntity).canConnectData(b1)){
+                        if (((IConnectsToDataPipe) tTileEntity).canConnectData(b1)) {
                             mConnections |= 1 << b0;
                             connectionCount++;
                         }
-                    }else if(tTileEntity instanceof IGregTechTileEntity){
-                        IMetaTileEntity meta=((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                        if(meta instanceof IConnectsToDataPipe){
+                    } else if (tTileEntity instanceof IGregTechTileEntity) {
+                        IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+                        if (meta instanceof IConnectsToDataPipe) {
                             byte tColor = ((IConnectsToDataPipe) meta).getColorization();
                             if (tColor != myColor) {
                                 continue;
                             }
-                            if(((IConnectsToDataPipe) meta).canConnectData(b1)){
+                            if (((IConnectsToDataPipe) meta).canConnectData(b1)) {
                                 mConnections |= 1 << b0;
                                 connectionCount++;
                             }
@@ -182,18 +197,18 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
         }
         for (byte b = 0; b < 6; b++) {
             if ((mConnections & 1 << b) == 0) {
-                continue;//if not connected continue
+                continue; // if not connected continue
             }
             TileEntity next = getBaseMetaTileEntity().getTileEntityAtSide(b);
             if (next instanceof IConnectsToDataPipe && next != source) {
-                if(((IConnectsToDataPipe) next).isDataInputFacing(GT_Utility.getOppositeSide(b))){
+                if (((IConnectsToDataPipe) next).isDataInputFacing(GT_Utility.getOppositeSide(b))) {
                     return (IConnectsToDataPipe) next;
                 }
-            }else if(next instanceof IGregTechTileEntity) {
+            } else if (next instanceof IGregTechTileEntity) {
                 IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
                 if (meta instanceof IConnectsToDataPipe && meta != source) {
-                    if (meta instanceof GT_MetaTileEntity_Pipe_Data &&
-                            ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount == 2) {
+                    if (meta instanceof GT_MetaTileEntity_Pipe_Data
+                            && ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount == 2) {
                         ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
                         return (IConnectsToDataPipe) meta;
                     }
@@ -208,7 +223,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        float tSpace = (1f - 0.375f)/2;
+        float tSpace = (1f - 0.375f) / 2;
         float tSide0 = tSpace;
         float tSide1 = 1f - tSpace;
         float tSide2 = tSpace;
@@ -216,39 +231,58 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
         float tSide4 = tSpace;
         float tSide5 = 1f - tSpace;
 
-        if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 0) != 0){tSide0=tSide2=tSide4=0;tSide3=tSide5=1;}
-        if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 1) != 0){tSide2=tSide4=0;tSide1=tSide3=tSide5=1;}
-        if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 2) != 0){tSide0=tSide2=tSide4=0;tSide1=tSide5=1;}
-        if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 3) != 0){tSide0=tSide4=0;tSide1=tSide3=tSide5=1;}
-        if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 4) != 0){tSide0=tSide2=tSide4=0;tSide1=tSide3=1;}
-        if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0){tSide0=tSide2=0;tSide1=tSide3=tSide5=1;}
+        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 0) != 0) {
+            tSide0 = tSide2 = tSide4 = 0;
+            tSide3 = tSide5 = 1;
+        }
+        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 1) != 0) {
+            tSide2 = tSide4 = 0;
+            tSide1 = tSide3 = tSide5 = 1;
+        }
+        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 2) != 0) {
+            tSide0 = tSide2 = tSide4 = 0;
+            tSide1 = tSide5 = 1;
+        }
+        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 3) != 0) {
+            tSide0 = tSide4 = 0;
+            tSide1 = tSide3 = tSide5 = 1;
+        }
+        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 4) != 0) {
+            tSide0 = tSide2 = tSide4 = 0;
+            tSide1 = tSide3 = 1;
+        }
+        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0) {
+            tSide0 = tSide2 = 0;
+            tSide1 = tSide3 = tSide5 = 1;
+        }
 
         byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if((tConn & 1 << ForgeDirection.DOWN.ordinal()) != 0) {
+        if ((tConn & 1 << ForgeDirection.DOWN.ordinal()) != 0) {
             tSide0 = 0f;
         }
-        if((tConn & 1 << ForgeDirection.UP.ordinal()) != 0) {
+        if ((tConn & 1 << ForgeDirection.UP.ordinal()) != 0) {
             tSide1 = 1f;
         }
-        if((tConn & 1 << ForgeDirection.NORTH.ordinal()) != 0) {
+        if ((tConn & 1 << ForgeDirection.NORTH.ordinal()) != 0) {
             tSide2 = 0f;
         }
-        if((tConn & 1 << ForgeDirection.SOUTH.ordinal()) != 0) {
+        if ((tConn & 1 << ForgeDirection.SOUTH.ordinal()) != 0) {
             tSide3 = 1f;
         }
-        if((tConn & 1 << ForgeDirection.WEST.ordinal()) != 0) {
+        if ((tConn & 1 << ForgeDirection.WEST.ordinal()) != 0) {
             tSide4 = 0f;
         }
-        if((tConn & 1 << ForgeDirection.EAST.ordinal()) != 0) {
+        if ((tConn & 1 << ForgeDirection.EAST.ordinal()) != 0) {
             tSide5 = 1f;
         }
 
-        return AxisAlignedBB.getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
+        return AxisAlignedBB.getBoundingBox(
+                aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
     }
 
     @Override
     public float getThickNess() {
-        if(GT_Mod.instance.isClientSide() && GT_Client.hideValue==1) {
+        if (GT_Mod.instance.isClientSide() && GT_Client.hideValue == 1) {
             return 0.0625F;
         }
         return 0.375f;
@@ -271,7 +305,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
 
     @Override
     public void setActive(boolean state) {
-        if(state!=active) {
+        if (state != active) {
             active = state;
             getBaseMetaTileEntity().issueTextureUpdate();
         }

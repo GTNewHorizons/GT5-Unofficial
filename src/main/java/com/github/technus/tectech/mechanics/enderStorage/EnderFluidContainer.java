@@ -1,5 +1,6 @@
 package com.github.technus.tectech.mechanics.enderStorage;
 
+import java.io.Serializable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -7,18 +8,18 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import java.io.Serializable;
-
 public class EnderFluidContainer implements IFluidHandler, Serializable {
     private static final int CAPACITY = 64000;
+
     @Deprecated()
     private int fluidID = -1;
+
     @Deprecated()
     private int fluidQuantity = 0;
+
     private NBTTagCompound fluid;
 
-    public EnderFluidContainer() {
-    }
+    public EnderFluidContainer() {}
 
     private FluidStack getFluidStack() {
         FluidStack fluidStack = null;
@@ -40,7 +41,6 @@ public class EnderFluidContainer implements IFluidHandler, Serializable {
             fluid = null;
         }
     }
-
 
     @Override
     public int fill(ForgeDirection side, FluidStack fluidStackIn, boolean doFill) {
@@ -102,6 +102,6 @@ public class EnderFluidContainer implements IFluidHandler, Serializable {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection forgeDirection) {
-        return new FluidTankInfo[]{new FluidTankInfo(getFluidStack(), CAPACITY)};
+        return new FluidTankInfo[] {new FluidTankInfo(getFluidStack(), CAPACITY)};
     }
 }

@@ -1,12 +1,25 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting.crafter;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine.machine;
+import static com.github.technus.tectech.util.CommonValues.V;
+import static com.github.technus.tectech.util.CommonValues.VN;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Holder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -22,6 +35,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -31,73 +48,51 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
-import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting.crafter;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.DynamoMulti;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.EnergyMulti;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine.machine;
-import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.util.CommonValues.VN;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM implements ISurvivalConstructable {
-    //region variables
-    private final        ArrayList<GT_MetaTileEntity_Hatch_Holder> eHolders = new ArrayList<>();
-    private              GT_Recipe.GT_Recipe_AssemblyLine          tRecipe;
-    private              TT_recipe.TT_assLineRecipe                aRecipe;
-    private              String                                    machineType;
-    private static final String                                    assembly = "Assembly line";
-    private              ItemStack                                 holdItem;
-    private              long                                      computationRemaining, computationRequired;
+public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM
+        implements ISurvivalConstructable {
+    // region variables
+    private final ArrayList<GT_MetaTileEntity_Hatch_Holder> eHolders = new ArrayList<>();
+    private GT_Recipe.GT_Recipe_AssemblyLine tRecipe;
+    private TT_recipe.TT_assLineRecipe aRecipe;
+    private String machineType;
+    private static final String assembly = "Assembly line";
+    private ItemStack holdItem;
+    private long computationRemaining, computationRequired;
 
     private static LinkedHashMap<String, String> lServerNames;
 
-    private static final String[] description = new String[]{
-            EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            translateToLocal("gt.blockmachines.multimachine.em.research.hint.0"),//1 - Classic/Data Hatches or Computer casing
-            translateToLocal("gt.blockmachines.multimachine.em.research.hint.1"),//2 - Holder Hatch
+    private static final String[] description = new String[] {
+        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+        translateToLocal(
+                "gt.blockmachines.multimachine.em.research.hint.0"), // 1 - Classic/Data Hatches or Computer casing
+        translateToLocal("gt.blockmachines.multimachine.em.research.hint.1"), // 2 - Holder Hatch
     };
 
     private String clientLocale = "en_US";
-    //endregion
+    // endregion
 
-    //region structure
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_research> STRUCTURE_DEFINITION = IStructureDefinition
-            .<GT_MetaTileEntity_EM_research>builder()
-            .addShape("main", transpose(new String[][]{
-                    {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"},
-                    {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
-                    {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
-                    {"   ", " E ", "   ", "   ", "A~A", "CCC", "DDD"},
-                    {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
-                    {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
-                    {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"}
-            }))
-            .addElement('A', ofBlock(sBlockCasingsTT, 1))
-            .addElement('B', ofBlock(sBlockCasingsTT, 2))
-            .addElement('C', ofBlock(sBlockCasingsTT, 3))
-            .addElement('D', classicHatches(textureOffset + 1, 1, sBlockCasingsTT, 1))
-            .addElement('E', HolderHatchElement.INSTANCE.newAny(3, 2))
-            .build();
-    //endregion
+    // region structure
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_research> STRUCTURE_DEFINITION =
+            IStructureDefinition.<GT_MetaTileEntity_EM_research>builder()
+                    .addShape("main", transpose(new String[][] {
+                        {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"},
+                        {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
+                        {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
+                        {"   ", " E ", "   ", "   ", "A~A", "CCC", "DDD"},
+                        {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
+                        {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
+                        {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"}
+                    }))
+                    .addElement('A', ofBlock(sBlockCasingsTT, 1))
+                    .addElement('B', ofBlock(sBlockCasingsTT, 2))
+                    .addElement('C', ofBlock(sBlockCasingsTT, 3))
+                    .addElement('D', classicHatches(textureOffset + 1, 1, sBlockCasingsTT, 1))
+                    .addElement('E', HolderHatchElement.INSTANCE.newAny(3, 2))
+                    .build();
+    // endregion
 
     public GT_MetaTileEntity_EM_research(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -109,9 +104,12 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     private void makeStick() {
         mInventory[1].setTagCompound(new NBTTagCompound());
-        mInventory[1].setStackDisplayName(GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + " Construction Data");
-        GT_Utility.ItemNBT.setBookTitle(mInventory[1], GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + " Construction Data");
-        NBTTagCompound tNBT = mInventory[1].getTagCompound();//code above makes it not null
+        mInventory[1].setStackDisplayName(
+                GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + " Construction Data");
+        GT_Utility.ItemNBT.setBookTitle(
+                mInventory[1],
+                GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + " Construction Data");
+        NBTTagCompound tNBT = mInventory[1].getTagCompound(); // code above makes it not null
 
         tNBT.setTag("output", tRecipe.mOutput.writeToNBT(new NBTTagCompound()));
         tNBT.setInteger("time", tRecipe.mDuration);
@@ -122,17 +120,24 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
             tNBT.setTag("f" + i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
         }
-        tNBT.setString("author", EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE + " Assembling Line Recipe Generator");
+        tNBT.setString(
+                "author",
+                EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE
+                        + " Assembling Line Recipe Generator");
         NBTTagList tNBTList = new NBTTagList();
-        tNBTList.appendTag(new NBTTagString("Construction plan for " + tRecipe.mOutput.stackSize + ' ' + GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + ". Needed EU/t: " + tRecipe.mEUt + " Production time: " + tRecipe.mDuration / 20));
+        tNBTList.appendTag(new NBTTagString("Construction plan for " + tRecipe.mOutput.stackSize + ' '
+                + GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + ". Needed EU/t: " + tRecipe.mEUt
+                + " Production time: " + tRecipe.mDuration / 20));
         for (int i = 0; i < tRecipe.mInputs.length; i++) {
             if (tRecipe.mInputs[i] != null) {
-                tNBTList.appendTag(new NBTTagString("Input Bus " + (i + 1) + ": " + tRecipe.mInputs[i].stackSize + ' ' + GT_LanguageManager.getTranslation(tRecipe.mInputs[i].getDisplayName())));
+                tNBTList.appendTag(new NBTTagString("Input Bus " + (i + 1) + ": " + tRecipe.mInputs[i].stackSize + ' '
+                        + GT_LanguageManager.getTranslation(tRecipe.mInputs[i].getDisplayName())));
             }
         }
         for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
             if (tRecipe.mFluidInputs[i] != null) {
-                tNBTList.appendTag(new NBTTagString("Input Hatch " + (i + 1) + ": " + tRecipe.mFluidInputs[i].amount + "L " + GT_LanguageManager.getTranslation(tRecipe.mFluidInputs[i].getLocalizedName())));
+                tNBTList.appendTag(new NBTTagString("Input Hatch " + (i + 1) + ": " + tRecipe.mFluidInputs[i].amount
+                        + "L " + GT_LanguageManager.getTranslation(tRecipe.mFluidInputs[i].getLocalizedName())));
             }
         }
         tNBT.setTag("pages", tNBTList);
@@ -141,7 +146,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     static {
         try {
             Class GT_Assemblyline_Server = Class.forName("gregtech.api.util.GT_Assemblyline_Server");
-            lServerNames = (LinkedHashMap<String, String>) GT_Assemblyline_Server.getField("lServerNames").get(null);
+            lServerNames = (LinkedHashMap<String, String>)
+                    GT_Assemblyline_Server.getField("lServerNames").get(null);
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
             lServerNames = null;
         }
@@ -182,7 +188,10 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
             tNBT.setTag("f" + i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
         }
-        tNBT.setString("author", EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE + ' ' + machineType + " Recipe Generator");
+        tNBT.setString(
+                "author",
+                EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE + ' '
+                        + machineType + " Recipe Generator");
         NBTTagList tNBTList = new NBTTagList();
         s = tRecipe.mOutput.getDisplayName();
         if (getBaseMetaTileEntity().isServerSide()) {
@@ -191,22 +200,24 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 s = tRecipe.mOutput.getDisplayName();
             }
         }
-        tNBTList.appendTag(new NBTTagString("Construction plan for " + tRecipe.mOutput.stackSize + " " + s + ". Needed EU/t: " + tRecipe.mEUt + " Production time: " + (tRecipe.mDuration / 20)));
+        tNBTList.appendTag(new NBTTagString("Construction plan for " + tRecipe.mOutput.stackSize + " " + s
+                + ". Needed EU/t: " + tRecipe.mEUt + " Production time: " + (tRecipe.mDuration / 20)));
         for (int i = 0; i < tRecipe.mInputs.length; i++) {
             if (tRecipe.mOreDictAlt[i] != null) {
-                int           count    = 0;
+                int count = 0;
                 StringBuilder tBuilder = new StringBuilder("Input Bus " + (i + 1) + ": ");
                 for (ItemStack tStack : tRecipe.mOreDictAlt[i]) {
                     if (tStack != null) {
                         s = tStack.getDisplayName();
                         if (getBaseMetaTileEntity().isServerSide()) {
                             s = lServerNames.get(tStack.getDisplayName());
-                            if (s == null)
-                                s = tStack.getDisplayName();
+                            if (s == null) s = tStack.getDisplayName();
                         }
 
-
-                        tBuilder.append(count == 0 ? "" : "\nOr ").append(tStack.stackSize).append(" ").append(s);
+                        tBuilder.append(count == 0 ? "" : "\nOr ")
+                                .append(tStack.stackSize)
+                                .append(" ")
+                                .append(s);
                         count++;
                     }
                 }
@@ -219,7 +230,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                         s = tRecipe.mInputs[i].getDisplayName();
                     }
                 }
-                tNBTList.appendTag(new NBTTagString("Input Bus " + (i + 1) + ": " + tRecipe.mInputs[i].stackSize + " " + s));
+                tNBTList.appendTag(
+                        new NBTTagString("Input Bus " + (i + 1) + ": " + tRecipe.mInputs[i].stackSize + " " + s));
             }
         }
         for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
@@ -231,7 +243,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                         s = tRecipe.mFluidInputs[i].getLocalizedName();
                     }
                 }
-                tNBTList.appendTag(new NBTTagString("Input Hatch " + (i + 1) + ": " + tRecipe.mFluidInputs[i].amount + "L " + s));
+                tNBTList.appendTag(
+                        new NBTTagString("Input Hatch " + (i + 1) + ": " + tRecipe.mFluidInputs[i].amount + "L " + s));
             }
         }
         tNBT.setTag("pages", tNBTList);
@@ -292,7 +305,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                         machineType = assembly;
                         tRecipe = assRecipe;
-                        //if found
+                        // if found
                         if (iterateRecipes()) return true;
                     }
                 }
@@ -301,7 +314,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
                         aRecipe = assRecipeTT;
                         machineType = machine;
-                        //if found
+                        // if found
                         if (iterateRecipes()) return true;
                     }
                 }
@@ -309,7 +322,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
                         aRecipe = assRecipeTT;
                         machineType = crafter;
-                        //if found
+                        // if found
                         if (iterateRecipes()) return true;
                     }
                 }
@@ -342,13 +355,18 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 eHolders.get(0).getBaseMetaTileEntity().setActive(false);
                 eHolders.get(0).mInventory[0] = null;
 
-                mInventory[1].setStackDisplayName(GT_LanguageManager.getTranslation(aRecipe.mOutputs[0].getDisplayName()) + ' ' + machineType + " Construction Data");
-                NBTTagCompound tNBT = mInventory[1].getTagCompound();//code above makes it not null
+                mInventory[1].setStackDisplayName(
+                        GT_LanguageManager.getTranslation(aRecipe.mOutputs[0].getDisplayName()) + ' ' + machineType
+                                + " Construction Data");
+                NBTTagCompound tNBT = mInventory[1].getTagCompound(); // code above makes it not null
 
                 tNBT.setString("eMachineType", machineType);
                 GameRegistry.UniqueIdentifier uid = GameRegistry.findUniqueIdentifierFor(aRecipe.mOutputs[0].getItem());
                 tNBT.setString(E_RECIPE_ID, uid + ":" + aRecipe.mOutputs[0].getItemDamage());
-                tNBT.setString("author", EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE + ' ' + machineType + " Recipe Generator");
+                tNBT.setString(
+                        "author",
+                        EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech"
+                                + EnumChatFormatting.WHITE + ' ' + machineType + " Recipe Generator");
             }
         }
         computationRequired = computationRemaining = 0;
@@ -360,18 +378,35 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.name"))   // Machine Type: Research Station
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.0"))  // Controller block of the Research Station
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1"))  // Used to scan Data Sticks for Assembling Line Recipes
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.2"))  // Needs to be fed with computation to work
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.3"))  // Does not consume the item until the Data Stick is written
+        tt.addMachineType(translateToLocal(
+                        "gt.blockmachines.multimachine.em.research.name")) // Machine Type: Research Station
+                .addInfo(translateToLocal(
+                        "gt.blockmachines.multimachine.em.research.desc.0")) // Controller block of the Research Station
+                .addInfo(translateToLocal(
+                        "gt.blockmachines.multimachine.em.research.desc.1")) // Used to scan Data Sticks for
+                // Assembling Line Recipes
+                .addInfo(translateToLocal(
+                        "gt.blockmachines.multimachine.em.research.desc.2")) // Needs to be fed with computation to work
+                .addInfo(translateToLocal(
+                        "gt.blockmachines.multimachine.em.research.desc.3")) // Does not consume the item until
+                // the Data Stick is written
                 .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
                 .addSeparator()
                 .beginStructureBlock(3, 7, 7, false)
-                .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"), translateToLocal("tt.keyword.Structure.CenterPillar"), 2) // Object Holder: Center of the front pillar
-                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.DataConnector"), translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Optical Connector: Any Computer Casing on the backside of the main body
-                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Energy Hatch: Any Computer Casing on the backside of the main body
-                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Maintenance Hatch: Any Computer Casing on the backside of the main body
+                .addOtherStructurePart(
+                        translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
+                        translateToLocal("tt.keyword.Structure.CenterPillar"),
+                        2) // Object Holder: Center of the front pillar
+                .addOtherStructurePart(
+                        translateToLocal("tt.keyword.Structure.DataConnector"),
+                        translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"),
+                        1) // Optical Connector: Any Computer Casing on the backside of the main body
+                .addEnergyHatch(
+                        translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"),
+                        1) // Energy Hatch: Any Computer Casing on the backside of the main body
+                .addMaintenanceHatch(
+                        translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"),
+                        1) // Maintenance Hatch: Any Computer Casing on the backside of the main body
                 .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
     }
@@ -379,7 +414,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getInfoData() {
         long storedEnergy = 0;
-        long maxEnergy    = 0;
+        long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
@@ -393,42 +428,64 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             }
         }
 
-        return new String[]{
-                translateToLocalFormatted("tt.keyphrase.Energy_Hatches", clientLocale) + ":",
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
-                (mEUt <= 0 ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": " : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ") +
-                        EnumChatFormatting.RED + GT_Utility.formatNumbers(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t " +
-                        translateToLocalFormatted("tt.keyword.at", clientLocale) + " " +
-                        EnumChatFormatting.RED + GT_Utility.formatNumbers(eAmpereFlow) + EnumChatFormatting.RESET + " A",
-                translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": " +
-                        EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " +
-                        EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET + " " +
-                        translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale) + ": " +
-                        EnumChatFormatting.GREEN + GT_Utility.formatNumbers(eMaxAmpereFlow) + EnumChatFormatting.RESET + " A",
-                translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": " +
-                        EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " " +
-                        translateToLocalFormatted("tt.keyword.Efficiency", clientLocale) + ": " +
-                        EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
-                translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": " +
-                        EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET + " " +
-                        translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale) + ": " +
-                        EnumChatFormatting.BLUE + eSafeVoid,
-                translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": " +
-                        EnumChatFormatting.GREEN + GT_Utility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET + " / " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET,
-                translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":",
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(computationRemaining / 20L) + EnumChatFormatting.RESET + " / " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(computationRequired / 20L)
+        return new String[] {
+            translateToLocalFormatted("tt.keyphrase.Energy_Hatches", clientLocale) + ":",
+            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / "
+                    + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET
+                    + " EU",
+            (mEUt <= 0
+                            ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": "
+                            : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ")
+                    + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t "
+                    + translateToLocalFormatted("tt.keyword.at", clientLocale)
+                    + " " + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(eAmpereFlow) + EnumChatFormatting.RESET + " A",
+            translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": " + EnumChatFormatting.YELLOW
+                    + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN
+                    + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET + " "
+                    + translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale)
+                    + ": " + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(eMaxAmpereFlow) + EnumChatFormatting.RESET + " A",
+            translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": " + EnumChatFormatting.RED
+                    + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " "
+                    + translateToLocalFormatted("tt.keyword.Efficiency", clientLocale)
+                    + ": " + EnumChatFormatting.YELLOW
+                    + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
+            translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": " + EnumChatFormatting.BLUE
+                    + ePowerPass + EnumChatFormatting.RESET + " "
+                    + translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale)
+                    + ": " + EnumChatFormatting.BLUE
+                    + eSafeVoid,
+            translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
+                    + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET + " / "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET,
+            translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":",
+            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(computationRemaining / 20L) + EnumChatFormatting.RESET
+                    + " / " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(computationRequired / 20L)
         };
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new TT_RenderedExtendedFacingTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
+            return new ITexture[] {
+                Textures.BlockIcons.casingTexturePages[texturePage][3],
+                new TT_RenderedExtendedFacingTexture(
+                        aActive
+                                ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
+                                : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)
+            };
         }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3]};
+        return new ITexture[] {Textures.BlockIcons.casingTexturePages[texturePage][3]};
     }
 
     @Override
@@ -482,10 +539,10 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         holdItem = null;
     }
 
-    //@Override
-    //public boolean isFacingValid(byte aFacing) {
+    // @Override
+    // public boolean isFacingValid(byte aFacing) {
     //    return aFacing >= 2;
-    //}
+    // }
 
     @Override
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -495,7 +552,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 tRecipe = null;
                 if (holdItem != null) {
                     if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                        for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : TT_recipe.GT_Recipe_MapTT.sAssemblylineRecipes) {
+                        for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe :
+                                TT_recipe.GT_Recipe_MapTT.sAssemblylineRecipes) {
                             if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
                                 this.tRecipe = tRecipe;
                                 machineType = assembly;
@@ -503,7 +561,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                             }
                         }
                     } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
-                        for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sMachineRecipes.recipeList()) {
+                        for (TT_recipe.TT_assLineRecipe assRecipeTT :
+                                TT_recipe.TT_Recipe_Map.sMachineRecipes.recipeList()) {
                             if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
                                 aRecipe = assRecipeTT;
                                 machineType = machine;
@@ -511,7 +570,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                             }
                         }
                         if (aRecipe == null) {
-                            for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sCrafterRecipes.recipeList()) {
+                            for (TT_recipe.TT_assLineRecipe assRecipeTT :
+                                    TT_recipe.TT_Recipe_Map.sCrafterRecipes.recipeList()) {
                                 if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
                                     aRecipe = assRecipeTT;
                                     machineType = crafter;

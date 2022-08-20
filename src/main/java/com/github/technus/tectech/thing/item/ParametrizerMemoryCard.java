@@ -1,5 +1,10 @@
 package com.github.technus.tectech.thing.item;
 
+import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
+import static com.github.technus.tectech.thing.CustomItemList.parametrizerMemory;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_ParamText;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -10,6 +15,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,19 +28,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import java.util.List;
-
-import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.TecTech.creativeTabTecTech;
-import static com.github.technus.tectech.thing.CustomItemList.parametrizerMemory;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 /**
  * Created by Tec on 15.03.2017.
  */
 public final class ParametrizerMemoryCard extends Item {
-    public static  ParametrizerMemoryCard INSTANCE;
-    private static IIcon                  locked, unlocked;
+    public static ParametrizerMemoryCard INSTANCE;
+    private static IIcon locked, unlocked;
 
     private ParametrizerMemoryCard() {
         setMaxStackSize(1);
@@ -45,7 +44,17 @@ public final class ParametrizerMemoryCard extends Item {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int aSide,
+            float hitX,
+            float hitY,
+            float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {
             aStack.stackSize = 1;
@@ -59,12 +68,12 @@ public final class ParametrizerMemoryCard extends Item {
                         }
                         NBTTagCompound tNBT = aStack.getTagCompound();
                         if (aStack.getItemDamage() == 1) {
-                            //write to parametrizer
+                            // write to parametrizer
                             parametrizer.param = tNBT.getInteger("param");
                             parametrizer.value0D = tNBT.getDouble("value0D");
                             parametrizer.value1D = tNBT.getDouble("value1D");
                         } else {
-                            //read from parametrizer
+                            // read from parametrizer
                             tNBT.setInteger("param", parametrizer.param);
                             tNBT.setDouble("value0D", parametrizer.value0D);
                             tNBT.setDouble("value1D", parametrizer.value1D);
@@ -80,9 +89,7 @@ public final class ParametrizerMemoryCard extends Item {
                         NBTTagCompound tNBT = aStack.getTagCompound();
                         if (aStack.getItemDamage() == 1) {
                             base.parametrization.trySetParameters(
-                                    tNBT.getInteger("param"),
-                                    tNBT.getDouble("value0D"),
-                                    tNBT.getDouble("value1D"));
+                                    tNBT.getInteger("param"), tNBT.getDouble("value0D"), tNBT.getDouble("value1D"));
                             return true;
                         }
                     } else if (metaTE instanceof GT_MetaTileEntity_Hatch_ParamText) {
@@ -92,14 +99,14 @@ public final class ParametrizerMemoryCard extends Item {
                         }
                         NBTTagCompound tNBT = aStack.getTagCompound();
                         if (aStack.getItemDamage() == 1) {
-                            //write to parametrizer
+                            // write to parametrizer
                             parametrizer.param = tNBT.getInteger("param");
                             parametrizer.value0D = tNBT.getDouble("value0D");
                             parametrizer.value1D = tNBT.getDouble("value1D");
                             parametrizer.value0s = tNBT.getString("value0s");
                             parametrizer.value1s = tNBT.getString("value1s");
                         } else {
-                            //read from parametrizer
+                            // read from parametrizer
                             tNBT.setInteger("param", parametrizer.param);
                             tNBT.setDouble("value0D", parametrizer.value0D);
                             tNBT.setDouble("value1D", parametrizer.value1D);
@@ -132,28 +139,34 @@ public final class ParametrizerMemoryCard extends Item {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         NBTTagCompound tNBT = aStack.getTagCompound();
         aList.add(CommonValues.BASS_MARK);
-        aList.add(translateToLocal("item.em.parametrizerMemoryCard.desc.0"));//Stores Parameters
+        aList.add(translateToLocal("item.em.parametrizerMemoryCard.desc.0")); // Stores Parameters
 
         if (aStack.getItemDamage() == 1) {
-            aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.1"));//Use on Parametrizer/Controller to configure it
+            aList.add(EnumChatFormatting.BLUE
+                    + translateToLocal(
+                            "item.em.parametrizerMemoryCard.desc.1")); // Use on Parametrizer/Controller to configure it
         } else {
-            aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.2"));//Use on Parametrizer to store parameters
+            aList.add(EnumChatFormatting.BLUE
+                    + translateToLocal(
+                            "item.em.parametrizerMemoryCard.desc.2")); // Use on Parametrizer to store parameters
         }
-        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.3"));//Sneak right click to lock/unlock
+        aList.add(EnumChatFormatting.BLUE
+                + translateToLocal("item.em.parametrizerMemoryCard.desc.3")); // Sneak right click to lock/unlock
 
         double temp;
         if (tNBT != null && tNBT.hasKey("param")) {
             aList.add("Hatch ID: " + EnumChatFormatting.AQUA + tNBT.getInteger("param"));
             temp = tNBT.getInteger("value0D");
             aList.add("Value 0D: " + EnumChatFormatting.AQUA + temp);
-            aList.add("Value 0B: " + EnumChatFormatting.AQUA + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
+            aList.add("Value 0B: " + EnumChatFormatting.AQUA
+                    + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
             aList.add("Value 0s: " + EnumChatFormatting.AQUA + tNBT.getString("value0s"));
             temp = tNBT.getInteger("value1D");
             aList.add("Value 1D: " + EnumChatFormatting.AQUA + temp);
-            aList.add("Value 1B: " + EnumChatFormatting.AQUA + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
+            aList.add("Value 1B: " + EnumChatFormatting.AQUA
+                    + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
             aList.add("Value 1s: " + EnumChatFormatting.AQUA + tNBT.getString("value1s"));
         }
-
     }
 
     public static void run() {

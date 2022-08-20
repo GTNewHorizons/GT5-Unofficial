@@ -1,21 +1,21 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
+import static com.github.technus.tectech.util.TT_Utility.unpackNBT;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import java.util.NavigableMap;
 import java.util.TreeMap;
-
-import static com.github.technus.tectech.util.TT_Utility.unpackNBT;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Created by danie_000 on 22.01.2017.
  */
-public final class EMDefinitionStackMap extends EMStackMap<EMDefinitionStack> implements IEMMapWriteExact<EMDefinitionStack> {//Transient class for construction of definitions/recipes
-    //Constructors + Clone, all make a whole new OBJ.
+public final class EMDefinitionStackMap extends EMStackMap<EMDefinitionStack>
+        implements IEMMapWriteExact<EMDefinitionStack> { // Transient class for construction of definitions/recipes
+    // Constructors + Clone, all make a whole new OBJ.
     public EMDefinitionStackMap() {}
 
     public EMDefinitionStackMap(EMDefinitionStack... in) {
@@ -45,6 +45,7 @@ public final class EMDefinitionStackMap extends EMStackMap<EMDefinitionStack> im
     }
 
     public static EMDefinitionStackMap fromNBT(EMDefinitionsRegistry registry, NBTTagCompound nbt) throws EMException {
-        return new EMDefinitionStackMap(unpackNBT(EMDefinitionStack.class,inner -> EMDefinitionStack.fromNBT(registry, inner),nbt));
+        return new EMDefinitionStackMap(
+                unpackNBT(EMDefinitionStack.class, inner -> EMDefinitionStack.fromNBT(registry, inner), nbt));
     }
 }

@@ -1,20 +1,19 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry;
 
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 public class EMType {
-    private final Map<String, IEMDefinition> definitions  = new HashMap<>();
+    private final Map<String, IEMDefinition> definitions = new HashMap<>();
     private final Map<String, IEMDefinition> definitionsR = Collections.unmodifiableMap(definitions);
-    private final Class<? extends IEMDefinition>                   clazz;
-    private final String                     unlocalizedName;
+    private final Class<? extends IEMDefinition> clazz;
+    private final String unlocalizedName;
 
     public EMType(Class<? extends IEMDefinition> clazz, String unlocalizedName) {
         this.clazz = clazz;
@@ -38,7 +37,7 @@ public class EMType {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        return clazz==((EMType) o).clazz;
+        return clazz == ((EMType) o).clazz;
     }
 
     @Override

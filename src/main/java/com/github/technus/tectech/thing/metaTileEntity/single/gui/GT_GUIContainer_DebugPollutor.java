@@ -1,10 +1,10 @@
 package com.github.technus.tectech.thing.metaTileEntity.single.gui;
 
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
-
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_DebugPollutor extends GT_GUIContainerMetaTile_Machine {
     public GT_GUIContainer_DebugPollutor(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {

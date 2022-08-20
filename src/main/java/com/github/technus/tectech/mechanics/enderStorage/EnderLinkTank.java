@@ -1,11 +1,10 @@
 package com.github.technus.tectech.mechanics.enderStorage;
 
 import com.google.common.base.Objects;
+import java.io.Serializable;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.IFluidHandler;
-
-import java.io.Serializable;
 
 public class EnderLinkTank implements Serializable {
     private final int X;
@@ -14,7 +13,7 @@ public class EnderLinkTank implements Serializable {
     private final int D;
 
     public EnderLinkTank(IFluidHandler fluidHandler) {
-        TileEntity tile = (TileEntity)fluidHandler;
+        TileEntity tile = (TileEntity) fluidHandler;
         X = tile.xCoord;
         Y = tile.yCoord;
         Z = tile.zCoord;
@@ -33,10 +32,7 @@ public class EnderLinkTank implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EnderLinkTank that = (EnderLinkTank) o;
-        return X == that.X &&
-                Y == that.Y &&
-                Z == that.Z &&
-                D == that.D;
+        return X == that.X && Y == that.Y && Z == that.Z && D == that.D;
     }
 
     @Override

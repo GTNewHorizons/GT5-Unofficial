@@ -9,16 +9,16 @@ import net.minecraftforge.fluids.FluidStack;
  */
 public class EMFluidQuantizationInfo {
     private final FluidStack in;
-    private final IEMStack   out;
+    private final IEMStack out;
 
-    public EMFluidQuantizationInfo(FluidStack fluidStackIn, IEMStack emOut){
-        in=fluidStackIn;
-        out=emOut;
+    public EMFluidQuantizationInfo(FluidStack fluidStackIn, IEMStack emOut) {
+        in = fluidStackIn;
+        out = emOut;
     }
 
-    public EMFluidQuantizationInfo(Fluid fluid, int fluidAmount, IEMStack emOut){
-        in=new FluidStack(fluid,fluidAmount);
-        out=emOut;
+    public EMFluidQuantizationInfo(Fluid fluid, int fluidAmount, IEMStack emOut) {
+        in = new FluidStack(fluid, fluidAmount);
+        out = emOut;
     }
 
     public FluidStack input() {

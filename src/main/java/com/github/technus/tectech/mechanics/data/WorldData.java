@@ -1,10 +1,9 @@
 package com.github.technus.tectech.mechanics.data;
 
+import java.util.Objects;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-
-import java.util.Objects;
 
 public final class WorldData {
     private final World world;
@@ -14,13 +13,13 @@ public final class WorldData {
     public WorldData(World world, Chunk data) {
         this.world = world;
         this.chunk = data;
-        coordIntPair=data.getChunkCoordIntPair();
+        coordIntPair = data.getChunkCoordIntPair();
     }
 
     public WorldData(World world, ChunkCoordIntPair data) {
         this.world = world;
         this.coordIntPair = data;
-        chunk= world.getChunkFromChunkCoords(data.chunkXPos,data.chunkZPos);
+        chunk = world.getChunkFromChunkCoords(data.chunkXPos, data.chunkZPos);
     }
 
     public World getWorld() {
@@ -40,9 +39,9 @@ public final class WorldData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WorldData worldData = (WorldData) o;
-        return world.provider.dimensionId==worldData.world.provider.dimensionId &&
-                coordIntPair.chunkXPos==worldData.coordIntPair.chunkXPos &&
-                coordIntPair.chunkZPos==worldData.coordIntPair.chunkXPos;
+        return world.provider.dimensionId == worldData.world.provider.dimensionId
+                && coordIntPair.chunkXPos == worldData.coordIntPair.chunkXPos
+                && coordIntPair.chunkZPos == worldData.coordIntPair.chunkXPos;
     }
 
     @Override
