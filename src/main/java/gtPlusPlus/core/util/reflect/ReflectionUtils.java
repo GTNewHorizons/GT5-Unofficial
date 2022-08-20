@@ -420,6 +420,7 @@ public class ReflectionUtils {
 	}
 
 	public static boolean setField(final Object object, final Field field, final Object fieldValue) {
+		if (field == null) return false;
 		Class<?> clazz;
 		if (object instanceof Class) {
 			clazz = (Class<?>) object;
