@@ -43,6 +43,10 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         IIcon tIcon = aIconContainer.getIcon();
         IIcon tOverlay = aIconContainer.getOverlayIcon();
 
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+
         if (tIcon != null) {
             renderRegularItem(type, aStack, tIcon);
         }
@@ -64,12 +68,12 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
                 ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
             }
         }
+
+        GL11.glDisable(GL11.GL_BLEND);
     }
 
     public void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon) {
         GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
-
-        enableBlendingItemTexture();
 
         short[] tModulation = aItem.getRGBa(aStack);
         GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
@@ -81,12 +85,9 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
             ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
         }
 
-        GL11.glDisable(GL11.GL_BLEND);
     }
 
     public void renderContainedFluid(ItemRenderType type, FluidStack tFluid, IIcon fluidIcon) {
-        enableBlendingItemTexture();
-
         int tColor = tFluid.getFluid().getColor(tFluid);
         GL11.glColor3f((tColor >> 16 & 0xFF) / 255.0F, (tColor >> 8 & 0xFF) / 255.0F, (tColor & 0xFF) / 255.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
@@ -98,15 +99,6 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
             ItemRenderer.renderItemIn2D(Tessellator.instance, fluidIcon.getMaxU(), fluidIcon.getMinV(), fluidIcon.getMinU(), fluidIcon.getMaxV(), fluidIcon.getIconWidth(), fluidIcon.getIconHeight(), 0.0625F);
         }
         GL11.glDepthFunc(GL11.GL_LEQUAL);
-
-        GL11.glDisable(GL11.GL_BLEND);
-    }
-
-    protected void enableBlendingItemTexture() {
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glColor3f(1.0F, 1.0F, 1.0F);
     }
 
 }
