@@ -3463,25 +3463,34 @@ public class DreamCraftRecipeLoader {
                 2000000);
 
         // Draconic Evolution Fusion Crafter Controller
-		if (Loader.isModLoaded("AWWayofTime")&&Loader.isModLoaded("EMT")){
-				TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 8),
-						16_777_216, 1024, 2_000_000, 8, new Object[]{
-								GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 10783),
-								GT_ModHandler.getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 8),
-								GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsBotania.GaiaSpirit, 1L),
-								ItemList.Casing_Coil_AwakenedDraconium.get(8L),
-								ItemList.Electric_Motor_UHV.get(8L),
-								ItemList.Robot_Arm_UHV.get(4L),
-								new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4},
-								ItemList.Gravistar.get(4, new Object(){}),
-								GT_ModHandler.getModItem("Thaumcraft", "ItemEldritchObject", 1, 3),
-								GT_ModHandler.getModItem("AWWayofTime", "bloodMagicBaseItems", 8, 29),
-								GT_ModHandler.getModItem("AWWayofTime", "bloodMagicBaseItems", 8, 28),
-						}, new FluidStack[]{
-								new FluidStack(solderIndalloy, 2880),
-								Materials.Void.getMolten(2880L),
-								Materials.DraconiumAwakened.getMolten(1440),
-						}, GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 5001), 1500, 8_000_000);
+        if (Loader.isModLoaded("AWWayofTime") && Loader.isModLoaded("EMT")) {
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    GT_ModHandler.getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 8),
+                    16_777_216,
+                    1024,
+                    2_000_000,
+                    8,
+                    new Object[] {
+                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 10783),
+                        GT_ModHandler.getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsBotania.GaiaSpirit, 1L),
+                        ItemList.Casing_Coil_AwakenedDraconium.get(8L),
+                        ItemList.Electric_Motor_UHV.get(8L),
+                        ItemList.Robot_Arm_UHV.get(4L),
+                        new Object[] {OrePrefixes.circuit.get(Materials.Infinite), 4},
+                        ItemList.Gravistar.get(4, new Object() {}),
+                        GT_ModHandler.getModItem("Thaumcraft", "ItemEldritchObject", 1, 3),
+                        GT_ModHandler.getModItem("AWWayofTime", "bloodMagicBaseItems", 8, 29),
+                        GT_ModHandler.getModItem("AWWayofTime", "bloodMagicBaseItems", 8, 28),
+                    },
+                    new FluidStack[] {
+                        new FluidStack(solderIndalloy, 2880),
+                        Materials.Void.getMolten(2880L),
+                        Materials.DraconiumAwakened.getMolten(1440),
+                    },
+                    GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 5001),
+                    1500,
+                    8_000_000);
             if (Loader.isModLoaded("DraconicEvolution")) {
                 // DE Schematics Cores Tier 1
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -3491,13 +3500,13 @@ public class DreamCraftRecipeLoader {
                         1_000_000,
                         4,
                         new Object[] {
-                                GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
-                                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Draconium, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Ichorium, 1L),
-                                new Object[] {OrePrefixes.circuit.get(Materials.Infinite), 1},
+                            GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Draconium, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Ichorium, 1L),
+                            new Object[] {OrePrefixes.circuit.get(Materials.Infinite), 1},
                         },
                         new FluidStack[] {
-                                Materials.Sunnarium.getMolten(14400L), Materials.Void.getMolten(28800L),
+                            Materials.Sunnarium.getMolten(14400L), Materials.Void.getMolten(28800L),
                         },
                         GT_ModHandler.getModItem("EMT", "EMTItems", 1, 16),
                         12000,
@@ -3511,13 +3520,13 @@ public class DreamCraftRecipeLoader {
                         4_000_000,
                         8,
                         new Object[] {
-                                GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 4, 0),
-                                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Draconium, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 1L),
-                                new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1},
+                            GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 4, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Draconium, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 1L),
+                            new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1},
                         },
                         new FluidStack[] {
-                                Materials.Neutronium.getMolten(14400L), Materials.Void.getMolten(57600L),
+                            Materials.Neutronium.getMolten(14400L), Materials.Void.getMolten(57600L),
                         },
                         GT_ModHandler.getModItem("EMT", "EMTItems", 1, 17),
                         24000,
@@ -3531,13 +3540,13 @@ public class DreamCraftRecipeLoader {
                         16_000_000,
                         16,
                         new Object[] {
-                                GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 4, 0),
-                                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 1L),
-                                new Object[] {OrePrefixes.circuit.get(Materials.Nano), 1},
+                            GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 4, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 1L),
+                            new Object[] {OrePrefixes.circuit.get(Materials.Nano), 1},
                         },
                         new FluidStack[] {
-                                Materials.Infinity.getMolten(14400L), Materials.Void.getMolten(115200L),
+                            Materials.Infinity.getMolten(14400L), Materials.Void.getMolten(115200L),
                         },
                         GT_ModHandler.getModItem("EMT", "EMTItems", 1, 18),
                         36000,
@@ -3550,26 +3559,25 @@ public class DreamCraftRecipeLoader {
                         64_000_000,
                         64,
                         new Object[] {
-                                GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 8, 0),
-                                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 4L),
-                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 1L),
-                                new Object[] {OrePrefixes.circuit.get(Materials.Piko), 1},
+                            GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 8, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 4L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 1L),
+                            new Object[] {OrePrefixes.circuit.get(Materials.Piko), 1},
                         },
                         new FluidStack[] {
-                                Materials.SpaceTime.getMolten(14400L), Materials.Void.getMolten(230400L),
+                            Materials.SpaceTime.getMolten(14400L), Materials.Void.getMolten(230400L),
                         },
                         GT_ModHandler.getModItem("EMT", "EMTItems", 1, 19),
                         72000,
                         32_000_000);
             }
-		}
+        }
 
-        //region singleblocks
+        // region singleblocks
 
-        //Tesla Transceiver LV 1A
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                        ItemList.Battery_Buffer_1by1_LV.get(1),
-                        CustomItemList.teslaCover.getWithDamage(1, 0)},
+        // Tesla Transceiver LV 1A
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {ItemList.Battery_Buffer_1by1_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0)},
                 Materials.Lead.getMolten(576),
                 CustomItemList.Machine_TeslaCoil_1by1_LV.get(1),
                 400,
