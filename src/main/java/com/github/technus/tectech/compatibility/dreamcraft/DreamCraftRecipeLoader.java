@@ -3495,8 +3495,8 @@ public class DreamCraftRecipeLoader {
                 // DE Schematics Cores Tier 1
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
                         GT_ModHandler.getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 9),
-                        500_000,
-                        1024,
+                        5_000_000,
+                        512,
                         1_000_000,
                         4,
                         new Object[] {
@@ -3509,14 +3509,14 @@ public class DreamCraftRecipeLoader {
                             Materials.Sunnarium.getMolten(14400L), Materials.Void.getMolten(28800L),
                         },
                         GT_ModHandler.getModItem("EMT", "EMTItems", 1, 16),
-                        12000,
+                        6000,
                         500_000);
 
                 // DE Schematics Cores Tier 2
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
                         GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
-                        5_000_000,
-                        2048,
+                        10_000_000,
+                        1024,
                         4_000_000,
                         8,
                         new Object[] {
@@ -3529,14 +3529,14 @@ public class DreamCraftRecipeLoader {
                             Materials.Neutronium.getMolten(14400L), Materials.Void.getMolten(57600L),
                         },
                         GT_ModHandler.getModItem("EMT", "EMTItems", 1, 17),
-                        24000,
+                        12000,
                         2_000_000);
 
                 // DE Schematics Cores Tier 3
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
                         GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 1, 0),
-                        50_000_000,
-                        4096,
+                        20_000_000,
+                        2048,
                         16_000_000,
                         16,
                         new Object[] {
@@ -3549,13 +3549,13 @@ public class DreamCraftRecipeLoader {
                             Materials.Infinity.getMolten(14400L), Materials.Void.getMolten(115200L),
                         },
                         GT_ModHandler.getModItem("EMT", "EMTItems", 1, 18),
-                        36000,
+                        24000,
                         8_000_000);
                 // DE Schematics Cores Tier 4
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
                         GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 1, 0),
-                        500_000_000,
-                        8192,
+                        40_000_000,
+                        4096,
                         64_000_000,
                         64,
                         new Object[] {
@@ -3568,7 +3568,7 @@ public class DreamCraftRecipeLoader {
                             Materials.SpaceTime.getMolten(14400L), Materials.Void.getMolten(230400L),
                         },
                         GT_ModHandler.getModItem("EMT", "EMTItems", 1, 19),
-                        72000,
+                        36000,
                         32_000_000);
             }
         }
