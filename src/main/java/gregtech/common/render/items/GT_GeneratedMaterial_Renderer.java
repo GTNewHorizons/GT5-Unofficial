@@ -42,16 +42,16 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
 
         IIcon tIcon = aIconContainer.getIcon();
         IIcon tOverlay = aIconContainer.getOverlayIcon();
+        FluidStack aFluid = GT_Utility.getFluidForFilledItem(aStack, true);
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
         if (tIcon != null) {
-            renderRegularItem(type, aStack, tIcon);
+            renderRegularItem(type, aStack, tIcon, aFluid == null);
         }
 
-        FluidStack aFluid = GT_Utility.getFluidForFilledItem(aStack, true);
         if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
             IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
             if (fluidIcon != null) {
@@ -72,11 +72,13 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    public void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon) {
+    public void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
         GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
 
-        short[] tModulation = aItem.getRGBa(aStack);
-        GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
+        if (shouldModulateColor) {
+            short[] tModulation = aItem.getRGBa(aStack);
+            GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
+        }
 
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
             GT_RenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
