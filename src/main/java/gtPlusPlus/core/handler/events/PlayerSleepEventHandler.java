@@ -11,6 +11,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.preloader.DevHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -20,7 +21,7 @@ import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 
 public class PlayerSleepEventHandler {
 
-	private static Field sEffectDuration = ReflectionUtils.getField(PotionEffect.class, "duration");
+	private static Field sEffectDuration = ReflectionUtils.getField(PotionEffect.class, DevHelper.isObfuscatedEnvironment() ? "field_76460_b" : "duration");
 	private static ArrayList<Potion> sPositiveEffects = new ArrayList<Potion>();
 	private static ArrayList<Potion> sNegativeEffects = new ArrayList<Potion>();
 
