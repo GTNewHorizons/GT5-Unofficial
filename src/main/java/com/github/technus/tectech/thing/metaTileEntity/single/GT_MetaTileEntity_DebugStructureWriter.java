@@ -1,5 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugStructureWriter;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugStructureWriter;
@@ -23,9 +26,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 /**
  * Created by Tec on 23.03.2017.
  */
@@ -33,16 +33,17 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     private static GT_RenderedTexture MARK;
     public short[] numbers = new short[6];
     public boolean size = false;
-    public String[] result = new String[]{"Undefined"};
+    public String[] result = new String[] {"Undefined"};
 
     public GT_MetaTileEntity_DebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
-        TT_Utility.setTier(aTier,this);
+        TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_DebugStructureWriter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_DebugStructureWriter(
+            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TT_Utility.setTier(aTier,this);
+        TT_Utility.setTier(aTier, this);
     }
 
     @Override
@@ -58,8 +59,17 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aSide != aFacing ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK};
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
+        return new ITexture[] {
+            MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+            aSide != aFacing ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK
+        };
     }
 
     @Override
@@ -115,17 +125,26 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isAllowedToWork()) {
-//            String pseudoJavaCode = StructureUtility.getPseudoJavaCode(aBaseMetaTileEntity.getWorld(),
-//                    ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
-//                    aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
-//                    numbers[0], numbers[1], numbers[2],
-//                    numbers[3], numbers[4], numbers[5],false);
+            //            String pseudoJavaCode = StructureUtility.getPseudoJavaCode(aBaseMetaTileEntity.getWorld(),
+            //
+            // ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
+            //                    aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(),
+            // aBaseMetaTileEntity.getZCoord(),
+            //                    numbers[0], numbers[1], numbers[2],
+            //                    numbers[3], numbers[4], numbers[5],false);
             String pseudoJavaCode = StructureUtility.getPseudoJavaCode(
-                    aBaseMetaTileEntity.getWorld(), ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
-                    aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
-                    numbers[0], numbers[1], numbers[2],
+                    aBaseMetaTileEntity.getWorld(),
+                    ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
+                    aBaseMetaTileEntity.getXCoord(),
+                    aBaseMetaTileEntity.getYCoord(),
+                    aBaseMetaTileEntity.getZCoord(),
+                    numbers[0],
+                    numbers[1],
+                    numbers[2],
                     te -> te.getClass().getCanonicalName(),
-                    numbers[3], numbers[4], numbers[5],
+                    numbers[3],
+                    numbers[4],
+                    numbers[5],
                     false);
             TecTech.LOGGER.info(pseudoJavaCode);
             result = pseudoJavaCode.split("\\n");
@@ -136,17 +155,25 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
-//        String pseudoJavaCode = StructureUtility.getPseudoJavaCode(aBaseMetaTileEntity.getWorld(),
-//                ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
-//                aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
-//                numbers[0], numbers[1], numbers[2],
-//                numbers[3], numbers[4], numbers[5],true);
+        //        String pseudoJavaCode = StructureUtility.getPseudoJavaCode(aBaseMetaTileEntity.getWorld(),
+        //                ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
+        //                aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(),
+        // aBaseMetaTileEntity.getZCoord(),
+        //                numbers[0], numbers[1], numbers[2],
+        //                numbers[3], numbers[4], numbers[5],true);
         String pseudoJavaCode = StructureUtility.getPseudoJavaCode(
-                aBaseMetaTileEntity.getWorld(), ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
-                aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
-                numbers[0], numbers[1], numbers[2],
+                aBaseMetaTileEntity.getWorld(),
+                ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord(),
+                numbers[0],
+                numbers[1],
+                numbers[2],
                 te -> te.getClass().getCanonicalName(),
-                numbers[3], numbers[4], numbers[5],
+                numbers[3],
+                numbers[4],
+                numbers[5],
                 false);
         TecTech.LOGGER.info(pseudoJavaCode);
         result = pseudoJavaCode.split("\\n");
@@ -179,11 +206,14 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.debug.tt.writer.desc.0"),//Scans Blocks Around
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.1"),//Prints Multiblock NonTE structure check code
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.2")//ABC axises aligned to machine front
+        return new String[] {
+            CommonValues.TEC_MARK_GENERAL,
+            translateToLocal("gt.blockmachines.debug.tt.writer.desc.0"), // Scans Blocks Around
+            EnumChatFormatting.BLUE
+                    + translateToLocal(
+                            "gt.blockmachines.debug.tt.writer.desc.1"), // Prints Multiblock NonTE structure check code
+            EnumChatFormatting.BLUE
+                    + translateToLocal("gt.blockmachines.debug.tt.writer.desc.2") // ABC axises aligned to machine front
         };
     }
 

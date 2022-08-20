@@ -12,8 +12,11 @@ public class GT_GUIContainer_Capacitor extends GT_GUIContainerMetaTile_Machine {
         mName = aName;
     }
 
-    public GT_GUIContainer_Capacitor(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aBackground) {
-        super(new GT_Container_Capacitor(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/" + aBackground + "4by4.png");
+    public GT_GUIContainer_Capacitor(
+            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aBackground) {
+        super(
+                new GT_Container_Capacitor(aInventoryPlayer, aTileEntity),
+                "gregtech:textures/gui/" + aBackground + "4by4.png");
         this.mName = aName;
     }
 

@@ -1,20 +1,19 @@
 package com.github.technus.tectech.thing.item;
 
+import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.thing.CustomItemList.powerPassUpgradeCover;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.util.CommonValues;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-
-import java.util.List;
-
-import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.thing.CustomItemList.powerPassUpgradeCover;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 public final class PowerPassUpgradeCover extends Item {
     public static PowerPassUpgradeCover INSTANCE;
@@ -28,9 +27,12 @@ public final class PowerPassUpgradeCover extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.BASS_MARK);
-        aList.add(translateToLocal("item.tm.powerpassupgradecover.desc.0"));//Add power pass functionality to TecTech Multiblocks
-        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.powerpassupgradecover.desc.1"));//Active transformer in a can??
-        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.powerpassupgradecover.desc.2"));//Chain them up like Christmas lights!
+        aList.add(translateToLocal(
+                "item.tm.powerpassupgradecover.desc.0")); // Add power pass functionality to TecTech Multiblocks
+        aList.add(EnumChatFormatting.BLUE
+                + translateToLocal("item.tm.powerpassupgradecover.desc.1")); // Active transformer in a can??
+        aList.add(EnumChatFormatting.BLUE
+                + translateToLocal("item.tm.powerpassupgradecover.desc.2")); // Chain them up like Christmas lights!
     }
 
     public static void run() {

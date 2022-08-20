@@ -1,13 +1,11 @@
 package com.github.technus.tectech.mechanics.spark;
 
-
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-
 import java.io.Serializable;
 import java.util.Objects;
 
 public class ThaumSpark implements Serializable {
-    //This works regardless of if TC is loaded
+    // This works regardless of if TC is loaded
     private static final long serialVersionUID = -7037856938316679566L;
     public int x, y, z, wID;
     public byte xR, yR, zR;
@@ -42,13 +40,13 @@ public class ThaumSpark implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ThaumSpark that = (ThaumSpark) o;
-        return x == that.x &&
-                y == that.y &&
-                z == that.z &&
-                wID == that.wID &&
-                xR == that.xR &&
-                yR == that.yR &&
-                zR == that.zR;
+        return x == that.x
+                && y == that.y
+                && z == that.z
+                && wID == that.wID
+                && xR == that.xR
+                && yR == that.yR
+                && zR == that.zR;
     }
 
     @Override

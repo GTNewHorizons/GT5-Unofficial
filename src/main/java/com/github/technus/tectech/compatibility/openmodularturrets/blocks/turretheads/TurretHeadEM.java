@@ -1,5 +1,7 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads;
 
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
+
 import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -11,15 +13,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import openmodularturrets.tileentity.turretbase.TurretBase;
 
-import static com.github.technus.tectech.TecTech.creativeTabTecTech;
-
 /**
  * Created by Tec on 27/07/2017.
  */
 public class TurretHeadEM extends Block implements ITileEntityProvider {
     public static TurretHeadEM INSTANCE;
 
-    public TurretHeadEM(){
+    public TurretHeadEM() {
         super(Material.glass);
         setCreativeTab(creativeTabTecTech);
         setBlockUnbreakable();
@@ -27,7 +27,7 @@ public class TurretHeadEM extends Block implements ITileEntityProvider {
         setStepSound(Block.soundTypeMetal);
         setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 1F, 0.8F);
         setBlockName("turretHeadEM");
-        //this.setBlockTextureName(Reference.MODID+":turretHeadEM");
+        // this.setBlockTextureName(Reference.MODID+":turretHeadEM");
     }
 
     @Override
@@ -42,12 +42,12 @@ public class TurretHeadEM extends Block implements ITileEntityProvider {
 
     @Override
     public boolean canPlaceBlockAt(World worldIn, int x, int y, int z) {
-        return worldIn.getTileEntity(x + 1, y, z) instanceof TurretBase ||
-                worldIn.getTileEntity(x - 1, y, z) instanceof TurretBase ||
-                worldIn.getTileEntity(x,y + 1, z) instanceof TurretBase ||
-                worldIn.getTileEntity(x,y - 1, z) instanceof TurretBase ||
-                worldIn.getTileEntity(x,y, z + 1) instanceof TurretBase ||
-                worldIn.getTileEntity(x,y, z - 1) instanceof TurretBase;
+        return worldIn.getTileEntity(x + 1, y, z) instanceof TurretBase
+                || worldIn.getTileEntity(x - 1, y, z) instanceof TurretBase
+                || worldIn.getTileEntity(x, y + 1, z) instanceof TurretBase
+                || worldIn.getTileEntity(x, y - 1, z) instanceof TurretBase
+                || worldIn.getTileEntity(x, y, z + 1) instanceof TurretBase
+                || worldIn.getTileEntity(x, y, z - 1) instanceof TurretBase;
     }
 
     @Override
@@ -63,6 +63,6 @@ public class TurretHeadEM extends Block implements ITileEntityProvider {
     public static void run() {
         INSTANCE = new TurretHeadEM();
         GameRegistry.registerBlock(INSTANCE, TurretHeadItemEM.class, INSTANCE.getUnlocalizedName());
-        GameRegistry.registerTileEntity(TileTurretHeadEM.class,"TileTurretHeadEM");
+        GameRegistry.registerTileEntity(TileTurretHeadEM.class, "TileTurretHeadEM");
     }
 }

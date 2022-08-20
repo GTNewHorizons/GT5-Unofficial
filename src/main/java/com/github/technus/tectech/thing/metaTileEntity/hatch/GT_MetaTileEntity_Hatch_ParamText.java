@@ -1,5 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_ParamText;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_ParamText;
@@ -16,20 +19,17 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
 /**
  * Created by danie_000 on 15.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_Param {
-    public String value0s="";
-    public String value1s="";
+    public String value0s = "";
+    public String value1s = "";
 
     private String clientLocale = "en_US";
 
     public GT_MetaTileEntity_Hatch_ParamText(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID,aName,aNameRegional,aTier);
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public GT_MetaTileEntity_Hatch_ParamText(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -38,8 +38,9 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if(aPlayerInventory.player instanceof EntityPlayerMP) {
-            NetworkDispatcher.INSTANCE.sendTo(new TextParametersMessage.ParametersTextData(this), (EntityPlayerMP) aPlayerInventory.player);
+        if (aPlayerInventory.player instanceof EntityPlayerMP) {
+            NetworkDispatcher.INSTANCE.sendTo(
+                    new TextParametersMessage.ParametersTextData(this), (EntityPlayerMP) aPlayerInventory.player);
         }
         return new GT_Container_ParamText(aPlayerInventory, aBaseMetaTileEntity);
     }
@@ -49,8 +50,8 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
         return new GT_GUIContainer_ParamText(aPlayerInventory, aBaseMetaTileEntity);
     }
 
-    //@Override
-    //public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+    // @Override
+    // public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
     //    if (aBaseMetaTileEntity.isClientSide() && (aTick % 20L == 0L)) {
     //        //refresh casing on state change
     //        int Xpos = aBaseMetaTileEntity.getXCoord();
@@ -61,7 +62,7 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
     //        } catch (Exception e) {}
     //    }
     //    super.onPostTick(aBaseMetaTileEntity, aTick);
-    //}
+    // }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
@@ -75,14 +76,18 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
 
     @Override
     public String[] getInfoData() {
-        return new String[]{
-                translateToLocalFormatted("tt.keyword.Parametrizer", clientLocale)+ " " + translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.GREEN + param,
-                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0S: " + EnumChatFormatting.DARK_AQUA + value0s,
-                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1S: " + EnumChatFormatting.DARK_BLUE + value1s,
-                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0D: " + EnumChatFormatting.AQUA + value0D,
-                translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1D: " + EnumChatFormatting.BLUE + value1D,
-                translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 0D: " + EnumChatFormatting.GOLD   + input0D,
-                translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 1D: " + EnumChatFormatting.YELLOW + input1D,
+        return new String[] {
+            translateToLocalFormatted("tt.keyword.Parametrizer", clientLocale) + " "
+                    + translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.GREEN
+                    + param,
+            translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0S: " + EnumChatFormatting.DARK_AQUA
+                    + value0s,
+            translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1S: " + EnumChatFormatting.DARK_BLUE
+                    + value1s,
+            translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 0D: " + EnumChatFormatting.AQUA + value0D,
+            translateToLocalFormatted("tt.keyword.Value", clientLocale) + " 1D: " + EnumChatFormatting.BLUE + value1D,
+            translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 0D: " + EnumChatFormatting.GOLD + input0D,
+            translateToLocalFormatted("tt.keyword.Input", clientLocale) + " 1D: " + EnumChatFormatting.YELLOW + input1D,
         };
     }
 
@@ -158,10 +163,11 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.hatch.param.desc.0"),//For parametrization of Multiblocks
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.hatch.param.desc.1") +"\u00b2"//E=mine*craft
+        return new String[] {
+            CommonValues.TEC_MARK_GENERAL,
+            translateToLocal("gt.blockmachines.hatch.param.desc.0"), // For parametrization of Multiblocks
+            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                    + translateToLocal("gt.blockmachines.hatch.param.desc.1") + "\u00b2" // E=mine*craft
         };
     }
 }

@@ -1,5 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
@@ -13,15 +15,13 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 /**
  * Created by danie_000 on 27.10.2016.
  */
 public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_DataConnector<QuantumDataPacket> {
     public GT_MetaTileEntity_Hatch_OutputData(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "");
-        TT_Utility.setTier(aTier,this);
+        TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_OutputData(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -80,16 +80,17 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.hatch.dataout.desc.0"),//Quantum Data Output for Multiblocks
-                translateToLocal("gt.blockmachines.hatch.dataout.desc.1"),//High speed fibre optics connector.
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataout.desc.2")//Must be painted to work
+        return new String[] {
+            CommonValues.TEC_MARK_EM,
+            translateToLocal("gt.blockmachines.hatch.dataout.desc.0"), // Quantum Data Output for Multiblocks
+            translateToLocal("gt.blockmachines.hatch.dataout.desc.1"), // High speed fibre optics connector.
+            EnumChatFormatting.AQUA
+                    + translateToLocal("gt.blockmachines.hatch.dataout.desc.2") // Must be painted to work
         };
     }
 
     @Override
-    public IConnectsToDataPipe getNext(IConnectsToDataPipe source/*==this*/) {
+    public IConnectsToDataPipe getNext(IConnectsToDataPipe source /*==this*/) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         byte color = base.getColorization();
         if (color < 0) {
@@ -100,12 +101,13 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
             return null;
         }
         IMetaTileEntity meta = next.getMetaTileEntity();
-        if (meta instanceof GT_MetaTileEntity_Pipe_Data){
+        if (meta instanceof GT_MetaTileEntity_Pipe_Data) {
             ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
             return (IConnectsToDataPipe) meta;
-        }else if (meta instanceof GT_MetaTileEntity_Hatch_InputData &&
-                ((GT_MetaTileEntity_Hatch_InputData) meta).getColorization()==color &&
-                ((GT_MetaTileEntity_Hatch_InputData) meta).canConnectData(GT_Utility.getOppositeSide(base.getFrontFacing()))) {
+        } else if (meta instanceof GT_MetaTileEntity_Hatch_InputData
+                && ((GT_MetaTileEntity_Hatch_InputData) meta).getColorization() == color
+                && ((GT_MetaTileEntity_Hatch_InputData) meta)
+                        .canConnectData(GT_Utility.getOppositeSide(base.getFrontFacing()))) {
             return (IConnectsToDataPipe) meta;
         }
         return null;

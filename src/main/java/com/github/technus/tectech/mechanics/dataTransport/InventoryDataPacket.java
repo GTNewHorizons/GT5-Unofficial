@@ -1,44 +1,43 @@
 package com.github.technus.tectech.mechanics.dataTransport;
 
+import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
+
+import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.ArrayList;
-
-import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
-
 public class InventoryDataPacket extends DataPacket<ItemStack[]> {
-    public InventoryDataPacket(ItemStack[] content){
+    public InventoryDataPacket(ItemStack[] content) {
         super(content);
     }
 
-    public InventoryDataPacket(NBTTagCompound compound){
+    public InventoryDataPacket(NBTTagCompound compound) {
         super(compound);
     }
 
     @Override
     protected ItemStack[] contentFromNBT(NBTTagCompound nbt) {
-        int count=nbt.getInteger("count");
-        if(count>0){
-            ArrayList<ItemStack> stacks=new ArrayList<>();
-            for(int i=0;i<count;i++){
-                ItemStack stack=ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(Integer.toString(i)));
-                if(stack!=null){
+        int count = nbt.getInteger("count");
+        if (count > 0) {
+            ArrayList<ItemStack> stacks = new ArrayList<>();
+            for (int i = 0; i < count; i++) {
+                ItemStack stack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(Integer.toString(i)));
+                if (stack != null) {
                     stacks.add(stack);
                 }
             }
-            return stacks.size()>0?stacks.toArray(nullItem):null;
+            return stacks.size() > 0 ? stacks.toArray(nullItem) : null;
         }
         return null;
     }
 
     @Override
     protected NBTTagCompound contentToNBT() {
-        NBTTagCompound compound=new NBTTagCompound();
-        if(content!=null && content.length>0){
-            compound.setInteger("count",content.length);
-            for(int i=0;i<content.length;i++){
-                compound.setTag(Integer.toString(i),content[i].writeToNBT(new NBTTagCompound()));
+        NBTTagCompound compound = new NBTTagCompound();
+        if (content != null && content.length > 0) {
+            compound.setInteger("count", content.length);
+            for (int i = 0; i < content.length; i++) {
+                compound.setTag(Integer.toString(i), content[i].writeToNBT(new NBTTagCompound()));
             }
         }
         return compound;
@@ -56,6 +55,6 @@ public class InventoryDataPacket extends DataPacket<ItemStack[]> {
 
     @Override
     public String getContentString() {
-        return "Stack Count: "+(content==null?0:content.length);
+        return "Stack Count: " + (content == null ? 0 : content.length);
     }
 }

@@ -1,37 +1,37 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry;
 
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.nbtE__;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.null__;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.IEMMapRead;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import java.util.*;
-
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.nbtE__;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.null__;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class EMDefinitionsRegistry {
     private static final String TAG_NAME = "EM";
 
     private final NavigableSet<IEMDefinition> stacksRegistered = new TreeSet<>();
 
-    private final Map<Integer, IEMDefinition> hashMap  = new HashMap<>();
+    private final Map<Integer, IEMDefinition> hashMap = new HashMap<>();
     private final Map<Integer, IEMDefinition> hashMapR = Collections.unmodifiableMap(hashMap);
 
-    private final Map<Class<? extends IEMDefinition>, EMType>         types          = new HashMap<>();
-    private final Map<Class<? extends IEMDefinition>, EMType>         typesR         = Collections.unmodifiableMap(types);
-    private final Map<Class<? extends IEMDefinition>, EMType>         directTypes    = new HashMap<>();
-    private final Map<Class<? extends IEMDefinition>, EMType>         directTypesR   = Collections.unmodifiableMap(directTypes);
-    private final Map<Class<? extends IEMDefinition>, EMIndirectType> indirectTypes  = new HashMap<>();
-    private final Map<Class<? extends IEMDefinition>, EMIndirectType> indirectTypesR = Collections.unmodifiableMap(indirectTypes);
+    private final Map<Class<? extends IEMDefinition>, EMType> types = new HashMap<>();
+    private final Map<Class<? extends IEMDefinition>, EMType> typesR = Collections.unmodifiableMap(types);
+    private final Map<Class<? extends IEMDefinition>, EMType> directTypes = new HashMap<>();
+    private final Map<Class<? extends IEMDefinition>, EMType> directTypesR = Collections.unmodifiableMap(directTypes);
+    private final Map<Class<? extends IEMDefinition>, EMIndirectType> indirectTypes = new HashMap<>();
+    private final Map<Class<? extends IEMDefinition>, EMIndirectType> indirectTypesR =
+            Collections.unmodifiableMap(indirectTypes);
 
-    private final Map<String, EMType>         binds          = new HashMap<>();
-    private final Map<String, EMType>         bindsR         = Collections.unmodifiableMap(binds);
-    private final Map<String, IEMDefinition>  directBinds    = new HashMap<>();
-    private final Map<String, IEMDefinition>  directBindsR   = Collections.unmodifiableMap(directBinds);
-    private final Map<String, EMIndirectType> indirectBinds  = new HashMap<>();
+    private final Map<String, EMType> binds = new HashMap<>();
+    private final Map<String, EMType> bindsR = Collections.unmodifiableMap(binds);
+    private final Map<String, IEMDefinition> directBinds = new HashMap<>();
+    private final Map<String, IEMDefinition> directBindsR = Collections.unmodifiableMap(directBinds);
+    private final Map<String, EMIndirectType> indirectBinds = new HashMap<>();
     private final Map<String, EMIndirectType> indirectBindsR = Collections.unmodifiableMap(indirectBinds);
 
     public NBTTagCompound directToNBT(String bind) {
@@ -84,7 +84,8 @@ public class EMDefinitionsRegistry {
 
     protected void addType(EMType emType) {
         if (types.put(emType.getClazz(), emType) != null) {
-            EMException e = new EMException("Class collision! " + emType.getClazz().getName());
+            EMException e =
+                    new EMException("Class collision! " + emType.getClazz().getName());
             if (DEBUG_MODE) {
                 e.printStackTrace();
             } else {
@@ -130,7 +131,8 @@ public class EMDefinitionsRegistry {
             if (emType != null) {
                 directTypes.put(definition.getClass(), emType);
             } else {
-                EMException e = new EMException("Direct Type bind missing! " + definition.getClass().getName());
+                EMException e = new EMException(
+                        "Direct Type bind missing! " + definition.getClass().getName());
                 if (DEBUG_MODE) {
                     e.printStackTrace();
                 } else {

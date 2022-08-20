@@ -4,11 +4,11 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class QuantumDataPacket extends DataPacket<Long> {
-    public QuantumDataPacket(Long content){
+    public QuantumDataPacket(Long content) {
         super(content);
     }
 
-    public QuantumDataPacket(NBTTagCompound compound){
+    public QuantumDataPacket(NBTTagCompound compound) {
         super(compound);
     }
 
@@ -19,8 +19,8 @@ public class QuantumDataPacket extends DataPacket<Long> {
 
     @Override
     protected NBTTagCompound contentToNBT() {
-        NBTTagCompound compound=new NBTTagCompound();
-        compound.setLong("computation",content);
+        NBTTagCompound compound = new NBTTagCompound();
+        compound.setLong("computation", content);
         return compound;
     }
 
@@ -31,7 +31,7 @@ public class QuantumDataPacket extends DataPacket<Long> {
 
     @Override
     protected Long unifyContentWith(Long content) {
-        return this.content+content;
+        return this.content + content;
     }
 
     public QuantumDataPacket unifyTraceWith(Vec3Impl... positions) {

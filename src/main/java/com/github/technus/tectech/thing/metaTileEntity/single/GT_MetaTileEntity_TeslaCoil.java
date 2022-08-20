@@ -1,5 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
+import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.*;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
+import static com.github.technus.tectech.util.CommonValues.V;
+import static java.lang.Math.round;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.spark.RendererMessage;
@@ -16,6 +23,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
+import java.util.Arrays;
+import java.util.HashSet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,36 +32,30 @@ import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
-import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.*;
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
-import static com.github.technus.tectech.util.CommonValues.V;
-import static java.lang.Math.round;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer implements ITeslaConnectable {
-    //Interface fields
-    private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = MultimapBuilder.treeKeys().linkedListValues().build();
+    // Interface fields
+    private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap =
+            MultimapBuilder.treeKeys().linkedListValues().build();
     private final HashSet<ThaumSpark> sparkList = new HashSet<>();
     private int sparkCount = 10;
 
-    private final static int transferRadiusMax = TecTech.configTecTech.TESLA_SINGLE_RANGE;//Default is 20
-    private final static int perBlockLoss = TecTech.configTecTech.TESLA_SINGLE_LOSS_PER_BLOCK;//Default is 1
-    private final static float overDriveLoss = TecTech.configTecTech.TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE;//Default is 0.25F
-    private final static int transferRadiusMin = 4;//Minimum user configurable
-    private int transferRadius = transferRadiusMax;//Default transferRadius setting
+    private static final int transferRadiusMax = TecTech.configTecTech.TESLA_SINGLE_RANGE; // Default is 20
+    private static final int perBlockLoss = TecTech.configTecTech.TESLA_SINGLE_LOSS_PER_BLOCK; // Default is 1
+    private static final float overDriveLoss =
+            TecTech.configTecTech.TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE; // Default is 0.25F
+    private static final int transferRadiusMin = 4; // Minimum user configurable
+    private int transferRadius = transferRadiusMax; // Default transferRadius setting
 
-    public boolean powerPassToggle = false;//Power Pass for public viewing
-    private final static int histSteps = 20;//Hysteresis Resolution
-    private int histSettingLow = 3;//Hysteresis Low Limit
-    private int histSettingHigh = 15;//Hysteresis High Limit
-    private final static int histLowLimit = 1;//How low can you configure it?
-    private final static int histHighLimit = 19;//How high can you configure it?
-    private float histLow = (float) histSettingLow / histSteps;//Power pass is disabled if power is under this fraction
-    private float histHigh = (float) histSettingHigh / histSteps;//Power pass is enabled if power is over this fraction
+    public boolean powerPassToggle = false; // Power Pass for public viewing
+    private static final int histSteps = 20; // Hysteresis Resolution
+    private int histSettingLow = 3; // Hysteresis Low Limit
+    private int histSettingHigh = 15; // Hysteresis High Limit
+    private static final int histLowLimit = 1; // How low can you configure it?
+    private static final int histHighLimit = 19; // How high can you configure it?
+    private float histLow =
+            (float) histSettingLow / histSteps; // Power pass is disabled if power is under this fraction
+    private float histHigh =
+            (float) histSettingHigh / histSteps; // Power pass is enabled if power is over this fraction
 
     private final long outputVoltage = V[mTier];
     private boolean overdriveToggle = false;
@@ -64,30 +67,35 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_TeslaCoil(String aName, int aTier, String aDescription, ITexture[][][] aTextures, int aSlotCount) {
+    public GT_MetaTileEntity_TeslaCoil(
+            String aName, int aTier, String aDescription, ITexture[][][] aTextures, int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }
 
     @Override
     public String[] getDescription() {
-        String[] jargon = new String[]{
-                CommonValues.BASS_MARK,
-                translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"),//Your Tesla I/O machine of choice
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.machine.tt.tesla.desc.1")//Lightning stoves for the rich
+        String[] jargon = new String[] {
+            CommonValues.BASS_MARK,
+            translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"), // Your Tesla I/O machine of choice
+            EnumChatFormatting.AQUA
+                    + translateToLocal("gt.blockmachines.machine.tt.tesla.desc.1") // Lightning stoves for the rich
         };
         String[] sDesc = super.getDescription();
-        sDesc = Arrays.copyOfRange(sDesc, 1, sDesc.length);//Removes first element from array
+        sDesc = Arrays.copyOfRange(sDesc, 1, sDesc.length); // Removes first element from array
         return ArrayUtils.addAll(jargon, sDesc);
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onSolderingToolRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (overdriveToggle) {
             overdriveToggle = false;
-            PlayerChatHelper.SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_disengaged", clientLocale));
+            PlayerChatHelper.SendInfo(
+                    aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_disengaged", clientLocale));
         } else {
             overdriveToggle = true;
-            PlayerChatHelper.SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_engaged", clientLocale));
+            PlayerChatHelper.SendInfo(
+                    aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_engaged", clientLocale));
         }
         return true;
     }
@@ -101,7 +109,10 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 histSettingHigh = histSettingLow + 1;
             }
             histHigh = (float) histSettingHigh / histSteps;
-            PlayerChatHelper.SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Hysteresis_high_set_to", clientLocale) + " " + round(histHigh * 100F) + "%");
+            PlayerChatHelper.SendInfo(
+                    aPlayer,
+                    translateToLocalFormatted("tt.keyphrase.Hysteresis_high_set_to", clientLocale) + " "
+                            + round(histHigh * 100F) + "%");
         } else {
             if (histSettingLow > histLowLimit) {
                 histSettingLow--;
@@ -109,12 +120,16 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 histSettingLow = histSettingHigh - 1;
             }
             histLow = (float) histSettingLow / histSteps;
-            PlayerChatHelper.SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Hysteresis_low_set_to", clientLocale) + " " + round(histLow * 100F) + "%");
+            PlayerChatHelper.SendInfo(
+                    aPlayer,
+                    translateToLocalFormatted("tt.keyphrase.Hysteresis_low_set_to", clientLocale) + " "
+                            + round(histLow * 100F) + "%");
         }
     }
 
     @Override
-    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWireCutterRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             if (transferRadius > transferRadiusMin) {
                 transferRadius--;
@@ -124,7 +139,10 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 transferRadius++;
             }
         }
-        PlayerChatHelper.SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Tesla_radius_set_to", clientLocale) + " " + transferRadius + "m");
+        PlayerChatHelper.SendInfo(
+                aPlayer,
+                translateToLocalFormatted("tt.keyphrase.Tesla_radius_set_to", clientLocale) + " " + transferRadius
+                        + "m");
         return false;
     }
 
@@ -136,12 +154,12 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     @Override
     public String getAlternativeModeText() {
-        //Hysteresis based ePowerPass Config
+        // Hysteresis based ePowerPass Config
         long energyMax = getStoredEnergy()[1];
         long energyStored = getStoredEnergy()[0];
         float energyFrac = (float) energyStored / energyMax;
 
-        //ePowerPass hist toggle
+        // ePowerPass hist toggle
         if (energyFrac > histHigh) {
             powerPassToggle = true;
         } else if (energyFrac < histLow) {
@@ -150,28 +168,43 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             powerPassToggle = !powerPassToggle;
         }
 
-        //And after this cheeky-ness, toss the string XD
-        return powerPassToggle ? translateToLocalFormatted("tt.keyphrase.Sending_power", clientLocale) + "!" : translateToLocalFormatted("tt.keyphrase.Receiving_power", clientLocale) + "!";
+        // And after this cheeky-ness, toss the string XD
+        return powerPassToggle
+                ? translateToLocalFormatted("tt.keyphrase.Sending_power", clientLocale) + "!"
+                : translateToLocalFormatted("tt.keyphrase.Receiving_power", clientLocale) + "!";
     }
 
     @Override
     public boolean isFacingValid(byte aSide) {
         return aSide != 1;
-    }//Prevents output at the top side
+    } // Prevents output at the top side
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[3][17][];
         for (byte i = -1; i < 16; ++i) {
-            rTextures[0][i + 1] = new ITexture[]{MACHINE_CASINGS_TT[this.mTier][i + 1]};
-            rTextures[1][i + 1] = new ITexture[]{MACHINE_CASINGS_TT[this.mTier][i + 1], TESLA_TRANSCEIVER_TOP_BA};
-            rTextures[2][i + 1] = new ITexture[]{MACHINE_CASINGS_TT[this.mTier][i + 1], this.mInventory.length == 16 ? OVERLAYS_ENERGY_OUT_POWER_TT[this.mTier] : (this.mInventory.length > 4 ? OVERLAYS_ENERGY_OUT_MULTI_TT[this.mTier] : OVERLAYS_ENERGY_OUT_TT[this.mTier])};
+            rTextures[0][i + 1] = new ITexture[] {MACHINE_CASINGS_TT[this.mTier][i + 1]};
+            rTextures[1][i + 1] = new ITexture[] {MACHINE_CASINGS_TT[this.mTier][i + 1], TESLA_TRANSCEIVER_TOP_BA};
+            rTextures[2][i + 1] = new ITexture[] {
+                MACHINE_CASINGS_TT[this.mTier][i + 1],
+                this.mInventory.length == 16
+                        ? OVERLAYS_ENERGY_OUT_POWER_TT[this.mTier]
+                        : (this.mInventory.length > 4
+                                ? OVERLAYS_ENERGY_OUT_MULTI_TT[this.mTier]
+                                : OVERLAYS_ENERGY_OUT_TT[this.mTier])
+            };
         }
         return rTextures;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         return this.mTextures[aSide == aFacing ? 2 : aSide == 1 ? 1 : 0][aColorIndex + 1];
     }
 
@@ -210,27 +243,28 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             return;
         }
 
-        //Hysteresis based ePowerPass Config
+        // Hysteresis based ePowerPass Config
         long energyMax = getStoredEnergy()[1];
         long energyStored = getStoredEnergy()[0];
         float energyFrac = (float) energyStored / energyMax;
 
-        //ePowerPass hist toggle
+        // ePowerPass hist toggle
         if (!powerPassToggle && energyFrac > histHigh) {
             powerPassToggle = true;
         } else if (powerPassToggle && energyFrac < histLow) {
             powerPassToggle = false;
         }
 
-        //Send Power
+        // Send Power
         powerTeslaNodeMap(this);
 
-        //TODO Encapsulate the spark sender
+        // TODO Encapsulate the spark sender
         sparkCount--;
-        if (sparkCount == 0){
+        if (sparkCount == 0) {
             sparkCount = 10;
-            if(!sparkList.isEmpty()){
-                NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
+            if (!sparkList.isEmpty()) {
+                NetworkDispatcher.INSTANCE.sendToAllAround(
+                        new RendererMessage.RendererData(sparkList),
                         aBaseMetaTileEntity.getWorld().provider.dimensionId,
                         aBaseMetaTileEntity.getXCoord(),
                         aBaseMetaTileEntity.getYCoord(),
@@ -332,9 +366,10 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     @Override
     public Vec3Impl getTeslaPosition() {
-        return new Vec3Impl(this.getBaseMetaTileEntity().getXCoord(),
-                            this.getBaseMetaTileEntity().getYCoord(),
-                            this.getBaseMetaTileEntity().getZCoord());
+        return new Vec3Impl(
+                this.getBaseMetaTileEntity().getXCoord(),
+                this.getBaseMetaTileEntity().getYCoord(),
+                this.getBaseMetaTileEntity().getZCoord());
     }
 
     @Override

@@ -1,16 +1,15 @@
 package com.github.technus.tectech.mechanics.enderStorage;
 
+import static com.github.technus.tectech.Reference.MODID;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.IFluidHandler;
-
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.github.technus.tectech.Reference.MODID;
 
 public class EnderWorldSavedData extends WorldSavedData {
     private static EnderWorldSavedData INSTANCE;

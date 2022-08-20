@@ -1,15 +1,14 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretbases;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.util.CommonValues;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-
-import java.util.List;
-
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 28/07/2017.

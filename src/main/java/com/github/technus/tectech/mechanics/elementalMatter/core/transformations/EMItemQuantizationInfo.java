@@ -13,8 +13,8 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class EMItemQuantizationInfo {
     private final ItemStack in;
-    private final boolean   skipNBT;
-    private final IEMStack  out;
+    private final boolean skipNBT;
+    private final IEMStack out;
 
     public EMItemQuantizationInfo(ItemStack itemStackIn, boolean skipNBT, IEMStack emOut) {
         in = itemStackIn;
@@ -38,24 +38,27 @@ public class EMItemQuantizationInfo {
 
     @Override
     public int hashCode() {
-        return (GameRegistry.findUniqueIdentifierFor(in.getItem())+":"+in.getUnlocalizedName()+ ':' +in.getItemDamage()).hashCode();
+        return (GameRegistry.findUniqueIdentifierFor(in.getItem()) + ":" + in.getUnlocalizedName() + ':'
+                        + in.getItemDamage())
+                .hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof EMItemQuantizationInfo){
-            //alias
-            ItemStack stack=((EMItemQuantizationInfo) obj).in;
-            if(!in.getUnlocalizedName().equals(((EMItemQuantizationInfo) obj).in.getUnlocalizedName())) {
+        if (obj instanceof EMItemQuantizationInfo) {
+            // alias
+            ItemStack stack = ((EMItemQuantizationInfo) obj).in;
+            if (!in.getUnlocalizedName().equals(((EMItemQuantizationInfo) obj).in.getUnlocalizedName())) {
                 return false;
             }
 
-            if(!GameRegistry.findUniqueIdentifierFor(in.getItem()).equals(
-                GameRegistry.findUniqueIdentifierFor(((EMItemQuantizationInfo) obj).in.getItem()))) {
+            if (!GameRegistry.findUniqueIdentifierFor(in.getItem())
+                    .equals(GameRegistry.findUniqueIdentifierFor(((EMItemQuantizationInfo) obj).in.getItem()))) {
                 return false;
             }
 
-            if(in.getItemDamage() != OreDictionary.WILDCARD_VALUE && stack.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
+            if (in.getItemDamage() != OreDictionary.WILDCARD_VALUE
+                    && stack.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
                 if (in.getItemDamage() != stack.getItemDamage()) {
                     return false;
                 }

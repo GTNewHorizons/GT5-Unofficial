@@ -9,8 +9,8 @@ import net.minecraftforge.oredict.OreDictionary;
  * Created by Tec on 23.05.2017.
  */
 public class EMOredictQuantizationInfo {
-    private final int      id;
-    private final int      amount;
+    private final int id;
+    private final int amount;
     private final IEMStack out;
 
     public EMOredictQuantizationInfo(int id, int amount, IEMStack out) {
@@ -20,15 +20,15 @@ public class EMOredictQuantizationInfo {
     }
 
     public EMOredictQuantizationInfo(String name, int qty, IEMStack emOut) {
-        this(OreDictionary.getOreID(name),qty,emOut);
+        this(OreDictionary.getOreID(name), qty, emOut);
     }
 
     public EMOredictQuantizationInfo(OrePrefixes prefix, Materials material, int qty, IEMStack emOut) {
-        this(prefix, material.mName, qty,emOut);
+        this(prefix, material.mName, qty, emOut);
     }
 
     public EMOredictQuantizationInfo(OrePrefixes prefix, String materialName, int qty, IEMStack emOut) {
-        this(OreDictionary.getOreID(prefix.name() + materialName),qty,emOut);
+        this(OreDictionary.getOreID(prefix.name() + materialName), qty, emOut);
     }
 
     public IEMStack getOut() {

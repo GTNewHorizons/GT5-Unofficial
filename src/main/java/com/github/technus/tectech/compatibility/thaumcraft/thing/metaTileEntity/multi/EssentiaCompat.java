@@ -10,23 +10,23 @@ import net.minecraft.tileentity.TileEntity;
 public class EssentiaCompat {
     public static EssentiaCompat essentiaContainerCompat;
 
-    public <T extends GT_MetaTileEntity_MultiblockBase_EM> boolean check(T meta,TileEntity te){
+    public <T extends GT_MetaTileEntity_MultiblockBase_EM> boolean check(T meta, TileEntity te) {
         return false;
     }
 
-    public <T extends GT_MetaTileEntity_MultiblockBase_EM> TileEntity getContainer(T meta){
+    public <T extends GT_MetaTileEntity_MultiblockBase_EM> TileEntity getContainer(T meta) {
         return null;
     }
 
-    public String getEssentiaName(IEMDefinition stack){
+    public String getEssentiaName(IEMDefinition stack) {
         return null;
     }
 
-    public boolean putInContainer(TileEntity container, String name){
+    public boolean putInContainer(TileEntity container, String name) {
         return false;
     }
 
-    public IEMDefinition getFromContainer(TileEntity container){
+    public IEMDefinition getFromContainer(TileEntity container) {
         return null;
     }
 }

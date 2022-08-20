@@ -1,5 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_BuckConverter;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_BuckConverter;
 import com.github.technus.tectech.util.CommonValues;
@@ -20,21 +23,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMachineBlock {
-    private static GT_RenderedTexture BUCK,BUCK_ACTIVE;
-    public int EUT=0,AMP=0;
+    private static GT_RenderedTexture BUCK, BUCK_ACTIVE;
+    public int EUT = 0, AMP = 0;
 
     public GT_MetaTileEntity_BuckConverter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
-        TT_Utility.setTier(aTier,this);
+        TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_BuckConverter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TT_Utility.setTier(aTier,this);
+        TT_Utility.setTier(aTier, this);
     }
 
     @Override
@@ -51,11 +51,21 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aSide == aFacing ? (aActive?BUCK_ACTIVE:BUCK) :
-                (aSide==GT_Utility.getOppositeSide(aFacing)?
-                        OVERLAYS_ENERGY_IN_POWER_TT[mTier]:
-                        (aActive ? OVERLAYS_ENERGY_OUT_POWER_TT[mTier] : OVERLAYS_ENERGY_IN_POWER_TT[mTier]))};
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
+        return new ITexture[] {
+            MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+            aSide == aFacing
+                    ? (aActive ? BUCK_ACTIVE : BUCK)
+                    : (aSide == GT_Utility.getOppositeSide(aFacing)
+                            ? OVERLAYS_ENERGY_IN_POWER_TT[mTier]
+                            : (aActive ? OVERLAYS_ENERGY_OUT_POWER_TT[mTier] : OVERLAYS_ENERGY_IN_POWER_TT[mTier]))
+        };
     }
 
     @Override
@@ -85,15 +95,15 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("eEUT",EUT);
-        aNBT.setInteger("eAMP",AMP);
+        aNBT.setInteger("eEUT", EUT);
+        aNBT.setInteger("eAMP", AMP);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        EUT=aNBT.getInteger("eEUT");
-        AMP=aNBT.getInteger("eAMP");
-        getBaseMetaTileEntity().setActive((long)AMP*EUT >=0);
+        EUT = aNBT.getInteger("eEUT");
+        AMP = aNBT.getInteger("eAMP");
+        getBaseMetaTileEntity().setActive((long) AMP * EUT >= 0);
     }
 
     @Override
@@ -122,11 +132,13 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"),//Electronic voltage regulator
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"),//Adjustable step down transformer
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.2")//Switching power supply...
+        return new String[] {
+            CommonValues.TEC_MARK_GENERAL,
+            translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"), // Electronic voltage regulator
+            EnumChatFormatting.BLUE
+                    + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"), // Adjustable step down transformer
+            EnumChatFormatting.BLUE
+                    + translateToLocal("gt.blockmachines.machine.tt.buck.desc.2") // Switching power supply...
         };
     }
 
@@ -152,7 +164,9 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public boolean isOutputFacing(byte aSide) {
-        return getBaseMetaTileEntity().isActive() && aSide != getBaseMetaTileEntity().getFrontFacing() && aSide != getBaseMetaTileEntity().getBackFacing();
+        return getBaseMetaTileEntity().isActive()
+                && aSide != getBaseMetaTileEntity().getFrontFacing()
+                && aSide != getBaseMetaTileEntity().getBackFacing();
     }
 
     @Override
@@ -162,7 +176,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public long maxAmperesOut() {
-        return getBaseMetaTileEntity().isActive()?Math.min(Math.abs(AMP),64):0;
+        return getBaseMetaTileEntity().isActive() ? Math.min(Math.abs(AMP), 64) : 0;
     }
 
     @Override
@@ -172,17 +186,17 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public long maxEUOutput() {
-        return getBaseMetaTileEntity().isActive()?Math.min(Math.abs(EUT),maxEUInput()):0;
+        return getBaseMetaTileEntity().isActive() ? Math.min(Math.abs(EUT), maxEUInput()) : 0;
     }
 
     @Override
     public long maxEUStore() {
-        return CommonValues.V[mTier]<<4;
+        return CommonValues.V[mTier] << 4;
     }
 
     @Override
     public long getMinimumStoredEU() {
-        return CommonValues.V[mTier]<<2;
+        return CommonValues.V[mTier] << 2;
     }
 
     @Override

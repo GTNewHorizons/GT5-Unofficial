@@ -1,29 +1,29 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.definitions;
 
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
+import static com.github.technus.tectech.util.TT_Utility.areBitsSet;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.util.TT_Utility;
-import net.minecraft.nbt.NBTTagCompound;
-
 import java.util.ArrayList;
-
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
-import static com.github.technus.tectech.util.TT_Utility.areBitsSet;
-import static net.minecraft.util.StatCollector.translateToLocal;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Created by danie_000 on 11.11.2016.
  */
-public interface IEMDefinition extends Comparable<IEMDefinition>, Cloneable {//IMMUTABLE
-    double STABLE_RAW_LIFE_TIME       = 1.5e36D;
-    double NO_DECAY_RAW_LIFE_TIME     = -1D;
-    long   DEFAULT_ENERGY_LEVEL       = 0;
-    double DEFAULT_ENERGY_REQUIREMENT = 25000D;//legit cuz normal atoms should only emit a gamma if they don't have defined energy levels
-    //add text based creators for recipe formula input?
+public interface IEMDefinition extends Comparable<IEMDefinition>, Cloneable { // IMMUTABLE
+    double STABLE_RAW_LIFE_TIME = 1.5e36D;
+    double NO_DECAY_RAW_LIFE_TIME = -1D;
+    long DEFAULT_ENERGY_LEVEL = 0;
+    double DEFAULT_ENERGY_REQUIREMENT =
+            25000D; // legit cuz normal atoms should only emit a gamma if they don't have defined energy levels
+    // add text based creators for recipe formula input?
 
-    //Nomenclature
+    // Nomenclature
     String getLocalizedTypeName();
 
     String getShortLocalizedName();
@@ -36,57 +36,63 @@ public interface IEMDefinition extends Comparable<IEMDefinition>, Cloneable {//I
 
     String getSymbol();
 
-    default void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel, EMDefinitionsRegistry registry) {
-        if (areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CLASS_TYPE | SCAN_GET_CHARGE | SCAN_GET_MASS | SCAN_GET_TIMESPAN_INFO, capabilities)) {
+    default void addScanShortSymbols(
+            ArrayList<String> lines, int capabilities, long energyLevel, EMDefinitionsRegistry registry) {
+        if (areBitsSet(
+                SCAN_GET_NOMENCLATURE | SCAN_GET_CLASS_TYPE | SCAN_GET_CHARGE | SCAN_GET_MASS | SCAN_GET_TIMESPAN_INFO,
+                capabilities)) {
             lines.add(getShortSymbol());
         }
     }
 
-    default void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel, EMDefinitionsRegistry registry) {
-        if (TT_Utility.areBitsSet(SCAN_GET_CLASS_TYPE | SCAN_GET_CHARGE | SCAN_GET_MASS | SCAN_GET_TIMESPAN_INFO, capabilities)) {
-            lines.add(translateToLocal("tt.keyword.scan.class") +
-                    " = " + registry.getTypes().get(getClass()).getLocalizedName());
+    default void addScanResults(
+            ArrayList<String> lines, int capabilities, long energyLevel, EMDefinitionsRegistry registry) {
+        if (TT_Utility.areBitsSet(
+                SCAN_GET_CLASS_TYPE | SCAN_GET_CHARGE | SCAN_GET_MASS | SCAN_GET_TIMESPAN_INFO, capabilities)) {
+            lines.add(translateToLocal("tt.keyword.scan.class") + " = "
+                    + registry.getTypes().get(getClass()).getLocalizedName());
             if (areBitsSet(SCAN_GET_NOMENCLATURE, capabilities)) {
-                lines.add(translateToLocal("tt.keyword.scan.name") +
-                        " = " + getLocalizedName());
-                lines.add(translateToLocal("tt.keyword.scan.symbol") +
-                        " = " + getSymbol());
+                lines.add(translateToLocal("tt.keyword.scan.name") + " = " + getLocalizedName());
+                lines.add(translateToLocal("tt.keyword.scan.symbol") + " = " + getSymbol());
             }
         }
         if (areBitsSet(SCAN_GET_CHARGE, capabilities)) {
-            lines.add(translateToLocal("tt.keyword.scan.charge") +
-                    " = " + getCharge() / 3D + " " + translateToLocal("tt.keyword.unit.charge"));
+            lines.add(translateToLocal("tt.keyword.scan.charge") + " = " + getCharge() / 3D + " "
+                    + translateToLocal("tt.keyword.unit.charge"));
         }
         if (areBitsSet(SCAN_GET_COLORABLE, capabilities)) {
-            lines.add(hasColor() ?
-                    translateToLocal("tt.keyword.scan.colored") :
-                    translateToLocal("tt.keyword.scan.colorless"));
+            lines.add(
+                    hasColor()
+                            ? translateToLocal("tt.keyword.scan.colored")
+                            : translateToLocal("tt.keyword.scan.colorless"));
         }
         if (areBitsSet(SCAN_GET_MASS, capabilities)) {
-            lines.add(translateToLocal("tt.keyword.scan.mass") +
-                    " = " + getMass() + " " + translateToLocal("tt.keyword.unit.mass"));
+            lines.add(translateToLocal("tt.keyword.scan.mass") + " = " + getMass() + " "
+                    + translateToLocal("tt.keyword.unit.mass"));
         }
         if (areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
-            lines.add((isTimeSpanHalfLife() ?
-                    translateToLocal("tt.keyword.scan.half_life") :
-                    translateToLocal("tt.keyword.scan.life_time")) +
-                    " = " + getRawTimeSpan(energyLevel) + " " + translateToLocal("tt.keyword.unit.time"));
+            lines.add((isTimeSpanHalfLife()
+                            ? translateToLocal("tt.keyword.scan.half_life")
+                            : translateToLocal("tt.keyword.scan.life_time"))
+                    + " = "
+                    + getRawTimeSpan(energyLevel) + " " + translateToLocal("tt.keyword.unit.time"));
             lines.add("    " + translateToLocal("tt.keyphrase.scan.at_current_energy_level"));
         }
     }
 
-    int getMatterMassType();//bigger number means bigger things usually, but it is just used to differentiate between classes of iED
+    int getMatterMassType(); // bigger number means bigger things usually, but it is just used to differentiate
+    // between classes of iED
 
     int getGeneration();
 
-    //Not dynamically changing stuff
-    IEMDefinition getAnti();//gives new anti particle def
+    // Not dynamically changing stuff
+    IEMDefinition getAnti(); // gives new anti particle def
 
-    EMDecay[] getDecayArray();//possible decays
+    EMDecay[] getDecayArray(); // possible decays
 
-    EMDecay[] getNaturalDecayInstant();//natural decay if lifespan <1tick
+    EMDecay[] getNaturalDecayInstant(); // natural decay if lifespan <1tick
 
-    EMDecay[] getEnergyInducedDecay(long energyLevel);//energetic decay
+    EMDecay[] getEnergyInducedDecay(long energyLevel); // energetic decay
 
     boolean usesSpecialEnergeticDecayHandling();
 
@@ -96,24 +102,24 @@ public interface IEMDefinition extends Comparable<IEMDefinition>, Cloneable {//I
 
     boolean fusionMakesEnergy(long energyLevel);
 
-    double getEnergyDiffBetweenStates(long currentEnergy, long newEnergyLevel);//positive or negative
+    double getEnergyDiffBetweenStates(long currentEnergy, long newEnergyLevel); // positive or negative
 
-    double getMass();//mass... MeV/c^2
+    double getMass(); // mass... MeV/c^2
 
-    int getCharge();//charge 1/3 electron charge
+    int getCharge(); // charge 1/3 electron charge
 
-    //dynamically changing stuff
+    // dynamically changing stuff
     int getMaxColors();
 
     default boolean hasColor() {
         return getMaxColors() > 0;
     }
 
-    double getRawTimeSpan(long currentEnergy);//defined in static fields or generated
+    double getRawTimeSpan(long currentEnergy); // defined in static fields or generated
 
     boolean isTimeSpanHalfLife();
 
-    EMConstantStackMap getSubParticles();//contents... null if none
+    EMConstantStackMap getSubParticles(); // contents... null if none
 
     NBTTagCompound toNBT(EMDefinitionsRegistry registry);
 

@@ -1,5 +1,10 @@
 package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions;
 
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay.NO_DECAY;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
@@ -11,16 +16,11 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.reg
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay.NO_DECAY;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 /**
  * Created by Tec on 06.05.2017.
  */
 public final class EMComplexAspectDefinition extends EMComplexTemplate {
-    private final int    hash;
+    private final int hash;
     private final double mass;
 
     private static final String nbtType = "`";
@@ -52,14 +52,15 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
         hash = super.hashCode();
     }
 
-    //public but u can just try{}catch(){} the constructor it still calls this method
+    // public but u can just try{}catch(){} the constructor it still calls this method
     private static boolean canTheyBeTogether(EMConstantStackMap stacks) {
         long amount = 0;
         for (EMDefinitionStack aspects : stacks.valuesToArray()) {
-            if (!(aspects.getDefinition() instanceof EMComplexAspectDefinition) && !(aspects.getDefinition() instanceof EMPrimalAspectDefinition)) {
+            if (!(aspects.getDefinition() instanceof EMComplexAspectDefinition)
+                    && !(aspects.getDefinition() instanceof EMPrimalAspectDefinition)) {
                 return false;
             }
-            if((int) aspects.getAmount() != aspects.getAmount()){
+            if ((int) aspects.getAmount() != aspects.getAmount()) {
                 throw new ArithmeticException("Amount cannot be safely converted to int!");
             }
             amount += aspects.getAmount();
@@ -157,7 +158,7 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
 
     @Override
     public EMDecay[] getEnergyInducedDecay(long energyLevel) {
-        return new EMDecay[]{new EMDecay(0.75F, aspectStacks), deadEnd};
+        return new EMDecay[] {new EMDecay(0.75F, aspectStacks), deadEnd};
     }
 
     @Override
@@ -206,10 +207,16 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
     }
 
     public static void run(EMDefinitionsRegistry registry) {
-        registry.registerDefinitionClass(nbtType, new EMIndirectType((definitionsRegistry, nbt)->
-                new EMComplexAspectDefinition(EMConstantStackMap.fromNBT(definitionsRegistry,nbt)), EMComplexAspectDefinition.class, "tt.keyword.Aspect"));
+        registry.registerDefinitionClass(
+                nbtType,
+                new EMIndirectType(
+                        (definitionsRegistry, nbt) ->
+                                new EMComplexAspectDefinition(EMConstantStackMap.fromNBT(definitionsRegistry, nbt)),
+                        EMComplexAspectDefinition.class,
+                        "tt.keyword.Aspect"));
         if (DEBUG_MODE) {
-            TecTech.LOGGER.info("Registered Elemental Matter Class: ComplexAspect " + nbtType + ' ' + getClassTypeStatic());
+            TecTech.LOGGER.info(
+                    "Registered Elemental Matter Class: ComplexAspect " + nbtType + ' ' + getClassTypeStatic());
         }
     }
 

@@ -1,6 +1,5 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_ParamText;
 import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -23,8 +22,8 @@ public class TextParametersMessage implements IMessage {
     int mPosY;
     int mPosZ;
     int mPosD;
-    String mVal0="";
-    String mVal1="";
+    String mVal0 = "";
+    String mVal1 = "";
 
     public TextParametersMessage() {}
 
@@ -55,55 +54,56 @@ public class TextParametersMessage implements IMessage {
         public ParametersTextQuery() {}
 
         public ParametersTextQuery(GT_MetaTileEntity_Hatch_ParamText metaTile) {
-            IGregTechTileEntity base=metaTile.getBaseMetaTileEntity();
-            mPosX=base.getXCoord();
-            mPosY=base.getYCoord();
-            mPosZ=base.getZCoord();
-            mPosD=base.getWorld().provider.dimensionId;
+            IGregTechTileEntity base = metaTile.getBaseMetaTileEntity();
+            mPosX = base.getXCoord();
+            mPosY = base.getYCoord();
+            mPosZ = base.getZCoord();
+            mPosD = base.getWorld().provider.dimensionId;
         }
     }
 
-    public static class ParametersTextData extends TextParametersMessage{
+    public static class ParametersTextData extends TextParametersMessage {
         public ParametersTextData() {}
 
         public ParametersTextData(GT_MetaTileEntity_Hatch_ParamText metaTile) {
-            IGregTechTileEntity base=metaTile.getBaseMetaTileEntity();
-            mPosX=base.getXCoord();
-            mPosY=base.getYCoord();
-            mPosZ=base.getZCoord();
-            mPosD=base.getWorld().provider.dimensionId;
-            mVal0 =metaTile.value0s;
-            mVal1 =metaTile.value1s;
+            IGregTechTileEntity base = metaTile.getBaseMetaTileEntity();
+            mPosX = base.getXCoord();
+            mPosY = base.getYCoord();
+            mPosZ = base.getZCoord();
+            mPosD = base.getWorld().provider.dimensionId;
+            mVal0 = metaTile.value0s;
+            mVal1 = metaTile.value1s;
         }
     }
 
-    public static class ParametersTextUpdate extends TextParametersMessage{
+    public static class ParametersTextUpdate extends TextParametersMessage {
         public ParametersTextUpdate() {}
 
         public ParametersTextUpdate(GT_MetaTileEntity_Hatch_ParamText metaTile) {
-            IGregTechTileEntity base=metaTile.getBaseMetaTileEntity();
-            mPosX=base.getXCoord();
-            mPosY=base.getYCoord();
-            mPosZ=base.getZCoord();
-            mPosD=base.getWorld().provider.dimensionId;
-            mVal0 =metaTile.value0s;
-            mVal1 =metaTile.value1s;
+            IGregTechTileEntity base = metaTile.getBaseMetaTileEntity();
+            mPosX = base.getXCoord();
+            mPosY = base.getYCoord();
+            mPosZ = base.getZCoord();
+            mPosD = base.getWorld().provider.dimensionId;
+            mVal0 = metaTile.value0s;
+            mVal1 = metaTile.value1s;
         }
     }
 
     public static class ClientHandler extends AbstractClientMessageHandler<ParametersTextData> {
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, ParametersTextData pMessage, MessageContext pCtx) {
-            if(pPlayer.worldObj.provider.dimensionId==pMessage.mPosD){
-                TileEntity te=pPlayer.worldObj.getTileEntity(pMessage.mPosX,pMessage.mPosY,pMessage.mPosZ);
-                if(te instanceof IGregTechTileEntity){
+            if (pPlayer.worldObj.provider.dimensionId == pMessage.mPosD) {
+                TileEntity te = pPlayer.worldObj.getTileEntity(pMessage.mPosX, pMessage.mPosY, pMessage.mPosZ);
+                if (te instanceof IGregTechTileEntity) {
                     IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if(meta instanceof GT_MetaTileEntity_Hatch_ParamText){
-                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value0s =pMessage.mVal0;
-                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value1s =pMessage.mVal1;
-                        if(Minecraft.getMinecraft().currentScreen instanceof GT_GUIContainer_ParamText){
-                            GT_GUIContainer_ParamText gui=((GT_GUIContainer_ParamText) Minecraft.getMinecraft().currentScreen);
-                            if(gui.mContainer==meta){
+                    if (meta instanceof GT_MetaTileEntity_Hatch_ParamText) {
+                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value0s = pMessage.mVal0;
+                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value1s = pMessage.mVal1;
+                        if (Minecraft.getMinecraft().currentScreen instanceof GT_GUIContainer_ParamText) {
+                            GT_GUIContainer_ParamText gui =
+                                    ((GT_GUIContainer_ParamText) Minecraft.getMinecraft().currentScreen);
+                            if (gui.mContainer == meta) {
                                 gui.setTextIn0(pMessage.mVal0);
                                 gui.setTextIn1(pMessage.mVal1);
                             }
@@ -136,15 +136,15 @@ public class TextParametersMessage implements IMessage {
         @Override
         public IMessage handleServerMessage(EntityPlayer pPlayer, ParametersTextUpdate pMessage, MessageContext pCtx) {
             World world = DimensionManager.getWorld(pMessage.mPosD);
-            if(world!=null){
-                TileEntity te=world.getTileEntity(pMessage.mPosX,pMessage.mPosY,pMessage.mPosZ);
-                if(te instanceof IGregTechTileEntity){
+            if (world != null) {
+                TileEntity te = world.getTileEntity(pMessage.mPosX, pMessage.mPosY, pMessage.mPosZ);
+                if (te instanceof IGregTechTileEntity) {
                     IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if(meta instanceof GT_MetaTileEntity_Hatch_ParamText){
-                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value0s =pMessage.mVal0;
-                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value1s =pMessage.mVal1;
-                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value0D= TT_Utility.getValue(pMessage.mVal0);
-                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value1D= TT_Utility.getValue(pMessage.mVal1);
+                    if (meta instanceof GT_MetaTileEntity_Hatch_ParamText) {
+                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value0s = pMessage.mVal0;
+                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value1s = pMessage.mVal1;
+                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value0D = TT_Utility.getValue(pMessage.mVal0);
+                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value1D = TT_Utility.getValue(pMessage.mVal1);
                     }
                 }
             }

@@ -1,5 +1,9 @@
 package com.github.technus.tectech.thing.cover;
 
+import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderFluidContainer;
+import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderLinkTag;
+import static gregtech.GT_Mod.gregtechproxy;
+
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.enderStorage.EnderLinkCoverMessage;
 import com.github.technus.tectech.mechanics.enderStorage.EnderLinkTag;
@@ -14,6 +18,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
+import java.util.UUID;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -21,25 +26,18 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import java.util.UUID;
-
-import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderFluidContainer;
-import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderLinkTag;
-import static gregtech.GT_Mod.gregtechproxy;
-
 public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     private static final int L_PER_TICK = 8000;
-    private final static int IMPORT_EXPORT_MASK = 0b0001;
-    private final static int PUBLIC_PRIVATE_MASK = 0b0010;
-    private static EnderLinkTag tag = new EnderLinkTag("", null);//Client-Sided
+    private static final int IMPORT_EXPORT_MASK = 0b0001;
+    private static final int PUBLIC_PRIVATE_MASK = 0b0010;
+    private static EnderLinkTag tag = new EnderLinkTag("", null); // Client-Sided
 
-    public GT_Cover_TM_EnderFluidLink() {
-    }
+    public GT_Cover_TM_EnderFluidLink() {}
 
     public static void setEnderLinkTag(EnderLinkTag inputTag) {
-        if(inputTag != null) {
+        if (inputTag != null) {
             tag = inputTag;
-            //Hacky Way to update the gui
+            // Hacky Way to update the gui
             GUI_INSTANCE.resetColorField();
         }
     }
@@ -62,7 +60,8 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(
+            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if ((aTileEntity instanceof IFluidHandler)) {
             IFluidHandler fluidHandlerSelf = (IFluidHandler) aTileEntity;
             IFluidHandler fluidHandlerEnder = getEnderFluidContainer(getEnderLinkTag((IFluidHandler) aTileEntity));
@@ -92,11 +91,19 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     }
 
     @Override
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public int onCoverScrewdriverclick(
+            byte aSide,
+            int aCoverID,
+            int aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
         int newCoverVariable = toggleBit(aCoverVariable, IMPORT_EXPORT_MASK);
 
         if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {
-            PlayerChatHelper.SendInfo(aPlayer, "Ender Suction Engaged!");//TODO Translation support
+            PlayerChatHelper.SendInfo(aPlayer, "Ender Suction Engaged!"); // TODO Translation support
         } else {
             PlayerChatHelper.SendInfo(aPlayer, "Ender Filling Engaged!");
         }
@@ -105,19 +112,19 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
 
     @Override
     public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        //Runs each tick
+        // Runs each tick
         return 1;
     }
 
-    //region GUI
+    // region GUI
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity)  {
-        //Only open gui if we're placed on a fluid tank
+    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
+        // Only open gui if we're placed on a fluid tank
         Object gui = null;
         if (aTileEntity instanceof IFluidHandler) {
             gui = new TM_EnderFluidLinkCover(aSide, aCoverID, coverData, aTileEntity);
@@ -133,37 +140,37 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
         private int coverVariable;
         private GT_GuiTextBox colorField;
 
-        private final static int START_X = 10;
-        private final static int START_Y = 25;
-        private final static int SPACE_X = 18;
-        private final static int SPACE_Y = 18;
+        private static final int START_X = 10;
+        private static final int START_Y = 25;
+        private static final int SPACE_X = 18;
+        private static final int SPACE_Y = 18;
 
-        private final static int SIZE_X = 176;
-        private final static int SIZE_Y = 107;
+        private static final int SIZE_X = 176;
+        private static final int SIZE_Y = 107;
 
-        private final static int BOX_SIZE_X = 34;
-        private final static int BOX_SIZE_Y = 34;
+        private static final int BOX_SIZE_X = 34;
+        private static final int BOX_SIZE_Y = 34;
 
-        private final static int TEXT_FIELD_SIZE_X = SPACE_X * 5 - 8;
-        private final static int TEXT_FIELD_SIZE_Y = 12;
-        private final static int TEXT_STRING_LENGTH = 9;
+        private static final int TEXT_FIELD_SIZE_X = SPACE_X * 5 - 8;
+        private static final int TEXT_FIELD_SIZE_Y = 12;
+        private static final int TEXT_STRING_LENGTH = 9;
 
-        private final static int FONT_COLOR = 0xFF555555;
-        private final static int BOX_BORDER_COLOR = 0xFF000000;
+        private static final int FONT_COLOR = 0xFF555555;
+        private static final int BOX_BORDER_COLOR = 0xFF000000;
 
-        private final static int COLOR_FIELD_ID = 0;
-        private final static int PUBLIC_BUTTON_ID = 1;
-        private final static int PRIVATE_BUTTON_ID = 2;
-        private final static int IMPORT_BUTTON_ID = 3;
-        private final static int EXPORT_BUTTON_ID = 4;
+        private static final int COLOR_FIELD_ID = 0;
+        private static final int PUBLIC_BUTTON_ID = 1;
+        private static final int PRIVATE_BUTTON_ID = 2;
+        private static final int IMPORT_BUTTON_ID = 3;
+        private static final int EXPORT_BUTTON_ID = 4;
 
         private GT_GuiIconButton newButtonWithSpacing(int id, int x, int y, GT_GuiIcon icon) {
             return new GT_GuiIconButton(this, id, START_X + SPACE_X * x, START_Y + SPACE_Y * y, icon);
         }
 
         private GT_GuiTextBox newTextField(int id, int x, int y) {
-            GT_GuiTextBox field = new GT_GuiTextBox(this, id, START_X + SPACE_X * x,
-                    START_Y + SPACE_Y * y, TEXT_FIELD_SIZE_X, TEXT_FIELD_SIZE_Y);
+            GT_GuiTextBox field = new GT_GuiTextBox(
+                    this, id, START_X + SPACE_X * x, START_Y + SPACE_Y * y, TEXT_FIELD_SIZE_X, TEXT_FIELD_SIZE_Y);
             field.setMaxStringLength(TEXT_STRING_LENGTH);
             return field;
         }
@@ -178,21 +185,18 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
             side = aSide;
             coverID = aCoverID;
             coverVariable = aCoverVariable;
-            NetworkDispatcher.INSTANCE.sendToServer(new EnderLinkCoverMessage.EnderLinkCoverQuery(tag, (IFluidHandler) tile));
-            //Color Value Field
+            NetworkDispatcher.INSTANCE.sendToServer(
+                    new EnderLinkCoverMessage.EnderLinkCoverQuery(tag, (IFluidHandler) tile));
+            // Color Value Field
             colorField = newTextField(COLOR_FIELD_ID, 0, 0);
             GUI_INSTANCE = this;
             resetColorField();
-            //Public/Private Buttons
-            newButtonWithSpacing(PUBLIC_BUTTON_ID, 0, 2, GT_GuiIcon.WHITELIST)
-                    .setTooltipText(trans("326", "Public"));
-            newButtonWithSpacing(PRIVATE_BUTTON_ID, 1, 2, GT_GuiIcon.BLACKLIST)
-                    .setTooltipText(trans("327", "Private"));
-            //Import/Export Buttons
-            newButtonWithSpacing(IMPORT_BUTTON_ID, 0, 3, GT_GuiIcon.IMPORT)
-                    .setTooltipText(trans("007", "Import"));
-            newButtonWithSpacing(EXPORT_BUTTON_ID, 1, 3, GT_GuiIcon.EXPORT)
-                    .setTooltipText(trans("006", "Export"));
+            // Public/Private Buttons
+            newButtonWithSpacing(PUBLIC_BUTTON_ID, 0, 2, GT_GuiIcon.WHITELIST).setTooltipText(trans("326", "Public"));
+            newButtonWithSpacing(PRIVATE_BUTTON_ID, 1, 2, GT_GuiIcon.BLACKLIST).setTooltipText(trans("327", "Private"));
+            // Import/Export Buttons
+            newButtonWithSpacing(IMPORT_BUTTON_ID, 0, 3, GT_GuiIcon.IMPORT).setTooltipText(trans("007", "Import"));
+            newButtonWithSpacing(EXPORT_BUTTON_ID, 1, 3, GT_GuiIcon.EXPORT).setTooltipText(trans("006", "Export"));
         }
 
         @Override
@@ -209,15 +213,15 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
         }
 
         @Override
-        public void buttonClicked(GuiButton btn){
-            if (getClickable(btn.id)){
+        public void buttonClicked(GuiButton btn) {
+            if (getClickable(btn.id)) {
                 coverVariable = getNewCoverVariable(btn.id);
                 GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
             }
             updateButtons();
         }
 
-        private void updateButtons(){
+        private void updateButtons() {
             GuiButton b;
             for (Object o : buttonList) {
                 b = (GuiButton) o;
@@ -227,23 +231,26 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
 
         private void switchPrivatePublic(int coverVar) {
             UUID ownerUUID = tag.getUUID();
-            if (testBit(coverVar, PUBLIC_PRIVATE_MASK)){
+            if (testBit(coverVar, PUBLIC_PRIVATE_MASK)) {
                 ownerUUID = gregtechproxy.getThePlayer().getUniqueID();
             } else {
                 ownerUUID = null;
             }
             EnderLinkTag newTag = new EnderLinkTag(tag.getFrequency(), ownerUUID);
-            NetworkDispatcher.INSTANCE.sendToServer(new EnderLinkCoverMessage.EnderLinkCoverUpdate(newTag, (IFluidHandler) tile));
+            NetworkDispatcher.INSTANCE.sendToServer(
+                    new EnderLinkCoverMessage.EnderLinkCoverUpdate(newTag, (IFluidHandler) tile));
         }
 
         private int getNewCoverVariable(int id) {
             int tempCoverVariable = coverVariable;
             switch (id) {
-                case PUBLIC_BUTTON_ID: case PRIVATE_BUTTON_ID:
+                case PUBLIC_BUTTON_ID:
+                case PRIVATE_BUTTON_ID:
                     tempCoverVariable = toggleBit(tempCoverVariable, PUBLIC_PRIVATE_MASK);
                     switchPrivatePublic(tempCoverVariable);
                     break;
-                case IMPORT_BUTTON_ID: case EXPORT_BUTTON_ID:
+                case IMPORT_BUTTON_ID:
+                case EXPORT_BUTTON_ID:
                     tempCoverVariable = toggleBit(tempCoverVariable, IMPORT_EXPORT_MASK);
             }
             return tempCoverVariable;
@@ -272,7 +279,8 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
             try {
                 String string = box.getText();
                 tag = new EnderLinkTag(string, tag.getUUID());
-                NetworkDispatcher.INSTANCE.sendToServer(new EnderLinkCoverMessage.EnderLinkCoverUpdate(tag, (IFluidHandler) tile));
+                NetworkDispatcher.INSTANCE.sendToServer(
+                        new EnderLinkCoverMessage.EnderLinkCoverUpdate(tag, (IFluidHandler) tile));
             } catch (NumberFormatException ignored) {
             }
             resetColorField();

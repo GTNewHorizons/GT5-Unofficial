@@ -1,10 +1,10 @@
 package com.github.technus.tectech.thing.metaTileEntity.single.gui;
 
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
-
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_DebugStructureWriter extends GT_GUIContainerMetaTile_Machine {
     public GT_GUIContainer_DebugStructureWriter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -20,7 +20,7 @@ public class GT_GUIContainer_DebugStructureWriter extends GT_GUIContainerMetaTil
                 return;
             }
             fontRendererObj.drawString(dsw.size ? "Structure size" : "My position", 46, 16, 16448255);
-            fontRendererObj.drawString(dsw.size ? "(Changing scan size)" : "(Moving origin)", 46,24, 16448255);
+            fontRendererObj.drawString(dsw.size ? "(Changing scan size)" : "(Moving origin)", 46, 24, 16448255);
             fontRendererObj.drawString("A: " + dsw.numbers[dsw.size ? 3 : 0], 46, 32, 16448255);
             fontRendererObj.drawString("B: " + dsw.numbers[dsw.size ? 4 : 1], 46, 40, 16448255);
             fontRendererObj.drawString("C: " + dsw.numbers[dsw.size ? 5 : 2], 46, 48, 16448255);

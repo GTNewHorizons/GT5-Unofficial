@@ -1,9 +1,14 @@
 package com.github.technus.tectech.thing.item;
 
+import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.thing.CustomItemList.teslaComponent;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.util.CommonValues;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,13 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-
-import java.util.List;
-
-import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.thing.CustomItemList.teslaComponent;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 
 public final class TeslaCoilComponent extends Item {
     public static TeslaCoilComponent INSTANCE;
@@ -32,7 +30,8 @@ public final class TeslaCoilComponent extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.BASS_MARK);
-        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.itemTeslaComponent.desc"));//Tesla bois need these!
+        aList.add(EnumChatFormatting.BLUE
+                + translateToLocal("item.tm.itemTeslaComponent.desc")); // Tesla bois need these!
     }
 
     @Override
