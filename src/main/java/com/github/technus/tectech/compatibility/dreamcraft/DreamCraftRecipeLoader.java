@@ -203,7 +203,7 @@ public class DreamCraftRecipeLoader {
                 16_777_216, 2048, 8_000_000, 1, new Object[]{
                         new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
                         GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Infinity, 8),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 8),
                         GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
                         GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 32, 0)
                 }, new FluidStack[]{
