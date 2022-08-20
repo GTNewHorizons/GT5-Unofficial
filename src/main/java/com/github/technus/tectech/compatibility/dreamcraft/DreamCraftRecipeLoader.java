@@ -3491,6 +3491,86 @@ public class DreamCraftRecipeLoader {
                     GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 5001),
                     1500,
                     8_000_000);
+            if (Loader.isModLoaded("DraconicEvolution")) {
+                // DE Schematics Cores Tier 1
+                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                        GT_ModHandler.getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 9),
+                        5_000_000,
+                        512,
+                        1_000_000,
+                        4,
+                        new Object[] {
+                            GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Draconium, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Ichorium, 1L),
+                            new Object[] {OrePrefixes.circuit.get(Materials.Infinite), 1},
+                        },
+                        new FluidStack[] {
+                            Materials.Sunnarium.getMolten(14400L), Materials.Void.getMolten(28800L),
+                        },
+                        GT_ModHandler.getModItem("EMT", "EMTItems", 1, 16),
+                        6000,
+                        500_000);
+
+                // DE Schematics Cores Tier 2
+                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                        GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0),
+                        10_000_000,
+                        1024,
+                        4_000_000,
+                        8,
+                        new Object[] {
+                            GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 4, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Draconium, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 1L),
+                            new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1},
+                        },
+                        new FluidStack[] {
+                            Materials.Neutronium.getMolten(14400L), Materials.Void.getMolten(57600L),
+                        },
+                        GT_ModHandler.getModItem("EMT", "EMTItems", 1, 17),
+                        12000,
+                        2_000_000);
+
+                // DE Schematics Cores Tier 3
+                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                        GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 1, 0),
+                        20_000_000,
+                        2048,
+                        16_000_000,
+                        16,
+                        new Object[] {
+                            GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 4, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 1L),
+                            new Object[] {OrePrefixes.circuit.get(Materials.Nano), 1},
+                        },
+                        new FluidStack[] {
+                            Materials.Infinity.getMolten(14400L), Materials.Void.getMolten(115200L),
+                        },
+                        GT_ModHandler.getModItem("EMT", "EMTItems", 1, 18),
+                        24000,
+                        8_000_000);
+                // DE Schematics Cores Tier 4
+                TT_recipeAdder.addResearchableAssemblylineRecipe(
+                        GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 1, 0),
+                        40_000_000,
+                        4096,
+                        64_000_000,
+                        64,
+                        new Object[] {
+                            GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 8, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 4L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 1L),
+                            new Object[] {OrePrefixes.circuit.get(Materials.Piko), 1},
+                        },
+                        new FluidStack[] {
+                            Materials.SpaceTime.getMolten(14400L), Materials.Void.getMolten(230400L),
+                        },
+                        GT_ModHandler.getModItem("EMT", "EMTItems", 1, 19),
+                        36000,
+                        32_000_000);
+            }
         }
 
         // region singleblocks
