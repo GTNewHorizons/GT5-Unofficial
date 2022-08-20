@@ -36,10 +36,18 @@ public class GT_Container_InputBus_ME  extends GT_ContainerMetaTile_Machine {
             for (int x = 0; x < 4; ++x) {
                 GT_Slot_Holo_ME slot = new GT_Slot_Holo_ME(this.mTileEntity, x + y * 4 + 16,
                     LEFT_OFFSET + x * SLOT_SIZE + 90, TOP_OFFSET + y * SLOT_SIZE, false, true);
-                //slot.setEnabled(false); should it be highlightable?
                 addSlotToContainer(slot);
             }
         addSlotToContainer(slotCircuit = new GT_Slot_Render(mTileEntity, CIRCUIT_SLOT, 80, 63));
+    }
+
+    private boolean containsSuchStack(ItemStack tStack) {
+        for (int i = 0; i < 16; ++i) {
+            Slot tSlot = (Slot) this.inventorySlots.get(i);
+            if (tSlot != null && GT_Utility.areStacksEqual(tSlot.getStack(), tStack, false))
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -54,6 +62,8 @@ public class GT_Container_InputBus_ME  extends GT_ContainerMetaTile_Machine {
                     tSlot.putStack(null);
                 }
                 else {
+                    if (containsSuchStack(tStack))
+                        return null;
                     tSlot.putStack(GT_Utility.copyAmount(1L, new Object[] {tStack}));
                 }
                 if (mTileEntity.isServerSide()) {

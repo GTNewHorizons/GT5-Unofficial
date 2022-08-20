@@ -65,7 +65,7 @@ public class GT_GUIContainer_InputBus_ME  extends GT_GUIContainerMetaTile_Machin
                 mContainer.mTileEntity.getStackInSlot(GT_Container_InputBus_ME.CIRCUIT_SLOT))));
     }
 
-    // base method is made pubic by AE2 ASM
+    // base method is made public by AE2 ASM
     public void func_146977_a( final Slot s )
     {
         this.drawSlot( s );
