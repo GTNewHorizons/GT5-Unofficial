@@ -96,7 +96,9 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     @Override
     public void onRemoval() {
         if (LoaderReference.BloodMagic) MinecraftForge.EVENT_BUS.unregister(this);
-        if (getBaseMetaTileEntity().isClientSide()) entityRenderer.setDead();
+        if (getBaseMetaTileEntity().isClientSide() && entityRenderer != null) {
+            entityRenderer.setDead();
+        }
     }
 
     private static final String WellOfSufferingRitualName = "AW013Suffering";
