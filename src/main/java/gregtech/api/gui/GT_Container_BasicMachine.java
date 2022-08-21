@@ -30,15 +30,12 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
             mItemTransfer = false,
             mStuttering = false;
 
-    private Runnable circuitSlotClickCallback;
-
     GT_Slot_Holo slotFluidTransferToggle;
     GT_Slot_Holo slotItemTransferToggle;
     GT_Slot_Holo slotFluidOutput;
     GT_Slot_Holo slotFluidInput;
     Slot slotBattery;
     Slot slotSpecial;
-    GT_Slot_Render slotCircuit;
 
     public GT_Container_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -54,9 +51,9 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         addSlotToContainer(slotItemTransferToggle = new GT_Slot_Holo(mTileEntity, 0, 26, 63, false, true, 1));
         slotItemTransferToggle.setEnabled(!machine.isSteampowered());
         addSlotToContainer(slotFluidOutput = new GT_Slot_Render(mTileEntity, 2, 107, 63));
-        slotFluidOutput.setEnabled(recipes != null ? recipes.hasFluidOutputs() : false);
-        addSlotToContainer(slotCircuit = new GT_Slot_Render(mTileEntity, machine.getCircuitSlot(), 153, 63));
-        slotCircuit.setEnabled(machine.allowSelectCircuit());
+        slotFluidOutput.setEnabled(recipes != null && recipes.hasFluidOutputs());
+        // add circuit slot here to have it in fixed position
+        addCircuitSlot();
 
         int tStartIndex = machine.getInputSlot();
 
@@ -222,40 +219,6 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                     machine.mItemTransfer = !machine.mItemTransfer;
                 }
                 return null;
-            case 3:
-                if (machine.allowSelectCircuit() && aMouseclick < 2) {
-                    ItemStack newCircuit;
-                    if (aShifthold == 1) {
-                        if (aMouseclick == 0) {
-                            if (circuitSlotClickCallback != null)
-                                circuitSlotClickCallback.run();
-                            return null;
-                        } else {
-                            // clear
-                            newCircuit = null;
-                        }
-                    } else {
-                        ItemStack cursorStack = aPlayer.inventory.getItemStack();
-                        List<ItemStack> tCircuits = machine.getConfigurationCircuits();
-                        int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
-                        if (index < 0) {
-                            int curIndex = GT_Utility.findMatchingStackInList(tCircuits, machine.getStackInSlot(machine.getCircuitSlot())) + 1;
-                            if (aMouseclick == 0) {
-                                curIndex += 1;
-                            } else {
-                                curIndex -= 1;
-                            }
-                            curIndex = Math.floorMod(curIndex, tCircuits.size() + 1) - 1;
-                            newCircuit = curIndex < 0 ? null : tCircuits.get(curIndex);
-                        } else {
-                            // set to whatever it is
-                            newCircuit = tCircuits.get(index);
-                        }
-                    }
-                    mTileEntity.setInventorySlotContents(machine.getCircuitSlot(), newCircuit);
-                    return newCircuit;
-                }
-                return null;
             default:
                 if (aSlotNumber == OTHER_SLOT_COUNT + 1 + machine.mInputSlotCount + machine.mOutputItems.length && aMouseclick < 2) {
                     if (mTileEntity.isClientSide()) {
@@ -338,9 +301,5 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
 
     public GT_MetaTileEntity_BasicMachine getMachine() {
         return (GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity();
-    }
-
-    public void setCircuitSlotClickCallback(Runnable circuitSlotClickCallback) {
-        this.circuitSlotClickCallback = circuitSlotClickCallback;
     }
 }
