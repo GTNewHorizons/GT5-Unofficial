@@ -1617,6 +1617,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(✦◆✦)(⚷⚙⚷ Ni4Ti6)";
         SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs⚶)\u2086(⌘☯☯⌘)\u2085";
         SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy⚶)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085۞\u2082";
+        Diatomite.mChemicalFormula = "(SiO\u2082)Fe\u2082O\u2083(Al\u2082O\u2083)";
     }
 
     private static void initSubTags() {
