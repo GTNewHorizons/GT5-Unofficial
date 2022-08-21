@@ -3,21 +3,27 @@ package gregtech.api.gui;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
-import gregtech.api.gui.widgets.GT_GuiCoverTabLine;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiTooltip;
-import gregtech.api.gui.widgets.GT_GuiTooltipManager;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.widgets.*;
 import gregtech.api.gui.widgets.GT_GuiTabLine.DisplayStyle;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_ITabRenderer;
 import gregtech.api.gui.widgets.GT_GuiTooltipManager.GT_IToolTipRenderer;
+import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
 import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Util;
+import gregtech.api.util.GT_Utility;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -34,6 +40,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
 
     protected GT_GuiTooltipManager mTooltipManager = new GT_GuiTooltipManager();
     protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    private static final String GHOST_CIRCUIT_TOOLTIP = "GT5U.machines.select_circuit.tooltip";
 
     private final int guiTint;
 
@@ -68,6 +75,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
         }
 
         guiTint = getColorization();
+        mContainer.setCircuitSlotClickCallback(this::openSelectCircuitDialog);
     }
 
     public GT_GUIContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
@@ -178,7 +186,14 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
      * Load data for and create appropriate tooltips for this machine.
      * Only called when one of regular or shift tooltips are enabled.
      */
-    protected void setupTooltips() {    }
+    protected void setupTooltips() {
+        if (mContainer.mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
+            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)mContainer.mTileEntity.getMetaTileEntity();
+            if (ccs.allowSelectCircuit())
+                addToolTip(new GT_GuiSlotTooltip(mContainer.getSlot(ccs.getCircuitGUISlot()), mTooltipCache.getData(GHOST_CIRCUIT_TOOLTIP)));
+        }
+
+    }
 
     // GT_IToolTipRenderer and GT_ITabRenderer implementations
     @Override
@@ -212,5 +227,43 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
     @Override
     public boolean removeToolTip(GT_GuiTooltip toolTip) {
         return mTooltipManager.removeToolTip(toolTip);
+    }
+
+    @Override
+    protected void onMouseWheel(int mx, int my, int delta) {
+        if (mContainer.mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
+            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)mContainer.mTileEntity.getMetaTileEntity();
+            Slot slotCircuit = mContainer.getSlot(ccs.getCircuitGUISlot());
+            if (slotCircuit != null && func_146978_c(slotCircuit.xDisplayPosition,
+                slotCircuit.yDisplayPosition, 16, 16, mx, my))
+            {
+                // emulate click
+                handleMouseClick(slotCircuit, -1, delta > 0 ? 1 : 0, 0);
+                return;
+            }
+        }
+        super.onMouseWheel(mx, my, delta);
+    }
+
+    private void openSelectCircuitDialog() {
+        IMetaTileEntity machine = mContainer.mTileEntity.getMetaTileEntity();
+        IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)machine;
+        List<ItemStack> circuits = ccs.getConfigurationCircuits();
+        mc.displayGuiScreen(new GT_GUIDialogSelectItem(
+            StatCollector.translateToLocal("GT5U.machines.select_circuit"),
+            machine.getStackForm(0),
+            this,
+            this::onCircuitSelected,
+            circuits,
+            GT_Utility.findMatchingStackInList(circuits,
+                machine.getStackInSlot(ccs.getCircuitSlot()))));
+    }
+
+    private void onCircuitSelected(ItemStack selected) {
+        GT_Values.NW.sendToServer(new GT_Packet_SetConfigurationCircuit(mContainer.mTileEntity, selected));
+        // we will not do any validation on client side
+        // it doesn't get to actually decide what inventory contains anyway
+        IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)mContainer.mTileEntity.getMetaTileEntity();
+        mContainer.mTileEntity.setInventorySlotContents(ccs.getCircuitSlot(), selected);
     }
 }

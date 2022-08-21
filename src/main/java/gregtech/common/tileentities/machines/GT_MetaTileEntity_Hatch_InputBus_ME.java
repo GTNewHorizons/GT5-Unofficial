@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -20,29 +19,28 @@ import appeng.api.util.AECableType;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.GT_Container_InputBus_ME;
 import gregtech.common.gui.GT_GUIContainer_InputBus_ME;
-import gregtech.api.util.GT_Utility;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
-public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus {
+public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus implements IConfigurationCircuitSupport {
     private static final int SLOT_COUNT = 16;
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
-    private ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
-    private int[] savedStackSizes = new int[SLOT_COUNT];
+    private final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
+    private final int[] savedStackSizes = new int[SLOT_COUNT];
     private boolean processingRecipe = false;
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 1, SLOT_COUNT * 2 + 1, new String[] {
@@ -186,10 +184,20 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     public int getCircuitSlot() { return SLOT_COUNT * 2; }
 
     @Override
+    public int getCircuitSlotX() {
+        return 80;
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        return 63;
+    }
+
+    @Override
     public ItemStack getStackInSlot(int aIndex) {
         if (!processingRecipe)
             return super.getStackInSlot(aIndex);
-        if (aIndex < 0 && aIndex > mInventory.length)
+        if (aIndex < 0 || aIndex > mInventory.length)
             return null;
         if (aIndex >= SLOT_COUNT && aIndex < SLOT_COUNT * 2)
             //Display slots
@@ -276,7 +284,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (GregTech_API.mAE2 && aIndex >= 0 && aIndex < SLOT_COUNT) {
             if (aStack == null) {
                 super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
-                return null;
             }
             else {
                 AENetworkProxy proxy = getProxy();
@@ -295,7 +302,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 }
                 catch (final GridAccessException ignored) {
                 }
-                return null;
             }
         }
         return null;

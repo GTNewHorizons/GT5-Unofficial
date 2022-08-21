@@ -7,6 +7,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
@@ -46,7 +47,7 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank {
+public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank implements IConfigurationCircuitSupport {
 
     /**
      * return values for checkRecipe()
@@ -148,13 +149,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         onFacingChange();
         onMachineBlockUpdate();
     	return true;
-    }
-
-    @Override
-    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
-        if (allowSelectCircuit() && aIndex == getCircuitSlot() && aStack != null && aStack.stackSize != 0)
-            aStack = GT_Utility.copyAmount(0, aStack);
-        super.setInventorySlotContents(aIndex, aStack);
     }
 
     @Override
@@ -849,6 +843,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return !mDisableMultiStack || mInventory[aIndex] == null;
     }
 
+    @Override
     public boolean allowSelectCircuit() {
         return false;
     }
@@ -865,18 +860,15 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return inputs;
     }
 
-    /**
-     * This might be non-final in the future, but for now, no, don't change this.
-     */
-    public final int getCircuitSlot() {
+    @Override
+    public int getCircuitSlot() {
         return 4;
     }
 
-    /**
-     * Return a list of possible configuration circuit this machine expects.
-     *
-     * This list is unmodifiable. Its elements are not supposed to be modified in any way!
-     */
+    @Override
+    public int getCircuitGUISlot() { return 3; }
+
+    @Override
     public List<ItemStack> getConfigurationCircuits() {
         return GregTech_API.getConfigurationCircuitList(mTier);
     }
@@ -1035,5 +1027,15 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     public Power getPower() {
         return mPower;
+    }
+
+    @Override
+    public int getCircuitSlotX() {
+        return 153;
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        return 63;
     }
 }
