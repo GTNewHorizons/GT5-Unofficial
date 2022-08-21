@@ -2788,7 +2788,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, COSMICNEUTRONIUM, 1, 100);
+                IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, COSMICNEUTRONIUM, 1, 10);
                 if (Loader.isModLoaded("avaritiaddons"))
                     tMutation.requireResource(GameRegistry.findBlock("avaritiaddons", "InfinityChest"), 0);
             }
