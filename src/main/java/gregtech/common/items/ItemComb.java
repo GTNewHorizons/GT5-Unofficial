@@ -404,9 +404,9 @@ public class ItemComb extends Item {
             addCentrifugeToItemStack(CombType.SEAWEED, new ItemStack[]{ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem("GalaxySpace", "tcetiedandelions", 1L, 0)}, new int[]{50 * 100, 100 * 100}, Voltage.UV, 100);
         }
 		//Infinity Line
-		addCentrifugeToMaterial(CombType.COSMICNEUTRONIUM, new Materials[] {Materials.CosmicNeutronium, Materials.Neutronium}, new int[] {(int) (0.5 * 100), 1 * 100}, new int[] {}, Voltage.UHV, 12000, NI, 50 * 100);
-		addCentrifugeToMaterial(CombType.INFINITYCATALYST, new Materials[] {Materials.InfinityCatalyst, Materials.Neutronium}, new int[] {(int) (0.05 * 100), 1 * 100}, new int[] {}, Voltage.UEV, 48000, NI, 50 * 100);
-		addCentrifugeToMaterial(CombType.INFINITY, new Materials[] {Materials.Infinity, Materials.InfinityCatalyst}, new int[] {(int) (0.01 * 100), (int) (0.05 * 100)}, new int[] {}, Voltage.UIV, 96000, NI, 50 * 100);
+		addCentrifugeToMaterial(CombType.COSMICNEUTRONIUM, new Materials[] {Materials.CosmicNeutronium, Materials.Neutronium}, new int[] {(int) (15 * 100), 1 * 100}, new int[] {}, Voltage.UHV, 1200, NI, 50 * 100);
+		addCentrifugeToMaterial(CombType.INFINITYCATALYST, new Materials[] {Materials.InfinityCatalyst, Materials.Neutronium}, new int[] {(int) (25 * 100), 20 * 100}, new int[] {}, Voltage.ZPM, 100, NI, 50 * 100);
+		addCentrifugeToMaterial(CombType.INFINITY, new Materials[] {Materials.Infinity, Materials.InfinityCatalyst}, new int[] {(int) (20 * 100), (int) (0.05 * 100)}, new int[] {}, Voltage.UV, 1000, NI, 50 * 100);
 
         //(Noble)gas Line
         addFluidExtractorProcess(CombType.HELIUM, Materials.Helium.getGas(250), Voltage.HV);
@@ -481,7 +481,7 @@ public class ItemComb extends Item {
 	 * @param chance chance to get result, 10000 == 100%
 	 * @param volt required Voltage Tier for this recipe, this also affect the duration, amount of UU-Matter, and needed liquid type and amount for chemical reactor
 	 * @param stackSize This parameter can be null, in that case stack size will be just 1. This handle the stackSize of the resulting Item, and Also the Type of Item. if this value is multiple of 9, than related Material output will be dust, if this value is multiple of 4 than output will be Small dust, else the output will be Tiny dust
-	 * @param beeWax if this is null, than the comb will product default Bee wax. But if aMaterial is more than 5, beeWax will be ignored in Gregtech Centrifuge.
+	 * @param beeWax if this is null, then the comb will product default Bee wax. But if aMaterial is more than 5, beeWax will be ignored in Gregtech Centrifuge.
 	 * @param waxChance have same format like "chance"
 	**/
 	public void addCentrifugeToMaterial(CombType comb, Materials[] aMaterial, int[] chance, int[] stackSize, Voltage volt, ItemStack beeWax, int waxChance) {
@@ -499,9 +499,9 @@ public class ItemComb extends Item {
 			if(Math.max(1, stackSize[i]) % 9 == 0) {
 				aOutPut[i] = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial[i], (Math.max(1, stackSize[i])/9) );
 			}else if(Math.max(1, stackSize[i]) % 4 == 0) {
-				aOutPut[i] = GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial[i], (Math.max(1, stackSize[i])/4) );
+				aOutPut[i] = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial[i], (Math.max(1, stackSize[i])/4) );
 			}else {
-				aOutPut[i] = GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial[i], Math.max(1, stackSize[i]));
+				aOutPut[i] = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial[i], Math.max(1, stackSize[i]));
 			}
 		}
 		if(beeWax != NI) {
