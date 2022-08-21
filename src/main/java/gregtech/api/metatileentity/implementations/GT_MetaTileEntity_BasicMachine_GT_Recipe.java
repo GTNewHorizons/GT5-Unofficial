@@ -965,7 +965,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     @Override
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1 && GT_Utility.isStringValid(this.mSoundResourceLocation))
+        if (aIndex == 1
+                && this.mSoundResourceLocation != null
+                && GT_Utility.isStringValid(this.mSoundResourceLocation.getResourceDomain())
+                && GT_Utility.isStringValid(this.mSoundResourceLocation.getResourcePath()))
             GT_Utility.doSoundAtClient(this.mSoundResourceLocation, 100, 1.0F, aX, aY, aZ);
     }
 
@@ -973,8 +976,11 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     public void startProcess() {
         BaseMetaTileEntity myMetaTileEntity = ((BaseMetaTileEntity) this.getBaseMetaTileEntity());
         // Added to throttle sounds. To reduce lag, this is on the server side so BlockUpdate packets aren't sent.
-        if (myMetaTileEntity.mTickTimer > (myMetaTileEntity.mLastSoundTick+ticksBetweenSounds)) {
-            if (GT_Utility.isStringValid(this.mSoundResourceLocation)) this.sendLoopStart((byte) 1);
+        if (myMetaTileEntity.mTickTimer > (myMetaTileEntity.mLastSoundTick + ticksBetweenSounds)) {
+            if (this.mSoundResourceLocation != null
+                    && GT_Utility.isStringValid(this.mSoundResourceLocation.getResourceDomain())
+                    && GT_Utility.isStringValid(this.mSoundResourceLocation.getResourcePath()))
+                this.sendLoopStart((byte) 1);
             // Does not have overflow protection, but they are longs.
             myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
         }
