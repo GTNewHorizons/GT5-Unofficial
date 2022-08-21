@@ -832,8 +832,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         },
         template -> AlleleHelper.instance.set(template, SPEED, Speed.FAST),
         dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(LEAD, OSMIUM, 5);
+            IBeeMutationCustom tMutation = dis.registerMutation(LEAD, OSMIUM, 3);
             tMutation.requireResource("blockIndium");
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(39, "Venus"));//Venus Dim
         }
     ),
 
