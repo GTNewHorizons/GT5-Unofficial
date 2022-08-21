@@ -232,6 +232,7 @@ public class ItemComb extends Item {
 		addProcessGT(CombType.COPPER, new Materials[] {Materials.Copper}, Voltage.LV);
 		addProcessGT(CombType.TIN, new Materials[] {Materials.Tin}, Voltage.LV);
 		addProcessGT(CombType.LEAD, new Materials[] {Materials.Lead}, Voltage.LV);
+        addProcessGT(CombType.INDIUM, new Materials[] {Materials.Indium}, Voltage.ZPM);
 		addProcessGT(CombType.NICKEL, new Materials[] {Materials.Nickel}, Voltage.LV);
 		addProcessGT(CombType.ZINC, new Materials[] {Materials.Zinc}, Voltage.LV);
 		addProcessGT(CombType.SILVER, new Materials[] {Materials.Silver}, Voltage.LV);

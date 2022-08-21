@@ -824,6 +824,20 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         dis -> dis.registerMutation(ASH, PEAT, 15)
     ),
 
+    INDIUM(GT_BranchDefinition.RAREMETAL, "Electrotine", false, new Color(0xFFA9FF), new Color(0x8F5D99),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.INDIUM), 0.05f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(HOT);
+        },
+        template -> AlleleHelper.instance.set(template, SPEED, Speed.FAST),
+        dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(LEAD, OSMIUM, 3);
+            tMutation.requireResource("blockIndium");
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(39, "Venus"));//Venus Dim
+        }
+    ),
+
     //IC2
     COOLANT(GT_BranchDefinition.IC2, "Coolant", false, new Color(0x144F5A), new Color(0x2494A2),
             beeSpecies -> {
@@ -2774,7 +2788,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, COSMICNEUTRONIUM, 1, 100);
+                IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, COSMICNEUTRONIUM, 1, 10);
                 if (Loader.isModLoaded("avaritiaddons"))
                     tMutation.requireResource(GameRegistry.findBlock("avaritiaddons", "InfinityChest"), 0);
             }
