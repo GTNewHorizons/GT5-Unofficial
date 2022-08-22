@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -20,7 +19,6 @@ import appeng.api.util.AECableType;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
@@ -32,7 +30,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.GT_Container_InputBus_ME;
 import gregtech.common.gui.GT_GUIContainer_InputBus_ME;
-import gregtech.api.util.GT_Utility;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
@@ -113,10 +110,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {
-        if (getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getTimer() > 1) {
-            gridProxy = null;
-            getProxy();
-        }
     }
 
     @Override
@@ -159,11 +152,16 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public String[] getInfoData() {
-        return new String[]{
-            "The bus is " + ((getProxy() != null && getProxy().isActive()) ?
-            EnumChatFormatting.GREEN + "online" : EnumChatFormatting.RED + "offline")
-                + EnumChatFormatting.RESET};
+        if (GregTech_API.mAE2) {
+            return new String[] {
+                "The bus is " + ((getProxy() != null && getProxy().isActive()) ?
+                    EnumChatFormatting.GREEN + "online" : EnumChatFormatting.RED + "offline" + getAEDiagnostics())
+                    + EnumChatFormatting.RESET};
+        }
+        else
+            return new String[] {};
     }
+    
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;

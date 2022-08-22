@@ -140,6 +140,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 if (getBaseMetaTileEntity().getWorld() != null)
                     gridProxy.setOwner(getBaseMetaTileEntity().getWorld().getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
             }
+
         }
         return this.gridProxy;
     }
@@ -147,10 +148,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     @Override
     @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {
-        if (getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getTimer() > 1) {
-            gridProxy = null;
-            getProxy();
-        }
     }
 
     @Optional.Method(modid = "appliedenergistics2")
@@ -253,9 +250,12 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public String[] getInfoData() {
+        if (!GregTech_API.mAE2)
+            return new String[]{};
         List<String> ss = new ArrayList<>();
         ss.add("The bus is " + ((getProxy() != null && getProxy().isActive())?
-            EnumChatFormatting.GREEN + "online" : EnumChatFormatting.RED + "offline") + EnumChatFormatting.RESET);
+            EnumChatFormatting.GREEN + "online" : EnumChatFormatting.RED + "offline"
+            + getAEDiagnostics() ) + EnumChatFormatting.RESET);
         if (itemCache.isEmpty()) {
             ss.add("The bus has no cached items");
         }
