@@ -24,8 +24,10 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.HashSet;
-import kubatech.Config;
+import kubatech.config.Config;
+import kubatech.config.OverridesConfig;
 import kubatech.kubatech;
 import kubatech.loaders.MobRecipeLoader;
 
@@ -34,6 +36,7 @@ public class LoadConfigPacket implements IMessage {
     public static final LoadConfigPacket instance = new LoadConfigPacket();
 
     public final HashSet<String> mobsToLoad = new HashSet<>();
+    public final HashMap<String, OverridesConfig.MobOverride> mobsOverrides = new HashMap<>();
 
     @Override
     public void fromBytes(ByteBuf buf) {
@@ -45,6 +48,13 @@ public class LoadConfigPacket implements IMessage {
                 byte[] sbytes = new byte[buf.readInt()];
                 buf.readBytes(sbytes);
                 mobsToLoad.add(new String(sbytes, StandardCharsets.UTF_8));
+            }
+            int overridessize = buf.readInt();
+            for (int i = 0; i < overridessize; i++) {
+                byte[] sbytes = new byte[buf.readInt()];
+                buf.readBytes(sbytes);
+                mobsOverrides.put(
+                        new String(sbytes, StandardCharsets.UTF_8), OverridesConfig.MobOverride.readFromByteBuf(buf));
             }
         }
     }
@@ -60,6 +70,13 @@ public class LoadConfigPacket implements IMessage {
                 buf.writeInt(sbytes.length);
                 buf.writeBytes(sbytes);
             });
+            buf.writeInt(mobsOverrides.size());
+            mobsOverrides.forEach((k, v) -> {
+                byte[] sbytes = k.getBytes(StandardCharsets.UTF_8);
+                buf.writeInt(sbytes.length);
+                buf.writeBytes(sbytes);
+                v.writeToByteBuf(buf);
+            });
         }
     }
 
@@ -67,7 +84,7 @@ public class LoadConfigPacket implements IMessage {
         @Override
         public IMessage onMessage(LoadConfigPacket message, MessageContext ctx) {
             kubatech.info("Received Mob Handler config, parsing");
-            MobRecipeLoader.processMobRecipeMap(message.mobsToLoad);
+            MobRecipeLoader.processMobRecipeMap(message.mobsToLoad, message.mobsOverrides);
             return null;
         }
     }

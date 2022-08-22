@@ -12,6 +12,8 @@ mobhandler.mod=Mod:
 mobhandler.max_health=Max health: 
 mobhandler.chance=Chance: 
 mobhandler.average_reminder=§7§oPlease remember that these are average drops.
+mobhandler.lootable=Looting is applied
+mobhandler.player_only=§7Does not drop in EEC
 
 #Commands
 commandhandler.invalid=§cInvalid use ! The proper use of this command is /%s
