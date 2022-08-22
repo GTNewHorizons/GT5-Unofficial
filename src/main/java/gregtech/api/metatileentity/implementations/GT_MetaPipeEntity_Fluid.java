@@ -374,6 +374,8 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             int tFilledAmount = tEntry.left.fill(tEntry.middle, drainFromIndex(tEntry.right, false, index), false);
 
             if (tFilledAmount > 0) tEntry.left.fill(tEntry.middle, drainFromIndex(tFilledAmount, true, index), true);
+
+            if (mFluids[index] == null || mFluids[index].amount <= 0) return;
         }
 
     }
