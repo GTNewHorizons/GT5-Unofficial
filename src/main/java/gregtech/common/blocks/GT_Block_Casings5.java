@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.enums.HeatingCoilLevel.*;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -7,12 +9,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.util.GT_LanguageManager;
+import java.util.function.Consumer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
-import java.util.function.Consumer;
-
-import static gregtech.api.enums.HeatingCoilLevel.*;
 
 public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHeatingCoil {
 
@@ -33,7 +32,6 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hypogen Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Eternal Coil Block");
 
-
         ItemList.Casing_Coil_Cupronickel.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Coil_Kanthal.set(new ItemStack(this, 1, 1));
         ItemList.Casing_Coil_Nichrome.set(new ItemStack(this, 1, 2));
@@ -52,7 +50,7 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
 
     @Override
     public int getTextureIndex(int aMeta) {
-        return (1 << 7 ) | aMeta;
+        return (1 << 7) | aMeta;
     }
 
     @Override
@@ -162,8 +160,6 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
                 return 0;
         }
     }
-
-
 
     @Override
     public HeatingCoilLevel getCoilHeat(int meta) {

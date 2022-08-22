@@ -9,12 +9,12 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 public class GT_MetaTileEntity_OreDrillingPlant4 extends GT_MetaTileEntity_OreDrillingPlantBase {
     public GT_MetaTileEntity_OreDrillingPlant4(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        mTier=4;
+        mTier = 4;
     }
 
     public GT_MetaTileEntity_OreDrillingPlant4(String aName) {
         super(aName);
-        mTier=4;
+        mTier = 4;
     }
 
     @Override

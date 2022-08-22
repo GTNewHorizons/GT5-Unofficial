@@ -1,13 +1,12 @@
 package gregtech.api.gui;
 
-import java.util.List;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
@@ -31,8 +30,7 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
             mInput = 0,
             mID = 0,
             mDisplayErrorCode = 0;
-    public long mEnergyLong = 0,
-            mStorageLong = 0;
+    public long mEnergyLong = 0, mStorageLong = 0;
     private int oActive = 0,
             oMaxProgressTime = 0,
             oProgressTime = 0,
@@ -44,11 +42,9 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
             oInput = 0,
             oID = 0,
             oDisplayErrorCode = 0;
-    private long oEnergyLong = 0,
-            oStorageLong = 0;
+    private long oEnergyLong = 0, oStorageLong = 0;
     protected int mTimer = 0;
     protected Runnable circuitSlotClickCallback;
-
 
     public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -57,31 +53,32 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
 
         if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {
             addSlots(aInventoryPlayer);
-            if (doesBindPlayerInventory())
-                bindPlayerInventory(aInventoryPlayer);
+            if (doesBindPlayerInventory()) bindPlayerInventory(aInventoryPlayer);
             detectAndSendChanges();
         } else {
             aInventoryPlayer.player.openContainer = aInventoryPlayer.player.inventoryContainer;
         }
     }
 
-    public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean doesBindInventory) {
+    public GT_ContainerMetaTile_Machine(
+            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean doesBindInventory) {
         super(aInventoryPlayer, aTileEntity);
         mTileEntity = aTileEntity;
 
         if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {
             addSlots(aInventoryPlayer);
-            if (doesBindPlayerInventory() && doesBindInventory)
-                bindPlayerInventory(aInventoryPlayer);
+            if (doesBindPlayerInventory() && doesBindInventory) bindPlayerInventory(aInventoryPlayer);
             detectAndSendChanges();
         } else {
             aInventoryPlayer.player.openContainer = aInventoryPlayer.player.inventoryContainer;
         }
     }
+
     protected void addCircuitSlot() {
         if (mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
-            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)mTileEntity.getMetaTileEntity();
-            GT_Slot_Render slotCircuit = new GT_Slot_Render(mTileEntity, ccs.getCircuitSlot(), ccs.getCircuitSlotX(), ccs.getCircuitSlotY());
+            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) mTileEntity.getMetaTileEntity();
+            GT_Slot_Render slotCircuit =
+                    new GT_Slot_Render(mTileEntity, ccs.getCircuitSlot(), ccs.getCircuitSlotX(), ccs.getCircuitSlotY());
             addSlotToContainer(slotCircuit);
             slotCircuit.setEnabled(ccs.allowSelectCircuit());
         }
@@ -95,8 +92,7 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null)
-            return;
+        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
         mStorage = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getEUCapacity());
         mStorageLong = mTileEntity.getEUCapacity();
         mEnergy = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getStoredEU());
@@ -261,17 +257,17 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
     public void setCircuitSlotClickCallback(Runnable circuitSlotClickCallback) {
         this.circuitSlotClickCallback = circuitSlotClickCallback;
     }
+
     @Override
     public ItemStack slotClick(int aSlotNumber, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
         if (mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
             IMetaTileEntity machine = mTileEntity.getMetaTileEntity();
-            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)machine;
+            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) machine;
             if (ccs.allowSelectCircuit() && aSlotNumber == ccs.getCircuitGUISlot() && aMouseclick < 2) {
                 ItemStack newCircuit;
                 if (aShifthold == 1) {
                     if (aMouseclick == 0) {
-                        if (circuitSlotClickCallback != null)
-                            circuitSlotClickCallback.run();
+                        if (circuitSlotClickCallback != null) circuitSlotClickCallback.run();
                         return null;
                     } else {
                         // clear
@@ -282,7 +278,9 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
                     List<ItemStack> tCircuits = ccs.getConfigurationCircuits();
                     int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
                     if (index < 0) {
-                        int curIndex = GT_Utility.findMatchingStackInList(tCircuits, machine.getStackInSlot(ccs.getCircuitSlot())) + 1;
+                        int curIndex = GT_Utility.findMatchingStackInList(
+                                        tCircuits, machine.getStackInSlot(ccs.getCircuitSlot()))
+                                + 1;
                         if (aMouseclick == 0) {
                             curIndex += 1;
                         } else {

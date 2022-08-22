@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -11,9 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
-
-import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.ALL_SIDES;
 
 public abstract class CommonMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mSendClientData = false, mInventoryChanged = false;
@@ -30,6 +29,7 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
         }
         return false;
     }
+
     protected void saveMetaTileNBT(NBTTagCompound aNBT) {
         try {
             if (hasValidMetaTileEntity()) {
@@ -158,5 +158,4 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
         final IMetaTileEntity meta = getMetaTileEntity();
         return meta != null && meta.shouldJoinIc2Enet();
     }
-
 }

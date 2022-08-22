@@ -9,7 +9,9 @@ public class GT_GUIContainer_BronzeBlastFurnace extends GT_GUIContainerMetaTile_
     private final int textColor = this.getTextColorOrDefault("title", 0x404040);
 
     public GT_GUIContainer_BronzeBlastFurnace(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(new GT_Container_BronzeBlastFurnace(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/BronzeBlastFurnace.png");
+        super(
+                new GT_Container_BronzeBlastFurnace(aInventoryPlayer, aTileEntity),
+                "gregtech:textures/gui/BronzeBlastFurnace.png");
     }
 
     @Override
@@ -23,9 +25,23 @@ public class GT_GUIContainer_BronzeBlastFurnace extends GT_GUIContainerMetaTile_
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
-        if ((this.mContainer != null) &&
-                (this.mContainer.mProgressTime > 0)) {
-            drawTexturedModalRect(x + 58, y + 28, 176, 0, Math.max(0, Math.min(20, (this.mContainer.mProgressTime > 0 ? 1 : 0) + this.mContainer.mProgressTime * 20 / (this.mContainer.mMaxProgressTime < 1 ? 1 : this.mContainer.mMaxProgressTime))), 11);
+        if ((this.mContainer != null) && (this.mContainer.mProgressTime > 0)) {
+            drawTexturedModalRect(
+                    x + 58,
+                    y + 28,
+                    176,
+                    0,
+                    Math.max(
+                            0,
+                            Math.min(
+                                    20,
+                                    (this.mContainer.mProgressTime > 0 ? 1 : 0)
+                                            + this.mContainer.mProgressTime
+                                                    * 20
+                                                    / (this.mContainer.mMaxProgressTime < 1
+                                                            ? 1
+                                                            : this.mContainer.mMaxProgressTime))),
+                    11);
         }
     }
 }

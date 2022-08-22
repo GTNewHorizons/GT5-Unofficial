@@ -11,16 +11,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -29,6 +19,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.annotation.Nullable;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 /** This class holds cells for non-GT fluids. */
 public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
@@ -94,6 +93,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         private final int mId;
         /** This is the Forge internal fluid name. */
         private final String mfluidName;
+
         private final CellType mType;
 
         @Nullable
@@ -189,6 +189,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
      * <p>Only contains IDs that were successfully registered.
      */
     private final Map<Integer, RegisteredFluidData> registeredFluidDataMap;
+
     private final EnumMap<CellType, IIconContainer> iconContainerMap;
 
     private GT_MetaGenerated_Item_98() {
@@ -206,8 +207,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
      * However, cell icons seem to be deleted some time between load and post-load, so we must pre-cache them.
      */
     public static synchronized void preInit() {
-        if (INSTANCE == null)
-            INSTANCE = new GT_MetaGenerated_Item_98();
+        if (INSTANCE == null) INSTANCE = new GT_MetaGenerated_Item_98();
 
         // We'll just steal the icons from Water. They are all the same anyway (except _NULL is broken for cells).
         for (CellType cellType : CellType.values()) {
@@ -254,7 +254,9 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
             GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName(itemStack) + ".name",
-                    cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack) + cellType.prefix.mLocalizedMaterialPost);
+                    cellType.prefix.mLocalizedMaterialPre
+                            + fluid.getLocalizedName(fluidStack)
+                            + cellType.prefix.mLocalizedMaterialPost);
 
             int color = fluid.getColor();
             short[] rgba = new short[4];

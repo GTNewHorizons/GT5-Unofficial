@@ -4,21 +4,18 @@ package gregtech.api.graphs;
 public class NodeList {
     Node[] mNodes;
     int mCounter = 0;
+
     public NodeList(Node[] mNodes) {
         this.mNodes = mNodes;
     }
 
     Node getNextNode() {
-        if (++mCounter < mNodes.length)
-            return mNodes[mCounter];
-        else
-            return null;
+        if (++mCounter < mNodes.length) return mNodes[mCounter];
+        else return null;
     }
 
     Node getNode() {
-        if (mCounter < mNodes.length)
-            return mNodes[mCounter];
-        else
-            return null;
+        if (mCounter < mNodes.length) return mNodes[mCounter];
+        else return null;
     }
 }

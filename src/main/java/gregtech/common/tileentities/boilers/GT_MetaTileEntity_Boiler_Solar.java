@@ -1,5 +1,10 @@
 package gregtech.common.tileentities.boilers;
 
+import static gregtech.api.GregTech_API.sMachineFile;
+import static gregtech.api.enums.ConfigCategories.machineconfig;
+import static mcp.mobius.waila.api.SpecialChars.GOLD;
+import static mcp.mobius.waila.api.SpecialChars.RESET;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -10,6 +15,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_Boiler;
 import gregtech.common.gui.GT_GUIContainer_Boiler;
+import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,21 +27,13 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.List;
-
-import static gregtech.api.GregTech_API.sMachineFile;
-import static gregtech.api.enums.ConfigCategories.machineconfig;
-import static mcp.mobius.waila.api.SpecialChars.GOLD;
-import static mcp.mobius.waila.api.SpecialChars.RESET;
-
 public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     public static final String LPS_FMT = "%s L/s";
     private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
             "gt.blockmachines.boiler.solar.desc.format",
-            "Steam Power by the Sun%n" +
-                    "Produces %sL of Steam per second%n" +
-                    "Calcifies over time, reducing Steam output to %sL/s%n" +
-                    "Break and replace to descale");
+            "Steam Power by the Sun%n" + "Produces %sL of Steam per second%n"
+                    + "Calcifies over time, reducing Steam output to %sL/s%n"
+                    + "Break and replace to descale");
     protected final Config mConfig;
     protected int basicTemperatureMod = 5; // Base Celsius gain or loss
     private int mRunTimeTicks = 0;
@@ -55,13 +53,14 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         mConfig = createConfig();
     }
 
-    protected GT_MetaTileEntity_Boiler_Solar(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, Config aConfig) {
+    protected GT_MetaTileEntity_Boiler_Solar(
+            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, Config aConfig) {
         super(aName, aTier, aDescription, aTextures);
         mConfig = aConfig;
     }
 
     protected Config createConfig() {
-        return new Config(machineconfig + ".boiler.solar.bronze",1080000,40,120,45);
+        return new Config(machineconfig + ".boiler.solar.bronze", 1080000, 40, 120, 45);
     }
 
     /**
@@ -91,9 +90,10 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 
     @Override
     public String[] getDescription() {
-        return String.format(localizedDescFormat,
-                GT_Utility.formatNumbers(getMaxOutputPerSecond()),
-                GT_Utility.formatNumbers(getMinOutputPerSecond()))
+        return String.format(
+                        localizedDescFormat,
+                        GT_Utility.formatNumbers(getMaxOutputPerSecond()),
+                        GT_Utility.formatNumbers(getMinOutputPerSecond()))
                 .split("\\R");
     }
 
@@ -107,16 +107,17 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         for (int color = -1; color < 16; color++) {
             int i = color + 1;
             short[] colorModulation = Dyes.getModulation(color, Dyes._NULL.mRGBa);
-            rTextures[0][i] = new ITexture[]{
-                    TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM, colorModulation)};
-            rTextures[1][i] = new ITexture[]{
-                    TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_TOP, colorModulation),
-                    TextureFactory.of(BlockIcons.BOILER_SOLAR)};
-            rTextures[2][i] = new ITexture[]{
-                    TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation)};
-            rTextures[3][i] = new ITexture[]{
-                    TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation),
-                    TextureFactory.of(BlockIcons.OVERLAY_PIPE)};
+            rTextures[0][i] =
+                    new ITexture[] {TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM, colorModulation)};
+            rTextures[1][i] = new ITexture[] {
+                TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_TOP, colorModulation),
+                TextureFactory.of(BlockIcons.BOILER_SOLAR)
+            };
+            rTextures[2][i] = new ITexture[] {TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation)};
+            rTextures[3][i] = new ITexture[] {
+                TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation),
+                TextureFactory.of(BlockIcons.OVERLAY_PIPE)
+            };
         }
         return rTextures;
     }
@@ -132,7 +133,13 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         int i = aColorIndex + 1;
         if (aSide >= 2) {
             if (aSide != aFacing) return mTextures[2][i];
@@ -189,7 +196,9 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
              *  from the maximum output per second, and return this or the minimum output per second
              */
             return mConfig.getMaxOutputPerSecond()
-                            - mConfig.getMaxOutputPerSecond() * (mRunTimeTicks - mConfig.getCalcificationTicks()) / mConfig.getCalcificationTicks();
+                    - mConfig.getMaxOutputPerSecond()
+                            * (mRunTimeTicks - mConfig.getCalcificationTicks())
+                            / mConfig.getCalcificationTicks();
         } else {
             return mConfig.getMaxOutputPerSecond();
         }
@@ -247,16 +256,19 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 
     @Override
     public String[] getInfoData() {
-        return String.format("Heat Capacity: " + EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET +
-                        "    Hot time: " + EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET + "%n" +
-                        "Min output: " + EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET +
-                        "    Max output: " + EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET + "%n" +
-                        "Current Output: " + EnumChatFormatting.YELLOW + LPS_FMT + EnumChatFormatting.RESET,
-                GT_Utility.formatNumbers(getHeatCapacityPercent()),
-                GT_Utility.formatNumbers(getHotTimeSeconds()),
-                GT_Utility.formatNumbers(getMinOutputPerSecond()),
-                GT_Utility.formatNumbers(getMaxOutputPerSecond()),
-                GT_Utility.formatNumbers(getProductionPerSecond()))
+        return String.format(
+                        "Heat Capacity: " + EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET
+                                + "    Hot time: "
+                                + EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET + "%n" + "Min output: "
+                                + EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET + "    Max output: "
+                                + EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET + "%n"
+                                + "Current Output: "
+                                + EnumChatFormatting.YELLOW + LPS_FMT + EnumChatFormatting.RESET,
+                        GT_Utility.formatNumbers(getHeatCapacityPercent()),
+                        GT_Utility.formatNumbers(getHotTimeSeconds()),
+                        GT_Utility.formatNumbers(getMinOutputPerSecond()),
+                        GT_Utility.formatNumbers(getMaxOutputPerSecond()),
+                        GT_Utility.formatNumbers(getProductionPerSecond()))
                 .split("\\R");
     }
 
@@ -274,15 +286,20 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public void getWailaBody(
+            ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(String.format((GOLD + "Solar Boiler Output: " + RESET + "%d/%d L/s"), tag.getInteger("calcificationOutput"), tag.getInteger("maxCalcificationOutput")));
+        currentTip.add(String.format(
+                (GOLD + "Solar Boiler Output: " + RESET + "%d/%d L/s"),
+                tag.getInteger("calcificationOutput"),
+                tag.getInteger("maxCalcificationOutput")));
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+    public void getWailaNBTData(
+            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("calcificationOutput", (getProductionPerSecond()));
         tag.setInteger("maxCalcificationOutput", (getMaxOutputPerSecond()));
@@ -295,27 +312,38 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         private final int coolDownTicks;
         private final int maxRuntimeTicks;
 
-        public Config(String aCategory,
-                      int aDefaultCalcificationTicks,
-                      int aDefaultMinOutputPerSecond,
-                      int aDefaultMaxOutputPerSecond,
-                      int aDefaultCoolDownTicks) {
-            calcificationTicks = get(aCategory,"CalcificationTicks", aDefaultCalcificationTicks,
+        public Config(
+                String aCategory,
+                int aDefaultCalcificationTicks,
+                int aDefaultMinOutputPerSecond,
+                int aDefaultMaxOutputPerSecond,
+                int aDefaultCoolDownTicks) {
+            calcificationTicks = get(
+                    aCategory,
+                    "CalcificationTicks",
+                    aDefaultCalcificationTicks,
                     "Number of run-time ticks before boiler starts calcification.",
                     "100% calcification and minimal output will be reached at 2 times this.");
-            minOutputPerSecond = get(aCategory,"MinOutputPerSecond", aDefaultMinOutputPerSecond);
-            maxOutputPerSecond = get(aCategory,"MaxOutputPerSecond", aDefaultMaxOutputPerSecond);
-            coolDownTicks = get(aCategory,"CoolDownTicks", aDefaultCoolDownTicks, "Number of ticks it takes to lose 1°C.");
+            minOutputPerSecond = get(aCategory, "MinOutputPerSecond", aDefaultMinOutputPerSecond);
+            maxOutputPerSecond = get(aCategory, "MaxOutputPerSecond", aDefaultMaxOutputPerSecond);
+            coolDownTicks =
+                    get(aCategory, "CoolDownTicks", aDefaultCoolDownTicks, "Number of ticks it takes to lose 1°C.");
             // After which min output is reached.
-            maxRuntimeTicks = (getMaxOutputPerSecond() - getMinOutputPerSecond()) * getCalcificationTicks() / getMaxOutputPerSecond() + getCalcificationTicks();
+            maxRuntimeTicks = (getMaxOutputPerSecond() - getMinOutputPerSecond())
+                            * getCalcificationTicks()
+                            / getMaxOutputPerSecond()
+                    + getCalcificationTicks();
         }
 
-        protected int get(final String aCategory, final String aKey, final int aDefaultValue, final String... aComments) {
+        protected int get(
+                final String aCategory, final String aKey, final int aDefaultValue, final String... aComments) {
             final StringBuilder tCommentBuilder = new StringBuilder();
-            for (String tComment: aComments)
-                tCommentBuilder.append(tComment).append('\n');
+            for (String tComment : aComments) tCommentBuilder.append(tComment).append('\n');
             tCommentBuilder.append("Default: ").append(aDefaultValue);
-            return sMachineFile.mConfig.get(aCategory, aKey, aDefaultValue, tCommentBuilder.toString()).getInt();
+            return sMachineFile
+                    .mConfig
+                    .get(aCategory, aKey, aDefaultValue, tCommentBuilder.toString())
+                    .getInt();
         }
 
         public int getCalcificationTicks() {

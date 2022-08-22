@@ -80,12 +80,16 @@ public interface IBasicEnergyContainer extends IEnergyConnected {
     /**
      * returns the amount of Steam contained in this Block, in EU units!
      */
-    default long getStoredSteam() { return 0; }
+    default long getStoredSteam() {
+        return 0;
+    }
 
     /**
      * returns the amount of Steam containable in this Block, in EU units!
      */
-    default long getSteamCapacity() { return 0; }
+    default long getSteamCapacity() {
+        return 0;
+    }
 
     /**
      * Increases stored Energy. Energy Base Value is in EU, even though it's Steam!
@@ -96,5 +100,7 @@ public interface IBasicEnergyContainer extends IEnergyConnected {
      * <p/>
      * And yes, you can't directly decrease the Steam of a Machine. That is done by decreaseStoredEnergyUnits
      */
-    default boolean increaseStoredSteam(long aEnergy, boolean aIgnoreTooMuchEnergy) { return false; }
+    default boolean increaseStoredSteam(long aEnergy, boolean aIgnoreTooMuchEnergy) {
+        return false;
+    }
 }

@@ -7,6 +7,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -21,9 +22,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.List;
-
-public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block implements gregtech.api.interfaces.IHasIndexedTexture {
+public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block
+        implements gregtech.api.interfaces.IHasIndexedTexture {
     public GT_Block_Casings_Abstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
         super(aItemClass, aName, aMaterial);
         setStepSound(soundTypeMetal);
@@ -32,7 +32,8 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block impleme
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
     }
 
-    public GT_Block_Casings_Abstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial, int aMaxMeta) {
+    public GT_Block_Casings_Abstract(
+            Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial, int aMaxMeta) {
         this(aItemClass, aName, aMaterial);
         for (int i = 0; i < aMaxMeta; i++) {
             Textures.BlockIcons.setCasingTextureForId(getTextureIndex(i), TextureFactory.of(this, i));
@@ -115,8 +116,7 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block impleme
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister aIconRegister) {
-    }
+    public void registerBlockIcons(IIconRegister aIconRegister) {}
 
     @Override
     @SideOnly(Side.CLIENT)

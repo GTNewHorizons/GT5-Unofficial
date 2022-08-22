@@ -1,10 +1,10 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.interfaces.IGuiScreen;
+import java.awt.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import org.lwjgl.opengl.GL11;
-import java.awt.Rectangle;
 
 public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElement {
     public static final int DEFAULT_WIDTH = 16;
@@ -15,7 +15,6 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
     protected IGuiScreen gui;
 
     private GT_GuiTooltip tooltip;
-
 
     public GT_GuiIconButton(IGuiScreen gui, int id, int x, int y, GT_GuiIcon icon) {
         super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");
@@ -28,8 +27,7 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
 
     @Override
     public void onInit() {
-        if (tooltip != null)
-            gui.addToolTip(tooltip);
+        if (tooltip != null) gui.addToolTip(tooltip);
         xPosition = x0 + gui.getGuiLeft();
         yPosition = y0 + gui.getGuiTop();
     }
@@ -41,12 +39,14 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
 
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-        if (this.tooltip != null)
-            this.tooltip.enabled = true;
+        if (this.tooltip != null) this.tooltip.enabled = true;
 
         if (this.visible) {
-            //moused over
-            this.field_146123_n = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + width && mouseY < this.yPosition + height;
+            // moused over
+            this.field_146123_n = mouseX >= this.xPosition
+                    && mouseY >= this.yPosition
+                    && mouseX < this.xPosition + width
+                    && mouseY < this.yPosition + height;
 
             mouseDragged(mc, mouseX, mouseY);
 
@@ -56,17 +56,15 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
 
             int x = xPosition;
             int y = yPosition;
-            if(!this.field_146123_n) {
-            //    GL11.glColor4f(200F/255F, 210F/255F, 1, 1);
-            }
-            else
-                GL11.glColor4f(1, 1, 1, 1);
+            if (!this.field_146123_n) {
+                //    GL11.glColor4f(200F/255F, 210F/255F, 1, 1);
+            } else GL11.glColor4f(1, 1, 1, 1);
 
             GT_GuiIcon.render(getButtonTexture(this.field_146123_n), x, y, width, height, 0, true);
 
             GL11.glColor4f(1, 1, 1, 1);
             if (icon != null) {
-                GT_GuiIcon.render(icon, x, y, width, height , 0, true);
+                GT_GuiIcon.render(icon, x, y, width, height, 0, true);
             }
 
             GL11.glPopAttrib();
@@ -76,13 +74,11 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
     @Override
     public void mouseReleased(int mouseX, int mouseY) {
         this.gui.clearSelectedButton();
-        if(mousePressed(Minecraft.getMinecraft(), mouseX, mouseY))
-            this.gui.buttonClicked(this);
+        if (mousePressed(Minecraft.getMinecraft(), mouseX, mouseY)) this.gui.buttonClicked(this);
     }
 
     public GT_GuiIcon getButtonTexture(boolean mouseOver) {
-        if (!enabled)
-            return GT_GuiIcon.BUTTON_DISABLED;
+        if (!enabled) return GT_GuiIcon.BUTTON_DISABLED;
         if (this.equals(this.gui.getSelectedButton()))
             return mouseOver ? GT_GuiIcon.BUTTON_HIGHLIGHT_DOWN : GT_GuiIcon.BUTTON_DOWN;
 
@@ -92,6 +88,7 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
     public GT_GuiIcon getIcon() {
         return icon;
     }
+
     public GT_GuiIconButton setIcon(GT_GuiIcon icon) {
         this.icon = icon;
         return this;
@@ -102,10 +99,8 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
     }
 
     public GT_GuiIconButton setTooltipText(String... text) {
-        if (tooltip == null)
-            tooltip = new GT_GuiTooltip(getBounds(), text);
-        else
-            tooltip.setToolTipText(text);
+        if (tooltip == null) tooltip = new GT_GuiTooltip(getBounds(), text);
+        else tooltip.setToolTipText(text);
         return this;
     }
 

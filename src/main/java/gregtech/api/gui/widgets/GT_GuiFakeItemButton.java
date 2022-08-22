@@ -3,14 +3,13 @@ package gregtech.api.gui.widgets;
 import codechicken.lib.gui.GuiDraw;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.util.GT_UtilityClient;
+import java.awt.*;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import java.awt.*;
-import java.util.List;
 
 public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
 
@@ -42,14 +41,13 @@ public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
         this.gui = gui;
         this.bgIcon = bgIcon;
         item = null;
-        rectangle  = new Rectangle(x, y, 18, 18);
+        rectangle = new Rectangle(x, y, 18, 18);
         gui.addElement(this);
     }
 
     public GT_GuiFakeItemButton setItem(ItemStack i) {
         item = i;
-        if (getMimicSlot())
-            updateTooltip();
+        if (getMimicSlot()) updateTooltip();
         return this;
     }
 
@@ -57,7 +55,7 @@ public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
         itemTooltips = item == null ? null : GT_UtilityClient.getTooltip(item, true);
     }
 
-    public ItemStack getItem(){
+    public ItemStack getItem() {
         return item;
     }
 
@@ -95,8 +93,7 @@ public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
 
     @Override
     public void onRemoved() {
-        if (mimicSlot)
-            gui.removeToolTip(tooltip);
+        if (mimicSlot) gui.removeToolTip(tooltip);
     }
 
     @Override
@@ -106,8 +103,8 @@ public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        if (bgIcon != null){
-            GT_GuiIcon.render(bgIcon, xPosition-1, yPosition-1, 18, 18,0,true);
+        if (bgIcon != null) {
+            GT_GuiIcon.render(bgIcon, xPosition - 1, yPosition - 1, 18, 18, 0, true);
         }
 
         if (item != null) {
@@ -115,10 +112,15 @@ public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
                 GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
                 GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             }
-            gui.getItemRenderer().renderItemAndEffectIntoGUI(gui.getFontRenderer(), Minecraft.getMinecraft().getTextureManager(), item, xPosition, yPosition);
+            gui.getItemRenderer()
+                    .renderItemAndEffectIntoGUI(
+                            gui.getFontRenderer(),
+                            Minecraft.getMinecraft().getTextureManager(),
+                            item,
+                            xPosition,
+                            yPosition);
 
-            if (item.getItem() instanceof ItemBlock)
-                GL11.glPopAttrib();
+            if (item.getItem() instanceof ItemBlock) GL11.glPopAttrib();
         }
 
         if (getMimicSlot())

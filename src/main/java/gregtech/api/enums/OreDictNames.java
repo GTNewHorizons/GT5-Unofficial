@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-
 public enum OreDictNames {
     craftingAnvil,
     craftingBook,

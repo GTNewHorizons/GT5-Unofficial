@@ -5,7 +5,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_LargeBoiler_Bronze extends GT_MetaTileEntity_LargeBoiler {
 
@@ -25,8 +24,8 @@ public class GT_MetaTileEntity_LargeBoiler_Bronze extends GT_MetaTileEntity_Larg
     }
 
     @Override
-    public String getCasingMaterial(){
-    	return "Bronze";
+    public String getCasingMaterial() {
+        return "Bronze";
     }
 
     @Override
@@ -90,5 +89,7 @@ public class GT_MetaTileEntity_LargeBoiler_Bronze extends GT_MetaTileEntity_Larg
     }
 
     @Override
-    boolean isSuperheated() { return false; }
+    boolean isSuperheated() {
+        return false;
+    }
 }

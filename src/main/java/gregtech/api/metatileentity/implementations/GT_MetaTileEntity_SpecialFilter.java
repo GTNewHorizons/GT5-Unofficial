@@ -14,16 +14,19 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
     public boolean bNBTAllowed = false;
     public boolean bInvertFilter = false;
 
-    public GT_MetaTileEntity_SpecialFilter(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
+    public GT_MetaTileEntity_SpecialFilter(
+            int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
         // 9 buffer slot, 1 representation slot, 1 holo slot. last seems not needed...
         super(aID, aName, aNameRegional, aTier, 11, aDescription);
     }
 
-    public GT_MetaTileEntity_SpecialFilter(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_SpecialFilter(
+            String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_SpecialFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_SpecialFilter(
+            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -60,7 +63,9 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) && ((this.bNBTAllowed) || (!aStack.hasTagCompound())) && (this.isStackAllowed(aStack) != this.bInvertFilter);
+        return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
+                && ((this.bNBTAllowed) || (!aStack.hasTagCompound()))
+                && (this.isStackAllowed(aStack) != this.bInvertFilter);
     }
 
     protected abstract boolean isStackAllowed(ItemStack aStack);

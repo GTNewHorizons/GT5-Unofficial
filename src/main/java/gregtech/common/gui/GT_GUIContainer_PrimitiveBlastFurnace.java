@@ -5,23 +5,21 @@ import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.nei.NEI_TransferRectHost;
-import net.minecraft.entity.player.InventoryPlayer;
-
 import java.awt.*;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTile_Machine
         implements NEI_TransferRectHost {
     private String name;
     public String mNEI;
-    private final static GT_GuiTabIconSet TAB_ICONSET = new GT_GuiTabIconSet(
-        GT_GuiIcon.TAB_NORMAL_BRICK,
-        GT_GuiIcon.TAB_HIGHLIGHT_BRICK,
-        GT_GuiIcon.TAB_DISABLED_BRICK);
+    private static final GT_GuiTabIconSet TAB_ICONSET = new GT_GuiTabIconSet(
+            GT_GuiIcon.TAB_NORMAL_BRICK, GT_GuiIcon.TAB_HIGHLIGHT_BRICK, GT_GuiIcon.TAB_DISABLED_BRICK);
     private final int textColor = this.getTextColorOrDefault("title", 0x404040);
 
-    public GT_GUIContainer_PrimitiveBlastFurnace(InventoryPlayer inventoryPlayer, IGregTechTileEntity tileEntity,
-            String name, String aNEI) {
-        super(new GT_Container_PrimitiveBlastFurnace(inventoryPlayer, tileEntity),
+    public GT_GUIContainer_PrimitiveBlastFurnace(
+            InventoryPlayer inventoryPlayer, IGregTechTileEntity tileEntity, String name, String aNEI) {
+        super(
+                new GT_Container_PrimitiveBlastFurnace(inventoryPlayer, tileEntity),
                 String.format("gregtech:textures/gui/%s.png", name.replace(" ", "")));
         this.name = name;
         this.mNEI = aNEI;
@@ -39,8 +37,19 @@ public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTi
         int y = (this.height - this.ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
         if ((this.mContainer != null) && (this.mContainer.mProgressTime > 0)) {
-            drawTexturedModalRect(x + 58, y + 28, 176, 0, Math.max(0, Math.min(20, (1)
-                            + this.mContainer.mProgressTime * 20 / (Math.max(this.mContainer.mMaxProgressTime, 1)))),
+            drawTexturedModalRect(
+                    x + 58,
+                    y + 28,
+                    176,
+                    0,
+                    Math.max(
+                            0,
+                            Math.min(
+                                    20,
+                                    (1)
+                                            + this.mContainer.mProgressTime
+                                                    * 20
+                                                    / (Math.max(this.mContainer.mMaxProgressTime, 1)))),
                     11);
         }
     }

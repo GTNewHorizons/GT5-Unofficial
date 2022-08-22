@@ -100,6 +100,8 @@ public class GT_Block_Casings6 extends GT_Block_Casings_Abstract {
 
     @Override
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
+        return gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16
+                | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8
+                | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
     }
 }

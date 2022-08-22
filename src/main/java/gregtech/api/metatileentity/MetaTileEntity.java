@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.api.enums.GT_Values.V;
+
 import appeng.api.util.AECableType;
 import appeng.me.helpers.AENetworkProxy;
 import cpw.mods.fml.common.Optional;
@@ -21,6 +23,10 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
@@ -42,13 +48,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import static gregtech.api.enums.GT_Values.V;
-
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
@@ -69,6 +68,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      * The Inventory of the MetaTileEntity. Amount of Slots can be larger than 256. HAYO!
      */
     public final ItemStack[] mInventory;
+
     public boolean doTickProfilingInThisTick = true;
 
     private MetaTileEntity mCallBackTile;
@@ -78,7 +78,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      */
     private IGregTechTileEntity mBaseMetaTileEntity;
 
-    public long mSoundRequests=0;
+    public long mSoundRequests = 0;
 
     /**
      * This registers your Machine at the List.
@@ -143,7 +143,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public ItemStack getStackForm(long aAmount) {
-        return new ItemStack(GregTech_API.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
+        return new ItemStack(
+                GregTech_API.sBlockMachines,
+                (int) aAmount,
+                getBaseMetaTileEntity().getMetaTileID());
     }
 
     public String getLocalName() {
@@ -151,23 +154,35 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public void onServerStart() {/*Do nothing*/}
+    public void onServerStart() {
+        /*Do nothing*/
+    }
 
     @Override
-    public void onWorldSave(File aSaveDirectory) {/*Do nothing*/}
+    public void onWorldSave(File aSaveDirectory) {
+        /*Do nothing*/
+    }
 
     @Override
-    public void onWorldLoad(File aSaveDirectory) {/*Do nothing*/}
+    public void onWorldLoad(File aSaveDirectory) {
+        /*Do nothing*/
+    }
 
     @Override
-    public void onConfigLoad(GT_Config aConfig) {/*Do nothing*/}
+    public void onConfigLoad(GT_Config aConfig) {
+        /*Do nothing*/
+    }
 
     @Override
-    public void setItemNBT(NBTTagCompound aNBT) {/*Do nothing*/}
+    public void setItemNBT(NBTTagCompound aNBT) {
+        /*Do nothing*/
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {/*Do nothing*/}
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        /*Do nothing*/
+    }
 
     @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
@@ -175,10 +190,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {/*Do nothing*/}
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        /*Do nothing*/
+    }
 
     @Override
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (getBaseMetaTileEntity().isValidFacing(aWrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(aWrenchingSide);
             return true;
@@ -187,39 +205,54 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if(!aPlayer.isSneaking()) return false;
+    public boolean onWireCutterRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (!aPlayer.isSneaking()) return false;
         byte tSide = GT_Utility.getOppositeSide(aWrenchingSide);
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(aWrenchingSide);
-        if ((tTileEntity instanceof IGregTechTileEntity) && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+        if ((tTileEntity instanceof IGregTechTileEntity)
+                && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
-            return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity().onWireCutterRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
+            return ((IGregTechTileEntity) tTileEntity)
+                    .getMetaTileEntity()
+                    .onWireCutterRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
         }
         return false;
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if(!aPlayer.isSneaking()) return false;
+    public boolean onSolderingToolRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (!aPlayer.isSneaking()) return false;
         byte tSide = GT_Utility.getOppositeSide(aWrenchingSide);
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(aWrenchingSide);
-        if ((tTileEntity instanceof IGregTechTileEntity) && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+        if ((tTileEntity instanceof IGregTechTileEntity)
+                && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
-            return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity().onSolderingToolRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
+            return ((IGregTechTileEntity) tTileEntity)
+                    .getMetaTileEntity()
+                    .onSolderingToolRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
         }
         return false;
     }
 
     @Override
     public void onExplosion() {
-        GT_Log.exp.println("Machine at "+this.getBaseMetaTileEntity().getXCoord()+" | "+this.getBaseMetaTileEntity().getYCoord()+" | "+this.getBaseMetaTileEntity().getZCoord()+" DIMID: "+ this.getBaseMetaTileEntity().getWorld().provider.dimensionId+ " exploded.");
+        GT_Log.exp.println("Machine at " + this.getBaseMetaTileEntity().getXCoord() + " | "
+                + this.getBaseMetaTileEntity().getYCoord() + " | "
+                + this.getBaseMetaTileEntity().getZCoord() + " DIMID: "
+                + this.getBaseMetaTileEntity().getWorld().provider.dimensionId + " exploded.");
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {/*Do nothing*/}
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        /*Do nothing*/
+    }
 
     @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {/*Do nothing*/}
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        /*Do nothing*/
+    }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -233,23 +266,33 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public void inValidate() {/*Do nothing*/}
+    public void inValidate() {
+        /*Do nothing*/
+    }
 
     @Override
-    public void onRemoval() {/*Do nothing*/}
+    public void onRemoval() {
+        /*Do nothing*/
+    }
 
     @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {/*Do nothing*/}
+    public void initDefaultModes(NBTTagCompound aNBT) {
+        /*Do nothing*/
+    }
 
     /**
      * When a GUI is opened
      */
-    public void onOpenGUI() {/*Do nothing*/}
+    public void onOpenGUI() {
+        /*Do nothing*/
+    }
 
     /**
      * When a GUI is closed
      */
-    public void onCloseGUI() {/*Do nothing*/}
+    public void onCloseGUI() {
+        /*Do nothing*/
+    }
 
     /**
      * a Player rightclicks the Machine
@@ -260,15 +303,20 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onRightclick(
+            IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
         return onRightclick(aBaseMetaTileEntity, aPlayer);
     }
 
     @Override
-    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {/*Do nothing*/}
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        /*Do nothing*/
+    }
 
     @Override
-    public void onValueUpdate(byte aValue) {/*Do nothing*/}
+    public void onValueUpdate(byte aValue) {
+        /*Do nothing*/
+    }
 
     @Override
     public byte getUpdateData() {
@@ -276,13 +324,19 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public void doSound(byte aIndex, double aX, double aY, double aZ) {/*Do nothing*/}
+    public void doSound(byte aIndex, double aX, double aY, double aZ) {
+        /*Do nothing*/
+    }
 
     @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {/*Do nothing*/}
+    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        /*Do nothing*/
+    }
 
     @Override
-    public void stopSoundLoop(byte aValue, double aX, double aY, double aZ) {/*Do nothing*/}
+    public void stopSoundLoop(byte aValue, double aX, double aY, double aZ) {
+        /*Do nothing*/
+    }
 
     @Override
     public MetaTileEntity getCallbackBase() {
@@ -458,7 +512,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      * This is used to set the internal Steam Energy to the given Parameter.
      */
     public void setSteamVar(long aSteam) {
-        if(((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredSteam != aSteam){
+        if (((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredSteam != aSteam) {
             markDirty();
             ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredSteam = aSteam;
         }
@@ -529,7 +583,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel, ArrayList<String> aList) {
+    public ArrayList<String> getSpecialDebugInfo(
+            IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel, ArrayList<String> aList) {
         return aList;
     }
 
@@ -583,10 +638,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public void onMachineBlockUpdate() {/*Do nothing*/}
+    public void onMachineBlockUpdate() {
+        /*Do nothing*/
+    }
 
     @Override
-    public void receiveClientEvent(byte aEventID, byte aValue) {/*Do nothing*/}
+    public void receiveClientEvent(byte aEventID, byte aValue) {
+        /*Do nothing*/
+    }
 
     @Override
     public boolean isSimpleMachine() {
@@ -639,13 +698,17 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     /**
      * When the Facing gets changed.
      */
-    public void onFacingChange() {/*Do nothing*/}
+    public void onFacingChange() {
+        /*Do nothing*/
+    }
 
     /**
      * if the IC2 Teleporter can drain from this.
      */
     public boolean isTeleporterCompatible() {
-        return isEnetOutput() && getBaseMetaTileEntity().getOutputVoltage() >= 128 && getBaseMetaTileEntity().getUniversalEnergyCapacity() >= 500000;
+        return isEnetOutput()
+                && getBaseMetaTileEntity().getOutputVoltage() >= 128
+                && getBaseMetaTileEntity().getUniversalEnergyCapacity() >= 500000;
     }
 
     /**
@@ -678,7 +741,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public String[] getInfoData() {
-        return new String[]{};
+        return new String[] {};
     }
 
     public boolean isDigitalChest() {
@@ -689,7 +752,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         return null;
     }
 
-    public void setItemCount(int aCount) {/*Do nothing*/}
+    public void setItemCount(int aCount) {
+        /*Do nothing*/
+    }
 
     public int getMaxItemCount() {
         return 0;
@@ -710,14 +775,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         markDirty();
         if (this instanceof IConfigurationCircuitSupport) {
-            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)this;
+            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) this;
             if (ccs.allowSelectCircuit() && aIndex == ccs.getCircuitSlot() && aStack != null) {
                 mInventory[aIndex] = GT_Utility.copyAmount(0, aStack);
                 return;
             }
         }
-        if (aIndex >= 0 && aIndex < mInventory.length)
-            mInventory[aIndex] = aStack;
+        if (aIndex >= 0 && aIndex < mInventory.length) mInventory[aIndex] = aStack;
     }
 
     @Override
@@ -745,8 +809,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                 if (setStackToZeroInsteadOfNull(aIndex)) {
                     tStack.stackSize = 0;
                     markDirty();
-                }
-                else setInventorySlotContents(aIndex, null);
+                } else setInventorySlotContents(aIndex, null);
             } else {
                 rStack = tStack.splitStack(aAmount);
                 markDirty();
@@ -761,21 +824,59 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public int[] getAccessibleSlotsFromSide(int aSide) {
         TIntList tList = new TIntArrayList();
         IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
-        boolean tSkip = tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), -2, tTileEntity) || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), -2, tTileEntity);
+        boolean tSkip = tTileEntity
+                        .getCoverBehaviorAtSideNew((byte) aSide)
+                        .letsItemsIn(
+                                (byte) aSide,
+                                tTileEntity.getCoverIDAtSide((byte) aSide),
+                                tTileEntity.getComplexCoverDataAtSide((byte) aSide),
+                                -2,
+                                tTileEntity)
+                || tTileEntity
+                        .getCoverBehaviorAtSideNew((byte) aSide)
+                        .letsItemsOut(
+                                (byte) aSide,
+                                tTileEntity.getCoverIDAtSide((byte) aSide),
+                                tTileEntity.getComplexCoverDataAtSide((byte) aSide),
+                                -2,
+                                tTileEntity);
         for (int i = 0; i < getSizeInventory(); i++)
-            if (isValidSlot(i) && (tSkip || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), i, tTileEntity) || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), i, tTileEntity)))
-                tList.add(i);
+            if (isValidSlot(i)
+                    && (tSkip
+                            || tTileEntity
+                                    .getCoverBehaviorAtSideNew((byte) aSide)
+                                    .letsItemsOut(
+                                            (byte) aSide,
+                                            tTileEntity.getCoverIDAtSide((byte) aSide),
+                                            tTileEntity.getComplexCoverDataAtSide((byte) aSide),
+                                            i,
+                                            tTileEntity)
+                            || tTileEntity
+                                    .getCoverBehaviorAtSideNew((byte) aSide)
+                                    .letsItemsIn(
+                                            (byte) aSide,
+                                            tTileEntity.getCoverIDAtSide((byte) aSide),
+                                            tTileEntity.getComplexCoverDataAtSide((byte) aSide),
+                                            i,
+                                            tTileEntity))) tList.add(i);
         return tList.toArray();
     }
 
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex])) && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+        return isValidSlot(aIndex)
+                && aStack != null
+                && aIndex < mInventory.length
+                && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex]))
+                && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
     }
 
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-        return isValidSlot(aIndex) && aStack != null && aIndex < mInventory.length && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+        return isValidSlot(aIndex)
+                && aStack != null
+                && aIndex < mInventory.length
+                && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
     }
 
     @Override
@@ -790,8 +891,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
-        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[]{};
-        return new FluidTankInfo[]{getInfo()};
+        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[] {};
+        return new FluidTankInfo[] {getInfo()};
     }
 
     public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
@@ -802,7 +903,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
         if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 1) {
-            int tSteam = (int) Math.min(Integer.MAX_VALUE, Math.min(aFluid.amount / 2, getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
+            int tSteam = (int) Math.min(
+                    Integer.MAX_VALUE,
+                    Math.min(
+                            aFluid.amount / 2,
+                            getBaseMetaTileEntity().getSteamCapacity()
+                                    - getBaseMetaTileEntity().getStoredSteam()));
             if (tSteam > 0) {
                 markDirty();
                 if (doFill) getBaseMetaTileEntity().increaseStoredSteam(tSteam, true);
@@ -907,7 +1013,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public void onColorChangeServer(byte aColor) {
         final IGregTechTileEntity meta = getBaseMetaTileEntity();
         final int aX = meta.getXCoord(), aY = meta.getYCoord(), aZ = meta.getZCoord();
-        for (byte aSide = 0; aSide < 6 ; aSide++ ) {
+        for (byte aSide = 0; aSide < 6; aSide++) {
             // Flag surrounding pipes/cables to revaluate their connection with us if we got painted
             final TileEntity tTileEntity = meta.getTileEntityAtSide(aSide);
             if ((tTileEntity instanceof BaseMetaPipeEntity)) {
@@ -935,27 +1041,63 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        float tStrength =
-            aExplosionPower < V[0] ? 1.0F :
-            aExplosionPower < V[1] ? 2.0F :
-            aExplosionPower < V[2] ? 3.0F :
-            aExplosionPower < V[3] ? 4.0F :
-            aExplosionPower < V[4] ? 5.0F :
-            aExplosionPower < V[4] * 2 ? 6.0F :
-            aExplosionPower < V[5] ? 7.0F :
-            aExplosionPower < V[6] ? 8.0F :
-            aExplosionPower < V[7] ? 9.0F :
-            aExplosionPower < V[8] ? 10.0F :
-            aExplosionPower < V[8] * 2 ? 11.0F :
-            aExplosionPower < V[9] ? 12.0F :
-            aExplosionPower < V[10] ? 13.0F :
-            aExplosionPower < V[11] ? 14.0F :
-            aExplosionPower < V[12] ? 15.0F :
-            aExplosionPower < V[12] * 2 ? 16.0F :
-            aExplosionPower < V[13] ? 17.0F :
-            aExplosionPower < V[14] ? 18.0F :
-            aExplosionPower < V[15] ? 19.0F : 20.0F;
-        int tX = getBaseMetaTileEntity().getXCoord(), tY = getBaseMetaTileEntity().getYCoord(), tZ = getBaseMetaTileEntity().getZCoord();
+        float tStrength = aExplosionPower < V[0]
+                ? 1.0F
+                : aExplosionPower < V[1]
+                        ? 2.0F
+                        : aExplosionPower < V[2]
+                                ? 3.0F
+                                : aExplosionPower < V[3]
+                                        ? 4.0F
+                                        : aExplosionPower < V[4]
+                                                ? 5.0F
+                                                : aExplosionPower < V[4] * 2
+                                                        ? 6.0F
+                                                        : aExplosionPower < V[5]
+                                                                ? 7.0F
+                                                                : aExplosionPower < V[6]
+                                                                        ? 8.0F
+                                                                        : aExplosionPower < V[7]
+                                                                                ? 9.0F
+                                                                                : aExplosionPower < V[8]
+                                                                                        ? 10.0F
+                                                                                        : aExplosionPower < V[8] * 2
+                                                                                                ? 11.0F
+                                                                                                : aExplosionPower < V[9]
+                                                                                                        ? 12.0F
+                                                                                                        : aExplosionPower
+                                                                                                                        < V[
+                                                                                                                                10]
+                                                                                                                ? 13.0F
+                                                                                                                : aExplosionPower
+                                                                                                                                < V[
+                                                                                                                                        11]
+                                                                                                                        ? 14.0F
+                                                                                                                        : aExplosionPower
+                                                                                                                                        < V[
+                                                                                                                                                12]
+                                                                                                                                ? 15.0F
+                                                                                                                                : aExplosionPower
+                                                                                                                                                < V[
+                                                                                                                                                                12]
+                                                                                                                                                        * 2
+                                                                                                                                        ? 16.0F
+                                                                                                                                        : aExplosionPower
+                                                                                                                                                        < V[
+                                                                                                                                                                13]
+                                                                                                                                                ? 17.0F
+                                                                                                                                                : aExplosionPower
+                                                                                                                                                                < V[
+                                                                                                                                                                        14]
+                                                                                                                                                        ? 18.0F
+                                                                                                                                                        : aExplosionPower
+                                                                                                                                                                        < V[
+                                                                                                                                                                                15]
+                                                                                                                                                                ? 19.0F
+                                                                                                                                                                : 20.0F;
+        int tX = getBaseMetaTileEntity().getXCoord(),
+                tY = getBaseMetaTileEntity().getYCoord(),
+                tZ = getBaseMetaTileEntity().getZCoord();
         World tWorld = getBaseMetaTileEntity().getWorld();
         GT_Utility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
@@ -969,7 +1111,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider) {
+    public void addCollisionBoxesToList(
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            AxisAlignedBB inputAABB,
+            List<AxisAlignedBB> outputAABB,
+            Entity collider) {
         AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         if (axisalignedbb1 != null && inputAABB.intersectsWith(axisalignedbb1)) outputAABB.add(axisalignedbb1);
     }
@@ -990,29 +1139,33 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public boolean allowGeneralRedstoneOutput(){
-    	return false;
+    public boolean allowGeneralRedstoneOutput() {
+        return false;
     }
 
     @Deprecated
-    public String trans(String aKey, String aEnglish){
-    	return GT_Utility.trans(aKey, aEnglish);
+    public String trans(String aKey, String aEnglish) {
+        return GT_Utility.trans(aKey, aEnglish);
     }
 
     @Override
-    public boolean hasAlternativeModeText(){
-    	return false;
+    public boolean hasAlternativeModeText() {
+        return false;
     }
 
     @Override
-    public String getAlternativeModeText(){
-    	return "";
+    public String getAlternativeModeText() {
+        return "";
     }
 
     @Override
-    public boolean shouldJoinIc2Enet() { return false; }
+    public boolean shouldJoinIc2Enet() {
+        return false;
+    }
 
-    public boolean shouldTriggerBlockUpdate() { return false; }
+    public boolean shouldTriggerBlockUpdate() {
+        return false;
+    }
 
     @Optional.Method(modid = "appliedenergistics2")
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
@@ -1028,12 +1181,17 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public void gridChanged() {}
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        currenttip.add(String.format("Facing: %s", ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing()).name()));
+    public void getWailaBody(
+            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        currenttip.add(String.format(
+                "Facing: %s",
+                ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing())
+                        .name()));
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+    public void getWailaNBTData(
+            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
         /* Empty */
     }
 }

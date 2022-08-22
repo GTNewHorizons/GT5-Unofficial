@@ -2,8 +2,8 @@ package gregtech.loaders.materialprocessing;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.GTNH_ExtraMaterials;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 
 public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandler {
@@ -17,9 +17,36 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
         /** This is just left here as an example of how to add new materials. **/
         if (false) {
             int i = 0;
-            for (int j = GregTech_API.sMaterialProperties.get("general", "AmountOfCustomMaterialSlots", 16); i < j; i++) {
+            for (int j = GregTech_API.sMaterialProperties.get("general", "AmountOfCustomMaterialSlots", 16);
+                    i < j;
+                    i++) {
                 String aID = (i < 10 ? "0" : "") + i;
-                new Materials(-1, TextureSet.SET_METALLIC, 1.0F, 0, 0, 0, 255, 255, 255, 0, "CustomMat" + aID, "CustomMat" + aID, 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, "custom", true, aID);
+                new Materials(
+                        -1,
+                        TextureSet.SET_METALLIC,
+                        1.0F,
+                        0,
+                        0,
+                        0,
+                        255,
+                        255,
+                        255,
+                        0,
+                        "CustomMat" + aID,
+                        "CustomMat" + aID,
+                        0,
+                        0,
+                        0,
+                        0,
+                        false,
+                        false,
+                        1,
+                        1,
+                        1,
+                        Dyes._NULL,
+                        "custom",
+                        true,
+                        aID);
             }
         }
     }

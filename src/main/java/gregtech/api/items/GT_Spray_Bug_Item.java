@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 public class GT_Spray_Bug_Item extends GT_Tool_Item {
     public GT_Spray_Bug_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
-        super(aUnlocalized, aEnglish, "A very 'buggy' Spray", aMaxDamage, aEntityDamage, true);/*
+        super(aUnlocalized, aEnglish, "A very 'buggy' Spray", aMaxDamage, aEntityDamage, true); /*
         addToEffectiveList(EntityCaveSpider.class.getName());
 		addToEffectiveList(EntitySpider.class.getName());
 		addToEffectiveList("EntityTFHedgeSpider");
@@ -41,14 +41,24 @@ public class GT_Spray_Bug_Item extends GT_Tool_Item {
     }
     */
     @Override
-    public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int aSide,
+            float hitX,
+            float hitY,
+            float hitZ) {
         super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
         if (aWorld.isRemote) {
             return false;
         }
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if (aBlock == null) return false;
-//    	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
+        //    	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         try {
@@ -60,7 +70,9 @@ public class GT_Spray_Bug_Item extends GT_Tool_Item {
                     return true;
                 }
             }
-        } catch (Throwable e) {/*Do nothing*/}
+        } catch (Throwable e) {
+            /*Do nothing*/
+        }
 
         return false;
     }
