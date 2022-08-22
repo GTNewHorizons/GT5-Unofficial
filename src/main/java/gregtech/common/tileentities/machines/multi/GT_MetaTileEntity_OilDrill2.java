@@ -27,22 +27,22 @@ public class GT_MetaTileEntity_OilDrill2 extends GT_MetaTileEntity_OilDrillBase 
 
     @Override
     protected ItemList getCasingBlockItem() {
-        return ItemList.Casing_StableTitanium;
+        return ItemList.Casing_CleanStainlessSteel;
     }
 
     @Override
     protected Materials getFrameMaterial() {
-        return Materials.Titanium;
+        return Materials.StainlessSteel;
     }
 
     @Override
     protected int getCasingTextureIndex() {
-        return 50;
+        return 49;
     }
 
     @Override
     protected int getRangeInChunks() {
-        return 4;
+        return 2;
     }
 
     @Override

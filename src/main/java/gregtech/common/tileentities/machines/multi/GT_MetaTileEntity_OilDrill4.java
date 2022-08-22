@@ -6,47 +6,48 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
-public class GT_MetaTileEntity_OilDrill3 extends GT_MetaTileEntity_OilDrillBase {
-    public GT_MetaTileEntity_OilDrill3(int aID, String aName, String aNameRegional) {
+public class GT_MetaTileEntity_OilDrill4 extends GT_MetaTileEntity_OilDrillBase {
+
+    public GT_MetaTileEntity_OilDrill4(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_OilDrill3(String aName) {
+    public GT_MetaTileEntity_OilDrill4(String aName) {
         super(aName);
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        return createTooltip("III");
+        return createTooltip("IV");
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_OilDrill3(mName);
+        return new GT_MetaTileEntity_OilDrill4(mName);
     }
 
     @Override
     protected ItemList getCasingBlockItem() {
-        return ItemList.Casing_StableTitanium;
+        return ItemList.Casing_RobustTungstenSteel;
     }
 
     @Override
     protected Materials getFrameMaterial() {
-        return Materials.Titanium;
+        return Materials.TungstenSteel;
     }
 
     @Override
     protected int getCasingTextureIndex() {
-        return 50;
+        return 48;
     }
 
     @Override
     protected int getRangeInChunks() {
-        return 4;
+        return 8;
     }
 
     @Override
     protected int getMinTier() {
-        return 4;
+        return 5;
     }
 }
