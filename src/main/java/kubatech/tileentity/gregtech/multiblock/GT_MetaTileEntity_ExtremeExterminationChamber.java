@@ -368,7 +368,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 }
                 if (tileAltar == null) return;
 
-                if (currentEssence < effect.getCostPerRefresh() * 100) SoulNetworkHandler.causeNauseaToPlayer(owner);
+                if (currentEssence < effect.getCostPerRefresh() * 100) {
+                    SoulNetworkHandler.causeNauseaToPlayer(owner);
+                    return;
+                }
 
                 ((IBloodAltar) tileAltar)
                         .sacrificialDaggerCall(
