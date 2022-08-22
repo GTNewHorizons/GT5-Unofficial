@@ -49,6 +49,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -64,6 +65,8 @@ import kubatech.client.effect.EntityRenderer;
 import kubatech.loaders.MobRecipeLoader;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -71,6 +74,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -124,6 +128,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                                     onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0)),
                                     ofHatchAdder(
                                             GT_MetaTileEntity_ExtremeExterminationChamber::addOutputToMachineList,
+                                            CASING_INDEX,
+                                            1),
+                                    ofHatchAdder(
+                                            GT_MetaTileEntity_ExtremeExterminationChamber::addInputToMachineList,
                                             CASING_INDEX,
                                             1),
                                     ofHatchAdder(
@@ -188,6 +196,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addInfo("Spawns and Exterminates monsters for you")
                 .addInfo("Base energy usage: 2,000 EU/t")
                 .addInfo("Recipe time is based on mob health")
+                .addInfo("You have to put weapon in ULV Input Bus")
                 .addInfo("Also produces 120 Liquid XP per operation")
                 .addInfo("If the mob spawns infernal")
                 .addInfo("it will drain 8 times more power")
@@ -204,6 +213,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addStructureInfo("The glass tier limits the Energy Input tier")
                 .addOtherStructurePart("Steel Frame Box", "All vertical corners (except top and bottom)")
                 .addOutputBus("Any casing", 1)
+                .addOtherStructurePart(
+                        "1x ULV " + StatCollector.translateToLocal("GT5U.MBTT.InputBus"), "Any casing", 1)
                 .addOutputHatch("Any casing", 1)
                 .addEnergyHatch("Any casing", 1)
                 .addMaintenanceHatch("Any casing", 1)
@@ -417,7 +428,13 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         if (!recipe.isPeacefulAllowed
                 && this.getBaseMetaTileEntity().getWorld().difficultySetting == EnumDifficulty.PEACEFUL) return false;
 
-        this.mOutputItems = recipe.generateOutputs(rand, this);
+        GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.get(0);
+        if (inputbus == null || !isValidMetaTileEntity(inputbus)) return false;
+        ItemStack lootingholder = inputbus.getStackInSlot(0);
+        if (lootingholder == null || !Enchantment.looting.canApply(lootingholder)) return false;
+
+        this.mOutputItems = recipe.generateOutputs(
+                rand, this, EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingholder));
 
         if (isInRitualMode && isRitualValid()) {
             this.mMaxProgresstime = 400;
@@ -474,7 +491,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mGlassTier = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
-        if (mCasing < 10 || mMaintenanceHatches.size() != 1 || mEnergyHatches.size() == 0) return false;
+        if (mCasing < 10
+                || mMaintenanceHatches.size() != 1
+                || mEnergyHatches.size() == 0
+                || mInputBusses.size() != 1
+                || mInputBusses.get(0).mTier != 0) return false;
         if (mGlassTier < 8)
             for (GT_MetaTileEntity_Hatch_Energy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
         if (isInRitualMode) connectToRitual();

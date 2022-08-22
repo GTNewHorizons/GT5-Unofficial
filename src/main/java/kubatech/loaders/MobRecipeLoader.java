@@ -207,13 +207,25 @@ public class MobRecipeLoader {
             entity = e;
         }
 
-        public ItemStack[] generateOutputs(Random rnd, GT_MetaTileEntity_ExtremeExterminationChamber MTE) {
+        public ItemStack[] generateOutputs(
+                Random rnd, GT_MetaTileEntity_ExtremeExterminationChamber MTE, int lootinglevel) {
             MTE.mEUt = mEUt;
             MTE.mMaxProgresstime = mDuration;
             ArrayList<ItemStack> stacks = new ArrayList<>(mOutputs.size());
             for (MobDrop o : mOutputs) {
-                if (o.chance == 10000 || rnd.nextInt(10000) < o.chance) {
+                int chance = o.chance;
+                int amount = o.stack.stackSize;
+                if (o.lootable && lootinglevel > 0) {
+                    chance += lootinglevel * 5000;
+                    if (chance > 10000) {
+                        int div = (int) Math.ceil(chance / 10000d);
+                        amount *= div;
+                        chance /= div;
+                    }
+                }
+                if (chance == 10000 || rnd.nextInt(10000) < chance) {
                     ItemStack s = o.stack.copy();
+                    s.stackSize = amount;
                     if (o.enchantable != null) EnchantmentHelper.addRandomEnchantment(rnd, s, o.enchantable);
                     if (o.damages != null) {
                         int rChance = rnd.nextInt(mMaxDamageChance);
