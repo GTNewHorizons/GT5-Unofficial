@@ -66,7 +66,7 @@ public class GT_MetaTileEntity_FusionComputer3 extends GT_MetaTileEntity_FusionC
         tt.addMachineType("Fusion Reactor")
                 .addInfo("A SUN DOWN ON EARTH")
                 .addInfo("Controller block for the Fusion Reactor Mk III")
-                .addInfo("8192EU/t and 40M EU capacity per Energy Hatch")
+                .addInfo("32768EU/t and 40M EU capacity per Energy Hatch")
                 .addInfo("If the recipe has a startup cost greater than the")
                 .addInfo("number of energy hatches * cap, you can't do it")
                 .addSeparator()

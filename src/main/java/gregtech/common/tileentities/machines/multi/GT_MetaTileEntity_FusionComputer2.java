@@ -66,7 +66,7 @@ public class GT_MetaTileEntity_FusionComputer2 extends GT_MetaTileEntity_FusionC
         tt.addMachineType("Fusion Reactor")
                 .addInfo("It's over 9000!!!")
                 .addInfo("Controller block for the Fusion Reactor Mk II")
-                .addInfo("4096EU/t and 20M EU capacity per Energy Hatch")
+                .addInfo("8192EU/t and 20M EU capacity per Energy Hatch")
                 .addInfo("If the recipe has a startup cost greater than the")
                 .addInfo("number of energy hatches * cap, you can't do it")
                 .addSeparator()
