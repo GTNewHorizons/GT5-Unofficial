@@ -153,7 +153,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     private boolean isInRitualMode = false;
     private int mCasing = 0;
     private byte mGlassTier = 0;
-    private boolean mAnimationEnabled = false;
+    private boolean mAnimationEnabled = true;
 
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
@@ -170,7 +170,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isInRitualMode = aNBT.getBoolean("isInRitualMode");
-        mAnimationEnabled = aNBT.getBoolean("mAnimationEnabled");
+        mAnimationEnabled = !aNBT.hasKey("mAnimationEnabled") || aNBT.getBoolean("mAnimationEnabled");
         mGlassTier = aNBT.getByte("mGlassTier");
     }
 
