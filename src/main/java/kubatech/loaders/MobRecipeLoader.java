@@ -42,13 +42,15 @@ import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
-import kubatech.Config;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
+import kubatech.api.mobhandler.MobDrop;
 import kubatech.api.network.LoadConfigPacket;
 import kubatech.api.utils.GSONUtils;
 import kubatech.api.utils.InfernalHelper;
 import kubatech.api.utils.ModUtils;
+import kubatech.config.Config;
+import kubatech.config.OverridesConfig;
 import kubatech.nei.Mob_Handler;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
 import minetweaker.MineTweakerAPI;
@@ -189,9 +191,14 @@ public class MobRecipeLoader {
             alwaysinfernal = InfernalHelper.checkEntityClassForced(e);
             isPeacefulAllowed = !(e instanceof IMob);
 
-            mOutputs = outputs;
+            mOutputs = (ArrayList<MobDrop>) outputs.clone();
             int maxdamagechance = 0;
-            for (MobDrop o : mOutputs) {
+            for (Iterator<MobDrop> iterator = mOutputs.iterator(); iterator.hasNext(); ) {
+                MobDrop o = iterator.next();
+                if (o.playerOnly) {
+                    iterator.remove();
+                    continue;
+                }
                 if (o.damages != null) for (int v : o.damages.values()) maxdamagechance += v;
             }
             mMaxDamageChance = maxdamagechance;
@@ -261,38 +268,6 @@ public class MobRecipeLoader {
             }
 
             return stacks.toArray(new ItemStack[0]);
-        }
-    }
-
-    public static class MobDrop {
-        public enum DropType {
-            Normal,
-            Rare,
-            Additional,
-            Infernal
-        }
-
-        @GSONUtils.SkipGSON
-        public ItemStack stack;
-
-        public NBTTagCompound reconstructableStack;
-        public DropType type;
-        public int chance;
-        public Integer enchantable;
-        public HashMap<Integer, Integer> damages;
-
-        public MobDrop(
-                ItemStack stack, DropType type, int chance, Integer enchantable, HashMap<Integer, Integer> damages) {
-            this.stack = stack;
-            this.reconstructableStack = stack.writeToNBT(new NBTTagCompound());
-            this.type = type;
-            this.chance = chance;
-            this.enchantable = enchantable;
-            this.damages = damages;
-        }
-
-        public void reconstructStack() {
-            this.stack = ItemStack.loadItemStackFromNBT(this.reconstructableStack);
         }
     }
 
@@ -495,6 +470,7 @@ public class MobRecipeLoader {
                 if (randomchomenchantdetected) {
                     randomenchantmentlevel = ostack.stackTagCompound.getInteger(randomEnchantmentDetectedString);
                     ostack.stackTagCompound.removeTag("ench");
+                    ostack.stackTagCompound.setInteger(randomEnchantmentDetectedString, 0);
                 }
                 if ((booksAlwaysRandomlyEnchanted || randomchomenchantdetected)
                         && Items.enchanted_book == ostack.getItem()) {
@@ -722,7 +698,9 @@ public class MobRecipeLoader {
 
             droplist drops = new droplist();
             droplist raredrops = new droplist();
+            droplist superraredrops = new droplist();
             droplist additionaldrops = new droplist();
+            droplist dropslooting = new droplist();
 
             LOG.info("Generating normal drops");
 
@@ -753,6 +731,7 @@ public class MobRecipeLoader {
                 e.capturedDrops.clear();
             }
 
+            boolean second = false;
             do {
                 try {
                     dropFewItems.invoke(e, true, 0);
@@ -762,10 +741,58 @@ public class MobRecipeLoader {
                 }
                 collector.addDrop(drops, e.capturedDrops, frand.chance);
 
-                if (frand.chance < 0.0000001d) {
+                if (second && frand.chance < 0.0000001d) {
                     LOG.info("Skipping " + k + " normal dropmap because it's too randomized");
                     break;
                 }
+                second = true;
+
+            } while (frand.nextRound());
+
+            LOG.info("Generating normal drops with looting");
+
+            frand.newRound();
+            collector.newRound();
+
+            if (v.getName().startsWith("com.emoniph.witchery")) {
+                try {
+                    dropFewItems.invoke(e, true, 0);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    return;
+                }
+                frand.newRound();
+                frand.exceptionOnEnchantTry = true;
+                boolean enchantmentDetected = false;
+                try {
+                    dropFewItems.invoke(e, true, 0);
+                } catch (Exception ex) {
+                    enchantmentDetected = true;
+                }
+                int w = frand.walkCounter;
+                frand.newRound();
+                if (enchantmentDetected) {
+                    frand.maxWalkCount = w;
+                    collector.booksAlwaysRandomlyEnchanted = true;
+                }
+                e.capturedDrops.clear();
+            }
+
+            second = false;
+            do {
+                try {
+                    dropFewItems.invoke(e, true, 1);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    return;
+                }
+                collector.addDrop(dropslooting, e.capturedDrops, frand.chance);
+
+                if (second && frand.chance < 0.0000001d) {
+                    LOG.info("Skipping " + k + " normal dropmap because it's too randomized");
+                    break;
+                }
+                second = true;
 
             } while (frand.nextRound());
 
@@ -774,6 +801,7 @@ public class MobRecipeLoader {
             frand.newRound();
             collector.newRound();
 
+            second = false;
             do {
                 try {
                     dropRareDrop.invoke(e, 0);
@@ -783,10 +811,35 @@ public class MobRecipeLoader {
                 }
                 collector.addDrop(raredrops, e.capturedDrops, frand.chance);
 
-                if (frand.chance < 0.0000001d) {
+                if (second && frand.chance < 0.0000001d) {
                     LOG.info("Skipping " + k + " rare dropmap because it's too randomized");
                     break;
                 }
+                second = true;
+
+            } while (frand.nextRound());
+
+            LOG.info("Generating super rare drops");
+
+            frand.newRound();
+            collector.newRound();
+
+            second = false;
+            do {
+                try {
+                    dropRareDrop.invoke(e, 1);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    return;
+                }
+                collector.addDrop(superraredrops, e.capturedDrops, frand.chance);
+
+                if (second && frand.chance < 0.0000001d) {
+                    LOG.info("Skipping " + k + " rare dropmap because it's too randomized");
+                    break;
+                }
+                second = true;
+
             } while (frand.nextRound());
 
             LOG.info("Generating additional drops");
@@ -823,6 +876,7 @@ public class MobRecipeLoader {
                     frand.forceFloatValue = 0f;
                     chanceModifierLocal = 0.25f;
                 }
+                second = false;
                 do {
                     addRandomArmor.invoke(e);
                     if (!usingVanillaEnchantingMethod) enchantEquipment.invoke(e);
@@ -870,10 +924,11 @@ public class MobRecipeLoader {
                     }
                     Arrays.fill(e.getLastActiveItems(), null);
 
-                    if (frand.chance < 0.0000001d) {
+                    if (second && frand.chance < 0.0000001d) {
                         LOG.info("Skipping " + k + " additional dropmap because it's too randomized");
                         break;
                     }
+                    second = true;
 
                 } while (frand.nextRound());
             } catch (Exception ignored) {
@@ -894,46 +949,91 @@ public class MobRecipeLoader {
                 ItemStack stack = drop.stack;
                 if (stack.hasTagCompound()) stack.stackTagCompound.removeTag(randomEnchantmentDetectedString);
                 int chance = drop.getchance(10000);
-                while (chance > 10000) {
-                    stack.stackSize *= 2;
-                    chance /= 2;
+                if (chance > 10000) {
+                    int div = (int) Math.ceil(chance / 10000d);
+                    stack.stackSize *= div;
+                    chance /= div;
                 }
+                if (chance == 0) {
+                    LOG.warn("Detected 0% loot, setting to 0.01%");
+                    chance = 1;
+                }
+                dropinstance dlooting = dropslooting.get(drop);
                 moboutputs.add(new MobDrop(
                         stack,
                         MobDrop.DropType.Normal,
                         chance,
                         drop.isEnchatmentRandomized ? drop.enchantmentLevel : null,
-                        drop.isDamageRandomized ? drop.damagesPossible : null));
+                        drop.isDamageRandomized ? drop.damagesPossible : null,
+                        dlooting != null && dlooting.dropcount > drop.dropcount,
+                        false));
             }
             for (dropinstance drop : raredrops.drops) {
                 ItemStack stack = drop.stack;
                 if (stack.hasTagCompound()) stack.stackTagCompound.removeTag(randomEnchantmentDetectedString);
                 int chance = drop.getchance(250);
-                while (chance > 10000) {
-                    stack.stackSize *= 2;
-                    chance /= 2;
+                if (chance > 10000) {
+                    int div = (int) Math.ceil(chance / 10000d);
+                    stack.stackSize *= div;
+                    chance /= div;
+                }
+                if (chance == 0) {
+                    LOG.warn("Detected 0% loot, setting to 0.01%");
+                    chance = 1;
                 }
                 moboutputs.add(new MobDrop(
                         stack,
                         MobDrop.DropType.Rare,
                         chance,
                         drop.isEnchatmentRandomized ? drop.enchantmentLevel : null,
-                        drop.isDamageRandomized ? drop.damagesPossible : null));
+                        drop.isDamageRandomized ? drop.damagesPossible : null,
+                        false,
+                        false));
+            }
+            for (dropinstance drop : superraredrops.drops) {
+                if (raredrops.contains(drop)) continue;
+                ItemStack stack = drop.stack;
+                if (stack.hasTagCompound()) stack.stackTagCompound.removeTag(randomEnchantmentDetectedString);
+                int chance = drop.getchance(50);
+                if (chance > 10000) {
+                    int div = (int) Math.ceil(chance / 10000d);
+                    stack.stackSize *= div;
+                    chance /= div;
+                }
+                if (chance == 0) {
+                    LOG.warn("Detected 0% loot, setting to 0.01%");
+                    chance = 1;
+                }
+                moboutputs.add(new MobDrop(
+                        stack,
+                        MobDrop.DropType.Rare,
+                        chance,
+                        drop.isEnchatmentRandomized ? drop.enchantmentLevel : null,
+                        drop.isDamageRandomized ? drop.damagesPossible : null,
+                        false,
+                        false));
             }
             for (dropinstance drop : additionaldrops.drops) {
                 ItemStack stack = drop.stack;
                 if (stack.hasTagCompound()) stack.stackTagCompound.removeTag(randomEnchantmentDetectedString);
                 int chance = drop.getchance(850);
-                while (chance > 10000) {
-                    stack.stackSize *= 2;
-                    chance /= 2;
+                if (chance > 10000) {
+                    int div = (int) Math.ceil(chance / 10000d);
+                    stack.stackSize *= div;
+                    chance /= div;
+                }
+                if (chance == 0) {
+                    LOG.warn("Detected 0% loot, setting to 0.01%");
+                    chance = 1;
                 }
                 moboutputs.add(new MobDrop(
                         stack,
                         MobDrop.DropType.Additional,
                         chance,
                         drop.isEnchatmentRandomized ? drop.enchantmentLevel : null,
-                        drop.isDamageRandomized ? drop.damagesPossible : null));
+                        drop.isDamageRandomized ? drop.damagesPossible : null,
+                        false,
+                        false));
             }
 
             GeneralMobList.put(k, new GeneralMappedMob(e, new MobRecipe(e, moboutputs), moboutputs));
@@ -973,13 +1073,18 @@ public class MobRecipeLoader {
     public static void processMobRecipeMap() {
         LOG.info("Loading config");
 
+        OverridesConfig.LoadConfig();
+
         if (isClientSided) Mob_Handler.clearRecipes();
         MobNameToRecipeMap.clear();
         LoadConfigPacket.instance.mobsToLoad.clear();
-        GeneralMobList.forEach((k, v) -> {
+        LoadConfigPacket.instance.mobsOverrides.clear();
+        for (Map.Entry<String, GeneralMappedMob> entry : GeneralMobList.entrySet()) {
+            String k = entry.getKey();
+            GeneralMappedMob v = entry.getValue();
             if (Arrays.asList(Config.mobBlacklist).contains(k)) {
                 LOG.info("Entity " + k + " is blacklisted, skipping");
-                return;
+                continue;
             }
 
             MobRecipe recipe = v.recipe;
@@ -992,21 +1097,38 @@ public class MobRecipeLoader {
                 Optionals.parseMTAdditions(k, drops, recipe);
             }
 
+            OverridesConfig.MobOverride override = null;
+            if ((override = OverridesConfig.overrides.get(k)) != null) {
+                if (override.removeAll) drops.clear();
+                else
+                    for (OverridesConfig.MobDropSimplified removal : override.removals) {
+                        drops.removeIf(removal::isMatching);
+                        if (recipe != null) recipe.mOutputs.removeIf(removal::isMatching);
+                    }
+                drops.addAll(override.additions);
+                if (recipe != null)
+                    recipe.mOutputs.addAll(override.additions.stream()
+                            .filter(d -> !d.playerOnly)
+                            .collect(Collectors.toList()));
+                LoadConfigPacket.instance.mobsOverrides.put(k, override);
+            }
+
             if (drops.isEmpty()) {
                 LOG.info("Entity " + k + " doesn't drop any items, skipping EEC map");
-                if (!Config.includeEmptyMobs) return;
+                if (!Config.includeEmptyMobs) continue;
                 LoadConfigPacket.instance.mobsToLoad.add(k);
                 LOG.info("Registered " + k);
-                return;
+                continue;
             }
             if (v.recipe != null) MobNameToRecipeMap.put(k, recipe);
             LoadConfigPacket.instance.mobsToLoad.add(k);
             LOG.info("Registered " + k);
-        });
+        }
     }
 
     @SideOnly(Side.CLIENT)
-    public static void processMobRecipeMap(HashSet<String> mobs) {
+    public static void processMobRecipeMap(
+            HashSet<String> mobs, HashMap<String, OverridesConfig.MobOverride> overrides) {
         if (isClientSided) Mob_Handler.clearRecipes();
         MobNameToRecipeMap.clear();
         mobs.forEach(k -> {
@@ -1019,6 +1141,22 @@ public class MobRecipeLoader {
             // MT Scripts should already be loaded here
             if (LoaderReference.MineTweaker) {
                 Optionals.parseMTAdditions(k, drops, recipe);
+            }
+
+            OverridesConfig.MobOverride override = null;
+            if ((override = overrides.get(k)) != null) {
+                if (override.removeAll) drops.clear();
+                else
+                    for (OverridesConfig.MobDropSimplified removal : override.removals) {
+                        drops.removeIf(removal::isMatching);
+                        if (recipe != null) recipe.mOutputs.removeIf(removal::isMatching);
+                    }
+                drops.addAll(override.additions);
+                if (recipe != null)
+                    recipe.mOutputs.addAll(override.additions.stream()
+                            .filter(d -> !d.playerOnly)
+                            .collect(Collectors.toList()));
+                drops.sort(Comparator.comparing(d -> d.type)); // Fix gui
             }
 
             Mob_Handler.addRecipe(v.mob, drops);
@@ -1040,9 +1178,9 @@ public class MobRecipeLoader {
                     if (r.getFrom() == 0 && r.getTo() == 0) chance = 1d;
                     else chance = (((double) r.getTo() - (double) r.getFrom()) / 2d) + (double) r.getFrom();
                     ItemStack stack = ((ItemStack) entry.getKey().getInternal()).copy();
-                    MobDrop drop = new MobDrop(stack, MobDrop.DropType.Normal, (int) (chance * 10000), null, null);
+                    MobDrop drop = new MobDrop(
+                            stack, MobDrop.DropType.Normal, (int) (chance * 10000), null, null, false, true);
                     drops.add(drop);
-                    if (recipe != null) recipe.mOutputs.add(drop);
                 }
                 for (Map.Entry<IItemStack, IntRange> entry :
                         ie.getDropsToAddPlayerOnly().entrySet()) {
@@ -1052,9 +1190,9 @@ public class MobRecipeLoader {
                     if (r.getFrom() == 0 && r.getTo() == 0) chance = 1d;
                     else chance = (((double) r.getTo() - (double) r.getFrom()) / 2d) + (double) r.getFrom();
                     ItemStack stack = ((ItemStack) entry.getKey().getInternal()).copy();
-                    MobDrop drop = new MobDrop(stack, MobDrop.DropType.Normal, (int) (chance * 10000), null, null);
+                    MobDrop drop = new MobDrop(
+                            stack, MobDrop.DropType.Normal, (int) (chance * 10000), null, null, false, true);
                     drops.add(drop);
-                    if (recipe != null) recipe.mOutputs.add(drop);
                 }
                 for (IItemStack istack : ie.getDropsToRemove()) {
                     List<MobDrop> toRemove = drops.stream()

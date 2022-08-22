@@ -17,9 +17,10 @@
  *
  */
 
-package kubatech;
+package kubatech.config;
 
 import java.io.File;
+import kubatech.Tags;
 import net.minecraftforge.common.config.Configuration;
 
 public class Config {

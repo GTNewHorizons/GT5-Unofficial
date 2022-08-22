@@ -1,12 +1,16 @@
 package kubatech.api.utils;
 
 import com.google.gson.*;
+import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
@@ -66,5 +70,32 @@ public class GSONUtils {
             .addSerializationExclusionStrategy(GSONStrategy)
             .addDeserializationExclusionStrategy(GSONStrategy)
             .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundDeserializer)
-            .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundSerializer);
+            .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundSerializer)
+            .serializeNulls();
+    public static final GsonBuilder GSON_BUILDER_PRETTY = new GsonBuilder()
+            .addSerializationExclusionStrategy(GSONStrategy)
+            .addDeserializationExclusionStrategy(GSONStrategy)
+            .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundDeserializer)
+            .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundSerializer)
+            .serializeNulls()
+            .setPrettyPrinting();
+
+    public static <T> T readFile(Gson gson, File file, Class<T> tClass) {
+        if (!file.exists()) return null;
+        if (!file.isFile()) return null;
+        T t = null;
+        Reader reader = null;
+        try {
+            reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
+            t = gson.fromJson(reader, tClass);
+        } catch (Exception ignored) {
+        } finally {
+            if (reader != null)
+                try {
+                    reader.close();
+                } catch (Exception ignored) {
+                }
+        }
+        return t;
+    }
 }

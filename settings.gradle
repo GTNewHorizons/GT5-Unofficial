@@ -5,6 +5,6 @@ plugins {
 apply plugin: 'com.diffplug.blowdryerSetup'
 
 blowdryerSetup {
-    github('GTNewHorizons/ExampleMod1.7.10', 'tag', '0.1.4')
+    github('GTNewHorizons/ExampleMod1.7.10', 'tag', '0.1.5')
     //devLocal '.' // Use this when testing config updates locally
 }

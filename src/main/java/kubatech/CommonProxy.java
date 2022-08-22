@@ -24,6 +24,7 @@ import cpw.mods.fml.common.event.*;
 import kubatech.commands.CommandConfig;
 import kubatech.commands.CommandHandler;
 import kubatech.commands.CommandHelp;
+import kubatech.config.Config;
 import kubatech.loaders.RecipeLoader;
 
 public class CommonProxy {

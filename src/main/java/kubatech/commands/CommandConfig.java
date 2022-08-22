@@ -21,8 +21,8 @@ package kubatech.commands;
 
 import static kubatech.commands.CommandConfig.Translations.*;
 
-import kubatech.Config;
 import kubatech.api.network.LoadConfigPacket;
+import kubatech.config.Config;
 import kubatech.kubatech;
 import kubatech.loaders.MobRecipeLoader;
 import net.minecraft.command.CommandBase;
