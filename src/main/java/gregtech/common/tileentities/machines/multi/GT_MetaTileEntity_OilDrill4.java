@@ -1,10 +1,12 @@
 package gregtech.common.tileentities.machines.multi;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_OilDrill4 extends GT_MetaTileEntity_OilDrillBase {
 
@@ -38,7 +40,7 @@ public class GT_MetaTileEntity_OilDrill4 extends GT_MetaTileEntity_OilDrillBase 
 
     @Override
     protected int getCasingTextureIndex() {
-        return 48;
+        return GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 0);
     }
 
     @Override
