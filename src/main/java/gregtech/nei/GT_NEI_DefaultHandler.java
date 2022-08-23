@@ -494,9 +494,11 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         } else {
             tier = 4;
         }
-        if (Voltage <= 65536) {
+        if (Voltage <= GT_Values.V[6]) {
+            //no-op
+        } else if (Voltage <= GT_Values.V[7]) {
             tier = Math.max(tier, 2);
-        } else if (Voltage <= 131072) {
+        } else if (Voltage <= GT_Values.V[8]) {
             tier = Math.max(tier, 3);
         } else {
             tier = 4;
