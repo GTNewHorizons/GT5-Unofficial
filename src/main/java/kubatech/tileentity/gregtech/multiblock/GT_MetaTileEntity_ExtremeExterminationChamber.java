@@ -455,10 +455,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 weaponCache.stack = null;
                 return false;
             }
+            ItemStack lootingholder = inputbus.getStackInSlot(0);
             weaponCheck:
             {
-                ItemStack lootingholder = inputbus.getStackInSlot(0);
-                if (weaponCache.id.equals(lootingholder)) break weaponCheck;
+                if (weaponCache.stack != null && weaponCache.id.equals(lootingholder)) break weaponCheck;
                 if (lootingholder == null || !Enchantment.looting.canApply(lootingholder)) {
                     weaponCache.stack = null;
                     break weaponCheck;
@@ -486,9 +486,9 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                     rand, this, attackDamage, weaponCache.stack != null ? weaponCache.looting : 0);
             int eut = this.mEUt;
             calculatePerfectOverclockedNessMulti(this.mEUt, this.mMaxProgresstime, 2, getMaxInputVoltage());
-            if (weaponCache.stack != null && weaponCache.stack.isItemStackDamageable()) {
+            if (weaponCache.stack != null && lootingholder.isItemStackDamageable()) {
                 do {
-                    if (weaponCache.stack.attemptDamageItem(1, rand)) {
+                    if (lootingholder.attemptDamageItem(1, rand)) {
                         inputbus.setInventorySlotContents(0, null);
                         break;
                     }
