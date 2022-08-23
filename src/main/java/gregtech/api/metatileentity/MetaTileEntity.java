@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity;
 
+import appeng.api.networking.energy.IEnergyGrid;
+import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AECableType;
 import appeng.me.helpers.AENetworkProxy;
 import cpw.mods.fml.common.Optional;
@@ -1028,4 +1030,27 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         /* Empty */
     }
 
+    @Optional.Method(modid = "appliedenergistics2")
+    protected String getAEDiagnostics() {
+        try {
+            if (getProxy() == null)
+                return "(proxy)";
+            if (getProxy().getNode() == null)
+                return "(node)";
+            if (getProxy().getNode().getGrid() == null)
+                return "(grid)";
+            if (!getProxy().getNode().meetsChannelRequirements())
+                return "(channels)";
+            IPathingGrid pg = getProxy().getNode().getGrid().getCache(IPathingGrid.class);
+            if (!pg.isNetworkBooting())
+                return "(booting)";
+            IEnergyGrid eg = getProxy().getNode().getGrid().getCache(IEnergyGrid.class);
+            if (!eg.isNetworkPowered())
+                return "(power)";
+        }
+        catch(Throwable ex) {
+            ex.printStackTrace();
+        }
+        return "";
+    }
 }
