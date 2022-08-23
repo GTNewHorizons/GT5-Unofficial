@@ -33,6 +33,8 @@ GT5U.MBTT.StructureHint=多种可选方块或任意等级方块
 GT5U.MBTT.Mod=添加模组：
 GT5U.MBTT.Air=必须留空
 
+GT5U.MBTT.subchannel=子信道 §6%s§r 将被用于 %s
+
 GT5U.cracker.io_side=输入/输出仓必须处在对侧！
 
 GT5U.turbine.running.true=涡轮运行
@@ -105,7 +107,7 @@ GT5U.machines.item_transfer.tooltip.extended.5=§7Shift以切换多组输入.
 GT5U.machines.battery_slot.tooltip=电力槽
 GT5U.machines.battery_slot.tooltip.1=§7使用 %1$s§7 电池供能
 GT5U.machines.battery_slot.tooltip.2=§7可以为 %1$s§7 工具&电池充电
-GT5U.machines.battery_slot.tooltip.extended=§4警告：§7 如果通过线缆输入 
+GT5U.machines.battery_slot.tooltip.extended=§4警告：§7 如果通过线缆输入
 GT5U.machines.battery_slot.tooltip.extended.1=§7%2$s§7+ 电压将导致爆炸.
 GT5U.machines.battery_slot.tooltip.alternative=电力槽
 GT5U.machines.battery_slot.tooltip.alternative.1=%1$s§7 电压? 你已经不再需要tooltip了.
@@ -360,7 +362,7 @@ achievement.Olivine.desc=高度：10-40，几率：60， 暮色森林/鸟神星/
 achievement.Apatite=找到磷灰石矿石
 achievement.Apatite.desc=高度：40-60，几率：60，主世界/暮色森林/鲸鱼座T星//    大概已经不存在了
 achievement.TricalciumPhosphate=找到磷酸三钙矿石
-achievement.TricalciumPhosphate.desc=高度：40-60，几率：60，主世界/暮色森林/鲸鱼座T星// 
+achievement.TricalciumPhosphate.desc=高度：40-60，几率：60，主世界/暮色森林/鲸鱼座T星//
 achievement.Phosphate=找到磷酸盐矿石
 achievement.Phosphate.desc=高度：40-60，几率：60，主世界/暮色森林/鲸鱼座T星//    大概已经不存在了
 achievement.Galena=找到方铅矿矿石
@@ -616,7 +618,7 @@ achievement.unitool=万用工具
 achievement.unitool.desc=制造一把万用铲
 achievement.recycling=回收利用
 achievement.recycling.desc=制造一台电弧炉
-achievement.crushed=粉碎 
+achievement.crushed=粉碎
 achievement.crushed.desc=用锤子粉碎矿石
 achievement.cleandust=清洗
 achievement.cleandust.desc=在坩埚里清洗粉末
@@ -1176,7 +1178,7 @@ gregtech.areaLethargic=摸鱼
 gregtech.areaExploratory=探索
 gregtech.speedUnproductive=不生产
 gregtech.speedAccelerated=加速
-gregtech.lifeBlink=瞬灭 
+gregtech.lifeBlink=瞬灭
 gregtech.lifeEon=永生
 
 entity.gregtech.GT_Entity_Arrow.name=GT箭头
