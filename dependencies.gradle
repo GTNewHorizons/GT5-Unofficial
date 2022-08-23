@@ -24,7 +24,7 @@ dependencies {
 
 	runtime('com.github.GTNewHorizons:NewHorizonsCoreMod:1.9.53:dev')
 	runtime('com.github.GTNewHorizons:ForestryMC:4.4.12:dev')
-	runtime('com.github.GTNewHorizons:GTplusplus:1.7.76:dev') 
+	runtime('com.github.GTNewHorizons:GTplusplus:1.7.76:dev')
 
 	//compileOnly('com.github.GTNewHorizons:Avaritia:1.28)
 }
