@@ -70,7 +70,10 @@ public class ItemID {
             if (!item.equals(((ItemStack) obj).getItem())) return false;
             if (!ignorecount) if (count != ((ItemStack) obj).stackSize) return false;
             if (!ignoremeta) if (meta != ((ItemStack) obj).getItemDamage()) return false;
-            if (!ignorenbt) if (!tag.equals(((ItemStack) obj).stackTagCompound)) return false;
+            if (!ignorenbt) {
+                if (tag == null) return ((ItemStack) obj).stackTagCompound == null;
+                if (!tag.equals(((ItemStack) obj).stackTagCompound)) return false;
+            }
             return true;
         }
         return false;
