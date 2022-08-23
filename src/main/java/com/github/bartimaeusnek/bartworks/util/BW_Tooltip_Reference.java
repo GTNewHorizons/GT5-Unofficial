@@ -22,11 +22,12 @@
 
 package com.github.bartimaeusnek.bartworks.util;
 
-import static net.minecraft.util.EnumChatFormatting.*;
 import net.minecraft.util.StatCollector;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static net.minecraft.util.EnumChatFormatting.*;
 
 public class BW_Tooltip_Reference {
     public static final String BW_NO_RESET = ChatColorHelper.DARKGREEN + "BartWorks";

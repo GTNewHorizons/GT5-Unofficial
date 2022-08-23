@@ -181,6 +181,6 @@ public class TecTechUtils {
     }
 
     public static long getEUPerTickFromLaser(GT_MetaTileEntity_Hatch_EnergyTunnel tHatch) {
-        return tHatch.Amperes * tHatch.maxEUInput() - (tHatch.Amperes / 20);
+        return tHatch.Amperes * tHatch.maxEUInput()/* - (tHatch.Amperes / 20)*/;
     }
 }

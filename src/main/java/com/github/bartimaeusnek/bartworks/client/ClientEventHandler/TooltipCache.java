@@ -26,7 +26,10 @@ import com.github.bartimaeusnek.bartworks.util.Pair;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 class TooltipCache {
     private static final HashMap<Pair<Integer, Short>, char[]> cache = new HashMap<>();

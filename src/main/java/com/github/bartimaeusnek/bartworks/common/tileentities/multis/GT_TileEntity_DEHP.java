@@ -23,7 +23,6 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;

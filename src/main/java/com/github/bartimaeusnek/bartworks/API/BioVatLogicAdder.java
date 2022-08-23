@@ -24,7 +24,6 @@ package com.github.bartimaeusnek.bartworks.API;
 
 import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;

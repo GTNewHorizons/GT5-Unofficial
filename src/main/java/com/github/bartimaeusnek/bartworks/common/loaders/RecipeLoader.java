@@ -24,11 +24,7 @@ package com.github.bartimaeusnek.bartworks.common.loaders;
 
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_LESU;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ManualTrafo;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_HTGR;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_Windmill;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.*;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;

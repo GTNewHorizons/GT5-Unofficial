@@ -154,6 +154,10 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
             }
         }
 
+        long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
+        String tName = BW_Util.getTierNameFromVoltage(nominalV);
+        if(tName.equals("MAX+")) tName = EnumChatFormatting.OBFUSCATED + "MAX+";
+
         return new String[]{
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " +
                 EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
@@ -164,9 +168,11 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " +
                 EnumChatFormatting.RED + GT_Utility.formatNumbers(-this.lEUt) + EnumChatFormatting.RESET + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " +
-                EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*" + TecTechUtils.getMaxInputAmperage(this) + "A) " +
+                EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.getMaxInputVoltage()) + EnumChatFormatting.RESET +
+                " EU/t(*" + GT_Utility.formatNumbers(TecTechUtils.getMaxInputAmperage(this)) + "A) = " +
+                EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(nominalV) + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.machines.tier") + ": " +
-                EnumChatFormatting.YELLOW + BW_Util.getTierNameFromVoltage(this.getMaxInputVoltage()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + tName + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " +
                 EnumChatFormatting.RED + (this.getIdealStatus() - this.getRepairStatus()) + EnumChatFormatting.RESET + " " +
                 StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": " +

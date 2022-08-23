@@ -47,6 +47,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+
 import java.util.HashMap;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.calculateSv;

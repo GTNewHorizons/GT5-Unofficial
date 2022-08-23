@@ -39,14 +39,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import net.minecraft.item.ItemStack;
 
-import static gregtech.api.enums.OrePrefixes.block;
-import static gregtech.api.enums.OrePrefixes.dust;
-import static gregtech.api.enums.OrePrefixes.dustSmall;
-import static gregtech.api.enums.OrePrefixes.gem;
-import static gregtech.api.enums.OrePrefixes.ingot;
-import static gregtech.api.enums.OrePrefixes.plate;
-import static gregtech.api.enums.OrePrefixes.stick;
-import static gregtech.api.enums.OrePrefixes.stickLong;
+import static gregtech.api.enums.OrePrefixes.*;
 
 public class SimpleMetalLoader implements IWerkstoffRunnable {
     @Override

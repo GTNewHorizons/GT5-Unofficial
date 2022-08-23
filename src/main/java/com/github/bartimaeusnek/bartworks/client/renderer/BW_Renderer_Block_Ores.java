@@ -33,12 +33,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
-import static gregtech.common.render.GT_Renderer_Block.renderNegativeXFacing;
-import static gregtech.common.render.GT_Renderer_Block.renderNegativeYFacing;
-import static gregtech.common.render.GT_Renderer_Block.renderNegativeZFacing;
-import static gregtech.common.render.GT_Renderer_Block.renderPositiveXFacing;
-import static gregtech.common.render.GT_Renderer_Block.renderPositiveYFacing;
-import static gregtech.common.render.GT_Renderer_Block.renderPositiveZFacing;
+import static gregtech.common.render.GT_Renderer_Block.*;
 
 public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
     public static BW_Renderer_Block_Ores INSTANCE = new BW_Renderer_Block_Ores();

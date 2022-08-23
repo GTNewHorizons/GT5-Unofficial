@@ -35,11 +35,7 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEnt
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
 import com.github.bartimaeusnek.bartworks.common.tileentities.debug.CreativeScanner;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.*;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaBlastFurnace;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaDistillTower;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaChemicalReactor;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaOilCracker;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.*;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.*;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.crossmod.galacticgreg.GT_TileEntity_VoidMiners;

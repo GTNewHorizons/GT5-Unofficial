@@ -45,7 +45,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static gregtech.api.enums.OrePrefixes.*;
-import static gregtech.api.enums.OrePrefixes.cell;
 
 public class CellLoader implements IWerkstoffRunnable {
     @Override

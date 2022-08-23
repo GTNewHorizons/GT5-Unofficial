@@ -38,7 +38,6 @@ import java.util.Objects;
 
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.capsuleMolten;
 import static gregtech.api.enums.OrePrefixes.*;
-import static gregtech.api.enums.OrePrefixes.dustTiny;
 
 public class MoltenCellLoader implements IWerkstoffRunnable {
     @Override

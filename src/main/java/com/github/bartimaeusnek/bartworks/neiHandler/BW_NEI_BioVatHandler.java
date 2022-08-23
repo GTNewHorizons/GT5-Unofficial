@@ -34,7 +34,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.nei.GT_NEI_DefaultHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 

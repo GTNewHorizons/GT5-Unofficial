@@ -53,22 +53,11 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ANAEROBE_GAS;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.NOBLE_GAS;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Oganesson;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.fluids;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.molten;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
 import static gregtech.api.enums.GT_Values.VN;
 
 public class StaticRecipeChangeLoaders {

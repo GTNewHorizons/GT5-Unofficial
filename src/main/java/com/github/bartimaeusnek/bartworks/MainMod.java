@@ -60,7 +60,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import static com.github.bartimaeusnek.bartworks.common.loaders.BioRecipeLoader.runOnServerStarted;
-import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.removeIC2Recipes;
 import static gregtech.api.enums.GT_Values.VN;
 

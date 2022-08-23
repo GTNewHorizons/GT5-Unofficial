@@ -32,10 +32,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
-import static gregtech.api.enums.OrePrefixes.dust;
-import static gregtech.api.enums.OrePrefixes.ingot;
-import static gregtech.api.enums.OrePrefixes.plateDense;
-import static gregtech.api.enums.OrePrefixes.plateDouble;
+import static gregtech.api.enums.OrePrefixes.*;
 
 public class MultipleMetalLoader implements IWerkstoffRunnable {
     @Override

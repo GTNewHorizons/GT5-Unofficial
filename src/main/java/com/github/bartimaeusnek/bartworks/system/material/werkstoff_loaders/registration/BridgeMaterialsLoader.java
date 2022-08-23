@@ -35,7 +35,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import net.minecraft.item.ItemStack;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import static gregtech.api.enums.OrePrefixes.*;

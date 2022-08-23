@@ -22,8 +22,6 @@
 
 package com.github.bartimaeusnek.bartworks.util;
 
-import net.minecraft.util.MathHelper;
-
 /*
  * Faster implementations for Math stuff
  */
