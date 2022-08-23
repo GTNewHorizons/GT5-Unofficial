@@ -61,6 +61,7 @@ import kubatech.api.LoaderReference;
 import kubatech.api.network.CustomTileEntityPacket;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.FastRandom;
+import kubatech.api.utils.ItemID;
 import kubatech.api.utils.ReflectionHelper;
 import kubatech.client.effect.EntityRenderer;
 import kubatech.loaders.MobRecipeLoader;
@@ -199,8 +200,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addInfo(Author)
                 .addInfo("Spawns and Exterminates monsters for you")
                 .addInfo("Base energy usage: 2,000 EU/t")
-                .addInfo("Recipe time is based on mob health")
-                .addInfo("You have to put weapon in ULV Input Bus")
+                .addInfo("Recipe time is based on mob health and the weapon")
+                .addInfo("You have to put a weapon in ULV Input Bus (optional)")
                 .addInfo("Also produces 120 Liquid XP per operation")
                 .addInfo("If the mob spawns infernal")
                 .addInfo("it will drain 8 times more power")
@@ -216,6 +217,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addOtherStructurePart("Borosilicate Glass", "All walls without corners")
                 .addStructureInfo("The glass tier limits the Energy Input tier")
                 .addOtherStructurePart("Steel Frame Box", "All vertical corners (except top and bottom)")
+                .addOtherStructurePart("Diamond spikes", "Inside second layer")
                 .addOutputBus("Any casing", 1)
                 .addOtherStructurePart(
                         "1x ULV " + StatCollector.translateToLocal("GT5U.MBTT.InputBus"), "Any casing", 1)
@@ -415,6 +417,15 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     private CustomTileEntityPacket mobPacket = null;
 
+    private static class WeaponCache {
+        ItemStack stack = null;
+        ItemID id = null;
+        int looting = 0;
+        double attackdamage = 0;
+    }
+
+    private final WeaponCache weaponCache = new WeaponCache();
+
     @Override
     public boolean checkRecipe(ItemStack aStack) {
         if (getBaseMetaTileEntity().isClientSide()) return false;
@@ -438,34 +449,46 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 5000)};
             this.mOutputItems = recipe.generateOutputs(rand, this, 3, 0);
         } else {
+            double attackDamage = 9d; // damage from spikes
             GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.get(0);
-            if (inputbus == null || !isValidMetaTileEntity(inputbus)) return false;
-            ItemStack lootingholder = inputbus.getStackInSlot(0);
-            if (lootingholder == null || !Enchantment.looting.canApply(lootingholder)) return false;
-            double attackDamage = 3;
-
-            try {
-                //noinspection unchecked
-                attackDamage += ((Multimap<String, AttributeModifier>) lootingholder.getAttributeModifiers())
-                        .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName()).stream()
-                                .mapToDouble(attr -> attr.getAmount()
-                                        + (double) EnchantmentHelper.func_152377_a(
-                                                lootingholder, EnumCreatureAttribute.UNDEFINED))
-                                .sum();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            if (inputbus == null || !isValidMetaTileEntity(inputbus)) {
+                weaponCache.stack = null;
+                return false;
             }
+            weaponCheck:
+            {
+                ItemStack lootingholder = inputbus.getStackInSlot(0);
+                if (weaponCache.id.equals(lootingholder)) break weaponCheck;
+                if (lootingholder == null || !Enchantment.looting.canApply(lootingholder)) {
+                    weaponCache.stack = null;
+                    break weaponCheck;
+                }
+                try {
+                    //noinspection unchecked
+                    weaponCache.attackdamage = ((Multimap<String, AttributeModifier>)
+                                    lootingholder.getAttributeModifiers())
+                            .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName()).stream()
+                                    .mapToDouble(attr -> attr.getAmount()
+                                            + (double) EnchantmentHelper.func_152377_a(
+                                                    lootingholder, EnumCreatureAttribute.UNDEFINED))
+                                    .sum();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                weaponCache.stack = lootingholder;
+                weaponCache.looting =
+                        EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingholder);
+                weaponCache.id = ItemID.create_NoCopy(lootingholder, true, true);
+            }
+            if (weaponCache.stack != null) attackDamage += weaponCache.attackdamage;
 
             this.mOutputItems = recipe.generateOutputs(
-                    rand,
-                    this,
-                    attackDamage,
-                    EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingholder));
+                    rand, this, attackDamage, weaponCache.stack != null ? weaponCache.looting : 0);
             int eut = this.mEUt;
             calculatePerfectOverclockedNessMulti(this.mEUt, this.mMaxProgresstime, 2, getMaxInputVoltage());
-            if (lootingholder.isItemStackDamageable()) {
+            if (weaponCache.stack != null && weaponCache.stack.isItemStackDamageable()) {
                 do {
-                    if (lootingholder.attemptDamageItem(1, rand)) {
+                    if (weaponCache.stack.attemptDamageItem(1, rand)) {
                         inputbus.setInventorySlotContents(0, null);
                         break;
                     }
