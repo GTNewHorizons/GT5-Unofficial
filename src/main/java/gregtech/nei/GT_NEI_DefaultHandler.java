@@ -509,7 +509,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     private String formatSpecialValueHeatCoil(int heat) {
         for (HeatingCoilLevel heatLevel : HeatingCoilLevel.values()) {
             if (heatLevel == HeatingCoilLevel.None || heatLevel == HeatingCoilLevel.ULV) continue;
-            if (heatLevel.getHeat() > heat) {
+            if (heatLevel.getHeat() >= heat) {
                 return "(" + heatLevel.getName() + ")";
             }
         }
