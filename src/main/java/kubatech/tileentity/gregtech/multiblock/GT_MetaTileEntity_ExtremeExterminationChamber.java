@@ -34,6 +34,7 @@ import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
 import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
+import com.google.common.collect.Multimap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -49,9 +50,12 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 import kubatech.Tags;
@@ -59,11 +63,17 @@ import kubatech.api.LoaderReference;
 import kubatech.api.network.CustomTileEntityPacket;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.FastRandom;
+import kubatech.api.utils.ItemID;
 import kubatech.api.utils.ReflectionHelper;
 import kubatech.client.effect.EntityRenderer;
 import kubatech.loaders.MobRecipeLoader;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -71,6 +81,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -127,6 +139,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                                             CASING_INDEX,
                                             1),
                                     ofHatchAdder(
+                                            GT_MetaTileEntity_ExtremeExterminationChamber::addInputToMachineList,
+                                            CASING_INDEX,
+                                            1),
+                                    ofHatchAdder(
                                             GT_MetaTileEntity_ExtremeExterminationChamber::addEnergyInputToMachineList,
                                             CASING_INDEX,
                                             1),
@@ -153,7 +169,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     private boolean isInRitualMode = false;
     private int mCasing = 0;
     private byte mGlassTier = 0;
-    private boolean mAnimationEnabled = false;
+    private boolean mAnimationEnabled = true;
 
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
@@ -170,7 +186,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isInRitualMode = aNBT.getBoolean("isInRitualMode");
-        mAnimationEnabled = aNBT.getBoolean("mAnimationEnabled");
+        mAnimationEnabled = !aNBT.hasKey("mAnimationEnabled") || aNBT.getBoolean("mAnimationEnabled");
         mGlassTier = aNBT.getByte("mGlassTier");
     }
 
@@ -187,7 +203,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addInfo(Author)
                 .addInfo("Spawns and Exterminates monsters for you")
                 .addInfo("Base energy usage: 2,000 EU/t")
-                .addInfo("Recipe time is based on mob health")
+                .addInfo("Recipe time is based on mob health and the weapon")
+                .addInfo("You have to put a weapon in ULV Input Bus (optional)")
                 .addInfo("Also produces 120 Liquid XP per operation")
                 .addInfo("If the mob spawns infernal")
                 .addInfo("it will drain 8 times more power")
@@ -203,7 +220,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addOtherStructurePart("Borosilicate Glass", "All walls without corners")
                 .addStructureInfo("The glass tier limits the Energy Input tier")
                 .addOtherStructurePart("Steel Frame Box", "All vertical corners (except top and bottom)")
+                .addOtherStructurePart("Diamond spikes", "Inside second layer")
                 .addOutputBus("Any casing", 1)
+                .addOtherStructurePart(
+                        "1x ULV " + StatCollector.translateToLocal("GT5U.MBTT.InputBus"), "Any casing", 1)
                 .addOutputHatch("Any casing", 1)
                 .addEnergyHatch("Any casing", 1)
                 .addMaintenanceHatch("Any casing", 1)
@@ -368,7 +388,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 }
                 if (tileAltar == null) return;
 
-                if (currentEssence < effect.getCostPerRefresh() * 100) SoulNetworkHandler.causeNauseaToPlayer(owner);
+                if (currentEssence < effect.getCostPerRefresh() * 100) {
+                    SoulNetworkHandler.causeNauseaToPlayer(owner);
+                    return;
+                }
 
                 ((IBloodAltar) tileAltar)
                         .sacrificialDaggerCall(
@@ -397,6 +420,15 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     private CustomTileEntityPacket mobPacket = null;
 
+    private static class WeaponCache {
+        boolean isValid = false;
+        ItemID id = null;
+        int looting = 0;
+        double attackdamage = 0;
+    }
+
+    private final WeaponCache weaponCache = new WeaponCache();
+
     @Override
     public boolean checkRecipe(ItemStack aStack) {
         if (getBaseMetaTileEntity().isClientSide()) return false;
@@ -414,14 +446,57 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         if (!recipe.isPeacefulAllowed
                 && this.getBaseMetaTileEntity().getWorld().difficultySetting == EnumDifficulty.PEACEFUL) return false;
 
-        this.mOutputItems = recipe.generateOutputs(rand, this);
-
         if (isInRitualMode && isRitualValid()) {
             this.mMaxProgresstime = 400;
             this.mEUt /= 4;
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 5000)};
+            this.mOutputItems = recipe.generateOutputs(rand, this, 3, 0);
         } else {
-            calculateOverclockedNessMulti(this.mEUt, this.mMaxProgresstime, 2, getMaxInputVoltage());
+            double attackDamage = 9d; // damage from spikes
+            GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.size() == 0 ? null : this.mInputBusses.get(0);
+            if (inputbus == null || !isValidMetaTileEntity(inputbus)) {
+                weaponCache.isValid = false;
+                return false;
+            }
+            ItemStack lootingholder = inputbus.getStackInSlot(0);
+            weaponCheck:
+            {
+                if (weaponCache.isValid && weaponCache.id.equals(lootingholder)) break weaponCheck;
+                if (lootingholder == null || !Enchantment.looting.canApply(lootingholder)) {
+                    weaponCache.isValid = false;
+                    break weaponCheck;
+                }
+                try {
+                    //noinspection unchecked
+                    weaponCache.attackdamage = ((Multimap<String, AttributeModifier>)
+                                    lootingholder.getAttributeModifiers())
+                            .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName()).stream()
+                                    .mapToDouble(attr -> attr.getAmount()
+                                            + (double) EnchantmentHelper.func_152377_a(
+                                                    lootingholder, EnumCreatureAttribute.UNDEFINED))
+                                    .sum();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                weaponCache.isValid = true;
+                weaponCache.looting =
+                        EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingholder);
+                weaponCache.id = ItemID.create_NoCopy(lootingholder, true, true);
+            }
+            if (weaponCache.isValid) attackDamage += weaponCache.attackdamage;
+
+            this.mOutputItems =
+                    recipe.generateOutputs(rand, this, attackDamage, weaponCache.isValid ? weaponCache.looting : 0);
+            int eut = this.mEUt;
+            calculatePerfectOverclockedNessMulti(this.mEUt, this.mMaxProgresstime, 2, getMaxInputVoltage());
+            if (weaponCache.isValid && lootingholder.isItemStackDamageable()) {
+                do {
+                    if (lootingholder.attemptDamageItem(1, rand)) {
+                        inputbus.setInventorySlotContents(0, null);
+                        break;
+                    }
+                } while ((eut <<= 2) < this.mEUt);
+            }
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 120)};
         }
         if (this.mEUt > 0) this.mEUt = -this.mEUt;
@@ -434,6 +509,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         if (mAnimationEnabled) mobPacket.addData(mobType);
         mobPacket.sendToAllAround(16);
 
+        this.updateSlots();
         return true;
     }
 
@@ -471,11 +547,34 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mGlassTier = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
-        if (mCasing < 10 || mMaintenanceHatches.size() != 1 || mEnergyHatches.size() == 0) return false;
+        if (mCasing < 10
+                || mMaintenanceHatches.size() != 1
+                || mEnergyHatches.size() == 0
+                || !(mInputBusses.size() == 0 || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0)))
+            return false;
         if (mGlassTier < 8)
             for (GT_MetaTileEntity_Hatch_Energy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
         if (isInRitualMode) connectToRitual();
         return true;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add("Animations: " + EnumChatFormatting.YELLOW + (mAnimationEnabled ? "Enabled" : "Disabled"));
+        info.add("Is in ritual mode: " + EnumChatFormatting.YELLOW + (isInRitualMode ? "Yes" : "No"));
+        if (isInRitualMode)
+            info.add("Is connected to ritual: "
+                    + (isRitualValid() ? EnumChatFormatting.GREEN + "Yes" : EnumChatFormatting.RED + "No"));
+        else {
+            info.add("Inserted weapon: " + EnumChatFormatting.YELLOW + (weaponCache.isValid ? "Yes" : "No"));
+            if (weaponCache.isValid) {
+                info.add("Weapon attack damage: " + EnumChatFormatting.YELLOW + weaponCache.attackdamage);
+                info.add("Weapon looting level: " + EnumChatFormatting.YELLOW + weaponCache.looting);
+                info.add("Total attack damage: " + EnumChatFormatting.YELLOW + (9 + weaponCache.attackdamage));
+            } else info.add("Total attack damage: " + EnumChatFormatting.YELLOW + 9);
+        }
+        return info.toArray(new String[0]);
     }
 
     @Override
