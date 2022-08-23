@@ -50,7 +50,6 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     
     // Tooltip localization keys
     private static final String
-        GHOST_CIRCUIT_TOOLTIP = "GT5U.machines.select_circuit.tooltip",
         BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
         BATTERY_SLOT_TOOLTIP_ALT = "GT5U.machines.battery_slot.tooltip.alternative",
         UNUSED_SLOT_TOOLTIP = "GT5U.machines.unused_slot.tooltip",
@@ -72,7 +71,6 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
             String aTextureFile, String aNEI, byte aProgressBarDirection, byte aProgressBarAmount) {
         super(new GT_Container_BasicMachine(aInventoryPlayer, aTileEntity),
             RES_PATH_GUI + "basicmachines/" + aTextureFile);
-        getContainer().setCircuitSlotClickCallback(this::openSelectCircuitDialog);
         mProgressBarDirection = aProgressBarDirection;
         mProgressBarAmount = (byte) Math.max(1, aProgressBarAmount);
         mName = aName;
@@ -84,15 +82,13 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
      */
     @Override
     protected void setupTooltips() {
+        super.setupTooltips();
         GT_MetaTileEntity_BasicMachine machine = getMachine();
         GT_Recipe_Map recipes = machine.getRecipeList();
         GT_Container_BasicMachine container = getContainer();
         Rectangle tProblemArea = new Rectangle(this.guiLeft + 79, this.guiTop + 44, 18, 18);
         String batterySlotTooltipKey;
         Object[] batterySlotTooltipArgs;
-        if (machine.allowSelectCircuit()) {
-            addToolTip(new GT_GuiSlotTooltip(container.slotCircuit, mTooltipCache.getData(GHOST_CIRCUIT_TOOLTIP)));
-        }
         if (machine.isSteampowered()) {
             batterySlotTooltipKey = UNUSED_SLOT_TOOLTIP;
             batterySlotTooltipArgs = new String[0];
@@ -144,24 +140,6 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         return GT_Values.TIER_COLORS[machineTier] + GT_Values.VN[machineTier];
     }
 
-    private void openSelectCircuitDialog() {
-        mc.displayGuiScreen(new GT_GUIDialogSelectItem(
-                StatCollector.translateToLocal("GT5U.machines.select_circuit"),
-                mContainer.mTileEntity.getMetaTileEntity().getStackForm(0),
-                this,
-                this::onCircuitSelected,
-                getMachine().getConfigurationCircuits(),
-                GT_Utility.findMatchingStackInList(getMachine().getConfigurationCircuits(),
-                getMachine().getStackInSlot(getMachine().getCircuitSlot()))));
-    }
-
-    private void onCircuitSelected(ItemStack selected) {
-        GT_Values.NW.sendToServer(new GT_Packet_SetConfigurationCircuit(mContainer.mTileEntity, selected));
-        // we will not do any validation on client side
-        // it doesn't get to actually decide what inventory contains anyway
-        mContainer.mTileEntity.setInventorySlotContents(getMachine().getCircuitSlot(), selected);
-    }
-
     private GT_MetaTileEntity_BasicMachine getMachine() {
         return (GT_MetaTileEntity_BasicMachine) mContainer.mTileEntity.getMetaTileEntity();
     }
@@ -170,18 +148,6 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
         fontRendererObj.drawString(mName, 8, 4, textColor);
-    }
-
-    @Override
-    protected void onMouseWheel(int mx, int my, int delta) {
-        GT_Slot_Render slotCircuit = getContainer().slotCircuit;
-        if (slotCircuit != null && func_146978_c(slotCircuit.xDisplayPosition,
-                slotCircuit.yDisplayPosition, 16, 16, mx, my)) {
-            // emulate click
-            handleMouseClick(slotCircuit, -1, delta > 0 ? 1 : 0, 0);
-            return;
-        }
-        super.onMouseWheel(mx, my, delta);
     }
 
     @Override

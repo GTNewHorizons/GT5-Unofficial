@@ -11,6 +11,7 @@ import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -710,7 +711,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         markDirty();
-        if (aIndex >= 0 && aIndex < mInventory.length) mInventory[aIndex] = aStack;
+        if (this instanceof IConfigurationCircuitSupport) {
+            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)this;
+            if (ccs.allowSelectCircuit() && aIndex == ccs.getCircuitSlot() && aStack != null) {
+                mInventory[aIndex] = GT_Utility.copyAmount(0, aStack);
+                return;
+            }
+        }
+        if (aIndex >= 0 && aIndex < mInventory.length)
+            mInventory[aIndex] = aStack;
     }
 
     @Override
@@ -1047,8 +1056,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             IEnergyGrid eg = getProxy().getNode().getGrid().getCache(IEnergyGrid.class);
             if (!eg.isNetworkPowered())
                 return "(power)";
-        }
-        catch(Throwable ex) {
+        } catch(Throwable ex) {
             ex.printStackTrace();
         }
         return "";
