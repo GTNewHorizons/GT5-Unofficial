@@ -1622,7 +1622,28 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		return null;
 	}
 
-	@Override
+	/**
+	 * Deplete fluid input from a set of restricted hatches. This assumes these hatches can store nothing else but your
+	 * expected fluid
+	 */
+    protected boolean depleteInputFromRestrictedHatches(Collection<GT_MetaTileEntity_Hatch_CustomFluidBase> aHatches, int aAmount) {
+        for (final GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : aHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                FluidStack tLiquid = tHatch.getFluid();
+                if (tLiquid == null || tLiquid.amount < aAmount) {
+                    continue;
+                }
+                tLiquid = tHatch.drain(aAmount, false);
+                if (tLiquid != null && tLiquid.amount >= aAmount) {
+                    tLiquid = tHatch.drain(aAmount, true);
+                    return tLiquid != null && tLiquid.amount >= aAmount;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
 	public void updateSlots() {
 		for (final GT_MetaTileEntity_Hatch_InputBattery tHatch : this.mChargeHatches) {
 			if (isValidMetaTileEntity(tHatch)) {

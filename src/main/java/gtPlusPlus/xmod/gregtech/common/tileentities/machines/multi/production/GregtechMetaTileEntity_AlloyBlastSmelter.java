@@ -117,7 +117,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends GregtechMeta_Multi
 					.addElement(
 							'C',
 							buildHatchAdder(GregtechMetaTileEntity_AlloyBlastSmelter.class)
-									.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+									.atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
 									.casingIndex(TAE.GTPP_INDEX(15))
 									.dot(1)
 									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 15)))

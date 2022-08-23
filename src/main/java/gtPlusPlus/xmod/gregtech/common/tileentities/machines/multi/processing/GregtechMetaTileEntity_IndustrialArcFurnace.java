@@ -106,7 +106,7 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends GregtechMeta_Mu
 					.addElement(
 							'C',
 							buildHatchAdder(GregtechMetaTileEntity_IndustrialArcFurnace.class)
-									.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+									.atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
 									.casingIndex(getCasingTextureIndex())
 									.dot(1)
 									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings4Misc, 3)))

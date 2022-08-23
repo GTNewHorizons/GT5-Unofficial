@@ -386,7 +386,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 			built = survivialBuildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, source, actor, false, true);
 			if (built >= 0) return built;
 		}
-		mHeight = tTotalHeight;
+		mHeight = tTotalHeight - 1;
 		return survivialBuildPiece(STRUCTURE_PIECE_TOP_HINT, stackSize, 1, tTotalHeight - 1, 0, elementBudget, source, actor, false, true);
 	}
 

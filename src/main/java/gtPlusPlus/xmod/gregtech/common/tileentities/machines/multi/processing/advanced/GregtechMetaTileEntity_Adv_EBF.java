@@ -443,7 +443,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 
 	}
 
-	private volatile int mGraceTimer = 2;
+	private int mGraceTimer = 2;
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {		
@@ -452,7 +452,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 		if (this.mStartUpCheck < 0) {
 			if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {			
 				if (aTick % 10 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
-					if (!this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 5))) {						
+					if (!this.depleteInputFromRestrictedHatches(this.mPyrotheumHatches, 5)) {
 						if (mGraceTimer-- == 0) {
 							this.causeMaintenanceIssue();
 							this.stopMachine();

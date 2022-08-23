@@ -58,7 +58,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 	protected final List<List<GT_MetaTileEntity_Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
 	protected int mHeight;
 	protected int mCasing;
-	protected int mTopLayerFound;
+	protected boolean mTopLayerFound;
 
 	private static IStructureDefinition<GregtechMetaTileEntity_Adv_DistillationTower> STRUCTURE_DEFINITION = null;
 
@@ -147,7 +147,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 	}
 
 	protected void onTopLayerFound() {
-		mTopLayerFound |= 1;
+		mTopLayerFound = true;
 	}
 
 	@Override
@@ -205,7 +205,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		// reset
 		mOutputHatchesByLayer.forEach(List::clear);
 		mHeight = 1;
-		mTopLayerFound = 0;
+		mTopLayerFound = false;
 
 		// check base
 		if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0))
@@ -219,13 +219,13 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 			if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1).isEmpty())
 				// layer without output hatch
 				return false;
-			if (mTopLayerFound != 0) {
+			if (mTopLayerFound || !mMufflerHatches.isEmpty()) {
 				break;
 			}
 			// not top
 			mHeight++;
 		}
-		return mTopLayerFound == 3 && mHeight >= 2 && checkHatch();
+		return mTopLayerFound && mHeight >= 2 && checkHatch();
 	}
 
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

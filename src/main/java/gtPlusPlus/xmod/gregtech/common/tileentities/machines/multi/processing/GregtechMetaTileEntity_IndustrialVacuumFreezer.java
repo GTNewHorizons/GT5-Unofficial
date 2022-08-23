@@ -150,23 +150,6 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		return super.checkHatch() && !mCryotheumHatches.isEmpty();
 	}
 
-	private boolean depleteFuel(int aAmount) {
-		for (final GT_MetaTileEntity_Hatch_CustomFluidBase tHatch : this.mCryotheumHatches) {
-			if (isValidMetaTileEntity(tHatch)) {
-				FluidStack tLiquid = tHatch.getFluid();
-				if (tLiquid == null || tLiquid.amount < aAmount) {
-					continue;
-				}
-				tLiquid = tHatch.drain(aAmount, false);
-				if (tLiquid != null && tLiquid.amount >= aAmount) {
-					tLiquid = tHatch.drain(aAmount, true);
-					return tLiquid != null && tLiquid.amount >= aAmount;
-				}
-			}
-		}
-		return false;
-	}
-
 	private boolean addCryotheumHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
@@ -268,7 +251,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		if (this.mStartUpCheck < 0) {
 			if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {			
 				if (aTick % 10 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
-					if (!this.depleteFuel(10)) {
+					if (!this.depleteInputFromRestrictedHatches(this.mCryotheumHatches, 10)) {
 						if (mGraceTimer-- == 0) {
 							this.causeMaintenanceIssue();
 							this.stopMachine();

@@ -89,7 +89,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends GregtechMet
 					.addElement(
 							'C',
 							buildHatchAdder(GregtechMetaTileEntity_IndustrialCuttingMachine.class)
-									.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+									.atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
 									.casingIndex(getCasingTextureIndex())
 									.dot(1)
 									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 13)))
