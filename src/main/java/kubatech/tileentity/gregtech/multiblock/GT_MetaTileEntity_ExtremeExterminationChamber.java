@@ -54,6 +54,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 import kubatech.Tags;
@@ -79,6 +81,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -418,7 +421,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     private CustomTileEntityPacket mobPacket = null;
 
     private static class WeaponCache {
-        ItemStack stack = null;
+        boolean isValid = false;
         ItemID id = null;
         int looting = 0;
         double attackdamage = 0;
@@ -452,15 +455,15 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             double attackDamage = 9d; // damage from spikes
             GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.get(0);
             if (inputbus == null || !isValidMetaTileEntity(inputbus)) {
-                weaponCache.stack = null;
+                weaponCache.isValid = false;
                 return false;
             }
             ItemStack lootingholder = inputbus.getStackInSlot(0);
             weaponCheck:
             {
-                if (weaponCache.stack != null && weaponCache.id.equals(lootingholder)) break weaponCheck;
+                if (weaponCache.isValid && weaponCache.id.equals(lootingholder)) break weaponCheck;
                 if (lootingholder == null || !Enchantment.looting.canApply(lootingholder)) {
-                    weaponCache.stack = null;
+                    weaponCache.isValid = false;
                     break weaponCheck;
                 }
                 try {
@@ -475,18 +478,18 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                weaponCache.stack = lootingholder;
+                weaponCache.isValid = true;
                 weaponCache.looting =
                         EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingholder);
                 weaponCache.id = ItemID.create_NoCopy(lootingholder, true, true);
             }
-            if (weaponCache.stack != null) attackDamage += weaponCache.attackdamage;
+            if (weaponCache.isValid) attackDamage += weaponCache.attackdamage;
 
-            this.mOutputItems = recipe.generateOutputs(
-                    rand, this, attackDamage, weaponCache.stack != null ? weaponCache.looting : 0);
+            this.mOutputItems =
+                    recipe.generateOutputs(rand, this, attackDamage, weaponCache.isValid ? weaponCache.looting : 0);
             int eut = this.mEUt;
             calculatePerfectOverclockedNessMulti(this.mEUt, this.mMaxProgresstime, 2, getMaxInputVoltage());
-            if (weaponCache.stack != null && lootingholder.isItemStackDamageable()) {
+            if (weaponCache.isValid && lootingholder.isItemStackDamageable()) {
                 do {
                     if (lootingholder.attemptDamageItem(1, rand)) {
                         inputbus.setInventorySlotContents(0, null);
@@ -553,6 +556,25 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             for (GT_MetaTileEntity_Hatch_Energy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
         if (isInRitualMode) connectToRitual();
         return true;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add("Animations: " + EnumChatFormatting.YELLOW + (mAnimationEnabled ? "Enabled" : "Disabled"));
+        info.add("Is in ritual mode: " + EnumChatFormatting.YELLOW + (isInRitualMode ? "Yes" : "No"));
+        if (isInRitualMode)
+            info.add("Is connected to ritual: "
+                    + (isRitualValid() ? EnumChatFormatting.GREEN + "Yes" : EnumChatFormatting.RED + "No"));
+        else {
+            info.add("Inserted weapon: " + EnumChatFormatting.YELLOW + (weaponCache.isValid ? "Yes" : "No"));
+            if (weaponCache.isValid) {
+                info.add("Weapon attack damage: " + EnumChatFormatting.YELLOW + weaponCache.attackdamage);
+                info.add("Weapon looting level: " + EnumChatFormatting.YELLOW + weaponCache.looting);
+                info.add("Total attack damage: " + EnumChatFormatting.YELLOW + (9 + weaponCache.attackdamage));
+            } else info.add("Total attack damage: " + EnumChatFormatting.YELLOW + 9);
+        }
+        return info.toArray(new String[0]);
     }
 
     @Override
