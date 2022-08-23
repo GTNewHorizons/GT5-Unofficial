@@ -119,6 +119,7 @@ public class OverridesConfig {
             reader = Files.newReader(overrideFile, StandardCharsets.UTF_8);
             overrides = gson.fromJson(reader, new TypeToken<Map<String, MobOverride>>() {}.getType());
             overrides.remove("ExampleMob");
+            overrides.values().forEach(o -> o.additions.forEach(MobDrop::reconstructStack));
             if (LoaderReference.GTNHCoreMod) {
                 LOG.info("Detected GTNH Core Mod, parsing custom drops from there.");
                 CustomDrops coredrops =

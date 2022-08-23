@@ -107,7 +107,7 @@ public class MobRecipeLoader {
         public final ArrayList<MobDrop> mOutputs;
         public final int mEUt = 2000;
         public final int mDuration;
-        public final int mMaxDamageChance;
+        public int mMaxDamageChance;
         public final boolean infernalityAllowed;
         public final boolean alwaysinfernal;
         public static droplist infernaldrops;
@@ -210,6 +210,19 @@ public class MobRecipeLoader {
             maxEntityHealth = e.getMaxHealth();
             mDuration = 55 + (int) (maxEntityHealth * 10);
             entity = e;
+        }
+
+        public void refresh() {
+            int maxdamagechance = 0;
+            for (Iterator<MobDrop> iterator = mOutputs.iterator(); iterator.hasNext(); ) {
+                MobDrop o = iterator.next();
+                if (o.playerOnly) {
+                    iterator.remove();
+                    continue;
+                }
+                if (o.damages != null) for (int v : o.damages.values()) maxdamagechance += v;
+            }
+            mMaxDamageChance = maxdamagechance;
         }
 
         public ItemStack[] generateOutputs(
@@ -600,9 +613,7 @@ public class MobRecipeLoader {
                                             .newInstance(new Object[] {f});
                             ArrayList<MobDrop> drops = entry.getValue();
                             drops.forEach(MobDrop::reconstructStack);
-                            GeneralMobList.put(
-                                    entry.getKey(),
-                                    new GeneralMappedMob(e, drops.size() != 0 ? new MobRecipe(e, drops) : null, drops));
+                            GeneralMobList.put(entry.getKey(), new GeneralMappedMob(e, new MobRecipe(e, drops), drops));
                         } catch (Exception ignored) {
                         }
                     }
@@ -955,7 +966,8 @@ public class MobRecipeLoader {
             collector.newRound();
 
             if (drops.isEmpty() && raredrops.isEmpty() && additionaldrops.isEmpty()) {
-                GeneralMobList.put(k, new GeneralMappedMob(e, null, new ArrayList<>()));
+                ArrayList<MobDrop> arr = new ArrayList<>();
+                GeneralMobList.put(k, new GeneralMappedMob(e, new MobRecipe(e, arr), arr));
                 LOG.info("Entity " + k + " doesn't drop any items, skipping EEC Recipe map");
                 return;
             }
@@ -1105,7 +1117,7 @@ public class MobRecipeLoader {
             }
 
             MobRecipe recipe = v.recipe;
-            if (recipe != null) recipe = recipe.copy();
+            recipe = recipe.copy();
             @SuppressWarnings("unchecked")
             ArrayList<MobDrop> drops = (ArrayList<MobDrop>) v.drops.clone();
 
@@ -1116,19 +1128,20 @@ public class MobRecipeLoader {
 
             OverridesConfig.MobOverride override = null;
             if ((override = OverridesConfig.overrides.get(k)) != null) {
-                if (override.removeAll) drops.clear();
-                else
+                if (override.removeAll) {
+                    drops.clear();
+                    recipe.mOutputs.clear();
+                } else
                     for (OverridesConfig.MobDropSimplified removal : override.removals) {
                         drops.removeIf(removal::isMatching);
-                        if (recipe != null) recipe.mOutputs.removeIf(removal::isMatching);
+                        recipe.mOutputs.removeIf(removal::isMatching);
                     }
                 drops.addAll(override.additions);
-                if (recipe != null)
-                    recipe.mOutputs.addAll(override.additions.stream()
-                            .filter(d -> !d.playerOnly)
-                            .collect(Collectors.toList()));
+                recipe.mOutputs.addAll(
+                        override.additions.stream().filter(d -> !d.playerOnly).collect(Collectors.toList()));
                 LoadConfigPacket.instance.mobsOverrides.put(k, override);
             }
+            recipe.refresh();
 
             if (drops.isEmpty()) {
                 LOG.info("Entity " + k + " doesn't drop any items, skipping EEC map");
@@ -1137,7 +1150,7 @@ public class MobRecipeLoader {
                 LOG.info("Registered " + k);
                 continue;
             }
-            if (v.recipe != null) MobNameToRecipeMap.put(k, recipe);
+            if (v.recipe.mOutputs.size() > 0) MobNameToRecipeMap.put(k, recipe);
             LoadConfigPacket.instance.mobsToLoad.add(k);
             LOG.info("Registered " + k);
         }
@@ -1151,7 +1164,7 @@ public class MobRecipeLoader {
         mobs.forEach(k -> {
             GeneralMappedMob v = GeneralMobList.get(k);
             MobRecipe recipe = v.recipe;
-            if (recipe != null) recipe = recipe.copy();
+            recipe = recipe.copy();
             @SuppressWarnings("unchecked")
             ArrayList<MobDrop> drops = (ArrayList<MobDrop>) v.drops.clone();
 
@@ -1162,22 +1175,23 @@ public class MobRecipeLoader {
 
             OverridesConfig.MobOverride override = null;
             if ((override = overrides.get(k)) != null) {
-                if (override.removeAll) drops.clear();
-                else
+                if (override.removeAll) {
+                    drops.clear();
+                    recipe.mOutputs.clear();
+                } else
                     for (OverridesConfig.MobDropSimplified removal : override.removals) {
                         drops.removeIf(removal::isMatching);
-                        if (recipe != null) recipe.mOutputs.removeIf(removal::isMatching);
+                        recipe.mOutputs.removeIf(removal::isMatching);
                     }
                 drops.addAll(override.additions);
-                if (recipe != null)
-                    recipe.mOutputs.addAll(override.additions.stream()
-                            .filter(d -> !d.playerOnly)
-                            .collect(Collectors.toList()));
-                drops.sort(Comparator.comparing(d -> d.type)); // Fix gui
+                recipe.mOutputs.addAll(
+                        override.additions.stream().filter(d -> !d.playerOnly).collect(Collectors.toList()));
+                drops.sort(Comparator.comparing(d -> d.type)); // Fix GUI
             }
+            recipe.refresh();
 
             Mob_Handler.addRecipe(v.mob, drops);
-            if (recipe != null) MobNameToRecipeMap.put(k, recipe);
+            if (recipe.mOutputs.size() > 0) MobNameToRecipeMap.put(k, recipe);
             LOG.info("Registered " + k);
         });
         LOG.info("Sorting NEI map");
@@ -1193,11 +1207,16 @@ public class MobRecipeLoader {
                     // Get average chance
                     double chance;
                     if (r.getFrom() == 0 && r.getTo() == 0) chance = 1d;
-                    else chance = (((double) r.getTo() - (double) r.getFrom()) / 2d) + (double) r.getFrom();
+                    else {
+                        double a = r.getFrom();
+                        double b = r.getTo();
+                        chance = ((b * b) + b - (a * a) + a) / (2 * (b - a + 1));
+                    }
                     ItemStack stack = ((ItemStack) entry.getKey().getInternal()).copy();
                     MobDrop drop = new MobDrop(
-                            stack, MobDrop.DropType.Normal, (int) (chance * 10000), null, null, false, true);
+                            stack, MobDrop.DropType.Normal, (int) (chance * 10000), null, null, false, false);
                     drops.add(drop);
+                    recipe.mOutputs.add(drop);
                 }
                 for (Map.Entry<IItemStack, IntRange> entry :
                         ie.getDropsToAddPlayerOnly().entrySet()) {
@@ -1205,7 +1224,11 @@ public class MobRecipeLoader {
                     // Get average chance
                     double chance;
                     if (r.getFrom() == 0 && r.getTo() == 0) chance = 1d;
-                    else chance = (((double) r.getTo() - (double) r.getFrom()) / 2d) + (double) r.getFrom();
+                    else {
+                        double a = r.getFrom();
+                        double b = r.getTo();
+                        chance = ((b * b) + b - (a * a) + a) / (2 * (b - a + 1));
+                    }
                     ItemStack stack = ((ItemStack) entry.getKey().getInternal()).copy();
                     MobDrop drop = new MobDrop(
                             stack, MobDrop.DropType.Normal, (int) (chance * 10000), null, null, false, true);
@@ -1216,7 +1239,7 @@ public class MobRecipeLoader {
                             .filter(d -> istack.matches(new MCItemStack(d.stack)))
                             .collect(Collectors.toList());
                     drops.removeAll(toRemove);
-                    if (recipe != null) recipe.mOutputs.removeAll(toRemove);
+                    recipe.mOutputs.removeAll(toRemove);
                 }
             }
         }
