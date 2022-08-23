@@ -453,7 +453,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             this.mOutputItems = recipe.generateOutputs(rand, this, 3, 0);
         } else {
             double attackDamage = 9d; // damage from spikes
-            GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.get(0);
+            GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.size() == 0 ? null : this.mInputBusses.get(0);
             if (inputbus == null || !isValidMetaTileEntity(inputbus)) {
                 weaponCache.isValid = false;
                 return false;
@@ -550,8 +550,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         if (mCasing < 10
                 || mMaintenanceHatches.size() != 1
                 || mEnergyHatches.size() == 0
-                || mInputBusses.size() != 1
-                || mInputBusses.get(0).mTier != 0) return false;
+                || !(mInputBusses.size() == 0 || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0)))
+            return false;
         if (mGlassTier < 8)
             for (GT_MetaTileEntity_Hatch_Energy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
         if (isInRitualMode) connectToRitual();
