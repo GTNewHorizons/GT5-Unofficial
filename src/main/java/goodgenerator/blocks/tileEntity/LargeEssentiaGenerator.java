@@ -175,13 +175,13 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
                         },
                         {
                             "T  TXT  T",
-                            "  TCCCT  ",
-                            " TCCCCCT ",
-                            "TCCCCCCCT",
-                            "XCCCCCCCX",
-                            "TCCCCCCCT",
-                            " TCCCCCT ",
-                            "  TCCCT  ",
+                            "  TCXCT  ",
+                            " TCCXCCT ",
+                            "TCCCXCCCT",
+                            "XXXXXXXXX",
+                            "TCCCXCCCT",
+                            " TCCXCCT ",
+                            "  TCXCT  ",
                             "T  TXT  T"
                         }
                     }))
