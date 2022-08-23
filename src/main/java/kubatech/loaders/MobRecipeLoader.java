@@ -215,7 +215,7 @@ public class MobRecipeLoader {
         public ItemStack[] generateOutputs(
                 Random rnd, GT_MetaTileEntity_ExtremeExterminationChamber MTE, double attackDamage, int lootinglevel) {
             MTE.mEUt = mEUt;
-            MTE.mMaxProgresstime = Math.min(55, (int) ((maxEntityHealth / attackDamage) * 10d));
+            MTE.mMaxProgresstime = Math.max(55, (int) ((maxEntityHealth / attackDamage) * 10d));
             ArrayList<ItemStack> stacks = new ArrayList<>(mOutputs.size());
             for (MobDrop o : mOutputs) {
                 int chance = o.chance;
