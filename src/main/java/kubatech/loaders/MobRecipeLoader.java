@@ -113,6 +113,7 @@ public class MobRecipeLoader {
         public static droplist infernaldrops;
         public final boolean isPeacefulAllowed;
         public final EntityLiving entity;
+        public final float maxEntityHealth;
 
         @SuppressWarnings("unchecked")
         public MobRecipe copy() {
@@ -123,7 +124,8 @@ public class MobRecipeLoader {
                     infernalityAllowed,
                     alwaysinfernal,
                     isPeacefulAllowed,
-                    entity);
+                    entity,
+                    maxEntityHealth);
         }
 
         private MobRecipe(
@@ -133,7 +135,8 @@ public class MobRecipeLoader {
                 boolean infernalityAllowed,
                 boolean alwaysinfernal,
                 boolean isPeacefulAllowed,
-                EntityLiving entity) {
+                EntityLiving entity,
+                float maxEntityHealth) {
             this.mOutputs = mOutputs;
             this.mDuration = mDuration;
             this.mMaxDamageChance = mMaxDamageChance;
@@ -141,6 +144,7 @@ public class MobRecipeLoader {
             this.alwaysinfernal = alwaysinfernal;
             this.isPeacefulAllowed = isPeacefulAllowed;
             this.entity = entity;
+            this.maxEntityHealth = maxEntityHealth;
         }
 
         @SuppressWarnings("unchecked")
@@ -203,14 +207,15 @@ public class MobRecipeLoader {
             }
             mMaxDamageChance = maxdamagechance;
             // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
-            mDuration = 55 + 10 + (((int) e.getMaxHealth() / 5) * 10);
+            maxEntityHealth = e.getMaxHealth();
+            mDuration = 55 + (int) (maxEntityHealth * 10);
             entity = e;
         }
 
         public ItemStack[] generateOutputs(
-                Random rnd, GT_MetaTileEntity_ExtremeExterminationChamber MTE, int lootinglevel) {
+                Random rnd, GT_MetaTileEntity_ExtremeExterminationChamber MTE, double attackDamage, int lootinglevel) {
             MTE.mEUt = mEUt;
-            MTE.mMaxProgresstime = mDuration;
+            MTE.mMaxProgresstime = Math.min(55, (int) ((maxEntityHealth / attackDamage) * 10d));
             ArrayList<ItemStack> stacks = new ArrayList<>(mOutputs.size());
             for (MobDrop o : mOutputs) {
                 int chance = o.chance;

@@ -34,6 +34,7 @@ import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
 import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
+import com.google.common.collect.Multimap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -67,6 +68,9 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -428,20 +432,45 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         if (!recipe.isPeacefulAllowed
                 && this.getBaseMetaTileEntity().getWorld().difficultySetting == EnumDifficulty.PEACEFUL) return false;
 
-        GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.get(0);
-        if (inputbus == null || !isValidMetaTileEntity(inputbus)) return false;
-        ItemStack lootingholder = inputbus.getStackInSlot(0);
-        if (lootingholder == null || !Enchantment.looting.canApply(lootingholder)) return false;
-
-        this.mOutputItems = recipe.generateOutputs(
-                rand, this, EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingholder));
-
         if (isInRitualMode && isRitualValid()) {
             this.mMaxProgresstime = 400;
             this.mEUt /= 4;
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 5000)};
+            this.mOutputItems = recipe.generateOutputs(rand, this, 3, 0);
         } else {
+            GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.get(0);
+            if (inputbus == null || !isValidMetaTileEntity(inputbus)) return false;
+            ItemStack lootingholder = inputbus.getStackInSlot(0);
+            if (lootingholder == null || !Enchantment.looting.canApply(lootingholder)) return false;
+            double attackDamage = 3;
+
+            try {
+                //noinspection unchecked
+                attackDamage += ((Multimap<String, AttributeModifier>) lootingholder.getAttributeModifiers())
+                        .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName()).stream()
+                                .mapToDouble(attr -> attr.getAmount()
+                                        + (double) EnchantmentHelper.func_152377_a(
+                                                lootingholder, EnumCreatureAttribute.UNDEFINED))
+                                .sum();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            this.mOutputItems = recipe.generateOutputs(
+                    rand,
+                    this,
+                    attackDamage,
+                    EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingholder));
+            int eut = this.mEUt;
             calculatePerfectOverclockedNessMulti(this.mEUt, this.mMaxProgresstime, 2, getMaxInputVoltage());
+            if (lootingholder.isItemStackDamageable()) {
+                do {
+                    if (lootingholder.attemptDamageItem(1, rand)) {
+                        inputbus.setInventorySlotContents(0, null);
+                        break;
+                    }
+                } while ((eut <<= 2) < this.mEUt);
+            }
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 120)};
         }
         if (this.mEUt > 0) this.mEUt = -this.mEUt;
@@ -454,6 +483,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         if (mAnimationEnabled) mobPacket.addData(mobType);
         mobPacket.sendToAllAround(16);
 
+        this.updateSlots();
         return true;
     }
 
