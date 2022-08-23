@@ -71,7 +71,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
                                 .atLeast(Maintenance, InputHatch, InputBus, Muffler)
                                 .casingIndex(t.getFireboxTextureIndex())
                                 .dot(1)
-                                .buildAndChain(onElementPass(GT_MetaTileEntity_LargeBoiler::onCasingAdded, ofBlock(t.getFireboxBlock(), t.getFireboxMeta())))
+                                .buildAndChain(onElementPass(GT_MetaTileEntity_LargeBoiler::onFireboxAdded, ofBlock(t.getFireboxBlock(), t.getFireboxMeta())))
                     ))
                     .build();
         }
