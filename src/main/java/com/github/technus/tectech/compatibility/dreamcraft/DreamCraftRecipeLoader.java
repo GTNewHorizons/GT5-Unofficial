@@ -251,13 +251,13 @@ public class DreamCraftRecipeLoader {
 
         // Infinite Oil Rig
         TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.OilDrill3.get(1),
+                ItemList.OilDrill4.get(1),
                 16777216,
                 2048,
                 2000000,
                 4,
                 new Object[] {
-                    ItemList.OilDrill3.get(1),
+                    ItemList.OilDrill4.get(1),
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
                     new Object[] {OrePrefixes.circuit.get(Materials.Infinite), 4L},
                     ItemList.Electric_Motor_UHV.get(4),
