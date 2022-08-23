@@ -1056,8 +1056,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             IEnergyGrid eg = getProxy().getNode().getGrid().getCache(IEnergyGrid.class);
             if (!eg.isNetworkPowered())
                 return "(power)";
-}
-        catch(Throwable ex) {
+        } catch(Throwable ex) {
             ex.printStackTrace();
         }
         return "";
