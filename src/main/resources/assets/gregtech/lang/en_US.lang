@@ -67,6 +67,22 @@ GT5U.fusion.req=EU Required
 GT5U.fusion.plasma=Plasma Output
 
 GT5U.EBF.heat=Heat capacity
+GT5U.coil.None=None
+GT5U.coil.ULV=None
+GT5U.coil.LV=Cupronickel
+GT5U.coil.MV=Kanthal
+GT5U.coil.HV=Nichrome
+GT5U.coil.EV=Tungstensteel
+GT5U.coil.IV=HSS-G
+GT5U.coil.LuV=HSS-S
+GT5U.coil.ZPM=Naquadah
+GT5U.coil.UV=Naquadah Alloy
+GT5U.coil.UHV=Trinium
+GT5U.coil.UEV=Electrum Flux
+GT5U.coil.UIV=Awakened Draconium
+GT5U.coil.UMV=Infinity
+GT5U.coil.UXV=Hypogen
+GT5U.coil.MAX=Eternal
 
 GT5U.MS.multismelting=Multi smelting
 

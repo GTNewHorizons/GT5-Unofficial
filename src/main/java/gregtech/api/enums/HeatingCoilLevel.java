@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import net.minecraft.util.StatCollector;
+
 public enum HeatingCoilLevel {
         None, //                       0
         ULV,  //Not implemented      901
@@ -48,6 +50,10 @@ public enum HeatingCoilLevel {
          */
         public int getCostDiscount() {
             return 1 << Math.max(0, this.ordinal() - 5);
+        }
+
+        public String getName() {
+            return StatCollector.translateToLocal("GT5U.coil." + this);
         }
 
         public static HeatingCoilLevel getFromTier(byte tier){

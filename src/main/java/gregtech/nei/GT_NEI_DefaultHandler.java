@@ -15,6 +15,7 @@ import codechicken.nei.recipe.RecipeCatalysts;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -32,11 +33,9 @@ import gregtech.common.power.UnspecifiedEUPower;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.IResource;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.Range;
 import org.lwjgl.opengl.GL11;
@@ -44,7 +43,6 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -418,8 +416,12 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             if (drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue) + " " + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt))) {
                 lineCounter++;
             }
-        }
-        if (drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue))) {
+        } else if (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre) && this.mRecipeMap.mNEISpecialValuePre.toLowerCase().contains("heat capacity")) {
+            drawLine(lineCounter, getSpecialInfo(recipe.mSpecialValue));
+            lineCounter++;
+            drawLine(lineCounter, " " + formatSpecialValueHeatCoil(recipe.mSpecialValue));
+            lineCounter++;
+        } else if (drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue))) {
             lineCounter++;
         }
         if (GT_Mod.gregtechproxy.mNEIRecipeOwner) {
@@ -504,6 +506,16 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             tier = 4;
         }
         return "(MK " + tier + ")";
+    }
+
+    private String formatSpecialValueHeatCoil(int heat) {
+        for (HeatingCoilLevel heatLevel : HeatingCoilLevel.values()) {
+            if (heatLevel == HeatingCoilLevel.None || heatLevel == HeatingCoilLevel.ULV) continue;
+            if (heatLevel.getHeat() >= heat) {
+                return "(" + heatLevel.getName() + ")";
+            }
+        }
+        return "(" + HeatingCoilLevel.MAX.getName() + "+)";
     }
 
     @SuppressWarnings("unused") //TODO: Consider removing
