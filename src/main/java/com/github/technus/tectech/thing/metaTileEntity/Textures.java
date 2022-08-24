@@ -18,19 +18,16 @@ public class Textures {
     private static final IIconContainer MACHINE_UIV_SIDE = new CustomIcon("iconsets/MACHINE_UIV_SIDE");
     private static final IIconContainer MACHINE_UMV_SIDE = new CustomIcon("iconsets/MACHINE_UMV_SIDE");
     private static final IIconContainer MACHINE_UXV_SIDE = new CustomIcon("iconsets/MACHINE_UXV_SIDE");
-    private static final IIconContainer MACHINE_OPV_SIDE = new CustomIcon("iconsets/MACHINE_OPV_SIDE");
     private static final IIconContainer MACHINE_MAXV_SIDE = new CustomIcon("iconsets/MACHINE_MAXV_SIDE");
     private static final IIconContainer MACHINE_UEV_TOP = new CustomIcon("iconsets/MACHINE_UEV_TOP");
     private static final IIconContainer MACHINE_UIV_TOP = new CustomIcon("iconsets/MACHINE_UIV_TOP");
     private static final IIconContainer MACHINE_UMV_TOP = new CustomIcon("iconsets/MACHINE_UMV_TOP");
     private static final IIconContainer MACHINE_UXV_TOP = new CustomIcon("iconsets/MACHINE_UXV_TOP");
-    private static final IIconContainer MACHINE_OPV_TOP = new CustomIcon("iconsets/MACHINE_OPV_TOP");
     private static final IIconContainer MACHINE_MAXV_TOP = new CustomIcon("iconsets/MACHINE_MAXV_TOP");
     private static final IIconContainer MACHINE_UEV_BOTTOM = new CustomIcon("iconsets/MACHINE_UEV_BOTTOM");
     private static final IIconContainer MACHINE_UIV_BOTTOM = new CustomIcon("iconsets/MACHINE_UIV_BOTTOM");
     private static final IIconContainer MACHINE_UMV_BOTTOM = new CustomIcon("iconsets/MACHINE_UMV_BOTTOM");
     private static final IIconContainer MACHINE_UXV_BOTTOM = new CustomIcon("iconsets/MACHINE_UXV_BOTTOM");
-    private static final IIconContainer MACHINE_OPV_BOTTOM = new CustomIcon("iconsets/MACHINE_OPV_BOTTOM");
     private static final IIconContainer MACHINE_MAXV_BOTTOM = new CustomIcon("iconsets/MACHINE_MAXV_BOTTOM");
 
     private static final IIconContainer TESLA_TRANSCEIVER_TOP = new CustomIcon("iconsets/TESLA_TRANSCEIVER_TOP");
@@ -41,21 +38,21 @@ public class Textures {
                         MACHINE_8V_SIDE, MACHINE_LV_SIDE, MACHINE_MV_SIDE, MACHINE_HV_SIDE,
                         MACHINE_EV_SIDE, MACHINE_IV_SIDE, MACHINE_LuV_SIDE, MACHINE_ZPM_SIDE,
                         MACHINE_UV_SIDE, MACHINE_MAX_SIDE, MACHINE_UEV_SIDE, MACHINE_UIV_SIDE,
-                        MACHINE_UMV_SIDE, MACHINE_UXV_SIDE, MACHINE_OPV_SIDE, MACHINE_MAXV_SIDE,
+                        MACHINE_UMV_SIDE, MACHINE_UXV_SIDE, MACHINE_MAXV_SIDE,
                     },
             MACHINECASINGS_TOP_TT =
                     new IIconContainer[] {
                         MACHINE_8V_TOP, MACHINE_LV_TOP, MACHINE_MV_TOP, MACHINE_HV_TOP,
                         MACHINE_EV_TOP, MACHINE_IV_TOP, MACHINE_LuV_TOP, MACHINE_ZPM_TOP,
                         MACHINE_UV_TOP, MACHINE_MAX_TOP, MACHINE_UEV_TOP, MACHINE_UIV_TOP,
-                        MACHINE_UMV_TOP, MACHINE_UXV_TOP, MACHINE_OPV_TOP, MACHINE_MAXV_TOP,
+                        MACHINE_UMV_TOP, MACHINE_UXV_TOP, MACHINE_MAXV_TOP,
                     },
             MACHINECASINGS_BOTTOM_TT =
                     new IIconContainer[] {
                         MACHINE_8V_BOTTOM, MACHINE_LV_BOTTOM, MACHINE_MV_BOTTOM, MACHINE_HV_BOTTOM,
                         MACHINE_EV_BOTTOM, MACHINE_IV_BOTTOM, MACHINE_LuV_BOTTOM, MACHINE_ZPM_BOTTOM,
                         MACHINE_UV_BOTTOM, MACHINE_MAX_BOTTOM, MACHINE_UEV_BOTTOM, MACHINE_UIV_BOTTOM,
-                        MACHINE_UMV_BOTTOM, MACHINE_UXV_BOTTOM, MACHINE_OPV_BOTTOM, MACHINE_MAXV_BOTTOM,
+                        MACHINE_UMV_BOTTOM, MACHINE_UXV_BOTTOM, MACHINE_MAXV_BOTTOM,
                     };
     public static ITexture[]
             OVERLAYS_ENERGY_IN_TT =
@@ -75,7 +72,6 @@ public class Textures {
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN, new short[] {100, 100, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN, new short[] {80, 80, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN, new short[] {60, 60, 245, 0}),
-                        new GT_RenderedTexture(OVERLAY_ENERGY_IN, new short[] {40, 40, 245, 0}),
                     },
             OVERLAYS_ENERGY_OUT_TT =
                     new ITexture[] {
@@ -94,7 +90,6 @@ public class Textures {
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT, new short[] {100, 100, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT, new short[] {80, 80, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT, new short[] {60, 60, 245, 0}),
-                        new GT_RenderedTexture(OVERLAY_ENERGY_OUT, new short[] {40, 40, 245, 0}),
                     },
             OVERLAYS_ENERGY_IN_MULTI_TT =
                     new ITexture[] {
@@ -113,7 +108,6 @@ public class Textures {
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN_MULTI, new short[] {100, 100, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN_MULTI, new short[] {80, 80, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN_MULTI, new short[] {60, 60, 245, 0}),
-                        new GT_RenderedTexture(OVERLAY_ENERGY_IN_MULTI, new short[] {40, 40, 245, 0}),
                     },
             OVERLAYS_ENERGY_OUT_MULTI_TT =
                     new ITexture[] {
@@ -132,7 +126,6 @@ public class Textures {
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI, new short[] {100, 100, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI, new short[] {80, 80, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI, new short[] {60, 60, 245, 0}),
-                        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_MULTI, new short[] {40, 40, 245, 0}),
                     },
             OVERLAYS_ENERGY_IN_POWER_TT =
                     new ITexture[] {
@@ -151,7 +144,6 @@ public class Textures {
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN_POWER, new short[] {100, 100, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN_POWER, new short[] {80, 80, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN_POWER, new short[] {60, 60, 245, 0}),
-                        new GT_RenderedTexture(OVERLAY_ENERGY_IN_POWER, new short[] {40, 40, 245, 0}),
                     },
             OVERLAYS_ENERGY_OUT_POWER_TT =
                     new ITexture[] {
@@ -170,7 +162,6 @@ public class Textures {
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT_POWER, new short[] {100, 100, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT_POWER, new short[] {80, 80, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT_POWER, new short[] {60, 60, 245, 0}),
-                        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_POWER, new short[] {40, 40, 245, 0}),
                     },
             OVERLAYS_ENERGY_IN_LASER_TT =
                     new ITexture[] {
@@ -189,7 +180,6 @@ public class Textures {
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[] {100, 100, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[] {80, 80, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[] {60, 60, 245, 0}),
-                        new GT_RenderedTexture(OVERLAY_ENERGY_IN_LASER, new short[] {40, 40, 245, 0}),
                     },
             OVERLAYS_ENERGY_OUT_LASER_TT =
                     new ITexture[] {
@@ -208,10 +198,9 @@ public class Textures {
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[] {100, 100, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[] {80, 80, 245, 0}),
                         new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[] {60, 60, 245, 0}),
-                        new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[] {40, 40, 245, 0}),
                     };
 
-    public static ITexture[][] MACHINE_CASINGS_TT = new ITexture[16][17];
+    public static ITexture[][] MACHINE_CASINGS_TT = new ITexture[15][17];
 
     public static ITexture TESLA_TRANSCEIVER_TOP_BA = new GT_RenderedTexture(TESLA_TRANSCEIVER_TOP);
 

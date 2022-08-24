@@ -96,13 +96,9 @@ public class NoDreamCraftMachineLoader implements Runnable {
                         12012, "wettransformer.tier.12", "Mega Ultimate Power Transformer", 12)
                 .getStackForm(1L)); // UXV -> UMV (Use Soft Mallet to invert)
 
-        CustomItemList.WetTransformer_OPV_UXV.set(new GT_MetaTileEntity_WetTransformer(
+        CustomItemList.WetTransformer_MAXV_UXV.set(new GT_MetaTileEntity_WetTransformer(
                         12013, "wettransformer.tier.13", "Extended Mega Ultimate Power Transformer", 13)
-                .getStackForm(1L)); // OPV -> UXV (Use Soft Mallet to invert)
-
-        CustomItemList.WetTransformer_MAXV_OPV.set(new GT_MetaTileEntity_WetTransformer(
-                        12014, "wettransformer.tier.14", "Overpowered Power Transformer", 14)
-                .getStackForm(1L)); // MAX -> OPV (Use Soft Mallet to invert)
+                .getStackForm(1L)); // MAX -> UXV (Use Soft Mallet to invert)
 
         try {
             MetaTileEntity temp;
@@ -143,15 +139,8 @@ public class NoDreamCraftMachineLoader implements Runnable {
             }
             CustomItemList.Hull_UXV.set(temp.getStackForm(1L));
 
-            temp = new GT_MetaTileEntity_BasicHull(11234, "hull.tier.14", "OPV Machine Hull", 14, imagination);
+            temp = new GT_MetaTileEntity_BasicHull(11234, "hull.tier.14", "MAX Machine Hull", 14, imagination);
             TT_Utility.setTier(14, temp);
-            if (GT_Values.GT.isClientSide()) {
-                field.set(temp, method.invoke(temp, iTexture));
-            }
-            CustomItemList.Hull_OPV.set(temp.getStackForm(1L));
-
-            temp = new GT_MetaTileEntity_BasicHull(11235, "hull.tier.15", "MAX Machine Hull", 15, imagination);
-            TT_Utility.setTier(15, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -201,23 +190,12 @@ public class NoDreamCraftMachineLoader implements Runnable {
                     11224,
                     "tt.transformer.tier.13",
                     "Extended Mega Ultimate Transformer",
-                    13); // OPV -> UXV (Use Soft Mallet to invert)
+                    13); // MAX -> UXV (Use Soft Mallet to invert)
             TT_Utility.setTier(13, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
-            CustomItemList.Transformer_OPV_UXV.set(temp.getStackForm(1L));
-
-            temp = new GT_MetaTileEntity_TT_Transformer(
-                    11225,
-                    "tt.transformer.tier.14",
-                    "Overpowered Transformer",
-                    14); // MAX -> OPV (Use Soft Mallet to invert)
-            TT_Utility.setTier(14, temp);
-            if (GT_Values.GT.isClientSide()) {
-                field.set(temp, method.invoke(temp, iTexture));
-            }
-            CustomItemList.Transformer_MAXV_OPV.set(temp.getStackForm(1L));
+            CustomItemList.Transformer_MAXV_UXV.set(temp.getStackForm(1L));
 
             if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
                 Class clazz = Class.forName(
@@ -278,26 +256,13 @@ public class NoDreamCraftMachineLoader implements Runnable {
                         "transformer.ha.tier.13",
                         "Extended Mega Ultimate Hi-Amp Transformer",
                         13,
-                        // OPV -> UXV (Use Soft Mallet to invert)
+                        // MAXV -> UXV (Use Soft Mallet to invert)
                         translateToLocal("gt.blockmachines.transformer.ha.tier.13.desc"));
                 TT_Utility.setTier(13, temp);
                 if (GT_Values.GT.isClientSide()) {
                     field.set(temp, method.invoke(temp, iTexture));
                 }
-                CustomItemList.Transformer_HA_OPV_UXV.set(temp.getStackForm(1));
-
-                temp = constructor.newInstance(
-                        11914,
-                        "transformer.ha.tier.14",
-                        "Overpowered Hi-Amp Transformer",
-                        14,
-                        // MAX -> OPV (Use Soft Mallet to invert)
-                        translateToLocal("gt.blockmachines.transformer.ha.tier.14.desc"));
-                TT_Utility.setTier(14, temp);
-                if (GT_Values.GT.isClientSide()) {
-                    field.set(temp, method.invoke(temp, iTexture));
-                }
-                CustomItemList.Transformer_HA_MAXV_OPV.set(temp.getStackForm(1));
+                CustomItemList.Transformer_HA_MAXV_UXV.set(temp.getStackForm(1));
             }
         } catch (Exception e) {
             e.printStackTrace();

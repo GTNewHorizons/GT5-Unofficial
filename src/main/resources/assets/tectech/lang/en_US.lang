@@ -111,8 +111,7 @@ gt.blockmachines.hull.tier.10.name=UEV Machine Hull
 gt.blockmachines.hull.tier.11.name=UIV Machine Hull
 gt.blockmachines.hull.tier.12.name=UMV Machine Hull
 gt.blockmachines.hull.tier.13.name=UXV Machine Hull
-gt.blockmachines.hull.tier.14.name=OPV Machine Hull
-gt.blockmachines.hull.tier.15.name=MAX Machine Hull
+gt.blockmachines.hull.tier.14.name=MAX Machine Hull
 
 #Transformers
 gt.blockmachines.wetransformer.tier.00.name=Ultra Low Voltage Power Transformer
@@ -142,9 +141,7 @@ gt.blockmachines.wetransformer.tier.11.desc=UMV -> UIV (Use Soft Mallet to inver
 gt.blockmachines.wetransformer.tier.12.name=Mega Ultimate Power Transformer
 gt.blockmachines.wetransformer.tier.12.desc=UXV -> UMV (Use Soft Mallet to invert)
 gt.blockmachines.wetransformer.tier.13.name=Extended Mega Ultimate Power Transformer
-gt.blockmachines.wetransformer.tier.13.desc=OPV -> UXV (Use Soft Mallet to invert)
-gt.blockmachines.wetransformer.tier.14.name=Overpowered Power Transformer
-gt.blockmachines.wetransformer.tier.14.desc=MAX -> OPV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.13.desc=MAX -> UXV (Use Soft Mallet to invert)
 
 gt.blockmachines.tt.transformer.tier.09.name=Highly Ultimate Transformer
 gt.blockmachines.tt.transformer.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert)
@@ -155,9 +152,7 @@ gt.blockmachines.tt.transformer.tier.11.desc=UMV -> UIV (Use Soft Mallet to inve
 gt.blockmachines.tt.transformer.tier.12.name=Mega Ultimate Transformer
 gt.blockmachines.tt.transformer.tier.12.desc=UXV -> UMV (Use Soft Mallet to invert)
 gt.blockmachines.tt.transformer.tier.13.name=Extended Mega Ultimate Transformer
-gt.blockmachines.tt.transformer.tier.13.desc=OPV -> UXV (Use Soft Mallet to invert)
-gt.blockmachines.tt.transformer.tier.14.name=Overpowered Transformer
-gt.blockmachines.tt.transformer.tier.14.desc=MAX -> OPV (Use Soft Mallet to invert)
+gt.blockmachines.tt.transformer.tier.13.desc=MAX -> UXV (Use Soft Mallet to invert)
 
 gt.blockmachines.transformer.ha.tier.09.name=Highly Ultimate Hi-Amp Transformer
 gt.blockmachines.transformer.ha.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert
@@ -168,9 +163,7 @@ gt.blockmachines.transformer.ha.tier.11.desc=UMV -> UIV (Use Soft Mallet to inve
 gt.blockmachines.transformer.ha.tier.12.name=Mega Ultimate Hi-Amp Transformer
 gt.blockmachines.transformer.ha.tier.12.desc=UXV -> UMV (Use Soft Mallet to invert)
 gt.blockmachines.transformer.ha.tier.13.name=Extended Mega Ultimate Hi-Amp Transformer
-gt.blockmachines.transformer.ha.tier.13.desc=OPV -> UXV (Use Soft Mallet to invert)
-gt.blockmachines.transformer.ha.tier.14.name=Overpowered Hi-Amp Transformer
-gt.blockmachines.transformer.ha.tier.14.desc=MAX -> OPV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.ha.tier.13.desc=MAX -> UXV (Use Soft Mallet to invert)
 
 #Hatches
 tt.base.emhatch.desc.0=Max stacks amount:
@@ -450,8 +443,7 @@ gt.blockcasingsNH.10.name=UEV Machine Casing
 gt.blockcasingsNH.11.name=UIV Machine Casing
 gt.blockcasingsNH.12.name=UMV Machine Casing
 gt.blockcasingsNH.13.name=UXV Machine Casing
-gt.blockcasingsNH.14.name=OPV Machine Casing
-gt.blockcasingsNH.15.name=MAX Machine Casing
+gt.blockcasingsNH.14.name=MAX Machine Casing
 
 gt.blockhintTT.desc.0=Helps while building
 gt.blockhintTT.0.name=Hint 1 dot
