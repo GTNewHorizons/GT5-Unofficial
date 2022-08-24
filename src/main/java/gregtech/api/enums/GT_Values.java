@@ -165,19 +165,19 @@ public class GT_Values {
             new String[]{
                 EnumChatFormatting.RED.toString(),          // ULV, 0
                 EnumChatFormatting.GRAY.toString(),         // LV,  1
-                EnumChatFormatting.AQUA.toString(),         // MV,  2
-                EnumChatFormatting.GOLD.toString(),         // HV,  3
-                EnumChatFormatting.DARK_PURPLE.toString(),  // EV,  4
-                EnumChatFormatting.DARK_BLUE.toString(),    // IV,  5
+                EnumChatFormatting.GOLD.toString(),         // MV,  2
+                EnumChatFormatting.YELLOW.toString(),         // HV,  3
+                EnumChatFormatting.DARK_GRAY.toString(),  // EV,  4
+                EnumChatFormatting.GREEN.toString(),    // IV,  5
                 EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
-                EnumChatFormatting.WHITE.toString(),        // ZPM, 7
-                EnumChatFormatting.DARK_AQUA.toString(),    // UV,  8
+                EnumChatFormatting.AQUA.toString(),        // ZPM, 7
+                EnumChatFormatting.DARK_GREEN.toString(),    // UV,  8
                 EnumChatFormatting.DARK_RED.toString(),     // UHV, 9
-                EnumChatFormatting.GREEN.toString(),        // UEV, 10
-                EnumChatFormatting.DARK_GREEN.toString(),   // UIV, 11
-                EnumChatFormatting.YELLOW.toString(),       // UMV, 12
-                EnumChatFormatting.UNDERLINE.toString(),    // UXV, 13
-                EnumChatFormatting.BOLD.toString(),         // MAX, 14
+                EnumChatFormatting.DARK_PURPLE.toString(),        // UEV, 10
+                EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD.toString(),   // UIV, 11
+                EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD.toString() + EnumChatFormatting.UNDERLINE.toString(),       // UMV, 12
+                EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD.toString() + EnumChatFormatting.UNDERLINE.toString(),    // UXV, 13
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD.toString() + EnumChatFormatting.UNDERLINE.toString(),         // MAX, 14
                 EnumChatFormatting.OBFUSCATED.toString()    // ~~~, 15
     };
 
