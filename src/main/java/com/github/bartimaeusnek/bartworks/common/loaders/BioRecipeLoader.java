@@ -159,7 +159,7 @@ public class BioRecipeLoader {
         Materials[] hulls = {Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, Materials.Chrome, Materials.Iridium, Materials.Osmium, Materials.Naquadah};
         Materials[] wireMat = {Materials.Kanthal, Materials.Nichrome, Materials.TungstenSteel, Materials.Naquadah, Materials.NaquadahAlloy, Materials.Superconductor};
         Materials[] circuits = {Materials.Advanced, Materials.Data, Materials.Elite, Materials.Master, Materials.Ultimate, Materials.Superconductor};
-        for (int i = 3; i < GT_Values.VN.length; i++) {
+        for (int i = 3; i < GT_Values.VN.length - 1; i++) {
             //12625
             BioLab[(i - 3)] = new GT_MetaTileEntity_BioLab(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + i, "bw.biolab" + GT_Values.VN[i], GT_Values.VN[i] + " " + StatCollector.translateToLocal("tile.biolab.name"), i).getStackForm(1L);
             RadioHatch[(i - 3)] = new GT_MetaTileEntity_RadioHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 7 - 2 + i, "bw.radiohatch" + GT_Values.VN[i], GT_Values.VN[i] + " " + StatCollector.translateToLocal("tile.radiohatch.name"), i).getStackForm(1L);

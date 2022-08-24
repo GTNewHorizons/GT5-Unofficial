@@ -192,7 +192,7 @@ public class ItemRegistry {
             ItemRegistry.EIG = new GT_TileEntity_ExtremeIndustrialGreenhouse(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15 + 49, "EIG", "Extreme Industrial Greenhouse").getStackForm(1L);
             GT_OreDictUnificator.add(OrePrefixes.block, Materials.BorosilicateGlass, new ItemStack(ItemRegistry.bw_glasses[0], 1, 0));
             GT_OreDictUnificator.registerOre(OrePrefixes.block, Materials.NickelZincFerrite, new ItemStack(ItemRegistry.BW_BLOCKS[2]));
-            for (int i = 0; i < GT_Values.VN.length; i++) {
+            for (int i = 0; i < GT_Values.VN.length - 1; i++) {
                 ItemRegistry.diode2A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length + 1 + i, "diode" + "2A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 2A " + GT_Values.VN[i], i).getStackForm(1L);
                 ItemRegistry.diode4A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 2 + 1 + i, "diode" + "4A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 4A " + GT_Values.VN[i], i).getStackForm(1L);
                 ItemRegistry.diode8A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 3 + 1 + i, "diode" + "8A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 8A " + GT_Values.VN[i], i).getStackForm(1L);

@@ -366,7 +366,7 @@ public class RecipeLoader {
                         }
                 );
 
-            for (int i = 0; i < GT_Values.VN.length; i++) {
+            for (int i = 0; i < GT_Values.VN.length - 1; i++) {
                 try {
                     Materials cable = cables[i];
                     ItemStack hull = hulls[i] instanceof Materials ? GT_OreDictUnificator.get(OrePrefixes.plate, hulls[i], 1L) : ((Werkstoff) hulls[i]).get(OrePrefixes.plate);
