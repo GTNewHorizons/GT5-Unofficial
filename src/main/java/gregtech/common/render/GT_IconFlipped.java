@@ -11,8 +11,6 @@ public class GT_IconFlipped implements IIcon {
     private final boolean flipV;
 
     public GT_IconFlipped(IIcon baseIcon, boolean flipU, boolean flipV) {
-        if(baseIcon == null)
-            System.out.println("HI");
         this.baseIcon = baseIcon;
         this.flipU = flipU;
         this.flipV = flipV;
