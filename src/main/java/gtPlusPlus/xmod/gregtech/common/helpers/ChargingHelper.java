@@ -66,6 +66,7 @@ public class ChargingHelper {
 
 									for (GregtechMetaWirelessCharger mEntityTemp : mChargerMap.values()){
 										if (mEntityTemp != null){
+											if (mEntityTemp.getBaseMetaTileEntity() == null || !mEntityTemp.getBaseMetaTileEntity().isAllowedToWork()) continue;
 											if (mPlayerMan.getEntityWorld().provider.dimensionId == mEntityTemp.getDimensionID()){										
 												mVoltage = mEntityTemp.maxEUInput();
 												mEuStored = mEntityTemp.getEUVar();
