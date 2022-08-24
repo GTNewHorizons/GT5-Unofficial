@@ -7,6 +7,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_Boiler;
 import gregtech.common.gui.GT_GUIContainer_Boiler;
@@ -161,9 +162,12 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     @Override
     protected void produceSteam(int aAmount) {
         super.produceSteam(aAmount);
-        // produceSteam is getting called every 10 ticks
-        if (mRunTimeTicks >= 0 && mRunTimeTicks < (Integer.MAX_VALUE - 10)) mRunTimeTicks += 10;
-        else mRunTimeTicks = Integer.MAX_VALUE; // Prevent Integer overflow wrap
+        // Disable calcification when using distilled water
+        if (mFluid.isFluidEqual(GT_ModHandler.getWater(1))) {
+            // produceSteam is getting called every 10 ticks
+            if (mRunTimeTicks >= 0 && mRunTimeTicks < (Integer.MAX_VALUE - 10)) mRunTimeTicks += 10;
+            else mRunTimeTicks = Integer.MAX_VALUE; // Prevent Integer overflow wrap
+        }
     }
 
     @Override
