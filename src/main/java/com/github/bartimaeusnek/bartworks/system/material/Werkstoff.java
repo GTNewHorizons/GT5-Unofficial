@@ -199,23 +199,21 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 if (contents.length > 1) {
                     if (p.getKey() instanceof Materials) {
                         if (((Materials) p.getKey()).mMaterialList.size() > 1 && p.getValue() > 1)
-//                    if (((Materials) p.getKey()).mChemicalFormula != null && Character.isDigit(((Materials) p.getKey()).mChemicalFormula.toCharArray()[((Materials) p.getKey()).mChemicalFormula.length()-1]))
-                            this.toolTip += "(" + ((Materials) p.getKey()).mChemicalFormula + ")" + (BW_Util.subscriptNumber(p.getValue()));
+                            this.toolTip += "(" + getFormula((Materials) p.getKey()) + ")" + (BW_Util.subscriptNumber(p.getValue()));
                         else
-                            this.toolTip += ((Materials) p.getKey()).mChemicalFormula + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                            this.toolTip += getFormula((Materials) p.getKey()) + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
                     }
                     if (p.getKey() instanceof Werkstoff) {
                         if (((Werkstoff) p.getKey()).CONTENTS.size() > 1 && p.getValue() > 1)
-//                    if (((Werkstoff) p.getKey()).toolTip != null && Character.isDigit(((Werkstoff) p.getKey()).toolTip.toCharArray()[((Werkstoff) p.getKey()).toolTip.length()-1]))
-                            this.toolTip += "(" + ((Werkstoff) p.getKey()).toolTip + ")" + (BW_Util.subscriptNumber(p.getValue()));
+                            this.toolTip += "(" + getFormula((Werkstoff) p.getKey()) + ")" + (BW_Util.subscriptNumber(p.getValue()));
                         else
-                            this.toolTip += ((Werkstoff) p.getKey()).toolTip + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                            this.toolTip += getFormula((Werkstoff) p.getKey()) + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
                     }
                 } else {
                     if (p.getKey() instanceof Materials) {
-                        this.toolTip += ((Materials) p.getKey()).mChemicalFormula + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                        this.toolTip += getFormula((Materials) p.getKey()) + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
                     } else if (p.getKey() instanceof Werkstoff)
-                        this.toolTip += ((Werkstoff) p.getKey()).toolTip + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
+                        this.toolTip += getFormula((Werkstoff) p.getKey()) + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
                 }
             }
         } else
@@ -293,6 +291,13 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.owner = getMaterialOwner();
     }
 
+    private static String getFormula(Materials material) {
+        return material.mChemicalFormula.isEmpty() ? "?" : material.mChemicalFormula;
+    }
+
+    private static String getFormula(Werkstoff material) {
+        return material.toolTip.isEmpty() ? "?" : material.toolTip;
+    }
 
     public Werkstoff addAdditionalOreDict(String s) {
         ADDITIONAL_OREDICT.add(s);
