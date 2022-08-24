@@ -28,7 +28,6 @@ public class GT_Block_Casings6 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hermetic Casing XII");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Hermetic Casing XIII");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Hermetic Casing XIV");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Hermetic Casing XV");
 
         ItemList.Casing_Tank_0.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Tank_1.set(new ItemStack(this, 1, 1));
@@ -45,7 +44,6 @@ public class GT_Block_Casings6 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Tank_12.set(new ItemStack(this, 1, 12));
         ItemList.Casing_Tank_13.set(new ItemStack(this, 1, 13));
         ItemList.Casing_Tank_14.set(new ItemStack(this, 1, 14));
-        ItemList.Casing_Tank_15.set(new ItemStack(this, 1, 15));
     }
 
     @Override
@@ -91,8 +89,6 @@ public class GT_Block_Casings6 extends GT_Block_Casings_Abstract {
                 return Textures.BlockIcons.MACHINE_CASING_TANK_13.getIcon();
             case 14:
                 return Textures.BlockIcons.MACHINE_CASING_TANK_14.getIcon();
-            case 15:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_15.getIcon();
             default:
                 return Textures.BlockIcons.MACHINE_CASING_TANK_0.getIcon();
         }
