@@ -32,7 +32,6 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
@@ -53,11 +52,6 @@ public final class MainLoader {
     private MainLoader() {}
 
     public static void staticLoad() {
-        for (int i = 0; i < 16; i++) {
-            GT_Values.V[i] = V[i];
-            GT_Values.VN[i] = VN[i];
-            GT_Values.VOLTAGE_NAMES[i] = VOLTAGE_NAMES[i];
-        }
         new ComponentLoader();
     }
 
