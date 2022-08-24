@@ -71,7 +71,11 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
         .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
         .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
         .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
-        .addElement('g', ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true))
+        .addElement('g', ofChain(
+            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
+            ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false), //warded glass
+            ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true))
+        )
         .addElement('e', ofChain(
             Energy.newAny(16, 1),
             ofBlock(GregTech_API.sBlockCasings2, 0)
