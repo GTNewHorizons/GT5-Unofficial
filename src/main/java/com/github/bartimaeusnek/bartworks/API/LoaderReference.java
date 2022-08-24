@@ -58,6 +58,7 @@ public class LoaderReference {
     public static boolean betterloadingscreen;
     public static boolean TGregworks;
     public static boolean ProjRedIllumination;
+    public static boolean Botania;
 
 
     public static void init() {
@@ -89,5 +90,6 @@ public class LoaderReference {
         betterloadingscreen = Loader.isModLoaded("betterloadingscreen");
         TGregworks = Loader.isModLoaded("TGregworks");
         ProjRedIllumination = Loader.isModLoaded("ProjRed|Illumination");
+        Botania = Loader.isModLoaded("Botania");
     }
 }

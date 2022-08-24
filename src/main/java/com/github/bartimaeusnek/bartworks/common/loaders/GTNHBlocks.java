@@ -30,6 +30,7 @@ import com.github.bartimaeusnek.bartworks.API.LoaderReference;
  * Executed on 2019-01-03 02:08:43
  * modified by bartimaeusnek to only add blocks that mods are loaded
  * modified by bartimaeusnek on 2020-03-22 00:20 to run statically
+ * modified by Quarri6343 on 2022-08-24 20:02 to add Botania Support
  */
 public class GTNHBlocks {
 
@@ -39,6 +40,12 @@ public class GTNHBlocks {
 
         if (LoaderReference.BloodArsenal)
             BioVatLogicAdder.BioVatGlass.addCustomGlass("BloodArsenal", "blood_stained_glass", 0, 3);
+        if (LoaderReference.Botania) {
+            BioVatLogicAdder.BioVatGlass.addCustomGlass("Botania", "manaGlass", 0, 4);
+            BioVatLogicAdder.BioVatGlass.addCustomGlass("Botania", "manaGlassPane", 0, 4);
+            BioVatLogicAdder.BioVatGlass.addCustomGlass("Botania", "elfGlass", 0, 5);
+            BioVatLogicAdder.BioVatGlass.addCustomGlass("Botania", "elfGlassPane", 0, 5);
+        }
         if (LoaderReference.Botany)
             BioVatLogicAdder.BioVatGlass.addCustomGlass("Botany", "stained", 0, 3);
         if (LoaderReference.EnderIO)
