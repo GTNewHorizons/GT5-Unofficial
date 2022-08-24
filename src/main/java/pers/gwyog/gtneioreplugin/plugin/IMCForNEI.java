@@ -26,6 +26,9 @@ public class IMCForNEI {
                 "gregtech:gt.blockmachines:142");
         sendCatalyst(
                 "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
+                "gregtech:gt.blockmachines:149");
+        sendCatalyst(
+                "pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid",
                 "gregtech:gt.blockmachines:148");
     }
 
