@@ -658,6 +658,10 @@ public final class ModItems {
 			MaterialGenerator.generateOreMaterial(ALLOY.KOBOLDITE);
 			GTplusplus_Everglades.GenerateOreMaterials();
 
+			// formula override
+			ALLOY.TUNGSTEN_TITANIUM_CARBIDE.vChemicalFormula = StringUtils.subscript("(CW)7Ti3");
+			ALLOY.TITANSTEEL.vChemicalFormula = StringUtils.subscript("((CW)7Ti3)3???");
+
 			// Werkstoff bridge
 			ELEMENT.getInstance().ZIRCONIUM.setWerkstoffID((short) 3);
 			ELEMENT.getInstance().THORIUM232.setWerkstoffID((short) 30);
