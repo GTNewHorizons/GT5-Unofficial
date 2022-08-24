@@ -11,6 +11,11 @@ public class UnspecifiedEUPower extends EUPower {
     }
 
     @Override
+    public String getPowerUsageString() {
+        return super.getVoltageString();
+    }
+
+    @Override
     public String getVoltageString() {
         return VOLTAGE;
     }
