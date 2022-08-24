@@ -666,7 +666,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 + "  Efficiency: " + tag.getFloat("efficiency") + "%");
 
         currentTip.add(String.format(
-                "Computation: %d / %d", tag.getInteger("computation"), tag.getInteger("computationRequired")));
+                "Computation: %,d / %,d", tag.getInteger("computation"), tag.getInteger("computationRequired")));
     }
 
     @Override
