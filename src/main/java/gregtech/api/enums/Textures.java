@@ -79,7 +79,6 @@ public class Textures {
 
         MACHINE_CASING_TANK_13,
         MACHINE_CASING_TANK_14,
-        MACHINE_CASING_TANK_15,
         MACHINE_CASING_TANK_0,
 
         BLOCK_STEELEAF,
