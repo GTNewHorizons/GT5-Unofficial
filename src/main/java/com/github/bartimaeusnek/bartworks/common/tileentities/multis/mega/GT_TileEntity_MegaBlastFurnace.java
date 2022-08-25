@@ -61,6 +61,7 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTI
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -82,8 +83,8 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
                     .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX)
             )
             .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-            .addElement('C', ofCoil(GT_TileEntity_MegaBlastFurnace::setCoilLevel, GT_TileEntity_MegaBlastFurnace::getCoilLevel))
-            .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glasTier = t, te -> te.glasTier))
+            .addElement('C', withChannel("coil", ofCoil(GT_TileEntity_MegaBlastFurnace::setCoilLevel, GT_TileEntity_MegaBlastFurnace::getCoilLevel)))
+            .addElement('g', withChannel("glass", BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glasTier = t, te -> te.glasTier)))
             .addElement('b', buildHatchAdder(GT_TileEntity_MegaBlastFurnace.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, TTEnabledEnergyHatchElement.INSTANCE)
                 .casingIndex(CASING_INDEX)

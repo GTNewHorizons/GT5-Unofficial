@@ -1,6 +1,7 @@
 // Add any additional repositories for your dependencies here
 
 repositories {
+    mavenLocal()
     maven {
         name = "GTNH Maven"
         url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
