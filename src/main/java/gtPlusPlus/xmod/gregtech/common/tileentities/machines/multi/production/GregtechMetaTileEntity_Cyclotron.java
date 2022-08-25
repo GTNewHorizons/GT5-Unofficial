@@ -165,7 +165,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 					.addElement(
 							'h',
 							buildHatchAdder(GregtechMetaTileEntity_Cyclotron.class)
-									.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch)
+									.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
 									.casingIndex(44)
 									.dot(1)
 									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta())))
