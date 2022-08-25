@@ -174,7 +174,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
 		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
 		init();
-		return checkRecipeGeneric(tItemInputs, tFluidInputs, 4, 80, 00, 100);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, 4, 80, 00, 10000);
 	}
 
 	public static boolean sInit = false;
@@ -299,6 +299,10 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll) {
+
+		if (aItemInputs == null || aItemInputs.length <= 0) {
+			return false;
+		}
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -462,7 +466,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		log("tRecipeEUt: "+tRecipeEUt);
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
 		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
-			if (!tRecipe.isRecipeInputEqual(true, true, aFluidInputs, aItemInputs)) {
+			if (!tRecipe.isRecipeInputEqual(true, false, aFluidInputs, aItemInputs)) {
 				break;
 			}
 			log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
