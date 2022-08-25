@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
@@ -21,18 +22,23 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         final MultiTileEntityRegistry aRegistry = new MultiTileEntityRegistry("gt.multitileentity");
         final MultiTileEntityBlock aMachine = MultiTileEntityBlock.getOrCreate("GregTech", "machine", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
 
-        Class<? extends TileEntity> aClass;
-
         // Disable for now
-//        aClass = MultiBlock_Macerator.class; aRegistry.add(
-//            "Large Macerator", "Multiblock Controller", 1000,  aClass, 1, 64, aMachine,
-//            GT_Util.makeNBT(tuple(NBT.MATERIAL, Material.iron),  tuple(NBT.TEXTURE, "metalwall"), tuple(NBT.TANK_CAPACITY, 128000L))
-//        );
+//        aRegistry.create(1000, MultiBlock_Macerator.class)
+//            .name("Large Macerator")
+//            .category("Multiblock Controller")
+//            .setBlock(aMachine)
+//            .material(Materials.Iron)
+//            .texture("metalwall")
+//            .tankCapacity(128000L)
+//            .register();
 //
-//        aClass = MultiBlockPart.class; aRegistry.add(
-//         "Test Casing", "Multiblock Casing", 18000, aClass, 1, 64, aMachine,
-//          GT_Util.makeNBT(tuple(NBT.MATERIAL, Material.iron),  tuple(NBT.TEXTURE, "metalwall"))
-//        );
+//        aRegistry.create(18000, MultiBlockPart.class)
+//            .name("Test Casing")
+//            .category("Multiblock Casing")
+//            .setBlock(aMachine)
+//            .material(Materials.Cobalt)
+//            .texture("metalwall")
+//            .register();
 
     }
 }

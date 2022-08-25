@@ -350,7 +350,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public void receiveCoverData(byte aCoverSide, int aCoverID, int aCoverData) {
         if ((aCoverSide >= 0 && aCoverSide < 6))
             setCoverIDAtSideNoUpdate(aCoverSide, aCoverID);
-            setCoverDataAtSide(aCoverSide, aCoverData);
+        setCoverDataAtSide(aCoverSide, aCoverData);
     }
 
     @Override
