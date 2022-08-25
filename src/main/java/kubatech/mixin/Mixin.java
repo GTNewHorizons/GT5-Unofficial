@@ -1,6 +1,6 @@
 package kubatech.mixin;
 
-import static kubatech.mixin.TargetedMod.*;
+import static kubatech.mixin.TargetedMod.VANILLA;
 
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import java.util.Arrays;

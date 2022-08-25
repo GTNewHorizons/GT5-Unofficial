@@ -14,7 +14,21 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public enum ItemList implements IItemContainer {
-    ExtremeExterminationChamber;
+    ExtremeExterminationChamber,
+    BlackTea,
+    ButterflyTea,
+    EarlGrayTea,
+    GreenTea,
+    LemonTea,
+    MilkTea,
+    OolongTea,
+    PeppermintTea,
+    PuerhTea,
+    RedTea,
+    WhiteTea,
+    YellowTea,
+    UltimateTea,
+    ;
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;

@@ -19,6 +19,8 @@
 
 package kubatech;
 
+import static kubatech.loaders.ItemLoader.RegisterItems;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
 import kubatech.commands.CommandConfig;
@@ -36,6 +38,7 @@ public class CommonProxy {
         Config.synchronizeConfiguration();
         RecipeLoader.addRecipes();
         FMLCommonHandler.instance().bus().register(new FMLEventHandler());
+        RegisterItems();
     }
 
     public void init(FMLInitializationEvent event) {}

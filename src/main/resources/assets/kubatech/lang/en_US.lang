@@ -25,3 +25,52 @@ command.help.usage=- Shows all possible commands
 command.config.invalid_option=§cInvalid option ! Possible options: reload
 command.config.success=§aConfig reloaded successfully !
 command.config.usage=<option>
+
+#Items
+item.fromcollection=This item is from
+item.notyours=It looks like that item is not yours
+#Tea collection
+item.teacollection=Turbo Legendary Secret Tea Collection
+item.teacollection.mmm=Mmmm Tea
+item.kubaitem.teacollection.black_tea.name=§6§lKuba's Black Tea
+item.kubaitem.teacollection.butterfly_tea.name=§1§lKuba's Butterfly Pea Tea
+item.kubaitem.teacollection.earl_gray_tea.name=§6§lKuba's Earl Gray Tea
+item.kubaitem.teacollection.green_tea.name=§2§lKuba's Green Tea
+item.kubaitem.teacollection.lemon_tea.name=§e§lKuba's Lemon Tea
+item.kubaitem.teacollection.milk_tea.name=§f§lKuba's Milk Tea
+item.kubaitem.teacollection.oolong_tea.name=§e§lKuba's Oolong Tea
+item.kubaitem.teacollection.peppermint_tea.name=§a§lKuba's Peppermint Tea
+item.kubaitem.teacollection.pu-erh_tea.name=§4§lKuba's Pu-erh Tea
+item.kubaitem.teacollection.red_tea.name=§c§lKuba's Hibiscus Tea
+item.kubaitem.teacollection.white_tea.name=§e§lKuba's White Tea
+item.kubaitem.teacollection.yellow_tea.name=§6§lKuba's Yellow Tea
+item.kubaitem.teacollection.ultimate_tea.name=§6§lKuba's %s §6§lTea
+
+#Achievements
+achievement.teacollection.black_tea=§6§lKuba's Black Tea
+achievement.teacollection.butterfly_tea=§1§lKuba's Butterfly Pea Tea
+achievement.teacollection.earl_gray_tea=§6§lKuba's Earl Gray Tea
+achievement.teacollection.green_tea=§2§lKuba's Green Tea
+achievement.teacollection.lemon_tea=§e§lKuba's Lemon Tea
+achievement.teacollection.milk_tea=§f§lKuba's Milk Tea
+achievement.teacollection.oolong_tea=§e§lKuba's Oolong Tea
+achievement.teacollection.peppermint_tea=§a§lKuba's Peppermint Tea
+achievement.teacollection.pu-erh_tea=§4§lKuba's Pu-erh Tea
+achievement.teacollection.red_tea=§c§lKuba's Hibiscus Tea
+achievement.teacollection.white_tea=§e§lKuba's White Tea
+achievement.teacollection.yellow_tea=§6§lKuba's Yellow Tea
+achievement.teacollection.ultimate_tea=§4§l§k??????
+
+achievement.teacollection.black_tea.desc=§6The most common and popular type of Tea
+achievement.teacollection.butterfly_tea.desc=§1Not even Tea
+achievement.teacollection.earl_gray_tea.desc=§6For the true Brits
+achievement.teacollection.green_tea.desc=§2Based
+achievement.teacollection.lemon_tea.desc=§eBlack Tea with lemon, what did You expect ?
+achievement.teacollection.milk_tea.desc=§fBlack Tea with milk, my favourite
+achievement.teacollection.oolong_tea.desc=§e對於真正的鑑賞家
+achievement.teacollection.peppermint_tea.desc=§aGood for stomach ache
+achievement.teacollection.pu-erh_tea.desc=§4Good for digestion, also tastes like dirt
+achievement.teacollection.red_tea.desc=§cWhy would anyone drink this ?
+achievement.teacollection.white_tea.desc=§eThe healthiest one
+achievement.teacollection.yellow_tea.desc=§6Green Tea with more grassy flavour
+achievement.teacollection.ultimate_tea.desc=§4§lOne Tea to drink them all

@@ -1,7 +1,7 @@
 package kubatech.mixin;
 
 import static java.nio.file.Files.walk;
-import static kubatech.mixin.TargetedMod.*;
+import static kubatech.mixin.TargetedMod.VANILLA;
 
 import java.io.File;
 import java.io.FileNotFoundException;

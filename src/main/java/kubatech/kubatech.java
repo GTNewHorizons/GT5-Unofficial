@@ -19,6 +19,8 @@
 
 package kubatech;
 
+import static kubatech.api.enums.ItemList.RedTea;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
@@ -26,6 +28,9 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import kubatech.api.network.CustomTileEntityPacket;
 import kubatech.api.network.LoadConfigPacket;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,6 +47,25 @@ public class kubatech {
 
     public static kubatech instance = null;
     public static final SimpleNetworkWrapper NETWORK = new SimpleNetworkWrapper(Tags.MODID);
+    public static final CreativeTabs KT = new CreativeTabs(Tags.MODID) {
+        private ItemStack iconItemStack = null;
+
+        @Override
+        public ItemStack getIconItemStack() {
+            if (iconItemStack == null) iconItemStack = RedTea.get(1);
+            return iconItemStack;
+        }
+
+        @Override
+        public Item getTabIconItem() {
+            return null;
+        }
+
+        @Override
+        public String getTranslatedTabLabel() {
+            return Tags.MODNAME;
+        }
+    };
 
     static {
         NETWORK.registerMessage(new LoadConfigPacket.Handler(), LoadConfigPacket.class, 0, Side.CLIENT);

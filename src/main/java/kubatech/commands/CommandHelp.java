@@ -19,7 +19,8 @@
 
 package kubatech.commands;
 
-import static kubatech.commands.CommandHelp.Translations.*;
+import static kubatech.commands.CommandHelp.Translations.POSSIBLE_COMMANDS;
+import static kubatech.commands.CommandHelp.Translations.USAGE;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
