@@ -4,7 +4,10 @@ import static gtPlusPlus.core.lib.CORE.GTNH;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
@@ -379,7 +382,7 @@ public class RecipeLoader_Nuclear {
 				FluidUtils.getFluidStack("sulfuriclithium", 10000),
 				new ItemStack[] { 
 						ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4),
+						GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4),
 						ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 10),
 						ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 2),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3), // LithiumCarbonate
