@@ -114,11 +114,12 @@ public class GregtechConduits {
 
 	}
 
-	private static void generateFluidMultiPipes(Constructor<GT_MetaPipeEntity_Fluid> aClazz, Materials aMaterial, String name, String displayName, int startID, int baseCapacity, int heatCapacity, boolean gasProof){
+	private static void generateFluidMultiPipes(Constructor<GT_MetaPipeEntity_Fluid> aClazz, Materials aMaterial, String name, String displayName, int startID, int transferRatePerSec, int heatCapacity, boolean gasProof){
 		GT_MetaPipeEntity_Fluid aPipe;
+		final int transferRatePerTick = transferRatePerSec / 20;
 		try {
 			aPipe = aClazz.newInstance(startID, "GT_Pipe_" + name + "_Hexadecuple",
-					"Hexadecuple " + displayName + " Fluid Pipe", 1.0F, aMaterial, baseCapacity, heatCapacity, gasProof,
+					"Hexadecuple " + displayName + " Fluid Pipe", 1.0F, aMaterial, transferRatePerTick, heatCapacity, gasProof,
 					16);
 			if (aPipe == null) {
 				Logger.INFO("Failed to Generate "+aMaterial+" Hexadecuple pipes.");
@@ -164,19 +165,19 @@ public class GregtechConduits {
 	}
 
 	private static void run2(){
-		generateNonGTFluidPipes(GT_Materials.Staballoy, ALLOY.STABALLOY, BasePipeID, 6250, 7500, true);
-		generateNonGTFluidPipes(GT_Materials.Tantalloy60, ALLOY.TANTALLOY_60, BasePipeID+5, 5000, 4250, true);
-		generateNonGTFluidPipes(GT_Materials.Tantalloy61, ALLOY.TANTALLOY_61, BasePipeID+10, 6000, 5800, true);
+		generateNonGTFluidPipes(GT_Materials.Staballoy, ALLOY.STABALLOY, BasePipeID, 12500, 7500, true);
+		generateNonGTFluidPipes(GT_Materials.Tantalloy60, ALLOY.TANTALLOY_60, BasePipeID+5, 10000, 4250, true);
+		generateNonGTFluidPipes(GT_Materials.Tantalloy61, ALLOY.TANTALLOY_61, BasePipeID+10, 12000, 5800, true);
 		if (LoadedMods.Thaumcraft){
-			generateNonGTFluidPipes(GT_Materials.Void, null, BasePipeID+15, 800, 25000, true);
+			generateNonGTFluidPipes(GT_Materials.Void, null, BasePipeID+15, 1600, 25000, true);
 		}
 		generateGTFluidPipes(Materials.Europium, BasePipeID+20, 12000, 7500, true);
-		generateNonGTFluidPipes(GT_Materials.Potin, ALLOY.POTIN, BasePipeID+25, 250, 2000, true);
-		generateNonGTFluidPipes(GT_Materials.MaragingSteel300, ALLOY.MARAGING300, BasePipeID+30, 7000, 2500, true);
-		generateNonGTFluidPipes(GT_Materials.MaragingSteel350, ALLOY.MARAGING350, BasePipeID+35, 8000, 2500, true);
-		generateNonGTFluidPipes(GT_Materials.Inconel690, ALLOY.INCONEL_690, BasePipeID+40, 7500, 4800, true);
-		generateNonGTFluidPipes(GT_Materials.Inconel792, ALLOY.INCONEL_792, BasePipeID+45, 8000, 5500, true);
-		generateNonGTFluidPipes(GT_Materials.HastelloyX, ALLOY.HASTELLOY_X, BasePipeID+50, 10000, 4200, true);
+		generateNonGTFluidPipes(GT_Materials.Potin, ALLOY.POTIN, BasePipeID+25, 500, 2000, true);
+		generateNonGTFluidPipes(GT_Materials.MaragingSteel300, ALLOY.MARAGING300, BasePipeID+30, 14000, 2500, true);
+		generateNonGTFluidPipes(GT_Materials.MaragingSteel350, ALLOY.MARAGING350, BasePipeID+35, 16000, 2500, true);
+		generateNonGTFluidPipes(GT_Materials.Inconel690, ALLOY.INCONEL_690, BasePipeID+40, 15000, 4800, true);
+		generateNonGTFluidPipes(GT_Materials.Inconel792, ALLOY.INCONEL_792, BasePipeID+45, 16000, 5500, true);
+		generateNonGTFluidPipes(GT_Materials.HastelloyX, ALLOY.HASTELLOY_X, BasePipeID+50, 20000, 4200, true);
 
 		generateGTFluidPipes(Materials.Tungsten, BasePipeID+55, 4320, 7200, true);
 		if (LoadedMods.EnderIO){
@@ -185,7 +186,7 @@ public class GregtechConduits {
 		generateGTFluidPipes(Materials.Clay, BasePipeID+65, 100, 500, false);
 		generateGTFluidPipes(Materials.Lead, BasePipeID+70, 720, 1200, true);		
 
-		generateNonGTFluidPipes(GT_Materials.TriniumNaquadahCarbonite, ALLOY.TRINIUM_NAQUADAH_CARBON, 30500, 10, 250000, true);
+		generateNonGTFluidPipes(GT_Materials.TriniumNaquadahCarbonite, ALLOY.TRINIUM_NAQUADAH_CARBON, 30500, 20, 250000, true);
 
 	}
 
@@ -314,7 +315,7 @@ public class GregtechConduits {
 	}
 
 	private static void generateNonGTFluidPipes(final GT_Materials material, final Material myMaterial, final int startID, final int transferRatePerSec, final int heatResistance, final boolean isGasProof){
-		final int transferRatePerTick = transferRatePerSec/10;
+		final int transferRatePerTick = transferRatePerSec/20;
 		long mass;
 		if (myMaterial != null){
 			mass = myMaterial.getMass();
