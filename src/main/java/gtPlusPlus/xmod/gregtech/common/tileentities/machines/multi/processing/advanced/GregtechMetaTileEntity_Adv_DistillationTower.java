@@ -301,39 +301,72 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		return false;
 	}
 
-	private short getControllerY() {
-		return getBaseMetaTileEntity().getYCoord();
-	}
-
 	@Override
 	public boolean addOutput(FluidStack aLiquid) {
 		if (aLiquid == null) return false;
-		FluidStack tLiquid = aLiquid.copy();
-		for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-			if (isValidMetaTileEntity(tHatch) && GT_ModHandler.isSteam(aLiquid) ? tHatch.outputsSteam() : tHatch.outputsLiquids()) {
-				if (tHatch.getBaseMetaTileEntity().getYCoord() == getControllerY() + 1) {
-					int tAmount = tHatch.fill(tLiquid, false);
-					if (tAmount >= tLiquid.amount) {
-						return tHatch.fill(tLiquid, true) >= tLiquid.amount;
-					} else if (tAmount > 0) {
-						tLiquid.amount = tLiquid.amount - tHatch.fill(tLiquid, true);
-					}
-				}
-			}
+		FluidStack copiedFluidStack = aLiquid.copy();
+		for (List<GT_MetaTileEntity_Hatch_Output> hatches : mOutputHatchesByLayer) {
+			if (dumpFluid(hatches, copiedFluidStack, true))
+				return true;
+		}
+		for (List<GT_MetaTileEntity_Hatch_Output> hatches : mOutputHatchesByLayer) {
+			if (dumpFluid(hatches, copiedFluidStack, false))
+				return true;
 		}
 		return false;
 	}
 
 	@Override
 	protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
-		for (int i = 0; i < mOutputFluids2.length; i++) {
-			if (mOutputHatches.size() > i && mOutputHatches.get(i) != null && mOutputFluids2[i] != null && isValidMetaTileEntity(mOutputHatches.get(i))) {
-				if (mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord() == getControllerY() + 1 + i) {
-					mOutputHatches.get(i).fill(mOutputFluids2[i], true);
-				}
+		if (mMode == 0) {
+			// dt mode
+			for (int i = 0; i < mOutputFluids2.length && i < mOutputHatchesByLayer.size(); i++) {
+				FluidStack tStack = mOutputFluids2[i].copy();
+				if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true))
+					dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
+			}
+		} else {
+			// distillery mode
+			for (FluidStack outputFluidStack : mOutputFluids2) {
+				addOutput(outputFluidStack);
 			}
 		}
+	}
 
+	@Override
+	public int canBufferOutputs(ItemStack[] aItemOutputs, FluidStack[] aFluidOutputs, int aParallelRecipes) {
+		// sb mode. no need to check layered outputs
+		if (mMode == 1) return super.canBufferOutputs(aItemOutputs, aFluidOutputs, aParallelRecipes);
+		// not enough output hatches
+		if (mOutputHatchesByLayer.size() < aFluidOutputs.length) {
+			log("Not enough output layers for distillation towers");
+			return 0;
+		}
+		// first check if item output can be held. We delegate this to super class since we do not have special item hatches
+		aParallelRecipes = super.canBufferOutputs(aItemOutputs, new FluidStack[0], aParallelRecipes);
+		if (aParallelRecipes == 0) return 0;
+		for (int i = 0; i < aFluidOutputs.length; i++) {
+			FluidStack tFluidOutput = aFluidOutputs[i];
+			FluidStack tCopied = new FluidStack(tFluidOutput, 0);
+			int toFill = tFluidOutput.amount * aParallelRecipes;
+			for (GT_MetaTileEntity_Hatch_Output hatch : mOutputHatchesByLayer.get(i)) {
+				boolean fluidMatch =
+						hatch.isFluidLocked() ?
+								tFluidOutput.getFluid().getName().equals(hatch.getLockedFluidName()) :
+								hatch.getFluid() == null || hatch.getFluid().isFluidEqual(tFluidOutput);
+
+				if (fluidMatch) {
+					tCopied.amount = toFill;
+					toFill -= hatch.fill(tCopied, false);
+					if (toFill == 0)
+						// no more current fluid to fill. break out to go to next fluid
+						break;
+				}
+			}
+			// use ceil div
+			aParallelRecipes -= (toFill + tFluidOutput.amount - 1) / tFluidOutput.amount;
+		}
+		return aParallelRecipes;
 	}
 
 	@Override
