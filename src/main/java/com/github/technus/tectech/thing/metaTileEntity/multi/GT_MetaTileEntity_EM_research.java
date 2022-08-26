@@ -90,7 +90,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     .addElement('B', ofBlock(sBlockCasingsTT, 2))
                     .addElement('C', ofBlock(sBlockCasingsTT, 3))
                     .addElement('D', classicHatches(textureOffset + 1, 1, sBlockCasingsTT, 1))
-                    .addElement('E', HolderHatchElement.INSTANCE.newAny(3, 2))
+                    .addElement('E', HolderHatchElement.INSTANCE.newAny(textureOffset + 3, 2))
                     .build();
     // endregion
 
