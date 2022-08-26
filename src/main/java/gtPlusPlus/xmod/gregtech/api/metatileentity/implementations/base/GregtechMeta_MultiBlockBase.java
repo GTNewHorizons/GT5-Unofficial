@@ -475,9 +475,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 				}		
 			}
 
-			// Count the slots we need, later we can check if any are able to merge with existing stacks
-			int aRecipeSlotsRequired = 0;		
-
 			// A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the recipe outputs.
 			ConcurrentSet<FlexiblePair<ItemStack, Integer>> aInputMap = new ConcurrentHashSet<FlexiblePair<ItemStack, Integer>>();
 
@@ -489,24 +486,17 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 				}
 				else {
 					int aStackSize = aY.stackSize * aParallelRecipes;
-					if (aStackSize > 64) {
-						int aSlotsNeedsForThisStack = (int) Math.ceil((double) ((float) aStackSize / 64f)); 
-						// Should round up and add as many stacks as required nicely.
-						aRecipeSlotsRequired += aSlotsNeedsForThisStack;					
-						for (int o=0;o<aRecipeSlotsRequired;o++) {
-							int aStackToRemove = (aStackSize -= 64) > 64 ? 64 : aStackSize;		
-							aY = aY.copy();
-							aY.stackSize = 0;
-							aInputMap.add(new FlexiblePair<ItemStack, Integer>(aY, aStackToRemove));
-						}					
-					}
-					else {
-						// Only requires one slot
-						aRecipeSlotsRequired++;
+
+					int aSlotsNeedsForThisStack = (int) Math.ceil((float) aStackSize / aY.getMaxStackSize());
+					// Should round up and add as many stacks as required nicely.
+					for (int o=0;o<aSlotsNeedsForThisStack;o++) {
+						if (aStackSize < 1) break;
+						int aStackToRemove = Math.min(aStackSize, aY.getMaxStackSize());
+						aStackSize -= aStackToRemove;
 						aY = aY.copy();
 						aY.stackSize = 0;
-						aInputMap.add(new FlexiblePair<ItemStack, Integer>(aY, aStackSize));
-					}	
+						aInputMap.add(new FlexiblePair<ItemStack, Integer>(aY, aStackToRemove));
+					}
 				}			
 			}
 
