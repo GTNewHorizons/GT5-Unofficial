@@ -62,6 +62,10 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         UNKNOWN_NUTRIENT_AGAR(7, "unknownnutrientagar", CellType.REGULAR),
         SEAWEED_BROTH(8, "seaweedbroth", CellType.REGULAR),
         SUPER_LIGHT_RADOX(9, "superlightradox", CellType.REGULAR),
+        SODIUM_POTASSIUM(18, "sodiumpotassium", CellType.REGULAR),
+        ENRICHED_BACTERIAL_SLUDGE(19, "enrichedbacterialsludge", CellType.REGULAR),
+        FERMENTED_BACTERIAL_SLUDGE(20, "fermentedbacterialsludge", CellType.REGULAR),
+        POLLUTION(21, "pollution", CellType.REGULAR),
 
         // BartWorks
         ENZYME_SOLUTION(10, "enzymessollution", CellType.REGULAR),
