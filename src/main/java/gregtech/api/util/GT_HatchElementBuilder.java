@@ -286,7 +286,7 @@ public class GT_HatchElementBuilder<T> {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), mDot);
+                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), mDot - 1);
                 return true;
             }
 
