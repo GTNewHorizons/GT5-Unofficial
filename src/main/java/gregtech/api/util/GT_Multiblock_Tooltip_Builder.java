@@ -82,24 +82,24 @@ public class GT_Multiblock_Tooltip_Builder {
 		hBlocks = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
 		hBlocks.put(StructureLibAPI.HINT_BLOCK_META_AIR, TT_air);
 	}
-	
+
 	/**
 	 * Add a line telling you what the machine type is. Usually, this will be the name of a SB version.<br>
 	 * Machine Type: machine
-	 * 
+	 *
 	 * @param machine
 	 * 		Name of the machine type
-	 * 
+	 *
 	 * @return Instance this method was called on.
 	 */
 	public GT_Multiblock_Tooltip_Builder addMachineType(String machine) {
 		iLines.add(TT_machineType + COLON + EnumChatFormatting.YELLOW + machine + EnumChatFormatting.RESET);
 		return this;
 	}
-	
+
 	/**
 	 * Add a basic line of information about this structure
-	 * 
+	 *
 	 * @param info
 	 * 		The line to be added.
 	 * @return Instance this method was called on.
@@ -108,24 +108,24 @@ public class GT_Multiblock_Tooltip_Builder {
 		iLines.add(info);
 		return this;
 	}
-	
+
 	/**
 	 * Add a separator line like this:<br>
 	 * -----------------------------------------
-	 * 
+	 *
 	 * @return Instance this method was called on.
 	 */
 	public GT_Multiblock_Tooltip_Builder addSeparator() {
 		iLines.add("-----------------------------------------");
 		return this;
 	}
-	
+
 	/**
 	 * Add a line telling how much this machine pollutes.
-	 * 
+	 *
 	 * @param pollution
 	 * 		Amount of pollution per second when active
-	 * 
+	 *
 	 * @return Instance this method was called on.
 	 */
 	public GT_Multiblock_Tooltip_Builder addPollutionAmount(int pollution) {
@@ -136,7 +136,7 @@ public class GT_Multiblock_Tooltip_Builder {
 	/**
 	 * Begin adding structural information by adding a line about the structure's dimensions
 	 * and then inserting a "Structure:" line.
-	 * 
+	 *
 	 * @param w
 	 * 		Structure width.
 	 * @param h
@@ -157,11 +157,11 @@ public class GT_Multiblock_Tooltip_Builder {
 			sLines.add(TT_structure + COLON);
 			return this;
 	}
-	
+
 	/**
 	 * Begin adding structural information by adding a line about the structure's dimensions<br>
 	 * and then inserting a "Structure:" line. Variable version displays min and max
-	 *  
+	 *
 	 * @param wmin
 	 * 		Structure min width.
 	 * @param wmax
@@ -188,7 +188,7 @@ public class GT_Multiblock_Tooltip_Builder {
 			sLines.add(TT_structure + COLON);
 			return this;
 	}
-	
+
 	/**
 	 * Add a line of information about the structure:<br>
 	 * 	(indent)Controller: info
@@ -200,7 +200,7 @@ public class GT_Multiblock_Tooltip_Builder {
 		sLines.add(TAB + TT_controller + COLON + info);
 		return this;
 	}
-		
+
 	/**
 	 * Add a line of information about the structure:<br>
 	 * 	(indent)minCountx casingName (minimum)
@@ -214,7 +214,7 @@ public class GT_Multiblock_Tooltip_Builder {
 		sLines.add(TAB + minCount +"x " + casingName + " " + TT_minimum);
 		return this;
 	}
-	
+
 	/**
 	 * Use this method to add a structural part that isn't covered by the other methods.<br>
 	 * (indent)name: info
@@ -228,7 +228,7 @@ public class GT_Multiblock_Tooltip_Builder {
 		sLines.add(TAB + name + COLON + info);
 		return this;
 	}
-	
+
 	/**
 	 * Add a line of information about the structure:<br>
 	 * 	(indent)Maintenance Hatch: info
@@ -240,19 +240,19 @@ public class GT_Multiblock_Tooltip_Builder {
 		sLines.add(TAB + TT_maintenancehatch + COLON + info);
 		return this;
 	}
-	
+
 	/**
 	 * Add a line of information about the structure:<br>
 	 * 	(indent)Muffler Hatch: info
 	 * @param info
-	 * 		Location where the hatch goes 
+	 * 		Location where the hatch goes
 	 * @return Instance this method was called on.
 	 */
 	public GT_Multiblock_Tooltip_Builder addMufflerHatch(String info) {
 		sLines.add(TAB + TT_mufflerhatch + COLON + info);
 		return this;
 	}
-	
+
 	/**
 	 * Add a line of information about the structure:<br>
 	 * 	(indent)Energy Hatch: info
@@ -264,7 +264,7 @@ public class GT_Multiblock_Tooltip_Builder {
 		sLines.add(TAB + TT_energyhatch + COLON + info);
 		return this;
 	}
-	
+
 	/**
 	 * Add a line of information about the structure:<br>
 	 * 	(indent)Dynamo Hatch: info
@@ -281,43 +281,43 @@ public class GT_Multiblock_Tooltip_Builder {
 	 * Add a line of information about the structure:<br>
 	 * 	(indent)Input Bus: info
 	 * @param info
-	 * 		Location where the bus goes 
+	 * 		Location where the bus goes
 	 * @return Instance this method was called on.
 	 */
 	public GT_Multiblock_Tooltip_Builder addInputBus(String info) {
 		sLines.add(TAB + TT_inputbus + COLON + info);
 		return this;
 	}
-	
+
 	/**
 	 * Add a line of information about the structure:<br>
 	 * 	(indent)Input Hatch: info
 	 * @param info
-	 * 		Location where the hatch goes 
+	 * 		Location where the hatch goes
 	 * @return Instance this method was called on.
 	 */
 	public GT_Multiblock_Tooltip_Builder addInputHatch(String info) {
 		sLines.add(TAB + TT_inputhatch + COLON + info);
 		return this;
 	}
-	
+
 	/**
 	 * Add a line of information about the structure:<br>
 	 * 	(indent)Output Bus: info
 	 * @param info
-	 * 		Location where the bus goes 
+	 * 		Location where the bus goes
 	 * @return Instance this method was called on.
 	 */
 	public GT_Multiblock_Tooltip_Builder addOutputBus(String info) {
 		sLines.add(TAB + TT_outputbus + COLON + info);
 		return this;
 	}
-	
+
 	/**
 	 * Add a line of information about the structure:<br>
 	 * 	(indent)Output Hatch: info
 	 * @param info
-	 * 		Location where the bus goes 
+	 * 		Location where the bus goes
 	 * @return Instance this method was called on.
 	 */
 	public GT_Multiblock_Tooltip_Builder addOutputHatch(String info) {
@@ -466,6 +466,18 @@ public class GT_Multiblock_Tooltip_Builder {
 		return this;
 	}
 
+    /**
+     * Use this method to add non-standard structural info.<br>
+     * (indent)info
+     * @param channel the name of subchannel
+     * @param purpose the purpose of subchannel
+     * @return Instance this method was called on.
+     */
+    public GT_Multiblock_Tooltip_Builder addSubChannelUsage(String channel, String purpose) {
+        sLines.add(StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+        return this;
+    }
+
 	/**
 	 * Use this method to add non-standard structural hint. This info will appear before the standard structural hint.
 	 * @param info
@@ -489,12 +501,12 @@ public class GT_Multiblock_Tooltip_Builder {
 		for (int dot : dots) hBlocks.put(dot, StatCollector.translateToLocal(name));
 		return this;
 	}
-	
+
 	/**
 	 * Call at the very end.<br>
 	 * Adds a final line with the mod name and information on how to display the structure guidelines.<br>
 	 * Ends the building process.
-	 * 
+	 *
 	 * @param mod
 	 * 		Name of the mod that adds this multiblock machine
 	 */
@@ -507,11 +519,11 @@ public class GT_Multiblock_Tooltip_Builder {
 		// e.getKey() - 1 because 1 dot is meta 0.
 		hArray = Stream.concat(hLines.stream(), hBlocks.asMap().entrySet().stream().map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue()))).toArray(String[]::new);
 	}
-	
+
 	public String[] getInformation() {
 		return iArray;
 	}
-	
+
 	public String[] getStructureInformation() {
 		return sArray;
 	}
