@@ -10,7 +10,8 @@ import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.CommonValues.VN;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static mcp.mobius.waila.api.SpecialChars.*;
+import static mcp.mobius.waila.api.SpecialChars.RESET;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -39,13 +40,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 /**
@@ -637,6 +642,31 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             return true;
         }
         return true;
+    }
+
+    @Override
+    public void getWailaNBTData(
+            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
+        tag.setFloat("efficiency", mEfficiency / 100.0F);
+        tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
+        tag.setLong("computation", (computationRequired - computationRemaining) / 20L);
+        tag.setLong("computationRequired", computationRequired / 20L);
+    }
+
+    @Override
+    public void getWailaBody(
+            ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
+
+        if (tag.getBoolean("incompleteStructure")) {
+            currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
+        }
+        currentTip.add((tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
+                + "  Efficiency: " + tag.getFloat("efficiency") + "%");
+
+        currentTip.add(String.format(
+                "Computation: %,d / %,d", tag.getInteger("computation"), tag.getInteger("computationRequired")));
     }
 
     @Override
