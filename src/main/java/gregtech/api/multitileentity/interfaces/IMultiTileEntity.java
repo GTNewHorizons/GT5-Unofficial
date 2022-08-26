@@ -60,6 +60,9 @@ public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, 
     @Override
     boolean isDead();
 
+    void loadTextureNBT(NBTTagCompound aNBT);
+    void copyTextures();
+
     void issueClientUpdate();
     void sendClientData( EntityPlayerMP aPlayer);
     boolean receiveClientEvent(int aEventID, int aValue);

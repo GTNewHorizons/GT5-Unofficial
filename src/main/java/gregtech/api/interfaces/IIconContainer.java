@@ -5,6 +5,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
+import static gregtech.api.enums.GT_Values.UNCOLORED_RBGA;
+
 public interface IIconContainer {
     /**
      * @return A regular Icon.
@@ -32,5 +34,14 @@ public interface IIconContainer {
     @SideOnly(Side.CLIENT)
     ResourceLocation getTextureFile();
 
+    @SideOnly(Side.CLIENT)
+    default public short[] getIconColor(int aRenderPass) {
+        return UNCOLORED_RBGA;
+    }
+
+    @SideOnly(Side.CLIENT)
+    default public boolean isUsingColorModulation(int aRenderPass) {
+        return aRenderPass == 0;
+    }
 
 }

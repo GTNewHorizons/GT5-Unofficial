@@ -1,6 +1,7 @@
 package gregtech.api.enums;
 
 import gregtech.api.fluid.FluidTankGT;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
@@ -248,7 +249,6 @@ public class GT_Values {
             CUSTOM_NAME         = "name",                    // String
             DISPAY              = "gt.display",              // String
             FACING              = "gt.facing",               // Byte
-            HIDDEN              = "gt.hidden",               // Boolean
             LOCK_UPGRADE        = "gt.locked",               // Boolean
             MATERIAL            = "gt.material",             // String containing the Material Name.
             MODE                = "gt.mode",                 // Number
@@ -259,6 +259,7 @@ public class GT_Values {
             OWNER_UUID          = "gt.ownerUuid",            // UUID (String)
 
             // Machines
+            ACTIVE              = "gt.active",               // Boolean
             FLUID_OUT           = "gt.fluidout",             // Output Fluid
             INV_OUT             = "gt.invout",               // ItemStack
             PARALLEL            = "gt.parallel",             // Number
@@ -282,6 +283,9 @@ public class GT_Values {
     }
 
 
+    /** The Color White as RGB Short Array. */
+    public static final short[] UNCOLORED_RBGA = {255, 255, 255, 255};
+    /** The Color White as simple Integer (0x00ffffff). */
     public static final int UNCOLORED = 0x00ffffff;
 
     /**
@@ -329,6 +333,20 @@ public class GT_Values {
      **/
     public static final byte[]
         OPOS = { 1, 0, 3, 2, 5, 4, 6};
+
+    /**
+     * [Facing,Side]->Side Mappings for Blocks, which don't face up- and downwards.
+     * 0 = bottom, 1 = top, 2 = left, 3 = front, 4 = right, 5 = back, 6 = undefined.
+     */
+    public static final byte[][] FACING_ROTATIONS = {
+        {0,1,2,3,4,5,6},
+        {0,1,2,3,4,5,6},
+        {0,1,3,5,4,2,6},
+        {0,1,5,3,2,4,6},
+        {0,1,2,4,3,5,6},
+        {0,1,4,2,5,3,6},
+        {0,1,2,3,4,5,6}
+    };
 
     /**
      * The Mod Object itself. That is the GT_Mod-Object. It's needed to open GUI's and similar.
@@ -457,6 +475,7 @@ public class GT_Values {
     public static final FluidTankInfo[] emptyFluidTankInfo = new FluidTankInfo[0];
     public static final FluidStack[] emptyFluidStack = new FluidStack[0];
     public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
+    public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
 
     /**
      *  Pretty formatting for author names.
