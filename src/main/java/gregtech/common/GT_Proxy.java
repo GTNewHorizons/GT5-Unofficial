@@ -427,6 +427,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         oreDictBurnTimes.put("dustCaesium", 6000);
         oreDictBurnTimes.put("blockLignite", 12000);
         oreDictBurnTimes.put("blockCharcoal", 16000);
+        oreDictBurnTimes.put("gemDiamond", 102400);
+        oreDictBurnTimes.put("blockDiamond", 1024000);
+        oreDictBurnTimes.put("crushedDiamond", 102400);
+        oreDictBurnTimes.put("dustImpureDiamond", 102400);
+        oreDictBurnTimes.put("dustDiamond", 102400);
+        oreDictBurnTimes.put("dustSmallDiamond", 25600);
+        oreDictBurnTimes.put("dustTinyDiamond", 11378);
     }
 
 
