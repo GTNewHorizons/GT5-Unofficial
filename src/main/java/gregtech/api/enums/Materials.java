@@ -1362,6 +1362,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Peanutwood.setMaceratingInto(Wood);
         WoodSealed.setMaceratingInto(Wood);
         NetherBrick.setMaceratingInto(Netherrack);
+        AnyRubber.setMaceratingInto(Rubber);
     }
 
     private static void setReRegistration() {
