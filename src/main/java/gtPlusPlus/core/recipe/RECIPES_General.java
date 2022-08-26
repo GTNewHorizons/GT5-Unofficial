@@ -120,25 +120,6 @@ public class RECIPES_General {
 			GT_ModHandler.addPulverisationRecipe(ItemUtils.getSimpleStack(ModItems.shardAqua), ItemUtils.getSimpleStack(ModItems.dustAqua, 2));
 
 		}
-
-		if (OreDictionary.doesOreNameExist("dustPotassiumNitrade")) {
-			ItemStack aDustKNO3 = ItemUtils.getItemStackOfAmountFromOreDict("dustPotassiumNitrade", 1);
-			ItemStack aDustGtppKNO3 = MISC_MATERIALS.POTASSIUM_NITRATE.getDust(1);
-			if (RecipeUtils.addShapedRecipe(
-					null, null, null,
-					null, "dustPotassiumNitrade", null,
-					null, null, null,
-					ItemUtils.getSimpleStack(aDustGtppKNO3, 1))) {
-				Logger.INFO("Add conversion recipe (GT Potassium Nitrade -> GT++ Potassium Nitrate)");
-			}
-			if (RecipeUtils.addShapedRecipe(
-					null, null, null,
-					null, "dustPotassiumNitrate", null,
-					null, null, null,
-					ItemUtils.getSimpleStack(aDustKNO3, 1))) {
-				Logger.INFO("Add conversion recipe (GT++ Potassium Nitrate -> GT Potassium Nitrade)");
-			}
-		}
 		
 		//Rainforest oak Sapling
 		if (RecipeUtils.addShapedRecipe(
