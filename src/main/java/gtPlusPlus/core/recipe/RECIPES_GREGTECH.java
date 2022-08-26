@@ -1567,7 +1567,7 @@ public class RECIPES_GREGTECH {
 
 		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {ItemUtils.getSimpleStack(ModItems.itemRope, 6)}, null, ItemUtils.getSimpleStack(ModBlocks.blockNet, 2), 1*20, 8);
 		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {ItemUtils.getSimpleStack(CI.explosiveITNT, 2), ItemUtils.getSimpleStack(CI.explosiveTNT, 4), ELEMENT.getInstance().SULFUR.getDust(2), ELEMENT.getInstance().IRON.getFrameBox(1)}, null, ItemUtils.getSimpleStack(ModBlocks.blockMiningExplosive, 3), 5*20, 60);		
-		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {ItemUtils.getSimpleStack(Items.nether_star), ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 8), ItemUtils.getItemStackOfAmountFromOreDict("stickBlackSteel", 8)}, null, ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard, 32), 30*20, 500);
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {ItemUtils.getSimpleStack(Items.nether_star), ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 8), ItemUtils.getItemStackOfAmountFromOreDict("stickBlackSteel", 8)}, null, ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard, 64), 30*20, 500);
 
 		ItemStack aFluidReg1 = ItemUtils.getValueOfItemList("FluidRegulator_LV", ItemList.Pump_LV).get(1);
 		ItemStack aFluidReg2 = ItemUtils.getValueOfItemList("FluidRegulator_MV", ItemList.Pump_MV).get(1);
