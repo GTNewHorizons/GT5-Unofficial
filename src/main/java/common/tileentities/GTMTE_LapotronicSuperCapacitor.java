@@ -121,7 +121,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 	private static final int CASING_META = 0;
 	private static final int CASING_TEXTURE_ID = (42 << 7) | 127;
 
-    // master channel for height.
+    // height channel for height.
     // glass channel for glass
     // capacitor channel for capacitor, but it really just pick whatever capacitor it can find in survival
     private static final IStructureDefinition<GTMTE_LapotronicSuperCapacitor> STRUCTURE_DEFINITION = IStructureDefinition.<GTMTE_LapotronicSuperCapacitor>builder()
@@ -325,6 +325,9 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
             .addDynamoHatch("Any casing")
             .addOtherStructurePart("Laser Target/Source Hatches", "Any casing, must be using " + GT_Values.TIER_COLORS[8] + GT_Values.VN[8] + EnumChatFormatting.GRAY + "-tier glass")
             .addStructureInfo("You can have several I/O Hatches")
+            .addSubChannelUsage("glass", "Borosilicate Glass Tier")
+            .addSubChannelUsage("capacitor", "Maximum Capacitor Tier")
+            .addSubChannelUsage("height", "Height of structure")
             .addMaintenanceHatch("Any casing")
             .toolTipFinisher("KekzTech");
         return tt;
@@ -456,7 +459,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        int layer = Math.min(stackSize.stackSize + 3, 18);
+        int layer = Math.min(ChannelDataAccessor.getChannelData(stackSize, "height") + 3, 18);
         int built;
         built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 2, 1, 0, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
