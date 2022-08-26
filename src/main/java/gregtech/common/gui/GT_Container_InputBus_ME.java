@@ -2,13 +2,15 @@ package gregtech.common.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.gui.GT_Slot_Holo_ME;
-import gregtech.api.gui.GT_Slot_Render;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
@@ -43,6 +45,45 @@ public class GT_Container_InputBus_ME extends GT_ContainerMetaTile_Machine {
                 return true;
         }
         return false;
+    }
+
+    private final static int PROGRESS_PACKET_INDEX_OFFSET = 200;
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null)
+            return;
+        for (Object crafter : this.crafters) {
+            ICrafting player = (ICrafting) crafter;
+            for (int i = 0; i < 16; ++i) {
+                ItemStack s = ((Slot) this.inventorySlots.get(i + 16)).getStack();
+                if (s == null)
+                    continue;
+                player.sendProgressBarUpdate(this, PROGRESS_PACKET_INDEX_OFFSET + 2 * i, s.stackSize & 65535);
+                player.sendProgressBarUpdate(this, PROGRESS_PACKET_INDEX_OFFSET + 2 * i + 1, s.stackSize >>> 16);
+            }
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        if (id >= PROGRESS_PACKET_INDEX_OFFSET && id < (PROGRESS_PACKET_INDEX_OFFSET + 32)) {
+            int index = (id - PROGRESS_PACKET_INDEX_OFFSET) / 2;
+            ItemStack s = ((Slot) this.inventorySlots.get(index + 16)).getStack();
+            if (s != null) {
+                if ((id - PROGRESS_PACKET_INDEX_OFFSET) % 2 == 0) {
+                    s.stackSize &= 0xFFFF0000;
+                    s.stackSize += (value & 0xFFFF);
+                }
+                else {
+                    s.stackSize &= 0xFFFF;
+                    s.stackSize += value << 16;
+                }
+            }
+        }
     }
 
     @Override
