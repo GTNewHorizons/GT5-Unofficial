@@ -12,9 +12,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -59,8 +57,11 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends GregtechMeta_
 
 	static {
 		for (int id = 0; id < 9; id++) {
-			String aNEI = getRecipeMap(id).mNEIName;
-			aToolTipNames[id] = aNEI != null ? aNEI : "BAD NEI NAME (Report to Github)";			
+			GT_Recipe.GT_Recipe_Map recipeMap = getRecipeMap(id);
+			if (recipeMap != null) {
+				String aNEI = GT_LanguageManager.getTranslation(getRecipeMap(id).mNEIName);
+				aToolTipNames[id] = aNEI != null ? aNEI : "BAD NEI NAME (Report to Github)";
+			}
 		}
 	}
 
@@ -85,7 +86,6 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends GregtechMeta_
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-
 		String[] aBuiltStrings = new String[3];
 		aBuiltStrings[0] = aToolTipNames[0] + ", " + aToolTipNames[1] + ", " + aToolTipNames[2];
 		aBuiltStrings[1] = aToolTipNames[3] + ", " + aToolTipNames[4] + ", " + aToolTipNames[5];
