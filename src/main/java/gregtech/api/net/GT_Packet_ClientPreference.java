@@ -36,8 +36,7 @@ public class GT_Packet_ClientPreference extends GT_Packet_New {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        if (mPlayer != null)
-            GT_Mod.gregtechproxy.setClientPreference(mPlayer.getUniqueID(), mPreference);
+        if (mPlayer != null) GT_Mod.gregtechproxy.setClientPreference(mPlayer.getUniqueID(), mPreference);
     }
 
     @Override
@@ -49,6 +48,7 @@ public class GT_Packet_ClientPreference extends GT_Packet_New {
 
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
-        return new GT_Packet_ClientPreference(new GT_ClientPreference(aData.readBoolean(), aData.readBoolean(), aData.readBoolean()));
+        return new GT_Packet_ClientPreference(
+                new GT_ClientPreference(aData.readBoolean(), aData.readBoolean(), aData.readBoolean()));
     }
 }

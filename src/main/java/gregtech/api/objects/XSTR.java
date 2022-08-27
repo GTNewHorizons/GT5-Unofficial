@@ -23,7 +23,6 @@ package gregtech.api.objects;
  * This code is released under the GNU Lesser General Public License Version 3
  * http://www.gnu.org/licenses/lgpl-3.0.txt
  */
-
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -41,21 +40,21 @@ public class XSTR extends Random {
     private static final long GAMMA = 0x9e3779b97f4a7c15L;
     private static final int PROBE_INCREMENT = 0x9e3779b9;
     private static final long SEEDER_INCREMENT = 0xbb67ae8584caa73bL;
-    private static final double DOUBLE_UNIT = 0x1.0p-53;  // 1.0  / (1L << 53)
-    private static final float  FLOAT_UNIT  = 0x1.0p-24f; // 1.0f / (1 << 24)
+    private static final double DOUBLE_UNIT = 0x1.0p-53; // 1.0  / (1L << 53)
+    private static final float FLOAT_UNIT = 0x1.0p-24f; // 1.0f / (1 << 24)
     private static final AtomicLong seedUniquifier = new AtomicLong(8682522807148012L);
-    public static final XSTR XSTR_INSTANCE=new XSTR(){
+    public static final XSTR XSTR_INSTANCE = new XSTR() {
         @Override
         public synchronized void setSeed(long seed) {
-            if(!Thread.currentThread().getStackTrace()[2].getClassName().equals(Random.class.getName()))
+            if (!Thread.currentThread().getStackTrace()[2].getClassName().equals(Random.class.getName()))
                 throw new NoSuchMethodError("This is meant to be shared!, leave seed state alone!");
         }
     };
 
     /*
-     MODIFIED BY: Robotia
-     Modification: Implemented Random class seed generator
-     */
+    MODIFIED BY: Robotia
+    Modification: Implemented Random class seed generator
+    */
     /**
      * Creates a new pseudo random number generator. The seed is initialized to
      * the current time, as if by
@@ -68,7 +67,7 @@ public class XSTR extends Random {
     private static long seedUniquifier() {
         // L'Ecuyer, "Tables of Linear Congruential Generators of
         // Different Sizes and Good Lattice Structure", 1999
-        for (;;) {
+        for (; ; ) {
             long current = seedUniquifier.get();
             long next = current * 181783497276652981L;
             if (seedUniquifier.compareAndSet(current, next)) {
@@ -86,6 +85,7 @@ public class XSTR extends Random {
     public XSTR(long seed) {
         this.seed = seed;
     }
+
     @Override
     public boolean nextBoolean() {
         return next(1) != 0;
@@ -93,7 +93,7 @@ public class XSTR extends Random {
 
     @Override
     public double nextDouble() {
-        return (((long)(next(26)) << 27) + next(27)) * DOUBLE_UNIT;
+        return (((long) (next(26)) << 27) + next(27)) * DOUBLE_UNIT;
     }
     /**
      * Returns the current state of the seed, can be used to clone the object
@@ -142,8 +142,10 @@ public class XSTR extends Random {
         x &= ((1L << nbits) - 1);
         return (int) x;
     }
+
     boolean haveNextNextGaussian = false;
     double nextNextGaussian = 0;
+
     @Override
     public synchronized double nextGaussian() {
         // See Knuth, ACP, Section 3.4.1 Algorithm C.
@@ -157,7 +159,7 @@ public class XSTR extends Random {
                 v2 = 2 * nextDouble() - 1; // between -1 and 1
                 s = v1 * v1 + v2 * v2;
             } while (s >= 1 || s == 0);
-            double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s)/s);
+            double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s) / s);
             nextNextGaussian = v2 * multiplier;
             haveNextNextGaussian = true;
             return v1 * multiplier;
@@ -220,9 +222,9 @@ public class XSTR extends Random {
      */
     @Override
     public int nextInt(int bound) {
-        //if (bound <= 0) {
-        //throw new RuntimeException("BadBound");
-        //}
+        // if (bound <= 0) {
+        // throw new RuntimeException("BadBound");
+        // }
 
         /*int r = next(31);
         int m = bound - 1;
@@ -236,7 +238,7 @@ public class XSTR extends Random {
                 ;
         }
         return r;*/
-        //speedup, new nextInt ~+40%
+        // speedup, new nextInt ~+40%
         last = seed ^ (seed << 21);
         last ^= (last >>> 35);
         last ^= (last << 4);
@@ -244,6 +246,7 @@ public class XSTR extends Random {
         int out = (int) last % bound;
         return (out < 0) ? -out : out;
     }
+
     @Override
     public int nextInt() {
         return next(32);
@@ -257,15 +260,14 @@ public class XSTR extends Random {
     @Override
     public long nextLong() {
         // it's okay that the bottom word remains signed.
-        return ((long)(next(32)) << 32) + next(32);
+        return ((long) (next(32)) << 32) + next(32);
     }
 
     @Override
     public void nextBytes(byte[] bytes_arr) {
         for (int iba = 0, lenba = bytes_arr.length; iba < lenba; )
-            for (int rndba = nextInt(),
-                 nba = Math.min(lenba - iba, Integer.SIZE/Byte.SIZE);
-                 nba-- > 0; rndba >>= Byte.SIZE)
-                bytes_arr[iba++] = (byte)rndba;
+            for (int rndba = nextInt(), nba = Math.min(lenba - iba, Integer.SIZE / Byte.SIZE);
+                    nba-- > 0;
+                    rndba >>= Byte.SIZE) bytes_arr[iba++] = (byte) rndba;
     }
 }

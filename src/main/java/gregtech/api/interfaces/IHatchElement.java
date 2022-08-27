@@ -6,7 +6,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.IGT_HatchAdder;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -56,22 +55,23 @@ public interface IHatchElement<T> {
     default <T2 extends T> IStructureElement<T2> newAny(int aCasingIndex, int aDot) {
         if (aCasingIndex < 0 || aDot < 0) throw new IllegalArgumentException();
         return GT_StructureUtility.<T2>buildHatchAdder()
-            .anyOf(this)
-            .casingIndex(aCasingIndex)
-            .dot(aDot)
-            .continueIfSuccess()
-            .build();
+                .anyOf(this)
+                .casingIndex(aCasingIndex)
+                .dot(aDot)
+                .continueIfSuccess()
+                .build();
     }
 
-    default <T2 extends T> IStructureElement<T2> newAny(int aCasingIndex, int aDot, BiPredicate<? super T2, ? super IGregTechTileEntity> aShouldSkip) {
+    default <T2 extends T> IStructureElement<T2> newAny(
+            int aCasingIndex, int aDot, BiPredicate<? super T2, ? super IGregTechTileEntity> aShouldSkip) {
         if (aCasingIndex < 0 || aDot < 0 || aShouldSkip == null) throw new IllegalArgumentException();
         return GT_StructureUtility.<T2>buildHatchAdder()
-            .anyOf(this)
-            .casingIndex(aCasingIndex)
-            .dot(aDot)
-            .shouldSkip(aShouldSkip)
-            .continueIfSuccess()
-            .build();
+                .anyOf(this)
+                .casingIndex(aCasingIndex)
+                .dot(aDot)
+                .shouldSkip(aShouldSkip)
+                .continueIfSuccess()
+                .build();
     }
 
     default <T2 extends T> IHatchElement<T2> or(IHatchElement<? super T2> fallback) {
@@ -93,9 +93,9 @@ class HatchElementEither<T> implements IHatchElement<T> {
     public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
         if (mMteClasses == null)
             mMteClasses = ImmutableList.<Class<? extends IMetaTileEntity>>builder()
-                .addAll(first.mteClasses())
-                .addAll(second.mteClasses())
-                .build();
+                    .addAll(first.mteClasses())
+                    .addAll(second.mteClasses())
+                    .build();
         return mMteClasses;
     }
 
@@ -106,8 +106,7 @@ class HatchElementEither<T> implements IHatchElement<T> {
 
     @Override
     public String name() {
-        if (name == null)
-            name = first.name() + " or " + second.name();
+        if (name == null) name = first.name() + " or " + second.name();
         return name;
     }
 
@@ -124,7 +123,12 @@ class HatchElement<T> implements IHatchElement<T> {
     private final IHatchElement<? super T> mBacking;
     private final ToLongFunction<? super T> mCount;
 
-    public HatchElement(List<Class<? extends IMetaTileEntity>> aMteClasses, IGT_HatchAdder<? super T> aAdder, String aName, ToLongFunction<? super T> aCount, IHatchElement<? super T> aBacking) {
+    public HatchElement(
+            List<Class<? extends IMetaTileEntity>> aMteClasses,
+            IGT_HatchAdder<? super T> aAdder,
+            String aName,
+            ToLongFunction<? super T> aCount,
+            IHatchElement<? super T> aBacking) {
         this.mClasses = aMteClasses;
         this.mAdder = aAdder;
         this.mName = aName;

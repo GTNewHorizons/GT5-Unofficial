@@ -17,16 +17,13 @@ import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
 import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
-
+import java.util.List;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-
-import java.util.List;
-
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -46,27 +43,22 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
 
     // Cover Tabs support. Subclasses can override display position, style and visuals by overriding setupCoverTabs
     public GT_GuiCoverTabLine coverTabs;
-    private static final int
-        COVER_TAB_LEFT = -16,
-        COVER_TAB_TOP = 1,
-        COVER_TAB_HEIGHT = 20,
-        COVER_TAB_WIDTH = 18,
-        COVER_TAB_SPACING = 2;
-    private static final DisplayStyle
-        COVER_TAB_X_DIR = DisplayStyle.NONE,
-        COVER_TAB_Y_DIR = DisplayStyle.NORMAL;
-    private static final GT_GuiTabIconSet TAB_ICONSET =  new GT_GuiTabIconSet(
-        GT_GuiIcon.TAB_NORMAL,
-        GT_GuiIcon.TAB_HIGHLIGHT,
-        GT_GuiIcon.TAB_DISABLED);
+    private static final int COVER_TAB_LEFT = -16,
+            COVER_TAB_TOP = 1,
+            COVER_TAB_HEIGHT = 20,
+            COVER_TAB_WIDTH = 18,
+            COVER_TAB_SPACING = 2;
+    private static final DisplayStyle COVER_TAB_X_DIR = DisplayStyle.NONE, COVER_TAB_Y_DIR = DisplayStyle.NORMAL;
+    private static final GT_GuiTabIconSet TAB_ICONSET =
+            new GT_GuiTabIconSet(GT_GuiIcon.TAB_NORMAL, GT_GuiIcon.TAB_HIGHLIGHT, GT_GuiIcon.TAB_DISABLED);
 
     public GT_GUIContainerMetaTile_Machine(GT_ContainerMetaTile_Machine aContainer, String aGUIbackground) {
         super(aContainer, aGUIbackground);
         mContainer = aContainer;
 
         DisplayStyle preferredDisplayStyle = GT_Mod.gregtechproxy.mCoverTabsVisible
-        ? (GT_Mod.gregtechproxy.mCoverTabsFlipped ? DisplayStyle.INVERSE : DisplayStyle.NORMAL)
-        : DisplayStyle.NONE;
+                ? (GT_Mod.gregtechproxy.mCoverTabsFlipped ? DisplayStyle.INVERSE : DisplayStyle.NORMAL)
+                : DisplayStyle.NONE;
         setupCoverTabs(preferredDisplayStyle);
 
         // Only setup tooltips if they're currently enabled.
@@ -78,8 +70,8 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
         mContainer.setCircuitSlotClickCallback(this::openSelectCircuitDialog);
     }
 
-    public GT_GUIContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
-            String aGUIbackground) {
+    public GT_GUIContainerMetaTile_Machine(
+            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aGUIbackground) {
         this(new GT_ContainerMetaTile_Machine(aInventoryPlayer, aTileEntity), aGUIbackground);
     }
 
@@ -88,18 +80,18 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
      */
     protected void setupCoverTabs(DisplayStyle preferredDisplayStyle) {
         coverTabs = new GT_GuiCoverTabLine(
-            this,
-            COVER_TAB_LEFT,
-            COVER_TAB_TOP,
-            COVER_TAB_HEIGHT,
-            COVER_TAB_WIDTH,
-            COVER_TAB_SPACING,
-            COVER_TAB_X_DIR,
-            COVER_TAB_Y_DIR,
-            preferredDisplayStyle,
-            getTabBackground(),
-            getMachine().getBaseMetaTileEntity(),
-            getColorization());
+                this,
+                COVER_TAB_LEFT,
+                COVER_TAB_TOP,
+                COVER_TAB_HEIGHT,
+                COVER_TAB_WIDTH,
+                COVER_TAB_SPACING,
+                COVER_TAB_X_DIR,
+                COVER_TAB_Y_DIR,
+                preferredDisplayStyle,
+                getTabBackground(),
+                getMachine().getBaseMetaTileEntity(),
+                getColorization());
     }
 
     @Override
@@ -152,15 +144,14 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
     /**
      * @return This machine's MetaTileEntity
      */
-    private MetaTileEntity  getMachine() {
-        return (MetaTileEntity ) mContainer.mTileEntity.getMetaTileEntity();
+    private MetaTileEntity getMachine() {
+        return (MetaTileEntity) mContainer.mTileEntity.getMetaTileEntity();
     }
 
     // Tabs support
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton)
-    {
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         // Check for clicked tabs
         coverTabs.onMouseClicked(mouseX, mouseY, mouseButton);
@@ -188,11 +179,12 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
      */
     protected void setupTooltips() {
         if (mContainer.mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
-            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)mContainer.mTileEntity.getMetaTileEntity();
+            IConfigurationCircuitSupport ccs =
+                    (IConfigurationCircuitSupport) mContainer.mTileEntity.getMetaTileEntity();
             if (ccs.allowSelectCircuit())
-                addToolTip(new GT_GuiSlotTooltip(mContainer.getSlot(ccs.getCircuitGUISlot()), mTooltipCache.getData(GHOST_CIRCUIT_TOOLTIP)));
+                addToolTip(new GT_GuiSlotTooltip(
+                        mContainer.getSlot(ccs.getCircuitGUISlot()), mTooltipCache.getData(GHOST_CIRCUIT_TOOLTIP)));
         }
-
     }
 
     // GT_IToolTipRenderer and GT_ITabRenderer implementations
@@ -200,30 +192,37 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
     public void drawHoveringText(List text, int mouseX, int mouseY, FontRenderer font) {
         super.drawHoveringText(text, mouseX, mouseY, font);
     }
+
     @Override
     public int getGuiTop() {
         return guiTop;
     }
+
     @Override
     public int getGuiLeft() {
         return guiLeft;
     }
+
     @Override
     public int getXSize() {
         return xSize;
     }
+
     @Override
     public FontRenderer getFontRenderer() {
         return fontRendererObj;
     }
+
     @Override
     public RenderItem getItemRenderer() {
         return itemRender;
     }
+
     @Override
     public void addToolTip(GT_GuiTooltip toolTip) {
         mTooltipManager.addToolTip(toolTip);
     }
+
     @Override
     public boolean removeToolTip(GT_GuiTooltip toolTip) {
         return mTooltipManager.removeToolTip(toolTip);
@@ -232,11 +231,11 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
     @Override
     protected void onMouseWheel(int mx, int my, int delta) {
         if (mContainer.mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
-            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)mContainer.mTileEntity.getMetaTileEntity();
+            IConfigurationCircuitSupport ccs =
+                    (IConfigurationCircuitSupport) mContainer.mTileEntity.getMetaTileEntity();
             Slot slotCircuit = mContainer.getSlot(ccs.getCircuitGUISlot());
-            if (slotCircuit != null && func_146978_c(slotCircuit.xDisplayPosition,
-                slotCircuit.yDisplayPosition, 16, 16, mx, my))
-            {
+            if (slotCircuit != null
+                    && func_146978_c(slotCircuit.xDisplayPosition, slotCircuit.yDisplayPosition, 16, 16, mx, my)) {
                 // emulate click
                 handleMouseClick(slotCircuit, -1, delta > 0 ? 1 : 0, 0);
                 return;
@@ -247,23 +246,22 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
 
     private void openSelectCircuitDialog() {
         IMetaTileEntity machine = mContainer.mTileEntity.getMetaTileEntity();
-        IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)machine;
+        IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) machine;
         List<ItemStack> circuits = ccs.getConfigurationCircuits();
         mc.displayGuiScreen(new GT_GUIDialogSelectItem(
-            StatCollector.translateToLocal("GT5U.machines.select_circuit"),
-            machine.getStackForm(0),
-            this,
-            this::onCircuitSelected,
-            circuits,
-            GT_Utility.findMatchingStackInList(circuits,
-                machine.getStackInSlot(ccs.getCircuitSlot()))));
+                StatCollector.translateToLocal("GT5U.machines.select_circuit"),
+                machine.getStackForm(0),
+                this,
+                this::onCircuitSelected,
+                circuits,
+                GT_Utility.findMatchingStackInList(circuits, machine.getStackInSlot(ccs.getCircuitSlot()))));
     }
 
     private void onCircuitSelected(ItemStack selected) {
         GT_Values.NW.sendToServer(new GT_Packet_SetConfigurationCircuit(mContainer.mTileEntity, selected));
         // we will not do any validation on client side
         // it doesn't get to actually decide what inventory contains anyway
-        IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport)mContainer.mTileEntity.getMetaTileEntity();
+        IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) mContainer.mTileEntity.getMetaTileEntity();
         mContainer.mTileEntity.setInventorySlotContents(ccs.getCircuitSlot(), selected);
     }
 }

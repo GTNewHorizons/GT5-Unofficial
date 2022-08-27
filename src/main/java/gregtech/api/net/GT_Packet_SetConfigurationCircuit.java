@@ -5,7 +5,6 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
@@ -20,7 +19,6 @@ import net.minecraftforge.common.DimensionManager;
 /**
  * Client -> Server: Update machine configuration data
  */
-
 public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
     protected int mX;
     protected short mY;
@@ -97,6 +95,7 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
         machine.getConfigurationCircuits().stream()
                 .filter(stack -> GT_Utility.areStacksEqual(stack, circuit))
                 .findFirst()
-                .ifPresent(stack -> ((IGregTechTileEntity) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
+                .ifPresent(stack ->
+                        ((IGregTechTileEntity) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
     }
 }

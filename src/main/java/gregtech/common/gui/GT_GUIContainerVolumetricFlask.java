@@ -1,13 +1,12 @@
 package gregtech.common.gui;
 
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.net.GT_Packet_UpdateItem;
 import gregtech.common.items.GT_VolumetricFlask;
-import gregtech.common.net.MessageSetFlaskCapacity;
-import net.minecraft.client.Minecraft;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -16,12 +15,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
-
 @SideOnly(Side.CLIENT)
 public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
-    private static final ResourceLocation BACKGROUND = new ResourceLocation("gregtech:textures/gui/VolumetricFlask.png");
+    private static final ResourceLocation BACKGROUND =
+            new ResourceLocation("gregtech:textures/gui/VolumetricFlask.png");
 
     private GuiIntegerBox amount;
     private GuiButton apply;
@@ -56,7 +53,13 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
 
         buttonList.add(apply = new GuiButton(0, guiLeft + 128, guiTop + 51, 38, 20, "Accept"));
 
-        amount = new GuiIntegerBox(fontRendererObj, guiLeft + 62, guiTop + 57, 59, fontRendererObj.FONT_HEIGHT, ((GT_VolumetricFlask) container.flask.getItem()).getMaxCapacity());
+        amount = new GuiIntegerBox(
+                fontRendererObj,
+                guiLeft + 62,
+                guiTop + 57,
+                59,
+                fontRendererObj.FONT_HEIGHT,
+                ((GT_VolumetricFlask) container.flask.getItem()).getMaxCapacity());
         amount.setEnableBackgroundDrawing(false);
         amount.setMaxStringLength(16);
         amount.setTextColor(16777215);
@@ -66,7 +69,6 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
         System.out.println(((GT_VolumetricFlask) container.flask.getItem()).getCapacity(container.flask));
         amount.setText(String.valueOf(((GT_VolumetricFlask) container.flask.getItem()).getCapacity(container.flask)));
     }
-
 
     @Override
     protected final void drawGuiContainerBackgroundLayer(float f, int x, int y) {
@@ -84,13 +86,17 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
         amount.drawTextBox();
     }
 
-
     @Override
     protected void keyTyped(char character, int key) {
         if (!checkHotbarKeys(key)) {
-            if (key == 28)
-                actionPerformed(apply);
-            if (((key == 211) || (key == 205) || (key == 203) || (key == 14) || (character == '-') || (Character.isDigit(character))) && (amount.textboxKeyTyped(character, key))) {
+            if (key == 28) actionPerformed(apply);
+            if (((key == 211)
+                            || (key == 205)
+                            || (key == 203)
+                            || (key == 14)
+                            || (character == '-')
+                            || (Character.isDigit(character)))
+                    && (amount.textboxKeyTyped(character, key))) {
                 try {
                     String out = amount.getText();
                     boolean fixed = false;
@@ -171,7 +177,6 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
         }
     }
 
-
     protected int getQty(GuiButton btn) {
         try {
             DecimalFormat df = new DecimalFormat("+#;-#");
@@ -194,7 +199,6 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
             this.maxValue = maxValue;
         }
 
-
         @Override
         public void writeText(String selectedText) {
             String original = getText();
@@ -212,7 +216,6 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
             }
         }
 
-
         @Override
         public void setText(String s) {
             try {
@@ -228,5 +231,4 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
             super.setText(s);
         }
     }
-
 }

@@ -4,6 +4,7 @@ import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,8 +14,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
-
-import java.util.List;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -109,8 +108,10 @@ public class GT_Container extends Container {
         if (aSlotIndex >= 0) {
             if (inventorySlots.get(aSlotIndex) == null || inventorySlots.get(aSlotIndex) instanceof GT_Slot_Holo)
                 return null;
-            if (!(inventorySlots.get(aSlotIndex) instanceof GT_Slot_Armor)) if (aSlotIndex < getAllSlotCount())
-                if (aSlotIndex < getSlotStartIndex() || aSlotIndex >= getSlotStartIndex() + getSlotCount()) return null;
+            if (!(inventorySlots.get(aSlotIndex) instanceof GT_Slot_Armor))
+                if (aSlotIndex < getAllSlotCount())
+                    if (aSlotIndex < getSlotStartIndex() || aSlotIndex >= getSlotStartIndex() + getSlotCount())
+                        return null;
         }
 
         try {
@@ -137,7 +138,8 @@ public class GT_Container extends Container {
                         aPlayerInventory.setItemStack(null);
                     }
                     if (aMouseclick == 1) {
-                        aPlayer.dropPlayerItemWithRandomChoice(aPlayerInventory.getItemStack().splitStack(1), true);
+                        aPlayer.dropPlayerItemWithRandomChoice(
+                                aPlayerInventory.getItemStack().splitStack(1), true);
                         if (aPlayerInventory.getItemStack().stackSize == 0) {
                             aPlayerInventory.setItemStack(null);
                         }
@@ -187,7 +189,9 @@ public class GT_Container extends Container {
                             }
                             aSlot.onPickupFromSlot(aPlayer, aPlayerInventory.getItemStack());
                         } else if (aSlot.isItemValid(mouseStack)) {
-                            if (tTempStack.getItem() == mouseStack.getItem() && tTempStack.getItemDamage() == mouseStack.getItemDamage() && ItemStack.areItemStackTagsEqual(tTempStack, mouseStack)) {
+                            if (tTempStack.getItem() == mouseStack.getItem()
+                                    && tTempStack.getItemDamage() == mouseStack.getItemDamage()
+                                    && ItemStack.areItemStackTagsEqual(tTempStack, mouseStack)) {
                                 tTempStackSize = aMouseclick == 0 ? mouseStack.stackSize : 1;
                                 if (tTempStackSize > aSlot.getSlotStackLimit() - tTempStack.stackSize) {
                                     tTempStackSize = aSlot.getSlotStackLimit() - tTempStack.stackSize;
@@ -204,10 +208,15 @@ public class GT_Container extends Container {
                                 aSlot.putStack(mouseStack);
                                 aPlayerInventory.setItemStack(tTempStack);
                             }
-                        } else if (tTempStack.getItem() == mouseStack.getItem() && mouseStack.getMaxStackSize() > 1 && (!tTempStack.getHasSubtypes() || tTempStack.getItemDamage() == mouseStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(tTempStack, mouseStack)) {
+                        } else if (tTempStack.getItem() == mouseStack.getItem()
+                                && mouseStack.getMaxStackSize() > 1
+                                && (!tTempStack.getHasSubtypes()
+                                        || tTempStack.getItemDamage() == mouseStack.getItemDamage())
+                                && ItemStack.areItemStackTagsEqual(tTempStack, mouseStack)) {
                             tTempStackSize = tTempStack.stackSize;
 
-                            if (tTempStackSize > 0 && tTempStackSize + mouseStack.stackSize <= mouseStack.getMaxStackSize()) {
+                            if (tTempStackSize > 0
+                                    && tTempStackSize + mouseStack.stackSize <= mouseStack.getMaxStackSize()) {
                                 mouseStack.stackSize += tTempStackSize;
                                 tTempStack = aSlot.decrStackSize(tTempStackSize);
 
@@ -231,7 +240,8 @@ public class GT_Container extends Container {
             if (aSlot.canTakeStack(aPlayer)) {
                 // get the stack at the specified hotbar slot.
                 tTempStack = aPlayerInventory.getStackInSlot(aMouseclick);
-                boolean canSwap = tTempStack == null || aSlot.inventory == aPlayerInventory && aSlot.isItemValid(tTempStack);
+                boolean canSwap =
+                        tTempStack == null || aSlot.inventory == aPlayerInventory && aSlot.isItemValid(tTempStack);
                 tTempStackSize = -1;
 
                 if (!canSwap) {
@@ -260,7 +270,10 @@ public class GT_Container extends Container {
                     aSlot.putStack(tTempStack);
                 }
             }
-        } else if (aShifthold == 3 && aPlayer.capabilities.isCreativeMode && aPlayerInventory.getItemStack() == null && aSlotIndex >= 0) {
+        } else if (aShifthold == 3
+                && aPlayer.capabilities.isCreativeMode
+                && aPlayerInventory.getItemStack() == null
+                && aSlotIndex >= 0) {
             aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
             if (aSlot != null && aSlot.getHasStack()) {
                 tTempStack = GT_Utility.copyOrNull(aSlot.getStack());
@@ -278,19 +291,26 @@ public class GT_Container extends Container {
 
         mTileEntity.markDirty();
 
-        //null checks and checks if the item can be stacked (maxStackSize > 1)
-        if (getSlotCount() > 0 && slotObject != null && slotObject.getHasStack() && !(slotObject instanceof GT_Slot_Holo)) {
+        // null checks and checks if the item can be stacked (maxStackSize > 1)
+        if (getSlotCount() > 0
+                && slotObject != null
+                && slotObject.getHasStack()
+                && !(slotObject instanceof GT_Slot_Holo)) {
             ItemStack stackInSlot = slotObject.getStack();
             stack = GT_Utility.copyOrNull(stackInSlot);
 
-            //TileEntity -> Player
+            // TileEntity -> Player
             if (aSlotIndex < getAllSlotCount()) {
                 if (doesBindPlayerInventory())
                     if (!mergeItemStack(stackInSlot, getAllSlotCount(), getAllSlotCount() + 36, true)) {
                         return null;
                     }
-                //Player -> TileEntity
-            } else if (!mergeItemStack(stackInSlot, getShiftClickStartIndex(), getShiftClickStartIndex() + getShiftClickSlotCount(), false)) {
+                // Player -> TileEntity
+            } else if (!mergeItemStack(
+                    stackInSlot,
+                    getShiftClickStartIndex(),
+                    getShiftClickStartIndex() + getShiftClickSlotCount(),
+                    false)) {
                 return null;
             }
 
@@ -321,10 +341,17 @@ public class GT_Container extends Container {
         ItemStack itemStack;
 
         if (aStack.isStackable()) {
-            while (aStack.stackSize > 0 && (!reverseOrder && slotIndex < aSlotCount || reverseOrder && slotIndex >= aStartIndex)) {
+            while (aStack.stackSize > 0
+                    && (!reverseOrder && slotIndex < aSlotCount || reverseOrder && slotIndex >= aStartIndex)) {
                 slot = (Slot) this.inventorySlots.get(slotIndex);
                 itemStack = slot.getStack();
-                if (!(slot instanceof GT_Slot_Holo) && !(slot instanceof GT_Slot_Output) && slot.isItemValid(aStack) && itemStack != null && itemStack.getItem() == aStack.getItem() && (!aStack.getHasSubtypes() || aStack.getItemDamage() == itemStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(aStack, itemStack)) {
+                if (!(slot instanceof GT_Slot_Holo)
+                        && !(slot instanceof GT_Slot_Output)
+                        && slot.isItemValid(aStack)
+                        && itemStack != null
+                        && itemStack.getItem() == aStack.getItem()
+                        && (!aStack.getHasSubtypes() || aStack.getItemDamage() == itemStack.getItemDamage())
+                        && ItemStack.areItemStackTagsEqual(aStack, itemStack)) {
                     int combinedStackSize = itemStack.stackSize + aStack.stackSize;
                     if (itemStack.stackSize < mTileEntity.getInventoryStackLimit()) {
                         if (combinedStackSize <= aStack.getMaxStackSize()) {
@@ -569,14 +596,18 @@ public class GT_Container extends Container {
         return true;
     }
 
-    protected static ItemStack handleFluidSlotClick(IFluidAccess aFluidAccess, EntityPlayer aPlayer, boolean aProcessFullStack, boolean aCanDrain, boolean aCanFill) {
+    protected static ItemStack handleFluidSlotClick(
+            IFluidAccess aFluidAccess,
+            EntityPlayer aPlayer,
+            boolean aProcessFullStack,
+            boolean aCanDrain,
+            boolean aCanFill) {
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
         ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
         if (tStackSizedOne == null || tStackHeld.stackSize == 0) return null;
         FluidStack tInputFluid = aFluidAccess.get();
         FluidStack tFluidHeld = GT_Utility.getFluidForFilledItem(tStackSizedOne, true);
-        if (tFluidHeld != null && tFluidHeld.amount <= 0)
-            tFluidHeld = null;
+        if (tFluidHeld != null && tFluidHeld.amount <= 0) tFluidHeld = null;
         if (tInputFluid == null) {
             // tank empty, consider fill only from now on
             if (!aCanFill)
@@ -639,19 +670,17 @@ public class GT_Container extends Container {
             }
             replaceCursorItemStack(aPlayer, tFilledContainer);
         }
-        if (tTankStack.amount <= 0)
-            aFluidAccess.set(null);
+        if (tTankStack.amount <= 0) aFluidAccess.set(null);
         return tFilledContainer;
     }
 
-    protected static ItemStack fillFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, FluidStack aFluidHeld, boolean aProcessFullStack) {
+    protected static ItemStack fillFluid(
+            IFluidAccess aFluidAccess, EntityPlayer aPlayer, FluidStack aFluidHeld, boolean aProcessFullStack) {
         // we are not using aMachine.fill() here any more, so we need to check for fluid type here ourselves
-        if (aFluidAccess.get() != null && !aFluidAccess.get().isFluidEqual(aFluidHeld))
-            return null;
+        if (aFluidAccess.get() != null && !aFluidAccess.get().isFluidEqual(aFluidHeld)) return null;
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
         ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
-        if (tStackSizedOne == null)
-            return null;
+        if (tStackSizedOne == null) return null;
 
         int tFreeSpace = aFluidAccess.getCapacity() - (aFluidAccess.get() != null ? aFluidAccess.get().amount : 0);
         if (tFreeSpace <= 0)
@@ -715,5 +744,4 @@ public class GT_Container extends Container {
             GT_Utility.addItemToPlayerInventory(aPlayer, tStackResult);
         }
     }
-
 }

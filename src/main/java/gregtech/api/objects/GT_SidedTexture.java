@@ -9,21 +9,44 @@ import gregtech.api.interfaces.ITexture;
  * @deprecated Replaced by the {@link gregtech.api.render.TextureFactory} API.
  */
 @Deprecated
-public class GT_SidedTexture extends gregtech.common.render.GT_SidedTexture implements ITexture, IColorModulationContainer {
-    @Deprecated public short[] mRGBa;
+public class GT_SidedTexture extends gregtech.common.render.GT_SidedTexture
+        implements ITexture, IColorModulationContainer {
+    @Deprecated
+    public short[] mRGBa;
 
-    public GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa, boolean aAllowAlpha) {
+    public GT_SidedTexture(
+            IIconContainer aIcon0,
+            IIconContainer aIcon1,
+            IIconContainer aIcon2,
+            IIconContainer aIcon3,
+            IIconContainer aIcon4,
+            IIconContainer aIcon5,
+            short[] aRGBa,
+            boolean aAllowAlpha) {
         super(aIcon0, aIcon1, aIcon2, aIcon3, aIcon4, aIcon5, aRGBa, aAllowAlpha);
 
         // Backwards Compat
         GT_SidedTexture.this.mRGBa = aRGBa;
     }
 
-    public GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa) {
+    public GT_SidedTexture(
+            IIconContainer aIcon0,
+            IIconContainer aIcon1,
+            IIconContainer aIcon2,
+            IIconContainer aIcon3,
+            IIconContainer aIcon4,
+            IIconContainer aIcon5,
+            short[] aRGBa) {
         this(aIcon0, aIcon1, aIcon2, aIcon3, aIcon4, aIcon5, aRGBa, true);
     }
 
-    public GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5) {
+    public GT_SidedTexture(
+            IIconContainer aIcon0,
+            IIconContainer aIcon1,
+            IIconContainer aIcon2,
+            IIconContainer aIcon3,
+            IIconContainer aIcon4,
+            IIconContainer aIcon5) {
         this(aIcon0, aIcon1, aIcon2, aIcon3, aIcon4, aIcon5, Dyes._NULL.mRGBa);
     }
 

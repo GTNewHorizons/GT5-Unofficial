@@ -1,5 +1,8 @@
 package gregtech.common.covers;
 
+import static gregtech.api.enums.GT_Values.SIDE_UNKNOWN;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GT_CoverBehavior;
@@ -13,9 +16,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import static gregtech.api.enums.GT_Values.SIDE_UNKNOWN;
-import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-
 public class GT_Cover_Vent extends GT_CoverBehavior {
     private final int mEfficiency;
     private final Fluid IC2_HOT_COOLANT = FluidRegistry.getFluid("ic2hotcoolant");
@@ -26,12 +26,14 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(
+            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(
+            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if (aSide == SIDE_UNKNOWN) return 0;
         int ret = 0;
         if (aTileEntity instanceof IFluidHandler) {
@@ -107,10 +109,8 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
             return 0; // Vent cover need water or air
         }
         if (chances > XSTR_INSTANCE.nextInt(10000)) {
-            final FluidStack hotFluidStack =
-                    fluidHandler.drain(ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
-            final FluidStack coldFluidStack =
-                    new FluidStack(IC2_COOLANT, hotFluidStack.amount);
+            final FluidStack hotFluidStack = fluidHandler.drain(ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true);
+            final FluidStack coldFluidStack = new FluidStack(IC2_COOLANT, hotFluidStack.amount);
             fluidHandler.fill(ForgeDirection.UNKNOWN, coldFluidStack, true);
             return hotFluidStack.amount;
         }

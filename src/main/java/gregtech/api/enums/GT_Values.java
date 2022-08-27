@@ -5,6 +5,9 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -12,10 +15,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
 
 /**
  * Made for static imports, this Class is just a Helper.
@@ -41,18 +40,19 @@ public class GT_Values {
      * The first 32 Bits
      */
     @SuppressWarnings("PointlessBitwiseExpression") // Nicer source layout this way
-    public static final int[] B = new int[]{
-            1 << 0, 1 << 1, 1 << 2,
-            1 << 3, 1 << 4, 1 << 5,
-            1 << 6, 1 << 7, 1 << 8,
-            1 << 9, 1 << 10, 1 << 11,
-            1 << 12, 1 << 13, 1 << 14,
-            1 << 15, 1 << 16, 1 << 17,
-            1 << 18, 1 << 19, 1 << 20,
-            1 << 21, 1 << 22, 1 << 23,
-            1 << 24, 1 << 25, 1 << 26,
-            1 << 27, 1 << 28, 1 << 29,
-            1 << 30, 1 << 31};
+    public static final int[] B = new int[] {
+        1 << 0, 1 << 1, 1 << 2,
+        1 << 3, 1 << 4, 1 << 5,
+        1 << 6, 1 << 7, 1 << 8,
+        1 << 9, 1 << 10, 1 << 11,
+        1 << 12, 1 << 13, 1 << 14,
+        1 << 15, 1 << 16, 1 << 17,
+        1 << 18, 1 << 19, 1 << 20,
+        1 << 21, 1 << 22, 1 << 23,
+        1 << 24, 1 << 25, 1 << 26,
+        1 << 27, 1 << 28, 1 << 29,
+        1 << 30, 1 << 31
+    };
 
     /**
      * Renamed from "MATERIAL_UNIT" to just "M"
@@ -83,103 +83,108 @@ public class GT_Values {
     /**
      * The Voltage Tiers. Use this Array instead of the old named Voltage Variables
      */
-    public static final long[] V =
-            new long[]{
-                    8L, 32L, 128L,
-                    512L, 2048L, 8192L,
-                    32_768L, 131_072L, 524_288L,
-                    2_097_152L, 8_388_608L, 33_554_432L,
-                    134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7,
-                    // Error tier to prevent out of bounds errors. Not really a real tier (for now).
-                    8_589_934_592L};
-    // Why -7? Mystery of the universe. Something may break if you change this so please do not without extensive testing.
-    //TODO:Adding that in coremod!!!
-    //TODO:tier 14,15 wires and transformers only (not even cables !!!)
-    //TODO:tier 12,13 the above + batteries, battery buffers, (maybe cables,12 also works for machines)
-    //TODO:tier 10,11 the above + chargers and other machines, (cables would be nice)
-    //TODO:tier 9     machines and batteries
+    public static final long[] V = new long[] {
+        8L, 32L, 128L,
+        512L, 2048L, 8192L,
+        32_768L, 131_072L, 524_288L,
+        2_097_152L, 8_388_608L, 33_554_432L,
+        134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7,
+        // Error tier to prevent out of bounds errors. Not really a real tier (for now).
+        8_589_934_592L
+    };
+    // Why -7? Mystery of the universe. Something may break if you change this so please do not without extensive
+    // testing.
+    // TODO:Adding that in coremod!!!
+    // TODO:tier 14,15 wires and transformers only (not even cables !!!)
+    // TODO:tier 12,13 the above + batteries, battery buffers, (maybe cables,12 also works for machines)
+    // TODO:tier 10,11 the above + chargers and other machines, (cables would be nice)
+    // TODO:tier 9     machines and batteries
 
-    //TODO:AND ALL THE MATERIALS... for that
-    //TODO:LIST OF MACHINES WITH POINTLESS TIERS (unless you implement some other tiering mechanism like reducing eu cost if time=1tick)
-    //Macerator/Compressor/Furnace... and for cheap recipes any
+    // TODO:AND ALL THE MATERIALS... for that
+    // TODO:LIST OF MACHINES WITH POINTLESS TIERS (unless you implement some other tiering mechanism like reducing eu
+    // cost if time=1tick)
+    // Macerator/Compressor/Furnace... and for cheap recipes any
 
     /**
      * Array of Maximum Amperes at given Tier index
      * <p>keeping Voltage*Amps < Integer.MAX_VALUE-7 for machines (and tier logic 4x EUt 2/ time)</p>
      * <p>AMV[4]= max amps at tier 4</p>
      */
-    public static final long[] AatV =
-            new long[]{
-                    268435455, 67108863, 16777215,
-                    4194303, 1048575, 262143,
-                    65535, 16383, 4095,
-                    1023, 255, 63,
-                    15, 3, 1,
-                    1};
+    public static final long[] AatV = new long[] {
+        268435455, 67108863, 16777215,
+        4194303, 1048575, 262143,
+        65535, 16383, 4095,
+        1023, 255, 63,
+        15, 3, 1,
+        1
+    };
     /**
      * The short Names for the Voltages
      */
-    public static final String[] VN =
-            new String[]{
-                "ULV", // 0
-                "LV",  // 1
-                "MV",  // 2
-                "HV",  // 3
-                "EV",  // 4
-                "IV",  // 5
-                "LuV", // 6
-                "ZPM", // 7
-                "UV",  // 8
-                "UHV", // 9
-                "UEV", // 10
-                "UIV", // 11
-                "UMV", // 12
-                "UXV", // 13
-                "MAX", // 14
-                "ERROR VOLTAGE" // 15
+    public static final String[] VN = new String[] {
+        "ULV", // 0
+        "LV", // 1
+        "MV", // 2
+        "HV", // 3
+        "EV", // 4
+        "IV", // 5
+        "LuV", // 6
+        "ZPM", // 7
+        "UV", // 8
+        "UHV", // 9
+        "UEV", // 10
+        "UIV", // 11
+        "UMV", // 12
+        "UXV", // 13
+        "MAX", // 14
+        "ERROR VOLTAGE" // 15
     };
 
     /**
      * The long Names for the Voltages
      */
-    public static final String[] VOLTAGE_NAMES =
-            new String[]{
-                "Ultra Low Voltage",              // 0
-                "Low Voltage",                    // 1
-                "Medium Voltage",                 // 2
-                "High Voltage",                   // 3
-                "Extreme Voltage",                // 4
-                "Insane Voltage",                 // 5
-                "Ludicrous Voltage",              // 6
-                "ZPM Voltage",                    // 7
-                "Ultimate Voltage",               // 8
-                "Ultimate High Voltage",          // 9
-                "Ultimate Extreme Voltage",       // 10
-                "Ultimate Insane Voltage",        // 11
-                "Ultimate Mega Voltage",          // 12
-                "Ultimate Extended Mega Voltage", // 13
-                "Maximum Voltage",                // 14
-                "Error Voltage, report this"      // 15
+    public static final String[] VOLTAGE_NAMES = new String[] {
+        "Ultra Low Voltage", // 0
+        "Low Voltage", // 1
+        "Medium Voltage", // 2
+        "High Voltage", // 3
+        "Extreme Voltage", // 4
+        "Insane Voltage", // 5
+        "Ludicrous Voltage", // 6
+        "ZPM Voltage", // 7
+        "Ultimate Voltage", // 8
+        "Ultimate High Voltage", // 9
+        "Ultimate Extreme Voltage", // 10
+        "Ultimate Insane Voltage", // 11
+        "Ultimate Mega Voltage", // 12
+        "Ultimate Extended Mega Voltage", // 13
+        "Maximum Voltage", // 14
+        "Error Voltage, report this" // 15
     };
 
-    public static final String[] TIER_COLORS =
-            new String[]{
-                EnumChatFormatting.RED.toString(),          // ULV, 0
-                EnumChatFormatting.GRAY.toString(),         // LV,  1
-                EnumChatFormatting.GOLD.toString(),         // MV,  2
-                EnumChatFormatting.YELLOW.toString(),         // HV,  3
-                EnumChatFormatting.DARK_GRAY.toString(),  // EV,  4
-                EnumChatFormatting.GREEN.toString(),    // IV,  5
-                EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
-                EnumChatFormatting.AQUA.toString(),        // ZPM, 7
-                EnumChatFormatting.DARK_GREEN.toString(),    // UV,  8
-                EnumChatFormatting.DARK_RED.toString(),     // UHV, 9
-                EnumChatFormatting.DARK_PURPLE.toString(),        // UEV, 10
-                EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD.toString(),   // UIV, 11
-                EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD.toString() + EnumChatFormatting.UNDERLINE.toString(),       // UMV, 12
-                EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD.toString() + EnumChatFormatting.UNDERLINE.toString(),    // UXV, 13
-                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD.toString() + EnumChatFormatting.UNDERLINE.toString(),         // MAX, 14
-                EnumChatFormatting.OBFUSCATED.toString()    // ~~~, 15
+    public static final String[] TIER_COLORS = new String[] {
+        EnumChatFormatting.RED.toString(), // ULV, 0
+        EnumChatFormatting.GRAY.toString(), // LV,  1
+        EnumChatFormatting.GOLD.toString(), // MV,  2
+        EnumChatFormatting.YELLOW.toString(), // HV,  3
+        EnumChatFormatting.DARK_GRAY.toString(), // EV,  4
+        EnumChatFormatting.GREEN.toString(), // IV,  5
+        EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
+        EnumChatFormatting.AQUA.toString(), // ZPM, 7
+        EnumChatFormatting.DARK_GREEN.toString(), // UV,  8
+        EnumChatFormatting.DARK_RED.toString(), // UHV, 9
+        EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
+        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD.toString(), // UIV, 11
+        EnumChatFormatting.RED.toString()
+                + EnumChatFormatting.BOLD.toString()
+                + EnumChatFormatting.UNDERLINE.toString(), // UMV, 12
+        EnumChatFormatting.DARK_RED.toString()
+                + EnumChatFormatting.BOLD.toString()
+                + EnumChatFormatting.UNDERLINE.toString(), // UXV, 13
+        EnumChatFormatting.WHITE.toString()
+                + EnumChatFormatting.BOLD.toString()
+                + EnumChatFormatting.UNDERLINE.toString(), // MAX, 14
+        EnumChatFormatting.OBFUSCATED.toString() // ~~~, 15
     };
 
     /**
@@ -193,8 +198,7 @@ public class GT_Values {
     /**
      * MOD ID Strings, since they are very common Parameters.
      */
-    public static final String
-            MOD_ID = "gregtech",
+    public static final String MOD_ID = "gregtech",
             MOD_ID_IC2 = "IC2",
             MOD_ID_NC = "IC2NuclearControl",
             MOD_ID_TC = "Thaumcraft",
@@ -224,8 +228,7 @@ public class GT_Values {
     /**
      * File Paths and Resource Paths
      */
-    public static final String
-            TEX_DIR = "textures/",
+    public static final String TEX_DIR = "textures/",
             TEX_DIR_GUI = TEX_DIR + "gui/",
             TEX_DIR_ITEM = TEX_DIR + "items/",
             TEX_DIR_BLOCK = TEX_DIR + "blocks/",
@@ -244,44 +247,41 @@ public class GT_Values {
      * NBT String Keys
      */
     public static class NBT {
-        public static final String
-            COLOR               = "gt.color",                // Integer
-            CUSTOM_NAME         = "name",                    // String
-            DISPAY              = "gt.display",              // String
-            FACING              = "gt.facing",               // Byte
-            LOCK_UPGRADE        = "gt.locked",               // Boolean
-            MATERIAL            = "gt.material",             // String containing the Material Name.
-            MODE                = "gt.mode",                 // Number
-            ALLOWED_MODES       = "gt.amode",                // Number
-            MTE_ID              = "gt.mte.id",               // Containing the MTE ID
-            MTE_REG             = "gt.mte.reg",              // Containing the MTE Registry ID
-            OWNER               = "gt.owner",                // String
-            OWNER_UUID          = "gt.ownerUuid",            // UUID (String)
+        public static final String COLOR = "gt.color", // Integer
+                CUSTOM_NAME = "name", // String
+                DISPAY = "gt.display", // String
+                FACING = "gt.facing", // Byte
+                LOCK_UPGRADE = "gt.locked", // Boolean
+                MATERIAL = "gt.material", // String containing the Material Name.
+                MODE = "gt.mode", // Number
+                ALLOWED_MODES = "gt.amode", // Number
+                MTE_ID = "gt.mte.id", // Containing the MTE ID
+                MTE_REG = "gt.mte.reg", // Containing the MTE Registry ID
+                OWNER = "gt.owner", // String
+                OWNER_UUID = "gt.ownerUuid", // UUID (String)
 
-            // Machines
-            ACTIVE              = "gt.active",               // Boolean
-            FLUID_OUT           = "gt.fluidout",             // Output Fluid
-            INV_OUT             = "gt.invout",               // ItemStack
-            PARALLEL            = "gt.parallel",             // Number
-            TANK_CAPACITY       = "gt.tankcap",              // Number
-            TANK_IN             = "gt.tank.in.",             // FluidStack
-            TANK_OUT            = "gt.tank.out.",            // FluidStack
-            TEXTURE             = "gt.texture",              // String
-            INV_SIZE            = "gt.invsize",              // Number
-            INV_LIST            = "gt.invlist",              // NBT List
+                // Machines
+                ACTIVE = "gt.active", // Boolean
+                FLUID_OUT = "gt.fluidout", // Output Fluid
+                INV_OUT = "gt.invout", // ItemStack
+                PARALLEL = "gt.parallel", // Number
+                TANK_CAPACITY = "gt.tankcap", // Number
+                TANK_IN = "gt.tank.in.", // FluidStack
+                TANK_OUT = "gt.tank.out.", // FluidStack
+                TEXTURE = "gt.texture", // String
+                INV_SIZE = "gt.invsize", // Number
+                INV_LIST = "gt.invlist", // NBT List
 
-            // MultiBlock
-            STRUCTURE_OK        = "gt.structure.ok",
-            ROTATION            = "gt.eRotation",
-            FLIP                = "gt.eFlip",
-        	TARGET              = "gt.target",               // Boolean
-            TARGET_X            = "gt.target.x",             // Number
-            TARGET_Y            = "gt.target.y",             // Number
-            TARGET_Z            = "gt.target.z",             // Number
-
-            empty_              = "";
+                // MultiBlock
+                STRUCTURE_OK = "gt.structure.ok",
+                ROTATION = "gt.eRotation",
+                FLIP = "gt.eFlip",
+                TARGET = "gt.target", // Boolean
+                TARGET_X = "gt.target.x", // Number
+                TARGET_Y = "gt.target.y", // Number
+                TARGET_Z = "gt.target.z", // Number
+                empty_ = "";
     }
-
 
     /** The Color White as RGB Short Array. */
     public static final short[] UNCOLORED_RBGA = {255, 255, 255, 255};
@@ -291,61 +291,58 @@ public class GT_Values {
     /**
      * Sides
      */
-    public static final byte
-        SIDE_BOTTOM    = 0, SIDE_DOWN      = 0,
-        SIDE_TOP       = 1, SIDE_UP        = 1,
-        SIDE_NORTH     = 2, // Also a Side with a stupidly mirrored Texture
-        SIDE_SOUTH     = 3,
-        SIDE_WEST      = 4,
-        SIDE_EAST      = 5, // Also a Side with a stupidly mirrored Texture
-        SIDE_ANY    = 6, SIDE_UNKNOWN   = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
+    public static final byte SIDE_BOTTOM = 0,
+            SIDE_DOWN = 0,
+            SIDE_TOP = 1,
+            SIDE_UP = 1,
+            SIDE_NORTH = 2, // Also a Side with a stupidly mirrored Texture
+            SIDE_SOUTH = 3,
+            SIDE_WEST = 4,
+            SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
+            SIDE_ANY = 6,
+            SIDE_UNKNOWN = 6,
+            SIDE_INVALID = 6,
+            SIDE_INSIDE = 6,
+            SIDE_UNDEFINED = 6;
 
     /** Compass alike Array for the proper ordering of North, East, South and West. */
     public static final byte[] COMPASS_DIRECTIONS = {SIDE_NORTH, SIDE_EAST, SIDE_SOUTH, SIDE_WEST};
 
-
     /**
      * An Array containing all Sides which follow the Condition, in order to iterate over them for example.
      */
-    public static final byte[]
-        ALL_SIDES                    =  {0,1,2,3,4,5,6},
-        ALL_VALID_SIDES              =  {0,1,2,3,4,5  };
+    public static final byte[] ALL_SIDES = {0, 1, 2, 3, 4, 5, 6}, ALL_VALID_SIDES = {0, 1, 2, 3, 4, 5};
 
     /**
      * For Facing Checks.
      */
-
-    public static final boolean[]
-        INVALID_SIDES           = { false, false, false, false, false, false, true  },
-        VALID_SIDES             = { true,  true,  true,  true,  true,  true,  false };
-
+    public static final boolean[] INVALID_SIDES = {false, false, false, false, false, false, true},
+            VALID_SIDES = {true, true, true, true, true, true, false};
 
     /**
      *  Side->Offset Mappings.
      */
-    public static final byte[]
-        OFFX = { 0, 0, 0, 0,-1,+1, 0},
-        OFFY = {-1,+1, 0, 0, 0, 0, 0},
-        OFFZ = { 0, 0,-1,+1, 0, 0, 0};
+    public static final byte[] OFFX = {0, 0, 0, 0, -1, +1, 0},
+            OFFY = {-1, +1, 0, 0, 0, 0, 0},
+            OFFZ = {0, 0, -1, +1, 0, 0, 0};
 
     /**
      *  Side->Opposite Mappings.
      **/
-    public static final byte[]
-        OPOS = { 1, 0, 3, 2, 5, 4, 6};
+    public static final byte[] OPOS = {1, 0, 3, 2, 5, 4, 6};
 
     /**
      * [Facing,Side]->Side Mappings for Blocks, which don't face up- and downwards.
      * 0 = bottom, 1 = top, 2 = left, 3 = front, 4 = right, 5 = back, 6 = undefined.
      */
     public static final byte[][] FACING_ROTATIONS = {
-        {0,1,2,3,4,5,6},
-        {0,1,2,3,4,5,6},
-        {0,1,3,5,4,2,6},
-        {0,1,5,3,2,4,6},
-        {0,1,2,4,3,5,6},
-        {0,1,4,2,5,3,6},
-        {0,1,2,3,4,5,6}
+        {0, 1, 2, 3, 4, 5, 6},
+        {0, 1, 2, 3, 4, 5, 6},
+        {0, 1, 3, 5, 4, 2, 6},
+        {0, 1, 5, 3, 2, 4, 6},
+        {0, 1, 2, 4, 3, 5, 6},
+        {0, 1, 4, 2, 5, 3, 6},
+        {0, 1, 2, 3, 4, 5, 6}
     };
 
     /**
@@ -464,11 +461,11 @@ public class GT_Values {
      *  If true, then digital chest with AE2 storage bus will be accessible only through AE2
      */
     public static boolean disableDigitalChestsExternalAccess = false;
+
     public static boolean lateConfigSave = true;
     public static boolean worldTickHappened = false;
 
     public static final int[] emptyIntArray = new int[0];
-
 
     public static final IFluidTank[] emptyFluidTank = new IFluidTank[0];
     public static final FluidTankGT[] emptyFluidTankGT = new FluidTankGT[0];
@@ -480,11 +477,14 @@ public class GT_Values {
     /**
      *  Pretty formatting for author names.
      */
-    public static final String AuthorColen = "Author: " +
-        EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "C" +
-        EnumChatFormatting.GOLD + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "o" +
-        EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "l" +
-        EnumChatFormatting.DARK_AQUA + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "e" +
-        EnumChatFormatting.DARK_PURPLE + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "n";
-
+    public static final String AuthorColen = "Author: " + EnumChatFormatting.DARK_RED
+            + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "C"
+            + EnumChatFormatting.GOLD
+            + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "o"
+            + EnumChatFormatting.GREEN
+            + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "l"
+            + EnumChatFormatting.DARK_AQUA
+            + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "e"
+            + EnumChatFormatting.DARK_PURPLE
+            + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "n";
 }

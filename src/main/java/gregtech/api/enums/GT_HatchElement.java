@@ -2,7 +2,6 @@ package gregtech.api.enums;
 
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
@@ -14,7 +13,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.IGT_HatchAdder;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +24,8 @@ public enum GT_HatchElement implements IHatchElement<GT_MetaTileEntity_MultiBloc
             return t.mMufflerHatches.size();
         }
     },
-    Maintenance(GT_MetaTileEntity_MultiBlockBase::addMaintenanceToMachineList, GT_MetaTileEntity_Hatch_Maintenance.class) {
+    Maintenance(
+            GT_MetaTileEntity_MultiBlockBase::addMaintenanceToMachineList, GT_MetaTileEntity_Hatch_Maintenance.class) {
         @Override
         public long count(GT_MetaTileEntity_MultiBlockBase t) {
             return t.mMaintenanceHatches.size();
@@ -84,7 +83,8 @@ public enum GT_HatchElement implements IHatchElement<GT_MetaTileEntity_MultiBloc
     private final IGT_HatchAdder<GT_MetaTileEntity_MultiBlockBase> adder;
 
     @SafeVarargs
-    GT_HatchElement(IGT_HatchAdder<GT_MetaTileEntity_MultiBlockBase> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+    GT_HatchElement(
+            IGT_HatchAdder<GT_MetaTileEntity_MultiBlockBase> adder, Class<? extends IMetaTileEntity>... mteClasses) {
         this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
         this.adder = adder;
     }
