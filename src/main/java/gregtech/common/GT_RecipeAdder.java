@@ -13,6 +13,7 @@ import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
+import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
@@ -186,7 +187,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         GT_Recipe.GT_Recipe_Map.sChemicalRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2}, new ItemStack[]{aOutput, aOutput2}, null, null, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUtick, aCleanroom ? -200 : 0);
         if (!(aInput1 != null && aInput1.getItem() instanceof GT_IntegratedCircuit_Item && aInput1.getItemDamage() >= 10)
                 && !(aInput2 != null && aInput2.getItem() instanceof GT_IntegratedCircuit_Item && aInput2.getItemDamage() >= 10)) {
-            GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.addRecipe(false, new ItemStack[]{aInput1, aInput2}, new ItemStack[]{aOutput, aOutput2}, null, null, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUtick, 0);
+            GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.addRecipe(false, ArrayExt.withoutNulls(new ItemStack[]{aInput1, aInput2}, ItemStack[]::new), ArrayExt.withoutNulls(new ItemStack[]{aOutput, aOutput2}, ItemStack[]::new), null, null, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUtick, 0);
         }
         return true;
     }
