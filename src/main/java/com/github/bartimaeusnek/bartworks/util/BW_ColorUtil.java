@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.util;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
 
 import java.util.Arrays;
 @SuppressWarnings("unused")
@@ -243,45 +244,6 @@ public class BW_ColorUtil {
     }
 
     public static String getColorForTier(int tier) {
-        String ret;
-        switch (tier) {
-            case 0:
-                ret = ChatColorHelper.RED;
-                break;
-            case 1:
-                ret = ChatColorHelper.GRAY;
-                break;
-            case 2:
-                ret = ChatColorHelper.AQUA;
-                break;
-            case 3:
-                ret = ChatColorHelper.GOLD;
-                break;
-            case 4:
-                ret = ChatColorHelper.DARKPURPLE;
-                break;
-            case 5:
-                ret = ChatColorHelper.DARKBLUE;
-                break;
-            case 6:
-                ret = ChatColorHelper.LIGHT_PURPLE;
-                break;
-            case 7:
-                ret = ChatColorHelper.WHITE;
-                break;
-            case 8:
-                ret = ChatColorHelper.DARKAQUA;
-                break;
-            case 9:
-                ret = ChatColorHelper.DARKRED;
-                break;
-            case 10:
-                ret = ChatColorHelper.GREEN;
-                break;
-            default:
-                ret = ChatColorHelper.OBFUSCATED;
-                break;
-        }
-        return ret;
+        return GT_Values.TIER_COLORS[tier];
     }
 }
