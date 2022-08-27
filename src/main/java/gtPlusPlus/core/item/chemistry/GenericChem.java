@@ -504,7 +504,7 @@ public class GenericChem extends ItemPackage {
 
 				},
 				new FluidStack[] {
-						MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(40000)
+						MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 280)
 				},
 				20*800,
 				3842160,
