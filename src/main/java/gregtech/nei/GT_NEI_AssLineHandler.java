@@ -30,6 +30,7 @@ import java.util.List;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
@@ -43,6 +44,8 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
      * Can be referenced from cached recipes.
      */
     public static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
+
+    private String mRecipeName;
 
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
@@ -195,7 +198,11 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
 
     @Override
     public String getRecipeName() {
-        return GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
+        if (mRecipeName == null) {
+            mRecipeName = GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
+            updateOverrideTextColor();
+        }
+        return mRecipeName;
     }
 
     @Override
@@ -240,9 +247,10 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
 
     @Override
     public void drawExtras(int aRecipeIndex) {
-        int tEUt = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
-        int tDuration = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
-        String[] recipeDesc = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.getNeiDesc();
+        GT_Recipe recipe = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe;
+        int tEUt = recipe.mEUt;
+        int tDuration = recipe.mDuration;
+        String[] recipeDesc = recipe.getNeiDesc();
         if (recipeDesc == null) {
             if (tEUt != 0) {
                 drawText(
@@ -259,7 +267,7 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
                                 10,
                                 93,
                                 trans("154", "Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU",
-                                0xFFFF0000);
+                                0xFF000000);
                     } else {
                         drawText(
                                 10,
@@ -286,12 +294,16 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
                         0xFF000000);
             }
             int tSpecial = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
+            boolean specialDrew = false;
             if (tSpecial == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
                 drawText(10, 123, trans("159", "Needs Low Gravity"), 0xFF000000);
+                specialDrew = true;
             } else if (tSpecial == -200 && GT_Mod.gregtechproxy.mEnableCleanroom) {
                 drawText(10, 123, trans("160", "Needs Cleanroom"), 0xFF000000);
+                specialDrew = true;
             } else if (tSpecial == -201) {
                 drawText(10, 123, trans("206", "Scan for Assembly Line"), 0xFF000000);
+                specialDrew = true;
             } else if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre))
                     || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
                 drawText(
@@ -301,6 +313,49 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
                                 + GT_Utility.formatNumbers(tSpecial * this.mRecipeMap.mNEISpecialValueMultiplier)
                                 + this.mRecipeMap.mNEISpecialValuePost,
                         0xFF000000);
+                specialDrew = true;
+            }
+            int y = 123 + (specialDrew ? 10 : 0);
+            if (GT_Mod.gregtechproxy.mNEIRecipeOwner) {
+                if (recipe.owners.size() > 1) {
+                    drawText(
+                            10,
+                            y,
+                            EnumChatFormatting.ITALIC
+                                    + GT_Utility.trans("226", "Original Recipe by: ")
+                                    + recipe.owners.get(0).getName(),
+                            0xFF000000);
+                    y += 10;
+                    for (int i = 1; i < recipe.owners.size(); i++) {
+                        drawText(
+                                10,
+                                y,
+                                EnumChatFormatting.ITALIC
+                                        + GT_Utility.trans("227", "Modified by: ")
+                                        + recipe.owners.get(i).getName(),
+                                0xFF000000);
+                        y += 10;
+                    }
+                } else if (recipe.owners.size() > 0) {
+                    drawText(
+                            10,
+                            y,
+                            EnumChatFormatting.ITALIC
+                                    + GT_Utility.trans("225", "Recipe by: ")
+                                    + recipe.owners.get(0).getName(),
+                            0xFF000000);
+                    y += 10;
+                }
+            }
+            if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace
+                    && recipe.stackTraces != null
+                    && !recipe.stackTraces.isEmpty()) {
+                drawText(10, y, "stackTrace:", 0xFF000000);
+                y += 10;
+                for (StackTraceElement stackTrace : recipe.stackTraces.get(0)) {
+                    drawText(10, y, stackTrace.toString(), 0xFF000000);
+                    y += 10;
+                }
             }
         } else {
             int i = 0;
