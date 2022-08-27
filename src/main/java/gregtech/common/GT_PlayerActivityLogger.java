@@ -2,7 +2,6 @@ package gregtech.common;
 
 import gregtech.GT_Mod;
 import gregtech.api.util.GT_Log;
-
 import java.util.ArrayList;
 
 public class GT_PlayerActivityLogger implements Runnable {

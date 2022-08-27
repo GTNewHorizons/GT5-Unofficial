@@ -22,8 +22,11 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     }
 
     void setCoverIdAndDataAtSide(byte aSide, int aId, ISerializableObject aData);
+
     void setCoverIDAtSide(byte aSide, int aID);
+
     boolean setCoverIDAtSideNoUpdate(byte aSide, int aID);
+
     void setCoverItemAtSide(byte aSide, ItemStack aCover);
 
     @Deprecated
@@ -71,7 +74,8 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      * Receiving a packet with cover data.
      * @param aPlayer the player who made the change
      */
-    default void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
+    default void receiveCoverData(
+            byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
         if (aCoverData instanceof ISerializableObject.LegacyCoverData)
             receiveCoverData(aCoverSide, aCoverID, ((ISerializableObject.LegacyCoverData) aCoverData).get());
     }

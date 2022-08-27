@@ -1,61 +1,59 @@
 package gregtech.api.gui.widgets;
 
-import java.util.Arrays;
-
 import gregtech.api.interfaces.IGuiIcon;
+import java.util.Arrays;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 
-public enum GT_GuiIcon implements IGuiIcon{
-    BUTTON_NORMAL           (0, 0,     0),
-    BUTTON_DOWN             (0, 32,    0),
-    BUTTON_HIGHLIGHT        (0, 32*2,  0),
-    BUTTON_HIGHLIGHT_DOWN   (0, 32*3,  0),
-    BUTTON_DISABLED         (0, 32*4,  0),
+public enum GT_GuiIcon implements IGuiIcon {
+    BUTTON_NORMAL(0, 0, 0),
+    BUTTON_DOWN(0, 32, 0),
+    BUTTON_HIGHLIGHT(0, 32 * 2, 0),
+    BUTTON_HIGHLIGHT_DOWN(0, 32 * 3, 0),
+    BUTTON_DISABLED(0, 32 * 4, 0),
 
-    DISABLE                 (0, 0,     32),
-    REDSTONE_OFF            (0, 32,    32),
-    REDSTONE_ON             (0, 32*2,  32),
-    CHECKMARK               (0, 32*3,  32),
-    CROSS                   (0, 32*4,  32),
-    WHITELIST               (0, 32*5,  32),
-    BLACKLIST               (0, 32*6,  32),
-    PROGRESS                (0, 32*7,  32),
+    DISABLE(0, 0, 32),
+    REDSTONE_OFF(0, 32, 32),
+    REDSTONE_ON(0, 32 * 2, 32),
+    CHECKMARK(0, 32 * 3, 32),
+    CROSS(0, 32 * 4, 32),
+    WHITELIST(0, 32 * 5, 32),
+    BLACKLIST(0, 32 * 6, 32),
+    PROGRESS(0, 32 * 7, 32),
 
-    EXPORT                  (0, 0,     32*2),
-    IMPORT                  (0, 32,    32*2),
-    ALLOW_INPUT             (0, 32*2,  32*2),
-    BLOCK_INPUT             (0, 32*3,  32*2),
-    GREEN_ARROW_UP          (0, 32*4,  32*2),
-    GREEN_ARROW_DOWN        (0, 32*5,  32*2),
-    CYCLIC                  (0, 32*6,  32*2),
+    EXPORT(0, 0, 32 * 2),
+    IMPORT(0, 32, 32 * 2),
+    ALLOW_INPUT(0, 32 * 2, 32 * 2),
+    BLOCK_INPUT(0, 32 * 3, 32 * 2),
+    GREEN_ARROW_UP(0, 32 * 4, 32 * 2),
+    GREEN_ARROW_DOWN(0, 32 * 5, 32 * 2),
+    CYCLIC(0, 32 * 6, 32 * 2),
 
-    SLOT_DARKGRAY           (1, 176,0,18,18),
-    SLOT_GRAY               (1, 176,18,18,18),
+    SLOT_DARKGRAY(1, 176, 0, 18, 18),
+    SLOT_GRAY(1, 176, 18, 18, 18),
 
-    TAB_NORMAL              (2,     0,   0,18,20),
-    TAB_HIGHLIGHT           (2,    18,   0,18,20),
-    TAB_DISABLED            (2,  18*2,   0,18,20),
-    TAB_NORMAL_BRONZE       (2,     0,  20,18,20),
-    TAB_HIGHLIGHT_BRONZE    (2,    18,  20,18,20),
-    TAB_DISABLED_BRONZE     (2,  18*2,  20,18,20),
-    TAB_NORMAL_STEEL        (2,     0,2*20,18,20),
-    TAB_HIGHLIGHT_STEEL     (2,    18,2*20,18,20),
-    TAB_DISABLED_STEEL      (2,  18*2,2*20,18,20),
-    TAB_NORMAL_BRICK        (2,     0,3*20,18,20),
-    TAB_HIGHLIGHT_BRICK     (2,    18,3*20,18,20),
-    TAB_DISABLED_BRICK      (2,  18*2,3*20,18,20),
-    TAB_INFO_GRAY           (2,   220,   0,18,20),
-    TAB_INFO_BLUE           (2,220+18,   0,18,20),
-;
-
+    TAB_NORMAL(2, 0, 0, 18, 20),
+    TAB_HIGHLIGHT(2, 18, 0, 18, 20),
+    TAB_DISABLED(2, 18 * 2, 0, 18, 20),
+    TAB_NORMAL_BRONZE(2, 0, 20, 18, 20),
+    TAB_HIGHLIGHT_BRONZE(2, 18, 20, 18, 20),
+    TAB_DISABLED_BRONZE(2, 18 * 2, 20, 18, 20),
+    TAB_NORMAL_STEEL(2, 0, 2 * 20, 18, 20),
+    TAB_HIGHLIGHT_STEEL(2, 18, 2 * 20, 18, 20),
+    TAB_DISABLED_STEEL(2, 18 * 2, 2 * 20, 18, 20),
+    TAB_NORMAL_BRICK(2, 0, 3 * 20, 18, 20),
+    TAB_HIGHLIGHT_BRICK(2, 18, 3 * 20, 18, 20),
+    TAB_DISABLED_BRICK(2, 18 * 2, 3 * 20, 18, 20),
+    TAB_INFO_GRAY(2, 220, 0, 18, 20),
+    TAB_INFO_BLUE(2, 220 + 18, 0, 18, 20),
+    ;
 
     private static final int T_SIZE = 256;
     private static ResourceLocation[] TEXTURES = {
-            new ResourceLocation("gregtech", "textures/gui/GuiButtons.png"),
-            new ResourceLocation("gregtech", "textures/gui/GuiCover.png"),
-            new ResourceLocation("gregtech", "textures/gui/GuiTabs.png"),
+        new ResourceLocation("gregtech", "textures/gui/GuiButtons.png"),
+        new ResourceLocation("gregtech", "textures/gui/GuiCover.png"),
+        new ResourceLocation("gregtech", "textures/gui/GuiTabs.png"),
     };
 
     public final int x, y, width, height;
@@ -72,25 +70,34 @@ public enum GT_GuiIcon implements IGuiIcon{
     }
 
     GT_GuiIcon(int texID, int x, int y) {
-        this(texID, x, y,32,32,null);
+        this(texID, x, y, 32, 32, null);
     }
+
     GT_GuiIcon(int texID, int x, int y, int width, int height) {
-        this(texID, x, y, width, height,null);
+        this(texID, x, y, width, height, null);
     }
-    public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
-            boolean doDraw) {
+
+    public static void render(
+            IGuiIcon icon, double x, double y, double width, double height, double zLevel, boolean doDraw) {
         render(icon, x, y, width, height, zLevel, doDraw, false);
     }
 
-    public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
-            boolean doDraw, boolean flipHoritontally) {
+    public static void render(
+            IGuiIcon icon,
+            double x,
+            double y,
+            double width,
+            double height,
+            double zLevel,
+            boolean doDraw,
+            boolean flipHoritontally) {
         Tessellator tess = Tessellator.instance;
         if (doDraw) {
             Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURES[icon.getTexId()]);
             tess.startDrawingQuads();
         }
         double minU = (double) (icon.getX() + (flipHoritontally ? icon.getWidth() : 0)) / T_SIZE;
-        double maxU = (double) (icon.getX() + (flipHoritontally ? 0: icon.getWidth())) / T_SIZE;
+        double maxU = (double) (icon.getX() + (flipHoritontally ? 0 : icon.getWidth())) / T_SIZE;
         double minV = (double) icon.getY() / T_SIZE;
         double maxV = (double) (icon.getY() + icon.getHeight()) / T_SIZE;
         tess.addVertexWithUV(x, y + height, zLevel, minU, maxV);
@@ -98,11 +105,9 @@ public enum GT_GuiIcon implements IGuiIcon{
         tess.addVertexWithUV(x + width, y + 0, zLevel, maxU, minV);
         tess.addVertexWithUV(x, y + 0, zLevel, minU, minV);
 
-        if (icon.getOverlay() != null)
-            render(icon.getOverlay(), x, y, width, height, zLevel, false);
+        if (icon.getOverlay() != null) render(icon.getOverlay(), x, y, width, height, zLevel, false);
 
-        if (doDraw)
-            tess.draw();
+        if (doDraw) tess.draw();
     }
 
     /**

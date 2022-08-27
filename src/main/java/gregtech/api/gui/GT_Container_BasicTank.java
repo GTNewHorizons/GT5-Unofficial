@@ -55,7 +55,8 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
             }
             GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
             BasicTankFluidAccess tDrainableAccess = BasicTankFluidAccess.from(tTank, false);
-            return handleFluidSlotClick(tDrainableAccess, aPlayer, aMouseclick == 0, true, !tTank.isDrainableStackSeparate());
+            return handleFluidSlotClick(
+                    tDrainableAccess, aPlayer, aMouseclick == 0, true, !tTank.isDrainableStackSeparate());
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
@@ -66,8 +67,7 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
         if (((GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity()).mFluid != null)
             mContent = ((GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity()).mFluid.amount;
-        else
-            mContent = 0;
+        else mContent = 0;
         for (Object crafter : this.crafters) {
             ICrafting player = (ICrafting) crafter;
             if (mTimer % 500 == 0 || oContent != mContent) {
@@ -114,10 +114,8 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
 
         @Override
         public void set(FluidStack stack) {
-            if (mIsFillableStack)
-                mTank.setFillableStack(stack);
-            else
-                mTank.setDrainableStack(stack);
+            if (mIsFillableStack) mTank.setFillableStack(stack);
+            else mTank.setDrainableStack(stack);
         }
 
         @Override

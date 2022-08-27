@@ -1,12 +1,12 @@
 package gregtech.api.enums;
+
 import gregtech.api.interfaces.IIconContainer;
 
 public class TextureSet {
 
     public boolean is_custom = false;
 
-    public static final TextureSet
-            SET_NONE = new TextureSet("NONE"),
+    public static final TextureSet SET_NONE = new TextureSet("NONE"),
             SET_DULL = new TextureSet("DULL"),
             SET_RUBY = new TextureSet("RUBY"),
             SET_OPAL = new TextureSet("OPAL"),
@@ -37,8 +37,7 @@ public class TextureSet {
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
      */
-    public static final short
-            INDEX_wire = 69,
+    public static final short INDEX_wire = 69,
             INDEX_foil = 70,
             INDEX_block1 = 71,
             INDEX_block2 = 72,

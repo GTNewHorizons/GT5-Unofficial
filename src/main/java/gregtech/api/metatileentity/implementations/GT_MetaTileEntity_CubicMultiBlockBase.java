@@ -1,5 +1,11 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -9,16 +15,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_StructureUtility;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-
-import java.util.List;
-
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
 
 /**
  * A simple 3x3x3 hollow cubic multiblock, that can be arbitrarily rotated, made of a single type of machine casing and accepts hatches everywhere.
@@ -35,100 +34,102 @@ import static gregtech.api.enums.GT_HatchElement.*;
  *
  * @param <T>
  */
-public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTileEntity_CubicMultiBlockBase<T>> extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> implements ISurvivalConstructable {
-	protected static final String STRUCTURE_PIECE_MAIN = "main";
-	protected static final ClassValue<IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>>>() {
-		@Override
-		protected IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>> computeValue(Class<?> type) {
-			return StructureDefinition.<GT_MetaTileEntity_CubicMultiBlockBase<?>>builder()
-					.addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
-							{"hhh", "hhh", "hhh"},
-							{"h~h", "h-h", "hhh"},
-							{"hhh", "hhh", "hhh"},
-					}))
-					.addElement('h', ofChain(
-							lazy(
-                                t -> GT_StructureUtility.<GT_MetaTileEntity_CubicMultiBlockBase<?>>buildHatchAdder()
-                                    .atLeastList(t.getAllowedHatches())
-                                    .casingIndex(t.getHatchTextureIndex())
-                                    .dot(1)
-                                    .build()
-                            ),
-							onElementPass(
-									GT_MetaTileEntity_CubicMultiBlockBase::onCorrectCasingAdded,
-									lazy(GT_MetaTileEntity_CubicMultiBlockBase::getCasingElement)
-							)
-					))
-					.build();
-		}
-	};
-	private int mCasingAmount = 0;
+public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTileEntity_CubicMultiBlockBase<T>>
+        extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> implements ISurvivalConstructable {
+    protected static final String STRUCTURE_PIECE_MAIN = "main";
+    protected static final ClassValue<IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>>>
+            STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>>>() {
+                @Override
+                protected IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>> computeValue(Class<?> type) {
+                    return StructureDefinition.<GT_MetaTileEntity_CubicMultiBlockBase<?>>builder()
+                            .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
+                                {"hhh", "hhh", "hhh"},
+                                {"h~h", "h-h", "hhh"},
+                                {"hhh", "hhh", "hhh"},
+                            }))
+                            .addElement(
+                                    'h',
+                                    ofChain(
+                                            lazy(t ->
+                                                    GT_StructureUtility
+                                                            .<GT_MetaTileEntity_CubicMultiBlockBase<?>>buildHatchAdder()
+                                                            .atLeastList(t.getAllowedHatches())
+                                                            .casingIndex(t.getHatchTextureIndex())
+                                                            .dot(1)
+                                                            .build()),
+                                            onElementPass(
+                                                    GT_MetaTileEntity_CubicMultiBlockBase::onCorrectCasingAdded,
+                                                    lazy(GT_MetaTileEntity_CubicMultiBlockBase::getCasingElement))))
+                            .build();
+                }
+            };
+    private int mCasingAmount = 0;
 
-	protected GT_MetaTileEntity_CubicMultiBlockBase(int aID, String aName, String aNameRegional) {
-		super(aID, aName, aNameRegional);
-	}
+    protected GT_MetaTileEntity_CubicMultiBlockBase(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
 
-	protected GT_MetaTileEntity_CubicMultiBlockBase(String aName) {
-		super(aName);
-	}
+    protected GT_MetaTileEntity_CubicMultiBlockBase(String aName) {
+        super(aName);
+    }
 
-	/**
-	 * Create a simple 3x3x3 hollow cubic structure made of a single type of machine casing and accepts hatches everywhere.
-	 * <p>
-	 * The created definition contains a single piece named {@link #STRUCTURE_PIECE_MAIN}.
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public IStructureDefinition<T> getStructureDefinition() {
-		return (IStructureDefinition<T>) STRUCTURE_DEFINITION.get(getClass());
-	}
+    /**
+     * Create a simple 3x3x3 hollow cubic structure made of a single type of machine casing and accepts hatches everywhere.
+     * <p>
+     * The created definition contains a single piece named {@link #STRUCTURE_PIECE_MAIN}.
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public IStructureDefinition<T> getStructureDefinition() {
+        return (IStructureDefinition<T>) STRUCTURE_DEFINITION.get(getClass());
+    }
 
-	@Override
-	public void construct(ItemStack aStack, boolean aHintsOnly) {
-		buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 1, 1, 0);
-	}
+    @Override
+    public void construct(ItemStack aStack, boolean aHintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 1, 1, 0);
+    }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, source, actor,false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
     }
 
     @Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		mCasingAmount = 0;
-		return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) &&
-				mCasingAmount >= getRequiredCasingCount() &&
-				checkHatches(aBaseMetaTileEntity, aStack);
-	}
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCasingAmount = 0;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0)
+                && mCasingAmount >= getRequiredCasingCount()
+                && checkHatches(aBaseMetaTileEntity, aStack);
+    }
 
-	/**
-	 * Called by {@link #checkMachine(IGregTechTileEntity, ItemStack)} to check if all required hatches are present.
-	 * <p>
-	 * Default implementation requires EXACTLY ONE maintenance hatch to be present, and ignore all other conditions.
-	 *
-	 * @param aBaseMetaTileEntity the tile entity of self
-	 * @param aStack              The item stack inside the controller
-	 * @return true if the test passes, false otherwise
-	 */
-	protected boolean checkHatches(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		return mMaintenanceHatches.size() == 1;
-	}
+    /**
+     * Called by {@link #checkMachine(IGregTechTileEntity, ItemStack)} to check if all required hatches are present.
+     * <p>
+     * Default implementation requires EXACTLY ONE maintenance hatch to be present, and ignore all other conditions.
+     *
+     * @param aBaseMetaTileEntity the tile entity of self
+     * @param aStack              The item stack inside the controller
+     * @return true if the test passes, false otherwise
+     */
+    protected boolean checkHatches(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        return mMaintenanceHatches.size() == 1;
+    }
 
-	protected abstract IStructureElement<GT_MetaTileEntity_CubicMultiBlockBase<?>> getCasingElement();
+    protected abstract IStructureElement<GT_MetaTileEntity_CubicMultiBlockBase<?>> getCasingElement();
 
     protected List<IHatchElement<? super GT_MetaTileEntity_CubicMultiBlockBase<?>>> getAllowedHatches() {
         return ImmutableList.of(InputHatch, OutputHatch, InputBus, OutputBus, Muffler, Maintenance, Energy);
     }
 
-	/**
-	 * The hatch's texture index.
-	 */
-	protected abstract int getHatchTextureIndex();
+    /**
+     * The hatch's texture index.
+     */
+    protected abstract int getHatchTextureIndex();
 
-	protected abstract int getRequiredCasingCount();
+    protected abstract int getRequiredCasingCount();
 
-	protected void onCorrectCasingAdded() {
-		mCasingAmount++;
-	}
+    protected void onCorrectCasingAdded() {
+        mCasingAmount++;
+    }
 }

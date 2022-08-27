@@ -1,15 +1,13 @@
 package gregtech.api.multitileentity;
 
+import static gregtech.api.enums.GT_Values.NBT;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.base.BaseMultiTileEntity;
 import gregtech.api.util.GT_Util;
-import net.minecraft.block.material.Material;
+import java.lang.ref.WeakReference;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Tuple;
-
-import java.lang.ref.WeakReference;
-
-import static gregtech.api.enums.GT_Values.NBT;
 
 public class MultiTileEntityClassContainer {
     private final WeakReference<MultiTileEntityRegistry> mRegistry;
@@ -27,8 +25,8 @@ public class MultiTileEntityClassContainer {
     public byte mStackSize = 64;
     public boolean mHidden = false;
 
-
-    public MultiTileEntityClassContainer(MultiTileEntityRegistry aRegistry, int aID, Class<? extends BaseMultiTileEntity> aClass) {
+    public MultiTileEntityClassContainer(
+            MultiTileEntityRegistry aRegistry, int aID, Class<? extends BaseMultiTileEntity> aClass) {
         /* Start the Builder */
         mRegistry = new WeakReference<>(aRegistry);
         mID = (short) aID;
@@ -41,9 +39,16 @@ public class MultiTileEntityClassContainer {
         final MultiTileEntityRegistry registry = mRegistry.get();
 
         if (mParameters.hasKey(NBT.MATERIAL) && !mParameters.hasKey(NBT.COLOR))
-            mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(Materials.get(mParameters.getString(NBT.MATERIAL)).getRGBA()));
+            mParameters.setInteger(
+                    NBT.COLOR,
+                    GT_Util.getRGBInt(
+                            Materials.get(mParameters.getString(NBT.MATERIAL)).getRGBA()));
 
-        try {mCanonicalTileEntity = mClass.newInstance();} catch (Throwable e) {throw new IllegalArgumentException(e);}
+        try {
+            mCanonicalTileEntity = mClass.newInstance();
+        } catch (Throwable e) {
+            throw new IllegalArgumentException(e);
+        }
         mCanonicalTileEntity.initFromNBT(mParameters, mID, (short) -1);
 
         return registry != null && registry.add(this.mLocalized, this.mCategoryName, this) != null;
@@ -86,8 +91,7 @@ public class MultiTileEntityClassContainer {
     public MultiTileEntityClassContainer material(Materials aMaterial) {
         // Sets the material, and the color from the material, if not already set
         mParameters.setString(NBT.MATERIAL, aMaterial.toString());
-        if (!mParameters.hasKey(NBT.COLOR))
-            mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(aMaterial.getRGBA()));
+        if (!mParameters.hasKey(NBT.COLOR)) mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(aMaterial.getRGBA()));
         return this;
     }
 
@@ -116,5 +120,4 @@ public class MultiTileEntityClassContainer {
         mParameters = GT_Util.fuseNBT(mParameters, GT_Util.makeNBT(aTags));
         return this;
     }
-
 }

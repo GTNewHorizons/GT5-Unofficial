@@ -1,5 +1,7 @@
 package gregtech.api.items;
 
+import static gregtech.api.enums.GT_Values.*;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
@@ -19,6 +21,11 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,14 +37,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.food.IEdible;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static gregtech.api.enums.GT_Values.*;
 
 /**
  * @author Gregorius Techneticies
@@ -59,9 +58,10 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
      * <p/>
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
-    public static final ConcurrentHashMap<String, GT_MetaGenerated_Item> sInstances = new ConcurrentHashMap<String, GT_MetaGenerated_Item>();
+    public static final ConcurrentHashMap<String, GT_MetaGenerated_Item> sInstances =
+            new ConcurrentHashMap<String, GT_MetaGenerated_Item>();
 
-	/* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
+    /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
 
     public final short mOffset, mItemAmount;
     public final BitSet mEnabledItems;
@@ -132,7 +132,15 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                         if (((IFoodStat) tRandomData).getFoodAction(this, rStack) == EnumAction.eat) {
                             int tFoodValue = ((IFoodStat) tRandomData).getFoodLevel(this, rStack, null);
                             if (tFoodValue > 0)
-                                RA.addCannerRecipe(rStack, ItemList.IC2_Food_Can_Empty.get(tFoodValue), ((IFoodStat) tRandomData).isRotten(this, rStack, null) ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue) : ItemList.IC2_Food_Can_Filled.get(tFoodValue), null, tFoodValue * 100, 1);
+                                RA.addCannerRecipe(
+                                        rStack,
+                                        ItemList.IC2_Food_Can_Empty.get(tFoodValue),
+                                        ((IFoodStat) tRandomData).isRotten(this, rStack, null)
+                                                ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue)
+                                                : ItemList.IC2_Food_Can_Filled.get(tFoodValue),
+                                        null,
+                                        tFoodValue * 100,
+                                        1);
                         }
                         tUseOreDict = false;
                     }
@@ -208,13 +216,22 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
      *                       Use -3 if you want to make this Battery charge/discharge-able.
      * @return the Item itself for convenience in constructing.
      */
-    public final GT_MetaGenerated_Item setElectricStats(int aMetaValue, long aMaxCharge, long aTransferLimit, long aTier, long aSpecialData, boolean aUseAnimations) {
+    public final GT_MetaGenerated_Item setElectricStats(
+            int aMetaValue,
+            long aMaxCharge,
+            long aTransferLimit,
+            long aTier,
+            long aSpecialData,
+            boolean aUseAnimations) {
         if (aMetaValue < 0 || aMetaValue >= mOffset + mEnabledItems.length()) return this;
         if (aMaxCharge == 0) mElectricStats.remove((short) aMetaValue);
         else {
-            mElectricStats.put((short) aMetaValue, new Long[]{aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData});
+            mElectricStats.put(
+                    (short) aMetaValue,
+                    new Long[] {aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData});
             if (aMetaValue >= mOffset && aUseAnimations)
-                mIconList[aMetaValue - mOffset] = Arrays.copyOf(mIconList[aMetaValue - mOffset], Math.max(9, mIconList[aMetaValue - mOffset].length));
+                mIconList[aMetaValue - mOffset] = Arrays.copyOf(
+                        mIconList[aMetaValue - mOffset], Math.max(9, mIconList[aMetaValue - mOffset].length));
         }
         return this;
     }
@@ -229,7 +246,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     public final GT_MetaGenerated_Item setFluidContainerStats(int aMetaValue, long aCapacity, long aStacksize) {
         if (aMetaValue < 0 || aMetaValue >= mOffset + mEnabledItems.length()) return this;
         if (aCapacity < 0) mElectricStats.remove((short) aMetaValue);
-        else mFluidContainerStats.put((short) aMetaValue, new Long[]{aCapacity, Math.max(1, aStacksize)});
+        else mFluidContainerStats.put((short) aMetaValue, new Long[] {aCapacity, Math.max(1, aStacksize)});
         return this;
     }
 
@@ -261,7 +278,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         return null;
     }
 
-	/* ---------- INTERNAL OVERRIDES ---------- */
+    /* ---------- INTERNAL OVERRIDES ---------- */
 
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
@@ -287,9 +304,15 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         if (tStat != null) {
             if (Loader.isModLoaded(MOD_ID_APC)) {
-                aPlayer.getFoodStats().func_151686_a((ItemFood) GT_Utility.callConstructor("squeek.applecore.api.food.ItemFoodProxy.ItemFoodProxy", 0, null, true, this), aStack);
+                aPlayer.getFoodStats()
+                        .func_151686_a(
+                                (ItemFood) GT_Utility.callConstructor(
+                                        "squeek.applecore.api.food.ItemFoodProxy.ItemFoodProxy", 0, null, true, this),
+                                aStack);
             } else {
-                aPlayer.getFoodStats().addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
+                aPlayer.getFoodStats()
+                        .addStats(
+                                tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
             }
             tStat.onEaten(this, aStack, aPlayer);
         }
@@ -300,7 +323,9 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     @Optional.Method(modid = MOD_ID_APC)
     public FoodValues getFoodValues(ItemStack aStack) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
-        return tStat == null ? null : new FoodValues(tStat.getFoodLevel(this, aStack, null), tStat.getSaturation(this, aStack, null));
+        return tStat == null
+                ? null
+                : new FoodValues(tStat.getFoodLevel(this, aStack, null), tStat.getSaturation(this, aStack, null));
     }
 
     @Override
@@ -331,9 +356,11 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         for (short i = 0; i < j; i++)
             if (mEnabledItems.get(i)) {
                 for (byte k = 1; k < mIconList[i].length; k++) {
-                    mIconList[i][k] = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
+                    mIconList[i][k] = aIconRegister.registerIcon(
+                            RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
                 }
-                mIconList[i][0] = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
+                mIconList[i][0] = aIconRegister.registerIcon(
+                        RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
             }
     }
 

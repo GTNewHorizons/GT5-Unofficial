@@ -16,7 +16,6 @@ public class PowerNodePath extends NodePath {
     int mTick = 0;
     boolean mCountUp = true;
 
-
     public PowerNodePath(MetaPipeEntity[] aCables) {
         super(aCables);
     }

@@ -30,7 +30,7 @@ public interface IGT_Mod {
      */
     EntityPlayer getThePlayer();
 
-    //---------- Internal Usage Only ----------
+    // ---------- Internal Usage Only ----------
 
     /**
      * works only ClientSide otherwise returns 0

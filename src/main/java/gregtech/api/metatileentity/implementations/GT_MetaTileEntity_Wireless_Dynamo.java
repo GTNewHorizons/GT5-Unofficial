@@ -1,25 +1,25 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GT_Values.*;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import static gregtech.GT_Mod.gregtechproxy;
-import static gregtech.api.enums.GT_Values.*;
-
-public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
+public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo
+        implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
 
     private String owner_uuid;
     private String owner_name;
 
-    public GT_MetaTileEntity_Wireless_Dynamo(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Wireless_Dynamo(
+            String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -29,12 +29,12 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
+        return new ITexture[] {aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
+        return new ITexture[] {aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
     }
 
     @Override
@@ -125,11 +125,9 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
                 owner_name = aBaseMetaTileEntity.getOwnerName();
 
                 // Attempt to load in map from file.
-                if (GlobalEnergy.size() == 0)
-                    loadGlobalEnergyInfo(aBaseMetaTileEntity.getWorld());
+                if (GlobalEnergy.size() == 0) loadGlobalEnergyInfo(aBaseMetaTileEntity.getWorld());
 
                 strongCheckOrAddUser(owner_uuid, owner_name);
-
             }
 
             // Every ticks_between_energy_addition ticks change the energy content of the machine.
@@ -140,4 +138,3 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
         }
     }
 }
-

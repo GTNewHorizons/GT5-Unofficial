@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import static gregtech.api.enums.GT_Values.E;
+
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
@@ -12,6 +14,7 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
+import javax.annotation.Nonnull;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,21 +27,17 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nonnull;
-
-import static gregtech.api.enums.GT_Values.E;
-
 public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfilter.FluidFilterData> {
 
     // Uses the lower 3 bits of the cover variable, so we have 8 options to work with (0-7)
     private final int FILTER_INPUT_DENY_OUTPUT = 0; //  000
     private final int INVERT_INPUT_DENY_OUTPUT = 1; //  001
-    private final int FILTER_INPUT_ANY_OUTPUT = 2;  //  010
-    private final int INVERT_INPUT_ANY_OUTPUT = 3;  //  011
+    private final int FILTER_INPUT_ANY_OUTPUT = 2; //  010
+    private final int INVERT_INPUT_ANY_OUTPUT = 3; //  011
     private final int DENY_INPUT_FILTER_OUTPUT = 4; //  100
     private final int DENY_INPUT_INVERT_OUTPUT = 5; //  101
-    private final int ANY_INPUT_FILTER_OUTPUT = 6;  //  110
-    private final int ANY_INPUT_INVERT_OUTPUT = 7;  //  111
+    private final int ANY_INPUT_FILTER_OUTPUT = 6; //  110
+    private final int ANY_INPUT_INVERT_OUTPUT = 7; //  111
 
     public GT_Cover_Fluidfilter() {
         super(FluidFilterData.class);
@@ -55,21 +54,30 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
-    protected String getDescriptionImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected String getDescriptionImpl(
+            byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity) {
         final Fluid fluid = FluidRegistry.getFluid(aCoverVariable.mFluidID);
         if (fluid == null) return E;
 
         final FluidStack sFluid = new FluidStack(fluid, 1000);
-        return (String.format("Filtering Fluid: %s - %s", sFluid.getLocalizedName(), getFilterMode(aCoverVariable.mFilterMode)));
+        return (String.format(
+                "Filtering Fluid: %s - %s", sFluid.getLocalizedName(), getFilterMode(aCoverVariable.mFilterMode)));
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected boolean isRedstoneSensitiveImpl(
+            byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    protected FluidFilterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected FluidFilterData doCoverThingsImpl(
+            byte aSide,
+            byte aInputRedstone,
+            int aCoverID,
+            FluidFilterData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
         return aCoverVariable;
     }
 
@@ -94,11 +102,18 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
             default:
                 return ("UNKNOWN");
         }
-
     }
 
     @Override
-    protected FluidFilterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected FluidFilterData onCoverScrewdriverClickImpl(
+            byte aSide,
+            int aCoverID,
+            FluidFilterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
         aCoverVariable.mFilterMode = (aCoverVariable.mFilterMode + (aPlayer.isSneaking() ? -1 : 1)) % 8;
         if (aCoverVariable.mFilterMode < 0) {
             aCoverVariable.mFilterMode = 7;
@@ -110,14 +125,20 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (
-                ((aX > 0.375D) && (aX < 0.625D)) ||
-                        ((aSide > 3) && ((aY > 0.375D) && (aY < 0.625D))) ||
-                        ((aSide < 2) && ((aZ > 0.375D) && (aZ < 0.625D))) ||
-                        (aSide == 2) ||
-                        (aSide == 3)
-        ) {
+    protected boolean onCoverRightClickImpl(
+            byte aSide,
+            int aCoverID,
+            FluidFilterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
+        if (((aX > 0.375D) && (aX < 0.625D))
+                || ((aSide > 3) && ((aY > 0.375D) && (aY < 0.625D)))
+                || ((aSide < 2) && ((aZ > 0.375D) && (aZ < 0.625D)))
+                || (aSide == 2)
+                || (aSide == 3)) {
             ItemStack tStack = aPlayer.inventory.getCurrentItem();
             if (tStack == null) return true;
 
@@ -127,7 +148,8 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                 aCoverVariable.mFluidID = aFluid;
                 aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
                 FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
+                GT_Utility.sendChatToPlayer(
+                        aPlayer, GT_Utility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
             }
             return true;
         }
@@ -135,41 +157,38 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidInImpl(
+            byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         if (aFluid == null) return true;
 
         int aFilterMode = aCoverVariable.mFilterMode;
         int aFilterFluid = aCoverVariable.mFluidID;
 
-        if (aFilterMode == DENY_INPUT_FILTER_OUTPUT || aFilterMode == DENY_INPUT_INVERT_OUTPUT)
-            return false;
-        else if (aFilterMode == ANY_INPUT_FILTER_OUTPUT || aFilterMode == ANY_INPUT_INVERT_OUTPUT)
-            return true;
+        if (aFilterMode == DENY_INPUT_FILTER_OUTPUT || aFilterMode == DENY_INPUT_INVERT_OUTPUT) return false;
+        else if (aFilterMode == ANY_INPUT_FILTER_OUTPUT || aFilterMode == ANY_INPUT_INVERT_OUTPUT) return true;
         else if (aFluid.getID() == aFilterFluid)
             return aFilterMode == FILTER_INPUT_DENY_OUTPUT || aFilterMode == FILTER_INPUT_ANY_OUTPUT;
-        else
-            return aFilterMode == INVERT_INPUT_DENY_OUTPUT || aFilterMode == INVERT_INPUT_ANY_OUTPUT;
+        else return aFilterMode == INVERT_INPUT_DENY_OUTPUT || aFilterMode == INVERT_INPUT_ANY_OUTPUT;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidOutImpl(
+            byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         if (aFluid == null) return true;
 
         int aFilterMode = aCoverVariable.mFilterMode;
         int aFilterFluid = aCoverVariable.mFluidID;
 
-        if (aFilterMode == FILTER_INPUT_DENY_OUTPUT || aFilterMode == INVERT_INPUT_DENY_OUTPUT)
-            return false;
-        else if (aFilterMode == FILTER_INPUT_ANY_OUTPUT || aFilterMode == INVERT_INPUT_ANY_OUTPUT)
-            return true;
+        if (aFilterMode == FILTER_INPUT_DENY_OUTPUT || aFilterMode == INVERT_INPUT_DENY_OUTPUT) return false;
+        else if (aFilterMode == FILTER_INPUT_ANY_OUTPUT || aFilterMode == INVERT_INPUT_ANY_OUTPUT) return true;
         else if (aFluid.getID() == aFilterFluid)
             return aFilterMode == DENY_INPUT_FILTER_OUTPUT || aFilterMode == ANY_INPUT_FILTER_OUTPUT;
-        else
-            return aFilterMode == DENY_INPUT_INVERT_OUTPUT || aFilterMode == ANY_INPUT_INVERT_OUTPUT;
+        else return aFilterMode == DENY_INPUT_INVERT_OUTPUT || aFilterMode == ANY_INPUT_INVERT_OUTPUT;
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean alwaysLookConnectedImpl(
+            byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
@@ -181,14 +200,19 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     /**
      * GUI Stuff
      */
-
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    protected Object getClientGUIImpl(byte aSide, int aCoverID, FluidFilterData coverData, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+    protected Object getClientGUIImpl(
+            byte aSide,
+            int aCoverID,
+            FluidFilterData coverData,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            World aWorld) {
         return new GT_FluidFilterGUICover(aSide, aCoverID, coverData, aTileEntity);
     }
 
@@ -204,25 +228,32 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private final int
-            textColor = this.getTextColorOrDefault("text", 0xFF555555),
-            textColorTitle = this.getTextColorOrDefault("title", 0xFF222222);
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555),
+                textColorTitle = this.getTextColorOrDefault("title", 0xFF222222);
 
-        public GT_FluidFilterGUICover(byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity) {
+        public GT_FluidFilterGUICover(
+                byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
             GT_GuiIconButton b;
-            b = new GT_GuiIconButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.IMPORT).setTooltipText(GT_Utility.trans("232", "Filter Input"));
-            b = new GT_GuiIconButton(this, 1, startX + spaceX*1, startY+spaceY*0, GT_GuiIcon.EXPORT).setTooltipText(GT_Utility.trans("233", "Filter Output"));
-            b = new GT_GuiIconButton(this, 2, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.BLOCK_INPUT).setTooltipText(GT_Utility.trans("234", "Block Output"));
-            b = new GT_GuiIconButton(this, 3, startX + spaceX*1, startY+spaceY*2, GT_GuiIcon.ALLOW_INPUT).setTooltipText(GT_Utility.trans("235", "Allow Output"));
-            b = new GT_GuiIconButton(this, 4, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.WHITELIST).setTooltipText(GT_Utility.trans("236", "Whitelist Fluid"));
-            b = new GT_GuiIconButton(this, 5, startX + spaceX*1, startY+spaceY*1, GT_GuiIcon.BLACKLIST).setTooltipText(GT_Utility.trans("237", "Blacklist Fluid"));
+            b = new GT_GuiIconButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.IMPORT)
+                    .setTooltipText(GT_Utility.trans("232", "Filter Input"));
+            b = new GT_GuiIconButton(this, 1, startX + spaceX * 1, startY + spaceY * 0, GT_GuiIcon.EXPORT)
+                    .setTooltipText(GT_Utility.trans("233", "Filter Output"));
+            b = new GT_GuiIconButton(this, 2, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.BLOCK_INPUT)
+                    .setTooltipText(GT_Utility.trans("234", "Block Output"));
+            b = new GT_GuiIconButton(this, 3, startX + spaceX * 1, startY + spaceY * 2, GT_GuiIcon.ALLOW_INPUT)
+                    .setTooltipText(GT_Utility.trans("235", "Allow Output"));
+            b = new GT_GuiIconButton(this, 4, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.WHITELIST)
+                    .setTooltipText(GT_Utility.trans("236", "Whitelist Fluid"));
+            b = new GT_GuiIconButton(this, 5, startX + spaceX * 1, startY + spaceY * 1, GT_GuiIcon.BLACKLIST)
+                    .setTooltipText(GT_Utility.trans("237", "Blacklist Fluid"));
 
-            fluidFilterButton = new GT_GuiFakeItemButton(this, startX, startY + spaceY * 3 + 2, GT_GuiIcon.SLOT_DARKGRAY);
+            fluidFilterButton =
+                    new GT_GuiFakeItemButton(this, startX, startY + spaceY * 3 + 2, GT_GuiIcon.SLOT_DARKGRAY);
             fluidFilterButton.setMimicSlot(true);
         }
 
@@ -259,14 +290,20 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
             return false;
         }
 
-
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(GT_Utility.trans("238", "Filter Direction"),    startX + spaceX*2, 3+startY+spaceY*0, textColor);
-            this.fontRendererObj.drawString(GT_Utility.trans("239", "Filter Type"),         startX + spaceX*2, 3+startY+spaceY*1, textColor);
-            this.fontRendererObj.drawString(GT_Utility.trans("240", "Block Flow"),          startX + spaceX*2, 3+startY+spaceY*2, textColor);
-            this.fontRendererObj.drawSplitString(fluidFilterName,                           startX + spaceX+3, 4+startY+spaceY*3, gui_width-40 , textColorTitle);
+            this.fontRendererObj.drawString(
+                    GT_Utility.trans("238", "Filter Direction"),
+                    startX + spaceX * 2,
+                    3 + startY + spaceY * 0,
+                    textColor);
+            this.fontRendererObj.drawString(
+                    GT_Utility.trans("239", "Filter Type"), startX + spaceX * 2, 3 + startY + spaceY * 1, textColor);
+            this.fontRendererObj.drawString(
+                    GT_Utility.trans("240", "Block Flow"), startX + spaceX * 2, 3 + startY + spaceY * 2, textColor);
+            this.fontRendererObj.drawSplitString(
+                    fluidFilterName, startX + spaceX + 3, 4 + startY + spaceY * 3, gui_width - 40, textColorTitle);
         }
 
         @Override
@@ -289,16 +326,12 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                 if (o instanceof GT_GuiIconButton) {
                     b = (GT_GuiIconButton) o;
                     b.enabled = getClickable(b.id);
-                    if (getClickable(1)) { //filtering input
-                        if (b.id == 2)
-                            b.setTooltipText(GT_Utility.trans("311", "Block Output"));
-                        else if (b.id == 3)
-                            b.setTooltipText(GT_Utility.trans("312", "Allow Output"));
+                    if (getClickable(1)) { // filtering input
+                        if (b.id == 2) b.setTooltipText(GT_Utility.trans("311", "Block Output"));
+                        else if (b.id == 3) b.setTooltipText(GT_Utility.trans("312", "Allow Output"));
                     } else {
-                        if (b.id == 2)
-                            b.setTooltipText(GT_Utility.trans("313", "Block Input"));
-                        else if (b.id == 3)
-                            b.setTooltipText(GT_Utility.trans("314", "Allow Input"));
+                        if (b.id == 2) b.setTooltipText(GT_Utility.trans("313", "Block Input"));
+                        else if (b.id == 3) b.setTooltipText(GT_Utility.trans("314", "Allow Input"));
                     }
                 }
             }
@@ -353,8 +386,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                 mFilterMode = tNBT.getInteger("mFilterMode");
                 if (tNBT.hasKey("mFluid", NBT.TAG_STRING))
                     mFluidID = FluidRegistry.getFluidID(tNBT.getString("mFluid"));
-                else
-                    mFluidID = -1;
+                else mFluidID = -1;
             }
         }
 

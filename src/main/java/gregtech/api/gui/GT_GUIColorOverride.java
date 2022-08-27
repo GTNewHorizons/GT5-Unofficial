@@ -1,12 +1,11 @@
 package gregtech.api.gui;
 
-import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.GregTech_API;
+import gregtech.api.util.ColorsMetadataSection;
+import java.io.IOException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
-
-import java.io.IOException;
 
 public class GT_GUIColorOverride {
 
@@ -14,11 +13,13 @@ public class GT_GUIColorOverride {
 
     public GT_GUIColorOverride(String guiTexturePath) {
         try {
-            IResource ir = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(guiTexturePath));
+            IResource ir =
+                    Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(guiTexturePath));
             if (ir.hasMetadata()) {
                 cmSection = (ColorsMetadataSection) ir.getMetadata("colors");
             }
-        } catch (IOException ignore) {}
+        } catch (IOException ignore) {
+        }
     }
 
     public int getTextColorOrDefault(String textType, int defaultColor) {

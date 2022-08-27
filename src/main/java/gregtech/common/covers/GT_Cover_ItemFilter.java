@@ -1,5 +1,8 @@
 package gregtech.common.covers;
 
+import static gregtech.api.util.GT_Utility.intToStack;
+import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
+
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.enums.GT_Values;
@@ -13,6 +16,9 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
+import java.util.Collections;
+import java.util.List;
+import javax.annotation.Nonnull;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,13 +29,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.Fluid;
-
-import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
-
-import static gregtech.api.util.GT_Utility.intToStack;
-import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilter.ItemFilterData> {
 
@@ -51,27 +50,52 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected boolean isRedstoneSensitiveImpl(
+            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    protected ItemFilterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected ItemFilterData doCoverThingsImpl(
+            byte aSide,
+            byte aInputRedstone,
+            int aCoverID,
+            ItemFilterData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
         TileEntity tTileEntity = aTileEntity.getTileEntityAtSide(aSide);
-        Object fromEntity = mExport ? aTileEntity : tTileEntity,
-                toEntity = !mExport ? aTileEntity : tTileEntity;
+        Object fromEntity = mExport ? aTileEntity : tTileEntity, toEntity = !mExport ? aTileEntity : tTileEntity;
         byte fromSide = !mExport ? GT_Utility.getOppositeSide(aSide) : aSide,
                 toSide = mExport ? GT_Utility.getOppositeSide(aSide) : aSide;
 
         List<ItemStack> Filter = Collections.singletonList(aCoverVariable.mFilter);
 
-        moveMultipleItemStacks(fromEntity, toEntity, fromSide, toSide, Filter, aCoverVariable.mWhitelist, (byte) 64, (byte) 1, (byte) 64, (byte) 1, 64);
+        moveMultipleItemStacks(
+                fromEntity,
+                toEntity,
+                fromSide,
+                toSide,
+                Filter,
+                aCoverVariable.mWhitelist,
+                (byte) 64,
+                (byte) 1,
+                (byte) 64,
+                (byte) 1,
+                64);
 
         return aCoverVariable;
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected boolean onCoverRightClickImpl(
+            byte aSide,
+            int aCoverID,
+            ItemFilterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
         ItemStack tStack = aPlayer.inventory.getCurrentItem();
         if (tStack != null) {
             aCoverVariable.mFilter = tStack;
@@ -84,54 +108,75 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected ItemFilterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected ItemFilterData onCoverScrewdriverClickImpl(
+            byte aSide,
+            int aCoverID,
+            ItemFilterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
         aCoverVariable.mWhitelist = !aCoverVariable.mWhitelist;
-        GT_Utility.sendChatToPlayer(aPlayer, aCoverVariable.mWhitelist ? GT_Utility.trans("125", "Whitelist Mode") : GT_Utility.trans("124", "Blacklist Mode"));
+        GT_Utility.sendChatToPlayer(
+                aPlayer,
+                aCoverVariable.mWhitelist
+                        ? GT_Utility.trans("125", "Whitelist Mode")
+                        : GT_Utility.trans("124", "Blacklist Mode"));
         return aCoverVariable;
     }
 
     @Override
-    protected boolean letsRedstoneGoInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsRedstoneGoInImpl(
+            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsRedstoneGoOutImpl(
+            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsEnergyInImpl(
+            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsEnergyOutImpl(
+            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidInImpl(
+            byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         return false;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidOutImpl(
+            byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         return false;
     }
 
     @Override
-    protected boolean letsItemsInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsInImpl(
+            byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsOutImpl(
+            byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean alwaysLookConnectedImpl(
+            byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
@@ -143,14 +188,19 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     /**
      * GUI Stuff
      */
-
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    protected Object getClientGUIImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+    protected Object getClientGUIImpl(
+            byte aSide,
+            int aCoverID,
+            ItemFilterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            World aWorld) {
         return new GT_Cover_ItemFilter.GUI(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
@@ -158,8 +208,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         private boolean mWhitelist;
         private ItemStack mFilter;
 
-        public ItemFilterData() {
-        }
+        public ItemFilterData() {}
 
         public ItemFilterData(boolean mWhitelist, ItemStack mFilter) {
             this.mWhitelist = mWhitelist;
@@ -177,8 +226,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setBoolean("mWhitelist", mWhitelist);
-            if (mFilter != null)
-                tag.setTag("mFilter", mFilter.writeToNBT(new NBTTagCompound()));
+            if (mFilter != null) tag.setTag("mFilter", mFilter.writeToNBT(new NBTTagCompound()));
             return tag;
         }
 
@@ -194,8 +242,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
             mWhitelist = tag.getBoolean("mWhitelist");
             if (tag.hasKey("mFilter", Constants.NBT.TAG_COMPOUND))
                 mFilter = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mFilter"));
-            else
-                mFilter = null;
+            else mFilter = null;
         }
 
         @Nonnull
@@ -227,17 +274,28 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            btnMode = new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.WHITELIST, GT_GuiIcon.BLACKLIST, GT_Utility.trans("125", "Whitelist Mode"), GT_Utility.trans("124", "Blacklist Mode"));
+            btnMode = new GT_GuiIconCheckButton(
+                    this,
+                    0,
+                    startX + spaceX * 0,
+                    startY + spaceY * 0,
+                    GT_GuiIcon.WHITELIST,
+                    GT_GuiIcon.BLACKLIST,
+                    GT_Utility.trans("125", "Whitelist Mode"),
+                    GT_Utility.trans("124", "Blacklist Mode"));
 
-            itemFilterButtons = new GT_GuiFakeItemButton(this, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.SLOT_GRAY);
+            itemFilterButtons =
+                    new GT_GuiFakeItemButton(this, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.SLOT_GRAY);
             itemFilterButtons.setMimicSlot(true);
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(GT_Utility.trans("317", "Filter: "),    startX + spaceX*0, 3+startY+spaceY*1, textColor);
-            this.fontRendererObj.drawString(GT_Utility.trans("318", "Check Mode"),  startX + spaceX*2, 3+startY+spaceY*0, textColor);
+            this.fontRendererObj.drawString(
+                    GT_Utility.trans("317", "Filter: "), startX + spaceX * 0, 3 + startY + spaceY * 1, textColor);
+            this.fontRendererObj.drawString(
+                    GT_Utility.trans("318", "Check Mode"), startX + spaceX * 2, 3 + startY + spaceY * 0, textColor);
         }
 
         @Override

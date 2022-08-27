@@ -5,6 +5,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_LanguageManager;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,11 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import shedar.mods.ic2.nuclearcontrol.api.*;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
 
 public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor, IPanelDataSource {
     private static final UUID CARD_TYPE = new UUID(0L, 41L);
@@ -39,7 +38,8 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
                 aList.add(transItem("014", "Missing Coodinates!"));
             } else {
                 aList.add(transItem("015", "Device at:"));
-                aList.add(String.format("x: %d, y: %d, z: %d", tNBT.getInteger("x"), tNBT.getInteger("y"), tNBT.getInteger("z")));
+                aList.add(String.format(
+                        "x: %d, y: %d, z: %d", tNBT.getInteger("x"), tNBT.getInteger("y"), tNBT.getInteger("z")));
             }
         }
     }
@@ -54,12 +54,13 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
         ChunkCoordinates target = aCard.getTarget();
 
         TileEntity tTileEntity = world.getTileEntity(target.posX, target.posY, target.posZ);
-        if (((tTileEntity instanceof IGregTechDeviceInformation)) && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
+        if (((tTileEntity instanceof IGregTechDeviceInformation))
+                && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
             String[] tInfoData = ((IGregTechDeviceInformation) tTileEntity).getInfoData();
             for (int i = 0; i < tInfoData.length; i++) {
                 aCard.setString("mString" + i, tInfoData[i]);
             }
-            aCard.setInt("mString",strCount=tInfoData.length);
+            aCard.setInt("mString", strCount = tInfoData.length);
             return CardState.OK;
         }
         return CardState.NO_TARGET;
@@ -68,7 +69,7 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
     @Override
     public List<PanelString> getStringData(int aSettings, ICardWrapper aCard, boolean aLabels) {
         List<PanelString> rList = new LinkedList<>();
-        for (int i = 0; i < (strCount=aCard.getInt("mString")); i++) {
+        for (int i = 0; i < (strCount = aCard.getInt("mString")); i++) {
             if ((aSettings & 1 << i) != 0) {
                 PanelString line = new PanelString();
                 line.textLeft = GT_LanguageManager.getTranslation(aCard.getString("mString" + i), "\\\\");
@@ -94,6 +95,5 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aOutputSubItems) {
-    }
+    public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aOutputSubItems) {}
 }

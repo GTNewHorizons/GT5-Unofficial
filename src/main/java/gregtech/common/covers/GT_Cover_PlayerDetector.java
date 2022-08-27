@@ -20,12 +20,14 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
     private int range = 8;
 
     @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(
+            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(
+            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         boolean playerDetected = false;
 
         if (aTileEntity instanceof IGregTechTileEntity) {
@@ -40,7 +42,10 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
         for (Object tObject : aTileEntity.getWorld().playerEntities) {
             if ((tObject instanceof EntityPlayerMP)) {
                 EntityPlayerMP tEntity = (EntityPlayerMP) tObject;
-                int dist = Math.max(1, (int) tEntity.getDistance(aTileEntity.getXCoord() + 0.5D, aTileEntity.getYCoord() + 0.5D, aTileEntity.getZCoord() + 0.5D));
+                int dist = Math.max(1, (int) tEntity.getDistance(
+                        aTileEntity.getXCoord() + 0.5D,
+                        aTileEntity.getYCoord() + 0.5D,
+                        aTileEntity.getZCoord() + 0.5D));
                 if (dist < range) {
                     if (aCoverVariable == 0) {
                         playerDetected = true;
@@ -59,22 +64,34 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
             }
         }
 
-
         aTileEntity.setOutputRedstoneSignal(aSide, (byte) (playerDetected ? 15 : 0));
         return aCoverVariable;
     }
 
     @Override
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 3;
-        if(aCoverVariable <0){aCoverVariable = 2;}
-        switch(aCoverVariable) {
+    public int onCoverScrewdriverclick(
+            byte aSide,
+            int aCoverID,
+            int aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
+        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 3;
+        if (aCoverVariable < 0) {
+            aCoverVariable = 2;
+        }
+        switch (aCoverVariable) {
             case 0:
-				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("068", "Emit if any Player is close")); break;
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("068", "Emit if any Player is close"));
+                break;
             case 1:
-				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("069", "Emit if other Player is close")); break;
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("069", "Emit if other Player is close"));
+                break;
             case 2:
-				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("070", "Emit if you are close")); break;
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("070", "Emit if you are close"));
+                break;
         }
         return aCoverVariable;
     }
@@ -110,7 +127,8 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput(
+            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
@@ -121,14 +139,13 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
     /**
      * GUI Stuff
      */
-
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity)  {
+    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
         return new GUI(aSide, aCoverID, coverData, aTileEntity);
     }
 
@@ -150,23 +167,23 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-			new GT_GuiIconCheckButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.CHECKMARK, null)
+            new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.CHECKMARK, null)
                     .setTooltipText(GT_Utility.trans("068", "Emit if any Player is close"));
-			new GT_GuiIconCheckButton(this, 1, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.CHECKMARK, null)
+            new GT_GuiIconCheckButton(this, 1, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.CHECKMARK, null)
                     .setTooltipText(GT_Utility.trans("069", "Emit if other Player is close"));
-			new GT_GuiIconCheckButton(this, 2, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.CHECKMARK, null)
+            new GT_GuiIconCheckButton(this, 2, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.CHECKMARK, null)
                     .setTooltipText(GT_Utility.trans("070", "Emit if you are close"));
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-			this.fontRendererObj.drawString(GT_Utility.trans("319", "Any player"),
-                    startX + spaceX*1, 4+startY+spaceY*0, textColor);
-			this.fontRendererObj.drawString(GT_Utility.trans("320", "Other players"),
-                    startX + spaceX*1, 4+startY+spaceY*1, textColor);
-			this.fontRendererObj.drawString(GT_Utility.trans("321", "Only owner"),
-                    startX + spaceX*1, 4+startY+spaceY*2, textColor);
+            this.fontRendererObj.drawString(
+                    GT_Utility.trans("319", "Any player"), startX + spaceX * 1, 4 + startY + spaceY * 0, textColor);
+            this.fontRendererObj.drawString(
+                    GT_Utility.trans("320", "Other players"), startX + spaceX * 1, 4 + startY + spaceY * 1, textColor);
+            this.fontRendererObj.drawString(
+                    GT_Utility.trans("321", "Only owner"), startX + spaceX * 1, 4 + startY + spaceY * 2, textColor);
         }
 
         @Override
@@ -175,15 +192,15 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
         }
 
         @Override
-        public void buttonClicked(GuiButton btn){
-            if (!isEnabled(btn.id)){
+        public void buttonClicked(GuiButton btn) {
+            if (!isEnabled(btn.id)) {
                 coverVariable = getNewCoverVariable(btn.id, ((GT_GuiIconCheckButton) btn).isChecked());
                 GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
             }
             updateButtons();
         }
 
-        private void updateButtons(){
+        private void updateButtons() {
             for (Object o : buttonList)
                 ((GT_GuiIconCheckButton) o).setChecked(isEnabled(((GT_GuiIconCheckButton) o).id));
         }
