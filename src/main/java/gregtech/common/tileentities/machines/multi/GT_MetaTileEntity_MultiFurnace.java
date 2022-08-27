@@ -235,10 +235,9 @@ public class GT_MetaTileEntity_MultiFurnace
 
         if (mMaintenanceHatches.size() != 1) return false;
 
-        if (getCoilLevel().getHeat()<9000) {
-            this.mLevel= 8 * getCoilLevel().getLevel();
-        }
-        else {
+        if (getCoilLevel().getHeat() < 9000) {
+            this.mLevel = 8 * getCoilLevel().getLevel();
+        } else {
             this.mLevel = 1 << (getCoilLevel().getTier());
         }
         this.mCostDiscount = getCoilLevel().getCostDiscount();
@@ -279,7 +278,7 @@ public class GT_MetaTileEntity_MultiFurnace
                 storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
-            
+
         return new String[] {
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN
                     + GT_Utility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET + " s / "
@@ -306,7 +305,6 @@ public class GT_MetaTileEntity_MultiFurnace
                     + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mCostDiscount) + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN
                     + mPollutionReduction + EnumChatFormatting.RESET + " %"
-
         };
     }
 
