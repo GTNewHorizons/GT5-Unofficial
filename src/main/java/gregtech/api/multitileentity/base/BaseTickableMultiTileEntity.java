@@ -1,13 +1,13 @@
 package gregtech.api.multitileentity.base;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_OnNeighborBlockChange;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Util;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
-
-import static gregtech.GT_Mod.GT_FML_LOGGER;
 
 public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity implements IMTE_OnNeighborBlockChange {
     /** Variable for seeing if the Tick Function is called right now. */
@@ -18,7 +18,6 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
     protected long mTimer = 0;
     /** Variable for updating Data to the Client */
     private boolean mSendClientData = false;
-
 
     public BaseTickableMultiTileEntity() {
         super(true);
@@ -42,7 +41,7 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
             if (!isServerSide) {
                 if (mNeedsUpdate) {
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                    //worldObj.func_147479_m(xCoord, yCoord, zCoord);
+                    // worldObj.func_147479_m(xCoord, yCoord, zCoord);
                     mNeedsUpdate = false;
                 }
             }
@@ -84,16 +83,24 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
     }
 
     /** The first part of the Tick. */
-    public void onPreTick(long aTick, boolean isServerSide) { /*Do nothing*/ }
+    public void onPreTick(long aTick, boolean isServerSide) {
+        /*Do nothing*/
+    }
 
     /** The regular Tick. */
-    public void onTick(long aTimer, boolean isServerSide) { /*Do nothing*/ }
+    public void onTick(long aTimer, boolean isServerSide) {
+        /*Do nothing*/
+    }
 
     /** The absolute last part of the Tick. */
-    public void onPostTick(long aTick, boolean isServerSide) { /*Do nothing*/ }
+    public void onPostTick(long aTick, boolean isServerSide) {
+        /*Do nothing*/
+    }
 
     /** Gets called when there is an Exception happening during one of the Tick Functions. */
-    public void onTickFailed(long aTimer, boolean isServerSide) { /*Do nothing*/ }
+    public void onTickFailed(long aTimer, boolean isServerSide) {
+        /*Do nothing*/
+    }
 
     @Override
     public void onNeighborBlockChange(World aWorld, Block aBlock) {
@@ -109,5 +116,4 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
     public byte getComparatorValue(byte aSide) {
         return 0;
     }
-
 }

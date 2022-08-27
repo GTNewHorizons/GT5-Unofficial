@@ -14,15 +14,24 @@ public class GT_GUIContainer_Regulator extends GT_GUIContainerMetaTile_Machine {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[0]), 120, 9, textColor);
-        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[1]), 137, 9, textColor);
-        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[2]), 155, 9, textColor);
-        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[3]), 120, 26, textColor);
-        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[4]), 137, 26, textColor);
-        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[5]), 155, 26, textColor);
-        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[6]), 120, 43, textColor);
-        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[7]), 137, 43, textColor);
-        this.fontRendererObj.drawString(String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[8]), 155, 43, textColor);
+        this.fontRendererObj.drawString(
+                String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[0]), 120, 9, textColor);
+        this.fontRendererObj.drawString(
+                String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[1]), 137, 9, textColor);
+        this.fontRendererObj.drawString(
+                String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[2]), 155, 9, textColor);
+        this.fontRendererObj.drawString(
+                String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[3]), 120, 26, textColor);
+        this.fontRendererObj.drawString(
+                String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[4]), 137, 26, textColor);
+        this.fontRendererObj.drawString(
+                String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[5]), 155, 26, textColor);
+        this.fontRendererObj.drawString(
+                String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[6]), 120, 43, textColor);
+        this.fontRendererObj.drawString(
+                String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[7]), 137, 43, textColor);
+        this.fontRendererObj.drawString(
+                String.valueOf(((GT_Container_Regulator) this.mContainer).mTargetSlots[8]), 155, 43, textColor);
     }
 
     @Override

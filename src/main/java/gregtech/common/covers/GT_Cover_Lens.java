@@ -11,7 +11,8 @@ public class GT_Cover_Lens extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(
+            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
     }
 

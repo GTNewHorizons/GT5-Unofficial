@@ -15,11 +15,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.common.blocks.GT_Block_Casings5;
 import gregtech.common.blocks.GT_Item_Machines;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.*;
+import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -32,11 +34,6 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.*;
-
 public class GT_StructureUtility {
     //    private static final Map<Class<?>, String> customNames = new HashMap<>();
     private GT_StructureUtility() {
@@ -47,7 +44,8 @@ public class GT_StructureUtility {
         return aTile != null && clazz.isInstance(aTile.getMetaTileEntity());
     }
 
-    public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IGT_HatchAdder<T> aHatchAdder, int aTextureIndex, int aDots) {
+    public static <T> IStructureElementNoPlacement<T> ofHatchAdder(
+            IGT_HatchAdder<T> aHatchAdder, int aTextureIndex, int aDots) {
         return ofHatchAdder(aHatchAdder, aTextureIndex, StructureLibAPI.getBlockHint(), aDots - 1);
     }
 
@@ -85,16 +83,37 @@ public class GT_StructureUtility {
                 if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
                     return false;
                 ItemBlock tFrameStackItem = (ItemBlock) tFrameStack.getItem();
-                return tFrameStackItem.placeBlockAt(tFrameStack, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tFrameStack));
+                return tFrameStackItem.placeBlockAt(
+                        tFrameStack, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tFrameStack));
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+            public PlaceResult survivalPlaceBlock(
+                    T t,
+                    World world,
+                    int x,
+                    int y,
+                    int z,
+                    ItemStack trigger,
+                    IItemSource s,
+                    EntityPlayerMP actor,
+                    Consumer<IChatComponent> chatter) {
                 if (check(t, world, x, y, z)) return PlaceResult.SKIP;
                 ItemStack tFrameStack = GT_OreDictUnificator.get(OrePrefixes.frameGt, aFrameMaterial, 1);
                 if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
                     return PlaceResult.REJECT; // honestly, this is more like a programming error or pack issue
-                return StructureUtility.survivalPlaceBlock(tFrameStack, ItemStackPredicate.NBTMode.IGNORE_KNOWN_INSIGNIFICANT_TAGS, null, false, world, x, y, z, s, actor, chatter);
+                return StructureUtility.survivalPlaceBlock(
+                        tFrameStack,
+                        ItemStackPredicate.NBTMode.IGNORE_KNOWN_INSIGNIFICANT_TAGS,
+                        null,
+                        false,
+                        world,
+                        x,
+                        y,
+                        z,
+                        s,
+                        actor,
+                        chatter);
             }
         };
     }
@@ -110,7 +129,8 @@ public class GT_StructureUtility {
         return GT_HatchElementBuilder.builder();
     }
 
-    public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IGT_HatchAdder<T> aHatchAdder, int aTextureIndex, Block aHintBlock, int aHintMeta) {
+    public static <T> IStructureElementNoPlacement<T> ofHatchAdder(
+            IGT_HatchAdder<T> aHatchAdder, int aTextureIndex, Block aHintBlock, int aHintMeta) {
         if (aHatchAdder == null || aHintBlock == null) {
             throw new IllegalArgumentException();
         }
@@ -118,7 +138,8 @@ public class GT_StructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity && aHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) aTextureIndex);
+                return tileEntity instanceof IGregTechTileEntity
+                        && aHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) aTextureIndex);
             }
 
             @Override
@@ -129,7 +150,14 @@ public class GT_StructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> ofHatchAdder(IGT_HatchAdder<T> aHatchAdder, int aTextureIndex, Block aHintBlock, int aHintMeta, BiPredicate<T, IGregTechTileEntity> shouldSkip, Function<T, Class<? extends IMetaTileEntity>> aMetaId, final IStructureElement.PlaceResult acceptType) {
+    public static <T> IStructureElement<T> ofHatchAdder(
+            IGT_HatchAdder<T> aHatchAdder,
+            int aTextureIndex,
+            Block aHintBlock,
+            int aHintMeta,
+            BiPredicate<T, IGregTechTileEntity> shouldSkip,
+            Function<T, Class<? extends IMetaTileEntity>> aMetaId,
+            final IStructureElement.PlaceResult acceptType) {
         if (aHatchAdder == null) {
             throw new IllegalArgumentException();
         }
@@ -137,7 +165,8 @@ public class GT_StructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity && aHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) aTextureIndex);
+                return tileEntity instanceof IGregTechTileEntity
+                        && aHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) aTextureIndex);
             }
 
             @Override
@@ -153,29 +182,45 @@ public class GT_StructureUtility {
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+            public PlaceResult survivalPlaceBlock(
+                    T t,
+                    World world,
+                    int x,
+                    int y,
+                    int z,
+                    ItemStack trigger,
+                    IItemSource s,
+                    EntityPlayerMP actor,
+                    Consumer<IChatComponent> chatter) {
                 if (shouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
-                    if (tileEntity instanceof IGregTechTileEntity && shouldSkip.test(t, (IGregTechTileEntity) tileEntity))
-                        return PlaceResult.SKIP;
+                    if (tileEntity instanceof IGregTechTileEntity
+                            && shouldSkip.test(t, (IGregTechTileEntity) tileEntity)) return PlaceResult.SKIP;
                 }
-                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, actor))
-                    return PlaceResult.REJECT;
+                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, actor)) return PlaceResult.REJECT;
                 Class<? extends IMetaTileEntity> clazz = aMetaId.apply(t);
                 if (clazz == null) return PlaceResult.REJECT;
                 ItemStack taken = s.takeOne(is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is)), true);
                 if (GT_Utility.isStackInvalid(taken)) {
-                    chatter.accept(new ChatComponentTranslation("GT5U.autoplace.error.no_mte.class_name", clazz.getSimpleName()));
+                    chatter.accept(new ChatComponentTranslation(
+                            "GT5U.autoplace.error.no_mte.class_name", clazz.getSimpleName()));
                     return PlaceResult.REJECT;
                 }
-                if (StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT)
-                    return acceptType;
+                if (StructureUtility.survivalPlaceBlock(
+                                taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor)
+                        == PlaceResult.ACCEPT) return acceptType;
                 return PlaceResult.REJECT;
             }
         };
     }
 
-    public static <T> IStructureElement<T> ofHatchAdder(IGT_HatchAdder<T> aHatchAdder, int aTextureIndex, Block aHintBlock, int aHintMeta, BiPredicate<T, IGregTechTileEntity> shouldSkip, ToIntFunction<T> aMetaId) {
+    public static <T> IStructureElement<T> ofHatchAdder(
+            IGT_HatchAdder<T> aHatchAdder,
+            int aTextureIndex,
+            Block aHintBlock,
+            int aHintMeta,
+            BiPredicate<T, IGregTechTileEntity> shouldSkip,
+            ToIntFunction<T> aMetaId) {
         if (aHatchAdder == null) {
             throw new IllegalArgumentException();
         }
@@ -183,7 +228,8 @@ public class GT_StructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity && aHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) aTextureIndex);
+                return tileEntity instanceof IGregTechTileEntity
+                        && aHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) aTextureIndex);
             }
 
             @Override
@@ -199,14 +245,22 @@ public class GT_StructureUtility {
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+            public PlaceResult survivalPlaceBlock(
+                    T t,
+                    World world,
+                    int x,
+                    int y,
+                    int z,
+                    ItemStack trigger,
+                    IItemSource s,
+                    EntityPlayerMP actor,
+                    Consumer<IChatComponent> chatter) {
                 if (shouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
-                    if (tileEntity instanceof IGregTechTileEntity && shouldSkip.test(t, (IGregTechTileEntity) tileEntity))
-                        return PlaceResult.SKIP;
+                    if (tileEntity instanceof IGregTechTileEntity
+                            && shouldSkip.test(t, (IGregTechTileEntity) tileEntity)) return PlaceResult.SKIP;
                 }
-                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, actor))
-                    return PlaceResult.REJECT;
+                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, actor)) return PlaceResult.REJECT;
                 GT_Item_Machines item = (GT_Item_Machines) Item.getItemFromBlock(GregTech_API.sBlockMachines);
                 int meta = aMetaId.applyAsInt(t);
                 if (meta < 0) return PlaceResult.REJECT;
@@ -215,16 +269,28 @@ public class GT_StructureUtility {
                     chatter.accept(new ChatComponentTranslation("GT5U.autoplace.error.no_mte.id", meta));
                     return PlaceResult.REJECT;
                 }
-                return StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT ? PlaceResult.ACCEPT_STOP : PlaceResult.REJECT;
+                return StructureUtility.survivalPlaceBlock(
+                                        taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor)
+                                == PlaceResult.ACCEPT
+                        ? PlaceResult.ACCEPT_STOP
+                        : PlaceResult.REJECT;
             }
         };
     }
 
-    public static <T> IStructureElement<T> ofHatchAdderOptional(IGT_HatchAdder<T> aHatchAdder, int textureIndex, int dots, Block placeCasing, int placeCasingMeta) {
-        return ofHatchAdderOptional(aHatchAdder, textureIndex, StructureLibAPI.getBlockHint(), dots - 1, placeCasing, placeCasingMeta);
+    public static <T> IStructureElement<T> ofHatchAdderOptional(
+            IGT_HatchAdder<T> aHatchAdder, int textureIndex, int dots, Block placeCasing, int placeCasingMeta) {
+        return ofHatchAdderOptional(
+                aHatchAdder, textureIndex, StructureLibAPI.getBlockHint(), dots - 1, placeCasing, placeCasingMeta);
     }
 
-    public static <T> IStructureElement<T> ofHatchAdderOptional(IGT_HatchAdder<T> aHatchAdder, int aTextureIndex, Block aHintBlock, int hintMeta, Block placeCasing, int placeCasingMeta) {
+    public static <T> IStructureElement<T> ofHatchAdderOptional(
+            IGT_HatchAdder<T> aHatchAdder,
+            int aTextureIndex,
+            Block aHintBlock,
+            int hintMeta,
+            Block placeCasing,
+            int placeCasingMeta) {
         if (aHatchAdder == null || aHintBlock == null) {
             throw new IllegalArgumentException();
         }
@@ -233,9 +299,9 @@ public class GT_StructureUtility {
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 Block worldBlock = world.getBlock(x, y, z);
-                return (tileEntity instanceof IGregTechTileEntity &&
-                    aHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) aTextureIndex)) ||
-                    (worldBlock == placeCasing && worldBlock.getDamageValue(world, x, y, z) == placeCasingMeta);
+                return (tileEntity instanceof IGregTechTileEntity
+                                && aHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) aTextureIndex))
+                        || (worldBlock == placeCasing && worldBlock.getDamageValue(world, x, y, z) == placeCasingMeta);
             }
 
             @Override
@@ -251,9 +317,19 @@ public class GT_StructureUtility {
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+            public PlaceResult survivalPlaceBlock(
+                    T t,
+                    World world,
+                    int x,
+                    int y,
+                    int z,
+                    ItemStack trigger,
+                    IItemSource s,
+                    EntityPlayerMP actor,
+                    Consumer<IChatComponent> chatter) {
                 if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-                return StructureUtility.survivalPlaceBlock(placeCasing, placeCasingMeta, world, x, y, z, s, actor, chatter);
+                return StructureUtility.survivalPlaceBlock(
+                        placeCasing, placeCasingMeta, world, x, y, z, s, actor, chatter);
             }
         };
     }
@@ -263,11 +339,14 @@ public class GT_StructureUtility {
      *
      * @see #ofCoil(BiPredicate, Function)
      */
-    public static <T> IStructureElement<T> ofCoil(BiConsumer<T, HeatingCoilLevel> aHeatingCoilSetter, Function<T, HeatingCoilLevel> aHeatingCoilGetter) {
-        return ofCoil((t, l) -> {
-            aHeatingCoilSetter.accept(t, l);
-            return true;
-        }, aHeatingCoilGetter);
+    public static <T> IStructureElement<T> ofCoil(
+            BiConsumer<T, HeatingCoilLevel> aHeatingCoilSetter, Function<T, HeatingCoilLevel> aHeatingCoilGetter) {
+        return ofCoil(
+                (t, l) -> {
+                    aHeatingCoilSetter.accept(t, l);
+                    return true;
+                },
+                aHeatingCoilGetter);
     }
 
     /**
@@ -279,7 +358,8 @@ public class GT_StructureUtility {
      *                           If the setter returns false then it assumes the coil is rejected.
      * @param aHeatingCoilGetter Get the current heating level. Null means no coil recorded yet.
      */
-    public static <T> IStructureElement<T> ofCoil(BiPredicate<T, HeatingCoilLevel> aHeatingCoilSetter, Function<T, HeatingCoilLevel> aHeatingCoilGetter) {
+    public static <T> IStructureElement<T> ofCoil(
+            BiPredicate<T, HeatingCoilLevel> aHeatingCoilSetter, Function<T, HeatingCoilLevel> aHeatingCoilGetter) {
         if (aHeatingCoilSetter == null || aHeatingCoilGetter == null) {
             throw new IllegalArgumentException();
         }
@@ -287,10 +367,9 @@ public class GT_StructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
-                if (!(block instanceof IHeatingCoil))
-                    return false;
+                if (!(block instanceof IHeatingCoil)) return false;
                 HeatingCoilLevel existingLevel = aHeatingCoilGetter.apply(t),
-                    newLevel = ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z));
+                        newLevel = ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z));
                 if (existingLevel == null || existingLevel == HeatingCoilLevel.None) {
                     return aHeatingCoilSetter.test(t, newLevel);
                 } else {
@@ -309,7 +388,8 @@ public class GT_StructureUtility {
             }
 
             private HeatingCoilLevel getHeatFromHint(ItemStack trigger) {
-                return HeatingCoilLevel.getFromTier((byte) Math.min(HeatingCoilLevel.getMaxTier() , Math.max(0, trigger.stackSize - 1)));
+                return HeatingCoilLevel.getFromTier(
+                        (byte) Math.min(HeatingCoilLevel.getMaxTier(), Math.max(0, trigger.stackSize - 1)));
             }
 
             @Override
@@ -318,11 +398,23 @@ public class GT_StructureUtility {
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+            public PlaceResult survivalPlaceBlock(
+                    T t,
+                    World world,
+                    int x,
+                    int y,
+                    int z,
+                    ItemStack trigger,
+                    IItemSource s,
+                    EntityPlayerMP actor,
+                    Consumer<IChatComponent> chatter) {
                 Block block = world.getBlock(x, y, z);
-                boolean isCoil = block instanceof IHeatingCoil && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) == getHeatFromHint(trigger);
+                boolean isCoil = block instanceof IHeatingCoil
+                        && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z))
+                                == getHeatFromHint(trigger);
                 if (isCoil) return PlaceResult.SKIP;
-                return StructureUtility.survivalPlaceBlock(GregTech_API.sBlockCasings5, getMetaFromHint(trigger), world, x, y, z, s, actor, chatter);
+                return StructureUtility.survivalPlaceBlock(
+                        GregTech_API.sBlockCasings5, getMetaFromHint(trigger), world, x, y, z, s, actor, chatter);
             }
         };
     }
@@ -339,9 +431,9 @@ public class GT_StructureUtility {
     public static Predicate<ItemStack> filterByMTETier(int aMinTier, int aMaxTier) {
         return is -> {
             IMetaTileEntity tile = GT_Item_Machines.getMetaTileEntity(is);
-            return tile instanceof GT_MetaTileEntity_TieredMachineBlock &&
-                ((GT_MetaTileEntity_TieredMachineBlock) tile).mTier <= aMaxTier &&
-                ((GT_MetaTileEntity_TieredMachineBlock) tile).mTier >= aMinTier;
+            return tile instanceof GT_MetaTileEntity_TieredMachineBlock
+                    && ((GT_MetaTileEntity_TieredMachineBlock) tile).mTier <= aMaxTier
+                    && ((GT_MetaTileEntity_TieredMachineBlock) tile).mTier >= aMinTier;
         };
     }
 }

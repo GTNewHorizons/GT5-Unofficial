@@ -1,5 +1,7 @@
 package gregtech.api.items;
 
+import static gregtech.api.enums.GT_Values.M;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -9,14 +11,11 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
-import java.util.List;
-
-import static gregtech.api.enums.GT_Values.M;
 
 /**
  * @author Gregorius Techneticies
@@ -45,7 +44,9 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
     public GT_MetaGenerated_Item_X01(String aUnlocalized, OrePrefixes aGeneratedPrefix, int aIconSetIndex) {
         super(aUnlocalized, (short) 32000, (short) 766);
         mPrefix = aGeneratedPrefix;
-        mIconSetIndex = aIconSetIndex >= 0 ? aIconSetIndex : aGeneratedPrefix.mTextureIndex >= 0 ? aGeneratedPrefix.mTextureIndex : 0;
+        mIconSetIndex = aIconSetIndex >= 0
+                ? aIconSetIndex
+                : aGeneratedPrefix.mTextureIndex >= 0 ? aGeneratedPrefix.mTextureIndex : 0;
 
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
             OrePrefixes tPrefix = mPrefix;
@@ -54,8 +55,13 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
             if (tMaterial == null) continue;
             if (mPrefix.doGenerateItem(tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
-                GT_LanguageManager.addStringLocalization(getUnlocalizedName(tStack) + ".name", GT_LanguageManager.i18nPlaceholder ? getDefaultLocalizationFormat(tPrefix, tMaterial, i) : getDefaultLocalization(tPrefix, tMaterial, i));
-                GT_LanguageManager.addStringLocalization(getUnlocalizedName(tStack) + ".tooltip", tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
+                GT_LanguageManager.addStringLocalization(
+                        getUnlocalizedName(tStack) + ".name",
+                        GT_LanguageManager.i18nPlaceholder
+                                ? getDefaultLocalizationFormat(tPrefix, tMaterial, i)
+                                : getDefaultLocalization(tPrefix, tMaterial, i));
+                GT_LanguageManager.addStringLocalization(
+                        getUnlocalizedName(tStack) + ".tooltip", tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
                 String tOreName = getOreDictString(tPrefix, tMaterial);
                 tPrefix = OrePrefixes.getOrePrefix(tOreName);
                 if (tPrefix != null && tPrefix.mIsUnificatable) {
@@ -67,7 +73,7 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
         }
     }
 
-	/* ---------- OVERRIDEABLE FUNCTIONS ---------- */
+    /* ---------- OVERRIDEABLE FUNCTIONS ---------- */
 
     /**
      * @param aPrefix   the OreDict Prefix
@@ -110,15 +116,14 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
         return aMaterial.mIconSet.mTextures[mIconSetIndex];
     }
 
-	/* ---------- INTERNAL OVERRIDES ---------- */
+    /* ---------- INTERNAL OVERRIDES ---------- */
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-    	String aName = super.getItemStackDisplayName(aStack);
-    	int aDamage = aStack.getItemDamage();
-    	if (aDamage < 32000 && aDamage >= 0)
-    		return Materials.getLocalizedNameForItem(aName, aDamage % 1000);
-    	return aName;
+        String aName = super.getItemStackDisplayName(aStack);
+        int aDamage = aStack.getItemDamage();
+        if (aDamage < 32000 && aDamage >= 0) return Materials.getLocalizedNameForItem(aName, aDamage % 1000);
+        return aName;
     }
 
     @Override
@@ -136,19 +141,27 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
     @Override
     public short[] getRGBa(ItemStack aStack) {
         int aMetaData = getDamage(aStack);
-        return aMetaData < GregTech_API.sGeneratedMaterials.length && GregTech_API.sGeneratedMaterials[aMetaData] != null ? GregTech_API.sGeneratedMaterials[aMetaData].mRGBa : Materials._NULL.mRGBa;
+        return aMetaData < GregTech_API.sGeneratedMaterials.length
+                        && GregTech_API.sGeneratedMaterials[aMetaData] != null
+                ? GregTech_API.sGeneratedMaterials[aMetaData].mRGBa
+                : Materials._NULL.mRGBa;
     }
 
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
-        return aMetaData < GregTech_API.sGeneratedMaterials.length && GregTech_API.sGeneratedMaterials[aMetaData] != null ? getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData]) : null;
+        return aMetaData < GregTech_API.sGeneratedMaterials.length
+                        && GregTech_API.sGeneratedMaterials[aMetaData] != null
+                ? getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData])
+                : null;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public final void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++)
-            if (mPrefix.doGenerateItem(GregTech_API.sGeneratedMaterials[i]) && doesShowInCreative(mPrefix, GregTech_API.sGeneratedMaterials[i], GregTech_API.sDoShowAllItemsInCreative)) {
+            if (mPrefix.doGenerateItem(GregTech_API.sGeneratedMaterials[i])
+                    && doesShowInCreative(
+                            mPrefix, GregTech_API.sGeneratedMaterials[i], GregTech_API.sDoShowAllItemsInCreative)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 isItemStackUsable(tStack);
                 aList.add(tStack);
@@ -166,12 +179,16 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
             if (tIcon != null) return tIcon.getIcon();
             return null;
         }
-        return aMetaData >= mOffset && aMetaData - mOffset < mIconList.length ? mIconList[aMetaData - mOffset][0] : null;
+        return aMetaData >= mOffset && aMetaData - mOffset < mIconList.length
+                ? mIconList[aMetaData - mOffset][0]
+                : null;
     }
 
     @Override
     public int getItemStackLimit(ItemStack aStack) {
-        return getDamage(aStack) < mOffset ? Math.min(super.getItemStackLimit(aStack), mPrefix.mDefaultStackSize) : super.getItemStackLimit(aStack);
+        return getDamage(aStack) < mOffset
+                ? Math.min(super.getItemStackLimit(aStack), mPrefix.mDefaultStackSize)
+                : super.getItemStackLimit(aStack);
     }
 
     @Override

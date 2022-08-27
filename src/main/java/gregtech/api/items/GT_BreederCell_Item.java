@@ -5,15 +5,14 @@ import gregtech.api.util.GT_Utility;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import ic2.core.IC2Potion;
+import java.util.List;
+import java.util.function.Supplier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-
-import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * A {@link ic2.core.item.reactor.ItemReactorLithiumCell}, but can be used to produce anything!
@@ -25,7 +24,14 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
     protected final int mHeatBonusMultiplier;
     protected ItemStack mProduct;
 
-    public GT_BreederCell_Item(String aUnlocalized, String aEnglish, String aEnglishTooltip, int aHeatBonusStep, int aHeatBonusMultiplier, int aRequiredPulse, Supplier<ItemStack> aProduct) {
+    public GT_BreederCell_Item(
+            String aUnlocalized,
+            String aEnglish,
+            String aEnglishTooltip,
+            int aHeatBonusStep,
+            int aHeatBonusMultiplier,
+            int aRequiredPulse,
+            Supplier<ItemStack> aProduct) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
         this.mHeatBonusStep = aHeatBonusStep;
         this.mHeatBonusMultiplier = aHeatBonusMultiplier;
@@ -61,9 +67,11 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
                 color2 = EnumChatFormatting.WHITE;
                 break;
         }
-        aList.add(String.format(transItem("020", "Progress: %s/%s"), "" + color2 + aStack.getItemDamage() + EnumChatFormatting.RESET, "" + getMaxDamage()));
-        if (aStack.getItemDamage() > 0)
-            aList.add(EnumChatFormatting.RED + transItem("021", "Radiation Hazard"));
+        aList.add(String.format(
+                transItem("020", "Progress: %s/%s"),
+                "" + color2 + aStack.getItemDamage() + EnumChatFormatting.RESET,
+                "" + getMaxDamage()));
+        if (aStack.getItemDamage() > 0) aList.add(EnumChatFormatting.RED + transItem("021", "Radiation Hazard"));
     }
 
     @Override
@@ -72,17 +80,22 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
     }
 
     @Override
-    public void processChamber(IReactor reactor, ItemStack yourStack, int x, int y, boolean heatrun) {
-    }
+    public void processChamber(IReactor reactor, ItemStack yourStack, int x, int y, boolean heatrun) {}
 
     @Override
-    public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY, int pulseX, int pulseY, boolean heatrun) {
+    public boolean acceptUraniumPulse(
+            IReactor reactor,
+            ItemStack yourStack,
+            ItemStack pulsingStack,
+            int youX,
+            int youY,
+            int pulseX,
+            int pulseY,
+            boolean heatrun) {
         if (heatrun) {
             int myLevel = getNewDamage(reactor, yourStack);
-            if (myLevel >= getMaxDamage())
-                reactor.setItemAt(youX, youY, mProduct.copy());
-            else
-                yourStack.setItemDamage(myLevel);
+            if (myLevel >= getMaxDamage()) reactor.setItemAt(youX, youY, mProduct.copy());
+            else yourStack.setItemDamage(myLevel);
         }
 
         return true;

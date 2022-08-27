@@ -10,7 +10,8 @@ import org.lwjgl.opengl.GL11;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
-    private final IItemRenderer mItemRenderer = new GT_GeneratedItem_Renderer();;
+    private final IItemRenderer mItemRenderer = new GT_GeneratedItem_Renderer();
+    ;
     private final IItemRenderer mMaterialRenderer = new GT_GeneratedMaterial_Renderer();
 
     public GT_MetaGenerated_Item_Renderer() {
@@ -62,5 +63,4 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
         return mItemRenderer;
     }
-
 }

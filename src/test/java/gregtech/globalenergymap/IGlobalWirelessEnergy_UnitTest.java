@@ -1,11 +1,10 @@
 package gregtech.globalenergymap;
 
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
-import org.junit.jupiter.api.Test;
-
-import java.math.BigInteger;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
+import java.math.BigInteger;
+import org.junit.jupiter.api.Test;
 
 class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
 
@@ -69,7 +68,6 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
 
     @Test
     void IGlobalWirelessEnergy_NameChange() {
-
 
         String user_uuid = "12345";
         String user_name_0 = "Colen";

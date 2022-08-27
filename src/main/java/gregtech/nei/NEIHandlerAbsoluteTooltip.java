@@ -1,7 +1,6 @@
 package gregtech.nei;
 
 import codechicken.lib.gui.GuiDraw;
-
 import java.awt.*;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class NEIHandlerAbsoluteTooltip {
     public void handleTooltip(List<String> currenttip, int recipeIndex) {
         displaySize = GuiDraw.displaySize();
         if (shouldAddTooltip(recipeIndex)) {
-                currenttip.add(tooltip);
+            currenttip.add(tooltip);
         }
     }
 
@@ -31,10 +30,9 @@ public class NEIHandlerAbsoluteTooltip {
         return area.contains(mousePos);
     }
 
-
     private Point getRelMouse() {
         int ySize = Math.min(Math.max(displaySize.height - 68, 166), 370);
-        int  guiLeft = (displaySize.width - 176) / 2;
+        int guiLeft = (displaySize.width - 176) / 2;
         int guiTop = (displaySize.height - ySize) / 2 + 10;
         Point mousePos = GuiDraw.getMousePosition();
         return new Point(mousePos.x - guiLeft - 5, mousePos.y - guiTop - 38);
@@ -47,6 +45,6 @@ public class NEIHandlerAbsoluteTooltip {
 
     private int getActualRecipesPerPage() {
         int ySize = Math.min(Math.max(displaySize.height - 68, 166), 370);
-        return (ySize - (12*3)) / 135;
+        return (ySize - (12 * 3)) / 135;
     }
 }

@@ -10,6 +10,8 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
@@ -20,22 +22,26 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 /***
  * @author TrainerSnow#5086
  */
 public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLimiter.FluidLimiterData> {
-
 
     public GT_Cover_FluidLimiter() {
         super(FluidLimiterData.class);
     }
 
     @Override
-    protected FluidLimiterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if(aTileEntity instanceof IFluidHandler) {
+    protected FluidLimiterData onCoverScrewdriverClickImpl(
+            byte aSide,
+            int aCoverID,
+            FluidLimiterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
+        if (aTileEntity instanceof IFluidHandler) {
             adjustThreshold(aCoverVariable, !aPlayer.isSneaking());
             GT_Utility.sendChatToPlayer(aPlayer, String.format("Threshold: %f", aCoverVariable.threshold));
         }
@@ -43,12 +49,14 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidInImpl(
+            byte aSide, int aCoverID, FluidLimiterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         return allowsFluidIn(aCoverVariable, aTileEntity);
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean alwaysLookConnectedImpl(
+            byte aSide, int aCoverID, FluidLimiterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
@@ -57,22 +65,21 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
      */
 
     private boolean allowsFluidIn(FluidLimiterData aCoverVariable, ICoverable c) {
-        if(c instanceof IFluidHandler) {
+        if (c instanceof IFluidHandler) {
             return aCoverVariable.threshold > getFillLevelInputSlots((IFluidHandler) c);
         }
         return false;
     }
 
-
     private void adjustThreshold(FluidLimiterData coverVariable, boolean way) {
-        if(way) {
-            if((coverVariable.threshold + 0.05f) > 1F) {
+        if (way) {
+            if ((coverVariable.threshold + 0.05f) > 1F) {
                 coverVariable.threshold = 0F;
                 return;
             }
             coverVariable.threshold += 0.05F;
         } else {
-            if((Math.abs(coverVariable.threshold) - 0.05F) < 0F) {
+            if ((Math.abs(coverVariable.threshold) - 0.05F) < 0F) {
                 coverVariable.threshold = 1F;
                 return;
             }
@@ -84,10 +91,10 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         FluidTankInfo[] tankInfo = fh.getTankInfo(ForgeDirection.UNKNOWN);
         long tMax;
         long tUsed;
-        if(tankInfo != null) {
-            //0 Because we acces first slot only
+        if (tankInfo != null) {
+            // 0 Because we acces first slot only
             FluidTankInfo inputSlot = tankInfo[0];
-            if(inputSlot.fluid != null) {
+            if (inputSlot.fluid != null) {
                 tMax = inputSlot.capacity;
                 tUsed = inputSlot.fluid.amount;
                 return (float) tUsed / (float) tMax;
@@ -95,7 +102,6 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         }
         return 0F;
     }
-
 
     /*
     Data
@@ -110,6 +116,7 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
     public FluidLimiterData createDataObject() {
         return new FluidLimiterData(1F);
     }
+
     public static class FluidLimiterData implements ISerializableObject {
         private float threshold;
 
@@ -138,7 +145,7 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
 
         @Override
         public void loadDataFromNBT(NBTBase aNBT) {
-            if(aNBT instanceof NBTTagCompound) {
+            if (aNBT instanceof NBTTagCompound) {
                 NBTTagCompound tag = (NBTTagCompound) aNBT;
                 this.threshold = tag.getFloat("threshold");
             }
@@ -152,13 +159,18 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         }
     }
 
-
     /*
     GUI
      */
 
     @Override
-    protected Object getClientGUIImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+    protected Object getClientGUIImpl(
+            byte aSide,
+            int aCoverID,
+            FluidLimiterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            World aWorld) {
         return new GUI(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
@@ -212,12 +224,12 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
             int percent;
             try {
                 percent = Integer.parseInt(box.getText().trim());
-            } catch(NumberFormatException ignored) {
+            } catch (NumberFormatException ignored) {
                 resetTextBox(thresholdBox);
                 return;
             }
 
-            if(percent > 100 || percent <= 0) return;
+            if (percent > 100 || percent <= 0) return;
             this.coverVariable.threshold = percent / 100F;
 
             box.setText(String.valueOf(percent));

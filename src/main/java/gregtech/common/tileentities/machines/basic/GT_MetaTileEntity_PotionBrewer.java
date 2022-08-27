@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -15,49 +17,88 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
-
 public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachine {
     public GT_MetaTileEntity_PotionBrewer(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "Brewing your Drinks", 1, 0, "PotionBrewer.png", "",
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                1,
+                "Brewing your Drinks",
+                1,
+                0,
+                "PotionBrewer.png",
+                "",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                .addIcon(OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW)
+                                .glow()
+                                .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_POTIONBREWER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                .addIcon(OVERLAY_SIDE_POTIONBREWER_GLOW)
+                                .glow()
+                                .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                .addIcon(OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW)
+                                .glow()
+                                .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_POTIONBREWER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                .addIcon(OVERLAY_FRONT_POTIONBREWER_GLOW)
+                                .glow()
+                                .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                .addIcon(OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW)
+                                .glow()
+                                .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_POTIONBREWER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                .addIcon(OVERLAY_TOP_POTIONBREWER_GLOW)
+                                .glow()
+                                .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                .addIcon(OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW)
+                                .glow()
+                                .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_POTIONBREWER_GLOW).glow().build())
-        );
+                        TextureFactory.builder()
+                                .addIcon(OVERLAY_BOTTOM_POTIONBREWER_GLOW)
+                                .glow()
+                                .build()));
     }
 
-    public GT_MetaTileEntity_PotionBrewer(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GT_MetaTileEntity_PotionBrewer(
+            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 0, aGUIName, aNEIName);
     }
 
-    public GT_MetaTileEntity_PotionBrewer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+    public GT_MetaTileEntity_PotionBrewer(
+            String aName,
+            int aTier,
+            String[] aDescription,
+            ITexture[][][] aTextures,
+            String aGUIName,
+            String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 0, aGUIName, aNEIName);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_PotionBrewer(this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.mGUIName, this.mNEIName);
+        return new GT_MetaTileEntity_PotionBrewer(
+                this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.mGUIName, this.mNEIName);
     }
 
     @Override
@@ -72,8 +113,8 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
             return tCheck;
         }
 
-        calculateOverclockedNess(4,128);
-        //In case recipe is too OP for that machine
+        calculateOverclockedNess(4, 128);
+        // In case recipe is too OP for that machine
         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
@@ -114,25 +155,30 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
                     }
                     return setOutput("potion.weakness");
                 }
-                if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), getInputAt(0))) {
+                if (GT_Utility.areStacksEqual(
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), getInputAt(0))) {
                     if (!tModifier.startsWith("strong")) {
-                        return setOutput("potion." + tInputName + ".strong" + (tModifier.isEmpty() ? "" : "." + tModifier));
+                        return setOutput(
+                                "potion." + tInputName + ".strong" + (tModifier.isEmpty() ? "" : "." + tModifier));
                     }
                     if (tModifier.startsWith("long")) {
                         return setOutput("potion." + tInputName + tModifier.replaceFirst("long", ""));
                     }
                     return setOutput("potion.thick");
                 }
-                if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), getInputAt(0))) {
+                if (GT_Utility.areStacksEqual(
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), getInputAt(0))) {
                     if (!tModifier.startsWith("long")) {
-                        return setOutput("potion." + tInputName + ".long" + (tModifier.isEmpty() ? "" : "." + tModifier));
+                        return setOutput(
+                                "potion." + tInputName + ".long" + (tModifier.isEmpty() ? "" : "." + tModifier));
                     }
                     if (tModifier.startsWith("strong")) {
                         return setOutput("potion." + tInputName + tModifier.replaceFirst("strong", ""));
                     }
                     return setOutput("potion.mundane");
                 }
-                if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L), getInputAt(0))) {
+                if (GT_Utility.areStacksEqual(
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L), getInputAt(0))) {
                     if (!tInputName.endsWith(".splash")) {
                         return setOutput("potion." + tInputName + ".splash");
                     }
@@ -152,15 +198,17 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
         if (this.mOutputFluid == null) {
             this.mOutputFluid = FluidRegistry.getFluidStack("potion.mundane", getFillableStack().amount);
         }
-        
+
         getInputAt(0).stackSize -= 1;
         getFillableStack().amount -= 750;
         return 2;
     }
 
     @Override
-    public boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) && getRecipeList().containsInput(aStack);
+    public boolean allowPutStackValidated(
+            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
+                && getRecipeList().containsInput(aStack);
     }
 
     @Override

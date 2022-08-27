@@ -1,7 +1,6 @@
 package gregtech.api.objects;
 
 import com.google.common.collect.Collections2;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,13 +20,27 @@ public class GT_ArrayList<E> extends ArrayList<E> {
     public GT_ArrayList(boolean aAllowNulls, E... aArray) {
         super(Arrays.asList(aArray));
         mAllowNulls = aAllowNulls;
-        if (!mAllowNulls) {size_sS=size(); for (int i = 0; i < size_sS; i++) if (get(i) == null) {remove(i--);size_sS=size();}}
+        if (!mAllowNulls) {
+            size_sS = size();
+            for (int i = 0; i < size_sS; i++)
+                if (get(i) == null) {
+                    remove(i--);
+                    size_sS = size();
+                }
+        }
     }
 
     public GT_ArrayList(boolean aAllowNulls, Collection<? extends E> aList) {
         super(aList);
         mAllowNulls = aAllowNulls;
-        if (!mAllowNulls) {size_sS=size(); for (int i = 0; i < size_sS; i++) if (get(i) == null) {remove(i--);size_sS=size();}}
+        if (!mAllowNulls) {
+            size_sS = size();
+            for (int i = 0; i < size_sS; i++)
+                if (get(i) == null) {
+                    remove(i--);
+                    size_sS = size();
+                }
+        }
     }
 
     @Override

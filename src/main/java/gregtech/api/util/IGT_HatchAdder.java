@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public interface IGT_HatchAdder<T> {
@@ -22,6 +21,7 @@ public interface IGT_HatchAdder<T> {
     }
 
     default IGT_HatchAdder<T> orElse(IGT_HatchAdder<? super T> fallback) {
-        return (t, iGregTechTileEntity, aShort) -> IGT_HatchAdder.this.apply(t, iGregTechTileEntity, aShort) || fallback.apply(t, iGregTechTileEntity, aShort);
+        return (t, iGregTechTileEntity, aShort) -> IGT_HatchAdder.this.apply(t, iGregTechTileEntity, aShort)
+                || fallback.apply(t, iGregTechTileEntity, aShort);
     }
 }

@@ -1,10 +1,8 @@
 package gregtech.api.interfaces.metatileentity;
 
-import java.util.List;
-
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
+import java.util.List;
+import net.minecraft.item.ItemStack;
 
 /**
  *  Implement this interface if your metatileentity supports configuration circuits
@@ -23,7 +21,7 @@ public interface IConfigurationCircuitSupport {
      * This list is unmodifiable. Its elements are not supposed to be modified in any way!
      */
     default List<ItemStack> getConfigurationCircuits() {
-            return GregTech_API.getConfigurationCircuitList(100);
+        return GregTech_API.getConfigurationCircuitList(100);
     }
 
     /**
@@ -41,5 +39,6 @@ public interface IConfigurationCircuitSupport {
     }
 
     int getCircuitSlotX();
+
     int getCircuitSlotY();
 }

@@ -59,6 +59,10 @@ public class GT_Tool_Drill_HV extends GT_Tool_Drill_LV {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill.mTextureIndex] : Textures.ItemIcons.POWER_UNIT_HV;
+        return aIsToolHead
+                ? gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial(aStack)
+                        .mIconSet
+                        .mTextures[gregtech.api.enums.OrePrefixes.toolHeadDrill.mTextureIndex]
+                : Textures.ItemIcons.POWER_UNIT_HV;
     }
 }

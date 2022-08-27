@@ -1,5 +1,12 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
@@ -23,13 +30,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
-
 public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEntity_BasicTank {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
@@ -49,14 +49,21 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     public TileEntity tTile = null;
 
     public GT_MetaTileEntity_MicrowaveEnergyTransmitter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 3, new String[]{"Transmits Energy Wirelessly", "Use Nitrogen Plasma", "for Inter-dimensional transmission", "0.004EU Loss per 100 Blocks"});
+        super(aID, aName, aNameRegional, aTier, 3, new String[] {
+            "Transmits Energy Wirelessly",
+            "Use Nitrogen Plasma",
+            "for Inter-dimensional transmission",
+            "0.004EU Loss per 100 Blocks"
+        });
     }
 
-    public GT_MetaTileEntity_MicrowaveEnergyTransmitter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_MicrowaveEnergyTransmitter(
+            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_MicrowaveEnergyTransmitter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_MicrowaveEnergyTransmitter(
+            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
@@ -80,33 +87,52 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_MicrowaveEnergyTransmitter(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
+                this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[]{
-                "Coordinates:",
-                "X: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET,
-                "Y: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET,
-                "Z: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET,
-                "Dimension: " + EnumChatFormatting.GREEN+this.mTargetD+EnumChatFormatting.RESET,
-                "Dimension Valid: " + (GT_Utility.isRealDimension(this.mTargetD) ? EnumChatFormatting.GREEN+"Yes"+EnumChatFormatting.RESET : EnumChatFormatting.RED+"No"+EnumChatFormatting.RESET),
-                "Dimension Registered: " + (DimensionManager.isDimensionRegistered(this.mTargetD) ? EnumChatFormatting.GREEN+"Yes"+EnumChatFormatting.RESET : EnumChatFormatting.RED+"No"+EnumChatFormatting.RESET)
+        return new String[] {
+            "Coordinates:",
+            "X: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET,
+            "Y: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET,
+            "Z: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET,
+            "Dimension: " + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET,
+            "Dimension Valid: "
+                    + (GT_Utility.isRealDimension(this.mTargetD)
+                            ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
+                            : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET),
+            "Dimension Registered: "
+                    + (DimensionManager.isDimensionRegistered(this.mTargetD)
+                            ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
+                            : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET)
         };
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == 0) return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1]};
-        if (aActive) return new ITexture[]{
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
+        if (aSide == 0) return new ITexture[] {MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        if (aActive)
+            return new ITexture[] {
                 MACHINE_CASINGS[mTier][aColorIndex + 1],
                 TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW).glow().build()};
-        return new ITexture[]{
-                MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_TELEPORTER),
-                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_GLOW).glow().build()};
+                TextureFactory.builder()
+                        .addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW)
+                        .glow()
+                        .build()
+            };
+        return new ITexture[] {
+            MACHINE_CASINGS[mTier][aColorIndex + 1],
+            TextureFactory.of(OVERLAY_TELEPORTER),
+            TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_GLOW).glow().build()
+        };
     }
 
     @Override
@@ -131,7 +157,8 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
 
     @Override
     public void onConfigLoad(GT_Config aConfig) {
-        sInterDimensionalTeleportAllowed = aConfig.get(ConfigCategories.machineconfig, "Teleporter.Interdimensional", true);
+        sInterDimensionalTeleportAllowed =
+                aConfig.get(ConfigCategories.machineconfig, "Teleporter.Interdimensional", true);
         mMaxLoss = Math.max(aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.MaxLoss", 50), 11);
         mMaxLossDistance = aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.MaxLossDistance", 10000);
         mPassiveEnergyUse = aConfig.get(ConfigCategories.machineconfig, "MicrowaveTransmitter.PassiveEnergy", true);
@@ -154,7 +181,8 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
         for (byte i = -5; i <= 5; i = (byte) (i + 1)) {
             for (byte j = -5; j <= 5; j = (byte) (j + 1)) {
                 for (byte k = -5; k <= 5; k = (byte) (k + 1)) {
-                    if (getBaseMetaTileEntity().getBlockOffset(i, j, k) ==  GregTech_API.sBlockMetal5 && getBaseMetaTileEntity().getMetaIDOffset(i, j, k) == 8) {//require osmiridium block
+                    if (getBaseMetaTileEntity().getBlockOffset(i, j, k) == GregTech_API.sBlockMetal5
+                            && getBaseMetaTileEntity().getMetaIDOffset(i, j, k) == 8) { // require osmiridium block
                         return true;
                     }
                 }
@@ -164,20 +192,19 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     public boolean hasDimensionalTeleportCapability() {
-        return this.mDebug ||
-                (
-                        sInterDimensionalTeleportAllowed &&
-                                (
-                                        this.hasBlock ||
-                                                mFluid != null && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && mFluid.amount >= 1000
-
-                                )
-                )
-        ;
+        return this.mDebug
+                || (sInterDimensionalTeleportAllowed
+                        && (this.hasBlock
+                                || mFluid != null
+                                        && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))
+                                        && mFluid.amount >= 1000));
     }
 
     public boolean isDimensionalTeleportAvailable() {
-        return this.mDebug || (hasDimensionalTeleportCapability() && GT_Utility.isRealDimension(this.mTargetD) && GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.dimensionId));
+        return this.mDebug
+                || (hasDimensionalTeleportCapability()
+                        && GT_Utility.isRealDimension(this.mTargetD)
+                        && GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.dimensionId));
     }
 
     @Override
@@ -190,12 +217,15 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
             if (getBaseMetaTileEntity().getTimer() % 100L == 50L) {
                 this.hasBlock = checkForBlock();
             }
-            if ((getBaseMetaTileEntity().isAllowedToWork()) && (getBaseMetaTileEntity().getRedstone())) {
+            if ((getBaseMetaTileEntity().isAllowedToWork())
+                    && (getBaseMetaTileEntity().getRedstone())) {
                 if (getBaseMetaTileEntity().getStoredEU() > (V[mTier] * 16)) {
                     if (mPassiveEnergyUse) {
-                        getBaseMetaTileEntity().decreaseStoredEnergyUnits(2L<<(mTier-1), false);
+                        getBaseMetaTileEntity().decreaseStoredEnergyUnits(2L << (mTier - 1), false);
                     }
-                    if (hasDimensionalTeleportCapability() && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))) {
+                    if (hasDimensionalTeleportCapability()
+                            && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId
+                            && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))) {
                         mFluid.amount--;
                         if (mFluid.amount < 1) {
                             mFluid = null;
@@ -216,20 +246,21 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                         }
                     }
                     int tDistance = distanceCalculation();
-                    if(tTile!=null) {
+                    if (tTile != null) {
                         if (tTile instanceof IEnergyConnected) {
-                            long packetSize=V[mTier];
-                            if(tTile instanceof IGregTechTileEntity){
-                                IMetaTileEntity mte=((IGregTechTileEntity) tTile).getMetaTileEntity();
-                                if(mte instanceof BaseMetaTileEntity) {
-                                    packetSize=((BaseMetaTileEntity) mte).getMaxSafeInput();
+                            long packetSize = V[mTier];
+                            if (tTile instanceof IGregTechTileEntity) {
+                                IMetaTileEntity mte = ((IGregTechTileEntity) tTile).getMetaTileEntity();
+                                if (mte instanceof BaseMetaTileEntity) {
+                                    packetSize = ((BaseMetaTileEntity) mte).getMaxSafeInput();
                                 }
                             }
                             long energyUse = 10;
                             if (mMaxLossDistance != 0) {
-                                energyUse = GT_Utility.safeInt(10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
+                                energyUse = GT_Utility.safeInt(
+                                        10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
                             }
-                            energyUse=packetSize + ((V[mTier] * energyUse) / 100);
+                            energyUse = packetSize + ((V[mTier] * energyUse) / 100);
                             if (getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) {
                                 if (((IEnergyConnected) tTile).injectEnergyUnits((byte) 6, packetSize, 1) > 0) {
                                     getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
@@ -246,7 +277,13 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     private int distanceCalculation() {
-        return Math.abs(((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId) && (isDimensionalTeleportAvailable()) ? 100 : 1) * (int) Math.sqrt(Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D) + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D) + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D)));
+        return Math.abs(((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId)
+                                && (isDimensionalTeleportAvailable())
+                        ? 100
+                        : 1)
+                * (int) Math.sqrt(Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D)
+                        + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D)
+                        + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D)));
     }
 
     @Override
@@ -378,5 +415,4 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return null;
     }
-
 }
