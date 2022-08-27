@@ -137,26 +137,26 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
             return false;
 
         int mVolatage = GT_Utility.safeInt(getMaxInputVoltage());
-        int tMaxParrallel = this.mLevel;
-        int tCurrenParrallel = 0;
+        int tMaxParallel = this.mLevel;
+        int tCurrentParallel = 0;
         ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
         ArrayList<Integer> outputStackSizes = new ArrayList<>();
         for (ItemStack item : tInputList) {
             ItemStack smeltedOutput = GT_ModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
                 smeltedOutputs.add(smeltedOutput);
-                if (item.stackSize <= (tMaxParrallel - tCurrenParrallel)) {
-                    tCurrenParrallel += item.stackSize;
+                if (item.stackSize <= (tMaxParallel - tCurrentParallel)) {
+                    tCurrentParallel += item.stackSize;
                     outputStackSizes.add(smeltedOutput.stackSize * item.stackSize);
                     item.stackSize = 0;
                 } else {
-                    int remainingStackSize = tCurrenParrallel + item.stackSize - tMaxParrallel;
+                    int remainingStackSize = tCurrentParallel + item.stackSize - tMaxParallel;
                     outputStackSizes.add(smeltedOutput.stackSize * (item.stackSize - remainingStackSize));
                     item.stackSize = remainingStackSize;
                     break;
                 }
             }
-            if (tCurrenParrallel == tMaxParrallel) {
+            if (tCurrentParallel == tMaxParallel) {
                 break;
             }
         }
@@ -209,7 +209,12 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
         if (mMaintenanceHatches.size() != 1)
             return false;
 
-        this.mLevel = getCoilLevel().getLevel();
+        if (getCoilLevel().getHeat()<9000) {
+            this.mLevel= 8 * getCoilLevel().getLevel();
+        }
+        else {
+            this.mLevel = 1 << (getCoilLevel().getTier());
+        }
         this.mCostDiscount = getCoilLevel().getCostDiscount();
         return true;
     }
