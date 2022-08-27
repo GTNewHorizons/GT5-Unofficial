@@ -1418,7 +1418,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         //4HSiCl3 = 3SiCl4 + SiH4
         GT_Values.RA.addChemicalRecipe(ItemList.Cell_Empty.get(1L), GT_Utility.getIntegratedCircuit(2), Materials.Trichlorosilane.getFluid(4000), Materials.SiliconTetrachloride.getFluid(3000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Silane, 1), 240, 30);
         //SiH4 = Si + 4H
-        GT_Values.RA.addChemicalRecipe(GT_Values.NI, GT_Utility.getIntegratedCircuit(1), Materials.Silane.getGas(1000), Materials.Hydrogen.getGas(4000), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1), 300, 30);
+        GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(1), GT_Values.NI, Materials.Silane.getGas(1000), Materials.Hydrogen.getGas(4000), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1), 300, 30);
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Silane, 1), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, Materials.Hydrogen.getGas(4000), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1), ItemList.Cell_Empty.get(1L),300, 30);
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Silane, 1), ItemList.Cell_Empty.get(3L), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 4),300, 30);
         //Ca + 2H = CaH2

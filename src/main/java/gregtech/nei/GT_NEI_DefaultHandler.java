@@ -771,11 +771,33 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             }
         }
 
+        @SuppressWarnings("deprecation")
         public CachedDefaultRecipe(GT_Recipe aRecipe) {
             super();
             this.mRecipe = aRecipe;
             List<PositionedStack> maybeIn;
             List<PositionedStack> maybeOut;
+
+            try {
+                maybeIn = GT_NEI_DefaultHandler.this.mRecipeMap.getInputPositionedStacks(aRecipe);
+            } catch (NullPointerException npe) {
+                maybeIn = null;
+                GT_Log.err.println("CachedDefaultRecipe - Invalid InputPositionedStacks " + aRecipe);
+                npe.printStackTrace(GT_Log.err);
+            }
+            try {
+                maybeOut = GT_NEI_DefaultHandler.this.mRecipeMap.getOutputPositionedStacks(aRecipe);
+            } catch (NullPointerException npe) {
+                maybeOut = null;
+                GT_Log.err.println("CachedDefaultRecipe - Invalid OutputPositionedStacks " + aRecipe);
+                npe.printStackTrace(GT_Log.err);
+            }
+
+            if (maybeOut != null && maybeIn != null) {
+                mOutputs = maybeOut;
+                mInputs = maybeIn;
+                return;
+            }
 
             try {
                 maybeIn = aRecipe.getInputPositionedStacks();

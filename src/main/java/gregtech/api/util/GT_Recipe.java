@@ -555,17 +555,19 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     /**
-     * Overriding this method and getOutputPositionedStacks allows for custom NEI stack placement
-     * @return A list of input stacks
+     * Use {@link GT_Recipe_Map#getInputPositionedStacks(GT_Recipe)} instead
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     public ArrayList<PositionedStack> getInputPositionedStacks(){
     	return null;
     }
 
     /**
-     * Overriding this method and getInputPositionedStacks allows for custom NEI stack placement
-     * @return A list of output stacks
+     * Use {@link GT_Recipe_Map#getOutputPositionedStacks(GT_Recipe)} instead
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     public ArrayList<PositionedStack> getOutputPositionedStacks(){
     	return null;
     }
@@ -1195,6 +1197,22 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          */
         public boolean usesSpecialSlot() {
             return mUsesSpecialSlot;
+        }
+
+        /**
+         * Overriding this method and getOutputPositionedStacks allows custom NEI stack placement
+         * @return A list of input stacks
+         */
+        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe){
+            return null;
+        }
+
+        /**
+         * Overriding this method and getInputPositionedStacks allows custom NEI stack placement
+         * @return A list of output stacks
+         */
+        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe){
+            return null;
         }
 
         public void addRecipe(Object o, FluidStack[] fluidInputArray, FluidStack[] fluidOutputArray) {
@@ -2096,76 +2114,69 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             aOutputs = adjustedOutputs.toArray(new ItemStack[0]);
             aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[0]);
 
-            return addRecipe(new GT_Recipe_LargeChemicalReactor(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+            return super.addRecipe(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
         }
 
-        private static class GT_Recipe_LargeChemicalReactor extends GT_Recipe {
+        @Override
+        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
+            int itemLimit = Math.min(recipe.mInputs.length, TOTAL_INPUT_COUNT);
+            int fluidLimit = Math.min(recipe.mFluidInputs.length, TOTAL_INPUT_COUNT - itemLimit);
+            int inputlimit = itemLimit + fluidLimit;
+            int j = 0;
 
-            protected GT_Recipe_LargeChemicalReactor(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-            	super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-            }
+            ArrayList<PositionedStack> inputStacks = new ArrayList<>(inputlimit);
 
-			@Override
-			public ArrayList<PositionedStack> getInputPositionedStacks() {
-                int itemLimit = Math.min(mInputs.length, TOTAL_INPUT_COUNT);
-                int fluidLimit = Math.min(mFluidInputs.length, TOTAL_INPUT_COUNT - itemLimit);
-                int inputlimit = itemLimit + fluidLimit;
-                int j = 0;
-
-                ArrayList<PositionedStack> inputStacks = new ArrayList<>(inputlimit);
-
-                for (int i = 0; i < itemLimit; i++, j++) {
-                    if (this.mInputs == null || (this.mInputs[i] == null && (i == 0 && itemLimit == 1))) {
-                        if (this.mOutputs != null && this.mOutputs.length > 0 && this.mOutputs[0] != null)
-                            GT_Log.out.println("recipe " + this + " Output 0:" + this.mOutputs[0].getDisplayName() + " has errored!");
-                        else
-                            GT_Log.out.println("recipe " + this + " has errored!");
-
-                        new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
-                    }
-
-
-                    if ((this.mInputs != null && this.mInputs[i] != null) || !GT_Values.allow_broken_recipemap)
-                        inputStacks.add(new FixedPositionedStack(this.mInputs[i].copy(), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+            for (int i = 0; i < itemLimit; i++, j++) {
+                if (recipe.mInputs == null || (recipe.mInputs[i] == null && (i == 0 && itemLimit == 1))) {
+                    if (recipe.mOutputs != null && recipe.mOutputs.length > 0 && recipe.mOutputs[0] != null)
+                        GT_Log.out.println("recipe " + recipe + " Output 0:" + recipe.mOutputs[0].getDisplayName() + " has errored!");
                     else
-                        inputStacks.add(new FixedPositionedStack(new ItemStack(Items.command_block_minecart), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
-				}
+                        GT_Log.out.println("recipe " + recipe + " has errored!");
 
-				for (int i = 0; i < fluidLimit; i++, j++) {
-                    if (this.mFluidInputs == null || this.mFluidInputs[i] == null) {
-                        if (this.mOutputs != null && this.mOutputs.length > 0 && this.mOutputs[0] != null)
-                            GT_Log.out.println("recipe " + this + " Output 0:" + this.mOutputs[0].getDisplayName() + " has errored!");
-                        else
-                            GT_Log.out.println("recipe " + this + " has errored!");
-
-                        new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
-                    }
-
-                    if ((this.mFluidInputs != null && this.mFluidInputs[i] != null) || !GT_Values.allow_broken_recipemap)
-                        inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+                    new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
                 }
 
-				return inputStacks;
-			}
 
-			@Override
-			public ArrayList<PositionedStack> getOutputPositionedStacks() {
-                int itemLimit = Math.min(mOutputs.length, OUTPUT_COUNT);
-                int fluidLimit = Math.min(mFluidOutputs.length, FLUID_OUTPUT_COUNT);
-                ArrayList<PositionedStack> outputStacks = new ArrayList<>(itemLimit + fluidLimit);
-
-                int j = 0;
-
-                for (int i = 0; i < itemLimit; i++, j++) {
-                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), 102 + j % 3 * 18, (j >= 3 ? 5 : 23)));
-                }
-
-                for (int i = 0; i < fluidLimit; i++, j++) {
-                    outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + j % 3 * 18, (j >= 3 ? 5 : 23)));
-                }
-
-                return outputStacks;
+                if ((recipe.mInputs != null && recipe.mInputs[i] != null) || !GT_Values.allow_broken_recipemap)
+                    inputStacks.add(new FixedPositionedStack(recipe.mInputs[i].copy(), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+                else
+                    inputStacks.add(new FixedPositionedStack(new ItemStack(Items.command_block_minecart), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
             }
+
+            for (int i = 0; i < fluidLimit; i++, j++) {
+                if (recipe.mFluidInputs == null || recipe.mFluidInputs[i] == null) {
+                    if (recipe.mOutputs != null && recipe.mOutputs.length > 0 && recipe.mOutputs[0] != null)
+                        GT_Log.out.println("recipe " + recipe + " Output 0:" + recipe.mOutputs[0].getDisplayName() + " has errored!");
+                    else
+                        GT_Log.out.println("recipe " + recipe + " has errored!");
+
+                    new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
+                }
+
+                if ((recipe.mFluidInputs != null && recipe.mFluidInputs[i] != null) || !GT_Values.allow_broken_recipemap)
+                    inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(recipe.mFluidInputs[i], true), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+            }
+
+            return inputStacks;
+        }
+
+        @Override
+        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
+            int itemLimit = Math.min(recipe.mOutputs.length, OUTPUT_COUNT);
+            int fluidLimit = Math.min(recipe.mFluidOutputs.length, FLUID_OUTPUT_COUNT);
+            ArrayList<PositionedStack> outputStacks = new ArrayList<>(itemLimit + fluidLimit);
+
+            int j = 0;
+
+            for (int i = 0; i < itemLimit; i++, j++) {
+                outputStacks.add(new FixedPositionedStack(recipe.mOutputs[i].copy(), 102 + j % 3 * 18, (j >= 3 ? 5 : 23)));
+            }
+
+            for (int i = 0; i < fluidLimit; i++, j++) {
+                outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(recipe.mFluidOutputs[i], true), 102 + j % 3 * 18, (j >= 3 ? 5 : 23)));
+            }
+
+            return outputStacks;
         }
     }
     public static class GT_Recipe_Map_DistillationTower extends GT_Recipe_Map {
@@ -2177,78 +2188,61 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         super(new HashSet<>(110), "gt.recipe.distillationtower", "Distillation Tower", null, RES_PATH_GUI + "basicmachines/DistillationTower", 2, 4, 0, 0, 1, E, 1, E, true, true);
     }
 
-    @Override
-    public GT_Recipe addRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, int[] aOutputChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        return addRecipe(new GT_Recipe_DistillationTower(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
-    }
+        @Override
+        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
+            int itemLimit = Math.min(recipe.mInputs.length, TOTAL_INPUT_COUNT);
+            int fluidLimit = Math.min(recipe.mFluidInputs.length, TOTAL_INPUT_COUNT - itemLimit);
+            int inputlimit = itemLimit + fluidLimit;
+            int j = 0;
 
-    @Override
-    public GT_Recipe addRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-   	    return addRecipe(aOptimize, aInputs, aOutputs, aSpecial, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-   	}
+            ArrayList<PositionedStack> inputStacks = new ArrayList<>(inputlimit);
 
-   	private static class GT_Recipe_DistillationTower extends GT_Recipe{
-   	    protected GT_Recipe_DistillationTower(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-   	        super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-   	    }
+            for (int i = 0; i < itemLimit; i++, j++) {
+                if (recipe.mInputs == null || (recipe.mInputs[i] == null && (i == 0 && itemLimit == 1))) {
+                    if (recipe.mOutputs != null && recipe.mOutputs.length > 0 && recipe.mOutputs[0] != null)
+                        GT_Log.out.println("recipe " + recipe + " Output 0:" + recipe.mOutputs[0].getDisplayName() + " has errored!");
+                    else
+                        GT_Log.out.println("recipe " + recipe + " has errored!");
+                    new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
+                }
 
-   	    @Override
-        public ArrayList<PositionedStack> getInputPositionedStacks() {
-   	        int itemLimit = Math.min(mInputs.length, TOTAL_INPUT_COUNT);
-   	        int fluidLimit = Math.min(mFluidInputs.length, TOTAL_INPUT_COUNT - itemLimit);
-   	        int inputlimit = itemLimit + fluidLimit;
-   	        int j = 0;
+                if ((recipe.mInputs != null && recipe.mInputs[i] != null) || !GT_Values.allow_broken_recipemap)
+                    inputStacks.add(new FixedPositionedStack(recipe.mInputs[i].copy(), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+                else
+                    inputStacks.add(new FixedPositionedStack(new ItemStack(Items.command_block_minecart), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+            }
 
-   	        ArrayList<PositionedStack> inputStacks = new ArrayList<>(inputlimit);
+            for (int i = 0; i < fluidLimit; i++, j++) {
+                if (recipe.mFluidInputs == null || recipe.mFluidInputs[i] == null) {
+                    if (recipe.mOutputs != null && recipe.mOutputs.length > 0 && recipe.mOutputs[0] != null)
+                        GT_Log.out.println("recipe " + recipe + " Output 0:" + recipe.mOutputs[0].getDisplayName() + " has errored!");
+                    else
+                        GT_Log.out.println("recipe " + recipe + " has errored!");
+                    new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
+                }
 
-   	        for (int i = 0; i < itemLimit; i++, j++) {
-   	            if (this.mInputs == null || (this.mInputs[i] == null && (i == 0 && itemLimit == 1))) {
-   	                if (this.mOutputs != null && this.mOutputs.length > 0 && this.mOutputs[0] != null)
-   	                    GT_Log.out.println("recipe " + this + " Output 0:" + this.mOutputs[0].getDisplayName() + " has errored!");
-   	                else
-   	                    GT_Log.out.println("recipe " + this + " has errored!");
-   	                new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
-   	            }
+                if ((recipe.mFluidInputs != null && recipe.mFluidInputs[i] != null) || !GT_Values.allow_broken_recipemap)
+                    inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(recipe.mFluidInputs[i], true), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+            }
 
-   	            if ((this.mInputs != null && this.mInputs[i] != null) || !GT_Values.allow_broken_recipemap)
-   	                inputStacks.add(new FixedPositionedStack(this.mInputs[i].copy(), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
-   	            else
-   	                inputStacks.add(new FixedPositionedStack(new ItemStack(Items.command_block_minecart), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
-   	        }
+            return inputStacks;
+        }
+        @Override
+        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
+            int fluidLimit = Math.min(recipe.mFluidOutputs.length, FLUID_OUTPUT_COUNT);
+            ArrayList<PositionedStack> outputStacks = new ArrayList<>(1 + fluidLimit);
 
-   	        for (int i = 0; i < fluidLimit; i++, j++) {
-   	            if (this.mFluidInputs == null || this.mFluidInputs[i] == null) {
-   	                if (this.mOutputs != null && this.mOutputs.length > 0 && this.mOutputs[0] != null)
-   	                    GT_Log.out.println("recipe " + this + " Output 0:" + this.mOutputs[0].getDisplayName() + " has errored!");
-   	                else
-   	                    GT_Log.out.println("recipe " + this + " has errored!");
-   	                new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
-   	            }
+            if (recipe.mOutputs.length > 0 && recipe.mOutputs[0] != null) {
+                outputStacks.add(new FixedPositionedStack(recipe.getOutput(0), 102, 52));
+            }
 
-   	            if ((this.mFluidInputs != null && this.mFluidInputs[i] != null) || !GT_Values.allow_broken_recipemap)
-   	                inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
-   	        }
-
-   	        return inputStacks;
-   	    }
-   	    @Override
-        public ArrayList<PositionedStack> getOutputPositionedStacks() {
-   	        int fluidLimit = Math.min(mFluidOutputs.length, FLUID_OUTPUT_COUNT);
-   	        ArrayList<PositionedStack> outputStacks = new ArrayList<>(1 + fluidLimit);
-
-   	        if (this.mOutputs.length > 0 && this.mOutputs[0] != null) {
-   	            outputStacks.add(new FixedPositionedStack(this.getOutput(0), 102, 52));
-   	        }
-
-   	        for (int i = 0; i < fluidLimit; i++) {
-   	            int x = 102 + ((i + 1) % ROW_SIZE) * 18;
-   	            int y =  52 - ((i + 1) / ROW_SIZE) * 18;
-   	            outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), x, y));
-   	        }
-   	        return outputStacks;
-   	    }
-
-   	}
+            for (int i = 0; i < fluidLimit; i++) {
+                int x = 102 + ((i + 1) % ROW_SIZE) * 18;
+                int y =  52 - ((i + 1) / ROW_SIZE) * 18;
+                outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(recipe.mFluidOutputs[i], true), x, y));
+            }
+            return outputStacks;
+        }
     }
 
     public static class GT_Recipe_Map_OilCracker extends GT_Recipe_Map {
@@ -2330,56 +2324,42 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         @Override
-        public GT_Recipe addRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, int[] aOutputChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-            return addRecipe(new GT_Recipe_PlasmaForge(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
+            ArrayList<PositionedStack> inputStacks = new ArrayList<>();
+            int i = 0;
+            if (recipe.mInputs != null) {
+                for (int j = 0; j < recipe.mInputs.length; j ++, i ++) {
+                    if (recipe.mInputs[j] == NI) continue;
+                    inputStacks.add(new FixedPositionedStack(recipe.mInputs[j].copy(), 12 + 18 * (i % 3), 5 + 18 * (i / 3)));
+                }
+            }
+            if (recipe.mFluidInputs != null) {
+                for (int j = 0; j < recipe.mFluidInputs.length; j ++, i ++) {
+                    if (recipe.mFluidInputs[j] == NF) continue;
+                    inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(recipe.mFluidInputs[j], true), 12 + 18 * (i % 3), 5 + 18 * (i / 3)));
+                }
+            }
+            return inputStacks;
         }
 
-        private static class GT_Recipe_PlasmaForge extends GT_Recipe {
-
-            public GT_Recipe_PlasmaForge(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-                super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
+        @Override
+        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
+            ArrayList<PositionedStack> outputStacks = new ArrayList<>();
+            int i = 0;
+            if (recipe.mOutputs != null) {
+                for (int j = 0; j < recipe.mOutputs.length; j ++, i ++) {
+                    if (recipe.mOutputs[j] == NI) continue;
+                    outputStacks.add(new FixedPositionedStack(recipe.mOutputs[j].copy(), 102 + 18 * (i % 3), 5 + 18 * (i / 3)));
+                }
             }
-
-            @Override
-            public ArrayList<PositionedStack> getInputPositionedStacks() {
-                ArrayList<PositionedStack> inputStacks = new ArrayList<>();
-                int i = 0;
-                if (mInputs != null) {
-                    for (int j = 0; j < mInputs.length; j ++, i ++) {
-                        if (mInputs[j] == NI) continue;
-                        inputStacks.add(new FixedPositionedStack(mInputs[j].copy(), 12 + 18 * (i % 3), 5 + 18 * (i / 3)));
-                    }
+            if (recipe.mFluidOutputs != null) {
+                for (int j = 0; j < recipe.mFluidOutputs.length; j ++, i ++) {
+                    if (recipe.mFluidOutputs[j] == NF) continue;
+                    outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(recipe.mFluidOutputs[j], true), 102 + 18 * (i % 3), 5 + 18 * (i / 3)));
                 }
-                if (mFluidInputs != null) {
-                    for (int j = 0; j < mFluidInputs.length; j ++, i ++) {
-                        if (mFluidInputs[j] == NF) continue;
-                        inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mFluidInputs[j], true), 12 + 18 * (i % 3), 5 + 18 * (i / 3)));
-                    }
-                }
-                return inputStacks;
             }
-
-            @Override
-            public ArrayList<PositionedStack> getOutputPositionedStacks() {
-                ArrayList<PositionedStack> outputStacks = new ArrayList<>();
-                int i = 0;
-                if (mOutputs != null) {
-                    for (int j = 0; j < mOutputs.length; j ++, i ++) {
-                        if (mOutputs[j] == NI) continue;
-                        outputStacks.add(new FixedPositionedStack(mOutputs[j].copy(), 102 + 18 * (i % 3), 5 + 18 * (i / 3)));
-                    }
-                }
-                if (mFluidOutputs != null) {
-                    for (int j = 0; j < mFluidOutputs.length; j ++, i ++) {
-                        if (mFluidOutputs[j] == NF) continue;
-                        outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mFluidOutputs[j], true), 102 + 18 * (i % 3), 5 + 18 * (i / 3)));
-                    }
-                }
-                return outputStacks;
-            }
-
+            return outputStacks;
         }
-
     }
 
     public static class GT_Recipe_Map_ComplexFusion extends GT_Recipe_Map {
@@ -2390,43 +2370,34 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public GT_Recipe addRecipe(int[] aOutputChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-            return addRecipe(new GT_Recipe_ComplexFusion(false, null, null, null, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue), false, false, false);
+            return addRecipe(new GT_Recipe(false, null, null, null, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue), false, false, false);
         }
 
-        private static class GT_Recipe_ComplexFusion extends GT_Recipe {
-
-            public GT_Recipe_ComplexFusion(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-                super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-            }
-
-            @Override
-            public ArrayList<PositionedStack> getInputPositionedStacks() {
-                ArrayList<PositionedStack> inputStacks = new ArrayList<>();
-                int i = 0;
-                if (mFluidInputs != null) {
-                    for (int j = 0; j < mFluidInputs.length; j ++, i ++) {
-                        if (mFluidInputs[j] == NF) continue;
-                        inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mFluidInputs[j], true), 3 + 18 * (i % 4), -1 + 18 * (i / 4)));
-                    }
+        @Override
+        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
+            ArrayList<PositionedStack> inputStacks = new ArrayList<>();
+            int i = 0;
+            if (recipe.mFluidInputs != null) {
+                for (int j = 0; j < recipe.mFluidInputs.length; j ++, i ++) {
+                    if (recipe.mFluidInputs[j] == NF) continue;
+                    inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(recipe.mFluidInputs[j], true), 3 + 18 * (i % 4), -1 + 18 * (i / 4)));
                 }
-                return inputStacks;
             }
-
-            @Override
-            public ArrayList<PositionedStack> getOutputPositionedStacks() {
-                ArrayList<PositionedStack> outputStacks = new ArrayList<>();
-                int i = 0;
-                if (mFluidOutputs != null) {
-                    for (int j = 0; j < mFluidOutputs.length; j ++, i ++) {
-                        if (mFluidOutputs[j] == NF) continue;
-                        outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mFluidOutputs[j], true), 93 + 18 * (i % 4), -1 + 18 * (i / 4)));
-                    }
-                }
-                return outputStacks;
-            }
-
+            return inputStacks;
         }
 
+        @Override
+        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
+            ArrayList<PositionedStack> outputStacks = new ArrayList<>();
+            int i = 0;
+            if (recipe.mFluidOutputs != null) {
+                for (int j = 0; j < recipe.mFluidOutputs.length; j ++, i ++) {
+                    if (recipe.mFluidOutputs[j] == NF) continue;
+                    outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(recipe.mFluidOutputs[j], true), 93 + 18 * (i % 4), -1 + 18 * (i / 4)));
+                }
+            }
+            return outputStacks;
+        }
     }
 
 }
