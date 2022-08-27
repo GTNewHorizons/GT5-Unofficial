@@ -1697,7 +1697,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_HP_Solar.set(
                 new GT_MetaTileEntity_Boiler_Solar_Steel(114, "boiler.steel.solar", "High Pressure Solar Boiler")
                         .getStackForm(1L));
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Boiler.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Boiler.get(1L), bitsd, new Object[] {
             aTextPlate,
             "PwP",
             "BFB",
@@ -1708,7 +1708,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'B',
             new ItemStack(Blocks.brick_block, 1)
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Steel_Boiler.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Steel_Boiler.get(1L), bitsd, new Object[] {
             aTextPlate,
             "PwP",
             "BFB",
@@ -1719,7 +1719,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'B',
             new ItemStack(Blocks.brick_block, 1)
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Steel_Boiler_Lava.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Steel_Boiler_Lava.get(1L), bitsd, new Object[] {
             aTextPlate,
             "PTP",
             aTextPlateMotor,
@@ -1730,7 +1730,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'T',
             GT_ModHandler.getModItem("BuildCraft|Factory", "tankBlock", 1L, 0)
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Boiler_Solar.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Boiler_Solar.get(1L), bitsd, new Object[] {
             "GGG",
             "SSS",
             aTextPlateMotor,
@@ -1743,7 +1743,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'G',
             new ItemStack(Blocks.glass, 1)
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Solar.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Solar.get(1L), bitsd, new Object[] {
             "GGG",
             "SSS",
             aTextPlateMotor,
@@ -1796,7 +1796,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 new GT_MetaTileEntity_AlloySmelter_Steel(119, "hpmachine.alloysmelter", "High Pressure Alloy Smelter")
                         .getStackForm(1L));
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Furnace.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Furnace.get(1L), bitsd, new Object[] {
             "XXX",
             "XMX",
             "XFX",
@@ -1807,7 +1807,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'F',
             OreDictNames.craftingFurnace
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Furnace.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Furnace.get(1L), bitsd, new Object[] {
             "XSX",
             "PMP",
             "XXX",
@@ -1820,7 +1820,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'S',
             OrePrefixes.plate.get(Materials.Steel)
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Macerator.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Macerator.get(1L), bitsd, new Object[] {
             "DXD",
             "XMX",
             "PXP",
@@ -1833,7 +1833,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'D',
             OrePrefixes.gem.get(Materials.Diamond)
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Macerator.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Macerator.get(1L), bitsd, new Object[] {
             "PSP",
             "XMX",
             "PPP",
@@ -1846,7 +1846,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'S',
             OrePrefixes.plate.get(Materials.Steel)
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Extractor.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Extractor.get(1L), bitsd, new Object[] {
             "XXX",
             "PMG",
             "XXX",
@@ -1859,7 +1859,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'G',
             new ItemStack(Blocks.glass, 1)
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Extractor.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Extractor.get(1L), bitsd, new Object[] {
             "XSX",
             "PMP",
             "XXX",
@@ -1872,7 +1872,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'S',
             OrePrefixes.plate.get(Materials.Steel)
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Hammer.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Hammer.get(1L), bitsd, new Object[] {
             "XPX",
             "XMX",
             "XAX",
@@ -1885,7 +1885,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'A',
             OreDictNames.craftingAnvil
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Hammer.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Hammer.get(1L), bitsd, new Object[] {
             "PSP",
             "XMX",
             "PPP",
@@ -1898,7 +1898,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'S',
             OrePrefixes.plate.get(Materials.Steel)
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Compressor.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Compressor.get(1L), bitsd, new Object[] {
             "XXX",
             aTextPlateMotor,
             "XXX",
@@ -1909,7 +1909,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'P',
             OreDictNames.craftingPiston
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Compressor.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Compressor.get(1L), bitsd, new Object[] {
             "XSX",
             "PMP",
             "XXX",
@@ -1922,7 +1922,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'S',
             OrePrefixes.plate.get(Materials.Steel)
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_AlloySmelter.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_AlloySmelter.get(1L), bitsd, new Object[] {
             "XXX",
             "FMF",
             "XXX",
@@ -1933,7 +1933,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'F',
             OreDictNames.craftingFurnace
         });
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_AlloySmelter.get(1L), bits, new Object[] {
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_AlloySmelter.get(1L), bitsd, new Object[] {
             "PSP",
             "PMP",
             "PXP",
