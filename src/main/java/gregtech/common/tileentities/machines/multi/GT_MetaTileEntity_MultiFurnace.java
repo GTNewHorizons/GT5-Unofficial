@@ -94,7 +94,7 @@ public class GT_MetaTileEntity_MultiFurnace
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Furnace")
                 .addInfo("Controller Block for the Multi Smelter")
-                .addInfo("Smelts up to 8-128 items at once")
+                .addInfo("Smelts up to 8-8192 items at once")
                 .addInfo("Items smelted increases with coil tier")
                 .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
@@ -169,26 +169,26 @@ public class GT_MetaTileEntity_MultiFurnace
         if (tInputList.isEmpty()) return false;
 
         int mVolatage = GT_Utility.safeInt(getMaxInputVoltage());
-        int tMaxParrallel = 8 * this.mLevel;
-        int tCurrenParrallel = 0;
+        int tMaxParallel = this.mLevel;
+        int tCurrentParallel = 0;
         ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
         ArrayList<Integer> outputStackSizes = new ArrayList<>();
         for (ItemStack item : tInputList) {
             ItemStack smeltedOutput = GT_ModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
                 smeltedOutputs.add(smeltedOutput);
-                if (item.stackSize <= (tMaxParrallel - tCurrenParrallel)) {
-                    tCurrenParrallel += item.stackSize;
+                if (item.stackSize <= (tMaxParallel - tCurrentParallel)) {
+                    tCurrentParallel += item.stackSize;
                     outputStackSizes.add(smeltedOutput.stackSize * item.stackSize);
                     item.stackSize = 0;
                 } else {
-                    int remainingStackSize = tCurrenParrallel + item.stackSize - tMaxParrallel;
+                    int remainingStackSize = tCurrentParallel + item.stackSize - tMaxParallel;
                     outputStackSizes.add(smeltedOutput.stackSize * (item.stackSize - remainingStackSize));
                     item.stackSize = remainingStackSize;
                     break;
                 }
             }
-            if (tCurrenParrallel == tMaxParrallel) {
+            if (tCurrentParallel == tMaxParallel) {
                 break;
             }
         }
@@ -235,7 +235,11 @@ public class GT_MetaTileEntity_MultiFurnace
 
         if (mMaintenanceHatches.size() != 1) return false;
 
-        this.mLevel = getCoilLevel().getLevel();
+        if (getCoilLevel().getHeat() < 9000) {
+            this.mLevel = 8 * getCoilLevel().getLevel();
+        } else {
+            this.mLevel = 1 << (getCoilLevel().getTier());
+        }
         this.mCostDiscount = getCoilLevel().getCostDiscount();
         return true;
     }
@@ -297,7 +301,7 @@ public class GT_MetaTileEntity_MultiFurnace
                     + ": " + EnumChatFormatting.YELLOW
                     + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
             StatCollector.translateToLocal("GT5U.MS.multismelting") + ": " + EnumChatFormatting.GREEN
-                    + mLevel * 8 + EnumChatFormatting.RESET + " Discount: (EU/t) / "
+                    + mLevel + EnumChatFormatting.RESET + " Discount: (EU/t) / "
                     + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mCostDiscount) + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN
                     + mPollutionReduction + EnumChatFormatting.RESET + " %"
