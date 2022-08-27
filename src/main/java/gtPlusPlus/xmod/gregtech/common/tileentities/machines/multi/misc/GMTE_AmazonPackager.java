@@ -167,7 +167,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 			tItems.add(this.getGUIItemStack());		
 		}
 		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
-		boolean state = checkRecipeGeneric(tItemInputs, sNoFluids, 16 * GT_Utility.getTier(this.getMaxInputVoltage()), 75, 500, 10000);
+		boolean state = checkRecipeGeneric(tItemInputs, sNoFluids, getMaxParallelRecipes(), 75, 500, 10000);
 
 
 		if (state) {
@@ -571,7 +571,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
 	@Override
 	public int getMaxParallelRecipes() {
-		return 9;
+		return (16 * GT_Utility.getTier(this.getMaxInputVoltage()));
 	}
 
 	@Override
