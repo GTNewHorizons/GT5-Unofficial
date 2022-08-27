@@ -563,7 +563,7 @@ public class MyMaterial implements Runnable {
             new short[] {0x73, 0xa5, 0xfc},
             "Zinc Chloride",
             subscriptNumbers("ZnCl2"),
-            new Werkstoff.Stats(),
+            new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             OffsetID + 51,
