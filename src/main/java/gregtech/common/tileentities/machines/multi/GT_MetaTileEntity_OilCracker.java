@@ -371,13 +371,12 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                 if (isValidMetaTileEntity(tHatch)) {
                     for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
                         if (tFluid != null && !GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
-                            //GT_Log.out.print("mf: " + tFluid + "\n");
+                            // GT_Log.out.print("mf: " + tFluid + "\n");
                             rList.add(tFluid);
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
                     if (!GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tHatch.getFillableStack()))
                         rList.add(tHatch.getFillableStack());
@@ -390,13 +389,12 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                 if (isValidMetaTileEntity(tHatch)) {
                     for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
                         if (tFluid != null && GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
-                            //GT_Log.out.print("mf: " + tFluid + "\n");
+                            // GT_Log.out.print("mf: " + tFluid + "\n");
                             rList.add(tFluid);
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
                     FluidStack tStack = tHatch.getFillableStack();
                     if (GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tStack)) {
