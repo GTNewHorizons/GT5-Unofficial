@@ -45,7 +45,7 @@ public class GregtechMetaTileEntity_Adv_Implosion extends GregtechMeta_MultiBloc
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Factory Grade Advanced Implosion Compressor")
-				.addInfo("Speed: 100% | Eu Usage: 100% | Parallel: ((Tier/2)+1)")
+				.addInfo("Speed: +100% | EU Usage: 100% | Parallel: ((Tier/2)+1)")
 				.addInfo("Constructed exactly the same as a normal Implosion Compressor")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()

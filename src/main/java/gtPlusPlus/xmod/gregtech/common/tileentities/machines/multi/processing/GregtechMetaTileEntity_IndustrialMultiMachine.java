@@ -95,7 +95,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends GregtechMeta_
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Industrial Multi-Machine")
 				.addInfo("250% faster than using single block machines of the same voltage")
-				.addInfo("Only uses 80% of the eu/t normally required")
+				.addInfo("Only uses 80% of the EU/t normally required")
 				.addInfo("Processes two items per voltage tier")
 				.addInfo("Machine Type: [A] - " + EnumChatFormatting.YELLOW + aBuiltStrings[0] + EnumChatFormatting.RESET)
 				.addInfo("Machine Type: [B] - " + EnumChatFormatting.YELLOW + aBuiltStrings[1] + EnumChatFormatting.RESET)

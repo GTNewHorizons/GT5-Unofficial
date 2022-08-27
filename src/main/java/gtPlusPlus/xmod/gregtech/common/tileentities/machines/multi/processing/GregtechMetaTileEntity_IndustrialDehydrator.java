@@ -69,7 +69,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 				.addInfo("Factory Grade Vacuum Furnace")
 				.addInfo("Can toggle the operation temperature with a Screwdriver")
 				.addInfo("All Dehydrator recipes are Low Temp recipes")
-				.addInfo("Speed: 120% | Eu Usage: 50% | Parallel: 4")
+				.addInfo("Speed: +120% | EU Usage: 50% | Parallel: 4")
 				.addInfo("Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)")
 				.addInfo("Each 1800K over the min. Heat Capacity allows for one upgraded overclock")
 				.addInfo("Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%")

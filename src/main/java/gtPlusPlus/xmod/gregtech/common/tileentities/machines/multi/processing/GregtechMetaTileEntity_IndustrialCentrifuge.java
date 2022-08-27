@@ -67,7 +67,7 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge extends GregtechMeta_Mu
 				.addInfo("Controller Block for the Industrial Centrifuge")
 				.addInfo("125% faster than using single block machines of the same voltage")
 				.addInfo("Disable animations with a screwdriver")
-				.addInfo("Only uses 90% of the eu/t normally required")
+				.addInfo("Only uses 90% of the EU/t normally required")
 				.addInfo("Processes six items per voltage tier")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()

@@ -60,7 +60,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends GregtechMet
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Industrial Cutting Factory")
 				.addInfo("200% faster than using single block machines of the same voltage")
-				.addInfo("Only uses 75% of the eu/t normally required")
+				.addInfo("Only uses 75% of the EU/t normally required")
 				.addInfo("Processes four items per voltage tier")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()

@@ -70,7 +70,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Factory Grade Advanced Vacuum Freezer")
-				.addInfo("Speed: 200% | Eu Usage: 100% | Parallel: 4")
+				.addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
 				.addInfo("Consumes 1L of " + mCryoFuelName + "/t during operation")
 				.addInfo("Constructed exactly the same as a normal Vacuum Freezer")
 				.addPollutionAmount(getPollutionPerSecond(null))

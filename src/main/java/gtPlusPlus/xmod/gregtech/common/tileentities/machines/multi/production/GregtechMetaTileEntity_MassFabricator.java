@@ -100,7 +100,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Matter Fabricator")
-				.addInfo("Speed: 100% | Eu Usage: 80%")
+				.addInfo("Speed: +0% | EU Usage: 80%")
 				.addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
 				.addInfo("Produces UU-A, UU-M & Scrap")
 				.addInfo("Change mode with screwdriver")

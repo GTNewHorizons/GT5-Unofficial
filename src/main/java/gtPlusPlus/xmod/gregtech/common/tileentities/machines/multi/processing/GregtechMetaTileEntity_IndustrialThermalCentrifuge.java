@@ -57,7 +57,7 @@ public class GregtechMetaTileEntity_IndustrialThermalCentrifuge extends Gregtech
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Industrial Thermal Centrifuge")
 				.addInfo("150% faster than using single block machines of the same voltage")
-				.addInfo("Only uses 80% of the eu/t normally required")
+				.addInfo("Only uses 80% of the EU/t normally required")
 				.addInfo("Processes eight items per voltage tier")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()

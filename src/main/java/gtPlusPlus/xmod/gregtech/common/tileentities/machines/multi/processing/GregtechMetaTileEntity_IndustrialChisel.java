@@ -66,7 +66,7 @@ public class GregtechMetaTileEntity_IndustrialChisel extends GregtechMeta_MultiB
 				.addInfo("Factory Grade Auto Chisel")
 				.addInfo("Target block goes in GUI slot")
 				.addInfo("If no target provided, firdt chisel result is used")
-				.addInfo("Speed: 200% | Eu Usage: 75% | Parallel: Tier x 16")
+				.addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)

@@ -54,7 +54,7 @@ public class GregtechMetaTileEntity_IndustrialElectrolyzer extends GregtechMeta_
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Industrial Electrolyzer")
 				.addInfo("180% faster than using single block machines of the same voltage")
-				.addInfo("Only uses 90% of the eu/t normally required")
+				.addInfo("Only uses 90% of the EU/t normally required")
 				.addInfo("Processes two items per voltage tier")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()

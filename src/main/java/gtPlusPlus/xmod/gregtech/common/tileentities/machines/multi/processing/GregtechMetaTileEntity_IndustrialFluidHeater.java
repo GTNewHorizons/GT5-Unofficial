@@ -55,7 +55,7 @@ public class GregtechMetaTileEntity_IndustrialFluidHeater extends GregtechMeta_M
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Industrial Fluid Heater")
 				.addInfo("120% faster than using single block machines of the same voltage")
-				.addInfo("Only uses 90% of the eu/t normally required")
+				.addInfo("Only uses 90% of the EU/t normally required")
 				.addInfo("Processes eight items per voltage tier")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()

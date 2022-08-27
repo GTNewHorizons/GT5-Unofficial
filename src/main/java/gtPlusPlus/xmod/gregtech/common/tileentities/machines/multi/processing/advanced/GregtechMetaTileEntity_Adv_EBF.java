@@ -78,7 +78,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 		.addInfo("Factory Grade Advanced Blast Furnace")
-		.addInfo("Speed: 120% | Eu Usage: 90% | Parallel: 8")
+		.addInfo("Speed: +120% | EU Usage: 90% | Parallel: 8")
 		.addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
 		.addInfo("Constructed exactly the same as a normal EBF")
 		.addPollutionAmount(getPollutionPerSecond(null))

@@ -124,7 +124,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 				.addInfo("Controller Block for the Industrial Alloy Smelter")
 				.addInfo("Gains one parallel per voltage tier")
 				.addInfo("Gains one multiplier per coil tier")
-				.addInfo("parallel = tier * coil tier")
+				.addInfo("Parallel = Tier * Coil Tier")
 				.addInfo("Gains 5% speed bonus per coil tier")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
