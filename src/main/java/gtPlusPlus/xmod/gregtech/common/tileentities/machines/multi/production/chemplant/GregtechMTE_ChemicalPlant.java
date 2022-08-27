@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -34,6 +36,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -44,6 +47,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
@@ -62,13 +66,11 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 	private int checkPipe;
 	private int maxTierOfHatch;
 	private int mCasing;
-	private volatile int mBuiltState = 1;
 	private IStructureDefinition<GregtechMTE_ChemicalPlant> STRUCTURE_DEFINITION = null;
 
 	private final ArrayList<GT_MetaTileEntity_Hatch_Catalysts> mCatalystBuses = new ArrayList<GT_MetaTileEntity_Hatch_Catalysts>();
 
 	private static final HashMap<Integer, Triplet<Block, Integer, Integer>> mTieredBlockRegistry = new HashMap<>();
-	private static final HashMap<Pair<Block, Integer>, Integer> mReverseMap = new HashMap<>();
 
 	public GregtechMTE_ChemicalPlant(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -84,7 +86,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 			CORE.crash("Tried to register a Machine casing for tier "+aTier+" to the Chemical Plant, however this tier already contains one.");
 		}
 		mTieredBlockRegistry.put(aTier, aCasingData);
-		mReverseMap.put(Pair.of(aBlock, aMeta), aTier);
 		return true;
 	}
 
@@ -123,6 +124,10 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 				.addOutputHatch("Bottom Casing", 1)
 				.addEnergyHatch("Bottom Casing", 1)
 				.addMaintenanceHatch("Bottom Casing", 1)
+				.addSubChannelUsage("casing", "metal machine casing")
+				.addSubChannelUsage("machine", "tier machine casing")
+				.addSubChannelUsage("coil", "heating coil blocks")
+				.addSubChannelUsage("pipe", "pipe casing blocks")
 				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
@@ -174,6 +179,14 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 	@Override
 	public IStructureDefinition<GregtechMTE_ChemicalPlant> getStructureDefinition() {
 		if (STRUCTURE_DEFINITION == null) {
+			IStructureElement<GregtechMTE_ChemicalPlant> allCasingsElement = withChannel(
+					"casing",
+					ofChain(
+							IntStream.range(0, 8)
+									.mapToObj(GregtechMTE_ChemicalPlant::ofSolidCasing)
+									.collect(Collectors.toList())
+					)
+			);
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_ChemicalPlant>builder()
 					.addShape(mName, transpose(new String[][]{
 							{"XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX"},
@@ -205,91 +218,36 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 											.casingIndex(getCasingTextureID())
 											.dot(1)
 											.build(),
-									onElementPass(
-											x -> {++x.checkCasing[0]; ++x.mCasing;},
-											ofSolidCasing(0)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[1]; ++x.mCasing;},
-											ofSolidCasing(1)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[2]; ++x.mCasing;},
-											ofSolidCasing(2)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[3]; ++x.mCasing;},
-											ofSolidCasing(3)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[4]; ++x.mCasing;},
-											ofSolidCasing(4)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[5]; ++x.mCasing;},
-											ofSolidCasing(5)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[6]; ++x.mCasing;},
-											ofSolidCasing(6)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[7]; ++x.mCasing;},
-											ofSolidCasing(7)
-									)
+									allCasingsElement
 							)
 					)
 					.addElement(
 							'X',
-							ofChain(
-									onElementPass(
-											x -> {++x.checkCasing[0]; ++x.mCasing;},
-											ofSolidCasing(0)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[1]; ++x.mCasing;},
-											ofSolidCasing(1)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[2]; ++x.mCasing;},
-											ofSolidCasing(2)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[3]; ++x.mCasing;},
-											ofSolidCasing(3)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[4]; ++x.mCasing;},
-											ofSolidCasing(4)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[5]; ++x.mCasing;},
-											ofSolidCasing(5)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[6]; ++x.mCasing;},
-											ofSolidCasing(6)
-									),
-									onElementPass(
-											x -> {++x.checkCasing[7]; ++x.mCasing;},
-											ofSolidCasing(7)
+							allCasingsElement
+					)
+					.addElement(
+							'M',
+							withChannel(
+									"machine",
+									addTieredBlock(
+											GregTech_API.sBlockCasings1, GregtechMTE_ChemicalPlant::setMachineMeta, GregtechMTE_ChemicalPlant::getMachineMeta, 10
 									)
 							)
 					)
 					.addElement(
-							'M',
-							addTieredBlock(
-									GregTech_API.sBlockCasings1, GregtechMTE_ChemicalPlant::setMachineMeta, GregtechMTE_ChemicalPlant::getMachineMeta, 10
+							'H',
+							withChannel(
+									"coil",
+									ofCoil(GregtechMTE_ChemicalPlant::setCoilMeta, GregtechMTE_ChemicalPlant::getCoilMeta)
 							)
 					)
 					.addElement(
-							'H',
-							ofCoil(GregtechMTE_ChemicalPlant::setCoilMeta, GregtechMTE_ChemicalPlant::getCoilMeta)
-					)
-					.addElement(
 							'P',
-							addTieredBlock(
-									GregTech_API.sBlockCasings2, GregtechMTE_ChemicalPlant::setPipeMeta, GregtechMTE_ChemicalPlant::getPipeMeta, 12, 16
+							withChannel(
+									"pipe",
+									addTieredBlock(
+											GregTech_API.sBlockCasings2, GregtechMTE_ChemicalPlant::setPipeMeta, GregtechMTE_ChemicalPlant::getPipeMeta, 12, 16
+									)
 							)
 					)
 					.build();
@@ -297,11 +255,16 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 		return STRUCTURE_DEFINITION;
 	}
 
-	public static <T> IStructureElement<T> ofSolidCasing(int aIndex) {
-		return new IStructureElement<T>() {
+	private static IStructureElement<GregtechMTE_ChemicalPlant> ofSolidCasing(int aIndex) {
+		return new IStructureElement<GregtechMTE_ChemicalPlant>() {
 			@Override
-			public boolean check(T t, World world, int x, int y, int z) {
-				return check(aIndex, world, x, y, z);
+			public boolean check(GregtechMTE_ChemicalPlant t, World world, int x, int y, int z) {
+				if (check(aIndex, world, x, y, z)) {
+					t.checkCasing[aIndex]++;
+					t.mCasing++;
+					return true;
+				}
+				else return false;
 			}
 
 			private boolean check(int aIndex, World world, int x, int y, int z) {
@@ -318,18 +281,18 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 			}
 
 			@Override
-			public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+			public boolean spawnHint(GregtechMTE_ChemicalPlant t, World world, int x, int y, int z, ItemStack trigger) {
 				StructureLibAPI.hintParticle(world, x, y, z, mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_1(), mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_2());
 				return true;
 			}
 
 			@Override
-			public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+			public boolean placeBlock(GregtechMTE_ChemicalPlant t, World world, int x, int y, int z, ItemStack trigger) {
 				return world.setBlock(x, y, z, mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_1(), mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_2(), 3);
 			}
 
 			@Override
-			public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+			public PlaceResult survivalPlaceBlock(GregtechMTE_ChemicalPlant t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
 				if (check(getIndex(trigger.stackSize), world, x, y, z)) return PlaceResult.SKIP;
 				return StructureUtility.survivalPlaceBlock(mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_1(), mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_2(), world, x, y, z, s, actor, chatter);
 			}
