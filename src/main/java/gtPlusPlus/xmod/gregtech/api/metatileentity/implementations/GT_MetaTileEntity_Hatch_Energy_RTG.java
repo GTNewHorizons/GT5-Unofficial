@@ -2,7 +2,8 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
 
-import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
 import gregtech.api.gui.GT_Container_3by3;
@@ -15,7 +16,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -27,15 +27,16 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
 
 	public GT_MetaTileEntity_Hatch_Energy_RTG(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount) {
 		super(aID, aName, aNameRegional, aTier);
-		ReflectionUtils.setFinalFieldValue(MetaTileEntity.class, "mInventory", new ItemStack[aInvSlotCount]);
+		setInventoryContent(aInvSlotCount);
 	}
 
 	public GT_MetaTileEntity_Hatch_Energy_RTG(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
 		super(aName, aTier, aDescription, aTextures);
 	}
 
-	public GT_MetaTileEntity_Hatch_Energy_RTG(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+	public GT_MetaTileEntity_Hatch_Energy_RTG(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aInvSlotCount) {
 		super(aName, aTier, aDescription, aTextures);
+		setInventoryContent(aInvSlotCount);
 	}
 	
 	@Override
@@ -109,13 +110,7 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
 
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		Constructor aCon = ReflectionUtils.getConstructor(this.getClass(), new Class[] {String.class, int.class, int.class, String[].class, ITexture[][][].class});
-		Object aInst = ReflectionUtils.createNewInstanceFromConstructor(aCon, new Object[] {mName, mTier, 9, mDescriptionArray, mTextures});
-		if (GT_MetaTileEntity_Hatch_Energy_RTG.class.isInstance(aInst)) {
-			return (MetaTileEntity) aInst;
-		}
-		Logger.INFO("Created bad sized RTG hatch.");
-		return new GT_MetaTileEntity_Hatch_Energy_RTG(mName, mTier, mDescriptionArray, mTextures);
+		return new GT_MetaTileEntity_Hatch_Energy_RTG(mName, mTier, mDescriptionArray, mTextures, 9);
 	}
 
 	@Override
@@ -283,6 +278,16 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
 		return null;		
 	}
 
-
+	private void setInventoryContent(int aInvSlotCount) {
+		try {
+			Field fieldInventory = MetaTileEntity.class.getDeclaredField("mInventory");
+			Field modifiersField = Field.class.getDeclaredField("modifiers");
+			modifiersField.setAccessible(true);
+			modifiersField.setInt(fieldInventory, fieldInventory.getModifiers() & ~Modifier.PRIVATE & ~Modifier.FINAL);
+			fieldInventory.set(this, new ItemStack[aInvSlotCount]);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
