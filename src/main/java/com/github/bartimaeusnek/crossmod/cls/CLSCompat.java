@@ -23,16 +23,14 @@
 package com.github.bartimaeusnek.crossmod.cls;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-@SuppressWarnings({"rawtypes","unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class CLSCompat {
-    private CLSCompat() {
-    }
+    private CLSCompat() {}
 
     private static final long MINIMAL_UPDATE_INTERVAL = 1000 / 30; // target 30 fps
     private static long lastUpdate = 0;
@@ -76,12 +74,10 @@ public class CLSCompat {
             e.printStackTrace();
         }
 
-        if (Werkstoff.werkstoffHashSet.size() >= 100)
-            sizeStep = Werkstoff.werkstoffHashSet.size() / 100 - 1;
-        else
-            sizeStep = sizeStep2 = Werkstoff.werkstoffHashSet.size();
+        if (Werkstoff.werkstoffHashSet.size() >= 100) sizeStep = Werkstoff.werkstoffHashSet.size() / 100 - 1;
+        else sizeStep = sizeStep2 = Werkstoff.werkstoffHashSet.size();
 
-        return new Integer[]{sizeStep, sizeStep2, sizeStep};
+        return new Integer[] {sizeStep, sizeStep2, sizeStep};
     }
 
     public static int invokeStepSize(Werkstoff werkstoff, Integer[] steps, int size) {
@@ -97,8 +93,7 @@ public class CLSCompat {
             lastUpdate = time;
         }
 
-        if (steps[0] == 0 && Werkstoff.werkstoffHashSet.size() >= 100)
-            steps[0] = steps[2];
+        if (steps[0] == 0 && Werkstoff.werkstoffHashSet.size() >= 100) steps[0] = steps[2];
 
         size += steps[1];
         return size;

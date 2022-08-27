@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -38,12 +39,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class BW_Blocks extends Block {
 
     @SideOnly(Side.CLIENT)
     protected IIcon[] texture;
+
     String[] textureNames;
     protected String name;
 

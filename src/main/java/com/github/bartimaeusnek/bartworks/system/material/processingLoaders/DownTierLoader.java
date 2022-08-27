@@ -25,7 +25,6 @@ package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.StreamUtils;
 import gregtech.api.util.GT_Recipe;
-
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

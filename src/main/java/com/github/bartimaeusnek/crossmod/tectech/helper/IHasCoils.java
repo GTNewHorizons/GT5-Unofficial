@@ -26,5 +26,6 @@ import gregtech.api.enums.HeatingCoilLevel;
 
 public interface IHasCoils {
     void setCoilHeat(HeatingCoilLevel coilMeta);
+
     HeatingCoilLevel getCoilHeat();
 }

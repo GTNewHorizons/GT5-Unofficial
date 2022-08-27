@@ -55,11 +55,6 @@ public class BioPlasmid extends BioData {
 
     @Override
     public String toString() {
-        return "BioPlasmid{" +
-                "name='" + name + '\'' +
-                ", ID=" + ID +
-                '}';
+        return "BioPlasmid{" + "name='" + name + '\'' + ", ID=" + ID + '}';
     }
-
-
 }

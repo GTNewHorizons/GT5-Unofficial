@@ -36,7 +36,8 @@ public class GT_MetaTileEntity_CompressedFluidHatch extends GT_MetaTileEntity_Ha
         this.mDescriptionArray[1] = "Capacity: 100000000L";
     }
 
-    public GT_MetaTileEntity_CompressedFluidHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_CompressedFluidHatch(
+            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -52,6 +53,7 @@ public class GT_MetaTileEntity_CompressedFluidHatch extends GT_MetaTileEntity_Ha
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_CompressedFluidHatch(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_CompressedFluidHatch(
+                this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 }

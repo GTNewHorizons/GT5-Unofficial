@@ -22,22 +22,21 @@
 
 package com.github.bartimaeusnek.bartworks.common.items;
 
+import static com.github.bartimaeusnek.bartworks.common.loaders.BioItemList.*;
+
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-
-import java.util.List;
-
-import static com.github.bartimaeusnek.bartworks.common.loaders.BioItemList.*;
 
 public class LabParts extends SimpleSubItemClass {
 
@@ -49,12 +48,12 @@ public class LabParts extends SimpleSubItemClass {
     @Override
     public EnumRarity getRarity(ItemStack itemStack) {
 
-        if (itemStack == null || itemStack.getTagCompound() == null)
-            return EnumRarity.common;
+        if (itemStack == null || itemStack.getTagCompound() == null) return EnumRarity.common;
 
         switch (itemStack.getItemDamage()) {
             case 0:
-                return BW_Util.getRarityFromByte(itemStack.getTagCompound().getCompoundTag("DNA").getByte("Rarity"));
+                return BW_Util.getRarityFromByte(
+                        itemStack.getTagCompound().getCompoundTag("DNA").getByte("Rarity"));
             case 1:
             case 2:
                 return BW_Util.getRarityFromByte(itemStack.getTagCompound().getByte("Rarity"));
@@ -66,7 +65,10 @@ public class LabParts extends SimpleSubItemClass {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        if (stack.getItemDamage() == 0 && stack.getTagCompound() != null && stack.getTagCompound().getIntArray("Color") != null && stack.getTagCompound().getIntArray("Color").length > 0) {
+        if (stack.getItemDamage() == 0
+                && stack.getTagCompound() != null
+                && stack.getTagCompound().getIntArray("Color") != null
+                && stack.getTagCompound().getIntArray("Color").length > 0) {
             int[] rgb = stack.getTagCompound().getIntArray("Color");
             return BW_ColorUtil.getColorFromRGBArray(rgb);
         }
@@ -76,8 +78,7 @@ public class LabParts extends SimpleSubItemClass {
     @Override
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean b) {
-        if (itemStack == null)
-            return;
+        if (itemStack == null) return;
 
         if (itemStack.getTagCompound() == null) {
             switch (itemStack.getItemDamage()) {
@@ -107,16 +108,22 @@ public class LabParts extends SimpleSubItemClass {
 
         switch (itemStack.getItemDamage()) {
             case 0:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name") + " " + itemStack.getTagCompound().getString("Name") + (culture != null ? " ("+culture.getLocalisedName()+")" : ""));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name") + " "
+                        + itemStack.getTagCompound().getString("Name")
+                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
                 if (!itemStack.getTagCompound().getBoolean("Breedable")) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
             case 1:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name") + " " + itemStack.getTagCompound().getString("Name") + (culture != null ? " ("+culture.getLocalisedName()+")" : ""));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name") + " "
+                        + itemStack.getTagCompound().getString("Name")
+                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
                 break;
             case 2:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name") + " " + itemStack.getTagCompound().getString("Name") + (culture != null ? " ("+culture.getLocalisedName()+")" : ""));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name") + " "
+                        + itemStack.getTagCompound().getString("Name")
+                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
                 break;
             default:
                 break;

@@ -30,7 +30,8 @@ import net.minecraft.world.World;
 
 public class BW_TileEntityContainer_MachineBlock extends BW_TileEntityContainer {
 
-    public BW_TileEntityContainer_MachineBlock(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
+    public BW_TileEntityContainer_MachineBlock(
+            Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
         GregTech_API.registerMachineBlock(this, -1);
     }

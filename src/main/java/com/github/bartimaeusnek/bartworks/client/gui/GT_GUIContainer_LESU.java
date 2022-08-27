@@ -31,13 +31,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import java.awt.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
 
 @SideOnly(Side.CLIENT)
 public class GT_GUIContainer_LESU extends GT_GUIContainer {
@@ -57,16 +56,52 @@ public class GT_GUIContainer_LESU extends GT_GUIContainer {
         this.drawString(this.fontRendererObj, "L.E.S.U.", 11, 8, 16448255);
         if (this.mContainer != null) {
             String percell = String.valueOf(ConfigHandler.energyPerCell).substring(1);
-            this.drawString(this.fontRendererObj, "EU: " + GT_Utility.formatNumbers(this.mContainer.mEnergy), 11, 16, 16448255);
-            this.drawString(this.fontRendererObj, "MAX: " + (this.c.getBaseMetaTileEntity().isActive() ? GT_Utility.formatNumbers(this.mContainer.mOutput) + percell : Integer.toString(0)), 11, 24, 16448255);
-            this.drawString(this.fontRendererObj, "MAX EU/t IN: " + GT_Utility.formatNumbers(this.mContainer.mInput), 11, 32, 16448255);
-            this.drawString(this.fontRendererObj, "EU/t OUT: " + GT_Utility.formatNumbers(this.mContainer.mOutput), 11, 40, 16448255);
-            this.drawString(this.fontRendererObj, "AMP/t IN/OUT: " + GT_Utility.formatNumbers(this.c.getBaseMetaTileEntity().getInputAmperage()), 11, 48, 16448255);
+            this.drawString(
+                    this.fontRendererObj, "EU: " + GT_Utility.formatNumbers(this.mContainer.mEnergy), 11, 16, 16448255);
+            this.drawString(
+                    this.fontRendererObj,
+                    "MAX: "
+                            + (this.c.getBaseMetaTileEntity().isActive()
+                                    ? GT_Utility.formatNumbers(this.mContainer.mOutput) + percell
+                                    : Integer.toString(0)),
+                    11,
+                    24,
+                    16448255);
+            this.drawString(
+                    this.fontRendererObj,
+                    "MAX EU/t IN: " + GT_Utility.formatNumbers(this.mContainer.mInput),
+                    11,
+                    32,
+                    16448255);
+            this.drawString(
+                    this.fontRendererObj,
+                    "EU/t OUT: " + GT_Utility.formatNumbers(this.mContainer.mOutput),
+                    11,
+                    40,
+                    16448255);
+            this.drawString(
+                    this.fontRendererObj,
+                    "AMP/t IN/OUT: "
+                            + GT_Utility.formatNumbers(
+                                    this.c.getBaseMetaTileEntity().getInputAmperage()),
+                    11,
+                    48,
+                    16448255);
             if (this.c.maxEUStore() >= Long.MAX_VALUE - 1) {
-                this.drawString(this.fontRendererObj, StatCollector.translateToLocal("tooltip.LESU.0.name"), 11, 56, Color.YELLOW.getRGB());
+                this.drawString(
+                        this.fontRendererObj,
+                        StatCollector.translateToLocal("tooltip.LESU.0.name"),
+                        11,
+                        56,
+                        Color.YELLOW.getRGB());
             }
             if (!this.c.getBaseMetaTileEntity().isActive()) {
-                this.drawString(this.fontRendererObj, StatCollector.translateToLocal("tooltip.LESU.1.name"), 11, 56, Color.RED.getRGB());
+                this.drawString(
+                        this.fontRendererObj,
+                        StatCollector.translateToLocal("tooltip.LESU.1.name"),
+                        11,
+                        56,
+                        Color.RED.getRGB());
             }
         }
     }

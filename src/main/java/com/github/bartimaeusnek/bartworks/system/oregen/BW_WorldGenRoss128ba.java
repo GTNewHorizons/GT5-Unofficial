@@ -22,19 +22,30 @@
 
 package com.github.bartimaeusnek.bartworks.system.oregen;
 
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
+import static com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy.uo_dimensionList;
+import static gregtech.api.enums.Materials.*;
+
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
-import static com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy.uo_dimensionList;
-import static gregtech.api.enums.Materials.*;
+public class BW_WorldGenRoss128ba extends BW_OreLayer {
 
-public class BW_WorldGenRoss128ba extends BW_OreLayer  {
-
-    public BW_WorldGenRoss128ba(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled) {
+    public BW_WorldGenRoss128ba(
+            String aName,
+            boolean aDefault,
+            int aMinY,
+            int aMaxY,
+            int aWeight,
+            int aDensity,
+            int aSize,
+            ISubTagContainer top,
+            ISubTagContainer bottom,
+            ISubTagContainer between,
+            ISubTagContainer sprinkled) {
         super(aName, aDefault, aMinY, aMaxY, aWeight, aDensity, aSize, top, bottom, between, sprinkled);
     }
 
@@ -42,12 +53,12 @@ public class BW_WorldGenRoss128ba extends BW_OreLayer  {
     public Block getDefaultBlockToReplace() {
         return Block.getBlockFromName("GalacticraftCore:tile.moonBlock");
     }
+
     @Override
-    public int[] getDefaultDamageToReplace(){
+    public int[] getDefaultDamageToReplace() {
         int[] ret = new int[12];
         for (int i = 0; i < 12; i++) {
-            if (i != 5 && i != 3)
-                ret[i] = i;
+            if (i != 5 && i != 3) ret[i] = i;
         }
         return ret;
     }
@@ -58,25 +69,88 @@ public class BW_WorldGenRoss128ba extends BW_OreLayer  {
     }
 
     public static void init_Ores() {
-        new BW_WorldGenRoss128ba("ore.mix.ross128ba.tib", true, 30, 60, 6, 1, 16, Tiberium, Tiberium, NaquadahEnriched, NaquadahEnriched);
-        new BW_WorldGenRoss128ba("ore.mix.ross128ba.Tungstate", true, 5, 40, 60, 4, 14, Ferberite, Huebnerit, Loellingit, Scheelite);
-        new BW_WorldGenRoss128ba("ore.mix.ross128ba.bart", true, 30, 60, 1, 1, 1, BArTiMaEuSNeK, BArTiMaEuSNeK, BArTiMaEuSNeK, BArTiMaEuSNeK);
-        new BW_WorldGenRoss128ba("ore.mix.ross128ba.TurmalinAlkali", true, 5, 80, 60, 4, 48, Olenit, FluorBuergerit, ChromoAluminoPovondrait, VanadioOxyDravit);
-        new BW_WorldGenRoss128ba("ore.mix.ross128ba.Amethyst", true, 5, 80, 35, 2, 8, Amethyst, Olivine, Prasiolite, Hedenbergit);
-        new BW_WorldGenRoss128ba("ore.mix.ross128ba.CopperSulfits", true, 40, 70, 80, 3, 24, Djurleit, Bornite, Wittichenit, Tetrahedrite);
-        new BW_WorldGenRoss128ba("ore.mix.ross128ba.RedZircon", true, 10, 80, 40, 3, 24, Fayalit, FuchsitAL, RedZircon, FuchsitCR);
-        new BW_WorldGenRoss128ba("ore.mix.ross128ba.Fluorspar", true, 10, 80, 35, 4, 8, Galena, Sphalerite, Fluorspar, Barite);
+        new BW_WorldGenRoss128ba(
+                "ore.mix.ross128ba.tib",
+                true,
+                30,
+                60,
+                6,
+                1,
+                16,
+                Tiberium,
+                Tiberium,
+                NaquadahEnriched,
+                NaquadahEnriched);
+        new BW_WorldGenRoss128ba(
+                "ore.mix.ross128ba.Tungstate", true, 5, 40, 60, 4, 14, Ferberite, Huebnerit, Loellingit, Scheelite);
+        new BW_WorldGenRoss128ba(
+                "ore.mix.ross128ba.bart",
+                true,
+                30,
+                60,
+                1,
+                1,
+                1,
+                BArTiMaEuSNeK,
+                BArTiMaEuSNeK,
+                BArTiMaEuSNeK,
+                BArTiMaEuSNeK);
+        new BW_WorldGenRoss128ba(
+                "ore.mix.ross128ba.TurmalinAlkali",
+                true,
+                5,
+                80,
+                60,
+                4,
+                48,
+                Olenit,
+                FluorBuergerit,
+                ChromoAluminoPovondrait,
+                VanadioOxyDravit);
+        new BW_WorldGenRoss128ba(
+                "ore.mix.ross128ba.Amethyst", true, 5, 80, 35, 2, 8, Amethyst, Olivine, Prasiolite, Hedenbergit);
+        new BW_WorldGenRoss128ba(
+                "ore.mix.ross128ba.CopperSulfits",
+                true,
+                40,
+                70,
+                80,
+                3,
+                24,
+                Djurleit,
+                Bornite,
+                Wittichenit,
+                Tetrahedrite);
+        new BW_WorldGenRoss128ba(
+                "ore.mix.ross128ba.RedZircon", true, 10, 80, 40, 3, 24, Fayalit, FuchsitAL, RedZircon, FuchsitCR);
+        new BW_WorldGenRoss128ba(
+                "ore.mix.ross128ba.Fluorspar", true, 10, 80, 35, 4, 8, Galena, Sphalerite, Fluorspar, Barite);
     }
 
     public static void init_undergroundFluids() {
         String ross128b = StatCollector.translateToLocal("moon.Ross128ba");
-        uo_dimensionList.SetConfigValues(ross128b, ross128b, SaltWater.getFluid(1).getFluid().getName(), SaltWater.getFluid(1).getFluid().getName(), 0, 1250, 40, 5);
-        uo_dimensionList.SetConfigValues(ross128b, ross128b, Helium_3.getGas(1).getFluid().getName(), Helium_3.getGas(1).getFluid().getName(), 0, 1250, 60, 5);
+        uo_dimensionList.SetConfigValues(
+                ross128b,
+                ross128b,
+                SaltWater.getFluid(1).getFluid().getName(),
+                SaltWater.getFluid(1).getFluid().getName(),
+                0,
+                1250,
+                40,
+                5);
+        uo_dimensionList.SetConfigValues(
+                ross128b,
+                ross128b,
+                Helium_3.getGas(1).getFluid().getName(),
+                Helium_3.getGas(1).getFluid().getName(),
+                0,
+                1250,
+                60,
+                5);
     }
 
     @Override
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
         return aDimensionType == ConfigHandler.ross128BAID;
     }
-
 }

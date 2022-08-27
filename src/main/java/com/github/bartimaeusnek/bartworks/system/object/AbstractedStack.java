@@ -23,15 +23,14 @@
 package com.github.bartimaeusnek.bartworks.system.object;
 
 import com.github.bartimaeusnek.bartworks.util.Pair;
+import java.io.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.io.*;
-
 public class AbstractedStack implements Serializable {
 
-    final Pair<Integer,Short> idDamage;
+    final Pair<Integer, Short> idDamage;
     final NBTTagCompound mTag;
 
     @Override
@@ -67,8 +66,7 @@ public class AbstractedStack implements Serializable {
     }
 
     public AbstractedStack(ItemStack itemStack) {
-        if (itemStack == null)
-            throw new UnsupportedOperationException();
+        if (itemStack == null) throw new UnsupportedOperationException();
         this.idDamage = new Pair<>(Item.getIdFromItem(itemStack.getItem()), (short) itemStack.getItemDamage());
         this.mTag = itemStack.getTagCompound();
     }

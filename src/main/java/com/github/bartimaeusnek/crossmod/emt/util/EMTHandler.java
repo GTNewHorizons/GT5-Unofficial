@@ -23,15 +23,17 @@
 package com.github.bartimaeusnek.crossmod.emt.util;
 
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-
 import java.lang.reflect.Field;
+
 @SuppressWarnings("unchecked")
 public class EMTHandler {
     public static Class<? extends GT_MetaTileEntity_Hatch_Input> aEssentiaInputHatch;
     public static Field aAspectField;
+
     static {
         try {
-            aEssentiaInputHatch = (Class<? extends GT_MetaTileEntity_Hatch_Input>) Class.forName("emt.gthandler.common.implementations.EssentiaHatch");
+            aEssentiaInputHatch = (Class<? extends GT_MetaTileEntity_Hatch_Input>)
+                    Class.forName("emt.gthandler.common.implementations.EssentiaHatch");
             aAspectField = aEssentiaInputHatch.getDeclaredField("current");
             aAspectField.setAccessible(true);
         } catch (ClassNotFoundException | NoSuchFieldException e) {

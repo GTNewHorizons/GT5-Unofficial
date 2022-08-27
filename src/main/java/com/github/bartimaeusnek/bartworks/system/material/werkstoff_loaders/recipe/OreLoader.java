@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
+import static gregtech.api.enums.OrePrefixes.*;
+
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
@@ -30,16 +32,21 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 
-import static gregtech.api.enums.OrePrefixes.*;
-
 public class OreLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
-        if (werkstoff.hasItemType(ore) && werkstoff.hasItemType(ingot) && !werkstoff.getStats().isBlastFurnace())
-            GT_ModHandler.addSmeltingRecipe(WerkstoffLoader.getCorrespondingItemStack(ore, werkstoff), werkstoff.get(ingot));
+        if (werkstoff.hasItemType(ore)
+                && werkstoff.hasItemType(ingot)
+                && !werkstoff.getStats().isBlastFurnace())
+            GT_ModHandler.addSmeltingRecipe(
+                    WerkstoffLoader.getCorrespondingItemStack(ore, werkstoff), werkstoff.get(ingot));
 
         if (werkstoff.hasItemType(ore)) {
-            GT_Values.RA.addForgeHammerRecipe(werkstoff.get(ore), werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed), 16, 10);
+            GT_Values.RA.addForgeHammerRecipe(
+                    werkstoff.get(ore),
+                    werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed),
+                    16,
+                    10);
             GT_ModHandler.addPulverisationRecipe(
                     werkstoff.get(ore),
                     werkstoff.get(crushed, 2),

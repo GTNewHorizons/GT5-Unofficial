@@ -22,19 +22,17 @@
 
 package com.github.bartimaeusnek.bartworks.ASM;
 
-import org.objectweb.asm.tree.MethodNode;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import org.objectweb.asm.tree.MethodNode;
 
 public class ASMUtils {
 
     public static String matchAny(String toCompare, String... args) {
         for (String arg : args) {
-            if (toCompare.equalsIgnoreCase(arg))
-                return arg;
+            if (toCompare.equalsIgnoreCase(arg)) return arg;
         }
         return "";
     }
@@ -44,16 +42,15 @@ public class ASMUtils {
      */
     public static boolean isCorrectMethod(MethodNode methodNode, String... args) {
         for (String arg : args) {
-            if (methodNode.name.equalsIgnoreCase(arg) || methodNode.desc.equalsIgnoreCase(arg))
-                return true;
+            if (methodNode.name.equalsIgnoreCase(arg) || methodNode.desc.equalsIgnoreCase(arg)) return true;
         }
         return false;
     }
 
     public static boolean writeClassToDisk(byte[] towrite, String Classname, String Path) {
         try {
-            if (Path.charAt(Path.length()-1) == '/' || Path.charAt(Path.length()-1) == '\\')
-                Path = Path.substring(0,Path.length()-1);
+            if (Path.charAt(Path.length() - 1) == '/' || Path.charAt(Path.length() - 1) == '\\')
+                Path = Path.substring(0, Path.length() - 1);
             OutputStream os = new FileOutputStream(new File(Path + '/' + Classname + ".class"));
             os.write(towrite);
         } catch (IOException e) {
@@ -62,5 +59,4 @@ public class ASMUtils {
         }
         return true;
     }
-
 }

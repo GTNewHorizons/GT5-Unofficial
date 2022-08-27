@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.server.container;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import java.util.Iterator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -32,8 +33,6 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import java.util.Iterator;
 
 public class BW_Container_RadioHatch extends Container {
 
@@ -66,9 +65,7 @@ public class BW_Container_RadioHatch extends Container {
             }
 
             @Override
-            public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-
-            }
+            public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {}
 
             @Override
             public String getInventoryName() {
@@ -86,9 +83,7 @@ public class BW_Container_RadioHatch extends Container {
             }
 
             @Override
-            public void markDirty() {
-
-            }
+            public void markDirty() {}
 
             @Override
             public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
@@ -96,14 +91,10 @@ public class BW_Container_RadioHatch extends Container {
             }
 
             @Override
-            public void openInventory() {
-
-            }
+            public void openInventory() {}
 
             @Override
-            public void closeInventory() {
-
-            }
+            public void closeInventory() {}
 
             @Override
             public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
@@ -128,12 +119,12 @@ public class BW_Container_RadioHatch extends Container {
     @Override
     @SuppressWarnings("rawtypes")
     public void detectAndSendChanges() {
-        if (!this.iGregTechTileEntity.getBaseMetaTileEntity().isClientSide() && this.iGregTechTileEntity.getBaseMetaTileEntity().getMetaTileEntity() != null) {
+        if (!this.iGregTechTileEntity.getBaseMetaTileEntity().isClientSide()
+                && this.iGregTechTileEntity.getBaseMetaTileEntity().getMetaTileEntity() != null) {
             this.coverage = this.iGregTechTileEntity.getCoverage();
             ++this.timer;
             Iterator var2 = this.crafters.iterator();
-            if (this.timer >= Long.MAX_VALUE - 1)
-                this.timer = 0;
+            if (this.timer >= Long.MAX_VALUE - 1) this.timer = 0;
             while (true) {
                 do {
                     if (!var2.hasNext()) {
@@ -150,8 +141,7 @@ public class BW_Container_RadioHatch extends Container {
 
     @Override
     public void updateProgressBar(int p_75137_1_, int p_75137_2_) {
-        if (p_75137_1_ == 0)
-            this.coverage = (byte) p_75137_2_;
+        if (p_75137_1_ == 0) this.coverage = (byte) p_75137_2_;
     }
 
     @Override

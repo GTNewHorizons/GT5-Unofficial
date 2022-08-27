@@ -28,15 +28,13 @@ public final class WerkstoffAdderRegistry {
 
     private static final HashSet<Runnable> toRun = new HashSet<>();
 
-    private WerkstoffAdderRegistry() {
-    }
+    private WerkstoffAdderRegistry() {}
 
     public static void addWerkstoffAdder(Runnable adder) {
         toRun.add(adder);
     }
 
     public static void run() {
-        for (Runnable r : toRun)
-            r.run();
+        for (Runnable r : toRun) r.run();
     }
 }

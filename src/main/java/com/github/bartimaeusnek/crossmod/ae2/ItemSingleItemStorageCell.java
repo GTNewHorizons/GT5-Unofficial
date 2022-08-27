@@ -1,27 +1,27 @@
-//package com.github.bartimaeusnek.crossmod.ae2;
+// package com.github.bartimaeusnek.crossmod.ae2;
 //
-//import appeng.api.AEApi;
-//import appeng.api.config.FuzzyMode;
-//import appeng.api.config.IncludeExclude;
-//import appeng.api.implementations.items.IStorageCell;
-//import appeng.api.storage.*;
-//import appeng.api.storage.data.IAEItemStack;
-//import appeng.core.localization.GuiText;
-//import appeng.items.contents.CellUpgrades;
-//import appeng.util.Platform;
-//import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
-//import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
-//import cpw.mods.fml.common.registry.GameRegistry;
-//import cpw.mods.fml.relauncher.Side;
-//import cpw.mods.fml.relauncher.SideOnly;
-//import net.minecraft.entity.player.EntityPlayer;
-//import net.minecraft.inventory.IInventory;
-//import net.minecraft.item.Item;
-//import net.minecraft.item.ItemStack;
+// import appeng.api.AEApi;
+// import appeng.api.config.FuzzyMode;
+// import appeng.api.config.IncludeExclude;
+// import appeng.api.implementations.items.IStorageCell;
+// import appeng.api.storage.*;
+// import appeng.api.storage.data.IAEItemStack;
+// import appeng.core.localization.GuiText;
+// import appeng.items.contents.CellUpgrades;
+// import appeng.util.Platform;
+// import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
+// import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
+// import cpw.mods.fml.common.registry.GameRegistry;
+// import cpw.mods.fml.relauncher.Side;
+// import cpw.mods.fml.relauncher.SideOnly;
+// import net.minecraft.entity.player.EntityPlayer;
+// import net.minecraft.inventory.IInventory;
+// import net.minecraft.item.Item;
+// import net.minecraft.item.ItemStack;
 //
-//import java.util.List;
+// import java.util.List;
 //
-//public class ItemSingleItemStorageCell extends SimpleSubItemClass implements IStorageCell {
+// public class ItemSingleItemStorageCell extends SimpleSubItemClass implements IStorageCell {
 //
 //    public ItemSingleItemStorageCell(String tex) {
 //        super(tex);
@@ -32,15 +32,19 @@
 //    @Override
 //    @SideOnly(Side.CLIENT)
 //    public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List lines, boolean p_77624_4_) {
-//        IMEInventoryHandler<?> inventory = AEApi.instance().registries().cell().getCellInventory(stack, (ISaveProvider)null, StorageChannel.ITEMS);
+//        IMEInventoryHandler<?> inventory = AEApi.instance().registries().cell().getCellInventory(stack,
+// (ISaveProvider)null, StorageChannel.ITEMS);
 //        if (inventory instanceof ICellInventoryHandler) {
 //            ICellInventoryHandler handler = (ICellInventoryHandler)inventory;
 //            ICellInventory cellInventory = handler.getCellInv();
 //            if (cellInventory != null) {
-//                lines.add(cellInventory.getUsedBytes() + " " + GuiText.Of.getLocal() + ' ' + cellInventory.getTotalBytes() + ' ' + GuiText.BytesUsed.getLocal());
-//                lines.add(cellInventory.getStoredItemTypes() + " " + GuiText.Of.getLocal() + ' ' + cellInventory.getTotalItemTypes() + ' ' + GuiText.Types.getLocal());
+//                lines.add(cellInventory.getUsedBytes() + " " + GuiText.Of.getLocal() + ' ' +
+// cellInventory.getTotalBytes() + ' ' + GuiText.BytesUsed.getLocal());
+//                lines.add(cellInventory.getStoredItemTypes() + " " + GuiText.Of.getLocal() + ' ' +
+// cellInventory.getTotalItemTypes() + ' ' + GuiText.Types.getLocal());
 //                if (handler.isPreformatted()) {
-//                    String list = (handler.getIncludeExcludeMode() == IncludeExclude.WHITELIST ? GuiText.Included : GuiText.Excluded).getLocal();
+//                    String list = (handler.getIncludeExcludeMode() == IncludeExclude.WHITELIST ? GuiText.Included :
+// GuiText.Excluded).getLocal();
 //                    if (handler.isFuzzy()) {
 //                        lines.add(GuiText.Partitioned.getLocal() + " - " + list + ' ' + GuiText.Fuzzy.getLocal());
 //                    } else {
@@ -119,4 +123,4 @@
 //    public void setFuzzyMode(ItemStack is, FuzzyMode fzMode) {
 //        Platform.openNbtData(is).setString("FuzzyMode", fzMode.name());
 //    }
-//}
+// }

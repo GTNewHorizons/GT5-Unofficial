@@ -33,27 +33,25 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import java.io.StringReader;
 import net.minecraft.util.StringTranslate;
 import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.StringReader;
-
 @Mod(
-        modid        = BartWorksCrossmod.MOD_ID, 
-        name         = BartWorksCrossmod.NAME, 
-        version      = BartWorksCrossmod.VERSION,
-        dependencies =   "required-after:IC2;      "
-                       + "required-after:gregtech; "
-                       + "required-after:bartworks;"
-                       + "after:GalacticraftMars;  "
-                       + "after:GalacticraftCore;  "
-                       + "after:Micdoodlecore;     "
-                       + "after:miscutils;         "
-                       + "after:EMT;               "
-                       + "after:tectech;           "
-)
+        modid = BartWorksCrossmod.MOD_ID,
+        name = BartWorksCrossmod.NAME,
+        version = BartWorksCrossmod.VERSION,
+        dependencies = "required-after:IC2;      "
+                + "required-after:gregtech; "
+                + "required-after:bartworks;"
+                + "after:GalacticraftMars;  "
+                + "after:GalacticraftCore;  "
+                + "after:Micdoodlecore;     "
+                + "after:miscutils;         "
+                + "after:EMT;               "
+                + "after:tectech;           ")
 public class BartWorksCrossmod {
     public static final String NAME = "BartWorks Mod Additions";
     public static final String VERSION = MainMod.VERSION;
@@ -65,53 +63,46 @@ public class BartWorksCrossmod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent preinit) {
-//        if (LoaderReference.appliedenergistics2)
-//            new ItemSingleItemStorageCell("singleItemStorageCell");
-        if (LoaderReference.GalacticraftCore)
-            GalacticraftProxy.preInit(preinit);
-        if (LoaderReference.Thaumcraft)
-            new CustomAspects();
+        //        if (LoaderReference.appliedenergistics2)
+        //            new ItemSingleItemStorageCell("singleItemStorageCell");
+        if (LoaderReference.GalacticraftCore) GalacticraftProxy.preInit(preinit);
+        if (LoaderReference.Thaumcraft) new CustomAspects();
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent init) {
-        if (LoaderReference.GalacticraftCore)
-            GalacticraftProxy.init(init);
+        if (LoaderReference.GalacticraftCore) GalacticraftProxy.init(init);
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent init) {
-        if (LoaderReference.GalacticraftCore)
-            GalacticraftProxy.postInit(init);
-        if (LoaderReference.miscutils)
-            RadioHatchCompat.run();
-        if (LoaderReference.tectech)
-            TecTechResearchLoader.runResearches();
+        if (LoaderReference.GalacticraftCore) GalacticraftProxy.postInit(init);
+        if (LoaderReference.miscutils) RadioHatchCompat.run();
+        if (LoaderReference.tectech) TecTechResearchLoader.runResearches();
     }
 
-//    @Mod.EventHandler
-//    public void onFMLMissingMappingsEvent(FMLMissingMappingsEvent event){
-//        for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()){
-//            if (mapping.name.equalsIgnoreCase())
-//        }
-//    }
+    //    @Mod.EventHandler
+    //    public void onFMLMissingMappingsEvent(FMLMissingMappingsEvent event){
+    //        for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()){
+    //            if (mapping.name.equalsIgnoreCase())
+    //        }
+    //    }
 
-
-//    @Mod.EventHandler
-//    public void onServerStarted(FMLServerStartedEvent event) {
-//        if (LoaderReference.EMT){
-//            try {
-//                TCRecipeHandler.init();
-//            } catch (IllegalAccessException | InvocationTargetException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    //    @Mod.EventHandler
+    //    public void onServerStarted(FMLServerStartedEvent event) {
+    //        if (LoaderReference.EMT){
+    //            try {
+    //                TCRecipeHandler.init();
+    //            } catch (IllegalAccessException | InvocationTargetException e) {
+    //                e.printStackTrace();
+    //            }
+    //        }
+    //    }
 
     @Mod.EventHandler
     public void onFMLServerStart(FMLServerStartingEvent event) {
         if (LoaderReference.miscutils)
-            for (Object s : RadioHatchCompat.TranslateSet){
+            for (Object s : RadioHatchCompat.TranslateSet) {
                 StringTranslate.inject(new ReaderInputStream(new StringReader((String) s)));
             }
     }

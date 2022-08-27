@@ -45,16 +45,14 @@ public class NonNullWrappedHashSet<E> extends HashSet<E> {
     }
 
     public boolean add(E e) {
-        if (e != null)
-            return super.add(e);
+        if (e != null) return super.add(e);
         return false;
     }
 
     public boolean addAll(Collection<? extends E> c) {
         boolean wasChanged = false;
         for (E element : c) {
-            if (element != null)
-                wasChanged |= this.add(element);
+            if (element != null) wasChanged |= this.add(element);
         }
         return wasChanged;
     }

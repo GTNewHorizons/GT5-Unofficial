@@ -22,6 +22,9 @@
 
 package com.github.bartimaeusnek.bartworks;
 
+import static com.github.bartimaeusnek.bartworks.common.loaders.BioRecipeLoader.runOnServerStarted;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.removeIC2Recipes;
+import static gregtech.api.enums.GT_Values.VN;
 
 import com.github.bartimaeusnek.bartworks.API.*;
 import com.github.bartimaeusnek.bartworks.client.ClientEventHandler.TooltipEventHandler;
@@ -50,22 +53,19 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import java.io.IOException;
+import java.util.Map;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.util.Map;
-
-import static com.github.bartimaeusnek.bartworks.common.loaders.BioRecipeLoader.runOnServerStarted;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.removeIC2Recipes;
-import static gregtech.api.enums.GT_Values.VN;
-
 @SuppressWarnings("ALL")
 @Mod(
-        modid = MainMod.MOD_ID, name = MainMod.NAME, version = MainMod.VERSION,
+        modid = MainMod.MOD_ID,
+        name = MainMod.NAME,
+        version = MainMod.VERSION,
         dependencies = "required-after:IC2; "
                 + "required-after:gregtech; "
                 + "after:berriespp; "
@@ -75,8 +75,7 @@ import static gregtech.api.enums.GT_Values.VN;
                 + "after:Forestry; "
                 + "after:ProjRed|Illumination; "
                 + "after:RandomThings; "
-                + "before:miscutils; "
-    )
+                + "before:miscutils; ")
 public final class MainMod {
     public static final String NAME = "BartWorks";
     public static final String VERSION = "GRADLETOKEN_VERSION";
@@ -90,6 +89,7 @@ public final class MainMod {
 
     @Mod.Instance(MainMod.MOD_ID)
     public static MainMod instance;
+
     public static BW_Network BW_Network_instance = new BW_Network();
 
     @Mod.EventHandler
@@ -99,14 +99,13 @@ public final class MainMod {
             MainMod.LOGGER.error("Something has loaded an old API. Please contact the Mod authors to update!");
         }
 
-        LoaderReference.init(); //Check for ALL the mods.
+        LoaderReference.init(); // Check for ALL the mods.
 
         if (LoaderReference.miscutils) {
             MainMod.LOGGER.info("Found GT++, continuing");
         }
 
-        if (LoaderReference.dreamcraft)
-            ConfigHandler.hardmode = true;
+        if (LoaderReference.dreamcraft) ConfigHandler.hardmode = true;
 
         ConfigHandler.hardmode = ConfigHandler.ezmode != ConfigHandler.hardmode;
 
@@ -122,8 +121,7 @@ public final class MainMod {
             WerkstoffLoader.setUp();
         }
 
-        if (ConfigHandler.hardmode)
-            MainMod.LOGGER.info(". . . ACTIVATED HARDMODE.");
+        if (ConfigHandler.hardmode) MainMod.LOGGER.info(". . . ACTIVATED HARDMODE.");
 
         if (ConfigHandler.BioLab) {
             BioCultureLoader.run();
@@ -132,10 +130,8 @@ public final class MainMod {
         if (ConfigHandler.newStuff) {
             Werkstoff.init();
             GregTech_API.sAfterGTPostload.add(new CircuitPartLoader());
-            if (SideReference.Side.Client)
-                GregTech_API.sBeforeGTLoad.add(new PrefixTextureLinker());
+            if (SideReference.Side.Client) GregTech_API.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
-
     }
 
     @Mod.EventHandler
@@ -147,8 +143,7 @@ public final class MainMod {
             MinecraftForge.EVENT_BUS.register(serverEventHandler);
         }
         FMLCommonHandler.instance().bus().register(serverEventHandler);
-        if (ConfigHandler.BioLab)
-            BioLabLoader.run();
+        if (ConfigHandler.BioLab) BioLabLoader.run();
         if (ConfigHandler.newStuff) {
             WerkstoffLoader.runInit();
         }
@@ -162,8 +157,11 @@ public final class MainMod {
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
         if (ConfigHandler.BioLab) {
             GTNHBlocks.run();
-            for (Map.Entry<BioVatLogicAdder.BlockMetaPair, Byte> pair : BioVatLogicAdder.BioVatGlass.getGlassMap().entrySet()) {
-                GT_OreDictUnificator.registerOre("blockGlass" + VN[pair.getValue()], new ItemStack(pair.getKey().getBlock(), 1, pair.getKey().getaByte()));
+            for (Map.Entry<BioVatLogicAdder.BlockMetaPair, Byte> pair :
+                    BioVatLogicAdder.BioVatGlass.getGlassMap().entrySet()) {
+                GT_OreDictUnificator.registerOre(
+                        "blockGlass" + VN[pair.getValue()],
+                        new ItemStack(pair.getKey().getBlock(), 1, pair.getKey().getaByte()));
             }
         }
         ArtificialMicaLine.runArtificialMicaRecipe();
@@ -201,22 +199,19 @@ public final class MainMod {
         CircuitImprintLoader.run();
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
         if (!recipesAdded) {
-            if (!disableExtraGasRecipes)
-                StaticRecipeChangeLoaders.addEBFGasRecipes();
+            if (!disableExtraGasRecipes) StaticRecipeChangeLoaders.addEBFGasRecipes();
 
-            if (classicMode)
-                DownTierLoader.run();
+            if (classicMode) DownTierLoader.run();
 
-            //StaticRecipeChangeLoaders.patchEBFMapForCircuitUnification();
+            // StaticRecipeChangeLoaders.patchEBFMapForCircuitUnification();
 
             recipesAdded = true;
         }
 
         StaticRecipeChangeLoaders.fixEnergyRequirements();
-        //StaticRecipeChangeLoaders.synchroniseCircuitUseMulti();
+        // StaticRecipeChangeLoaders.synchroniseCircuitUseMulti();
 
-        //Accept recipe map changes into Buffers
+        // Accept recipe map changes into Buffers
         GT_Recipe.GT_Recipe_Map.sMappings.forEach(GT_Recipe.GT_Recipe_Map::reInit);
     }
-
 }

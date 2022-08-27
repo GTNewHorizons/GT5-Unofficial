@@ -22,6 +22,9 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
+import static gregtech.api.enums.GT_Values.VN;
+
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -36,18 +39,14 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-
-import java.lang.reflect.Field;
-import java.util.Arrays;
-
-import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
-import static gregtech.api.enums.GT_Values.VN;
 
 public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     private static float nulearHeatMod = 2f;
@@ -72,7 +71,12 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             Field f = c.getDeclaredField("huOutputModifier");
             f.setAccessible(true);
             GT_TileEntity_DEHP.nulearHeatMod = f.getFloat(f);
-        } catch (SecurityException | IllegalArgumentException | ExceptionInInitializerError | NullPointerException | IllegalAccessException | NoSuchFieldException e) {
+        } catch (SecurityException
+                | IllegalArgumentException
+                | ExceptionInInitializerError
+                | NullPointerException
+                | IllegalAccessException
+                | NoSuchFieldException e) {
             e.printStackTrace();
         }
         super.onConfigLoad(aConfig);
@@ -99,7 +103,8 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "DrillingRig.png");
+        return new GT_GUIContainer_MultiMachine(
+                aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "DrillingRig.png");
     }
 
     @Override
@@ -112,13 +117,16 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
         if (ConfigHandler.DEHPDirectSteam) {
             tt.addInfo("0 Idle, 1 Steam, 2 Superheated Steam (requires Distilled Water), 3 Retract")
                     .addInfo("Explodes when it runs out of Water/Distilled Water")
-                    .addInfo("Converts " + (long) (this.mTier * 1200 * 20) + "L/s Water(minus 10% per Maintenance Problem) to Steam")
-                    .addInfo("Converts " + (long) (this.mTier * 600 * 20) + "L/s Distilled Water(minus 10% per Maintenance Problem) to SuperheatedSteam");
+                    .addInfo("Converts " + (long) (this.mTier * 1200 * 20)
+                            + "L/s Water(minus 10% per Maintenance Problem) to Steam")
+                    .addInfo("Converts " + (long) (this.mTier * 600 * 20)
+                            + "L/s Distilled Water(minus 10% per Maintenance Problem) to SuperheatedSteam");
 
         } else {
             tt.addInfo("0 Idle, 1 & 2 Coolant Heating Mode (no Difference between them), 3 Retract")
                     .addInfo("Explodes when it runs out of Coolant")
-                    .addInfo("Heats up " + (long) (this.mTier * 24 * ((double) GT_TileEntity_DEHP.nulearHeatMod)) * 20 + "L/s Coolant(minus 10% per Maintenance Problem)");
+                    .addInfo("Heats up " + (long) (this.mTier * 24 * ((double) GT_TileEntity_DEHP.nulearHeatMod)) * 20
+                            + "L/s Coolant(minus 10% per Maintenance Problem)");
         }
         tt.addSeparator()
                 .beginStructureBlock(3, 7, 3, false)
@@ -163,8 +171,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     private long getFluidFromHatches(Fluid f) {
         long ret = 0;
         for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
-            if (ih.getFluid().getFluid().equals(f))
-                ret += ih.getFluidAmount();
+            if (ih.getFluid().getFluid().equals(f)) ret += ih.getFluidAmount();
         }
         return ret;
     }
@@ -172,18 +179,18 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     private long getWaterFromHatches(boolean onlyDistilled) {
         Fluid toConsume1 = FluidRegistry.WATER;
         Fluid toConsume2 = GT_ModHandler.getDistilledWater(1L).getFluid();
-        if (onlyDistilled)
-            toConsume1 = toConsume2;
+        if (onlyDistilled) toConsume1 = toConsume2;
         long ret = 0;
         for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
-            if (ih.getFluid().getFluid().equals(toConsume1) || ih.getFluid().getFluid().equals(toConsume2))
-                ret += ih.getFluidAmount();
+            if (ih.getFluid().getFluid().equals(toConsume1)
+                    || ih.getFluid().getFluid().equals(toConsume2)) ret += ih.getFluidAmount();
         }
         return ret;
     }
 
     @Override
-    protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
+    protected boolean workingUpward(
+            ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
         if (this.mMode != 3) {
             this.isPickingPipes = false;
             try {
@@ -198,16 +205,15 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (this.getBaseMetaTileEntity().getWorld().isRemote)
-            return;
+        if (this.getBaseMetaTileEntity().getWorld().isRemote) return;
         ++this.mMode;
-        if (this.mMode >= 4)
-            this.mMode = 0;
+        if (this.mMode >= 4) this.mMode = 0;
         GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + this.mMode);
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
     }
 
-    protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
+    protected boolean workingDownward(
+            ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
         if (this.mMode == 3) {
             this.isPickingPipes = true;
             try {
@@ -222,8 +228,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             if (this.waitForPipes()) {
                 return false;
             } else {
-                if (this.mMode == 0)
-                    this.mMode = 1;
+                if (this.mMode == 0) this.mMode = 1;
                 if (ConfigHandler.DEHPDirectSteam) {
                     if (this.mMode == 1) {
                         long steamProduced = (this.mTier * 600 * 2L * this.mEfficiency / 10000L);
@@ -250,7 +255,11 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
                     }
                 } else {
                     if (this.mMode == 1 || this.mMode == 2) {
-                        long coolantConverted = (long) (this.mTier * 24 * ((double) GT_TileEntity_DEHP.nulearHeatMod) * this.mEfficiency / 10000L);
+                        long coolantConverted = (long) (this.mTier
+                                * 24
+                                * ((double) GT_TileEntity_DEHP.nulearHeatMod)
+                                * this.mEfficiency
+                                / 10000L);
                         if (this.getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
                             this.consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
                             this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
@@ -273,23 +282,29 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             Arrays.fill(tmp, (int) (ammount / Integer.MAX_VALUE));
             for (int i = 0; i < tmp.length; i++) {
                 for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
-                    if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid().getFluid().equals(fluid) || ih.getFluid().getFluid().equals(GT_ModHandler.getDistilledWater(1).getFluid()) : ih.getFluid().getFluid().equals(fluid))
-                        tmp[i] -= ih.drain((int) ammount, true).amount;
-                    if (tmp[i] <= 0)
-                        break;
+                    if (fluid.equals(FluidRegistry.WATER)
+                            ? ih.getFluid().getFluid().equals(fluid)
+                                    || ih.getFluid()
+                                            .getFluid()
+                                            .equals(GT_ModHandler.getDistilledWater(1)
+                                                    .getFluid())
+                            : ih.getFluid().getFluid().equals(fluid)) tmp[i] -= ih.drain((int) ammount, true).amount;
+                    if (tmp[i] <= 0) break;
                 }
             }
 
             return tmp[tmp.length - 1] <= 0;
-
         }
 
         long tmp = ammount;
         for (GT_MetaTileEntity_Hatch_Input ih : this.mInputHatches) {
-            if (fluid.equals(FluidRegistry.WATER) ? ih.getFluid().getFluid().equals(fluid) || ih.getFluid().getFluid().equals(GT_ModHandler.getDistilledWater(1).getFluid()) : ih.getFluid().getFluid().equals(fluid))
-                tmp -= ih.drain((int) ammount, true).amount;
-            if (tmp <= 0)
-                return true;
+            if (fluid.equals(FluidRegistry.WATER)
+                    ? ih.getFluid().getFluid().equals(fluid)
+                            || ih.getFluid()
+                                    .getFluid()
+                                    .equals(GT_ModHandler.getDistilledWater(1).getFluid())
+                    : ih.getFluid().getFluid().equals(fluid)) tmp -= ih.drain((int) ammount, true).amount;
+            if (tmp <= 0) return true;
         }
         return false;
     }

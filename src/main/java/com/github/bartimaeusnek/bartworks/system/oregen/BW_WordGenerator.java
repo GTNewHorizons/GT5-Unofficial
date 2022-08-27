@@ -22,17 +22,15 @@
 
 package com.github.bartimaeusnek.bartworks.system.oregen;
 
-
 import cpw.mods.fml.common.IWorldGenerator;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
+import java.util.HashSet;
+import java.util.Random;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-
-import java.util.HashSet;
-import java.util.Random;
 
 /**
  * Original GT File Stripped and adjusted to work with this mod
@@ -40,12 +38,20 @@ import java.util.Random;
 public class BW_WordGenerator implements IWorldGenerator {
 
     public BW_WordGenerator() {
-        //GT_NH Override... wont be actually registered to force its generation directly in the ChunkProvider
-        //GameRegistry.registerWorldGenerator(this, 1073741823);
+        // GT_NH Override... wont be actually registered to force its generation directly in the ChunkProvider
+        // GameRegistry.registerWorldGenerator(this, 1073741823);
     }
 
-    public synchronized void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
-        new BW_WordGenerator.WorldGenContainer(aX * 16, aZ * 16, aWorld.provider.dimensionId, aWorld, aChunkGenerator, aChunkProvider).run();
+    public synchronized void generate(
+            Random aRandom,
+            int aX,
+            int aZ,
+            World aWorld,
+            IChunkProvider aChunkGenerator,
+            IChunkProvider aChunkProvider) {
+        new BW_WordGenerator.WorldGenContainer(
+                        aX * 16, aZ * 16, aWorld.provider.dimensionId, aWorld, aChunkGenerator, aChunkProvider)
+                .run();
     }
 
     public static class WorldGenContainer implements Runnable {
@@ -57,7 +63,13 @@ public class BW_WordGenerator implements IWorldGenerator {
         public int mX;
         public int mZ;
 
-        public WorldGenContainer(int aX, int aZ, int aDimensionType, World aWorld, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        public WorldGenContainer(
+                int aX,
+                int aZ,
+                int aDimensionType,
+                World aWorld,
+                IChunkProvider aChunkGenerator,
+                IChunkProvider aChunkProvider) {
             this.mX = aX;
             this.mZ = aZ;
             this.mDimensionType = aDimensionType;
@@ -66,7 +78,7 @@ public class BW_WordGenerator implements IWorldGenerator {
             this.mChunkProvider = aChunkProvider;
         }
 
-        //returns a coordinate of a center chunk of 3x3 square; the argument belongs to this square
+        // returns a coordinate of a center chunk of 3x3 square; the argument belongs to this square
         public int getVeinCenterCoordinate(int c) {
             c += c < 0 ? 1 : 3;
             return c - c % 3 - 2;
@@ -93,7 +105,8 @@ public class BW_WordGenerator implements IWorldGenerator {
             xCenter <<= 4;
             zCenter <<= 4;
             ChunkCoordIntPair centerChunk = new ChunkCoordIntPair(xCenter, zCenter);
-            if (!BW_WordGenerator.WorldGenContainer.mGenerated.contains(centerChunk) && this.surroundingChunksLoaded(xCenter, zCenter)) {
+            if (!BW_WordGenerator.WorldGenContainer.mGenerated.contains(centerChunk)
+                    && this.surroundingChunksLoaded(xCenter, zCenter)) {
                 BW_WordGenerator.WorldGenContainer.mGenerated.add(centerChunk);
                 if ((BW_OreLayer.sWeight > 0) && (BW_OreLayer.sList.size() > 0)) {
                     boolean temp = true;
@@ -109,10 +122,17 @@ public class BW_WordGenerator implements IWorldGenerator {
                                     boolean placed;
                                     int attempts = 0;
                                     do {
-                                        placed = tWorldGen.executeWorldgen(this.mWorld, random, "", this.mDimensionType, xCenter, zCenter, this.mChunkGenerator, this.mChunkProvider);
+                                        placed = tWorldGen.executeWorldgen(
+                                                this.mWorld,
+                                                random,
+                                                "",
+                                                this.mDimensionType,
+                                                xCenter,
+                                                zCenter,
+                                                this.mChunkGenerator,
+                                                this.mChunkProvider);
                                         ++attempts;
-                                    }
-                                    while ((!placed) && attempts < 25);
+                                    } while ((!placed) && attempts < 25);
                                     temp = false;
                                     break;
                                 } catch (Throwable e) {

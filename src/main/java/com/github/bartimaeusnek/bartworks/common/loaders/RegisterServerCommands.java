@@ -27,7 +27,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 public class RegisterServerCommands {
 
-    public static void registerAll(FMLServerStartingEvent event){
+    public static void registerAll(FMLServerStartingEvent event) {
         event.registerServerCommand(new SummonRuin());
         event.registerServerCommand(new ChangeConfig());
         event.registerServerCommand(new PrintRecipeListToFile());
@@ -35,5 +35,4 @@ public class RegisterServerCommands {
         event.registerServerCommand(new GetWorkingDirectory());
         event.registerServerCommand(new RunGC());
     }
-
 }

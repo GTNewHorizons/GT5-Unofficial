@@ -36,5 +36,4 @@ public class bartworksTab extends CreativeTabs {
     public Item getTabIconItem() {
         return ItemRegistry.ROCKCUTTER_HV;
     }
-
 }

@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.client.renderer;
 
+import static gregtech.common.render.GT_Renderer_Block.*;
+
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Block_TE;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Blocks;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -33,8 +35,6 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
-import static gregtech.common.render.GT_Renderer_Block.*;
-
 public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
     public static BW_Renderer_Block_Ores INSTANCE = new BW_Renderer_Block_Ores();
     public final int mRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -43,7 +43,7 @@ public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int modelId, RenderBlocks aRenderer) {
-        BW_MetaGenerated_Block_TE tTileEntity = ((BW_MetaGenerated_Blocks)aBlock).getProperTileEntityForRendering();
+        BW_MetaGenerated_Block_TE tTileEntity = ((BW_MetaGenerated_Blocks) aBlock).getProperTileEntityForRendering();
         tTileEntity.mMetaData = (short) aMeta;
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
@@ -64,8 +64,9 @@ public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int modelId, RenderBlocks aRenderer) {
-        BW_MetaGenerated_Block_TE tTileEntity = ((BW_MetaGenerated_Blocks)aBlock).getProperTileEntityForRendering();
+    public boolean renderWorldBlock(
+            IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int modelId, RenderBlocks aRenderer) {
+        BW_MetaGenerated_Block_TE tTileEntity = ((BW_MetaGenerated_Blocks) aBlock).getProperTileEntityForRendering();
         tTileEntity.mMetaData = ((BW_MetaGenerated_Block_TE) aWorld.getTileEntity(aX, aY, aZ)).mMetaData;
         aRenderer.useInventoryTint = false;
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);

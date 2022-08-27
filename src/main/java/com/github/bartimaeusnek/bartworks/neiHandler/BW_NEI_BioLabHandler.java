@@ -36,7 +36,11 @@ public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
     public BW_NEI_BioLabHandler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
         super(aRecipeMap);
         if (!NEI_BW_Config.sIsAdded) {
-            FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
+            FMLInterModComms.sendRuntimeMessage(
+                    GT_Values.GT,
+                    "NEIPlugins",
+                    "register-crafting-handler",
+                    "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
             GuiUsageRecipe.usagehandlers.add(this);
         }
@@ -47,10 +51,12 @@ public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
     }
 
     public void loadCraftingRecipes(ItemStack aResult) {
-        if (aResult != null && aResult.getItem() instanceof LabParts && aResult.getItemDamage() < 3 && aResult.getTagCompound() != null) {
+        if (aResult != null
+                && aResult.getItem() instanceof LabParts
+                && aResult.getItemDamage() < 3
+                && aResult.getTagCompound() != null) {
             for (CachedDefaultRecipe recipe : getCache())
-                if (NEI_BW_Config.checkRecipe(aResult, recipe.mOutputs))
-                    arecipes.add(recipe);
+                if (NEI_BW_Config.checkRecipe(aResult, recipe.mOutputs)) arecipes.add(recipe);
         } else {
             super.loadCraftingRecipes(aResult);
         }
@@ -58,10 +64,12 @@ public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
 
     @Override
     public void loadUsageRecipes(ItemStack aResult) {
-        if (aResult != null && aResult.getItem() instanceof LabParts && aResult.getItemDamage() < 3 && aResult.getTagCompound() != null) {
+        if (aResult != null
+                && aResult.getItem() instanceof LabParts
+                && aResult.getItemDamage() < 3
+                && aResult.getTagCompound() != null) {
             for (CachedDefaultRecipe recipe : getCache())
-                if (NEI_BW_Config.checkRecipe(aResult, recipe.mInputs))
-                    arecipes.add(recipe);
+                if (NEI_BW_Config.checkRecipe(aResult, recipe.mInputs)) arecipes.add(recipe);
         } else {
             super.loadUsageRecipes(aResult);
         }

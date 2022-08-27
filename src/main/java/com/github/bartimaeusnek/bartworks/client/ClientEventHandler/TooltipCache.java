@@ -23,21 +23,19 @@
 package com.github.bartimaeusnek.bartworks.client.ClientEventHandler;
 
 import com.github.bartimaeusnek.bartworks.util.Pair;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 class TooltipCache {
     private static final HashMap<Pair<Integer, Short>, char[]> cache = new HashMap<>();
 
-    static boolean put(ItemStack itemStack, List<String> tooltip){
+    static boolean put(ItemStack itemStack, List<String> tooltip) {
         Pair<Integer, Short> p = new Pair<>(Item.getIdFromItem(itemStack.getItem()), (short) itemStack.getItemDamage());
-        if (TooltipCache.cache.containsKey(p))
-            return false;
+        if (TooltipCache.cache.containsKey(p)) return false;
 
         if (!tooltip.isEmpty()) {
             StringBuilder sb = new StringBuilder();
@@ -46,7 +44,7 @@ class TooltipCache {
                 sb.append(System.lineSeparator());
             }
             char[] rettype = sb.toString().toCharArray();
-            return TooltipCache.cache.put(p,rettype) == rettype;
+            return TooltipCache.cache.put(p, rettype) == rettype;
         } else {
             return false;
         }
@@ -54,17 +52,16 @@ class TooltipCache {
 
     static List<String> getTooltip(ItemStack itemStack) {
         Pair<Integer, Short> p = new Pair<>(Item.getIdFromItem(itemStack.getItem()), (short) itemStack.getItemDamage());
-        char[] toTest= TooltipCache.cache.get(p);
-        if (toTest == null){
+        char[] toTest = TooltipCache.cache.get(p);
+        if (toTest == null) {
             return new ArrayList<>();
         }
         return Arrays.asList(new String(toTest).split(System.lineSeparator()));
     }
 
-    private static void checkSize(){
-        if (TooltipCache.cache.size()> Short.MAX_VALUE*2 ){
+    private static void checkSize() {
+        if (TooltipCache.cache.size() > Short.MAX_VALUE * 2) {
             TooltipCache.cache.clear();
         }
     }
-
 }

@@ -25,13 +25,12 @@ package com.github.bartimaeusnek.bartworks.ASM;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import net.minecraftforge.common.config.Configuration;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
+import net.minecraftforge.common.config.Configuration;
 
-@IFMLLoadingPlugin.SortingIndex(Integer.MAX_VALUE)//Load as late as possible (after fastcraft/OptiFine).
+@IFMLLoadingPlugin.SortingIndex(Integer.MAX_VALUE) // Load as late as possible (after fastcraft/OptiFine).
 @IFMLLoadingPlugin.MCVersion("1.7.10")
 @IFMLLoadingPlugin.TransformerExclusions("com.github.bartimaeusnek.bartworks.ASM")
 @IFMLLoadingPlugin.Name(BWCorePlugin.BWCORE_PLUGIN_NAME)
@@ -42,18 +41,17 @@ public class BWCorePlugin implements IFMLLoadingPlugin {
     public static File minecraftDir;
 
     public BWCorePlugin() {
-        //Injection Code taken from CodeChickenLib
-        if (BWCorePlugin.minecraftDir != null)
-            return;//get called twice, once for IFMLCallHook
+        // Injection Code taken from CodeChickenLib
+        if (BWCorePlugin.minecraftDir != null) return; // get called twice, once for IFMLCallHook
         BWCorePlugin.minecraftDir = (File) FMLInjectionData.data()[6];
-        //do all the configuration already now...
+        // do all the configuration already now...
         new ConfigHandler(new Configuration(new File(new File(BWCorePlugin.minecraftDir, "config"), "bartworks.cfg")));
         BWCoreTransformer.shouldTransform[2] = false;
     }
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[]{BWCoreTransformer.class.getName()};
+        return new String[] {BWCoreTransformer.class.getName()};
     }
 
     @Override

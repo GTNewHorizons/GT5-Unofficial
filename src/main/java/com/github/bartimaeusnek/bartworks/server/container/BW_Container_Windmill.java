@@ -33,7 +33,6 @@ public class BW_Container_Windmill extends GT_Container_MultiMachine {
         super(aInventoryPlayer, aTileEntity);
     }
 
-
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         this.addSlotToContainer(new Slot(this.mTileEntity, 1, 60, 36));
     }

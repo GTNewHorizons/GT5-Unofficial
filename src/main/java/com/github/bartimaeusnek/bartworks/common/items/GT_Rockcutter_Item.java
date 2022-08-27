@@ -30,6 +30,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -46,17 +49,16 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
-    private static Set<Block> mineableBlocks = Sets.newHashSet(Blocks.stone, Blocks.cobblestone, Blocks.sand, Blocks.clay);
+    private static Set<Block> mineableBlocks =
+            Sets.newHashSet(Blocks.stone, Blocks.cobblestone, Blocks.sand, Blocks.clay);
     private final int mCharge;
     private final int mTransfer;
     public int mTier;
+
     @SideOnly(Side.CLIENT)
     private IIcon icon;
+
     private final int multi;
 
     public GT_Rockcutter_Item(int aTier) {
@@ -73,6 +75,7 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
         this.setNoRepair();
         this.setUnlocalizedName("GT_Rockcutter_Item_" + GT_Values.VN[this.mTier]);
     }
+
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         aList.add(StatCollector.translateToLocal("tooltip.bw.tier.name") + " " + GT_Values.VN[this.mTier]);
@@ -89,12 +92,23 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
         }
     }
 
-    public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World p_77648_3_, int p_77648_4_, int p_77648_5_, int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
+    public boolean onItemUse(
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World p_77648_3_,
+            int p_77648_4_,
+            int p_77648_5_,
+            int p_77648_6_,
+            int p_77648_7_,
+            float p_77648_8_,
+            float p_77648_9_,
+            float p_77648_10_) {
         ElectricItem.manager.use(aStack, 0, aPlayer);
         return false;
     }
 
-    public boolean onBlockDestroyed(ItemStack var1, World var2, Block var3, int var4, int var5, int var6, EntityLivingBase var7) {
+    public boolean onBlockDestroyed(
+            ItemStack var1, World var2, Block var3, int var4, int var5, int var6, EntityLivingBase var7) {
         ElectricItem.manager.use(var1, 0, var7);
         if (ElectricItem.manager.canUse(var1, 500 * this.multi)) {
             ElectricItem.manager.use(var1, 500 * this.multi, var7);
@@ -106,7 +120,14 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
 
     @Override
     public boolean canHarvestBlock(Block par1Block, ItemStack itemStack) {
-        return par1Block.getMaterial().equals(Material.glass) || par1Block.getMaterial().equals(Material.clay) || par1Block.getMaterial().equals(Material.packedIce) || par1Block.getMaterial().equals(Material.ice) || par1Block.getMaterial().equals(Material.sand) || par1Block.getMaterial().equals(Material.ground) || par1Block.getMaterial().equals(Material.rock) || mineableBlocks.contains(par1Block);
+        return par1Block.getMaterial().equals(Material.glass)
+                || par1Block.getMaterial().equals(Material.clay)
+                || par1Block.getMaterial().equals(Material.packedIce)
+                || par1Block.getMaterial().equals(Material.ice)
+                || par1Block.getMaterial().equals(Material.sand)
+                || par1Block.getMaterial().equals(Material.ground)
+                || par1Block.getMaterial().equals(Material.rock)
+                || mineableBlocks.contains(par1Block);
     }
 
     @SideOnly(Side.CLIENT)
@@ -122,7 +143,6 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
             itemList.add(new ItemStack(this, 1, this.getMaxDamage()));
         }
     }
-
 
     @Override
     public boolean canProvideEnergy(ItemStack itemStack) {

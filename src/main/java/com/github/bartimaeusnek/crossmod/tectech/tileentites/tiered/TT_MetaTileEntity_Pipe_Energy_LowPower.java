@@ -35,12 +35,11 @@ import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import ic2.core.Ic2Items;
+import java.util.ArrayList;
+import java.util.HashSet;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 
 public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Cable implements LowPowerLaser {
 
@@ -48,13 +47,29 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
         super(aID, aName, aNameRegional, 0.25f, Materials.BorosilicateGlass, 0, 0, 0, false, false);
     }
 
-    public TT_MetaTileEntity_Pipe_Energy_LowPower(String aName, float aThickNess, Materials aMaterial, long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
+    public TT_MetaTileEntity_Pipe_Energy_LowPower(
+            String aName,
+            float aThickNess,
+            Materials aMaterial,
+            long aCableLossPerMeter,
+            long aAmperage,
+            long aVoltage,
+            boolean aInsulated,
+            boolean aCanShock) {
         super(aName, aThickNess, aMaterial, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new TT_MetaTileEntity_Pipe_Energy_LowPower(this.mName, this.mThickNess, this.mMaterial, this.mCableLossPerMeter, this.mAmperage, this.mVoltage, this.mInsulated, this.mCanShock);
+        return new TT_MetaTileEntity_Pipe_Energy_LowPower(
+                this.mName,
+                this.mThickNess,
+                this.mMaterial,
+                this.mCableLossPerMeter,
+                this.mAmperage,
+                this.mVoltage,
+                this.mInsulated,
+                this.mCanShock);
     }
 
     @Override
@@ -65,24 +80,32 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[]{
-                TextureFactory.of(
-                        Block.getBlockFromItem(Ic2Items.glassFiberCableBlock.getItem()),
-                        Ic2Items.glassFiberCableBlock.getItemDamage(),
-                        ForgeDirection.getOrientation(aSide)
-                )
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aConnections,
+            byte aColorIndex,
+            boolean aConnected,
+            boolean aRedstone) {
+        return new ITexture[] {
+            TextureFactory.of(
+                    Block.getBlockFromItem(Ic2Items.glassFiberCableBlock.getItem()),
+                    Ic2Items.glassFiberCableBlock.getItemDamage(),
+                    ForgeDirection.getOrientation(aSide))
         };
     }
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Primitive Laser Cable intended for Low Power Applications",
-                "Does not auto-connect",
-                "Does not turn or bend",
-                ChatColorHelper.WHITE + "Must be " + ChatColorHelper.YELLOW + "c" + ChatColorHelper.RED + "o" + ChatColorHelper.BLUE + "l" + ChatColorHelper.DARKPURPLE + "o" + ChatColorHelper.GOLD + "r" + ChatColorHelper.DARKRED + "e" + ChatColorHelper.DARKGREEN + "d" + ChatColorHelper.WHITE + " in order to work",
-                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
+        return new String[] {
+            "Primitive Laser Cable intended for Low Power Applications",
+            "Does not auto-connect",
+            "Does not turn or bend",
+            ChatColorHelper.WHITE + "Must be " + ChatColorHelper.YELLOW + "c" + ChatColorHelper.RED + "o"
+                    + ChatColorHelper.BLUE + "l" + ChatColorHelper.DARKPURPLE + "o" + ChatColorHelper.GOLD + "r"
+                    + ChatColorHelper.DARKRED + "e" + ChatColorHelper.DARKGREEN + "d" + ChatColorHelper.WHITE
+                    + " in order to work",
+            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
         };
     }
 
@@ -126,11 +149,11 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
         return 0L;
     }
 
-
     @Override
     @Deprecated
     @SuppressWarnings("deprecation")
-    public long transferElectricity(byte aSide, long aVoltage, long aAmperage, ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
+    public long transferElectricity(
+            byte aSide, long aVoltage, long aAmperage, ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
         return 0L;
     }
 
@@ -140,12 +163,14 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
     }
 
     @Override
-    public boolean letsIn(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsIn(
+            GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsOut(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsOut(
+            GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 }

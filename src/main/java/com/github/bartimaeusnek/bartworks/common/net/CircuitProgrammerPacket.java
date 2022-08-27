@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.common.net;
 import com.github.bartimaeusnek.bartworks.common.items.Circuit_Programmer;
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.net.GT_Packet;
+import java.nio.ByteBuffer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,8 +33,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-
-import java.nio.ByteBuffer;
 
 public class CircuitProgrammerPacket extends GT_Packet {
 
@@ -60,14 +59,22 @@ public class CircuitProgrammerPacket extends GT_Packet {
 
     @Override
     public byte[] encode() {
-        return ByteBuffer.allocate(9).putInt(0, this.dimID).putInt(4, this.playerID).put(8, (this.hasChip ? this.chipCfg : -1)).array();
+        return ByteBuffer.allocate(9)
+                .putInt(0, this.dimID)
+                .putInt(4, this.playerID)
+                .put(8, (this.hasChip ? this.chipCfg : -1))
+                .array();
     }
 
     @Override
     public GT_Packet decode(ByteArrayDataInput byteArrayDataInput) {
         byte[] ret = new byte[9];
         byteArrayDataInput.readFully(ret);
-        return new CircuitProgrammerPacket(ByteBuffer.wrap(ret).getInt(0), ByteBuffer.wrap(ret).getInt(4), ByteBuffer.wrap(ret).get(8) > -1, ByteBuffer.wrap(ret).get(8));
+        return new CircuitProgrammerPacket(
+                ByteBuffer.wrap(ret).getInt(0),
+                ByteBuffer.wrap(ret).getInt(4),
+                ByteBuffer.wrap(ret).get(8) > -1,
+                ByteBuffer.wrap(ret).get(8));
     }
 
     @Override
@@ -80,10 +87,11 @@ public class CircuitProgrammerPacket extends GT_Packet {
                 if (item instanceof Circuit_Programmer) {
                     NBTTagCompound nbt = stack.getTagCompound();
                     nbt.setBoolean("HasChip", this.hasChip);
-                    if (this.hasChip)
-                        nbt.setByte("ChipConfig", this.chipCfg);
+                    if (this.hasChip) nbt.setByte("ChipConfig", this.chipCfg);
                     stack.setTagCompound(nbt);
-                    ((EntityPlayer) w.getEntityByID(this.playerID)).inventory.setInventorySlotContents(((EntityPlayer) w.getEntityByID(this.playerID)).inventory.currentItem, stack);
+                    ((EntityPlayer) w.getEntityByID(this.playerID))
+                            .inventory.setInventorySlotContents(
+                                    ((EntityPlayer) w.getEntityByID(this.playerID)).inventory.currentItem, stack);
                 }
             }
         }

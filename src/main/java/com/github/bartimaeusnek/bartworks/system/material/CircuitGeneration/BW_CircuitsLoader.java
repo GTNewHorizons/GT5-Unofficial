@@ -26,8 +26,7 @@ public class BW_CircuitsLoader {
 
     private static final BW_Meta_Items NEW_CIRCUITS = new BW_Meta_Items();
 
-    private BW_CircuitsLoader() {
-    }
+    private BW_CircuitsLoader() {}
 
     public static BW_Meta_Items getNewCircuits() {
         return BW_CircuitsLoader.NEW_CIRCUITS;
@@ -44,6 +43,6 @@ public class BW_CircuitsLoader {
         BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(7, 11, "Ultimate Magneto Resonatic Circuit");
         BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(8, 12, "Superconductor Magneto Resonatic Circuit");
         BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(9, 13, "Infinite Magneto Resonatic Circuit");
-        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(10,14, "Bio Magneto Resonatic Circuit");
+        BW_CircuitsLoader.NEW_CIRCUITS.addNewCircuit(10, 14, "Bio Magneto Resonatic Circuit");
     }
 }

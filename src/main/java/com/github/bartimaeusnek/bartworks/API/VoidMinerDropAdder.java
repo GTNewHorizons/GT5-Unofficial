@@ -23,24 +23,25 @@
 package com.github.bartimaeusnek.bartworks.API;
 
 import gregtech.api.interfaces.ISubTagContainer;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class VoidMinerDropAdder {
 
-   private static Method getExtraDropsDimMap;
+    private static Method getExtraDropsDimMap;
 
-   static {
-       try {
-           getExtraDropsDimMap = Class.forName("com.github.bartimaeusnek.crossmod.galacticgreg.GT_TileEntity_VoidMiner_Base").getMethod("addMatierialToDimensionList",int.class, ISubTagContainer.class, float.class);
-       } catch (NoSuchMethodException | ClassNotFoundException e) {
-           e.printStackTrace();
-       }
-   }
-
-    public static void addDropsToDim(int dimID, ISubTagContainer material, float chance) throws InvocationTargetException, IllegalAccessException {
-        getExtraDropsDimMap.invoke(null, dimID, material, chance);
+    static {
+        try {
+            getExtraDropsDimMap = Class.forName(
+                            "com.github.bartimaeusnek.crossmod.galacticgreg.GT_TileEntity_VoidMiner_Base")
+                    .getMethod("addMatierialToDimensionList", int.class, ISubTagContainer.class, float.class);
+        } catch (NoSuchMethodException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
+    public static void addDropsToDim(int dimID, ISubTagContainer material, float chance)
+            throws InvocationTargetException, IllegalAccessException {
+        getExtraDropsDimMap.invoke(null, dimID, material, chance);
+    }
 }

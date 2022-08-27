@@ -22,26 +22,24 @@
 
 package com.github.bartimaeusnek.bartworks.API;
 
+import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
+
 import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
-
-import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 
 @SuppressWarnings("ALL")
 public final class BioVatLogicAdder {
-
 
     public static class RadioHatch {
 
@@ -62,9 +60,12 @@ public final class BioVatLogicAdder {
             giveItemStackRadioHatchAbilites(ItemList.Uraniumcell_2.get(1), Materials.Uranium, 6);
             giveItemStackRadioHatchAbilites(ItemList.Uraniumcell_4.get(1), Materials.Uranium, 12);
 
-            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TiberiumCell_1.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 3);
-            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TiberiumCell_2.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 6);
-            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TiberiumCell_4.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 12);
+            giveItemStackRadioHatchAbilites(
+                    BW_NonMeta_MaterialItems.TiberiumCell_1.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 3);
+            giveItemStackRadioHatchAbilites(
+                    BW_NonMeta_MaterialItems.TiberiumCell_2.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 6);
+            giveItemStackRadioHatchAbilites(
+                    BW_NonMeta_MaterialItems.TiberiumCell_4.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 12);
 
             giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.TheCoreCell.get(1), Materials.Naquadah, 96);
 
@@ -76,19 +77,38 @@ public final class BioVatLogicAdder {
             giveItemStackRadioHatchAbilites(ItemList.Depleted_Naquadah_2.get(1), Materials.Naquadah, 6, 10);
             giveItemStackRadioHatchAbilites(ItemList.Depleted_Naquadah_4.get(1), Materials.Naquadah, 12, 10);
 
-            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorMOXSimpledepleted",1), Materials.Plutonium, 3, 10);
-            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorMOXDualdepleted",1),  Materials.Plutonium, 6, 10);
-            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorMOXQuaddepleted",1),  Materials.Plutonium, 12, 10);
+            giveItemStackRadioHatchAbilites(
+                    GT_ModHandler.getModItem("IC2", "reactorMOXSimpledepleted", 1), Materials.Plutonium, 3, 10);
+            giveItemStackRadioHatchAbilites(
+                    GT_ModHandler.getModItem("IC2", "reactorMOXDualdepleted", 1), Materials.Plutonium, 6, 10);
+            giveItemStackRadioHatchAbilites(
+                    GT_ModHandler.getModItem("IC2", "reactorMOXQuaddepleted", 1), Materials.Plutonium, 12, 10);
 
-            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorUraniumSimpledepleted",1), Materials.Uranium, 3, 10);
-            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorUraniumDualdepleted",1), Materials.Uranium, 6, 10);
-            giveItemStackRadioHatchAbilites(GT_ModHandler.getModItem("IC2","reactorUraniumQuaddepleted",1), Materials.Uranium, 12, 10);
+            giveItemStackRadioHatchAbilites(
+                    GT_ModHandler.getModItem("IC2", "reactorUraniumSimpledepleted", 1), Materials.Uranium, 3, 10);
+            giveItemStackRadioHatchAbilites(
+                    GT_ModHandler.getModItem("IC2", "reactorUraniumDualdepleted", 1), Materials.Uranium, 6, 10);
+            giveItemStackRadioHatchAbilites(
+                    GT_ModHandler.getModItem("IC2", "reactorUraniumQuaddepleted", 1), Materials.Uranium, 12, 10);
 
-            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 3, 10);
-            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 6, 10);
-            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1), WerkstoffLoader.Tiberium.getBridgeMaterial(), 12, 10);
+            giveItemStackRadioHatchAbilites(
+                    BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1),
+                    WerkstoffLoader.Tiberium.getBridgeMaterial(),
+                    3,
+                    10);
+            giveItemStackRadioHatchAbilites(
+                    BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1),
+                    WerkstoffLoader.Tiberium.getBridgeMaterial(),
+                    6,
+                    10);
+            giveItemStackRadioHatchAbilites(
+                    BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1),
+                    WerkstoffLoader.Tiberium.getBridgeMaterial(),
+                    12,
+                    10);
 
-            giveItemStackRadioHatchAbilites(BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1), Materials.Naquadah, 96, 10);
+            giveItemStackRadioHatchAbilites(
+                    BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1), Materials.Naquadah, 96, 10);
 
             if (WerkstoffLoader.gtnhGT) {
                 giveItemStackRadioHatchAbilites(ItemList.MNqCell_1.get(1), Materials.Naquadria, 3);
@@ -158,16 +178,13 @@ public final class BioVatLogicAdder {
         public static int getMaxSv() {
             int ret = MaxSV;
             for (MaterialSvPair pair : RadioHatch.getMaSv()) {
-                if (pair.getSievert() > ret)
-                    ret = pair.getSievert();
+                if (pair.getSievert() > ret) ret = pair.getSievert();
             }
             for (ItemStack is : RadioHatch.IsSv.keySet()) {
-                if (RadioHatch.IsSv.get(is) > ret)
-                    ret = RadioHatch.IsSv.get(is);
+                if (RadioHatch.IsSv.get(is) > ret) ret = RadioHatch.IsSv.get(is);
             }
             return ret;
         }
-
     }
 
     public static class BioVatGlass {
@@ -184,10 +201,11 @@ public final class BioVatLogicAdder {
         public static boolean addCustomGlass(String sModname, String sUnlocBlockName, int meta, int tier) {
             Block block = findBlock(sModname, sUnlocBlockName);
             boolean ret = block != null;
-            if (ret)
-                BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) meta), (byte) tier);
+            if (ret) BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) meta), (byte) tier);
             else
-                new IllegalArgumentException("Block: " + sUnlocBlockName + " of the Mod: " + sModname + " was NOT found!").printStackTrace();
+                new IllegalArgumentException(
+                                "Block: " + sUnlocBlockName + " of the Mod: " + sModname + " was NOT found!")
+                        .printStackTrace();
             block = null;
             return ret;
         }
@@ -236,8 +254,8 @@ public final class BioVatLogicAdder {
             if (this == o) return true;
             if (o == null || this.getClass() != o.getClass()) return false;
             BioVatLogicAdder.MaterialSvPair that = (BioVatLogicAdder.MaterialSvPair) o;
-            return Objects.equals(this.getMaterials(), that.getMaterials()) &&
-                    Objects.equals(this.getSievert(), that.getSievert());
+            return Objects.equals(this.getMaterials(), that.getMaterials())
+                    && Objects.equals(this.getSievert(), that.getSievert());
         }
 
         @Override
@@ -252,8 +270,6 @@ public final class BioVatLogicAdder {
         public Integer getSievert() {
             return this.sievert;
         }
-
-
     }
 
     public static class BlockMetaPair {
@@ -270,8 +286,7 @@ public final class BioVatLogicAdder {
             if (this == o) return true;
             if (o == null || this.getClass() != o.getClass()) return false;
             BioVatLogicAdder.BlockMetaPair that = (BioVatLogicAdder.BlockMetaPair) o;
-            return Objects.equals(this.getBlock(), that.getBlock()) &&
-                    Objects.equals(this.getaByte(), that.getaByte());
+            return Objects.equals(this.getBlock(), that.getBlock()) && Objects.equals(this.getaByte(), that.getaByte());
         }
 
         @Override

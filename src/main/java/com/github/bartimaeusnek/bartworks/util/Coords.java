@@ -62,15 +62,10 @@ public class Coords {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || this.getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
         Coords coords = (Coords) o;
-        return this.x == coords.x &&
-                this.y == coords.y &&
-                this.z == coords.z &&
-                this.wID == coords.wID;
+        return this.x == coords.x && this.y == coords.y && this.z == coords.z && this.wID == coords.wID;
     }
 
     @Override

@@ -27,11 +27,10 @@ import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Block
 import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.net.GT_Packet;
+import java.nio.ByteBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import java.nio.ByteBuffer;
 
 public class MetaBlockPacket extends GT_Packet {
 
@@ -59,8 +58,23 @@ public class MetaBlockPacket extends GT_Packet {
 
     @Override
     public byte[] encode() {
-        int hash = MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(12).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).array(), 0, 12, 31);
-        return ByteBuffer.allocate(16).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).putInt(hash).array();
+        int hash = MurmurHash3.murmurhash3_x86_32(
+                ByteBuffer.allocate(12)
+                        .putInt(this.x)
+                        .putInt(this.z)
+                        .putShort(this.y)
+                        .putShort(this.meta)
+                        .array(),
+                0,
+                12,
+                31);
+        return ByteBuffer.allocate(16)
+                .putInt(this.x)
+                .putInt(this.z)
+                .putShort(this.y)
+                .putShort(this.meta)
+                .putInt(hash)
+                .array();
     }
 
     @Override
@@ -73,7 +87,17 @@ public class MetaBlockPacket extends GT_Packet {
         this.y = buff.getShort();
         this.meta = buff.getShort();
         MetaBlockPacket todecode = new MetaBlockPacket(this.x, this.y, this.z, this.meta);
-        if (buff.getInt() != MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(12).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).array(), 0, 12, 31)) {
+        if (buff.getInt()
+                != MurmurHash3.murmurhash3_x86_32(
+                        ByteBuffer.allocate(12)
+                                .putInt(this.x)
+                                .putInt(this.z)
+                                .putShort(this.y)
+                                .putShort(this.meta)
+                                .array(),
+                        0,
+                        12,
+                        31)) {
             MainMod.LOGGER.error("PACKET HASH DOES NOT MATCH!");
             return null;
         }

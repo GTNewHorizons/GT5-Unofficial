@@ -1,17 +1,16 @@
 package com.github.bartimaeusnek.bartworks.API;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import net.minecraft.block.Block;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * API for bartworks borosilicate glass.
@@ -27,8 +26,7 @@ public class BorosilicateGlass {
     private static List<Pair<Block, Integer>> representatives;
 
     private static Block getGlassBlock() {
-        if (block == null)
-            block = GameRegistry.findBlock("bartworks", "BW_GlasBlocks");
+        if (block == null) block = GameRegistry.findBlock("bartworks", "BW_GlasBlocks");
         return block;
     }
 
@@ -91,8 +89,10 @@ public class BorosilicateGlass {
      *
      * @param initialValue the value set before structure check started
      */
-    public static <T> IStructureElement<T> ofBoroGlass(byte initialValue, BiConsumer<T, Byte> setter, Function<T, Byte> getter) {
-        return lazy(t -> ofBlocksTiered(BorosilicateGlass::getTier, getRepresentatives(), initialValue, setter, getter));
+    public static <T> IStructureElement<T> ofBoroGlass(
+            byte initialValue, BiConsumer<T, Byte> setter, Function<T, Byte> getter) {
+        return lazy(
+                t -> ofBlocksTiered(BorosilicateGlass::getTier, getRepresentatives(), initialValue, setter, getter));
     }
 
     /**
@@ -102,15 +102,18 @@ public class BorosilicateGlass {
      * @param minTier      minimal accepted tier. inclusive. must be greater than 0.
      * @param maxTier      maximal accepted tier. inclusive.
      */
-    public static <T> IStructureElement<T> ofBoroGlass(byte initialValue, byte minTier, byte maxTier, BiConsumer<T, Byte> setter, Function<T, Byte> getter) {
+    public static <T> IStructureElement<T> ofBoroGlass(
+            byte initialValue, byte minTier, byte maxTier, BiConsumer<T, Byte> setter, Function<T, Byte> getter) {
         if (minTier > maxTier || minTier < 0) throw new IllegalArgumentException();
         return lazy(t -> ofBlocksTiered(
                 (block1, meta) -> checkWithinBound(getTier(block1, meta), minTier, maxTier),
-                getRepresentatives().stream().skip(Math.max(minTier - 3, 0)).limit(maxTier - minTier + 1).collect(Collectors.toList()),
+                getRepresentatives().stream()
+                        .skip(Math.max(minTier - 3, 0))
+                        .limit(maxTier - minTier + 1)
+                        .collect(Collectors.toList()),
                 initialValue,
                 setter,
-                getter
-        ));
+                getter));
     }
 
     /**

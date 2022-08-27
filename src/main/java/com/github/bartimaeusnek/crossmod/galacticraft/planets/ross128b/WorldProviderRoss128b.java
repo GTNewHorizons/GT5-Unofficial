@@ -60,10 +60,9 @@ public class WorldProviderRoss128b extends AbstractWorldProviderSpace {
         return Vec3.createVectorHelper(red, green, blue);
     }
 
-
     @Override
     public Vector3 getFogColor() {
-        //unused
+        // unused
         return null;
     }
 
@@ -159,5 +158,4 @@ public class WorldProviderRoss128b extends AbstractWorldProviderSpace {
     public boolean hasBreathableAtmosphere() {
         return true;
     }
-
 }

@@ -34,7 +34,8 @@ public class GT_MetaTileEntity_GiantOutputHatch extends GT_MetaTileEntity_Hatch_
         this.mDescriptionArray[1] = "Capacity: 100000000L";
     }
 
-    public GT_MetaTileEntity_GiantOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_GiantOutputHatch(
+            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 

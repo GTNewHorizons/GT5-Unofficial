@@ -40,5 +40,4 @@ public final class WerkstoffAPI {
     public static Werkstoff getWerkstoff(String aName) throws NoSuchFieldException, IllegalAccessException {
         return (Werkstoff) w.getField(aName).get(null);
     }
-
 }

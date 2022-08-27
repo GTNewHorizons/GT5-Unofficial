@@ -25,8 +25,7 @@ package com.github.bartimaeusnek.bartworks.API;
 import net.minecraft.inventory.ISidedInventory;
 
 public interface ITileDropsContent extends ISidedInventory {
-    default int[] getDropSlots(){
+    default int[] getDropSlots() {
         return new int[] {0};
     }
-
 }

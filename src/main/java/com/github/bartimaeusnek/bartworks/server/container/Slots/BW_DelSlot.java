@@ -36,6 +36,4 @@ public class BW_DelSlot extends Slot {
         p_75215_1_ = null;
         this.onSlotChanged();
     }
-
-
 }

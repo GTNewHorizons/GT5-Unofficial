@@ -47,8 +47,8 @@ public class BW_GlasBlocks extends BW_Blocks {
         this.connectedTex = false;
     }
 
-
-    public BW_GlasBlocks(String name, String[] texture, short[][] color, CreativeTabs tabs, boolean connectedTex, boolean fake) {
+    public BW_GlasBlocks(
+            String name, String[] texture, short[][] color, CreativeTabs tabs, boolean connectedTex, boolean fake) {
         super(name, texture, tabs, Material.glass);
         this.connectedTex = connectedTex;
         this.color = color;
@@ -67,11 +67,9 @@ public class BW_GlasBlocks extends BW_Blocks {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess worldClient, int xCoord, int yCoord, int zCoord, int aSide) {
-        if (worldClient.getBlock(xCoord, yCoord, zCoord) instanceof BW_GlasBlocks)
-            return false;
+        if (worldClient.getBlock(xCoord, yCoord, zCoord) instanceof BW_GlasBlocks) return false;
         return super.shouldSideBeRendered(worldClient, xCoord, yCoord, zCoord, aSide);
     }
-
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -96,10 +94,7 @@ public class BW_GlasBlocks extends BW_Blocks {
             String[] splitname = this.textureNames[0].split(":");
             for (int j = 0; j < 16; j++) {
                 this.connectedTexture[j] = par1IconRegister.registerIcon(
-                        splitname[0]
-                                + ":connectedTex/"
-                                + splitname[1] + '/'
-                                + splitname[1] + '_' + j);
+                        splitname[0] + ":connectedTex/" + splitname[1] + '/' + splitname[1] + '_' + j);
             }
         }
     }
@@ -107,8 +102,7 @@ public class BW_GlasBlocks extends BW_Blocks {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess worldClient, int xCoord, int yCoord, int zCoord, int aSide) {
-        if (!this.connectedTex)
-            return super.getIcon(worldClient, xCoord, yCoord, zCoord, aSide);
+        if (!this.connectedTex) return super.getIcon(worldClient, xCoord, yCoord, zCoord, aSide);
 
         ForgeDirection dir = ForgeDirection.getOrientation(aSide);
         byte sides = 0;
@@ -146,7 +140,6 @@ public class BW_GlasBlocks extends BW_Blocks {
                 if (worldClient.getBlock(xCoord, yCoord, zCoord + 1) instanceof BW_GlasBlocks)
                     sides = (byte) (sides | 0b1000);
                 break;
-
             }
             case NORTH: {
                 if (worldClient.getBlock(xCoord, yCoord + 1, zCoord) instanceof BW_GlasBlocks)
@@ -186,10 +179,8 @@ public class BW_GlasBlocks extends BW_Blocks {
 
     @Override
     public int getRenderType() {
-        if (!this.fake && SideReference.Side.Client)
-            return RendererGlasBlock.RID;
-        else
-            return 0;
+        if (!this.fake && SideReference.Side.Client) return RendererGlasBlock.RID;
+        else return 0;
     }
 
     @Override

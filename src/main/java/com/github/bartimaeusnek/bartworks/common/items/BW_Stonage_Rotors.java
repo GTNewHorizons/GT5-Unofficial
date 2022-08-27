@@ -22,6 +22,9 @@
 
 package com.github.bartimaeusnek.bartworks.common.items;
 
+import static ic2.api.item.IKineticRotor.GearboxType.WATER;
+import static ic2.api.item.IKineticRotor.GearboxType.WIND;
+
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import cpw.mods.fml.relauncher.Side;
@@ -29,6 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.IKineticRotor;
 import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
 import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,11 +40,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-
-import java.util.List;
-
-import static ic2.api.item.IKineticRotor.GearboxType.WATER;
-import static ic2.api.item.IKineticRotor.GearboxType.WIND;
 
 public class BW_Stonage_Rotors extends Item implements IKineticRotor {
 
@@ -50,7 +49,16 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
     private final ResourceLocation tex;
     private final String itemTex;
 
-    public BW_Stonage_Rotors(int diameter, float eff, int min, int max, int durability, IKineticRotor.GearboxType type, ResourceLocation tex, String Name, String itemTex) {
+    public BW_Stonage_Rotors(
+            int diameter,
+            float eff,
+            int min,
+            int max,
+            int durability,
+            IKineticRotor.GearboxType type,
+            ResourceLocation tex,
+            String Name,
+            String itemTex) {
         this.DiaMinMax[0] = diameter;
         this.DiaMinMax[1] = min;
         this.DiaMinMax[2] = max;
@@ -70,7 +78,8 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
 
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
-        info.add(StatCollector.translateToLocalFormatted("ic2.itemrotor.wind.info", this.DiaMinMax[1], this.DiaMinMax[2]));
+        info.add(StatCollector.translateToLocalFormatted(
+                "ic2.itemrotor.wind.info", this.DiaMinMax[1], this.DiaMinMax[2]));
         IKineticRotor.GearboxType type = null;
         if (Minecraft.getMinecraft().currentScreen instanceof GuiWaterKineticGenerator) {
             type = WATER;
@@ -78,7 +87,8 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
             type = WIND;
         }
         info.add(StatCollector.translateToLocal("tooltip.rotor.0.name") + " " + this.DiaMinMax[0]);
-        info.add(StatCollector.translateToLocal("tooltip.rotor.1.name") + " " + (this.getMaxDamage() - this.getDamage(itemStack)) + "/" + this.getMaxDamage());
+        info.add(StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
+                + (this.getMaxDamage() - this.getDamage(itemStack)) + "/" + this.getMaxDamage());
         info.add(StatCollector.translateToLocal("tooltip.rotor.2.name") + " " + this.eff);
         if (type != null) {
             info.add(StatCollector.translateToLocal(("ic2.itemrotor.fitsin." + this.isAcceptedType(itemStack, type))));

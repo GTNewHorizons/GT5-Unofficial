@@ -32,18 +32,17 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.objects.GT_UO_DimensionList;
+import java.io.File;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-
-import java.io.File;
 
 public class GalacticraftProxy {
     public static GT_UO_DimensionList uo_dimensionList = new GT_UO_DimensionList();
     static Configuration gtConf;
-    private GalacticraftProxy() {
-    }
 
-    public static void postInit(FMLPostInitializationEvent e){
+    private GalacticraftProxy() {}
+
+    public static void postInit(FMLPostInitializationEvent e) {
         if (SideReference.Side.Server || SideReference.EffectiveSide.Server) {
             GalacticraftProxy.serverPostInit(e);
         } else {
@@ -61,20 +60,17 @@ public class GalacticraftProxy {
         GalacticraftProxy.commonpreInit(e);
     }
 
-    private static void serverpreInit(FMLPreInitializationEvent e) {
+    private static void serverpreInit(FMLPreInitializationEvent e) {}
 
-    }
-
-    private static void clientpreInit(FMLPreInitializationEvent e) {
-    }
+    private static void clientpreInit(FMLPreInitializationEvent e) {}
 
     private static void commonpreInit(FMLPreInitializationEvent e) {
-        GalacticraftProxy.gtConf = new Configuration(new File(new File(e.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg"));
+        GalacticraftProxy.gtConf =
+                new Configuration(new File(new File(e.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg"));
         GalacticraftProxy.uo_dimensionList.getConfig(GalacticraftProxy.gtConf, "undergroundfluid");
         BW_WorldGenRoss128b.initundergroundFluids();
         BW_WorldGenRoss128ba.init_undergroundFluids();
-        if (GalacticraftProxy.gtConf.hasChanged())
-            GalacticraftProxy.gtConf.save();
+        if (GalacticraftProxy.gtConf.hasChanged()) GalacticraftProxy.gtConf.save();
         BW_WorldGenRoss128b.initOres();
         BW_WorldGenRoss128ba.init_Ores();
         MinecraftForge.EVENT_BUS.register(BWAtmosphereManager.INSTANCE);
@@ -89,27 +85,17 @@ public class GalacticraftProxy {
         GalacticraftProxy.commonInit(e);
     }
 
-    private static void serverInit(FMLInitializationEvent e) {
+    private static void serverInit(FMLInitializationEvent e) {}
 
-    }
-
-    private static void clientInit(FMLInitializationEvent e) {
-
-    }
+    private static void clientInit(FMLInitializationEvent e) {}
 
     private static void commonInit(FMLInitializationEvent e) {
-        if (ConfigHandler.Ross128Enabled)
-            Ross128SolarSystem.init();
-    }
-    private static void serverPostInit(FMLPostInitializationEvent e) {
-
+        if (ConfigHandler.Ross128Enabled) Ross128SolarSystem.init();
     }
 
-    private static void clientPostInit(FMLPostInitializationEvent e) {
+    private static void serverPostInit(FMLPostInitializationEvent e) {}
 
-    }
+    private static void clientPostInit(FMLPostInitializationEvent e) {}
 
-    private static void commonPostInit(FMLPostInitializationEvent e) {
-
-    }
+    private static void commonPostInit(FMLPostInitializationEvent e) {}
 }

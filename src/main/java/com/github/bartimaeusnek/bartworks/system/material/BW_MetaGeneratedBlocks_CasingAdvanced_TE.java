@@ -48,11 +48,13 @@ public class BW_MetaGeneratedBlocks_CasingAdvanced_TE extends BW_MetaGenerated_B
                         PrefixTextureLinker.texMapBlocks
                                 .get(WerkstoffLoader.blockCasingAdvanced)
                                 .getOrDefault(set, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex]),
-                        aMaterial.getRGBA()
-                );
-                return new ITexture[]{TextureFactory.of(Blocks.iron_block), aIconSet};
+                        aMaterial.getRGBA());
+                return new ITexture[] {TextureFactory.of(Blocks.iron_block), aIconSet};
             }
         }
-        return new ITexture[]{TextureFactory.of(Blocks.iron_block), TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex])};
+        return new ITexture[] {
+            TextureFactory.of(Blocks.iron_block),
+            TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex])
+        };
     }
 }

@@ -28,8 +28,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 public class MegaUtils {
 
     public static boolean drainEnergyMegaVanilla(GT_MetaTileEntity_MultiBlockBase multiBlockBase, long aEU) {
-        if (aEU <= 0)
-            return true;
+        if (aEU <= 0) return true;
 
         long allTheEu = 0;
         int hatches = 0;
@@ -39,8 +38,7 @@ public class MegaUtils {
                 hatches++;
             }
 
-        if (allTheEu < aEU)
-            return false;
+        if (allTheEu < aEU) return false;
 
         long euperhatch = aEU / hatches;
 

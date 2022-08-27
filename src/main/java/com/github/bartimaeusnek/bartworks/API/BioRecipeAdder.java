@@ -25,11 +25,10 @@ package com.github.bartimaeusnek.bartworks.API;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import gregtech.api.enums.Materials;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings("ALL")
 public final class BioRecipeAdder {
@@ -38,8 +37,18 @@ public final class BioRecipeAdder {
     public static final int LOWGRAVITY = -100;
     public static final int CLEANROOM = -200;
 
-    public static boolean addBioLabRecipe(ItemStack[] aInputs, ItemStack aOutput, ItemStack aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        return BWRecipes.instance.addBioLabRecipe(aInputs, aOutput, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
+    public static boolean addBioLabRecipe(
+            ItemStack[] aInputs,
+            ItemStack aOutput,
+            ItemStack aSpecialItems,
+            int[] aChances,
+            FluidStack[] aFluidInputs,
+            FluidStack[] aFluidOutputs,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue) {
+        return BWRecipes.instance.addBioLabRecipe(
+                aInputs, aOutput, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
     }
 
     /**
@@ -54,8 +63,16 @@ public final class BioRecipeAdder {
      * @param aSpecialValue 0 = STANDART, -100 = LowGravity, -200 = Cleanroom
      * @return if the recipe was added.
      */
-    public static boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances, FluidStack aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
-        return BWRecipes.instance.addBioLabRecipeIncubation(aInput, aOutput, aChances, aFluidInputs, aDuration, aEUt, aSpecialValue);
+    public static boolean addBioLabRecipeIncubation(
+            ItemStack aInput,
+            BioCulture aOutput,
+            int[] aChances,
+            FluidStack aFluidInputs,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue) {
+        return BWRecipes.instance.addBioLabRecipeIncubation(
+                aInput, aOutput, aChances, aFluidInputs, aDuration, aEUt, aSpecialValue);
     }
 
     /**
@@ -71,8 +88,19 @@ public final class BioRecipeAdder {
      * @param exactSv       if the recipe needs EXACTLY the Sv or can use less...
      * @return
      */
-    public static boolean addBacterialVatRecipe(ItemStack[] aInputs, @Nonnull BioCulture aCulture, @Nonnull FluidStack[] aFluidInputs, @Nonnull FluidStack[] aFluidOutputs, @Nonnegative int aDuration, @Nonnegative int aEUt, int Sv, @Nonnegative int glasTier, int aSpecialValue, boolean exactSv) {
-        return BWRecipes.instance.addBacterialVatRecipe(aInputs, aCulture, aFluidInputs, aFluidOutputs, aDuration, aEUt, Sv, glasTier, aSpecialValue, exactSv);
+    public static boolean addBacterialVatRecipe(
+            ItemStack[] aInputs,
+            @Nonnull BioCulture aCulture,
+            @Nonnull FluidStack[] aFluidInputs,
+            @Nonnull FluidStack[] aFluidOutputs,
+            @Nonnegative int aDuration,
+            @Nonnegative int aEUt,
+            int Sv,
+            @Nonnegative int glasTier,
+            int aSpecialValue,
+            boolean exactSv) {
+        return BWRecipes.instance.addBacterialVatRecipe(
+                aInputs, aCulture, aFluidInputs, aFluidOutputs, aDuration, aEUt, Sv, glasTier, aSpecialValue, exactSv);
     }
 
     /**
@@ -88,38 +116,69 @@ public final class BioRecipeAdder {
      * @param exactSv       if the recipe needs EXACTLY the Sv or can use less...
      * @return
      */
-    public static boolean addBacterialVatRecipe(ItemStack[] aInputs, @Nonnull BioCulture aCulture, @Nonnull FluidStack[] aFluidInputs, @Nonnull FluidStack[] aFluidOutputs, @Nonnegative int aDuration, @Nonnegative int aEUt, Materials material, @Nonnegative int glasTier, int aSpecialValue, boolean exactSv) {
-        return BWRecipes.instance.addBacterialVatRecipe(aInputs, aCulture, aFluidInputs, aFluidOutputs, aDuration, aEUt, material, glasTier, aSpecialValue, exactSv);
+    public static boolean addBacterialVatRecipe(
+            ItemStack[] aInputs,
+            @Nonnull BioCulture aCulture,
+            @Nonnull FluidStack[] aFluidInputs,
+            @Nonnull FluidStack[] aFluidOutputs,
+            @Nonnegative int aDuration,
+            @Nonnegative int aEUt,
+            Materials material,
+            @Nonnegative int glasTier,
+            int aSpecialValue,
+            boolean exactSv) {
+        return BWRecipes.instance.addBacterialVatRecipe(
+                aInputs,
+                aCulture,
+                aFluidInputs,
+                aFluidOutputs,
+                aDuration,
+                aEUt,
+                material,
+                glasTier,
+                aSpecialValue,
+                exactSv);
     }
 
-//    public static boolean addBacterialVatRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSievert) {
-//        return BWRecipes.instance.addBacterialVatRecipe(aInputs, aOutputs, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSievert);
-//    }
+    //    public static boolean addBacterialVatRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, FluidStack[]
+    // aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSievert) {
+    //        return BWRecipes.instance.addBacterialVatRecipe(aInputs, aOutputs, aFluidInputs, aFluidOutputs, aDuration,
+    // aEUt, aSievert);
+    //    }
 
-//    @Deprecated
-//    public static boolean addBioLabRecipeDNAExtraction(ItemStack[] aInputs, ItemStack aOutput, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
-//        return BWRecipes.instance.addBioLabRecipeDNAExtraction(aInputs, aOutput, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-//    }
-//
-//    @Deprecated
-//    public static boolean addBioLabRecipePCRThermoclycling(ItemStack[] aInputs, ItemStack aOutput, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
-//        return BWRecipes.instance.addBioLabRecipePCRThermoclycling(aInputs, aOutput, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-//    }
-//
-//    @Deprecated
-//    public static boolean addBioLabRecipePlasmidSynthesis(ItemStack[] aInputs, ItemStack aOutput, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
-//        return BWRecipes.instance.addBioLabRecipePlasmidSynthesis(aInputs, aOutput, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-//    }
-//
-//    @Deprecated
-//    public static boolean addBioLabRecipeTransformation(ItemStack[] aInputs, ItemStack aOutput, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
-//        return BWRecipes.instance.addBioLabRecipeTransformation(aInputs, aOutput, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-//    }
-//
-//    @Deprecated
-//    public static boolean addBioLabRecipeClonalCellularSynthesis(ItemStack[] aInputs, ItemStack aOutput, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
-//        return BWRecipes.instance.addBioLabRecipeClonalCellularSynthesis(aInputs, aOutput, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-//    }
-
+    //    @Deprecated
+    //    public static boolean addBioLabRecipeDNAExtraction(ItemStack[] aInputs, ItemStack aOutput, int[] aChances,
+    // FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
+    //        return BWRecipes.instance.addBioLabRecipeDNAExtraction(aInputs, aOutput, aChances, aFluidInputs,
+    // aFluidOutputs, aDuration, aEUt, aSpecialValue);
+    //    }
+    //
+    //    @Deprecated
+    //    public static boolean addBioLabRecipePCRThermoclycling(ItemStack[] aInputs, ItemStack aOutput, int[] aChances,
+    // FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
+    //        return BWRecipes.instance.addBioLabRecipePCRThermoclycling(aInputs, aOutput, aChances, aFluidInputs,
+    // aFluidOutputs, aDuration, aEUt, aSpecialValue);
+    //    }
+    //
+    //    @Deprecated
+    //    public static boolean addBioLabRecipePlasmidSynthesis(ItemStack[] aInputs, ItemStack aOutput, int[] aChances,
+    // FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
+    //        return BWRecipes.instance.addBioLabRecipePlasmidSynthesis(aInputs, aOutput, aChances, aFluidInputs,
+    // aFluidOutputs, aDuration, aEUt, aSpecialValue);
+    //    }
+    //
+    //    @Deprecated
+    //    public static boolean addBioLabRecipeTransformation(ItemStack[] aInputs, ItemStack aOutput, int[] aChances,
+    // FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
+    //        return BWRecipes.instance.addBioLabRecipeTransformation(aInputs, aOutput, aChances, aFluidInputs,
+    // aFluidOutputs, aDuration, aEUt, aSpecialValue);
+    //    }
+    //
+    //    @Deprecated
+    //    public static boolean addBioLabRecipeClonalCellularSynthesis(ItemStack[] aInputs, ItemStack aOutput, int[]
+    // aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
+    //        return BWRecipes.instance.addBioLabRecipeClonalCellularSynthesis(aInputs, aOutput, aChances, aFluidInputs,
+    // aFluidOutputs, aDuration, aEUt, aSpecialValue);
+    //    }
 
 }

@@ -42,7 +42,13 @@ public interface ITileWithGUI {
      */
     default boolean openGUI(TileEntity tileEntity, EntityPlayer player) {
         if (!tileEntity.getWorldObj().isRemote)
-            player.openGui(MainMod.MOD_ID, getGUIID(), tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+            player.openGui(
+                    MainMod.MOD_ID,
+                    getGUIID(),
+                    tileEntity.getWorldObj(),
+                    tileEntity.xCoord,
+                    tileEntity.yCoord,
+                    tileEntity.zCoord);
         return true;
     }
 }

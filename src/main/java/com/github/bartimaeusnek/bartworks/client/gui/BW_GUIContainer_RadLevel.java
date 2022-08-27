@@ -41,7 +41,6 @@ public class BW_GUIContainer_RadLevel extends GuiContainer {
         this.container = (BW_Container_RadioHatch) p_i1072_1_;
     }
 
-
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor3f(1, 1, 1);

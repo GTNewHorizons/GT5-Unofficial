@@ -24,12 +24,18 @@ public class BW_CropVisualizer extends EntityFX {
 
     @Override
     public void onUpdate() {
-        if (this.particleAge++ >= this.particleMaxAge)
-            this.setDead();
+        if (this.particleAge++ >= this.particleMaxAge) this.setDead();
     }
 
     @Override
-    public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_) {
+    public void renderParticle(
+            Tessellator p_70539_1_,
+            float p_70539_2_,
+            float p_70539_3_,
+            float p_70539_4_,
+            float p_70539_5_,
+            float p_70539_6_,
+            float p_70539_7_) {
         Tessellator tessellator = Tessellator.instance;
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDepthMask(false);
@@ -51,5 +57,4 @@ public class BW_CropVisualizer extends EntityFX {
     public boolean shouldRenderInPass(int pass) {
         return pass == 2;
     }
-
 }

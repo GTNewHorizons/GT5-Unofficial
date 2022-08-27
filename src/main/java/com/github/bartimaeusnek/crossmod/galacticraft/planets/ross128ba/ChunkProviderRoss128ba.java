@@ -25,6 +25,8 @@ package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128ba;
 import com.github.bartimaeusnek.bartworks.util.NoiseUtil.BartsNoise;
 import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b.ChunkProviderRoss128b;
 import gregtech.api.objects.XSTR;
+import java.util.Arrays;
+import java.util.Random;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.world.gen.BiomeGenBaseMoon;
@@ -38,9 +40,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import java.util.Arrays;
-import java.util.Random;
-
 public class ChunkProviderRoss128ba extends ChunkProviderMoon {
 
     private final XSTR rand = new XSTR();
@@ -50,7 +49,7 @@ public class ChunkProviderRoss128ba extends ChunkProviderMoon {
 
     public ChunkProviderRoss128ba(World world, long seed, boolean mapFeaturesEnabled) {
         super(world, seed, mapFeaturesEnabled);
-        this.biomesForGeneration = new BiomeGenBase[]{BiomeGenBaseMoon.moonFlat};
+        this.biomesForGeneration = new BiomeGenBase[] {BiomeGenBaseMoon.moonFlat};
         this.caveGenerator = new MapGenCavesMoon();
         this.worldObj = world;
     }
@@ -61,7 +60,9 @@ public class ChunkProviderRoss128ba extends ChunkProviderMoon {
         byte[] meta = new byte[65536];
         Arrays.fill(ids, Blocks.air);
         this.generateTerrain(cx, cz, ids, meta);
-        this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, cx * 16, cz * 16, 16, 16);
+        this.biomesForGeneration = this.worldObj
+                .getWorldChunkManager()
+                .loadBlockGeneratorData(this.biomesForGeneration, cx * 16, cz * 16, 16, 16);
         this.createCraters(cx, cz, ids, meta);
         this.replaceBlocksForBiome(cx, cz, ids, meta, this.biomesForGeneration);
         this.caveGenerator.generate(this, this.worldObj, cx, cz, ids, meta);
@@ -70,8 +71,7 @@ public class ChunkProviderRoss128ba extends ChunkProviderMoon {
         return Chunk;
     }
 
-    public void decoratePlanet(World par1World, Random par2Random, int par3, int par4) {
-    }
+    public void decoratePlanet(World par1World, Random par2Random, int par3, int par4) {}
 
     @Override
     public void populate(IChunkProvider par1IChunkProvider, int par2, int par3) {
@@ -108,6 +108,5 @@ public class ChunkProviderRoss128ba extends ChunkProviderMoon {
                 }
             }
         }
-
     }
 }

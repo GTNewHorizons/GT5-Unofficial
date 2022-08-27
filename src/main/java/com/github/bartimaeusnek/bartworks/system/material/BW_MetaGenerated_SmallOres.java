@@ -25,25 +25,25 @@ package com.github.bartimaeusnek.bartworks.system.material;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
+import java.util.Arrays;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.util.Arrays;
-
 public class BW_MetaGenerated_SmallOres extends BW_MetaGenerated_Ores {
     public BW_MetaGenerated_SmallOres(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
-        this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization("bw.blocktype." + OrePrefixes.oreSmall,  OrePrefixes.oreSmall.mLocalizedMaterialPre+"%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
+        this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization(
+                "bw.blocktype." + OrePrefixes.oreSmall,
+                OrePrefixes.oreSmall.mLocalizedMaterialPre + "%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
     }
 
     @Override
     protected void doRegistrationStuff(Werkstoff w) {
         if (w != null) {
-            if (!w.hasItemType(OrePrefixes.ore) || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
-                return;
+            if (!w.hasItemType(OrePrefixes.ore) || ((w.getGenerationFeatures().blacklist & 0b1000) != 0)) return;
             GT_ModHandler.addValuableOre(this, w.getmID(), 1);
         }
     }
@@ -53,7 +53,8 @@ public class BW_MetaGenerated_SmallOres extends BW_MetaGenerated_Ores {
         return "bw.blockores.02";
     }
 
-    public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air, Block block, int[] aBlockMeta) {
+    public static boolean setOreBlock(
+            World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air, Block block, int[] aBlockMeta) {
         if (!air) {
             aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
         }
@@ -81,5 +82,4 @@ public class BW_MetaGenerated_SmallOres extends BW_MetaGenerated_Ores {
             return true;
         }
     }
-
 }

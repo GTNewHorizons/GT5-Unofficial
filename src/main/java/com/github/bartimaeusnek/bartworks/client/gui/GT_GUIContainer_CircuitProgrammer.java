@@ -35,7 +35,8 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GT_GUIContainer_CircuitProgrammer extends GuiContainer {
 
-    public static final ResourceLocation texture = new ResourceLocation(MainMod.MOD_ID, "textures/GUI/GUI_CircuitP.png");
+    public static final ResourceLocation texture =
+            new ResourceLocation(MainMod.MOD_ID, "textures/GUI/GUI_CircuitP.png");
 
     public GT_GUIContainer_CircuitProgrammer(InventoryPlayer p_i1072_1_) {
         super(new GT_Container_CircuitProgrammer(p_i1072_1_));

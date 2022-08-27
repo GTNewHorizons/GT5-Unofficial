@@ -22,22 +22,32 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
+import static gregtech.api.enums.OrePrefixes.block;
+import static gregtech.api.enums.OrePrefixes.ingot;
+
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
 
-import static gregtech.api.enums.OrePrefixes.block;
-import static gregtech.api.enums.OrePrefixes.ingot;
-
 public class MetalLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(ingot)) {
             GT_ModHandler.addCompressionRecipe(werkstoff.get(ingot, 9), werkstoff.get(block));
-            GT_Values.RA.addExtruderRecipe(werkstoff.get(ingot, 9), ItemList.Shape_Extruder_Block.get(0), werkstoff.get(block), (int) werkstoff.getStats().getMass(), 8 * werkstoff.getStats().getMeltingPoint() >= 2800 ? 60 : 15);
-            GT_Values.RA.addAlloySmelterRecipe(werkstoff.get(ingot, 9), ItemList.Shape_Mold_Block.get(0L), werkstoff.get(block), (int) (werkstoff.getStats().getMass() / 2), 4 * werkstoff.getStats().getMeltingPoint() >= 2800 ? 60 : 15);
+            GT_Values.RA.addExtruderRecipe(
+                    werkstoff.get(ingot, 9),
+                    ItemList.Shape_Extruder_Block.get(0),
+                    werkstoff.get(block),
+                    (int) werkstoff.getStats().getMass(),
+                    8 * werkstoff.getStats().getMeltingPoint() >= 2800 ? 60 : 15);
+            GT_Values.RA.addAlloySmelterRecipe(
+                    werkstoff.get(ingot, 9),
+                    ItemList.Shape_Mold_Block.get(0L),
+                    werkstoff.get(block),
+                    (int) (werkstoff.getStats().getMass() / 2),
+                    4 * werkstoff.getStats().getMeltingPoint() >= 2800 ? 60 : 15);
         }
     }
 }

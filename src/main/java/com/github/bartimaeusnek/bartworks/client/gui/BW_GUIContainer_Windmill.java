@@ -41,8 +41,7 @@ public class BW_GUIContainer_Windmill extends GT_GUIContainerMetaTile_Machine {
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        if (!(this.mContainer instanceof GT_Container_MultiMachine))
-            return;
+        if (!(this.mContainer instanceof GT_Container_MultiMachine)) return;
 
         if ((this.mContainer.mDisplayErrorCode & 64) != 0)
             this.fontRendererObj.drawString(this.trans("138", "Incomplete Structure."), 92, 22, 16448255);
@@ -70,11 +69,10 @@ public class BW_GUIContainer_Windmill extends GT_GUIContainerMetaTile_Machine {
                 this.drawTexturedModalRect(x + 85, y + 27, 176, (last = 32), 32, 32);
             else if (System.currentTimeMillis() / DIVIDER % 40 == 0)
                 this.drawTexturedModalRect(x + 85, y + 27, 176, (last = 0), 32, 32);
-            else
-                this.drawTexturedModalRect(x + 85, y + 27, 176, last, 32, 32);
+            else this.drawTexturedModalRect(x + 85, y + 27, 176, last, 32, 32);
         }
 
-        //Soft Mallet
+        // Soft Mallet
         if (this.mContainer.mDisplayErrorCode == 0) {
             if (this.mContainer.mActive == 0) {
                 this.drawTexturedModalRect(x + 66, y + 66, 176, 128, 15, 15);

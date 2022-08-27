@@ -40,12 +40,16 @@ public class BW_MetaGenerated_WerkstoffBlock_TE extends BW_MetaGenerated_Block_T
             if ((aMaterial != null)) {
                 TextureSet set = aMaterial.getTexSet();
                 ITexture aIconSet = TextureFactory.of(
-                        set.mTextures[PrefixTextureLinker.blockTexMap.getOrDefault(set, OrePrefixes.block.mTextureIndex)], aMaterial.getRGBA()
-                );
-                return new ITexture[]{TextureFactory.of(Blocks.iron_block), aIconSet};
+                        set.mTextures[
+                                PrefixTextureLinker.blockTexMap.getOrDefault(set, OrePrefixes.block.mTextureIndex)],
+                        aMaterial.getRGBA());
+                return new ITexture[] {TextureFactory.of(Blocks.iron_block), aIconSet};
             }
         }
-        return new ITexture[]{TextureFactory.of(Blocks.iron_block), TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex])};
+        return new ITexture[] {
+            TextureFactory.of(Blocks.iron_block),
+            TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex])
+        };
     }
 
     @Override

@@ -51,7 +51,7 @@ public class GT_Container_CircuitProgrammer extends Container {
 
         IInventory inv = new pinv(this.player);
 
-        this.addSlotToContainer(new Slot(inv, 0, 44, 61));//-45, 84));
+        this.addSlotToContainer(new Slot(inv, 0, 44, 61)); // -45, 84));
 
         for (int i = 1; i < 13; i++) {
             this.addSlotToContainer(new GT_Slot_Holo(inv, i, -64 + i * 18, 22, false, false, 1));
@@ -67,10 +67,10 @@ public class GT_Container_CircuitProgrammer extends Container {
         }
 
         for (int i = 0; i < 9; i++) {
-            if (GT_Utility.isStackValid(inventory.getStackInSlot(i)) && inventory.getStackInSlot(i).getItem() instanceof Circuit_Programmer)
+            if (GT_Utility.isStackValid(inventory.getStackInSlot(i))
+                    && inventory.getStackInSlot(i).getItem() instanceof Circuit_Programmer)
                 this.addSlotToContainer(new GT_Slot_Render(inventory, i, 8 + i * 18, 142));
-            else
-                this.addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
+            else this.addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
         }
     }
 
@@ -97,7 +97,11 @@ public class GT_Container_CircuitProgrammer extends Container {
         Slot chipslot = (Slot) this.inventorySlots.get(0);
         if (SlotNR > 24) {
             Slot slot = (Slot) this.inventorySlots.get(SlotNR);
-            if (slot != null && slot.getStack() != null && slot.getStack().getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
+            if (slot != null
+                    && slot.getStack() != null
+                    && slot.getStack()
+                            .getItem()
+                            .equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
                 if (chipslot.getStack() == null) {
                     chipslot.putStack(slot.getStack().copy());
                     slot.decrStackSize(1);
@@ -162,8 +166,12 @@ public class GT_Container_CircuitProgrammer extends Container {
 
         @Override
         public void setInventorySlotContents(int slotNR, ItemStack itemStack) {
-            if (itemStack != null && itemStack.getItem() != null && itemStack.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
-                this.Slot = BW_Util.setStackSize(itemStack.copy(),1);
+            if (itemStack != null
+                    && itemStack.getItem() != null
+                    && itemStack
+                            .getItem()
+                            .equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
+                this.Slot = BW_Util.setStackSize(itemStack.copy(), 1);
                 itemStack.stackSize--;
                 this.tag = this.toBind.getTagCompound();
                 this.tag.setBoolean("HasChip", true);
@@ -171,8 +179,15 @@ public class GT_Container_CircuitProgrammer extends Container {
                 this.toBind.setTagCompound(this.tag);
                 this.Player.inventory.setInventorySlotContents(this.Player.inventory.currentItem, this.toBind);
                 if (!this.Player.isClientWorld())
-                    MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(this.Player.worldObj.provider.dimensionId, this.Player.getEntityId(), true, (byte) itemStack.getItemDamage()));
-            } else if (BW_Util.checkStackAndPrefix(itemStack) && GT_OreDictUnificator.getAssociation(itemStack).mPrefix.equals(OrePrefixes.circuit) && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.equals(Materials.Basic)) {
+                    MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(
+                            this.Player.worldObj.provider.dimensionId, this.Player.getEntityId(), true, (byte)
+                                    itemStack.getItemDamage()));
+            } else if (BW_Util.checkStackAndPrefix(itemStack)
+                    && GT_OreDictUnificator.getAssociation(itemStack).mPrefix.equals(OrePrefixes.circuit)
+                    && GT_OreDictUnificator.getAssociation(itemStack)
+                            .mMaterial
+                            .mMaterial
+                            .equals(Materials.Basic)) {
                 this.Slot = GT_Utility.getIntegratedCircuit(0);
                 this.Slot.stackSize = 1;
                 itemStack.stackSize--;
@@ -182,19 +197,21 @@ public class GT_Container_CircuitProgrammer extends Container {
                 this.toBind.setTagCompound(this.tag);
                 this.Player.inventory.setInventorySlotContents(this.Player.inventory.currentItem, this.toBind);
                 if (!this.Player.isClientWorld())
-                    MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(this.Player.worldObj.provider.dimensionId, this.Player.getEntityId(), true, (byte) 0));
-            }/* else if (GT_Utility.isStackValid(itemStack) && itemStack.getItem() instanceof Circuit_Programmer) {
-                ForgeHooks.onPlayerTossEvent(Player, itemStack, false);
-                this.closeInventory();
-                Player.closeScreen();
-            }*/ else {
+                    MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(
+                            this.Player.worldObj.provider.dimensionId, this.Player.getEntityId(), true, (byte) 0));
+            } /* else if (GT_Utility.isStackValid(itemStack) && itemStack.getItem() instanceof Circuit_Programmer) {
+                  ForgeHooks.onPlayerTossEvent(Player, itemStack, false);
+                  this.closeInventory();
+                  Player.closeScreen();
+              }*/ else {
                 ForgeHooks.onPlayerTossEvent(this.Player, itemStack, false);
                 this.tag = this.toBind.getTagCompound();
                 this.tag.setBoolean("HasChip", false);
                 this.toBind.setTagCompound(this.tag);
                 this.Player.inventory.setInventorySlotContents(this.Player.inventory.currentItem, this.toBind);
                 if (!this.Player.isClientWorld())
-                    MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(this.Player.worldObj.provider.dimensionId, this.Player.getEntityId(), false, (byte) 0));
+                    MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(
+                            this.Player.worldObj.provider.dimensionId, this.Player.getEntityId(), false, (byte) 0));
             }
         }
 
@@ -214,9 +231,7 @@ public class GT_Container_CircuitProgrammer extends Container {
         }
 
         @Override
-        public void markDirty() {
-
-        }
+        public void markDirty() {}
 
         @Override
         public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
@@ -224,19 +239,17 @@ public class GT_Container_CircuitProgrammer extends Container {
         }
 
         @Override
-        public void openInventory() {
-
-        }
+        public void openInventory() {}
 
         @Override
-        public void closeInventory() {
-
-        }
+        public void closeInventory() {}
 
         @Override
         public boolean isItemValidForSlot(int p_94041_1_, ItemStack itemStack) {
-            return itemStack != null && itemStack.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem());
+            return itemStack != null
+                    && itemStack
+                            .getItem()
+                            .equals(GT_Utility.getIntegratedCircuit(0).getItem());
         }
     }
-
 }

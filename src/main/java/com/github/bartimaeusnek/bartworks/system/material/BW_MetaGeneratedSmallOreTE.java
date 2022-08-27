@@ -29,12 +29,11 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
+import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
 
@@ -46,13 +45,15 @@ public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
             Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
             ArrayList<ItemStack> tSelector = new ArrayList<>();
 
-            ItemStack tStack = GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
+            ItemStack tStack = GT_OreDictUnificator.get(
+                    OrePrefixes.gemExquisite, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
             if (tStack != null) {
                 for (int i = 0; i < 1; i++) {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
+            tStack = GT_OreDictUnificator.get(
+                    OrePrefixes.gemFlawless, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
             if (tStack != null) {
                 for (int i = 0; i < 2; i++) {
                     tSelector.add(tStack);
@@ -64,7 +65,8 @@ public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L), 1L);
+            tStack = GT_OreDictUnificator.get(
+                    OrePrefixes.gemFlawed, aMaterial, GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1L), 1L);
             if (tStack != null) {
                 for (int i = 0; i < 5; i++) {
                     tSelector.add(tStack);
@@ -76,7 +78,11 @@ public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
                     tSelector.add(tStack);
                 }
             }
-            tStack = GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L), 1L);
+            tStack = GT_OreDictUnificator.get(
+                    OrePrefixes.gemChipped,
+                    aMaterial,
+                    GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
+                    1L);
             if (tStack != null) {
                 for (int i = 0; i < 5; i++) {
                     tSelector.add(tStack);
@@ -91,13 +97,13 @@ public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
             if (tSelector.size() > 0) {
                 int i = 0;
 
-                for(int j = Math.max(1, (aFortune > 0 ? tRandom.nextInt(1 + aFortune) : 0)); i < j; ++i) {
+                for (int j = Math.max(1, (aFortune > 0 ? tRandom.nextInt(1 + aFortune) : 0)); i < j; ++i) {
                     rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
                 }
-
             }
             if (tRandom.nextInt(3 + aFortune) > 1) {
-                rList.add(GT_OreDictUnificator.get(tRandom.nextInt(3) > 0 ? OrePrefixes.dustImpure : OrePrefixes.dust, Materials.Stone, 1L));
+                rList.add(GT_OreDictUnificator.get(
+                        tRandom.nextInt(3) > 0 ? OrePrefixes.dustImpure : OrePrefixes.dust, Materials.Stone, 1L));
             }
         }
         return rList;
@@ -107,10 +113,14 @@ public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
     public ITexture[] getTexture(Block aBlock, byte aSide) {
         Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
         if ((aMaterial != null)) {
-            ITexture aIconSet = TextureFactory.of(aMaterial.getTexSet().mTextures[OrePrefixes.oreSmall.mTextureIndex], aMaterial.getRGBA());
-            return new ITexture[]{TextureFactory.of(Blocks.stone), aIconSet};
+            ITexture aIconSet = TextureFactory.of(
+                    aMaterial.getTexSet().mTextures[OrePrefixes.oreSmall.mTextureIndex], aMaterial.getRGBA());
+            return new ITexture[] {TextureFactory.of(Blocks.stone), aIconSet};
         }
-        return new ITexture[]{TextureFactory.of(Blocks.stone), TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.oreSmall.mTextureIndex])};
+        return new ITexture[] {
+            TextureFactory.of(Blocks.stone),
+            TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.oreSmall.mTextureIndex])
+        };
     }
 
     @Override

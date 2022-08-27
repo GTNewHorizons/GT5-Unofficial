@@ -27,15 +27,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_Container_1by1;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import java.nio.ByteBuffer;
+import java.util.Iterator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import java.nio.ByteBuffer;
-import java.util.Iterator;
 
 public class GT_Container_RadioHatch extends GT_Container_1by1 {
 
@@ -68,8 +67,7 @@ public class GT_Container_RadioHatch extends GT_Container_1by1 {
             this.teTimer = ByteBuffer.allocate(8).putLong(this.TE.getTimer()).array();
             ++this.timer;
             Iterator var2 = this.crafters.iterator();
-            if (this.timer >= Long.MAX_VALUE - 1)
-                this.timer = 0;
+            if (this.timer >= Long.MAX_VALUE - 1) this.timer = 0;
             while (true) {
                 do {
                     if (!var2.hasNext()) {
@@ -88,24 +86,19 @@ public class GT_Container_RadioHatch extends GT_Container_1by1 {
                         var1.sendProgressBarUpdate(this, 21, this.mass);
                     if (this.timer % 500 == 10 || this.dsievert != this.sievert)
                         var1.sendProgressBarUpdate(this, 22, (this.sievert - 100));
-                    if (this.timer % 500 == 10 || this.dr != this.r)
-                        var1.sendProgressBarUpdate(this, 23, this.r);
-                    if (this.timer % 500 == 10 || this.dg != this.g)
-                        var1.sendProgressBarUpdate(this, 24, this.g);
-                    if (this.timer % 500 == 10 || this.db != this.b)
-                        var1.sendProgressBarUpdate(this, 25, this.b);
+                    if (this.timer % 500 == 10 || this.dr != this.r) var1.sendProgressBarUpdate(this, 23, this.r);
+                    if (this.timer % 500 == 10 || this.dg != this.g) var1.sendProgressBarUpdate(this, 24, this.g);
+                    if (this.timer % 500 == 10 || this.db != this.b) var1.sendProgressBarUpdate(this, 25, this.b);
                     if (this.timer % 500 == 10 || this.dteTimer != this.teTimer)
                         for (int i = 0; i < this.teTimer.length; i++) {
                             var1.sendProgressBarUpdate(this, 26 + i, this.teTimer[i]);
                         }
-                    if (this.timer % 500 == 10 || this.dsv != this.sv)
-                        var1.sendProgressBarUpdate(this, 34, this.sv);
+                    if (this.timer % 500 == 10 || this.dsv != this.sv) var1.sendProgressBarUpdate(this, 34, this.sv);
 
                 } while (this.timer % 500 != 10 && this.dmass == this.mass);
             }
         }
     }
-
 
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
@@ -162,28 +155,25 @@ public class GT_Container_RadioHatch extends GT_Container_1by1 {
 
     // Handle shift-clicking
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int id){
-        Slot slot = (Slot)this.inventorySlots.get(id);
+    public ItemStack transferStackInSlot(EntityPlayer player, int id) {
+        Slot slot = (Slot) this.inventorySlots.get(id);
         ItemStack stack = slot.getStack();
-        if(stack == null)
-            return null;
-        if(slot instanceof RadioSlot)
+        if (stack == null) return null;
+        if (slot instanceof RadioSlot) return super.transferStackInSlot(player, id);
+        else if (((GT_MetaTileEntity_RadioHatch) this.mTileEntity.getMetaTileEntity()).isStackValidRadioMaterial(stack))
             return super.transferStackInSlot(player, id);
-        else if (((GT_MetaTileEntity_RadioHatch)this.mTileEntity.getMetaTileEntity()).isStackValidRadioMaterial(stack))
-            return super.transferStackInSlot(player, id);
-        else
-            return null;
+        else return null;
     }
 
-    private static class RadioSlot extends Slot{
+    private static class RadioSlot extends Slot {
         public RadioSlot(IInventory p_i1824_1_, int p_i1824_2_, int p_i1824_3_, int p_i1824_4_) {
             super(p_i1824_1_, p_i1824_2_, p_i1824_3_, p_i1824_4_);
         }
 
         @Override
         public boolean isItemValid(ItemStack p_75214_1_) {
-            return ((GT_MetaTileEntity_RadioHatch)((IGregTechTileEntity)this.inventory).getMetaTileEntity()).isStackValidRadioMaterial(p_75214_1_);
+            return ((GT_MetaTileEntity_RadioHatch) ((IGregTechTileEntity) this.inventory).getMetaTileEntity())
+                    .isStackValidRadioMaterial(p_75214_1_);
         }
     }
-
 }

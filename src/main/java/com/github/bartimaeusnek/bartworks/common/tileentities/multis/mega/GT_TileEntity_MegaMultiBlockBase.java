@@ -1,5 +1,8 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_Values.V;
+
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
@@ -19,6 +22,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -28,16 +35,12 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Consumer;
-
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_Values.V;
-
-@Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
-public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_MegaMultiBlockBase<T>> extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> implements TecTechEnabledMulti {
+@Optional.Interface(
+        iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti",
+        modid = "tectech",
+        striprefs = true)
+public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_MegaMultiBlockBase<T>>
+        extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> implements TecTechEnabledMulti {
 
     protected GT_TileEntity_MegaMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -77,8 +80,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         Collection collection = this.getTecTechEnergyTunnels();
         if (!collection.isEmpty())
             for (Object tecTechEnergyMulti : collection)
-                if (!(tecTechEnergyMulti instanceof LowPowerLaser))
-                    return false;
+                if (!(tecTechEnergyMulti instanceof LowPowerLaser)) return false;
         return true;
     }
 
@@ -104,28 +106,26 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     @Override
     public boolean drainEnergyInput(long aEU) {
-        if (LoaderReference.tectech)
-            return TecTechUtils.drainEnergyMEBFTecTech(this, aEU);
+        if (LoaderReference.tectech) return TecTechUtils.drainEnergyMEBFTecTech(this, aEU);
         return MegaUtils.drainEnergyMegaVanilla(this, aEU);
     }
 
     @Override
     public long getMaxInputVoltage() {
-        if (LoaderReference.tectech)
-            return TecTechUtils.getMaxInputVoltage(this);
+        if (LoaderReference.tectech) return TecTechUtils.getMaxInputVoltage(this);
         return super.getMaxInputVoltage();
     }
 
     @Deprecated
     @Override
     protected void calculateOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
-        calculateOverclockedNessMultiInternal((long)aEUt, aDuration, maxInputVoltage, false);
+        calculateOverclockedNessMultiInternal((long) aEUt, aDuration, maxInputVoltage, false);
     }
 
     @Deprecated
     @Override
     protected void calculatePerfectOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
-        calculateOverclockedNessMultiInternal((long)aEUt, aDuration, maxInputVoltage, true);
+        calculateOverclockedNessMultiInternal((long) aEUt, aDuration, maxInputVoltage, true);
     }
 
     @Override
@@ -154,43 +154,49 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
             }
         }
 
-        long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
+        long nominalV =
+                LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
         String tName = BW_Util.getTierNameFromVoltage(nominalV);
-        if(tName.equals("MAX+")) tName = EnumChatFormatting.OBFUSCATED + "MAX+";
+        if (tName.equals("MAX+")) tName = EnumChatFormatting.OBFUSCATED + "MAX+";
 
-        return new String[]{
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " +
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
-                EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " +
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
-                EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " +
-                EnumChatFormatting.RED + GT_Utility.formatNumbers(-this.lEUt) + EnumChatFormatting.RESET + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " +
-                EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.getMaxInputVoltage()) + EnumChatFormatting.RESET +
-                " EU/t(*" + GT_Utility.formatNumbers(TecTechUtils.getMaxInputAmperage(this)) + "A) = " +
-                EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(nominalV) + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.tier") + ": " +
-                EnumChatFormatting.YELLOW + tName + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " +
-                EnumChatFormatting.RED + (this.getIdealStatus() - this.getRepairStatus()) + EnumChatFormatting.RESET + " " +
-                StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": " +
-                EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " +
-                EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %",
-            BW_Tooltip_Reference.BW};
+        return new String[] {
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(this.mProgresstime / 20) + EnumChatFormatting.RESET + " s / "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
+            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
+            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(-this.lEUt) + EnumChatFormatting.RESET + " EU/t",
+            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(this.getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*"
+                    + GT_Utility.formatNumbers(TecTechUtils.getMaxInputAmperage(this)) + "A) = "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(nominalV) + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.machines.tier") + ": " + EnumChatFormatting.YELLOW + tName
+                    + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED
+                    + (this.getIdealStatus() - this.getRepairStatus()) + EnumChatFormatting.RESET + " "
+                    + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                    + ": " + EnumChatFormatting.YELLOW
+                    + (float) this.mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
+            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN
+                    + mPollutionReduction + EnumChatFormatting.RESET + " %",
+            BW_Tooltip_Reference.BW
+        };
     }
 
-
     // Special overclocking to handle over MAX voltage
-    protected byte calculateOverclockedNessMultiInternal(long aEUt, int aDuration, long maxInputVoltage, boolean perfectOC) {
+    protected byte calculateOverclockedNessMultiInternal(
+            long aEUt, int aDuration, long maxInputVoltage, boolean perfectOC) {
         byte mTier = (byte) Math.max(0, BW_Util.getTier(maxInputVoltage)), overclockCount = 0;
         if (mTier == 0) {
-            //Long time calculation
+            // Long time calculation
             long xMaxProgresstime = ((long) aDuration) << 1;
             if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-                //make impossible if too long
+                // make impossible if too long
                 this.lEUt = Integer.MAX_VALUE - 1;
                 this.mMaxProgresstime = Integer.MAX_VALUE - 1;
             } else {
@@ -198,49 +204,48 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
                 this.mMaxProgresstime = (int) xMaxProgresstime;
             }
         } else {
-            //Long EUt calculation
+            // Long EUt calculation
             long xEUt = aEUt;
-            //Isnt too low EUt check?
+            // Isnt too low EUt check?
             long tempEUt = Math.max(xEUt, V[1]);
 
             this.mMaxProgresstime = aDuration;
 
             while (tempEUt <= BW_Util.getTierVoltage(mTier - 1)) {
-                tempEUt <<= 2;//this actually controls overclocking
-                //xEUt *= 4;//this is effect of everclocking
-                this.mMaxProgresstime >>= perfectOC ? 2 : 1;//this is effect of overclocking
-                xEUt = this.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
+                tempEUt <<= 2; // this actually controls overclocking
+                // xEUt *= 4;//this is effect of everclocking
+                this.mMaxProgresstime >>= perfectOC ? 2 : 1; // this is effect of overclocking
+                xEUt = this.mMaxProgresstime <= 0
+                        ? xEUt >> 1
+                        : xEUt << 2; // U know, if the time is less than 1 tick make the machine use less power
                 overclockCount++;
             }
 
-            while (xEUt > maxInputVoltage && xEUt >= aEUt){
-                //downclock one notch until we are good again, we have overshot.
+            while (xEUt > maxInputVoltage && xEUt >= aEUt) {
+                // downclock one notch until we are good again, we have overshot.
                 xEUt >>= 2;
                 this.mMaxProgresstime <<= perfectOC ? 2 : 1;
                 overclockCount--;
             }
 
-            if (xEUt < aEUt){
+            if (xEUt < aEUt) {
                 xEUt <<= 2;
                 this.mMaxProgresstime >>= perfectOC ? 2 : 1;
                 overclockCount++;
             }
 
             this.lEUt = xEUt;
-            if (this.lEUt == 0)
-                this.lEUt = 1;
-            if (this.mMaxProgresstime <= 0)
-                this.mMaxProgresstime = 1;//set time to 1 tick
+            if (this.lEUt == 0) this.lEUt = 1;
+            if (this.mMaxProgresstime <= 0) this.mMaxProgresstime = 1; // set time to 1 tick
         }
         return overclockCount;
     }
 
-
-    protected void calculateOverclockedNessMulti(long aEUt, int aDuration, long maxInputVoltage){
+    protected void calculateOverclockedNessMulti(long aEUt, int aDuration, long maxInputVoltage) {
         calculateOverclockedNessMultiInternal(aEUt, aDuration, maxInputVoltage, false);
     }
 
-    protected void calculatePerfectOverclockedNessMulti(long aEUt, int aDuration, long maxInputVoltage){
+    protected void calculatePerfectOverclockedNessMulti(long aEUt, int aDuration, long maxInputVoltage) {
         calculateOverclockedNessMultiInternal(aEUt, aDuration, maxInputVoltage, true);
     }
 
@@ -248,11 +253,9 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
     public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (LoaderReference.tectech) {
             int tier = TecTechUtils.addEnergyInputToMachineList(this, aTileEntity, aBaseCasingIndex, energyTier);
-            if(energyTier == -1) energyTier = tier;
+            if (energyTier == -1) energyTier = tier;
             return tier != -1;
-        }
-        else
-        {
+        } else {
             if (aTileEntity == null) {
                 return false;
             } else {
@@ -260,12 +263,10 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
                 if (aMetaTileEntity == null) {
                     return false;
                 } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-                    if(energyTier == -1)
-                        energyTier = ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).mTier;
-                    if(((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).mTier != energyTier)
-                        return false;
-                    ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                    return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+                    if (energyTier == -1) energyTier = ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).mTier;
+                    if (((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).mTier != energyTier) return false;
+                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                    return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
                 } else {
                     return false;
                 }
@@ -282,9 +283,10 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.lEUt > 0) {
-            this.addEnergyOutput(this.lEUt * (long)this.mEfficiency / 10000L);
+            this.addEnergyOutput(this.lEUt * (long) this.mEfficiency / 10000L);
             return true;
-        } else if (this.lEUt < 0 && !this.drainEnergyInput((-this.lEUt) * 10000L / (long)Math.max(1000, this.mEfficiency))) {
+        } else if (this.lEUt < 0
+                && !this.drainEnergyInput((-this.lEUt) * 10000L / (long) Math.max(1000, this.mEfficiency))) {
             this.stopMachine();
             return false;
         } else {
@@ -318,10 +320,9 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         private static final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         static {
-            ImmutableList.Builder<Class<? extends IMetaTileEntity>> builder = ImmutableList.<Class<? extends IMetaTileEntity>>builder()
-                .addAll(Energy.mteClasses());
-            if (LoaderReference.tectech)
-                builder.add(GT_MetaTileEntity_Hatch_EnergyMulti.class);
+            ImmutableList.Builder<Class<? extends IMetaTileEntity>> builder =
+                    ImmutableList.<Class<? extends IMetaTileEntity>>builder().addAll(Energy.mteClasses());
+            if (LoaderReference.tectech) builder.add(GT_MetaTileEntity_Hatch_EnergyMulti.class);
             mteClasses = builder.build();
         }
 
@@ -343,11 +344,14 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     protected static class StructureElementAirNoHint<T> implements IStructureElement<T> {
         private static final StructureElementAirNoHint<?> INSTANCE = new StructureElementAirNoHint<>();
+
         @SuppressWarnings("unchecked")
         public static <T> IStructureElement<T> getInstance() {
             return (IStructureElement<T>) INSTANCE;
         }
+
         private StructureElementAirNoHint() {}
+
         @Override
         public boolean check(T o, World world, int x, int y, int z) {
             return world.isAirBlock(x, y, z);
@@ -355,9 +359,10 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
         @Override
         public boolean spawnHint(T o, World world, int x, int y, int z, ItemStack trigger) {
-            if (world.blockExists(x, y, z) && ! world.isAirBlock(x, y, z))
+            if (world.blockExists(x, y, z) && !world.isAirBlock(x, y, z))
                 // hint if this is obstructed. in case *someone* ever finish the transparent rendering
-                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), StructureLibAPI.HINT_BLOCK_META_AIR);
+                StructureLibAPI.hintParticle(
+                        world, x, y, z, StructureLibAPI.getBlockHint(), StructureLibAPI.HINT_BLOCK_META_AIR);
             return true;
         }
 
@@ -368,7 +373,16 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         }
 
         @Override
-        public PlaceResult survivalPlaceBlock(T o, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+        public PlaceResult survivalPlaceBlock(
+                T o,
+                World world,
+                int x,
+                int y,
+                int z,
+                ItemStack trigger,
+                IItemSource s,
+                EntityPlayerMP actor,
+                Consumer<IChatComponent> chatter) {
             if (check(o, world, x, y, z)) return PlaceResult.SKIP;
             if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, actor)) return PlaceResult.REJECT;
             world.setBlock(x, y, z, Blocks.air, 0, 2);

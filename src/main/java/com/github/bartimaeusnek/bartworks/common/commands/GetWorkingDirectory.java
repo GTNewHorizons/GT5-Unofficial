@@ -40,6 +40,7 @@ public class GetWorkingDirectory extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-        p_71515_1_.addChatMessage(new ChatComponentText(Minecraft.getMinecraft().mcDataDir.getAbsolutePath()));
+        p_71515_1_.addChatMessage(
+                new ChatComponentText(Minecraft.getMinecraft().mcDataDir.getAbsolutePath()));
     }
 }

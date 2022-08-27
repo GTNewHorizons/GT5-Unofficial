@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
+import static gregtech.api.enums.OrePrefixes.*;
+
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
@@ -32,15 +34,27 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
-import static gregtech.api.enums.OrePrefixes.*;
-
 public class MultipleMetalLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(plateDense)) {
-            GT_Recipe.GT_Recipe_Map.sBenderRecipes.add(new BWRecipes.DynamicGTRecipe(true, new ItemStack[]{werkstoff.get(ingot, 2), GT_Utility.getIntegratedCircuit(2)}, new ItemStack[]{werkstoff.get(plateDouble)}, null, null, null, null, (int) Math.max(werkstoff.getStats().getMass() * 2, 1L), 60, 0));
-            GregTech_API.registerCover(werkstoff.get(plateDouble), TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false), null);
-            GT_Values.RA.addPulveriserRecipe(werkstoff.get(plateDouble), new ItemStack[]{werkstoff.get(dust, 2)}, null, 2, 8);
+            GT_Recipe.GT_Recipe_Map.sBenderRecipes.add(new BWRecipes.DynamicGTRecipe(
+                    true,
+                    new ItemStack[] {werkstoff.get(ingot, 2), GT_Utility.getIntegratedCircuit(2)},
+                    new ItemStack[] {werkstoff.get(plateDouble)},
+                    null,
+                    null,
+                    null,
+                    null,
+                    (int) Math.max(werkstoff.getStats().getMass() * 2, 1L),
+                    60,
+                    0));
+            GregTech_API.registerCover(
+                    werkstoff.get(plateDouble),
+                    TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false),
+                    null);
+            GT_Values.RA.addPulveriserRecipe(
+                    werkstoff.get(plateDouble), new ItemStack[] {werkstoff.get(dust, 2)}, null, 2, 8);
         }
     }
 }

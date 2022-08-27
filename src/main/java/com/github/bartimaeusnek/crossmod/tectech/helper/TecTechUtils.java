@@ -33,34 +33,31 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 public class TecTechUtils {
 
     @Deprecated
-    public static boolean addEnergyInputToMachineList(TecTechEnabledMulti baseTE, IGregTechTileEntity te, int aBaseCasingIndex){
+    public static boolean addEnergyInputToMachineList(
+            TecTechEnabledMulti baseTE, IGregTechTileEntity te, int aBaseCasingIndex) {
         return addEnergyInputToMachineList(baseTE, te, aBaseCasingIndex, -1) != -1;
     }
 
-    public static int addEnergyInputToMachineList(TecTechEnabledMulti baseTE, IGregTechTileEntity te, int aBaseCasingIndex, int aTier) {
-        if (te == null || !(te.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch))
-            return -1;
+    public static int addEnergyInputToMachineList(
+            TecTechEnabledMulti baseTE, IGregTechTileEntity te, int aBaseCasingIndex, int aTier) {
+        if (te == null || !(te.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch)) return -1;
         else {
             GT_MetaTileEntity_Hatch mte = (GT_MetaTileEntity_Hatch) te.getMetaTileEntity();
 
-            if(mte.mTier != aTier && aTier != -1)
-                return -1;
+            if (mte.mTier != aTier && aTier != -1) return -1;
 
             if (mte instanceof GT_MetaTileEntity_Hatch_EnergyTunnel)
-                if(baseTE.getVanillaEnergyHatches().isEmpty() && baseTE.getTecTechEnergyMultis().isEmpty())
+                if (baseTE.getVanillaEnergyHatches().isEmpty()
+                        && baseTE.getTecTechEnergyMultis().isEmpty())
                     baseTE.getTecTechEnergyTunnels().add((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
-                else
-                    return -1;
-            else if(baseTE.getTecTechEnergyTunnels().isEmpty()) {
+                else return -1;
+            else if (baseTE.getTecTechEnergyTunnels().isEmpty()) {
                 if (mte instanceof GT_MetaTileEntity_Hatch_Energy)
                     baseTE.getVanillaEnergyHatches().add((GT_MetaTileEntity_Hatch_Energy) mte);
                 else if (mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti)
                     baseTE.getTecTechEnergyMultis().add((GT_MetaTileEntity_Hatch_EnergyMulti) mte);
-                else
-                    return -1;
-            }
-            else
-                return -1;
+                else return -1;
+            } else return -1;
 
             mte.updateTexture(aBaseCasingIndex);
             return mte.mTier;
@@ -68,8 +65,7 @@ public class TecTechUtils {
     }
 
     public static boolean drainEnergyMEBFTecTech(TecTechEnabledMulti multi, long aEU) {
-        if (aEU <= 0)
-            return true;
+        if (aEU <= 0) return true;
 
         long allTheEu = 0;
         int hatches = 0;
@@ -91,8 +87,7 @@ public class TecTechUtils {
                 hatches++;
             }
 
-        if (allTheEu < aEU)
-            return false;
+        if (allTheEu < aEU) return false;
 
         if (hatches == 0) return false;
 
@@ -109,7 +104,10 @@ public class TecTechUtils {
         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : multi.getTecTechEnergyMultis())
             hasDrained &= tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euperhatch, false);
 
-        return hasDrained && (multi.getVanillaEnergyHatches().size() > 0 || multi.getTecTechEnergyTunnels().size() > 0 || multi.getTecTechEnergyMultis().size() > 0);
+        return hasDrained
+                && (multi.getVanillaEnergyHatches().size() > 0
+                        || multi.getTecTechEnergyTunnels().size() > 0
+                        || multi.getTecTechEnergyMultis().size() > 0);
     }
 
     public static long getnominalVoltageTT(TecTechEnabledMulti base) {
@@ -181,6 +179,6 @@ public class TecTechUtils {
     }
 
     public static long getEUPerTickFromLaser(GT_MetaTileEntity_Hatch_EnergyTunnel tHatch) {
-        return tHatch.Amperes * tHatch.maxEUInput()/* - (tHatch.Amperes / 20)*/;
+        return tHatch.Amperes * tHatch.maxEUInput() /* - (tHatch.Amperes / 20)*/;
     }
 }

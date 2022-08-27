@@ -55,11 +55,6 @@ public class BioDNA extends BioData {
 
     @Override
     public String toString() {
-        return "BioDNA{" +
-                "name='" + name + '\'' +
-                ", ID=" + ID +
-                '}';
+        return "BioDNA{" + "name='" + name + '\'' + ", ID=" + ID + '}';
     }
-
-
 }

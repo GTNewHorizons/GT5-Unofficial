@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import static gregtech.api.enums.GT_Values.RA;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -36,8 +38,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import static gregtech.api.enums.GT_Values.RA;
-
 public class BW_MetaGeneratedFrames extends MetaPipeEntity {
 
     public final Werkstoff mMaterial;
@@ -47,8 +47,16 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
         mMaterial = aMaterial;
 
         GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, aMaterial, getStackForm(1));
-        GT_ModHandler.addCraftingRecipe(getStackForm(2), RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"SSS", "SwS", "SSS", 'S', mMaterial.get(OrePrefixes.stick)});
-        RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.getVarName(), 4), ItemList.Circuit_Integrated.getWithDamage(0, 4), getStackForm(1), 64, 8);
+        GT_ModHandler.addCraftingRecipe(
+                getStackForm(2),
+                RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+                new Object[] {"SSS", "SwS", "SSS", 'S', mMaterial.get(OrePrefixes.stick)});
+        RA.addAssemblerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.getVarName(), 4),
+                ItemList.Circuit_Integrated.getWithDamage(0, 4),
+                getStackForm(1),
+                64,
+                8);
     }
 
     private BW_MetaGeneratedFrames(String aName, Werkstoff aMaterial) {
@@ -67,13 +75,23 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[]{TextureFactory.of(this.mMaterial.getTexSet().mTextures[OrePrefixes.frameGt.mTextureIndex], Dyes.getModulation(aColorIndex, this.mMaterial.getRGBA()))};
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aConnections,
+            byte aColorIndex,
+            boolean aConnected,
+            boolean aRedstone) {
+        return new ITexture[] {
+            TextureFactory.of(
+                    this.mMaterial.getTexSet().mTextures[OrePrefixes.frameGt.mTextureIndex],
+                    Dyes.getModulation(aColorIndex, this.mMaterial.getRGBA()))
+        };
     }
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Just something you can put a Cover or CFoam on."};
+        return new String[] {"Just something you can put a Cover or CFoam on."};
     }
 
     @Override
@@ -102,18 +120,24 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
     }
 
     @Override
-    public final void saveNBTData(NBTTagCompound aNBT) {/*Do nothing*/}
+    public final void saveNBTData(NBTTagCompound aNBT) {
+        /*Do nothing*/
+    }
 
     @Override
-    public final void loadNBTData(NBTTagCompound aNBT) {/*Do nothing*/}
+    public final void loadNBTData(NBTTagCompound aNBT) {
+        /*Do nothing*/
+    }
 
     @Override
-    public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public final boolean allowPutStack(
+            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
     }
 
     @Override
-    public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public final boolean allowPullStack(
+            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
     }
 

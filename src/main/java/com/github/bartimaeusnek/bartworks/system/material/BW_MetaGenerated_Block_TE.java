@@ -22,18 +22,17 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import static com.github.bartimaeusnek.bartworks.MainMod.BW_Network_instance;
+
 import com.github.bartimaeusnek.bartworks.common.net.MetaBlockPacket;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
+import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
-
-import java.util.ArrayList;
-
-import static com.github.bartimaeusnek.bartworks.MainMod.BW_Network_instance;
 
 public abstract class BW_MetaGenerated_Block_TE extends TileEntity implements ITexturedTileEntity {
 
@@ -56,7 +55,11 @@ public abstract class BW_MetaGenerated_Block_TE extends TileEntity implements IT
     @Override
     public Packet getDescriptionPacket() {
         if (!this.worldObj.isRemote)
-            BW_Network_instance.sendPacketToAllPlayersInRange(this.worldObj, new MetaBlockPacket(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData), this.xCoord, this.zCoord);
+            BW_Network_instance.sendPacketToAllPlayersInRange(
+                    this.worldObj,
+                    new MetaBlockPacket(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
+                    this.xCoord,
+                    this.zCoord);
         return null;
     }
 
@@ -71,5 +74,4 @@ public abstract class BW_MetaGenerated_Block_TE extends TileEntity implements IT
         rList.add(new ItemStack(GetProperBlock(), 1, this.mMetaData));
         return rList;
     }
-
 }

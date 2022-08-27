@@ -8,6 +8,11 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
 import net.minecraftforge.common.config.Property;
 import tconstruct.library.TConstructRegistry;
 import vexatos.tgregworks.TGregworks;
@@ -15,20 +20,15 @@ import vexatos.tgregworks.integration.TGregRegistry;
 import vexatos.tgregworks.item.ItemTGregPart;
 import vexatos.tgregworks.reference.Config;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 @Mod(
-        modid = MaterialsInjector.MOD_ID, name = MaterialsInjector.NAME, version = MaterialsInjector.VERSION,
+        modid = MaterialsInjector.MOD_ID,
+        name = MaterialsInjector.NAME,
+        version = MaterialsInjector.VERSION,
         dependencies = "required-after:IC2; "
                 + "required-after:gregtech; "
                 + "required-after:bartworks;"
                 + "before:TGregworks;"
-                + "before:miscutils; "
-)
+                + "before:miscutils; ")
 @SuppressWarnings("unchecked")
 public class MaterialsInjector {
 
@@ -57,19 +57,17 @@ public class MaterialsInjector {
         try {
             getFields();
             getMethodes();
-        } catch (
-                  IllegalArgumentException
+        } catch (IllegalArgumentException
                 | IllegalAccessException
                 | NoSuchFieldException
                 | NoSuchMethodException
-                | SecurityException
-                          e) {
+                | SecurityException e) {
             MainMod.LOGGER.catching(e);
             FMLCommonHandler.instance().exitJava(1, true);
         }
     }
 
-    private static void getFields() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException  {
+    private static void getFields() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
         Field configPropsField = TGregRegistry.class.getDeclaredField("configProps");
         configPropsField.setAccessible(true);
         configProps = (HashMap<Materials, Property>) configPropsField.get(TGregworks.registry);
@@ -83,7 +81,8 @@ public class MaterialsInjector {
         getGlobalMultiplierMethod = TGregRegistry.class.getDeclaredMethod("getGlobalMultiplier", String.class);
         getGlobalMultiplierMethod.setAccessible(true);
 
-        getGlobalMultiplierMethodTwoArguments = TGregRegistry.class.getDeclaredMethod("getGlobalMultiplier", String.class, double.class);
+        getGlobalMultiplierMethodTwoArguments =
+                TGregRegistry.class.getDeclaredMethod("getGlobalMultiplier", String.class, double.class);
         getGlobalMultiplierMethodTwoArguments.setAccessible(true);
 
         getMultiplierMethod = TGregRegistry.class.getDeclaredMethod("getMultiplier", Materials.class, String.class);
@@ -134,10 +133,11 @@ public class MaterialsInjector {
         }
     }
 
-    private static void setConfigProps(Materials m){
+    private static void setConfigProps(Materials m) {
         if (TGregworks.config.get(Config.Category.Enable, m.mName, true).getBoolean(true)) {
             TGregworks.registry.toolMaterials.add(m);
-            Property configProp = TGregworks.config.get(Config.onMaterial(Config.MaterialID), m.mName, 0, null, 0, 100000);
+            Property configProp =
+                    TGregworks.config.get(Config.onMaterial(Config.MaterialID), m.mName, 0, null, 0, 100000);
             configProps.put(m, configProp);
             configIDs.add(configProp.getInt());
         }
@@ -145,25 +145,53 @@ public class MaterialsInjector {
 
     private static void addToolMaterial(int matID, Materials m)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        TConstructRegistry.addToolMaterial(matID, m.mName, m.mLocalizedName, m.mToolQuality,
-                (int) (m.mDurability * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.Durability) * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.Durability)), // Durability
-                (int) (m.mToolSpeed * 100F * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.MiningSpeed) * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.MiningSpeed)), // Mining speed
-                (int) (m.mToolQuality * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.Attack) * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.Attack)), // Attack
-                (m.mToolQuality - 0.5F) * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.HandleModifier) * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.HandleModifier), // Handle Modifier
-                (int) getReinforcedLevelMethod.invoke(TGregworks.registry, m), (float) getStoneboundLevelMethod.invoke(TGregworks.registry, m), "", (m.getRGBA()[0] << 16) | (m.getRGBA()[1] << 8) | (m.getRGBA()[2]));
+        TConstructRegistry.addToolMaterial(
+                matID,
+                m.mName,
+                m.mLocalizedName,
+                m.mToolQuality,
+                (int) (m.mDurability
+                        * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.Durability)
+                        * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.Durability)), // Durability
+                (int) (m.mToolSpeed
+                        * 100F
+                        * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.MiningSpeed)
+                        * (float)
+                                getMultiplierMethod.invoke(TGregworks.registry, m, Config.MiningSpeed)), // Mining speed
+                (int) (m.mToolQuality
+                        * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.Attack)
+                        * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.Attack)), // Attack
+                (m.mToolQuality - 0.5F)
+                        * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.HandleModifier)
+                        * (float) getMultiplierMethod.invoke(
+                                TGregworks.registry, m, Config.HandleModifier), // Handle Modifier
+                (int) getReinforcedLevelMethod.invoke(TGregworks.registry, m),
+                (float) getStoneboundLevelMethod.invoke(TGregworks.registry, m),
+                "",
+                (m.getRGBA()[0] << 16) | (m.getRGBA()[1] << 8) | (m.getRGBA()[2]));
     }
 
     private static void addBowMaterial(int matID, Materials m)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        TConstructRegistry.addBowMaterial(matID,
-                (int) ((float) m.mToolQuality * 10F * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.BowDrawSpeed) * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.BowDrawSpeed)),
-                (((float) m.mToolQuality) - 0.5F) * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.BowFlightSpeed) * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.BowFlightSpeed));
+        TConstructRegistry.addBowMaterial(
+                matID,
+                (int) ((float) m.mToolQuality
+                        * 10F
+                        * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.BowDrawSpeed)
+                        * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.BowDrawSpeed)),
+                (((float) m.mToolQuality) - 0.5F)
+                        * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.BowFlightSpeed)
+                        * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.BowFlightSpeed));
     }
 
     private static void addArrowMaterial(int matID, Materials m)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        TConstructRegistry.addArrowMaterial(matID,
-                (float) ((((double) m.getMass()) / 10F) * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.ArrowMass) * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.ArrowMass)),
-                (float) getGlobalMultiplierMethodTwoArguments.invoke(TGregworks.registry, Config.ArrowBreakChance, 0.9) * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.ArrowBreakChance));
+        TConstructRegistry.addArrowMaterial(
+                matID,
+                (float) ((((double) m.getMass()) / 10F)
+                        * (float) getGlobalMultiplierMethod.invoke(TGregworks.registry, Config.ArrowMass)
+                        * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.ArrowMass)),
+                (float) getGlobalMultiplierMethodTwoArguments.invoke(TGregworks.registry, Config.ArrowBreakChance, 0.9)
+                        * (float) getMultiplierMethod.invoke(TGregworks.registry, m, Config.ArrowBreakChance));
     }
 }

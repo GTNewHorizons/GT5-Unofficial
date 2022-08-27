@@ -23,6 +23,6 @@
 package com.github.bartimaeusnek.bartworks.API;
 
 public class API_ConfigValues {
-    //One-Side-Only
+    // One-Side-Only
     public static boolean debugLog = true;
 }

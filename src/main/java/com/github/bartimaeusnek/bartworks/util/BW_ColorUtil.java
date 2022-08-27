@@ -24,29 +24,25 @@ package com.github.bartimaeusnek.bartworks.util;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
-
 import java.util.Arrays;
+
 @SuppressWarnings("unused")
 public class BW_ColorUtil {
-    private BW_ColorUtil(){}
+    private BW_ColorUtil() {}
 
-    public static byte getDarknessFromColor (short[] rgba, int index){
+    public static byte getDarknessFromColor(short[] rgba, int index) {
         int g = rgba[index];
-        if (g >= 0 && g < 64)
-            return 0;
-        else if (g >= 64 && g < 160)
-            return 1;
-        else if (g >= 160 && g < 223)
-            return 2;
-        else if (g >= 233 && g <= 255)
-            return 3;
+        if (g >= 0 && g < 64) return 0;
+        else if (g >= 64 && g < 160) return 1;
+        else if (g >= 160 && g < 223) return 2;
+        else if (g >= 233 && g <= 255) return 3;
         return 4;
     }
 
-    public static Dyes getDyeFromColor(short[] rgba){
-        rgba=correctCorlorArray(rgba);
-        if (isGrayScale(rgba,2)){
-            switch (getDarknessFromColor(rgba,0)) {
+    public static Dyes getDyeFromColor(short[] rgba) {
+        rgba = correctCorlorArray(rgba);
+        if (isGrayScale(rgba, 2)) {
+            switch (getDarknessFromColor(rgba, 0)) {
                 case 0:
                     return Dyes.dyeBlack;
                 case 1:
@@ -58,25 +54,23 @@ public class BW_ColorUtil {
             }
         } else {
             short[] tmp = roundColor(rgba, 2);
-            if (isRedScale(tmp)){
+            if (isRedScale(tmp)) {
                 if (isPurpleScale(tmp)) {
                     switch (getDarknessFromColor(rgba, 0)) {
                         case 0:
                         case 1:
-                            if (rgba[3] - 50 > rgba[0])
-                                 return Dyes.dyePurple;
+                            if (rgba[3] - 50 > rgba[0]) return Dyes.dyePurple;
                             else return Dyes.dyeRed;
                         case 2:
                         case 3:
-                            if (rgba[3] - 50 > rgba[0])
-                                 return Dyes.dyeMagenta;
-                            else if (rgba[0] > 200 && rgba[2] > 140)
-                                return Dyes.dyePink;
-                            else if (rgba[0] > rgba[1]+rgba[1]/10 && rgba[0] > rgba[2]+rgba[2]/10 && rgba[1]>>4 == rgba[2]>>4 && rgba[1]+50 > rgba[0]) {
+                            if (rgba[3] - 50 > rgba[0]) return Dyes.dyeMagenta;
+                            else if (rgba[0] > 200 && rgba[2] > 140) return Dyes.dyePink;
+                            else if (rgba[0] > rgba[1] + rgba[1] / 10
+                                    && rgba[0] > rgba[2] + rgba[2] / 10
+                                    && rgba[1] >> 4 == rgba[2] >> 4
+                                    && rgba[1] + 50 > rgba[0]) {
                                 return Dyes.dyeBrown;
-                            }
-                            else
-                                return Dyes.dyeRed;
+                            } else return Dyes.dyeRed;
                         case 4:
                             return Dyes._NULL;
                     }
@@ -87,27 +81,25 @@ public class BW_ColorUtil {
                         case 1:
                             return Dyes.dyeBrown;
                         case 2:
-                        case 3:{
-                            if (rgba[0]>>5 > rgba[1]>>5)
-                                return Dyes.dyeOrange;
-                            else
-                                return Dyes.dyeYellow;
+                        case 3: {
+                            if (rgba[0] >> 5 > rgba[1] >> 5) return Dyes.dyeOrange;
+                            else return Dyes.dyeYellow;
                         }
                         case 4:
                             return Dyes._NULL;
                     }
                 return Dyes.dyePink;
-            } else if (isGrenScale(tmp)){
+            } else if (isGrenScale(tmp)) {
                 if (isCyanScale(tmp)) {
-                 if (rgba[2]+40 < rgba[1])
-                     switch (getDarknessFromColor(rgba,0)) {
-                         case 0:
-                         case 1:
-                             return Dyes.dyeGreen;
-                         case 2:
-                         case 3:
-                             return Dyes.dyeLime;
-                     }
+                    if (rgba[2] + 40 < rgba[1])
+                        switch (getDarknessFromColor(rgba, 0)) {
+                            case 0:
+                            case 1:
+                                return Dyes.dyeGreen;
+                            case 2:
+                            case 3:
+                                return Dyes.dyeLime;
+                        }
                     return Dyes.dyeCyan;
                 }
                 if (isYellowScale(tmp))
@@ -116,14 +108,12 @@ public class BW_ColorUtil {
                         case 1:
                             return Dyes.dyeBrown;
                         case 2:
-                        case 3:{
-                            if (rgba[0]>>5 > rgba[1]>>5)
-                                return Dyes.dyeOrange;
-                            else
-                                return Dyes.dyeYellow;
+                        case 3: {
+                            if (rgba[0] >> 5 > rgba[1] >> 5) return Dyes.dyeOrange;
+                            else return Dyes.dyeYellow;
                         }
                     }
-                switch (getDarknessFromColor(rgba,0)) {
+                switch (getDarknessFromColor(rgba, 0)) {
                     case 0:
                     case 1:
                         return Dyes.dyeGreen;
@@ -131,7 +121,7 @@ public class BW_ColorUtil {
                     case 3:
                         return Dyes.dyeLime;
                 }
-            } else if (isBlueScale(tmp)){
+            } else if (isBlueScale(tmp)) {
                 if (isPurpleScale(tmp)) {
                     switch (getDarknessFromColor(rgba, 0)) {
                         case 0:
@@ -141,11 +131,10 @@ public class BW_ColorUtil {
                         case 3:
                             return Dyes.dyeMagenta;
                     }
-                }
-                else if (isCyanScale(tmp)){
+                } else if (isCyanScale(tmp)) {
                     return Dyes.dyeCyan;
                 }
-                switch (getDarknessFromColor(rgba,0)) {
+                switch (getDarknessFromColor(rgba, 0)) {
                     case 0:
                     case 1:
                         return Dyes.dyeBlue;
@@ -158,81 +147,73 @@ public class BW_ColorUtil {
         return Dyes._NULL;
     }
 
-    public static boolean isCyanScale(short[] rgba){
+    public static boolean isCyanScale(short[] rgba) {
         return !isRedScale(rgba);
     }
 
-    public static boolean isPurpleScale(short[] rgba){
+    public static boolean isPurpleScale(short[] rgba) {
         return !isGrenScale(rgba);
     }
 
-    public static boolean isYellowScale(short[] rgba){
-       return !isBlueScale(rgba);
+    public static boolean isYellowScale(short[] rgba) {
+        return !isBlueScale(rgba);
     }
 
-    public static boolean isBlueScale(short[] rgba){
-        rgba=correctCorlorArray(rgba);
-        return (rgba[2]*2) >= (rgba[1]+rgba[0]);
+    public static boolean isBlueScale(short[] rgba) {
+        rgba = correctCorlorArray(rgba);
+        return (rgba[2] * 2) >= (rgba[1] + rgba[0]);
     }
 
-    public static boolean isGrenScale(short[] rgba){
-        rgba=correctCorlorArray(rgba);
-        return (rgba[1]*2) >= (rgba[0]+rgba[2]);
+    public static boolean isGrenScale(short[] rgba) {
+        rgba = correctCorlorArray(rgba);
+        return (rgba[1] * 2) >= (rgba[0] + rgba[2]);
     }
 
-    public static boolean isRedScale(short[] rgba){
-        rgba=correctCorlorArray(rgba);
-        return (rgba[0]*2) >= (rgba[1]+rgba[2]);
+    public static boolean isRedScale(short[] rgba) {
+        rgba = correctCorlorArray(rgba);
+        return (rgba[0] * 2) >= (rgba[1] + rgba[2]);
     }
 
-    public static boolean isGrayScale(short[] rgba, int magin){
-        rgba=correctCorlorArray(rgba);
-        return rgba[0]>>magin==rgba[1]>>magin && rgba[1]>>magin==rgba[2]>>magin;
+    public static boolean isGrayScale(short[] rgba, int magin) {
+        rgba = correctCorlorArray(rgba);
+        return rgba[0] >> magin == rgba[1] >> magin && rgba[1] >> magin == rgba[2] >> magin;
     }
 
-    public static short[] roundColor(short[] rgba, int magin){
-        short[]tmp = Arrays.copyOf(rgba,4);
-        tmp[0] = (short) (rgba[0]>>magin);
-        tmp[1] = (short) (rgba[1]>>magin);
-        tmp[2] = (short) (rgba[2]>>magin);
+    public static short[] roundColor(short[] rgba, int magin) {
+        short[] tmp = Arrays.copyOf(rgba, 4);
+        tmp[0] = (short) (rgba[0] >> magin);
+        tmp[1] = (short) (rgba[1] >> magin);
+        tmp[2] = (short) (rgba[2] >> magin);
         return tmp;
     }
 
-    public static boolean isGrayScale(short[] rgba){
-       rgba=correctCorlorArray(rgba);
-       return rgba[0]==rgba[1] && rgba[1] == rgba[2];
+    public static boolean isGrayScale(short[] rgba) {
+        rgba = correctCorlorArray(rgba);
+        return rgba[0] == rgba[1] && rgba[1] == rgba[2];
     }
 
-    public static short[] correctCorlorArray(short[] rgba){
+    public static short[] correctCorlorArray(short[] rgba) {
         if (rgba.length > 4) {
-            rgba = Arrays.copyOfRange(rgba, 0,4);
+            rgba = Arrays.copyOfRange(rgba, 0, 4);
         }
         if (rgba.length < 4) {
             short[] tmp = Arrays.copyOf(rgba, 4);
-            Arrays.fill(tmp,rgba.length,4, (short) 0);
+            Arrays.fill(tmp, rgba.length, 4, (short) 0);
             rgba = tmp;
         }
-        if (rgba[0] > 255)
-            rgba[0] = 255;
-        if (rgba[1] > 255)
-            rgba[1] = 255;
-        if (rgba[2] > 255)
-            rgba[2] = 255;
-        if (rgba[3] > 255)
-            rgba[3] = 255;
-        if (rgba[0] < 0)
-            rgba[0] = 0;
-        if (rgba[1] < 0)
-            rgba[1] = 0;
-        if (rgba[2] < 0)
-            rgba[2] = 0;
-        if (rgba[3] < 0)
-            rgba[3] = 0;
+        if (rgba[0] > 255) rgba[0] = 255;
+        if (rgba[1] > 255) rgba[1] = 255;
+        if (rgba[2] > 255) rgba[2] = 255;
+        if (rgba[3] > 255) rgba[3] = 255;
+        if (rgba[0] < 0) rgba[0] = 0;
+        if (rgba[1] < 0) rgba[1] = 0;
+        if (rgba[2] < 0) rgba[2] = 0;
+        if (rgba[3] < 0) rgba[3] = 0;
         return rgba;
     }
 
     public static short[] splitColorToRBGArray(int rgb) {
-        return new short[]{(short) ((rgb >> 16) & 0xFF), (short) ((rgb >> 8) & 0xFF), (short) (rgb & 0xFF)};
+        return new short[] {(short) ((rgb >> 16) & 0xFF), (short) ((rgb >> 8) & 0xFF), (short) (rgb & 0xFF)};
     }
 
     public static int getColorFromRGBArray(short[] color) {

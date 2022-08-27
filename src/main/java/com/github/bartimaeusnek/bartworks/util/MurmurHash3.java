@@ -20,7 +20,6 @@
  */
 package com.github.bartimaeusnek.bartworks.util;
 
-
 public final class MurmurHash3 {
 
     public static final int fmix32(int h) {
@@ -45,14 +44,14 @@ public final class MurmurHash3 {
      * Gets a long from a byte buffer in little endian byte order.
      */
     public static final long getLongLittleEndian(byte[] buf, int offset) {
-        return ((long) buf[offset + 7] << 56)   // no mask needed
+        return ((long) buf[offset + 7] << 56) // no mask needed
                 | ((buf[offset + 6] & 0xffL) << 48)
                 | ((buf[offset + 5] & 0xffL) << 40)
                 | ((buf[offset + 4] & 0xffL) << 32)
                 | ((buf[offset + 3] & 0xffL) << 24)
                 | ((buf[offset + 2] & 0xffL) << 16)
                 | ((buf[offset + 1] & 0xffL) << 8)
-                | ((buf[offset] & 0xffL));        // no shift needed
+                | ((buf[offset] & 0xffL)); // no shift needed
     }
 
     /**
@@ -64,17 +63,18 @@ public final class MurmurHash3 {
         final int c2 = 0x1b873593;
 
         int h1 = seed;
-        int roundedEnd = offset + (len & 0xfffffffc);  // round down to 4 byte block
+        int roundedEnd = offset + (len & 0xfffffffc); // round down to 4 byte block
 
         for (int i = offset; i < roundedEnd; i += 4) {
             // little endian load order
-            int k1 = (data[i] & 0xff) | ((data[i + 1] & 0xff) << 8) | ((data[i + 2] & 0xff) << 16) | (data[i + 3] << 24);
+            int k1 =
+                    (data[i] & 0xff) | ((data[i + 1] & 0xff) << 8) | ((data[i + 2] & 0xff) << 16) | (data[i + 3] << 24);
             k1 *= c1;
-            k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
+            k1 = (k1 << 15) | (k1 >>> 17); // ROTL32(k1,15);
             k1 *= c2;
 
             h1 ^= k1;
-            h1 = (h1 << 13) | (h1 >>> 19);  // ROTL32(h1,13);
+            h1 = (h1 << 13) | (h1 >>> 19); // ROTL32(h1,13);
             h1 = h1 * 5 + 0xe6546b64;
         }
 
@@ -91,7 +91,7 @@ public final class MurmurHash3 {
             case 1:
                 k1 |= (data[roundedEnd] & 0xff);
                 k1 *= c1;
-                k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
+                k1 = (k1 << 15) | (k1 >>> 17); // ROTL32(k1,15);
                 k1 *= c2;
                 h1 ^= k1;
         }
@@ -127,8 +127,7 @@ public final class MurmurHash3 {
         int k2 = 0;
         int shift = 0;
         int bits = 0;
-        int nBytes = 0;   // length in UTF8 bytes
-
+        int nBytes = 0; // length in UTF8 bytes
 
         while (pos < end) {
             int code = data.charAt(pos++);
@@ -137,37 +136,33 @@ public final class MurmurHash3 {
                 bits = 8;
 
                 /***
-                 // optimized ascii implementation (currently slower!!! code size?)
-                 if (shift == 24) {
-                 k1 = k1 | (code << 24);
-
-                 k1 *= c1;
-                 k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
-                 k1 *= c2;
-
-                 h1 ^= k1;
-                 h1 = (h1 << 13) | (h1 >>> 19);  // ROTL32(h1,13);
-                 h1 = h1*5+0xe6546b64;
-
-                 shift = 0;
-                 nBytes += 4;
-                 k1 = 0;
-                 } else {
-                 k1 |= code << shift;
-                 shift += 8;
-                 }
-                 continue;
+                 * // optimized ascii implementation (currently slower!!! code size?)
+                 * if (shift == 24) {
+                 * k1 = k1 | (code << 24);
+                 *
+                 * k1 *= c1;
+                 * k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
+                 * k1 *= c2;
+                 *
+                 * h1 ^= k1;
+                 * h1 = (h1 << 13) | (h1 >>> 19);  // ROTL32(h1,13);
+                 * h1 = h1*5+0xe6546b64;
+                 *
+                 * shift = 0;
+                 * nBytes += 4;
+                 * k1 = 0;
+                 * } else {
+                 * k1 |= code << shift;
+                 * shift += 8;
+                 * }
+                 * continue;
                  ***/
-
             } else if (code < 0x800) {
-                k2 = (0xC0 | (code >> 6))
-                        | ((0x80 | (code & 0x3F)) << 8);
+                k2 = (0xC0 | (code >> 6)) | ((0x80 | (code & 0x3F)) << 8);
                 bits = 16;
             } else if (code < 0xD800 || code > 0xDFFF || pos >= end) {
                 // we check for pos>=end to encode an unpaired surrogate as 3 bytes.
-                k2 = (0xE0 | (code >> 12))
-                        | ((0x80 | ((code >> 6) & 0x3F)) << 8)
-                        | ((0x80 | (code & 0x3F)) << 16);
+                k2 = (0xE0 | (code >> 12)) | ((0x80 | ((code >> 6) & 0x3F)) << 8) | ((0x80 | (code & 0x3F)) << 16);
                 bits = 24;
             } else {
                 // surrogate pair
@@ -181,7 +176,6 @@ public final class MurmurHash3 {
                 bits = 32;
             }
 
-
             k1 |= k2 << shift;
 
             // int used_bits = 32 - shift;  // how many bits of k2 were used in k1.
@@ -192,30 +186,29 @@ public final class MurmurHash3 {
                 // mix after we have a complete word
 
                 k1 *= c1;
-                k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
+                k1 = (k1 << 15) | (k1 >>> 17); // ROTL32(k1,15);
                 k1 *= c2;
 
                 h1 ^= k1;
-                h1 = (h1 << 13) | (h1 >>> 19);  // ROTL32(h1,13);
+                h1 = (h1 << 13) | (h1 >>> 19); // ROTL32(h1,13);
                 h1 = h1 * 5 + 0xe6546b64;
 
                 shift -= 32;
                 // unfortunately, java won't let you shift 32 bits off, so we need to check for 0
                 if (shift != 0) {
-                    k1 = k2 >>> (bits - shift);   // bits used == bits - newshift
+                    k1 = k2 >>> (bits - shift); // bits used == bits - newshift
                 } else {
                     k1 = 0;
                 }
                 nBytes += 4;
             }
-
         } // inner
 
         // handle tail
         if (shift > 0) {
             nBytes += shift >> 3;
             k1 *= c1;
-            k1 = (k1 << 15) | (k1 >>> 17);  // ROTL32(k1,15);
+            k1 = (k1 << 15) | (k1 >>> 17); // ROTL32(k1,15);
             k1 *= c2;
             h1 ^= k1;
         }
@@ -245,7 +238,7 @@ public final class MurmurHash3 {
         final long c1 = 0x87c37b91114253d5L;
         final long c2 = 0x4cf5ad432745937fL;
 
-        int roundedEnd = offset + (len & 0xFFFFFFF0);  // round down to 16 byte block
+        int roundedEnd = offset + (len & 0xFFFFFFF0); // round down to 16 byte block
         for (int i = offset; i < roundedEnd; i += 16) {
             long k1 = getLongLittleEndian(key, i);
             long k2 = getLongLittleEndian(key, i + 8);
@@ -309,7 +302,7 @@ public final class MurmurHash3 {
                 h1 ^= k1;
         }
 
-        //----------
+        // ----------
         // finalization
 
         h1 ^= len;
@@ -335,5 +328,4 @@ public final class MurmurHash3 {
         public long val1;
         public long val2;
     }
-
 }

@@ -22,21 +22,20 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashMap;
+
 import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashMap;
 
 public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
 
@@ -44,7 +43,17 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
         super(par1);
     }
 
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            ItemStack stack,
+            EntityPlayer player,
+            World world,
+            int x,
+            int y,
+            int z,
+            int side,
+            float hitX,
+            float hitY,
+            float hitZ) {
         return false;
     }
 
@@ -59,10 +68,11 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
                 int aMetaData = aStack.getItemDamage();
                 Werkstoff werkstoff = werkstoffHashMap.get((short) aMetaData);
                 if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-                return ((BW_MetaGenerated_Blocks) block).blockTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
+                return ((BW_MetaGenerated_Blocks) block)
+                        .blockTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
             }
         }
-        return GT_LanguageManager.getTranslation( getUnlocalizedName(aStack) + ".name");
+        return GT_LanguageManager.getTranslation(getUnlocalizedName(aStack) + ".name");
     }
 
     @Override
@@ -76,7 +86,7 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
             aList = new ArrayList<String>();
         }
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
-        if(werkstoff != null) {
+        if (werkstoff != null) {
             String tooltip = werkstoff.getLocalizedToolTip();
             if (!tooltip.isEmpty()) {
                 aList.add(tooltip);
@@ -93,7 +103,18 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
         }
     }
 
-    public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side, float hitX, float hitY, float hitZ, int aMeta) {
+    public boolean placeBlockAt(
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int side,
+            float hitX,
+            float hitY,
+            float hitZ,
+            int aMeta) {
         short tDamage = (short) this.getDamage(aStack);
         if (tDamage > 0) {
             if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {
@@ -101,8 +122,7 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
             }
             BW_MetaGenerated_Block_TE tTileEntity = (BW_MetaGenerated_Block_TE) aWorld.getTileEntity(aX, aY, aZ);
             tTileEntity.mMetaData = tDamage;
-        } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3))
-            return false;
+        } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3)) return false;
         if (aWorld.getBlock(aX, aY, aZ) == this.field_150939_a) {
             this.field_150939_a.onBlockPlacedBy(aWorld, aX, aY, aZ, aPlayer, aStack);
             this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);

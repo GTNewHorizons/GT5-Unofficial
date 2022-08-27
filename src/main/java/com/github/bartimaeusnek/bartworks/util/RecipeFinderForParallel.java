@@ -3,19 +3,17 @@ package com.github.bartimaeusnek.bartworks.util;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 /**
  * Handle the parallel more efficient.
  *
  * @author GlodBlock
  */
-
 public class RecipeFinderForParallel {
 
     /**
@@ -29,7 +27,8 @@ public class RecipeFinderForParallel {
      * @param   aMaxParallel    The max parallel that it can reach
      * @return  The parallel that it can reach
      */
-    public static int handleParallelRecipe(GT_Recipe aRecipe, FluidStack[] aFluidInputs, ItemStack[] aItemStacks, int aMaxParallel) {
+    public static int handleParallelRecipe(
+            GT_Recipe aRecipe, FluidStack[] aFluidInputs, ItemStack[] aItemStacks, int aMaxParallel) {
         if (aFluidInputs == null) aFluidInputs = new FluidStack[0];
         if (aItemStacks == null) aItemStacks = new ItemStack[0];
         HashMap<Integer, Integer> tCompressedFluidInput = compressFluid(aFluidInputs);
@@ -39,7 +38,8 @@ public class RecipeFinderForParallel {
         int tCurrentPara = aMaxParallel;
         for (int tFluid : tCompressedFluidRecipe.keySet()) {
             if (tCompressedFluidInput.containsKey(tFluid) && tCompressedFluidRecipe.get(tFluid) != 0) {
-                tCurrentPara = Math.min(tCurrentPara, tCompressedFluidInput.get(tFluid) / tCompressedFluidRecipe.get(tFluid));
+                tCurrentPara =
+                        Math.min(tCurrentPara, tCompressedFluidInput.get(tFluid) / tCompressedFluidRecipe.get(tFluid));
             }
         }
         for (int tItem : tCompressedItemRecipe.keySet()) {
@@ -52,8 +52,7 @@ public class RecipeFinderForParallel {
                     }
                 }
                 tCurrentPara = Math.min(tCurrentPara, tCountWildcard / tCompressedItemRecipe.get(tItem));
-            }
-            else if (tCompressedItemRecipe.get(tItem) != 0) {
+            } else if (tCompressedItemRecipe.get(tItem) != 0) {
                 /*OreDict Stuff*/
                 int tCountOre = 0;
                 ItemStack tRealRecipe = GT_Utility.intToStack(tItem);
@@ -81,9 +80,9 @@ public class RecipeFinderForParallel {
                 if (tFluid.amount >= tCompressedFluidRecipe.get(tFluid.getFluidID())) {
                     tFluid.amount -= tCompressedFluidRecipe.get(tFluid.getFluidID());
                     tCompressedFluidRecipe.remove(tFluid.getFluidID());
-                }
-                else {
-                    tCompressedFluidRecipe.put(tFluid.getFluidID(), tCompressedFluidRecipe.get(tFluid.getFluidID()) - tFluid.amount);
+                } else {
+                    tCompressedFluidRecipe.put(
+                            tFluid.getFluidID(), tCompressedFluidRecipe.get(tFluid.getFluidID()) - tFluid.amount);
                     tFluid.amount = 0;
                 }
             }
@@ -91,7 +90,7 @@ public class RecipeFinderForParallel {
 
         /*OreDict Stuff*/
         /*Wildcard Stuff*/
-        for (Iterator<Integer> i = tCompressedItemRecipe.keySet().iterator(); i.hasNext();) {
+        for (Iterator<Integer> i = tCompressedItemRecipe.keySet().iterator(); i.hasNext(); ) {
             int tItem = i.next();
             if (tItem >> 16 == Short.MAX_VALUE) {
                 for (ItemStack tInputItem : aItemStacks) {
@@ -101,15 +100,13 @@ public class RecipeFinderForParallel {
                             tInputItem.stackSize -= tCompressedItemRecipe.get(tItem);
                             i.remove();
                             break;
-                        }
-                        else {
+                        } else {
                             tCompressedItemRecipe.put(tItem, tCompressedItemRecipe.get(tItem) - tInputItem.stackSize);
                             tInputItem.stackSize = 0;
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 ItemStack tRealRecipe = GT_Utility.intToStack(tItem);
                 int tTargetAmount = tCompressedItemRecipe.get(tItem);
                 for (ItemStack input : aItemStacks) {
@@ -140,8 +137,7 @@ public class RecipeFinderForParallel {
     public static Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> getMultiOutput(GT_Recipe aRecipe, int aPall) {
         ArrayList<FluidStack> tFluidList = new ArrayList<>();
         ArrayList<ItemStack> tItemList = new ArrayList<>();
-        if (aRecipe == null)
-            return new Pair<>(tFluidList, tItemList);
+        if (aRecipe == null) return new Pair<>(tFluidList, tItemList);
         if (aRecipe.mFluidOutputs != null && aRecipe.mFluidOutputs.length > 0) {
             for (FluidStack tFluid : aRecipe.mFluidOutputs) {
                 if (tFluid != null && tFluid.amount > 0) {

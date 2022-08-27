@@ -27,7 +27,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
-public class GT_TileEntity_VoidMiners  {
+public class GT_TileEntity_VoidMiners {
 
     public static class VMLUV extends GT_TileEntity_VoidMiner_Base {
 

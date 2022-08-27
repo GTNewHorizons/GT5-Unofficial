@@ -22,22 +22,21 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.classic;
 
+import static net.minecraftforge.common.util.ForgeDirection.*;
+
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.util.Coords;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.TileFluidHandler;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
-
-import static net.minecraftforge.common.util.ForgeDirection.*;
-
 public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implements ITileAddsInformation {
 
-    private final static ForgeDirection[] allowed_directions = new ForgeDirection[]{DOWN, WEST, EAST, SOUTH, NORTH};
+    private static final ForgeDirection[] allowed_directions = new ForgeDirection[] {DOWN, WEST, EAST, SOUTH, NORTH};
     private PriorityQueue<Coords> breadthFirstQueue = new PriorityQueue<>(Comparator.comparingInt(x -> x.y));
     private boolean wasInited = false;
 
@@ -51,8 +50,7 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
     }
 
     public void initEntity() {
-        if (wasInited)
-            return;
+        if (wasInited) return;
         breadthFirstQueue.add(new Coords(this.xCoord, this.yCoord, this.zCoord));
         wasInited = true;
     }
@@ -61,8 +59,7 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
     public void updateEntity() {
         initEntity();
         Coords current = breadthFirstQueue.poll();
-        if (current == null)
-            return;
+        if (current == null) return;
         setFluidBlock(current);
         for (ForgeDirection allowed_direction : allowed_directions) {
             addBlockToQueue(current, allowed_direction);
@@ -103,18 +100,15 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
     }
 
     private void setFluidBlock(Coords current) {
-        if (!checkForAir(current))
-            return;
-        if (this.tank.drain(1000, false) == null || this.tank.drain(1000, false).amount != 1000)
-            return;
+        if (!checkForAir(current)) return;
+        if (this.tank.drain(1000, false) == null || this.tank.drain(1000, false).amount != 1000) return;
         FluidStack stack = this.tank.drain(1000, true);
         worldObj.setBlock(current.x, current.y, current.z, stack.getFluid().getBlock(), 0, 2);
     }
 
     private void addBlockToQueue(Coords current, ForgeDirection allowed_direction) {
         Coords side = current.getCoordsFromSide(allowed_direction);
-        if (checkForAir(side))
-            breadthFirstQueue.add(side);
+        if (checkForAir(side)) breadthFirstQueue.add(side);
     }
 
     private boolean checkForAir(Coords coords) {
@@ -123,6 +117,6 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
 
     @Override
     public String[] getInfoData() {
-        return new String[]{"Experimental Machine to fill Holes with Fluids"};
+        return new String[] {"Experimental Machine to fill Holes with Fluids"};
     }
 }

@@ -34,10 +34,14 @@ public class BW_MetaGeneratedOreTE extends BW_MetaGenerated_Block_TE {
     public ITexture[] getTexture(Block aBlock, byte aSide) {
         Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
         if ((aMaterial != null)) {
-            ITexture aIconSet = TextureFactory.of(aMaterial.getTexSet().mTextures[OrePrefixes.ore.mTextureIndex], aMaterial.getRGBA());
-            return new ITexture[]{TextureFactory.of(Blocks.stone), aIconSet};
+            ITexture aIconSet = TextureFactory.of(
+                    aMaterial.getTexSet().mTextures[OrePrefixes.ore.mTextureIndex], aMaterial.getRGBA());
+            return new ITexture[] {TextureFactory.of(Blocks.stone), aIconSet};
         }
-        return new ITexture[]{TextureFactory.of(Blocks.stone), TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])};
+        return new ITexture[] {
+            TextureFactory.of(Blocks.stone),
+            TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])
+        };
     }
 
     @Override

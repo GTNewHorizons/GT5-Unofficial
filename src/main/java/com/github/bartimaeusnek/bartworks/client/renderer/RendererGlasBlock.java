@@ -75,11 +75,19 @@ public class RendererGlasBlock implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-        //renderer.setRenderBounds(0.001,0.001,0.001,0.999,0.999,0.999);
+    public boolean renderWorldBlock(
+            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+        // renderer.setRenderBounds(0.001,0.001,0.001,0.999,0.999,0.999);
         renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses, x, y, z);
-        //renderer.setRenderBounds(0,0,0,1,1,1);
-        renderer.renderStandardBlockWithColorMultiplier(block, x, y, z, ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f, ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f, ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
+        // renderer.setRenderBounds(0,0,0,1,1,1);
+        renderer.renderStandardBlockWithColorMultiplier(
+                block,
+                x,
+                y,
+                z,
+                ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
+                ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
+                ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
         return true;
     }
 

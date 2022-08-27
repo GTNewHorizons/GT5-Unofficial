@@ -45,5 +45,4 @@ public class BW_RotorBlock extends TileEntityWindKineticGenerator {
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
         return new BW_GUIContainer_RotorBlock(new ContainerWindKineticGenerator(entityPlayer, this));
     }
-
 }

@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.crossmod.galacticraft;
 
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
+import java.util.Random;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
@@ -32,8 +33,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-
-import java.util.Random;
 
 public class UniversalTeleportType implements ITeleportType {
 
@@ -63,18 +62,15 @@ public class UniversalTeleportType implements ITeleportType {
 
     @Override
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket) {
-        if (ridingAutoRocket)
-            return;
+        if (ridingAutoRocket) return;
         if ((player != null) && (GCPlayerStats.get(player).teleportCooldown <= 0)) {
             if (player.capabilities.isFlying) {
                 player.capabilities.isFlying = false;
             }
 
             EntityLanderBase elb;
-            if (LoaderReference.GalacticraftMars)
-                elb=PlanetsHelperClass.getLanderType(player);
-            else
-                elb = new EntityLander(player);
+            if (LoaderReference.GalacticraftMars) elb = PlanetsHelperClass.getLanderType(player);
+            else elb = new EntityLander(player);
 
             if (!newWorld.isRemote) {
                 newWorld.spawnEntityInWorld(elb);
@@ -84,7 +80,5 @@ public class UniversalTeleportType implements ITeleportType {
     }
 
     @Override
-    public void setupAdventureSpawn(EntityPlayerMP player) {
-
-    }
+    public void setupAdventureSpawn(EntityPlayerMP player) {}
 }

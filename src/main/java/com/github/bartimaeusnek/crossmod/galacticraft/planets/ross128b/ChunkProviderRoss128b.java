@@ -22,12 +22,16 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
 
+import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
+import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE;
+
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WordGenerator;
 import com.github.bartimaeusnek.bartworks.system.worldgen.MapGenRuins;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
 import gregtech.api.objects.XSTR;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
@@ -44,11 +48,6 @@ import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
-
-import java.util.List;
-
-import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
-import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE;
 
 public class ChunkProviderRoss128b extends ChunkProviderGenerate {
     XSTR rand = new XSTR();
@@ -75,7 +74,9 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
         Block[] ablock = new Block[65536];
         byte[] abyte = new byte[65536];
         this.func_147424_a(p_73154_1_, p_73154_2_, ablock);
-        this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, p_73154_1_ * 16, p_73154_2_ * 16, 16, 16);
+        this.biomesForGeneration = this.worldObj
+                .getWorldChunkManager()
+                .loadBlockGeneratorData(this.biomesForGeneration, p_73154_1_ * 16, p_73154_2_ * 16, 16, 16);
         for (int i = 0; i < this.biomesForGeneration.length; i++) {
             BiomeGenBase biomeGenBase = this.biomesForGeneration[i];
             if (biomeGenBase.biomeID == BiomeGenBase.mushroomIsland.biomeID) {
@@ -86,7 +87,8 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             if (LoaderReference.Thaumcraft) {
                 if (ThaumcraftHandler.isTaintBiome(biomeGenBase.biomeID))
                     this.biomesForGeneration[i] = BiomeGenBase.taiga;
-                else if (ConfigHandler.disableMagicalForest && ThaumcraftHandler.isMagicalForestBiome(biomeGenBase.biomeID))
+                else if (ConfigHandler.disableMagicalForest
+                        && ThaumcraftHandler.isMagicalForestBiome(biomeGenBase.biomeID))
                     this.biomesForGeneration[i] = BiomeGenBase.birchForest;
             }
         }
@@ -118,22 +120,27 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             this.rand.setSeed((long) p_73153_2_ * i1 + (long) p_73153_3_ * j1 ^ this.worldObj.getSeed());
         }
 
-        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false));
+        MinecraftForge.EVENT_BUS.post(
+                new PopulateChunkEvent.Pre(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false));
 
         int x1;
         int y1;
         int z1;
-        if (biomegenbase != BiomeGenBase.desert && biomegenbase != BiomeGenBase.desertHills && TerrainGen.populate(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false, LAKE)) {
+        if (biomegenbase != BiomeGenBase.desert
+                && biomegenbase != BiomeGenBase.desertHills
+                && TerrainGen.populate(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false, LAKE)) {
             x1 = k + this.rand.nextInt(16) + 8;
             y1 = this.rand.nextInt(256);
             z1 = l + this.rand.nextInt(16) + 8;
             int rni = this.rand.nextInt(8);
-            if (rni == 0)
-                (new WorldGenLakes(Blocks.ice)).generate(this.worldObj, this.rand, x1, y1, z1);
-            else if (rni == 4)
-                (new WorldGenLakes(Blocks.water)).generate(this.worldObj, this.rand, x1, y1, z1);
+            if (rni == 0) (new WorldGenLakes(Blocks.ice)).generate(this.worldObj, this.rand, x1, y1, z1);
+            else if (rni == 4) (new WorldGenLakes(Blocks.water)).generate(this.worldObj, this.rand, x1, y1, z1);
         }
-        if (biomegenbase != BiomeGenBase.ocean && biomegenbase != BiomeGenBase.deepOcean && biomegenbase != BiomeGenBase.river && biomegenbase != BiomeGenBase.frozenOcean && biomegenbase != BiomeGenBase.frozenRiver
+        if (biomegenbase != BiomeGenBase.ocean
+                && biomegenbase != BiomeGenBase.deepOcean
+                && biomegenbase != BiomeGenBase.river
+                && biomegenbase != BiomeGenBase.frozenOcean
+                && biomegenbase != BiomeGenBase.frozenRiver
                 && this.rand.nextInt(ConfigHandler.ross128bRuinChance) == 0) {
             x1 = k + this.rand.nextInt(16) + 3;
             y1 = this.rand.nextInt(256);
@@ -162,17 +169,18 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
         }
 
         BWOreGen.generate(this.rand, p_73153_2_, p_73153_3_, this.worldObj, this, this);
-        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false));
+        MinecraftForge.EVENT_BUS.post(
+                new PopulateChunkEvent.Post(p_73153_1_, this.worldObj, this.rand, p_73153_2_, p_73153_3_, false));
 
         BlockFalling.fallInstantly = false;
     }
 
     @Override
-    public void recreateStructures(int p_82695_1_, int p_82695_2_) {
-    }
+    public void recreateStructures(int p_82695_1_, int p_82695_2_) {}
 
     @Override
-    public void replaceBlocksForBiome(int p_147422_1_, int p_147422_2_, Block[] blocks, byte[] metas, BiomeGenBase[] p_147422_5_) {
+    public void replaceBlocksForBiome(
+            int p_147422_1_, int p_147422_2_, Block[] blocks, byte[] metas, BiomeGenBase[] p_147422_5_) {
         super.replaceBlocksForBiome(p_147422_1_, p_147422_2_, blocks, metas, p_147422_5_);
         for (int i = 0; i < blocks.length; i++) {
             if (blocks[i] == Blocks.grass) {

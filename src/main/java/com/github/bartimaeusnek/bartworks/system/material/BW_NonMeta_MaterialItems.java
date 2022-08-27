@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import static gregtech.api.enums.GT_Values.W;
+
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -30,12 +32,15 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import static gregtech.api.enums.GT_Values.W;
-
 public enum BW_NonMeta_MaterialItems implements IItemContainer {
-    Depleted_Tiberium_1,Depleted_Tiberium_2,Depleted_Tiberium_4,
-    TiberiumCell_1,TiberiumCell_2,TiberiumCell_4,
-    TheCoreCell,Depleted_TheCoreCell;
+    Depleted_Tiberium_1,
+    Depleted_Tiberium_2,
+    Depleted_Tiberium_4,
+    TiberiumCell_1,
+    TiberiumCell_2,
+    TiberiumCell_4,
+    TheCoreCell,
+    Depleted_TheCoreCell;
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
 

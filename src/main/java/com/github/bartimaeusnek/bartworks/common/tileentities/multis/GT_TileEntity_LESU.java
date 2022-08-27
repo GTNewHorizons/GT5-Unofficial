@@ -42,6 +42,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
+import java.util.Collections;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -52,12 +54,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-
 public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
-
 
     private static final byte TEXID_SIDE = 0;
     private static final byte TEXID_CHARGING = 1;
@@ -79,7 +76,6 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         super(aName);
     }
 
-
     @Override
     public boolean isEnetOutput() {
         return true;
@@ -99,7 +95,10 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     public long maxAmperesIn() {
         int ret = 0;
         for (int i = 0; i < 5; ++i)
-            if (this.circuits[i] != null && this.circuits[i].getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem()))
+            if (this.circuits[i] != null
+                    && this.circuits[i]
+                            .getItem()
+                            .equals(GT_Utility.getIntegratedCircuit(0).getItem()))
                 ret += this.circuits[i].getItemDamage();
         return ret > 0 ? ret : 1;
     }
@@ -158,9 +157,11 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public String[] getDescription() {
         ArrayList<String> e = new ArrayList<>();
-        String[] dsc = StatCollector.translateToLocal("tooltip.tile.lesu.0.name").split(";");
+        String[] dsc =
+                StatCollector.translateToLocal("tooltip.tile.lesu.0.name").split(";");
         Collections.addAll(e, dsc);
-        e.add(StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " " + GT_Utility.formatNumbers(ConfigHandler.energyPerCell) + "EU");
+        e.add(StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " "
+                + GT_Utility.formatNumbers(ConfigHandler.energyPerCell) + "EU");
         dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name").split(";");
         Collections.addAll(e, dsc);
         e.add(ChatColorHelper.RED + StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
@@ -191,7 +192,6 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
                 }
             };
         }
-
     }
 
     @Override
@@ -206,31 +206,36 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
     public boolean isClientSide() {
         if (this.getWorld() != null)
-            return this.getWorld().isRemote ? FMLCommonHandler.instance().getSide() == Side.CLIENT : FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
+            return this.getWorld().isRemote
+                    ? FMLCommonHandler.instance().getSide() == Side.CLIENT
+                    : FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
         return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
     }
 
-
     @Override
     @SuppressWarnings("ALL")
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
 
         ITexture[] ret = new ITexture[0];
 
         if (this.isClientSide()) {
 
             for (int i = 0; i < GT_TileEntity_LESU.iTextures.length; i++) {
-                GT_TileEntity_LESU.iTextures[i][0] = TextureFactory.of(GT_TileEntity_LESU.iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
+                GT_TileEntity_LESU.iTextures[i][0] = TextureFactory.of(
+                        GT_TileEntity_LESU.iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
             }
 
             if (aSide == aFacing && this.getBaseMetaTileEntity().getUniversalEnergyStored() <= 0)
                 ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_EMPTY];
-            else if (aSide == aFacing && !aActive)
-                ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_IDLE];
-            else if (aSide == aFacing && aActive)
-                ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_CHARGING];
-            else
-                ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_SIDE];
+            else if (aSide == aFacing && !aActive) ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_IDLE];
+            else if (aSide == aFacing && aActive) ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_CHARGING];
+            else ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_SIDE];
         }
 
         return ret;
@@ -253,17 +258,14 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public ItemStack getStackInSlot(int p_70301_1_) {
-        if (p_70301_1_ > 1)
-            return this.circuits[(p_70301_1_ - 2)];
+        if (p_70301_1_ > 1) return this.circuits[(p_70301_1_ - 2)];
         return this.mInventory[p_70301_1_];
     }
 
     @Override
     public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-        if (p_70299_1_ < 2)
-            this.mInventory[p_70299_1_] = p_70299_2_;
-        else
-            this.circuits[(p_70299_1_ - 2)] = p_70299_2_;
+        if (p_70299_1_ < 2) this.mInventory[p_70299_1_] = p_70299_2_;
+        else this.circuits[(p_70299_1_ - 2)] = p_70299_2_;
     }
 
     @Override
@@ -294,7 +296,10 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
             case 1:
                 return true;
             default:
-                return p_94041_2_ != null && p_94041_2_.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem());
+                return p_94041_2_ != null
+                        && p_94041_2_
+                                .getItem()
+                                .equals(GT_Utility.getIntegratedCircuit(0).getItem());
         }
     }
 
@@ -328,8 +333,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             this.mMaxProgresstime = 1;
-            if (aTick % 20 == 0)
-                this.checkMachine(aBaseMetaTileEntity, null);
+            if (aTick % 20 == 0) this.checkMachine(aBaseMetaTileEntity, null);
             this.mWrench = true;
             this.mScrewdriver = true;
             this.mSoftHammer = true;
@@ -369,9 +373,20 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         long startingTime = System.nanoTime();
         this.connectedcells = new ConnectedBlocksChecker();
-        this.connectedcells.get_connected(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), ItemRegistry.BW_BLOCKS[1]);
+        this.connectedcells.get_connected(
+                aBaseMetaTileEntity.getWorld(),
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord(),
+                ItemRegistry.BW_BLOCKS[1]);
 
-        if (this.connectedcells.get_meta_of_sideblocks(aBaseMetaTileEntity.getWorld(), this.getBaseMetaTileEntity().getMetaTileID(), new int[]{aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord()}, true)) {
+        if (this.connectedcells.get_meta_of_sideblocks(
+                aBaseMetaTileEntity.getWorld(),
+                this.getBaseMetaTileEntity().getMetaTileID(),
+                new int[] {
+                    aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord()
+                },
+                true)) {
             this.getBaseMetaTileEntity().disableWorking();
             this.getBaseMetaTileEntity().setActive(false);
             this.mStorage = 0;
@@ -381,7 +396,10 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         }
 
         this.mEfficiency = this.getMaxEfficiency(null);
-        this.mStorage = (ConfigHandler.energyPerCell * this.connectedcells.hashset.size() >= Long.MAX_VALUE - 1 || ConfigHandler.energyPerCell * this.connectedcells.hashset.size() < 0) ? Long.MAX_VALUE - 1 : ConfigHandler.energyPerCell * this.connectedcells.hashset.size();
+        this.mStorage = (ConfigHandler.energyPerCell * this.connectedcells.hashset.size() >= Long.MAX_VALUE - 1
+                        || ConfigHandler.energyPerCell * this.connectedcells.hashset.size() < 0)
+                ? Long.MAX_VALUE - 1
+                : ConfigHandler.energyPerCell * this.connectedcells.hashset.size();
         this.mMaxProgresstime = 1;
         this.mProgresstime = 0;
 
@@ -396,9 +414,15 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         this.getBaseMetaTileEntity().setActive(true);
 
         long finishedTime = System.nanoTime();
-        //System.out.println("LESU LookUp: "+((finishedTime - startingTime) / 1000000)+"ms");
+        // System.out.println("LESU LookUp: "+((finishedTime - startingTime) / 1000000)+"ms");
         if (finishedTime - startingTime > 5000000)
-            MainMod.LOGGER.warn("LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime) + "ns / " + ((finishedTime - startingTime) / 1000000) + "ms) Owner:"+this.getBaseMetaTileEntity().getOwnerName()+" Check at x:" + this.getBaseMetaTileEntity().getXCoord() + " y:" + this.getBaseMetaTileEntity().getYCoord() + " z:" + this.getBaseMetaTileEntity().getZCoord() + " DIM-ID: " + this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+            MainMod.LOGGER.warn("LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime) + "ns / "
+                    + ((finishedTime - startingTime) / 1000000) + "ms) Owner:"
+                    + this.getBaseMetaTileEntity().getOwnerName() + " Check at x:"
+                    + this.getBaseMetaTileEntity().getXCoord() + " y:"
+                    + this.getBaseMetaTileEntity().getYCoord() + " z:"
+                    + this.getBaseMetaTileEntity().getZCoord() + " DIM-ID: "
+                    + this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
         return true;
     }
 
@@ -425,5 +449,4 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     public World getWorld() {
         return this.getBaseMetaTileEntity().getWorld();
     }
-
 }

@@ -29,6 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
+import java.util.List;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -45,17 +46,21 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class BW_TileEntityContainer_Multiple extends BlockContainer {
 
     protected final String[] textureNames;
     protected final String name;
     protected final Class<? extends TileEntity>[] tileEntityArray;
+
     @SideOnly(Side.CLIENT)
     protected IIcon[] texture;
 
-    public BW_TileEntityContainer_Multiple(Material p_i45386_1_, Class<? extends TileEntity>[] tileEntity, String blockName, String[] textureNames, CreativeTabs tabs) {
+    public BW_TileEntityContainer_Multiple(
+            Material p_i45386_1_,
+            Class<? extends TileEntity>[] tileEntity,
+            String blockName,
+            String[] textureNames,
+            CreativeTabs tabs) {
         super(p_i45386_1_);
         this.setHardness(15.0F);
         this.setResistance(30.0F);
@@ -68,7 +73,16 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World worldObj, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+    public boolean onBlockActivated(
+            World worldObj,
+            int x,
+            int y,
+            int z,
+            EntityPlayer player,
+            int p_149727_6_,
+            float p_149727_7_,
+            float p_149727_8_,
+            float p_149727_9_) {
         if (worldObj.isRemote) {
             return true;
         }

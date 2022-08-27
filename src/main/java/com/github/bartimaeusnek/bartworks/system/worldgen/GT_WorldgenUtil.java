@@ -24,9 +24,8 @@ package com.github.bartimaeusnek.bartworks.system.worldgen;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import gregtech.api.GregTech_API;
-import net.minecraft.block.Block;
-
 import java.util.Random;
+import net.minecraft.block.Block;
 
 public class GT_WorldgenUtil {
 
@@ -34,23 +33,23 @@ public class GT_WorldgenUtil {
 
     public static final Block GT_TILES = GregTech_API.sBlockMachines;
 
-    public static short getGenerator(Random rand,int tier){
+    public static short getGenerator(Random rand, int tier) {
         int meta = ConfigHandler.metasForTiers[0][tier][rand.nextInt(ConfigHandler.metasForTiers[0][tier].length)];
-        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : GT_WorldgenUtil.getGenerator(rand,tier);
+        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : GT_WorldgenUtil.getGenerator(rand, tier);
     }
 
-    public static short getBuffer(Random rand,int tier){
+    public static short getBuffer(Random rand, int tier) {
         int meta = ConfigHandler.metasForTiers[1][tier][rand.nextInt(ConfigHandler.metasForTiers[1][tier].length)];
-        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : GT_WorldgenUtil.getBuffer(rand,tier);
+        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : GT_WorldgenUtil.getBuffer(rand, tier);
     }
 
-    public static short getCable(Random rand,int tier){
+    public static short getCable(Random rand, int tier) {
         int meta = ConfigHandler.metasForTiers[2][tier][rand.nextInt(ConfigHandler.metasForTiers[2][tier].length)];
-        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : GT_WorldgenUtil.getCable(rand,tier);
+        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : GT_WorldgenUtil.getCable(rand, tier);
     }
 
-    public static short getMachine(Random rand,int tier){
+    public static short getMachine(Random rand, int tier) {
         int meta = ConfigHandler.metasForTiers[3][tier][rand.nextInt(ConfigHandler.metasForTiers[3][tier].length)];
-        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : GT_WorldgenUtil.getMachine(rand,tier);
+        return GregTech_API.METATILEENTITIES[meta] != null ? (short) meta : GT_WorldgenUtil.getMachine(rand, tier);
     }
 }

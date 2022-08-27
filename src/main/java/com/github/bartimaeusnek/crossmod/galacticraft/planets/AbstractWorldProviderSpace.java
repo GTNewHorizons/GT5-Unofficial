@@ -41,5 +41,4 @@ public abstract class AbstractWorldProviderSpace extends WorldProviderSpace impl
     public boolean hasSunset() {
         return true;
     }
-
 }

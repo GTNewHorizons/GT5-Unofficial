@@ -23,11 +23,10 @@
 package com.github.bartimaeusnek.bartworks.common.items;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-
-import java.util.List;
 
 public class LabModule extends SimpleSubItemClass {
     public LabModule(String[] tex) {

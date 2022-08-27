@@ -28,52 +28,44 @@ package com.github.bartimaeusnek.bartworks.util;
 @SuppressWarnings("unused")
 public class MathUtils {
 
-
     public static long floorLong(double x) {
-        if (Double.isInfinite(x) || Double.isNaN(x))
-            return (long) x;
+        if (Double.isInfinite(x) || Double.isNaN(x)) return (long) x;
         long xi = (long) x;
         return x < xi ? xi - 1 : xi;
     }
 
     public static long ceilLong(double x) {
-        if (Double.isInfinite(x) || Double.isNaN(x))
-            return (long) x;
+        if (Double.isInfinite(x) || Double.isNaN(x)) return (long) x;
         long xi = (long) x;
         return x > xi ? xi + 1 : xi;
     }
 
     public static int floorInt(double x) {
-        if (Double.isInfinite(x) || Double.isNaN(x))
-            return (int) x;
+        if (Double.isInfinite(x) || Double.isNaN(x)) return (int) x;
         int xi = (int) x;
         return x < xi ? xi - 1 : xi;
     }
 
     public static int ceilInt(float x) {
-        if (Float.isInfinite(x) || Float.isNaN(x))
-            return (int) x;
+        if (Float.isInfinite(x) || Float.isNaN(x)) return (int) x;
         int xi = (int) x;
         return x > xi ? xi + 1 : xi;
     }
 
     public static int ceilInt(double x) {
-        if (Double.isInfinite(x) || Double.isNaN(x))
-            return (int) x;
+        if (Double.isInfinite(x) || Double.isNaN(x)) return (int) x;
         int xi = (int) x;
         return x > xi ? xi + 1 : xi;
     }
 
     public static double floor(double x) {
-        if (Double.isInfinite(x) || Double.isNaN(x))
-            return x;
+        if (Double.isInfinite(x) || Double.isNaN(x)) return x;
         int xi = (int) x;
         return x < xi ? xi - 1 : xi;
     }
 
     public static double ceil(double x) {
-        if (Double.isInfinite(x) || Double.isNaN(x))
-            return x;
+        if (Double.isInfinite(x) || Double.isNaN(x)) return x;
         int xi = (int) x;
         return x > xi ? xi + 1 : xi;
     }
@@ -108,20 +100,20 @@ public class MathUtils {
         return (val.compareTo(min) < 0) ? min : (val.compareTo(max) > 0) ? max : val;
     }
 
-    public static int wrap(int input, int bound){
-        return (((input % bound)+bound) % bound);
+    public static int wrap(int input, int bound) {
+        return (((input % bound) + bound) % bound);
     }
 
-    public static long wrap(long input, long bound){
-        return (((input % bound)+bound) % bound);
+    public static long wrap(long input, long bound) {
+        return (((input % bound) + bound) % bound);
     }
 
-    public static double wrap(double input, double bound){
-        return (((input % bound)+bound) % bound);
+    public static double wrap(double input, double bound) {
+        return (((input % bound) + bound) % bound);
     }
 
-    public static float wrap(float input, float bound){
-        return (((input % bound)+bound) % bound);
+    public static float wrap(float input, float bound) {
+        return (((input % bound) + bound) % bound);
     }
 
     public static float tanh(float x) {

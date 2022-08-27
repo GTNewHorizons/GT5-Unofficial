@@ -24,5 +24,4 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.classic;
 
 import net.minecraft.tileentity.TileEntity;
 
-public class BWTileEntityDimIDBridge extends TileEntity {
-}
+public class BWTileEntityDimIDBridge extends TileEntity {}

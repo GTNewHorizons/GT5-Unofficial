@@ -31,13 +31,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import ic2.core.Ic2Items;
+import java.lang.reflect.Field;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.reflect.FieldUtils;
-
-import java.lang.reflect.Field;
 
 /**
  * This class gets injected into GT via ASM!
@@ -49,10 +48,10 @@ public class BeforeGTPreload implements Runnable {
 
     @Override
     public void run() {
-        if (didrun)
-            return;
-        //fixing BorosilicateGlass... -_-'
-        Materials.BorosilicateGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
+        if (didrun) return;
+        // fixing BorosilicateGlass... -_-'
+        Materials.BorosilicateGlass.add(
+                SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
 
         Field activeContainer = FieldUtils.getDeclaredField(LoadController.class, "activeContainer", true);
         ModContainer bartworks = null;
@@ -73,12 +72,10 @@ public class BeforeGTPreload implements Runnable {
                 if (mod.getModId().equals("bartworks")) {
                     bartworks = mod;
                 }
-                if (bartworks != null)
-                    break;
+                if (bartworks != null) break;
             }
             if (bartworks == null || gregtech == null)
                 FMLCommonHandler.instance().exitJava(-1, true);
-
 
             try {
                 activeContainer.set(modController, bartworks);
@@ -91,7 +88,9 @@ public class BeforeGTPreload implements Runnable {
 
         Block[] bw_glasses;
         try {
-            bw_glasses = (Block[]) Class.forName("com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry").getField("bw_glasses").get(null);
+            bw_glasses = (Block[]) Class.forName("com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry")
+                    .getField("bw_glasses")
+                    .get(null);
             GameRegistry.registerBlock(bw_glasses[0], BW_ItemBlocks.class, "BW_GlasBlocks");
             OreDictionary.registerOre("blockGlassHV", new ItemStack(Blocks.glass, 1, Short.MAX_VALUE));
             OreDictionary.registerOre("blockGlassHV", new ItemStack(bw_glasses[0], 1, 0));

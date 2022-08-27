@@ -22,6 +22,10 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.blockCasing;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.blockCasingAdvanced;
+import static gregtech.api.enums.OrePrefixes.*;
+
 import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
@@ -30,59 +34,52 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.item.ItemStack;
 
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.blockCasing;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.blockCasingAdvanced;
-import static gregtech.api.enums.OrePrefixes.*;
-
 public class CasingLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff == BW_GT_MaterialReference.Wood /*|| werkstoff == BW_GT_MaterialReference.WoodSealed*/) {
             addCasingRecipes(werkstoff, plank);
         } else {
-            if (!
-                    (
-                            werkstoff.hasGenerationFeature(blockCasing) &&
-                                    werkstoff.doesOreDictedItemExists(plate) &&
-                                    werkstoff.doesOreDictedItemExists(screw) &&
-                                    werkstoff.doesOreDictedItemExists(gearGtSmall) &&
-                                    werkstoff.doesOreDictedItemExists(gearGt) &&
-                                    werkstoff.doesOreDictedItemExists(plateDouble)
-                    )
-            )
-                return;
+            if (!(werkstoff.hasGenerationFeature(blockCasing)
+                    && werkstoff.doesOreDictedItemExists(plate)
+                    && werkstoff.doesOreDictedItemExists(screw)
+                    && werkstoff.doesOreDictedItemExists(gearGtSmall)
+                    && werkstoff.doesOreDictedItemExists(gearGt)
+                    && werkstoff.doesOreDictedItemExists(plateDouble))) return;
 
             addCasingRecipes(werkstoff, plateDouble);
         }
     }
 
-    private static void addCasingRecipes(Werkstoff werkstoff, OrePrefixes reboltedCasingsOuterStuff){
-        GT_ModHandler.addCraftingRecipe(werkstoff.get(blockCasing), new Object[]{
-                "PSP",
-                "PGP",
-                "PSP",
-                'P', werkstoff.get(plate),
-                'S', werkstoff.get(screw),
-                'G', werkstoff.get(gearGtSmall)
+    private static void addCasingRecipes(Werkstoff werkstoff, OrePrefixes reboltedCasingsOuterStuff) {
+        GT_ModHandler.addCraftingRecipe(werkstoff.get(blockCasing), new Object[] {
+            "PSP", "PGP", "PSP", 'P', werkstoff.get(plate), 'S', werkstoff.get(screw), 'G', werkstoff.get(gearGtSmall)
         });
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                werkstoff.get(plate, 6),
-                werkstoff.get(screw, 2),
-                werkstoff.get(gearGtSmall)
-        }, GT_Values.NF, werkstoff.get(blockCasing), 200, 30);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {werkstoff.get(plate, 6), werkstoff.get(screw, 2), werkstoff.get(gearGtSmall)},
+                GT_Values.NF,
+                werkstoff.get(blockCasing),
+                200,
+                30);
 
-        GT_ModHandler.addCraftingRecipe(werkstoff.get(blockCasingAdvanced), new Object[]{
-                "PSP",
-                "PGP",
-                "PSP",
-                'P', werkstoff.get(reboltedCasingsOuterStuff),
-                'S', werkstoff.get(screw),
-                'G', werkstoff.get(gearGt)
+        GT_ModHandler.addCraftingRecipe(werkstoff.get(blockCasingAdvanced), new Object[] {
+            "PSP",
+            "PGP",
+            "PSP",
+            'P',
+            werkstoff.get(reboltedCasingsOuterStuff),
+            'S',
+            werkstoff.get(screw),
+            'G',
+            werkstoff.get(gearGt)
         });
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                werkstoff.get(reboltedCasingsOuterStuff, 6),
-                werkstoff.get(screw, 2),
-                werkstoff.get(gearGt)
-        }, GT_Values.NF, werkstoff.get(blockCasingAdvanced), 200, 30);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                    werkstoff.get(reboltedCasingsOuterStuff, 6), werkstoff.get(screw, 2), werkstoff.get(gearGt)
+                },
+                GT_Values.NF,
+                werkstoff.get(blockCasingAdvanced),
+                200,
+                30);
     }
 }

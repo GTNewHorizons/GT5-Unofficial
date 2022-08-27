@@ -28,7 +28,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
 public interface ITileHasDifferentTextureSides {
 
     IIcon[] texture = new IIcon[7];
@@ -45,5 +44,4 @@ public interface ITileHasDifferentTextureSides {
 
     @SideOnly(Side.CLIENT)
     void registerBlockIcons(IIconRegister par1IconRegister);
-
 }

@@ -26,17 +26,16 @@ import com.github.bartimaeusnek.bartworks.API.API_ConfigValues;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 import gregtech.api.enums.TC_Aspects;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.biome.BiomeGenBase;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-@SuppressWarnings({"rawtypes","unchecked","unused"})
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class ThaumcraftHandler {
-    private ThaumcraftHandler(){}
+    private ThaumcraftHandler() {}
 
     private static Integer taintBiomeID;
     private static Integer magicalForestBiomeID;
@@ -52,16 +51,21 @@ public class ThaumcraftHandler {
 
     public static boolean isWand(ItemStack aStack) {
         try {
-            return aStack != null && ThaumcraftHandler.mWandInterface.isAssignableFrom(aStack.getItem().getClass());
+            return aStack != null
+                    && ThaumcraftHandler.mWandInterface.isAssignableFrom(
+                            aStack.getItem().getClass());
         } catch (Throwable var3) {
             return false;
         }
     }
 
-    public static boolean isMagicalForestBiome(int biomeID){
+    public static boolean isMagicalForestBiome(int biomeID) {
         if (ThaumcraftHandler.magicalForestBiomeID == null) {
             try {
-                BiomeGenBase biome = (BiomeGenBase) Class.forName("thaumcraft.common.lib.world.ThaumcraftWorldGenerator").getField("biomeMagicalForest").get(null);
+                BiomeGenBase biome =
+                        (BiomeGenBase) Class.forName("thaumcraft.common.lib.world.ThaumcraftWorldGenerator")
+                                .getField("biomeMagicalForest")
+                                .get(null);
                 return biomeID == (ThaumcraftHandler.magicalForestBiomeID = biome.biomeID);
             } catch (ClassCastException | ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -71,10 +75,13 @@ public class ThaumcraftHandler {
         return biomeID == ThaumcraftHandler.magicalForestBiomeID;
     }
 
-    public static boolean isTaintBiome(int biomeID){
+    public static boolean isTaintBiome(int biomeID) {
         if (ThaumcraftHandler.taintBiomeID == null) {
             try {
-                BiomeGenBase TaintBiome = (BiomeGenBase) Class.forName("thaumcraft.common.lib.world.ThaumcraftWorldGenerator").getField("biomeTaint").get(null);
+                BiomeGenBase TaintBiome =
+                        (BiomeGenBase) Class.forName("thaumcraft.common.lib.world.ThaumcraftWorldGenerator")
+                                .getField("biomeTaint")
+                                .get(null);
                 return biomeID == (ThaumcraftHandler.taintBiomeID = TaintBiome.biomeID);
             } catch (ClassCastException | ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -102,33 +109,45 @@ public class ThaumcraftHandler {
             try {
                 ThaumcraftHandler.AspectAdder.mAspectListClass = Class.forName("thaumcraft.api.aspects.AspectList");
                 ThaumcraftHandler.AspectAdder.mAspectClass = Class.forName("thaumcraft.api.aspects.Aspect");
-                ThaumcraftHandler.AspectAdder.addToList = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("add", ThaumcraftHandler.AspectAdder.mAspectClass,int.class);
-                ThaumcraftHandler.AspectAdder.registerObjectTag = Class.forName("thaumcraft.api.ThaumcraftApi").getMethod("registerObjectTag",ItemStack.class, ThaumcraftHandler.AspectAdder.mAspectListClass);
+                ThaumcraftHandler.AspectAdder.addToList = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod(
+                        "add", ThaumcraftHandler.AspectAdder.mAspectClass, int.class);
+                ThaumcraftHandler.AspectAdder.registerObjectTag = Class.forName("thaumcraft.api.ThaumcraftApi")
+                        .getMethod(
+                                "registerObjectTag", ItemStack.class, ThaumcraftHandler.AspectAdder.mAspectListClass);
                 ThaumcraftHandler.AspectAdder.getName = ThaumcraftHandler.AspectAdder.mAspectClass.getMethod("getName");
-                ThaumcraftHandler.AspectAdder.writeAspectListToNBT = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("writeToNBT", NBTTagCompound.class);
-                ThaumcraftHandler.AspectAdder.add = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("add", ThaumcraftHandler.AspectAdder.mAspectListClass);
-                ThaumcraftHandler.AspectAdder.getAmount = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("getAmount", ThaumcraftHandler.AspectAdder.mAspectClass);
-                ThaumcraftHandler.AspectAdder.getAspects = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("getAspects");
-                ThaumcraftHandler.AspectAdder.readAspectListFromNBT = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("readFromNBT", NBTTagCompound.class);
-                ThaumcraftHandler.AspectAdder.isResearchComplete = Class.forName("thaumcraft.common.lib.research.ResearchManager").getMethod("isResearchComplete",String.class,String.class);
-                ThaumcraftHandler.AspectAdder.linkedAspektList = ThaumcraftHandler.AspectAdder.mAspectListClass.getField("aspects");
+                ThaumcraftHandler.AspectAdder.writeAspectListToNBT =
+                        ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("writeToNBT", NBTTagCompound.class);
+                ThaumcraftHandler.AspectAdder.add = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod(
+                        "add", ThaumcraftHandler.AspectAdder.mAspectListClass);
+                ThaumcraftHandler.AspectAdder.getAmount = ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod(
+                        "getAmount", ThaumcraftHandler.AspectAdder.mAspectClass);
+                ThaumcraftHandler.AspectAdder.getAspects =
+                        ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("getAspects");
+                ThaumcraftHandler.AspectAdder.readAspectListFromNBT =
+                        ThaumcraftHandler.AspectAdder.mAspectListClass.getMethod("readFromNBT", NBTTagCompound.class);
+                ThaumcraftHandler.AspectAdder.isResearchComplete = Class.forName(
+                                "thaumcraft.common.lib.research.ResearchManager")
+                        .getMethod("isResearchComplete", String.class, String.class);
+                ThaumcraftHandler.AspectAdder.linkedAspektList =
+                        ThaumcraftHandler.AspectAdder.mAspectListClass.getField("aspects");
             } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException e) {
                 e.printStackTrace();
             }
         }
 
-        public static void addAspectViaBW(ItemStack stack, Pair<Object,Integer>... aspectPair) {
-            if (stack == null || stack.getItem() == null || stack.getUnlocalizedName() == null)
-                return;
+        public static void addAspectViaBW(ItemStack stack, Pair<Object, Integer>... aspectPair) {
+            if (stack == null || stack.getItem() == null || stack.getUnlocalizedName() == null) return;
             try {
                 Object aspectList = ThaumcraftHandler.AspectAdder.mAspectListClass.newInstance();
                 for (Pair a : aspectPair) {
                     if (API_ConfigValues.debugLog)
-                        DebugLog.log("Stack:"+ stack.getDisplayName() + " Damage:" +stack.getItemDamage() + " aspectPair: " + ThaumcraftHandler.AspectAdder.getName.invoke(a.getKey()) + " / " + a.getValue());
+                        DebugLog.log("Stack:" + stack.getDisplayName() + " Damage:" + stack.getItemDamage()
+                                + " aspectPair: " + ThaumcraftHandler.AspectAdder.getName.invoke(a.getKey()) + " / "
+                                + a.getValue());
                     ThaumcraftHandler.AspectAdder.addToList.invoke(aspectList, a.getKey(), a.getValue());
                 }
                 ThaumcraftHandler.AspectAdder.registerObjectTag.invoke(null, stack, aspectList);
-            }catch (IllegalAccessException | InstantiationException | InvocationTargetException e){
+            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }
@@ -137,9 +156,10 @@ public class ThaumcraftHandler {
             try {
                 Object aspectList = ThaumcraftHandler.AspectAdder.mAspectListClass.newInstance();
                 for (TC_Aspects.TC_AspectStack tc_aspects : tc_aspectStacks)
-                    ThaumcraftHandler.AspectAdder.addToList.invoke(aspectList, tc_aspects.mAspect.mAspect, (int) tc_aspects.mAmount);
+                    ThaumcraftHandler.AspectAdder.addToList.invoke(
+                            aspectList, tc_aspects.mAspect.mAspect, (int) tc_aspects.mAmount);
                 ThaumcraftHandler.AspectAdder.registerObjectTag.invoke(null, stack, aspectList);
-            }catch (IllegalAccessException | InstantiationException | InvocationTargetException e){
+            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }

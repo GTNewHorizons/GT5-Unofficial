@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import static com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items.metaTab;
+
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_Renderer_Block_Ores;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
@@ -29,16 +31,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
+import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-
-import static com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items.metaTab;
 
 public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
 
@@ -50,7 +49,8 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
         this(p_i45386_1_, tileEntity, blockName, null);
     }
 
-    public BW_MetaGenerated_Blocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName, OrePrefixes types) {
+    public BW_MetaGenerated_Blocks(
+            Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName, OrePrefixes types) {
         super(p_i45386_1_, tileEntity, blockName);
         this.setHardness(5.0F);
         this.setResistance(5.0F);
@@ -58,7 +58,9 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
         this.setCreativeTab(metaTab);
         _prefixes = types;
         if (_prefixes != null) {
-            this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization("bw.blocktype." + _prefixes, _prefixes.mLocalizedMaterialPre + "%material" + _prefixes.mLocalizedMaterialPost);
+            this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization(
+                    "bw.blocktype." + _prefixes,
+                    _prefixes.mLocalizedMaterialPre + "%material" + _prefixes.mLocalizedMaterialPost);
         }
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
@@ -66,14 +68,14 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
         super.onBlockAdded(aWorld, aX, aY, aZ);
-        //Waste some time to allow the TE to be set, do not use thread sleep here, it doesnt allow for nanoseconds.
-        //This will just waste a few cpu cycles to allow the TE to be set
+        // Waste some time to allow the TE to be set, do not use thread sleep here, it doesnt allow for nanoseconds.
+        // This will just waste a few cpu cycles to allow the TE to be set
         BW_Util.shortSleep(0);
     }
 
     @SideOnly(Side.CLIENT)
     public final BW_MetaGenerated_Block_TE getProperTileEntityForRendering() {
-        return (BW_MetaGenerated_Block_TE) createNewTileEntity(null,0);
+        return (BW_MetaGenerated_Block_TE) createNewTileEntity(null, 0);
     }
 
     protected abstract void doRegistrationStuff(Werkstoff w);
@@ -88,8 +90,7 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
     }
 
     public int getRenderType() {
-        if (BW_Renderer_Block_Ores.INSTANCE == null)
-            return super.getRenderType();
+        if (BW_Renderer_Block_Ores.INSTANCE == null) return super.getRenderType();
         return BW_Renderer_Block_Ores.INSTANCE.mRenderID;
     }
 
@@ -103,7 +104,7 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        return ((ITileEntityProvider)this).createNewTileEntity(world, metadata);
+        return ((ITileEntityProvider) this).createNewTileEntity(world, metadata);
     }
 
     @Override
@@ -124,7 +125,8 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
         if ((tTileEntity instanceof BW_MetaGenerated_Block_TE)) {
             return ((BW_MetaGenerated_Block_TE) tTileEntity).getDrops(aFortune);
         }
-        return mTemporaryTileEntity.get() == null ? new ArrayList<>() : mTemporaryTileEntity.get().getDrops(aFortune);
+        return mTemporaryTileEntity.get() == null
+                ? new ArrayList<>()
+                : mTemporaryTileEntity.get().getDrops(aFortune);
     }
-
 }

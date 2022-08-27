@@ -24,10 +24,15 @@ package com.github.bartimaeusnek.bartworks.API;
 
 public interface INoiseGen {
 
-   double getNoise(int x, int z);
-   double[][] getNoiseForRegion(int xStart, int zStart, int xEnd, int zEnd);
-   void setOctaves(int octaves);
-   void setFrequency(double freq);
-   void setSeed(long seed);
-   void setAmplitude(double amplitude);
+    double getNoise(int x, int z);
+
+    double[][] getNoiseForRegion(int xStart, int zStart, int xEnd, int zEnd);
+
+    void setOctaves(int octaves);
+
+    void setFrequency(double freq);
+
+    void setSeed(long seed);
+
+    void setAmplitude(double amplitude);
 }

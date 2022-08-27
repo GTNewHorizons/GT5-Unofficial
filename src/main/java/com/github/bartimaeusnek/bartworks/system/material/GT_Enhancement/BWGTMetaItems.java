@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
+import static com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.GTMetaItemEnhancer.NoMetaValue;
+
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items;
@@ -36,6 +38,10 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_OreDictUnificator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -45,65 +51,61 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.GTMetaItemEnhancer.NoMetaValue;
-
 public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
     private boolean hasList;
     private final Set<Integer> hiddenThings = new HashSet<>();
 
     public BWGTMetaItems(OrePrefixes orePrefixes, List<Materials> noSubIDMaterials) {
-        super(orePrefixes,null);
-        //materialloop:
+        super(orePrefixes, null);
+        // materialloop:
         for (int i = 0; i < Materials.values().length; i++) {
             ItemStack tStack = new ItemStack(this, 1, i);
             Materials material = Materials.values()[i];
-            if (((material.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((material.getFluid(1) == null && material.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
-                continue;
-            //for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
+            if (((material.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
+                    || ((material.getFluid(1) == null && material.getGas(1) == null)
+                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle)))) continue;
+            // for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
             //    if (material.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
             //        continue materialloop;
-            if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ",""))){
+            if (OreDictionary.doesOreNameExist(
+                    this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ", ""))) {
                 hiddenThings.add(i);
                 continue;
             }
-            GT_OreDictUnificator.registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ",""), tStack);
+            GT_OreDictUnificator.registerOre(
+                    this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ", ""), tStack);
         }
 
         if (noSubIDMaterials != null) {
             hasList = true;
-            //materialloop:
+            // materialloop:
             for (int i = 0; i < noSubIDMaterials.size(); i++) {
-                ItemStack tStack = new ItemStack(this, 1, i+1001);
+                ItemStack tStack = new ItemStack(this, 1, i + 1001);
                 Materials w = noSubIDMaterials.get(i);
-                if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+                if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
+                        || ((w.getFluid(1) == null && w.getGas(1) == null)
+                                && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                     continue;
-                //for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
+                // for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
                 //    if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
                 //        continue materialloop;
-                if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""))){
+                if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ", ""))) {
                     hiddenThings.add(i);
                     continue;
                 }
-                GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""), tStack);
+                GT_OreDictUnificator.registerOre(
+                        this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ", ""), tStack);
             }
         }
     }
 
     private Materials getMaterial(ItemStack is) {
-        if (is == null || is.getItem() != this)
-            return null;
+        if (is == null || is.getItem() != this) return null;
         final int meta = is.getItemDamage();
         Materials material;
-        if (meta > 1000 && hasList)
-            material = NoMetaValue.get(meta - 1001);
-        else
-            material = Materials.values()[meta];
+        if (meta > 1000 && hasList) material = NoMetaValue.get(meta - 1001);
+        else material = Materials.values()[meta];
         return material;
     }
 
@@ -127,12 +129,11 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
-        @Override
+    @Override
     public IIconContainer getIconContainer(int aMetaData) {
-        if (this.orePrefixes.mTextureIndex == -1)
-            return getIconContainerBartWorks(aMetaData);
+        if (this.orePrefixes.mTextureIndex == -1) return getIconContainerBartWorks(aMetaData);
         if (aMetaData > 1000 && hasList)
-            return NoMetaValue.get(aMetaData-1001).mIconSet.mTextures[this.orePrefixes.mTextureIndex];
+            return NoMetaValue.get(aMetaData - 1001).mIconSet.mTextures[this.orePrefixes.mTextureIndex];
         if (aMetaData < 0 || aMetaData > Materials.values().length || Materials.values()[(short) aMetaData] == null)
             return null;
         return Materials.values()[(short) aMetaData].mIconSet.mTextures[this.orePrefixes.mTextureIndex];
@@ -140,23 +141,18 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
     @Override
     protected IIconContainer getIconContainerBartWorks(int aMetaData) {
-        if (SideReference.Side.Server || PrefixTextureLinker.texMap == null)
-            return null;
+        if (SideReference.Side.Server || PrefixTextureLinker.texMap == null) return null;
 
         HashMap<TextureSet, Textures.ItemIcons.CustomIcon> iconLink = PrefixTextureLinker.texMap.get(this.orePrefixes);
 
-        if (iconLink == null)
-            return null;
+        if (iconLink == null) return null;
 
         Materials material;
 
-        if (aMetaData > 1000 && hasList)
-            material = NoMetaValue.get(aMetaData-1001);
-        else
-            material = Materials.values()[aMetaData];
+        if (aMetaData > 1000 && hasList) material = NoMetaValue.get(aMetaData - 1001);
+        else material = Materials.values()[aMetaData];
 
-        if (material == null || material.mIconSet == null)
-            return null;
+        if (material == null || material.mIconSet == null) return null;
 
         return iconLink.get(material.mIconSet);
     }
@@ -167,50 +163,49 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < Materials.values().length; i++) {
             Materials w = Materials.values()[i];
-            if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
-                continue;
-            else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
-                continue;
-            else if (hiddenThings.contains(i))
-                continue;
+            if ((w == null)
+                    || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
+                            && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0) continue;
+            else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
+                    || ((w.getFluid(1) == null && w.getGas(1) == null)
+                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle)))) continue;
+            else if (hiddenThings.contains(i)) continue;
             aList.add(new ItemStack(this, 1, i));
         }
         if (hasList)
             for (int i = 0; i < NoMetaValue.size(); i++) {
                 Materials w = NoMetaValue.get(i);
-                if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0 && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
+                if ((w == null)
+                        || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
+                                && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0) continue;
+                else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
+                        || ((w.getFluid(1) == null && w.getGas(1) == null)
+                                && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                     continue;
-                else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten) || ((w.getFluid(1) == null && w.getGas(1) == null) && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
-                    continue;
-                else if (hiddenThings.contains(i))
-                    continue;
+                else if (hiddenThings.contains(i)) continue;
                 aList.add(new ItemStack(this, 1, i + 1001));
             }
     }
 
     @Override
     public short[] getColorForGUI(ItemStack aStack) {
-        if (aStack.getItemDamage() > 1000 && hasList)
-            return NoMetaValue.get(aStack.getItemDamage()-1001).mRGBa;
+        if (aStack.getItemDamage() > 1000 && hasList) return NoMetaValue.get(aStack.getItemDamage() - 1001).mRGBa;
         return Materials.values()[aStack.getItemDamage()].mRGBa;
     }
 
     @Override
     public String getNameForGUI(ItemStack aStack) {
         if (aStack.getItemDamage() > 1000 && hasList)
-            return NoMetaValue.get(aStack.getItemDamage()-1001).mDefaultLocalName;
+            return NoMetaValue.get(aStack.getItemDamage() - 1001).mDefaultLocalName;
         return Materials.values()[aStack.getItemDamage()].mDefaultLocalName;
     }
 
     @Override
-    public void onUpdate(ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand) {
-
-    }
+    public void onUpdate(ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand) {}
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        if (aStack.getItemDamage() > 1000 && hasList)
-            return NoMetaValue.get(aStack.getItemDamage()-1001).mRGBa;
+        if (aStack.getItemDamage() > 1000 && hasList) return NoMetaValue.get(aStack.getItemDamage() - 1001).mRGBa;
         return Materials.values()[aStack.getItemDamage()].mRGBa;
     }
 

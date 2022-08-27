@@ -30,7 +30,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class BW_GUIContainer_HeatedWaterPump extends GuiContainer {
-    private static final ResourceLocation furnaceGuiTextures = new ResourceLocation(MainMod.MOD_ID + ":textures/GUI/GUIheatedPump.png");
+    private static final ResourceLocation furnaceGuiTextures =
+            new ResourceLocation(MainMod.MOD_ID + ":textures/GUI/GUIheatedPump.png");
     final BW_Container_HeatedWaterPump container;
 
     public BW_GUIContainer_HeatedWaterPump(Container p_i1072_1_) {
@@ -45,7 +46,8 @@ public class BW_GUIContainer_HeatedWaterPump extends GuiContainer {
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-//      this.drawString(this.fontRendererObj, "Fuel:" + container.fuel + " Water:" + container.water, k, l, 0xffffff);
+        //      this.drawString(this.fontRendererObj, "Fuel:" + container.fuel + " Water:" + container.water, k, l,
+        // 0xffffff);
 
         if (this.container.fuel > 0) {
             this.mc.getTextureManager().bindTexture(BW_GUIContainer_HeatedWaterPump.furnaceGuiTextures);
@@ -54,10 +56,10 @@ public class BW_GUIContainer_HeatedWaterPump extends GuiContainer {
             this.drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 13 - i1, 14, i1 + 1);
         }
 
-//        if (this.container.water > 0){
-//            this.mc.getTextureManager().bindTexture( new ResourceLocation("textures/blocks/water_still.png"));
-//            this.drawTexturedModalRect(k+85,l+32,32,32,18,18);
-//        }
+        //        if (this.container.water > 0){
+        //            this.mc.getTextureManager().bindTexture( new ResourceLocation("textures/blocks/water_still.png"));
+        //            this.drawTexturedModalRect(k+85,l+32,32,32,18,18);
+        //        }
 
     }
 }

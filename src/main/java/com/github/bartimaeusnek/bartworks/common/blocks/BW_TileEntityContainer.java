@@ -66,14 +66,27 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
     }
 
     @Override
-    public boolean onBlockActivated(World worldObj, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+    public boolean onBlockActivated(
+            World worldObj,
+            int x,
+            int y,
+            int z,
+            EntityPlayer player,
+            int p_149727_6_,
+            float p_149727_7_,
+            float p_149727_8_,
+            float p_149727_9_) {
         if (worldObj.isRemote) {
             return false;
         }
         TileEntity tile = worldObj.getTileEntity(x, y, z);
         if (tile instanceof BW_TileEntity_HeatedWaterPump) {
-            if (player.getHeldItem() != null && (player.getHeldItem().getItem().equals(Items.bucket) || player.getHeldItem().getItem() instanceof IFluidContainerItem) && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false) != null)
-                if (player.getHeldItem().getItem().equals(Items.bucket) && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false).amount == 1000) {
+            if (player.getHeldItem() != null
+                    && (player.getHeldItem().getItem().equals(Items.bucket)
+                            || player.getHeldItem().getItem() instanceof IFluidContainerItem)
+                    && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false) != null)
+                if (player.getHeldItem().getItem().equals(Items.bucket)
+                        && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false).amount == 1000) {
                     ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, true);
                     player.getHeldItem().stackSize--;
                     if (player.getHeldItem().stackSize <= 0)
@@ -125,7 +138,8 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
             int[] dropSlots = ((ITileDropsContent) t).getDropSlots();
             for (int dropSlot : dropSlots) {
                 if (((ITileDropsContent) t).getStackInSlot(dropSlot) != null)
-                    world.spawnEntityInWorld(new EntityItem(world, x, y, z, ((BW_TileEntity_HeatedWaterPump) t).getStackInSlot(dropSlot)));
+                    world.spawnEntityInWorld(new EntityItem(
+                            world, x, y, z, ((BW_TileEntity_HeatedWaterPump) t).getStackInSlot(dropSlot)));
             }
         }
         super.breakBlock(world, x, y, z, block, meta);
@@ -141,8 +155,7 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
                 e.printStackTrace();
                 return super.getIcon(side, meta);
             }
-        } else
-            return super.getIcon(side, meta);
+        } else return super.getIcon(side, meta);
     }
 
     @Override
@@ -154,8 +167,7 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
-        } else
-            super.registerBlockIcons(par1IconRegister);
+        } else super.registerBlockIcons(par1IconRegister);
     }
 
     @Override

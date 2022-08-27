@@ -29,13 +29,53 @@ import gregtech.common.items.GT_DepletetCell_Item;
 public class LoadItemContainers {
 
     public static void run() {
-        BW_NonMeta_MaterialItems.Depleted_Tiberium_1.set(new GT_DepletetCell_Item("TiberiumcellDep", "Fuel Rod (Depleted Tiberium)", 1));
-        BW_NonMeta_MaterialItems.Depleted_Tiberium_2.set(new GT_DepletetCell_Item("Double_TiberiumcellDep", "Dual Fuel Rod (Depleted Tiberium)", 1));
-        BW_NonMeta_MaterialItems.Depleted_Tiberium_4.set(new GT_DepletetCell_Item("Quad_TiberiumcellDep", "Quad Fuel Rod (Depleted Tiberium)", 1));
-        BW_NonMeta_MaterialItems.TiberiumCell_1.set(new GT_RadioactiveCellIC_Item("Tiberiumcell", "Fuel Rod (Tiberium)", 1, 50000, 2F, 1, 0.5F, BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1), false));
-        BW_NonMeta_MaterialItems.TiberiumCell_2.set(new GT_RadioactiveCellIC_Item("Double_Tiberiumcell", "Dual Fuel Rod (Tiberium)", 2, 50000, 2F, 1, 0.5F, BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1), false));
-        BW_NonMeta_MaterialItems.TiberiumCell_4.set(new GT_RadioactiveCellIC_Item("Quad_Tiberiumcell", "Quad Fuel Rod (Tiberium)", 4, 50000, 2F, 1, 0.5F, BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1), false));
-        BW_NonMeta_MaterialItems.Depleted_TheCoreCell.set(new GT_DepletetCell_Item("Core_Reactor_CellDep", "Depleted \"The Core\" Cell", 32));
-        BW_NonMeta_MaterialItems.TheCoreCell.set(new GT_RadioactiveCellIC_Item("Core_Reactor_Cell", "\"The Core\" Cell", 32, 100000, 8F, 32, 1F, BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1), false));
+        BW_NonMeta_MaterialItems.Depleted_Tiberium_1.set(
+                new GT_DepletetCell_Item("TiberiumcellDep", "Fuel Rod (Depleted Tiberium)", 1));
+        BW_NonMeta_MaterialItems.Depleted_Tiberium_2.set(
+                new GT_DepletetCell_Item("Double_TiberiumcellDep", "Dual Fuel Rod (Depleted Tiberium)", 1));
+        BW_NonMeta_MaterialItems.Depleted_Tiberium_4.set(
+                new GT_DepletetCell_Item("Quad_TiberiumcellDep", "Quad Fuel Rod (Depleted Tiberium)", 1));
+        BW_NonMeta_MaterialItems.TiberiumCell_1.set(new GT_RadioactiveCellIC_Item(
+                "Tiberiumcell",
+                "Fuel Rod (Tiberium)",
+                1,
+                50000,
+                2F,
+                1,
+                0.5F,
+                BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1),
+                false));
+        BW_NonMeta_MaterialItems.TiberiumCell_2.set(new GT_RadioactiveCellIC_Item(
+                "Double_Tiberiumcell",
+                "Dual Fuel Rod (Tiberium)",
+                2,
+                50000,
+                2F,
+                1,
+                0.5F,
+                BW_NonMeta_MaterialItems.Depleted_Tiberium_2.get(1),
+                false));
+        BW_NonMeta_MaterialItems.TiberiumCell_4.set(new GT_RadioactiveCellIC_Item(
+                "Quad_Tiberiumcell",
+                "Quad Fuel Rod (Tiberium)",
+                4,
+                50000,
+                2F,
+                1,
+                0.5F,
+                BW_NonMeta_MaterialItems.Depleted_Tiberium_4.get(1),
+                false));
+        BW_NonMeta_MaterialItems.Depleted_TheCoreCell.set(
+                new GT_DepletetCell_Item("Core_Reactor_CellDep", "Depleted \"The Core\" Cell", 32));
+        BW_NonMeta_MaterialItems.TheCoreCell.set(new GT_RadioactiveCellIC_Item(
+                "Core_Reactor_Cell",
+                "\"The Core\" Cell",
+                32,
+                100000,
+                8F,
+                32,
+                1F,
+                BW_NonMeta_MaterialItems.Depleted_TheCoreCell.get(1),
+                false));
     }
 }

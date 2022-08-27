@@ -40,68 +40,66 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ServerEventHandler {
 
-    //MinecraftForge.EVENT_BUS
+    // MinecraftForge.EVENT_BUS
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
-        if (event == null || !(event.entity instanceof EntityPlayerMP) || !SideReference.Side.Server)
-            return;
-        MainMod.BW_Network_instance.sendToPlayer(new OreDictCachePacket(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
-        MainMod.BW_Network_instance.sendToPlayer(new ServerJoinedPackage(null),(EntityPlayerMP) event.entity);
+        if (event == null || !(event.entity instanceof EntityPlayerMP) || !SideReference.Side.Server) return;
+        MainMod.BW_Network_instance.sendToPlayer(
+                new OreDictCachePacket(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
+        MainMod.BW_Network_instance.sendToPlayer(new ServerJoinedPackage(null), (EntityPlayerMP) event.entity);
     }
 
-    //FMLCommonHandler.instance().bus()
+    // FMLCommonHandler.instance().bus()
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
-        if (event == null || !(event.player instanceof EntityPlayerMP))
-            return;
+        if (event == null || !(event.player instanceof EntityPlayerMP)) return;
 
-        if (event.player.worldObj.getTotalWorldTime() % 20 != 0)
-            return;
+        if (event.player.worldObj.getTotalWorldTime() % 20 != 0) return;
 
         boolean replace = false;
         ItemStack toReplace = null;
         for (int i = 0; i < event.player.inventory.mainInventory.length; i++) {
-           ItemStack stack = event.player.inventory.mainInventory[i];
-           if (stack == null)
-               continue;
-           int[] oreIDs = OreDictionary.getOreIDs(stack);
+            ItemStack stack = event.player.inventory.mainInventory[i];
+            if (stack == null) continue;
+            int[] oreIDs = OreDictionary.getOreIDs(stack);
 
-           if (oreIDs.length > 0){
-               loop: for (int oreID : oreIDs) {
-                   String oreDictName = OreDictionary.getOreName(oreID);
-                   for (Werkstoff e : Werkstoff.werkstoffHashSet) {
-                       replace = e.getGenerationFeatures().enforceUnification;
-                       if (replace) {
-                           if (oreDictName.contains(e.getVarName())) {
-                               String prefix = oreDictName.replace(e.getVarName(), "");
-                               OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);
-                               if (prefixes == null) {
-                                   continue;
-                               }
-                               toReplace = GT_OreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
-                               break loop;
-                           } else {
-                               for (String s : e.getADDITIONAL_OREDICT()) {
-                                   if (oreDictName.contains(s)) {
-                                       String prefix = oreDictName.replace(s, "");
-                                       OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);
-                                       if (prefixes == null) {
-                                           continue;
-                                       }
-                                       toReplace = GT_OreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
-                                       break loop;
-                                   }
-                               }
-                           }
-                       }
-                       replace = false;
-                   }
-               }
-           }
-           if (replace && toReplace != null) {
-               event.player.inventory.setInventorySlotContents(i, toReplace);
-               replace = false;
-           }
-       }
+            if (oreIDs.length > 0) {
+                loop:
+                for (int oreID : oreIDs) {
+                    String oreDictName = OreDictionary.getOreName(oreID);
+                    for (Werkstoff e : Werkstoff.werkstoffHashSet) {
+                        replace = e.getGenerationFeatures().enforceUnification;
+                        if (replace) {
+                            if (oreDictName.contains(e.getVarName())) {
+                                String prefix = oreDictName.replace(e.getVarName(), "");
+                                OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);
+                                if (prefixes == null) {
+                                    continue;
+                                }
+                                toReplace = GT_OreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
+                                break loop;
+                            } else {
+                                for (String s : e.getADDITIONAL_OREDICT()) {
+                                    if (oreDictName.contains(s)) {
+                                        String prefix = oreDictName.replace(s, "");
+                                        OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);
+                                        if (prefixes == null) {
+                                            continue;
+                                        }
+                                        toReplace = GT_OreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
+                                        break loop;
+                                    }
+                                }
+                            }
+                        }
+                        replace = false;
+                    }
+                }
+            }
+            if (replace && toReplace != null) {
+                event.player.inventory.setInventorySlotContents(i, toReplace);
+                replace = false;
+            }
+        }
     }
 }

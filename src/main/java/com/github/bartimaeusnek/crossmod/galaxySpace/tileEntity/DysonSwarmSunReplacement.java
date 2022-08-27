@@ -37,7 +37,6 @@ public class DysonSwarmSunReplacement extends MetaTileEntity {
     private static long dysonObjs;
     private static long swarmControllers;
 
-
     public DysonSwarmSunReplacement(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
         super(aID, aBasicName, aRegionalName, aInvSlotCount);
     }
@@ -46,13 +45,18 @@ public class DysonSwarmSunReplacement extends MetaTileEntity {
         super(aName, aInvSlotCount);
     }
 
-
-    public void toggle(){
+    public void toggle() {
         if (!wasBuild) {
-            GalacticraftCore.solarSystemSol.getMainStar().setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png"));
+            GalacticraftCore.solarSystemSol
+                    .getMainStar()
+                    .setBodyIcon(new ResourceLocation(
+                            GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png"));
             wasBuild = !wasBuild;
         } else {
-            GalacticraftCore.solarSystemSol.getMainStar().setBodyIcon(new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/sun.png"));
+            GalacticraftCore.solarSystemSol
+                    .getMainStar()
+                    .setBodyIcon(new ResourceLocation(
+                            GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/sun.png"));
             wasBuild = !wasBuild;
         }
     }
@@ -75,7 +79,7 @@ public class DysonSwarmSunReplacement extends MetaTileEntity {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new DysonSwarmSunReplacement(this.mName,this.mInventory.length);
+        return new DysonSwarmSunReplacement(this.mName, this.mInventory.length);
     }
 
     @Override
@@ -90,7 +94,8 @@ public class DysonSwarmSunReplacement extends MetaTileEntity {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        aBaseMetaTileEntity.increaseStoredEnergyUnits((DysonSwarmSunReplacement.dysonObjs*10000)/ swarmControllers, true);
+        aBaseMetaTileEntity.increaseStoredEnergyUnits(
+                (DysonSwarmSunReplacement.dysonObjs * 10000) / swarmControllers, true);
     }
 
     public boolean isEnetOutput() {
@@ -113,8 +118,8 @@ public class DysonSwarmSunReplacement extends MetaTileEntity {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity iGregTechTileEntity, byte b, byte b1, byte b2, boolean b3, boolean b4) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity iGregTechTileEntity, byte b, byte b1, byte b2, boolean b3, boolean b4) {
         return new ITexture[0];
     }
-
 }

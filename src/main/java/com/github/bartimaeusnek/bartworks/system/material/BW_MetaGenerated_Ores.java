@@ -26,6 +26,8 @@ import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -37,27 +39,26 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
 
     public BW_MetaGenerated_Ores(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
-        this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization("bw.blocktype." + OrePrefixes.ore, OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
+        this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization(
+                "bw.blocktype." + OrePrefixes.ore,
+                OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
     }
 
     protected void doRegistrationStuff(Werkstoff w) {
         if (w != null) {
-            if (!w.hasItemType(OrePrefixes.ore) || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
-                return;
+            if (!w.hasItemType(OrePrefixes.ore) || ((w.getGenerationFeatures().blacklist & 0b1000) != 0)) return;
             GT_ModHandler.addValuableOre(this, w.getmID(), 1);
         }
     }
 
-    public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air, Block block, int[] aBlockMeta) {
+    public static boolean setOreBlock(
+            World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air, Block block, int[] aBlockMeta) {
         if (!air) {
-            aY = MathUtils.clamp(aY,1, aWorld.getActualHeight());
+            aY = MathUtils.clamp(aY, 1, aWorld.getActualHeight());
         }
 
         Block tBlock = aWorld.getBlock(aX, aY, aZ);
@@ -107,7 +108,9 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
     @SuppressWarnings("unchecked")
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
         for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
-            if ((tMaterial != null) && tMaterial.hasItemType(OrePrefixes.ore) && ((tMaterial.getGenerationFeatures().blacklist & 0x8) == 0)) {
+            if ((tMaterial != null)
+                    && tMaterial.hasItemType(OrePrefixes.ore)
+                    && ((tMaterial.getGenerationFeatures().blacklist & 0x8) == 0)) {
                 aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
             }
         }
@@ -118,10 +121,8 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 for (int z = -1; z <= 1; z++) {
-                    if (x == 0 && y == 0 && z == 0)
-                        continue;
-                    if (aWorld.getBlock(aX+x,aY+y,aZ+z).isAir(aWorld,aX+x,aY+y,aZ+z))
-                        return true;
+                    if (x == 0 && y == 0 && z == 0) continue;
+                    if (aWorld.getBlock(aX + x, aY + y, aZ + z).isAir(aWorld, aX + x, aY + y, aZ + z)) return true;
                 }
             }
         }

@@ -31,6 +31,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_Generic_Item;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,8 +39,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem {
 
@@ -56,8 +55,7 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
                 (s, p) -> {
                     ElectricItem.manager.use(s, COST_PER_USE, p);
                     return s;
-                }
-        );
+                });
     }
 
     @Override
@@ -65,7 +63,10 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         if (aStack != null && aStack.getTagCompound() != null)
-            aList.add(StatCollector.translateToLocal("tooltip.cp.0.name") + " " + (aStack.getTagCompound().getBoolean("HasChip") ? StatCollector.translateToLocal("tooltip.bw.yes.name") : StatCollector.translateToLocal("tooltip.bw.no.name")));
+            aList.add(StatCollector.translateToLocal("tooltip.cp.0.name") + " "
+                    + (aStack.getTagCompound().getBoolean("HasChip")
+                            ? StatCollector.translateToLocal("tooltip.bw.yes.name")
+                            : StatCollector.translateToLocal("tooltip.bw.no.name")));
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
@@ -124,5 +125,4 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
     public double getTransferLimit(ItemStack itemStack) {
         return GT_Values.V[1];
     }
-
 }

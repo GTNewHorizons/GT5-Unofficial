@@ -38,8 +38,10 @@ public class ServerJoinedPackage extends GT_Packet {
 
     public ServerJoinedPackage(Object obj) {
         super(false);
-        this.config =(byte) (ConfigHandler.classicMode && ConfigHandler.disableExtraGassesForEBF ? 3 : ConfigHandler.classicMode ? 2 : ConfigHandler.disableExtraGassesForEBF ? 1 : 0);
-
+        this.config = (byte)
+                (ConfigHandler.classicMode && ConfigHandler.disableExtraGassesForEBF
+                        ? 3
+                        : ConfigHandler.classicMode ? 2 : ConfigHandler.disableExtraGassesForEBF ? 1 : 0);
     }
 
     @Override
@@ -49,7 +51,7 @@ public class ServerJoinedPackage extends GT_Packet {
 
     @Override
     public byte[] encode() {
-        return new byte[]{this.config};
+        return new byte[] {this.config};
     }
 
     @Override
@@ -62,6 +64,6 @@ public class ServerJoinedPackage extends GT_Packet {
     public void process(IBlockAccess iBlockAccess) {
         boolean gas = (this.config & 1) != 0;
         boolean classic = (this.config & 0b10) != 0;
-        MainMod.runOnPlayerJoined(classic,gas);
+        MainMod.runOnPlayerJoined(classic, gas);
     }
 }

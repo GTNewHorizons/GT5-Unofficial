@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import net.minecraft.util.ResourceLocation;
 
 public class SkyProviderRoss128b {
-    //ASM enables this texture
-    public static final ResourceLocation sunTex = new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/World/SunRoss128.png");
+    // ASM enables this texture
+    public static final ResourceLocation sunTex =
+            new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/World/SunRoss128.png");
 }

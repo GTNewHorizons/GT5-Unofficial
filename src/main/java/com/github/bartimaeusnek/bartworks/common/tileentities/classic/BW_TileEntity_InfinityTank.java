@@ -24,13 +24,12 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.classic;
 
 import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
-
-import java.util.ArrayList;
 
 public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank, IFluidHandler, ITileWithGUI {
 
@@ -60,7 +59,7 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-       boolean ret = false;
+        boolean ret = false;
         for (FluidStack stack : this.INTERNALTANKS) {
             ret = GT_Utility.areFluidsEqual(stack, new FluidStack(fluid, 0));
             if (ret) {
@@ -79,8 +78,7 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
     @Override
     public FluidStack getFluid() {
         if (this.INTERNALTANKS.get(this.selectedTank) == null || this.INTERNALTANKS.get(this.selectedTank).amount == 0)
-            if (this.selectedTank > 0)
-                this.selectedTank = this.INTERNALTANKS.size() - 1;
+            if (this.selectedTank > 0) this.selectedTank = this.INTERNALTANKS.size() - 1;
         return this.INTERNALTANKS.get(this.selectedTank);
     }
 
@@ -107,7 +105,6 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
         p_145841_1_.setTag("InternalTank", lInternalTank);
     }
 
-
     @Override
     public int getCapacity() {
         return Integer.MAX_VALUE;
@@ -120,11 +117,9 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-        if (this.worldObj.isRemote || resource == null || resource.amount == 0)
-            return 0;
+        if (this.worldObj.isRemote || resource == null || resource.amount == 0) return 0;
 
-        if (!doFill)
-            return resource.amount;
+        if (!doFill) return resource.amount;
 
         int id = 0;
 
@@ -146,18 +141,16 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
     public FluidStack drain(int maxDrain, boolean doDrain) {
 
         FluidStack outputstack = this.INTERNALTANKS.get(this.selectedTank);
-        if (this.worldObj.isRemote || maxDrain == 0 || this.getFluid() == null || outputstack == null)
-            return null;
+        if (this.worldObj.isRemote || maxDrain == 0 || this.getFluid() == null || outputstack == null) return null;
 
         int actualdrain = maxDrain;
-        if (actualdrain > outputstack.amount)
-            actualdrain = outputstack.amount;
+        if (actualdrain > outputstack.amount) actualdrain = outputstack.amount;
         FluidStack ret = new FluidStack(outputstack.getFluid(), actualdrain);
-        if (ret.amount == 0)
-            ret = null;
+        if (ret.amount == 0) ret = null;
         if (doDrain) {
             outputstack.amount -= actualdrain;
-            FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(outputstack, this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, this, actualdrain));
+            FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(
+                    outputstack, this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, this, actualdrain));
         }
         return ret;
     }

@@ -22,13 +22,11 @@
 
 package com.github.bartimaeusnek.bartworks.util.accessprioritylist;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import java.util.Iterator;
 import java.util.ListIterator;
+import org.apache.commons.lang3.NotImplementedException;
 
 public class AccessPriorityListIterators {
-
 
     public static class AccessPriorityListListIterator<E> implements ListIterator<E> {
         final AccessPriorityListNode<E> head;
@@ -36,7 +34,9 @@ public class AccessPriorityListIterators {
         AccessPriorityListNode<E> current;
         int counter = 0;
         boolean reverse;
-        public AccessPriorityListListIterator(AccessPriorityListNode<E> head, AccessPriorityListNode<E> tail, boolean reverse) {
+
+        public AccessPriorityListListIterator(
+                AccessPriorityListNode<E> head, AccessPriorityListNode<E> tail, boolean reverse) {
             this.head = head;
             this.tail = tail;
             current = reverse ? tail : head;
@@ -78,12 +78,12 @@ public class AccessPriorityListIterators {
 
         @Override
         public int nextIndex() {
-            return counter+1;
+            return counter + 1;
         }
 
         @Override
         public int previousIndex() {
-            return counter-1;
+            return counter - 1;
         }
 
         @Override
@@ -105,6 +105,7 @@ public class AccessPriorityListIterators {
     public static class AccessPriorityListIterator<E> implements Iterator<E> {
         final AccessPriorityListNode<E> head;
         AccessPriorityListNode<E> current;
+
         public AccessPriorityListIterator(AccessPriorityListNode<E> head) {
             this.head = this.current = head;
         }
@@ -146,6 +147,7 @@ public class AccessPriorityListIterators {
     public static class AccessPriorityListNodeIterator<E> implements Iterator<AccessPriorityListNode<E>> {
         final AccessPriorityListNode<E> head;
         AccessPriorityListNode<E> current;
+
         public AccessPriorityListNodeIterator(AccessPriorityListNode<E> head) {
             this.head = this.current = head;
         }
@@ -162,5 +164,4 @@ public class AccessPriorityListIterators {
             return ret;
         }
     }
-
 }

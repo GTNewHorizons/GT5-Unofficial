@@ -46,25 +46,30 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
         for (BW_Meta_Items.BW_GT_MetaGen_Item_Hook tItem : BW_Meta_Items.BW_GT_MetaGen_Item_Hook.sInstances) {
             MinecraftForgeClient.registerItemRenderer(tItem, this);
         }
-
     }
 
     @Override
     public boolean handleRenderType(ItemStack aStack, IItemRenderer.ItemRenderType aType) {
         if (!GT_Utility.isStackInvalid(aStack) && aStack.getItemDamage() >= 0) {
-            return aType == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON || aType == IItemRenderer.ItemRenderType.INVENTORY || aType == IItemRenderer.ItemRenderType.EQUIPPED || aType == IItemRenderer.ItemRenderType.ENTITY;
+            return aType == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON
+                    || aType == IItemRenderer.ItemRenderType.INVENTORY
+                    || aType == IItemRenderer.ItemRenderType.EQUIPPED
+                    || aType == IItemRenderer.ItemRenderType.ENTITY;
         } else {
             return false;
         }
     }
+
     @Override
-    public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType aType, ItemStack aStack, IItemRenderer.ItemRendererHelper aHelper) {
+    public boolean shouldUseRenderHelper(
+            IItemRenderer.ItemRenderType aType, ItemStack aStack, IItemRenderer.ItemRendererHelper aHelper) {
         if (GT_Utility.isStackInvalid(aStack)) {
             return false;
         } else {
             return aType == IItemRenderer.ItemRenderType.ENTITY;
         }
     }
+
     @Override
     public void renderItem(IItemRenderer.ItemRenderType type, ItemStack aStack, Object... data) {
         if (!GT_Utility.isStackInvalid(aStack)) {
@@ -90,18 +95,38 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
                         GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     else {
                         for (int i = 0; i < 4; i++) {
-                            GT_RenderUtil.renderItemIcon(tIcon, 0.0D+i*2D,0.0D+i*2D,10.0D+i*2D,10.0D+i*2D, 0.001D, 0.0F, 0.0F, -1.0F);
+                            GT_RenderUtil.renderItemIcon(
+                                    tIcon,
+                                    0.0D + i * 2D,
+                                    0.0D + i * 2D,
+                                    10.0D + i * 2D,
+                                    10.0D + i * 2D,
+                                    0.001D,
+                                    0.0F,
+                                    0.0F,
+                                    -1.0F);
                         }
                     }
                 } else {
                     if (aMetaData < CircuitImprintLoader.reverseIDs)
-                        ItemRenderer.renderItemIn2D(Tessellator.instance,tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
-//                    else {
-//                        for (int i = 0; i < 4; i++) {
-//                            ItemRenderer.renderItemIn2D(Tessellator.instance, 0.0F+i*2F,0.0F+i*2F,10.0F+i*2F,10.0F+i*2F, tIcon.getIconWidth(), tIcon.getIconHeight(),0.0625F);
-//                        }
-//                    }
-//                    ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
+                        ItemRenderer.renderItemIn2D(
+                                Tessellator.instance,
+                                tIcon.getMaxU(),
+                                tIcon.getMinV(),
+                                tIcon.getMinU(),
+                                tIcon.getMaxV(),
+                                tIcon.getIconWidth(),
+                                tIcon.getIconHeight(),
+                                0.0625F);
+                    //                    else {
+                    //                        for (int i = 0; i < 4; i++) {
+                    //                            ItemRenderer.renderItemIn2D(Tessellator.instance,
+                    // 0.0F+i*2F,0.0F+i*2F,10.0F+i*2F,10.0F+i*2F, tIcon.getIconWidth(), tIcon.getIconHeight(),0.0625F);
+                    //                        }
+                    //                    }
+                    //                    ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(),
+                    // tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(),
+                    // 0.0625F);
                 }
 
                 IIcon tOverlay = (IIcon) BW_Util.get2DCoordFrom1DArray(aMetaData, 1, 2, aItem.mIconList);
@@ -112,7 +137,15 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
                     if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                         GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
-                        ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
+                        ItemRenderer.renderItemIn2D(
+                                Tessellator.instance,
+                                tOverlay.getMaxU(),
+                                tOverlay.getMinV(),
+                                tOverlay.getMinU(),
+                                tOverlay.getMaxV(),
+                                tOverlay.getIconWidth(),
+                                tOverlay.getIconHeight(),
+                                0.0625F);
                     }
                 }
             }

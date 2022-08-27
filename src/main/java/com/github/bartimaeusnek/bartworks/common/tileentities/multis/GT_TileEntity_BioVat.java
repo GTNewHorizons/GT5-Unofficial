@@ -22,6 +22,13 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
+import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
@@ -45,6 +52,11 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import javax.annotation.Nullable;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -57,19 +69,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
-import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
-import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTiered;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_BioVat> {
 
@@ -102,27 +101,34 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
 
     private static final int CASING_INDEX = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_TileEntity_BioVat> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_BioVat>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
-            {"ccccc", "ccccc", "ccccc", "ccccc", "ccccc"},
-            {"ggggg", "gaaag", "gaaag", "gaaag", "ggggg"},
-            {"ggggg", "gaaag", "gaaag", "gaaag", "ggggg"},
-            {"cc~cc", "ccccc", "ccccc", "ccccc", "ccccc"},
-        }))
-        .addElement('c', ofChain(
-            ofHatchAdder(GT_TileEntity_BioVat::addMaintenanceToMachineList, CASING_INDEX, 1),
-            ofHatchAdder(GT_TileEntity_BioVat::addOutputToMachineList, CASING_INDEX, 1),
-            ofHatchAdder(GT_TileEntity_BioVat::addInputToMachineList, CASING_INDEX, 1),
-            ofHatchAdder(GT_TileEntity_BioVat::addRadiationInputToMachineList, CASING_INDEX, 1),
-            ofHatchAdder(GT_TileEntity_BioVat::addEnergyInputToMachineList, CASING_INDEX, 1),
-            onElementPass(e -> e.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 1))
-        ))
-        .addElement('a', ofChain(
-            isAir(),
-            ofBlockAnyMeta(FluidLoader.bioFluidBlock)
-        ))
-        .addElement('g', ofGlassTiered((byte)1, (byte)127, (byte)0, (te, v) -> te.mGlassTier = v, te -> te.mGlassTier, 1))
-        .build();
+    private static final IStructureDefinition<GT_TileEntity_BioVat> STRUCTURE_DEFINITION =
+            StructureDefinition.<GT_TileEntity_BioVat>builder()
+                    .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
+                        {"ccccc", "ccccc", "ccccc", "ccccc", "ccccc"},
+                        {"ggggg", "gaaag", "gaaag", "gaaag", "ggggg"},
+                        {"ggggg", "gaaag", "gaaag", "gaaag", "ggggg"},
+                        {"cc~cc", "ccccc", "ccccc", "ccccc", "ccccc"},
+                    }))
+                    .addElement(
+                            'c',
+                            ofChain(
+                                    ofHatchAdder(GT_TileEntity_BioVat::addMaintenanceToMachineList, CASING_INDEX, 1),
+                                    ofHatchAdder(GT_TileEntity_BioVat::addOutputToMachineList, CASING_INDEX, 1),
+                                    ofHatchAdder(GT_TileEntity_BioVat::addInputToMachineList, CASING_INDEX, 1),
+                                    ofHatchAdder(GT_TileEntity_BioVat::addRadiationInputToMachineList, CASING_INDEX, 1),
+                                    ofHatchAdder(GT_TileEntity_BioVat::addEnergyInputToMachineList, CASING_INDEX, 1),
+                                    onElementPass(e -> e.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 1))))
+                    .addElement('a', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
+                    .addElement(
+                            'g',
+                            ofGlassTiered(
+                                    (byte) 1,
+                                    (byte) 127,
+                                    (byte) 0,
+                                    (te, v) -> te.mGlassTier = v,
+                                    te -> te.mGlassTier,
+                                    1))
+                    .build();
 
     @Override
     public IStructureDefinition<GT_TileEntity_BioVat> getStructureDefinition() {
@@ -137,25 +143,24 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.
-            addMachineType("Bacterial Vat").
-            addInfo("Controller block for the Bacterial Vat").
-            addInfo("For maximum efficiency boost keep the Output Hatch always half filled!").
-            addSeparator().
-            beginStructureBlock(5, 4, 5, false).
-            addController("Front bottom center").
-            addCasingInfo("Clean Stainless Steel Casings", 19).
-            addOtherStructurePart("Glass", "Hollow two middle layers", 2).
-            addStructureInfo("The glass can be any glass, i.e. Tinkers Construct Clear Glass").
-            addStructureInfo("Some Recipes need more advanced Glass Types").
-            addMaintenanceHatch("Any casing", 1).
-            addOtherStructurePart("Radio Hatch", "Any casing", 1).
-            addInputBus("Any casing", 1).
-            addOutputBus("Any casing", 1).
-            addInputHatch("Any casing", 1).
-            addOutputHatch("Any casing", 1).
-            addEnergyHatch("Any casing", 1).
-            toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
+        tt.addMachineType("Bacterial Vat")
+                .addInfo("Controller block for the Bacterial Vat")
+                .addInfo("For maximum efficiency boost keep the Output Hatch always half filled!")
+                .addSeparator()
+                .beginStructureBlock(5, 4, 5, false)
+                .addController("Front bottom center")
+                .addCasingInfo("Clean Stainless Steel Casings", 19)
+                .addOtherStructurePart("Glass", "Hollow two middle layers", 2)
+                .addStructureInfo("The glass can be any glass, i.e. Tinkers Construct Clear Glass")
+                .addStructureInfo("Some Recipes need more advanced Glass Types")
+                .addMaintenanceHatch("Any casing", 1)
+                .addOtherStructurePart("Radio Hatch", "Any casing", 1)
+                .addInputBus("Any casing", 1)
+                .addOutputBus("Any casing", 1)
+                .addInputHatch("Any casing", 1)
+                .addOutputHatch("Any casing", 1)
+                .addEnergyHatch("Any casing", 1)
+                .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
 
@@ -163,7 +168,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         int[] ret = new int[4];
         ret[0] = aSpecialValue & 0xF; // = glass tier
         ret[1] = aSpecialValue >>> 4 & 0b11; // = special value
-        ret[2] = aSpecialValue >>> 6 & 0b1; //boolean exact svt | 1 = true | 0 = false
+        ret[2] = aSpecialValue >>> 6 & 0b1; // boolean exact svt | 1 = true | 0 = false
         ret[3] = aSpecialValue >>> 7 & Integer.MAX_VALUE; // = sievert
         return ret;
     }
@@ -177,18 +182,22 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     }
 
     private int getInputCapacity() {
-        return this.mInputHatches.stream().mapToInt(GT_MetaTileEntity_Hatch_Input::getCapacity).sum();
+        return this.mInputHatches.stream()
+                .mapToInt(GT_MetaTileEntity_Hatch_Input::getCapacity)
+                .sum();
     }
 
     private int getOutputCapacity() {
-        return this.mOutputHatches.stream().mapToInt(GT_MetaTileEntity_Hatch_Output::getCapacity).sum();
+        return this.mOutputHatches.stream()
+                .mapToInt(GT_MetaTileEntity_Hatch_Output::getCapacity)
+                .sum();
     }
 
     @Override
     public int getCapacity() {
         int ret = 0;
         ret += this.getInputCapacity();
-        //ret += getOutputCapacity();
+        // ret += getOutputCapacity();
         return ret;
     }
 
@@ -223,14 +232,13 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     }
 
     private int calcMod(double x) {
-        double y = (((double) this.getOutputCapacity()) / 2D),
-               z = ConfigHandler.bioVatMaxParallelBonus;
+        double y = (((double) this.getOutputCapacity()) / 2D), z = ConfigHandler.bioVatMaxParallelBonus;
 
         int ret = MathUtils.ceilInt(((-1D / y * Math.pow((x - y), 2D) + y) / y * z));
         return MathUtils.clamp(1, ret, ConfigHandler.bioVatMaxParallelBonus);
     }
 
-    private List<ItemStack> getItemInputs(){
+    private List<ItemStack> getItemInputs() {
         ArrayList<ItemStack> tInputList = this.getStoredInputs();
         int tInputList_sS = tInputList.size();
         for (int i = 0; i < tInputList_sS - 1; i++) {
@@ -250,7 +258,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         return tInputList;
     }
 
-    private List<FluidStack> getFluidInputs(){
+    private List<FluidStack> getFluidInputs() {
         ArrayList<FluidStack> tFluidList = this.getStoredFluids();
         int tFluidList_sS = tFluidList.size();
         for (int i = 0; i < tFluidList_sS - 1; i++) {
@@ -285,7 +293,8 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
         long tEnergy = V[tTier];
 
-        GT_Recipe gtRecipe = gtRecipeMap.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, tEnergy, tFluids, itemStack, tInputs);
+        GT_Recipe gtRecipe = gtRecipeMap.findRecipe(
+                this.getBaseMetaTileEntity(), this.mLastRecipe, false, tEnergy, tFluids, itemStack, tInputs);
 
         if (gtRecipe == null) return false;
 
@@ -298,10 +307,9 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
 
         this.mNeededSievert = conditions[3];
 
-        if (conditions[2] == 0 ?
-            (this.mSievert < this.mNeededSievert || this.mGlassTier < conditions[0])
-            : (this.mSievert != conditions[3] || this.mGlassTier < conditions[0]))
-            return false;
+        if (conditions[2] == 0
+                ? (this.mSievert < this.mNeededSievert || this.mGlassTier < conditions[0])
+                : (this.mSievert != conditions[3] || this.mGlassTier < conditions[0])) return false;
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
@@ -320,16 +328,15 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
             }
         }
 
-        this.mOutputFluids = new FluidStack[]{new FluidStack(recipeFluidOutput, recipeFluidOutput.amount * this.mTimes)};
+        this.mOutputFluids =
+                new FluidStack[] {new FluidStack(recipeFluidOutput, recipeFluidOutput.amount * this.mTimes)};
 
         BW_Util.calculateOverclockedNessMulti(gtRecipe.mEUt, gtRecipe.mDuration, 1, tEnergy, this);
 
-        if (this.mEUt > 0)
-            this.mEUt = -this.mEUt;
+        if (this.mEUt > 0) this.mEUt = -this.mEUt;
         this.mProgresstime = 0;
 
-        if (gtRecipe.mCanBeBuffered)
-            this.mLastRecipe = gtRecipe;
+        if (gtRecipe.mCanBeBuffered) this.mLastRecipe = gtRecipe;
 
         this.updateSlots();
         return true;
@@ -363,15 +370,14 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         this.mGlassTier = 0;
         this.mCasing = 0;
 
-        if(!checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0))
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0)) return false;
 
-        return  this.mCasing >= 19 &&
-                this.mRadHatches.size() <= 1 &&
-                this.mOutputHatches.size() == 1 &&
-                this.mMaintenanceHatches.size() == 1 &&
-                this.mInputHatches.size() > 0 &&
-                this.mEnergyHatches.size() > 0;
+        return this.mCasing >= 19
+                && this.mRadHatches.size() <= 1
+                && this.mOutputHatches.size() == 1
+                && this.mMaintenanceHatches.size() == 1
+                && this.mInputHatches.size() > 0
+                && this.mEnergyHatches.size() > 0;
     }
 
     @Override
@@ -394,8 +400,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         if (this.mFluid != null && height > 1 && this.reCalculateFluidAmmount() > 0) {
             for (int x = -1; x < 2; x++)
                 for (int y = 1; y < height; y++)
-                    for (int z = -1; z < 2; z++)
-                        this.sendPackagesOrRenewRenderer(x, y, z, this.mCulture);
+                    for (int z = -1; z < 2; z++) this.sendPackagesOrRenewRenderer(x, y, z, this.mCulture);
         }
     }
 
@@ -403,8 +408,18 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX * 2;
         int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ * 2;
 
-        GT_TileEntity_BioVat.staticColorMap.remove(new Coords(xDir + x + this.getBaseMetaTileEntity().getXCoord(), y + this.getBaseMetaTileEntity().getYCoord(), zDir + z + this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
-        GT_TileEntity_BioVat.staticColorMap.put(new Coords(xDir + x + this.getBaseMetaTileEntity().getXCoord(), y + this.getBaseMetaTileEntity().getYCoord(), zDir + z + this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld().provider.dimensionId), lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB());
+        GT_TileEntity_BioVat.staticColorMap.remove(new Coords(
+                xDir + x + this.getBaseMetaTileEntity().getXCoord(),
+                y + this.getBaseMetaTileEntity().getYCoord(),
+                zDir + z + this.getBaseMetaTileEntity().getZCoord(),
+                this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
+        GT_TileEntity_BioVat.staticColorMap.put(
+                new Coords(
+                        xDir + x + this.getBaseMetaTileEntity().getXCoord(),
+                        y + this.getBaseMetaTileEntity().getYCoord(),
+                        zDir + z + this.getBaseMetaTileEntity().getZCoord(),
+                        this.getBaseMetaTileEntity().getWorld().provider.dimensionId),
+                lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB());
 
         if (SideReference.Side.Server) {
             MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
@@ -414,14 +429,11 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
                                     xDir + x + this.getBaseMetaTileEntity().getXCoord(),
                                     y + this.getBaseMetaTileEntity().getYCoord(),
                                     zDir + z + this.getBaseMetaTileEntity().getZCoord(),
-                                    this.getBaseMetaTileEntity().getWorld().provider.dimensionId
-                            ),
+                                    this.getBaseMetaTileEntity().getWorld().provider.dimensionId),
                             lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB(),
-                            true
-                    ),
+                            true),
                     this.getBaseMetaTileEntity().getXCoord(),
-                    this.getBaseMetaTileEntity().getZCoord()
-            );
+                    this.getBaseMetaTileEntity().getZCoord());
             MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
                     this.getBaseMetaTileEntity().getWorld(),
                     new RendererPacket(
@@ -429,14 +441,11 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
                                     xDir + x + this.getBaseMetaTileEntity().getXCoord(),
                                     y + this.getBaseMetaTileEntity().getYCoord(),
                                     zDir + z + this.getBaseMetaTileEntity().getZCoord(),
-                                    this.getBaseMetaTileEntity().getWorld().provider.dimensionId
-                            ),
+                                    this.getBaseMetaTileEntity().getWorld().provider.dimensionId),
                             lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB(),
-                            false
-                    ),
+                            false),
                     this.getBaseMetaTileEntity().getXCoord(),
-                    this.getBaseMetaTileEntity().getZCoord()
-            );
+                    this.getBaseMetaTileEntity().getZCoord());
         }
         this.needsVisualUpdate = true;
     }
@@ -450,8 +459,12 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
                     break;
                 }
                 EntityPlayerMP tPlayer = (EntityPlayerMP) tObject;
-                Chunk tChunk = aWorld.getChunkFromBlockCoords(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getZCoord());
-                if (tPlayer.getServerForPlayer().getPlayerManager().isPlayerWatchingChunk(tPlayer, tChunk.xPosition, tChunk.zPosition)) {
+                Chunk tChunk = aWorld.getChunkFromBlockCoords(
+                        this.getBaseMetaTileEntity().getXCoord(),
+                        this.getBaseMetaTileEntity().getZCoord());
+                if (tPlayer.getServerForPlayer()
+                        .getPlayerManager()
+                        .isPlayerWatchingChunk(tPlayer, tChunk.xPosition, tChunk.zPosition)) {
                     if (!this.playerMPHashSet.contains(tPlayer)) {
                         this.playerMPHashSet.add(tPlayer);
                         this.sendAllRequiredRendererPackets();
@@ -459,7 +472,6 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
                 } else {
                     this.playerMPHashSet.remove(tPlayer);
                 }
-
             }
         }
     }
@@ -472,19 +484,41 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
             for (int x = -1; x < 2; x++) {
                 for (int y = 0; y < this.height; y++) {
                     for (int z = -1; z < 2; z++) {
-                        if (this.getBaseMetaTileEntity().getWorld().getBlock(xDir + x + this.getBaseMetaTileEntity().getXCoord(), y + this.getBaseMetaTileEntity().getYCoord(), zDir + z + this.getBaseMetaTileEntity().getZCoord()).equals(Blocks.air))
-                            this.getBaseMetaTileEntity().getWorld().setBlock(xDir + x + this.getBaseMetaTileEntity().getXCoord(), y + this.getBaseMetaTileEntity().getYCoord(), zDir + z + this.getBaseMetaTileEntity().getZCoord(), FluidLoader.bioFluidBlock);
+                        if (this.getBaseMetaTileEntity()
+                                .getWorld()
+                                .getBlock(
+                                        xDir + x + this.getBaseMetaTileEntity().getXCoord(),
+                                        y + this.getBaseMetaTileEntity().getYCoord(),
+                                        zDir + z + this.getBaseMetaTileEntity().getZCoord())
+                                .equals(Blocks.air))
+                            this.getBaseMetaTileEntity()
+                                    .getWorld()
+                                    .setBlock(
+                                            xDir
+                                                    + x
+                                                    + this.getBaseMetaTileEntity()
+                                                            .getXCoord(),
+                                            y + this.getBaseMetaTileEntity().getYCoord(),
+                                            zDir
+                                                    + z
+                                                    + this.getBaseMetaTileEntity()
+                                                            .getZCoord(),
+                                            FluidLoader.bioFluidBlock);
                     }
                 }
             }
     }
 
     private int reCalculateFluidAmmount() {
-        return this.getStoredFluids().stream().mapToInt(fluidStack -> fluidStack.amount).sum();
+        return this.getStoredFluids().stream()
+                .mapToInt(fluidStack -> fluidStack.amount)
+                .sum();
     }
 
     private int reCalculateHeight() {
-        return (this.reCalculateFluidAmmount() > ((this.getCapacity() / 4) - 1) ? (this.reCalculateFluidAmmount() >= this.getCapacity() / 2 ? 3 : 2) : 1);
+        return (this.reCalculateFluidAmmount() > ((this.getCapacity() / 4) - 1)
+                ? (this.reCalculateFluidAmmount() >= this.getCapacity() / 2 ? 3 : 2)
+                : 1);
     }
 
     public void doAllVisualThings() {
@@ -492,29 +526,59 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
             if (this.mMachine) {
                 ItemStack aStack = this.mInventory[1];
                 BioCulture lCulture = null;
-                int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX * 2;
-                int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ * 2;
+                int xDir = ForgeDirection.getOrientation(
+                                        this.getBaseMetaTileEntity().getBackFacing())
+                                .offsetX
+                        * 2;
+                int zDir = ForgeDirection.getOrientation(
+                                        this.getBaseMetaTileEntity().getBackFacing())
+                                .offsetZ
+                        * 2;
 
                 if (this.getBaseMetaTileEntity().getTimer() % 200 == 0) {
                     this.check_Chunk();
                 }
 
-                if (this.needsVisualUpdate && this.getBaseMetaTileEntity().getTimer() % GT_TileEntity_BioVat.TIMERDIVIDER == 0) {
+                if (this.needsVisualUpdate
+                        && this.getBaseMetaTileEntity().getTimer() % GT_TileEntity_BioVat.TIMERDIVIDER == 0) {
                     for (int x = -1; x < 2; x++)
                         for (int y = 1; y < 3; y++)
                             for (int z = -1; z < 2; z++)
-                                this.getBaseMetaTileEntity().getWorld().setBlockToAir(xDir + x + this.getBaseMetaTileEntity().getXCoord(), y + this.getBaseMetaTileEntity().getYCoord(), zDir + z + this.getBaseMetaTileEntity().getZCoord());
+                                this.getBaseMetaTileEntity()
+                                        .getWorld()
+                                        .setBlockToAir(
+                                                xDir
+                                                        + x
+                                                        + this.getBaseMetaTileEntity()
+                                                                .getXCoord(),
+                                                y + this.getBaseMetaTileEntity().getYCoord(),
+                                                zDir
+                                                        + z
+                                                        + this.getBaseMetaTileEntity()
+                                                                .getZCoord());
                 }
 
                 this.height = this.reCalculateHeight();
                 if (this.mFluid != null && this.height > 1 && this.reCalculateFluidAmmount() > 0) {
-                    if ((!(BW_Util.areStacksEqualOrNull(aStack, this.mStack))) || (this.needsVisualUpdate && this.getBaseMetaTileEntity().getTimer() % GT_TileEntity_BioVat.TIMERDIVIDER == 1)) {
+                    if ((!(BW_Util.areStacksEqualOrNull(aStack, this.mStack)))
+                            || (this.needsVisualUpdate
+                                    && this.getBaseMetaTileEntity().getTimer() % GT_TileEntity_BioVat.TIMERDIVIDER
+                                            == 1)) {
                         for (int x = -1; x < 2; x++) {
                             for (int y = 1; y < this.height; y++) {
                                 for (int z = -1; z < 2; z++) {
-                                    if (aStack == null || aStack.getItem() instanceof LabParts && aStack.getItemDamage() == 0) {
-                                        if (this.mCulture == null || aStack == null || aStack.getTagCompound() == null || this.mCulture.getID() != aStack.getTagCompound().getInteger("ID")) {
-                                            lCulture = aStack == null || aStack.getTagCompound() == null ? null : BioCulture.getBioCulture(aStack.getTagCompound().getString("Name"));
+                                    if (aStack == null
+                                            || aStack.getItem() instanceof LabParts && aStack.getItemDamage() == 0) {
+                                        if (this.mCulture == null
+                                                || aStack == null
+                                                || aStack.getTagCompound() == null
+                                                || this.mCulture.getID()
+                                                        != aStack.getTagCompound()
+                                                                .getInteger("ID")) {
+                                            lCulture = aStack == null || aStack.getTagCompound() == null
+                                                    ? null
+                                                    : BioCulture.getBioCulture(aStack.getTagCompound()
+                                                            .getString("Name"));
                                             this.sendPackagesOrRenewRenderer(x, y, z, lCulture);
                                         }
                                     }
@@ -524,9 +588,9 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
                         this.mStack = aStack;
                         this.mCulture = lCulture;
                     }
-                    if (this.needsVisualUpdate && this.getBaseMetaTileEntity().getTimer() % GT_TileEntity_BioVat.TIMERDIVIDER == 1) {
-                        if (this.getBaseMetaTileEntity().isClientSide())
-                            new Throwable().printStackTrace();
+                    if (this.needsVisualUpdate
+                            && this.getBaseMetaTileEntity().getTimer() % GT_TileEntity_BioVat.TIMERDIVIDER == 1) {
+                        if (this.getBaseMetaTileEntity().isClientSide()) new Throwable().printStackTrace();
                         this.placeFluid();
                         this.needsVisualUpdate = false;
                     }
@@ -540,8 +604,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (this.height != this.reCalculateHeight())
-            this.needsVisualUpdate = true;
+        if (this.height != this.reCalculateHeight()) this.needsVisualUpdate = true;
         this.doAllVisualThings();
         if (this.getBaseMetaTileEntity().isServerSide() && this.mRadHatches.size() == 1) {
             this.mSievert = this.mRadHatches.get(0).getSievert();
@@ -561,13 +624,13 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         aNBT.setInteger("mFluidHeight", this.height);
         if (this.mCulture != null && !this.mCulture.getName().isEmpty())
             aNBT.setString("mCulture", this.mCulture.getName());
-        else if ((this.mCulture == null || this.mCulture.getName().isEmpty()) && !aNBT.getString("mCulture").isEmpty()) {
+        else if ((this.mCulture == null || this.mCulture.getName().isEmpty())
+                && !aNBT.getString("mCulture").isEmpty()) {
             aNBT.removeTag("mCulture");
         }
-        if (this.mFluid != null)
-            aNBT.setString("mFluid", this.mFluid.getName());
-        aNBT.setInteger("mSievert",this.mSievert);
-        aNBT.setInteger("mNeededSievert",this.mNeededSievert);
+        if (this.mFluid != null) aNBT.setString("mFluid", this.mFluid.getName());
+        aNBT.setInteger("mSievert", this.mSievert);
+        aNBT.setInteger("mNeededSievert", this.mNeededSievert);
         super.saveNBTData(aNBT);
     }
 
@@ -578,25 +641,46 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         for (int x = -1; x < 2; x++) {
             for (int y = 1; y < 3; y++) {
                 for (int z = -1; z < 2; z++) {
-                    if (this.getBaseMetaTileEntity().getWorld().getBlock(xDir + x + this.getBaseMetaTileEntity().getXCoord(), y + this.getBaseMetaTileEntity().getYCoord(), zDir + z + this.getBaseMetaTileEntity().getZCoord()).equals(FluidLoader.bioFluidBlock))
-                        this.getBaseMetaTileEntity().getWorld().setBlockToAir(xDir + x + this.getBaseMetaTileEntity().getXCoord(), y + this.getBaseMetaTileEntity().getYCoord(), zDir + z + this.getBaseMetaTileEntity().getZCoord());
-                    GT_TileEntity_BioVat.staticColorMap.remove(new Coords(xDir + x + this.getBaseMetaTileEntity().getXCoord(), y + this.getBaseMetaTileEntity().getYCoord(), zDir + z + this.getBaseMetaTileEntity().getZCoord()), this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+                    if (this.getBaseMetaTileEntity()
+                            .getWorld()
+                            .getBlock(
+                                    xDir + x + this.getBaseMetaTileEntity().getXCoord(),
+                                    y + this.getBaseMetaTileEntity().getYCoord(),
+                                    zDir + z + this.getBaseMetaTileEntity().getZCoord())
+                            .equals(FluidLoader.bioFluidBlock))
+                        this.getBaseMetaTileEntity()
+                                .getWorld()
+                                .setBlockToAir(
+                                        xDir + x + this.getBaseMetaTileEntity().getXCoord(),
+                                        y + this.getBaseMetaTileEntity().getYCoord(),
+                                        zDir + z + this.getBaseMetaTileEntity().getZCoord());
+                    GT_TileEntity_BioVat.staticColorMap.remove(
+                            new Coords(
+                                    xDir + x + this.getBaseMetaTileEntity().getXCoord(),
+                                    y + this.getBaseMetaTileEntity().getYCoord(),
+                                    zDir + z + this.getBaseMetaTileEntity().getZCoord()),
+                            this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
                     if (SideReference.Side.Server)
                         MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
                                 this.getBaseMetaTileEntity().getWorld(),
                                 new RendererPacket(
                                         new Coords(
-                                                xDir + x + this.getBaseMetaTileEntity().getXCoord(),
+                                                xDir
+                                                        + x
+                                                        + this.getBaseMetaTileEntity()
+                                                                .getXCoord(),
                                                 y + this.getBaseMetaTileEntity().getYCoord(),
-                                                zDir + z + this.getBaseMetaTileEntity().getZCoord(),
-                                                this.getBaseMetaTileEntity().getWorld().provider.dimensionId
-                                        ),
-                                        this.mCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : this.mCulture.getColorRGB(),
-                                        true
-                                ),
+                                                zDir
+                                                        + z
+                                                        + this.getBaseMetaTileEntity()
+                                                                .getZCoord(),
+                                                this.getBaseMetaTileEntity().getWorld().provider.dimensionId),
+                                        this.mCulture == null
+                                                ? BioCulture.NULLCULTURE.getColorRGB()
+                                                : this.mCulture.getColorRGB(),
+                                        true),
                                 this.getBaseMetaTileEntity().getXCoord(),
-                                this.getBaseMetaTileEntity().getZCoord()
-                        );
+                                this.getBaseMetaTileEntity().getZCoord());
                 }
             }
         }
@@ -607,8 +691,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     public void loadNBTData(NBTTagCompound aNBT) {
         this.height = aNBT.getInteger("mFluidHeight");
         this.mCulture = BioCulture.getBioCulture(aNBT.getString("mCulture"));
-        if (!aNBT.getString("mFluid").isEmpty())
-            this.mFluid = FluidRegistry.getFluid(aNBT.getString("mFluid"));
+        if (!aNBT.getString("mFluid").isEmpty()) this.mFluid = FluidRegistry.getFluid(aNBT.getString("mFluid"));
         this.mSievert = aNBT.getInteger("mSievert");
         this.mNeededSievert = aNBT.getInteger("mNeededSievert");
         super.loadNBTData(aNBT);
@@ -625,19 +708,41 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive)
-                return new ITexture[]{
+                return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW).extFacing().glow().build()};
-            return new ITexture[]{
+                    TextureFactory.builder()
+                            .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                            .extFacing()
+                            .build(),
+                    TextureFactory.builder()
+                            .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
+                            .extFacing()
+                            .glow()
+                            .build()
+                };
+            return new ITexture[] {
                 Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER).extFacing().build(),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW).extFacing().glow().build()};
+                TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                        .extFacing()
+                        .build(),
+                TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build()
+            };
         }
-        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
+        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
     }
 
     @Override
@@ -650,10 +755,13 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         final String[] baseInfoData = super.getInfoData();
         final String[] infoData = new String[baseInfoData.length + 2];
         System.arraycopy(baseInfoData, 0, infoData, 0, baseInfoData.length);
-        infoData[infoData.length - 2] = StatCollector.translateToLocal("BW.infoData.BioVat.expectedProduction") + ": " +
-            EnumChatFormatting.GREEN + (mMaxProgresstime <= 0 ? getExpectedTimes(null, false) : mExpectedTimes) * 100 + EnumChatFormatting.RESET + " %";
-        infoData[infoData.length - 1] = StatCollector.translateToLocal("BW.infoData.BioVat.production") + ": " +
-            EnumChatFormatting.GREEN + (mMaxProgresstime <= 0 ? 0 : mTimes) * 100 + EnumChatFormatting.RESET + " %";
+        infoData[infoData.length - 2] = StatCollector.translateToLocal("BW.infoData.BioVat.expectedProduction") + ": "
+                + EnumChatFormatting.GREEN
+                + (mMaxProgresstime <= 0 ? getExpectedTimes(null, false) : mExpectedTimes) * 100
+                + EnumChatFormatting.RESET + " %";
+        infoData[infoData.length - 1] =
+                StatCollector.translateToLocal("BW.infoData.BioVat.production") + ": " + EnumChatFormatting.GREEN
+                        + (mMaxProgresstime <= 0 ? 0 : mTimes) * 100 + EnumChatFormatting.RESET + " %";
         return infoData;
     }
 }

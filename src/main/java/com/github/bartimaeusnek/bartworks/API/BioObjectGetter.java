@@ -27,10 +27,9 @@ import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import com.github.bartimaeusnek.bartworks.util.BioDNA;
 import com.github.bartimaeusnek.bartworks.util.BioData;
 import com.github.bartimaeusnek.bartworks.util.BioPlasmid;
+import java.util.Collection;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.Collection;
 
 @SuppressWarnings("ALL")
 public final class BioObjectGetter {
@@ -83,7 +82,7 @@ public final class BioObjectGetter {
         return BioObjectGetter.convertDataToDNA(BioObjectGetter.convertBioPlasmidToData(bioPlasmid));
     }
 
-    //UNSAFE needs to be reworked!
+    // UNSAFE needs to be reworked!
 
     public static Collection<ItemStack> getAllPetriDishes() {
         return BioItemList.getAllPetriDishes();
@@ -121,5 +120,4 @@ public final class BioObjectGetter {
     public static ItemStack getOther(int selection) {
         return BioItemList.getOther(selection);
     }
-
 }

@@ -1,4 +1,4 @@
-///*
+/// *
 // * Copyright (c) 2019 bartimaeusnek
 // *
 // * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,37 +20,38 @@
 // * SOFTWARE.
 // */
 //
-//package com.github.bartimaeusnek.bartworks.common.tileentities.classic;
+// package com.github.bartimaeusnek.bartworks.common.tileentities.classic;
 //
-//import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
-//import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
-//import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
-//import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
-//import com.github.bartimaeusnek.bartworks.MainMod;
-//import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-//import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
-//import com.github.bartimaeusnek.bartworks.util.ConnectedBlocksChecker;
-//import cpw.mods.fml.common.FMLCommonHandler;
-//import cpw.mods.fml.relauncher.Side;
-//import gregtech.api.interfaces.tileentity.IEnergyConnected;
-//import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-//import gregtech.api.objects.XSTR;
-//import net.minecraft.block.Block;
-//import net.minecraft.client.renderer.texture.IIconRegister;
-//import net.minecraft.entity.player.EntityPlayer;
-//import net.minecraft.inventory.IInventory;
-//import net.minecraft.item.ItemStack;
-//import net.minecraft.tileentity.TileEntity;
-//import net.minecraft.util.StatCollector;
-//import net.minecraft.world.World;
-//import net.minecraft.world.biome.BiomeGenBase;
-//import net.minecraftforge.fluids.IFluidHandler;
+// import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
+// import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
+// import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
+// import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
+// import com.github.bartimaeusnek.bartworks.MainMod;
+// import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+// import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+// import com.github.bartimaeusnek.bartworks.util.ConnectedBlocksChecker;
+// import cpw.mods.fml.common.FMLCommonHandler;
+// import cpw.mods.fml.relauncher.Side;
+// import gregtech.api.interfaces.tileentity.IEnergyConnected;
+// import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+// import gregtech.api.objects.XSTR;
+// import net.minecraft.block.Block;
+// import net.minecraft.client.renderer.texture.IIconRegister;
+// import net.minecraft.entity.player.EntityPlayer;
+// import net.minecraft.inventory.IInventory;
+// import net.minecraft.item.ItemStack;
+// import net.minecraft.tileentity.TileEntity;
+// import net.minecraft.util.StatCollector;
+// import net.minecraft.world.World;
+// import net.minecraft.world.biome.BiomeGenBase;
+// import net.minecraftforge.fluids.IFluidHandler;
 //
-//import java.nio.ByteBuffer;
-//import java.util.ArrayList;
+// import java.nio.ByteBuffer;
+// import java.util.ArrayList;
 //
 //
-//public class BW_TileEntity_LESU_Redux extends TileEntity implements ITileHasDifferentTextureSides, ITileAddsInformation, ITileWithGUI, ITileDropsContent, IEnergyConnected {
+// public class BW_TileEntity_LESU_Redux extends TileEntity implements ITileHasDifferentTextureSides,
+// ITileAddsInformation, ITileWithGUI, ITileDropsContent, IEnergyConnected {
 //
 //    public ConnectedBlocksChecker connectedcells;
 //    public ItemStack[] circuits = new ItemStack[5];
@@ -490,4 +491,4 @@
 //    public int[] getDropSlots() {
 //        return new int[0];
 //    }
-//}
+// }

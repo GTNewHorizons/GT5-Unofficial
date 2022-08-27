@@ -22,6 +22,9 @@
 
 package com.github.bartimaeusnek.bartworks.system.worldgen;
 
+import static com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler.maxTierRoss;
+import static net.minecraftforge.common.ChestGenHooks.PYRAMID_JUNGLE_CHEST;
+
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -31,6 +34,8 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Utility;
+import java.security.SecureRandom;
+import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -40,11 +45,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ChestGenHooks;
 
-import java.security.SecureRandom;
-import java.util.Random;
-
-import static com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler.maxTierRoss;
-import static net.minecraftforge.common.ChestGenHooks.PYRAMID_JUNGLE_CHEST;
 @SuppressWarnings({"ALL"})
 public abstract class MapGenRuins extends WorldGenerator {
 
@@ -85,11 +85,10 @@ public abstract class MapGenRuins extends WorldGenerator {
 
     int[] statBlocks = new int[4];
 
-    protected void setRandomBlockWAirChance(World worldObj, int x, int y, int z, Random rand, int airchance, Pair<Block, Integer>... blocks) {
-        if (rand.nextInt(100) > airchance)
-            this.setRandomBlock(worldObj, x, y, z, rand, blocks);
-        else
-            this.setBlock(worldObj, x, y, z, Blocks.air, 0);
+    protected void setRandomBlockWAirChance(
+            World worldObj, int x, int y, int z, Random rand, int airchance, Pair<Block, Integer>... blocks) {
+        if (rand.nextInt(100) > airchance) this.setRandomBlock(worldObj, x, y, z, rand, blocks);
+        else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
 
     protected void setRandomBlock(World worldObj, int x, int y, int z, Random rand, Pair<Block, Integer>... blocks) {
@@ -115,7 +114,13 @@ public abstract class MapGenRuins extends WorldGenerator {
         }
         if (isEnabled)
             throw new IllegalStateException("Machine Block Runnable needs to be disabled while creating world!");
-        this.setBlockAndNotifyAdequately(worldObj, x, y, z, GT_WorldgenUtil.GT_TILES, GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
+        this.setBlockAndNotifyAdequately(
+                worldObj,
+                x,
+                y,
+                z,
+                GT_WorldgenUtil.GT_TILES,
+                GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType());
         TileEntity tile = worldObj.getTileEntity(x, y, z);
         ((IGregTechTileEntity) tile).setInitialValuesAsNBT(null, (short) meta);
         return tile;
@@ -130,15 +135,13 @@ public abstract class MapGenRuins extends WorldGenerator {
     protected void setGTMachineBlockWChance(World worldObj, int x, int y, int z, Random rand, int airchance, int meta) {
         if (rand.nextInt(100) > airchance) {
             this.setGTMachineBlock(worldObj, x, y, z, meta);
-        } else
-            this.setBlock(worldObj, x, y, z, Blocks.air, 0);
+        } else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
 
     protected void setGTCablekWChance(World worldObj, int x, int y, int z, Random rand, int airchance, int meta) {
         if (rand.nextInt(100) > airchance) {
             this.setGTCable(worldObj, x, y, z, meta);
-        } else
-            this.setBlock(worldObj, x, y, z, Blocks.air, 0);
+        } else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
 
     protected void setGTMachine(World worldObj, int x, int y, int z, int meta, String ownerName, byte facing) {
@@ -158,7 +161,16 @@ public abstract class MapGenRuins extends WorldGenerator {
         }
     }
 
-    private void checkTile(BaseMetaTileEntity BTE, World worldObj, int x, int y, int z, int meta, String ownerName, byte facing, int depth) {
+    private void checkTile(
+            BaseMetaTileEntity BTE,
+            World worldObj,
+            int x,
+            int y,
+            int z,
+            int meta,
+            String ownerName,
+            byte facing,
+            int depth) {
         if (depth < 25) {
             if (BTE.getMetaTileID() != meta || worldObj.getTileEntity(x, y, z) != BTE || BTE.isInvalid()) {
                 redoTile(BTE, worldObj, x, y, z, meta, ownerName, facing);
@@ -170,7 +182,8 @@ public abstract class MapGenRuins extends WorldGenerator {
         }
     }
 
-    private void redoTile(BaseMetaTileEntity BTE, World worldObj, int x, int y, int z, int meta, String ownerName, byte facing) {
+    private void redoTile(
+            BaseMetaTileEntity BTE, World worldObj, int x, int y, int z, int meta, String ownerName, byte facing) {
         reSetGTTileEntity(BTE, worldObj, x, y, z, meta);
         BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x, y, z);
         BTE.setOwnerName(ownerName);
@@ -217,11 +230,11 @@ public abstract class MapGenRuins extends WorldGenerator {
                 }
             }
 
-            this.setFloorBlocks(new int[]{0, 0, 0}, Blocks.brick_block, Blocks.double_stone_slab, Blocks.stonebrick);
-            this.setWallBlocks(new int[]{0, 1, 2, 1, 1}, Blocks.stonebrick);
-            this.setRoofBlocks(new int[]{9}, Blocks.log);
-            this.setMiscBlocks(new int[]{1}, Blocks.log);
-            this.statBlocks = new int[]{rand.nextInt(this.ToBuildWith[0].length)};
+            this.setFloorBlocks(new int[] {0, 0, 0}, Blocks.brick_block, Blocks.double_stone_slab, Blocks.stonebrick);
+            this.setWallBlocks(new int[] {0, 1, 2, 1, 1}, Blocks.stonebrick);
+            this.setRoofBlocks(new int[] {9}, Blocks.log);
+            this.setMiscBlocks(new int[] {1}, Blocks.log);
+            this.statBlocks = new int[] {rand.nextInt(this.ToBuildWith[0].length)};
             int colored = rand.nextInt(15);
             int tier = secureRandom.nextInt(maxTierRoss);
             boolean useColor = rand.nextBoolean();
@@ -239,25 +252,40 @@ public abstract class MapGenRuins extends WorldGenerator {
                             this.setBlock(worldObj, x + dx, y + 0, z + dz, floor.getKey(), floor.getValue());
                         } else if (dy > 0 && dy < 4) {
                             if (Math.abs(dx) == 5 && Math.abs(dz) == 5) {
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + dz, rand, 5, this.ToBuildWith[3][0]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + dy, z + dz, rand, 5, this.ToBuildWith[3][0]);
                             } else if ((dx == 0) && dz == -5 && (dy == 1 || dy == 2)) {
-                                if (dy == 1)
-                                    this.setBlock(worldObj, x + dx, y + 1, z + -5, Blocks.iron_door, 1);
-                                if (dy == 2)
-                                    this.setBlock(worldObj, x + dx, y + 2, z + dz, Blocks.iron_door, 8);
+                                if (dy == 1) this.setBlock(worldObj, x + dx, y + 1, z + -5, Blocks.iron_door, 1);
+                                if (dy == 2) this.setBlock(worldObj, x + dx, y + 2, z + dz, Blocks.iron_door, 8);
                             } else if (Math.abs(dx) == 5 && Math.abs(dz) < 5 || Math.abs(dz) == 5 && Math.abs(dx) < 5) {
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + dz, rand, 25, this.ToBuildWith[1]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + dy, z + dz, rand, 25, this.ToBuildWith[1]);
                                 if (dy == 2) {
                                     if (rand.nextInt(100) < 12)
                                         if (useColor)
-                                            this.setRandomBlockWAirChance(worldObj, x + dx, y + 2, z + dz, rand, 25, new Pair<>(Blocks.stained_glass_pane, colored));
+                                            this.setRandomBlockWAirChance(
+                                                    worldObj,
+                                                    x + dx,
+                                                    y + 2,
+                                                    z + dz,
+                                                    rand,
+                                                    25,
+                                                    new Pair<>(Blocks.stained_glass_pane, colored));
                                         else
-                                            this.setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + dz, rand, 25, new Pair<>(Blocks.glass_pane, 0));
+                                            this.setRandomBlockWAirChance(
+                                                    worldObj,
+                                                    x + dx,
+                                                    y + dy,
+                                                    z + dz,
+                                                    rand,
+                                                    25,
+                                                    new Pair<>(Blocks.glass_pane, 0));
                                 }
                             }
 
                             if (dy == 3 && Math.abs(dx) == 6) {
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + 3, z + dz, rand, 25, this.ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + 3, z + dz, rand, 25, this.ToBuildWith[2]);
                             }
 
                             if (dy == 1) {
@@ -268,13 +296,24 @@ public abstract class MapGenRuins extends WorldGenerator {
                                     this.setBlock(worldObj, x + -3, y + dy, z + dz, Blocks.chest, 5);
                                     IInventory chest = (IInventory) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                     if (chest != null) {
-                                        WeightedRandomChestContent.generateChestContents(secureRandom, ChestGenHooks.getItems(PYRAMID_JUNGLE_CHEST, rand), chest, ChestGenHooks.getCount(PYRAMID_JUNGLE_CHEST, rand));
+                                        WeightedRandomChestContent.generateChestContents(
+                                                secureRandom,
+                                                ChestGenHooks.getItems(PYRAMID_JUNGLE_CHEST, rand),
+                                                chest,
+                                                ChestGenHooks.getCount(PYRAMID_JUNGLE_CHEST, rand));
                                     }
                                 }
 
                                 if (dx == 4 && dz == 4) {
                                     short meta = GT_WorldgenUtil.getGenerator(secureRandom, tier);
-                                    this.setGTMachine(worldObj, x + dx, y + dy, z + dz, meta, owner, tier > 0 ? (byte) 4 : (byte) 2);
+                                    this.setGTMachine(
+                                            worldObj,
+                                            x + dx,
+                                            y + dy,
+                                            z + dz,
+                                            meta,
+                                            owner,
+                                            tier > 0 ? (byte) 4 : (byte) 2);
                                 } else if (dx == 3 && dz == 4) {
                                     if (tier > 0) {
                                         short meta = GT_WorldgenUtil.getBuffer(secureRandom, tier);
@@ -294,34 +333,42 @@ public abstract class MapGenRuins extends WorldGenerator {
                                         lastset = true;
                                     } else {
                                         lastset = rand.nextBoolean();
-                                        if (lastset)
-                                            treeinaRow++;
+                                        if (lastset) treeinaRow++;
                                     }
                                 }
                             }
                         } else if (dy == 4) {
                             if (Math.abs(dx) == 5)
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + 4, z + dz, rand, 25, this.ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + 4, z + dz, rand, 25, this.ToBuildWith[2]);
                             else if (Math.abs(dz) == 5 && Math.abs(dx) < 5)
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + dz, rand, 25, this.ToBuildWith[1]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + dy, z + dz, rand, 25, this.ToBuildWith[1]);
                         } else if (dy == 5) {
                             if (Math.abs(dx) == 4)
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + 5, z + dz, rand, 25, this.ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + 5, z + dz, rand, 25, this.ToBuildWith[2]);
                             else if (Math.abs(dz) == 5 && Math.abs(dx) < 4)
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + dz, rand, 25, this.ToBuildWith[1]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + dy, z + dz, rand, 25, this.ToBuildWith[1]);
                         } else if (dy == 6) {
                             if (Math.abs(dx) == 3)
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + 6, z + dz, rand, 25, this.ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + 6, z + dz, rand, 25, this.ToBuildWith[2]);
                             else if (Math.abs(dz) == 5 && Math.abs(dx) < 3)
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + dz, rand, 25, this.ToBuildWith[1]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + dy, z + dz, rand, 25, this.ToBuildWith[1]);
                         } else if (dy == 7) {
                             if (Math.abs(dx) == 2)
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + 7, z + dz, rand, 25, this.ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + 7, z + dz, rand, 25, this.ToBuildWith[2]);
                             else if (Math.abs(dz) == 5 && Math.abs(dx) < 2)
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + dy, z + dz, rand, 25, this.ToBuildWith[1]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + dy, z + dz, rand, 25, this.ToBuildWith[1]);
                         } else if (dy == 8) {
                             if (Math.abs(dx) == 1 || Math.abs(dx) == 0)
-                                this.setRandomBlockWAirChance(worldObj, x + dx, y + 8, z + dz, rand, 25, this.ToBuildWith[2]);
+                                this.setRandomBlockWAirChance(
+                                        worldObj, x + dx, y + 8, z + dz, rand, 25, this.ToBuildWith[2]);
                         }
                     }
                 }
@@ -341,15 +388,12 @@ public abstract class MapGenRuins extends WorldGenerator {
                             lastset = true;
                         } else {
                             lastset = rand.nextBoolean();
-                            if (lastset)
-                                treeinaRow++;
+                            if (lastset) treeinaRow++;
                         }
-                    } else
-                        break tosetloop;
+                    } else break tosetloop;
                 }
             }
             return true;
         }
     }
-
 }

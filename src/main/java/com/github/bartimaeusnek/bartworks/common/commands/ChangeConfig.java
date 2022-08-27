@@ -23,11 +23,10 @@
 package com.github.bartimaeusnek.bartworks.common.commands;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import java.lang.reflect.Field;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
-
-import java.lang.reflect.Field;
 
 public class ChangeConfig extends CommandBase {
     @Override
@@ -43,7 +42,7 @@ public class ChangeConfig extends CommandBase {
     @Override
     @SuppressWarnings("rawtypes")
     public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-        try{
+        try {
             Field f = ConfigHandler.class.getField(p_71515_2_[0]);
             Class c = f.getType();
             if (c.equals(int.class)) {
@@ -55,28 +54,26 @@ public class ChangeConfig extends CommandBase {
                     return;
                 }
                 f.setInt(null, l);
-            }
-            else if (c.equals(long.class)) {
+            } else if (c.equals(long.class)) {
                 long l;
-                try{
+                try {
                     l = Long.parseLong(p_71515_2_[1]);
-                }catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     p_71515_1_.addChatMessage(new ChatComponentText("you need to enter a number!"));
                     return;
                 }
                 f.setLong(null, l);
-            }
-            else if (c.equals(boolean.class)){
-                if (p_71515_2_[1].equalsIgnoreCase("true") || p_71515_2_[1].equalsIgnoreCase("1") )
-                    f.setBoolean(null,true);
-                else if (p_71515_2_[1].equalsIgnoreCase("false") || p_71515_2_[1].equalsIgnoreCase("0") )
-                    f.setBoolean(null,false);
+            } else if (c.equals(boolean.class)) {
+                if (p_71515_2_[1].equalsIgnoreCase("true") || p_71515_2_[1].equalsIgnoreCase("1"))
+                    f.setBoolean(null, true);
+                else if (p_71515_2_[1].equalsIgnoreCase("false") || p_71515_2_[1].equalsIgnoreCase("0"))
+                    f.setBoolean(null, false);
                 else {
                     p_71515_1_.addChatMessage(new ChatComponentText("booleans need to be set to true or false"));
                 }
             }
             p_71515_1_.addChatMessage(new ChatComponentText("Set " + p_71515_2_[0] + " to " + p_71515_2_[1]));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

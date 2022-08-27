@@ -63,17 +63,14 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 
-        if (this.getBaseMetaTileEntity().getWorld().isRemote)
-            return;
+        if (this.getBaseMetaTileEntity().getWorld().isRemote) return;
         if (!aPlayer.isSneaking()) {
             --this.aAmps;
-            if (this.aAmps < 0)
-                this.aAmps = this.maxAmps;
+            if (this.aAmps < 0) this.aAmps = this.maxAmps;
             GT_Utility.sendChatToPlayer(aPlayer, "Max Amps: " + this.aAmps);
-        }else{
+        } else {
             ++this.aAmps;
-            if (this.aAmps > this.maxAmps)
-                this.aAmps = 0;
+            if (this.aAmps > this.maxAmps) this.aAmps = 0;
             GT_Utility.sendChatToPlayer(aPlayer, "Max Amps: " + this.aAmps);
         }
     }
@@ -108,30 +105,30 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     }
 
     private long getAmpsfromMeta(int meta) {
-        if (meta > ConfigHandler.IDOffset + GT_Values.VN.length && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 2)
-            return 2L;
-        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 2 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 3)
-            return 4L;
-        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 3 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 4)
-            return 8L;
-        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 4 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 5)
-            return 12L;
-        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 5 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 6)
-            return 16L;
-        else
-            return 0L;
+        if (meta > ConfigHandler.IDOffset + GT_Values.VN.length
+                && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 2) return 2L;
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 2
+                && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 3) return 4L;
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 3
+                && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 4) return 8L;
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 4
+                && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 5) return 12L;
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 5
+                && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 6) return 16L;
+        else return 0L;
     }
 
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return new String[]{
-                this.mDescription,
-                StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " " +
-                        ChatColorHelper.YELLOW + GT_Utility.formatNumbers(GT_Values.V[this.mTier]),
-                StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " " +
-                        ChatColorHelper.YELLOW + GT_Utility.formatNumbers(this.maxAmperesIn()),
-                StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " " +
-                        ChatColorHelper.YELLOW + GT_Utility.formatNumbers(this.maxAmperesOut()),
-                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()};
+        return new String[] {
+            this.mDescription,
+            StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " " + ChatColorHelper.YELLOW
+                    + GT_Utility.formatNumbers(GT_Values.V[this.mTier]),
+            StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " " + ChatColorHelper.YELLOW
+                    + GT_Utility.formatNumbers(this.maxAmperesIn()),
+            StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " " + ChatColorHelper.YELLOW
+                    + GT_Utility.formatNumbers(this.maxAmperesOut()),
+            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
+        };
     }
 }

@@ -26,32 +26,55 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import java.util.Optional;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.Optional;
-
-public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_TieredMachineBlock implements LowPowerLaser {
+public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_TieredMachineBlock
+        implements LowPowerLaser {
 
     protected long AMPERES;
 
-    public TT_Abstract_LowPowerLaserThingy(int aID, String aName, String aNameRegional, int aTier, long aAmperes, int aInvSlotCount, String aDescription, ITexture... aTextures) {
+    public TT_Abstract_LowPowerLaserThingy(
+            int aID,
+            String aName,
+            String aNameRegional,
+            int aTier,
+            long aAmperes,
+            int aInvSlotCount,
+            String aDescription,
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
 
-    public TT_Abstract_LowPowerLaserThingy(int aID, String aName, String aNameRegional, int aTier, long aAmperes, int aInvSlotCount, String[] aDescription, ITexture... aTextures) {
+    public TT_Abstract_LowPowerLaserThingy(
+            int aID,
+            String aName,
+            String aNameRegional,
+            int aTier,
+            long aAmperes,
+            int aInvSlotCount,
+            String[] aDescription,
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
 
-    public TT_Abstract_LowPowerLaserThingy(String aName, int aTier, long aAmperes, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public TT_Abstract_LowPowerLaserThingy(
+            String aName, int aTier, long aAmperes, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
 
-    public TT_Abstract_LowPowerLaserThingy(String aName, int aTier, long aAmperes, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public TT_Abstract_LowPowerLaserThingy(
+            String aName,
+            int aTier,
+            long aAmperes,
+            int aInvSlotCount,
+            String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
@@ -93,16 +116,12 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
 
     @Override
     public void saveNBTData(NBTTagCompound nbtTagCompound) {
-        Optional.ofNullable(nbtTagCompound).ifPresent(
-                tag -> tag.setLong("AMPERES", AMPERES)
-        );
+        Optional.ofNullable(nbtTagCompound).ifPresent(tag -> tag.setLong("AMPERES", AMPERES));
     }
 
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
-        Optional.ofNullable(nbtTagCompound).ifPresent(
-                tag -> AMPERES = tag.getLong("AMPERES")
-        );
+        Optional.ofNullable(nbtTagCompound).ifPresent(tag -> AMPERES = tag.getLong("AMPERES"));
     }
 
     @Override
@@ -154,5 +173,4 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
     public long maxEUStore() {
         return 512L + GT_Values.V[this.mTier + 1] * 24L * AMPERES;
     }
-
 }

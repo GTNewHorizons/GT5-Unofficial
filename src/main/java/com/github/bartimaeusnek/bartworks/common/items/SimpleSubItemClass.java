@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,11 +34,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import java.util.List;
-
 public class SimpleSubItemClass extends Item {
     @SideOnly(Side.CLIENT)
     protected IIcon[] itemIcon;
+
     String[] tex;
 
     public SimpleSubItemClass(String... tex) {
@@ -52,7 +52,6 @@ public class SimpleSubItemClass extends Item {
         for (int i = 0; i < this.tex.length; i++) {
             this.itemIcon[i] = iconRegister.registerIcon(MainMod.MOD_ID + ":" + this.tex[i]);
         }
-
     }
 
     @Override
@@ -72,17 +71,13 @@ public class SimpleSubItemClass extends Item {
 
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int p_77617_1_) {
-        if (p_77617_1_ < this.tex.length)
-            return this.itemIcon[p_77617_1_];
-        else
-            return this.itemIcon[0];
+        if (p_77617_1_ < this.tex.length) return this.itemIcon[p_77617_1_];
+        else return this.itemIcon[0];
     }
 
     public String getUnlocalizedName(ItemStack p_77667_1_) {
         if (p_77667_1_.getItemDamage() < this.tex.length)
             return "item." + this.tex[p_77667_1_.getItemDamage()].replaceAll("/", ".");
-        else
-            return "WrongDamageItemDestroyIt";
+        else return "WrongDamageItemDestroyIt";
     }
-
 }

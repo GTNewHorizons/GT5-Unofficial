@@ -53,7 +53,8 @@ public class GuiHandler implements IGuiHandler {
                 }
             }
             case 3:
-                return new BW_Container_HeatedWaterPump((BW_TileEntity_HeatedWaterPump) world.getTileEntity(x, y, z), player);
+                return new BW_Container_HeatedWaterPump(
+                        (BW_TileEntity_HeatedWaterPump) world.getTileEntity(x, y, z), player);
         }
         return null;
     }
@@ -69,14 +70,15 @@ public class GuiHandler implements IGuiHandler {
                 case 2: {
                     if (world.getTileEntity(x, y, z) instanceof IGregTechTileEntity) {
                         IGregTechTileEntity te = (IGregTechTileEntity) world.getTileEntity(x, y, z);
-                        return new BW_GUIContainer_RadLevel(new BW_Container_RadioHatch(player.inventory, te.getMetaTileEntity()));
+                        return new BW_GUIContainer_RadLevel(
+                                new BW_Container_RadioHatch(player.inventory, te.getMetaTileEntity()));
                     }
                 }
                 case 3:
-                    return new BW_GUIContainer_HeatedWaterPump(new BW_Container_HeatedWaterPump((BW_TileEntity_HeatedWaterPump) world.getTileEntity(x, y, z), player));
+                    return new BW_GUIContainer_HeatedWaterPump(new BW_Container_HeatedWaterPump(
+                            (BW_TileEntity_HeatedWaterPump) world.getTileEntity(x, y, z), player));
             }
-        } else
-            return getServerGuiElement(ID, player, world, x, y, z);
+        } else return getServerGuiElement(ID, player, world, x, y, z);
         return null;
     }
 }

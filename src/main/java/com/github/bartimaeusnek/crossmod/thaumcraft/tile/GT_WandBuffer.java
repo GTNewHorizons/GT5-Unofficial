@@ -59,7 +59,6 @@ public class GT_WandBuffer extends GT_MetaTileEntity_BasicBatteryBuffer {
                 }
             }
         }
-
     }
 
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
@@ -115,8 +114,6 @@ public class GT_WandBuffer extends GT_MetaTileEntity_BasicBatteryBuffer {
             tStored = 9223372036854775807L;
         }
 
-        return new long[]{tStored, tScale};
+        return new long[] {tStored, tScale};
     }
-
-
 }

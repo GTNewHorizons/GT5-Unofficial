@@ -22,9 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.util.accessprioritylist;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import java.util.*;
+import org.apache.commons.lang3.NotImplementedException;
 
 @SuppressWarnings("ALL")
 public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
@@ -37,18 +36,15 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         return new AccessPriorityList();
     }
 
-    public AccessPriorityList() {
-    }
+    public AccessPriorityList() {}
 
     @Override
     public void addFirst(E t) {
         final AccessPriorityListNode<E> first = head;
         final AccessPriorityListNode<E> newNode = new AccessPriorityListNode<>(null, t, first);
         head = newNode;
-        if (first == null)
-            tail = newNode;
-        else
-            first.setBefore(newNode);
+        if (first == null) tail = newNode;
+        else first.setBefore(newNode);
         size++;
     }
 
@@ -57,10 +53,8 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         final AccessPriorityListNode<E> last = tail;
         final AccessPriorityListNode<E> newNode = new AccessPriorityListNode<>(last, t, null);
         tail = newNode;
-        if (last == null)
-            head = newNode;
-        else
-            last.setNext(newNode);
+        if (last == null) head = newNode;
+        else last.setNext(newNode);
         size++;
     }
 
@@ -162,7 +156,6 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         return new AccessPriorityListIterators.AccessPriorityListNodeIterator<>(head);
     }
 
-
     @Override
     public Iterator<E> descendingIterator() {
         return new AccessPriorityListIterators.AccessPriorityListReverseIterator<>(tail);
@@ -172,8 +165,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
     public Object[] toArray() {
         Object[] ret = new Object[size];
         int index = 0;
-        for (Iterator<E> it = iterator(); it.hasNext(); index++)
-            ret[index] = it.next();
+        for (Iterator<E> it = iterator(); it.hasNext(); index++) ret[index] = it.next();
         return ret;
     }
 
@@ -181,8 +173,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
     public <T> T[] toArray(T[] a) {
         T[] ret = (T[]) new Object[size];
         int index = 0;
-        for (Iterator<T> it = (Iterator<T>) iterator(); it.hasNext(); index++)
-            ret[index] = it.next();
+        for (Iterator<T> it = (Iterator<T>) iterator(); it.hasNext(); index++) ret[index] = it.next();
         return ret;
     }
 
@@ -193,8 +184,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
     }
 
     private void moveNodeUp(AccessPriorityListNode<E> node) {
-        if (node == head || node.getBefore() == null)
-            return;
+        if (node == head || node.getBefore() == null) return;
         final AccessPriorityListNode<E> before = node.getBefore();
         final AccessPriorityListNode<E> beforeBefore = before.getBefore();
         final AccessPriorityListNode<E> next = node.getNext();
@@ -204,10 +194,8 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         node.setBefore(beforeBefore);
         // <0,1,2> <1,2,3> N<0,3,4> <3,4,5>
 
-        if (beforeBefore != null)
-            beforeBefore.setNext(node);
-        else
-            head = node;
+        if (beforeBefore != null) beforeBefore.setNext(node);
+        else head = node;
         // <0,1,3> <1,2,3> N<0,3,4> <3,4,5>
 
         before.setBefore(node);
@@ -216,10 +204,8 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         before.setNext(next);
         // <0,1,3> <3,2,4> N<0,3,4> <3,4,5>
 
-        if (next != null)
-            next.setBefore(before);
-        else
-            tail = before;
+        if (next != null) next.setBefore(before);
+        else tail = before;
         // <0,1,3> N<0,3,4> <3,2,4> <2,4,5>
 
         node.setNext(before);
@@ -229,13 +215,11 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
     AccessPriorityListNode<E> getNode(int index) {
         if (index <= (size / 2)) {
             AccessPriorityListNode<E> x = head;
-            for (int i = 0; i < index; i++)
-                x = x.getNext();
+            for (int i = 0; i < index; i++) x = x.getNext();
             return x;
         } else {
             AccessPriorityListNode<E> x = tail;
-            for (int i = size - 1; i > index; i--)
-                x = x.getBefore();
+            for (int i = size - 1; i > index; i--) x = x.getBefore();
             return x;
         }
     }
@@ -246,8 +230,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
     }
 
     private boolean isValidIndex(int index) {
-        if (index >= 0 && index < size)
-            return true;
+        if (index >= 0 && index < size) return true;
         throw new ArrayIndexOutOfBoundsException("NOT A VAILD INDEX!");
     }
 
@@ -283,10 +266,10 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public boolean remove(Object o) {
-//        Object p;
-//        for (Iterator it = this.iterator(); it.hasNext(); o.equals(p)){
-//            p = it.next();
-//        }
+        //        Object p;
+        //        for (Iterator it = this.iterator(); it.hasNext(); o.equals(p)){
+        //            p = it.next();
+        //        }
         throw new NotImplementedException("");
     }
 
@@ -297,8 +280,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        if (c == null)
-            return false;
+        if (c == null) return false;
         c.forEach(this::addLast);
         return true;
     }
@@ -338,20 +320,19 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         addPrioToNode(node, 1L);
     }
 
-    public void addPrioToNode(AccessPriorityListNode<E> node, long prio){
+    public void addPrioToNode(AccessPriorityListNode<E> node, long prio) {
         long current = node.getPriority();
         if (current == Long.MAX_VALUE || (current > 0 && prio > 0 && prio + current < 0))
             node.setPriority(Long.MAX_VALUE);
-        else
-            node.setPriority(current + prio);
-        while (node.getBefore() != null && node.getPriority() >= node.getBefore().getPriority()) {
+        else node.setPriority(current + prio);
+        while (node.getBefore() != null
+                && node.getPriority() >= node.getBefore().getPriority()) {
             moveNodeUp(node);
         }
     }
 
     public void addPrioToNode(int index, long prio) {
-        if (!isValidIndex(index))
-            return;
+        if (!isValidIndex(index)) return;
         AccessPriorityListNode<E> node = getNode(index);
         addPrioToNode(node, prio);
     }
@@ -362,8 +343,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E get(int index) {
-        if (!isValidIndex(index))
-            return null;
+        if (!isValidIndex(index)) return null;
         AccessPriorityListNode<E> node = getNode(index);
         return node.getELEMENT();
     }

@@ -24,29 +24,26 @@ package com.github.bartimaeusnek.bartworks.system.oredict;
 
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.item.ItemStack;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import net.minecraft.item.ItemStack;
 
 public class OreDictAdder {
 
     private static final ConcurrentHashMap<String, ItemStack> toAddMap = new ConcurrentHashMap<>();
 
-    public static synchronized void addToMap(Pair<String, ItemStack> element){
-            OreDictAdder.toAddMap.put(element.getKey(),element.getValue());
+    public static synchronized void addToMap(Pair<String, ItemStack> element) {
+        OreDictAdder.toAddMap.put(element.getKey(), element.getValue());
     }
 
     @SafeVarargs
-    public static synchronized void addToMap(Pair<String, ItemStack>... elements){
-        for (Pair<String, ItemStack> p : elements)
-            OreDictAdder.toAddMap.put(p.getKey(),p.getValue());
+    public static synchronized void addToMap(Pair<String, ItemStack>... elements) {
+        for (Pair<String, ItemStack> p : elements) OreDictAdder.toAddMap.put(p.getKey(), p.getValue());
     }
 
-    public static void addToOreDict(){
-        for (Map.Entry<String, ItemStack> entry: OreDictAdder.toAddMap.entrySet()){
-            GT_OreDictUnificator.registerOre(entry.getKey(),entry.getValue());
+    public static void addToOreDict() {
+        for (Map.Entry<String, ItemStack> entry : OreDictAdder.toAddMap.entrySet()) {
+            GT_OreDictUnificator.registerOre(entry.getKey(), entry.getValue());
         }
     }
-
 }

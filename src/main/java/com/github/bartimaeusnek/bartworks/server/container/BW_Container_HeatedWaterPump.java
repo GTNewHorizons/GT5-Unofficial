@@ -27,15 +27,14 @@ import com.github.bartimaeusnek.bartworks.server.container.Slots.BW_FuelSlot;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_Slot_Render;
+import java.nio.ByteBuffer;
+import java.util.Iterator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import java.nio.ByteBuffer;
-import java.util.Iterator;
 
 public class BW_Container_HeatedWaterPump extends Container {
 
@@ -79,8 +78,10 @@ public class BW_Container_HeatedWaterPump extends Container {
                     slot.putStack(null);
                 }
             }
-        }
-        else if (p_82846_2_ > 1 && slot.getStack() != null && ((Slot) this.inventorySlots.get(0)).getStack() == null && ((Slot) this.inventorySlots.get(0)).isItemValid(slot.getStack())){
+        } else if (p_82846_2_ > 1
+                && slot.getStack() != null
+                && ((Slot) this.inventorySlots.get(0)).getStack() == null
+                && ((Slot) this.inventorySlots.get(0)).isItemValid(slot.getStack())) {
             ((Slot) this.inventorySlots.get(0)).putStack(slot.getStack());
             slot.putStack(null);
         }
@@ -91,8 +92,7 @@ public class BW_Container_HeatedWaterPump extends Container {
     @SuppressWarnings("rawtypes")
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (this.TILE.getWorldObj().isRemote)
-            return;
+        if (this.TILE.getWorldObj().isRemote) return;
 
         this.fuel = this.TILE.fuel;
         this.maxfuel = this.TILE.maxfuel;
@@ -101,8 +101,7 @@ public class BW_Container_HeatedWaterPump extends Container {
         this.netmaxfuel = ByteBuffer.allocate(8).putInt(this.maxfuel).array();
         ++this.timer;
         Iterator var2 = this.crafters.iterator();
-        if (this.timer >= Long.MAX_VALUE - 1)
-            this.timer = 0;
+        if (this.timer >= Long.MAX_VALUE - 1) this.timer = 0;
         while (true) {
             do {
                 if (!var2.hasNext()) {
@@ -129,10 +128,8 @@ public class BW_Container_HeatedWaterPump extends Container {
     @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int packetID, int valure) {
-        if (this.netfuel == null)
-            this.netfuel = new byte[8];
-        if (this.netmaxfuel == null)
-            this.netmaxfuel = new byte[8];
+        if (this.netfuel == null) this.netfuel = new byte[8];
+        if (this.netmaxfuel == null) this.netmaxfuel = new byte[8];
         switch (packetID) {
             case 0: {
                 this.water = valure;

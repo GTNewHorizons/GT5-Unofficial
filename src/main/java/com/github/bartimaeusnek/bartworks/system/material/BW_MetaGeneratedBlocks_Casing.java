@@ -26,6 +26,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
+import java.util.List;
+import java.util.Optional;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -36,13 +38,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.util.List;
-import java.util.Optional;
+public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks
+        implements com.gtnewhorizon.structurelib.structure.ICustomBlockSetting {
 
-public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks implements com.gtnewhorizon.structurelib.structure.ICustomBlockSetting
-{
-
-    public BW_MetaGeneratedBlocks_Casing(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName, OrePrefixes prefixes) {
+    public BW_MetaGeneratedBlocks_Casing(
+            Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName, OrePrefixes prefixes) {
         super(p_i45386_1_, tileEntity, blockName, prefixes);
     }
 
@@ -79,7 +79,7 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
 
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        super.onBlockAdded(aWorld,aX,aY,aZ);
+        super.onBlockAdded(aWorld, aX, aY, aZ);
         GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
     }
 
@@ -90,10 +90,8 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
 
     @Override
     public String getUnlocalizedName() {
-        if (_prefixes == WerkstoffLoader.blockCasing)
-            return "bw.werkstoffblockscasing.01";
-        else if (_prefixes == WerkstoffLoader.blockCasingAdvanced)
-            return "bw.werkstoffblockscasingadvanced.01";
+        if (_prefixes == WerkstoffLoader.blockCasing) return "bw.werkstoffblockscasing.01";
+        else if (_prefixes == WerkstoffLoader.blockCasingAdvanced) return "bw.werkstoffblockscasingadvanced.01";
         return "";
     }
 
@@ -102,16 +100,13 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
     @SuppressWarnings("unchecked")
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
         Werkstoff.werkstoffHashSet.stream()
-                .filter(pMaterial ->
-                                   pMaterial.getType().equals(Werkstoff.Types.BIOLOGICAL)
+                .filter(pMaterial -> pMaterial.getType().equals(Werkstoff.Types.BIOLOGICAL)
                                 && pMaterial.hasGenerationFeature(WerkstoffLoader.blockCasing)
-                                ||
-                                   pMaterial.doesOreDictedItemExists(OrePrefixes.plate)
+                        || pMaterial.doesOreDictedItemExists(OrePrefixes.plate)
                                 && pMaterial.doesOreDictedItemExists(OrePrefixes.screw)
                                 && pMaterial.doesOreDictedItemExists(OrePrefixes.plateDouble)
                                 && pMaterial.doesOreDictedItemExists(OrePrefixes.gearGt)
-                                && pMaterial.doesOreDictedItemExists(OrePrefixes.gearGtSmall)
-                        )
+                                && pMaterial.doesOreDictedItemExists(OrePrefixes.gearGtSmall))
                 .map(pMaterial -> new ItemStack(aItem, 1, pMaterial.getmID()))
                 .forEach(aList::add);
     }
@@ -120,12 +115,13 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
      * ICustomBlockSetting setBlock override
      */
     public void setBlock(World world, int x, int y, int z, int meta) {
-        world.setBlock(x, y, z,this, meta,2);
+        world.setBlock(x, y, z, this, meta, 2);
         try {
             Thread.sleep(1);
-            //Fucking Minecraft TE settings.
-        } catch (InterruptedException ignored) {}
-        Optional.ofNullable(world.getTileEntity(x,y,z))
+            // Fucking Minecraft TE settings.
+        } catch (InterruptedException ignored) {
+        }
+        Optional.ofNullable(world.getTileEntity(x, y, z))
                 .filter(te -> te instanceof BW_MetaGenerated_Block_TE)
                 .map(te -> (BW_MetaGenerated_Block_TE) te)
                 .ifPresent(te -> te.mMetaData = (short) meta);

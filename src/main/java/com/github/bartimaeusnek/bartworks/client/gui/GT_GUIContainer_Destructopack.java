@@ -34,7 +34,8 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GT_GUIContainer_Destructopack extends GuiContainer {
-    public static final ResourceLocation texture = new ResourceLocation(MainMod.MOD_ID, "textures/GT2/gui/Destructopack.png");
+    public static final ResourceLocation texture =
+            new ResourceLocation(MainMod.MOD_ID, "textures/GT2/gui/Destructopack.png");
 
     public GT_GUIContainer_Destructopack(InventoryPlayer inventory) {
         super(new GT_Container_Item_Destructopack(inventory));
@@ -48,8 +49,5 @@ public class GT_GUIContainer_Destructopack extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-    }
-
-
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {}
 }

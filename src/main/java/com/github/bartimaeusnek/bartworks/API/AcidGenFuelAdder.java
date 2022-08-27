@@ -33,7 +33,8 @@ public final class AcidGenFuelAdder {
     }
 
     public static void addLiquidFuel(FluidStack fluidStack, int burn) {
-        ((BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance.getMappingsFor((byte) 2)).addLiquidFuel(fluidStack, burn);
+        ((BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance.getMappingsFor((byte) 2))
+                .addLiquidFuel(fluidStack, burn);
     }
 
     public static void addMoltenFuel(Materials M, int burn) {

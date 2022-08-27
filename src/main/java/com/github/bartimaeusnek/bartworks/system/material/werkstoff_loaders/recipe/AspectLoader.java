@@ -31,29 +31,30 @@ import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TC_Aspects;
-
 import java.util.Objects;
 
 public class AspectLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
-        if (!LoaderReference.Thaumcraft)
-            return;
+        if (!LoaderReference.Thaumcraft) return;
         for (OrePrefixes enabledOrePrefixes : WerkstoffLoader.ENABLED_ORE_PREFIXES) {
             if (werkstoff.hasItemType(enabledOrePrefixes)) {
                 if (enabledOrePrefixes.mMaterialAmount >= 3628800L || enabledOrePrefixes == OrePrefixes.ore) {
-                    DebugLog.log("OrePrefix: " + enabledOrePrefixes.name() + " mMaterialAmount: " + enabledOrePrefixes.mMaterialAmount / 3628800L);
+                    DebugLog.log("OrePrefix: " + enabledOrePrefixes.name() + " mMaterialAmount: "
+                            + enabledOrePrefixes.mMaterialAmount / 3628800L);
                     if (Objects.nonNull(WerkstoffLoader.items.get(enabledOrePrefixes)))
                         ThaumcraftHandler.AspectAdder.addAspectViaBW(
                                 werkstoff.get(enabledOrePrefixes),
-                                werkstoff.getTCAspects(enabledOrePrefixes == OrePrefixes.ore ? 1 :
-                                        (int) (enabledOrePrefixes.mMaterialAmount / 3628800L))
-                        );
+                                werkstoff.getTCAspects(
+                                        enabledOrePrefixes == OrePrefixes.ore
+                                                ? 1
+                                                : (int) (enabledOrePrefixes.mMaterialAmount / 3628800L)));
                 } else if (enabledOrePrefixes.mMaterialAmount >= 0L) {
                     if (Objects.nonNull(WerkstoffLoader.items.get(enabledOrePrefixes)))
                         //noinspection unchecked
-                        ThaumcraftHandler.AspectAdder.addAspectViaBW(werkstoff.get(enabledOrePrefixes), new Pair<>(TC_Aspects.PERDITIO.mAspect, 1));
+                        ThaumcraftHandler.AspectAdder.addAspectViaBW(
+                                werkstoff.get(enabledOrePrefixes), new Pair<>(TC_Aspects.PERDITIO.mAspect, 1));
                 }
             }
         }

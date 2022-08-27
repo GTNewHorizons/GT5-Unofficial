@@ -22,15 +22,14 @@
 
 package com.github.bartimaeusnek.bartworks.common.commands;
 
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 
 public class PrintRecipeListToFile extends CommandBase {
     @Override
@@ -50,9 +49,10 @@ public class PrintRecipeListToFile extends CommandBase {
         try {
 
             BufferedWriter fw = new BufferedWriter(new FileWriter(file));
-            CraftingManager.getInstance().getRecipeList().forEach( e -> {
+            CraftingManager.getInstance().getRecipeList().forEach(e -> {
                 try {
-                    fw.write(e.toString() + " = " +((IRecipe)e).getRecipeOutput().getDisplayName() +"\n");
+                    fw.write(e.toString() + " = "
+                            + ((IRecipe) e).getRecipeOutput().getDisplayName() + "\n");
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

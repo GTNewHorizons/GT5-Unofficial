@@ -53,5 +53,4 @@ public class GT_Container_LESU extends GT_Container_MultiMachine {
     public int getShiftClickSlotCount() {
         return 6;
     }
-
 }

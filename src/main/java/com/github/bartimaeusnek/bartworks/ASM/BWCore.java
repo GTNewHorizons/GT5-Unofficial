@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.ASM;
 
+import static com.github.bartimaeusnek.bartworks.ASM.BWCoreTransformer.shouldTransform;
+
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
@@ -33,13 +35,10 @@ import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.github.bartimaeusnek.bartworks.ASM.BWCoreTransformer.shouldTransform;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("ALL")
 public class BWCore extends DummyModContainer {
@@ -65,7 +64,7 @@ public class BWCore extends DummyModContainer {
         shouldTransform[4] = true;
         shouldTransform[5] = ConfigHandler.enabledPatches[5];
         shouldTransform[6] = ConfigHandler.enabledPatches[6];
-        //shouldTransform[6] = true;
+        // shouldTransform[6] = true;
         BWCore.BWCORE_LOG.info("Extra Utilities found and ASM Patch enabled? " + shouldTransform[0]);
         BWCore.BWCORE_LOG.info("Thaumcraft found and ASM Patch enabled? " + shouldTransform[3]);
         BWCore.BWCORE_LOG.info("RWG found and ASM Patch enabled? " + shouldTransform[5]);

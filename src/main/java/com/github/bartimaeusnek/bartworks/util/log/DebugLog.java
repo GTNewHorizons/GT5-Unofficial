@@ -23,7 +23,6 @@
 package com.github.bartimaeusnek.bartworks.util.log;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -40,9 +39,10 @@ public class DebugLog {
     private static Logger utilLog;
 
     public static void initDebugLog(FMLPreInitializationEvent event) throws IOException {
-        if (DebugLog.init)
-            return;
-        DebugLog.fh = new FileHandler(new File(new File(event.getModConfigurationDirectory().getParentFile(),"logs"),"BWLog.log").toString());
+        if (DebugLog.init) return;
+        DebugLog.fh = new FileHandler(
+                new File(new File(event.getModConfigurationDirectory().getParentFile(), "logs"), "BWLog.log")
+                        .toString());
         DebugLog.utilLog = Logger.getLogger("DebugLog");
         DebugLog.utilLog.setUseParentHandlers(false);
         DebugLog.utilLog.addHandler(DebugLog.fh);
@@ -53,7 +53,7 @@ public class DebugLog {
                 Calendar cal = new GregorianCalendar();
                 cal.setTimeInMillis(record.getMillis());
                 return "Level: " + record.getLevel()
-                        +" at " + logTime.format(cal.getTime())
+                        + " at " + logTime.format(cal.getTime())
                         + " " + record.getMessage() + "\n";
             }
         };
@@ -61,9 +61,8 @@ public class DebugLog {
         DebugLog.init = true;
     }
 
-    public static void log(String record){
-        if (!DebugLog.init)
-            return;
+    public static void log(String record) {
+        if (!DebugLog.init) return;
         DebugLog.utilLog.info(record);
     }
 }

@@ -30,7 +30,6 @@ import java.util.Map;
 public class Pair<A, B> implements Map.Entry<A, B> {
     Object[] pair = new Object[2];
 
-
     public Pair(Object[] pair) {
         this.pair = pair;
     }
@@ -53,7 +52,14 @@ public class Pair<A, B> implements Map.Entry<A, B> {
 
     @Override
     public int hashCode() {
-        return MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(8).putInt(pair[0].hashCode()).putInt(pair[1].hashCode()).array(), 0, 8, 31);
+        return MurmurHash3.murmurhash3_x86_32(
+                ByteBuffer.allocate(8)
+                        .putInt(pair[0].hashCode())
+                        .putInt(pair[1].hashCode())
+                        .array(),
+                0,
+                8,
+                31);
     }
 
     @Override
@@ -72,11 +78,11 @@ public class Pair<A, B> implements Map.Entry<A, B> {
         return (B) pair[1];
     }
 
-    public Pair<A,B> copyWithNewValue(B value){
-        return new Pair<>((A)this.pair[0],value);
+    public Pair<A, B> copyWithNewValue(B value) {
+        return new Pair<>((A) this.pair[0], value);
     }
 
-    public Pair<A,B> replaceValue(B value){
+    public Pair<A, B> replaceValue(B value) {
         this.setValue(value);
         return this;
     }

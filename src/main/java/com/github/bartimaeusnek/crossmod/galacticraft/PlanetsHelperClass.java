@@ -31,9 +31,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 public class PlanetsHelperClass {
 
-    public static EntityLanderBase getLanderType(EntityPlayerMP player){
+    public static EntityLanderBase getLanderType(EntityPlayerMP player) {
         EntityLanderBase elb;
-        switch (ConfigHandler.landerType){
+        switch (ConfigHandler.landerType) {
             case 1:
                 elb = new EntityLander(player);
                 break;

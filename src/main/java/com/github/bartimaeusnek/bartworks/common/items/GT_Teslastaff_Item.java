@@ -29,6 +29,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import java.util.List;
+import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -42,14 +44,12 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
-import java.util.List;
-import java.util.Set;
-
 public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
     private static final Set<Block> effective = Sets.newHashSet(Blocks.web);
     private final double mCharge;
     private final double mTransfer;
     public int mTier;
+
     @SideOnly(Side.CLIENT)
     private IIcon icon;
 
@@ -77,7 +77,8 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
             EntityLiving tTarget = (EntityLiving) aTarget;
             ElectricItem.manager.use(aStack, 9000000, aPlayer);
             for (int i = 1; i < 5; ++i) {
-                if (tTarget.getEquipmentInSlot(i) != null && tTarget.getEquipmentInSlot(i).getItem() instanceof IElectricItem) {
+                if (tTarget.getEquipmentInSlot(i) != null
+                        && tTarget.getEquipmentInSlot(i).getItem() instanceof IElectricItem) {
                     tTarget.setCurrentItemOrArmor(i, null);
                 }
             }

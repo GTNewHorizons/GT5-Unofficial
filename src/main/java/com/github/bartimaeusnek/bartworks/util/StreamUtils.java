@@ -23,15 +23,14 @@
 package com.github.bartimaeusnek.bartworks.util;
 
 import gregtech.api.util.GT_Recipe;
-
 import java.util.Optional;
 import java.util.function.Predicate;
 
 public class StreamUtils {
-    private StreamUtils(){}
+    private StreamUtils() {}
 
     public static Predicate<GT_Recipe.GT_Recipe_Map> filterVisualMaps() {
-       return gt_recipe_map -> {
+        return gt_recipe_map -> {
             Optional<GT_Recipe> op = gt_recipe_map.mRecipeList.stream().findAny();
             return op.isPresent() && !op.get().mFakeRecipe;
         };

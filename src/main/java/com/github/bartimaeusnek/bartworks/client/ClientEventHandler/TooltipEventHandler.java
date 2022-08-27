@@ -39,6 +39,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -47,10 +50,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 @SideOnly(Side.CLIENT)
 public class TooltipEventHandler {
 
@@ -58,29 +57,35 @@ public class TooltipEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void getTooltip(ItemTooltipEvent event) {
 
-        if (event == null || event.itemStack == null || event.itemStack.getItem() == null)
-            return;
+        if (event == null || event.itemStack == null || event.itemStack.getItem() == null) return;
 
         if (TooltipCache.getTooltip(event.itemStack).isEmpty()) {
             ItemStack tmp = event.itemStack.copy();
-            Pair<Integer,Short> abstractedStack = new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage());
+            Pair<Integer, Short> abstractedStack =
+                    new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage());
             List<String> tooAdd = new ArrayList<>();
-            if (ConfigHandler.sharedItemStackTooltip && OreDictHandler.getNonBWCache().contains(abstractedStack)) {
-                for (Pair<Integer,Short> pair : OreDictHandler.getNonBWCache()) {
+            if (ConfigHandler.sharedItemStackTooltip
+                    && OreDictHandler.getNonBWCache().contains(abstractedStack)) {
+                for (Pair<Integer, Short> pair : OreDictHandler.getNonBWCache()) {
                     if (pair.equals(abstractedStack)) {
                         GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
                         if (UI == null)
                             UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(tmp.getItem()));
                         if (UI != null) {
                             for (ModContainer modContainer : Loader.instance().getModList()) {
-                                if (UI.modId.equals(MainMod.MOD_ID) || UI.modId.equals(BartWorksCrossmod.MOD_ID) || UI.modId.equals("BWCore"))
-                                    break;
+                                if (UI.modId.equals(MainMod.MOD_ID)
+                                        || UI.modId.equals(BartWorksCrossmod.MOD_ID)
+                                        || UI.modId.equals("BWCore")) break;
                                 if (UI.modId.equals(modContainer.getModId())) {
-                                    tooAdd.add("Shared ItemStack between " + ChatColorHelper.DARKGREEN + "BartWorks" + ChatColorHelper.GRAY + " and " + ChatColorHelper.RED + modContainer.getName());
+                                    tooAdd.add("Shared ItemStack between " + ChatColorHelper.DARKGREEN + "BartWorks"
+                                            + ChatColorHelper.GRAY + " and " + ChatColorHelper.RED
+                                            + modContainer.getName());
                                 }
                             }
                         } else
-                            tooAdd.add("Shared ItemStack between " + ChatColorHelper.DARKGREEN + "BartWorks" + ChatColorHelper.GRAY + " and another Mod, that doesn't use the ModContainer propperly!");
+                            tooAdd.add("Shared ItemStack between " + ChatColorHelper.DARKGREEN + "BartWorks"
+                                    + ChatColorHelper.GRAY
+                                    + " and another Mod, that doesn't use the ModContainer propperly!");
                     }
                 }
             }
@@ -91,17 +96,15 @@ public class TooltipEventHandler {
                     TooltipCache.put(event.itemStack, tooAdd);
                     return;
                 }
-                BioVatLogicAdder.BlockMetaPair PAIR = new BioVatLogicAdder.BlockMetaPair(BLOCK, (byte) event.itemStack.getItemDamage());
+                BioVatLogicAdder.BlockMetaPair PAIR =
+                        new BioVatLogicAdder.BlockMetaPair(BLOCK, (byte) event.itemStack.getItemDamage());
                 HashMap<BioVatLogicAdder.BlockMetaPair, Byte> GLASSMAP = BioVatLogicAdder.BioVatGlass.getGlassMap();
                 if (GLASSMAP.containsKey(PAIR)) {
                     int tier = GLASSMAP.get(PAIR);
-                    tooAdd.add(
-                            StatCollector.translateToLocal("tooltip.glas.0.name") +
-                                    " "
-                                    + BW_ColorUtil.getColorForTier(tier) + GT_Values.VN[tier] + ChatColorHelper.RESET);
+                    tooAdd.add(StatCollector.translateToLocal("tooltip.glas.0.name") + " "
+                            + BW_ColorUtil.getColorForTier(tier) + GT_Values.VN[tier] + ChatColorHelper.RESET);
                 } else if (BLOCK.getMaterial().equals(Material.glass)) {
-                    tooAdd.add(StatCollector.translateToLocal("tooltip.glas.0.name") +
-                            " "
+                    tooAdd.add(StatCollector.translateToLocal("tooltip.glas.0.name") + " "
                             + BW_ColorUtil.getColorForTier(3) + GT_Values.VN[3] + ChatColorHelper.RESET);
                 }
             }

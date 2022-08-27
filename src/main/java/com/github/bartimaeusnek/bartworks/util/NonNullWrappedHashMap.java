@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public class NonNullWrappedHashMap<K,V> extends HashMap<K,V> {
+public class NonNullWrappedHashMap<K, V> extends HashMap<K, V> {
 
     private V defaultValue;
 
@@ -57,6 +57,7 @@ public class NonNullWrappedHashMap<K,V> extends HashMap<K,V> {
 
     @Override
     public V getOrDefault(Object key, V defaultValue) {
-        return Objects.requireNonNull(Optional.ofNullable(super.getOrDefault(key, defaultValue)).orElse(this.defaultValue));
+        return Objects.requireNonNull(
+                Optional.ofNullable(super.getOrDefault(key, defaultValue)).orElse(this.defaultValue));
     }
 }

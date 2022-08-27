@@ -23,14 +23,12 @@
 package com.github.bartimaeusnek.bartworks.util;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 /**
  * This implementation is for some reason slower than the Recursive Check....
@@ -42,35 +40,41 @@ public class ConnectedBlocksCheckerIteration {
     public final HashSet<Coords> checked = new HashSet<>(4096);
     private final Queue<Coords> kwoe = new LinkedList<>();
 
-    public long get_connected(World w, int x, int y, int z, Block b){
-        kwoe.add(new Coords(x,y,z,w.provider.dimensionId));
-        hashset.add(new Coords(x,y,z,w.provider.dimensionId));
-        while (!kwoe.isEmpty()){
+    public long get_connected(World w, int x, int y, int z, Block b) {
+        kwoe.add(new Coords(x, y, z, w.provider.dimensionId));
+        hashset.add(new Coords(x, y, z, w.provider.dimensionId));
+        while (!kwoe.isEmpty()) {
             Coords tocheck = kwoe.poll();
             int wID = w.provider.dimensionId;
             checked.add(tocheck);
             Coords c;
-            if (!checked.contains(c = new Coords(tocheck.x + 1, tocheck.y, tocheck.z, wID)) && w.getBlock(tocheck.x + 1, tocheck.y, tocheck.z).equals(b)) {
+            if (!checked.contains(c = new Coords(tocheck.x + 1, tocheck.y, tocheck.z, wID))
+                    && w.getBlock(tocheck.x + 1, tocheck.y, tocheck.z).equals(b)) {
                 kwoe.add(c);
                 hashset.add(c);
             }
-            if (!checked.contains(c = new Coords(tocheck.x - 1, tocheck.y, tocheck.z, wID)) && w.getBlock(tocheck.x - 1, tocheck.y, tocheck.z).equals(b)) {
+            if (!checked.contains(c = new Coords(tocheck.x - 1, tocheck.y, tocheck.z, wID))
+                    && w.getBlock(tocheck.x - 1, tocheck.y, tocheck.z).equals(b)) {
                 kwoe.add(c);
                 hashset.add(c);
             }
-            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y, tocheck.z + 1, wID)) && w.getBlock(tocheck.x, tocheck.y, tocheck.z + 1).equals(b)) {
+            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y, tocheck.z + 1, wID))
+                    && w.getBlock(tocheck.x, tocheck.y, tocheck.z + 1).equals(b)) {
                 kwoe.add(c);
                 hashset.add(c);
             }
-            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y, tocheck.z - 1, wID)) && w.getBlock(tocheck.x, tocheck.y, tocheck.z - 1).equals(b)) {
+            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y, tocheck.z - 1, wID))
+                    && w.getBlock(tocheck.x, tocheck.y, tocheck.z - 1).equals(b)) {
                 kwoe.add(c);
                 hashset.add(c);
             }
-            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y + 1, tocheck.z, wID)) && w.getBlock(tocheck.x, tocheck.y + 1, tocheck.z).equals(b)) {
+            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y + 1, tocheck.z, wID))
+                    && w.getBlock(tocheck.x, tocheck.y + 1, tocheck.z).equals(b)) {
                 kwoe.add(c);
                 hashset.add(c);
             }
-            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y - 1, tocheck.z, wID)) && w.getBlock(tocheck.x, tocheck.y - 1, tocheck.z).equals(b)) {
+            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y - 1, tocheck.z, wID))
+                    && w.getBlock(tocheck.x, tocheck.y - 1, tocheck.z).equals(b)) {
                 kwoe.add(c);
                 hashset.add(c);
             }
@@ -89,55 +93,48 @@ public class ConnectedBlocksCheckerIteration {
                 t = w.getTileEntity(C.x, C.y + 1, C.z);
                 if (t != null && !new Coords(C.x, C.y + 1, C.z, wID).equals(Controller)) {
                     if (t instanceof IGregTechTileEntity)
-                        if (((IGregTechTileEntity) t).getMetaTileID() == n)
-                            return true;
+                        if (((IGregTechTileEntity) t).getMetaTileID() == n) return true;
                 }
                 t = w.getTileEntity(C.x, C.y - 1, C.z);
                 if (t != null && !new Coords(C.x, C.y - 1, C.z, wID).equals(Controller)) {
                     if (t instanceof IGregTechTileEntity)
-                        if (((IGregTechTileEntity) t).getMetaTileID() == n)
-                            return true;
+                        if (((IGregTechTileEntity) t).getMetaTileID() == n) return true;
                 }
                 t = w.getTileEntity(C.x + 1, C.y, C.z);
                 if (t != null && !new Coords(C.x + 1, C.y, C.z, wID).equals(Controller)) {
                     if (t instanceof IGregTechTileEntity)
-                        if (((IGregTechTileEntity) t).getMetaTileID() == n)
-                            return true;
+                        if (((IGregTechTileEntity) t).getMetaTileID() == n) return true;
                 }
                 t = w.getTileEntity(C.x - 1, C.y, C.z);
                 if (t != null && !new Coords(C.x - 1, C.y, C.z, wID).equals(Controller)) {
                     if (t instanceof IGregTechTileEntity)
-                        if (((IGregTechTileEntity) t).getMetaTileID() == n)
-                            return true;
+                        if (((IGregTechTileEntity) t).getMetaTileID() == n) return true;
                 }
                 t = w.getTileEntity(C.x, C.y, C.z + 1);
                 if (t != null && !new Coords(C.x, C.y, C.z + 1, wID).equals(Controller)) {
                     if (t instanceof IGregTechTileEntity)
-                        if (((IGregTechTileEntity) t).getMetaTileID() == n)
-                            return true;
+                        if (((IGregTechTileEntity) t).getMetaTileID() == n) return true;
                 }
                 t = w.getTileEntity(C.x, C.y, C.z - 1);
                 if (t != null && !new Coords(C.x, C.y, C.z - 1, wID).equals(Controller)) {
                     if (t instanceof IGregTechTileEntity)
-                        if (((IGregTechTileEntity) t).getMetaTileID() == n)
-                            return true;
+                        if (((IGregTechTileEntity) t).getMetaTileID() == n) return true;
                 }
             } else {
-                if (n == w.getBlockMetadata(C.x, C.y + 1, C.z) && !new Coords(C.x, C.y + 1, C.z, wID).equals(Controller))
-                    return true;
-                if (n == w.getBlockMetadata(C.x, C.y - 1, C.z) && !new Coords(C.x, C.y - 1, C.z, wID).equals(Controller))
-                    return true;
-                if (n == w.getBlockMetadata(C.x + 1, C.y, C.z) && !new Coords(C.x + 1, C.y, C.z, wID).equals(Controller))
-                    return true;
-                if (n == w.getBlockMetadata(C.x - 1, C.y, C.z) && !new Coords(C.x - 1, C.y, C.z, wID).equals(Controller))
-                    return true;
-                if (n == w.getBlockMetadata(C.x, C.y, C.z + 1) && !new Coords(C.x, C.y, C.z + 1, wID).equals(Controller))
-                    return true;
-                if (n == w.getBlockMetadata(C.x, C.y, C.z - 1) && !new Coords(C.x, C.y, C.z - 1, wID).equals(Controller))
-                    return true;
+                if (n == w.getBlockMetadata(C.x, C.y + 1, C.z)
+                        && !new Coords(C.x, C.y + 1, C.z, wID).equals(Controller)) return true;
+                if (n == w.getBlockMetadata(C.x, C.y - 1, C.z)
+                        && !new Coords(C.x, C.y - 1, C.z, wID).equals(Controller)) return true;
+                if (n == w.getBlockMetadata(C.x + 1, C.y, C.z)
+                        && !new Coords(C.x + 1, C.y, C.z, wID).equals(Controller)) return true;
+                if (n == w.getBlockMetadata(C.x - 1, C.y, C.z)
+                        && !new Coords(C.x - 1, C.y, C.z, wID).equals(Controller)) return true;
+                if (n == w.getBlockMetadata(C.x, C.y, C.z + 1)
+                        && !new Coords(C.x, C.y, C.z + 1, wID).equals(Controller)) return true;
+                if (n == w.getBlockMetadata(C.x, C.y, C.z - 1)
+                        && !new Coords(C.x, C.y, C.z - 1, wID).equals(Controller)) return true;
             }
         }
         return false;
     }
-
 }

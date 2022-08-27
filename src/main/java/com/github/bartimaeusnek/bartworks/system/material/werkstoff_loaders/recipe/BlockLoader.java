@@ -22,27 +22,32 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
+import static gregtech.api.enums.OrePrefixes.*;
+
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.GT_Values;
 import net.minecraft.item.ItemStack;
 
-import static gregtech.api.enums.OrePrefixes.*;
-
 public class BlockLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
-        if (!werkstoff.hasItemType(block))
-            return;
+        if (!werkstoff.hasItemType(block)) return;
         if (werkstoff.hasItemType(ingot)) {
-            GT_Values.RA.addArcFurnaceRecipe(werkstoff.get(block), new ItemStack[]{werkstoff.get(ingot, 9)}, null, 16, 90, false);
+            GT_Values.RA.addArcFurnaceRecipe(
+                    werkstoff.get(block), new ItemStack[] {werkstoff.get(ingot, 9)}, null, 16, 90, false);
         }
         if (werkstoff.hasItemType(WerkstoffLoader.cellMolten)) {
             GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(block), null, werkstoff.getMolten(1296), 0, 288, 8);
         }
         if (werkstoff.hasItemType(plate)) {
-            GT_Values.RA.addCutterRecipe(werkstoff.get(block), werkstoff.get(plate, 9), null, (int) Math.max(werkstoff.getStats().getMass() * 10L, 1L), 30);
+            GT_Values.RA.addCutterRecipe(
+                    werkstoff.get(block),
+                    werkstoff.get(plate, 9),
+                    null,
+                    (int) Math.max(werkstoff.getStats().getMass() * 10L, 1L),
+                    30);
         }
     }
 }

@@ -30,6 +30,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -37,14 +39,10 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class GTMetaItemEnhancer {
-   static List<Materials> NoMetaValue;
+    static List<Materials> NoMetaValue;
 
-    private GTMetaItemEnhancer() {
-    }
+    private GTMetaItemEnhancer() {}
 
     public static void init() {
         if (!WerkstoffLoader.gtnhGT) {
@@ -52,64 +50,86 @@ public class GTMetaItemEnhancer {
             Materials[] values = Materials.values();
             for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
                 Materials m = values[i];
-                if (m == null || m.mStandardMoltenFluid == null)
-                    continue;
-                final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(m.getMolten(144), new ItemStack(moltenCell, 1, i), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L));
+                if (m == null || m.mStandardMoltenFluid == null) continue;
+                final FluidContainerRegistry.FluidContainerData emptyData =
+                        new FluidContainerRegistry.FluidContainerData(
+                                m.getMolten(144),
+                                new ItemStack(moltenCell, 1, i),
+                                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L));
                 FluidContainerRegistry.registerFluidContainer(emptyData);
                 GT_Utility.addFluidContainerData(emptyData);
-                GT_Values.RA.addFluidCannerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L), new ItemStack(moltenCell, 1, i), m.getMolten(144), GT_Values.NF);
-                GT_Values.RA.addFluidCannerRecipe(new ItemStack(moltenCell, 1, i), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L), GT_Values.NF, m.getMolten(144));
+                GT_Values.RA.addFluidCannerRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
+                        new ItemStack(moltenCell, 1, i),
+                        m.getMolten(144),
+                        GT_Values.NF);
+                GT_Values.RA.addFluidCannerRecipe(
+                        new ItemStack(moltenCell, 1, i),
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
+                        GT_Values.NF,
+                        m.getMolten(144));
             }
         }
         if (!LoaderReference.Forestry) {
             return;
         }
-        NoMetaValue = Materials.getMaterialsMap().values().stream().filter(m -> m.mMetaItemSubID == -1).collect(Collectors.toList());
+        NoMetaValue = Materials.getMaterialsMap().values().stream()
+                .filter(m -> m.mMetaItemSubID == -1)
+                .collect(Collectors.toList());
         Item moltenCapsuls = new BWGTMetaItems(WerkstoffLoader.capsuleMolten, null);
         Item capsuls = new BWGTMetaItems(OrePrefixes.capsule, NoMetaValue);
-        //Item bottles = new BWGTMetaItems(OrePrefixes.bottle, NoMetaValue);
+        // Item bottles = new BWGTMetaItems(OrePrefixes.bottle, NoMetaValue);
 
         Materials[] values = Materials.values();
         for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
             Materials m = values[i];
             if (m.mStandardMoltenFluid != null && GT_OreDictUnificator.get(WerkstoffLoader.cellMolten, m, 1) != null) {
-                final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(m.getMolten(144), new ItemStack(moltenCapsuls, 1, i), GT_ModHandler.getModItem("Forestry", "refractoryEmpty", 1));
+                final FluidContainerRegistry.FluidContainerData emptyData =
+                        new FluidContainerRegistry.FluidContainerData(
+                                m.getMolten(144),
+                                new ItemStack(moltenCapsuls, 1, i),
+                                GT_ModHandler.getModItem("Forestry", "refractoryEmpty", 1));
                 FluidContainerRegistry.registerFluidContainer(emptyData);
                 GT_Utility.addFluidContainerData(emptyData);
-                GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("Forestry", "refractoryEmpty", 1), new ItemStack(moltenCapsuls, 1, i), m.getMolten(144), GT_Values.NF);
-                GT_Values.RA.addFluidCannerRecipe(new ItemStack(moltenCapsuls, 1, i), GT_Values.NI, GT_Values.NF, m.getMolten(144));
+                GT_Values.RA.addFluidCannerRecipe(
+                        GT_ModHandler.getModItem("Forestry", "refractoryEmpty", 1),
+                        new ItemStack(moltenCapsuls, 1, i),
+                        m.getMolten(144),
+                        GT_Values.NF);
+                GT_Values.RA.addFluidCannerRecipe(
+                        new ItemStack(moltenCapsuls, 1, i), GT_Values.NI, GT_Values.NF, m.getMolten(144));
             }
-            if (m.getFluid(1) == null && m.getGas(1) == null)
-                continue;
-            if (OreDictionary.doesOreNameExist("capsule"+m.mName))
-                continue;
+            if (m.getFluid(1) == null && m.getGas(1) == null) continue;
+            if (OreDictionary.doesOreNameExist("capsule" + m.mName)) continue;
             addFluidData(m, GT_ModHandler.getModItem("Forestry", "waxCapsule", 1), capsuls, 1000, i, true);
             //   addFluidData(m, new ItemStack(Items.glass_bottle), bottles, 250, i, false);
         }
         for (int i = 0, valuesLength = NoMetaValue.size(); i < valuesLength; i++) {
             Materials m = NoMetaValue.get(i);
-            if (m.getFluid(1) == null && m.getGas(1) == null)
-                continue;
-            if (OreDictionary.doesOreNameExist("capsule"+m.mName))
-                continue;
+            if (m.getFluid(1) == null && m.getGas(1) == null) continue;
+            if (OreDictionary.doesOreNameExist("capsule" + m.mName)) continue;
             addFluidData(m, GT_ModHandler.getModItem("Forestry", "waxCapsule", 1), capsuls, 1000, i + 1001, true);
             //   addFluidData(m, new ItemStack(Items.glass_bottle), bottles, 250, i + 1001, false);
         }
-
     }
 
-    private static void addFluidData(Materials m, ItemStack container, Item filled, int amount, int it, boolean empty){
+    private static void addFluidData(Materials m, ItemStack container, Item filled, int amount, int it, boolean empty) {
         Fluid f = m.getFluid(1) != null ? m.getFluid(1).getFluid() : m.getGas(1).getFluid();
-        final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(new FluidStack(f, amount), new ItemStack(filled, 1, it), container);
+        final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
+                new FluidStack(f, amount), new ItemStack(filled, 1, it), container);
         FluidContainerRegistry.registerFluidContainer(emptyData);
         GT_Utility.addFluidContainerData(emptyData);
-        GT_Values.RA.addFluidCannerRecipe(container, new ItemStack(filled, 1, it), new FluidStack(f, amount), GT_Values.NF);
-        GT_Values.RA.addFluidCannerRecipe(new ItemStack(filled, 1, it), empty ? GT_Values.NI : container, GT_Values.NF, new FluidStack(f, amount));
+        GT_Values.RA.addFluidCannerRecipe(
+                container, new ItemStack(filled, 1, it), new FluidStack(f, amount), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(
+                new ItemStack(filled, 1, it),
+                empty ? GT_Values.NI : container,
+                GT_Values.NF,
+                new FluidStack(f, amount));
     }
 
-    public static void addAdditionalOreDictToForestry(){
-        if (!LoaderReference.Forestry)
-            return;
+    public static void addAdditionalOreDictToForestry() {
+        if (!LoaderReference.Forestry) return;
         OreDictionary.registerOre("capsuleWater", getForestryItem("waxCapsuleWater"));
         OreDictionary.registerOre("capsuleIce", getForestryItem("waxCapsuleIce"));
         OreDictionary.registerOre("capsuleHoney", getForestryItem("waxCapsuleHoney"));
@@ -124,7 +144,7 @@ public class GTMetaItemEnhancer {
         OreDictionary.registerOre("capsuleLava", getForestryItem("refractoryLava"));
     }
 
-    private static ItemStack getForestryItem(String itemName){
+    private static ItemStack getForestryItem(String itemName) {
         return GT_ModHandler.getModItem("Forestry", itemName, 1);
     }
 }

@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.bartworks.system.material;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
+import java.util.List;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -33,13 +34,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-import java.util.List;
-
 public class BW_MetaGenerated_WerkstoffBlocks extends BW_MetaGenerated_Blocks {
 
-    public BW_MetaGenerated_WerkstoffBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
+    public BW_MetaGenerated_WerkstoffBlocks(
+            Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
-        this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization("bw.blocktype." + OrePrefixes.block, OrePrefixes.block.mLocalizedMaterialPre + "%material" + OrePrefixes.block.mLocalizedMaterialPost);
+        this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization(
+                "bw.blocktype." + OrePrefixes.block,
+                OrePrefixes.block.mLocalizedMaterialPre + "%material" + OrePrefixes.block.mLocalizedMaterialPost);
     }
 
     @Override

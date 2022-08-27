@@ -84,7 +84,8 @@ public class GT_Multi_IndustrialCrucible extends GT_MetaTileEntity_MultiBlockBas
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity iGregTechTileEntity, byte b, byte b1, byte b2, boolean b3, boolean b4) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity iGregTechTileEntity, byte b, byte b1, byte b2, boolean b3, boolean b4) {
         return new ITexture[0];
     }
 }

@@ -106,9 +106,7 @@ public class FlowerSet<T> implements Set<T> {
     }
 
     @Override
-    public void clear() {
-
-    }
+    public void clear() {}
 
     static class FlowerNode<V> {
         private final FlowerSet<V> map;
@@ -124,19 +122,14 @@ public class FlowerSet<T> implements Set<T> {
         private static final int DEPTH = 20480;
 
         public void TryToSetSingleNode(FlowerNode node, FlowerNode toset, int place, int depth) {
-            if (depth > DEPTH)
-                throw new IllegalStateException("Recursive Call went too deep.");
-            if (node.links[place] == null)
-                node.links[place] = toset;
-            else
-                TryToSetSingleNode(node.links[place], toset, place, depth++);
+            if (depth > DEPTH) throw new IllegalStateException("Recursive Call went too deep.");
+            if (node.links[place] == null) node.links[place] = toset;
+            else TryToSetSingleNode(node.links[place], toset, place, depth++);
         }
 
         public void TryToSetSingleNode(FlowerNode node, FlowerNode toset, int place) {
-            if (node.links[place] == null)
-                node.links[place] = toset;
-            else
-                TryToSetSingleNode(node.links[place], toset, place, 0);
+            if (node.links[place] == null) node.links[place] = toset;
+            else TryToSetSingleNode(node.links[place], toset, place, 0);
         }
 
         @SafeVarargs
@@ -153,5 +146,4 @@ public class FlowerSet<T> implements Set<T> {
             return function -> function.hashCode() % function.map.petals;
         }
     }
-
 }
