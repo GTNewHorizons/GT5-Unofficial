@@ -41,8 +41,8 @@ public enum HeatingCoilLevel {
         /**
          * @return the coil Level, used for Parallels in the Multi Furnace for example.
          */
-        public byte getLevel() {
-            return (byte) (1 << Math.min(Math.max(0, this.ordinal() - 2), 4));
+        public int getLevel() {
+            return (1 << Math.min(Math.max(0, this.ordinal() - 2), 14));
         }
 
         /**

@@ -85,7 +85,7 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Furnace")
                 .addInfo("Controller Block for the Multi Smelter")
-                .addInfo("Smelts up to 8-128 items at once")
+                .addInfo("Smelts up to 8-8192 items at once")
                 .addInfo("Items smelted increases with coil tier")
                 .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
@@ -137,7 +137,7 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
             return false;
 
         int mVolatage = GT_Utility.safeInt(getMaxInputVoltage());
-        int tMaxParrallel = 8 * this.mLevel;
+        int tMaxParrallel = this.mLevel;
         int tCurrenParrallel = 0;
         ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
         ArrayList<Integer> outputStackSizes = new ArrayList<>();
@@ -264,7 +264,7 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
                         StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": " +
                         EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
                 StatCollector.translateToLocal("GT5U.MS.multismelting") + ": " +
-                        EnumChatFormatting.GREEN + mLevel * 8 + EnumChatFormatting.RESET +
+                        EnumChatFormatting.GREEN + mLevel + EnumChatFormatting.RESET +
                         " Discount: (EU/t) / " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mCostDiscount) + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " +
                         EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %"
