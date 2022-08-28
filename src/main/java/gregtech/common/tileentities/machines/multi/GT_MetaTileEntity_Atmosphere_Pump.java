@@ -17,8 +17,10 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -110,10 +112,10 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
                     .atLeast(
                         Energy,
                         Maintenance)
-                    .casingIndex(WSTEN_TURBINE_CASING)
+                    .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING))
                     .dot(2)
                     .buildAndChain(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING))
-            .addElement('C', OutputHatch.newAny(WSTEN_TURBINE_CASING, 3))
+            .addElement('C', OutputHatch.newAny(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING), 3))
             .addElement('H', ofBlock(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING))
             .addElement('F', ofBlock(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING))
             .addElement('G', ofBlockUnlocalizedName("IC2", "blockFenceIron", 0, true))
@@ -156,7 +158,26 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return false;
+
+        //Check Structure
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 1)) return false;
+
+        //Min 1 and max 2 energy hatch
+        if (mEnergyHatches.size() == 0 || mEnergyHatches.size() > 2) return false;
+
+        //Mandatory 1 output hatch and 1 maintenance hatch
+        if (mMaintenanceHatches.size() != 1) return false;
+        if (mOutputHatches.size() != 1) return false;
+
+        //hatch are from the same tier
+        byte tier_of_hatch = mEnergyHatches.get(0).mTier;
+        for (GT_MetaTileEntity_Hatch_Energy energyHatch : mEnergyHatches) {
+            if (energyHatch.mTier != tier_of_hatch) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -201,7 +222,7 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
         if (aSide == aFacing) {
             if (aActive)
                 return new ITexture[]{
-                    BlockIcons.casingTexturePages[0][60],
+                    BlockIcons.casingTexturePages[0][GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING)],
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ATMOSPHERE_PUMP_ACTIVE)
                         .extFacing()
@@ -213,7 +234,7 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
                         .build()
                 };
             return new ITexture[] {
-                BlockIcons.casingTexturePages[0][60],
+                BlockIcons.casingTexturePages[0][GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING)],
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ATMOSPHERE_PUMP)
                     .extFacing()
@@ -225,6 +246,6 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
                     .build()
             };
         }
-        return new ITexture[] {Textures.BlockIcons.casingTexturePages[0][60]};
+        return new ITexture[] {Textures.BlockIcons.casingTexturePages[0][GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING)]};
     }
 }
