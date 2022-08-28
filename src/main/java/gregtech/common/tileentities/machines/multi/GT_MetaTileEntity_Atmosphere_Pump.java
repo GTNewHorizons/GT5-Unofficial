@@ -9,12 +9,12 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.render.TextureFactory;
@@ -35,7 +35,7 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
         "HHHHHHH"
     },{
         "       ",
-        "       ",
+        "  HHH  ",
         " HE EH ",
         " HG GH ",
         "EHE~EHE",
@@ -84,7 +84,7 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
         "HHHFHHH"
     },{
         "       ",
-        "       ",
+        "  HHH  ",
         " HE EH ",
         " HG GH ",
         "EHECEHE",
@@ -125,6 +125,24 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
         super(aID, aName, aNameRegional);
     }
 
+    public GT_MetaTileEntity_Atmosphere_Pump(String aName) {
+        super(aName);
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_Atmosphere_Pump(mName);
+    }
+
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Atmosphere Pump")
+            .addInfo(EnumChatFormatting.DARK_PURPLE +"test")
+            .toolTipFinisher("Gregtech");
+
+        return tt;
+    }
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -162,30 +180,15 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Atmosphere Pump")
-            .addInfo(EnumChatFormatting.DARK_PURPLE +"test")
-            .toolTipFinisher("Gregtech");
-
-        return tt;
-    }
-
-    @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         return 0;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 5, 8);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly,3 , 4, 1);
     }
 
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        //return new GT_MetaTileEntity_Atmosphere_Pump(whatthefuckgothere);
-        return null;
-    }
 
     @Override
     public ITexture[] getTexture(
