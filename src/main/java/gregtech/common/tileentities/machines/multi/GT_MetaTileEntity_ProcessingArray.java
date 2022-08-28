@@ -217,18 +217,18 @@ public class GT_MetaTileEntity_ProcessingArray
                         break;
                     case 10:
                         tTier = 9;
-                        mMult = 2; // Parallels are 4x as strong and require 4x less EU/t
+                        mMult = 2; // Parallels are 4x as strong
                         break;
                     case 11:
                         tTier = 9;
-                        mMult = 4; // Parallels are 16x as strong and require 16x less EU/t
+                        mMult = 4; // Parallels are 16x as strong
                         break;
                     case 12:
                     case 13:
                     case 14:
                     case 15:
                         tTier = 9;
-                        mMult = 6; // Parallels are 64x as strong and require 64x less EU/t
+                        mMult = 6; // Parallels are 64x as strong
                         break;
                 }
             }
@@ -317,7 +317,7 @@ public class GT_MetaTileEntity_ProcessingArray
         calculateOverclockedNessMulti(aRecipe.mEUt, aRecipe.mDuration, aAmperage, GT_Values.V[tTier]);
         // In case recipe is too OP for that machine
         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-        this.mEUt = GT_Utility.safeInt(((long) this.mEUt * parallel) >> mMult, 1);
+        this.mEUt = GT_Utility.safeInt((long) this.mEUt * parallel, 1);
         if (mEUt == Integer.MAX_VALUE - 1) return false;
 
         if (this.mEUt > 0) {
@@ -507,7 +507,7 @@ public class GT_MetaTileEntity_ProcessingArray
             StatCollector.translateToLocal("GT5U.PA.machinetier") + ": " + EnumChatFormatting.GREEN
                     + tTier + EnumChatFormatting.RESET + " " + StatCollector.translateToLocal("GT5U.PA.discount")
                     + ": " + EnumChatFormatting.GREEN
-                    + (1 << mMult) + EnumChatFormatting.RESET + " x",
+                    + 1 + EnumChatFormatting.RESET + " x",
             StatCollector.translateToLocal("GT5U.PA.parallel") + ": " + EnumChatFormatting.GREEN
                     + GT_Utility.formatNumbers((mInventory[1] != null) ? (mInventory[1].stackSize << mMult) : 0)
                     + EnumChatFormatting.RESET
