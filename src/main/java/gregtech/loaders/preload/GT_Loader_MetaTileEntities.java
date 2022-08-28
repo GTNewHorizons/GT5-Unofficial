@@ -12066,9 +12066,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 new GT_MetaTileEntity_OilDrill4(149, "multimachine.oildrill4", "Oil/Gas/Fluid Drilling Rig IV")
                         .getStackForm(1));
         ItemList.OilDrillInfinite.set(new GT_MetaTileEntity_OilDrillInfinite(
-                        148, "multimachine.oildrillinfinite", "Infinite Oil/Gas/Fluid Drilling Rig")
+                    148, "multimachine.oildrillinfinite", "Infinite Oil/Gas/Fluid Drilling Rig")
                 .getStackForm(1));
-
+        ItemList.AtmospherePump.set(new GT_MetaTileEntity_Atmosphere_Pump(
+                    539, "multimachine.atmospherepump", "Atmosphere Pump")
+                .getStackForm(1));
         ItemList.ConcreteBackfiller1.set(new GT_MetaTileEntity_ConcreteBackfiller1(
                         143, "multimachine.concretebackfiller1", "Concrete Backfiller")
                 .getStackForm(1));

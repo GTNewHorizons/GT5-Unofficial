@@ -958,6 +958,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                                             OutputHatch,
                                             InputBus,
                                             OutputBus,
+                                            OutputBus,
                                             Energy,
                                             ExoticEnergy,
                                             Maintenance)
