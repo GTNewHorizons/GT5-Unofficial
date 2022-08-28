@@ -6,6 +6,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -43,42 +44,42 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
         "EHE~EHE",
         "HHHHHHH"
     },{
-        "       ", //ici
+        "  ---  ", //ici
         " HHHHH ",
         " H   H ",
         " G   G ",
         " H   H ",
         "HHHHHHH"
     },{
-        "       ", //ici
+        "  ---  ", //ici
         " HHHHH ",
         "   F   ",
         "   F   ",
         "   F   ",
         "HHHFHHH"
     },{
-        "       ", //ici
+        "  ---  ", //ici
         "EHHHHHE",
         "       ",
         "       ",
         "       ",
         "HHHFHHH"
     },{
-        "       ", //ici
+        "  ---  ", //ici
         "EHHHHHE",
         "       ",
         "       ",
         "       ",
         "HHHFHHH"
     },{
-        "       ", //ici
+        "  ---  ", //ici
         " HHHHH ",
         "   F   ",
         "   F   ",
         "   F   ",
         "HHHFHHH"
     },{
-        "       ", //ici
+        "  ---  ", //ici
         " HHHHH ",
         " H   H ",
         " G   G ",
@@ -140,7 +141,7 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Atmosphere Pump")
-            .addInfo(EnumChatFormatting.DARK_PURPLE +"test")
+            .addInfo(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.BOLD.toString() + "Author: " + EnumChatFormatting.RESET.toString() + EnumChatFormatting.DARK_PURPLE + "POPlol333")
             .toolTipFinisher("Gregtech");
 
         return tt;
@@ -153,7 +154,19 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        return false;
+
+        mMaxProgresstime = 80;
+        int airQuantity = 1000;
+
+
+        if(!mOutputHatches.isEmpty()) {
+            final int current = mOutputHatches.get(0).getFluidAmount();
+            mOutputHatches.get(0).setFillableStack(Materials.Air.getGas(current+airQuantity));
+        } else {
+            mOutputHatches.get(0).setFillableStack(Materials.Air.getGas(airQuantity));
+        }
+
+        return true;
     }
 
     @Override
@@ -247,5 +260,10 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
             };
         }
         return new ITexture[] {Textures.BlockIcons.casingTexturePages[0][GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING)]};
+    }
+
+    @Override //here if anyone want to actually use it
+    public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onRandomDisplayTick(aBaseMetaTileEntity);
     }
 }
