@@ -89,7 +89,7 @@ public enum CustomItemList implements IItemContainer {
     Machine_Multi_Decay, Machine_Multi_EMmachine,
     Machine_Multi_Stabilizer, Machine_Multi_EMCrafter,
     Machine_Multi_Wormhole, Machine_Multi_Annihilation,
-    Machine_Multi_BHG,
+    Machine_Multi_EyeOfHarmony,
     hint_0, hint_1, hint_2, hint_3, hint_4, hint_5, hint_6, hint_7, hint_8, hint_9, hint_10, hint_11, hint_general, hint_air, hint_noAir, hint_error,
 
     eM_avr_HV, eM_avr_EV, eM_avr_IV, eM_avr_LuV, eM_avr_ZPM, eM_avr_UV, eM_avr_UHV, eM_avr_UEV, eM_avr_UIV, eM_avr_UMV,
@@ -102,11 +102,13 @@ public enum CustomItemList implements IItemContainer {
     Machine_TeslaCoil_4by4_LV, Machine_TeslaCoil_4by4_MV, Machine_TeslaCoil_4by4_HV, Machine_TeslaCoil_4by4_EV, Machine_TeslaCoil_4by4_IV,
 
     SpacetimeCompressionFieldGeneratorTier0, SpacetimeCompressionFieldGeneratorTier1, SpacetimeCompressionFieldGeneratorTier2, SpacetimeCompressionFieldGeneratorTier3,
-    SpacetimeCompressionFieldGeneratorTier4, SpacetimeCompressionFieldGeneratorTier5, SpacetimeCompressionFieldGeneratorTier6, SpacetimeCompressionFieldGeneratorTier7,
+    SpacetimeCompressionFieldGeneratorTier4, SpacetimeCompressionFieldGeneratorTier5, SpacetimeCompressionFieldGeneratorTier6,
 
     TimeAccelerationFieldGeneratorTier0, TimeAccelerationFieldGeneratorTier1, TimeAccelerationFieldGeneratorTier2, TimeAccelerationFieldGeneratorTier3,
-    TimeAccelerationFieldGeneratorTier4, TimeAccelerationFieldGeneratorTier5, TimeAccelerationFieldGeneratorTier6, TimeAccelerationFieldGeneratorTier7;
+    TimeAccelerationFieldGeneratorTier4, TimeAccelerationFieldGeneratorTier5, TimeAccelerationFieldGeneratorTier6,
 
+    StabilisationFieldGeneratorTier0, StabilisationFieldGeneratorTier1, StabilisationFieldGeneratorTier2, StabilisationFieldGeneratorTier3,
+    StabilisationFieldGeneratorTier4, StabilisationFieldGeneratorTier5, StabilisationFieldGeneratorTier6;
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
