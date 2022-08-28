@@ -3,7 +3,10 @@ package gregtech.api.gui;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumChatFormatting;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
@@ -17,6 +20,40 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
     public GT_GUIContainer_DigitalTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
         super(new GT_Container_DigitalTank(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "DigitalTank.png");
         mName = aName;
+    }
+
+    @Override
+    public void drawScreen(int par1, int par2, float par3) {
+        super.drawScreen(par1, par2, par3);
+        drawTooltip(par1, par2);
+    }
+
+    private void drawTooltip(int x2, int y2) {
+        int xStart = (width - xSize) / 2;
+        int yStart = (height - ySize) / 2;
+        int x = x2 - xStart;
+        int y = y2 - yStart + 5;
+        List<String> list = new ArrayList<>();
+        if (y >= 68 && y <= 84) {
+            if (x >= 8 && x <= 24) {
+                list.add("Fluid Auto-Output");
+            } else
+            if (x >= 26 && x <= 42) {
+                list.add("Lock Fluid Mode");
+                list.add(EnumChatFormatting.GRAY + "First you need to a fill this tank fluid, then press the button");
+                list.add(EnumChatFormatting.GRAY + "No liquids will be poured in here except this one");
+            }
+            if (x >= 44 && x <= 60) {
+                list.add("Void Part Mode");
+                list.add(EnumChatFormatting.GRAY + "Overflown Fluid is removing if tank full");
+            }
+            if (x >= 62 && x <= 78) {
+                list.add("Void Full Mode");
+                list.add(EnumChatFormatting.GRAY + "Fluid is completely removing");
+            }
+        }
+        if (!list.isEmpty())
+            drawHoveringText(list, x2, y2, fontRendererObj);
     }
 
     @Override
@@ -38,5 +75,19 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+        if (mContainer != null) {
+            if (((GT_Container_DigitalTank) mContainer).mLockFluid) {
+                drawTexturedModalRect(x + 25, y + 63, 176, 0, 18, 18);
+            }
+            if (((GT_Container_DigitalTank) mContainer).outputFluid) {
+                drawTexturedModalRect(x + 7, y + 63, 176, 18, 18, 18);
+            }
+            if (((GT_Container_DigitalTank) mContainer).mVoidFluidPart) {
+                drawTexturedModalRect(x + 43, y + 63, 176, 36, 18, 18);
+            }
+            if (((GT_Container_DigitalTank) mContainer).mVoidFluidFull) {
+                drawTexturedModalRect(x + 61, y + 63, 176, 54, 18, 18);
+            }
+        }
     }
 }

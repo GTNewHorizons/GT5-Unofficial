@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
@@ -11,7 +12,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_DigitalTank extends GT_Container_BasicTank {
-    public boolean OutputFluid = false, mMode = false, mVoidFluidPart = false, mVoidFluidFull = false;
+    public boolean outputFluid = false, mLockFluid = false, mVoidFluidPart = false, mVoidFluidFull = false;
 
     public GT_Container_DigitalTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -30,20 +31,51 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
 
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-        if(aSlotIndex == 3){
-            GT_Utility.sendChatToPlayer(aPlayer, "Fluid Output Disabled");
+
+        GT_MetaTileEntity_DigitalTankBase mte = ((GT_MetaTileEntity_DigitalTankBase) mTileEntity.getMetaTileEntity());
+
+        if (aSlotIndex == 3) {
+            mte.mOutputFluid = !mte.mOutputFluid;
+            if (!mte.mOutputFluid) {
+                GT_Utility.sendChatToPlayer(aPlayer, "Fluid Output Disabled");
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, "Fluid Output Enabled");
+            }
             return null;
         }
         if(aSlotIndex == 4){
-            GT_Utility.sendChatToPlayer(aPlayer, "currently none, will be locked to the next that is put in");
+            String inBrackets;
+            mte.mLockFluid = !mte.mLockFluid;
+            if (mte.mLockFluid) {
+                if (mte.mFluid == null) {
+                    mte.lockedFluidName = null;
+                    inBrackets = "currently none, will be locked to the next that is put in";
+                } else {
+                    mte.lockedFluidName = mte.getDrainableStack().getUnlocalizedName();
+                    inBrackets = mte.getDrainableStack().getLocalizedName();
+                }
+                GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", "1 specific Fluid", inBrackets));
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, "Lock Fluid Mode Disabled");
+            }
             return null;
         }
-        if(aSlotIndex == 5){
-            GT_Utility.sendChatToPlayer(aPlayer, "Void Part Mode Disabled");
+        if (aSlotIndex == 5) {
+            mte.mVoidFluidPart = !mte.mVoidFluidPart;
+            if (!mte.mVoidFluidPart) {
+                GT_Utility.sendChatToPlayer(aPlayer, "Void Part Mode Disabled");
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, "Void Part Mode Enabled");
+            }
             return null;
         }
-        if(aSlotIndex == 6){
-            GT_Utility.sendChatToPlayer(aPlayer, "Void Full Mode Disabled");
+        if (aSlotIndex == 6) {
+            mte.mVoidFluidFull = !mte.mVoidFluidFull;
+            if (!mte.mVoidFluidFull) {
+                GT_Utility.sendChatToPlayer(aPlayer, "Void Full Mode Disabled");
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, "Void Full Mode Enabled");
+            }
             return null;
         }
 
@@ -52,22 +84,34 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
 
     @Override
     public void sendProgressBar() {
-//        OutputFluid = mte.OutputFluid;
-//        mMode = mte.mMode;
-//        mVoidFluidPart = mte.mVoidFluidPart;
-//        mVoidFluidFull = mte.mVoidFluidFull;
+        GT_MetaTileEntity_DigitalTankBase mte = ((GT_MetaTileEntity_DigitalTankBase) mTileEntity.getMetaTileEntity());
 
         for (Object crafter : this.crafters) {
             ICrafting player = (ICrafting) crafter;
-            if (mTimer % 500 == 0 || oContent != mContent) {
-                player.sendProgressBarUpdate(this, 100, mContent & 65535);
-                player.sendProgressBarUpdate(this, 101, mContent >>> 16);
-                player.sendProgressBarUpdate(this, 103, OutputFluid ? 1 : 0);
-                player.sendProgressBarUpdate(this, 104, mMode ? 1 : 0);
-                player.sendProgressBarUpdate(this, 105, mVoidFluidPart ? 1 : 0);
-                player.sendProgressBarUpdate(this, 106, mVoidFluidFull ? 1 : 0);
+            if (mTimer % 500 == 0) {
+                if(oContent != mContent){
+                    player.sendProgressBarUpdate(this, 100, mContent & 65535);
+                    player.sendProgressBarUpdate(this, 101, mContent >>> 16);
+                }
+            }
+            if(outputFluid != mte.mOutputFluid){
+                player.sendProgressBarUpdate(this, 103, mte.mOutputFluid ? 1 : 0);
+            }
+            if(mLockFluid != mte.mLockFluid){
+                player.sendProgressBarUpdate(this, 104, mte.mLockFluid ? 1 : 0);
+            }
+            if(mVoidFluidPart != mte.mVoidFluidPart){
+                player.sendProgressBarUpdate(this, 105, mte.mVoidFluidPart ? 1 : 0);
+            }
+            if(mVoidFluidFull != mte.mVoidFluidFull){
+                player.sendProgressBarUpdate(this, 106, mte.mVoidFluidFull ? 1 : 0);
             }
         }
+
+        outputFluid = mte.mOutputFluid;
+        mLockFluid = mte.mLockFluid;
+        mVoidFluidPart = mte.mVoidFluidPart;
+        mVoidFluidFull = mte.mVoidFluidFull;
     }
 
     @Override
@@ -76,10 +120,10 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
         super.updateProgressBar(id, value);
         switch (id) {
             case 103:
-                OutputFluid = (value != 0);
+                outputFluid = (value != 0);
                 break;
             case 104:
-                mMode = (value != 0);
+                mLockFluid = (value != 0);
                 break;
             case 105:
                 mVoidFluidPart = (value != 0);
