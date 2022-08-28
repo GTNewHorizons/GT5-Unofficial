@@ -165,8 +165,7 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Atmosphere Pump")
-            .addInfo(EnumChatFormatting.DARK_PURPLE +"bite (not a pp joke)")
-            .addInfo("j'ai 8 ans")
+            .addInfo(EnumChatFormatting.DARK_PURPLE +"test")
             .toolTipFinisher("Gregtech");
 
         return tt;
