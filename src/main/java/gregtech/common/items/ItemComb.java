@@ -1685,30 +1685,12 @@ public class ItemComb extends Item {
         }
         // Infinity Line
         addCentrifugeToMaterial(
-                CombType.COSMICNEUTRONIUM,
-                new Materials[] {Materials.CosmicNeutronium, Materials.Neutronium},
-                new int[] {(int) (15 * 100), 1 * 100},
-                new int[] {},
-                Voltage.UHV,
-                1200,
-                NI,
-                50 * 100);
-        addCentrifugeToMaterial(
                 CombType.INFINITYCATALYST,
                 new Materials[] {Materials.InfinityCatalyst, Materials.Neutronium},
                 new int[] {(int) (25 * 100), 20 * 100},
                 new int[] {},
                 Voltage.ZPM,
                 100,
-                NI,
-                50 * 100);
-        addCentrifugeToMaterial(
-                CombType.INFINITY,
-                new Materials[] {Materials.Infinity, Materials.InfinityCatalyst},
-                new int[] {(int) (20 * 100), (int) (0.05 * 100)},
-                new int[] {},
-                Voltage.UV,
-                1000,
                 NI,
                 50 * 100);
 
