@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -27,8 +28,8 @@ import net.minecraftforge.fluids.IFluidHandler;
  */
 public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLimiter.FluidLimiterData> {
 
-    public GT_Cover_FluidLimiter() {
-        super(FluidLimiterData.class);
+    public GT_Cover_FluidLimiter(ITexture coverTexture) {
+        super(FluidLimiterData.class, coverTexture);
     }
 
     @Override

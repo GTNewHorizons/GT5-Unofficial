@@ -6,6 +6,7 @@ import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
@@ -50,8 +51,8 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     public final int mTransferRate;
     private boolean allowFluid = false;
 
-    public GT_Cover_FluidRegulator(int aTransferRate) {
-        super(FluidRegulatorData.class);
+    public GT_Cover_FluidRegulator(int aTransferRate, ITexture coverTexture) {
+        super(FluidRegulatorData.class, coverTexture);
         if (aTransferRate > (-1 >>> (Integer.SIZE - SPEED_LENGTH)))
             throw new IllegalArgumentException("aTransferRate too big: " + aTransferRate);
         this.mTransferRate = aTransferRate;

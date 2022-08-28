@@ -4,17 +4,21 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.net.GT_Packet_TileEntityCover;
-import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_Shutter extends GT_CoverBehavior {
+public class GT_Cover_Shutter extends GT_Cover_Cased {
+
+    public GT_Cover_Shutter(ITexture coverTexture) {
+        super(coverTexture);
+    }
 
     @Override
     public boolean isRedstoneSensitive(

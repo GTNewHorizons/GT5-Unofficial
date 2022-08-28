@@ -10,6 +10,7 @@ import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -34,8 +35,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
 
     private final boolean mExport;
 
-    public GT_Cover_ItemFilter(boolean isExport) {
-        super(ItemFilterData.class);
+    public GT_Cover_ItemFilter(boolean isExport, ITexture coverTexture) {
+        super(ItemFilterData.class, coverTexture);
         this.mExport = isExport;
     }
 

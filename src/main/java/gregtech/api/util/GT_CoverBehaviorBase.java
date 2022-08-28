@@ -25,9 +25,15 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     public EntityPlayer lastPlayer = null;
     private final Class<T> typeToken;
+    private final ITexture coverTexture;
 
     protected GT_CoverBehaviorBase(Class<T> typeToken) {
+        this((Class<T>) typeToken, null);
+    }
+
+    protected GT_CoverBehaviorBase(Class<T> typeToken, ITexture coverTexture) {
         this.typeToken = typeToken;
+        this.coverTexture = coverTexture;
     }
 
     public abstract T createDataObject(int aLegacyData);
@@ -56,6 +62,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         } catch (Exception e) {
             throw new RuntimeException("Casting data in " + this.getClass() + ", data " + aData, e);
         }
+    }
+
+    public ITexture getCoverTexture() {
+        return this.coverTexture;
     }
 
     // region facade

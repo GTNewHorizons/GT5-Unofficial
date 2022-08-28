@@ -164,8 +164,18 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) {
             return Textures.BlockIcons.HIDDEN_TEXTURE[0]; // See through
         }
-        final ITexture coverTexture = getCoverBehaviorAtSideNew(aSide)
-                .getSpecialCoverTexture(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
+        GT_CoverBehaviorBase<?> coverBehavior = getCoverBehaviorAtSideNew(aSide);
+        final ITexture coverTexture;
+        if (coverBehavior != null) {
+            if (!(this instanceof BaseMetaPipeEntity)) {
+                coverTexture = coverBehavior.getCoverTexture();
+            } else {
+                coverTexture = coverBehavior.getSpecialCoverTexture(
+                        aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
+            }
+        } else {
+            coverTexture = null;
+        }
         return coverTexture != null
                 ? coverTexture
                 : GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
