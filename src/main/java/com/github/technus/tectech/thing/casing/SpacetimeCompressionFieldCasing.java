@@ -23,16 +23,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
  * Created by danie_000 on 03.10.2016.
  */
 public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
-    private static IIcon[] tM0 = new IIcon[2];
-    private static IIcon[] tM1 = new IIcon[2];
-    private static IIcon[] tM2 = new IIcon[2];
-    private static IIcon[] tM3 = new IIcon[2];
-    private static IIcon[] tM4 = new IIcon[2];
-    private static IIcon[] tM5 = new IIcon[2];
-    private static IIcon[] tM6 = new IIcon[2];
-    private static IIcon tM7;
-    private static IIcon[] tM8 = new IIcon[2];
-    private static IIcon[] tM9 = new IIcon[2];
+    private static IIcon texture_tier_0;
 
     private static final byte START_INDEX = 16;
 
@@ -57,93 +48,31 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
         CustomItemList.SpacetimeCompressionFieldGeneratorTier4.set(new ItemStack(this, 1, 4));
         CustomItemList.SpacetimeCompressionFieldGeneratorTier5.set(new ItemStack(this, 1, 5));
         CustomItemList.SpacetimeCompressionFieldGeneratorTier6.set(new ItemStack(this, 1, 6));
-        CustomItemList.SpacetimeCompressionFieldGeneratorTier7.set(new ItemStack(this, 1, 7));
 
     }
 
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
-        tM0[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_0");
-        tM0[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_0");
-        tM1[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_1");
-        tM1[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_1");
-        tM2[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_2");
-        tM2[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_2");
-        tM3[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_3");
-        tM3[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_3");
-        tM4[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_4");
-        tM4[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_4");
-        tM5[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_5");
-        tM5[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_5");
-        tM9[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_6");
-        tM9[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_6");
-
-        tM6[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_BASE_TOP_BOTTOM");
-        tM6[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_BASE_SIDES");
-        tM7 = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_TOROID");
-        tM8[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_SECONDARY_TOP_BOTTOM");
-        tM8[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_SECONDARY_SIDES");
+        texture_tier_0 = aIconRegister.registerIcon("gregtech:iconsets/EM_DIM");
     }
 
     @Override
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
             case 0:
-                switch (aSide) {
-                    case 0:
-                    case 1:
-                        return tM0[0];
-                    default:
-                        return tM0[1];
-                }
+                return texture_tier_0;
             case 1:
-                switch (aSide) {
-                    case 0:
-                    case 1:
-                        return tM1[0];
-                    default:
-                        return tM1[1];
-                }
+                return texture_tier_0;
             case 2:
-                switch (aSide) {
-                    case 0:
-                    case 1:
-                        return tM2[0];
-                    default:
-                        return tM2[1];
-                }
+                return texture_tier_0;
             case 3:
-                switch (aSide) {
-                    case 0:
-                    case 1:
-                        return tM3[0];
-                    default:
-                        return tM3[1];
-                }
+                return texture_tier_0;
             case 4:
-                switch (aSide) {
-                    case 0:
-                    case 1:
-                        return tM4[0];
-                    default:
-                        return tM4[1];
-                }
+                return texture_tier_0;
             case 5:
-                switch (aSide) {
-                    case 0:
-                    case 1:
-                        return tM5[0];
-                    default:
-                        return tM5[1];
-                }
+                return texture_tier_0;
             case 6:
-                switch (aSide) {
-                    case 0:
-                    case 1:
-                        return tM6[0];
-                    default:
-                        return tM6[1];
-                }
+                return texture_tier_0;
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
