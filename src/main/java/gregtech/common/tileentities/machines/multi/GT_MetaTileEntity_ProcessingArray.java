@@ -218,15 +218,18 @@ public class GT_MetaTileEntity_ProcessingArray
                     case 10:
                         tTier = 9;
                         mMult = 2; // Parallels are 4x as strong and require 4x less EU/t
+                        break;
                     case 11:
                         tTier = 9;
                         mMult = 4; // Parallels are 16x as strong and require 16x less EU/t
+                        break;
                     case 12:
                     case 13:
                     case 14:
                     case 15:
                         tTier = 9;
                         mMult = 6; // Parallels are 64x as strong and require 64x less EU/t
+                        break;
                 }
             }
         }
