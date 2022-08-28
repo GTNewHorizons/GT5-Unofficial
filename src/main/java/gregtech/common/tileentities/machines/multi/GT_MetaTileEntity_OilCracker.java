@@ -372,7 +372,6 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                 if (isValidMetaTileEntity(tHatch)) {
                     for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
                         if (tFluid != null && !GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
-                            // GT_Log.out.print("mf: " + tFluid + "\n");
                             rList.add(tFluid);
                         }
                     }
@@ -390,7 +389,6 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                 if (isValidMetaTileEntity(tHatch)) {
                     for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
                         if (tFluid != null && GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
-                            // GT_Log.out.print("mf: " + tFluid + "\n");
                             rList.add(tFluid);
                         }
                     }
