@@ -348,8 +348,8 @@ public class RecipeLoader_GlueLine {
                 },
                 MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(500),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64),
-                120,
-                30
+                400,
+                30720
         );
 
         GT_Values.RA.addAssemblerRecipe(
@@ -360,8 +360,8 @@ public class RecipeLoader_GlueLine {
                 },
                 MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(250),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64),
-                120,
-                30
+                80,
+                122880
         );
 
         GT_Values.RA.addMixerRecipe(
