@@ -1,21 +1,22 @@
 package gregtech.common.tileentities.storage;
 
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
-
+import gregtech.api.gui.GT_Container_DigitalTank;
+import gregtech.api.gui.GT_GUIContainer_DigitalTank;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+
+import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank {
     protected boolean mVoidOverflow = false;
@@ -182,6 +183,16 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             mFluid.amount = Math.min(mFluid.amount, getRealCapacity());
         }
         return mFluid;
+    }
+
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_DigitalTank(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_DigitalTank(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
     }
 
     @Override

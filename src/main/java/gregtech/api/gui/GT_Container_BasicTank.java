@@ -22,7 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
 
     public int mContent = 0;
-    private int oContent = 0;
+    protected int oContent = 0;
 
     public GT_Container_BasicTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -68,6 +68,11 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         if (((GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity()).mFluid != null)
             mContent = ((GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity()).mFluid.amount;
         else mContent = 0;
+        sendProgressBar();
+        oContent = mContent;
+    }
+
+    public void sendProgressBar(){
         for (Object crafter : this.crafters) {
             ICrafting player = (ICrafting) crafter;
             if (mTimer % 500 == 0 || oContent != mContent) {
@@ -75,8 +80,6 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
                 player.sendProgressBarUpdate(this, 101, mContent >>> 16);
             }
         }
-
-        oContent = mContent;
     }
 
     @Override
