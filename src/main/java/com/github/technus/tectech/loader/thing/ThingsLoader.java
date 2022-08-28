@@ -40,6 +40,8 @@ public class ThingsLoader implements Runnable {
         TT_Block_TimeAccelerationFieldGenerators.TimeAccelerationFieldGenerator = new TimeAccelerationFieldCasing();
         TecTech.LOGGER.info("Time Acceleration Field Casings registered.");
 
+        TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators = new StabilisationFieldCasing();
+
         QuantumGlassBlock.run();
         TecTech.LOGGER.info("Quantum Glass registered");
 
