@@ -33,19 +33,19 @@ public class NEI_Config implements IConfigureNEI {
         isAdded = false;
         new Mob_Handler();
         isAdded = true;
-        API.hideItem(BlackTea.get(1));
-        API.hideItem(ButterflyTea.get(1));
-        API.hideItem(EarlGrayTea.get(1));
-        API.hideItem(GreenTea.get(1));
-        API.hideItem(LemonTea.get(1));
-        API.hideItem(MilkTea.get(1));
-        API.hideItem(OolongTea.get(1));
-        API.hideItem(PeppermintTea.get(1));
-        API.hideItem(PuerhTea.get(1));
-        API.hideItem(RedTea.get(1));
-        API.hideItem(WhiteTea.get(1));
-        API.hideItem(YellowTea.get(1));
-        API.hideItem(UltimateTea.get(1));
+        API.hideItem(LegendaryBlackTea.get(1));
+        API.hideItem(LegendaryButterflyTea.get(1));
+        API.hideItem(LegendaryEarlGrayTea.get(1));
+        API.hideItem(LegendaryGreenTea.get(1));
+        API.hideItem(LegendaryLemonTea.get(1));
+        API.hideItem(LegendaryMilkTea.get(1));
+        API.hideItem(LegendaryOolongTea.get(1));
+        API.hideItem(LegendaryPeppermintTea.get(1));
+        API.hideItem(LegendaryPuerhTea.get(1));
+        API.hideItem(LegendaryRedTea.get(1));
+        API.hideItem(LegendaryWhiteTea.get(1));
+        API.hideItem(LegendaryYellowTea.get(1));
+        API.hideItem(LegendaryUltimateTea.get(1));
     }
 
     @Override

@@ -37,7 +37,7 @@ public class ItemProxy {
     private int itemID;
 
     public ItemProxy(String unlocalizedName, String texture) {
-        this.unlocalizedName = "item.kubaitem." + unlocalizedName;
+        this.unlocalizedName = "kubaitem." + unlocalizedName;
         texturepath = Tags.MODID + ":" + texture;
     }
 
@@ -61,21 +61,20 @@ public class ItemProxy {
         return icon;
     }
 
-    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {}
+    public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {}
 
-    public void onUpdate(
-            ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {}
+    public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isCurrentItem) {}
 
-    public EnumAction getItemUseAction(ItemStack p_77661_1_) {
+    public EnumAction getItemUseAction(ItemStack stack) {
         return EnumAction.none;
     }
 
-    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-        return p_77659_1_;
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer entity) {
+        return stack;
     }
 
-    public ItemStack onEaten(ItemStack p_77654_1_, World p_77654_2_, EntityPlayer p_77654_3_) {
-        return p_77654_1_;
+    public ItemStack onEaten(ItemStack stack, World world, EntityPlayer entity) {
+        return stack;
     }
 
     public int getMaxItemUseDuration() {

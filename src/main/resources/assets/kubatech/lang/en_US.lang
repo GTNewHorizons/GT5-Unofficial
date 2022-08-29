@@ -27,24 +27,50 @@ command.config.success=§aConfig reloaded successfully !
 command.config.usage=<option>
 
 #Items
-item.fromcollection=This item is from
-item.notyours=It looks like that item is not yours
-#Tea collection
-item.teacollection=Turbo Legendary Secret Tea Collection
-item.teacollection.mmm=Mmmm Tea
-item.kubaitem.teacollection.black_tea.name=§6§lKuba's Black Tea
-item.kubaitem.teacollection.butterfly_tea.name=§1§lKuba's Butterfly Pea Tea
-item.kubaitem.teacollection.earl_gray_tea.name=§6§lKuba's Earl Gray Tea
-item.kubaitem.teacollection.green_tea.name=§2§lKuba's Green Tea
-item.kubaitem.teacollection.lemon_tea.name=§e§lKuba's Lemon Tea
-item.kubaitem.teacollection.milk_tea.name=§f§lKuba's Milk Tea
-item.kubaitem.teacollection.oolong_tea.name=§e§lKuba's Oolong Tea
-item.kubaitem.teacollection.peppermint_tea.name=§a§lKuba's Peppermint Tea
-item.kubaitem.teacollection.pu-erh_tea.name=§4§lKuba's Pu-erh Tea
-item.kubaitem.teacollection.red_tea.name=§c§lKuba's Hibiscus Tea
-item.kubaitem.teacollection.white_tea.name=§e§lKuba's White Tea
-item.kubaitem.teacollection.yellow_tea.name=§6§lKuba's Yellow Tea
-item.kubaitem.teacollection.ultimate_tea.name=§6§lKuba's %s §6§lTea
+kubaitem.fromcollection=This item is from
+kubaitem.notyours=It looks like that item is not yours
+
+#Tea
+kubaitem.tea.black_tea.name=Black Tea
+kubaitem.tea.earl_gray_tea.name=Earl Gray Tea
+kubaitem.tea.green_tea.name=Green Tea
+kubaitem.tea.lemon_tea.name=Lemon Tea
+kubaitem.tea.milk_tea.name=Milk Tea
+kubaitem.tea.oolong_tea.name=Oolong Tea
+kubaitem.tea.peppermint_tea.name=Peppermint Tea
+kubaitem.tea.pu-erh_tea.name=Pu-erh Tea
+kubaitem.tea.white_tea.name=White Tea
+kubaitem.tea.yellow_tea.name=Yellow Tea
+kubaitem.teaingredient.black_tea_leaf.name=Black Tea Leaf
+kubaitem.teaingredient.green_tea_leaf.name=Green Tea Leaf
+kubaitem.teaingredient.oolong_tea_leaf.name=Oolong Tea Leaf
+kubaitem.teaingredient.pu-erh_tea_leaf.name=Pu-erh Tea Leaf
+kubaitem.teaingredient.white_tea_leaf.name=White Tea Leaf
+kubaitem.teaingredient.yellow_tea_leaf.name=Yellow Tea Leaf
+kubaitem.teaingredient.tea_leaf_dehydrated.name=Dehydrated Tea Leaf
+kubaitem.teaingredient.steamed_tea_leaf.name=Steamed Tea Leaf
+kubaitem.teaingredient.rolled_tea_leaf.name=Rolled Tea Leaf
+kubaitem.teaingredient.oxidized_tea_leaf.name=Oxidized Tea Leaf
+kubaitem.teaingredient.fermented_tea_leaf.name=Fermented Tea Leaf
+kubaitem.teaingredient.bruised_tea_leaf.name=Bruised Tea Leaf
+kubaitem.teaingredient.partially_oxidized_tea_leaf.name=Partially Oxidized Tea Leaf
+
+#Legendary Tea collection
+kubaitem.teacollection=Turbo Legendary Secret Tea Collection
+kubaitem.teacollection.mmm=Mmmm Tea
+kubaitem.teacollection.black_tea.name=§6§lKuba's Black Tea
+kubaitem.teacollection.butterfly_tea.name=§1§lKuba's Butterfly Pea Tea
+kubaitem.teacollection.earl_gray_tea.name=§6§lKuba's Earl Gray Tea
+kubaitem.teacollection.green_tea.name=§2§lKuba's Green Tea
+kubaitem.teacollection.lemon_tea.name=§e§lKuba's Lemon Tea
+kubaitem.teacollection.milk_tea.name=§f§lKuba's Milk Tea
+kubaitem.teacollection.oolong_tea.name=§e§lKuba's Oolong Tea
+kubaitem.teacollection.peppermint_tea.name=§a§lKuba's Peppermint Tea
+kubaitem.teacollection.pu-erh_tea.name=§4§lKuba's Pu-erh Tea
+kubaitem.teacollection.red_tea.name=§c§lKuba's Hibiscus Tea
+kubaitem.teacollection.white_tea.name=§e§lKuba's White Tea
+kubaitem.teacollection.yellow_tea.name=§6§lKuba's Yellow Tea
+kubaitem.teacollection.ultimate_tea.name=§6§lKuba's %s §6§lTea
 
 #Achievements
 achievement.teacollection.black_tea=§6§lKuba's Black Tea

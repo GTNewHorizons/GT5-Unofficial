@@ -36,9 +36,9 @@ public class CommonProxy {
 
         Config.init(event.getModConfigurationDirectory());
         Config.synchronizeConfiguration();
-        RecipeLoader.addRecipes();
         FMLCommonHandler.instance().bus().register(new FMLEventHandler());
         RegisterItems();
+        RecipeLoader.addRecipes();
     }
 
     public void init(FMLInitializationEvent event) {}

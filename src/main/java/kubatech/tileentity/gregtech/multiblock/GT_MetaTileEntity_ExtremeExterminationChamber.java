@@ -96,6 +96,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     public static final HashMap<String, MobRecipeLoader.MobRecipe> MobNameToRecipeMap = new HashMap<>();
     public final Random rand = new FastRandom();
 
+    @SuppressWarnings("unused")
     public GT_MetaTileEntity_ExtremeExterminationChamber(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }

@@ -11,4 +11,6 @@ public class LoaderReference {
     public static final boolean MineTweaker = Loader.isModLoaded("MineTweaker3");
     public static final boolean Bartworks = Loader.isModLoaded("bartworks");
     public static final boolean GTNHCoreMod = Loader.isModLoaded("dreamcraft");
+    public static final boolean GTPlusPlus = Loader.isModLoaded("miscutils");
+    public static final boolean HarvestCraft = Loader.isModLoaded("harvestcraft");
 }

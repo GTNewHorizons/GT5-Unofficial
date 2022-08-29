@@ -26,7 +26,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-public class TeaUltimate extends Tea {
+public class TeaUltimate extends TeaCollection {
     public TeaUltimate() {
         super("ultimate_tea");
     }
