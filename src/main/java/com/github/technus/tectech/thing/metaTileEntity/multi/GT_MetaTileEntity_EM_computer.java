@@ -189,7 +189,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         super.loadNBTData(aNBT);
         if (availableData != null) {
             availableData.set(aNBT.getDouble("computation"));
-            eAvailableData = (long)availableData.get();
+            eAvailableData = (long) availableData.get();
         }
     }
 
