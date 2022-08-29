@@ -244,19 +244,9 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float xOffset,
-            float yOffset,
-            float zOffset) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         // nothing on server side or fake player
-        if (player instanceof FakePlayer || !world.isRemote) return false;
+        if (player instanceof FakePlayer || !world.isRemote) return stack;
         // check if any screwdriver
         ItemStack configuratorStack;
         if (player.capabilities.isCreativeMode) {
@@ -276,12 +266,12 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
                 }
                 player.addChatComponentMessage(new ChatComponentTranslation(
                         "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
-                return false;
+                return stack;
             }
             configuratorStack = player.inventory.mainInventory[configurator.getKey()];
         }
         openSelectorGui(configuratorStack, stack.getItemDamage());
-        return true;
+        return stack;
     }
 
     private void openSelectorGui(ItemStack configurator, int meta) {
