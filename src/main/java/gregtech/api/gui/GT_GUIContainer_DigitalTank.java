@@ -4,6 +4,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,20 +37,20 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
         List<String> list = new ArrayList<>();
         if (y >= 68 && y <= 84) {
             if (x >= 8 && x <= 24) {
-                list.add("Fluid Auto-Output");
+                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.autooutput.name"));
             } else
             if (x >= 26 && x <= 42) {
-                list.add("Lock Fluid Mode");
-                list.add(EnumChatFormatting.GRAY + "First you need to a fill this tank fluid, then press the button");
-                list.add(EnumChatFormatting.GRAY + "No liquids will be poured in here except this one");
+                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.name"));
+                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip"));
+                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip1"));
             }
             if (x >= 44 && x <= 60) {
-                list.add("Void Part Mode");
-                list.add(EnumChatFormatting.GRAY + "Overflown Fluid is removing if tank full");
+                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.name"));
+                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.tooltip"));
             }
             if (x >= 62 && x <= 78) {
-                list.add("Void Full Mode");
-                list.add(EnumChatFormatting.GRAY + "Fluid is completely removing");
+                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.name"));
+                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.tooltip"));
             }
         }
         if (!list.isEmpty())

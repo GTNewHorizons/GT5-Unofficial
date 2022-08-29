@@ -27,9 +27,9 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     public GT_MetaTileEntity_DigitalTankBase(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, new String[] {
-            "Stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + "L of fluid",
-            "Can keep its contents when harvested",
-            "Sneak when harvesting to void its contents"
+            StatCollector.translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", GT_Utility.formatNumbers(commonSizeCompute(aTier))),
+            StatCollector.translateToLocal("GT5U.machines.digitaltank.tooltip1"),
+            StatCollector.translateToLocal("GT5U.machines.digitaltank.tooltip2")
         });
     }
 
@@ -206,8 +206,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             GT_Utility.sendChatToPlayer(
                 aPlayer,
                 mAllowInputFromOutputSide
-                    ? GT_Utility.trans("095", "Input from Output Side allowed")
-                    : GT_Utility.trans("096", "Input from Output Side forbidden"));
+                    ? GT_Utility.getTrans("095")
+                    : GT_Utility.getTrans("096"));
         }
     }
 
