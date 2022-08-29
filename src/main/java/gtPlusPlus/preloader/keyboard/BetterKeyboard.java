@@ -31,19 +31,17 @@
  */
 package gtPlusPlus.preloader.keyboard;
 
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.preloader.asm.transformers.ClassTransformer_LWJGL_Keyboard;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
-
+import net.minecraft.client.resources.I18n;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
-
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.asm.transformers.ClassTransformer_LWJGL_Keyboard;
-import net.minecraft.client.resources.I18n;
 
 /**
  * <br>
@@ -58,75 +56,90 @@ import net.minecraft.client.resources.I18n;
  */
 public class BetterKeyboard {
 
-	public static final int KEYBOARD_SIZE = Short.MAX_VALUE;
+    public static final int KEYBOARD_SIZE = Short.MAX_VALUE;
 
-	private static boolean init = false;
+    private static boolean init = false;
 
-	public static void init() {
-		if (!init) {
-			FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Trying to patch out LWJGL internal arrays with larger ones.");			
-			Field aKeyNameSize = ReflectionUtils.getField(Keyboard.class, "keyName");
-			Field aKeyMapSize = ReflectionUtils.getField(Keyboard.class, "keyMap");
-			Field aKeyDownBuffer = ReflectionUtils.getField(Keyboard.class, "keyDownBuffer");			
-			String[] aOldKeyNameArray = ReflectionUtils.getFieldValue(aKeyNameSize);
-			if (aOldKeyNameArray != null && aOldKeyNameArray.length < Short.MAX_VALUE) {
-				String[] aNewKeyNameArray = new String[Short.MAX_VALUE];	
-				for (int i=0;i<aOldKeyNameArray.length;i++) {
-					aNewKeyNameArray[i] = aOldKeyNameArray[i];
-				}
-				try {
-					ReflectionUtils.setFinalFieldValue(Keyboard.class, aKeyNameSize.getName(), aNewKeyNameArray);	
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Patched Field: "+aKeyNameSize.getName());
-				}
-				catch (Throwable t) {
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Failed Patching Field: "+aKeyDownBuffer.getName());
-				}
-			}			
-			Map<String, Integer> aOldKeyMapArray = ReflectionUtils.getFieldValue(aKeyMapSize);
-			if (aOldKeyNameArray != null && aOldKeyMapArray.size() < Short.MAX_VALUE) {
-				Map<String, Integer>  aNewKeyMapArray = new HashMap<String, Integer>(Short.MAX_VALUE);	
-				aNewKeyMapArray.putAll(aOldKeyMapArray);	
-				try {
-					ReflectionUtils.setFinalFieldValue(Keyboard.class, aKeyMapSize.getName(), aNewKeyMapArray);		
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Patched Field: "+aKeyMapSize.getName());
-				}
-				catch (Throwable t) {
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Failed Patching Field: "+aKeyDownBuffer.getName());
-				}		
-			}			
-			ByteBuffer aOldByteBuffer = ReflectionUtils.getFieldValue(aKeyDownBuffer);
-			if (aOldByteBuffer != null && aOldByteBuffer.capacity() == Keyboard.KEYBOARD_SIZE) {
-				ByteBuffer  aNewByteBuffer = BufferUtils.createByteBuffer(Short.MAX_VALUE);	
-				try {
-					ReflectionUtils.setFinalFieldValue(Keyboard.class, aKeyDownBuffer.getName(), aNewByteBuffer);		
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Patched Field: "+aKeyDownBuffer.getName());
-				}
-				catch (Throwable t) {	
-					FMLRelaunchLog.log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Failed Patching Field: "+aKeyDownBuffer.getName());
-				}
-			}			
-			init = true;
-		}				
-	}
+    public static void init() {
+        if (!init) {
+            FMLRelaunchLog.log(
+                    "[GT++ ASM] LWJGL Keybinding index out of bounds fix",
+                    Level.INFO,
+                    "Trying to patch out LWJGL internal arrays with larger ones.");
+            Field aKeyNameSize = ReflectionUtils.getField(Keyboard.class, "keyName");
+            Field aKeyMapSize = ReflectionUtils.getField(Keyboard.class, "keyMap");
+            Field aKeyDownBuffer = ReflectionUtils.getField(Keyboard.class, "keyDownBuffer");
+            String[] aOldKeyNameArray = ReflectionUtils.getFieldValue(aKeyNameSize);
+            if (aOldKeyNameArray != null && aOldKeyNameArray.length < Short.MAX_VALUE) {
+                String[] aNewKeyNameArray = new String[Short.MAX_VALUE];
+                for (int i = 0; i < aOldKeyNameArray.length; i++) {
+                    aNewKeyNameArray[i] = aOldKeyNameArray[i];
+                }
+                try {
+                    ReflectionUtils.setFinalFieldValue(Keyboard.class, aKeyNameSize.getName(), aNewKeyNameArray);
+                    FMLRelaunchLog.log(
+                            "[GT++ ASM] LWJGL Keybinding index out of bounds fix",
+                            Level.INFO,
+                            "Patched Field: " + aKeyNameSize.getName());
+                } catch (Throwable t) {
+                    FMLRelaunchLog.log(
+                            "[GT++ ASM] LWJGL Keybinding index out of bounds fix",
+                            Level.INFO,
+                            "Failed Patching Field: " + aKeyDownBuffer.getName());
+                }
+            }
+            Map<String, Integer> aOldKeyMapArray = ReflectionUtils.getFieldValue(aKeyMapSize);
+            if (aOldKeyNameArray != null && aOldKeyMapArray.size() < Short.MAX_VALUE) {
+                Map<String, Integer> aNewKeyMapArray = new HashMap<String, Integer>(Short.MAX_VALUE);
+                aNewKeyMapArray.putAll(aOldKeyMapArray);
+                try {
+                    ReflectionUtils.setFinalFieldValue(Keyboard.class, aKeyMapSize.getName(), aNewKeyMapArray);
+                    FMLRelaunchLog.log(
+                            "[GT++ ASM] LWJGL Keybinding index out of bounds fix",
+                            Level.INFO,
+                            "Patched Field: " + aKeyMapSize.getName());
+                } catch (Throwable t) {
+                    FMLRelaunchLog.log(
+                            "[GT++ ASM] LWJGL Keybinding index out of bounds fix",
+                            Level.INFO,
+                            "Failed Patching Field: " + aKeyDownBuffer.getName());
+                }
+            }
+            ByteBuffer aOldByteBuffer = ReflectionUtils.getFieldValue(aKeyDownBuffer);
+            if (aOldByteBuffer != null && aOldByteBuffer.capacity() == Keyboard.KEYBOARD_SIZE) {
+                ByteBuffer aNewByteBuffer = BufferUtils.createByteBuffer(Short.MAX_VALUE);
+                try {
+                    ReflectionUtils.setFinalFieldValue(Keyboard.class, aKeyDownBuffer.getName(), aNewByteBuffer);
+                    FMLRelaunchLog.log(
+                            "[GT++ ASM] LWJGL Keybinding index out of bounds fix",
+                            Level.INFO,
+                            "Patched Field: " + aKeyDownBuffer.getName());
+                } catch (Throwable t) {
+                    FMLRelaunchLog.log(
+                            "[GT++ ASM] LWJGL Keybinding index out of bounds fix",
+                            Level.INFO,
+                            "Failed Patching Field: " + aKeyDownBuffer.getName());
+                }
+            }
+            init = true;
+        }
+    }
 
+    /**
+     * Gets a key's name
+     * @param key The key
+     * @return a String with the key's human readable name in it or null if the key is unnamed
+     */
+    public static synchronized String getKeyName(int key) {
+        return ClassTransformer_LWJGL_Keyboard.getKeyName(key);
+    }
 
-	/**
-	 * Gets a key's name
-	 * @param key The key
-	 * @return a String with the key's human readable name in it or null if the key is unnamed
-	 */
-	public static synchronized String getKeyName(int key) {
-		return ClassTransformer_LWJGL_Keyboard.getKeyName(key);
-	}
-
-
-
-
-	/**
-	 * Represents a key or mouse button as a string. Args: key
-	 */
-	public static String getKeyDisplayString(int aKeyValue) {
-		return aKeyValue < 0 ? I18n.format("key.mouseButton", new Object[] {Integer.valueOf(aKeyValue + 101)}): getKeyName(aKeyValue);
-	}
-
+    /**
+     * Represents a key or mouse button as a string. Args: key
+     */
+    public static String getKeyDisplayString(int aKeyValue) {
+        return aKeyValue < 0
+                ? I18n.format("key.mouseButton", new Object[] {Integer.valueOf(aKeyValue + 101)})
+                : getKeyName(aKeyValue);
+    }
 }

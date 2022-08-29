@@ -6,16 +6,14 @@ import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class EnumHelperHandler {
 
-	public static void init() {		
+    public static void init() {
 
-		if (LoadedMods.IndustrialCraft2) {
-			CustomInternalName.init();
-		}
-		
-		if (LoadedMods.Gregtech) {
-			HANDLER_GT.addNewOrePrefixes();
-		}
-		
-	}
+        if (LoadedMods.IndustrialCraft2) {
+            CustomInternalName.init();
+        }
 
+        if (LoadedMods.Gregtech) {
+            HANDLER_GT.addNewOrePrefixes();
+        }
+    }
 }

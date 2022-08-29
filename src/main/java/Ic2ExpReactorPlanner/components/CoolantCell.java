@@ -12,20 +12,25 @@ import gregtech.api.objects.GT_ItemStack;
  * @author Brian McCloud
  */
 public class CoolantCell extends ReactorItem {
-    
-    public CoolantCell(final int id, final String baseName, GT_ItemStack aItem, final double maxDamage, final double maxHeat, final String sourceMod) {
+
+    public CoolantCell(
+            final int id,
+            final String baseName,
+            GT_ItemStack aItem,
+            final double maxDamage,
+            final double maxHeat,
+            final String sourceMod) {
         super(id, baseName, aItem, maxDamage, maxHeat, sourceMod);
     }
-    
+
     public CoolantCell(final CoolantCell other) {
         super(other);
     }
-    
+
     @Override
     public double adjustCurrentHeat(final double heat) {
         currentCellCooling += heat;
         bestCellCooling = Math.max(currentCellCooling, bestCellCooling);
         return super.adjustCurrentHeat(heat);
     }
-    
 }

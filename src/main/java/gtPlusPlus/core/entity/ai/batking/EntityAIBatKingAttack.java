@@ -13,394 +13,422 @@ import net.minecraft.util.MathHelper;
 
 public class EntityAIBatKingAttack extends EntityAIBase {
 
-	private final Ranged mRangedAI;
-	private final Melee mMeleeAI;
-	private boolean mIsMelee = false;
+    private final Ranged mRangedAI;
+    private final Melee mMeleeAI;
+    private boolean mIsMelee = false;
 
-	/** The Bat King in control of this AI.	 */
-	private final EntityBatKing mAttackingEntity;
+    /** The Bat King in control of this AI.	 */
+    private final EntityBatKing mAttackingEntity;
 
-	/** The PathEntity of our entity. */
-	private PathEntity mEntityPathEntity;
+    /** The PathEntity of our entity. */
+    private PathEntity mEntityPathEntity;
 
-	/** The current target of Bat King in control of this AI.	 */
-	private EntityLivingBase mEntityTarget;
+    /** The current target of Bat King in control of this AI.	 */
+    private EntityLivingBase mEntityTarget;
 
-	private final Class mClassTarget;
+    private final Class mClassTarget;
 
-	public EntityAIBatKingAttack(EntityBatKing aAttacker, Class aClassTarget,
-			double aMovementSpeed, int someInt, int aMaxRangedAttackTime, float someFloat, boolean aLongMemory) {
-		mRangedAI = new Ranged(this, aMovementSpeed, someInt, 5, someFloat);
-		mMeleeAI = new Melee(this, aClassTarget, aMovementSpeed, aLongMemory);		
-		mAttackingEntity = aAttacker;	
-		mClassTarget = aClassTarget;
-	}
+    public EntityAIBatKingAttack(
+            EntityBatKing aAttacker,
+            Class aClassTarget,
+            double aMovementSpeed,
+            int someInt,
+            int aMaxRangedAttackTime,
+            float someFloat,
+            boolean aLongMemory) {
+        mRangedAI = new Ranged(this, aMovementSpeed, someInt, 5, someFloat);
+        mMeleeAI = new Melee(this, aClassTarget, aMovementSpeed, aLongMemory);
+        mAttackingEntity = aAttacker;
+        mClassTarget = aClassTarget;
+    }
 
-	@Override
-	public boolean shouldExecute() {		
-		determineCombatStyle();
-		EntityLivingBase entitylivingbase = this.mAttackingEntity.getAttackTarget();
-		if (entitylivingbase == null) {
-			this.mEntityTarget = null;
-			return false;
-		} else if (!entitylivingbase.isEntityAlive()) {
-			return false;
-		} else if (this.mClassTarget != null && !this.mClassTarget.isAssignableFrom(entitylivingbase.getClass())) {
-			return false;
-		} else {			
-			if (this.mIsMelee) {
-				return this.mMeleeAI.shouldExecute();
-			}
-			else {
-				this.mEntityTarget = entitylivingbase;
-				this.mEntityPathEntity = this.mAttackingEntity.getNavigator().getPathToEntityLiving(entitylivingbase);
-				return mRangedAI != null && mMeleeAI != null && hasValidTarget();
-			}						
-		}
-	}
-	
-	public EntityBatKing getBatKing() {
-		return this.mAttackingEntity;
-	}
-	
-	public IRangedAttackMob getBatKingAsIRangedAttackMob() {
-		return this.mAttackingEntity;
-	}
+    @Override
+    public boolean shouldExecute() {
+        determineCombatStyle();
+        EntityLivingBase entitylivingbase = this.mAttackingEntity.getAttackTarget();
+        if (entitylivingbase == null) {
+            this.mEntityTarget = null;
+            return false;
+        } else if (!entitylivingbase.isEntityAlive()) {
+            return false;
+        } else if (this.mClassTarget != null && !this.mClassTarget.isAssignableFrom(entitylivingbase.getClass())) {
+            return false;
+        } else {
+            if (this.mIsMelee) {
+                return this.mMeleeAI.shouldExecute();
+            } else {
+                this.mEntityTarget = entitylivingbase;
+                this.mEntityPathEntity = this.mAttackingEntity.getNavigator().getPathToEntityLiving(entitylivingbase);
+                return mRangedAI != null && mMeleeAI != null && hasValidTarget();
+            }
+        }
+    }
 
-	public boolean hasValidTarget() {
-		return this.mEntityTarget != null;
-	}
+    public EntityBatKing getBatKing() {
+        return this.mAttackingEntity;
+    }
 
-	public EntityLivingBase getTarget() {
-		return mEntityTarget;
-	}
+    public IRangedAttackMob getBatKingAsIRangedAttackMob() {
+        return this.mAttackingEntity;
+    }
 
-	@Override
-	public boolean continueExecuting() {
-		determineCombatStyle();
-		if (mIsMelee) {
-			return mMeleeAI.continueExecuting();
-		} else {
-			return mRangedAI.continueExecuting();
-		}
-	}
+    public boolean hasValidTarget() {
+        return this.mEntityTarget != null;
+    }
 
-	@Override
-	public boolean isInterruptible() {
-		if (mIsMelee) {
+    public EntityLivingBase getTarget() {
+        return mEntityTarget;
+    }
 
-		} else {
+    @Override
+    public boolean continueExecuting() {
+        determineCombatStyle();
+        if (mIsMelee) {
+            return mMeleeAI.continueExecuting();
+        } else {
+            return mRangedAI.continueExecuting();
+        }
+    }
 
-		}
-		return super.isInterruptible();
-	}
+    @Override
+    public boolean isInterruptible() {
+        if (mIsMelee) {
 
-	@Override
-	public void startExecuting() {
-		determineCombatStyle();
-		if (mIsMelee) {
-			mMeleeAI.startExecuting();
-		} else {
-			mRangedAI.startExecuting();
-		}
-	}
+        } else {
 
-	@Override
-	public void resetTask() {
-		determineCombatStyle();
-		if (mIsMelee) {
-			mMeleeAI.resetTask();
-		} else {
-			mRangedAI.resetTask();
-		}
-	}
+        }
+        return super.isInterruptible();
+    }
 
-	@Override
-	public void updateTask() {
-		determineCombatStyle();
-		if (mIsMelee) {
-			mMeleeAI.updateTask();
-		} else {
-			mRangedAI.updateTask();
-		}
-	}
-	
-	
-	private final void determineCombatStyle() {
-		boolean aisMeleeNow = this.mIsMelee;
-		if (this.mEntityTarget != null && EntityUtils.getDistance(getBatKing(), mEntityTarget) < 4) {
-			this.mIsMelee = true;
-		}
-		else {
-			this.mIsMelee = false;
-		}
-		if (aisMeleeNow != this.mIsMelee) {
-			Logger.INFO("Bat King changed combat style from "+(aisMeleeNow ? "Melee" : "Ranged")+" to "+(this.mIsMelee ? "Melee" : "Ranged"));
-		}
-	}
+    @Override
+    public void startExecuting() {
+        determineCombatStyle();
+        if (mIsMelee) {
+            mMeleeAI.startExecuting();
+        } else {
+            mRangedAI.startExecuting();
+        }
+    }
 
-	private class Ranged {
+    @Override
+    public void resetTask() {
+        determineCombatStyle();
+        if (mIsMelee) {
+            mMeleeAI.resetTask();
+        } else {
+            mRangedAI.resetTask();
+        }
+    }
 
-		private final EntityAIBatKingAttack parentAI;
-		
-		/**
-		 * A decrementing tick that spawns a ranged attack once this value reaches 0. It
-		 * is then set back to the maxRangedAttackTime.
-		 */
-		private int rangedAttackTime;
-		private double entityMoveSpeed;
-		private int mCooldownTime;
-		private int field_96561_g;
-		/**
-		 * The maximum time the AI has to wait before performing another ranged attack.
-		 */
-		private int maxRangedAttackTime;
-		private float field_96562_i;
-		private float field_82642_h; //Max range
+    @Override
+    public void updateTask() {
+        determineCombatStyle();
+        if (mIsMelee) {
+            mMeleeAI.updateTask();
+        } else {
+            mRangedAI.updateTask();
+        }
+    }
 
-		public Ranged(EntityAIBatKingAttack aParent, double aMovementSpeed, int someInt,
-				int aMaxRangedAttackTime, float someFloat) {
-			this.rangedAttackTime = -1;
-			this.parentAI = aParent;
-			this.entityMoveSpeed = aMovementSpeed;
-			this.field_96561_g = someInt;
-			this.maxRangedAttackTime = aMaxRangedAttackTime;
-			this.field_96562_i = someFloat;
-			this.field_82642_h = someFloat * someFloat * 8;
-			parentAI.setMutexBits(3);
+    private final void determineCombatStyle() {
+        boolean aisMeleeNow = this.mIsMelee;
+        if (this.mEntityTarget != null && EntityUtils.getDistance(getBatKing(), mEntityTarget) < 4) {
+            this.mIsMelee = true;
+        } else {
+            this.mIsMelee = false;
+        }
+        if (aisMeleeNow != this.mIsMelee) {
+            Logger.INFO("Bat King changed combat style from " + (aisMeleeNow ? "Melee" : "Ranged") + " to "
+                    + (this.mIsMelee ? "Melee" : "Ranged"));
+        }
+    }
 
-		}
+    private class Ranged {
 
-		/**
-		 * Execute a one shot task or start executing a continuous task
-		 */
-		public void startExecuting() {			
-			parentAI.getBatKing().getNavigator().setPath(parentAI.mEntityPathEntity, this.entityMoveSpeed);
-		}
+        private final EntityAIBatKingAttack parentAI;
 
-		/**
-		 * Returns whether an in-progress EntityAIBase should continue executing
-		 */
-		public boolean continueExecuting() {
-			return parentAI.shouldExecute() || !parentAI.getBatKing().getNavigator().noPath();
-		}
+        /**
+         * A decrementing tick that spawns a ranged attack once this value reaches 0. It
+         * is then set back to the maxRangedAttackTime.
+         */
+        private int rangedAttackTime;
 
-		/**
-		 * Resets the task
-		 */
-		public void resetTask() {
-			parentAI.mEntityTarget = null;
-			this.mCooldownTime = 0;
-			this.rangedAttackTime = -1;
-		}
+        private double entityMoveSpeed;
+        private int mCooldownTime;
+        private int field_96561_g;
+        /**
+         * The maximum time the AI has to wait before performing another ranged attack.
+         */
+        private int maxRangedAttackTime;
 
-		/**
-		 * Updates the task
-		 */
-		public void updateTask() {			
-			
-			if (MathUtils.randInt(0, 100) == 0) {
-				maxRangedAttackTime = MathUtils.balance(maxRangedAttackTime, 20, 40);
-			}
-			
-			double d0 = parentAI.getBatKing().getDistanceSq(parentAI.mEntityTarget.posX, parentAI.mEntityTarget.boundingBox.minY,
-					parentAI.mEntityTarget.posZ);
-			boolean flag = parentAI.getBatKing().getEntitySenses().canSee(parentAI.mEntityTarget);
+        private float field_96562_i;
+        private float field_82642_h; // Max range
 
-			if (flag) {
-				++this.mCooldownTime;
-			} else {
-				this.mCooldownTime = 0;
-			}
+        public Ranged(
+                EntityAIBatKingAttack aParent,
+                double aMovementSpeed,
+                int someInt,
+                int aMaxRangedAttackTime,
+                float someFloat) {
+            this.rangedAttackTime = -1;
+            this.parentAI = aParent;
+            this.entityMoveSpeed = aMovementSpeed;
+            this.field_96561_g = someInt;
+            this.maxRangedAttackTime = aMaxRangedAttackTime;
+            this.field_96562_i = someFloat;
+            this.field_82642_h = someFloat * someFloat * 8;
+            parentAI.setMutexBits(3);
+        }
 
-			if (d0 <= (double) this.field_82642_h && this.mCooldownTime >= 20) {
-				parentAI.getBatKing().getNavigator().clearPathEntity();
-			} else {
-				if (parentAI.getBatKing().getNavigator().tryMoveToEntityLiving(parentAI.mEntityTarget, this.entityMoveSpeed)) {
-					Logger.INFO("Doing Ranged Ai Task.");
-				}
-				else {
-					Logger.INFO("Not Doing Ranged Ai Task.");
-				}
-			}
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void startExecuting() {
+            parentAI.getBatKing().getNavigator().setPath(parentAI.mEntityPathEntity, this.entityMoveSpeed);
+        }
 
-			parentAI.getBatKing().getLookHelper().setLookPositionWithEntity(parentAI.mEntityTarget, 30.0F, 30.0F);
-			float f;
-			Logger.INFO("Ranged AI - "+rangedAttackTime);
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean continueExecuting() {
+            return parentAI.shouldExecute()
+                    || !parentAI.getBatKing().getNavigator().noPath();
+        }
 
-			if (--this.rangedAttackTime == 0) {
-				if (d0 > (double) this.field_82642_h || !flag) {
-					Logger.INFO("Stopping ranged attack. "+flag+"|"+(d0 > (double) this.field_82642_h)+"|"+d0+"|"+(double) this.field_82642_h);
-					return;
-				}
+        /**
+         * Resets the task
+         */
+        public void resetTask() {
+            parentAI.mEntityTarget = null;
+            this.mCooldownTime = 0;
+            this.rangedAttackTime = -1;
+        }
 
-				f = MathHelper.sqrt_double(d0) / this.field_96562_i;
-				float f1 = f;
+        /**
+         * Updates the task
+         */
+        public void updateTask() {
 
-				if (f < 0.1F) {
-					f1 = 0.1F;
-				}
+            if (MathUtils.randInt(0, 100) == 0) {
+                maxRangedAttackTime = MathUtils.balance(maxRangedAttackTime, 20, 40);
+            }
 
-				if (f1 > 1.0F) {
-					f1 = 1.0F;
-				}
-				Logger.INFO("Trying to do a ranged attack.");
-				parentAI.getBatKingAsIRangedAttackMob().attackEntityWithRangedAttack(parentAI.mEntityTarget, f1);
-				this.rangedAttackTime = MathHelper.floor_float(
-						f * (float) (this.maxRangedAttackTime - this.field_96561_g) + (float) this.field_96561_g);
-			} else if (this.rangedAttackTime < 0) {
-				f = MathHelper.sqrt_double(d0) / this.field_96562_i;
-				this.rangedAttackTime = MathHelper.floor_float(
-						f * (float) (this.maxRangedAttackTime - this.field_96561_g) + (float) this.field_96561_g);
-			}
-		}
+            double d0 = parentAI.getBatKing()
+                    .getDistanceSq(
+                            parentAI.mEntityTarget.posX,
+                            parentAI.mEntityTarget.boundingBox.minY,
+                            parentAI.mEntityTarget.posZ);
+            boolean flag = parentAI.getBatKing().getEntitySenses().canSee(parentAI.mEntityTarget);
 
-	}
+            if (flag) {
+                ++this.mCooldownTime;
+            } else {
+                this.mCooldownTime = 0;
+            }
 
-	private class Melee {
+            if (d0 <= (double) this.field_82642_h && this.mCooldownTime >= 20) {
+                parentAI.getBatKing().getNavigator().clearPathEntity();
+            } else {
+                if (parentAI.getBatKing()
+                        .getNavigator()
+                        .tryMoveToEntityLiving(parentAI.mEntityTarget, this.entityMoveSpeed)) {
+                    Logger.INFO("Doing Ranged Ai Task.");
+                } else {
+                    Logger.INFO("Not Doing Ranged Ai Task.");
+                }
+            }
 
-		private final EntityAIBatKingAttack parentAI;
+            parentAI.getBatKing().getLookHelper().setLookPositionWithEntity(parentAI.mEntityTarget, 30.0F, 30.0F);
+            float f;
+            Logger.INFO("Ranged AI - " + rangedAttackTime);
 
-		/**
-		 * An amount of decrementing ticks that allows the entity to attack once the
-		 * tick reaches 0.
-		 */
-		int attackTick;
-		/** The speed with which the mob will approach the target */
-		double speedTowardsTarget;
-		/**
-		 * When true, the mob will continue chasing its target, even if it can't find a
-		 * path to them right now.
-		 */
-		boolean longMemory;
-		Class classTarget;
-		private int field_75445_i;
-		private double field_151497_i;
-		private double field_151495_j;
-		private double field_151496_k;
+            if (--this.rangedAttackTime == 0) {
+                if (d0 > (double) this.field_82642_h || !flag) {
+                    Logger.INFO("Stopping ranged attack. " + flag + "|" + (d0 > (double) this.field_82642_h) + "|" + d0
+                            + "|" + (double) this.field_82642_h);
+                    return;
+                }
 
-		private int failedPathFindingPenalty;
+                f = MathHelper.sqrt_double(d0) / this.field_96562_i;
+                float f1 = f;
 
-		public Melee(EntityAIBatKingAttack aParent, Class aClassTarget,
-				double aMoveToTargetSpeed, boolean aLongMemory) {
-			this.parentAI = aParent;
-			this.classTarget = aClassTarget;
-			this.speedTowardsTarget = aMoveToTargetSpeed;
-			this.longMemory = aLongMemory;
-			parentAI.setMutexBits(3);
-		}
+                if (f < 0.1F) {
+                    f1 = 0.1F;
+                }
 
-		/**
-		 * Returns whether the EntityAIBase should begin execution.
-		 */
-		public boolean shouldExecute() {			
-			if (!parentAI.hasValidTarget()) {
-				return false;
-			}			
-			EntityLivingBase entitylivingbase = parentAI.getTarget();
+                if (f1 > 1.0F) {
+                    f1 = 1.0F;
+                }
+                Logger.INFO("Trying to do a ranged attack.");
+                parentAI.getBatKingAsIRangedAttackMob().attackEntityWithRangedAttack(parentAI.mEntityTarget, f1);
+                this.rangedAttackTime = MathHelper.floor_float(
+                        f * (float) (this.maxRangedAttackTime - this.field_96561_g) + (float) this.field_96561_g);
+            } else if (this.rangedAttackTime < 0) {
+                f = MathHelper.sqrt_double(d0) / this.field_96562_i;
+                this.rangedAttackTime = MathHelper.floor_float(
+                        f * (float) (this.maxRangedAttackTime - this.field_96561_g) + (float) this.field_96561_g);
+            }
+        }
+    }
 
-			if (entitylivingbase == null) {
-				return false;
-			} else if (!entitylivingbase.isEntityAlive()) {
-				return false;
-			} else if (this.classTarget != null && !this.classTarget.isAssignableFrom(entitylivingbase.getClass())) {
-				return false;
-			} else {
-				if (--this.field_75445_i <= 0) {
-					parentAI.mEntityPathEntity = parentAI.mAttackingEntity.getNavigator().getPathToEntityLiving(entitylivingbase);
-					this.field_75445_i = 4 + parentAI.mAttackingEntity.getRNG().nextInt(7);
-					return parentAI.mEntityPathEntity != null;
-				} else {
-					return true;
-				}
-			}
-		}
+    private class Melee {
 
-		/**
-		 * Returns whether an in-progress EntityAIBase should continue executing
-		 */
-		public boolean continueExecuting() {
-			EntityLivingBase entitylivingbase = parentAI.mAttackingEntity.getAttackTarget();
-			return entitylivingbase == null ? false
-					: (!entitylivingbase.isEntityAlive() ? false
-							: (!this.longMemory ? !parentAI.mAttackingEntity.getNavigator().noPath()
-									: parentAI.mAttackingEntity.isWithinHomeDistance(MathHelper.floor_double(entitylivingbase.posX),
-											MathHelper.floor_double(entitylivingbase.posY),
-											MathHelper.floor_double(entitylivingbase.posZ))));
-		}
+        private final EntityAIBatKingAttack parentAI;
 
-		/**
-		 * Execute a one shot task or start executing a continuous task
-		 */
-		public void startExecuting() {
-			parentAI.mAttackingEntity.getNavigator().setPath(parentAI.mEntityPathEntity, this.speedTowardsTarget);
-			this.field_75445_i = 0;
-		}
+        /**
+         * An amount of decrementing ticks that allows the entity to attack once the
+         * tick reaches 0.
+         */
+        int attackTick;
+        /** The speed with which the mob will approach the target */
+        double speedTowardsTarget;
+        /**
+         * When true, the mob will continue chasing its target, even if it can't find a
+         * path to them right now.
+         */
+        boolean longMemory;
 
-		/**
-		 * Resets the task
-		 */
-		public void resetTask() {
-			parentAI.mAttackingEntity.getNavigator().clearPathEntity();
-		}
+        Class classTarget;
+        private int field_75445_i;
+        private double field_151497_i;
+        private double field_151495_j;
+        private double field_151496_k;
 
-		/**
-		 * Updates the task
-		 */
-		public void updateTask() {
-			EntityLivingBase entitylivingbase = parentAI.mAttackingEntity.getAttackTarget();
-			parentAI.mAttackingEntity.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
-			double d0 = parentAI.mAttackingEntity.getDistanceSq(entitylivingbase.posX, entitylivingbase.boundingBox.minY,
-					entitylivingbase.posZ);
-			double d1 = (double) (parentAI.mAttackingEntity.width * 2.0F * parentAI.mAttackingEntity.width * 2.0F + entitylivingbase.width);
-			--this.field_75445_i;
+        private int failedPathFindingPenalty;
 
-			if ((this.longMemory || parentAI.mAttackingEntity.getEntitySenses().canSee(entitylivingbase)) && this.field_75445_i <= 0
-					&& (this.field_151497_i == 0.0D && this.field_151495_j == 0.0D && this.field_151496_k == 0.0D
-					|| entitylivingbase.getDistanceSq(this.field_151497_i, this.field_151495_j,
-							this.field_151496_k) >= 1.0D
-							|| parentAI.mAttackingEntity.getRNG().nextFloat() < 0.05F)) {
-				this.field_151497_i = entitylivingbase.posX;
-				this.field_151495_j = entitylivingbase.boundingBox.minY;
-				this.field_151496_k = entitylivingbase.posZ;
-				this.field_75445_i = failedPathFindingPenalty + 4 + parentAI.mAttackingEntity.getRNG().nextInt(7);
+        public Melee(
+                EntityAIBatKingAttack aParent, Class aClassTarget, double aMoveToTargetSpeed, boolean aLongMemory) {
+            this.parentAI = aParent;
+            this.classTarget = aClassTarget;
+            this.speedTowardsTarget = aMoveToTargetSpeed;
+            this.longMemory = aLongMemory;
+            parentAI.setMutexBits(3);
+        }
 
-				if (parentAI.mAttackingEntity.getNavigator().getPath() != null) {
-					PathPoint finalPathPoint = parentAI.mAttackingEntity.getNavigator().getPath().getFinalPathPoint();
-					if (finalPathPoint != null && entitylivingbase.getDistanceSq(finalPathPoint.xCoord,
-							finalPathPoint.yCoord, finalPathPoint.zCoord) < 1) {
-						failedPathFindingPenalty = 0;
-					} else {
-						failedPathFindingPenalty += 10;
-					}
-				} else {
-					failedPathFindingPenalty += 10;
-				}
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        public boolean shouldExecute() {
+            if (!parentAI.hasValidTarget()) {
+                return false;
+            }
+            EntityLivingBase entitylivingbase = parentAI.getTarget();
 
-				if (d0 > 1024.0D) {
-					this.field_75445_i += 10;
-				} else if (d0 > 256.0D) {
-					this.field_75445_i += 5;
-				}
+            if (entitylivingbase == null) {
+                return false;
+            } else if (!entitylivingbase.isEntityAlive()) {
+                return false;
+            } else if (this.classTarget != null && !this.classTarget.isAssignableFrom(entitylivingbase.getClass())) {
+                return false;
+            } else {
+                if (--this.field_75445_i <= 0) {
+                    parentAI.mEntityPathEntity =
+                            parentAI.mAttackingEntity.getNavigator().getPathToEntityLiving(entitylivingbase);
+                    this.field_75445_i = 4 + parentAI.mAttackingEntity.getRNG().nextInt(7);
+                    return parentAI.mEntityPathEntity != null;
+                } else {
+                    return true;
+                }
+            }
+        }
 
-				if (!parentAI.mAttackingEntity.getNavigator().tryMoveToEntityLiving(entitylivingbase, this.speedTowardsTarget)) {
-					this.field_75445_i += 15;
-				}
-			}
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean continueExecuting() {
+            EntityLivingBase entitylivingbase = parentAI.mAttackingEntity.getAttackTarget();
+            return entitylivingbase == null
+                    ? false
+                    : (!entitylivingbase.isEntityAlive()
+                            ? false
+                            : (!this.longMemory
+                                    ? !parentAI.mAttackingEntity.getNavigator().noPath()
+                                    : parentAI.mAttackingEntity.isWithinHomeDistance(
+                                            MathHelper.floor_double(entitylivingbase.posX),
+                                            MathHelper.floor_double(entitylivingbase.posY),
+                                            MathHelper.floor_double(entitylivingbase.posZ))));
+        }
 
-			this.attackTick = Math.max(this.attackTick - 1, 0);
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void startExecuting() {
+            parentAI.mAttackingEntity.getNavigator().setPath(parentAI.mEntityPathEntity, this.speedTowardsTarget);
+            this.field_75445_i = 0;
+        }
 
-			if (d0 <= d1 && this.attackTick <= 20) {
-				this.attackTick = 20;
+        /**
+         * Resets the task
+         */
+        public void resetTask() {
+            parentAI.mAttackingEntity.getNavigator().clearPathEntity();
+        }
 
-				if (parentAI.mAttackingEntity.getHeldItem() != null) {
-					parentAI.mAttackingEntity.swingItem();
-				}
+        /**
+         * Updates the task
+         */
+        public void updateTask() {
+            EntityLivingBase entitylivingbase = parentAI.mAttackingEntity.getAttackTarget();
+            parentAI.mAttackingEntity.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
+            double d0 = parentAI.mAttackingEntity.getDistanceSq(
+                    entitylivingbase.posX, entitylivingbase.boundingBox.minY, entitylivingbase.posZ);
+            double d1 = (double) (parentAI.mAttackingEntity.width * 2.0F * parentAI.mAttackingEntity.width * 2.0F
+                    + entitylivingbase.width);
+            --this.field_75445_i;
 
-				parentAI.mAttackingEntity.attackEntityAsMob(entitylivingbase);
-			}
-		}
+            if ((this.longMemory || parentAI.mAttackingEntity.getEntitySenses().canSee(entitylivingbase))
+                    && this.field_75445_i <= 0
+                    && (this.field_151497_i == 0.0D && this.field_151495_j == 0.0D && this.field_151496_k == 0.0D
+                            || entitylivingbase.getDistanceSq(
+                                            this.field_151497_i, this.field_151495_j, this.field_151496_k)
+                                    >= 1.0D
+                            || parentAI.mAttackingEntity.getRNG().nextFloat() < 0.05F)) {
+                this.field_151497_i = entitylivingbase.posX;
+                this.field_151495_j = entitylivingbase.boundingBox.minY;
+                this.field_151496_k = entitylivingbase.posZ;
+                this.field_75445_i = failedPathFindingPenalty
+                        + 4
+                        + parentAI.mAttackingEntity.getRNG().nextInt(7);
 
-	}
+                if (parentAI.mAttackingEntity.getNavigator().getPath() != null) {
+                    PathPoint finalPathPoint =
+                            parentAI.mAttackingEntity.getNavigator().getPath().getFinalPathPoint();
+                    if (finalPathPoint != null
+                            && entitylivingbase.getDistanceSq(
+                                            finalPathPoint.xCoord, finalPathPoint.yCoord, finalPathPoint.zCoord)
+                                    < 1) {
+                        failedPathFindingPenalty = 0;
+                    } else {
+                        failedPathFindingPenalty += 10;
+                    }
+                } else {
+                    failedPathFindingPenalty += 10;
+                }
 
+                if (d0 > 1024.0D) {
+                    this.field_75445_i += 10;
+                } else if (d0 > 256.0D) {
+                    this.field_75445_i += 5;
+                }
+
+                if (!parentAI.mAttackingEntity
+                        .getNavigator()
+                        .tryMoveToEntityLiving(entitylivingbase, this.speedTowardsTarget)) {
+                    this.field_75445_i += 15;
+                }
+            }
+
+            this.attackTick = Math.max(this.attackTick - 1, 0);
+
+            if (d0 <= d1 && this.attackTick <= 20) {
+                this.attackTick = 20;
+
+                if (parentAI.mAttackingEntity.getHeldItem() != null) {
+                    parentAI.mAttackingEntity.swingItem();
+                }
+
+                parentAI.mAttackingEntity.attackEntityAsMob(entitylivingbase);
+            }
+        }
+    }
 }

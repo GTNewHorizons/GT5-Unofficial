@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-public abstract class GTPP_Worldgen{
+public abstract class GTPP_Worldgen {
 
     public final String mWorldGenName;
     public final boolean mEnabled;
@@ -31,7 +30,15 @@ public abstract class GTPP_Worldgen{
      * @param aChunkZ        zCoord of the Chunk
      * @return if the Worldgeneration has been successfully completed
      */
-    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+    public boolean executeWorldgen(
+            World aWorld,
+            Random aRandom,
+            String aBiome,
+            int aDimensionType,
+            int aChunkX,
+            int aChunkZ,
+            IChunkProvider aChunkGenerator,
+            IChunkProvider aChunkProvider) {
         return false;
     }
 
@@ -44,7 +51,15 @@ public abstract class GTPP_Worldgen{
      * @param aChunkZ        zCoord of the Chunk
      * @return if the Worldgeneration has been successfully completed
      */
-    public boolean executeCavegen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+    public boolean executeCavegen(
+            World aWorld,
+            Random aRandom,
+            String aBiome,
+            int aDimensionType,
+            int aChunkX,
+            int aChunkZ,
+            IChunkProvider aChunkGenerator,
+            IChunkProvider aChunkProvider) {
         return false;
     }
 
@@ -52,7 +67,8 @@ public abstract class GTPP_Worldgen{
         String aDimName = aWorld.provider.getDimensionName();
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
-            boolean tValue = sCustomWorldgenFile.get("worldgen.dimensions." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
+            boolean tValue = sCustomWorldgenFile.get(
+                    "worldgen.dimensions." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
             mDimensionMap.put(aDimName, tValue);
             return tValue;
         }

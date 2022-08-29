@@ -5,8 +5,7 @@ import net.minecraft.item.ItemStack;
 
 public interface IAlgalItem {
 
-	public abstract AlgaeDefinition getAlgaeType(ItemStack aStack);
-	
-	public abstract AlgaeGeneticData getSpeciesData(ItemStack aStack);	
-	
+    public abstract AlgaeDefinition getAlgaeType(ItemStack aStack);
+
+    public abstract AlgaeGeneticData getSpeciesData(ItemStack aStack);
 }

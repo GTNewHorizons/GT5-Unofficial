@@ -15,21 +15,29 @@ import gregtech.api.objects.GT_ItemStack;
  * @author Brian McCloud
  */
 public class Plating extends ReactorItem {
-    
+
     private final int heatAdjustment;
-    
-    public Plating(final int id, final String baseName, GT_ItemStack aItem, final double maxDamage, final double maxHeat, final String sourceMod, final int heatAdjustment, final double explosionPowerMultiplier) {
+
+    public Plating(
+            final int id,
+            final String baseName,
+            GT_ItemStack aItem,
+            final double maxDamage,
+            final double maxHeat,
+            final String sourceMod,
+            final int heatAdjustment,
+            final double explosionPowerMultiplier) {
         super(id, baseName, aItem, maxDamage, maxHeat, sourceMod);
         this.heatAdjustment = heatAdjustment;
         this.explosionPowerMultiplier = explosionPowerMultiplier;
     }
-    
+
     public Plating(Plating other) {
         super(other);
         this.heatAdjustment = other.heatAdjustment;
         this.explosionPowerMultiplier = other.explosionPowerMultiplier;
     }
-    
+
     @Override
     public void addToReactor(final Reactor parent, final int row, final int col) {
         super.addToReactor(parent, row, col);
@@ -45,5 +53,4 @@ public class Plating extends ReactorItem {
         }
         super.removeFromReactor();
     }
-    
 }

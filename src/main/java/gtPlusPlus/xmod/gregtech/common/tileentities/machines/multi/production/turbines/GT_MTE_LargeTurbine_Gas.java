@@ -2,8 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 
 import static gtPlusPlus.core.lib.CORE.RANDOM;
 
-import java.util.ArrayList;
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,6 +9,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,7 +20,6 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
     public GT_MTE_LargeTurbine_Gas(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
-
 
     public GT_MTE_LargeTurbine_Gas(String aName) {
         super(aName);
@@ -42,24 +40,23 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
         return 58;
     }
 
-
-	@Override
-	protected boolean requiresOutputHatch() {
-		return false;
-	}
+    @Override
+    protected boolean requiresOutputHatch() {
+        return false;
+    }
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return 4000;
     }
-    
+
     public int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) {
-        	return 0;
+            return 0;
         }
         GT_Recipe tFuel = GT_Recipe_Map.sTurbineFuels.findFuel(aLiquid);
         if (tFuel != null) {
-        	return tFuel.mSpecialValue;
+            return tFuel.mSpecialValue;
         }
         return 0;
     }
@@ -70,9 +67,11 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
             int tEU = 0;
             int actualOptimalFlow = 0;
 
-            FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
+            FluidStack firstFuelType = new FluidStack(
+                    aFluids.get(0),
+                    0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
-            //log("Fuel Value of "+aFluids.get(0).getLocalizedName()+" is "+fuelValue+"eu");
+            // log("Fuel Value of "+aFluids.get(0).getLocalizedName()+" is "+fuelValue+"eu");
             if (aOptFlow < fuelValue) {
                 // turbine too weak and/or fuel too powerful
                 // at least consume 1L
@@ -86,14 +85,18 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
             actualOptimalFlow = GT_Utility.safeInt((long) aOptFlow / fuelValue);
             this.realOptFlow = actualOptimalFlow;
 
-            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
+            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow
+                    * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for
+            // multi-hatch scenarios.
             int flow = 0;
             int totalFlow = 0;
 
             storedFluid = 0;
             for (FluidStack aFluid : aFluids) {
                 if (aFluid.isFluidEqual(firstFuelType)) {
-                    flow = Math.min(aFluid.amount, remainingFlow); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
+                    flow = Math.min(
+                            aFluid.amount,
+                            remainingFlow); // try to use up to 125% of optimal flow w/o exceeding remainingFlow
                     depleteInput(new FluidStack(aFluid, flow)); // deplete that amount
                     this.storedFluid += aFluid.amount;
                     remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
@@ -103,11 +106,11 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
             if (totalFlow <= 0) return 0;
             tEU = GT_Utility.safeInt((long) totalFlow * fuelValue);
 
-            //log("Total Flow: "+totalFlow);
-            //log("Real Optimal Flow: "+actualOptimalFlow);
-            //log("Flow: "+flow);
-            //log("Remaining Flow: "+remainingFlow);
-            
+            // log("Total Flow: "+totalFlow);
+            // log("Real Optimal Flow: "+actualOptimalFlow);
+            // log("Flow: "+flow);
+            // log("Remaining Flow: "+remainingFlow);
+
             if (totalFlow == actualOptimalFlow) {
                 tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
             } else {
@@ -117,7 +120,6 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
             }
 
             return tEU;
-
         }
         return 0;
     }
@@ -126,7 +128,7 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
     public int getDamageToComponent(ItemStack aStack) {
         return (RANDOM.nextInt(4) == 0) ? 0 : 1;
     }
- 
+
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
@@ -137,34 +139,33 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
         super.loadNBTData(aNBT);
     }
 
-	@Override
-	public String getCustomGUIResourceName() {
-		return null;
-	}
+    @Override
+    public String getCustomGUIResourceName() {
+        return null;
+    }
 
-	@Override
-	public String getMachineType() {
-		return "Large Gas Turbine";
-	}
+    @Override
+    public String getMachineType() {
+        return "Large Gas Turbine";
+    }
 
-	@Override
-	protected String getTurbineType() {
-		return "Gas";
-	}
+    @Override
+    protected String getTurbineType() {
+        return "Gas";
+    }
 
-	@Override
-	protected String getCasingName() {
-		return "Reinforced Gas Turbine Casing";
-	}
+    @Override
+    protected String getCasingName() {
+        return "Reinforced Gas Turbine Casing";
+    }
 
-	@Override
-	protected ITexture getTextureFrontFace() {
-		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS5);
-	}
+    @Override
+    protected ITexture getTextureFrontFace() {
+        return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS5);
+    }
 
-	@Override
-	protected ITexture getTextureFrontFaceActive() {
-		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE5);
-	}
-
+    @Override
+    protected ITexture getTextureFrontFaceActive() {
+        return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE5);
+    }
 }

@@ -1,5 +1,11 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -23,199 +29,192 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+public class GregtechMetaTileEntity_IndustrialCuttingMachine
+        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCuttingMachine>
+        implements ISurvivalConstructable {
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+    private boolean mCuttingMode = true;
+    private int mCasing;
+    private IStructureDefinition<GregtechMetaTileEntity_IndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
 
-public class GregtechMetaTileEntity_IndustrialCuttingMachine extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCuttingMachine> implements ISurvivalConstructable {
+    public GregtechMetaTileEntity_IndustrialCuttingMachine(
+            final int aID, final String aName, final String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
 
-	private boolean mCuttingMode = true;
-	private int mCasing;
-	private IStructureDefinition<GregtechMetaTileEntity_IndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
-	
-	public GregtechMetaTileEntity_IndustrialCuttingMachine(final int aID, final String aName, final String aNameRegional) {
-		super(aID, aName, aNameRegional);
-	}
+    public GregtechMetaTileEntity_IndustrialCuttingMachine(final String aName) {
+        super(aName);
+    }
 
-	public GregtechMetaTileEntity_IndustrialCuttingMachine(final String aName) {
-		super(aName);
-	}
+    @Override
+    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        return new GregtechMetaTileEntity_IndustrialCuttingMachine(this.mName);
+    }
 
-	@Override
-	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntity_IndustrialCuttingMachine(this.mName);
-	}
+    @Override
+    public String getMachineType() {
+        return "Cutting Machine / Slicing Machine";
+    }
 
-	@Override
-	public String getMachineType() {
-		return "Cutting Machine / Slicing Machine";
-	}
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(getMachineType())
+                .addInfo("Controller Block for the Industrial Cutting Factory")
+                .addInfo("200% faster than using single block machines of the same voltage")
+                .addInfo("Only uses 75% of the EU/t normally required")
+                .addInfo("Processes four items per voltage tier")
+                .addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator()
+                .beginStructureBlock(3, 3, 5, true)
+                .addController("Front Center")
+                .addCasingInfo("Cutting Factory Frames", 26)
+                .addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1)
+                .addInputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+        return tt;
+    }
 
-	@Override
-	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-		tt.addMachineType(getMachineType())
-				.addInfo("Controller Block for the Industrial Cutting Factory")
-				.addInfo("200% faster than using single block machines of the same voltage")
-				.addInfo("Only uses 75% of the EU/t normally required")
-				.addInfo("Processes four items per voltage tier")
-				.addPollutionAmount(getPollutionPerSecond(null))
-				.addSeparator()
-				.beginStructureBlock(3, 3, 5, true)
-				.addController("Front Center")
-				.addCasingInfo("Cutting Factory Frames", 26)
-				.addInputBus("Any Casing", 1)
-				.addOutputBus("Any Casing", 1)
-				.addInputHatch("Any Casing", 1)
-				.addEnergyHatch("Any Casing", 1)
-				.addMaintenanceHatch("Any Casing", 1)
-				.addMufflerHatch("Any Casing", 1)
-				.toolTipFinisher(CORE.GT_Tooltip_Builder);
-		return tt;
-	}
+    @Override
+    public IStructureDefinition<GregtechMetaTileEntity_IndustrialCuttingMachine> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialCuttingMachine>builder()
+                    .addShape(mName, transpose(new String[][] {
+                        {"CCC", "CCC", "CCC", "CCC", "CCC"},
+                        {"C~C", "C-C", "C-C", "C-C", "CCC"},
+                        {"CCC", "CCC", "CCC", "CCC", "CCC"},
+                    }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(GregtechMetaTileEntity_IndustrialCuttingMachine.class)
+                                    .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
+                                    .casingIndex(getCasingTextureIndex())
+                                    .dot(1)
+                                    .buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 13))))
+                    .build();
+        }
+        return STRUCTURE_DEFINITION;
+    }
 
-	@Override
-	public IStructureDefinition<GregtechMetaTileEntity_IndustrialCuttingMachine> getStructureDefinition() {
-		if (STRUCTURE_DEFINITION == null) {
-			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialCuttingMachine>builder()
-					.addShape(mName, transpose(new String[][]{
-							{"CCC", "CCC", "CCC", "CCC", "CCC"},
-							{"C~C", "C-C", "C-C", "C-C", "CCC"},
-							{"CCC", "CCC", "CCC", "CCC", "CCC"},
-					}))
-					.addElement(
-							'C',
-							buildHatchAdder(GregtechMetaTileEntity_IndustrialCuttingMachine.class)
-									.atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
-									.casingIndex(getCasingTextureIndex())
-									.dot(1)
-									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 13)))
-					)
-					.build();
-		}
-		return STRUCTURE_DEFINITION;
-	}
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
+    }
 
-	@Override
-	public void construct(ItemStack stackSize, boolean hintsOnly) {
-		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
-	}
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
+    }
 
-	@Override
-	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-		if (mMachine) return -1;
-		return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
-	}
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCasing = 0;
+        return checkPiece(mName, 1, 1, 0) && mCasing >= 26 && checkHatch();
+    }
 
-	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		mCasing = 0;
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 26 && checkHatch();
-	}
+    @Override
+    protected IIconContainer getActiveOverlay() {
+        return TexturesGtBlock.Overlay_Machine_Controller_Default_Active;
+    }
 
-	@Override
-	protected IIconContainer getActiveOverlay() {
-		return TexturesGtBlock.Overlay_Machine_Controller_Default_Active;
-	}
+    @Override
+    protected IIconContainer getInactiveOverlay() {
+        return TexturesGtBlock.Overlay_Machine_Controller_Default;
+    }
 
-	@Override
-	protected IIconContainer getInactiveOverlay() {
-		return TexturesGtBlock.Overlay_Machine_Controller_Default;
-	}
+    @Override
+    protected int getCasingTextureId() {
+        return TAE.GTPP_INDEX(29);
+    }
 
-	@Override
-	protected int getCasingTextureId() {
-		return TAE.GTPP_INDEX(29);
-	}
+    @Override
+    public boolean hasSlotInGUI() {
+        return false;
+    }
 
-	@Override
-	public boolean hasSlotInGUI() {
-		return false;
-	}
+    @Override
+    public String getCustomGUIResourceName() {
+        return "IndustrialCuttingMachine";
+    }
 
-	@Override
-	public String getCustomGUIResourceName() {
-		return "IndustrialCuttingMachine";
-	}
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return mCuttingMode ? GT_Recipe.GT_Recipe_Map.sCutterRecipes : GT_Recipe.GT_Recipe_Map.sSlicerRecipes;
+    }
 
-	@Override
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mCuttingMode ? GT_Recipe.GT_Recipe_Map.sCutterRecipes : GT_Recipe.GT_Recipe_Map.sSlicerRecipes;
-	}
+    @Override
+    public boolean checkRecipe(final ItemStack aStack) {
+        return checkRecipeGeneric((4 * GT_Utility.getTier(this.getMaxInputVoltage())), 75, 200);
+    }
 
-	@Override
-	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric((4* GT_Utility.getTier(this.getMaxInputVoltage())), 75, 200);
-	}
-	
-	@Override
-	public int getMaxParallelRecipes() {
-		return (4 * GT_Utility.getTier(this.getMaxInputVoltage()));
-	}
+    @Override
+    public int getMaxParallelRecipes() {
+        return (4 * GT_Utility.getTier(this.getMaxInputVoltage()));
+    }
 
-	@Override
-	public int getEuDiscountForParallelism() {
-		return 75;
-	}
+    @Override
+    public int getEuDiscountForParallelism() {
+        return 75;
+    }
 
-	@Override
-	public int getMaxEfficiency(final ItemStack aStack) {
-		return 10000;
-	}
+    @Override
+    public int getMaxEfficiency(final ItemStack aStack) {
+        return 10000;
+    }
 
-	@Override
-	public int getPollutionPerSecond(final ItemStack aStack) {
-		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialCuttingMachine;
-	}
+    @Override
+    public int getPollutionPerSecond(final ItemStack aStack) {
+        return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialCuttingMachine;
+    }
 
-	@Override
-	public int getAmountOfOutputs() {
-		return 2;
-	}
+    @Override
+    public int getAmountOfOutputs() {
+        return 2;
+    }
 
-	@Override
-	public boolean explodesOnComponentBreak(final ItemStack aStack) {
-		return false;
-	}
+    @Override
+    public boolean explodesOnComponentBreak(final ItemStack aStack) {
+        return false;
+    }
 
-	public Block getCasingBlock() {
-		return ModBlocks.blockCasings2Misc;
-	}
+    public Block getCasingBlock() {
+        return ModBlocks.blockCasings2Misc;
+    }
 
+    public byte getCasingMeta() {
+        return 13;
+    }
 
-	public byte getCasingMeta() {
-		return 13;
-	}
+    public byte getCasingTextureIndex() {
+        return (byte) TAE.GTPP_INDEX(29);
+    }
 
+    @Override
+    public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        mCuttingMode = Utils.invertBoolean(mCuttingMode);
+        String aMode = mCuttingMode ? "Cutting" : "Slicing";
+        PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);
+    }
 
-	public byte getCasingTextureIndex() {
-		return (byte) TAE.GTPP_INDEX(29);
-	}
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("mCuttingMode", mCuttingMode);
+    }
 
-	@Override
-	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		mCuttingMode = Utils.invertBoolean(mCuttingMode);		
-		String aMode = mCuttingMode ? "Cutting" : "Slicing";		
-		PlayerUtils.messagePlayer(aPlayer, "Mode: "+aMode);
-	}
-
-	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-		super.saveNBTData(aNBT);
-		aNBT.setBoolean("mCuttingMode", mCuttingMode);
-	}
-
-	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-		super.loadNBTData(aNBT);
-		if (aNBT.hasKey("mCuttingMode")) {
-			mCuttingMode = aNBT.getBoolean("mCuttingMode");			
-		}
-		else {
-			mCuttingMode = true;			
-		}
-	}
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("mCuttingMode")) {
+            mCuttingMode = aNBT.getBoolean("mCuttingMode");
+        } else {
+            mCuttingMode = true;
+        }
+    }
 }

@@ -10,14 +10,8 @@
  ******************************************************************************/
 package gtPlusPlus.xmod.forestry.bees.tileentities;
 
-import java.util.*;
-
-import cpw.mods.fml.common.Optional;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-
 import buildcraft.api.statements.ITriggerExternal;
+import cpw.mods.fml.common.Optional;
 import forestry.api.apiculture.*;
 import forestry.apiculture.ApiaryBeeListener;
 import forestry.apiculture.ApiaryBeeModifier;
@@ -28,65 +22,68 @@ import forestry.apiculture.tiles.TileBeeHousingBase;
 import forestry.apiculture.trigger.ApicultureTriggers;
 import gtPlusPlus.xmod.forestry.bees.gui.ContainerBeeHouse;
 import gtPlusPlus.xmod.forestry.bees.gui.GuiBeeHouse;
+import java.util.*;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileDenseBeeHouse extends TileBeeHousingBase implements IApiary {
-	private final IBeeModifier beeModifier = new ApiaryBeeModifier();
-	private final IBeeListener beeListener = new ApiaryBeeListener(this);
-	private final InventoryApiary inventory = new InventoryApiary(getAccessHandler());
+    private final IBeeModifier beeModifier = new ApiaryBeeModifier();
+    private final IBeeListener beeListener = new ApiaryBeeListener(this);
+    private final InventoryApiary inventory = new InventoryApiary(getAccessHandler());
 
-	public TileDenseBeeHouse() {
-		super("apiary2");
-		setInternalInventory(inventory);
-	}
+    public TileDenseBeeHouse() {
+        super("apiary2");
+        setInternalInventory(inventory);
+    }
 
-	@Override
-	public IBeeHousingInventory getBeeInventory() {
-		return inventory;
-	}
+    @Override
+    public IBeeHousingInventory getBeeInventory() {
+        return inventory;
+    }
 
-	@Override
-	public IApiaryInventory getApiaryInventory() {
-		return inventory;
-	}
+    @Override
+    public IApiaryInventory getApiaryInventory() {
+        return inventory;
+    }
 
-	@Override
-	public Collection<IBeeModifier> getBeeModifiers() {
-		List<IBeeModifier> beeModifiers = new ArrayList<>();
+    @Override
+    public Collection<IBeeModifier> getBeeModifiers() {
+        List<IBeeModifier> beeModifiers = new ArrayList<>();
 
-		beeModifiers.add(beeModifier);
+        beeModifiers.add(beeModifier);
 
-		for (IHiveFrame frame : inventory.getFrames()) {
-			beeModifiers.add(frame.getBeeModifier());
-		}
+        for (IHiveFrame frame : inventory.getFrames()) {
+            beeModifiers.add(frame.getBeeModifier());
+        }
 
-		return beeModifiers;
-	}
+        return beeModifiers;
+    }
 
-	@Override
-	public Iterable<IBeeListener> getBeeListeners() {
-		return Collections.singleton(beeListener);
-	}
+    @Override
+    public Iterable<IBeeListener> getBeeListeners() {
+        return Collections.singleton(beeListener);
+    }
 
-	/* ITRIGGERPROVIDER */
-	@Optional.Method(modid = "BuildCraftAPI|statements")
-	@Override
-	public Collection<ITriggerExternal> getExternalTriggers(ForgeDirection side, TileEntity tile) {
-		LinkedList<ITriggerExternal> res = new LinkedList<>();
-		res.add(ApicultureTriggers.missingQueen);
-		res.add(ApicultureTriggers.missingDrone);
-		res.add(ApicultureTriggers.noFrames);
-		return res;
-	}
+    /* ITRIGGERPROVIDER */
+    @Optional.Method(modid = "BuildCraftAPI|statements")
+    @Override
+    public Collection<ITriggerExternal> getExternalTriggers(ForgeDirection side, TileEntity tile) {
+        LinkedList<ITriggerExternal> res = new LinkedList<>();
+        res.add(ApicultureTriggers.missingQueen);
+        res.add(ApicultureTriggers.missingDrone);
+        res.add(ApicultureTriggers.noFrames);
+        return res;
+    }
 
-	@Override
-	public Object getGui(EntityPlayer player, int data) {
-		ContainerBeeHouse container = new ContainerBeeHouse(player.inventory, this, true);
-		return new GuiBeeHouse<>(this, container, GuiBeeHouse.Icon.APIARY);
-	}
+    @Override
+    public Object getGui(EntityPlayer player, int data) {
+        ContainerBeeHouse container = new ContainerBeeHouse(player.inventory, this, true);
+        return new GuiBeeHouse<>(this, container, GuiBeeHouse.Icon.APIARY);
+    }
 
-	@Override
-	public Object getContainer(EntityPlayer player, int data) {
-		return new ContainerBeeHouse(player.inventory, this, true);
-	}
+    @Override
+    public Object getContainer(EntityPlayer player, int data) {
+        return new ContainerBeeHouse(player.inventory, this, true);
+    }
 }

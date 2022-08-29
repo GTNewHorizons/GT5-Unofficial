@@ -1,13 +1,12 @@
 package gtPlusPlus.xmod.gregtech.api.gui.hatches;
 
-import java.util.Iterator;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_Container;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.slots.SlotNoInput;
+import java.util.Iterator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
@@ -17,18 +16,19 @@ import net.minecraft.item.ItemStack;
 
 public class CONTAINER_HatchNbtConsumable extends GT_Container {
 
-	public final int mInputslotCount;
-	private final int mTotalSlotCount;
-	
-    public CONTAINER_HatchNbtConsumable(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, int aInputslotCount) {
+    public final int mInputslotCount;
+    private final int mTotalSlotCount;
+
+    public CONTAINER_HatchNbtConsumable(
+            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, int aInputslotCount) {
         super(aInventoryPlayer, aTileEntity);
-		mInputslotCount = aInputslotCount;
-		mTotalSlotCount = aInputslotCount*2;
+        mInputslotCount = aInputslotCount;
+        mTotalSlotCount = aInputslotCount * 2;
         mTileEntity = aTileEntity;
         if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {
             addSlots(aInventoryPlayer);
             if (doesBindPlayerInventory()) {
-            	bindPlayerInventory(aInventoryPlayer);
+                bindPlayerInventory(aInventoryPlayer);
             }
             detectAndSendChanges();
         } else {
@@ -38,63 +38,61 @@ public class CONTAINER_HatchNbtConsumable extends GT_Container {
 
     @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-    	if (mTotalSlotCount == 8) {    	
-    		final int aSlotYStart = 26;
-    		final int aSlotYFinish = aSlotYStart + (18*2);
-    		final int aSlotXStart1 = 26;
-    		final int aSlotXFinish1 = aSlotXStart1 + (18*2);
-    		final int aSlotXStart2 = 116;
-    		final int aSlotXFinish2 = aSlotXStart2 + (18*2);    	
-    		int aSlotID = 0;
-    		for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
-    			for (int x = aSlotXStart1; x < aSlotXFinish1; x += 18) {
-    	            addSlotToContainer(new Slot(mTileEntity, aSlotID++, x, y));
-        		}
-    		}
-    		for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
-    			for (int x = aSlotXStart2; x < aSlotXFinish2; x += 18) {
-    	            addSlotToContainer(new ViewingSlot(mTileEntity, aSlotID++, x, y));
-        		}
-    		} 
-    	}
-    	else if (mTotalSlotCount == 18) {  
-    		int aSlotYStart = 20;
-    		int aSlotYFinish = aSlotYStart + (18*3);
-    		int aSlotXStart1 = 26;
-    		int aSlotXFinish1 = aSlotXStart1 + (18*3);
-    		int aSlotXStart2 = 98;
-    		int aSlotXFinish2 = aSlotXStart2 + (18*3);    		
-    		int aSlotID = 0;
-    		for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
-    			for (int x = aSlotXStart1; x < aSlotXFinish1; x += 18) {
-    	            addSlotToContainer(new Slot(mTileEntity, aSlotID++, x, y));
-        		}
-    		}
-    		for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
-    			for (int x = aSlotXStart2; x < aSlotXFinish2; x += 18) {
-    	            addSlotToContainer(new ViewingSlot(mTileEntity, aSlotID++, x, y));
-        		}
-    		}     		
-    	}
-    	else if (mTotalSlotCount == 32) {  
-    		int aSlotYStart = 8;
-    		int aSlotYFinish = aSlotYStart + (18*4);
-    		int aSlotXStart1 = 8;
-    		int aSlotXFinish1 = aSlotXStart1 + (18*4);
-    		int aSlotXStart2 = 97;
-    		int aSlotXFinish2 = aSlotXStart2 + (18*4);    		
-    		int aSlotID = 0;
-    		for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
-    			for (int x = aSlotXStart1; x < aSlotXFinish1; x += 18) {
-    	            addSlotToContainer(new Slot(mTileEntity, aSlotID++, x, y));
-        		}
-    		}
-    		for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
-    			for (int x = aSlotXStart2; x < aSlotXFinish2; x += 18) {
-    	            addSlotToContainer(new ViewingSlot(mTileEntity, aSlotID++, x, y));
-        		}
-    		}    		
-    	}        
+        if (mTotalSlotCount == 8) {
+            final int aSlotYStart = 26;
+            final int aSlotYFinish = aSlotYStart + (18 * 2);
+            final int aSlotXStart1 = 26;
+            final int aSlotXFinish1 = aSlotXStart1 + (18 * 2);
+            final int aSlotXStart2 = 116;
+            final int aSlotXFinish2 = aSlotXStart2 + (18 * 2);
+            int aSlotID = 0;
+            for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
+                for (int x = aSlotXStart1; x < aSlotXFinish1; x += 18) {
+                    addSlotToContainer(new Slot(mTileEntity, aSlotID++, x, y));
+                }
+            }
+            for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
+                for (int x = aSlotXStart2; x < aSlotXFinish2; x += 18) {
+                    addSlotToContainer(new ViewingSlot(mTileEntity, aSlotID++, x, y));
+                }
+            }
+        } else if (mTotalSlotCount == 18) {
+            int aSlotYStart = 20;
+            int aSlotYFinish = aSlotYStart + (18 * 3);
+            int aSlotXStart1 = 26;
+            int aSlotXFinish1 = aSlotXStart1 + (18 * 3);
+            int aSlotXStart2 = 98;
+            int aSlotXFinish2 = aSlotXStart2 + (18 * 3);
+            int aSlotID = 0;
+            for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
+                for (int x = aSlotXStart1; x < aSlotXFinish1; x += 18) {
+                    addSlotToContainer(new Slot(mTileEntity, aSlotID++, x, y));
+                }
+            }
+            for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
+                for (int x = aSlotXStart2; x < aSlotXFinish2; x += 18) {
+                    addSlotToContainer(new ViewingSlot(mTileEntity, aSlotID++, x, y));
+                }
+            }
+        } else if (mTotalSlotCount == 32) {
+            int aSlotYStart = 8;
+            int aSlotYFinish = aSlotYStart + (18 * 4);
+            int aSlotXStart1 = 8;
+            int aSlotXFinish1 = aSlotXStart1 + (18 * 4);
+            int aSlotXStart2 = 97;
+            int aSlotXFinish2 = aSlotXStart2 + (18 * 4);
+            int aSlotID = 0;
+            for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
+                for (int x = aSlotXStart1; x < aSlotXFinish1; x += 18) {
+                    addSlotToContainer(new Slot(mTileEntity, aSlotID++, x, y));
+                }
+            }
+            for (int y = aSlotYStart; y < aSlotYFinish; y += 18) {
+                for (int x = aSlotXStart2; x < aSlotXFinish2; x += 18) {
+                    addSlotToContainer(new ViewingSlot(mTileEntity, aSlotID++, x, y));
+                }
+            }
+        }
     }
 
     @Override
@@ -106,16 +104,35 @@ public class CONTAINER_HatchNbtConsumable extends GT_Container {
     public int getShiftClickSlotCount() {
         return mInputslotCount;
     }
-    
+
     /*
      * Uselss stuff copied from GT
      */
-    
 
-    public int mActive = 0, mMaxProgressTime = 0, mProgressTime = 0, mEnergy = 0, mSteam = 0, mSteamStorage = 0, mStorage = 0, mOutput = 0, mInput = 0, mID = 0, mDisplayErrorCode = 0;
-    private int oActive = 0, oMaxProgressTime = 0, oProgressTime = 0, oEnergy = 0, oSteam = 0, oSteamStorage = 0, oStorage = 0, oOutput = 0, oInput = 0, oID = 0, oDisplayErrorCode = 0, mTimer = 0;
+    public int mActive = 0,
+            mMaxProgressTime = 0,
+            mProgressTime = 0,
+            mEnergy = 0,
+            mSteam = 0,
+            mSteamStorage = 0,
+            mStorage = 0,
+            mOutput = 0,
+            mInput = 0,
+            mID = 0,
+            mDisplayErrorCode = 0;
+    private int oActive = 0,
+            oMaxProgressTime = 0,
+            oProgressTime = 0,
+            oEnergy = 0,
+            oSteam = 0,
+            oSteamStorage = 0,
+            oStorage = 0,
+            oOutput = 0,
+            oInput = 0,
+            oID = 0,
+            oDisplayErrorCode = 0,
+            mTimer = 0;
 
-    
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
@@ -252,31 +269,30 @@ public class CONTAINER_HatchNbtConsumable extends GT_Container {
     public boolean canInteractWith(EntityPlayer player) {
         return mTileEntity.isUseableByPlayer(player);
     }
-    
-    public String trans(String aKey, String aEnglish){
-    	return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
+
+    public String trans(String aKey, String aEnglish) {
+        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
     }
-    
+
     private static class ViewingSlot extends SlotNoInput {
 
-		public ViewingSlot(IInventory inventory, int index, int x, int y) {
-			super(inventory, index, x, y);
-		}
+        public ViewingSlot(IInventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
 
-		@Override
-		public boolean isItemValid(ItemStack itemstack) {
-			return false;
-		}
+        @Override
+        public boolean isItemValid(ItemStack itemstack) {
+            return false;
+        }
 
-		@Override
-		public int getSlotStackLimit() {
-			return 1;
-		}
+        @Override
+        public int getSlotStackLimit() {
+            return 1;
+        }
 
-		@Override
-		public boolean canTakeStack(EntityPlayer p_82869_1_) {
-			return true;
-		}
-    	
+        @Override
+        public boolean canTakeStack(EntityPlayer p_82869_1_) {
+            return true;
+        }
     }
 }

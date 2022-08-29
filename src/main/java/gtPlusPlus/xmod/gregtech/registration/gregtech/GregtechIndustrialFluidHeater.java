@@ -6,17 +6,16 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 
 public class GregtechIndustrialFluidHeater {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Industrial Thermal Centrifuge Multiblock.");
-			run1();			
-		}
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering Industrial Thermal Centrifuge Multiblock.");
+            run1();
+        }
+    }
 
-	}
-
-	private static void run1() {
-		GregtechItemList.Controller_IndustrialFluidHeater.set(new GregtechMetaTileEntity_IndustrialFluidHeater(31077,
-				"industrialfluidheater.controller.tier.single", "Thermic Heating Device").getStackForm(1L));
-
-	}
+    private static void run1() {
+        GregtechItemList.Controller_IndustrialFluidHeater.set(new GregtechMetaTileEntity_IndustrialFluidHeater(
+                        31077, "industrialfluidheater.controller.tier.single", "Thermic Heating Device")
+                .getStackForm(1L));
+    }
 }

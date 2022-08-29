@@ -6,55 +6,51 @@ import org.apache.logging.log4j.Logger;
 
 public class Preloader_Logger {
 
-	private Preloader_Logger() {
+    private Preloader_Logger() {}
 
-	}
+    // Logging Functions
+    public static final Logger MODLOGGER = Preloader_Logger.makeLogger();
 
-	// Logging Functions
-	public static final Logger MODLOGGER = Preloader_Logger.makeLogger();
+    // Generate GT++ Logger
+    public static Logger makeLogger() {
+        final Logger gtPlusPlusLogger = LogManager.getLogger("GT++ ASM");
+        return gtPlusPlusLogger;
+    }
 
-	// Generate GT++ Logger
-	public static Logger makeLogger() {
-		final Logger gtPlusPlusLogger = LogManager.getLogger("GT++ ASM");
-		return gtPlusPlusLogger;
-	}
+    public static final org.apache.logging.log4j.Logger getLogger() {
+        return MODLOGGER;
+    }
 
-	public static final org.apache.logging.log4j.Logger getLogger(){
-		return MODLOGGER;
-	}
+    // Non-Dev Comments
 
-	// Non-Dev Comments
+    public static void INFO(final String s, final String s2) {
+        INFO(s);
+        INFO(s2);
+    }
 
-	public static void INFO(final String s, final String s2) {
-		INFO(s);
-		INFO(s2);
-	}
+    public static void INFO(final String s) {
+        MODLOGGER.info(s);
+    }
 
-	public static void INFO(final String s) {
-		MODLOGGER.info(s);
-	}
+    // Developer Comments
+    public static void WARNING(final String s) {
+        MODLOGGER.warn(s);
+    }
 
-	// Developer Comments
-	public static void WARNING(final String s) {
-		MODLOGGER.warn(s);
-	}
+    // Errors
+    public static void ERROR(final String s) {
+        MODLOGGER.fatal(s);
+    }
 
-	// Errors
-	public static void ERROR(final String s) {
-		MODLOGGER.fatal(s);
-	}
-
-	public static void LOG(String string, Level info, String string2) {
-		if (info.equals(Level.INFO)) {
-			INFO("["+string+"] "+string2);
-		}
-		if (info.equals(Level.WARN)) {
-			WARNING("["+string+"] "+string2);
-		}
-		if (info.equals(Level.ERROR)) {
-			ERROR("["+string+"] "+string2);
-		}
-
-	}
-
+    public static void LOG(String string, Level info, String string2) {
+        if (info.equals(Level.INFO)) {
+            INFO("[" + string + "] " + string2);
+        }
+        if (info.equals(Level.WARN)) {
+            WARNING("[" + string + "] " + string2);
+        }
+        if (info.equals(Level.ERROR)) {
+            ERROR("[" + string + "] " + string2);
+        }
+    }
 }

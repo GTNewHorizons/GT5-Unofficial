@@ -1,23 +1,21 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
-import net.minecraft.entity.player.InventoryPlayer;
-
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import net.minecraft.entity.player.InventoryPlayer;
 
-public class GUI_AdvancedBoiler
-        extends GT_GUIContainerMetaTile_Machine {
+public class GUI_AdvancedBoiler extends GT_GUIContainerMetaTile_Machine {
     public GUI_AdvancedBoiler(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aTextureName) {
         super(new CONTAINER_AdvancedBoiler(aInventoryPlayer, aTileEntity), "miscutils:textures/gui/" + aTextureName);
     }
 
     @Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString("Advanced Boiler", 8, 4, 4210752);
     }
 
     @Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
         super.drawGuiContainerBackgroundLayer(par1, par2, par3);
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;

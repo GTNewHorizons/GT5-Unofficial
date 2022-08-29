@@ -28,56 +28,53 @@ import net.minecraftforge.fluids.Fluid;
 
 public class FluidPackage {
 
+    public final int mID;
+    public final String mName;
+    private final Fluid mFluid;
+    public final ItemStack mBucket;
+    public final Block mBlock;
 
-	public final int mID;
-	public final String mName;
-	private final Fluid mFluid;
-	public final ItemStack mBucket;
-	public final Block mBlock;
+    public FluidPackage(int aID, String aName, Fluid aFluid, ItemStack aBucket, Block aBlock) {
 
-	public FluidPackage(int aID, String aName, Fluid aFluid, ItemStack aBucket, Block aBlock) {
+        mNameToFluidMap.put(aName, aFluid);
+        mNameToBucketMap.put(aName, aBucket);
+        mNameToBlockMap.put(aName, aBlock);
+        mNameToMetaMap.put(aName, aID);
 
-		mNameToFluidMap.put(aName, aFluid);
-		mNameToBucketMap.put(aName, aBucket);
-		mNameToBlockMap.put(aName, aBlock);
-		mNameToMetaMap.put(aName, aID);
+        mFluidToNameMap.put(aFluid, aName);
+        mFluidToBucketMap.put(aFluid, aBucket);
+        mFluidToBlockMap.put(aFluid, aBlock);
+        mFluidToMetaMap.put(aFluid, aID);
 
-		mFluidToNameMap.put(aFluid, aName);
-		mFluidToBucketMap.put(aFluid, aBucket);
-		mFluidToBlockMap.put(aFluid, aBlock);
-		mFluidToMetaMap.put(aFluid, aID);
+        mBucketToFluidMap.put(aBucket, aFluid);
+        mBucketToNameMap.put(aBucket, aName);
+        mBucketToBlockMap.put(aBucket, aBlock);
+        mBucketToMetaMap.put(aBucket, aID);
 
-		mBucketToFluidMap.put(aBucket, aFluid);
-		mBucketToNameMap.put(aBucket, aName);
-		mBucketToBlockMap.put(aBucket, aBlock);
-		mBucketToMetaMap.put(aBucket, aID);
+        mBlockToNameMap.put(aBlock, aName);
+        mBlockToFluidMap.put(aBlock, aFluid);
+        mBlockToBucketMap.put(aBlock, aBucket);
+        mBlockToMetaMap.put(aBlock, aID);
 
-		mBlockToNameMap.put(aBlock, aName);
-		mBlockToFluidMap.put(aBlock, aFluid);
-		mBlockToBucketMap.put(aBlock, aBucket);
-		mBlockToMetaMap.put(aBlock, aID);	
+        mMetaToNameMap.put(aID, aName);
+        mMetaToFluidMap.put(aID, aFluid);
+        mMetaToBucketMap.put(aID, aBucket);
+        mMetaToBlockMap.put(aID, aBlock);
 
-		mMetaToNameMap.put(aID, aName);
-		mMetaToFluidMap.put(aID, aFluid);
-		mMetaToBucketMap.put(aID, aBucket);
-		mMetaToBlockMap.put(aID, aBlock);
-		
-		mMetaToColourMap.put(aID, aFluid.getColor());
-		
-		mID = aID;
-		mName = aName;
-		mFluid = aFluid;
-		mBucket = aBucket;
-		mBlock = aBlock;
+        mMetaToColourMap.put(aID, aFluid.getColor());
 
-	}
-	
-	public Fluid get() {
-		return mFluid;
-	}
-	
-	public boolean valid() {
-		return mName != null && mName.length() > 0 && mFluid != null && mBucket != null && mBlock != null;
-	}
+        mID = aID;
+        mName = aName;
+        mFluid = aFluid;
+        mBucket = aBucket;
+        mBlock = aBlock;
+    }
 
+    public Fluid get() {
+        return mFluid;
+    }
+
+    public boolean valid() {
+        return mName != null && mName.length() > 0 && mFluid != null && mBucket != null && mBlock != null;
+    }
 }

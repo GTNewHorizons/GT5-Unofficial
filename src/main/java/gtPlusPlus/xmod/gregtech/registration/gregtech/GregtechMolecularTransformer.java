@@ -6,17 +6,16 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 
 public class GregtechMolecularTransformer {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Molecular Transformer Multiblock.");
-			run1();
-		}		
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering Molecular Transformer Multiblock.");
+            run1();
+        }
+    }
 
-	}
-
-	private static void run1() {
-		GregtechItemList.Controller_MolecularTransformer.set(new GregtechMetaTileEntity_IndustrialMolecularTransformer(31072,
-				"moleculartransformer.controller.tier.single", "Molecular Transformer").getStackForm(1L));
-
-	}
+    private static void run1() {
+        GregtechItemList.Controller_MolecularTransformer.set(new GregtechMetaTileEntity_IndustrialMolecularTransformer(
+                        31072, "moleculartransformer.controller.tier.single", "Molecular Transformer")
+                .getStackForm(1L));
+    }
 }

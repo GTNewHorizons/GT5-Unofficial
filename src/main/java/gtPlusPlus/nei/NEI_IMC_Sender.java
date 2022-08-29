@@ -1,7 +1,6 @@
 package gtPlusPlus.nei;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -54,7 +53,7 @@ public class NEI_IMC_Sender {
         sendCatalyst("gtpp.recipe.treefarm", "gregtech:gt.blockmachines:836");
 
         if (LoadedMods.AdvancedSolarPanel) {
-        	sendHandler("gtpp.recipe.moleculartransformer", "AdvancedSolarPanel:BlockMolecularTransformer");
+            sendHandler("gtpp.recipe.moleculartransformer", "AdvancedSolarPanel:BlockMolecularTransformer");
             sendCatalyst("gtpp.recipe.moleculartransformer", "gregtech:gt.blockmachines:31072");
         }
 
@@ -76,19 +75,18 @@ public class NEI_IMC_Sender {
         sendCatalyst("crafting", "gregtech:gt.blockmachines:31097", -10);
         sendCatalyst("crafting", "gregtech:gt.blockmachines:31098", -10);
 
-//        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-//            // Compound Fabricator
-//            sendCatalyst("gt.recipe.fakeAssemblylineProcess", "gregtech:gt.blockmachines:31024");
-//        }
+        //        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+        //            // Compound Fabricator
+        //            sendCatalyst("gt.recipe.fakeAssemblylineProcess", "gregtech:gt.blockmachines:31024");
+        //        }
 
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:965", -1);
     }
 
-
     private static void sendHandler(String aRecipeName, String aBlock) {
-    	sendHandler(aRecipeName, aBlock, 2);
+        sendHandler(aRecipeName, aBlock, 2);
     }
-    
+
     private static void sendHandler(String aRecipeName, String aBlock, int aRecipesPerPage) {
         NBTTagCompound aNBT = new NBTTagCompound();
         aNBT.setString("handler", aRecipeName);

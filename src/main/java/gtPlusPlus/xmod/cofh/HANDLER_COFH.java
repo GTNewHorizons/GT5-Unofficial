@@ -6,10 +6,9 @@ import gtPlusPlus.core.lib.LoadedMods;
 
 public class HANDLER_COFH {
 
-	public static void initItems() {
-		if (LoadedMods.CoFHCore && (LoadedMods.IndustrialCraft2 || LoadedMods.IndustrialCraft2Classic)) {
-			ModItems.RfEuBattery = new RF2EU_Battery();				
-		}
-	}
-	
+    public static void initItems() {
+        if (LoadedMods.CoFHCore && (LoadedMods.IndustrialCraft2 || LoadedMods.IndustrialCraft2Classic)) {
+            ModItems.RfEuBattery = new RF2EU_Battery();
+        }
+    }
 }

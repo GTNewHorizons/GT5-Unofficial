@@ -6,8 +6,7 @@ import java.io.IOException;
 
 public interface IGregtechPacketEntity {
 
-	public void writePacketData(DataOutputStream data) throws IOException;
+    public void writePacketData(DataOutputStream data) throws IOException;
 
-	public void readPacketData(DataInputStream data) throws IOException;
-	
+    public void readPacketData(DataInputStream data) throws IOException;
 }

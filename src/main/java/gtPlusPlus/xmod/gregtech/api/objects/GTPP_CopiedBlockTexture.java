@@ -12,7 +12,7 @@ import net.minecraft.block.Block;
 @SuppressWarnings("deprecation")
 public class GTPP_CopiedBlockTexture extends GT_CopiedBlockTexture {
 
-	public GTPP_CopiedBlockTexture(Block aBlock, int aSide, int aMeta, short[] aRGBa, boolean aAllowAlpha) {
+    public GTPP_CopiedBlockTexture(Block aBlock, int aSide, int aMeta, short[] aRGBa, boolean aAllowAlpha) {
         super(aBlock, aMeta, aMeta, aRGBa, aAllowAlpha);
     }
 
@@ -23,5 +23,4 @@ public class GTPP_CopiedBlockTexture extends GT_CopiedBlockTexture {
     public GTPP_CopiedBlockTexture(Block aBlock, int aSide, int aMeta) {
         this(aBlock, aSide, aMeta, Dyes._NULL.mRGBa);
     }
-	
 }

@@ -8,46 +8,46 @@ import ic2.api.crops.ICropTile;
 import net.minecraft.item.ItemStack;
 
 public class Crop_Force extends BaseAestheticCrop {
-	
-	public int tier() {
-		return 4;
-	}
 
-	public String name() {
-		return "Force";
-	}
+    public int tier() {
+        return 4;
+    }
 
-	public String discoveredBy() {
-		return "Alkalus";
-	}
+    public String name() {
+        return "Force";
+    }
 
-	public int growthDuration(ICropTile crop) {
-		int ret = 800;
-		
-		/*if (crop.isBlockBelow(Blocks.dirt) || crop.isBlockBelow(Blocks.flowing_water)) {
-			ret = 225;
-		}*/
+    public String discoveredBy() {
+        return "Alkalus";
+    }
 
-		if (CORE_Preloader.DEBUG_MODE) {
-			ret = 1;
-		}
+    public int growthDuration(ICropTile crop) {
+        int ret = 800;
 
-		return ret;
-	}
+        /*if (crop.isBlockBelow(Blocks.dirt) || crop.isBlockBelow(Blocks.flowing_water)) {
+        	ret = 225;
+        }*/
 
-	public String[] attributes() {
-		return new String[]{"Power", "Soil", "Yellow", "Gold"};
-	}
+        if (CORE_Preloader.DEBUG_MODE) {
+            ret = 1;
+        }
 
-	public ItemStack getGain(ICropTile crop) {		
-		ItemStack ret = this.getDisplayItem();
-		if (MathUtils.randInt(0, 10) > 8) {
-			ret = STANDALONE.FORCE.getNugget(MathUtils.randInt(4, 8));
-		}
-		return ret;
-	}
+        return ret;
+    }
 
-	public ItemStack getDisplayItem() {
-		return STANDALONE.FORCE.getNugget(0);
-	}
+    public String[] attributes() {
+        return new String[] {"Power", "Soil", "Yellow", "Gold"};
+    }
+
+    public ItemStack getGain(ICropTile crop) {
+        ItemStack ret = this.getDisplayItem();
+        if (MathUtils.randInt(0, 10) > 8) {
+            ret = STANDALONE.FORCE.getNugget(MathUtils.randInt(4, 8));
+        }
+        return ret;
+    }
+
+    public ItemStack getDisplayItem() {
+        return STANDALONE.FORCE.getNugget(0);
+    }
 }

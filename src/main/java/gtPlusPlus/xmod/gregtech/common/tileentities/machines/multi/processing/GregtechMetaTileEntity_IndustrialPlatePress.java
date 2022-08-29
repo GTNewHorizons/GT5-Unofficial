@@ -1,6 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import java.util.ArrayList;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -20,214 +24,214 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+public class GregtechMetaTileEntity_IndustrialPlatePress
+        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialPlatePress>
+        implements ISurvivalConstructable {
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+    private boolean mFormingMode = false;
+    private int mCasing;
+    private IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> STRUCTURE_DEFINITION = null;
 
-public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialPlatePress> implements ISurvivalConstructable {
+    public GregtechMetaTileEntity_IndustrialPlatePress(final int aID, final String aName, final String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
 
-	private boolean mFormingMode = false;
-	private int mCasing;
-	private IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> STRUCTURE_DEFINITION = null;
+    public GregtechMetaTileEntity_IndustrialPlatePress(final String aName) {
+        super(aName);
+    }
 
-	public GregtechMetaTileEntity_IndustrialPlatePress(final int aID, final String aName, final String aNameRegional) {
-		super(aID, aName, aNameRegional);
-	}
+    @Override
+    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        return new GregtechMetaTileEntity_IndustrialPlatePress(this.mName);
+    }
 
-	public GregtechMetaTileEntity_IndustrialPlatePress(final String aName) {
-		super(aName);
-	}
+    @Override
+    public String getMachineType() {
+        return "Bending Machine, Forming Press";
+    }
 
-	@Override
-	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntity_IndustrialPlatePress(this.mName);
-	}
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(getMachineType())
+                .addInfo("Controller Block for Advanced Bending & Forming")
+                .addInfo("500% faster than using single block machines of the same voltage")
+                .addInfo("Processes four items per voltage tier")
+                .addInfo("Circuit for recipe goes in the Input Bus")
+                .addInfo("Each Input Bus can have a different Circuit/Shape!")
+                .addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator()
+                .beginStructureBlock(3, 3, 3, true)
+                .addController("Front Center")
+                .addCasingInfo("Material Press Machine Casings", 10)
+                .addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+        return tt;
+    }
 
-	@Override
-	public String getMachineType() {
-		return "Bending Machine, Forming Press";
-	}
+    @Override
+    public IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialPlatePress>builder()
+                    .addShape(mName, transpose(new String[][] {
+                        {"CCC", "CCC", "CCC"},
+                        {"C~C", "C-C", "CCC"},
+                        {"CCC", "CCC", "CCC"},
+                    }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(GregtechMetaTileEntity_IndustrialPlatePress.class)
+                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                                    .casingIndex(50)
+                                    .dot(1)
+                                    .buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 4))))
+                    .build();
+        }
+        return STRUCTURE_DEFINITION;
+    }
 
-	@Override
-	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-		tt.addMachineType(getMachineType())
-				.addInfo("Controller Block for Advanced Bending & Forming")
-				.addInfo("500% faster than using single block machines of the same voltage")
-				.addInfo("Processes four items per voltage tier")
-				.addInfo("Circuit for recipe goes in the Input Bus")
-				.addInfo("Each Input Bus can have a different Circuit/Shape!")
-				.addPollutionAmount(getPollutionPerSecond(null))
-				.addSeparator()
-				.beginStructureBlock(3, 3, 3, true)
-				.addController("Front Center")
-				.addCasingInfo("Material Press Machine Casings", 10)
-				.addInputBus("Any Casing", 1)
-				.addOutputBus("Any Casing", 1)
-				.addEnergyHatch("Any Casing", 1)
-				.addMaintenanceHatch("Any Casing", 1)
-				.addMufflerHatch("Any Casing", 1)
-				.toolTipFinisher(CORE.GT_Tooltip_Builder);
-		return tt;
-	}
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
+    }
 
-	@Override
-	public IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> getStructureDefinition() {
-		if (STRUCTURE_DEFINITION == null) {
-			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialPlatePress>builder()
-					.addShape(mName, transpose(new String[][]{
-							{"CCC", "CCC", "CCC"},
-							{"C~C", "C-C", "CCC"},
-							{"CCC", "CCC", "CCC"},
-					}))
-					.addElement(
-							'C',
-							buildHatchAdder(GregtechMetaTileEntity_IndustrialPlatePress.class)
-									.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-									.casingIndex(50)
-									.dot(1)
-									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 4)))
-					)
-					.build();
-		}
-		return STRUCTURE_DEFINITION;
-	}
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
+    }
 
-	@Override
-	public void construct(ItemStack stackSize, boolean hintsOnly) {
-		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
-	}
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCasing = 0;
+        return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
+    }
 
-	@Override
-	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-		if (mMachine) return -1;
-		return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
-	}
+    @Override
+    public String getSound() {
+        return GregTech_API.sSoundList.get(203);
+    }
 
-	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		mCasing = 0;
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
-	}
+    @Override
+    protected IIconContainer getActiveOverlay() {
+        return TexturesGtBlock.Overlay_Machine_Controller_Default_Active;
+    }
 
-	@Override
-	public String getSound() {
-		return GregTech_API.sSoundList.get(203);
-	}
+    @Override
+    protected IIconContainer getInactiveOverlay() {
+        return TexturesGtBlock.Overlay_Machine_Controller_Default;
+    }
 
-	@Override
-	protected IIconContainer getActiveOverlay() {
-		return TexturesGtBlock.Overlay_Machine_Controller_Default_Active;
-	}
+    @Override
+    protected int getCasingTextureId() {
+        return 50;
+    }
 
-	@Override
-	protected IIconContainer getInactiveOverlay() {
-		return TexturesGtBlock.Overlay_Machine_Controller_Default;
-	}
+    @Override
+    public boolean hasSlotInGUI() {
+        return false;
+    }
 
-	@Override
-	protected int getCasingTextureId() {
-		return 50;
-	}
+    @Override
+    public String getCustomGUIResourceName() {
+        return "MaterialPress";
+    }
 
-	@Override
-	public boolean hasSlotInGUI() {
-		return false;
-	}
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return mFormingMode ? GT_Recipe.GT_Recipe_Map.sPressRecipes : GT_Recipe.GT_Recipe_Map.sBenderRecipes;
+    }
 
-	@Override
-	public String getCustomGUIResourceName() {
-		return "MaterialPress";
-	}
+    @Override
+    public boolean checkRecipe(final ItemStack aStack) {
+        for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+            ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+            tBus.mRecipeMap = getRecipeMap();
+            if (isValidMetaTileEntity(tBus)) {
+                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+                        tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                }
+            }
 
-	@Override
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mFormingMode ?  GT_Recipe.GT_Recipe_Map.sPressRecipes : GT_Recipe.GT_Recipe_Map.sBenderRecipes;
-	}
+            if (checkRecipeGeneric(
+                    tBusItems.toArray(new ItemStack[] {}),
+                    new FluidStack[] {},
+                    (4 * GT_Utility.getTier(this.getMaxInputVoltage())),
+                    100,
+                    500,
+                    10000)) return true;
+        }
+        return false;
+    }
 
-	@Override
-	public boolean checkRecipe(final ItemStack aStack) {
-		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-			ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-			tBus.mRecipeMap = getRecipeMap();
-			if (isValidMetaTileEntity(tBus)) {
-				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-				}
-			}
+    @Override
+    public int getMaxParallelRecipes() {
+        return (4 * GT_Utility.getTier(this.getMaxInputVoltage()));
+    }
 
-			if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), new FluidStack[]{},
-					(4* GT_Utility.getTier(this.getMaxInputVoltage())), 100, 500, 10000)) return true;
-		}
-		return false;
-	}
-	
-	@Override
-	public int getMaxParallelRecipes() {
-		return (4 * GT_Utility.getTier(this.getMaxInputVoltage()));
-	}
+    @Override
+    public int getEuDiscountForParallelism() {
+        return 100;
+    }
 
-	@Override
-	public int getEuDiscountForParallelism() {
-		return 100;
-	}
+    @Override
+    public void startProcess() {
+        this.sendLoopStart((byte) 1);
+    }
 
-	@Override
-	public void startProcess() {
-		this.sendLoopStart((byte) 1);
-	}
+    @Override
+    public int getMaxEfficiency(final ItemStack aStack) {
+        return 10000;
+    }
 
-	@Override
-	public int getMaxEfficiency(final ItemStack aStack) {
-		return 10000;
-	}
+    @Override
+    public int getPollutionPerSecond(final ItemStack aStack) {
+        if (this.mFormingMode) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
+        return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
+    }
 
-	@Override
-	public int getPollutionPerSecond(final ItemStack aStack) {
-		if (this.mFormingMode) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
-		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
-	}
+    @Override
+    public int getAmountOfOutputs() {
+        return 1;
+    }
 
-	@Override
-	public int getAmountOfOutputs() {
-		return 1;
-	}
+    @Override
+    public boolean explodesOnComponentBreak(final ItemStack aStack) {
+        return false;
+    }
 
-	@Override
-	public boolean explodesOnComponentBreak(final ItemStack aStack) {
-		return false;
-	}
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setBoolean("mFormingMode", mFormingMode);
+        super.saveNBTData(aNBT);
+    }
 
-	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-		aNBT.setBoolean("mFormingMode", mFormingMode);
-		super.saveNBTData(aNBT);
-	}
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        mFormingMode = aNBT.getBoolean("mFormingMode");
+        super.loadNBTData(aNBT);
+    }
 
-	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-		mFormingMode = aNBT.getBoolean("mFormingMode");
-		super.loadNBTData(aNBT);
-	}
-
-	@Override
-	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		mFormingMode = Utils.invertBoolean(mFormingMode);		
-		if (mFormingMode){
-			PlayerUtils.messagePlayer(aPlayer, "Now running in Forming Press Mode.");
-		}
-		else {
-			PlayerUtils.messagePlayer(aPlayer, "Now running in Bending Mode.");
-		}		
-	}
+    @Override
+    public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        mFormingMode = Utils.invertBoolean(mFormingMode);
+        if (mFormingMode) {
+            PlayerUtils.messagePlayer(aPlayer, "Now running in Forming Press Mode.");
+        } else {
+            PlayerUtils.messagePlayer(aPlayer, "Now running in Bending Mode.");
+        }
+    }
 }

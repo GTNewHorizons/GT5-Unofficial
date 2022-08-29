@@ -7,12 +7,11 @@ import gtPlusPlus.core.lib.CORE;
 
 public class ClientUtils {
 
-	static {
-		if (FMLCommonHandler.instance().getSide() == Side.SERVER) {
-			Logger.ERROR("Something tried to access the ClientUtils class from the Server Side.");
-			Logger.ERROR("Soft crashing to prevent data corruption.");	
-			CORE.crash();
-		}
-	}
-	
+    static {
+        if (FMLCommonHandler.instance().getSide() == Side.SERVER) {
+            Logger.ERROR("Something tried to access the ClientUtils class from the Server Side.");
+            Logger.ERROR("Soft crashing to prevent data corruption.");
+            CORE.crash();
+        }
+    }
 }

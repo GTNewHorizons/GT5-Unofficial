@@ -6,8 +6,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 @SideOnly(Side.CLIENT)
-public class ModelDecayChest extends ModelBase
-{
+public class ModelDecayChest extends ModelBase {
     /** The chest lid in the chest's model. */
     public ModelRenderer chestLid = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 64);
     /** The model of the bottom of the chest. */
@@ -15,8 +14,7 @@ public class ModelDecayChest extends ModelBase
     /** The chest's knob in the chest model. */
     public ModelRenderer chestKnob;
 
-    public ModelDecayChest()
-    {
+    public ModelDecayChest() {
         this.chestLid.addBox(0.0F, -5.0F, -14.0F, 14, 5, 14, 0.0F);
         this.chestLid.rotationPointX = 1.0F;
         this.chestLid.rotationPointY = 7.0F;
@@ -36,8 +34,7 @@ public class ModelDecayChest extends ModelBase
     /**
      * This method renders out all parts of the chest model.
      */
-    public void renderAll()
-    {
+    public void renderAll() {
         this.chestKnob.rotateAngleX = this.chestLid.rotateAngleX;
         this.chestLid.render(0.0625F);
         this.chestKnob.render(0.0625F);

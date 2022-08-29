@@ -1,8 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.GT_Container_BasicTank;
-import gregtech.api.gui.GT_GUIContainer_BasicTank;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
@@ -25,19 +23,35 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
     /**
      * @param aInvSlotCount should be 3
      */
-    public GTPP_MTE_BasicTank(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription, ITexture... aTextures) {
+    public GTPP_MTE_BasicTank(
+            int aID,
+            String aName,
+            String aNameRegional,
+            int aTier,
+            int aInvSlotCount,
+            String aDescription,
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GTPP_MTE_BasicTank(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription, ITexture... aTextures) {
+    public GTPP_MTE_BasicTank(
+            int aID,
+            String aName,
+            String aNameRegional,
+            int aTier,
+            int aInvSlotCount,
+            String[] aDescription,
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GTPP_MTE_BasicTank(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public GTPP_MTE_BasicTank(
+            String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
-    
-    public GTPP_MTE_BasicTank(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+
+    public GTPP_MTE_BasicTank(
+            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -136,7 +150,8 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
                     if (ItemList.Display_Fluid.isStackEqual(mInventory[getStackDisplaySlot()], true, true))
                         mInventory[getStackDisplaySlot()] = null;
                 } else {
-                    mInventory[getStackDisplaySlot()] = GT_Utility.getFluidDisplayStack(getDisplayedFluid(), displaysStackSize());
+                    mInventory[getStackDisplaySlot()] =
+                            GT_Utility.getFluidDisplayStack(getDisplayedFluid(), displaysStackSize());
                 }
             }
 
@@ -145,15 +160,22 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
                 if (tFluid != null && isFluidInputAllowed(tFluid)) {
                     if (getFillableStack() == null) {
                         if (isFluidInputAllowed(tFluid) && tFluid.amount <= getCapacity()) {
-                            if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerItem(mInventory[getInputSlot()], true), 1)) {
+                            if (aBaseMetaTileEntity.addStackToSlot(
+                                    getOutputSlot(),
+                                    GT_Utility.getContainerItem(mInventory[getInputSlot()], true),
+                                    1)) {
                                 setFillableStack(tFluid.copy());
                                 this.onEmptyingContainerWhenEmpty();
                                 aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                             }
                         }
                     } else {
-                        if (tFluid.isFluidEqual(getFillableStack()) && tFluid.amount + getFillableStack().amount <= getCapacity()) {
-                            if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerItem(mInventory[getInputSlot()], true), 1)) {
+                        if (tFluid.isFluidEqual(getFillableStack())
+                                && tFluid.amount + getFillableStack().amount <= getCapacity()) {
+                            if (aBaseMetaTileEntity.addStackToSlot(
+                                    getOutputSlot(),
+                                    GT_Utility.getContainerItem(mInventory[getInputSlot()], true),
+                                    1)) {
                                 getFillableStack().amount += tFluid.amount;
                                 aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                             }
@@ -163,7 +185,8 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
             }
 
             if (doesFillContainers()) {
-                ItemStack tOutput = GT_Utility.fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
+                ItemStack tOutput =
+                        GT_Utility.fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
                 if (tOutput != null && aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tOutput, 1)) {
                     FluidStack tFluid = GT_Utility.getFluidForFilledItem(tOutput, true);
                     aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
@@ -186,8 +209,11 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid == null || aFluid.getFluid().getID() <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid))
-            return 0;
+        if (aFluid == null
+                || aFluid.getFluid().getID() <= 0
+                || aFluid.amount <= 0
+                || !canTankBeFilled()
+                || !isFluidInputAllowed(aFluid)) return 0;
 
         if (getFillableStack() == null || getFillableStack().getFluid().getID() <= 0) {
             if (aFluid.amount <= getCapacity()) {
@@ -205,8 +231,7 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
             return getCapacity();
         }
 
-        if (!getFillableStack().isFluidEqual(aFluid))
-            return 0;
+        if (!getFillableStack().isFluidEqual(aFluid)) return 0;
 
         int space = getCapacity() - getFillableStack().amount;
         if (aFluid.amount <= space) {
@@ -216,8 +241,7 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
             }
             return aFluid.amount;
         }
-        if (doFill)
-            getFillableStack().amount = getCapacity();
+        if (doFill) getFillableStack().amount = getCapacity();
         return space;
     }
 
@@ -231,8 +255,7 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
         }
 
         int used = maxDrain;
-        if (getDrainableStack().amount < used)
-            used = getDrainableStack().amount;
+        if (getDrainableStack().amount < used) used = getDrainableStack().amount;
 
         if (doDrain) {
             getDrainableStack().amount -= used;
@@ -259,8 +282,8 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return aIndex == getInputSlot();
     }
-    
-    protected void onEmptyingContainerWhenEmpty(){
-    	//Do nothing
+
+    protected void onEmptyingContainerWhenEmpty() {
+        // Do nothing
     }
 }

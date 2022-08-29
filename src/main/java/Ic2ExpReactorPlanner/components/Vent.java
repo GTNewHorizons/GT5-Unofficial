@@ -5,36 +5,43 @@
  */
 package Ic2ExpReactorPlanner.components;
 
+import gregtech.api.objects.GT_ItemStack;
 import java.util.ArrayList;
 import java.util.List;
-
-import gregtech.api.objects.GT_ItemStack;
 
 /**
  * Represents some kind of vent in a reactor.
  * @author Brian McCloud
  */
 public class Vent extends ReactorItem {
-    
+
     private final int selfVent;
     private final int hullDraw;
     private final int sideVent;
-    
-    public Vent(final int id, final String baseName, GT_ItemStack aItem, final double maxDamage, final double maxHeat, final String sourceMod,
-            final int selfVent, final int hullDraw, final int sideVent) {
+
+    public Vent(
+            final int id,
+            final String baseName,
+            GT_ItemStack aItem,
+            final double maxDamage,
+            final double maxHeat,
+            final String sourceMod,
+            final int selfVent,
+            final int hullDraw,
+            final int sideVent) {
         super(id, baseName, aItem, maxDamage, maxHeat, sourceMod);
         this.selfVent = selfVent;
         this.hullDraw = hullDraw;
         this.sideVent = sideVent;
     }
-    
+
     public Vent(final Vent other) {
         super(other);
         this.selfVent = other.selfVent;
         this.hullDraw = other.hullDraw;
         this.sideVent = other.sideVent;
     }
-    
+
     @Override
     public double dissipate() {
         double deltaHeat = Math.min(hullDraw, parent.getCurrentHeat());
@@ -73,7 +80,7 @@ public class Vent extends ReactorItem {
         bestVentCooling = Math.max(bestVentCooling, currentVentCooling);
         return currentDissipation;
     }
-    
+
     @Override
     public double getVentCoolingCapacity() {
         double result = selfVent;
@@ -97,14 +104,14 @@ public class Vent extends ReactorItem {
         }
         return result;
     }
-    
+
     @Override
     public double getHullCoolingCapacity() {
         return hullDraw;
     }
-    
+
     @Override
     public double getCurrentOutput() {
         return currentVentCooling;
     }
- }
+}

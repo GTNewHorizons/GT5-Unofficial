@@ -9,7 +9,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_Hatch_MillingBalls extends GT_MetaTileEntity_Hatch_NbtConsumable {
-	
+
     public GT_MetaTileEntity_Hatch_MillingBalls(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 6, 4, "Dedicated Milling Ball Storage", false);
     }
@@ -17,55 +17,53 @@ public class GT_MetaTileEntity_Hatch_MillingBalls extends GT_MetaTileEntity_Hatc
     public GT_MetaTileEntity_Hatch_MillingBalls(String aName, String aDescription, ITexture[][][] aTextures) {
         super(aName, 6, 4, aDescription, false, aTextures);
     }
-    
+
     public GT_MetaTileEntity_Hatch_MillingBalls(String aName, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, 6, 4, aDescription[0], false, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Bus_Milling_Balls)};
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Bus_Milling_Balls)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Bus_Milling_Balls)};
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Bus_Milling_Balls)};
     }
-	
-	@Override
-	public String[] getDescription() {
-		return new String[]{
-				this.mDescription,
-                CORE.GT_Tooltip};
-	}
+
+    @Override
+    public String[] getDescription() {
+        return new String[] {this.mDescription, CORE.GT_Tooltip};
+    }
 
     @Override
     public boolean isFacingValid(byte aFacing) {
         return true;
     }
 
-	@Override
-	public Class<? extends GT_MetaTileEntity_Hatch_NbtConsumable> getHatchEntityClass() {
-		return GT_MetaTileEntity_Hatch_MillingBalls.class;
-	}
+    @Override
+    public Class<? extends GT_MetaTileEntity_Hatch_NbtConsumable> getHatchEntityClass() {
+        return GT_MetaTileEntity_Hatch_MillingBalls.class;
+    }
 
-	@Override
-	public String getNameGUI() {
-		return "Ball Housing";
-	}
+    @Override
+    public String getNameGUI() {
+        return "Ball Housing";
+    }
 
-	@Override
-	public AutoMap<ItemStack> getItemsValidForUsageSlots() {
-		return new AutoMap<ItemStack>();
-	}	
+    @Override
+    public AutoMap<ItemStack> getItemsValidForUsageSlots() {
+        return new AutoMap<ItemStack>();
+    }
 
-	@Override
-	public boolean isItemValidForUsageSlot(ItemStack aStack) {
-		return ItemUtils.isMillingBall(aStack);
-	}
+    @Override
+    public boolean isItemValidForUsageSlot(ItemStack aStack) {
+        return ItemUtils.isMillingBall(aStack);
+    }
 
-	@Override
-	public int getInputSlotCount() {
-		return 4;
-	}
+    @Override
+    public int getInputSlotCount() {
+        return 4;
+    }
 }

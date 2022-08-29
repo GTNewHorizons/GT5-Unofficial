@@ -18,106 +18,109 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_FluidGenerator {
 
-	private static Block sBlock_EIO;
-	private static Block sBlock_RIO;
-	
-	public GT_MetaTileEntity_Hatch_Reservoir(final int aID, final String aName, final String aNameRegional,	final int aTier) {
-		super(aID, aName, aNameRegional, aTier);
-	}
+    private static Block sBlock_EIO;
+    private static Block sBlock_RIO;
 
-	public GT_MetaTileEntity_Hatch_Reservoir(final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
-		super(aName, aTier, aDescription, aTextures);
-	}
+    public GT_MetaTileEntity_Hatch_Reservoir(
+            final int aID, final String aName, final String aNameRegional, final int aTier) {
+        super(aID, aName, aNameRegional, aTier);
+    }
 
+    public GT_MetaTileEntity_Hatch_Reservoir(
+            final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures);
+    }
 
-	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_Hatch_Reservoir(this.mName, this.mTier, this.mDescription, this.mTextures);
-	}
+    public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_Hatch_Reservoir(this.mName, this.mTier, this.mDescription, this.mTextures);
+    }
 
-	@Override
-	public String[] getCustomTooltip() {
-		String[] aTooltip = new String[3];
-		aTooltip[0] = "Requires a Block of water facing the intake";
-		aTooltip[1] = "Infinite water supply hatch";
-		aTooltip[2] = "Creates 8000L of Water every 4 ticks";
-		return aTooltip;
-	}
+    @Override
+    public String[] getCustomTooltip() {
+        String[] aTooltip = new String[3];
+        aTooltip[0] = "Requires a Block of water facing the intake";
+        aTooltip[1] = "Infinite water supply hatch";
+        aTooltip[2] = "Creates 8000L of Water every 4 ticks";
+        return aTooltip;
+    }
 
-	@Override
-	public Fluid getFluidToGenerate() {
-		return FluidRegistry.WATER;
-	}
+    @Override
+    public Fluid getFluidToGenerate() {
+        return FluidRegistry.WATER;
+    }
 
-	@Override
-	public int getAmountOfFluidToGenerate() {
-		return 8000;
-	}
+    @Override
+    public int getAmountOfFluidToGenerate() {
+        return 8000;
+    }
 
-	@Override
-	public int getMaxTickTime() {
-		return 4;
-	}
+    @Override
+    public int getMaxTickTime() {
+        return 4;
+    }
 
-	@Override
-	public int getCapacity() {
-		return 256000;
-	}
-	
-	private static void setCrossModData() {
-		if (LoadedMods.EnderIO && sBlock_EIO == null) {
-			sBlock_EIO = GameRegistry.findBlock("EnderIO", "blockReservoir");
-		}
-		if (LoadedMods.RemoteIO && sBlock_RIO == null) {
-			sBlock_RIO = GameRegistry.findBlock("RIO", "machine");
-		}
-	}
-	
-	public static boolean isTileValid(TileEntity aTile) {
-		if (aTile != null) {
-			if (aTile instanceof IFluidHandler) {
-				IFluidHandler aFluidHandler = (IFluidHandler) aTile;
-				return aFluidHandler.canDrain(ForgeDirection.UNKNOWN, FluidRegistry.WATER);
-			}
-		}
-		return false;
-	}
+    @Override
+    public int getCapacity() {
+        return 256000;
+    }
 
-	@Override
-	public boolean doesHatchMeetConditionsToGenerate() {
-		Block aWater = this.getBaseMetaTileEntity().getBlockAtSide(this.getBaseMetaTileEntity().getFrontFacing());
-		if (aWater != null && aWater != Blocks.air) {
-			if (!this.canTankBeFilled()) {
-				return false;
-			}
-			setCrossModData();
-			if (LoadedMods.EnderIO) {
-				if (aWater == sBlock_EIO) {
-					return isTileValid(this.getBaseMetaTileEntity().getTileEntityAtSide(this.getBaseMetaTileEntity().getFrontFacing()));				
-				}			
-			}
-			if (LoadedMods.RemoteIO) {
-				if (aWater == sBlock_RIO && this.getBaseMetaTileEntity().getMetaIDAtSide(this.getBaseMetaTileEntity().getFrontFacing()) == 0) {
-					return isTileValid(this.getBaseMetaTileEntity().getTileEntityAtSide(this.getBaseMetaTileEntity().getFrontFacing()));
-				}
-			}
-			return aWater == Blocks.water || aWater == Blocks.flowing_water;
-		}
-		return false;		
-	}
+    private static void setCrossModData() {
+        if (LoadedMods.EnderIO && sBlock_EIO == null) {
+            sBlock_EIO = GameRegistry.findBlock("EnderIO", "blockReservoir");
+        }
+        if (LoadedMods.RemoteIO && sBlock_RIO == null) {
+            sBlock_RIO = GameRegistry.findBlock("RIO", "machine");
+        }
+    }
 
-	@Override
-	public void generateParticles(World aWorld, String name) {
-		
-	}
-	
-	public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(TexturesGtBlock.Overlay_Water)};
-	}
+    public static boolean isTileValid(TileEntity aTile) {
+        if (aTile != null) {
+            if (aTile instanceof IFluidHandler) {
+                IFluidHandler aFluidHandler = (IFluidHandler) aTile;
+                return aFluidHandler.canDrain(ForgeDirection.UNKNOWN, FluidRegistry.WATER);
+            }
+        }
+        return false;
+    }
 
-	public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(TexturesGtBlock.Overlay_Water)};
-	}
+    @Override
+    public boolean doesHatchMeetConditionsToGenerate() {
+        Block aWater = this.getBaseMetaTileEntity()
+                .getBlockAtSide(this.getBaseMetaTileEntity().getFrontFacing());
+        if (aWater != null && aWater != Blocks.air) {
+            if (!this.canTankBeFilled()) {
+                return false;
+            }
+            setCrossModData();
+            if (LoadedMods.EnderIO) {
+                if (aWater == sBlock_EIO) {
+                    return isTileValid(this.getBaseMetaTileEntity()
+                            .getTileEntityAtSide(this.getBaseMetaTileEntity().getFrontFacing()));
+                }
+            }
+            if (LoadedMods.RemoteIO) {
+                if (aWater == sBlock_RIO
+                        && this.getBaseMetaTileEntity()
+                                        .getMetaIDAtSide(
+                                                this.getBaseMetaTileEntity().getFrontFacing())
+                                == 0) {
+                    return isTileValid(this.getBaseMetaTileEntity()
+                            .getTileEntityAtSide(this.getBaseMetaTileEntity().getFrontFacing()));
+                }
+            }
+            return aWater == Blocks.water || aWater == Blocks.flowing_water;
+        }
+        return false;
+    }
 
+    @Override
+    public void generateParticles(World aWorld, String name) {}
+
+    public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Water)};
+    }
+
+    public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Water)};
+    }
 }

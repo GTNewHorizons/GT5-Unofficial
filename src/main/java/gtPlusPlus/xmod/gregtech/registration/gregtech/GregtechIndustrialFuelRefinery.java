@@ -7,20 +7,19 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.Gr
 
 public class GregtechIndustrialFuelRefinery {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Industrial Fuel Processing and Refinery Multiblock.");
-			if (CORE.ConfigSwitches.enableMultiblock_NuclearFuelRefinery) {
-				run1();
-			}
-		}
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering Industrial Fuel Processing and Refinery Multiblock.");
+            if (CORE.ConfigSwitches.enableMultiblock_NuclearFuelRefinery) {
+                run1();
+            }
+        }
+    }
 
-	}
-
-	private static void run1() {
-		// Industrial Maceration Stack Multiblock
-		GregtechItemList.Industrial_FuelRefinery.set(new GregtechMetaTileEntity_Refinery(835,
-				"industrialrefinery.controller.tier.single", "Reactor Fuel Processing Plant").getStackForm(1L));
-
-	}
+    private static void run1() {
+        // Industrial Maceration Stack Multiblock
+        GregtechItemList.Industrial_FuelRefinery.set(new GregtechMetaTileEntity_Refinery(
+                        835, "industrialrefinery.controller.tier.single", "Reactor Fuel Processing Plant")
+                .getStackForm(1L));
+    }
 }

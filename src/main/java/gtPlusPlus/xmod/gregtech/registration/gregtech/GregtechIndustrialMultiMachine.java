@@ -7,19 +7,18 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 
 public class GregtechIndustrialMultiMachine {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Industrial Multi-Machine Multiblock.");
-			if (CORE.ConfigSwitches.enableMultiblock_IndustrialMultiMachine) {
-				run1();
-			}
-		}
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering Industrial Multi-Machine Multiblock.");
+            if (CORE.ConfigSwitches.enableMultiblock_IndustrialMultiMachine) {
+                run1();
+            }
+        }
+    }
 
-	}
-
-	private static void run1() {
-		GregtechItemList.Industrial_MultiMachine.set(new GregtechMetaTileEntity_IndustrialMultiMachine(860,
-				"industrialmultimachine.controller.tier.single", "Large Processing Factory").getStackForm(1L));
-
-	}
+    private static void run1() {
+        GregtechItemList.Industrial_MultiMachine.set(new GregtechMetaTileEntity_IndustrialMultiMachine(
+                        860, "industrialmultimachine.controller.tier.single", "Large Processing Factory")
+                .getStackForm(1L));
+    }
 }

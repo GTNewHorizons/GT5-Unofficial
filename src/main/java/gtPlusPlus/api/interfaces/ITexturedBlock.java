@@ -1,14 +1,12 @@
 package gtPlusPlus.api.interfaces;
 
-import net.minecraft.block.Block;
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
+import net.minecraft.block.Block;
 
-public interface ITexturedBlock extends ITexturedTileEntity{
+public interface ITexturedBlock extends ITexturedTileEntity {
 
-	ITexture[] getTexture(byte side);
-	
-	ITexture[] getTexture(Block block, byte side);
+    ITexture[] getTexture(byte side);
 
+    ITexture[] getTexture(Block block, byte side);
 }

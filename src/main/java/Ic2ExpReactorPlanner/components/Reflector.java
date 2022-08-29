@@ -12,17 +12,23 @@ import gregtech.api.objects.GT_ItemStack;
  * @author Brian McCloud
  */
 public class Reflector extends ReactorItem {
-    
+
     private static String mcVersion = "1.12.2";
-    
-    public Reflector(final int id, final String baseName, final GT_ItemStack aStack, final double maxDamage, final double maxHeat, final String sourceMod) {
+
+    public Reflector(
+            final int id,
+            final String baseName,
+            final GT_ItemStack aStack,
+            final double maxDamage,
+            final double maxHeat,
+            final String sourceMod) {
         super(id, baseName, aStack, maxDamage, maxHeat, sourceMod);
     }
-    
+
     public Reflector(final Reflector other) {
         super(other);
     }
-    
+
     @Override
     public boolean isNeutronReflector() {
         return !isBroken();
@@ -48,7 +54,7 @@ public class Reflector extends ReactorItem {
         }
         return 0;
     }
-    
+
     @Override
     public double getMaxDamage() {
         if (maxDamage > 1 && "1.7.10".equals(mcVersion)) {
@@ -56,7 +62,7 @@ public class Reflector extends ReactorItem {
         }
         return maxDamage;
     }
-    
+
     public static void setMcVersion(String newVersion) {
         mcVersion = newVersion;
     }

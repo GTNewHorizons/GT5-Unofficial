@@ -2,7 +2,6 @@ package gtPlusPlus.core.item.effects;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -23,20 +22,19 @@ Side.SERVER marks the method as existing only on the server side.
 
 public class RarityEffect extends Item {
 
-	public RarityEffect(final int par1){
-		super();
-		this.setCreativeTab(CreativeTabs.tabMaterials);
-	}
+    public RarityEffect(final int par1) {
+        super();
+        this.setCreativeTab(CreativeTabs.tabMaterials);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(final ItemStack par1ItemStack){
-		return EnumRarity.common;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(final ItemStack par1ItemStack) {
+        return EnumRarity.common;
+    }
 
-	@Override
-	public boolean hasEffect(final ItemStack par1ItemStack){
-		return true;
-	}
-
+    @Override
+    public boolean hasEffect(final ItemStack par1ItemStack) {
+        return true;
+    }
 }

@@ -1,18 +1,15 @@
 package gtPlusPlus.xmod.gregtech.api.gui.hatches.charge;
 
-import net.minecraft.entity.player.InventoryPlayer;
-
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
 import gtPlusPlus.core.slots.SlotElectric;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.CONTAINER_4by4;
+import net.minecraft.entity.player.InventoryPlayer;
 
-public class CONTAINER_Electric_4by4 extends CONTAINER_4by4{
+public class CONTAINER_Electric_4by4 extends CONTAINER_4by4 {
 
-	public CONTAINER_Electric_4by4(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-		super(aInventoryPlayer, aTileEntity);
-	}
-
+    public CONTAINER_Electric_4by4(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+        super(aInventoryPlayer, aTileEntity);
+    }
 
     @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
@@ -33,5 +30,4 @@ public class CONTAINER_Electric_4by4 extends CONTAINER_4by4{
         addSlotToContainer(new SlotElectric(mTileEntity, 14, 89, 62));
         addSlotToContainer(new SlotElectric(mTileEntity, 15, 107, 62));
     }
-	
 }

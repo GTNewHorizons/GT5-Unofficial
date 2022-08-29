@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 
 public interface Base_Recipe_Wrapper {
 
-	public abstract ItemStack getRecipeOutput();
+    public abstract ItemStack getRecipeOutput();
 
-	public abstract ItemStack getRecipeInput();
+    public abstract ItemStack getRecipeInput();
 }

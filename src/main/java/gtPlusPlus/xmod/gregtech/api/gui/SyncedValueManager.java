@@ -29,7 +29,6 @@ class SyncedValueManager {
         }
     }
 
-
     public void updateProgressBar(int short1, int short2) {
         for (SyncedLong val : longs) {
             if (val.updateProgressBar(short1, short2)) return;

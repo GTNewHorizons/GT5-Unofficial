@@ -1,6 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import java.util.ArrayList;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -22,6 +26,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -29,435 +34,411 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Cyclotron>
+        implements ISurvivalConstructable {
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+    private int mCasing;
+    private IStructureDefinition<GregtechMetaTileEntity_Cyclotron> STRUCTURE_DEFINITION = null;
 
-public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Cyclotron> implements ISurvivalConstructable {
+    public GregtechMetaTileEntity_Cyclotron(int aID, String aName, String aNameRegional, int tier) {
+        super(aID, aName, aNameRegional);
+    }
 
-	private int mCasing;
-	private IStructureDefinition<GregtechMetaTileEntity_Cyclotron> STRUCTURE_DEFINITION = null;
+    public GregtechMetaTileEntity_Cyclotron(String aName) {
+        super(aName);
+    }
 
-	public GregtechMetaTileEntity_Cyclotron(int aID, String aName, String aNameRegional, int tier) {
-		super(aID, aName, aNameRegional);
-	}
+    @Override
+    public String getMachineType() {
+        return "Particle Accelerator";
+    }
 
-	public GregtechMetaTileEntity_Cyclotron(String aName) {
-		super(aName);
-	}
+    public int tier() {
+        return 5;
+    }
 
-	@Override
-	public String getMachineType() {
-		return "Particle Accelerator";
-	}
+    @Override
+    public long maxEUStore() {
+        return 1800000000L;
+    }
 
-	public int tier(){
-		return 5;
-	}
+    @Override
+    public boolean hasSlotInGUI() {
+        return false;
+    }
 
-	@Override
-	public long maxEUStore() {
-		return 1800000000L;
-	}
+    @Override
+    public String getCustomGUIResourceName() {
+        return null;
+    }
 
-	@Override
-	public boolean hasSlotInGUI() {
-		return false;
-	}
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return super.getServerGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
+        // return new CONTAINER_Cyclotron(aPlayerInventory, aBaseMetaTileEntity);
+    }
 
-	@Override
-	public String getCustomGUIResourceName() {
-		return null;
-	}	
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return super.getClientGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
+        // return new GUI_Cyclotron(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
+        // Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.mNEIName);
+    }
 
-	@Override
-	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return super.getServerGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
-		//return new CONTAINER_Cyclotron(aPlayerInventory, aBaseMetaTileEntity);
-	}
+    @Override
+    public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        return new GregtechMetaTileEntity_Cyclotron(this.mName);
+    }
 
-	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return super.getClientGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
-		//return new GUI_Cyclotron(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.mNEIName);
-	}
+    @Override
+    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
+        return aSide != getBaseMetaTileEntity().getFrontFacing();
+    }
 
-	@Override
-	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntity_Cyclotron(this.mName);
-	}
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+    }
 
-	@Override
-	public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
-		return aSide != getBaseMetaTileEntity().getFrontFacing();
-	}
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+    }
 
-	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-		super.saveNBTData(aNBT);
-	}
+    @Override
+    public IStructureDefinition<GregtechMetaTileEntity_Cyclotron> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Cyclotron>builder()
+                    .addShape(mName, transpose(new String[][] {
+                        {
+                            "               ",
+                            "      hhh      ",
+                            "    hh   hh    ",
+                            "   h       h   ",
+                            "  h         h  ",
+                            "  h         h  ",
+                            " h           h ",
+                            " h           h ",
+                            " h           h ",
+                            "  h         h  ",
+                            "  h         h  ",
+                            "   h       h   ",
+                            "    hh   hh    ",
+                            "      hhh      ",
+                            "               ",
+                        },
+                        {
+                            "      hhh      ",
+                            "    hhccchh    ",
+                            "   hcchhhcch   ",
+                            "  hchh   hhch  ",
+                            " hch       hch ",
+                            " hch       hch ",
+                            "hch         hch",
+                            "hch         hch",
+                            "hch         hch",
+                            " hch       hch ",
+                            " hch       hch ",
+                            "  hchh   hhch  ",
+                            "   hcch~hcch   ",
+                            "    hhccchh    ",
+                            "      hhh      ",
+                        },
+                        {
+                            "               ",
+                            "      hhh      ",
+                            "    hh   hh    ",
+                            "   h       h   ",
+                            "  h         h  ",
+                            "  h         h  ",
+                            " h           h ",
+                            " h           h ",
+                            " h           h ",
+                            "  h         h  ",
+                            "  h         h  ",
+                            "   h       h   ",
+                            "    hh   hh    ",
+                            "      hhh      ",
+                            "               ",
+                        }
+                    }))
+                    .addElement(
+                            'h',
+                            buildHatchAdder(GregtechMetaTileEntity_Cyclotron.class)
+                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                                    .casingIndex(44)
+                                    .dot(1)
+                                    .buildAndChain(onElementPass(
+                                            x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+                    .addElement('c', ofBlock(getCyclotronCoil(), getCyclotronCoilMeta()))
+                    .build();
+        }
+        return STRUCTURE_DEFINITION;
+    }
 
-	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-		super.loadNBTData(aNBT);
-	}
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(mName, stackSize, hintsOnly, 7, 1, 12);
+    }
 
-	@Override
-	public IStructureDefinition<GregtechMetaTileEntity_Cyclotron> getStructureDefinition() {
-		if (STRUCTURE_DEFINITION == null) {
-			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Cyclotron>builder()
-					.addShape(mName, transpose(new String[][]{
-							{
-									"               ",
-									"      hhh      ",
-									"    hh   hh    ",
-									"   h       h   ",
-									"  h         h  ",
-									"  h         h  ",
-									" h           h ",
-									" h           h ",
-									" h           h ",
-									"  h         h  ",
-									"  h         h  ",
-									"   h       h   ",
-									"    hh   hh    ",
-									"      hhh      ",
-									"               ",
-							},
-							{
-									"      hhh      ",
-									"    hhccchh    ",
-									"   hcchhhcch   ",
-									"  hchh   hhch  ",
-									" hch       hch ",
-									" hch       hch ",
-									"hch         hch",
-									"hch         hch",
-									"hch         hch",
-									" hch       hch ",
-									" hch       hch ",
-									"  hchh   hhch  ",
-									"   hcch~hcch   ",
-									"    hhccchh    ",
-									"      hhh      ",
-							},
-							{
-									"               ",
-									"      hhh      ",
-									"    hh   hh    ",
-									"   h       h   ",
-									"  h         h  ",
-									"  h         h  ",
-									" h           h ",
-									" h           h ",
-									" h           h ",
-									"  h         h  ",
-									"  h         h  ",
-									"   h       h   ",
-									"    hh   hh    ",
-									"      hhh      ",
-									"               ",
-							}
-					}))
-					.addElement(
-							'h',
-							buildHatchAdder(GregtechMetaTileEntity_Cyclotron.class)
-									.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-									.casingIndex(44)
-									.dot(1)
-									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta())))
-					)
-					.addElement(
-							'c',
-							ofBlock(
-									getCyclotronCoil(), getCyclotronCoilMeta()
-							)
-					)
-					.build();
-		}
-		return STRUCTURE_DEFINITION;
-	}
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 7, 1, 12, elementBudget, source, actor, false, true);
+    }
 
-	@Override
-	public void construct(ItemStack stackSize, boolean hintsOnly) {
-		buildPiece(mName , stackSize, hintsOnly, 7, 1, 12);
-	}
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCasing = 0;
+        return checkPiece(mName, 7, 1, 12) && mCasing >= 40 && checkHatch();
+    }
 
-	@Override
-	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-		if (mMachine) return -1;
-		return survivialBuildPiece(mName, stackSize, 7, 1, 12, elementBudget, source, actor, false, true);
-	}
+    public Block getCasingBlock() {
+        return ModBlocks.blockCasings2Misc;
+    }
 
-	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		mCasing = 0;
-		return checkPiece(mName, 7, 1, 12) && mCasing >= 40 && checkHatch();
-	}
+    public int getCasingMeta() {
+        return 10;
+    }
 
-	public Block getCasingBlock() {
-		return ModBlocks.blockCasings2Misc;
-	}
+    public Block getCyclotronCoil() {
+        return ModBlocks.blockCasings2Misc;
+    }
 
-	public int getCasingMeta() {
-		return 10;
-	}
+    public int getCyclotronCoilMeta() {
+        return 9;
+    }
 
-	public Block getCyclotronCoil() {
-		return ModBlocks.blockCasings2Misc;
-	}
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(getMachineType())
+                .addInfo("Super Magnetic Speed Shooter")
+                .addSeparator()
+                .addInfo("Particles are accelerated over 186 revolutions to 80% light speed")
+                .addInfo("Can produce a continuous beam current of 2.2 mA at 590 MeV")
+                .addInfo("Which will be extracted from the Isochronous Cyclotron")
+                .addSeparator()
+                .addInfo("Consists of the same layout as a Fusion Reactor")
+                .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
+                .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
+                .addInfo("All Hatches must be IV or better")
+                .addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator()
+                .addCasingInfo("Cyclotron Machine Casings", 40)
+                .addCasingInfo("Cyclotron Coil", 32)
+                .addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1)
+                .addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+        return tt;
+    }
 
-	public int getCyclotronCoilMeta() {
-		return 9;
-	}
+    @Override
+    protected IIconContainer getActiveOverlay() {
+        return getIconOverlay();
+    }
 
-	@Override
-	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-		tt.addMachineType(getMachineType())
-				.addInfo("Super Magnetic Speed Shooter")
-				.addSeparator()
-				.addInfo("Particles are accelerated over 186 revolutions to 80% light speed")
-				.addInfo("Can produce a continuous beam current of 2.2 mA at 590 MeV")
-				.addInfo("Which will be extracted from the Isochronous Cyclotron")
-				.addSeparator()
-				.addInfo("Consists of the same layout as a Fusion Reactor")
-				.addInfo("Any external casing can be a hatch/bus, unlike Fusion")
-				.addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
-				.addInfo("All Hatches must be IV or better")
-				.addPollutionAmount(getPollutionPerSecond(null))
-				.addSeparator()
-				.addCasingInfo("Cyclotron Machine Casings", 40)
-				.addCasingInfo("Cyclotron Coil", 32)
-				.addInputBus("Any Casing", 1)
-				.addOutputBus("Any Casing", 1)
-				.addInputHatch("Any Casing", 1)
-				.addOutputHatch("Any Casing", 1)
-				.addEnergyHatch("Any Casing", 1)
-				.addMaintenanceHatch("Any Casing", 1)
-				.addMufflerHatch("Any Casing", 1)
-				.toolTipFinisher(CORE.GT_Tooltip_Builder);
-		return tt;
-	}
+    @Override
+    protected IIconContainer getInactiveOverlay() {
+        return getIconOverlay();
+    }
 
-	@Override
-	protected IIconContainer getActiveOverlay() {
-		return getIconOverlay();
-	}
+    @Override
+    protected int getCasingTextureId() {
+        return 44;
+    }
 
-	@Override
-	protected IIconContainer getInactiveOverlay() {
-		return getIconOverlay();
-	}
+    public IIconContainer getIconOverlay() {
+        if (this.getBaseMetaTileEntity().isActive()) {
+            return TexturesGtBlock.Overlay_MatterFab_Active_Animated;
+        }
+        return TexturesGtBlock.Overlay_MatterFab_Animated;
+    }
 
-	@Override
-	protected int getCasingTextureId() {
-		return 44;
-	}
+    @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
+    }
 
-	public IIconContainer getIconOverlay() {
-		if (this.getBaseMetaTileEntity().isActive()){
-			return TexturesGtBlock.Overlay_MatterFab_Active_Animated;
-		}
-		return TexturesGtBlock.Overlay_MatterFab_Animated;
-	}
+    @Override
+    public boolean checkRecipe(ItemStack aStack) {
 
-	@Override
-	public boolean isCorrectMachinePart(ItemStack aStack) {
-		return true;
-	}
+        /*if (CORE.DEVENV) {
+        	return this.checkRecipeGeneric();
+        }*/
+        this.fixAllMaintenanceIssue();
 
-	@Override
-	public boolean checkRecipe(ItemStack aStack) {
-		
-		/*if (CORE.DEVENV) {
-			return this.checkRecipeGeneric();
-		}*/
-		this.fixAllMaintenanceIssue();		
-		
-		//log("Recipe Check.");
-		ArrayList<ItemStack> tItemList = getStoredInputs();
-		ItemStack[] tItemInputs = tItemList.toArray(new ItemStack[tItemList.size()]);
-		ArrayList<FluidStack> tInputList = getStoredFluids();
-		FluidStack[] tFluidInputs = tInputList.toArray(new FluidStack[tInputList.size()]);
-		long tVoltage = getMaxInputVoltage();
-		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+        // log("Recipe Check.");
+        ArrayList<ItemStack> tItemList = getStoredInputs();
+        ItemStack[] tItemInputs = tItemList.toArray(new ItemStack[tItemList.size()]);
+        ArrayList<FluidStack> tInputList = getStoredFluids();
+        FluidStack[] tFluidInputs = tInputList.toArray(new FluidStack[tInputList.size()]);
+        long tVoltage = getMaxInputVoltage();
+        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-		GT_Recipe tRecipe = GTPP_Recipe.GTPP_Recipe_Map.sCyclotronRecipes.findRecipe(getBaseMetaTileEntity(), false,
-				gregtech.api.enums.GT_Values.V[tTier], tFluidInputs, tItemInputs);
-		if (tRecipe != null){
-			if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
-				
-				this.mEfficiency = (10000 - ((getIdealStatus() - getRepairStatus()) * 1000));
-				this.mEfficiencyIncrease = 10000;
-				this.mEUt = tRecipe.mEUt;
-				this.mMaxProgresstime = tRecipe.mDuration;
-				
-				while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-					this.mEUt *= 4;
-					this.mMaxProgresstime /= 2;
-				}
-				
-				if (this.mEUt > 0) {
-					this.mEUt = (-this.mEUt);
-				}
-				
-				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-				
-				final ItemStack[] outputs = new ItemStack[tRecipe.mOutputs.length];				
-				for (int i = 0; i < tRecipe.mOutputs.length; i++){
-					if (this.getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)){
-						Logger.WARNING("Adding a bonus output");
-						outputs[i] = tRecipe.getOutput(i);
-					}
-					else {
-						Logger.WARNING("Adding null output");
-						outputs[i] = null;
-					}
-				}
+        GT_Recipe tRecipe = GTPP_Recipe.GTPP_Recipe_Map.sCyclotronRecipes.findRecipe(
+                getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluidInputs, tItemInputs);
+        if (tRecipe != null) {
+            if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
 
-				for (ItemStack s : outputs) {
-					if (s != null) {
-						if (s.getItem() instanceof IonParticles) {
-							long aCharge = IonParticles.getChargeState(s);
-							if (aCharge == 0) {
-								IonParticles.setChargeState(s, MathUtils.getRandomFromArray(new int[] {
-										-5, -5,
-										-4, -4, -4, 
-										-3, -3, -3, -3, -3,
-										-2, -2, -2, -2, -2, -2, -2,
-										-1, -1, -1, -1, -1, -1, -1, -1,
-										1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-										2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-										3, 3, 3, 3, 3, 3, 3,
-										4, 4, 4, 4,
-										5, 5, 5,
-										6, 6}));
-							}
-						}
-					}
-				}
-				
-				this.mOutputItems = outputs;
-				this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
-				this.updateSlots();
-				return true;
-			}
-		}		
-		return false;
-	}	
-	
-	@Override
-	public int getMaxParallelRecipes() {
-		return 1;
-	}
+                this.mEfficiency = (10000 - ((getIdealStatus() - getRepairStatus()) * 1000));
+                this.mEfficiencyIncrease = 10000;
+                this.mEUt = tRecipe.mEUt;
+                this.mMaxProgresstime = tRecipe.mDuration;
 
-	@Override
-	public int getEuDiscountForParallelism() {
-		return 0;
-	}
+                while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                    this.mEUt *= 4;
+                    this.mMaxProgresstime /= 2;
+                }
 
-	@Override
-	public boolean onRunningTick(ItemStack aStack) {	
-		if (this.mOutputBusses.size() > 0) {
-			for (GT_MetaTileEntity_Hatch_OutputBus g : this.mOutputBusses) {
-				if (g != null) {
-					for (ItemStack s : g.mInventory) {
-						if (s != null) {
-							if (s.getItem() instanceof IonParticles) {
-								long aCharge = IonParticles.getChargeState(s);
-								if (aCharge == 0) {
-									IonParticles.setChargeState(s, MathUtils.getRandomFromArray(new int[] {
-											-5, -5,
-											-4, -4, -4, 
-											-3, -3, -3, -3, -3,
-											-2, -2, -2, -2, -2, -2, -2,
-											-1, -1, -1, -1, -1, -1, -1, -1,
-											1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-											2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-											3, 3, 3, 3, 3, 3, 3,
-											4, 4, 4, 4,
-											5, 5, 5,
-											6, 6}));
-								}
-							}
-						}
-					}
-				}
-			}
-		}	
-		this.fixAllMaintenanceIssue();
-		return super.onRunningTick(aStack);
-	}
+                if (this.mEUt > 0) {
+                    this.mEUt = (-this.mEUt);
+                }
 
+                this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
 
-	@Override
-	public int getMaxEfficiency(ItemStack aStack) {
-		return 10000;
-	}
+                final ItemStack[] outputs = new ItemStack[tRecipe.mOutputs.length];
+                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                    if (this.getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)) {
+                        Logger.WARNING("Adding a bonus output");
+                        outputs[i] = tRecipe.getOutput(i);
+                    } else {
+                        Logger.WARNING("Adding null output");
+                        outputs[i] = null;
+                    }
+                }
 
-	@Override
-	public int getPollutionPerSecond(ItemStack aStack) {
-		return CORE.ConfigSwitches.pollutionPerSecondMultiCyclotron;
-	}
+                for (ItemStack s : outputs) {
+                    if (s != null) {
+                        if (s.getItem() instanceof IonParticles) {
+                            long aCharge = IonParticles.getChargeState(s);
+                            if (aCharge == 0) {
+                                IonParticles.setChargeState(s, MathUtils.getRandomFromArray(new int[] {
+                                    -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -2, -2, -1, -1, -1, -1,
+                                    -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                                    2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6
+                                }));
+                            }
+                        }
+                    }
+                }
 
-	@Override
-	public int getDamageToComponent(ItemStack aStack) {
-		return 0;
-	}
-	@Override
-	public boolean explodesOnComponentBreak(ItemStack aStack) {
-		return false;
-	}
+                this.mOutputItems = outputs;
+                this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
+                this.updateSlots();
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public String[] getExtraInfoData() {
-		String tier = tier() == 5 ? "I" : "II";
-		float plasmaOut = 0;
-		int powerRequired = 0;
-		if (this.mLastRecipe != null) {
-			powerRequired = this.mLastRecipe.mEUt;
-			if (this.mLastRecipe.getFluidOutput(0) != null) {
-				plasmaOut = (float)this.mLastRecipe.getFluidOutput(0).amount / (float)this.mLastRecipe.mDuration;
-			}
-		}
+    @Override
+    public int getMaxParallelRecipes() {
+        return 1;
+    }
 
-		return new String[]{
-				"COMET - Compact Cyclotron MK "+tier,
-				"EU Required: "+powerRequired+"EU/t",
-				"Stored EU: "+this.getEUVar()+" / "+maxEUStore()};
-	}
+    @Override
+    public int getEuDiscountForParallelism() {
+        return 0;
+    }
 
-	@Override
-	public int getAmountOfOutputs() {
-		return 1;
-	}
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (this.mOutputBusses.size() > 0) {
+            for (GT_MetaTileEntity_Hatch_OutputBus g : this.mOutputBusses) {
+                if (g != null) {
+                    for (ItemStack s : g.mInventory) {
+                        if (s != null) {
+                            if (s.getItem() instanceof IonParticles) {
+                                long aCharge = IonParticles.getChargeState(s);
+                                if (aCharge == 0) {
+                                    IonParticles.setChargeState(s, MathUtils.getRandomFromArray(new int[] {
+                                        -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -2, -2, -1, -1, -1,
+                                        -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2,
+                                        2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6
+                                    }));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        this.fixAllMaintenanceIssue();
+        return super.onRunningTick(aStack);
+    }
 
-	@SuppressWarnings("deprecation")
-	public boolean turnCasingActive(final boolean status) {
-		if (this.mEnergyHatches != null) {
-			for (final GT_MetaTileEntity_Hatch_Muffler hatch : this.mMufflerHatches) {
-				hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
-			}
-		}
-		if (this.mOutputHatches != null) {
-			for (final GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
-				hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
-			}
-		}
-		if (this.mInputHatches != null) {
-			for (final GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
-				hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
-			}
-		}
-		if (this.mMaintenanceHatches != null) {
-			for (final GT_MetaTileEntity_Hatch_Maintenance hatch : this.mMaintenanceHatches) {
-				hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
-			}
-		}
-		return true;
-	}
+    @Override
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
+    }
+
+    @Override
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return CORE.ConfigSwitches.pollutionPerSecondMultiCyclotron;
+    }
+
+    @Override
+    public int getDamageToComponent(ItemStack aStack) {
+        return 0;
+    }
+
+    @Override
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public String[] getExtraInfoData() {
+        String tier = tier() == 5 ? "I" : "II";
+        float plasmaOut = 0;
+        int powerRequired = 0;
+        if (this.mLastRecipe != null) {
+            powerRequired = this.mLastRecipe.mEUt;
+            if (this.mLastRecipe.getFluidOutput(0) != null) {
+                plasmaOut = (float) this.mLastRecipe.getFluidOutput(0).amount / (float) this.mLastRecipe.mDuration;
+            }
+        }
+
+        return new String[] {
+            "COMET - Compact Cyclotron MK " + tier,
+            "EU Required: " + powerRequired + "EU/t",
+            "Stored EU: " + this.getEUVar() + " / " + maxEUStore()
+        };
+    }
+
+    @Override
+    public int getAmountOfOutputs() {
+        return 1;
+    }
+
+    @SuppressWarnings("deprecation")
+    public boolean turnCasingActive(final boolean status) {
+        if (this.mEnergyHatches != null) {
+            for (final GT_MetaTileEntity_Hatch_Muffler hatch : this.mMufflerHatches) {
+                hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
+            }
+        }
+        if (this.mOutputHatches != null) {
+            for (final GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
+                hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
+            }
+        }
+        if (this.mInputHatches != null) {
+            for (final GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
+                hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
+            }
+        }
+        if (this.mMaintenanceHatches != null) {
+            for (final GT_MetaTileEntity_Hatch_Maintenance hatch : this.mMaintenanceHatches) {
+                hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
+            }
+        }
+        return true;
+    }
 }

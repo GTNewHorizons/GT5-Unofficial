@@ -6,17 +6,16 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 
 public class GregtechIndustrialAlloySmelter {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Industrial Alloy Smelter Multiblock.");
-			run1();		
-		}
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering Industrial Alloy Smelter Multiblock.");
+            run1();
+        }
+    }
 
-	}
-
-	private static void run1() {
-		GregtechItemList.Industrial_AlloySmelter.set(new GregtechMetaTileEntity_IndustrialAlloySmelter(31023,
-				"industrialalloysmelter.controller.tier.single", "Zyngen").getStackForm(1L));
-
-	}
+    private static void run1() {
+        GregtechItemList.Industrial_AlloySmelter.set(new GregtechMetaTileEntity_IndustrialAlloySmelter(
+                        31023, "industrialalloysmelter.controller.tier.single", "Zyngen")
+                .getStackForm(1L));
+    }
 }

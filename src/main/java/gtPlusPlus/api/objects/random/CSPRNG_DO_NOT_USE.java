@@ -34,12 +34,12 @@
  */
 
 package gtPlusPlus.api.objects.random;
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.Random;
 
 import gtPlusPlus.api.interfaces.IRandomGenerator;
 import gtPlusPlus.core.util.Utils;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.Random;
 
 /**
  * The Blum-Blum-Shub random number generator.
@@ -112,13 +112,12 @@ public class CSPRNG_DO_NOT_USE extends Random implements IRandomGenerator {
      * @param rand A source of randomness
      */
     private static BigInteger getPrime(int bits, Random rand) {
-	BigInteger p;
-	while (true) {
-	    p = new BigInteger(bits, 100, rand);
-	    if (p.mod(four).equals(three))
-		break;
-	}
-	return p;
+        BigInteger p;
+        while (true) {
+            p = new BigInteger(bits, 100, rand);
+            if (p.mod(four).equals(three)) break;
+        }
+        return p;
     }
 
     /**
@@ -132,14 +131,14 @@ public class CSPRNG_DO_NOT_USE extends Random implements IRandomGenerator {
      * @return A BigInteger, the <i>n</i>.
      */
     public static BigInteger generateN(int bits, Random rand) {
-	BigInteger p = getPrime(bits/2, rand);
-	BigInteger q = getPrime(bits/2, rand);
+        BigInteger p = getPrime(bits / 2, rand);
+        BigInteger q = getPrime(bits / 2, rand);
 
-	// make sure p != q (almost always true, but just in case, check)
-	while (p.equals(q)) {
-	    q = getPrime(bits, rand);
-	}
-	return p.multiply(q);
+        // make sure p != q (almost always true, but just in case, check)
+        while (p.equals(q)) {
+            q = getPrime(bits, rand);
+        }
+        return p.multiply(q);
     }
 
     /**
@@ -148,7 +147,7 @@ public class CSPRNG_DO_NOT_USE extends Random implements IRandomGenerator {
      * @param bits number of bits
      */
     public CSPRNG_DO_NOT_USE(int bits) {
-	this(bits, new Random());
+        this(bits, new Random());
     }
 
     /**
@@ -158,7 +157,7 @@ public class CSPRNG_DO_NOT_USE extends Random implements IRandomGenerator {
      * @param rand
      */
     public CSPRNG_DO_NOT_USE(int bits, Random rand) {
-	this(generateN(bits, rand));
+        this(generateN(bits, rand));
     }
 
     /**
@@ -170,7 +169,7 @@ public class CSPRNG_DO_NOT_USE extends Random implements IRandomGenerator {
      *            The n-value.
      */
     public CSPRNG_DO_NOT_USE(BigInteger n) {
-	this(n, SecureRandom.getSeed(n.bitLength() / 8));
+        this(n, SecureRandom.getSeed(n.bitLength() / 8));
     }
 
     /**
@@ -183,8 +182,8 @@ public class CSPRNG_DO_NOT_USE extends Random implements IRandomGenerator {
      *            The seed value using a byte[] array.
      */
     public CSPRNG_DO_NOT_USE(BigInteger n, byte[] seed) {
-	this.n = n;
-	setSeed(seed);
+        this.n = n;
+        setSeed(seed);
     }
 
     /**
@@ -194,9 +193,9 @@ public class CSPRNG_DO_NOT_USE extends Random implements IRandomGenerator {
      *            The new seed.
      */
     public void setSeed(byte[] seedBytes) {
-	// ADD: use hardwired default for n
-	BigInteger seed = new BigInteger(1, seedBytes);
-	state = seed.mod(n);
+        // ADD: use hardwired default for n
+        BigInteger seed = new BigInteger(1, seedBytes);
+        state = seed.mod(n);
     }
 
     /**
@@ -205,67 +204,64 @@ public class CSPRNG_DO_NOT_USE extends Random implements IRandomGenerator {
      * @return int
      */
     @Override
-	public int next(int numBits) {
-	// TODO: find out how many LSB one can extract per cycle.
-	//   it is more than one.
-	int result = 0;
-	for (int i = numBits; i != 0; --i) {
-	    state = state.modPow(two, n);
-	    result = (result << 1) | (state.testBit(0) == true ? 1 : 0);
-	}
-	return result;
-    }
-    
-
-    public static CSPRNG_DO_NOT_USE generate(){
-    	return generate(512);
-    }
-    
-    /**
-     * @return CSPRNG_DO_NOT_USE
-     * @Author Draknyte1/Alkalus
-     */
-    public static CSPRNG_DO_NOT_USE generate(int bitsize){
-    	// First use the internal, stock "true" random number
-    	// generator to get a "true random seed"
-    	SecureRandom r = Utils.generateSecureRandom();
-    	r.nextInt(); // need to do something for SR to be triggered.
-    	// Use this seed to generate a n-value for Blum-Blum-Shub
-    	// This value can be re-used if desired.
-    	BigInteger nval = CSPRNG_DO_NOT_USE.generateN(bitsize, r);
-    	// now get a seed
-    	byte[] seed = new byte[bitsize/8];
-    	r.nextBytes(seed);
-    	// now create an instance of BlumBlumShub
-    	CSPRNG_DO_NOT_USE bbs = new CSPRNG_DO_NOT_USE(nval, seed);    	
-    	return bbs;
-    }
-    
-    
-    /**
-     * @return CSPRNG_DO_NOT_USE
-     * @Author Draknyte1/Alkalus
-     */
-    public static CSPRNG_DO_NOT_USE generate(Random aRandom){
-    	return generate(512, aRandom);
-    }
-    
-    /**
-     * @return CSPRNG_DO_NOT_USE
-     * @Author Draknyte1/Alkalus
-     */
-    public static CSPRNG_DO_NOT_USE generate(int aBitSize, Random aRandom){
-    	// First use the internal, stock "true" random number
-    	// generator to get a "true random seed"
-    	SecureRandom r = Utils.generateSecureRandom();
-    	r.nextInt(); // need to do something for SR to be triggered.
-    	// Use this seed to generate a n-value for Blum-Blum-Shub
-    	// This value can be re-used if desired.
-    	int bitsize = aBitSize;
-    	// now create an instance of BlumBlumShub
-    	// do everything almost automatically
-    	CSPRNG_DO_NOT_USE bbs = new CSPRNG_DO_NOT_USE(bitsize, aRandom);
-    	return bbs;
+    public int next(int numBits) {
+        // TODO: find out how many LSB one can extract per cycle.
+        //   it is more than one.
+        int result = 0;
+        for (int i = numBits; i != 0; --i) {
+            state = state.modPow(two, n);
+            result = (result << 1) | (state.testBit(0) == true ? 1 : 0);
+        }
+        return result;
     }
 
+    public static CSPRNG_DO_NOT_USE generate() {
+        return generate(512);
+    }
+
+    /**
+     * @return CSPRNG_DO_NOT_USE
+     * @Author Draknyte1/Alkalus
+     */
+    public static CSPRNG_DO_NOT_USE generate(int bitsize) {
+        // First use the internal, stock "true" random number
+        // generator to get a "true random seed"
+        SecureRandom r = Utils.generateSecureRandom();
+        r.nextInt(); // need to do something for SR to be triggered.
+        // Use this seed to generate a n-value for Blum-Blum-Shub
+        // This value can be re-used if desired.
+        BigInteger nval = CSPRNG_DO_NOT_USE.generateN(bitsize, r);
+        // now get a seed
+        byte[] seed = new byte[bitsize / 8];
+        r.nextBytes(seed);
+        // now create an instance of BlumBlumShub
+        CSPRNG_DO_NOT_USE bbs = new CSPRNG_DO_NOT_USE(nval, seed);
+        return bbs;
+    }
+
+    /**
+     * @return CSPRNG_DO_NOT_USE
+     * @Author Draknyte1/Alkalus
+     */
+    public static CSPRNG_DO_NOT_USE generate(Random aRandom) {
+        return generate(512, aRandom);
+    }
+
+    /**
+     * @return CSPRNG_DO_NOT_USE
+     * @Author Draknyte1/Alkalus
+     */
+    public static CSPRNG_DO_NOT_USE generate(int aBitSize, Random aRandom) {
+        // First use the internal, stock "true" random number
+        // generator to get a "true random seed"
+        SecureRandom r = Utils.generateSecureRandom();
+        r.nextInt(); // need to do something for SR to be triggered.
+        // Use this seed to generate a n-value for Blum-Blum-Shub
+        // This value can be re-used if desired.
+        int bitsize = aBitSize;
+        // now create an instance of BlumBlumShub
+        // do everything almost automatically
+        CSPRNG_DO_NOT_USE bbs = new CSPRNG_DO_NOT_USE(bitsize, aRandom);
+        return bbs;
+    }
 }

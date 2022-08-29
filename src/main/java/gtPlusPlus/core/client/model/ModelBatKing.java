@@ -1,19 +1,16 @@
 package gtPlusPlus.core.client.model;
 
-import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.entity.monster.EntityBatKing;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.util.MathHelper;
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class ModelBatKing extends ModelBase
-{
+public class ModelBatKing extends ModelBase {
     private ModelRenderer batHead;
     /** The body box of the bat model. */
     private ModelRenderer batBody;
@@ -26,11 +23,10 @@ public class ModelBatKing extends ModelBase
     /** The outer left wing box of the bat model. */
     private ModelRenderer batOuterLeftWing;
 
-    public ModelBatKing()
-    {
+    public ModelBatKing() {
         this.textureWidth = 64;
         this.textureHeight = 64;
-        
+
         this.batHead = new ModelRenderer(this, 0, 0);
         this.batHead.addBox(-3.0F, -3.0F, -3.0F, 6, 6, 6);
         ModelRenderer modelrenderer = new ModelRenderer(this, 24, 0);
@@ -65,53 +61,54 @@ public class ModelBatKing extends ModelBase
      * not actually sure this is size, is not used as of now, but the model would be recreated if the value changed and
      * it seems a good match for a bats size
      */
-    public int getBatSize()
-    {
+    public int getBatSize() {
         return 72;
     }
 
     /**
      * Sets the models various rotation angles then renders the model.
      */
-    public void render(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_)
-    {
-        EntityBatKing entitybat = (EntityBatKing)p_78088_1_;
+    public void render(
+            Entity p_78088_1_,
+            float p_78088_2_,
+            float p_78088_3_,
+            float p_78088_4_,
+            float p_78088_5_,
+            float p_78088_6_,
+            float p_78088_7_) {
+        EntityBatKing entitybat = (EntityBatKing) p_78088_1_;
         float f6;
 
-        if (entitybat.getIsBatHanging())
-        {
-            f6 = (180F / (float)Math.PI);
-            this.batHead.rotateAngleX = p_78088_6_ / (180F / (float)Math.PI);
-            this.batHead.rotateAngleY = (float)Math.PI - p_78088_5_ / (180F / (float)Math.PI);
-            this.batHead.rotateAngleZ = (float)Math.PI;
+        if (entitybat.getIsBatHanging()) {
+            f6 = (180F / (float) Math.PI);
+            this.batHead.rotateAngleX = p_78088_6_ / (180F / (float) Math.PI);
+            this.batHead.rotateAngleY = (float) Math.PI - p_78088_5_ / (180F / (float) Math.PI);
+            this.batHead.rotateAngleZ = (float) Math.PI;
             this.batHead.setRotationPoint(0.0F, -2.0F, 0.0F);
             this.batRightWing.setRotationPoint(-3.0F, 0.0F, 3.0F);
             this.batLeftWing.setRotationPoint(3.0F, 0.0F, 3.0F);
-            this.batBody.rotateAngleX = (float)Math.PI;
+            this.batBody.rotateAngleX = (float) Math.PI;
             this.batRightWing.rotateAngleX = -0.15707964F;
-            this.batRightWing.rotateAngleY = -((float)Math.PI * 2F / 5F);
+            this.batRightWing.rotateAngleY = -((float) Math.PI * 2F / 5F);
             this.batOuterRightWing.rotateAngleY = -1.7278761F;
             this.batLeftWing.rotateAngleX = this.batRightWing.rotateAngleX;
             this.batLeftWing.rotateAngleY = -this.batRightWing.rotateAngleY;
             this.batOuterLeftWing.rotateAngleY = -this.batOuterRightWing.rotateAngleY;
-        }
-        else
-        {
-            f6 = (180F / (float)Math.PI);
-            this.batHead.rotateAngleX = p_78088_6_ / (180F / (float)Math.PI);
-            this.batHead.rotateAngleY = p_78088_5_ / (180F / (float)Math.PI);
+        } else {
+            f6 = (180F / (float) Math.PI);
+            this.batHead.rotateAngleX = p_78088_6_ / (180F / (float) Math.PI);
+            this.batHead.rotateAngleY = p_78088_5_ / (180F / (float) Math.PI);
             this.batHead.rotateAngleZ = 0.0F;
             this.batHead.setRotationPoint(0.0F, 0.0F, 0.0F);
             this.batRightWing.setRotationPoint(0.0F, 0.0F, 0.0F);
             this.batLeftWing.setRotationPoint(0.0F, 0.0F, 0.0F);
-            this.batBody.rotateAngleX = ((float)Math.PI / 4F) + MathHelper.cos(p_78088_4_ * 0.1F) * 0.15F;
+            this.batBody.rotateAngleX = ((float) Math.PI / 4F) + MathHelper.cos(p_78088_4_ * 0.1F) * 0.15F;
             this.batBody.rotateAngleY = 0.0F;
-            this.batRightWing.rotateAngleY = MathHelper.cos(p_78088_4_ * 1.3F) * (float)Math.PI * 0.25F;
+            this.batRightWing.rotateAngleY = MathHelper.cos(p_78088_4_ * 1.3F) * (float) Math.PI * 0.25F;
             this.batLeftWing.rotateAngleY = -this.batRightWing.rotateAngleY;
             this.batOuterRightWing.rotateAngleY = this.batRightWing.rotateAngleY * 0.5F;
             this.batOuterLeftWing.rotateAngleY = -this.batRightWing.rotateAngleY * 0.5F;
         }
-
 
         GL11.glScalef(4, 4, 4);
         this.batHead.render(p_78088_7_);

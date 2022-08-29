@@ -13,7 +13,7 @@ import java.util.Base64;
  */
 public class BigintStorage {
     private BigInteger storedValue = BigInteger.ZERO;
-    
+
     /**
      * Stores the specified value.  Requires that 0 &lt;= value &lt;= max.
      * @param value the value to store.
@@ -25,7 +25,7 @@ public class BigintStorage {
         }
         storedValue = storedValue.multiply(BigInteger.valueOf(max + 1)).add(BigInteger.valueOf(value));
     }
-    
+
     /**
      * Extracts a value based on the specified maximum.
      * @param max the expected maximum for the value.
@@ -36,7 +36,7 @@ public class BigintStorage {
         storedValue = values[0];
         return values[1].intValue();
     }
-    
+
     /**
      * Takes input of a Base64 string, and converts it to a BigintStorage.
      * @param code the Base64-encoded string (presumed to be from @outputBase64)
@@ -48,7 +48,7 @@ public class BigintStorage {
         result.storedValue = new BigInteger(temp);
         return result;
     }
-    
+
     /**
      * Outputs the current value of this BigintStorage as a Base64-encoded string.
      * @return the Base64-encoded string.

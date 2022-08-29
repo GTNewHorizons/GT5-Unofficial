@@ -10,34 +10,32 @@
  ******************************************************************************/
 package gtPlusPlus.xmod.forestry.bees.gui;
 
-import net.minecraft.entity.player.InventoryPlayer;
-
 import forestry.apiculture.gui.ContainerBeeHelper;
 import forestry.apiculture.gui.IContainerBeeHousing;
 import forestry.apiculture.tiles.TileBeeHousingBase;
 import forestry.core.gui.ContainerTile;
 import forestry.core.network.IForestryPacketClient;
 import forestry.core.network.packets.PacketGuiUpdate;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class ContainerBeeHouse extends ContainerTile<TileBeeHousingBase> implements IContainerBeeHousing {
 
-	public ContainerBeeHouse(InventoryPlayer player, TileBeeHousingBase tile, boolean hasFrames) {
-		super(tile, player, 8, 108);
-		ContainerBeeHelper.addSlots(this, tile, hasFrames);
-	}
+    public ContainerBeeHouse(InventoryPlayer player, TileBeeHousingBase tile, boolean hasFrames) {
+        super(tile, player, 8, 108);
+        ContainerBeeHelper.addSlots(this, tile, hasFrames);
+    }
 
-	private int beeProgress = 0;
+    private int beeProgress = 0;
 
-	@Override
-	public void detectAndSendChanges() {
-		super.detectAndSendChanges();
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
 
-		int beeProgress = tile.getBeekeepingLogic().getBeeProgressPercent();
-		if (this.beeProgress != beeProgress) {
-			this.beeProgress = beeProgress;
-			IForestryPacketClient packet = new PacketGuiUpdate(tile);
-			sendPacketToCrafters(packet);
-		}
-	}
-
+        int beeProgress = tile.getBeekeepingLogic().getBeeProgressPercent();
+        if (this.beeProgress != beeProgress) {
+            this.beeProgress = beeProgress;
+            IForestryPacketClient packet = new PacketGuiUpdate(tile);
+            sendPacketToCrafters(packet);
+        }
+    }
 }

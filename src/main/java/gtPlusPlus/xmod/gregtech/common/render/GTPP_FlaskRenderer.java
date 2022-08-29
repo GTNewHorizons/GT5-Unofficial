@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.render;
 
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.ItemList;
 import gregtech.common.items.GT_VolumetricFlask;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.util.DrawUtil;
@@ -18,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
 public final class GTPP_FlaskRenderer implements net.minecraftforge.client.IItemRenderer {
-	
+
     public GTPP_FlaskRenderer() {
         MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_8k.getItem(), this);
         MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_32k.getItem(), this);
@@ -28,14 +27,13 @@ public final class GTPP_FlaskRenderer implements net.minecraftforge.client.IItem
         return type != ItemRenderType.FIRST_PERSON_MAP;
     }
 
-
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
         return type == ItemRenderType.ENTITY;
     }
 
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GT_VolumetricFlask cell = (GT_VolumetricFlask) item.getItem();
-        
+
         int aType = cell.getMaxCapacity() == 8000 ? 0 : 1;
         IIcon icon = item.getIconIndex();
         GL11.glEnable(3042);
@@ -86,7 +84,15 @@ public final class GTPP_FlaskRenderer implements net.minecraftforge.client.IItem
         if (type.equals(ItemRenderType.INVENTORY)) {
             DrawUtil.renderIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {
-            ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
+            ItemRenderer.renderItemIn2D(
+                    Tessellator.instance,
+                    icon.getMaxU(),
+                    icon.getMinV(),
+                    icon.getMinU(),
+                    icon.getMaxV(),
+                    icon.getIconWidth(),
+                    icon.getIconHeight(),
+                    0.0625F);
         }
         GL11.glDisable(3008);
         GL11.glDisable(3042);

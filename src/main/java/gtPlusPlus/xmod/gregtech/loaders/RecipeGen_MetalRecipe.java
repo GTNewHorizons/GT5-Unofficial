@@ -1,28 +1,25 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-
 import java.util.HashSet;
 import java.util.Set;
 
 public class RecipeGen_MetalRecipe extends RecipeGen_Base {
 
-    public final static Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
+    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
+
     static {
         MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
     }
 
-    public RecipeGen_MetalRecipe(final Material M){
+    public RecipeGen_MetalRecipe(final Material M) {
         this.toGenerate = M;
         mRecipeGenMap.add(this);
     }
@@ -34,16 +31,13 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
 
     private void generateRecipes(final Material material) {
 
-        Logger.WARNING("Generating Metal recipes for "+material.getLocalizedName());
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getBlock(1)))
-            if (GT_ModHandler.addCompressionRecipe(
-                    material.getIngot(9),
-                    material.getBlock(1)
-            )){
-                Logger.WARNING("Compress Block Recipe: "+material.getLocalizedName()+" - Success");
-            }
-            else {
-                Logger.WARNING("Compress Block Recipe: "+material.getLocalizedName()+" - Failed");
+        Logger.WARNING("Generating Metal recipes for " + material.getLocalizedName());
+        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
+                && ItemUtils.checkForInvalidItems(material.getBlock(1)))
+            if (GT_ModHandler.addCompressionRecipe(material.getIngot(9), material.getBlock(1))) {
+                Logger.WARNING("Compress Block Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Compress Block Recipe: " + material.getLocalizedName() + " - Failed");
             }
 
         if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getRod(1)))
@@ -52,11 +46,10 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
                     material.getRod(1),
                     material.getSmallDust(2),
                     (int) Math.max(material.getMass() / 8L, 1L),
-                    material.vVoltageMultiplier)){
-                Logger.WARNING("Lathe Rod Recipe: "+material.getLocalizedName()+" - Success");
-            }
-            else {
-                Logger.WARNING("Lathe Rod Recipe: "+material.getLocalizedName()+" - Failed");
+                    material.vVoltageMultiplier)) {
+                Logger.WARNING("Lathe Rod Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Lathe Rod Recipe: " + material.getLocalizedName() + " - Failed");
             }
 
         if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1)))
@@ -65,84 +58,68 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
                     material.getBolt(4),
                     null,
                     (int) Math.max(material.getMass() * 2L, 1L),
-                    material.vVoltageMultiplier)){
-                Logger.WARNING("Cut Bolt Recipe: "+material.getLocalizedName()+" - Success");
-            }
-            else {
-                Logger.WARNING("Cut Bolt Recipe: "+material.getLocalizedName()+" - Failed");
+                    material.vVoltageMultiplier)) {
+                Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Failed");
             }
 
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getHotIngot(1)))
+        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
+                && ItemUtils.checkForInvalidItems(material.getHotIngot(1)))
             if (CORE.RA.addVacuumFreezerRecipe(
-            		material.getHotIngot(1),
-            		material.getIngot(1), 
-            		(int) Math.max(material.getMass() * 3L, 1L), 
-            		material.vVoltageMultiplier)
-        	){
-                Logger.WARNING("Cool Hot Ingot Recipe: "+material.getLocalizedName()+" - Success");
-            }
-            else {
-                Logger.WARNING("Cool Hot Ingot Recipe: "+material.getLocalizedName()+" - Failed");
+                    material.getHotIngot(1),
+                    material.getIngot(1),
+                    (int) Math.max(material.getMass() * 3L, 1L),
+                    material.vVoltageMultiplier)) {
+                Logger.WARNING("Cool Hot Ingot Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Cool Hot Ingot Recipe: " + material.getLocalizedName() + " - Failed");
             }
 
-        if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getLongRod(1))) {
+        if (ItemUtils.checkForInvalidItems(material.getRod(1))
+                && ItemUtils.checkForInvalidItems(material.getLongRod(1))) {
             if (GT_Values.RA.addForgeHammerRecipe(
-                    material.getRod(2),
-                    material.getLongRod(1),
-                    (int) Math.max(material.getMass(), 1L),
-                    16)){
-                Logger.WARNING("Hammer Long Rod Recipe: "+material.getLocalizedName()+" - Success");
-            }
-            else {
-                Logger.WARNING("Hammer Long Rod Recipe: "+material.getLocalizedName()+" - Failed");
+                    material.getRod(2), material.getLongRod(1), (int) Math.max(material.getMass(), 1L), 16)) {
+                Logger.WARNING("Hammer Long Rod Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Hammer Long Rod Recipe: " + material.getLocalizedName() + " - Failed");
             }
 
             GT_Values.RA.addCutterRecipe(
-                    material.getLongRod(1),
-                    material.getRod(2),
-                    null,
-                    (int) Math.max(material.getMass(), 1L),
-                    4);
+                    material.getLongRod(1), material.getRod(2), null, (int) Math.max(material.getMass(), 1L), 4);
         }
 
         if (ItemUtils.checkForInvalidItems(material.getBolt(1)) && ItemUtils.checkForInvalidItems(material.getScrew(1)))
             if (GT_Values.RA.addLatheRecipe(
-                    material.getBolt(1),
-                    material.getScrew(1),
-                    null,
-                    (int) Math.max(material.getMass() / 8L, 1L),
-                    4)){
-                Logger.WARNING("Lathe Screw Recipe: "+material.getLocalizedName()+" - Success");
-            }
-            else {
-                Logger.WARNING("Lathe Screw Recipe: "+material.getLocalizedName()+" - Failed");
-            }
-        
-        // Fine Wire
-        if (ItemUtils.checkForInvalidItems(material.getFineWire(1)) && (ItemUtils.checkForInvalidItems(material.getIngot(1)) || ItemUtils.checkForInvalidItems(material.getWire01(1))))        	
-            if (GT_Values.RA.addWiremillRecipe(
-            		ItemUtils.checkForInvalidItems(material.getWire01(1)) ? material.getWire01(1) : material.getIngot(1),
-            		material.getFineWire(ItemUtils.checkForInvalidItems(material.getWire01(1)) ? 4 : 8), 
-            		100, 
-            		4)){
-                Logger.WARNING("Wiremill Fine Wire Recipe: "+material.getLocalizedName()+" - Success");
-            }
-            else {
-                Logger.WARNING("Wiremill Fine Wire Recipe: "+material.getLocalizedName()+" - Failed");
+                    material.getBolt(1), material.getScrew(1), null, (int) Math.max(material.getMass() / 8L, 1L), 4)) {
+                Logger.WARNING("Lathe Screw Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Lathe Screw Recipe: " + material.getLocalizedName() + " - Failed");
             }
 
         // Fine Wire
-        if (ItemUtils.checkForInvalidItems(material.getFineWire(1)) && (ItemUtils.checkForInvalidItems(material.getRod(1))))        	
+        if (ItemUtils.checkForInvalidItems(material.getFineWire(1))
+                && (ItemUtils.checkForInvalidItems(material.getIngot(1))
+                        || ItemUtils.checkForInvalidItems(material.getWire01(1))))
             if (GT_Values.RA.addWiremillRecipe(
-            		material.getRod(1),
-            		material.getFineWire(4), 
-            		50, 
-            		4)){
-                Logger.WARNING("Wiremill Fine Wire Recipe: "+material.getLocalizedName()+" - Success");
+                    ItemUtils.checkForInvalidItems(material.getWire01(1))
+                            ? material.getWire01(1)
+                            : material.getIngot(1),
+                    material.getFineWire(ItemUtils.checkForInvalidItems(material.getWire01(1)) ? 4 : 8),
+                    100,
+                    4)) {
+                Logger.WARNING("Wiremill Fine Wire Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Wiremill Fine Wire Recipe: " + material.getLocalizedName() + " - Failed");
             }
-            else {
-                Logger.WARNING("Wiremill Fine Wire Recipe: "+material.getLocalizedName()+" - Failed");
+
+        // Fine Wire
+        if (ItemUtils.checkForInvalidItems(material.getFineWire(1))
+                && (ItemUtils.checkForInvalidItems(material.getRod(1))))
+            if (GT_Values.RA.addWiremillRecipe(material.getRod(1), material.getFineWire(4), 50, 4)) {
+                Logger.WARNING("Wiremill Fine Wire Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Wiremill Fine Wire Recipe: " + material.getLocalizedName() + " - Failed");
             }
-        
     }
 }

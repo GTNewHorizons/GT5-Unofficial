@@ -7,20 +7,18 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaC
 
 public class GregtechSteamCondenser {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Steam Condensor.");
-			if (CORE.ConfigSwitches.enableMachine_SteamConverter) {
-				run1();
-			}
-		}
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering Steam Condensor.");
+            if (CORE.ConfigSwitches.enableMachine_SteamConverter) {
+                run1();
+            }
+        }
+    }
 
-	}
-
-	private static void run1() {
-		// Steam Condensors
-		GregtechItemList.Condensor_MAX.set(
-				new GregtechMetaCondensor(769, "steamcondensor.01.tier.single", "Steam Condensor").getStackForm(1L));
-
-	}
+    private static void run1() {
+        // Steam Condensors
+        GregtechItemList.Condensor_MAX.set(
+                new GregtechMetaCondensor(769, "steamcondensor.01.tier.single", "Steam Condensor").getStackForm(1L));
+    }
 }

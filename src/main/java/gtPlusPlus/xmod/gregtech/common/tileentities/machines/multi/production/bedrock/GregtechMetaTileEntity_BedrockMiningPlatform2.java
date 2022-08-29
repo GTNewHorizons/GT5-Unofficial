@@ -1,11 +1,6 @@
 /*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.bedrock;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.Material;
 
 public class GregtechMetaTileEntity_BedrockMiningPlatform2 extends GregtechMetaTileEntity_BedrockMiningPlatformBase {
 	public GregtechMetaTileEntity_BedrockMiningPlatform2(final int aID, final String aName, final String aNameRegional) {

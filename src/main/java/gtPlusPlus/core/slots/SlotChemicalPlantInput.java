@@ -10,36 +10,35 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class SlotChemicalPlantInput extends Slot {
 
-	public SlotChemicalPlantInput(final IInventory inventory, final int index, final int x, final int y) {
-		super(inventory, index, x, y);
-	}
+    public SlotChemicalPlantInput(final IInventory inventory, final int index, final int x, final int y) {
+        super(inventory, index, x, y);
+    }
 
-	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
-		return isItemValidForChemicalPlantSlot(itemstack);
-	}
-	
-	public static boolean isItemValidForChemicalPlantSlot(ItemStack aStack) {
-		boolean validItem = GTPP_Recipe_Map.sChemicalPlantRecipes.containsInput(aStack);		
-		if (!validItem) {
-			for (GT_Recipe f : GTPP_Recipe_Map.sChemicalPlantRecipes.mRecipeList) {
-				if (f.mFluidInputs.length > 0) {
-					for (FluidStack g : f.mFluidInputs) {
-						if (g != null) {
-							if (FluidContainerRegistry.containsFluid(aStack, g)) {
-								return true;
-							}
-						}
-					}
-				}
-			}
-		}		
-		return validItem;
-	}
+    @Override
+    public boolean isItemValid(final ItemStack itemstack) {
+        return isItemValidForChemicalPlantSlot(itemstack);
+    }
 
-	@Override
-	public int getSlotStackLimit() {
-		return 64;
-	}
+    public static boolean isItemValidForChemicalPlantSlot(ItemStack aStack) {
+        boolean validItem = GTPP_Recipe_Map.sChemicalPlantRecipes.containsInput(aStack);
+        if (!validItem) {
+            for (GT_Recipe f : GTPP_Recipe_Map.sChemicalPlantRecipes.mRecipeList) {
+                if (f.mFluidInputs.length > 0) {
+                    for (FluidStack g : f.mFluidInputs) {
+                        if (g != null) {
+                            if (FluidContainerRegistry.containsFluid(aStack, g)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return validItem;
+    }
 
+    @Override
+    public int getSlotStackLimit() {
+        return 64;
+    }
 }

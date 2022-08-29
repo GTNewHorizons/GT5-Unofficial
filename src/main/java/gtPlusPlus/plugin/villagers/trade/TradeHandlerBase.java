@@ -10,16 +10,15 @@
  ******************************************************************************/
 package gtPlusPlus.plugin.villagers.trade;
 
+import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import java.util.Random;
-
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.village.MerchantRecipeList;
-import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 
 public abstract class TradeHandlerBase implements IVillageTradeHandler {
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public abstract void manipulateTradesForVillager(EntityVillager villager, MerchantRecipeList recipeList, Random random);
-
+    @SuppressWarnings("unchecked")
+    @Override
+    public abstract void manipulateTradesForVillager(
+            EntityVillager villager, MerchantRecipeList recipeList, Random random);
 }

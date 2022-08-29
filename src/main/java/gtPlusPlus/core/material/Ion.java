@@ -2,29 +2,29 @@ package gtPlusPlus.core.material;
 
 public class Ion {
 
-	private final Material mElement;
-	private final boolean mContainsPositiveCharge;
-	private final int mTotalIonization;
+    private final Material mElement;
+    private final boolean mContainsPositiveCharge;
+    private final int mTotalIonization;
 
-	public Ion(Material aMat, int chargeAmount) {
-		mElement = aMat;
-		mContainsPositiveCharge = (chargeAmount >= 0);
-		mTotalIonization = chargeAmount;
-	}	
-	
-	public synchronized final Material getElement() {
-		return mElement;
-	}
+    public Ion(Material aMat, int chargeAmount) {
+        mElement = aMat;
+        mContainsPositiveCharge = (chargeAmount >= 0);
+        mTotalIonization = chargeAmount;
+    }
 
-	public synchronized final boolean containsPositiveCharge() {
-		return mContainsPositiveCharge;
-	}
+    public final synchronized Material getElement() {
+        return mElement;
+    }
 
-	public synchronized final int getTotalIonization() {
-		return mTotalIonization;
-	}
-	
-	public final boolean isNeutral() {
-		return mTotalIonization == 0;
-	}
+    public final synchronized boolean containsPositiveCharge() {
+        return mContainsPositiveCharge;
+    }
+
+    public final synchronized int getTotalIonization() {
+        return mTotalIonization;
+    }
+
+    public final boolean isNeutral() {
+        return mTotalIonization == 0;
+    }
 }

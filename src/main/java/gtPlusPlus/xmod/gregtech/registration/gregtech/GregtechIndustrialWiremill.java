@@ -7,19 +7,19 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 
 public class GregtechIndustrialWiremill {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Industrial Wire Factory Multiblock.");
-			if (CORE.ConfigSwitches.enableMultiblock_IndustrialWireMill) {
-				run1();
-			}
-		}
-	}
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering Industrial Wire Factory Multiblock.");
+            if (CORE.ConfigSwitches.enableMultiblock_IndustrialWireMill) {
+                run1();
+            }
+        }
+    }
 
-	private static void run1() {
-		// Industrial Wire Factory Multiblock
-		GregtechItemList.Industrial_WireFactory.set(new GregtechMetaTileEntity_IndustrialWireMill(798,
-				"industrialwiremill.controller.tier.single", "Wire Factory Controller").getStackForm(1L));
-
-	}
+    private static void run1() {
+        // Industrial Wire Factory Multiblock
+        GregtechItemList.Industrial_WireFactory.set(new GregtechMetaTileEntity_IndustrialWireMill(
+                        798, "industrialwiremill.controller.tier.single", "Wire Factory Controller")
+                .getStackForm(1L));
+    }
 }

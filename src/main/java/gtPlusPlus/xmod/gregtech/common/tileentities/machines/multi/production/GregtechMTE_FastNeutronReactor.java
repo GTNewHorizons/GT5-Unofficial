@@ -1,19 +1,6 @@
 /*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMTE_FastNeutronReactor
 extends GregtechMeta_MultiBlockBase
@@ -39,7 +26,7 @@ extends GregtechMeta_MultiBlockBase
 	@Override
 	public String getCustomGUIResourceName() {
 		return null;
-	}	
+	}
 
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity)
@@ -70,7 +57,7 @@ extends GregtechMeta_MultiBlockBase
 			if (processing_Stage_2()) {
 				if (processing_Stage_3()) {
 					if (processing_Stage_4()) {
-						
+
 					}
 					else {
 						//Stage 4
@@ -88,8 +75,8 @@ extends GregtechMeta_MultiBlockBase
 			//Stage 1
 		}
 		return false;
-	}	
-	
+	}
+
 	@Override
 	public int getMaxParallelRecipes() {
 		return 1;
@@ -104,7 +91,7 @@ extends GregtechMeta_MultiBlockBase
 		for (GT_MetaTileEntity_Hatch_Input tRecipe : this.mInputHatches) {
 			if (tRecipe.getFluid() != null){
 				FluidStack tFluid = FluidUtils.getFluidStack(tRecipe.getFluid(), 200);
-				if (tFluid != null) {					
+				if (tFluid != null) {
 					if (tFluid == GT_ModHandler.getDistilledWater(1)) {
 						if (depleteInput(tFluid)) {
 							this.mMaxProgresstime = Math.max(1, runtimeBoost(8 * 2));
@@ -112,10 +99,10 @@ extends GregtechMeta_MultiBlockBase
 							this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
 							return true;
 						}
-					}				
-					
+					}
+
 				}
-			}		
+			}
 	}
 	this.mMaxProgresstime = 0;
 	this.mEUt = 0;
@@ -150,11 +137,11 @@ extends GregtechMeta_MultiBlockBase
 		}
 		return true;
 	}
-	
+
 	public int getEUt() {
 		return 0; //Default 400
 	}
-	
+
 	public int getEfficiencyIncrease() {
 		return 0; //Default 12
 	}
@@ -213,7 +200,7 @@ extends GregtechMeta_MultiBlockBase
 		return true;
 	}
 
-	public boolean damageFilter(){		
+	public boolean damageFilter(){
 		return false;
 	}
 

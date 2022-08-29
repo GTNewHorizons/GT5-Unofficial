@@ -12,7 +12,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 @SuppressWarnings("deprecation")
 public class GTPP_RenderedTexture extends GT_RenderedTexture {
 
-	public GTPP_RenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean aAllowAlpha) {
+    public GTPP_RenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean aAllowAlpha) {
         super(aIcon, aRGBa, aAllowAlpha);
     }
 
@@ -23,5 +23,4 @@ public class GTPP_RenderedTexture extends GT_RenderedTexture {
     public GTPP_RenderedTexture(IIconContainer aIcon) {
         this(aIcon, Dyes._NULL.mRGBa);
     }
-	
 }

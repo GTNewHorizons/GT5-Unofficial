@@ -1,11 +1,8 @@
 package gtPlusPlus.core.client.renderer;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
+import gtPlusPlus.core.entity.projectile.EntityToxinball;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -13,16 +10,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-
-import gtPlusPlus.core.entity.projectile.EntityToxinball;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
-public class RenderToxinball extends Render
-{
+public class RenderToxinball extends Render {
     private float mSize;
 
-    public RenderToxinball(float scale)
-    {
+    public RenderToxinball(float scale) {
         this.mSize = scale;
     }
 
@@ -32,11 +27,16 @@ public class RenderToxinball extends Render
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
-    public void doRender(EntityToxinball entity, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
-    {
+    public void doRender(
+            EntityToxinball entity,
+            double p_76986_2_,
+            double p_76986_4_,
+            double p_76986_6_,
+            float p_76986_8_,
+            float p_76986_9_) {
         GL11.glPushMatrix();
         this.bindEntityTexture(entity);
-        GL11.glTranslatef((float)p_76986_2_, (float)p_76986_4_, (float)p_76986_6_);
+        GL11.glTranslatef((float) p_76986_2_, (float) p_76986_4_, (float) p_76986_6_);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         float f2 = this.mSize;
         GL11.glScalef(f2 / 1.0F, f2 / 1.0F, f2 / 1.0F);
@@ -65,8 +65,7 @@ public class RenderToxinball extends Render
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(EntityToxinball entity)
-    {
+    protected ResourceLocation getEntityTexture(EntityToxinball entity) {
         return TextureMap.locationItemsTexture;
     }
 
@@ -74,9 +73,8 @@ public class RenderToxinball extends Render
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
     @Override
-	protected ResourceLocation getEntityTexture(Entity entity)
-    {
-        return this.getEntityTexture((EntityToxinball)entity);
+    protected ResourceLocation getEntityTexture(Entity entity) {
+        return this.getEntityTexture((EntityToxinball) entity);
     }
 
     /**
@@ -86,8 +84,13 @@ public class RenderToxinball extends Render
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
     @Override
-	public void doRender(Entity entity, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
-    {
-        this.doRender((EntityToxinball)entity, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+    public void doRender(
+            Entity entity,
+            double p_76986_2_,
+            double p_76986_4_,
+            double p_76986_6_,
+            float p_76986_8_,
+            float p_76986_9_) {
+        this.doRender((EntityToxinball) entity, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
     }
 }

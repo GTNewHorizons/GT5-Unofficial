@@ -7,19 +7,18 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 
 public class GregtechIndustrialWashPlant {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Industrial Wash Plant Multiblock.");
-			if (CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant) {
-				run1();
-			}
-		}
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering Industrial Wash Plant Multiblock.");
+            if (CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant) {
+                run1();
+            }
+        }
+    }
 
-	}
-
-	private static void run1() {
-		GregtechItemList.Industrial_WashPlant.set(new GregtechMetaTileEntity_IndustrialWashPlant(850,
-				"industrialwashplant.controller.tier.single", "Ore Washing Plant").getStackForm(1L));
-
-	}
+    private static void run1() {
+        GregtechItemList.Industrial_WashPlant.set(new GregtechMetaTileEntity_IndustrialWashPlant(
+                        850, "industrialwashplant.controller.tier.single", "Ore Washing Plant")
+                .getStackForm(1L));
+    }
 }

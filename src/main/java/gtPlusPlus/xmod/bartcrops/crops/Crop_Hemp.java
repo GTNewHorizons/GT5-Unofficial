@@ -9,48 +9,48 @@ import ic2.api.crops.ICropTile;
 import net.minecraft.item.ItemStack;
 
 public class Crop_Hemp extends BaseAestheticCrop {
-	
-	public int tier() {
-		return 2;
-	}
 
-	public String name() {
-		return "Hemp";
-	}
+    public int tier() {
+        return 2;
+    }
 
-	public String discoveredBy() {
-		return "Alkalus";
-	}
+    public String name() {
+        return "Hemp";
+    }
 
-	public int growthDuration(ICropTile crop) {
-		int ret = 550;
-		
-		/*if (crop.isBlockBelow(Blocks.dirt) || crop.isBlockBelow(Blocks.flowing_water)) {
-			ret = 225;
-		}*/
+    public String discoveredBy() {
+        return "Alkalus";
+    }
 
-		if (CORE_Preloader.DEBUG_MODE) {
-			ret = 1;
-		}
+    public int growthDuration(ICropTile crop) {
+        int ret = 550;
 
-		return ret;
-	}
+        /*if (crop.isBlockBelow(Blocks.dirt) || crop.isBlockBelow(Blocks.flowing_water)) {
+        	ret = 225;
+        }*/
 
-	public String[] attributes() {
-		return new String[]{"Green", "Soil", "Orange"};
-	}
+        if (CORE_Preloader.DEBUG_MODE) {
+            ret = 1;
+        }
 
-	public ItemStack getGain(ICropTile crop) {
-		
-		ItemStack ret = this.getDisplayItem();
-		if (MathUtils.randInt(0, 10) > 8) {
-			ret = ItemUtils.getSimpleStack(ModItems.itemRope, MathUtils.randInt(1, 3));
-		}
+        return ret;
+    }
 
-		return ret;
-	}
+    public String[] attributes() {
+        return new String[] {"Green", "Soil", "Orange"};
+    }
 
-	public ItemStack getDisplayItem() {
-		return ItemUtils.getSimpleStack(ModItems.itemRope, 0);
-	}
+    public ItemStack getGain(ICropTile crop) {
+
+        ItemStack ret = this.getDisplayItem();
+        if (MathUtils.randInt(0, 10) > 8) {
+            ret = ItemUtils.getSimpleStack(ModItems.itemRope, MathUtils.randInt(1, 3));
+        }
+
+        return ret;
+    }
+
+    public ItemStack getDisplayItem() {
+        return ItemUtils.getSimpleStack(ModItems.itemRope, 0);
+    }
 }

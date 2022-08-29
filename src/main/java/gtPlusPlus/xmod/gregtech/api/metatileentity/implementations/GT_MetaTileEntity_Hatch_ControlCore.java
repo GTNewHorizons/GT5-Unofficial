@@ -19,38 +19,43 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch {
-	
+
     public GT_Recipe_Map mRecipeMap = null;
-    
+
     public BlockPos mControllerLocation;
 
     public GT_MetaTileEntity_Hatch_ControlCore(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, getSlots(aTier), "Core determines maximum tier machine will operate at");
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                getSlots(aTier),
+                "Core determines maximum tier machine will operate at");
     }
 
     public GT_MetaTileEntity_Hatch_ControlCore(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16, aDescription, aTextures);
     }
-    
-    public GT_MetaTileEntity_Hatch_ControlCore(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+
+    public GT_MetaTileEntity_Hatch_ControlCore(
+            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16, aDescription[0], aTextures);
     }
-	
-	@Override
-	public String[] getDescription() {
-		return new String[]{
-				this.mDescription,
-                CORE.GT_Tooltip};
-	}
+
+    @Override
+    public String[] getDescription() {
+        return new String[] {this.mDescription, CORE.GT_Tooltip};
+    }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Control_Core)};
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Control_Core)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Control_Core)};
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Control_Core)};
     }
 
     @Override
@@ -75,7 +80,8 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_ControlCore(mName, mTier, StaticFields59.getDescriptionArray(this), mTextures);
+        return new GT_MetaTileEntity_Hatch_ControlCore(
+                mName, mTier, StaticFields59.getDescriptionArray(this), mTextures);
     }
 
     @Override
@@ -87,12 +93,12 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-         return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
+        return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-    	return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, "Control Core Module");
+        return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, "Control Core Module");
     }
 
     @Override
@@ -111,8 +117,17 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
     protected void fillStacksIntoFirstSlots() {
         for (int i = 0; i < mInventory.length; i++)
             for (int j = i + 1; j < mInventory.length; j++)
-                if (mInventory[j] != null && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+                if (mInventory[j] != null
+                        && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j]))) {
+                    GT_Utility.moveStackFromSlotAToSlotB(
+                            getBaseMetaTileEntity(),
+                            getBaseMetaTileEntity(),
+                            j,
+                            i,
+                            (byte) 64,
+                            (byte) 1,
+                            (byte) 64,
+                            (byte) 1);
                 }
     }
 
@@ -123,26 +138,25 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing() && (aStack != null && aStack.getItem() instanceof ItemControlCore);
-    }
-    
-    public boolean setOwner(TileEntity aTileEntity) {    	
-    	if (mControllerLocation != null) {
-    		return false;
-    	}
-    	else {
-    		mControllerLocation = new BlockPos(aTileEntity);
-    		return true;
-    	}    	
+        return aSide == getBaseMetaTileEntity().getFrontFacing()
+                && (aStack != null && aStack.getItem() instanceof ItemControlCore);
     }
 
-	public boolean setOwner(IGregTechTileEntity aTileEntity) {    	
-    	if (mControllerLocation != null) {
-    		return false;
-    	}
-    	else {
-    		mControllerLocation = new BlockPos(aTileEntity);
-    		return true;
-    	}		
-	}
+    public boolean setOwner(TileEntity aTileEntity) {
+        if (mControllerLocation != null) {
+            return false;
+        } else {
+            mControllerLocation = new BlockPos(aTileEntity);
+            return true;
+        }
+    }
+
+    public boolean setOwner(IGregTechTileEntity aTileEntity) {
+        if (mControllerLocation != null) {
+            return false;
+        } else {
+            mControllerLocation = new BlockPos(aTileEntity);
+            return true;
+        }
+    }
 }

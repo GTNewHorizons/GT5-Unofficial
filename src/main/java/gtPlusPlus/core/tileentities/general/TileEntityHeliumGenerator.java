@@ -1,124 +1,116 @@
 package gtPlusPlus.core.tileentities.general;
 
+import gregtech.api.enums.GT_Values;
+import gtPlusPlus.core.inventories.InventoryHeliumGenerator;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-import gregtech.api.enums.GT_Values;
+public class TileEntityHeliumGenerator extends TileEntity {
 
-import gtPlusPlus.core.inventories.InventoryHeliumGenerator;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+    private int tickCount = 0;
+    private final InventoryHeliumGenerator inventoryContents; // TODO
+    private int locationX;
+    private int locationY;
+    private int locationZ;
+    private int baseTickRate = 1200;
 
-public class TileEntityHeliumGenerator extends TileEntity{
+    public TileEntityHeliumGenerator() {
+        this.inventoryContents = new InventoryHeliumGenerator(); // number of slots - without product slot
+        this.setTileLocation();
+    }
 
-	private int tickCount = 0;
-	private final InventoryHeliumGenerator inventoryContents; //TODO
-	private int locationX;
-	private int locationY;
-	private int locationZ;
-	private int baseTickRate = 1200;
+    public boolean setTileLocation() {
+        if (this.hasWorldObj()) {
+            if (!this.getWorldObj().isRemote) {
+                this.locationX = this.xCoord;
+                this.locationY = this.yCoord;
+                this.locationZ = this.zCoord;
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public TileEntityHeliumGenerator(){
-		this.inventoryContents = new InventoryHeliumGenerator();//number of slots - without product slot
-		this.setTileLocation();
-	}
+    public InventoryHeliumGenerator getInventory() {
+        return this.inventoryContents;
+    }
 
-	public boolean setTileLocation(){
-		if (this.hasWorldObj()){
-			if (!this.getWorldObj().isRemote){
-				this.locationX = this.xCoord;
-				this.locationY = this.yCoord;
-				this.locationZ = this.zCoord;
-				return true;
-			}
-		}
-		return false;
-	}
+    public boolean tryAddLoot() {
+        if (this.getInventory().getInventory() != null) {
+            int checkingSlot = 0;
+            final ItemStack loot = this.generateLootForFishTrap();
+            for (final ItemStack contents : this.getInventory().getInventory()) {
+                if (contents == null) {
+                    this.getInventory().setInventorySlotContents(checkingSlot, loot);
+                    this.markDirty();
+                    return true;
+                } else if (contents.getItem() == loot.getItem()) {
+                    if (contents.stackSize < contents.getMaxStackSize()) {
+                        contents.stackSize++;
+                        this.markDirty();
+                        return true;
+                    } else {
+                        this.getInventory().setInventorySlotContents(checkingSlot, loot);
+                        this.markDirty();
+                        return true;
+                    }
+                } else {
 
-	public InventoryHeliumGenerator getInventory(){
-		return this.inventoryContents;
-	}
+                }
+                checkingSlot++;
+            }
+        }
+        this.markDirty();
+        return false;
+    }
 
-	public boolean tryAddLoot(){
-		if (this.getInventory().getInventory() != null){
-			int checkingSlot = 0;
-			final ItemStack loot = this.generateLootForFishTrap();
-			for (final ItemStack contents : this.getInventory().getInventory()){
-				if (contents == null){
-					this.getInventory().setInventorySlotContents(checkingSlot, loot);
-					this.markDirty();
-					return true;
-				}
-				else if (contents.getItem() == loot.getItem()){
-					if (contents.stackSize < contents.getMaxStackSize()){
-						contents.stackSize++;
-						this.markDirty();
-						return true;
-					}
-					else {
-						this.getInventory().setInventorySlotContents(checkingSlot, loot);
-						this.markDirty();
-						return true;
-					}
-				}
-				else {
+    private ItemStack generateLootForFishTrap() {
+        final int lootWeight = MathUtils.randInt(0, 1000);
+        ItemStack loot = GT_Values.NI;
+        if (lootWeight > 990) {
+            loot = ItemUtils.getSimpleStack(Items.slime_ball);
+        }
+        return loot;
+    }
 
-				}
-				checkingSlot++;
-			}
-		}
-		this.markDirty();
-		return false;
-	}
+    @Override
+    public void updateEntity() {
+        if (!this.worldObj.isRemote) {}
+    }
 
-	private ItemStack generateLootForFishTrap() {
-		final int lootWeight = MathUtils.randInt(0,  1000);
-		ItemStack loot = GT_Values.NI;
-		if (lootWeight > 990){
-			loot = ItemUtils.getSimpleStack(Items.slime_ball);
-		}
-		return loot;
-	}
+    public void calculateTickrate() {
+        int calculateTickrate = 0;
+        this.baseTickRate = calculateTickrate;
+    }
 
-	@Override
-	public void updateEntity(){
-		if (!this.worldObj.isRemote){
-			
-		}
-	}
+    public boolean anyPlayerInRange() {
+        return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 32) != null;
+    }
 
-	public void calculateTickrate(){
-		int calculateTickrate = 0;
-		this.baseTickRate = calculateTickrate;
-	}
+    public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag) {
+        if (!nbt.hasKey(tag)) {
+            nbt.setTag(tag, new NBTTagCompound());
+        }
+        return nbt.getCompoundTag(tag);
+    }
 
-	public boolean anyPlayerInRange(){
-		return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 32) != null;
-	}
+    @Override
+    public void writeToNBT(final NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        // Utils.LOG_INFO("Trying to write NBT data to TE.");
+        final NBTTagCompound chestData = new NBTTagCompound();
+        this.inventoryContents.writeToNBT(chestData);
+        nbt.setTag("ContentsChest", chestData);
+    }
 
-	public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag){
-		if(!nbt.hasKey(tag)){
-			nbt.setTag(tag, new NBTTagCompound());
-		}
-		return nbt.getCompoundTag(tag);
-	}
-
-	@Override
-	public void writeToNBT(final NBTTagCompound nbt){
-		super.writeToNBT(nbt);
-		//Utils.LOG_INFO("Trying to write NBT data to TE.");
-		final NBTTagCompound chestData = new NBTTagCompound();
-		this.inventoryContents.writeToNBT(chestData);
-		nbt.setTag("ContentsChest", chestData);
-	}
-
-	@Override
-	public void readFromNBT(final NBTTagCompound nbt){
-		super.readFromNBT(nbt);
-		//Utils.LOG_INFO("Trying to read NBT data from TE.");
-		this.inventoryContents.readFromNBT(nbt.getCompoundTag("ContentsChest"));
-	}
-
+    @Override
+    public void readFromNBT(final NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        // Utils.LOG_INFO("Trying to read NBT data from TE.");
+        this.inventoryContents.readFromNBT(nbt.getCompoundTag("ContentsChest"));
+    }
 }

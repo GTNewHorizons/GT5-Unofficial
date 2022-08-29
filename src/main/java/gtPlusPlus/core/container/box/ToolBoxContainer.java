@@ -8,8 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class ToolBoxContainer extends ContainerBoxBase {
-	public ToolBoxContainer(EntityPlayer par1Player, InventoryPlayer inventoryPlayer,
-			CustomBoxInventory CustomBoxInventory) {
-		super(par1Player, inventoryPlayer, CustomBoxInventory, SlotToolBox.class, UniversalToolBox.SLOTS);
-	}		
+    public ToolBoxContainer(
+            EntityPlayer par1Player, InventoryPlayer inventoryPlayer, CustomBoxInventory CustomBoxInventory) {
+        super(par1Player, inventoryPlayer, CustomBoxInventory, SlotToolBox.class, UniversalToolBox.SLOTS);
+    }
 }

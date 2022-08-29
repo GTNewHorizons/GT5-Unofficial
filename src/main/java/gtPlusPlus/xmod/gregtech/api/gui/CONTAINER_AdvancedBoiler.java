@@ -1,32 +1,27 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
-import java.util.Iterator;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
+import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_Boiler_Base;
+import java.util.Iterator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_Boiler_Base;
-
-public class CONTAINER_AdvancedBoiler
-        extends GT_ContainerMetaTile_Machine {
+public class CONTAINER_AdvancedBoiler extends GT_ContainerMetaTile_Machine {
     public int mWaterAmount = 0;
     public int mSteamAmount = 0;
     public int mProcessingEnergy = 0;
     public int mTemperature = 2;
-    
+
     public CONTAINER_AdvancedBoiler(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
 
     @Override
-	public void addSlots(InventoryPlayer aInventoryPlayer) {
+    public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(this.mTileEntity, 2, 116, 62));
         addSlotToContainer(new Slot(this.mTileEntity, 0, 44, 26));
         addSlotToContainer(new Slot(this.mTileEntity, 1, 44, 62));
@@ -34,33 +29,47 @@ public class CONTAINER_AdvancedBoiler
     }
 
     @Override
-	public int getSlotCount() {
+    public int getSlotCount() {
         return 4;
     }
 
     @Override
-	public int getShiftClickSlotCount() {
+    public int getShiftClickSlotCount() {
         return 1;
     }
 
     @Override
-	public void detectAndSendChanges() {
+    public void detectAndSendChanges() {
         super.detectAndSendChanges();
         if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
             return;
         }
-        
+
         int steamCapacity = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).getSteamCapacity();
         int waterCapacity = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).getCapacity();
         this.mTemperature = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mTemperature;
-        this.mProcessingEnergy = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mProcessingEnergy;
-        this.mSteamAmount = (((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mSteam == null ? 0 : ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mSteam.amount);
-        this.mWaterAmount = (((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mFluid == null ? 0 : ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mFluid.amount);
+        this.mProcessingEnergy =
+                ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mProcessingEnergy;
+        this.mSteamAmount = (((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mSteam == null
+                ? 0
+                : ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mSteam.amount);
+        this.mWaterAmount = (((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mFluid == null
+                ? 0
+                : ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mFluid.amount);
 
-        this.mTemperature = Math.min(54, Math.max(0, this.mTemperature * 54 / (((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).maxProgresstime() - 10)));
+        this.mTemperature = Math.min(
+                54,
+                Math.max(
+                        0,
+                        this.mTemperature
+                                * 54
+                                / (((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity())
+                                                .maxProgresstime()
+                                        - 10)));
         this.mSteamAmount = Math.min(54, Math.max(0, this.mSteamAmount * 54 / (steamCapacity - 100)));
         this.mWaterAmount = Math.min(54, Math.max(0, this.mWaterAmount * 54 / (waterCapacity - 100)));
-        this.mProcessingEnergy = Math.min(14, Math.max(this.mProcessingEnergy > 0 ? 1 : 0, this.mProcessingEnergy * 14 / 1000));
+        this.mProcessingEnergy =
+                Math.min(14, Math.max(this.mProcessingEnergy > 0 ? 1 : 0, this.mProcessingEnergy * 14 / 1000));
 
         Iterator<?> var2 = this.crafters.iterator();
         while (var2.hasNext()) {
@@ -73,7 +82,7 @@ public class CONTAINER_AdvancedBoiler
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
         switch (par1) {

@@ -5,11 +5,10 @@ import net.minecraft.inventory.Container;
 
 public abstract class GUI_Base_Tile_Entity extends GuiContainer {
 
-	public final Container mContainer;
-	
-	public GUI_Base_Tile_Entity(Container aContainer) {
-		super(aContainer);
-		mContainer = aContainer;
-	}
+    public final Container mContainer;
 
+    public GUI_Base_Tile_Entity(Container aContainer) {
+        super(aContainer);
+        mContainer = aContainer;
+    }
 }

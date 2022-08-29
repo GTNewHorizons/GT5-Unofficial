@@ -21,20 +21,21 @@ public class GT_MetaTileEntity_ULV_GasTurbine extends GT_MetaTileEntity_GasTurbi
     public GT_MetaTileEntity_ULV_GasTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
-	
-	@Override
-	public String[] getDescription() {
-		return new String[]{
-				this.mDescription,
-				"Produces "+(this.getPollution()*20)+" pollution/sec", 
-				"Fuel Efficiency: "+this.getEfficiency() + "%",
-                CORE.GT_Tooltip};
-	}
 
     @Override
-	public long maxEUStore() {
+    public String[] getDescription() {
+        return new String[] {
+            this.mDescription,
+            "Produces " + (this.getPollution() * 20) + " pollution/sec",
+            "Fuel Efficiency: " + this.getEfficiency() + "%",
+            CORE.GT_Tooltip
+        };
+    }
+
+    @Override
+    public long maxEUStore() {
         return Math.max(getEUVar(), V[1] * 80L + getMinimumStoredEU());
-	}
+    }
 
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_ULV_GasTurbine(this.mName, this.mTier, this.mDescription, this.mTextures);
@@ -47,13 +48,15 @@ public class GT_MetaTileEntity_ULV_GasTurbine extends GT_MetaTileEntity_GasTurbi
 
     @Override
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "GasTurbine.efficiency.tier." + this.mTier, 95);
+        this.mEfficiency = GregTech_API.sMachineFile.get(
+                ConfigCategories.machineconfig, "GasTurbine.efficiency.tier." + this.mTier, 95);
     }
 
     @Override
     public ITexture[] getSidesActive(final byte aColor) {
-		return new ITexture[]{super.getSidesActive(aColor)[0],
-				new GT_RenderedTexture((IIconContainer) TexturesGtBlock.Overlay_Machine_Turbine_Active)};
-	}
-    
+        return new ITexture[] {
+            super.getSidesActive(aColor)[0],
+            new GT_RenderedTexture((IIconContainer) TexturesGtBlock.Overlay_Machine_Turbine_Active)
+        };
+    }
 }

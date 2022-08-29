@@ -4,17 +4,14 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
-import gtPlusPlus.core.item.ModItems;
-
 public class MiscUtilCreativeTabMisc extends CreativeTabs {
 
-	public MiscUtilCreativeTabMisc(final String lable) {
-		super(lable);
-	}
+    public MiscUtilCreativeTabMisc(final String lable) {
+        super(lable);
+    }
 
-	@Override
-	public Item getTabIconItem() {
-		return Items.painting;
-	}
-
+    @Override
+    public Item getTabIconItem() {
+        return Items.painting;
+    }
 }

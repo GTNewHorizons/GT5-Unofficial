@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * Copyright (c) 2011-2014 SirSengir.
  * All rights reserved. This program and the accompanying materials
@@ -16,9 +15,9 @@ import forestry.core.blocks.BlockBase;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class BlockDenseBeeHouse extends BlockBase<BlockApicultureType> {
-	public BlockDenseBeeHouse() {
-		super();
-		setCreativeTab(AddToCreativeTab.tabBOP);
-		setHarvestLevel("axe", 0);
-	}
+    public BlockDenseBeeHouse() {
+        super();
+        setCreativeTab(AddToCreativeTab.tabBOP);
+        setHarvestLevel("axe", 0);
+    }
 }

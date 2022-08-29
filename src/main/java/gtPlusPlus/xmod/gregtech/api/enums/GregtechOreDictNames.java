@@ -24,16 +24,27 @@ Circuit Parts
 	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM;
  */
 public enum GregtechOreDictNames {
-	buffer_core, itemGregConduit, Circuit_IV, Circuit_LuV, Circuit_ZPM,
-	Circuit_Board_IV, Circuit_Board_LuV, Circuit_Board_ZPM,
-	Circuit_Parts_Crystal_Chip_IV, Circuit_Parts_Crystal_Chip_LuV, Circuit_Parts_Crystal_Chip_ZPM,
-	Circuit_Parts_IV, Circuit_Parts_LuV, Circuit_Parts_ZPM,
-	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM;
+    buffer_core,
+    itemGregConduit,
+    Circuit_IV,
+    Circuit_LuV,
+    Circuit_ZPM,
+    Circuit_Board_IV,
+    Circuit_Board_LuV,
+    Circuit_Board_ZPM,
+    Circuit_Parts_Crystal_Chip_IV,
+    Circuit_Parts_Crystal_Chip_LuV,
+    Circuit_Parts_Crystal_Chip_ZPM,
+    Circuit_Parts_IV,
+    Circuit_Parts_LuV,
+    Circuit_Parts_ZPM,
+    Circuit_Parts_Wiring_IV,
+    Circuit_Parts_Wiring_LuV,
+    Circuit_Parts_Wiring_ZPM;
 
-	public String unlocalisedName;
+    public String unlocalisedName;
 
-	private void ModObject() {
-		this.unlocalisedName = this.name();
-	}
-
+    private void ModObject() {
+        this.unlocalisedName = this.name();
+    }
 }

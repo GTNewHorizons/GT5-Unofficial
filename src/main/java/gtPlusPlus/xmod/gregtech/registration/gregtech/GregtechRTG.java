@@ -6,17 +6,16 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileE
 
 public class GregtechRTG {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering RTG.");
-			run1();
-		}
-	}
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering RTG.");
+            run1();
+        }
+    }
 
-	private static void run1() {
-		GregtechItemList.RTG.set(
-				new GregtechMetaTileEntity_RTG(869, "basicgenerator.rtg.tier.01", "Radioisotope Thermoelectric Generator", 3)
-						.getStackForm(1L));
-	}
-
+    private static void run1() {
+        GregtechItemList.RTG.set(new GregtechMetaTileEntity_RTG(
+                        869, "basicgenerator.rtg.tier.01", "Radioisotope Thermoelectric Generator", 3)
+                .getStackForm(1L));
+    }
 }

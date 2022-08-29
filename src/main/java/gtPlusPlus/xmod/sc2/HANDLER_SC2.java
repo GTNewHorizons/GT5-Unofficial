@@ -5,17 +5,13 @@ import vswe.stevescarts.ModuleData.GppModuleData;
 
 public class HANDLER_SC2 {
 
-	public synchronized static void preInit() {
-		if (LoadedMods.StevesCarts){
-			GppModuleData.loadGpp();
-		}
-	}
+    public static synchronized void preInit() {
+        if (LoadedMods.StevesCarts) {
+            GppModuleData.loadGpp();
+        }
+    }
 
-	public static void init(){
-	}
+    public static void init() {}
 
-	public static void postInit(){
-	}
-
-
+    public static void postInit() {}
 }

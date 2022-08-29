@@ -6,18 +6,17 @@ import net.minecraft.item.ItemStack;
 
 public class SlotNoInput extends Slot {
 
-	public SlotNoInput(final IInventory inventory, final int index, final int x, final int y) {
-		super(inventory, index, x, y);
-	}
+    public SlotNoInput(final IInventory inventory, final int index, final int x, final int y) {
+        super(inventory, index, x, y);
+    }
 
-	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
-		return false;
-	}
+    @Override
+    public boolean isItemValid(final ItemStack itemstack) {
+        return false;
+    }
 
-	@Override
-	public int getSlotStackLimit() {
-		return 0;
-	}
-
+    @Override
+    public int getSlotStackLimit() {
+        return 0;
+    }
 }

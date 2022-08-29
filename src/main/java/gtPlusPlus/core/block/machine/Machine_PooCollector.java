@@ -1,8 +1,5 @@
 package gtPlusPlus.core.block.machine;
 
-import java.util.List;
-import java.util.Random;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,6 +11,8 @@ import gtPlusPlus.core.tileentities.machines.TileEntityBaseFluidCollector;
 import gtPlusPlus.core.tileentities.machines.TileEntityPooCollector;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import java.util.List;
+import java.util.Random;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -27,156 +26,166 @@ import net.minecraft.world.World;
 
 public class Machine_PooCollector extends BlockContainer {
 
-	@SideOnly(Side.CLIENT)
-	private IIcon textureTop;
-	@SideOnly(Side.CLIENT)
-	private IIcon textureTop2;
-	@SideOnly(Side.CLIENT)
-	private IIcon textureSide;
-	@SideOnly(Side.CLIENT)
-	private IIcon textureSide2;
+    @SideOnly(Side.CLIENT)
+    private IIcon textureTop;
 
-	public Machine_PooCollector() {
-		super(Material.iron);
-		this.setHardness(5f);
-		this.setResistance(1f);
-		this.setBlockName("blockPooCollector");
-		this.setCreativeTab(AddToCreativeTab.tabMachines);
-		GameRegistry.registerBlock(this, ItemBlockMeta.class,"blockPooCollector");
-	}
+    @SideOnly(Side.CLIENT)
+    private IIcon textureTop2;
 
-	/**
-	 * Gets the block's texture. Args: side, meta
-	 */
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(final int aSide, final int aMeta) {
-		if (aMeta <= 7) {
-			blockIcon = textureSide;
-			return aSide <= 1 ? this.textureTop : this.textureSide;			
-		}
-		else {
-			blockIcon = textureSide2;
-			return aSide <= 1 ? this.textureTop2 : this.textureSide2;			
-		}	
-	}
+    @SideOnly(Side.CLIENT)
+    private IIcon textureSide;
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(final IIconRegister p_149651_1_) {
-		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_top");
-		this.textureTop2 = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_adv_top");
-		this.textureSide = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_sides");
-		this.textureSide2 = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_adv_sides");
-	}
+    @SideOnly(Side.CLIENT)
+    private IIcon textureSide2;
 
-	/**
-	 * Called upon block activation (right click on the block.)
-	 */
-	@Override
-	public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-			final int side, final float lx, final float ly, final float lz) {
-		if (world.isRemote) {
-			return true;
-		} else {
-			TileEntityBaseFluidCollector tank = (TileEntityBaseFluidCollector) world.getTileEntity(x, y, z);
-			if (tank != null) {
-				Item handItem;
-				try {
-					handItem = player.getHeldItem().getItem();
-				} catch (Throwable t) {
-					handItem = null;
-				}
-				
-				//Fluid container code
-				/*if (handItem != null
-						&& (handItem instanceof IFluidContainerItem || handItem instanceof ItemFluidContainer
-								|| FluidContainerRegistry.isFilledContainer(player.getHeldItem()))) {
-					if (tank.tank.getFluid() == null) {
-						try {
-							if (!FluidContainerRegistry.isFilledContainer(player.getHeldItem())) {
-								ItemStack handItemStack = player.getHeldItem();
-								IFluidContainerItem container = (IFluidContainerItem) handItem;
-								FluidStack containerFluid = container.getFluid(handItemStack);
-								container.drain(handItemStack, container.getFluid(handItemStack).amount, true);
-								tank.tank.setFluid(containerFluid);
-							} else {
-								ItemStack handItemStack = player.getHeldItem();
-								FluidContainerRegistry.drainFluidContainer(handItemStack);
-								FluidStack containerFluid = FluidContainerRegistry.getFluidForFilledItem(handItemStack);
-								ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(handItemStack);
-								player.setItemInUse(emptyContainer, 0);
+    public Machine_PooCollector() {
+        super(Material.iron);
+        this.setHardness(5f);
+        this.setResistance(1f);
+        this.setBlockName("blockPooCollector");
+        this.setCreativeTab(AddToCreativeTab.tabMachines);
+        GameRegistry.registerBlock(this, ItemBlockMeta.class, "blockPooCollector");
+    }
 
-								tank.tank.setFluid(containerFluid);
-							}
-						} catch (Throwable t) {
-							t.printStackTrace();
-						}
-					}
+    /**
+     * Gets the block's texture. Args: side, meta
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(final int aSide, final int aMeta) {
+        if (aMeta <= 7) {
+            blockIcon = textureSide;
+            return aSide <= 1 ? this.textureTop : this.textureSide;
+        } else {
+            blockIcon = textureSide2;
+            return aSide <= 1 ? this.textureTop2 : this.textureSide2;
+        }
+    }
 
-				}*/
-				
-				if (!tank.mInventory.isEmpty()) {
-					PlayerUtils.messagePlayer(player, "Inventory contains:");
-					PlayerUtils.messagePlayer(player, ItemUtils.getArrayStackNames(tank.mInventory.getRealInventory()));
-				}
-				else {
-					PlayerUtils.messagePlayer(player, "No solids collected yet.");					
-				}
-				if (tank.tank.getFluid() != null) {
-					PlayerUtils.messagePlayer(player, "Tank contains " + tank.tank.getFluidAmount() + "L of "
-							+ tank.tank.getFluid().getLocalizedName());
-				}
-			}
-		}
-		return true;
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(final IIconRegister p_149651_1_) {
+        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_top");
+        this.textureTop2 = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_adv_top");
+        this.textureSide = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_sides");
+        this.textureSide2 = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_adv_sides");
+    }
 
-	@Override
-	public int getRenderBlockPass() {
-		return 0;
-	}
+    /**
+     * Called upon block activation (right click on the block.)
+     */
+    @Override
+    public boolean onBlockActivated(
+            final World world,
+            final int x,
+            final int y,
+            final int z,
+            final EntityPlayer player,
+            final int side,
+            final float lx,
+            final float ly,
+            final float lz) {
+        if (world.isRemote) {
+            return true;
+        } else {
+            TileEntityBaseFluidCollector tank = (TileEntityBaseFluidCollector) world.getTileEntity(x, y, z);
+            if (tank != null) {
+                Item handItem;
+                try {
+                    handItem = player.getHeldItem().getItem();
+                } catch (Throwable t) {
+                    handItem = null;
+                }
 
-	@Override
-	public boolean isOpaqueCube() {
-		return super.isOpaqueCube();
-	}
+                // Fluid container code
+                /*if (handItem != null
+                		&& (handItem instanceof IFluidContainerItem || handItem instanceof ItemFluidContainer
+                				|| FluidContainerRegistry.isFilledContainer(player.getHeldItem()))) {
+                	if (tank.tank.getFluid() == null) {
+                		try {
+                			if (!FluidContainerRegistry.isFilledContainer(player.getHeldItem())) {
+                				ItemStack handItemStack = player.getHeldItem();
+                				IFluidContainerItem container = (IFluidContainerItem) handItem;
+                				FluidStack containerFluid = container.getFluid(handItemStack);
+                				container.drain(handItemStack, container.getFluid(handItemStack).amount, true);
+                				tank.tank.setFluid(containerFluid);
+                			} else {
+                				ItemStack handItemStack = player.getHeldItem();
+                				FluidContainerRegistry.drainFluidContainer(handItemStack);
+                				FluidStack containerFluid = FluidContainerRegistry.getFluidForFilledItem(handItemStack);
+                				ItemStack emptyContainer = FluidContainerRegistry.drainFluidContainer(handItemStack);
+                				player.setItemInUse(emptyContainer, 0);
 
-	@Override
-	public TileEntity createNewTileEntity(final World world, final int aMeta) {
-		return aMeta <= 7 ? new TileEntityPooCollector() : new TileEntityAdvPooCollector();
-	}
+                				tank.tank.setFluid(containerFluid);
+                			}
+                		} catch (Throwable t) {
+                			t.printStackTrace();
+                		}
+                	}
 
-	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
-		super.onBlockAdded(world, x, y, z);
-	}
+                }*/
 
-	@Override
-	public int getBlockColor() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+                if (!tank.mInventory.isEmpty()) {
+                    PlayerUtils.messagePlayer(player, "Inventory contains:");
+                    PlayerUtils.messagePlayer(player, ItemUtils.getArrayStackNames(tank.mInventory.getRealInventory()));
+                } else {
+                    PlayerUtils.messagePlayer(player, "No solids collected yet.");
+                }
+                if (tank.tank.getFluid() != null) {
+                    PlayerUtils.messagePlayer(
+                            player,
+                            "Tank contains " + tank.tank.getFluidAmount() + "L of "
+                                    + tank.tank.getFluid().getLocalizedName());
+                }
+            }
+        }
+        return true;
+    }
 
-	@Override
-	public int damageDropped(final int damage) {
-		return damage;
-	}
+    @Override
+    public int getRenderBlockPass() {
+        return 0;
+    }
 
-	@Override
-	public Item getItemDropped(final int meta, final Random rand, final int fortune) {
-		return Item.getItemFromBlock(this);
-	}
+    @Override
+    public boolean isOpaqueCube() {
+        return super.isOpaqueCube();
+    }
 
-	@Override
-	public int getRenderColor(int aMeta) {
-		return super.getRenderColor(aMeta);	
-	}
+    @Override
+    public TileEntity createNewTileEntity(final World world, final int aMeta) {
+        return aMeta <= 7 ? new TileEntityPooCollector() : new TileEntityAdvPooCollector();
+    }
 
-	@Override
-	public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
-		aList.add(new ItemStack(aItem, 1, 0));
-		aList.add(new ItemStack(aItem, 1, 8));		
-	}
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        super.onBlockAdded(world, x, y, z);
+    }
 
+    @Override
+    public int getBlockColor() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int damageDropped(final int damage) {
+        return damage;
+    }
+
+    @Override
+    public Item getItemDropped(final int meta, final Random rand, final int fortune) {
+        return Item.getItemFromBlock(this);
+    }
+
+    @Override
+    public int getRenderColor(int aMeta) {
+        return super.getRenderColor(aMeta);
+    }
+
+    @Override
+    public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
+        aList.add(new ItemStack(aItem, 1, 0));
+        aList.add(new ItemStack(aItem, 1, 8));
+    }
 }

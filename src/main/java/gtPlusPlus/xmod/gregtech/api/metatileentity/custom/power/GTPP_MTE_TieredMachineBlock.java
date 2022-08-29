@@ -4,7 +4,6 @@ import static gregtech.api.enums.GT_Values.GT;
 
 import gregtech.api.interfaces.ITexture;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
 
 public abstract class GTPP_MTE_TieredMachineBlock extends MetaTileEntityCustomPower {
     /**
@@ -25,17 +24,31 @@ public abstract class GTPP_MTE_TieredMachineBlock extends MetaTileEntityCustomPo
      */
     public final ITexture[][][] mTextures;
 
-    public GTPP_MTE_TieredMachineBlock(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription, ITexture... aTextures) {
+    public GTPP_MTE_TieredMachineBlock(
+            int aID,
+            String aName,
+            String aNameRegional,
+            int aTier,
+            int aInvSlotCount,
+            String aDescription,
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mTier = (byte) Math.max(0, Math.min(aTier, 9));
-        mDescriptionArray = aDescription == null ? new String[0] : new String[]{aDescription};
+        mDescriptionArray = aDescription == null ? new String[0] : new String[] {aDescription};
         mDescription = mDescriptionArray.length > 0 ? mDescriptionArray[0] : "";
         // must always be the last call!
         if (GT.isClientSide()) mTextures = getTextureSet(aTextures);
         else mTextures = null;
     }
 
-    public GTPP_MTE_TieredMachineBlock(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription, ITexture... aTextures) {
+    public GTPP_MTE_TieredMachineBlock(
+            int aID,
+            String aName,
+            String aNameRegional,
+            int aTier,
+            int aInvSlotCount,
+            String[] aDescription,
+            ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mTier = (byte) Math.max(0, Math.min(aTier, 9));
         mDescriptionArray = aDescription == null ? new String[0] : aDescription;
@@ -46,15 +59,17 @@ public abstract class GTPP_MTE_TieredMachineBlock extends MetaTileEntityCustomPo
         else mTextures = null;
     }
 
-    public GTPP_MTE_TieredMachineBlock(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public GTPP_MTE_TieredMachineBlock(
+            String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
         super(aName, aInvSlotCount);
         mTier = (byte) aTier;
-        mDescriptionArray = aDescription == null ? new String[0] : new String[]{aDescription};
+        mDescriptionArray = aDescription == null ? new String[0] : new String[] {aDescription};
         mDescription = mDescriptionArray.length > 0 ? mDescriptionArray[0] : "";
         mTextures = aTextures;
     }
 
-    public GTPP_MTE_TieredMachineBlock(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GTPP_MTE_TieredMachineBlock(
+            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aInvSlotCount);
         mTier = (byte) aTier;
         mDescriptionArray = aDescription == null ? new String[0] : aDescription;
@@ -79,14 +94,14 @@ public abstract class GTPP_MTE_TieredMachineBlock extends MetaTileEntityCustomPo
 
     @Override
     public String[] getDescription() {
-		AutoMap<String> aTooltip = new AutoMap<String>();
-		String []s1 = null;
-		s1 = new String[aTooltip.size()];
-		int u = 0;
-		for (String s : aTooltip) {
-			s1[u] = s;
-		}
-		return s1;
+        AutoMap<String> aTooltip = new AutoMap<String>();
+        String[] s1 = null;
+        s1 = new String[aTooltip.size()];
+        int u = 0;
+        for (String s : aTooltip) {
+            s1[u] = s;
+        }
+        return s1;
     }
 
     /**

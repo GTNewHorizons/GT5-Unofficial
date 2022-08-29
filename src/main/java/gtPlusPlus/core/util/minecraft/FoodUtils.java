@@ -10,51 +10,51 @@ import net.minecraft.item.ItemStack;
 
 public class FoodUtils {
 
-	public static final Class IEdibleClass;
-	
-	static {
-		IEdibleClass = ReflectionUtils.getClass("squeek.applecore.api.food.IEdible");
-	}
-	
-	public static boolean isFood(ItemStack food) {
-		
-		if (food == null) {
-			return false;
-		}
-		
-		Item item = food.getItem();	
-		
-		if(item == null) {
-			return false;
-		}
+    public static final Class IEdibleClass;
 
-		EnumAction action = item.getItemUseAction(food);
-		
-		if(item instanceof ItemBlock || action == EnumAction.eat || action == EnumAction.drink) {
-			if(getUnmodifiedFoodValues(food) > 0) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	private static int getUnmodifiedFoodValues(ItemStack stack) {
-		
-		if (stack == null) {
-			return 0;
-		}
-		
-		Item item = stack.getItem();
-		
-		if(item == null) {
-			return 0;
-		}		
-		
-		if(IEdibleClass.isInstance(item) || item instanceof ItemFood || item == Items.cake) {
-			return 1;
-		}
-		
-		return 0;
-	}
+    static {
+        IEdibleClass = ReflectionUtils.getClass("squeek.applecore.api.food.IEdible");
+    }
+
+    public static boolean isFood(ItemStack food) {
+
+        if (food == null) {
+            return false;
+        }
+
+        Item item = food.getItem();
+
+        if (item == null) {
+            return false;
+        }
+
+        EnumAction action = item.getItemUseAction(food);
+
+        if (item instanceof ItemBlock || action == EnumAction.eat || action == EnumAction.drink) {
+            if (getUnmodifiedFoodValues(food) > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static int getUnmodifiedFoodValues(ItemStack stack) {
+
+        if (stack == null) {
+            return 0;
+        }
+
+        Item item = stack.getItem();
+
+        if (item == null) {
+            return 0;
+        }
+
+        if (IEdibleClass.isInstance(item) || item instanceof ItemFood || item == Items.cake) {
+            return 1;
+        }
+
+        return 0;
+    }
 }

@@ -7,19 +7,18 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 
 public class GregtechIndustrialThermalCentrifuge {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Industrial Thermal Centrifuge Multiblock.");
-			if (CORE.ConfigSwitches.enableMultiblock_IndustrialThermalCentrifuge) {
-				run1();
-			}
-		}
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering Industrial Thermal Centrifuge Multiblock.");
+            if (CORE.ConfigSwitches.enableMultiblock_IndustrialThermalCentrifuge) {
+                run1();
+            }
+        }
+    }
 
-	}
-
-	private static void run1() {
-		GregtechItemList.Industrial_ThermalCentrifuge.set(new GregtechMetaTileEntity_IndustrialThermalCentrifuge(849,
-				"industrialthermalcentrifuge.controller.tier.single", "Large Thermal Refinery").getStackForm(1L));
-
-	}
+    private static void run1() {
+        GregtechItemList.Industrial_ThermalCentrifuge.set(new GregtechMetaTileEntity_IndustrialThermalCentrifuge(
+                        849, "industrialthermalcentrifuge.controller.tier.single", "Large Thermal Refinery")
+                .getStackForm(1L));
+    }
 }

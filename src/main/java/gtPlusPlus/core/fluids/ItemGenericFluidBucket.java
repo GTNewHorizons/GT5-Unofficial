@@ -1,14 +1,13 @@
 package gtPlusPlus.core.fluids;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import cpw.mods.fml.common.eventhandler.Event;
 import gtPlusPlus.api.objects.GregtechException;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -27,293 +26,290 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 
 public class ItemGenericFluidBucket extends ItemBucket {
 
-	private static IIcon mBaseBucketTexture;
-	private static IIcon mOverlayBucketTexture;	
-	private static AutoMap<Block> mInternalFluidCache = new AutoMap<Block>();	
-	
-	public ItemGenericFluidBucket(Block aFluid) {
-		super(aFluid);
-		this.setContainerItem(Items.bucket);
-		this.maxStackSize = 1;
-		mInternalFluidCache.put(aFluid);
-	}
-	
-	public static ItemStack registerFluidForBucket(int aID) {
-		
-		if (FluidFactory.mMetaToBucketMap.containsKey(aID)) {
-			try {
-				throw new GregtechException(""+aID+" is already registered! Unable to register fluid: "+FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
-			} catch (GregtechException e) {
-				e.printStackTrace();
-				CORE.crash(""+aID+" is already registered! Unable to register fluid: "+FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
-			}
-		}		
-		mInternalFluidCache.put(FluidFactory.mMetaToBlockMap.get(aID));
-		return ItemUtils.simpleMetaStack(FluidFactory.mGenericBucket, aID, 1);
-	}
+    private static IIcon mBaseBucketTexture;
+    private static IIcon mOverlayBucketTexture;
+    private static AutoMap<Block> mInternalFluidCache = new AutoMap<Block>();
 
-	Map<Integer, IIcon> mIconCache = new LinkedHashMap<Integer, IIcon>();
+    public ItemGenericFluidBucket(Block aFluid) {
+        super(aFluid);
+        this.setContainerItem(Items.bucket);
+        this.maxStackSize = 1;
+        mInternalFluidCache.put(aFluid);
+    }
 
-	/**
-	 * Called whenever this item is equipped and the right mouse button is pressed.
-	 * Args: itemStack, world, entityPlayer
-	 */
-	public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+    public static ItemStack registerFluidForBucket(int aID) {
 
-		Block isFull = FluidFactory.mMetaToBlockMap.get(aStack.getItemDamage());
+        if (FluidFactory.mMetaToBucketMap.containsKey(aID)) {
+            try {
+                throw new GregtechException("" + aID + " is already registered! Unable to register fluid: "
+                        + FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
+            } catch (GregtechException e) {
+                e.printStackTrace();
+                CORE.crash("" + aID + " is already registered! Unable to register fluid: "
+                        + FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
+            }
+        }
+        mInternalFluidCache.put(FluidFactory.mMetaToBlockMap.get(aID));
+        return ItemUtils.simpleMetaStack(FluidFactory.mGenericBucket, aID, 1);
+    }
 
-		boolean flag = isFull == Blocks.air;
-		MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(aWorld, aPlayer, flag);
+    Map<Integer, IIcon> mIconCache = new LinkedHashMap<Integer, IIcon>();
 
-		if (movingobjectposition == null || isFull == null) {
-			return aStack;
-		} else {
-			FillBucketEvent event = new FillBucketEvent(aPlayer, aStack, aWorld, movingobjectposition);
-			if (MinecraftForge.EVENT_BUS.post(event)) {
-				return aStack;
-			}
+    /**
+     * Called whenever this item is equipped and the right mouse button is pressed.
+     * Args: itemStack, world, entityPlayer
+     */
+    public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
 
-			if (event.getResult() == Event.Result.ALLOW) {
-				if (aPlayer.capabilities.isCreativeMode) {
-					return aStack;
-				}
+        Block isFull = FluidFactory.mMetaToBlockMap.get(aStack.getItemDamage());
 
-				if (--aStack.stackSize <= 0) {
-					return event.result;
-				}
+        boolean flag = isFull == Blocks.air;
+        MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(aWorld, aPlayer, flag);
 
-				if (!aPlayer.inventory.addItemStackToInventory(event.result)) {
-					aPlayer.dropPlayerItemWithRandomChoice(event.result, false);
-				}
+        if (movingobjectposition == null || isFull == null) {
+            return aStack;
+        } else {
+            FillBucketEvent event = new FillBucketEvent(aPlayer, aStack, aWorld, movingobjectposition);
+            if (MinecraftForge.EVENT_BUS.post(event)) {
+                return aStack;
+            }
 
-				return aStack;
-			}
-			if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-				int i = movingobjectposition.blockX;
-				int j = movingobjectposition.blockY;
-				int k = movingobjectposition.blockZ;
+            if (event.getResult() == Event.Result.ALLOW) {
+                if (aPlayer.capabilities.isCreativeMode) {
+                    return aStack;
+                }
 
-				if (!aWorld.canMineBlock(aPlayer, i, j, k)) {
-					return aStack;
-				}
+                if (--aStack.stackSize <= 0) {
+                    return event.result;
+                }
 
-				if (flag) {
-					if (!aPlayer.canPlayerEdit(i, j, k, movingobjectposition.sideHit, aStack)) {
-						return aStack;
-					}
+                if (!aPlayer.inventory.addItemStackToInventory(event.result)) {
+                    aPlayer.dropPlayerItemWithRandomChoice(event.result, false);
+                }
 
-					Material material = aWorld.getBlock(i, j, k).getMaterial();
-					int l = aWorld.getBlockMetadata(i, j, k);
+                return aStack;
+            }
+            if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                int i = movingobjectposition.blockX;
+                int j = movingobjectposition.blockY;
+                int k = movingobjectposition.blockZ;
 
-					if (material == Material.water && l == 0) {
-						aWorld.setBlockToAir(i, j, k);
-						return this.func_150910_a(aStack, aPlayer, Items.water_bucket);
-					}
+                if (!aWorld.canMineBlock(aPlayer, i, j, k)) {
+                    return aStack;
+                }
 
-					if (material == Material.lava && l == 0) {
-						aWorld.setBlockToAir(i, j, k);
-						return this.func_150910_a(aStack, aPlayer, Items.lava_bucket);
-					}
-				} else {
-					if (isFull == Blocks.air) {
-						return new ItemStack(Items.bucket);
-					}
+                if (flag) {
+                    if (!aPlayer.canPlayerEdit(i, j, k, movingobjectposition.sideHit, aStack)) {
+                        return aStack;
+                    }
 
-					if (movingobjectposition.sideHit == 0) {
-						--j;
-					}
+                    Material material = aWorld.getBlock(i, j, k).getMaterial();
+                    int l = aWorld.getBlockMetadata(i, j, k);
 
-					if (movingobjectposition.sideHit == 1) {
-						++j;
-					}
+                    if (material == Material.water && l == 0) {
+                        aWorld.setBlockToAir(i, j, k);
+                        return this.func_150910_a(aStack, aPlayer, Items.water_bucket);
+                    }
 
-					if (movingobjectposition.sideHit == 2) {
-						--k;
-					}
+                    if (material == Material.lava && l == 0) {
+                        aWorld.setBlockToAir(i, j, k);
+                        return this.func_150910_a(aStack, aPlayer, Items.lava_bucket);
+                    }
+                } else {
+                    if (isFull == Blocks.air) {
+                        return new ItemStack(Items.bucket);
+                    }
 
-					if (movingobjectposition.sideHit == 3) {
-						++k;
-					}
+                    if (movingobjectposition.sideHit == 0) {
+                        --j;
+                    }
 
-					if (movingobjectposition.sideHit == 4) {
-						--i;
-					}
+                    if (movingobjectposition.sideHit == 1) {
+                        ++j;
+                    }
 
-					if (movingobjectposition.sideHit == 5) {
-						++i;
-					}
+                    if (movingobjectposition.sideHit == 2) {
+                        --k;
+                    }
 
-					if (!aPlayer.canPlayerEdit(i, j, k, movingobjectposition.sideHit, aStack)) {
-						return aStack;
-					}
+                    if (movingobjectposition.sideHit == 3) {
+                        ++k;
+                    }
 
-					if (this.tryPlaceContainedLiquid(isFull, aWorld, i, j, k) && !aPlayer.capabilities.isCreativeMode) {
-						return new ItemStack(Items.bucket);
-					}
-				}
-			}
+                    if (movingobjectposition.sideHit == 4) {
+                        --i;
+                    }
 
-			return aStack;
-		}
-	}
+                    if (movingobjectposition.sideHit == 5) {
+                        ++i;
+                    }
 
-	private ItemStack func_150910_a(ItemStack p_150910_1_, EntityPlayer p_150910_2_, Item p_150910_3_) {
-		if (p_150910_2_.capabilities.isCreativeMode) {
-			return p_150910_1_;
-		} else if (--p_150910_1_.stackSize <= 0) {
-			return new ItemStack(p_150910_3_);
-		} else {
-			if (!p_150910_2_.inventory.addItemStackToInventory(new ItemStack(p_150910_3_))) {
-				p_150910_2_.dropPlayerItemWithRandomChoice(new ItemStack(p_150910_3_, 1, 0), false);
-			}
+                    if (!aPlayer.canPlayerEdit(i, j, k, movingobjectposition.sideHit, aStack)) {
+                        return aStack;
+                    }
 
-			return p_150910_1_;
-		}
-	}
+                    if (this.tryPlaceContainedLiquid(isFull, aWorld, i, j, k) && !aPlayer.capabilities.isCreativeMode) {
+                        return new ItemStack(Items.bucket);
+                    }
+                }
+            }
 
-	/**
-	 * Attempts to place the liquid contained inside the bucket.
-	 */
-	public boolean tryPlaceContainedLiquid(Block isFull, World aWorld, int aX, int aY, int aZ) {
-		if (isFull == Blocks.air) {
-			return false;
-		} else {
-			Material material = aWorld.getBlock(aX, aY, aZ).getMaterial();
-			boolean flag = !material.isSolid();
+            return aStack;
+        }
+    }
 
-			if (!aWorld.isAirBlock(aX, aY, aZ) && !flag) {
-				return false;
-			} else {
+    private ItemStack func_150910_a(ItemStack p_150910_1_, EntityPlayer p_150910_2_, Item p_150910_3_) {
+        if (p_150910_2_.capabilities.isCreativeMode) {
+            return p_150910_1_;
+        } else if (--p_150910_1_.stackSize <= 0) {
+            return new ItemStack(p_150910_3_);
+        } else {
+            if (!p_150910_2_.inventory.addItemStackToInventory(new ItemStack(p_150910_3_))) {
+                p_150910_2_.dropPlayerItemWithRandomChoice(new ItemStack(p_150910_3_, 1, 0), false);
+            }
 
-				if (!aWorld.isRemote && flag && !material.isLiquid()) {
-					aWorld.func_147480_a(aX, aY, aZ, true);
-				}
+            return p_150910_1_;
+        }
+    }
 
-				aWorld.setBlock(aX, aY, aZ, isFull, 0, 3);
+    /**
+     * Attempts to place the liquid contained inside the bucket.
+     */
+    public boolean tryPlaceContainedLiquid(Block isFull, World aWorld, int aX, int aY, int aZ) {
+        if (isFull == Blocks.air) {
+            return false;
+        } else {
+            Material material = aWorld.getBlock(aX, aY, aZ).getMaterial();
+            boolean flag = !material.isSolid();
 
-				return true;
-			}
-		}
-	}
+            if (!aWorld.isAirBlock(aX, aY, aZ) && !flag) {
+                return false;
+            } else {
 
-	@Override
-	public IIcon getIconFromDamage(int aMeta) {
-		IIcon aTemp = mIconCache.get(aMeta);
-		return aTemp != null ? aTemp : super.getIconFromDamage(aMeta);
-	}
+                if (!aWorld.isRemote && flag && !material.isLiquid()) {
+                    aWorld.func_147480_a(aX, aY, aZ, true);
+                }
 
-	@Override
-	public boolean getHasSubtypes() {
-		return mInternalFluidCache.size() > 0;
-	}
+                aWorld.setBlock(aX, aY, aZ, isFull, 0, 3);
 
-	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
-		list.add(new ItemStack(item, 1, 0));			
-			for (Block f : mInternalFluidCache) {
-				Integer aMeta;
-				if (f != null) {
-					aMeta = FluidFactory.mBlockToMetaMap.get(f);
-					if (aMeta != null) {
-						list.add(new ItemStack(item, 1, aMeta));						
-					}
-				}			
-			}		
-	}
+                return true;
+            }
+        }
+    }
 
-	@Override
-	public int getMaxDamage() {
-		return 512;
-	}
+    @Override
+    public IIcon getIconFromDamage(int aMeta) {
+        IIcon aTemp = mIconCache.get(aMeta);
+        return aTemp != null ? aTemp : super.getIconFromDamage(aMeta);
+    }
 
-	@Override
-	public boolean isDamageable() {
-		return false;
-	}
+    @Override
+    public boolean getHasSubtypes() {
+        return mInternalFluidCache.size() > 0;
+    }
 
-	@Override
-	public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
-		// TODO Auto-generated method stub
-		super.addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
-	}
+    @Override
+    public void getSubItems(Item item, CreativeTabs tab, List list) {
+        list.add(new ItemStack(item, 1, 0));
+        for (Block f : mInternalFluidCache) {
+            Integer aMeta;
+            if (f != null) {
+                aMeta = FluidFactory.mBlockToMetaMap.get(f);
+                if (aMeta != null) {
+                    list.add(new ItemStack(item, 1, aMeta));
+                }
+            }
+        }
+    }
 
-	@Override
-	public int getItemEnchantability() {
-		return 0;
-	}
+    @Override
+    public int getMaxDamage() {
+        return 512;
+    }
 
-	@Override
-	public boolean isRepairable() {
-		return false;
-	}
+    @Override
+    public boolean isDamageable() {
+        return false;
+    }
 
-	@Override
-	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {		
-		if (stack != null && renderPass == 1) {
-			return mOverlayBucketTexture;
-		}
-		else {
-			return mBaseBucketTexture;
-		}		
-		/*IIcon aTemp = mIconCache.get(stack.getItemDamage());
-		return aTemp != null ? aTemp : super.getIcon(stack, renderPass, player, usingItem, useRemaining);*/
-	}
+    @Override
+    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
+        // TODO Auto-generated method stub
+        super.addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
+    }
 
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
-	}
+    @Override
+    public int getItemEnchantability() {
+        return 0;
+    }
 
-	@Override
-	public int getMaxDamage(ItemStack stack) {
-		return 512;
-	}
+    @Override
+    public boolean isRepairable() {
+        return false;
+    }
 
-	@Override
-	public boolean isDamaged(ItemStack stack) {
-		return false;
-	}
+    @Override
+    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+        if (stack != null && renderPass == 1) {
+            return mOverlayBucketTexture;
+        } else {
+            return mBaseBucketTexture;
+        }
+        /*IIcon aTemp = mIconCache.get(stack.getItemDamage());
+        return aTemp != null ? aTemp : super.getIcon(stack, renderPass, player, usingItem, useRemaining);*/
+    }
 
-	@Override
-	public int getItemEnchantability(ItemStack stack) {
-		return 0;
-	}	
-	
-	@Override
-	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-		if (pass == 1) {
-			return mOverlayBucketTexture;
-		}
-		else {
-			return mBaseBucketTexture;
-		}
-	}
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
 
-	@Override
-	public void registerIcons(final IIconRegister i) {
-		mBaseBucketTexture = i.registerIcon("bucket_empty");
-		mOverlayBucketTexture = i.registerIcon(CORE.MODID+":bucket.generic.overlay");		
-	}
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return 512;
+    }
 
-	@Override
-	public boolean tryPlaceContainedLiquid(World p_77875_1_, int p_77875_2_, int p_77875_3_, int p_77875_4_) {
-		return tryPlaceContainedLiquid(Blocks.air, p_77875_1_, p_77875_2_, p_77875_3_, p_77875_4_);
-	}
+    @Override
+    public boolean isDamaged(ItemStack stack) {
+        return false;
+    }
 
-	@Override
-	public int getColorFromItemStack(ItemStack aStack, int aPass) {
-		if (aPass == 0) {
-			return super.getColorFromItemStack(aStack, aPass);
-		}
-		else {
-			return FluidFactory.mMetaToColourMap.get(aStack.getItemDamage());
-		}
-	}
+    @Override
+    public int getItemEnchantability(ItemStack stack) {
+        return 0;
+    }
 
-	@Override
-	public boolean requiresMultipleRenderPasses() {
-		return true;
-	}
-	
+    @Override
+    public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
+        if (pass == 1) {
+            return mOverlayBucketTexture;
+        } else {
+            return mBaseBucketTexture;
+        }
+    }
 
+    @Override
+    public void registerIcons(final IIconRegister i) {
+        mBaseBucketTexture = i.registerIcon("bucket_empty");
+        mOverlayBucketTexture = i.registerIcon(CORE.MODID + ":bucket.generic.overlay");
+    }
+
+    @Override
+    public boolean tryPlaceContainedLiquid(World p_77875_1_, int p_77875_2_, int p_77875_3_, int p_77875_4_) {
+        return tryPlaceContainedLiquid(Blocks.air, p_77875_1_, p_77875_2_, p_77875_3_, p_77875_4_);
+    }
+
+    @Override
+    public int getColorFromItemStack(ItemStack aStack, int aPass) {
+        if (aPass == 0) {
+            return super.getColorFromItemStack(aStack, aPass);
+        } else {
+            return FluidFactory.mMetaToColourMap.get(aStack.getItemDamage());
+        }
+    }
+
+    @Override
+    public boolean requiresMultipleRenderPasses() {
+        return true;
+    }
 }

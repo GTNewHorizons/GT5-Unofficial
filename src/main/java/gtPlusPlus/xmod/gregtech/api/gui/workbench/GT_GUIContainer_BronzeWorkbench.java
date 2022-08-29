@@ -6,8 +6,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_BronzeWorkbench extends GT_GUIContainer_AdvancedWorkbench {
 
-    public GT_GUIContainer_BronzeWorkbench(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aLocalName) {
-        super(new GT_Container_BronzeWorkbench(aInventoryPlayer, aTileEntity), aLocalName, CORE.RES_PATH_GUI + "BronzeCraftingTable.png");
+    public GT_GUIContainer_BronzeWorkbench(
+            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aLocalName) {
+        super(
+                new GT_Container_BronzeWorkbench(aInventoryPlayer, aTileEntity),
+                aLocalName,
+                CORE.RES_PATH_GUI + "BronzeCraftingTable.png");
     }
-    
 }

@@ -14,59 +14,69 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_ReactorProcessingUnit extends GT_MetaTileEntity_BasicMachine {
 
-	public GregtechMetaTileEntity_ReactorProcessingUnit(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, 1, 
-				"Processes Nuclear things", 2, 9, "Dehydrator.png", "",
-				new ITexture[]{
-						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE_ACTIVE),
-						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE),
-						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT_ACTIVE),
-						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT),
-						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
-						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP),
-						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
-						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP)
-		}
-				);
-	}
+    public GregtechMetaTileEntity_ReactorProcessingUnit(int aID, String aName, String aNameRegional, int aTier) {
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                1,
+                "Processes Nuclear things",
+                2,
+                9,
+                "Dehydrator.png",
+                "",
+                new ITexture[] {
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE_ACTIVE),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT_ACTIVE),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP)
+                });
+    }
 
-	public GregtechMetaTileEntity_ReactorProcessingUnit(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
-		super(aName, aTier, 1, aDescription, aTextures, 2, 9, aGUIName, aNEIName);
-	}
+    public GregtechMetaTileEntity_ReactorProcessingUnit(
+            String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+        super(aName, aTier, 1, aDescription, aTextures, 2, 9, aGUIName, aNEIName);
+    }
 
-	@Override
-	public String[] getDescription() {
-		return new String[]{this.mDescription, CORE.GT_Tooltip};
-	}
+    @Override
+    public String[] getDescription() {
+        return new String[] {this.mDescription, CORE.GT_Tooltip};
+    }
 
-	@Override
-	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntity_ReactorProcessingUnit(this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
-	}
+    @Override
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GregtechMetaTileEntity_ReactorProcessingUnit(
+                this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
+    }
 
-	@Override
-	public boolean allowSelectCircuit() {
-		return true;
-	}
+    @Override
+    public boolean allowSelectCircuit() {
+        return true;
+    }
 
-	@Override
-	public GT_Recipe.GT_Recipe_Map getRecipeList() {
-		return GTPP_Recipe.GTPP_Recipe_Map.sReactorProcessingUnitRecipes;
-	}
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return GTPP_Recipe.GTPP_Recipe_Map.sReactorProcessingUnitRecipes;
+    }
 
-	@Override
-	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) && (getRecipeList().containsInput(aStack));
-	}
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
+                && (getRecipeList().containsInput(aStack));
+    }
 
-	@Override
-	public boolean isFluidInputAllowed(FluidStack aFluid) {
-		return super.isFluidInputAllowed(aFluid);
-	}
+    @Override
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return super.isFluidInputAllowed(aFluid);
+    }
 
-	@Override
-	public int getCapacity() {
-		return 8000 * Math.max(1, this.mTier);
-	}
-
+    @Override
+    public int getCapacity() {
+        return 8000 * Math.max(1, this.mTier);
+    }
 }

@@ -1,14 +1,13 @@
 package gtPlusPlus.xmod.bartcrops;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.bartcrops.crops.Crop_Force;
 import gtPlusPlus.xmod.bartcrops.crops.Crop_Hemp;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -16,96 +15,95 @@ import net.minecraft.item.ItemStack;
  * Mostly borrowed from the Crops++ Crop Loader.
  * @author Alkalus
  */
-
 public class LoaderOfTheCrops {
-	
-	private static List<Boolean> mHasCropObj = new ArrayList<Boolean>();
-	private CropCard mCropObj;
-	private ItemStack mBaseSeed;
-	private static List<LoaderOfTheCrops> mCropList = cropLoader();
 
-	public LoaderOfTheCrops(CropCard cropObj) {
-		this.mCropObj = cropObj;
-	}
+    private static List<Boolean> mHasCropObj = new ArrayList<Boolean>();
+    private CropCard mCropObj;
+    private ItemStack mBaseSeed;
+    private static List<LoaderOfTheCrops> mCropList = cropLoader();
 
-	public LoaderOfTheCrops(CropCard cropObj, ItemStack baseseed) {
-		this.mCropObj = cropObj;
-		this.mBaseSeed = baseseed;
-	}
+    public LoaderOfTheCrops(CropCard cropObj) {
+        this.mCropObj = cropObj;
+    }
 
-	public static CropCard cropUnpackerCC(LoaderOfTheCrops inp) {
-		return inp.mCropObj;
-	}
+    public LoaderOfTheCrops(CropCard cropObj, ItemStack baseseed) {
+        this.mCropObj = cropObj;
+        this.mBaseSeed = baseseed;
+    }
 
-	private static ItemStack cropUnpackerCG(LoaderOfTheCrops inp) {
-		return inp.mBaseSeed;
-	}
+    public static CropCard cropUnpackerCC(LoaderOfTheCrops inp) {
+        return inp.mCropObj;
+    }
 
-	private static LoaderOfTheCrops cropHelper(CropCard cropObj) {
-		return new LoaderOfTheCrops(cropObj, ItemUtils.getItemStackOfAmountFromOreDict("crop" + cropObj.name(), 0));
-	}
+    private static ItemStack cropUnpackerCG(LoaderOfTheCrops inp) {
+        return inp.mBaseSeed;
+    }
 
-	public static final List<LoaderOfTheCrops> cropLoader() {
-		List<LoaderOfTheCrops> p = new ArrayList<LoaderOfTheCrops>();		
+    private static LoaderOfTheCrops cropHelper(CropCard cropObj) {
+        return new LoaderOfTheCrops(cropObj, ItemUtils.getItemStackOfAmountFromOreDict("crop" + cropObj.name(), 0));
+    }
 
-		p.add(new LoaderOfTheCrops(new Crop_Hemp(), new ItemStack(Item.getItemById(111), 3)));
-		p.add(new LoaderOfTheCrops(new Crop_Force(), new ItemStack(Item.getItemById(111), 3)));
-		
-		return p;
-	}
+    public static final List<LoaderOfTheCrops> cropLoader() {
+        List<LoaderOfTheCrops> p = new ArrayList<LoaderOfTheCrops>();
 
-	private static final List<CropCard> cropObjs() {
-		List<CropCard> p = new ArrayList<CropCard>();
+        p.add(new LoaderOfTheCrops(new Crop_Hemp(), new ItemStack(Item.getItemById(111), 3)));
+        p.add(new LoaderOfTheCrops(new Crop_Force(), new ItemStack(Item.getItemById(111), 3)));
 
-		for (int i = 0; i < mCropList.size(); ++i) {
-			p.add(cropUnpackerCC((LoaderOfTheCrops) mCropList.get(i)));
-		}
+        return p;
+    }
 
-		return p;
-	}
+    private static final List<CropCard> cropObjs() {
+        List<CropCard> p = new ArrayList<CropCard>();
 
-	private static final List<ItemStack> setBaseSeed() {
-		List<ItemStack> p = new ArrayList<ItemStack>();
+        for (int i = 0; i < mCropList.size(); ++i) {
+            p.add(cropUnpackerCC((LoaderOfTheCrops) mCropList.get(i)));
+        }
 
-		for (int i = 0; i < mCropList.size(); ++i) {
-			p.add(cropUnpackerCG((LoaderOfTheCrops) mCropList.get(i)));
-		}
+        return p;
+    }
 
-		return p;
-	}
+    private static final List<ItemStack> setBaseSeed() {
+        List<ItemStack> p = new ArrayList<ItemStack>();
 
-	private static final List<String> setnames() {
-		List<String> s = new ArrayList<String>();
+        for (int i = 0; i < mCropList.size(); ++i) {
+            p.add(cropUnpackerCG((LoaderOfTheCrops) mCropList.get(i)));
+        }
 
-		for (int i = 0; i < mCropList.size(); ++i) {
-			s.add(((CropCard) cropObjs().get(i)).name());
-		}
+        return p;
+    }
 
-		return s;
-	}
+    private static final List<String> setnames() {
+        List<String> s = new ArrayList<String>();
 
-	public static void load(FMLPreInitializationEvent preinit) {		
-		for (int i = 0; i < mCropList.size(); ++i) {
-			mHasCropObj.add(true);
-		}
-	}
+        for (int i = 0; i < mCropList.size(); ++i) {
+            s.add(((CropCard) cropObjs().get(i)).name());
+        }
 
-	public static void register() {
-		for (int i = 0; i < mCropList.size(); ++i) {
-			if ((Boolean) mHasCropObj.get(i) && cropObjs().get(i) != null) {
-				Crops.instance.registerCrop((CropCard) cropObjs().get(i));
-			}
-		}
-	}
+        return s;
+    }
 
-	public static void registerBaseSeed() {
-		List<ItemStack> baseseed = new ArrayList<ItemStack>(setBaseSeed());
+    public static void load(FMLPreInitializationEvent preinit) {
+        for (int i = 0; i < mCropList.size(); ++i) {
+            mHasCropObj.add(true);
+        }
+    }
 
-		for (int i = 0; i < mCropList.size(); ++i) {
-			if (baseseed.get(i) != null && cropObjs().get(i) != null) {
-				Crops.instance.registerBaseSeed((ItemStack) baseseed.get(i), (CropCard) cropObjs().get(i), 1, 1, 1, 1);
-			}
-		}
+    public static void register() {
+        for (int i = 0; i < mCropList.size(); ++i) {
+            if ((Boolean) mHasCropObj.get(i) && cropObjs().get(i) != null) {
+                Crops.instance.registerCrop((CropCard) cropObjs().get(i));
+            }
+        }
+    }
 
-	}
+    public static void registerBaseSeed() {
+        List<ItemStack> baseseed = new ArrayList<ItemStack>(setBaseSeed());
+
+        for (int i = 0; i < mCropList.size(); ++i) {
+            if (baseseed.get(i) != null && cropObjs().get(i) != null) {
+                Crops.instance.registerBaseSeed(
+                        (ItemStack) baseseed.get(i), (CropCard) cropObjs().get(i), 1, 1, 1, 1);
+            }
+        }
+    }
 }

@@ -4,12 +4,11 @@ import gtPlusPlus.xmod.growthcraft.fishtrap.FishTrapHandler;
 
 public class COMPAT_HarvestCraft {
 
-	public static void OreDict(){
-		run();
-	}
+    public static void OreDict() {
+        run();
+    }
 
-	private static final void run(){
-		FishTrapHandler.pamsHarvestCraftCompat();
-	}
-
+    private static final void run() {
+        FishTrapHandler.pamsHarvestCraftCompat();
+    }
 }

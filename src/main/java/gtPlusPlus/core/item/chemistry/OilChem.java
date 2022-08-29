@@ -4,42 +4,32 @@ import gtPlusPlus.api.objects.minecraft.ItemPackage;
 
 public class OilChem extends ItemPackage {
 
-	/**
-	 * Fluids
-	 */
+    /**
+     * Fluids
+     */
 
+    /**
+     * Items
+     */
+    @Override
+    public void items() {}
 
-	/**
-	 * Items
-	 */
+    @Override
+    public void blocks() {
+        // None yet
+    }
 
+    @Override
+    public void fluids() {}
 
+    @Override
+    public String errorMessage() {
+        return "Failed to generate recipes for OilChem.";
+    }
 
-	@Override
-	public void items() {
-				
-	}
+    @Override
+    public boolean generateRecipes() {
 
-	@Override
-	public void blocks() {
-		// None yet
-	}
-
-	@Override
-	public void fluids() {
-			
-	}
-
-	
-
-	@Override
-	public String errorMessage() {
-		return "Failed to generate recipes for OilChem.";
-	}
-
-	@Override
-	public boolean generateRecipes() {		
-
-		return true;
-	}
+        return true;
+    }
 }

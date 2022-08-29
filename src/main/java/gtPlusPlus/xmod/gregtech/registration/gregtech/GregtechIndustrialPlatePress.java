@@ -7,20 +7,19 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 
 public class GregtechIndustrialPlatePress {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Industrial Press Multiblock.");
-			if (CORE.ConfigSwitches.enableMultiblock_IndustrialPlatePress) {
-				run1();
-			}
-		}
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering Industrial Press Multiblock.");
+            if (CORE.ConfigSwitches.enableMultiblock_IndustrialPlatePress) {
+                run1();
+            }
+        }
+    }
 
-	}
-
-	private static void run1() {
-		// Industrial Presser Multiblock
-		GregtechItemList.Industrial_PlatePress.set(new GregtechMetaTileEntity_IndustrialPlatePress(792,
-				"industrialbender.controller.tier.single", "Industrial Material Press").getStackForm(1L));
-
-	}
+    private static void run1() {
+        // Industrial Presser Multiblock
+        GregtechItemList.Industrial_PlatePress.set(new GregtechMetaTileEntity_IndustrialPlatePress(
+                        792, "industrialbender.controller.tier.single", "Industrial Material Press")
+                .getStackForm(1L));
+    }
 }

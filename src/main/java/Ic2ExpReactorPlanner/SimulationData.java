@@ -10,9 +10,10 @@ package Ic2ExpReactorPlanner;
  * @author Brian McCloud
  */
 public class SimulationData {
-    // Values should only be written to by the simulator class and read by other classes, but this is not yet strictly enforced.
+    // Values should only be written to by the simulator class and read by other classes, but this is not yet strictly
+    // enforced.
     // Enforcement might require refactoring this to be an inner class of the simulator.
-    
+
     // Times to temperature thresholds
     public int timeToBelow50 = Integer.MAX_VALUE;
     public int timeToBurn = Integer.MAX_VALUE;
@@ -20,10 +21,10 @@ public class SimulationData {
     public int timeToHurt = Integer.MAX_VALUE;
     public int timeToLava = Integer.MAX_VALUE;
     public int timeToXplode = Integer.MAX_VALUE;
-    
+
     // Special, for calculating efficiency
     public int totalRodCount = 0;
-    
+
     // First component broken details
     public int firstComponentBrokenTime = Integer.MAX_VALUE;
     public int firstComponentBrokenRow = -1;
@@ -37,7 +38,7 @@ public class SimulationData {
     public double prebreakAvgHUoutput = 0;
     public double prebreakMinHUoutput = Double.MAX_VALUE;
     public double prebreakMaxHUoutput = 0;
-    
+
     // First rod depleted details
     public int firstRodDepletedTime = Integer.MAX_VALUE;
     public int firstRodDepletedRow = -1;
@@ -53,7 +54,7 @@ public class SimulationData {
     public double predepleteMaxHUoutput = 0;
     public double predepleteMinTemp = Double.MAX_VALUE;
     public double predepleteMaxTemp = 0;
-    
+
     // Completed-simulation details
     public int totalReactorTicks = 0;
     public int totalEUoutput = 0;
@@ -67,7 +68,7 @@ public class SimulationData {
     public int minTemp = (int) Double.MAX_VALUE;
     public int maxTemp = 0;
     public int explosionPower = 0;
-    
+
     // Heating and Cooling details
     public double hullHeating = 0;
     public double componentHeating = 0;
@@ -75,5 +76,4 @@ public class SimulationData {
     public double hullCoolingCapacity = 0;
     public double ventCooling = 0;
     public double ventCoolingCapacity = 0;
-    
 }

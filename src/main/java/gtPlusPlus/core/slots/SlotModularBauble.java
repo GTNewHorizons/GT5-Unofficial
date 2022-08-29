@@ -1,32 +1,30 @@
 package gtPlusPlus.core.slots;
 
+import gtPlusPlus.core.item.bauble.ModularBauble;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import gtPlusPlus.core.item.bauble.ModularBauble;
-
 public class SlotModularBauble extends Slot {
 
-	public SlotModularBauble(final IInventory inventory, final int slot, final int x, final int y) {
-		super(inventory, slot, x, y);
+    public SlotModularBauble(final IInventory inventory, final int slot, final int x, final int y) {
+        super(inventory, slot, x, y);
+    }
 
-	}
+    @Override
+    public boolean isItemValid(final ItemStack itemstack) {
+        boolean isValid = false;
 
-	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
-		boolean isValid = false;
+        if (itemstack != null) {
+            if (itemstack.getItem() instanceof ModularBauble) {
+                isValid = true;
+            }
+        }
+        return isValid;
+    }
 
-		if (itemstack != null) {
-			if (itemstack.getItem() instanceof ModularBauble) {
-				isValid = true;
-			}
-		}
-		return isValid;
-	}
-
-	@Override
-	public int getSlotStackLimit() {
-		return 1;
-	}
+    @Override
+    public int getSlotStackLimit() {
+        return 1;
+    }
 }

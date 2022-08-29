@@ -1,37 +1,12 @@
 /*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import java.util.ArrayList;
-
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.LangUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Naquadah;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 
 	public ArrayList<GT_MetaTileEntity_Hatch_Naquadah> mNaqHatches = new ArrayList<GT_MetaTileEntity_Hatch_Naquadah>();
 	public static String[] mCasingName = new String[5];
-	public static String mHatchName = "Naquadah Fuel Hatch";	
+	public static String mHatchName = "Naquadah Fuel Hatch";
 
 	private final int CASING_TEXTURE_ID = TAE.getIndexFromPage(0, 13);
 	private final int META_BaseCasing = 0; //4
@@ -47,7 +22,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 		mCasingName[1] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 1);
 		mCasingName[2] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 2);
 		mCasingName[3] = LangUtils.getLocalizedNameOfBlock(getCasing(3), 15);
-		mCasingName[4] = LangUtils.getLocalizedNameOfBlock(getCasing(1), 13);		
+		mCasingName[4] = LangUtils.getLocalizedNameOfBlock(getCasing(1), 13);
 		mHatchName = LangUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 969);
 	}
 
@@ -74,14 +49,14 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 		}
 		if (mCasingName[4].toLowerCase().contains(".name")) {
 			mCasingName[4] = LangUtils.getLocalizedNameOfBlock(getCasing(1), 13);
-		}		
+		}
 		if (mHatchName.toLowerCase().contains(".name")) {
 			mHatchName = LangUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 969);
 		}
 		return new String[]{
 				"Naquadah reacts violently with potassium, ",
 				"resulting in massive explosions with radioactive potential.",
-				"Size: 3x4x12, WxHxL",	
+				"Size: 3x4x12, WxHxL",
 				"Bottom Layer: "+mCasingName[0]+"s, (30x min)",
 				"Middle Layer: "+mCasingName[2]+"s (10x), with",
 				"                 "+mCasingName[3]+"s on either side",
@@ -92,7 +67,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				"",
 				"1x " + mHatchName + " (Any bottom layer casing)",
 				"1x " + "Maintenance Hatch" + " (Any bottom layer side casing)",
-				"1x " + "Energy Hatch" + " (Any top layer casing)",				
+				"1x " + "Energy Hatch" + " (Any top layer casing)",
 
 		};
 	}
@@ -126,7 +101,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 
 	public boolean checkRecipe(ItemStack aStack) {
 		return false;
-	}	
+	}
 
 	@Override
 	public int getMaxParallelRecipes() {
@@ -148,7 +123,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String getSound() {
-		return (String) GregTech_API.sSoundList.get(Integer.valueOf(212)); 
+		return (String) GregTech_API.sSoundList.get(Integer.valueOf(212));
 	}
 
 	private Block getCasing(int casingID) {
@@ -187,7 +162,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 		int aShieldingCount = 0;
 		int aPipeCount = 0;
 		int aIntegralCasingCount = 0;
-		int aContainmentChamberCount = 0;		
+		int aContainmentChamberCount = 0;
 
 		// Bottom Layer
 		aBaseCasingCount += checkEntireLayer(aBaseMetaTileEntity, getCasing(4), META_BaseCasing, -7, xDir, zDir);
@@ -241,7 +216,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 		if (aOwnerName != null && aOwnerName.length() > 0) {
 			aOwner = PlayerUtils.getPlayer(aOwnerName);
 		}
-		
+
 		if (aShieldingCount != 128) {
 			log("Not enough "+mCasingName[4]+"s, require 128.");
 			if (aOwner != null) {
@@ -283,7 +258,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				PlayerUtils.messagePlayer(aOwner, "Not enough "+LangUtils.getLocalizedNameOfBlock(getCasing(0), 6)+"s, require 48.");
 			}
 			return false;
-		}	
+		}
 		log("LNR Formed.");
 		if (aOwner != null) {
 			PlayerUtils.messagePlayer(aOwner, "Large Naquadah Reactor has formed successfully.");
@@ -305,7 +280,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				return false;
 			}
 		}
-	}	
+	}
 
 	public int checkEntireLayer(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
 		int aCasingCount = 0;
@@ -313,48 +288,48 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 			for (int z = -4; z < 5; z++) {
 				int aOffsetX = this.getBaseMetaTileEntity().getXCoord() + x;
 				int aOffsetY = this.getBaseMetaTileEntity().getYCoord() + aY;
-				int aOffsetZ = this.getBaseMetaTileEntity().getZCoord() + z;				
+				int aOffsetZ = this.getBaseMetaTileEntity().getZCoord() + z;
 				//Skip the corners
 				if ((x == 4 && z == 4) || (x == -4 && z == -4) || (x == 4 && z == -4) || (x == -4 && z == 4)) {
 					continue;
-				}		
+				}
 				// Skip controller
 				if (aY == 0 && x == 0 && z == 0) {
 					continue;
 				}
-				
+
 				Block aCurrentBlock = aBaseMetaTileEntity.getBlockOffset(xDir + x, aY, zDir + z);
 				int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + x, aY, zDir + z);
 				if (aCurrentBlock == aBlock && aCurrentMeta == aMeta) {
 					aCasingCount++;
-				}				
-				final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);					
+				}
+				final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
 				if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aCurrentBlock, aCurrentMeta, aBlock, aMeta)) {
 					log("Layer has error. Height: "+aY);
 					//this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);
 					return 0;
 				}
-			}	
-		}		
+			}
+		}
 		return aCasingCount;
 	}
 
-	public int checkOuterRing(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {		
+	public int checkOuterRing(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
 		int aCasingCount = 0;
 		for (int x = -4; x < 5; x++) {
 			for (int z = -4; z < 5; z++) {
 				int aOffsetX = this.getBaseMetaTileEntity().getXCoord() + x;
 				int aOffsetY = this.getBaseMetaTileEntity().getYCoord() + aY;
-				int aOffsetZ = this.getBaseMetaTileEntity().getZCoord() + z;				
+				int aOffsetZ = this.getBaseMetaTileEntity().getZCoord() + z;
 				//Skip the corners
 				if ((x == 4 && z == 4) || (x == -4 && z == -4) || (x == 4 && z == -4) || (x == -4 && z == 4)) {
 					continue;
-				}	
+				}
 
 				// If we are on the 5x5 ring, proceed
-				if ((x > -4 && x < 4 ) && (z > -4 && z < 4)) {	
+				if ((x > -4 && x < 4 ) && (z > -4 && z < 4)) {
 					if ((x == 3 && z == 3) || (x == -3 && z == -3) || (x == 3 && z == -3) || (x == -3 && z == 3)) {
-						//this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);					
+						//this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);
 					}
 					else {
 						continue;
@@ -365,14 +340,14 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + x, aY, zDir + z);
 				if (aCurrentBlock == aBlock && aCurrentMeta == aMeta) {
 					aCasingCount++;
-				}				
-				final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);					
+				}
+				final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
 				if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, false, aCurrentBlock, aCurrentMeta, aBlock, aMeta)) {
 					log("Layer has error. Height: "+aY);
 					//this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);
 					return 0;
 				}
-			}	
+			}
 		}
 		return aCasingCount;
 	}
@@ -382,16 +357,16 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 			for (int z = -3; z < 4; z++) {
 				int aOffsetX = this.getBaseMetaTileEntity().getXCoord() + x;
 				int aOffsetY = this.getBaseMetaTileEntity().getYCoord() + aY;
-				int aOffsetZ = this.getBaseMetaTileEntity().getZCoord() + z;				
+				int aOffsetZ = this.getBaseMetaTileEntity().getZCoord() + z;
 				//Skip the corners
 				if ((x == 3 && z == 3) || (x == -3 && z == -3) || (x == 3 && z == -3) || (x == -3 && z == 3)) {
 					continue;
-				}	
+				}
 
 				// If we are on the 5x5 ring, proceed
-				if ((x > -3 && x < 3 ) && (z > -3 && z < 3)) {	
+				if ((x > -3 && x < 3 ) && (z > -3 && z < 3)) {
 					if ((x == 2 && z == 2) || (x == -2 && z == -2) || (x == 2 && z == -2) || (x == -2 && z == 2)) {
-						//this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);					
+						//this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);
 					}
 					else {
 						continue;
@@ -402,51 +377,51 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + x, aY, zDir + z);
 				if (aCurrentBlock == aBlock && aCurrentMeta == aMeta) {
 					aCasingCount++;
-				}				
-				final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);					
+				}
+				final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
 				if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, false, aCurrentBlock, aCurrentMeta, aBlock, aMeta)) {
 					log("Layer has error. Height: "+aY);
 					//this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);
 					return 0;
 				}
-			}	
+			}
 		}
 		return aCasingCount;
 	}
-	
+
 	public int checkPipes(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
 		int aCasingCount = 0;
 		for (int x = -1; x < 2; x++) {
 			for (int z = -1; z < 2; z++) {
 				int aOffsetX = this.getBaseMetaTileEntity().getXCoord() + x;
 				int aOffsetY = this.getBaseMetaTileEntity().getYCoord() + aY;
-				int aOffsetZ = this.getBaseMetaTileEntity().getZCoord() + z;				
+				int aOffsetZ = this.getBaseMetaTileEntity().getZCoord() + z;
 				//Skip the corners
 				if ((x == 1 && z == 1) || (x == -1 && z == -1) || (x == 1 && z == -1) || (x == -1 && z == 1) || (x == 0 && z == 0)) {
 					Block aCurrentBlock = aBaseMetaTileEntity.getBlockOffset(xDir + x, aY, zDir + z);
 					int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + x, aY, zDir + z);
 					if (aCurrentBlock == aBlock && aCurrentMeta == aMeta) {
 						aCasingCount++;
-					}				
-					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);					
+					}
+					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
 					if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, false, aCurrentBlock, aCurrentMeta, aBlock, aMeta)) {
 						log("Pipe has error. Height: "+aY);
 						//this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);
 						return 0;
 					};
 				}
-			}	
+			}
 		}
 		return aCasingCount;
 	}
-	
+
 	public int checkContainmentRing(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
 		int aCasingCount = 0;
 		for (int x = -2; x < 3; x++) {
 			for (int z = -2; z < 3; z++) {
 				int aOffsetX = this.getBaseMetaTileEntity().getXCoord() + x;
 				int aOffsetY = this.getBaseMetaTileEntity().getYCoord() + aY;
-				int aOffsetZ = this.getBaseMetaTileEntity().getZCoord() + z;				
+				int aOffsetZ = this.getBaseMetaTileEntity().getZCoord() + z;
 				//Skip the corners
 				if ((x == 2 && z == 2) || (x == -2 && z == -2) || (x == 2 && z == -2) || (x == -2 && z == 2)) {
 					continue;
@@ -456,14 +431,14 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + x, aY, zDir + z);
 				if (aCurrentBlock == aBlock && aCurrentMeta == aMeta) {
 					aCasingCount++;
-				}				
-				final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);					
+				}
+				final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, aY, zDir + z);
 				if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, false, aCurrentBlock, aCurrentMeta, aBlock, aMeta)) {
 					log("Layer has error. Height: "+aY);
 					//this.getBaseMetaTileEntity().getWorld().setBlock(aOffsetX, aOffsetY, aOffsetZ, aBlock, aMeta, 3);
 					return 0;
 				}
-			}	
+			}
 		}
 		return aCasingCount;
 	}

@@ -1,7 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofCoil;
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -22,373 +27,375 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
+public class GregtechMetaTileEntity_IndustrialAlloySmelter
+        extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialAlloySmelter>
+        implements ISurvivalConstructable {
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofCoil;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
+    public static int CASING_TEXTURE_ID;
+    private HeatingCoilLevel mHeatingCapacity;
+    private int mLevel = 0;
+    private int mCasing;
+    private IStructureDefinition<GregtechMetaTileEntity_IndustrialAlloySmelter> STRUCTURE_DEFINITION = null;
 
-public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialAlloySmelter> implements ISurvivalConstructable {
+    public GregtechMetaTileEntity_IndustrialAlloySmelter(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+        CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 1);
+    }
 
-	public static int CASING_TEXTURE_ID;
-	private HeatingCoilLevel mHeatingCapacity;
-	private int mLevel = 0;
-	private int mCasing;
-	private IStructureDefinition<GregtechMetaTileEntity_IndustrialAlloySmelter> STRUCTURE_DEFINITION = null;
+    public GregtechMetaTileEntity_IndustrialAlloySmelter(String aName) {
+        super(aName);
+        CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 1);
+    }
 
-	public GregtechMetaTileEntity_IndustrialAlloySmelter(int aID, String aName, String aNameRegional) {
-		super(aID, aName, aNameRegional);
-		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 1);
-	}
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GregtechMetaTileEntity_IndustrialAlloySmelter(this.mName);
+    }
 
-	public GregtechMetaTileEntity_IndustrialAlloySmelter(String aName) {
-		super(aName);
-		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 1);
-	}
+    @Override
+    protected IIconContainer getActiveOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE;
+    }
 
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntity_IndustrialAlloySmelter(this.mName);
-	}
+    @Override
+    protected IIconContainer getInactiveOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER;
+    }
 
-	@Override
-	protected IIconContainer getActiveOverlay() {
-		return Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE;
-	}
+    @Override
+    protected int getCasingTextureId() {
+        return CASING_TEXTURE_ID;
+    }
 
-	@Override
-	protected IIconContainer getInactiveOverlay() {
-		return Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER;
-	}
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_MultiMachine(
+                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiFurnace.png");
+    }
 
-	@Override
-	protected int getCasingTextureId() {
-		return CASING_TEXTURE_ID;
-	}
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
+    }
 
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiFurnace.png");
-	}
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
+    }
 
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
-	}
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
+    }
 
-	public boolean isCorrectMachinePart(ItemStack aStack) {
-		return true;
-	}
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialAlloySmelter;
+    }
 
-	public int getMaxEfficiency(ItemStack aStack) {
-		return 10000;
-	}
+    public int getDamageToComponent(ItemStack aStack) {
+        return 0;
+    }
 
-	public int getPollutionPerSecond(ItemStack aStack) {
-		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialAlloySmelter;
-	}
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
 
-	public int getDamageToComponent(ItemStack aStack) {
-		return 0;
-	}
+    @Override
+    public boolean hasSlotInGUI() {
+        return false;
+    }
 
-	public boolean explodesOnComponentBreak(ItemStack aStack) {
-		return false;
-	}
+    @Override
+    public String getCustomGUIResourceName() {
+        return null;
+    }
 
-	@Override
-	public boolean hasSlotInGUI() {
-		return false;
-	}
+    @Override
+    public String getMachineType() {
+        return "Alloy Smelter";
+    }
 
-	@Override
-	public String getCustomGUIResourceName() {
-		return null;
-	}
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(getMachineType())
+                .addInfo("Controller Block for the Industrial Alloy Smelter")
+                .addInfo("Gains one parallel per voltage tier")
+                .addInfo("Gains one multiplier per coil tier")
+                .addInfo("Parallel = Tier * Coil Tier")
+                .addInfo("Gains 5% speed bonus per coil tier")
+                .addPollutionAmount(getPollutionPerSecond(null))
+                .addSeparator()
+                .beginStructureBlock(3, 5, 3, true)
+                .addController("Bottom center")
+                .addCasingInfo("Inconel Reinforced Casings", 10)
+                .addCasingInfo("Integral Encasement V", 8)
+                .addCasingInfo("Heating Coils", 16)
+                .addInputBus("Any Inconel Reinforced Casing", 1)
+                .addOutputBus("Any Inconel Reinforced Casing", 1)
+                .addEnergyHatch("Any Inconel Reinforced Casing", 1)
+                .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
+                .addMufflerHatch("Any Inconel Reinforced Casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder);
+        return tt;
+    }
 
-	@Override
-	public String getMachineType() {
-		return "Alloy Smelter";
-	}
+    @Override
+    public IStructureDefinition<GregtechMetaTileEntity_IndustrialAlloySmelter> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialAlloySmelter>builder()
+                    .addShape(mName, transpose(new String[][] {
+                        {"CCC", "CCC", "CCC"},
+                        {"HHH", "H-H", "HHH"},
+                        {"VVV", "V-V", "VVV"},
+                        {"HHH", "H-H", "HHH"},
+                        {"C~C", "CCC", "CCC"},
+                    }))
+                    .addElement(
+                            'C',
+                            buildHatchAdder(GregtechMetaTileEntity_IndustrialAlloySmelter.class)
+                                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                                    .casingIndex(CASING_TEXTURE_ID)
+                                    .dot(1)
+                                    .buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
+                    .addElement(
+                            'H',
+                            ofCoil(
+                                    GregtechMetaTileEntity_IndustrialAlloySmelter::setCoilLevel,
+                                    GregtechMetaTileEntity_IndustrialAlloySmelter::getCoilLevel))
+                    .addElement('V', ofBlock(ModBlocks.blockCasingsTieredGTPP, 4))
+                    .build();
+        }
+        return STRUCTURE_DEFINITION;
+    }
 
-	@Override
-	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-		tt.addMachineType(getMachineType())
-				.addInfo("Controller Block for the Industrial Alloy Smelter")
-				.addInfo("Gains one parallel per voltage tier")
-				.addInfo("Gains one multiplier per coil tier")
-				.addInfo("Parallel = Tier * Coil Tier")
-				.addInfo("Gains 5% speed bonus per coil tier")
-				.addPollutionAmount(getPollutionPerSecond(null))
-				.addSeparator()
-				.beginStructureBlock(3, 5, 3, true)
-				.addController("Bottom center")
-				.addCasingInfo("Inconel Reinforced Casings", 10)
-				.addCasingInfo("Integral Encasement V", 8)
-				.addCasingInfo("Heating Coils", 16)
-				.addInputBus("Any Inconel Reinforced Casing", 1)
-				.addOutputBus("Any Inconel Reinforced Casing", 1)
-				.addEnergyHatch("Any Inconel Reinforced Casing", 1)
-				.addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
-				.addMufflerHatch("Any Inconel Reinforced Casing", 1)
-				.toolTipFinisher(CORE.GT_Tooltip_Builder);
-		return tt;
-	}
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(mName, stackSize, hintsOnly, 1, 4, 0);
+    }
 
-	@Override
-	public IStructureDefinition<GregtechMetaTileEntity_IndustrialAlloySmelter> getStructureDefinition() {
-		if (STRUCTURE_DEFINITION == null) {
-			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialAlloySmelter>builder()
-					.addShape(mName, transpose(new String[][]{
-							{"CCC", "CCC", "CCC"},
-							{"HHH", "H-H", "HHH"},
-							{"VVV", "V-V", "VVV"},
-							{"HHH", "H-H", "HHH"},
-							{"C~C", "CCC", "CCC"},
-					}))
-					.addElement(
-							'C',
-							buildHatchAdder(GregtechMetaTileEntity_IndustrialAlloySmelter.class)
-									.atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-									.casingIndex(CASING_TEXTURE_ID)
-									.dot(1)
-									.buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1)))
-					)
-					.addElement(
-							'H',
-							ofCoil(
-									GregtechMetaTileEntity_IndustrialAlloySmelter::setCoilLevel, GregtechMetaTileEntity_IndustrialAlloySmelter::getCoilLevel
-							)
-					)
-					.addElement(
-							'V',
-							ofBlock(
-									ModBlocks.blockCasingsTieredGTPP, 4
-							)
-					)
-					.build();
-		}
-		return STRUCTURE_DEFINITION;
-	}
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, source, actor, false, true);
+    }
 
-	@Override
-	public void construct(ItemStack stackSize, boolean hintsOnly) {
-		buildPiece(mName, stackSize, hintsOnly, 1, 4, 0);
-	}
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCasing = 0;
+        mLevel = 0;
+        setCoilLevel(HeatingCoilLevel.None);
+        return checkPiece(mName, 1, 4, 0)
+                && mCasing >= 10
+                && getCoilLevel() != HeatingCoilLevel.None
+                && (mLevel = getCoilLevel().getTier() + 1) > 0
+                && checkHatch();
+    }
 
-	@Override
-	public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-		if (mMachine) return -1;
-		return survivialBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, source, actor, false, true);
-	}
+    @Override
+    public int getMaxParallelRecipes() {
+        return (this.mLevel * GT_Utility.getTier(this.getMaxInputVoltage()));
+    }
 
-	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		mCasing = 0;
-		mLevel = 0;
-		setCoilLevel(HeatingCoilLevel.None);
-		return checkPiece(mName, 1, 4, 0) && mCasing >= 10 && getCoilLevel() != HeatingCoilLevel.None && (mLevel = getCoilLevel().getTier() + 1) > 0 && checkHatch();
-	}
+    @Override
+    public int getEuDiscountForParallelism() {
+        return 100;
+    }
 
-	@Override
-	public int getMaxParallelRecipes() {
-		return (this.mLevel * GT_Utility.getTier(this.getMaxInputVoltage()));
-	}
+    @Override
+    public boolean checkRecipe(ItemStack aStack) {
+        FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
+        for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+            ArrayList<ItemStack> tInputs = new ArrayList<>();
+            if (isValidMetaTileEntity(tBus)) {
+                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+                        tInputs.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                    }
+                }
+            }
+            if (tInputs.size() > 1) {
+                ItemStack[] tItems = tInputs.toArray(new ItemStack[0]);
+                if (checkRecipeGeneric(tItems, tFluids, getMaxParallelRecipes(), 100, 5 * this.mLevel, 10000)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public int getEuDiscountForParallelism() {
-		return 100;
-	}
+    @Override
+    public boolean checkRecipeGeneric(
+            ItemStack[] aItemInputs,
+            FluidStack[] aFluidInputs,
+            int aMaxParallelRecipes,
+            long aEUPercent,
+            int aSpeedBonusPercent,
+            int aOutputChanceRoll) {
+        // Based on the Processing Array. A bit overkill, but very flexible.
 
+        // Reset outputs and progress stats
+        this.mEUt = 0;
+        this.mMaxProgresstime = 0;
+        this.mOutputItems = new ItemStack[] {};
+        this.mOutputFluids = new FluidStack[] {};
 
-	@Override
-	public boolean checkRecipe(ItemStack aStack) {
-		FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
-		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-			ArrayList<ItemStack> tInputs = new ArrayList<>();
-			if (isValidMetaTileEntity(tBus)) {
-				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-						tInputs.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-					}
-				}
-			}
-			if (tInputs.size() > 1) {
-				ItemStack[] tItems = tInputs.toArray(new ItemStack[0]);
-				if (checkRecipeGeneric(tItems, tFluids, getMaxParallelRecipes(), 100, 5 * this.mLevel, 10000)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	@Override
-	public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-			long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
-		// Based on the Processing Array. A bit overkill, but very flexible.
+        long tVoltage = getMaxInputVoltage();
+        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+        long tEnergy = getMaxInputEnergy();
+        Logger.WARNING("Running checkRecipeGeneric(0)");
 
-		// Reset outputs and progress stats
-		this.mEUt = 0;
-		this.mMaxProgresstime = 0;
-		this.mOutputItems = new ItemStack[] {};
-		this.mOutputFluids = new FluidStack[] {};
+        GT_Recipe tRecipe = this.getRecipeMap()
+                .findRecipe(
+                        getBaseMetaTileEntity(),
+                        mLastRecipe,
+                        false,
+                        gregtech.api.enums.GT_Values.V[tTier],
+                        aFluidInputs,
+                        aItemInputs);
 
-		long tVoltage = getMaxInputVoltage();
-		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		long tEnergy = getMaxInputEnergy();
-		Logger.WARNING("Running checkRecipeGeneric(0)");
+        Logger.WARNING("Running checkRecipeGeneric(1)");
+        // Remember last recipe - an optimization for findRecipe()
+        this.mLastRecipe = tRecipe;
 
-		GT_Recipe tRecipe = this.getRecipeMap().findRecipe(getBaseMetaTileEntity(), mLastRecipe, false,
-				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
+        if (tRecipe == null) {
+            Logger.WARNING("BAD RETURN - 1");
+            return false;
+        }
 
-		Logger.WARNING("Running checkRecipeGeneric(1)");
-		// Remember last recipe - an optimization for findRecipe()
-		this.mLastRecipe = tRecipe;
+        aMaxParallelRecipes = this.canBufferOutputs(tRecipe, aMaxParallelRecipes);
+        if (aMaxParallelRecipes == 0) {
+            Logger.WARNING("BAD RETURN - 2");
+            return false;
+        }
 
-		if (tRecipe == null) {
-			Logger.WARNING("BAD RETURN - 1");
-			return false;
-		}
+        // EU discount
+        float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
+        int tHeatCapacityDivTiers = (int) mHeatingCapacity.getHeat() / 900;
+        float tTotalEUt = 0.0f;
 
-		aMaxParallelRecipes = this.canBufferOutputs(tRecipe, aMaxParallelRecipes);
-		if (aMaxParallelRecipes == 0) {
-			Logger.WARNING("BAD RETURN - 2");
-			return false;
-		}
+        int parallelRecipes = 0;
+        // Count recipes to do in parallel, consuming input items and fluids and
+        // considering input voltage limits
+        for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
+            if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
+                Logger.WARNING("Broke at " + parallelRecipes + ".");
+                break;
+            }
+            Logger.WARNING("Bumped EU from " + tTotalEUt + " to " + (tTotalEUt + tRecipeEUt) + ".");
+            tTotalEUt += tRecipeEUt;
+        }
 
-		// EU discount
-		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
-		int tHeatCapacityDivTiers = (int) mHeatingCapacity.getHeat() / 900;
-		float tTotalEUt = 0.0f;
+        if (parallelRecipes == 0) {
+            Logger.WARNING("BAD RETURN - 3");
+            return false;
+        }
 
-		int parallelRecipes = 0;
-		// Count recipes to do in parallel, consuming input items and fluids and
-		// considering input voltage limits
-		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
-			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
-				Logger.WARNING("Broke at " + parallelRecipes + ".");
-				break;
-			}
-			Logger.WARNING("Bumped EU from " + tTotalEUt + " to " + (tTotalEUt + tRecipeEUt) + ".");
-			tTotalEUt += tRecipeEUt;
-		}
+        // -- Try not to fail after this point - inputs have already been consumed! --
 
-		if (parallelRecipes == 0) {
-			Logger.WARNING("BAD RETURN - 3");
-			return false;
-		}
+        // Convert speed bonus to duration multiplier
+        // e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
+        aSpeedBonusPercent = mLevel * 5;
+        float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
+        this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
+        int rInt = 2;
 
-		// -- Try not to fail after this point - inputs have already been consumed! --
+        this.mEUt = (int) Math.max(Math.ceil(tTotalEUt), 1);
 
-		// Convert speed bonus to duration multiplier
-		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
-		aSpeedBonusPercent = mLevel * 5;
-		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
-		this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
-		int rInt = 2;
+        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
 
-		this.mEUt = (int) Math.max(Math.ceil(tTotalEUt), 1);
+        // Overclock
+        if (this.mEUt <= 16) {
+            this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+            this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
+        } else {
+            while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                this.mEUt *= 4;
+                this.mMaxProgresstime /= (tHeatCapacityDivTiers >= rInt ? 4 : 2);
+            }
+        }
+        if (this.mEUt > 0) {
+            this.mEUt = (-this.mEUt);
+        }
 
-		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-		this.mEfficiencyIncrease = 10000;
+        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
 
-		// Overclock
-		if (this.mEUt <= 16) {
-			this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-			this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
-		} else {
-			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-				this.mEUt *= 4;
-				this.mMaxProgresstime /= (tHeatCapacityDivTiers >= rInt ? 4 : 2);
-			}
-		}
-		if (this.mEUt > 0) {
-			this.mEUt = (-this.mEUt);
-		}
+        // Collect fluid outputs
+        FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
+        for (int h = 0; h < tRecipe.mFluidOutputs.length; h++) {
+            if (tRecipe.getFluidOutput(h) != null) {
+                tOutputFluids[h] = tRecipe.getFluidOutput(h).copy();
+                tOutputFluids[h].amount *= parallelRecipes;
+            }
+        }
 
-		this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+        // Collect output item types
+        ItemStack[] tOutputItems = new ItemStack[tRecipe.mOutputs.length];
+        for (int h = 0; h < tRecipe.mOutputs.length; h++) {
+            if (tRecipe.getOutput(h) != null) {
+                tOutputItems[h] = tRecipe.getOutput(h).copy();
+                tOutputItems[h].stackSize = 0;
+            }
+        }
 
-		// Collect fluid outputs
-		FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
-		for (int h = 0; h < tRecipe.mFluidOutputs.length; h++) {
-			if (tRecipe.getFluidOutput(h) != null) {
-				tOutputFluids[h] = tRecipe.getFluidOutput(h).copy();
-				tOutputFluids[h].amount *= parallelRecipes;
-			}
-		}
+        // Set output item stack sizes (taking output chance into account)
+        for (int f = 0; f < tOutputItems.length; f++) {
+            if (tRecipe.mOutputs[f] != null && tOutputItems[f] != null) {
+                for (int g = 0; g < parallelRecipes; g++) {
+                    if (getBaseMetaTileEntity().getRandomNumber(aOutputChanceRoll) < tRecipe.getOutputChance(f))
+                        tOutputItems[f].stackSize += tRecipe.mOutputs[f].stackSize;
+                }
+            }
+        }
 
-		// Collect output item types
-		ItemStack[] tOutputItems = new ItemStack[tRecipe.mOutputs.length];
-		for (int h = 0; h < tRecipe.mOutputs.length; h++) {
-			if (tRecipe.getOutput(h) != null) {
-				tOutputItems[h] = tRecipe.getOutput(h).copy();
-				tOutputItems[h].stackSize = 0;
-			}
-		}
+        tOutputItems = removeNulls(tOutputItems);
 
-		// Set output item stack sizes (taking output chance into account)
-		for (int f = 0; f < tOutputItems.length; f++) {
-			if (tRecipe.mOutputs[f] != null && tOutputItems[f] != null) {
-				for (int g = 0; g < parallelRecipes; g++) {
-					if (getBaseMetaTileEntity().getRandomNumber(aOutputChanceRoll) < tRecipe.getOutputChance(f))
-						tOutputItems[f].stackSize += tRecipe.mOutputs[f].stackSize;
-				}
-			}
-		}
+        // Sanitize item stack size, splitting any stacks greater than max stack size
+        List<ItemStack> splitStacks = new ArrayList<ItemStack>();
+        for (ItemStack tItem : tOutputItems) {
+            while (tItem.getMaxStackSize() < tItem.stackSize) {
+                ItemStack tmp = tItem.copy();
+                tmp.stackSize = tmp.getMaxStackSize();
+                tItem.stackSize = tItem.stackSize - tItem.getMaxStackSize();
+                splitStacks.add(tmp);
+            }
+        }
 
-		tOutputItems = removeNulls(tOutputItems);
+        if (splitStacks.size() > 0) {
+            ItemStack[] tmp = new ItemStack[splitStacks.size()];
+            tmp = splitStacks.toArray(tmp);
+            tOutputItems = ArrayUtils.addAll(tOutputItems, tmp);
+        }
 
-		// Sanitize item stack size, splitting any stacks greater than max stack size
-		List<ItemStack> splitStacks = new ArrayList<ItemStack>();
-		for (ItemStack tItem : tOutputItems) {
-			while (tItem.getMaxStackSize() < tItem.stackSize) {
-				ItemStack tmp = tItem.copy();
-				tmp.stackSize = tmp.getMaxStackSize();
-				tItem.stackSize = tItem.stackSize - tItem.getMaxStackSize();
-				splitStacks.add(tmp);
-			}
-		}
+        // Strip empty stacks
+        List<ItemStack> tSList = new ArrayList<ItemStack>();
+        for (ItemStack tS : tOutputItems) {
+            if (tS.stackSize > 0) tSList.add(tS);
+        }
+        tOutputItems = tSList.toArray(new ItemStack[tSList.size()]);
 
-		if (splitStacks.size() > 0) {
-			ItemStack[] tmp = new ItemStack[splitStacks.size()];
-			tmp = splitStacks.toArray(tmp);
-			tOutputItems = ArrayUtils.addAll(tOutputItems, tmp);
-		}
+        // Commit outputs
+        this.mOutputItems = tOutputItems;
+        this.mOutputFluids = tOutputFluids;
+        updateSlots();
 
-		// Strip empty stacks
-		List<ItemStack> tSList = new ArrayList<ItemStack>();
-		for (ItemStack tS : tOutputItems) {
-			if (tS.stackSize > 0)
-				tSList.add(tS);
-		}
-		tOutputItems = tSList.toArray(new ItemStack[tSList.size()]);
+        // Play sounds (GT++ addition - GT multiblocks play no sounds)
+        startProcess();
 
-		// Commit outputs
-		this.mOutputItems = tOutputItems;
-		this.mOutputFluids = tOutputFluids;
-		updateSlots();
+        Logger.WARNING("GOOD RETURN - 1");
+        return true;
+    }
 
-		// Play sounds (GT++ addition - GT multiblocks play no sounds)
-		startProcess();
+    public HeatingCoilLevel getCoilLevel() {
+        return mHeatingCapacity;
+    }
 
-		Logger.WARNING("GOOD RETURN - 1");
-		return true;
-
-	}
-
-	public HeatingCoilLevel getCoilLevel() {
-		return mHeatingCapacity;
-	}
-
-	public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-		mHeatingCapacity = aCoilLevel;
-	}
+    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
+        mHeatingCapacity = aCoilLevel;
+    }
 }

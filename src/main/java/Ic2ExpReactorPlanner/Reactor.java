@@ -5,66 +5,64 @@
  */
 package Ic2ExpReactorPlanner;
 
+import Ic2ExpReactorPlanner.components.ReactorItem;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
-
-import Ic2ExpReactorPlanner.components.ReactorItem;
-
 
 /**
  * Represents an IndustrialCraft2 Nuclear Reactor.
  * @author Brian McCloud
  */
 public class Reactor {
-    
+
     private final ReactorItem[][] grid = new ReactorItem[6][9];
-    
+
     private double currentEUoutput = 0.0;
-    
+
     private double currentHeat = 0.0;
-    
+
     private double maxHeat = 10000.0;
-    
+
     private double ventedHeat = 0.0;
-    
+
     private boolean fluid = false;
-    
+
     private boolean pulsed = false;
-    
+
     private boolean automated = false;
-    
+
     private boolean usingReactorCoolantInjectors = false;
-    
-    private static final int DEFAULT_ON_PULSE = (int)5e6;
-    
+
+    private static final int DEFAULT_ON_PULSE = (int) 5e6;
+
     private int onPulse = DEFAULT_ON_PULSE;
-    
+
     private static final int DEFAULT_OFF_PULSE = 0;
-    
+
     private int offPulse = DEFAULT_OFF_PULSE;
-    
-    private static final int DEFAULT_SUSPEND_TEMP = (int)120e3;
-    
+
+    private static final int DEFAULT_SUSPEND_TEMP = (int) 120e3;
+
     private int suspendTemp = DEFAULT_SUSPEND_TEMP;
-    
-    private static final int DEFAULT_RESUME_TEMP = (int)120e3;
-    
+
+    private static final int DEFAULT_RESUME_TEMP = (int) 120e3;
+
     private int resumeTemp = DEFAULT_RESUME_TEMP;
-    
-    private int maxSimulationTicks = (int)5e6;
-    
+
+    private int maxSimulationTicks = (int) 5e6;
+
     // maximum paramatter types for a reactor component (current initial heat, automation threshold, reactor pause
     private static final int MAX_PARAM_TYPES = 3;
 
     public static final int MAX_COMPONENT_HEAT = 1_080_000;
-    
+
     public ReactorItem getComponentAt(final int row, final int column) {
         if (row >= 0 && row < grid.length && column >= 0 && column < grid[row].length) {
             return grid[row][column];
         }
         return null;
     }
-    
+
     public void setComponentAt(final int row, final int column, final ReactorItem component) {
         if (row >= 0 && row < grid.length && column >= 0 && column < grid[row].length) {
             if (grid[row][column] != null) {
@@ -84,7 +82,7 @@ public class Reactor {
             }
         }
     }
-    
+
     /**
      * @return the amount of EU output in the reactor tick just simulated.
      */
@@ -105,7 +103,7 @@ public class Reactor {
     public double getMaxHeat() {
         return maxHeat;
     }
-    
+
     /**
      * Adjust the maximum heat
      * @param adjustment the adjustment amount (negative values decrease the max heat).
@@ -121,7 +119,7 @@ public class Reactor {
     public void setCurrentHeat(final double currentHeat) {
         this.currentHeat = currentHeat;
     }
-    
+
     /**
      * Adjusts the reactor's current heat by a specified amount
      * @param adjustment the adjustment amount.
@@ -132,7 +130,7 @@ public class Reactor {
             currentHeat = 0.0;
         }
     }
-    
+
     /**
      * add some EU output.
      * @param amount the amount of EU to output over 1 reactor tick (20 game ticks).
@@ -140,14 +138,14 @@ public class Reactor {
     public void addEUOutput(final double amount) {
         currentEUoutput += amount;
     }
-    
+
     /**
      * clears the EU output (presumably to start simulating a new reactor tick).
      */
     public void clearEUOutput() {
         currentEUoutput = 0.0;
     }
-    
+
     /**
      * Gets a list of the materials needed to build the components.
      * @return a list of the materials needed to build the components.
@@ -157,7 +155,7 @@ public class Reactor {
     }
 
     public ArrayList<ReactorItem> getComponentList() {
-    	ArrayList<ReactorItem> result = new ArrayList<ReactorItem>();
+        ArrayList<ReactorItem> result = new ArrayList<ReactorItem>();
         for (int col = 0; col < grid[0].length; col++) {
             for (int row = 0; row < grid.length; row++) {
                 if (getComponentAt(row, col) != null) {
@@ -167,14 +165,14 @@ public class Reactor {
         }
         return result;
     }
-    
+
     /**
      * @return the amount of heat vented this reactor tick.
      */
     public double getVentedHeat() {
         return ventedHeat;
     }
-    
+
     /**
      * Adds to the amount of heat vented this reactor tick, in case it is a new-style reactor with a pressure vessel and outputting heat to fluid instead of EU.
      * @param amount the amount to add.
@@ -182,14 +180,14 @@ public class Reactor {
     public void ventHeat(final double amount) {
         ventedHeat += amount;
     }
-    
+
     /**
      * Clears the amount of vented heat, in case a new reactor tick is starting.
      */
     public void clearVentedHeat() {
         ventedHeat = 0;
     }
-    
+
     /**
      * Get a code that represents the component set, which can be passed between forum users, etc.
      * @return a code representing some ids for the components and arrangement.  Passing the same code to setCode() should re-create an identical reactor setup, even if other changes have happened in the meantime.
@@ -197,7 +195,7 @@ public class Reactor {
     public String getCode() {
         return "erp=" + buildCodeString();
     }
-    
+
     /**
      * Sets a code to configure the entire grid all at once.  Expects the code to have originally been output by getCode().
      * @param code the code of the reactor setup to use.
@@ -209,7 +207,7 @@ public class Reactor {
         int[][][] params = new int[grid.length][grid[0].length][MAX_PARAM_TYPES];
         if (code.startsWith("erp=")) {
             readCodeString(code.substring(4));
-        } else if (code.length() >= 108 && code.matches("[0-9A-Za-z(),|]+")) { //NOI18N
+        } else if (code.length() >= 108 && code.matches("[0-9A-Za-z(),|]+")) { // NOI18N
             try {
                 for (int row = 0; row < grid.length; row++) {
                     for (int col = 0; col < grid[row].length; col++) {
@@ -330,17 +328,19 @@ public class Reactor {
             }
         } else {
             String tempCode = code;
-            if (code.startsWith("http://www.talonfiremage.pwp.blueyonder.co.uk/v3/reactorplanner.html?")) { //NOI18N
-                tempCode = code.replace("http://www.talonfiremage.pwp.blueyonder.co.uk/v3/reactorplanner.html?", ""); //NOI18N
+            if (code.startsWith("http://www.talonfiremage.pwp.blueyonder.co.uk/v3/reactorplanner.html?")) { // NOI18N
+                tempCode = code.replace(
+                        "http://www.talonfiremage.pwp.blueyonder.co.uk/v3/reactorplanner.html?", ""); // NOI18N
             }
-            if (tempCode.matches("[0-9a-z]+")) { //NOI18N
+            if (tempCode.matches("[0-9a-z]+")) { // NOI18N
                 // Possibly a code from Talonius's old planner
                 handleTaloniusCode(tempCode);
-            } else if (code.matches("[0-9A-Za-z+/=]+")) { //NOI18N
+            } else if (code.matches("[0-9A-Za-z+/=]+")) { // NOI18N
                 // Try to handle it as a newer code with the "erp=" prefix stripped
                 readCodeString(code);
             } else if (!code.isEmpty()) {
-                //JOptionPane.showMessageDialog(null, String.format(getI18n("Warning.InvalidReactorCode"), code), getI18n("Warning.Title"), JOptionPane.WARNING_MESSAGE);
+                // JOptionPane.showMessageDialog(null, String.format(getI18n("Warning.InvalidReactorCode"), code),
+                // getI18n("Warning.Title"), JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -354,12 +354,13 @@ public class Reactor {
         for (int x = 8; x >= 0; x--) {
             for (int y = 5; y >= 0; y--) {
                 int nextValue = decoder.readInt(7);
-                
-                // items are no longer stackable in IC2 reactors, but stack sizes from the planner code still need to be handled
+
+                // items are no longer stackable in IC2 reactors, but stack sizes from the planner code still need to be
+                // handled
                 if (nextValue > 64) {
                     nextValue = decoder.readInt(7);
                 }
-                
+
                 switch (nextValue) {
                     case 0:
                         setComponentAt(y, x, null);
@@ -479,8 +480,8 @@ public class Reactor {
             }
         }
         if (warnings.length() > 0) {
-            warnings.setLength(warnings.length() - 1);  // to remove last newline character
-            //JOptionPane.showMessageDialog(null, warnings, "Warning.Title", JOptionPane.WARNING_MESSAGE);
+            warnings.setLength(warnings.length() - 1); // to remove last newline character
+            // JOptionPane.showMessageDialog(null, warnings, "Warning.Title", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -490,10 +491,8 @@ public class Reactor {
         // read the code revision from the code itself instead of making it part of the prefix.
         int codeRevision = storage.extract(255);
         int maxComponentHeat;
-        if (codeRevision == 3)
-            maxComponentHeat = (int)1080e3;
-        else
-            maxComponentHeat = (int)360e3;
+        if (codeRevision == 3) maxComponentHeat = (int) 1080e3;
+        else maxComponentHeat = (int) 360e3;
         // Check if the code revision is supported yet.
         if (codeRevision > 3) {
             throw new IllegalArgumentException("Unsupported code revision in reactor code.");
@@ -507,7 +506,8 @@ public class Reactor {
         for (int row = 0; row < grid.length; row++) {
             for (int col = 0; col < grid[row].length; col++) {
                 int componentId = 0;
-                // Changes may be coming to the number of components available, so make sure to check the code revision number.
+                // Changes may be coming to the number of components available, so make sure to check the code revision
+                // number.
                 if (codeRevision <= 1) {
                     componentId = storage.extract(38);
                 } else if (codeRevision == 2) {
@@ -522,7 +522,7 @@ public class Reactor {
                         component.setInitialHeat(storage.extract(maxComponentHeat));
                         if (codeRevision == 0 || (codeRevision >= 1 && automated)) {
                             component.setAutomationThreshold(storage.extract(maxComponentHeat));
-                            component.setReactorPause(storage.extract((int)10e3));
+                            component.setReactorPause(storage.extract((int) 10e3));
                         }
                     }
                     setComponentAt(row, col, component);
@@ -532,12 +532,12 @@ public class Reactor {
             }
         }
         // next, read the inital temperature and other details.
-        currentHeat = storage.extract((int)120e3);
+        currentHeat = storage.extract((int) 120e3);
         if (codeRevision == 0 || (codeRevision >= 1 && pulsed)) {
-            onPulse = storage.extract((int)5e6);
-            offPulse = storage.extract((int)5e6);
-            suspendTemp = storage.extract((int)120e3);
-            resumeTemp = storage.extract((int)120e3);
+            onPulse = storage.extract((int) 5e6);
+            offPulse = storage.extract((int) 5e6);
+            suspendTemp = storage.extract((int) 120e3);
+            resumeTemp = storage.extract((int) 120e3);
         }
         fluid = storage.extract(1) > 0;
         usingReactorCoolantInjectors = storage.extract(1) > 0;
@@ -545,36 +545,41 @@ public class Reactor {
             pulsed = storage.extract(1) > 0;
             automated = storage.extract(1) > 0;
         }
-        maxSimulationTicks = storage.extract((int)5e6);
+        maxSimulationTicks = storage.extract((int) 5e6);
     }
-    
+
     // builds a Base64 code string, not including the prefix.
     private String buildCodeString() {
         BigintStorage storage = new BigintStorage();
         // first, store the extra details, in reverse order of expected reading.
-        storage.store(maxSimulationTicks, (int)5e6);
+        storage.store(maxSimulationTicks, (int) 5e6);
         storage.store(usingReactorCoolantInjectors ? 1 : 0, 1);
         storage.store(fluid ? 1 : 0, 1);
         if (pulsed) {
-            storage.store(resumeTemp, (int)120e3);
-            storage.store(suspendTemp, (int)120e3);
-            storage.store(offPulse, (int)5e6);
-            storage.store(onPulse, (int)5e6);
+            storage.store(resumeTemp, (int) 120e3);
+            storage.store(suspendTemp, (int) 120e3);
+            storage.store(offPulse, (int) 5e6);
+            storage.store(onPulse, (int) 5e6);
         }
-        storage.store((int)currentHeat, (int)120e3);
+        storage.store((int) currentHeat, (int) 120e3);
         // grid is read (almost) first, so written (almost) last, and in reverse order
         for (int row = grid.length - 1; row >= 0; row--) {
             for (int col = grid[row].length - 1; col >= 0; col--) {
                 ReactorItem component = grid[row][col];
                 if (component != null) {
                     int id = component.id;
-                    // only store automation details for a component if non-default, and add a flag bit to indicate their presence.  null components don't even need the flag bit.
-                    if (component.getInitialHeat() > 0 || component.getAutomationThreshold() != ComponentFactory.getDefaultComponent(id).getAutomationThreshold() || component.getReactorPause() != ComponentFactory.getDefaultComponent(id).getReactorPause()) {
+                    // only store automation details for a component if non-default, and add a flag bit to indicate
+                    // their presence.  null components don't even need the flag bit.
+                    if (component.getInitialHeat() > 0
+                            || component.getAutomationThreshold()
+                                    != ComponentFactory.getDefaultComponent(id).getAutomationThreshold()
+                            || component.getReactorPause()
+                                    != ComponentFactory.getDefaultComponent(id).getReactorPause()) {
                         if (automated) {
-                            storage.store(component.getReactorPause(), (int)10e3);
-                            storage.store(component.getAutomationThreshold(), (int)1080e3);
+                            storage.store(component.getReactorPause(), (int) 10e3);
+                            storage.store(component.getAutomationThreshold(), (int) 1080e3);
                         }
-                        storage.store((int)component.getInitialHeat(), (int)1080e3);
+                        storage.store((int) component.getInitialHeat(), (int) 1080e3);
                         storage.store(1, 1);
                     } else {
                         storage.store(0, 1);
@@ -599,21 +604,35 @@ public class Reactor {
             for (int col = 0; col < grid[row].length; col++) {
                 final ReactorItem component = getComponentAt(row, col);
                 final int id = (component != null) ? component.id : 0;
-                result.append(String.format("%02X", id)); //NOI18N 
-                if (component != null && (component.getInitialHeat() > 0 
-                        || (automated && component.getAutomationThreshold() != ComponentFactory.getDefaultComponent(id).getAutomationThreshold())
-                        || (automated && component.getReactorPause() != ComponentFactory.getDefaultComponent(id).getReactorPause()))) {
+                result.append(String.format("%02X", id)); // NOI18N
+                if (component != null
+                        && (component.getInitialHeat() > 0
+                                || (automated
+                                        && component.getAutomationThreshold()
+                                                != ComponentFactory.getDefaultComponent(id)
+                                                        .getAutomationThreshold())
+                                || (automated
+                                        && component.getReactorPause()
+                                                != ComponentFactory.getDefaultComponent(id)
+                                                        .getReactorPause()))) {
                     result.append("(");
                     if (component.getInitialHeat() > 0) {
-                        result.append(String.format("h%s,", Integer.toString((int) component.getInitialHeat(), 36))); //NOI18N 
+                        result.append(String.format(
+                                "h%s,", Integer.toString((int) component.getInitialHeat(), 36))); // NOI18N
                     }
-                    if (automated && component.getAutomationThreshold() != ComponentFactory.getDefaultComponent(id).getAutomationThreshold()) {
-                        result.append(String.format("a%s,", Integer.toString(component.getAutomationThreshold(), 36))); //NOI18N 
+                    if (automated
+                            && component.getAutomationThreshold()
+                                    != ComponentFactory.getDefaultComponent(id).getAutomationThreshold()) {
+                        result.append(String.format(
+                                "a%s,", Integer.toString(component.getAutomationThreshold(), 36))); // NOI18N
                     }
-                    if (automated && component.getReactorPause() != ComponentFactory.getDefaultComponent(id).getReactorPause()) {
-                        result.append(String.format("p%s,", Integer.toString(component.getReactorPause(), 36))); //NOI18N 
+                    if (automated
+                            && component.getReactorPause()
+                                    != ComponentFactory.getDefaultComponent(id).getReactorPause()) {
+                        result.append(
+                                String.format("p%s,", Integer.toString(component.getReactorPause(), 36))); // NOI18N
                     }
-                    result.setLength(result.length() - 1); // remove the last comma, whichever parameter it came from. 
+                    result.setLength(result.length() - 1); // remove the last comma, whichever parameter it came from.
                     result.append(")");
                 }
             }
@@ -653,7 +672,7 @@ public class Reactor {
         }
         return result.toString();
     }
-    
+
     /**
      * Checks whether the reactor is to simulate a fluid-style reactor, rather than a direct EU-output reactor.
      * @return true if this was set to be a fluid-style reactor, false if this was set to be direct EU-output reactor.
@@ -669,7 +688,7 @@ public class Reactor {
     public void setFluid(final boolean fluid) {
         this.fluid = fluid;
     }
-    
+
     /**
      * Checks whether the reactor is using Reactor Coolant Injectors (RCIs)
      * @return true if this reactor was set to use RCIs, false otherwise.
@@ -677,7 +696,7 @@ public class Reactor {
     public boolean isUsingReactorCoolantInjectors() {
         return usingReactorCoolantInjectors;
     }
-    
+
     /**
      * Sets whether the reactor is to use Reactor Coolant Injectors (RCIs)
      * @param usingReactorCoolantInjectors true if this reactor should use RCIs, false otherwise.
@@ -685,35 +704,35 @@ public class Reactor {
     public void setUsingReactorCoolantInjectors(final boolean usingReactorCoolantInjectors) {
         this.usingReactorCoolantInjectors = usingReactorCoolantInjectors;
     }
-    
+
     public int getOnPulse() {
         return onPulse;
     }
-    
+
     public void setOnPulse(final int onPulse) {
         this.onPulse = onPulse;
     }
-    
+
     public int getOffPulse() {
         return offPulse;
     }
-    
+
     public void setOffPulse(final int offPulse) {
         this.offPulse = offPulse;
     }
-    
+
     public int getSuspendTemp() {
         return suspendTemp;
     }
-    
+
     public void setSuspendTemp(final int suspendTemp) {
         this.suspendTemp = suspendTemp;
     }
-    
+
     public int getResumeTemp() {
         return resumeTemp;
     }
-    
+
     public void setResumeTemp(final int resumeTemp) {
         this.resumeTemp = resumeTemp;
     }
@@ -741,12 +760,11 @@ public class Reactor {
     public void setMaxSimulationTicks(int maxSimulationTicks) {
         this.maxSimulationTicks = maxSimulationTicks;
     }
-    
+
     public void resetPulseConfig() {
         onPulse = DEFAULT_ON_PULSE;
         offPulse = DEFAULT_OFF_PULSE;
         suspendTemp = DEFAULT_SUSPEND_TEMP;
         resumeTemp = DEFAULT_RESUME_TEMP;
     }
-    
 }

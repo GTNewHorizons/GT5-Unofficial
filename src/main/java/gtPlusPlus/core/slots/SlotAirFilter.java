@@ -7,24 +7,23 @@ import net.minecraft.item.ItemStack;
 
 public class SlotAirFilter extends Slot {
 
-	public SlotAirFilter(final IInventory inventory, final int slot, final int x, final int y) {
-		super(inventory, slot, x, y);
-	}
+    public SlotAirFilter(final IInventory inventory, final int slot, final int x, final int y) {
+        super(inventory, slot, x, y);
+    }
 
-	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
-		if (itemstack == null) {
-			return false;
-		}		
-		if (itemstack.getItem() instanceof ItemAirFilter){
-			return true;			
-		}		
-		return false;
-	}
+    @Override
+    public boolean isItemValid(final ItemStack itemstack) {
+        if (itemstack == null) {
+            return false;
+        }
+        if (itemstack.getItem() instanceof ItemAirFilter) {
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public int getSlotStackLimit() {
-		return 1;
-	}
-
+    @Override
+    public int getSlotStackLimit() {
+        return 1;
+    }
 }

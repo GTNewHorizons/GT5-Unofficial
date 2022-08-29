@@ -15,25 +15,27 @@ public class GT_MetaTileEntity_ULV_CombustionGenerator extends GT_MetaTileEntity
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_ULV_CombustionGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_ULV_CombustionGenerator(
+            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
-	
-	@Override
-	public String[] getDescription() {
-		return new String[]{
-				this.mDescription,
-				"Produces "+(this.getPollution()*20)+" pollution/sec", 
-				"Fuel Efficiency: "+this.getEfficiency() + "%",
-                CORE.GT_Tooltip};
-	}
 
     @Override
-	public long maxEUStore() {
-        return Math.max(getEUVar(), V[1] * 80L + getMinimumStoredEU());
-	}
+    public String[] getDescription() {
+        return new String[] {
+            this.mDescription,
+            "Produces " + (this.getPollution() * 20) + " pollution/sec",
+            "Fuel Efficiency: " + this.getEfficiency() + "%",
+            CORE.GT_Tooltip
+        };
+    }
 
-	@Override
+    @Override
+    public long maxEUStore() {
+        return Math.max(getEUVar(), V[1] * 80L + getMinimumStoredEU());
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_ULV_CombustionGenerator(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
@@ -45,6 +47,7 @@ public class GT_MetaTileEntity_ULV_CombustionGenerator extends GT_MetaTileEntity
 
     @Override
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "DieselGenerator.efficiency.tier." + this.mTier, 95);
+        this.mEfficiency = GregTech_API.sMachineFile.get(
+                ConfigCategories.machineconfig, "DieselGenerator.efficiency.tier." + this.mTier, 95);
     }
 }

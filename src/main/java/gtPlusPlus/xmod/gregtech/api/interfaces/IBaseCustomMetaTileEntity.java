@@ -2,6 +2,5 @@ package gtPlusPlus.xmod.gregtech.api.interfaces;
 
 public interface IBaseCustomMetaTileEntity {
 
-	public boolean doesExplode();
-	
+    public boolean doesExplode();
 }

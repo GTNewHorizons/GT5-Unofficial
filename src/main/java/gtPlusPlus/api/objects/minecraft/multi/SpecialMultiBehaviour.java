@@ -12,33 +12,32 @@ import net.minecraft.item.ItemStack;
  */
 public abstract class SpecialMultiBehaviour {
 
-	private final int mMaxParallelRecipes = Short.MIN_VALUE;
-	private final int mEUPercent = Short.MIN_VALUE;
-	private final int mSpeedBonusPercent = Short.MIN_VALUE;
-	private final int mOutputChanceRoll = Short.MIN_VALUE;	
-	
-	public abstract ItemStack getTriggerItem();
-	
-	public abstract String getTriggerItemTooltip();
+    private final int mMaxParallelRecipes = Short.MIN_VALUE;
+    private final int mEUPercent = Short.MIN_VALUE;
+    private final int mSpeedBonusPercent = Short.MIN_VALUE;
+    private final int mOutputChanceRoll = Short.MIN_VALUE;
 
-	public int getMaxParallelRecipes() {
-		return this.mMaxParallelRecipes;
-	}
+    public abstract ItemStack getTriggerItem();
 
-	public int getEUPercent() {
-		return this.mEUPercent;
-	}
+    public abstract String getTriggerItemTooltip();
 
-	public int getSpeedBonusPercent() {
-		return this.mSpeedBonusPercent;
-	}
+    public int getMaxParallelRecipes() {
+        return this.mMaxParallelRecipes;
+    }
 
-	public int getOutputChanceRoll() {
-		return this.mOutputChanceRoll;
-	}	
-	
-	public final boolean isTriggerItem(ItemStack aToMatch) {
-		return GT_Utility.areStacksEqual(getTriggerItem(), aToMatch, false);
-	}
-	
+    public int getEUPercent() {
+        return this.mEUPercent;
+    }
+
+    public int getSpeedBonusPercent() {
+        return this.mSpeedBonusPercent;
+    }
+
+    public int getOutputChanceRoll() {
+        return this.mOutputChanceRoll;
+    }
+
+    public final boolean isTriggerItem(ItemStack aToMatch) {
+        return GT_Utility.areStacksEqual(getTriggerItem(), aToMatch, false);
+    }
 }

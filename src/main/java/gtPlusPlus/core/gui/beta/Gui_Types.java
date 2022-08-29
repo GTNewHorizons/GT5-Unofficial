@@ -1,8 +1,9 @@
 package gtPlusPlus.core.gui.beta;
 
-public enum Gui_Types
-{
-	Item,  Tile,  Entity;
+public enum Gui_Types {
+    Item,
+    Tile,
+    Entity;
 
-	private Gui_Types() {}
+    private Gui_Types() {}
 }

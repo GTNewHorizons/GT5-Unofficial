@@ -10,14 +10,14 @@ public abstract class ConcurrentSet<E> extends AbstractSet<E> implements Seriali
     private static final long serialVersionUID = -6761513279741915432L;
 
     private final ConcurrentMap<Integer, E> mInternalMap;
-    
-	private int mInternalID = 0;	
+
+    private int mInternalID = 0;
 
     /**
      * Creates a new instance which wraps the specified {@code map}.
-     */    
+     */
     public ConcurrentSet(ConcurrentMap<Integer, E> aMap) {
-    	mInternalMap = aMap;
+        mInternalMap = aMap;
     }
 
     @Override
@@ -42,7 +42,7 @@ public abstract class ConcurrentSet<E> extends AbstractSet<E> implements Seriali
 
     @Override
     public void clear() {
-		this.mInternalID = 0;
+        this.mInternalID = 0;
         mInternalMap.clear();
     }
 

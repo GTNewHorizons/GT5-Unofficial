@@ -7,21 +7,19 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.Gr
 
 public class GregtechIndustrialMixer {
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Industrial Mixer Multiblock.");
-			if (CORE.ConfigSwitches.enableMultiblock_IndustrialPlatePress) {
-				run1();
-			}
-		}
+    public static void run() {
+        if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+            Logger.INFO("Gregtech5u Content | Registering Industrial Mixer Multiblock.");
+            if (CORE.ConfigSwitches.enableMultiblock_IndustrialPlatePress) {
+                run1();
+            }
+        }
+    }
 
-	}
-
-	private static void run1() {
-		// Industrial Mixer Multiblock
-		GregtechItemList.Industrial_Mixer.set(new GregtechMetaTileEntity_IndustrialMixer(811,
-				"industrialmixer.controller.tier.single", "Industrial Mixing Machine").getStackForm(1L));
-
-	}
-	
+    private static void run1() {
+        // Industrial Mixer Multiblock
+        GregtechItemList.Industrial_Mixer.set(new GregtechMetaTileEntity_IndustrialMixer(
+                        811, "industrialmixer.controller.tier.single", "Industrial Mixing Machine")
+                .getStackForm(1L));
+    }
 }

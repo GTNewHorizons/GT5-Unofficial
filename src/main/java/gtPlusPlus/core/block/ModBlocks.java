@@ -36,136 +36,136 @@ import net.minecraftforge.fluids.Fluid;
 
 public final class ModBlocks {
 
-	public static Block blockRoundRobinator;
-	public static Block blockCircuitProgrammer;
-	public static Block blockVolumetricFlaskSetter;
-	public static Block blockFakeMiningPipe;
-	public static Block blockFakeMiningHead;
-	
-	public static Block blockFishTrap;
-	public static Block blockDecayablesChest;
-	public static Block blockEggBox;
-	
-	//Blocks
-	//public static Block blockBloodSteel;
-	//public static Block blockStaballoy;
-	// WIP TODO public static Block blockToolBuilder;
-	public static Block blockGriefSaver;
-	
-	public static Block blockCasingsMisc;
-	public static Block blockCasings2Misc;
-	public static Block blockCasings3Misc;
-	public static Block blockCasings4Misc;	
-	public static Block blockCasings5Misc;	
-	public static Block blockCasingsTieredGTPP;
-	public static Block blockSpecialMultiCasings;
-	public static Block blockSpecialMultiCasings2;
-	public static Block blockCustomMachineCasings;
-	public static Block blockCustomPipeGearCasings;	
-	
-	public static Block blockMetaTileEntity;
-	public static Block blockHeliumGenerator;
-	public static Block blockNHG;
-	public static Block blockCharger;
+    public static Block blockRoundRobinator;
+    public static Block blockCircuitProgrammer;
+    public static Block blockVolumetricFlaskSetter;
+    public static Block blockFakeMiningPipe;
+    public static Block blockFakeMiningHead;
 
-	public static Block MatterFabricatorEffectBlock;
+    public static Block blockFishTrap;
+    public static Block blockDecayablesChest;
+    public static Block blockEggBox;
 
-	public static Fluid fluidSludge = new Fluid("fluid.sludge");
-	public static Block blockFluidSludge;
+    // Blocks
+    // public static Block blockBloodSteel;
+    // public static Block blockStaballoy;
+    // WIP TODO public static Block blockToolBuilder;
+    public static Block blockGriefSaver;
 
-	public static Block blockFirePit;
+    public static Block blockCasingsMisc;
+    public static Block blockCasings2Misc;
+    public static Block blockCasings3Misc;
+    public static Block blockCasings4Misc;
+    public static Block blockCasings5Misc;
+    public static Block blockCasingsTieredGTPP;
+    public static Block blockSpecialMultiCasings;
+    public static Block blockSpecialMultiCasings2;
+    public static Block blockCustomMachineCasings;
+    public static Block blockCustomPipeGearCasings;
 
-	public static Block blockOreFluorite;
+    public static Block blockMetaTileEntity;
+    public static Block blockHeliumGenerator;
+    public static Block blockNHG;
+    public static Block blockCharger;
 
-	public static Block blockMiningExplosive;
+    public static Block MatterFabricatorEffectBlock;
 
-	public static Block blockHellfire;
-	public static Block blockInfiniteFLuidTank;
-	public static Block blockProjectTable;
-	public static Block blockTradeTable;
-	public static Block blockModularTable;
+    public static Fluid fluidSludge = new Fluid("fluid.sludge");
+    public static Block blockFluidSludge;
 
-	public static Block blockWitherGuard;
-	public static Block blockXpConverter;
-	public static Block blockCompressedObsidian;
-	public static Block blockNet;
+    public static Block blockFirePit;
 
-	public static Block blockPlayerDoorWooden;
-	public static Block blockPlayerDoorIron;
-	public static Block blockPlayerDoorCustom_Glass;
-	public static Block blockPlayerDoorCustom_Ice;
-	public static Block blockPlayerDoorCustom_Cactus;
+    public static Block blockOreFluorite;
 
-	public static Block blockCustomMobSpawner;
-	public static Block blockCustomSuperLight;
-	public static Block blockCustomJukebox;
-	
-	public static Block blockPooCollector;
-	
-	public static Block blockPestKiller;
+    public static Block blockMiningExplosive;
 
-	public static void init() {
-		Logger.INFO("Initializing Blocks.");
-		//blockGriefSaver = new TowerDevice().setBlockName("blockGriefSaver").setCreativeTab(AddToCreativeTab.tabBlock).setBlockTextureName("blockDefault");
+    public static Block blockHellfire;
+    public static Block blockInfiniteFLuidTank;
+    public static Block blockProjectTable;
+    public static Block blockTradeTable;
+    public static Block blockModularTable;
 
-		registerBlocks();
-	}
+    public static Block blockWitherGuard;
+    public static Block blockXpConverter;
+    public static Block blockCompressedObsidian;
+    public static Block blockNet;
 
-	public static void registerBlocks(){
+    public static Block blockPlayerDoorWooden;
+    public static Block blockPlayerDoorIron;
+    public static Block blockPlayerDoorCustom_Glass;
+    public static Block blockPlayerDoorCustom_Ice;
+    public static Block blockPlayerDoorCustom_Cactus;
 
-		Logger.INFO("Registering Blocks.");
-		MatterFabricatorEffectBlock = new LightGlass(false);
+    public static Block blockCustomMobSpawner;
+    public static Block blockCustomSuperLight;
+    public static Block blockCustomJukebox;
 
-		//Fluids
-		FluidRegistryHandler.registerFluids();
+    public static Block blockPooCollector;
 
-		//Workbench
-		blockHeliumGenerator = new HeliumGenerator();
-		blockFirePit = new FirePit();
-		blockFishTrap = new FishTrap();
-		blockInfiniteFLuidTank = new FluidTankInfinite();
-		//blockOreFluorite = new BlockBaseOre.oldOreBlock("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
-		blockMiningExplosive = new MiningExplosives();
-		blockHellfire = new HellFire();
-		blockProjectTable =  new Machine_ProjectTable();
-		blockTradeTable =  new Machine_TradeTable();
-		blockModularTable =  new Machine_ModularityTable();
-		blockWitherGuard = new BlockWitherProof();
-		blockXpConverter = new BlockTankXpConverter();
-		blockCompressedObsidian = new BlockCompressedObsidian();
-		blockNet = new BlockNet();		
+    public static Block blockPestKiller;
 
-		blockFakeMiningPipe = new Mining_Pipe_Fake();
-		blockFakeMiningHead = new Mining_Head_Fake();
-		
-		blockCircuitProgrammer = new CircuitProgrammer();
+    public static void init() {
+        Logger.INFO("Initializing Blocks.");
+        // blockGriefSaver = new
+        // TowerDevice().setBlockName("blockGriefSaver").setCreativeTab(AddToCreativeTab.tabBlock).setBlockTextureName("blockDefault");
 
-		blockDecayablesChest = new DecayablesChest();
-		blockEggBox = new EggBox();
-		
-		blockPlayerDoorWooden = new PlayerDoors(Material.wood, "door_wood", true);
-		blockPlayerDoorIron = new PlayerDoors(Material.iron, "door_iron", true);
-		blockPlayerDoorCustom_Glass = new PlayerDoors(Material.glass, "door_glass", false);
-		blockPlayerDoorCustom_Ice = new PlayerDoors(Material.ice, "door_ice", false);
-		blockPlayerDoorCustom_Cactus = new PlayerDoors(Material.cactus, "door_cactus", false, 0.6f, Block.soundTypeGrass, "Cactus");
-		
-		//blockCustomSuperLight = new BlockSuperLight();
-		blockCustomJukebox = new Machine_SuperJukebox();
-		
-		blockPooCollector = new Machine_PooCollector();
-		
-		blockPestKiller = new Machine_PestKiller();
-		
-		blockRoundRobinator = new Machine_RoundRobinator();
-		
-		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
-			blockVolumetricFlaskSetter = new VolumetricFlaskSetter();
-		}
-			
-		new BlockGenericRedstoneDetector();
-		new BlockGenericRedstoneTest();
+        registerBlocks();
+    }
 
-	}
+    public static void registerBlocks() {
 
+        Logger.INFO("Registering Blocks.");
+        MatterFabricatorEffectBlock = new LightGlass(false);
 
+        // Fluids
+        FluidRegistryHandler.registerFluids();
+
+        // Workbench
+        blockHeliumGenerator = new HeliumGenerator();
+        blockFirePit = new FirePit();
+        blockFishTrap = new FishTrap();
+        blockInfiniteFLuidTank = new FluidTankInfinite();
+        // blockOreFluorite = new BlockBaseOre.oldOreBlock("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE,
+        // Utils.rgbtoHexValue(120, 120, 30), 3);
+        blockMiningExplosive = new MiningExplosives();
+        blockHellfire = new HellFire();
+        blockProjectTable = new Machine_ProjectTable();
+        blockTradeTable = new Machine_TradeTable();
+        blockModularTable = new Machine_ModularityTable();
+        blockWitherGuard = new BlockWitherProof();
+        blockXpConverter = new BlockTankXpConverter();
+        blockCompressedObsidian = new BlockCompressedObsidian();
+        blockNet = new BlockNet();
+
+        blockFakeMiningPipe = new Mining_Pipe_Fake();
+        blockFakeMiningHead = new Mining_Head_Fake();
+
+        blockCircuitProgrammer = new CircuitProgrammer();
+
+        blockDecayablesChest = new DecayablesChest();
+        blockEggBox = new EggBox();
+
+        blockPlayerDoorWooden = new PlayerDoors(Material.wood, "door_wood", true);
+        blockPlayerDoorIron = new PlayerDoors(Material.iron, "door_iron", true);
+        blockPlayerDoorCustom_Glass = new PlayerDoors(Material.glass, "door_glass", false);
+        blockPlayerDoorCustom_Ice = new PlayerDoors(Material.ice, "door_ice", false);
+        blockPlayerDoorCustom_Cactus =
+                new PlayerDoors(Material.cactus, "door_cactus", false, 0.6f, Block.soundTypeGrass, "Cactus");
+
+        // blockCustomSuperLight = new BlockSuperLight();
+        blockCustomJukebox = new Machine_SuperJukebox();
+
+        blockPooCollector = new Machine_PooCollector();
+
+        blockPestKiller = new Machine_PestKiller();
+
+        blockRoundRobinator = new Machine_RoundRobinator();
+
+        if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
+            blockVolumetricFlaskSetter = new VolumetricFlaskSetter();
+        }
+
+        new BlockGenericRedstoneDetector();
+        new BlockGenericRedstoneTest();
+    }
 }

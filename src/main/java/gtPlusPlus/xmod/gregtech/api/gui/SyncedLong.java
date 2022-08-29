@@ -38,7 +38,7 @@ class SyncedLong {
             dirty = false;
         }
     }
-    
+
     private long getPiece(int index) {
         return ((long) pieces[index]) & 0xffff;
     }

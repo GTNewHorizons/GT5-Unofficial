@@ -1,37 +1,12 @@
 /*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import java.util.ArrayList;
-
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GTPP_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Plasma;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 
 	public long currentVoltage = GT_Values.V[7];
 	public byte currentTier = 8;
-	
+
 	public void upvolt() {
 		byte f = currentTier;
 		if ((f+1) > 10) {
@@ -40,10 +15,10 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 		else {
 			f++;
 		}
-		this.currentTier = f;	
+		this.currentTier = f;
 		updateVoltage();
 	}
-	
+
 	public void downvolt() {
 		byte f = currentTier;
 		if ((f-1) < 8) {
@@ -52,19 +27,19 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 		else {
 			f--;
 		}
-		this.currentTier = f;	
+		this.currentTier = f;
 		updateVoltage();
 	}
-	
+
 	private long updateVoltage() {
 		this.currentVoltage = GT_Values.V[this.currentTier-1];
 		return currentVoltage;
 	}
-	
+
 	public GregtechMTE_MiniFusionPlant(String aName) {
 		super(aName);
 	}
-	
+
 	public GregtechMTE_MiniFusionPlant(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -101,10 +76,10 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 		}
 		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(10))};
 	}
-	
+
 
 	@Override
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {		
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return GTPP_Recipe.GTPP_Recipe_Map.sSlowFusionRecipes;
 	}
 
@@ -125,10 +100,10 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String[] getTooltip() {
-		return new String[] { 
-				"Small scale fusion", 
+		return new String[] {
+				"Small scale fusion",
 				"16x slower than using Multiblock of the same voltage",
-				//"Input voltage can be changed within the GUI",				
+				//"Input voltage can be changed within the GUI",
 				"Place Input/Output Hatches on sides and bottom",
 				"Power can only be inserted into the back",
 				//e"Power can only be extracted from the top",
@@ -155,7 +130,7 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 		int tAmount = 0;
 
 		ForgeDirection aDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing());
-		
+
 		//Require air in front, I think
 		if (!aBaseMetaTileEntity.getAirOffset(xDir2, 0, zDir2)) {
 			Logger.INFO("Did not find air in front");
@@ -168,9 +143,9 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
 									h, zDir + j);
 							if (this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(10))) {
-								tAmount++;								
+								tAmount++;
 							}
-						}						
+						}
 					}
 				}
 			}
@@ -181,7 +156,7 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(ItemStack arg0) {
-		
+
 
 		ArrayList tFluidList = this.getStoredFluids();
 		int tFluidList_sS = tFluidList.size();
@@ -232,10 +207,10 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 		//Logger.INFO("Step "+aStep++);
 
 		return false;
-	
-		
-		
-		
+
+
+
+
 		//return this.checkRecipeGeneric(this.getMaxParallelRecipes(), getEuDiscountForParallelism(), 0);
 	}
 
@@ -268,15 +243,15 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String[] getExtraInfoData() {
-		String mode = EnumChatFormatting.BLUE + "" + currentVoltage + EnumChatFormatting.RESET;	
-		String aOutput = EnumChatFormatting.BLUE + "" + mEUt + EnumChatFormatting.RESET;		
+		String mode = EnumChatFormatting.BLUE + "" + currentVoltage + EnumChatFormatting.RESET;
+		String aOutput = EnumChatFormatting.BLUE + "" + mEUt + EnumChatFormatting.RESET;
 		String storedEnergyText;
 		if (this.getEUVar() > maxEUStore()) {
 			storedEnergyText = EnumChatFormatting.RED + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET;
 		} else {
 			storedEnergyText = EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET;
 		}
-		
+
 		return new String[]{
 				"Stored EU: " + storedEnergyText,
 				"Capacity: " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.maxEUStore()) + EnumChatFormatting.RESET,
@@ -304,7 +279,7 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 	public long getInputTier() {
 		return (long) GT_Utility.getTier(maxEUInput());
 	}
-	
+
 	@Override
 	public boolean isElectric() {
 		return true;
@@ -374,11 +349,11 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 	@Override
 	public int getPollutionPerTick(ItemStack arg0) {
 		return 0;
-	}	
+	}
 
 	@Override
 	public GT_MetaTileEntity_Hatch_ControlCore getControlCoreBus() {
-		GT_MetaTileEntity_Hatch_ControlCore x = new GT_MetaTileEntity_Hatch_ControlCore("", 0, "", null);		
+		GT_MetaTileEntity_Hatch_ControlCore x = new GT_MetaTileEntity_Hatch_ControlCore("", 0, "", null);
 		return (GT_MetaTileEntity_Hatch_ControlCore) x;
 	}
 

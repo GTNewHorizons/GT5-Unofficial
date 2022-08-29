@@ -1,13 +1,12 @@
 package gtPlusPlus.api.thermal.tileentity;
 
 public interface IThermalInfo {
-	
-	int getInfoEnergyPerTick();
 
-	int getInfoMaxEnergyPerTick();
+    int getInfoEnergyPerTick();
 
-	int getInfoEnergyStored();
+    int getInfoMaxEnergyPerTick();
 
-	int getInfoMaxEnergyStored();
-	
+    int getInfoEnergyStored();
+
+    int getInfoMaxEnergyStored();
 }

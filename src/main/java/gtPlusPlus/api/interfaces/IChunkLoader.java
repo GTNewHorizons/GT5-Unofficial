@@ -1,33 +1,31 @@
 package gtPlusPlus.api.interfaces;
 
 import java.util.Set;
-
 import net.minecraft.world.ChunkCoordIntPair;
 
 public interface IChunkLoader {
 
-	public long getTicksRemaining();
-	
-	public void setTicksRemaining(long aTicks);	
+    public long getTicksRemaining();
 
-	public ChunkCoordIntPair getResidingChunk();
-	
-	public void setResidingChunk(ChunkCoordIntPair aCurrentChunk);
+    public void setTicksRemaining(long aTicks);
 
-	public boolean getChunkLoadingActive();
-	
-	public void setChunkLoadingActive(boolean aActive);
+    public ChunkCoordIntPair getResidingChunk();
 
-	public boolean getDoesWorkChunkNeedReload();
-	
-	public void setDoesWorkChunkNeedReload(boolean aActive);
+    public void setResidingChunk(ChunkCoordIntPair aCurrentChunk);
 
-	public boolean addChunkToLoadedList(ChunkCoordIntPair aActiveChunk);
-	
-	public boolean removeChunkFromLoadedList(ChunkCoordIntPair aActiveChunk);
-	
-	public Set<ChunkCoordIntPair> getManagedChunks();
-	
-	public int getChunkloaderTier();
-	
+    public boolean getChunkLoadingActive();
+
+    public void setChunkLoadingActive(boolean aActive);
+
+    public boolean getDoesWorkChunkNeedReload();
+
+    public void setDoesWorkChunkNeedReload(boolean aActive);
+
+    public boolean addChunkToLoadedList(ChunkCoordIntPair aActiveChunk);
+
+    public boolean removeChunkFromLoadedList(ChunkCoordIntPair aActiveChunk);
+
+    public Set<ChunkCoordIntPair> getManagedChunks();
+
+    public int getChunkloaderTier();
 }

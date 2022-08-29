@@ -7,10 +7,9 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 public class HANDLER_AdvSolar {
 
-	public static void postInit() {
-		if (LoadedMods.AdvancedSolarPanel) {
-			RecipeUtils.removeRecipeByOutput(ItemUtils.getSimpleStack(AdvancedSolarPanel.blockMolecularTransformer));			
-		}
-	}
-	
+    public static void postInit() {
+        if (LoadedMods.AdvancedSolarPanel) {
+            RecipeUtils.removeRecipeByOutput(ItemUtils.getSimpleStack(AdvancedSolarPanel.blockMolecularTransformer));
+        }
+    }
 }

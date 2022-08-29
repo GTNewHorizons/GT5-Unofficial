@@ -5,42 +5,50 @@
  */
 package Ic2ExpReactorPlanner.components;
 
+import gregtech.api.objects.GT_ItemStack;
 import java.util.ArrayList;
 import java.util.List;
-
-import gregtech.api.objects.GT_ItemStack;
 
 /**
  * Represents some form of fuel rod (may be single, dual, or quad).
  * @author Brian McCloud
  */
 public class FuelRod extends ReactorItem {
-    
+
     private final int energyMult;
     private final double heatMult;
     private final int rodCount;
     private final boolean moxStyle;
-    
+
     private static boolean GT509behavior = false;
     private static boolean GTNHbehavior = false;
-    
+
     public static void setGT509Behavior(boolean value) {
         GT509behavior = value;
     }
-    
+
     public static void setGTNHBehavior(boolean value) {
         GTNHbehavior = value;
     }
-    
-    public FuelRod(final int id, final String baseName, GT_ItemStack aItem, final double maxDamage, final double maxHeat, final String sourceMod, 
-            final int energyMult, final double heatMult, final int rodCount, final boolean moxStyle) {
+
+    public FuelRod(
+            final int id,
+            final String baseName,
+            GT_ItemStack aItem,
+            final double maxDamage,
+            final double maxHeat,
+            final String sourceMod,
+            final int energyMult,
+            final double heatMult,
+            final int rodCount,
+            final boolean moxStyle) {
         super(id, baseName, aItem, maxDamage, maxHeat, sourceMod);
         this.energyMult = energyMult;
         this.heatMult = heatMult;
         this.rodCount = rodCount;
         this.moxStyle = moxStyle;
     }
-    
+
     public FuelRod(final FuelRod other) {
         super(other);
         this.energyMult = other.energyMult;
@@ -48,7 +56,7 @@ public class FuelRod extends ReactorItem {
         this.rodCount = other.rodCount;
         this.moxStyle = other.moxStyle;
     }
-    
+
     @Override
     public boolean isNeutronReflector() {
         return !isBroken();
@@ -74,7 +82,7 @@ public class FuelRod extends ReactorItem {
         }
         return neutronNeighbors;
     }
-    
+
     protected void handleHeat(final int heat) {
         List<ReactorItem> heatableNeighbors = new ArrayList<>(4);
         ReactorItem component = parent.getComponentAt(row + 1, col);
@@ -105,11 +113,11 @@ public class FuelRod extends ReactorItem {
             heatableNeighbors.get(0).adjustCurrentHeat(remainderHeat);
         }
     }
-    
+
     @Override
     public double generateHeat() {
         int pulses = countNeutronNeighbors() + (rodCount == 1 ? 1 : (rodCount == 2) ? 2 : 3);
-        int heat = (int)(heatMult * pulses * (pulses + 1));
+        int heat = (int) (heatMult * pulses * (pulses + 1));
         if (moxStyle && parent.isFluid() && (parent.getCurrentHeat() / parent.getMaxHeat()) > 0.5) {
             heat *= 2;
         }
@@ -125,13 +133,12 @@ public class FuelRod extends ReactorItem {
         int pulses = countNeutronNeighbors() + (rodCount == 1 ? 1 : (rodCount == 2) ? 2 : 3);
         double energy = energyMult * pulses;
         if (GT509behavior || "GT5".equals(sourceMod)) {
-            energy *= 2;//EUx2 if from GT5.09 or in GT5.09 mode
+            energy *= 2; // EUx2 if from GT5.09 or in GT5.09 mode
             if (moxStyle) {
                 energy *= (1 + 1.5 * parent.getCurrentHeat() / parent.getMaxHeat());
             }
-        } 
-        else if (GTNHbehavior || "GTNH".equals(sourceMod)) {
-            energy *= 10;//EUx10 if from GTNH or in GTNH mode
+        } else if (GTNHbehavior || "GTNH".equals(sourceMod)) {
+            energy *= 10; // EUx10 if from GTNH or in GTNH mode
             if (moxStyle) {
                 energy *= (1 + 1.5 * parent.getCurrentHeat() / parent.getMaxHeat());
             }
@@ -145,12 +152,12 @@ public class FuelRod extends ReactorItem {
         applyDamage(1.0);
         return energy;
     }
-    
+
     @Override
     public int getRodCount() {
         return rodCount;
     }
-    
+
     @Override
     public double getCurrentOutput() {
         if (parent != null) {
@@ -162,5 +169,4 @@ public class FuelRod extends ReactorItem {
         }
         return 0;
     }
-    
 }

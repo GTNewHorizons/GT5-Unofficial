@@ -1,37 +1,16 @@
 /*package gtPlusPlus.core.tileentities.base;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GT_Packet;
-import gregtech.api.net.GT_Packet_Block_Event;
-import gregtech.api.util.GT_Utility;
-
-import gtPlusPlus.api.interfaces.IGregtechPower;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TilePoweredGT extends TileEntityBase implements IGregtechPower {
-	
+
 	public static AutoMap<TilePoweredGT> mPoweredEntities = new AutoMap<TilePoweredGT>();
-	
+
 	//Base Tile Fields
 	public boolean ignoreUnloadedChunks;
 	public boolean isDead;
 	//Meta Tile Fields
 	private long mAcceptedAmperes;
-	
+
 	private boolean[] mActiveEUInputs;
 	private boolean[] mActiveEUOutputs;
 	protected int[] mAverageEUInput;
@@ -57,13 +36,13 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 		this.isDead = false;
 		mPoweredEntities.put(this);
 	}
-	
+
 	@Override
 	public boolean acceptsRotationalEnergy(byte p0) {
 		return false;
 	}
 
-	private boolean canAccessData() {		
+	private boolean canAccessData() {
 		return this.isInvalid() ? false : true;
 	}
 
@@ -121,7 +100,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 		}
 		return true;
 	}
-	
+
 	public void doExplosion(final long aExplosionPower) {
 		final float tStrength = (aExplosionPower < GT_Values.V[0])
 				? 1.0f
@@ -287,7 +266,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 		}
 		return null;
 	}
-	
+
 	@Override
 	public final IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(final byte aSide, final int aDistance) {
 		final TileEntity tTileEntity = this.getTileEntityAtSideAndDistance(aSide, aDistance);
@@ -617,9 +596,9 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 			return aSide >= 0 && aSide < 6 && this.mActiveEUInputs[aSide] && !this.mReleaseEnergy;
 		}
 		return this.isEnergyInputSide(aSide);
-	}	
-	
-	
+	}
+
+
 	public final boolean isClientSide() {
 		return this.worldObj.isRemote;
 	}
@@ -628,13 +607,13 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 	public boolean isDead() {
 		return this.isDead;
 	}
-	
+
 	private boolean isElectric() {
 		return true;
 	}
 
 	private boolean isEnergyInputSide(final byte aSide) {
-		if (aSide >= 0 && aSide < 6) {			
+		if (aSide >= 0 && aSide < 6) {
 			if (this.isInvalid() || this.mReleaseEnergy) {
 				return false;
 			}
@@ -644,9 +623,9 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 		}
 		return false;
 	}
-	
+
 	private boolean isEnergyOutputSide(final byte aSide) {
-		if (aSide >= 0 && aSide < 6) {			
+		if (aSide >= 0 && aSide < 6) {
 			if (this.isInvalid() || this.mReleaseEnergy) {
 				return this.mReleaseEnergy;
 			}
@@ -673,8 +652,8 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 	public boolean isInputFacing(final byte aSide) {
 		return false;
 	}
-	
-	
+
+
 
 
 	@Override
@@ -706,7 +685,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 	public long maxAmperesOut() {
 		return 1L;
 	}
-	
+
 	public long maxEUInput() {
 		return 0L;
 	}
@@ -714,7 +693,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 	public long maxEUOutput() {
 		return 0L;
 	}
-	
+
 	public long maxEUStore() {
 		return 0L;
 	}
@@ -722,7 +701,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 	public long maxSteamStore() {
 		return 256000L;
 	}
-	
+
 	public final void onAdjacentBlockChange(final int aX, final int aY, final int aZ) {
 		this.clearNullMarkersFromTileEntityBuffer();
 	}
@@ -761,7 +740,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 			//this.onMachineBlockUpdate();
 		}
 	}
-	
+
 	public void setSteamVar(final long aSteam) {
 		mStoredSteam = aSteam;
 	}
@@ -776,7 +755,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 		this.setEUVar(aEnergy);
 		return true;
 	}
-	
+
 	public boolean setStoredSteam(long aEnergy) {
 		if (!this.canAccessData()) {
 			return false;
@@ -800,9 +779,9 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 		super.readFromNBT(nbt);
 	}
 
-	
-	
-	
+
+
+
 	@Override
 	public boolean onPreTick(long aTick) {
 		return onPreTick(this, this.mTickTimer);
@@ -850,12 +829,12 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 		super.onChunkUnload();
 		this.isDead = true;
 	}
-	
-	
+
+
 	public void updateEntity() {
 		super.updateEntity();
 		this.isDead = false;
-		
+
 		this.mRunningThroughTick = true;
 		long tTime = System.currentTimeMillis();
 		int tCode = 0;
@@ -873,7 +852,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 							this.oX = this.xCoord;
 							this.oY = this.yCoord;
 							this.oZ = this.zCoord;
-							
+
 							this.worldObj.markTileEntityChunkModified(this.xCoord, this.yCoord, this.zCoord,
 									(TileEntity) this);
 							this.onFirstTick(this);
@@ -887,7 +866,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 							++tCode;
 							if (!aSideClient) {
 								break Label_1743;
-							}							
+							}
 							if (this.mNeedsUpdate) {
 								this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 								this.mNeedsUpdate = false;
@@ -902,7 +881,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 						case 7 : {
 							if (aSideServer && this.mTickTimer > 10L) {
 								for (byte i = (byte) (tCode - 2); i < 6; ++i) {
-									
+
 								}
 							}
 						}
@@ -932,7 +911,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 							if (!aSideServer) {
 								break Label_1743;
 							}
-							
+
 							if (this.xCoord != this.oX || this.yCoord != this.oY || this.zCoord != this.oZ) {
 								this.oX = this.xCoord;
 								this.oY = this.yCoord;
@@ -941,7 +920,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 								this.clearTileEntityBuffer();
 							}
 							if (this.mFacing != this.oFacing) {
-								this.oFacing = this.mFacing;								
+								this.oFacing = this.mFacing;
 								this.issueBlockUpdate();
 							}
 							if (this.mTickTimer > 20L && this.isElectric()) {
@@ -986,7 +965,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 									if (!this.hasValidMetaTileEntity()) {
 										this.mRunningThroughTick = false;
 										return;
-									}									
+									}
 								}
 							}
 							if (!this.hasValidMetaTileEntity()) {
@@ -1144,7 +1123,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 
 	private void onFirstTick(TilePoweredGT tilePoweredGT) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private boolean hasValidMetaTileEntity() {
@@ -1158,11 +1137,11 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 	public void issueClientUpdate() {
 		this.mSendClientData = true;
 	}
-	
+
 	public Packet getDescriptionPacket() {
 		this.issueClientUpdate();
 		return null;
 	}
-	
+
 }
 */

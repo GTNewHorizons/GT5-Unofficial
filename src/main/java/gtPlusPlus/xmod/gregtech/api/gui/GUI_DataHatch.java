@@ -1,11 +1,10 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.entity.player.InventoryPlayer;
-
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GUI_DataHatch extends GT_GUIContainerMetaTile_Machine {
 
@@ -16,7 +15,8 @@ public class GUI_DataHatch extends GT_GUIContainerMetaTile_Machine {
         mName = aName;
     }
 
-    public GUI_DataHatch(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aBackground) {
+    public GUI_DataHatch(
+            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aBackground) {
         super(new CONTAINER_DataHatch(aInventoryPlayer, aTileEntity), RES_PATH_GUI + aBackground + "HatchDataOrb.png");
         mName = aName;
     }
@@ -24,11 +24,11 @@ public class GUI_DataHatch extends GT_GUIContainerMetaTile_Machine {
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         fontRendererObj.drawString(mName, 8, 4, 4210752);
-		/*String[] aName = mName.trim().split("\\s+");
-		int aY = 4;
-		for (String s : aName) {
-		    fontRendererObj.drawString(s, 120, (aY += 12), 4210752);    		
-		}*/
+        /*String[] aName = mName.trim().split("\\s+");
+        int aY = 4;
+        for (String s : aName) {
+            fontRendererObj.drawString(s, 120, (aY += 12), 4210752);
+        }*/
     }
 
     @Override

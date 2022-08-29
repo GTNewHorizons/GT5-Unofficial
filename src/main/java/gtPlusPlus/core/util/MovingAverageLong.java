@@ -1,11 +1,10 @@
 package gtPlusPlus.core.util;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class MovingAverageLong {
     private final long[] storage;

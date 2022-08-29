@@ -7,12 +7,18 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class RailcraftUtils {
 
-	public static void addCokeOvenRecipe(ItemStack input, boolean matchDamage, boolean matchNBT, ItemStack output, FluidStack fluidOutput, int cookTime) {
-		CokeOvenCraftingManager.getInstance().addRecipe(input, matchDamage, matchNBT, output, fluidOutput, cookTime);
-	}
+    public static void addCokeOvenRecipe(
+            ItemStack input,
+            boolean matchDamage,
+            boolean matchNBT,
+            ItemStack output,
+            FluidStack fluidOutput,
+            int cookTime) {
+        CokeOvenCraftingManager.getInstance().addRecipe(input, matchDamage, matchNBT, output, fluidOutput, cookTime);
+    }
 
-	public static void addAdvancedCokeOvenRecipe(ItemStack input, boolean matchDamage, boolean matchNBT, ItemStack output, int cookTime) {
-		BlastFurnaceCraftingManager.getInstance().addRecipe(input, matchDamage, matchNBT, cookTime, output);
-	}
-	
+    public static void addAdvancedCokeOvenRecipe(
+            ItemStack input, boolean matchDamage, boolean matchNBT, ItemStack output, int cookTime) {
+        BlastFurnaceCraftingManager.getInstance().addRecipe(input, matchDamage, matchNBT, cookTime, output);
+    }
 }

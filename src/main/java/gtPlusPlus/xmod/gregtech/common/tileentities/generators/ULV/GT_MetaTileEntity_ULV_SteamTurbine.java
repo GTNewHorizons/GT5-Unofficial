@@ -21,20 +21,21 @@ public class GT_MetaTileEntity_ULV_SteamTurbine extends GT_MetaTileEntity_SteamT
     public GT_MetaTileEntity_ULV_SteamTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
-	
-	@Override
-	public String[] getDescription() {
-		return new String[]{
-				this.mDescription,
-				"Produces "+(this.getPollution()*20)+" pollution/sec", 
-				"Fuel Efficiency: "+this.getEfficiency() + "%",
-                CORE.GT_Tooltip};
-	}
 
     @Override
-	public long maxEUStore() {
+    public String[] getDescription() {
+        return new String[] {
+            this.mDescription,
+            "Produces " + (this.getPollution() * 20) + " pollution/sec",
+            "Fuel Efficiency: " + this.getEfficiency() + "%",
+            CORE.GT_Tooltip
+        };
+    }
+
+    @Override
+    public long maxEUStore() {
         return Math.max(getEUVar(), V[1] * 80L + getMinimumStoredEU());
-	}
+    }
 
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_ULV_SteamTurbine(this.mName, this.mTier, this.mDescription, this.mTextures);
@@ -44,15 +45,18 @@ public class GT_MetaTileEntity_ULV_SteamTurbine extends GT_MetaTileEntity_SteamT
     public int getCapacity() {
         return 16000;
     }
-    
+
     @Override
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier." + this.mTier, 6 + 1);
+        this.mEfficiency = GregTech_API.sMachineFile.get(
+                ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier." + this.mTier, 6 + 1);
     }
 
     @Override
     public ITexture[] getSidesActive(final byte aColor) {
-		return new ITexture[]{super.getSidesActive(aColor)[0],
-				new GT_RenderedTexture((IIconContainer) TexturesGtBlock.Overlay_Machine_Turbine_Active)};
-	}
+        return new ITexture[] {
+            super.getSidesActive(aColor)[0],
+            new GT_RenderedTexture((IIconContainer) TexturesGtBlock.Overlay_Machine_Turbine_Active)
+        };
+    }
 }
