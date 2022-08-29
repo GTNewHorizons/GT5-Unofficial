@@ -373,8 +373,8 @@ public class Utils {
         final Color c = new Color(r, g, b);
         String temp = Integer.toHexString(c.getRGB() & 0xFFFFFF).toUpperCase();
         temp = Utils.appenedHexNotationToString(String.valueOf(temp));
-        Logger.WARNING("Made " + temp + " - Hopefully it's not a mess.");
-        Logger.WARNING("It will decode into " + Integer.decode(temp) + ".");
+        // Logger.WARNING("Made " + temp + " - Hopefully it's not a mess.");
+        // Logger.WARNING("It will decode into " + Integer.decode(temp) + ".");
         return Integer.decode(temp);
     }
 

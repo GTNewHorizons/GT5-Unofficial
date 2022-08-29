@@ -247,22 +247,25 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mHasTower", mHasTower);
-        if (mHasTower) {
-            aNBT.setInteger("mTX", mTX);
-            aNBT.setInteger("mTY", mTY);
-            aNBT.setInteger("mTZ", mTZ);
-        }
+        /*aNBT.setBoolean("mHasTower", mHasTower);
+        if (this.mHasTower) {
+        	aNBT.setInteger("mTX", mTX);
+        	aNBT.setInteger("mTY", mTY);
+        	aNBT.setInteger("mTZ", mTZ);
+        }*/
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        this.mHasTower = aNBT.getBoolean("mHasTower");
+        /*this.mHasTower = aNBT.getBoolean("mHasTower");
         if (this.mHasTower) {
-            if (aNBT.hasKey("mTX")) this.mTX = aNBT.getInteger("mTX");
-            if (aNBT.hasKey("mTY")) this.mTY = aNBT.getInteger("mTY");
-            if (aNBT.hasKey("mTZ")) this.mTZ = aNBT.getInteger("mTZ");
-        }
+        	if (aNBT.hasKey("mTX"))
+        		this.mTX = aNBT.getInteger("mTX");
+        	if (aNBT.hasKey("mTY"))
+        		this.mTY = aNBT.getInteger("mTY");
+        	if (aNBT.hasKey("mTZ"))
+        		this.mTZ = aNBT.getInteger("mTZ");
+        }*/
     }
 
     @Override
@@ -299,7 +302,7 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
                 .getWorld()
                 .canBlockSeeTheSky(
                         this.getBaseMetaTileEntity().getXCoord(),
-                        this.getBaseMetaTileEntity().getYCoord(),
+                        this.getBaseMetaTileEntity().getYCoord() + 1,
                         this.getBaseMetaTileEntity().getZCoord())) {
             return true;
         }

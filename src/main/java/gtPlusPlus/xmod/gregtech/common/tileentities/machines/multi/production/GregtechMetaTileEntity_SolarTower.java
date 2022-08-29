@@ -21,10 +21,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.MISC_MATERIALS;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -75,14 +75,21 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
                 .addInfo("Contributing Green Energy towards the future")
+                .addInfo("Surround with rings of Solar Reflectors")
+                .addInfo("The Reflectors increase the internal heat value of the Tower (see below for formula)")
+                .addInfo("Each Reflector ring increases tier, the first ring is required for the Tower to work")
                 .addInfo("Input: " + MISC_MATERIALS.SOLAR_SALT_COLD.getLocalizedName())
                 .addInfo("Output: " + MISC_MATERIALS.SOLAR_SALT_HOT.getLocalizedName())
-                .addInfo("Surround with rings of Solar Heaters")
-                .addInfo("Each ring increases tier")
-                .addInfo("1 = 1, 2 = 2, 3 = 4, 4 = 8, 5 = 16")
-                .addInfo("Tier decreases heating time and allows more salt to be processed")
+                .addInfo("Every cycle (10 seconds), heat increases and all the Cold Solar Salt is heated")
+                .addInfo("Converting Cold to Hot Solar Salt reduces heat, equal to the amount converted")
+                .addInfo("If there's more Cold Salt than heat, all the heat is used up and returns to 0")
+                .addInfo("The heat increase is most efficient at exactly half of maximum heat")
+                .addInfo("Minimum efficiency at 0 or 100000 heat, maximum efficiency at 50000")
+                .addInfo("Heat Efficiency formula: (|currentHeat - 50000| ^ 0.8 + 7000) / 7000")
+                .addInfo("Heat gain per cycle: numberHeaters * heatEfficiency * (10 + bonus)")
+                .addInfo("Bonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16")
                 .addSeparator()
-                .beginStructureBlock(6, 27, 6, false)
+                .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
                 .addController("Top Middle")
                 .addCasingInfo("Structural Solar Casing", 229)
                 .addCasingInfo("Thermally Insulated Casing", 60)
@@ -363,7 +370,7 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
                             .addElement('g', lazy(t -> buildHatchAdder(GregtechMetaTileEntity_SolarTower.class)
                                     .hatchClass(TileEntitySolarHeater.class)
                                     .adder(GregtechMetaTileEntity_SolarTower::addSolarHeater)
-                                    // use a positive casing index to make adder builder happy
+                                    // Use a positive casing index to make adder builder happy
                                     .casingIndex(1)
                                     .dot(1)
                                     .continueIfSuccess()
@@ -587,7 +594,7 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
 
     public boolean getConnectedSolarReflectors() {
 
-        this.mSolarHeaters.clear();
+        resetSolarHeaters();
         int aRing = 1;
 
         if (this.mSolarHeaters.size() < 36) {
@@ -650,8 +657,8 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
 
     @Override
     public boolean checkRecipe(final ItemStack aStack) {
-        this.mEfficiencyIncrease = 10;
-        this.mMaxProgresstime = 100;
+        this.mEfficiencyIncrease = 100;
+        this.mMaxProgresstime = 200;
 
         if (this.mSolarHeaters.isEmpty()
                 || this.mSolarHeaters.size() < 340
@@ -662,34 +669,41 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
         int aTier = getHeaterTier();
         int aHeaters = getHeaterCountForTier(aTier);
 
-        // Manage Heat every 5s
-        // Add Heat First, if sources available
-        if (aHeaters > 0) {
-            for (int i = 0; i < aHeaters; i++) {
-                Math.min((this.mHeatLevel += aTier), 20000);
-            }
-        }
+        // Original formula was (-Math.pow(this.mHeatLevel - 50000, 0.8) + 7000) / 7000
+        // However, negative numbers to the power of a non-integer result in NaN, by default
+        // Max efficiency is 1, at mHeatLevel = 50000, and it lowers at the same rate if going above or below this heat
+        // Min efficiency is 0.179, at mHeatLevel = 0 or 100000
+        double aEfficiency = (-Math.pow(Math.abs(this.mHeatLevel - 50000), 0.8) + 7000) / 7000;
 
-        // Remove Heat, based on time of day
-        if (mHeatLevel > 0) {
-            if (mHeatLevel > 20000) {
-                this.mHeatLevel = 20000;
-            }
-        }
         World w = this.getBaseMetaTileEntity().getWorld();
+
+        // Manage Heat every 10s
+        // Add Heat First, if sources available and it's daytime, heat gain is halved if raining
         if (w != null) {
-            int aRemovalFactor = 0;
-            if (w.isDaytime()) {
-                aRemovalFactor = 1;
-            } else {
-                aRemovalFactor = 8;
+            if (aHeaters > 0 && w.isDaytime()) {
+                if (w.isRaining() && this.getBaseMetaTileEntity().getBiome().rainfall > 0.0F) {
+                    this.mHeatLevel += GT_Utility.safeInt((long) ((aHeaters / 2) * aEfficiency * (10 + aTier)));
+                    log("Added Heat (rain): " + aHeaters / 2 + " * " + aEfficiency + " * " + (10 + aTier) + " = "
+                            + (aHeaters * aEfficiency * (10 + aTier)));
+                } else {
+                    this.mHeatLevel += GT_Utility.safeInt((long) (aHeaters * aEfficiency * (10 + aTier)));
+                    log("Added Heat: " + aHeaters + " * " + aEfficiency + " * " + (10 + aTier) + " = "
+                            + (aHeaters * aEfficiency * (10 + aTier)));
+                }
             }
-            for (int i = 0; i < MathUtils.randInt((aHeaters / 10), aHeaters); i++) {
-                this.mHeatLevel -= aRemovalFactor;
+
+            // Remove Heat, based on time of day
+            if (mHeatLevel > 0) {
+                if (mHeatLevel > 100000) {
+                    this.mHeatLevel = 100000;
+                } else {
+                    this.mHeatLevel -= 10;
+                    log("Removed Heat: " + 10);
+                }
             }
         }
 
-        if (this.mEfficiency == this.getMaxEfficiency(null) && this.mHeatLevel >= 10000) {
+        if (this.mEfficiency == this.getMaxEfficiency(null) && this.mHeatLevel >= 30000) {
             if (mColdSalt == null) {
                 mColdSalt = MISC_MATERIALS.SOLAR_SALT_COLD.getFluid();
             }
@@ -699,14 +713,19 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
             ArrayList<FluidStack> aFluids = this.getStoredFluids();
             for (FluidStack aFluid : aFluids) {
                 if (aFluid.getFluid().equals(mColdSalt)) {
-                    if (aFluid.amount >= (aTier * 1000)) {
-                        this.depleteInput(FluidUtils.getFluidStack(mColdSalt, (aTier * 1000)));
-                        this.addOutput(FluidUtils.getFluidStack(mHotSalt, (aTier * 1000)));
-                        break;
-                    }
+                    int aFluidAmount = Math.min(aFluid.amount, this.mHeatLevel);
+
+                    this.mHeatLevel -= aFluidAmount;
+                    log("Removed Heat: " + (aFluidAmount));
+                    this.depleteInput(FluidUtils.getFluidStack(mColdSalt, aFluidAmount));
+                    this.addOutput(FluidUtils.getFluidStack(mHotSalt, aFluidAmount));
+                    this.mHeatLevel = Math.max(this.mHeatLevel, 0);
+
+                    break;
                 }
             }
         }
+        log("Heat Level" + mHeatLevel);
 
         return true;
     }

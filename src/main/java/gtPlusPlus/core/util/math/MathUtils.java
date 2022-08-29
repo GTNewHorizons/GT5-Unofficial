@@ -304,8 +304,8 @@ public class MathUtils {
 
         Logger.WARNING("Operating with " + temp);
         temp = Utils.appenedHexNotationToString(String.valueOf(temp));
-        Logger.WARNING("Made " + temp + " - Hopefully it's not a mess.");
-        Logger.WARNING("It will decode into " + Integer.decode(temp) + ".");
+        // Logger.WARNING("Made "+temp+" - Hopefully it's not a mess.");
+        // Logger.WARNING("It will decode into "+Integer.decode(temp)+".");
         return Integer.decode(temp);
     }
 
