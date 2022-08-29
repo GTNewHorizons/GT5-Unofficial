@@ -118,6 +118,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     // data required to operate
     protected long eRequiredData = 0;
 
+    // Counter for the computation timeout. Will be initialized one to the max time and then only decreased.
+    protected int eComputationTimeout = MAX_COMPUTATION_TIMEOUT;
+
+    // Max timeout of computation in ticks
+    protected static int MAX_COMPUTATION_TIMEOUT = 40;
+
     // storage for output EM that will be auto handled in case of failure to finish recipe
     // if you succed to use a recipe - be sure to output EM from outputEM to hatches in the output method
     protected EMInstanceStackMap[] outputEM;
@@ -1214,20 +1220,24 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     public boolean onRunningTickCheck_EM(ItemStack aStack) {
         if (eRequiredData > eAvailableData) {
-            if (energyFlowOnRunningTick_EM(aStack, false)) {
-                stopMachine();
+            if (!checkComputationTimeout()) {
+                if (energyFlowOnRunningTick_EM(aStack, false)) {
+                    stopMachine();
+                }
+                return false;
             }
-            return false;
         }
         return energyFlowOnRunningTick_EM(aStack, true);
     }
 
     public boolean onRunningTickCheck(ItemStack aStack) {
         if (eRequiredData > eAvailableData) {
-            if (energyFlowOnRunningTick(aStack, false)) {
-                stopMachine();
+            if (!checkComputationTimeout()) {
+                if (energyFlowOnRunningTick(aStack, false)) {
+                    stopMachine();
+                }
+                return false;
             }
-            return false;
         }
         return energyFlowOnRunningTick(aStack, true);
     }
@@ -2880,5 +2890,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         public IGT_HatchAdder<? super GT_MetaTileEntity_MultiblockBase_EM> adder() {
             return adder;
         }
+    }
+
+    /** Check if the computation timeout is still active
+     *
+     * @return True if the timeout is still active or false if the machine should fail
+     */
+    protected boolean checkComputationTimeout() {
+        if (eComputationTimeout > 0) {
+            return --eComputationTimeout > 0;
+        }
+        return false;
     }
 }
