@@ -9,13 +9,19 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.net.GT_Packet_TileEntityCover;
+import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_ControlsWork extends GT_Cover_Cased {
+public class GT_Cover_ControlsWork extends GT_CoverBehavior {
+
+    public GT_Cover_ControlsWork() {
+        this(null);
+    }
+
     public GT_Cover_ControlsWork(ITexture coverTexture) {
         super(coverTexture);
     }

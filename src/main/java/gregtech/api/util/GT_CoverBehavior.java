@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.E;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +20,11 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
     public EntityPlayer lastPlayer = null;
 
     public GT_CoverBehavior() {
-        super(ISerializableObject.LegacyCoverData.class);
+        this(null);
+    }
+
+    public GT_CoverBehavior(ITexture coverTexture) {
+        super(ISerializableObject.LegacyCoverData.class, coverTexture);
     }
 
     private static int convert(ISerializableObject.LegacyCoverData data) {

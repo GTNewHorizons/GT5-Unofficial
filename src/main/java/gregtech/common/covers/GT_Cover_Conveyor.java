@@ -10,13 +10,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.net.GT_Packet_TileEntityCover;
+import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_Conveyor extends GT_Cover_Cased {
+public class GT_Cover_Conveyor extends GT_CoverBehavior {
     public final int mTickRate;
     private final int mMaxStacks;
 

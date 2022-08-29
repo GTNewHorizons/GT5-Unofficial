@@ -8,6 +8,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.net.GT_Packet_TileEntityCover;
+import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,8 +17,12 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class GT_Cover_Pump extends GT_Cover_Cased {
+public class GT_Cover_Pump extends GT_CoverBehavior {
     public final int mTransferRate;
+
+    public GT_Cover_Pump(int aTransferRate) {
+        this(aTransferRate, null);
+    }
 
     public GT_Cover_Pump(int aTransferRate, ITexture coverTexture) {
         super(coverTexture);

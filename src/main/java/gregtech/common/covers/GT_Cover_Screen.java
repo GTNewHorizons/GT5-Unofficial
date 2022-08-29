@@ -2,10 +2,15 @@ package gregtech.common.covers;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.GT_CoverBehavior;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_Screen extends GT_Cover_Cased {
+public class GT_Cover_Screen extends GT_CoverBehavior {
+    public GT_Cover_Screen() {
+        this(null);
+    }
+
     public GT_Cover_Screen(ITexture coverTexture) {
         super(coverTexture);
     }

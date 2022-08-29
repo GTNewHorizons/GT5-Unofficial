@@ -10,18 +10,23 @@ import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_WirelessRedstoneCover;
+import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
-public abstract class GT_Cover_RedstoneWirelessBase extends GT_Cover_Cased {
+public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
 
     private static final int MAX_CHANNEL = 65535;
     private static final int PRIVATE_MASK = 0xFFFE0000;
     private static final int PUBLIC_MASK = 0x0000FFFF;
     private static final int CHECKBOX_MASK = 0x00010000;
+
+    public GT_Cover_RedstoneWirelessBase() {
+        this(null);
+    }
 
     public GT_Cover_RedstoneWirelessBase(ITexture coverTexture) {
         super(coverTexture);
