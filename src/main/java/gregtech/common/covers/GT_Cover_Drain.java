@@ -16,6 +16,11 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class GT_Cover_Drain extends GT_CoverBehavior {
+
+    /**
+     * @deprecated use {@link #GT_Cover_Drain(ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_Drain() {
         this(null);
     }

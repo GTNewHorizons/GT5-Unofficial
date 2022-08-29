@@ -9,6 +9,11 @@ import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.network.play.server.S2DPacketOpenWindow;
 
 public class GT_Cover_Crafting extends GT_CoverBehavior {
+
+    /**
+     * @deprecated use {@link #GT_Cover_Crafting(ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_Crafting() {
         this(null);
     }

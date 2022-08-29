@@ -30,6 +30,14 @@ import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMeterData> {
 
+    /**
+     * @deprecated use {@link #GT_Cover_EUMeter(ITexture coverTexture)} instead
+     */
+    @Deprecated
+    public GT_Cover_EUMeter() {
+        this(null);
+    }
+
     public GT_Cover_EUMeter(ITexture coverTexture) {
         super(EUMeterData.class, coverTexture);
     }

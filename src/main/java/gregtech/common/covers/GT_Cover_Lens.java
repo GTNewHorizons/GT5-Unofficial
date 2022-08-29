@@ -1,12 +1,22 @@
 package gregtech.common.covers;
 
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehavior;
 
 public class GT_Cover_Lens extends GT_CoverBehavior {
     private final byte mColor;
 
+    /**
+     * @deprecated use {@link #GT_Cover_Lens(byte aColor, ITexture coverTexture)} instead.
+     */
+    @Deprecated
     public GT_Cover_Lens(byte aColor) {
+        this(aColor, null);
+    }
+
+    public GT_Cover_Lens(byte aColor, ITexture coverTexture) {
+        super(coverTexture);
         this.mColor = aColor;
     }
 

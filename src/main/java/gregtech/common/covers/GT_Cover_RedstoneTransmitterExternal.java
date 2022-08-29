@@ -5,6 +5,15 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirelessBase {
+
+    /**
+     * @deprecated use {@link #GT_Cover_RedstoneTransmitterExternal(ITexture coverTexture)} instead
+     */
+    @Deprecated
+    public GT_Cover_RedstoneTransmitterExternal() {
+        this(null);
+    }
+
     public GT_Cover_RedstoneTransmitterExternal(ITexture coverTexture) {
         super(coverTexture);
     }
@@ -12,7 +21,7 @@ public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirel
     @Override
     public int doCoverThings(
             byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        GregTech_API.sWirelessRedstone.put(Integer.valueOf(aCoverVariable), Byte.valueOf(aInputRedstone));
+        GregTech_API.sWirelessRedstone.put(aCoverVariable, aInputRedstone);
         return aCoverVariable;
     }
 

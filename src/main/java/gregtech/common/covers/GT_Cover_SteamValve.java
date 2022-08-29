@@ -7,6 +7,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GT_Cover_SteamValve extends GT_Cover_Pump {
 
+    /**
+     * @deprecated use {@link #GT_Cover_SteamValve(int aTransferRate, ITexture coverTexture)} instead
+     */
+    @Deprecated
+    public GT_Cover_SteamValve(int aTransferRate) {
+        this(aTransferRate, null);
+    }
+
     public GT_Cover_SteamValve(int aTransferRate, ITexture coverTexture) {
         super(aTransferRate, coverTexture);
     }

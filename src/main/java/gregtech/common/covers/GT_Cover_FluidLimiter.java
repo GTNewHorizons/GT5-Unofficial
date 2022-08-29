@@ -28,6 +28,14 @@ import net.minecraftforge.fluids.IFluidHandler;
  */
 public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLimiter.FluidLimiterData> {
 
+    /**
+     * @deprecated use {@link #GT_Cover_FluidLimiter(ITexture coverTexture)} instead
+     */
+    @Deprecated
+    public GT_Cover_FluidLimiter() {
+        this(null);
+    }
+
     public GT_Cover_FluidLimiter(ITexture coverTexture) {
         super(FluidLimiterData.class, coverTexture);
     }

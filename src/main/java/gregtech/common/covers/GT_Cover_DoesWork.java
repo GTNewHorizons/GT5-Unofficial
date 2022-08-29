@@ -16,6 +16,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_DoesWork extends GT_CoverBehavior {
+
+    /**
+     * @deprecated use {@link #GT_Cover_DoesWork(ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_DoesWork() {
         this(null);
     }

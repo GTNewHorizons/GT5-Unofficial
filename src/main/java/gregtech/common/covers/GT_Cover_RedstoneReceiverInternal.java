@@ -6,6 +6,15 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 
 public class GT_Cover_RedstoneReceiverInternal extends GT_Cover_RedstoneWirelessBase {
+
+    /**
+     * @deprecated use {@link #GT_Cover_RedstoneReceiverInternal(ITexture coverTexture)} instead
+     */
+    @Deprecated
+    public GT_Cover_RedstoneReceiverInternal() {
+        this(null);
+    }
+
     public GT_Cover_RedstoneReceiverInternal(ITexture coverTexture) {
         super(coverTexture);
     }

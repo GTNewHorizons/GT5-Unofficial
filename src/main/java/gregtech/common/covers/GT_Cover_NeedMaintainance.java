@@ -19,6 +19,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
+
+    /**
+     * @deprecated use {@link #GT_Cover_NeedMaintainance(ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_NeedMaintainance() {
         this(null);
     }

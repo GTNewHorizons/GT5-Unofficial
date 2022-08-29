@@ -28,6 +28,10 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     protected static final int SLOT_ID_MIN = 0;
     protected static final int CONVERTED_BIT = 0x80000000;
 
+    /**
+     * @deprecated use {@link #GT_Cover_Arm(int aTickRate, ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_Arm(int aTickRate) {
         this(aTickRate, null);
     }

@@ -7,6 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_Screen extends GT_CoverBehavior {
+
+    /**
+     * @deprecated use {@link #GT_Cover_Screen(ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_Screen() {
         this(null);
     }

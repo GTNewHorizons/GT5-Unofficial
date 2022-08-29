@@ -18,6 +18,10 @@ import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_ControlsWork extends GT_CoverBehavior {
 
+    /**
+     * @deprecated use {@link #GT_Cover_ControlsWork(ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_ControlsWork() {
         this(null);
     }
