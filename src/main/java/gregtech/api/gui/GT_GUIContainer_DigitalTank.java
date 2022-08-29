@@ -1,24 +1,23 @@
 package gregtech.api.gui;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
-public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine{
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.StatCollector;
+
+public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine {
 
     private final String mName;
     private final int textColor = this.getTextColorOrDefault("text", 0xFAFAFF),
-        textColorTitle = this.getTextColorOrDefault("title", 0x404040),
-        textColorValue = this.getTextColorOrDefault("value", 0xFAFAFF);
+            textColorTitle = this.getTextColorOrDefault("title", 0x404040),
+            textColorValue = this.getTextColorOrDefault("value", 0xFAFAFF);
 
-    public GT_GUIContainer_DigitalTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
+    public GT_GUIContainer_DigitalTank(
+            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
         super(new GT_Container_DigitalTank(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "DigitalTank.png");
         mName = aName;
     }
@@ -38,8 +37,7 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
         if (y >= 68 && y <= 84) {
             if (x >= 8 && x <= 24) {
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.autooutput.name"));
-            } else
-            if (x >= 26 && x <= 42) {
+            } else if (x >= 26 && x <= 42) {
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.name"));
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip"));
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip1"));
@@ -53,8 +51,7 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.tooltip"));
             }
         }
-        if (!list.isEmpty())
-            drawHoveringText(list, x2, y2, fontRendererObj);
+        if (!list.isEmpty()) drawHoveringText(list, x2, y2, fontRendererObj);
     }
 
     @Override
@@ -63,10 +60,10 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
         if (mContainer != null) {
             fontRendererObj.drawString("Liquid Amount", 10, 20, textColor);
             fontRendererObj.drawString(
-                GT_Utility.parseNumberToString(((GT_Container_DigitalTank) mContainer).mContent),
-                10,
-                30,
-                textColorValue);
+                    GT_Utility.parseNumberToString(((GT_Container_DigitalTank) mContainer).mContent),
+                    10,
+                    30,
+                    textColorValue);
         }
     }
 

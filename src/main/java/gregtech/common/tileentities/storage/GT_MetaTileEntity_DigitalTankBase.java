@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.storage;
 
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 import gregtech.api.gui.GT_Container_DigitalTank;
 import gregtech.api.gui.GT_GUIContainer_DigitalTank;
 import gregtech.api.interfaces.ITexture;
@@ -17,8 +19,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
-
 public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank {
     public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     public String lockedFluidName = null;
@@ -27,7 +27,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     public GT_MetaTileEntity_DigitalTankBase(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, new String[] {
-            StatCollector.translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", GT_Utility.formatNumbers(commonSizeCompute(aTier))),
+            StatCollector.translateToLocalFormatted(
+                    "GT5U.machines.digitaltank.tooltip", GT_Utility.formatNumbers(commonSizeCompute(aTier))),
             StatCollector.translateToLocal("GT5U.machines.digitaltank.tooltip1"),
             StatCollector.translateToLocal("GT5U.machines.digitaltank.tooltip2")
         });
@@ -83,7 +84,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             aNBT.setBoolean("mVoidOverflow", this.mVoidFluidPart);
             aNBT.setBoolean("mVoidFluidFull", this.mVoidFluidFull);
             aNBT.setBoolean("mLockFluid", mLockFluid);
-            if (lockedFluidName != null && lockedFluidName.length() != 0) aNBT.setString("lockedFluidName", lockedFluidName);
+            if (lockedFluidName != null && lockedFluidName.length() != 0)
+                aNBT.setString("lockedFluidName", lockedFluidName);
             else aNBT.removeTag("lockedFluidName");
         }
         super.setItemNBT(aNBT);
@@ -96,7 +98,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         aNBT.setBoolean("mVoidOverflow", this.mVoidFluidPart);
         aNBT.setBoolean("mVoidFluidFull", this.mVoidFluidFull);
         aNBT.setBoolean("mLockFluid", mLockFluid);
-        if (lockedFluidName != null && lockedFluidName.length() != 0) aNBT.setString("lockedFluidName", lockedFluidName);
+        if (lockedFluidName != null && lockedFluidName.length() != 0)
+            aNBT.setString("lockedFluidName", lockedFluidName);
         else aNBT.removeTag("lockedFluidName");
         aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
     }
@@ -104,12 +107,12 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mOutputFluid    = aNBT.getBoolean("mOutputFluid");
+        mOutputFluid = aNBT.getBoolean("mOutputFluid");
         mVoidFluidPart = aNBT.getBoolean("mVoidOverflow");
         mVoidFluidFull = aNBT.getBoolean("mVoidFluidFull");
-        mLockFluid               = aNBT.getBoolean("mLockFluid");
-        lockedFluidName     = aNBT.getString("lockedFluidName");
-        lockedFluidName     = lockedFluidName.length() == 0 ? null : lockedFluidName;
+        mLockFluid = aNBT.getBoolean("mLockFluid");
+        lockedFluidName = aNBT.getString("lockedFluidName");
+        lockedFluidName = lockedFluidName.length() == 0 ? null : lockedFluidName;
         mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
     }
 
@@ -173,12 +176,10 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             byte aColorIndex,
             boolean aActive,
             boolean aRedstone) {
-        if (aSide != ForgeDirection.UP.ordinal()){
-            if(aSide == aBaseMetaTileEntity.getFrontFacing()){
+        if (aSide != ForgeDirection.UP.ordinal()) {
+            if (aSide == aBaseMetaTileEntity.getFrontFacing()) {
                 return new ITexture[] {MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_PIPE)};
-            }
-            else
-                return new ITexture[] {MACHINE_CASINGS[mTier][aColorIndex + 1]};
+            } else return new ITexture[] {MACHINE_CASINGS[mTier][aColorIndex + 1]};
         }
         return new ITexture[] {
             MACHINE_CASINGS[mTier][aColorIndex + 1],
@@ -201,13 +202,10 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if(aSide == getBaseMetaTileEntity().getFrontFacing()){
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
             GT_Utility.sendChatToPlayer(
-                aPlayer,
-                mAllowInputFromOutputSide
-                    ? GT_Utility.getTrans("095")
-                    : GT_Utility.getTrans("096"));
+                    aPlayer, mAllowInputFromOutputSide ? GT_Utility.getTrans("095") : GT_Utility.getTrans("096"));
         }
     }
 
@@ -273,7 +271,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                     } else {
                         if (tFluid.isFluidEqual(getFillableStack())) {
                             if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getRealCapacity())
-                                    || mVoidFluidPart || mVoidFluidFull) {
+                                    || mVoidFluidPart
+                                    || mVoidFluidFull) {
                                 if (aBaseMetaTileEntity.addStackToSlot(
                                         getOutputSlot(),
                                         GT_Utility.getContainerForFilledItem(mInventory[getInputSlot()], true),
@@ -331,20 +330,18 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (mOutputFluid
-                && getDrainableStack() != null
-                && (aTick % 20 == 0)) {
+            if (mOutputFluid && getDrainableStack() != null && (aTick % 20 == 0)) {
                 IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
                 if (tTank != null) {
                     FluidStack tDrained = drain(commonSizeCompute(mTier) / 100, false);
                     if (tDrained != null) {
                         int tFilledAmount = tTank.fill(
-                            ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
+                                ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
                         if (tFilledAmount > 0)
                             tTank.fill(
-                                ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-                                drain(tFilledAmount, true),
-                                true);
+                                    ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
+                                    drain(tFilledAmount, true),
+                                    true);
                     }
                 }
             }
@@ -368,8 +365,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public boolean isLiquidInput(byte aSide) {
-        return mAllowInputFromOutputSide
-            || aSide != getBaseMetaTileEntity().getFrontFacing();
+        return mAllowInputFromOutputSide || aSide != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override

@@ -37,44 +37,45 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
         if (aSlotIndex == 3) {
             mte.mOutputFluid = !mte.mOutputFluid;
             if (!mte.mOutputFluid) {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("225","Fluid Auto Output Disabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("225", "Fluid Auto Output Disabled"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("226","Fluid Auto Output Enabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("226", "Fluid Auto Output Enabled"));
             }
             return null;
         }
-        if(aSlotIndex == 4){
+        if (aSlotIndex == 4) {
             String inBrackets;
             mte.mLockFluid = !mte.mLockFluid;
             if (mte.mLockFluid) {
                 if (mte.mFluid == null) {
                     mte.lockedFluidName = null;
-                    inBrackets = GT_Utility.trans("227","currently none, will be locked to the next that is put in");
+                    inBrackets = GT_Utility.trans("227", "currently none, will be locked to the next that is put in");
                 } else {
                     mte.lockedFluidName = mte.getDrainableStack().getUnlocalizedName();
                     inBrackets = mte.getDrainableStack().getLocalizedName();
                 }
-                GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", GT_Utility.trans("228","1 specific Fluid"), inBrackets));
+                GT_Utility.sendChatToPlayer(
+                        aPlayer, String.format("%s (%s)", GT_Utility.trans("228", "1 specific Fluid"), inBrackets));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("229","Lock Fluid Mode Disabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("229", "Lock Fluid Mode Disabled"));
             }
             return null;
         }
         if (aSlotIndex == 5) {
             mte.mVoidFluidPart = !mte.mVoidFluidPart;
             if (!mte.mVoidFluidPart) {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("230","Overflow Voiding Mode Disabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("230", "Overflow Voiding Mode Disabled"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("231","Overflow Voiding Mode Enabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("231", "Overflow Voiding Mode Enabled"));
             }
             return null;
         }
         if (aSlotIndex == 6) {
             mte.mVoidFluidFull = !mte.mVoidFluidFull;
             if (!mte.mVoidFluidFull) {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("232","Void Full Mode Disabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("232", "Void Full Mode Disabled"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("233","Void Full Mode Enabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("233", "Void Full Mode Enabled"));
             }
             return null;
         }
@@ -92,16 +93,16 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
                 player.sendProgressBarUpdate(this, 100, mContent & 65535);
                 player.sendProgressBarUpdate(this, 101, mContent >>> 16);
             }
-            if(outputFluid != mte.mOutputFluid){
+            if (outputFluid != mte.mOutputFluid) {
                 player.sendProgressBarUpdate(this, 103, mte.mOutputFluid ? 1 : 0);
             }
-            if(mLockFluid != mte.mLockFluid){
+            if (mLockFluid != mte.mLockFluid) {
                 player.sendProgressBarUpdate(this, 104, mte.mLockFluid ? 1 : 0);
             }
-            if(mVoidFluidPart != mte.mVoidFluidPart){
+            if (mVoidFluidPart != mte.mVoidFluidPart) {
                 player.sendProgressBarUpdate(this, 105, mte.mVoidFluidPart ? 1 : 0);
             }
-            if(mVoidFluidFull != mte.mVoidFluidFull){
+            if (mVoidFluidFull != mte.mVoidFluidFull) {
                 player.sendProgressBarUpdate(this, 106, mte.mVoidFluidFull ? 1 : 0);
             }
         }
