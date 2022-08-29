@@ -2,6 +2,7 @@ package gregtech.api.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
@@ -10,6 +11,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class GT_Container_DigitalTank extends GT_Container_BasicTank {
     public boolean outputFluid = false, mLockFluid = false, mVoidFluidPart = false, mVoidFluidFull = false;
@@ -88,11 +91,9 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
 
         for (Object crafter : this.crafters) {
             ICrafting player = (ICrafting) crafter;
-            if (mTimer % 500 == 0) {
-                if(oContent != mContent){
-                    player.sendProgressBarUpdate(this, 100, mContent & 65535);
-                    player.sendProgressBarUpdate(this, 101, mContent >>> 16);
-                }
+            if (mContent != oContent) {
+                player.sendProgressBarUpdate(this, 100, mContent & 65535);
+                player.sendProgressBarUpdate(this, 101, mContent >>> 16);
             }
             if(outputFluid != mte.mOutputFluid){
                 player.sendProgressBarUpdate(this, 103, mte.mOutputFluid ? 1 : 0);
