@@ -6,26 +6,30 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.net.GT_Packet_TileEntityCover;
-import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_Conveyor extends GT_CoverBehavior {
+public class GT_Cover_Conveyor extends GT_Cover_Cased {
     public final int mTickRate;
     private final int mMaxStacks;
 
     public GT_Cover_Conveyor(int aTickRate) {
-        this.mTickRate = aTickRate;
-        this.mMaxStacks = 1;
+        this(aTickRate, 1, null);
     }
 
     public GT_Cover_Conveyor(int aTickRate, int maxStacks) {
+        this(aTickRate, maxStacks, null);
+    }
+
+    public GT_Cover_Conveyor(int aTickRate, int maxStacks, ITexture coverTexture) {
+        super(coverTexture);
         this.mTickRate = aTickRate;
         this.mMaxStacks = maxStacks;
     }

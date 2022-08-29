@@ -1,10 +1,15 @@
 package gregtech.common.covers;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 
 public class GT_Cover_RedstoneReceiverInternal extends GT_Cover_RedstoneWirelessBase {
+    public GT_Cover_RedstoneReceiverInternal(ITexture coverTexture) {
+        super(coverTexture);
+    }
+
     @Override
     public int doCoverThings(
             byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
