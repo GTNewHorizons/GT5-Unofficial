@@ -3469,7 +3469,7 @@ public class GT_Utility {
         return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
     }
 
-    public static String getTrans(String aKey){
+    public static String getTrans(String aKey) {
         return GT_LanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
     }
 
