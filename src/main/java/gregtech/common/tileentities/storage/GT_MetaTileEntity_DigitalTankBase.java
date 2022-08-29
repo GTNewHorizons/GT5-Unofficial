@@ -15,20 +15,19 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank {
-    public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false;
+    public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     public String lockedFluidName = null;
-    public boolean mLockFluid = false;
     private boolean voidBreak;
+    public boolean mAllowInputFromOutputSide = false;
 
     public GT_MetaTileEntity_DigitalTankBase(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, new String[] {
             "Stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + "L of fluid",
-            "Use a screwdriver to enable",
-            "voiding fluid on overflow",
             "Can keep its contents when harvested",
             "Sneak when harvesting to void its contents"
         });
@@ -99,6 +98,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         aNBT.setBoolean("mLockFluid", mLockFluid);
         if (lockedFluidName != null && lockedFluidName.length() != 0) aNBT.setString("lockedFluidName", lockedFluidName);
         else aNBT.removeTag("lockedFluidName");
+        aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
     }
 
     @Override
@@ -110,6 +110,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         mLockFluid               = aNBT.getBoolean("mLockFluid");
         lockedFluidName     = aNBT.getString("lockedFluidName");
         lockedFluidName     = lockedFluidName.length() == 0 ? null : lockedFluidName;
+        mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
     }
 
     @Override
@@ -172,7 +173,13 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             byte aColorIndex,
             boolean aActive,
             boolean aRedstone) {
-        if (aSide != ForgeDirection.UP.ordinal()) return new ITexture[] {MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        if (aSide != ForgeDirection.UP.ordinal()){
+            if(aSide == aBaseMetaTileEntity.getFrontFacing()){
+                return new ITexture[] {MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_PIPE)};
+            }
+            else
+                return new ITexture[] {MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        }
         return new ITexture[] {
             MACHINE_CASINGS[mTier][aColorIndex + 1],
             TextureFactory.of(OVERLAY_QTANK),
@@ -194,11 +201,14 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mVoidFluidPart = !mVoidFluidPart;
-        GT_Utility.sendChatToPlayer(
+        if(aSide == getBaseMetaTileEntity().getFrontFacing()){
+            mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
+            GT_Utility.sendChatToPlayer(
                 aPlayer,
-                StatCollector.translateToLocal(
-                        mVoidFluidPart ? "GT5U.machines.voidoveflow.enabled" : "GT5U.machines.voidoveflow.disabled"));
+                mAllowInputFromOutputSide
+                    ? GT_Utility.trans("095", "Input from Output Side allowed")
+                    : GT_Utility.trans("096", "Input from Output Side forbidden"));
+        }
     }
 
     @Override
@@ -318,13 +328,53 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     }
 
     @Override
-    public final byte getUpdateData() {
-        return 0x00;
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (mOutputFluid
+                && getDrainableStack() != null
+                && (aTick % 20 == 0)) {
+                IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
+                if (tTank != null) {
+                    FluidStack tDrained = drain(commonSizeCompute(mTier) / 100, false);
+                    if (tDrained != null) {
+                        int tFilledAmount = tTank.fill(
+                            ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
+                        if (tFilledAmount > 0)
+                            tTank.fill(
+                                ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
+                                drain(tFilledAmount, true),
+                                true);
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public boolean isFacingValid(byte aFacing) {
         return true;
+    }
+
+    @Override
+    public boolean isInputFacing(byte aSide) {
+        return mAllowInputFromOutputSide || aSide != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public boolean isOutputFacing(byte aSide) {
+        return false;
+    }
+
+    @Override
+    public boolean isLiquidInput(byte aSide) {
+        return mAllowInputFromOutputSide
+            || aSide != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public boolean isLiquidOutput(byte aSide) {
+        return aSide != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override

@@ -2,7 +2,6 @@ package gregtech.api.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
@@ -11,8 +10,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class GT_Container_DigitalTank extends GT_Container_BasicTank {
     public boolean outputFluid = false, mLockFluid = false, mVoidFluidPart = false, mVoidFluidFull = false;
