@@ -3469,6 +3469,10 @@ public class GT_Utility {
         return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
     }
 
+    public static String getTrans(String aKey) {
+        return GT_LanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
+    }
+
     /**
      * @return an Array containing the X and the Y Coordinate of the clicked Point, with the top left Corner as Origin, like on the Texture Sheet. return values should always be between [0.0F and 0.99F].
      */
