@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -12,7 +12,7 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
@@ -25,9 +25,12 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_Atmosphere_Pump> implements ISurvivalConstructable {
 
+
+    private int AirpipeTier = -1;
     @SuppressWarnings("SpellCheckingInspection")
     private static final String [][] structure_string = new String[][]{{
         "       ",
@@ -118,11 +121,21 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
                     .buildAndChain(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING))
             .addElement('C', OutputHatch.newAny(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING), 3))
             .addElement('H', ofBlock(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING))
-            .addElement('F', ofBlock(GregTech_API.sBlockCasings4, WSTEN_TURBINE_CASING))
             .addElement('G', ofBlockUnlocalizedName("IC2", "blockFenceIron", 0, true))
+            .addElement('F', ofBlocksTiered(
+                (block, meta) -> block == GregTech_API.sBlockCasings8 ? meta : -1,
+                ImmutableList.of(
+                    Pair.of(GregTech_API.sBlockCasings8, 10),
+                    Pair.of(GregTech_API.sBlockCasings8, 11),
+                    Pair.of(GregTech_API.sBlockCasings8, 12),
+                    Pair.of(GregTech_API.sBlockCasings8, 13),
+                    Pair.of(GregTech_API.sBlockCasings8, 14)
+                ),
+                0,
+                (t, meta) -> t.AirpipeTier = meta,
+                t -> t.AirpipeTier
+            ))
             .build();
-
-
 
     public GT_MetaTileEntity_Atmosphere_Pump(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -169,8 +182,12 @@ public class GT_MetaTileEntity_Atmosphere_Pump extends GT_MetaTileEntity_Enhance
         return true;
     }
 
+
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+
+        AirpipeTier = 0;
 
         //Check Structure
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 1)) return false;

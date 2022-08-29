@@ -1596,6 +1596,12 @@ public enum ItemList implements IItemContainer {
     Casing_Tank_15,
     Casing_Tank_0,
 
+    Casing_Airpipe_Steel,
+    Casing_Airpipe_Titanium,
+    Casing_Airpipe_Tungstensteel,
+    Casing_Airpipe_RhodiumPalladium,
+    Casing_Airpipe_Naquadah,
+
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,
