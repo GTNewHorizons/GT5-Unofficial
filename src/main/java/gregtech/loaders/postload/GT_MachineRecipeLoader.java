@@ -16366,7 +16366,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
                 new FluidStack[] {Materials.NitricOxide.getGas(9000), Materials.Oxygen.getGas(9000)},
-                new FluidStack[] {Materials.NitrogenDioxide.getGas(18000)},
+                new FluidStack[] {Materials.NitrogenDioxide.getGas(9000)},
                 null,
                 80,
                 480);
