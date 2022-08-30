@@ -1145,6 +1145,18 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 true, new ItemStack[] {aInput}, new ItemStack[] {aOutput}, null, null, null, aDuration, aEUt, 0);
         return true;
     }
+    @Override
+    public boolean addWiremillRecipe(ItemStack aCircuit, ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt) {
+        if ((aInput == null) || (aOutput == null)) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get("wiremill", aInput, aDuration)) <= 0) {
+            return false;
+        }
+        GT_Recipe.GT_Recipe_Map.sWiremillRecipes.addRecipe(
+            true, new ItemStack[] {aCircuit, aInput, }, new ItemStack[] {aOutput}, null, null, null, aDuration, aEUt, 0);
+        return true;
+    }
 
     @Override
     public boolean addPolarizerRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt) {

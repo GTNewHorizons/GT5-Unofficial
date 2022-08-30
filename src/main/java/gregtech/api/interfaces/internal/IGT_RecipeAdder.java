@@ -595,6 +595,9 @@ public interface IGT_RecipeAdder {
      */
     boolean addWiremillRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt);
 
+
+    boolean addWiremillRecipe( ItemStack aCircuit, ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt);
+
     /**
      * Adds a Polariser Recipe
      *
