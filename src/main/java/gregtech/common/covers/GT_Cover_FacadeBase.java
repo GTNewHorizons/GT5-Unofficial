@@ -8,6 +8,7 @@ import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.render.TextureFactory;
@@ -134,6 +135,12 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
     @Override
     protected ItemStack getDropImpl(byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
         return aCoverVariable.mStack;
+    }
+
+    @Override
+    protected ITexture getSpecialCoverFGTextureImpl(
+            byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
+        return getSpecialCoverTextureImpl(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
     @Override
