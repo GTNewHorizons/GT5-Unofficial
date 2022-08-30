@@ -8,9 +8,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_OutputHatch;
 import gregtech.common.gui.GT_GUIContainer_OutputHatch;
+import java.lang.ref.WeakReference;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -22,7 +24,7 @@ import net.minecraftforge.fluids.*;
 
 public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
     private String lockedFluidName = null;
-    private EntityPlayer playerThatLockedfluid = null;
+    private WeakReference<EntityPlayer> playerThatLockedfluid = null;
     public byte mMode = 0;
 
     public GT_MetaTileEntity_Hatch_Output(int aID, String aName, String aNameRegional, int aTier) {
@@ -263,7 +265,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
                 this.setLockedFluidName(null);
                 break;
             case 8:
-                playerThatLockedfluid = aPlayer;
+                playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
                     inBrackets = GT_Utility.trans(
@@ -280,7 +282,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
                                 GT_Utility.trans("151.1", "Outputs items and 1 specific Fluid"), inBrackets));
                 break;
             case 9:
-                playerThatLockedfluid = aPlayer;
+                playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
                     inBrackets = GT_Utility.trans(
@@ -378,6 +380,15 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
         this.lockedFluidName = lockedFluidName;
     }
 
+    public boolean canStoreFluid(Fluid fluid) {
+        if (isFluidLocked()) {
+            if (lockedFluidName == null) return true;
+            return lockedFluidName.equals(fluid.getName());
+        }
+        if (GT_ModHandler.isSteam(new FluidStack(fluid, 0))) return outputsSteam();
+        return outputsLiquids();
+    }
+
     @Override
     public int getTankPressure() {
         return +100;
@@ -385,12 +396,15 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
 
     @Override
     protected void onEmptyingContainerWhenEmpty() {
-        if (this.lockedFluidName == null && this.mFluid != null) {
+        if (this.lockedFluidName == null && this.mFluid != null && isFluidLocked()) {
             this.setLockedFluidName(this.mFluid.getFluid().getName());
+            EntityPlayer player;
+            if (playerThatLockedfluid == null || (player = playerThatLockedfluid.get()) == null) return;
             GT_Utility.sendChatToPlayer(
-                    playerThatLockedfluid,
+                    player,
                     String.format(
                             GT_Utility.trans("151.4", "Sucessfully locked Fluid to %s"), mFluid.getLocalizedName()));
+            playerThatLockedfluid = null;
         }
     }
 
