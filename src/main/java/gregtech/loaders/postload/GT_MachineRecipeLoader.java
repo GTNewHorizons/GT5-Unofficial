@@ -14540,6 +14540,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.Quicklime.getDust(2),
                 80,
                 480);
+        //Fluid Sodium
+        GT_Values.RA.addFluidHeaterRecipe(
+            Materials.Sodium.getDust(1),
+            GT_Values.NF,
+            Materials.Sodium.getFluid(1000),
+            200,
+            120);
+
         // 2CH3COOH = CH3COCH3 + CO2 + H
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {

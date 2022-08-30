@@ -1408,6 +1408,16 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     Materials.FierySteel.getFluid(250L),
                     ItemList.TF_Vial_FieryBlood.get(1L, new Object[0]),
                     ItemList.Bottle_Empty.get(1L, new Object[0])));
+
+            GT_Mod.gregtechproxy.addFluid(
+                "liquid_sodium",
+                "Liquid Sodium",
+                Materials.Sodium,
+                1,
+                495,
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
+                ItemList.Cell_Empty.get(1L, new Object[0]),
+                1000);
         }
 
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
