@@ -44,6 +44,9 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+/**
+ * TODO: Implement overlay rendering only with {@link GT_CoverBehaviorBase#getCoverTexture()}
+ */
 public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_FluidStorageMonitor.FluidStorageData> {
     private static final IIconContainer[] icons = new IIconContainer[] {
         OVERLAY_FLUID_STORAGE_MONITOR0,
