@@ -44,10 +44,16 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
                     250,
                     4);
             GT_Values.RA.addWiremillRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 6L),
+                    GT_Utility.getIntegratedCircuit(12),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L),
+                    300,
+                    4);
+            GT_Values.RA.addWiremillRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 8L),
                     GT_Utility.getIntegratedCircuit(16),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L),
-                    300,
+                    350,
                     4);
             GT_Values.RA.addWiremillRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
@@ -74,10 +80,16 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
                     200,
                     4);
             GT_Values.RA.addWiremillRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 12L),
+                    GT_Utility.getIntegratedCircuit(12),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L),
+                    250,
+                    4);
+            GT_Values.RA.addWiremillRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 16L),
                     GT_Utility.getIntegratedCircuit(16),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L),
-                    250,
+                    300,
                     4);
             GT_Values.RA.addWiremillRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
