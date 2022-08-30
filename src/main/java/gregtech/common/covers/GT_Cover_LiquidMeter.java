@@ -28,7 +28,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 /**
- * TODO: Implement overlay rendering only with {@link GT_CoverBehaviorBase#getCoverTexture()}
+ * TODO: Implement overlay rendering only with
+ * {@link GT_CoverBehaviorBase#getSpecialCoverFGTextureImpl(byte, int, ISerializableObject, ICoverable)}
  */
 public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMeter.LiquidMeterData> {
 

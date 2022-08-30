@@ -168,7 +168,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final ITexture coverTexture;
         if (coverBehavior != null) {
             if (!(this instanceof BaseMetaPipeEntity)) {
-                coverTexture = coverBehavior.getCoverTexture();
+                coverTexture = coverBehavior.getSpecialCoverFGTexture(
+                        aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
             } else {
                 coverTexture = coverBehavior.getSpecialCoverTexture(
                         aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);

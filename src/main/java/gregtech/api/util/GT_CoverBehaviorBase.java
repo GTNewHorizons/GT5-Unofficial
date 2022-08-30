@@ -25,15 +25,15 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     public EntityPlayer lastPlayer = null;
     private final Class<T> typeToken;
-    private final ITexture coverTexture;
+    private final ITexture coverFGTexture;
 
     protected GT_CoverBehaviorBase(Class<T> typeToken) {
-        this((Class<T>) typeToken, null);
+        this(typeToken, null);
     }
 
     protected GT_CoverBehaviorBase(Class<T> typeToken, ITexture coverTexture) {
         this.typeToken = typeToken;
-        this.coverTexture = coverTexture;
+        this.coverFGTexture = coverTexture;
     }
 
     public abstract T createDataObject(int aLegacyData);
@@ -64,10 +64,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         }
     }
 
-    public ITexture getCoverTexture() {
-        return this.coverTexture;
-    }
-
     // region facade
 
     /**
@@ -95,6 +91,15 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
      */
     public final ItemStack getDisplayStack(int aCoverID, ISerializableObject aCoverVariable) {
         return getDisplayStackImpl(aCoverID, forceCast(aCoverVariable));
+    }
+
+    /**
+     * Get the special foreground cover texture associated with this cover. Return null if one should use the texture passed to
+     * {@link gregtech.api.GregTech_API#registerCover(ItemStack, ITexture, GT_CoverBehaviorBase)} or its overloads.
+     */
+    public final ITexture getSpecialCoverFGTexture(
+            byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        return getSpecialCoverFGTextureImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
     }
 
     /**
@@ -388,6 +393,11 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     protected ItemStack getDisplayStackImpl(int aCoverID, T aCoverVariable) {
         return GT_Utility.intToStack(aCoverID);
+    }
+
+    protected ITexture getSpecialCoverFGTextureImpl(
+            byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+        return coverFGTexture;
     }
 
     protected ITexture getSpecialCoverTextureImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {

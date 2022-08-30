@@ -19,6 +19,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FLUID_STORAGE_MONIT
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -45,7 +46,8 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
 /**
- * TODO: Implement overlay rendering only with {@link GT_CoverBehaviorBase#getCoverTexture()}
+ * TODO: Implement overlay rendering only with
+ * {@link GT_CoverBehaviorBase#getSpecialCoverFGTextureImpl(byte, int, ISerializableObject, ICoverable)}
  */
 public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_FluidStorageMonitor.FluidStorageData> {
     private static final IIconContainer[] icons = new IIconContainer[] {
@@ -110,31 +112,39 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
     }
 
     @Override
+    protected ITexture getSpecialCoverFGTextureImpl(
+            byte aSide, int aCoverID, FluidStorageData aCoverVariable, ICoverable aTileEntity) {
+        return getSpecialCoverTextureImpl(aSide, aCoverID, aCoverVariable, aTileEntity);
+    }
+
+    @Override
     protected ITexture getSpecialCoverTextureImpl(
             byte aSide, int aCoverID, FluidStorageData aCoverVariable, ICoverable aTileEntity) {
         if (aCoverVariable.slot == -1 || aCoverVariable.fluid == null || aCoverVariable.scale == 0) {
             return TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0);
         }
-        return TextureFactory.of(
-                TextureFactory.of(
-                        new IIconContainer() {
-                            @Override
-                            public IIcon getIcon() {
-                                return aCoverVariable.fluid.getStillIcon();
-                            }
+        final IIconContainer fluidIcon = new IIconContainer() {
+            @Override
+            public IIcon getIcon() {
+                return aCoverVariable.fluid.getStillIcon();
+            }
 
-                            @Override
-                            public IIcon getOverlayIcon() {
-                                return null;
-                            }
+            @Override
+            public IIcon getOverlayIcon() {
+                return null;
+            }
 
-                            @Override
-                            public ResourceLocation getTextureFile() {
-                                return TextureMap.locationBlocksTexture;
-                            }
-                        },
-                        colorToRGBA(aCoverVariable.fluid.getColor())),
-                TextureFactory.of(icons[aCoverVariable.scale]));
+            @Override
+            public ResourceLocation getTextureFile() {
+                return TextureMap.locationBlocksTexture;
+            }
+        };
+
+        final short[] fluidRGBA = colorToRGBA(aCoverVariable.fluid.getColor());
+        final ITextureBuilder fluidTextureBuilder =
+                TextureFactory.builder().addIcon(fluidIcon).setRGBA(fluidRGBA);
+        if (aCoverVariable.fluid.getLuminosity() > 0) fluidTextureBuilder.glow();
+        return TextureFactory.of(fluidTextureBuilder.build(), TextureFactory.of(icons[aCoverVariable.scale]));
     }
 
     @Override
