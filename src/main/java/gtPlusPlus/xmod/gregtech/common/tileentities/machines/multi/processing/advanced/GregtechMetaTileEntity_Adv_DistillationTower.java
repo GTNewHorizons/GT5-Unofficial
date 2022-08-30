@@ -484,7 +484,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
         }
 
         public Mode next() {
-            return VALUES[ordinal() + 1 % VALUES.length];
+            return VALUES[(ordinal() + 1) % VALUES.length];
         }
     }
 }
