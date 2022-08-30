@@ -5,6 +5,7 @@ import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.net.GT_Packet_TileEntityCover;
@@ -15,6 +16,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_DoesWork extends GT_CoverBehavior {
+
+    /**
+     * @deprecated use {@link #GT_Cover_DoesWork(ITexture coverTexture)} instead
+     */
+    @Deprecated
+    public GT_Cover_DoesWork() {
+        this(null);
+    }
+
+    public GT_Cover_DoesWork(ITexture coverTexture) {
+        super(coverTexture);
+    }
+
     @Override
     public boolean isRedstoneSensitive(
             byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {

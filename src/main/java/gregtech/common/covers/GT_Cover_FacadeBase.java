@@ -137,6 +137,12 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
     }
 
     @Override
+    protected ITexture getSpecialCoverFGTextureImpl(
+            byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
+        return getSpecialCoverTextureImpl(aSide, aCoverID, aCoverVariable, aTileEntity);
+    }
+
+    @Override
     protected ITexture getSpecialCoverTextureImpl(
             byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
         if (GT_Utility.isStackInvalid(aCoverVariable.mStack)) return Textures.BlockIcons.ERROR_RENDERING[0];

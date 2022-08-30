@@ -6,6 +6,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.net.GT_Packet_TileEntityCover;
@@ -20,12 +21,24 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
     public final int mTickRate;
     private final int mMaxStacks;
 
+    /**
+     * @deprecated use {@link #GT_Cover_Conveyor(int aTickRate, int maxStacks, ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_Conveyor(int aTickRate) {
-        this.mTickRate = aTickRate;
-        this.mMaxStacks = 1;
+        this(aTickRate, 1, null);
     }
 
+    /**
+     * @deprecated use {@link #GT_Cover_Conveyor(int aTickRate, int maxStacks, ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_Conveyor(int aTickRate, int maxStacks) {
+        this(aTickRate, maxStacks, null);
+    }
+
+    public GT_Cover_Conveyor(int aTickRate, int maxStacks, ITexture coverTexture) {
+        super(coverTexture);
         this.mTickRate = aTickRate;
         this.mMaxStacks = maxStacks;
     }
