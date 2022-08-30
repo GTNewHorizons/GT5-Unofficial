@@ -17,7 +17,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Single_Recipe_Check;
 import gregtech.api.util.GT_Utility;
@@ -795,21 +794,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             if (!isValidMetaTileEntity(tHatch) || (restrictiveHatchesOnly && tHatch.mMode == 0)) {
                 continue;
             }
-            if (GT_ModHandler.isSteam(copiedFluidStack)) {
-                if (!tHatch.outputsSteam()) {
-                    continue;
-                }
-            } else {
-                if (!tHatch.outputsLiquids()) {
-                    continue;
-                }
-                if (tHatch.isFluidLocked()
-                        && tHatch.getLockedFluidName() != null
-                        && !tHatch.getLockedFluidName()
-                                .equals(copiedFluidStack.getFluid().getName())) {
-                    continue;
-                }
-            }
+            if (!tHatch.canStoreFluid(copiedFluidStack.getFluid())) continue;
             int tAmount = tHatch.fill(copiedFluidStack, false);
             if (tAmount >= copiedFluidStack.amount) {
                 boolean filled = tHatch.fill(copiedFluidStack, true) >= copiedFluidStack.amount;
