@@ -22,13 +22,13 @@ public class ProcessingItem implements gregtech.api.interfaces.IOreRecipeRegistr
                 && !aOreDictName.equals("itemNetherQuartz")) {
             switch (aOreDictName) {
                 case "itemSilicon":
-                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Silicon, 3628800L));
+                    GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.SiliconSG, 3628800L));
                     GT_Values.RA.addFormingPressRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 0L, 19),
-                            GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 20),
-                            200,
-                            16);
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SiliconSG, 1L),
+                        GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 0L, 19),
+                        GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 20),
+                        200,
+                        16);
                 case "itemWheat":
                     GT_OreDictUnificator.addItemData(aStack, new ItemData(Materials.Wheat, 3628800L));
                 case "itemManganese":
