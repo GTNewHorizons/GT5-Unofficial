@@ -1147,7 +1147,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
-    public boolean addWiremillRecipe(ItemStack aCircuit, ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt) {
+    public boolean addWiremillRecipe(ItemStack aInput, ItemStack aCircuit, ItemStack aOutput, int aDuration, int aEUt) {
         if ((aInput == null) || (aOutput == null)) {
             return false;
         }
@@ -1156,9 +1156,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
         GT_Recipe.GT_Recipe_Map.sWiremillRecipes.addRecipe(
                 true,
-                new ItemStack[] {
-                    aCircuit, aInput,
-                },
+                new ItemStack[] {aInput, aCircuit},
                 new ItemStack[] {aOutput},
                 null,
                 null,
