@@ -20,17 +20,27 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
             OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMASHING)) {
             GT_Values.RA.addWiremillRecipe(
+                    GT_Utility.getIntegratedCircuit(1),
                     GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                    GT_Utility.copy(
-                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 2L),
-                            GT_Utility.copyAmount(8L, aStack)),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 2L),
                     100,
                     4);
             GT_Values.RA.addWiremillRecipe(
+                    GT_Utility.getIntegratedCircuit(1),
                     GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
-                    GT_Utility.copy(
-                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L),
-                            GT_Utility.copyAmount(4L, aStack)),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L),
+                    50,
+                    4);
+            GT_Values.RA.addWiremillRecipe(
+                    GT_Utility.getIntegratedCircuit(2),
+                    GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 8L),
+                    100,
+                    4);
+            GT_Values.RA.addWiremillRecipe(
+                    GT_Utility.getIntegratedCircuit(2),
+                    GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 4L),
                     50,
                     4);
         }
