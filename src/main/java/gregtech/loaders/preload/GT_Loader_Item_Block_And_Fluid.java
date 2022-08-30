@@ -113,92 +113,19 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         ItemList.Neutron_Reflector.set(
                 new GT_NeutronReflector_Item("neutronreflector", "Iridium Neutron Reflector", 0));
-        /* ItemList.Reactor_Coolant_He_1.set(
-                        GregTech_API.constructCoolantCellItem("60k_Helium_Coolantcell", "60k He Coolant Cell", 60000));
-                GT_ModHandler.addCraftingRecipe(
-                        ItemList.Reactor_Coolant_He_1.get(1L, new Object[0]),
-                        GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                        new Object[] {
-                            " P ",
-                            "PCP",
-                            " P ",
-                            'C',
-                            OrePrefixes.cell.get(Materials.Helium),
-                            'P',
-                            OrePrefixes.plate.get(Materials.Tin)
-                        });
+        ItemList.Reactor_Coolant_He_1.set(
+                GregTech_API.constructCoolantCellItem("60k_Helium_Coolantcell", "60k He Coolant Cell", 60000));
+        ItemList.Reactor_Coolant_He_3.set(
+                GregTech_API.constructCoolantCellItem("180k_Helium_Coolantcell", "180k He Coolant Cell", 180000));
+        ItemList.Reactor_Coolant_He_6.set(
+                GregTech_API.constructCoolantCellItem("360k_Helium_Coolantcell", "360k He Coolant Cell", 360000));
+        ItemList.Reactor_Coolant_NaK_1.set(
+                GregTech_API.constructCoolantCellItem("60k_NaK_Coolantcell", "60k NaK Coolantcell", 60000));
+        ItemList.Reactor_Coolant_NaK_3.set(
+                GregTech_API.constructCoolantCellItem("180k_NaK_Coolantcell", "180k NaK Coolantcell", 180000));
+        ItemList.Reactor_Coolant_NaK_6.set(
+                GregTech_API.constructCoolantCellItem("360k_NaK_Coolantcell", "360k NaK Coolantcell", 360000));
 
-                ItemList.Reactor_Coolant_He_3.set(
-                        GregTech_API.constructCoolantCellItem("180k_Helium_Coolantcell", "180k He Coolant Cell", 180000));
-                GT_ModHandler.addCraftingRecipe(
-                        ItemList.Reactor_Coolant_He_3.get(1L, new Object[0]),
-                        GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                        new Object[] {
-                            "PCP", "PCP", "PCP", 'C', ItemList.Reactor_Coolant_He_1, 'P', OrePrefixes.plate.get(Materials.Tin)
-                        });
-
-                ItemList.Reactor_Coolant_He_6.set(
-                        GregTech_API.constructCoolantCellItem("360k_Helium_Coolantcell", "360k He Coolant Cell", 360000));
-                GT_ModHandler.addCraftingRecipe(
-                        ItemList.Reactor_Coolant_He_6.get(1L, new Object[0]),
-                        GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                        new Object[] {
-                            "PCP",
-                            "PDP",
-                            "PCP",
-                            'C',
-                            ItemList.Reactor_Coolant_He_3,
-                            'P',
-                            OrePrefixes.plate.get(Materials.Tin),
-                            'D',
-                            OrePrefixes.plateDense.get(Materials.Copper)
-                        });
-
-                ItemList.Reactor_Coolant_NaK_1.set(
-                        GregTech_API.constructCoolantCellItem("60k_NaK_Coolantcell", "60k NaK Coolantcell", 60000));
-                GT_ModHandler.addCraftingRecipe(
-                        ItemList.Reactor_Coolant_NaK_1.get(1L, new Object[0]),
-                        GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                        new Object[] {
-                            "TST",
-                            "PCP",
-                            "TST",
-                            'C',
-                            GT_ModHandler.getIC2Item("reactorCoolantSimple", 1L, 1),
-                            'T',
-                            OrePrefixes.plate.get(Materials.Tin),
-                            'S',
-                            OrePrefixes.dust.get(Materials.Sodium),
-                            'P',
-                            OrePrefixes.dust.get(Materials.Potassium)
-                        });
-
-                ItemList.Reactor_Coolant_NaK_3.set(
-                        GregTech_API.constructCoolantCellItem("180k_NaK_Coolantcell", "180k NaK Coolantcell", 180000));
-                GT_ModHandler.addCraftingRecipe(
-                        ItemList.Reactor_Coolant_NaK_3.get(1L, new Object[0]),
-                        GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                        new Object[] {
-                            "PCP", "PCP", "PCP", 'C', ItemList.Reactor_Coolant_NaK_1, 'P', OrePrefixes.plate.get(Materials.Tin)
-                        });
-
-                ItemList.Reactor_Coolant_NaK_6.set(
-                        GregTech_API.constructCoolantCellItem("360k_NaK_Coolantcell", "360k NaK Coolantcell", 360000));
-                GT_ModHandler.addCraftingRecipe(
-                        ItemList.Reactor_Coolant_NaK_6.get(1L, new Object[0]),
-                        GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                        new Object[] {
-                            "PCP",
-                            "PDP",
-                            "PCP",
-                            'C',
-                            ItemList.Reactor_Coolant_NaK_3,
-                            'P',
-                            OrePrefixes.plate.get(Materials.Tin),
-                            'D',
-                            OrePrefixes.plateDense.get(Materials.Copper)
-                        });
-        */
         ItemList.Reactor_Coolant_Sp_1.set(
                 GregTech_API.constructCoolantCellItem("180k_Space_Coolantcell", "180k Sp Coolant Cell", 180000));
 
