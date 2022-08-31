@@ -12,7 +12,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_DigitalTank extends GT_Container_BasicTank {
-    public boolean outputFluid = false, mLockFluid = false, mVoidFluidPart = false, mVoidFluidFull = false;
+    public boolean outputFluid = false, mLockFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mAllowInputFromOutputSide = false;
 
     public GT_Container_DigitalTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -27,6 +27,7 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 4, 26, 64, false, true, 1));
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 5, 44, 64, false, true, 1));
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 6, 62, 64, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 7, 80, 64, false, true, 1));
     }
 
     @Override
@@ -37,9 +38,9 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
         if (aSlotIndex == 3) {
             mte.mOutputFluid = !mte.mOutputFluid;
             if (!mte.mOutputFluid) {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("225", "Fluid Auto Output Disabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("262", "Fluid Auto Output Disabled"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("226", "Fluid Auto Output Enabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("263", "Fluid Auto Output Enabled"));
             }
             return null;
         }
@@ -49,37 +50,45 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
             if (mte.mLockFluid) {
                 if (mte.mFluid == null) {
                     mte.lockedFluidName = null;
-                    inBrackets = GT_Utility.trans("227", "currently none, will be locked to the next that is put in");
+                    inBrackets = GT_Utility.trans("264", "currently none, will be locked to the next that is put in");
                 } else {
                     mte.lockedFluidName = mte.getDrainableStack().getUnlocalizedName();
                     inBrackets = mte.getDrainableStack().getLocalizedName();
                 }
                 GT_Utility.sendChatToPlayer(
-                        aPlayer, String.format("%s (%s)", GT_Utility.trans("228", "1 specific Fluid"), inBrackets));
+                    aPlayer, String.format("%s (%s)", GT_Utility.trans("265", "1 specific Fluid"), inBrackets));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("229", "Lock Fluid Mode Disabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("266", "Lock Fluid Mode Disabled"));
             }
             return null;
         }
         if (aSlotIndex == 5) {
             mte.mVoidFluidPart = !mte.mVoidFluidPart;
             if (!mte.mVoidFluidPart) {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("230", "Overflow Voiding Mode Disabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("267", "Overflow Voiding Mode Disabled"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("231", "Overflow Voiding Mode Enabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("268", "Overflow Voiding Mode Enabled"));
             }
             return null;
         }
         if (aSlotIndex == 6) {
             mte.mVoidFluidFull = !mte.mVoidFluidFull;
             if (!mte.mVoidFluidFull) {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("232", "Void Full Mode Disabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("269", "Void Full Mode Disabled"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("233", "Void Full Mode Enabled"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("270", "Void Full Mode Enabled"));
+                return null;
+            }
+        }
+        if (aSlotIndex == 7) {
+            mte.mAllowInputFromOutputSide = !mte.mAllowInputFromOutputSide;
+            if (!mte.mAllowInputFromOutputSide) {
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.getTrans("096"));
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.getTrans("095"));
             }
             return null;
         }
-
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
 
@@ -105,12 +114,16 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
             if (mVoidFluidFull != mte.mVoidFluidFull) {
                 player.sendProgressBarUpdate(this, 106, mte.mVoidFluidFull ? 1 : 0);
             }
+            if (mAllowInputFromOutputSide != mte.mAllowInputFromOutputSide) {
+                player.sendProgressBarUpdate(this, 107, mte.mAllowInputFromOutputSide ? 1 : 0);
+            }
         }
 
         outputFluid = mte.mOutputFluid;
         mLockFluid = mte.mLockFluid;
         mVoidFluidPart = mte.mVoidFluidPart;
         mVoidFluidFull = mte.mVoidFluidFull;
+        mAllowInputFromOutputSide = mte.mAllowInputFromOutputSide;
     }
 
     @Override
@@ -129,6 +142,9 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
                 break;
             case 106:
                 mVoidFluidFull = (value != 0);
+                break;
+            case 107:
+                mAllowInputFromOutputSide = (value != 0);
                 break;
         }
     }

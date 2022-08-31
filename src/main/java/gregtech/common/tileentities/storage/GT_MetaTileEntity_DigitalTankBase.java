@@ -87,6 +87,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             if (lockedFluidName != null && lockedFluidName.length() != 0)
                 aNBT.setString("lockedFluidName", lockedFluidName);
             else aNBT.removeTag("lockedFluidName");
+            aNBT.setBoolean("mAllowInputFromOutputSide", this.mAllowInputFromOutputSide);
         }
         super.setItemNBT(aNBT);
     }
@@ -101,7 +102,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         if (lockedFluidName != null && lockedFluidName.length() != 0)
             aNBT.setString("lockedFluidName", lockedFluidName);
         else aNBT.removeTag("lockedFluidName");
-        aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
+        aNBT.setBoolean("mAllowInputFromOutputSide", this.mAllowInputFromOutputSide);
     }
 
     @Override

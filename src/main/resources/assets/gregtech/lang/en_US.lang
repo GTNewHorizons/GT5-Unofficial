@@ -113,6 +113,7 @@ GT5U.machines.digitaltank.voidoverflow.name=Overflow Voiding Mode
 GT5U.machines.digitaltank.voidoverflow.tooltip=§7Overflown Fluid is removing if tank full
 GT5U.machines.digitaltank.voidfull.name=Void Full Mode
 GT5U.machines.digitaltank.voidfull.tooltip=§7Fluid is completely removing
+GT5U.machines.digitaltank.inputfromoutput.name=Input Fluid from Output Side
 GT5U.machines.select_circuit=Select Machine Mode
 GT5U.machines.select_circuit.tooltip=Ghost Circuit Slot
 GT5U.machines.select_circuit.tooltip.1=§7LMB/RMB/scroll to cycle through the list

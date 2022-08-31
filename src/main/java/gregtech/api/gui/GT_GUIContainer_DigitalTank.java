@@ -50,6 +50,9 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.name"));
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.tooltip"));
             }
+            if (x >= 80 && x <= 96) {
+                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.inputfromoutput.name"));
+            }
         }
         if (!list.isEmpty()) drawHoveringText(list, x2, y2, fontRendererObj);
     }
@@ -85,6 +88,9 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
             }
             if (((GT_Container_DigitalTank) mContainer).mVoidFluidFull) {
                 drawTexturedModalRect(x + 61, y + 63, 176, 54, 18, 18);
+            }
+            if (((GT_Container_DigitalTank) mContainer).mAllowInputFromOutputSide) {
+                drawTexturedModalRect(x + 79, y + 63, 176, 72, 18, 18);
             }
         }
     }
