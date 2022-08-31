@@ -14,11 +14,6 @@ public class ClassesToTransform {
 
     public static final String TINKERS_FLUID_BLOCK = "tconstruct.smeltery.blocks.TConstructFluid";
 
-    public static final String RAILCRAFT_FLUID_HELPER = "mods.railcraft.common.fluids.FluidHelper";
-    public static final String RAILCRAFT_TILE_FLUID_LOADER =
-            "mods.railcraft.common.blocks.machine.gamma.TileFluidLoader";
-    public static final String RAILCRAFT_INVENTORY_TOOLS = "mods.railcraft.common.util.inventory.InvTools";
-
     public static final String GALACTICRAFT_FLUID_UTILS = "micdoodle8.mods.galacticraft.core.util.FluidUtil";
     public static final String GALACTICRAFT_TILE_ENTITY_FUEL_LOADER =
             "micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader";

@@ -149,32 +149,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
                     .toByteArray();
         }
 
-        // Fix RC stuff
-        // Patching PROCESS_VOLUME to allow more transfer limits
-        if (transformedName.equals(RAILCRAFT_FLUID_HELPER)
-                && (AsmConfig.enableRcFlowFix && AsmConfig.maxRailcraftTankProcessVolume != 4000)) {
-            Preloader_Logger.INFO("Railcraft PROCESS_VOLUME Patch", "Transforming " + transformedName);
-            return new ClassTransformer_Railcraft_FluidHelper(basicClass, obfuscated)
-                    .getWriter()
-                    .toByteArray();
-        }
-        // Patching TRANSFER_RATE in Fluid Loaders/Unloaders
-        if ((transformedName.equals(RAILCRAFT_TILE_FLUID_LOADER) && AsmConfig.maxRailcraftFluidLoaderFlow != 20)
-                || (transformedName.equals("mods.railcraft.common.blocks.machine.gamma.TileFluidUnloader")
-                        && AsmConfig.maxRailcraftFluidUnloaderFlow != 80)) {
-            Preloader_Logger.INFO("Railcraft TRANSFER_RATE Patch", "Transforming " + transformedName);
-            return new ClassTransformer_Railcraft_FluidCartHandling(basicClass, obfuscated, transformedName)
-                    .getWriter()
-                    .toByteArray();
-        }
-        // Fix Weird glitch involving negative itemstacks.
-        if (transformedName.equals(RAILCRAFT_INVENTORY_TOOLS) && AsmConfig.enableRcItemDupeFix) {
-            Preloader_Logger.INFO("Railcraft negative ItemStack Fix", "Transforming " + transformedName);
-            return new ClassTransformer_Railcraft_InvTools(basicClass, obfuscated)
-                    .getWriter()
-                    .toByteArray();
-        }
-
         // Fix GC stuff
         if (AsmConfig.enableGcFuelChanges) {
             if (transformedName.equals(GALACTICRAFT_FLUID_UTILS)) {
