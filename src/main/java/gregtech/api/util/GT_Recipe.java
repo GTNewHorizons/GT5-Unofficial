@@ -1712,7 +1712,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 "Wiremill",
                 null,
                 RES_PATH_GUI + "basicmachines/Wiremill",
-                1,
+                2,
                 1,
                 1,
                 0,
