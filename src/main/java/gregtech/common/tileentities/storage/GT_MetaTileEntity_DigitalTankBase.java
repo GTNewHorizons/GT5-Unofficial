@@ -350,12 +350,12 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public boolean isFacingValid(byte aFacing) {
-        return true;
+        return aFacing > 1;
     }
 
     @Override
     public boolean isInputFacing(byte aSide) {
-        return mAllowInputFromOutputSide || aSide != getBaseMetaTileEntity().getFrontFacing();
+        return true;
     }
 
     @Override
@@ -370,7 +370,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public boolean isLiquidOutput(byte aSide) {
-        return aSide != getBaseMetaTileEntity().getFrontFacing();
+        return true;
     }
 
     @Override
