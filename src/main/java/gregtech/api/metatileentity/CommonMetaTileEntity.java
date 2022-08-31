@@ -59,11 +59,12 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     }
 
     protected void loadMetaTileNBT(NBTTagCompound aNBT) {
+        final int nbtVersion = aNBT.getInteger("nbtVersion");
         if (mID != 0 && createNewMetatileEntity(mID)) {
             final NBTTagList tItemList = aNBT.getTagList("Inventory", 10);
             for (int i = 0; i < tItemList.tagCount(); i++) {
                 final NBTTagCompound tTag = tItemList.getCompoundTagAt(i);
-                final int tSlot = tTag.getInteger("IntSlot");
+                final int tSlot = migrateInventoryIndex(tTag.getInteger("IntSlot"), nbtVersion);
                 if (tSlot >= 0 && tSlot < getMetaTileEntity().getRealInventory().length) {
                     getMetaTileEntity().getRealInventory()[tSlot] = GT_Utility.loadItem(tTag);
                 }
@@ -76,6 +77,14 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
                 GT_Mod.logStackTrace(e);
             }
         }
+    }
+
+    /**
+     * Shifts the machine Inventory index according to the change in Input/Output Slots.
+     * Default implementation does not do anything to the slotIndex.
+     */
+    protected int migrateInventoryIndex(int slotIndex, int nbtVersion) {
+        return slotIndex;
     }
 
     @Override
