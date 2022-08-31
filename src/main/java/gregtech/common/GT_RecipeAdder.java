@@ -2587,6 +2587,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
+    public boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aOutput, int aDuration, int aEUt) {
+        return addFluidHeaterRecipe(aCircuit, null, aOutput, aDuration, aEUt);
+    }
+
+    @Override
     public boolean addFluidHeaterRecipe(
             ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt) {
         if ((aInput == null) || (aOutput == null)) {
