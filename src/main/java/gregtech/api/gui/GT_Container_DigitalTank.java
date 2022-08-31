@@ -12,7 +12,11 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_DigitalTank extends GT_Container_BasicTank {
-    public boolean outputFluid = false, mLockFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mAllowInputFromOutputSide = false;
+    public boolean outputFluid = false,
+            mLockFluid = false,
+            mVoidFluidPart = false,
+            mVoidFluidFull = false,
+            mAllowInputFromOutputSide = false;
 
     public GT_Container_DigitalTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -56,7 +60,7 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
                     inBrackets = mte.getDrainableStack().getLocalizedName();
                 }
                 GT_Utility.sendChatToPlayer(
-                    aPlayer, String.format("%s (%s)", GT_Utility.trans("265", "1 specific Fluid"), inBrackets));
+                        aPlayer, String.format("%s (%s)", GT_Utility.trans("265", "1 specific Fluid"), inBrackets));
             } else {
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("266", "Lock Fluid Mode Disabled"));
             }
