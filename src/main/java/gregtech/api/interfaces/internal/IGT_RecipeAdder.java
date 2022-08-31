@@ -864,8 +864,9 @@ public interface IGT_RecipeAdder {
     /**
      * Adds a Recipe for the Fluid Heater
      */
-    boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt);
+    boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aOutput, int aDuration, int aEUt);
 
+    boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt);
     /**
      * Adds a Recipe for the Distillery
      */
