@@ -2322,7 +2322,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             newInputSize = 6;
             newOutputSize = 1;
 
-        }  else if (mID >= 351 && mID <= 355 || mID >= 11050 && mID <= 11056) { // wire mill
+        } else if (mID >= 351 && mID <= 355 || mID >= 11050 && mID <= 11056) { // wire mill
             if (nbtVersion < wireAdditionVersion) {
                 oldInputSize = 1;
                 oldOutputSize = 1;

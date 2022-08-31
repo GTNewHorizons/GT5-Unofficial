@@ -79,7 +79,6 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
         }
     }
 
-
     /**
      * Shifts the machine Inventory index according to the change in Input/Output Slots.
      * Default implementation does not do anything to the slotIndex.
