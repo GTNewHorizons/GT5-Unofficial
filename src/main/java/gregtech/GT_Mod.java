@@ -29,6 +29,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.internal.IGT_Mod;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.ReverseShapedRecipe;
 import gregtech.api.objects.ReverseShapelessRecipe;
@@ -751,9 +752,8 @@ public class GT_Mod implements IGT_Mod {
         GT_Utility.reInit();
         GT_Recipe.reInit();
         try {
-            for (Map<gregtech.api.objects.GT_ItemStack, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
-                //noinspection rawtypes,unchecked// Deal with legacy Minecraft raw types,rawtypes
-                GT_Utility.reMap((Map) gt_itemStackMap);
+            for (Map<? extends GT_ItemStack, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
+                GT_Utility.reMap(gt_itemStackMap);
             }
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
