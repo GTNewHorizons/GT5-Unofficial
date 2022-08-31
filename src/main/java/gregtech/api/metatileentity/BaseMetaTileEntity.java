@@ -2270,15 +2270,13 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
      * @param nbtVersion The GregTech version in which the original Inventory Index was saved.
      * @return The corrected Inventory index
      */
-    @Override
-    protected int migrateInventoryIndex(int slotIndex, int nbtVersion) {
+    private int migrateInventoryIndex(int slotIndex, int nbtVersion) {
         final int oldInputSize;
         final int newInputSize;
         final int oldOutputSize;
         final int newOutputSize;
         final int chemistryUpdateVersion = GT_Mod.calculateTotalGTVersion(509, 31);
         final int configCircuitAdditionVersion = GT_Mod.calculateTotalGTVersion(509, 40);
-        final int wireAdditionVersion = GT_Mod.calculateTotalGTVersion(509, 41);
         // 4 is old GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT
         if (nbtVersion < configCircuitAdditionVersion
                 && getMetaTileEntity() instanceof GT_MetaTileEntity_BasicMachine
@@ -2320,16 +2318,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                 return slotIndex;
             }
             newInputSize = 6;
-            newOutputSize = 1;
-
-        } else if (mID >= 351 && mID <= 355 || mID >= 11050 && mID <= 11056) { // wire mill
-            if (nbtVersion < wireAdditionVersion) {
-                oldInputSize = 1;
-                oldOutputSize = 1;
-            } else {
-                return slotIndex;
-            }
-            newInputSize = 2;
             newOutputSize = 1;
 
         } else {

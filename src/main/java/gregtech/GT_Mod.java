@@ -138,7 +138,7 @@ import org.apache.logging.log4j.Logger;
 public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity
-    public static final int VERSION = 509, SUBVERSION = 41;
+    public static final int VERSION = 509, SUBVERSION = 40;
 
     @SuppressWarnings("DeprecatedIsStillUsed") // Need initialization until it is deleted
     @Deprecated

@@ -57,7 +57,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             8);
                     GT_Values.RA.addWiremillRecipe(
                             GT_Utility.copyAmount(1L, aStack),
-                            GT_Utility.getIntegratedCircuit(1),
                             GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 4L),
                             200,
                             8);
