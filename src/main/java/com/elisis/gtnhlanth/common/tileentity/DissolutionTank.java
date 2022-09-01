@@ -105,8 +105,9 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
         this.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
 
         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
-
         if (this.mEUt > 0) this.mEUt = (-this.mEUt);
+
+        this.updateSlots();
 
         if (!checkRatio(tRecipe, tFluidInputs)) {
             stopMachine();
@@ -115,7 +116,6 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 
         this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
         this.mOutputItems = tRecipe.mOutputs;
-        this.updateSlots();
         return true;
     }
 
