@@ -108,7 +108,51 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 
         if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
-        this.mOutputFluids = tRecipe.mFluidOutputs;
+        FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
+        FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
+
+        // FluidStack majorInput = null;
+        // FluidStack minorInput = null;
+
+        int majorAmount;
+        int minorAmount;
+
+        FluidStack fluidInputOne = tFluidInputs.get(0);
+        FluidStack fluidInputTwo = tFluidInputs.get(1);
+
+        // majorInput = ((fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName()))
+        //     ? fluidInputOne
+        //     : fluidInputTwo);
+        // GT_Log.out.print(majorInput.getLocalizedName());
+        if (fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
+            if (fluidInputTwo.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
+                // majorInput = fluidInputOne;
+                majorAmount = fluidInputOne.amount;
+                // minorInput = fluidInputTwo;
+                minorAmount = fluidInputTwo.amount;
+                // GT_Log.out.print("in first IF");
+            } else return false; // No valid other input
+
+        } else if (fluidInputTwo.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
+            if (fluidInputOne.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
+                // majorInput = fluidInputTwo;
+                majorAmount = fluidInputTwo.amount;
+                // minorInput = fluidInputOne;
+                minorAmount = fluidInputOne.amount;
+                // GT_Log.out.print("in second if");
+            } else return false;
+
+        } else return false;
+
+        // GT_Log.out.print("out of switch weirdness");
+
+        // GT_Log.out.print("major " + majorInput.getLocalizedName());
+        // GT_Log.out.print("minor " + minorInput.getLocalizedName());
+
+        // GT_Log.out.print("mjrinputamt " + majorInput.amount);
+        if (majorAmount / tRecipe.mSpecialValue != minorAmount) return false;
+
+        this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
         this.mOutputItems = tRecipe.mOutputs;
         this.updateSlots();
         return true;
