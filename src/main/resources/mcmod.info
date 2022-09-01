@@ -1,6 +1,6 @@
 [
     {
-      "modid": "ggfab",
+      "modid": "${modId}",
       "name": "${modName}",
       "description": "Production at scale",
       "version": "${modVersion}",
