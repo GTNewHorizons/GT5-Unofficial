@@ -87,6 +87,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             if (lockedFluidName != null && lockedFluidName.length() != 0)
                 aNBT.setString("lockedFluidName", lockedFluidName);
             else aNBT.removeTag("lockedFluidName");
+            aNBT.setBoolean("mAllowInputFromOutputSide", this.mAllowInputFromOutputSide);
         }
         super.setItemNBT(aNBT);
     }
@@ -101,7 +102,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         if (lockedFluidName != null && lockedFluidName.length() != 0)
             aNBT.setString("lockedFluidName", lockedFluidName);
         else aNBT.removeTag("lockedFluidName");
-        aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
+        aNBT.setBoolean("mAllowInputFromOutputSide", this.mAllowInputFromOutputSide);
     }
 
     @Override
@@ -355,7 +356,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public boolean isInputFacing(byte aSide) {
-        return mAllowInputFromOutputSide || aSide != getBaseMetaTileEntity().getFrontFacing();
+        return true;
     }
 
     @Override
@@ -370,7 +371,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public boolean isLiquidOutput(byte aSide) {
-        return aSide != getBaseMetaTileEntity().getFrontFacing();
+        return true;
     }
 
     @Override
