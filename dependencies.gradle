@@ -9,7 +9,7 @@ dependencies {
     compile('com.github.GTNewHorizons:TecTech:5.0.22:dev')
     compile('com.github.GTNewHorizons:ForestryMC:4.4.12:dev')
     compile('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-96-GTNH:dev')
-    compile('com.github.GTNewHorizons:bartworks:0.5.71:dev')
+    compile('com.github.GTNewHorizons:bartworks:0.5.80:dev')
     compile('com.github.GTNewHorizons:BuildCraft:7.1.27:dev')
     compile('com.github.GTNewHorizons:NotEnoughItems:2.2.22:dev')
 
