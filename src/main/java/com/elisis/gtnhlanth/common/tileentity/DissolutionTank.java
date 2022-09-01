@@ -28,7 +28,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -89,7 +89,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
     public boolean checkRecipe(ItemStack itemStack) {
         // GT_Log.out.print("in checkRecipe");
 
-        ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
+        List<FluidStack> tFluidInputs = this.getStoredFluids();
         FluidStack[] tFluidInputArray = tFluidInputs.toArray(new FluidStack[0]);
         ItemStack[] tItems = this.getStoredInputs().toArray(new ItemStack[0]);
         long tVoltage = this.getMaxInputVoltage();
@@ -108,6 +108,18 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 
         if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
+        if (!checkRatio(tRecipe, tFluidInputs)) {
+            stopMachine();
+            return false;
+        }
+
+        this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
+        this.mOutputItems = tRecipe.mOutputs;
+        this.updateSlots();
+        return true;
+    }
+
+    private boolean checkRatio(GT_Recipe tRecipe, List<FluidStack> tFluidInputs) {
         FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
         FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
 
@@ -150,12 +162,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
         // GT_Log.out.print("minor " + minorInput.getLocalizedName());
 
         // GT_Log.out.print("mjrinputamt " + majorInput.amount);
-        if (majorAmount / tRecipe.mSpecialValue != minorAmount) return false;
-
-        this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
-        this.mOutputItems = tRecipe.mOutputs;
-        this.updateSlots();
-        return true;
+        return majorAmount / tRecipe.mSpecialValue == minorAmount;
     }
 
     @Override
