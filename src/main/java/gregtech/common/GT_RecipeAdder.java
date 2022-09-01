@@ -2587,6 +2587,21 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
+    public boolean addFluidHeaterRecipe(ItemStack aItem, FluidStack aOutput, int aDuration, int aEUt) {
+        if ((aItem == null) || (aOutput == null)) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get(
+                        "fluidheater", aOutput.getFluid().getUnlocalizedName(), aDuration))
+                <= 0) {
+            return false;
+        }
+        GT_Recipe.GT_Recipe_Map.sFluidHeaterRecipes.addRecipe(
+                true, new ItemStack[] {aItem}, null, null, null, new FluidStack[] {aOutput}, aDuration, aEUt, 0);
+        return true;
+    }
+
+    @Override
     public boolean addFluidHeaterRecipe(
             ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt) {
         if ((aInput == null) || (aOutput == null)) {

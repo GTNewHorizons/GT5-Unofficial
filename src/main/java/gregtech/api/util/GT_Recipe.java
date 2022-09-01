@@ -1418,7 +1418,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 1,
                 0,
                 1,
-                1,
+                0,
                 1,
                 E,
                 1,
