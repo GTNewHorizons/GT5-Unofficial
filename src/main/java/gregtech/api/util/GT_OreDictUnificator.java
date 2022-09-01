@@ -9,7 +9,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_ItemStack2;
 import gregtech.api.objects.ItemData;
@@ -17,9 +16,11 @@ import gregtech.api.objects.MaterialStack;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import javax.annotation.Nullable;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -38,7 +39,7 @@ public class GT_OreDictUnificator {
     private static final Map<String, ItemStack> sName2StackMap = new HashMap<>();
     private static final Map<GT_ItemStack2, ItemData> sItemStack2DataMap = new HashMap<>();
     private static final Map<GT_ItemStack2, List<ItemStack>> sUnificationTable = new HashMap<>();
-    private static final GT_HashSet<GT_ItemStack> sNoUnificationList = new GT_HashSet<>();
+    private static final Set<GT_ItemStack2> sNoUnificationList = new HashSet<>();
     public static volatile int VERSION = 509;
     private static int isRegisteringOre = 0, isAddingOre = 0;
     private static boolean mRunThroughTheList = true;
@@ -54,7 +55,7 @@ public class GT_OreDictUnificator {
      */
     public static void addToBlacklist(ItemStack aStack) {
         if (GT_Utility.isStackValid(aStack) && !GT_Utility.isStackInList(aStack, sNoUnificationList))
-            sNoUnificationList.add(aStack);
+            sNoUnificationList.add(new GT_ItemStack2(aStack));
     }
 
     public static boolean isBlacklisted(ItemStack aStack) {
