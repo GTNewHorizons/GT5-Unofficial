@@ -44,6 +44,7 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.net.GT_Packet_Sound;
 import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.GT_ItemStack2;
 import gregtech.api.objects.ItemData;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
@@ -60,21 +61,8 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -2933,9 +2921,21 @@ public class GT_Utility {
         return isStackInList(new GT_ItemStack(aStack), aList);
     }
 
+    public static boolean isStackInList(ItemStack aStack, Set<GT_ItemStack2> aList) {
+        if (aStack == null) {
+            return false;
+        }
+        return isStackInList(new GT_ItemStack2(aStack), aList);
+    }
+
     public static boolean isStackInList(GT_ItemStack aStack, Collection<GT_ItemStack> aList) {
         return aStack != null
                 && (aList.contains(aStack) || aList.contains(new GT_ItemStack(aStack.mItem, aStack.mStackSize, W)));
+    }
+
+    public static boolean isStackInList(GT_ItemStack2 aStack, Set<GT_ItemStack2> aList) {
+        return aStack != null
+                && (aList.contains(aStack) || aList.contains(new GT_ItemStack2(aStack.mItem, aStack.mStackSize, W)));
     }
 
     /**

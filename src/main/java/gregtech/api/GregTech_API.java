@@ -99,7 +99,7 @@ public class GregTech_API {
     /**
      * Fixes the HashMap Mappings for ItemStacks once the Server started
      */
-    public static final Collection<Map<GT_ItemStack, ?>> sItemStackMappings = new ArrayList<>();
+    public static final Collection<Map<? extends GT_ItemStack, ?>> sItemStackMappings = new ArrayList<>();
 
     public static final Collection<Map<Fluid, ?>> sFluidMappings = new ArrayList<>();
     /**
