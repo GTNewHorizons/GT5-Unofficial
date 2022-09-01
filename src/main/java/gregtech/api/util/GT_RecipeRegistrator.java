@@ -482,6 +482,10 @@ public class GT_RecipeRegistrator {
                 Arrays.stream(sShapes).collect(Collectors.groupingBy(RecipeShape::getEmptySlots));
         List<Integer> x = new ArrayList<>(9);
         for (IRecipe tRecipe : allRecipeList) {
+            if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe) {
+                // we don't target shapeless recipes
+                continue;
+            }
             x.clear();
             ItemStack tStack = tRecipe.getRecipeOutput();
             if (GT_Utility.isStackValid(tStack)
@@ -491,10 +495,6 @@ public class GT_RecipeRegistrator {
                     && !(tStack.getItem() instanceof IReactorComponent)
                     && !GT_ModHandler.isElectricItem(tStack)
                     && !GT_Utility.isStackInList(tStack, GT_ModHandler.sNonReplaceableItems)) {
-                if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe) {
-                    // we don't target shapeless recipes
-                    continue;
-                }
                 if (tRecipe instanceof ShapedOreRecipe) {
                     boolean allValid = true;
                     Object[] input = ((ShapedOreRecipe) tRecipe).getInput();
