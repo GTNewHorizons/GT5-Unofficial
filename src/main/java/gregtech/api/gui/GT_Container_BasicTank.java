@@ -119,6 +119,8 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         public void set(FluidStack stack) {
             if (mIsFillableStack) mTank.setFillableStack(stack);
             else mTank.setDrainableStack(stack);
+            if(mTank instanceof GT_MetaTileEntity_DigitalTankBase)
+                ((GT_MetaTileEntity_DigitalTankBase) mTank).onEmptyingContainerWhenEmpty();
         }
 
         @Override
@@ -141,6 +143,11 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
 
         static BasicTankFluidAccess from(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
             return new BasicTankFluidAccess(aTank, aIsFillableStack);
+        }
+
+        @Override
+        public void verifyFluidStack(){
+            if (!(mTank instanceof GT_MetaTileEntity_DigitalTankBase) && get().amount <= 0) set(null);
         }
     }
 }
