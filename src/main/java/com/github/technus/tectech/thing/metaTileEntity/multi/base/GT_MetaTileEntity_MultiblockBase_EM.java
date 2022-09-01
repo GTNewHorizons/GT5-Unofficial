@@ -122,7 +122,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected int eComputationTimeout = MAX_COMPUTATION_TIMEOUT;
 
     // Max timeout of computation in ticks
-    protected static int MAX_COMPUTATION_TIMEOUT = 40;
+    protected static int MAX_COMPUTATION_TIMEOUT = 100;
 
     // storage for output EM that will be auto handled in case of failure to finish recipe
     // if you succed to use a recipe - be sure to output EM from outputEM to hatches in the output method
