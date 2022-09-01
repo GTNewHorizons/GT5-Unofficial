@@ -670,6 +670,7 @@ public class GT_Container extends Container {
             }
             replaceCursorItemStack(aPlayer, tFilledContainer);
         }
+        aFluidAccess.verifyFluidStack();
         return tFilledContainer;
     }
 
