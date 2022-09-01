@@ -89,9 +89,7 @@ public class TeaCollection extends ItemProxy {
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
         if (stack.stackTagCompound != null
                 && stack.stackTagCompound.hasKey("TeaOwner")
-                && !stack.stackTagCompound
-                        .getString("TeaOwner")
-                        .equals(entity.getUniqueID().toString())) {
+                && !stack.stackTagCompound.getString("TeaOwner").equals(entity.getCommandSenderName())) {
             tooltipList.add(EnumChatFormatting.GRAY + "" + EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC
                     + StatCollector.translateToLocal("kubaitem.notyours"));
             return;
@@ -109,10 +107,8 @@ public class TeaCollection extends ItemProxy {
     @Override
     public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
         if (p_77659_1_.stackTagCompound == null || !p_77659_1_.stackTagCompound.hasKey("TeaOwner")) return p_77659_1_;
-        if (!p_77659_1_
-                .stackTagCompound
-                .getString("TeaOwner")
-                .equals(p_77659_3_.getUniqueID().toString())) return p_77659_1_;
+        if (!p_77659_1_.stackTagCompound.getString("TeaOwner").equals(p_77659_3_.getCommandSenderName()))
+            return p_77659_1_;
         p_77659_3_.setItemInUse(p_77659_1_, 32);
         return p_77659_1_;
     }
@@ -122,9 +118,7 @@ public class TeaCollection extends ItemProxy {
         if (world.isRemote) return stack;
         if (!(entity instanceof EntityPlayerMP)) return stack;
         if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("TeaOwner")) return stack;
-        if (!stack.stackTagCompound
-                .getString("TeaOwner")
-                .equals(entity.getUniqueID().toString())) return stack;
+        if (!stack.stackTagCompound.getString("TeaOwner").equals(entity.getCommandSenderName())) return stack;
         entity.addChatComponentMessage(new ChatComponentText(
                 EnumChatFormatting.GREEN + StatCollector.translateToLocal("kubaitem.teacollection.mmm")));
         entity.triggerAchievement(achievement);
@@ -143,10 +137,8 @@ public class TeaCollection extends ItemProxy {
                 || (!stack.stackTagCompound.hasKey("TeaOwner")
                         || stack.stackTagCompound
                                 .getString("TeaOwner")
-                                .equals(Minecraft.getMinecraft()
-                                        .thePlayer
-                                        .getUniqueID()
-                                        .toString()))) return super.getDisplayName(stack);
+                                .equals(Minecraft.getMinecraft().thePlayer.getCommandSenderName())))
+            return super.getDisplayName(stack);
         return EnumChatFormatting.GOLD + "" + EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC + "???????";
     }
 
@@ -158,7 +150,7 @@ public class TeaCollection extends ItemProxy {
         if (tag == null) tag = stack.stackTagCompound = new NBTTagCompound();
         if (tag.hasKey("display")) tag.removeTag("display");
         if (tag.hasKey("TeaOwner")) return;
-        tag.setString("TeaOwner", entity.getPersistentID().toString());
+        tag.setString("TeaOwner", entity.getCommandSenderName());
     }
 
     private static class TeaPage extends AchievementPage {

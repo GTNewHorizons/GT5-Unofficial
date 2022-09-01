@@ -50,10 +50,7 @@ public class TeaUltimate extends TeaCollection {
                 || (!stack.stackTagCompound.hasKey("TeaOwner")
                         || stack.stackTagCompound
                                 .getString("TeaOwner")
-                                .equals(Minecraft.getMinecraft()
-                                        .thePlayer
-                                        .getUniqueID()
-                                        .toString()))) {
+                                .equals(Minecraft.getMinecraft().thePlayer.getCommandSenderName()))) {
             long current = System.currentTimeMillis();
             if (current - timeCounter > 200) {
                 timeCounter = current;
