@@ -6,6 +6,7 @@ import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -26,10 +27,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+/**
+ * TODO: Implement overlay rendering only with
+ * {@link GT_CoverBehaviorBase#getSpecialCoverFGTextureImpl(byte, int, ISerializableObject, ICoverable)}
+ */
 public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMeter.LiquidMeterData> {
 
-    public GT_Cover_LiquidMeter() {
-        super(LiquidMeterData.class);
+    public GT_Cover_LiquidMeter(ITexture coverTexture) {
+        super(LiquidMeterData.class, coverTexture);
     }
 
     @Override

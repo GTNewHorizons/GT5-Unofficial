@@ -4,6 +4,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.net.GT_Packet_TileEntityCover;
@@ -19,7 +20,16 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class GT_Cover_Pump extends GT_CoverBehavior {
     public final int mTransferRate;
 
+    /**
+     * @deprecated use {@link #GT_Cover_Pump(int aTransferRate, ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_Pump(int aTransferRate) {
+        this(aTransferRate, null);
+    }
+
+    public GT_Cover_Pump(int aTransferRate, ITexture coverTexture) {
+        super(coverTexture);
         this.mTransferRate = aTransferRate;
     }
 

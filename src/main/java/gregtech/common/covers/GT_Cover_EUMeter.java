@@ -7,6 +7,7 @@ import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -28,8 +29,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMeterData> {
+
+    /**
+     * @deprecated use {@link #GT_Cover_EUMeter(ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_EUMeter() {
-        super(EUMeterData.class);
+        this(null);
+    }
+
+    public GT_Cover_EUMeter(ITexture coverTexture) {
+        super(EUMeterData.class, coverTexture);
     }
 
     @Override
