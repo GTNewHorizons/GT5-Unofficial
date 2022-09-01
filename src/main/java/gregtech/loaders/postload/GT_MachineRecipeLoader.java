@@ -3631,7 +3631,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 200,
                 16);
         GT_Values.RA.addFormingPressRecipe(
-                ItemList.Circuit_Silicon_Wafer.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SiliconSG, 1L),
                 GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 0L, 19),
                 GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 20),
                 200,
