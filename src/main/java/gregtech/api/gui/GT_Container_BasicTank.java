@@ -147,7 +147,7 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
 
         @Override
         public void verifyFluidStack() {
-            if (!(mTank instanceof GT_MetaTileEntity_DigitalTankBase) && get().amount <= 0) set(null);
+            if (!(mTank instanceof GT_MetaTileEntity_DigitalTankBase) && get() != null && get().amount <= 0) set(null);
         }
     }
 }

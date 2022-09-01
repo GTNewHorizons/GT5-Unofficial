@@ -21,6 +21,6 @@ public interface IFluidAccess {
     }
 
     default void verifyFluidStack() {
-        if (get().amount <= 0) set(null);
+        if (get() != null && get().amount <= 0) set(null);
     }
 }
