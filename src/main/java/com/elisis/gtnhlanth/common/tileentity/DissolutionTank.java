@@ -28,7 +28,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -87,96 +87,82 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-
         // GT_Log.out.print("in checkRecipe");
 
-        ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
+        List<FluidStack> tFluidInputs = this.getStoredFluids();
         FluidStack[] tFluidInputArray = tFluidInputs.toArray(new FluidStack[0]);
         ItemStack[] tItems = this.getStoredInputs().toArray(new ItemStack[0]);
         long tVoltage = this.getMaxInputVoltage();
 
-        // Collection<GT_Recipe> tRecipes = RecipeAdder.instance.DigesterRecipes.mRecipeList;
         GT_Recipe tRecipe = RecipeAdder.instance.DissolutionTankRecipes.findRecipe(
                 getBaseMetaTileEntity(), false, tVoltage, tFluidInputArray, tItems);
 
-        if (tRecipe == null) return false;
-
+        if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluidInputArray, tItems)) return false;
         // GT_Log.out.print("Recipe not null\n");
-        if (tRecipe.isRecipeInputEqual(true, tFluidInputArray, tItems)) {
 
-            this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-            this.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
+        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+        this.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
 
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
+        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
+        if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
-            if (this.mEUt > 0) this.mEUt = (-this.mEUt);
+        this.updateSlots();
 
-            FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
-            FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
+        if (!checkRatio(tRecipe, tFluidInputs)) {
+            stopMachine();
+            return false;
+        }
 
-            FluidStack majorInput = null;
-            FluidStack minorInput = null;
+        this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
+        this.mOutputItems = tRecipe.mOutputs;
+        return true;
+    }
 
-            int majorAmount = 0;
-            int minorAmount = 0;
+    private boolean checkRatio(GT_Recipe tRecipe, List<FluidStack> tFluidInputs) {
+        FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
+        FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
 
-            FluidStack fluidInputOne = tFluidInputs.get(0);
-            FluidStack fluidInputTwo = tFluidInputs.get(1);
+        // FluidStack majorInput = null;
+        // FluidStack minorInput = null;
 
-            majorInput = ((fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName()))
-                    ? fluidInputOne
-                    : fluidInputTwo);
-            // GT_Log.out.print(majorInput.getLocalizedName());
-            if (fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
-                if (fluidInputTwo.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
-                    majorInput = fluidInputOne;
-                    majorAmount = fluidInputOne.amount;
-                    minorInput = fluidInputTwo;
-                    minorAmount = fluidInputTwo.amount;
-                    // GT_Log.out.print("in first IF");
-                } else return false; // No valid other input
+        int majorAmount;
+        int minorAmount;
 
-            } else if (fluidInputTwo.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
-                if (fluidInputOne.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
-                    majorInput = fluidInputTwo;
-                    majorAmount = fluidInputTwo.amount;
-                    minorInput = fluidInputOne;
-                    minorAmount = fluidInputOne.amount;
-                    // GT_Log.out.print("in second if");
-                } else return false;
+        FluidStack fluidInputOne = tFluidInputs.get(0);
+        FluidStack fluidInputTwo = tFluidInputs.get(1);
 
+        // majorInput = ((fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName()))
+        //     ? fluidInputOne
+        //     : fluidInputTwo);
+        // GT_Log.out.print(majorInput.getLocalizedName());
+        if (fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
+            if (fluidInputTwo.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
+                // majorInput = fluidInputOne;
+                majorAmount = fluidInputOne.amount;
+                // minorInput = fluidInputTwo;
+                minorAmount = fluidInputTwo.amount;
+                // GT_Log.out.print("in first IF");
+            } else return false; // No valid other input
+
+        } else if (fluidInputTwo.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
+            if (fluidInputOne.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
+                // majorInput = fluidInputTwo;
+                majorAmount = fluidInputTwo.amount;
+                // minorInput = fluidInputOne;
+                minorAmount = fluidInputOne.amount;
+                // GT_Log.out.print("in second if");
             } else return false;
 
-            // GT_Log.out.print("out of switch weirdness");
+        } else return false;
 
-            /*
-            for (FluidStack fluid : tFluidInputs) {
-            	String name = fluid.getUnlocalizedName();
-            	if (name == majorGenericFluid.getUnlocalizedName())
-            		majorInput = fluid;
+        // GT_Log.out.print("out of switch weirdness");
 
-            	else if (name == minorGenericFluid.getUnlocalizedName())
-            		minorInput = fluid;
-            }
-            */
-            if (majorInput == null || minorInput == null) return false;
+        // GT_Log.out.print("major " + majorInput.getLocalizedName());
+        // GT_Log.out.print("minor " + minorInput.getLocalizedName());
 
-            // GT_Log.out.print("major " + majorInput.getLocalizedName());
-            // GT_Log.out.print("minor " + minorInput.getLocalizedName());
-
-            // GT_Log.out.print("mjrinputamt " + majorInput.amount);
-            /*
-            if ((majorInput.amount / tRecipe.mSpecialValue) != (minorInput.amount))
-            	return false;
-            */
-            if ((majorAmount / tRecipe.mSpecialValue) != (minorAmount)) return false;
-
-            this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
-            this.mOutputItems = new ItemStack[] {tRecipe.getOutput(0)};
-            return true;
-        }
-        return false;
+        // GT_Log.out.print("mjrinputamt " + majorInput.amount);
+        return majorAmount / tRecipe.mSpecialValue == minorAmount;
     }
 
     @Override
