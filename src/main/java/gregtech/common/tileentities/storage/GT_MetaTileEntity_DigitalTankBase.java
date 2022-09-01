@@ -351,7 +351,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
+        return true;
     }
 
     @Override
