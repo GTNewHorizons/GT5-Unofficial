@@ -4216,6 +4216,14 @@ public class GT_Utility {
         return val > hi ? hi : val < lo ? lo : val;
     }
 
+    public static int ceilDiv(int lhs, int rhs) {
+        return (lhs + rhs - 1) / rhs;
+    }
+
+    public static long ceilDiv(long lhs, long rhs) {
+        return (lhs + rhs - 1) / rhs;
+    }
+
     /**
      * Hash an item stack for the purpose of storing hash across launches
      */
