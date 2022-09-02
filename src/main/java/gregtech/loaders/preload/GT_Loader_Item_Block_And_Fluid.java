@@ -2670,20 +2670,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 OrePrefixes.dust, Materials.Cocoa, GT_ModHandler.getModItem("harvestcraft", "cocoapowderItem", 1L, 0));
         GT_OreDictUnificator.set(OrePrefixes.dust, Materials.Coffee, ItemList.IC2_CoffeePowder.get(1L, new Object[0]));
 
-        // TODO ADD LATER @Technus why it crash if enable?
-        // FluidContainerRegistry.registerFluidContainer(new
-        // FluidContainerRegistry.FluidContainerData(Materials.Naquadah.getMolten(1000L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naquadah, 1L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L)));
-        // FluidContainerRegistry.registerFluidContainer(new
-        // FluidContainerRegistry.FluidContainerData(Materials.NaquadahEnriched.getMolten(1000L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NaquadahEnriched, 1L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L)));
-        // FluidContainerRegistry.registerFluidContainer(new
-        // FluidContainerRegistry.FluidContainerData(Materials.Naquadria.getMolten(1000L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naquadria, 1L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L)));
-
         GregTech_API.registerMachineBlock(
                 GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("reinforcedGlass", 0)), 0);
     }
