@@ -10,7 +10,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
-import java.util.Iterator;
 import net.minecraft.item.ItemStack;
 
 public class ProcessingCell implements IOreRecipeRegistrator {
@@ -83,9 +82,13 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                             tList.add(GT_Utility.copyAmount(64L, tStack));
                                             tStack.stackSize -= 64;
                                         }
-                                        int tThisCapsuleCount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tStack);
-                                        if (tStack.stackSize > 0 && tCapsuleCount+ tThisCapsuleCount<= 64L) {
-                                            if (tCapsuleCount + tThisCapsuleCount < 0L ? tList.size() < 5 : tList.size() < 6) {
+                                        int tThisCapsuleCount =
+                                                GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(
+                                                        tStack);
+                                        if (tStack.stackSize > 0 && tCapsuleCount + tThisCapsuleCount <= 64L) {
+                                            if (tCapsuleCount + tThisCapsuleCount < 0L
+                                                    ? tList.size() < 5
+                                                    : tList.size() < 6) {
                                                 tCapsuleCount += tThisCapsuleCount;
                                                 tList.add(tStack);
                                             }
