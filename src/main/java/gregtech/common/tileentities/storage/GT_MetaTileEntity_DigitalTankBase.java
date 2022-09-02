@@ -205,7 +205,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public boolean allowChangingLockedFluid(String name) {
-        return this.lockedFluidName == null || getFluidAmount() == 0;
+        return getFluidAmount() == 0;
     }
 
     @Override
