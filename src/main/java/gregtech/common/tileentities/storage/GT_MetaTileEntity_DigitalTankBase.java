@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import gregtech.api.gui.GT_Container_DigitalTank;
 import gregtech.api.gui.GT_GUIContainer_DigitalTank;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IFluidLockable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
@@ -15,13 +16,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank {
+public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank implements IFluidLockable {
     public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
-    public String lockedFluidName = null;
+    protected String lockedFluidName = null;
     private boolean voidBreak;
     public boolean mAllowInputFromOutputSide = false;
 
@@ -77,15 +80,14 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         if (!voidBreak) {
-            if (mFluid != null && mFluid.amount > 0) {
+            if (mFluid != null && mFluid.amount >= 0) {
                 aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
             }
             aNBT.setBoolean("mOutputFluid", this.mOutputFluid);
             aNBT.setBoolean("mVoidOverflow", this.mVoidFluidPart);
             aNBT.setBoolean("mVoidFluidFull", this.mVoidFluidFull);
             aNBT.setBoolean("mLockFluid", mLockFluid);
-            if (lockedFluidName != null && lockedFluidName.length() != 0)
-                aNBT.setString("lockedFluidName", lockedFluidName);
+            if (GT_Utility.isStringValid(lockedFluidName)) aNBT.setString("lockedFluidName", lockedFluidName);
             else aNBT.removeTag("lockedFluidName");
             aNBT.setBoolean("mAllowInputFromOutputSide", this.mAllowInputFromOutputSide);
         }
@@ -99,8 +101,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         aNBT.setBoolean("mVoidOverflow", this.mVoidFluidPart);
         aNBT.setBoolean("mVoidFluidFull", this.mVoidFluidFull);
         aNBT.setBoolean("mLockFluid", mLockFluid);
-        if (lockedFluidName != null && lockedFluidName.length() != 0)
-            aNBT.setString("lockedFluidName", lockedFluidName);
+        if (GT_Utility.isStringValid(lockedFluidName)) aNBT.setString("lockedFluidName", lockedFluidName);
         else aNBT.removeTag("lockedFluidName");
         aNBT.setBoolean("mAllowInputFromOutputSide", this.mAllowInputFromOutputSide);
     }
@@ -113,13 +114,15 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         mVoidFluidFull = aNBT.getBoolean("mVoidFluidFull");
         mLockFluid = aNBT.getBoolean("mLockFluid");
         lockedFluidName = aNBT.getString("lockedFluidName");
-        lockedFluidName = lockedFluidName.length() == 0 ? null : lockedFluidName;
+        lockedFluidName = GT_Utility.isStringInvalid(lockedFluidName) ? null : lockedFluidName;
         mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
     }
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return !mLockFluid || lockedFluidName == null || lockedFluidName.equals(aFluid.getUnlocalizedName());
+        return !mLockFluid
+                || lockedFluidName == null
+                || lockedFluidName.equals(aFluid.getFluid().getName());
     }
 
     @Override
@@ -130,7 +133,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     @Override
     public void onEmptyingContainerWhenEmpty() {
         if (this.lockedFluidName == null && this.mFluid != null) {
-            this.lockedFluidName = this.mFluid.getUnlocalizedName();
+            this.lockedFluidName = this.mFluid.getFluid().getName();
         }
     }
 
@@ -167,6 +170,42 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     @Override
     public boolean displaysStackSize() {
         return false;
+    }
+
+    @Override
+    public void setLockedFluidName(String lockedFluidName) {
+        this.lockedFluidName = lockedFluidName;
+        if (lockedFluidName != null) {
+            Fluid fluid = FluidRegistry.getFluid(lockedFluidName);
+            if (fluid != null) {
+                // create new FluidStack, otherwise existing 0-amount FluidStack will
+                // prevent new fluid from being locked
+                setFillableStack(new FluidStack(fluid, getFluidAmount()));
+                mLockFluid = true;
+            }
+        }
+        // Don't unlock if lockedFluidName == null,
+        // as player might explicitly enable fluid locking with no fluid contained
+    }
+
+    @Override
+    public String getLockedFluidName() {
+        return this.lockedFluidName;
+    }
+
+    @Override
+    public void lockFluid(boolean lock) {
+        this.mLockFluid = lock;
+    }
+
+    @Override
+    public boolean isFluidLocked() {
+        return this.mLockFluid;
+    }
+
+    @Override
+    public boolean allowChangingLockedFluid(String name) {
+        return this.lockedFluidName == null || getFluidAmount() == 0;
     }
 
     @Override

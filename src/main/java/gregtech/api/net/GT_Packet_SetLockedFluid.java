@@ -1,9 +1,9 @@
 package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
+import gregtech.api.interfaces.metatileentity.IFluidLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import io.netty.buffer.ByteBuf;
@@ -77,17 +77,20 @@ public class GT_Packet_SetLockedFluid extends GT_Packet_New {
         TileEntity tile = world.getTileEntity(mX, mY, mZ);
         if (!(tile instanceof IGregTechTileEntity) || ((IGregTechTileEntity) tile).isDead()) return;
         IMetaTileEntity mte = ((IGregTechTileEntity) tile).getMetaTileEntity();
-        if (!(mte instanceof GT_MetaTileEntity_Hatch_Output)) return;
+        if (!(mte instanceof IFluidLockable)) return;
         Fluid tFluid = FluidRegistry.getFluid(mFluidID);
         if (tFluid == null) return;
-        GT_MetaTileEntity_Hatch_Output hatch = (GT_MetaTileEntity_Hatch_Output) mte;
-        hatch.setLockedFluidName(tFluid.getName());
-        hatch.mMode = 9;
+        IFluidLockable mteToLock = (IFluidLockable) mte;
+        if (!mteToLock.allowChangingLockedFluid(tFluid.getName())) return;
+
+        mteToLock.setLockedFluidName(tFluid.getName());
         GT_Utility.sendChatToPlayer(
                 mPlayer,
                 String.format(
                         GT_LanguageManager.addStringLocalization(
-                                "Interaction_DESCRIPTION_Index_151.4", "Sucessfully locked Fluid to %s", false),
+                                "Interaction_DESCRIPTION_Index_151.4", "Successfully locked Fluid to %s", false),
                         new FluidStack(tFluid, 1).getLocalizedName()));
+
+        mteToLock.onFluidLockPacketReceived(tFluid.getName());
     }
 }
