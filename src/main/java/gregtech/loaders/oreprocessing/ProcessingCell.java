@@ -127,7 +127,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                             tList.size() >= 5 ? tList.get(4) : null,
                                             tCapsuleCount >= 0L
                                                     ? tList.size() >= 6 ? tList.get(5) : null
-                                                    : tCellBalance >= 0 ? ItemList.Cell_Empty.get(tCellBalance) : null,
+                                                    : tCellBalance < 0 ? ItemList.Cell_Empty.get(-tCellBalance) : null,
                                             (int) Math.max(1L, Math.abs(aMaterial.getProtons() * 8L * tItemAmount)),
                                             Math.min(4, tList.size()) * 30);
                                 }
