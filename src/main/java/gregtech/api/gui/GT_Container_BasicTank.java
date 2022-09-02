@@ -54,7 +54,7 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
                 tTank.setDrainableStack(GT_Utility.getFluidFromDisplayStack(tTank.getStackInSlot(2)));
             }
             GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
-            BasicTankFluidAccess tDrainableAccess = BasicTankFluidAccess.from(tTank, false);
+            IFluidAccess tDrainableAccess = constructFluidAccess(tTank, false);
             return handleFluidSlotClick(
                     tDrainableAccess, aPlayer, aMouseclick == 0, true, !tTank.isDrainableStackSeparate());
         }
@@ -106,9 +106,13 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         return 1;
     }
 
+    protected IFluidAccess constructFluidAccess(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
+        return new BasicTankFluidAccess(aTank, aIsFillableStack);
+    }
+
     static class BasicTankFluidAccess implements IFluidAccess {
-        private final GT_MetaTileEntity_BasicTank mTank;
-        private final boolean mIsFillableStack;
+        protected final GT_MetaTileEntity_BasicTank mTank;
+        protected final boolean mIsFillableStack;
 
         public BasicTankFluidAccess(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
             this.mTank = aTank;
@@ -131,23 +135,6 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         @Override
         public int getCapacity() {
             return mTank.getCapacity();
-        }
-
-        @Override
-        public int getRealCapacity() {
-            if (mTank instanceof GT_MetaTileEntity_DigitalTankBase) {
-                return ((GT_MetaTileEntity_DigitalTankBase) mTank).getRealCapacity();
-            }
-            return IFluidAccess.super.getRealCapacity();
-        }
-
-        static BasicTankFluidAccess from(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
-            return new BasicTankFluidAccess(aTank, aIsFillableStack);
-        }
-
-        @Override
-        public void verifyFluidStack() {
-            if (!(mTank instanceof GT_MetaTileEntity_DigitalTankBase) && get() != null && get().amount <= 0) set(null);
         }
     }
 }

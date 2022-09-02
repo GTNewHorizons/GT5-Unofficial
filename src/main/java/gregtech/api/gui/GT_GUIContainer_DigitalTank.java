@@ -2,14 +2,21 @@ package gregtech.api.gui;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.IDragAndDropSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.net.GT_Packet_SetLockedFluid;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
 
-public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine {
+public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine implements IDragAndDropSupport {
 
     private final String mName;
     private final int textColor = this.getTextColorOrDefault("text", 0xFAFAFF),
@@ -93,5 +100,24 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
                 drawTexturedModalRect(x + 79, y + 63, 176, 72, 18, 18);
             }
         }
+    }
+
+    @Override
+    public boolean handleDragAndDropGT(
+            GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button, boolean isGhost) {
+        if (!(gui instanceof GT_GUIContainer_DigitalTank)
+                || !((GT_GUIContainer_DigitalTank) gui).isMouseOverSlot(2, mousex, mousey)
+                || !isGhost) return false;
+        FluidStack fluidStack = GT_Utility.getFluidFromContainerOrFluidDisplay(draggedStack);
+        if (fluidStack == null) return false;
+        IGregTechTileEntity te = ((GT_GUIContainer_DigitalTank) gui).mContainer.mTileEntity;
+        GT_MetaTileEntity_DigitalTankBase mte = (GT_MetaTileEntity_DigitalTankBase) te.getMetaTileEntity();
+        if (mte == null || !mte.allowChangingLockedFluid(fluidStack.getFluid().getName())) return false;
+
+        GT_Values.NW.sendToServer(new GT_Packet_SetLockedFluid(te, fluidStack));
+        draggedStack.stackSize = 0;
+        // propagate to client too
+        mte.setLockedFluidName(fluidStack.getFluid().getName());
+        return true;
     }
 }

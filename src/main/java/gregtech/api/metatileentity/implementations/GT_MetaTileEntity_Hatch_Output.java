@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
 import gregtech.GT_Mod;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IFluidLockable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -22,7 +23,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch implements IFluidLockable {
     private String lockedFluidName = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
     public byte mMode = 0;
@@ -368,16 +369,29 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
         return mMode % 4 < 2 && mMode != 9;
     }
 
-    public boolean isFluidLocked() {
-        return mMode == 8 || mMode == 9;
-    }
-
+    @Override
     public String getLockedFluidName() {
         return lockedFluidName;
     }
 
+    @Override
     public void setLockedFluidName(String lockedFluidName) {
         this.lockedFluidName = lockedFluidName;
+    }
+
+    @Override
+    public void lockFluid(boolean lock) {
+        this.mMode = (byte) (lock ? 9 : 0);
+    }
+
+    @Override
+    public boolean isFluidLocked() {
+        return mMode == 8 || mMode == 9;
+    }
+
+    @Override
+    public boolean allowChangingLockedFluid(String name) {
+        return true;
     }
 
     public boolean canStoreFluid(Fluid fluid) {
@@ -403,7 +417,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
             GT_Utility.sendChatToPlayer(
                     player,
                     String.format(
-                            GT_Utility.trans("151.4", "Sucessfully locked Fluid to %s"), mFluid.getLocalizedName()));
+                            GT_Utility.trans("151.4", "Successfully locked Fluid to %s"), mFluid.getLocalizedName()));
             playerThatLockedfluid = null;
         }
     }

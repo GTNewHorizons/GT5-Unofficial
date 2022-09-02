@@ -2019,6 +2019,14 @@ public class GT_Utility {
         return null;
     }
 
+    public static FluidStack getFluidFromContainerOrFluidDisplay(ItemStack stack) {
+        FluidStack fluidStack = GT_Utility.getFluidForFilledItem(stack, true);
+        if (fluidStack == null) {
+            fluidStack = GT_Utility.getFluidFromDisplayStack(stack);
+        }
+        return fluidStack;
+    }
+
     public static synchronized boolean removeIC2BottleRecipe(
             ItemStack aContainer,
             ItemStack aInput,

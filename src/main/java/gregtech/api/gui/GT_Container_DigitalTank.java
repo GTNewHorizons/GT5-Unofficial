@@ -2,7 +2,9 @@ package gregtech.api.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,15 +55,16 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
             mte.mLockFluid = !mte.mLockFluid;
             if (mte.mLockFluid) {
                 if (mte.mFluid == null) {
-                    mte.lockedFluidName = null;
+                    mte.setLockedFluidName(null);
                     inBrackets = GT_Utility.trans("264", "currently none, will be locked to the next that is put in");
                 } else {
-                    mte.lockedFluidName = mte.getDrainableStack().getUnlocalizedName();
+                    mte.setLockedFluidName(mte.getDrainableStack().getFluid().getName());
                     inBrackets = mte.getDrainableStack().getLocalizedName();
                 }
                 GT_Utility.sendChatToPlayer(
                         aPlayer, String.format("%s (%s)", GT_Utility.trans("265", "1 specific Fluid"), inBrackets));
             } else {
+                mte.setLockedFluidName(null);
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("266", "Lock Fluid Mode Disabled"));
             }
             return null;
@@ -151,5 +154,25 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
                 mAllowInputFromOutputSide = (value != 0);
                 break;
         }
+    }
+
+    @Override
+    protected IFluidAccess constructFluidAccess(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
+        return new DigitalTankFluidAccess(aTank, aIsFillableStack);
+    }
+
+    static class DigitalTankFluidAccess extends BasicTankFluidAccess {
+
+        public DigitalTankFluidAccess(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
+            super(aTank, aIsFillableStack);
+        }
+
+        @Override
+        public int getRealCapacity() {
+            return ((GT_MetaTileEntity_DigitalTankBase) mTank).getRealCapacity();
+        }
+
+        @Override
+        public void verifyFluidStack() {}
     }
 }
