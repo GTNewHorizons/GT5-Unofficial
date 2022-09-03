@@ -731,13 +731,16 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     public void reloadOwner() {
         setOwner(Loader.instance().activeModContainer());
 
-        final List<String> excludedClasses =
-                Arrays.asList("java.lang.Thread", "gregtech.api.util.GT_Recipe", "gregtech.common.GT_RecipeAdder");
+        final List<String> excludedClasses = Arrays.asList(
+                "java.lang.Thread",
+                "gregtech.api.util.GT_Recipe",
+                "gregtech.api.util.GT_Recipe$GT_Recipe_Map",
+                "gregtech.common.GT_RecipeAdder");
         if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace) {
             List<StackTraceElement> toAdd = new ArrayList<>();
             for (StackTraceElement stackTrace : Thread.currentThread().getStackTrace()) {
                 if (excludedClasses.stream()
-                        .noneMatch(c -> stackTrace.getClassName().contains(c))) {
+                        .noneMatch(c -> stackTrace.getClassName().equals(c))) {
                     toAdd.add(stackTrace);
                 }
             }
