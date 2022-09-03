@@ -20,6 +20,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.items.GT_CoolantCellIC_Item;
 import gregtech.api.items.GT_CoolantCell_Item;
@@ -55,6 +56,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
+import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import net.minecraft.block.Block;
@@ -63,6 +65,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -367,6 +370,9 @@ public class GregTech_API {
             sPostloadFinished = false;
 
     private static Class<BaseMetaTileEntity> sBaseMetaTileEntityClass = null;
+
+    @SuppressWarnings("unchecked")
+    private static final IntFunction<TileEntity>[] teCreators = new IntFunction[16];
 
     static {
         sItemStackMappings.add(sCovers);
@@ -1038,5 +1044,19 @@ public class GregTech_API {
     @SideOnly(Side.CLIENT)
     public static void setItemIconRegister(IIconRegister aIconRegister) {
         GregTech_API.sItemIcons = aIconRegister;
+    }
+
+    public static void registerTileEntityConstructor(int meta, IntFunction<TileEntity> constructor) {
+        if (meta < 0 || meta > 15 || constructor == null)
+            throw new IllegalArgumentException();
+        if (teCreators[meta] != null)
+            throw new IllegalStateException("previous constructor: " + teCreators[meta] + " new constructor: " + constructor + " meta:" + meta);
+        teCreators[meta] = constructor;
+    }
+
+    public static TileEntity createTileEntity(int meta) {
+        meta = GT_Utility.clamp(meta, 0, 15);
+        if (teCreators[meta] == null) return null;
+        return teCreators[meta].apply(meta);
     }
 }

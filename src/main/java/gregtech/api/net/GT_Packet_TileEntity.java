@@ -1,6 +1,7 @@
 package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
+import gregtech.GT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
@@ -160,8 +161,9 @@ public class GT_Packet_TileEntity extends GT_Packet_New {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        if (aWorld != null) {
-            final TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
+        if (aWorld == null) return;
+        final TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
+        try {
             final Block tBlock;
             if (tTileEntity instanceof BaseMetaTileEntity)
                 ((BaseMetaTileEntity) tTileEntity)
@@ -192,6 +194,8 @@ public class GT_Packet_TileEntity extends GT_Packet_New {
                                 mRedstone,
                                 mColor);
             }
+        } catch (Exception e) {
+            GT_Mod.GT_FML_LOGGER.error("Exception setting tile entity data for tile entity {} at ({}, {}, {})", tTileEntity, mX, mY, mZ);
         }
     }
 

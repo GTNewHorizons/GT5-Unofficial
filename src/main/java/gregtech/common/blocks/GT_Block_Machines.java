@@ -587,10 +587,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public TileEntity createTileEntity(World aWorld, int aMeta) {
-        if (aMeta < 4) {
-            return GregTech_API.constructBaseMetaTileEntity();
-        }
-        return new BaseMetaPipeEntity();
+        return GregTech_API.createTileEntity(aMeta);
     }
 
     @Override
