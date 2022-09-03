@@ -487,12 +487,12 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 1, 0, 0);
+        buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 7, 0, 0);
         int tTotalHeight = Math.min(12, stackSize.stackSize + 2); // min 2 output layer, so at least 1 + 2 height
         for (int i = 1; i < tTotalHeight - 1; i++) {
-            buildPiece(STRUCTURE_PIECE_LAYER, stackSize, hintsOnly, 1, i, 0);
+            buildPiece(STRUCTURE_PIECE_LAYER, stackSize, hintsOnly, 7, 5 * i, 0);
         }
-        buildPiece(STRUCTURE_PIECE_TOP_HINT, stackSize, hintsOnly, 1, tTotalHeight - 1, 0);
+        buildPiece(STRUCTURE_PIECE_TOP_HINT, stackSize, hintsOnly, 7, 5 * (tTotalHeight - 1), 0);
     }
 
     @Override
@@ -501,18 +501,18 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         mHeight = 0;
         int built =
-                survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, realBudget, source, actor, false, true);
+                survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 7, 0, 0, realBudget, source, actor, false, true);
         if (built >= 0) return built;
         int tTotalHeight = Math.min(12, stackSize.stackSize + 2); // min 2 output layer, so at least 1 + 2 height
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivialBuildPiece(
-                    STRUCTURE_PIECE_LAYER, stackSize, 1, i, 0, realBudget, source, actor, false, true);
+                    STRUCTURE_PIECE_LAYER, stackSize, 7, 5 * mHeight, 0, realBudget, source, actor, false, true);
             if (built >= 0) return built;
         }
-        mHeight = tTotalHeight;
+        mHeight = tTotalHeight - 1;
         return survivialBuildPiece(
-                STRUCTURE_PIECE_TOP_HINT, stackSize, 1, tTotalHeight - 1, 0, realBudget, source, actor, false, true);
+                STRUCTURE_PIECE_TOP_HINT, stackSize, 7, 5 * mHeight, 0, realBudget, source, actor, false, true);
     }
 
     @Override
