@@ -2,6 +2,7 @@ package com.github.technus.tectech.compatibility.dreamcraft;
 
 import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
 
+import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
@@ -293,53 +294,55 @@ public class DreamCraftRecipeLoader {
                 60 * 20,
                 8_000_000);
 
-        // Hypogen Coil
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Casing_Coil_Infinity.get(1),
-                16_777_216 * 2,
-                2048 * 2,
-                32_000_000,
-                1,
-                new Object[] {
-                    new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1L},
-                    GT_OreDictUnificator.get("wireGt02Hypogen", 8L),
-                    GT_ModHandler.getModItem("miscutils", "itemScrewHypogen", 8, 0),
-                    GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
-                    GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
-                    GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
-                },
-                new FluidStack[] {
-                    Materials.Infinity.getMolten(576),
-                },
-                ItemList.Casing_Coil_Hypogen.get(1),
-                60 * 20,
-                8000000 * 4);
+        if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
+            // Hypogen Coil
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    ItemList.Casing_Coil_Infinity.get(1),
+                    16_777_216 * 2,
+                    2048 * 2,
+                    32_000_000,
+                    1,
+                    new Object[] {
+                        new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1L},
+                        GT_OreDictUnificator.get("wireGt02Hypogen", 8L),
+                        GT_ModHandler.getModItem("miscutils", "itemScrewHypogen", 8, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                    },
+                    new FluidStack[] {
+                        Materials.Infinity.getMolten(576),
+                    },
+                    ItemList.Casing_Coil_Hypogen.get(1),
+                    60 * 20,
+                    8000000 * 4);
 
-        // Eternal coil
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Casing_Coil_Hypogen.get(1),
-                16_777_216 * 4,
-                8_192,
-                128_000_000,
-                1,
-                new Object[] {
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SpaceTime, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 8),
-                    GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 1L),
-                    GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
-                    GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
-                    GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
-                    GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
-                    GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
-                    GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
-                },
-                new FluidStack[] {
-                    new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576),
-                },
-                ItemList.Casing_Coil_Eternal.get(1),
-                60 * 20,
-                8_000_000 * 16);
+            // Eternal coil
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    ItemList.Casing_Coil_Hypogen.get(1),
+                    16_777_216 * 4,
+                    8_192,
+                    128_000_000,
+                    1,
+                    new Object[] {
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SpaceTime, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 8),
+                        GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 1L),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                    },
+                    new FluidStack[] {
+                        new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576),
+                    },
+                    ItemList.Casing_Coil_Eternal.get(1),
+                    60 * 20,
+                    8_000_000 * 16);
+        }
 
         // Tesla Base
         GT_Values.RA.addAssemblerRecipe(
@@ -2694,7 +2697,7 @@ public class DreamCraftRecipeLoader {
                 4,
                 new Object[] {
                     getItemContainer("Hull_UEV").get(1L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUHV, 4L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 2L),
                     ItemList.Circuit_Chip_QPIC.get(4L),
                     new Object[] {OrePrefixes.circuit.get(Materials.Bio), 2L},
                     ItemList.UHV_Coil.get(4L),
@@ -2720,7 +2723,7 @@ public class DreamCraftRecipeLoader {
                 8,
                 new Object[] {
                     getItemContainer("Hull_UEV").get(1L),
-                    GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Longasssuperconductornameforuhvwire, 16L),
+                    GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUEVBase, 8L),
                     ItemList.Circuit_Chip_QPIC.get(4L),
                     new Object[] {OrePrefixes.circuit.get(Materials.Bio), 2L},
                     ItemList.UHV_Coil.get(4L),
@@ -3382,85 +3385,88 @@ public class DreamCraftRecipeLoader {
                 4000,
                 1600000);
 
-        // MK4 Computer
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                GregtechItemList.Compressed_Fusion_Reactor.get(1),
-                320000,
-                512,
-                2000000,
-                1,
-                new Object[] {
-                    GregtechItemList.Casing_Fusion_Internal.get(1),
-                    new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1L},
-                    new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1L},
-                    new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1L},
-                    new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1L},
-                    GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 4),
-                    ItemList.Field_Generator_UHV.get(2),
-                    ItemList.Circuit_Wafer_QPIC.get(64),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Longasssuperconductornameforuhvwire, 32),
-                },
-                new FluidStack[] {
-                    Materials.UUMatter.getFluid(50000),
-                    ALLOY.CINOBITE.getFluidStack(9216),
-                    ALLOY.OCTIRON.getFluidStack(9216),
-                    ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(9216),
-                },
-                GregtechItemList.FusionComputer_UV2.get(1),
-                6000,
-                2000000);
+        if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
+            // MK4 Computer
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    GregtechItemList.Compressed_Fusion_Reactor.get(1),
+                    320000,
+                    512,
+                    2000000,
+                    1,
+                    new Object[] {
+                        GregtechItemList.Casing_Fusion_Internal.get(1),
+                        new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1L},
+                        new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1L},
+                        new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1L},
+                        new Object[] {OrePrefixes.circuit.get(Materials.Bio), 1L},
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 4),
+                        ItemList.Field_Generator_UHV.get(2),
+                        ItemList.Circuit_Wafer_QPIC.get(64),
+                        GT_OreDictUnificator.get(
+                                OrePrefixes.wireGt04, Materials.Longasssuperconductornameforuhvwire, 32),
+                    },
+                    new FluidStack[] {
+                        Materials.UUMatter.getFluid(50000),
+                        ALLOY.CINOBITE.getFluidStack(9216),
+                        ALLOY.OCTIRON.getFluidStack(9216),
+                        ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(9216),
+                    },
+                    GregtechItemList.FusionComputer_UV2.get(1),
+                    6000,
+                    2000000);
 
-        // MK4 Coils
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Casing_Fusion_Coil.get(1L),
-                160000,
-                512,
-                2000000,
-                1,
-                new Object[] {
-                    ItemList.Energy_LapotronicOrb2.get(16L),
-                    new Object[] {OrePrefixes.circuit.get(Materials.Master), 16L},
-                    new Object[] {OrePrefixes.circuit.get(Materials.Superconductor), 8L},
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8),
-                    ItemList.Emitter_UHV.get(1),
-                    ItemList.Sensor_UHV.get(1),
+            // MK4 Coils
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Casing_Fusion_Coil.get(1L),
-                },
-                new FluidStack[] {
-                    Materials.UUMatter.getFluid(8000L),
-                    ALLOY.CINOBITE.getFluidStack(2304),
-                    ALLOY.OCTIRON.getFluidStack(2304),
-                    ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(2304),
-                },
-                GregtechItemList.Casing_Fusion_Internal.get(1),
-                1200,
-                2000000);
+                    160000,
+                    512,
+                    2000000,
+                    1,
+                    new Object[] {
+                        ItemList.Energy_LapotronicOrb2.get(16L),
+                        new Object[] {OrePrefixes.circuit.get(Materials.Master), 16L},
+                        new Object[] {OrePrefixes.circuit.get(Materials.Superconductor), 8L},
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8),
+                        ItemList.Emitter_UHV.get(1),
+                        ItemList.Sensor_UHV.get(1),
+                        ItemList.Casing_Fusion_Coil.get(1L),
+                    },
+                    new FluidStack[] {
+                        Materials.UUMatter.getFluid(8000L),
+                        ALLOY.CINOBITE.getFluidStack(2304),
+                        ALLOY.OCTIRON.getFluidStack(2304),
+                        ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(2304),
+                    },
+                    GregtechItemList.Casing_Fusion_Internal.get(1),
+                    1200,
+                    2000000);
 
-        // MK4 Casing
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Casing_Fusion2.get(1L),
-                80000,
-                512,
-                2000000,
-                1,
-                new Object[] {
-                    new Object[] {OrePrefixes.circuit.get(Materials.Data), 16L},
-                    new Object[] {OrePrefixes.circuit.get(Materials.Elite), 8L},
-                    GT_OreDictUnificator.get(OrePrefixes.block, Materials.TungstenCarbide, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8),
-                    ItemList.Electric_Motor_UHV.get(2),
-                    ItemList.Electric_Piston_UHV.get(1),
+            // MK4 Casing
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Casing_Fusion2.get(1L),
-                },
-                new FluidStack[] {
-                    Materials.UUMatter.getFluid(1000L),
-                    ALLOY.CINOBITE.getFluidStack(576),
-                    ALLOY.OCTIRON.getFluidStack(576),
-                    ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(576),
-                },
-                GregtechItemList.Casing_Fusion_External.get(1),
-                300,
-                2000000);
+                    80000,
+                    512,
+                    2000000,
+                    1,
+                    new Object[] {
+                        new Object[] {OrePrefixes.circuit.get(Materials.Data), 16L},
+                        new Object[] {OrePrefixes.circuit.get(Materials.Elite), 8L},
+                        GT_OreDictUnificator.get(OrePrefixes.block, Materials.TungstenCarbide, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8),
+                        ItemList.Electric_Motor_UHV.get(2),
+                        ItemList.Electric_Piston_UHV.get(1),
+                        ItemList.Casing_Fusion2.get(1L),
+                    },
+                    new FluidStack[] {
+                        Materials.UUMatter.getFluid(1000L),
+                        ALLOY.CINOBITE.getFluidStack(576),
+                        ALLOY.OCTIRON.getFluidStack(576),
+                        ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(576),
+                    },
+                    GregtechItemList.Casing_Fusion_External.get(1),
+                    300,
+                    2000000);
+        }
 
         // Draconic Evolution Fusion Crafter Controller
         if (Loader.isModLoaded("AWWayofTime") && Loader.isModLoaded("EMT")) {
@@ -4708,13 +4714,14 @@ public class DreamCraftRecipeLoader {
         Fluid mutated_living_solder = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
                 ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
                 : FluidRegistry.getFluid("molten.solderingalloy");
+        Fluid celestialTungsten = FluidRegistry.getFluid("molten.celestialtungsten");
 
         int total_computation = 96_000;
         int comp_per_second = 128;
         int research_eu_per_tick = 8_000_000;
         int research_amperage = 1;
 
-        FluidStack fluid_0 = new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 576);
+        FluidStack fluid_0 = celestialTungsten != null ? new FluidStack(celestialTungsten, 576) : null;
         FluidStack fluid_1 = new FluidStack(mutated_living_solder, 2592);
         FluidStack fluid_2 = Materials.Lubricant.getFluid(4000);
 
@@ -4948,14 +4955,16 @@ public class DreamCraftRecipeLoader {
         Fluid mutated_living_solder = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
                 ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
                 : FluidRegistry.getFluid("molten.solderingalloy");
+        Fluid hypogen = FluidRegistry.getFluid("molten.hypogen");
+        Fluid celestialTungsten = FluidRegistry.getFluid("molten.celestialtungsten");
 
         int total_computation = 192_000;
         int comp_per_second = 256;
         int research_eu_per_tick = 32_000_000;
         int research_amperage = 1;
 
-        FluidStack fluid_0 = new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576);
-        FluidStack fluid_1 = new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 576);
+        FluidStack fluid_0 = hypogen != null ? new FluidStack(hypogen, 576) : null;
+        FluidStack fluid_1 = celestialTungsten != null ? new FluidStack(celestialTungsten, 576) : null;
         FluidStack fluid_2 = new FluidStack(mutated_living_solder, 2592);
         FluidStack fluid_3 = Materials.Lubricant.getFluid(4000);
 
