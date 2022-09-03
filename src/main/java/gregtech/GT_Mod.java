@@ -29,6 +29,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.internal.IGT_Mod;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.ReverseShapedRecipe;
@@ -180,6 +181,14 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.DW = new GT_DummyWorld();
         GT_Values.NW = new GT_Network();
         GT_Values.RA = new GT_RecipeAdder();
+
+        for (int i = 0; i < 4; i++) {
+            GregTech_API.registerTileEntityConstructor(i, i2 -> GregTech_API.constructBaseMetaTileEntity());
+        }
+        for (int i = 4; i < 12; i++) {
+            GregTech_API.registerTileEntityConstructor(i, i2 -> new BaseMetaPipeEntity());
+        }
+
         //noinspection deprecation// Need run-time initialization
         GregTech_API.sRecipeAdder = GT_Values.RA;
 

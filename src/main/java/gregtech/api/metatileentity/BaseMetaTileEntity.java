@@ -1839,7 +1839,14 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
     @Override
     public void setMetaTileEntity(IMetaTileEntity aMetaTileEntity) {
-        mMetaTileEntity = (MetaTileEntity) aMetaTileEntity;
+        if (aMetaTileEntity instanceof MetaTileEntity || aMetaTileEntity == null)
+            mMetaTileEntity = (MetaTileEntity) aMetaTileEntity;
+        else {
+            GT_FML_LOGGER.error(
+                    "Unknown meta tile entity set! Class {}, inventory name {}.",
+                    aMetaTileEntity.getClass(),
+                    aMetaTileEntity.getInventoryName());
+        }
     }
 
     public byte getLightValue() {
