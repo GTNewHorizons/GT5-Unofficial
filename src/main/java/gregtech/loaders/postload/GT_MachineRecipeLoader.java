@@ -2373,21 +2373,21 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addFluidExtractionRecipe(
                 GT_ModHandler.getModItem("IC2", "blockAlloyGlass", 1L, 0),
                 GT_Values.NI,
-                Materials.ReinforceGlass.getFluid(144),
+                Materials.ReinforceGlass.getMolten(144),
                 10000,
                 100,
                 1920);
         GT_Values.RA.addFluidExtractionRecipe(
-                GT_ModHandler.getModItem(MOD_ID_DC, "item.ReinforcedGlassPLate", 2L, 0),
+                GT_ModHandler.getModItem(MOD_ID_DC, "item.ReinforcedGlassPlate", 1L, 0),
                 GT_Values.NI,
-                Materials.ReinforceGlass.getFluid(144),
+                Materials.ReinforceGlass.getMolten(72),
                 10000,
-                75,
+                50,
                 1920);
         GT_Values.RA.addFluidExtractionRecipe(
-                GT_ModHandler.getModItem(MOD_ID_DC, "item.ReinforcedGlassLense", 2L, 0),
+                GT_ModHandler.getModItem(MOD_ID_DC, "item.ReinforcedGlassLense", 1L, 0),
                 GT_Values.NI,
-                Materials.ReinforceGlass.getFluid(144),
+                Materials.ReinforceGlass.getMolten(54),
                 10000,
                 50,
                 1920);
@@ -3523,7 +3523,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addFluidSolidifierRecipe(
                 ItemList.Shape_Mold_Plate.get(0L),
                 Materials.ReinforceGlass.getMolten(72),
-                GT_ModHandler.getModItem(MOD_ID_DC, "item.ReinforcedGlassPLate", 1L, 0),
+                GT_ModHandler.getModItem(MOD_ID_DC, "item.ReinforcedGlassPlate", 1L, 0),
                 160,
                 1920);
         GT_Values.RA.addFluidSolidifierRecipe(
@@ -4972,7 +4972,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 24);
         GT_Values.RA.addFluidSolidifierRecipe(
                 ItemList.Shape_Mold_Ball.get(0L),
-                Materials.ReinforceGlass.getFluid(288),
+                Materials.ReinforceGlass.getMolten(288),
                 ItemList.Circuit_Parts_Reinforced_Glass_Tube.get(1),
                 200,
                 240);

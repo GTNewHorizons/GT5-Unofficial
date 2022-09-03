@@ -149,9 +149,9 @@ public class GT_RecipeRegistrator {
 
     public static void registerMaterialRecycling(ItemStack aStack, ItemData aData) {
         if (GT_Utility.isStackInvalid(aStack)
-                || GT_Utility.areStacksEqual(new ItemStack(Items.blaze_rod), aStack)
                 || aData == null
                 || !aData.hasValidMaterialData()
+                || !aData.mMaterial.mMaterial.mAutoGenerateRecycleRecipes
                 || aData.mMaterial.mAmount <= 0
                 || GT_Utility.getFluidForFilledItem(aStack, false) != null) return;
         registerReverseMacerating(GT_Utility.copyAmount(1, aStack), aData, aData.mPrefix == null);
