@@ -20,7 +20,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.items.GT_CoolantCellIC_Item;
 import gregtech.api.items.GT_CoolantCell_Item;
@@ -1047,10 +1046,10 @@ public class GregTech_API {
     }
 
     public static void registerTileEntityConstructor(int meta, IntFunction<TileEntity> constructor) {
-        if (meta < 0 || meta > 15 || constructor == null)
-            throw new IllegalArgumentException();
+        if (meta < 0 || meta > 15 || constructor == null) throw new IllegalArgumentException();
         if (teCreators[meta] != null)
-            throw new IllegalStateException("previous constructor: " + teCreators[meta] + " new constructor: " + constructor + " meta:" + meta);
+            throw new IllegalStateException(
+                    "previous constructor: " + teCreators[meta] + " new constructor: " + constructor + " meta:" + meta);
         teCreators[meta] = constructor;
     }
 
