@@ -16700,6 +16700,8 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.SulfuricAcid.getCells(1),
                 320,
                 8);
+
+        // S + O3 + H2O = H2SO4
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {GT_Utility.getIntegratedCircuit(24), Materials.Sulfur.getDust(1)},
                 new FluidStack[] {Materials.Oxygen.getGas(3000), Materials.Water.getFluid(1000)},
@@ -16714,13 +16716,17 @@ public class GT_MachineRecipeLoader implements Runnable {
                 null,
                 260,
                 480);
+
+        // H2S + O4 = H2SO4
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
-                new FluidStack[] {Materials.HydricSulfide.getGas(1000), Materials.Oxygen.getGas(3000)},
+                new FluidStack[] {Materials.HydricSulfide.getGas(1000), Materials.Oxygen.getGas(4000)},
                 new FluidStack[] {Materials.SulfuricAcid.getFluid(1000)},
                 null,
                 480,
                 30);
+
+        // SO2 + O + H2O = H2SO4
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
                 new FluidStack[] {
