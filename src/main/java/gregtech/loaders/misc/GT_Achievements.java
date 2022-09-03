@@ -372,7 +372,8 @@ public class GT_Achievements {
             return null;
         }
         if (recipe.getOutput(0) == null) {
-            GT_Mod.GT_FML_LOGGER.error("Invalid achievement registration attempt for recipe with null output", new Exception());
+            GT_Mod.GT_FML_LOGGER.error(
+                    "Invalid achievement registration attempt for recipe with null output", new Exception());
             return null;
         }
         if (this.achievementList.get(recipe.getOutput(0).getUnlocalizedName()) == null) {

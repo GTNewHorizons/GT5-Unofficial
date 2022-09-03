@@ -1842,7 +1842,10 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         if (aMetaTileEntity instanceof MetaTileEntity || aMetaTileEntity == null)
             mMetaTileEntity = (MetaTileEntity) aMetaTileEntity;
         else {
-            GT_FML_LOGGER.error("Unknown meta tile entity set! Class {}, inventory name {}.", aMetaTileEntity.getClass(), aMetaTileEntity.getInventoryName());
+            GT_FML_LOGGER.error(
+                    "Unknown meta tile entity set! Class {}, inventory name {}.",
+                    aMetaTileEntity.getClass(),
+                    aMetaTileEntity.getInventoryName());
         }
     }
 
