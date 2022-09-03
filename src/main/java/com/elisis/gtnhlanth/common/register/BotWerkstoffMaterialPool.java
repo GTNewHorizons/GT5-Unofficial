@@ -7,6 +7,7 @@ import static gregtech.api.enums.TextureSet.*;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.util.Pair;
+import net.minecraft.util.EnumChatFormatting;
 
 /*
  *
@@ -15,6 +16,9 @@ import com.github.bartimaeusnek.bartworks.util.Pair;
  */
 @SuppressWarnings("unchecked")
 public class BotWerkstoffMaterialPool implements Runnable {
+
+    private static final String DEPRECATED =
+            EnumChatFormatting.DARK_RED + "Deprecated; Will be removed in the next update";
 
     public static final Werkstoff TungsticAcid = new Werkstoff(
             new short[] {0xf5, 0xf1, 0x16},
@@ -145,6 +149,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff LMP103S = new Werkstoff(
             new short[] {0xbf, 0x2f, 0xc2},
             "LMP-103S",
+            DEPRECATED,
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -279,6 +284,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff MonomethylhydrazineFuelMix = new Werkstoff(
             new short[] {0x78, 0xe3, 0xa7},
             "Monomethylhydrazine Fuel Mix",
+            DEPRECATED,
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -287,6 +293,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff UnsymmetricalDimethylhydrazineFuelMix = new Werkstoff(
             new short[] {0xc8, 0xff, 0x00},
             "Unsymmetrical Dimethylhydrazine Fuel Mix",
+            DEPRECATED,
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
