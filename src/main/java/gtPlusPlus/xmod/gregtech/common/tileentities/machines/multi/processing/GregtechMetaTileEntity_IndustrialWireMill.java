@@ -15,6 +15,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -22,9 +23,15 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialWireMill
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialWireMill>
@@ -32,6 +39,7 @@ public class GregtechMetaTileEntity_IndustrialWireMill
 
     private int mCasing;
     private IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> STRUCTURE_DEFINITION = null;
+    private boolean isBussesSeparate;
 
     public GregtechMetaTileEntity_IndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -150,6 +158,45 @@ public class GregtechMetaTileEntity_IndustrialWireMill
     @Override
     public boolean checkRecipe(final ItemStack aStack) {
         return checkRecipeGeneric((4 * GT_Utility.getTier(this.getMaxInputVoltage())), 75, 200);
+    }
+
+    @Override
+    public boolean checkRecipeGeneric(
+            int aMaxParallelRecipes, long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
+        if (!isBussesSeparate)
+            return super.checkRecipeGeneric(aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
+        List<ItemStack> buffer = new ArrayList<>(16);
+        FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
+        for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
+            IGregTechTileEntity inv = tHatch.getBaseMetaTileEntity();
+            for (int i = inv.getSizeInventory() - 1; i >= 0; i--) {
+                if (inv.getStackInSlot(i) != null) buffer.add(inv.getStackInSlot(i));
+            }
+            ItemStack[] tItemInputs = buffer.toArray(new ItemStack[0]);
+            if (checkRecipeGeneric(
+                    tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        isBussesSeparate = !isBussesSeparate;
+        aPlayer.addChatMessage(new ChatComponentTranslation(
+                isBussesSeparate ? "interaction.separateBusses.enabled" : "interaction.separateBusses.disabled"));
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setBoolean("isBussesSeparate", isBussesSeparate);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
+        super.loadNBTData(aNBT);
     }
 
     @Override
