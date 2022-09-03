@@ -11,6 +11,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -135,6 +136,10 @@ public class GTplusplus implements ActionListener {
     public GTplusplus() {
         super();
         INIT_PHASE.SUPER.setPhaseActive(true);
+
+        for (int i = 12; i < 16; i++) {
+            GregTech_API.registerTileEntityConstructor(i, Meta_GT_Proxy::constructCustomGregtechMetaTileEntityByMeta);
+        }
     }
 
     // Pre-Init

@@ -5,7 +5,6 @@ import static gtPlusPlus.preloader.asm.ClassesToTransform.*;
 import cpw.mods.fml.relauncher.CoreModManager;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.DevHelper;
 import gtPlusPlus.preloader.Preloader_Logger;
 import gtPlusPlus.preloader.asm.AsmConfig;
@@ -75,25 +74,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
     }
 
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        /*
-         * Here we patch all instances of entity.setHealth and replace them with a static function.
-         * Only EntityLivingBase is left untouched, as nothing else truly needs to be calling this method and avoiding forge hooks.
-         * May exclude all vanilla/forge class if this causes issues though.
-         */
-        /*		PatchForge : if (AsmConfig.enabledFixEntitySetHealth && !transformedName.contains("gtPlusPlus.preloader")) {
-
-        	//Skip Vanilla/Forge Classes
-        	if (transformedName.contains("net.minecraft.") || transformedName.contains("cpw.")) {
-        		//break PatchForge;
-        	}
-
-        	ClassTransformer_Forge_EntityLivingBase_SetHealth aForgeHealthFix = new ClassTransformer_Forge_EntityLivingBase_SetHealth(transformedName, basicClass);
-        	if (aForgeHealthFix.isValidTransformer() && aForgeHealthFix.didPatchClass()) {
-        		Preloader_Logger.INFO("Fix EntityLivingBase.setHealth misuse", "Transforming "+transformedName);
-        		basicClass = aForgeHealthFix.getWriter().toByteArray();
-        	}
-        }*/
-
         // Is this environment obfuscated? (Extra checks just in case some weird shit happens during the check)
         final boolean obfuscated = checkObfuscated();
 
@@ -128,11 +108,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
             return classWriter.toByteArray();
         }
 
-        // Log Handling of CodeChicken
-        if (transformedName.equals("codechicken.nei.guihook.GuiContainerManager")) {
-            // Preloader_Logger.INFO("CodeChicken GuiContainerManager Patch", "Transforming "+transformedName);
-            // return new ClassTransformer_CC_GuiContainerManager(basicClass).getWriter().toByteArray();
-        }
         // Fix the OreDictionary COFH
         if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER) && (AsmConfig.enableCofhPatch || !obfuscated)) {
             Preloader_Logger.INFO("COFH", "Transforming " + transformedName);
@@ -171,92 +146,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
             }
         }
 
-        /**
-         * Gregtech ASM Patches
-         */
-
-        //		if (transformedName.equals(GT_UTILITY)) {
-        //			Preloader_Logger.INFO("Gregtech Utilities Patch", "Transforming "+transformedName);
-        //			return new ClassTransformer_GT_Utility(basicClass, transformedName).getWriter().toByteArray();
-        //		}
-        // Try patch achievements
-        if (transformedName.equals(GT_ACHIEVEMENTS)) {
-            Preloader_Logger.INFO("Gregtech Achievements Patch", "Transforming " + transformedName);
-            return new ClassTransformer_GT_Achievements_CrashFix(basicClass, obfuscated)
-                    .getWriter()
-                    .toByteArray();
-        }
-
-        // Fix bad handling of a loop left from original decompilation
-        // Also Fix Achievements, although currently disabled.
-        if (transformedName.equals(GT_CLIENT_PROXY)) {
-            Preloader_Logger.INFO("Gregtech Client Proxy Patch", "Transforming " + transformedName);
-            return new ClassTransformer_GT_Client(basicClass, obfuscated).getByteArray();
-        }
-
-        // Make GT packets safer, fill them with debug info.
-        if (transformedName.equals(GT_PACKET_TILE_ENTITY)) {
-            Preloader_Logger.INFO("Gregtech GT_Packet_TileEntity Patch", "Transforming " + transformedName);
-            return new ClassTransformer_GT_Packet_TileEntity(basicClass, obfuscated)
-                    .getWriter()
-                    .toByteArray();
-        }
-        // Make the setting of GT Tiles safer, so as not to crash the client.
-        if (transformedName.equals(GT_BASE_META_TILE_ENTITY)) {
-            Preloader_Logger.INFO("Gregtech setMetaTileEntity Patch", "Transforming " + transformedName);
-            return new ClassTransformer_GT_BaseMetaTileEntity(basicClass)
-                    .getWriter()
-                    .toByteArray();
-        }
-        // Add extra tools if we're in a dev environment.
-        if (transformedName.equals(GT_METAGENERATED_TOOL) && CORE_Preloader.DEV_ENVIRONMENT) {
-            Preloader_Logger.INFO("Gregtech Additional Tools Patch", "Transforming " + transformedName);
-            return new ClassTransformer_GT_MetaGenerated_Tool(basicClass)
-                    .getWriter()
-                    .toByteArray();
-        }
-        // Fix log handling on the charcoal pit
-        if (transformedName.equals(GT_MTE_CHARCOAL_PIT) && AsmConfig.enableGtCharcoalPitFix) {
-            Preloader_Logger.INFO("GT Charcoal Pit Fix", "Transforming " + transformedName);
-            return new ClassTransformer_GT_CharcoalPit(basicClass, obfuscated)
-                    .getWriter()
-                    .toByteArray();
-        }
-
-        // Patching Meta Tile Tooltips
-        if (transformedName.equals(GT_ITEM_MACHINES) && AsmConfig.enableGtTooltipFix) {
-            // Preloader_Logger.INFO("Gregtech Tooltip Patch", "Transforming "+transformedName);
-            // return new ClassTransformer_GT_ItemMachines_Tooltip(basicClass, false).getWriter().toByteArray();
-        }
-
-        if (transformedName.equals(GT_BLOCK_MACHINES)) {
-            // Fix GT NBT Persistency issue
-            Preloader_Logger.INFO("Gregtech NBT Persistency Patch", "Transforming " + transformedName);
-            byte[] g = new ClassTransformer_GT_BlockMachines_NBT(basicClass, false)
-                    .getWriter()
-                    .toByteArray();
-            Preloader_Logger.INFO("Gregtech getTileEntityBaseType Patch", "Transforming " + transformedName);
-            return new ClassTransformer_GT_BlockMachines_MetaPipeEntity(g, 0)
-                    .getWriter()
-                    .toByteArray();
-        }
-        if (transformedName.equals(GT_METAPIPE_ITEM)
-                || transformedName.equals(GT_METAPIPE_FRAME)
-                || transformedName.equals(GT_METAPIPE_FLUID)) {
-            Preloader_Logger.INFO("Gregtech getTileEntityBaseType Patch", "Transforming " + transformedName);
-            int mode = 0;
-            if (transformedName.equals(GT_METAPIPE_ITEM)) {
-                mode = 1;
-            } else if (transformedName.equals(GT_METAPIPE_FRAME)) {
-                mode = 2;
-            } else {
-                mode = 3;
-            }
-            return new ClassTransformer_GT_BlockMachines_MetaPipeEntity(basicClass, mode)
-                    .getWriter()
-                    .toByteArray();
-        }
-
         // Fix IC2 Wrench Harvesting
         for (String y : IC2_WRENCH_PATCH_CLASS_NAMES) {
             if (transformedName.equals(y)) {
@@ -267,12 +156,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
             }
         }
 
-        // This is breaking IC2 Hazmat, moved to hodgepodge
-        //		if (transformedName.equals(IC2_ITEM_ARMOUR_HAZMAT)) {
-        //			Preloader_Logger.INFO("IC2 Hazmat Patch", "Transforming "+transformedName);
-        //			return new ClassTransformer_IC2_Hazmat(basicClass, transformedName).getWriter().toByteArray();
-        //		}
-
         // Fix Thaumcraft Shit
         // Patching ItemWispEssence to allow invalid item handling
         if (transformedName.equals(THAUMCRAFT_ITEM_WISP_ESSENCE) && AsmConfig.enableTcAspectSafety) {
@@ -280,11 +163,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
             return new ClassTransformer_TC_ItemWispEssence(basicClass, obfuscated)
                     .getWriter()
                     .toByteArray();
-        }
-        // Fix Thaumic Tinkerer Shit
-        if (transformedName.equals(THAUMICTINKERER_TILE_REPAIRER) && AsmConfig.enableThaumicTinkererRepairFix) {
-            // Preloader_Logger.INFO("Thaumic Tinkerer RepairItem Patch", "Transforming "+transformedName);
-            // return new ClassTransformer_TT_ThaumicRestorer(basicClass).getWriter().toByteArray();
         }
 
         return basicClass;
