@@ -201,7 +201,13 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
 
     @Override
     public ItemStack getStackInSlot(int aIndex) {
-        return stacks != null && aIndex < stacks.length ? stacks[aIndex] : null;
+        if (stacks == null || aIndex >= stacks.length) {
+            return null;
+        }
+        // We return a stack with size 0 to prevent dropping when the hatch is broken
+        ItemStack stackCopy = stacks[aIndex].copy();
+        stackCopy.stackSize = 0;
+        return stackCopy;
     }
 
     @Override
