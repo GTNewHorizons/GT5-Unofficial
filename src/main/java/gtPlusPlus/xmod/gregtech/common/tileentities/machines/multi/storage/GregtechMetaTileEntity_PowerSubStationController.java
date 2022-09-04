@@ -723,8 +723,10 @@ public class GregtechMetaTileEntity_PowerSubStationController
                     + EnumChatFormatting.RESET + "]",
             "----------------------",
             "Stats for Nerds",
-            "Average Input: " + EnumChatFormatting.BLUE + this.mAverageEuAdded + EnumChatFormatting.RESET + " EU",
-            "Average Output: " + EnumChatFormatting.GOLD + this.mAverageEuConsumed + EnumChatFormatting.RESET + " EU",
+            "Average Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.getAverageEuAdded())
+                    + EnumChatFormatting.RESET + " EU",
+            "Average Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.getAverageEuConsumed())
+                    + EnumChatFormatting.RESET + " EU",
             "Total Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.mTotalEnergyAdded)
                     + EnumChatFormatting.RESET + " EU",
             "Total Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.mTotalEnergyConsumed)
