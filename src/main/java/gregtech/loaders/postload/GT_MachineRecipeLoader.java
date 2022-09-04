@@ -2717,7 +2717,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     ItemList.Electric_Pump_LV.get(1L),
                     ItemList.Electric_Motor_LV.get(1L),
                     GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Steel), 2L),
-                    GT_Utility.getIntegratedCircuit(2)
+                    GT_Utility.getIntegratedCircuit(5)
                 },
                 GT_Values.NF,
                 ItemList.Steam_Valve_LV.get(1L),
@@ -2728,7 +2728,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     ItemList.Electric_Pump_MV.get(1L),
                     ItemList.Electric_Motor_MV.get(1L),
                     GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Aluminium), 2L),
-                    GT_Utility.getIntegratedCircuit(2)
+                    GT_Utility.getIntegratedCircuit(5)
                 },
                 GT_Values.NF,
                 ItemList.Steam_Valve_MV.get(1L),
@@ -2739,7 +2739,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     ItemList.Electric_Pump_HV.get(1L),
                     ItemList.Electric_Motor_HV.get(1L),
                     GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.StainlessSteel), 2L),
-                    GT_Utility.getIntegratedCircuit(2)
+                    GT_Utility.getIntegratedCircuit(5)
                 },
                 GT_Values.NF,
                 ItemList.Steam_Valve_HV.get(1L),
@@ -2750,7 +2750,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     ItemList.Electric_Pump_EV.get(1L),
                     ItemList.Electric_Motor_EV.get(1L),
                     GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Titanium), 2L),
-                    GT_Utility.getIntegratedCircuit(2)
+                    GT_Utility.getIntegratedCircuit(5)
                 },
                 GT_Values.NF,
                 ItemList.Steam_Valve_EV.get(1L),
@@ -2761,7 +2761,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     ItemList.Electric_Pump_IV.get(1L),
                     ItemList.Electric_Motor_IV.get(1L),
                     GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.TungstenSteel), 2L),
-                    GT_Utility.getIntegratedCircuit(2)
+                    GT_Utility.getIntegratedCircuit(5)
                 },
                 GT_Values.NF,
                 ItemList.Steam_Valve_IV.get(1L),
