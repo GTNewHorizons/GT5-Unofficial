@@ -239,12 +239,25 @@ public class GT_MetaTileEntity_AssemblyLine
             // If we run into missing buses/hatches or bad inputs, we go to the next data stick.
             // This check only happens if we have a valid up to date data stick.
 
+            // first validate we have enough input busses and input hatches for this recipe
+            if (mInputBusses.size() < tRecipe.mInputs.length || mInputHatches.size() < tRecipe.mFluidInputs.length) {
+                if (GT_Values.D1) {
+                    GT_FML_LOGGER.info(
+                            "Not enough sources: Need ({}, {}), has ({}, {})",
+                            mInputBusses.size(),
+                            tRecipe.mInputs.length,
+                            mInputHatches.size(),
+                            tRecipe.mFluidInputs.length);
+                }
+                continue;
+            }
+
             // Check Inputs allign
             int aItemCount = tRecipe.mInputs.length;
             tStack = new int[aItemCount];
             for (int i = 0; i < aItemCount; i++) {
                 GT_MetaTileEntity_Hatch_InputBus tInputBus = mInputBusses.get(i);
-                if (tInputBus == null) {
+                if (!isValidMetaTileEntity(tInputBus)) {
                     continue nextDataStick;
                 }
                 ItemStack tSlotStack = tInputBus.getStackInSlot(0);
@@ -262,7 +275,7 @@ public class GT_MetaTileEntity_AssemblyLine
             tFluids = new int[aFluidCount];
             tFluidSlot = new int[aFluidCount];
             for (int i = 0; i < aFluidCount; i++) {
-                if (mInputHatches.get(i) == null) {
+                if (!isValidMetaTileEntity(mInputHatches.get(i))) {
                     continue nextDataStick;
                 } else {
                     if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput) {
