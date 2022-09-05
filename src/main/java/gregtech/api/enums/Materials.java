@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 
@@ -7,6 +8,7 @@ import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -2604,8 +2606,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             }
             aMaterial.mHasGas = GregTech_API.sMaterialProperties.get(aConfigPath, "AddGas", aMaterial.mHasGas);
             if (aMaterial.mHasGas) {
-                GT_Mod.gregtechproxy.addFluid(
-                        aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, 2, aMaterial.mGasTemp);
+                GT_FluidFactory.of(
+                        aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, GAS, aMaterial.mGasTemp);
             }
         }
     }
