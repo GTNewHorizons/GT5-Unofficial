@@ -915,26 +915,31 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         Materials.Ice.mGas = Materials.Water.mGas;
         Materials.Water.mGas.setTemperature(375).setGaseous(true);
 
-        ItemList.sOilExtraHeavy = (Fluid) GT_FluidFactory.of("liquid_extra_heavy_oil", "Very Heavy Oil", LIQUID, 295);
-        ItemList.sEpichlorhydrin = (Fluid) GT_FluidFactory.builder("liquid_epichlorhydrin")
+        ItemList.sOilExtraHeavy = GT_FluidFactory.of("liquid_extra_heavy_oil", "Very Heavy Oil", LIQUID, 295)
+                .asFluid();
+        ItemList.sEpichlorhydrin = GT_FluidFactory.builder("liquid_epichlorhydrin")
                 .withLocalizedName("Epichlorohydrin")
                 .withStateTemperature(LIQUID, 295)
                 .buildAddFluid()
                 .configureMaterials(Materials.Epichlorohydrin)
-                .registerBContainers(Materials.Epichlorohydrin.getCells(1), Materials.Empty.getCells(1));
-        ItemList.sDrillingFluid = (Fluid) GT_FluidFactory.of("liquid_drillingfluid", "Drilling Fluid", LIQUID, 295);
-        ItemList.sToluene = (Fluid) GT_FluidFactory.builder("liquid_toluene")
+                .registerBContainers(Materials.Epichlorohydrin.getCells(1), Materials.Empty.getCells(1))
+                .asFluid();
+        ItemList.sDrillingFluid = GT_FluidFactory.of("liquid_drillingfluid", "Drilling Fluid", LIQUID, 295)
+                .asFluid();
+        ItemList.sToluene = GT_FluidFactory.builder("liquid_toluene")
                 .withLocalizedName("Toluene")
                 .withStateTemperature(LIQUID, 295)
                 .buildAddFluid()
                 .configureMaterials(Materials.Toluene)
-                .registerBContainers(Materials.Toluene.getCells(1), Materials.Empty.getCells(1));
-        ItemList.sNitrationMixture = (Fluid) GT_FluidFactory.builder("liquid_nitrationmixture")
+                .registerBContainers(Materials.Toluene.getCells(1), Materials.Empty.getCells(1))
+                .asFluid();
+        ItemList.sNitrationMixture = GT_FluidFactory.builder("liquid_nitrationmixture")
                 .withLocalizedName("Nitration Mixture")
                 .withStateTemperature(LIQUID, 295)
                 .buildAddFluid()
                 .configureMaterials(Materials.NitrationMixture)
-                .registerBContainers(Materials.NitrationMixture.getCells(1), Materials.Empty.getCells(1));
+                .registerBContainers(Materials.NitrationMixture.getCells(1), Materials.Empty.getCells(1))
+                .asFluid();
 
         GT_FluidFactory.builder("liquid_heavy_oil")
                 .withLocalizedName("Heavy Oil")
@@ -968,14 +973,15 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 .registerBContainers(
                         GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 1L),
                         ItemList.Cell_Empty.get(1L));
-        ItemList.sHydricSulfur = (Fluid) GT_FluidFactory.builder("liquid_hydricsulfur")
+        ItemList.sHydricSulfur = GT_FluidFactory.builder("liquid_hydricsulfur")
                 .withLocalizedName("Hydrogen Sulfide")
                 .withStateTemperature(GAS, 295)
                 .buildAddFluid()
                 .configureMaterials(Materials.HydricSulfide)
                 .registerBContainers(
                         GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydricSulfide, 1L),
-                        ItemList.Cell_Empty.get(1L));
+                        ItemList.Cell_Empty.get(1L))
+                .asFluid();
         GT_FluidFactory.builder("gas_sulfuricgas")
                 .withLocalizedName("Sulfuric Gas")
                 .withStateTemperature(GAS, 295)

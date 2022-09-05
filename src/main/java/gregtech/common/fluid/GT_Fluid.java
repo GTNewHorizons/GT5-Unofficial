@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_Fluid extends Fluid implements IGT_Fluid {
+public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     private final String localizedName;
     private final ResourceLocation stillIconResourceLocation;
     private final ResourceLocation flowingIconResourceLocation;
@@ -155,6 +155,14 @@ public class GT_Fluid extends Fluid implements IGT_Fluid {
             default:
                 throw new IllegalStateException("Unexpected FluidState: " + fluidState);
         }
+        return this;
+    }
+
+    /**
+     * @inheritDoc from {@link IGT_Fluid#asFluid()}
+     */
+    @Override
+    public Fluid asFluid() {
         return this;
     }
 

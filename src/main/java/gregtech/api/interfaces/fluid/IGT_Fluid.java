@@ -4,10 +4,11 @@ import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
-public interface IGT_Fluid extends Runnable {
+public interface IGT_Fluid {
 
     /**
      * Registers this {@link IGT_Fluid} to ths {@link FluidRegistry}
@@ -45,12 +46,17 @@ public interface IGT_Fluid extends Runnable {
     IGT_Fluid registerPContainers(final ItemStack fullContainer, final ItemStack emptyContainer);
 
     /**
-     * Configures the {@link Materials}'s fluids from this {@link IGT_Fluid}'s state
+     * Updates the {@link Materials}'s fluids from this {@link IGT_Fluid}'s state
      *
      * @param material the {@link Materials} to configure based on this {@link IGT_Fluid} and {@link FluidState}
      * @return The {@link IGT_Fluid} for chaining
      */
     IGT_Fluid configureMaterials(Materials material);
+
+    /**
+     * @return this {@link IGT_Fluid} cast to {@link Fluid}
+     */
+    Fluid asFluid();
 
     /**
      * @return the {@link ResourceLocation} of the still fluid texture
