@@ -162,12 +162,13 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
                 .addInfo("Controller Block for the Advanced Distillation Tower")
-                .addInfo("Use 15% less energy in distillery mode")
+                .addInfo("Use 85% less energy in distillery mode")
                 .addInfo("250%/100% faster in DT/distillery mode")
                 .addInfo("Right click the controller with screwdriver to change mode.")
                 .addInfo("Max parallel dictated by tower tier and mode")
                 .addInfo("DTower Mode: T1=4, T2=12")
                 .addInfo("Distilery Mode: Tower Tier * (4*InputTier)")
+                .addInfo("Distilery Mode require a full height tower")
                 .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
                 .addCasingInfo("Clean Stainless Steel Machine Casing", 7)
@@ -235,7 +236,12 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
             // not top
             mHeight++;
         }
-        return mTopLayerFound && mHeight >= 2 && checkHatch();
+        boolean check = mTopLayerFound && mHeight >= 2 && checkHatch();
+        if (check && mHeight < 11) {
+            // force the mode to DT if not in full height
+            mMode = Mode.DistillationTower;
+        }
+        return check;
     }
 
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -291,6 +297,10 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
 
     @Override
     public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (mHeight < 11) {
+            PlayerUtils.messagePlayer(aPlayer, "Cannot switch mode if not in full height.");
+            return;
+        }
         mMode = mMode.next();
         PlayerUtils.messagePlayer(aPlayer, "Now running in " + mMode + " Mode.");
     }
@@ -426,7 +436,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
 
     @Override
     public int getEuDiscountForParallelism() {
-        return 85;
+        return 15;
     }
 
     private int getTierOfTower() {
