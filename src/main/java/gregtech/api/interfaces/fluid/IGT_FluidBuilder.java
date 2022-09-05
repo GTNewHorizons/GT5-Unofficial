@@ -30,31 +30,31 @@ public interface IGT_FluidBuilder {
      * @param stillIconResourceLocation the {@link ResourceLocation} of the still fluid icon
      * @return {@link IGT_FluidBuilder} self for call chaining
      */
-    IGT_FluidBuilder withStillIconResourceLocation(ResourceLocation stillIconResourceLocation);
+    IGT_FluidBuilder withStillIconResourceLocation(final ResourceLocation stillIconResourceLocation);
 
     /**
      * @param flowingIconResourceLocation the {@link ResourceLocation} of the flowing fluid icon
      * @return {@link IGT_FluidBuilder} self for call chaining
      */
-    IGT_FluidBuilder withFlowingIconResourceLocation(ResourceLocation flowingIconResourceLocation);
+    IGT_FluidBuilder withFlowingIconResourceLocation(final ResourceLocation flowingIconResourceLocation);
 
     /**
      * @param textureName The name of the GregTech mod texture of this {@link IGT_FluidBuilder}
      * @return {@link IGT_FluidBuilder} self for call chaining
      */
-    IGT_FluidBuilder withTextureName(String textureName);
+    IGT_FluidBuilder withTextureName(final String textureName);
 
     /**
      * @param fromGTFluid the {@link IGT_Fluid} to copy the texture from
      * @return {@link IGT_FluidBuilder} self for call chaining
      */
-    IGT_FluidBuilder withTextureFrom(IGT_Fluid fromGTFluid);
+    IGT_FluidBuilder withTextureFrom(final IGT_Fluid fromGTFluid);
 
     /**
      * @param fluidBlock the {@link Block} implementation of the {@link IGT_Fluid}
      * @return {@link IGT_FluidBuilder} self for call chaining
      */
-    IGT_FluidBuilder withFluidBlock(Block fluidBlock);
+    IGT_FluidBuilder withFluidBlock(final Block fluidBlock);
 
     /**
      * @param stillIconResourceLocation   The {@link ResourceLocation} of the still fluid texture
@@ -62,7 +62,7 @@ public interface IGT_FluidBuilder {
      * @return {@link IGT_FluidBuilder} self for call chaining
      */
     IGT_FluidBuilder withTextures(
-            ResourceLocation stillIconResourceLocation, ResourceLocation flowingIconResourceLocation);
+            final ResourceLocation stillIconResourceLocation, final ResourceLocation flowingIconResourceLocation);
 
     /**
      * Builds the {@link IGT_Fluid}

@@ -25,7 +25,8 @@ public interface IGT_Fluid {
      * @param containerSize  The size of the container
      * @return The {@link IGT_Fluid} for chaining
      */
-    IGT_Fluid registerContainers(ItemStack fullContainer, ItemStack emptyContainer, int containerSize);
+    IGT_Fluid registerContainers(
+            final ItemStack fullContainer, final ItemStack emptyContainer, final int containerSize);
 
     /**
      * Registers the bucket-sized 1000L containers in the {@link FluidContainerRegistry} for this {@link IGT_Fluid}
@@ -51,7 +52,7 @@ public interface IGT_Fluid {
      * @param material the {@link Materials} to configure based on this {@link IGT_Fluid} and {@link FluidState}
      * @return The {@link IGT_Fluid} for chaining
      */
-    IGT_Fluid configureMaterials(Materials material);
+    IGT_Fluid configureMaterials(final Materials material);
 
     /**
      * @return this {@link IGT_Fluid} cast to {@link Fluid}
