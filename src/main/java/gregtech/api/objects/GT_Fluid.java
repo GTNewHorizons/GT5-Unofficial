@@ -3,8 +3,13 @@ package gregtech.api.objects;
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.fluid.GT_FluidFactory;
 import net.minecraftforge.fluids.Fluid;
 
+/**
+ * @deprecated use {@link GT_FluidFactory#builder}
+ */
+@Deprecated
 public class GT_Fluid extends Fluid implements Runnable {
     public final String mTextureName;
     private final short[] mRGBa;
