@@ -2550,8 +2550,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             uncrackedFluid = aMaterial.mGas;
         } else return;
         for (int i = 0; i < 3; i++) {
-            crackedFluids[i] = GT_FluidFactory.builder(
-                            namePrefixes[i] + aMaterial.mName.toLowerCase(Locale.ENGLISH))
+            crackedFluids[i] = GT_FluidFactory.builder(namePrefixes[i] + aMaterial.mName.toLowerCase(Locale.ENGLISH))
                     .withTextureFrom((IGT_Fluid) uncrackedFluid)
                     .withLocalizedName(orePrefixes[i].mLocalizedMaterialPre + aMaterial.mDefaultLocalName)
                     .withColorRGBA(aMaterial.mRGBa)
@@ -2602,8 +2601,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             uncrackedFluid = aMaterial.mGas;
         } else return;
         for (int i = 0; i < 3; i++) {
-            crackedFluids[i] = GT_FluidFactory.builder(
-                            namePrefixes[i] + aMaterial.mName.toLowerCase(Locale.ENGLISH))
+            crackedFluids[i] = GT_FluidFactory.builder(namePrefixes[i] + aMaterial.mName.toLowerCase(Locale.ENGLISH))
                     .withTextureFrom((IGT_Fluid) uncrackedFluid)
                     .withLocalizedName(orePrefixes[i].mLocalizedMaterialPre + aMaterial.mDefaultLocalName)
                     .withColorRGBA(aMaterial.mRGBa)
