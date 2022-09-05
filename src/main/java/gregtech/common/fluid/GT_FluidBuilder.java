@@ -42,10 +42,10 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#withStateTemperature(FluidState, int)}
+     * @inheritDoc from {@link IGT_FluidBuilder#withStateAndTemperature(FluidState, int)}
      */
     @Override
-    public IGT_FluidBuilder withStateTemperature(final FluidState fluidState, final int temperature) {
+    public IGT_FluidBuilder withStateAndTemperature(final FluidState fluidState, final int temperature) {
         this.fluidState = fluidState;
         this.temperature = temperature;
         return this;
@@ -121,10 +121,10 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#buildAddFluid()
+     * @inheritDoc from {@link IGT_FluidBuilder#buildAndRegister()
      */
     @Override
-    public IGT_Fluid buildAddFluid() {
+    public IGT_Fluid buildAndRegister() {
         if (stillIconResourceLocation == null) {
             withTextureName(fluidName.toLowerCase(Locale.ENGLISH));
         }

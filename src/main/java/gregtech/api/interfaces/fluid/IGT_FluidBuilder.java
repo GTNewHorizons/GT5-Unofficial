@@ -24,7 +24,7 @@ public interface IGT_FluidBuilder {
      * @param temperature The Kelvin temperature of this {@link IGT_FluidBuilder}
      * @return {@link IGT_FluidBuilder} self for call chaining
      */
-    IGT_FluidBuilder withStateTemperature(final FluidState fluidState, final int temperature);
+    IGT_FluidBuilder withStateAndTemperature(final FluidState fluidState, final int temperature);
 
     /**
      * @param stillIconResourceLocation the {@link ResourceLocation} of the still fluid icon
@@ -78,5 +78,5 @@ public interface IGT_FluidBuilder {
      * @see #build()
      * @see IGT_Fluid#addFluid()
      */
-    IGT_Fluid buildAddFluid();
+    IGT_Fluid buildAndRegister();
 }

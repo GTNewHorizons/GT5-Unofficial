@@ -2469,8 +2469,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 .withLocalizedName(aMaterial.mDefaultLocalName)
                 .withTextureName(fluidTexture)
                 .withColorRGBA(aMaterial.mRGBa)
-                .withStateTemperature(LIQUID, aMaterial.getLiquidTemperature())
-                .buildAddFluid()
+                .withStateAndTemperature(LIQUID, aMaterial.getLiquidTemperature())
+                .buildAndRegister()
                 .configureMaterials(aMaterial)
                 .registerBContainers(
                         GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), ItemList.Cell_Empty.get(1L))
@@ -2487,8 +2487,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 .withLocalizedName(aMaterial.mDefaultLocalName)
                 .withTextureName(fluidTexture)
                 .withColorRGBA(aMaterial.mRGBa)
-                .withStateTemperature(GAS, aMaterial.getGasTemperature())
-                .buildAddFluid()
+                .withStateAndTemperature(GAS, aMaterial.getGasTemperature())
+                .buildAndRegister()
                 .configureMaterials(aMaterial)
                 .registerBContainers(
                         GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), ItemList.Cell_Empty.get(1L))
@@ -2505,8 +2505,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 .withLocalizedName(aMaterial.mDefaultLocalName + " Plasma")
                 .withTextureName(fluidTexture)
                 .withColorRGBA(aMaterial.mRGBa)
-                .withStateTemperature(PLASMA, 10000)
-                .buildAddFluid()
+                .withStateAndTemperature(PLASMA, 10000)
+                .buildAndRegister()
                 .configureMaterials(aMaterial)
                 .registerContainers(
                         GT_OreDictUnificator.get(OrePrefixes.cellPlasma, aMaterial, 1L),
@@ -2525,8 +2525,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 .withLocalizedName("Molten " + aMaterial.mDefaultLocalName)
                 .withTextureName(fluidTexture)
                 .withColorRGBA(aMaterial.mRGBa)
-                .withStateTemperature(MOLTEN, aMaterial.mMeltingPoint < 0 ? 1000 : aMaterial.mMeltingPoint)
-                .buildAddFluid()
+                .withStateAndTemperature(MOLTEN, aMaterial.mMeltingPoint < 0 ? 1000 : aMaterial.mMeltingPoint)
+                .buildAndRegister()
                 .configureMaterials(aMaterial)
                 .registerContainers(
                         GT_OreDictUnificator.get(OrePrefixes.cellMolten, aMaterial, 1L),
@@ -2554,8 +2554,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     .withTextureFrom((IGT_Fluid) uncrackedFluid)
                     .withLocalizedName(orePrefixes[i].mLocalizedMaterialPre + aMaterial.mDefaultLocalName)
                     .withColorRGBA(aMaterial.mRGBa)
-                    .withStateTemperature(GAS, 775)
-                    .buildAddFluid()
+                    .withStateAndTemperature(GAS, 775)
+                    .buildAndRegister()
                     .registerBContainers(
                             GT_OreDictUnificator.get(orePrefixes[i], aMaterial, 1L), ItemList.Cell_Empty.get(1L))
                     .asFluid();
@@ -2605,8 +2605,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     .withTextureFrom((IGT_Fluid) uncrackedFluid)
                     .withLocalizedName(orePrefixes[i].mLocalizedMaterialPre + aMaterial.mDefaultLocalName)
                     .withColorRGBA(aMaterial.mRGBa)
-                    .withStateTemperature(GAS, 775)
-                    .buildAddFluid()
+                    .withStateAndTemperature(GAS, 775)
+                    .buildAndRegister()
                     .registerBContainers(
                             GT_OreDictUnificator.get(orePrefixes[i], aMaterial, 1L), ItemList.Cell_Empty.get(1L))
                     .asFluid();

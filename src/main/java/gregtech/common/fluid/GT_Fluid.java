@@ -28,7 +28,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
      *
      * @param builder The {@link GT_FluidBuilder} instance to construct this {@link IGT_Fluid} implementation
      */
-    public GT_Fluid(final GT_FluidBuilder builder) {
+    protected GT_Fluid(final GT_FluidBuilder builder) {
         super(builder.fluidName);
         this.localizedName = builder.localizedName;
         this.stillIconResourceLocation = builder.stillIconResourceLocation;
@@ -137,7 +137,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     @Override
     public IGT_Fluid configureMaterials(final Materials material) {
         switch (fluidState) {
-            case SOLID:
+            case SLURRY:
                 material.mSolid = this;
                 break;
             case LIQUID:
@@ -173,7 +173,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
      */
     protected void configureFromStateTemperature() {
         switch (fluidState) {
-            case SOLID: // Solid
+            case SLURRY: // Solid
                 setGaseous(false).setViscosity(10000);
                 break;
             case LIQUID: // Fluid

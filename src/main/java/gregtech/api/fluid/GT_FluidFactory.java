@@ -48,8 +48,8 @@ public class GT_FluidFactory {
             final int temperature) {
         return builder(fluidName)
                 .withLocalizedName(localizedName)
-                .withStateTemperature(state, temperature)
-                .buildAddFluid()
+                .withStateAndTemperature(state, temperature)
+                .buildAndRegister()
                 .configureMaterials(material);
     }
 
@@ -65,8 +65,8 @@ public class GT_FluidFactory {
             final String fluidName, final String localizedName, final FluidState state, final int temperature) {
         return builder(fluidName)
                 .withLocalizedName(localizedName)
-                .withStateTemperature(state, temperature)
-                .buildAddFluid();
+                .withStateAndTemperature(state, temperature)
+                .buildAndRegister();
     }
 
     /**

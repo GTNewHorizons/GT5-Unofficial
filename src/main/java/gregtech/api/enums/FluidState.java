@@ -5,6 +5,6 @@ public enum FluidState {
     LIQUID,
     MOLTEN,
     PLASMA,
-    SOLID;
-    public static final FluidState[] VALUES = new FluidState[] {SOLID, LIQUID, GAS, PLASMA, MOLTEN};
+    SLURRY;
+    public static final FluidState[] VALUES = new FluidState[] {SLURRY, LIQUID, GAS, PLASMA, MOLTEN};
 }
