@@ -426,7 +426,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
 
     @Override
     public int getEuDiscountForParallelism() {
-        return 15;
+        return 85;
     }
 
     private int getTierOfTower() {
