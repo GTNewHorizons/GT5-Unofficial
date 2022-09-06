@@ -53,6 +53,7 @@ public class BWRecipes {
     public static final byte BACTERIALVATBYTE = 1;
     public static final byte ACIDGENMAPBYTE = 2;
     public static final byte CIRCUITASSEMBLYLINE = 3;
+    public static final byte RADHATCH = 4;
 
     private final GT_Recipe.GT_Recipe_Map sBiolab = new GT_Recipe.GT_Recipe_Map(
             new HashSet<>(150),
@@ -121,6 +122,23 @@ public class BWRecipes {
             true,
             true // special handler
             );
+    private final GT_Recipe.GT_Recipe_Map sRadHatch = new GT_Recipe.GT_Recipe_Map(
+            new HashSet<>(150),
+            "bw.recipe.radhatch",
+            "Radio Hatch Material List",
+            null,
+            "gregtech:textures/gui/basicmachines/BW.GUI.Radioactive",
+            1,
+            0,
+            1,
+            0,
+            1,
+            "",
+            0,
+            "",
+            false,
+            false // special handler
+            );
 
     /**
      * @param machine 0 = biolab; 1 = BacterialVat; 2 = sAcidGenFuels; 3 = circuitAssemblyLine
@@ -135,9 +153,50 @@ public class BWRecipes {
                 return sAcidGenFuels;
             case 3:
                 return sCircuitAssemblyLineMap;
+            case 4:
+                return sRadHatch;
             default:
                 return null;
         }
+    }
+
+    public static long calcDecayTicks(int x) {
+        long ret;
+        if (x == 43) ret = 5000;
+        else if (x == 61) ret = 4500;
+        else if (x <= 100) ret = MathUtils.ceilLong((8000D * Math.tanh(-x / 20D) + 8000D) * 1000D);
+        else ret = MathUtils.ceilLong(((8000D * Math.tanh(-x / 65D) + 8000D)));
+        return ret;
+    }
+
+    public boolean addRadHatch(ItemStack item, int radioLevel, int amount, short[] rgba) {
+        return sRadHatch.addRecipe(new DynamicGTRecipe(
+                        false,
+                        new ItemStack[] {item},
+                        null,
+                        null,
+                        new int[] {rgba[0], rgba[1], rgba[2]},
+                        null,
+                        null,
+                        amount,
+                        radioLevel,
+                        (int) calcDecayTicks(radioLevel)))
+                != null;
+    }
+
+    public boolean addRadHatch(ItemStack item, int radioLevel, int amount, int time, short[] rgba) {
+        return sRadHatch.addRecipe(new DynamicGTRecipe(
+                        false,
+                        new ItemStack[] {item},
+                        null,
+                        null,
+                        new int[] {rgba[0], rgba[1], rgba[2]},
+                        null,
+                        null,
+                        amount,
+                        radioLevel,
+                        time))
+                != null;
     }
 
     public boolean addBioLabRecipe(
@@ -391,6 +450,7 @@ public class BWRecipes {
                 != null;
     }
 
+    @Deprecated
     public boolean addBacterialVatRecipe(
             ItemStack[] aInputs,
             BioCulture aCulture,
@@ -456,6 +516,7 @@ public class BWRecipes {
                 != null;
     }
 
+    @Deprecated
     public boolean addBacterialVatRecipe(
             ItemStack[] aInputs,
             BioCulture culture,

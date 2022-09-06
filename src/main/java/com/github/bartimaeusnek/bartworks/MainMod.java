@@ -170,6 +170,7 @@ public final class MainMod {
             WerkstoffLoader.run();
             LocalisationLoader.localiseAll();
         }
+        RadioHatchMaterialLoader.run();
     }
 
     @Mod.EventHandler

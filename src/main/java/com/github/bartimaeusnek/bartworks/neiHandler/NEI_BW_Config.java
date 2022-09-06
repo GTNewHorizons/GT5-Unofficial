@@ -88,6 +88,7 @@ public class NEI_BW_Config implements IConfigureNEI {
         new BW_NEI_OreHandler();
         new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
         new BW_NEI_BioLabHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BIOLABBYTE));
+        new BW_NEI_RadHatchHandler(BWRecipes.instance.getMappingsFor(BWRecipes.RADHATCH));
         new BW_NEI_HTGRHandler(GT_TileEntity_HTGR.fakeRecipeMap);
         NEI_BW_Config.sIsAdded = true;
     }

@@ -24,16 +24,15 @@ package com.github.bartimaeusnek.bartworks.client.gui;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_RadioHatch;
 import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import java.nio.ByteBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -51,13 +50,12 @@ public class GT_GUIContainer_RadioHatch extends GT_GUIContainerMetaTile_Machine 
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        long timer = ByteBuffer.wrap(((GT_Container_RadioHatch) this.mContainer).teTimer)
-                .getLong();
-        double maxT = ((GT_Container_RadioHatch) this.mContainer).mass
-                * (GT_MetaTileEntity_RadioHatch.calcDecayTicks(((GT_Container_RadioHatch) this.mContainer).sievert));
+
+        long timer = ((GT_Container_RadioHatch) this.mContainer).teTimer;
+        double maxT = ((GT_Container_RadioHatch) this.mContainer).decayTime;
         double rem = maxT - timer % maxT;
 
-        this.fontRendererObj.drawString(this.mName, 8, 4, 4210752);
+        this.fontRendererObj.drawString(this.mName, 5, 4, 4210752);
         this.mc.getTextureManager().bindTexture(new ResourceLocation(MainMod.MOD_ID + ":textures/GUI/RadHatch.png"));
         if (((GT_Container_RadioHatch) this.mContainer).mass > 0) {
             GL11.glColor3f(
@@ -67,7 +65,11 @@ public class GT_GUIContainer_RadioHatch extends GT_GUIContainerMetaTile_Machine 
             this.drawTexturedModalRect(124, 18, 124, 18, 16, 48);
         }
         GL11.glColor3f(1f, 1f, 1f);
-        this.drawTexturedModalRect(124, 18, 176, 0, 16, 48 - MathUtils.ceilInt(48 * (rem / maxT)));
+        if (((GT_Container_RadioHatch) this.mContainer).mass <= 0) {
+            this.drawTexturedModalRect(124, 18, 176, 0, 16, 48);
+        } else {
+            this.drawTexturedModalRect(124, 18, 176, 0, 16, 48 - MathUtils.ceilInt(48 * (rem / maxT)));
+        }
         this.drawTexturedModalRect(
                 65,
                 13,
@@ -76,16 +78,18 @@ public class GT_GUIContainer_RadioHatch extends GT_GUIContainerMetaTile_Machine 
                 (48 * (((GT_Container_RadioHatch) this.mContainer).sv)) / (GT_GUIContainer_RadioHatch.maxSv),
                 16);
 
-        //        this.fontRendererObj.drawString("Sv: " + ((GT_Container_RadioHatch) mContainer).sievert, 8, 50,
-        // BW_ColorUtil.getColorFromRGBArray(new short[]{((GT_Container_RadioHatch) mContainer).r,
-        // ((GT_Container_RadioHatch) mContainer).g, ((GT_Container_RadioHatch) mContainer).b}));
-        //        this.fontRendererObj.drawString("Kg: " + ((GT_Container_RadioHatch) mContainer).mass, 8, 68,
-        // BW_ColorUtil.getColorFromRGBArray(new short[]{((GT_Container_RadioHatch) mContainer).r,
-        // ((GT_Container_RadioHatch) mContainer).g, ((GT_Container_RadioHatch) mContainer).b}));
-        //        this.fontRendererObj.drawString("Time: " + timer, 8, 76, BW_ColorUtil.getColorFromRGBArray(new
-        // short[]{((GT_Container_RadioHatch) mContainer).r, ((GT_Container_RadioHatch) mContainer).g,
-        // ((GT_Container_RadioHatch) mContainer).b}));
-
+        this.fontRendererObj.drawString(
+                StatCollector.translateToLocalFormatted(
+                        "BW.NEI.display.radhatch.1", ((GT_Container_RadioHatch) this.mContainer).mass),
+                65,
+                62,
+                4210752);
+        this.fontRendererObj.drawString(
+                StatCollector.translateToLocalFormatted(
+                        "BW.NEI.display.radhatch.0", ((GT_Container_RadioHatch) this.mContainer).sv),
+                60,
+                72,
+                4210752);
     }
 
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
