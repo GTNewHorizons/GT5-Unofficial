@@ -17,6 +17,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
+import gregtech.common.render.items.GaiaSpiritRenderer;
 import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
@@ -2478,6 +2479,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      */
     public static void initClient() {
         TranscendentMetal.renderer = new TranscendentMetalRenderer();
+        MaterialsBotania.GaiaSpirit.renderer = new GaiaSpiritRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {
