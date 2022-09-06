@@ -181,12 +181,9 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
                 break;
             case LIQUID: // Fluid
             case MOLTEN: // Molten
-                final int luminosity = temperature >= 3500
-                        ? 15
-                        : temperature < 1000 ? 0 : 14 * (temperature - 1000) / 2500 + 1;
-                setGaseous(false)
-                        .setViscosity(1000)
-                        .setLuminosity(luminosity);
+                final int luminosity =
+                        temperature >= 3500 ? 15 : temperature < 1000 ? 0 : 14 * (temperature - 1000) / 2500 + 1;
+                setGaseous(false).setViscosity(1000).setLuminosity(luminosity);
                 break;
             case GAS: // Gas
                 setGaseous(true).setDensity(-100).setViscosity(200);
