@@ -320,12 +320,12 @@ public class GT_Loader_OreDictionary implements Runnable {
         // Fake Circuits
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit, Materials.Primitive, GT_ModHandler.getModItem(MOD_ID_DC, "item.CircuitULV", 1L));
-        // GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Basic, GT_ModHandler.getModItem(MOD_ID_DC,
-        // "item.CircuitLV", 1L));
+        GT_OreDictUnificator.registerOre(
+                OrePrefixes.circuit, Materials.Basic, GT_ModHandler.getModItem(MOD_ID_DC, "item.CircuitLV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit, Materials.Good, GT_ModHandler.getModItem(MOD_ID_DC, "item.CircuitMV", 1L));
-        // GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Advanced, GT_ModHandler.getModItem(MOD_ID_DC,
-        // "item.CircuitHV", 1L));
+        GT_OreDictUnificator.registerOre(
+                OrePrefixes.circuit, Materials.Advanced, GT_ModHandler.getModItem(MOD_ID_DC, "item.CircuitHV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit, Materials.Data, GT_ModHandler.getModItem(MOD_ID_DC, "item.CircuitEV", 1L));
         GT_OreDictUnificator.registerOre(
