@@ -2,6 +2,8 @@ package gregtech.client;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -123,9 +125,7 @@ public class GT_TooltipEventHandler {
         if (tooltip != null) {
             String text = tooltip.get();
             if (!text.isEmpty()) {
-                for (String line : text.split("\n")) {
-                    event.toolTip.add(line);
-                }
+                event.toolTip.addAll(Arrays.asList(text.split("\n")));
             }
         }
     }
@@ -133,11 +133,11 @@ public class GT_TooltipEventHandler {
     @SafeVarargs
     private static Supplier<String> chain(Supplier<String>... parts) {
         return () -> {
-            String s = "";
+            StringBuilder stringBuilder = new StringBuilder();
             for (Supplier<String> text : parts) {
-                s += text.get();
+                stringBuilder.append(text.get());
             }
-            return s;
+            return stringBuilder.toString();
         };
     }
 
@@ -174,23 +174,13 @@ public class GT_TooltipEventHandler {
         Item item = GameRegistry.findItem(modID, registryName);
         if (item == null || meta < 0 || meta >= OreDictionary.WILDCARD_VALUE || tooltip == null) return;
         String identifier = item.getUnlocalizedName() + "@" + meta;
-        Supplier<String> previous = tooltipMap.get(identifier);
-        if (previous == null) {
-            tooltipMap.put(identifier, tooltip);
-        } else {
-            tooltipMap.put(identifier, chain(previous, NEW_LINE, tooltip));
-        }
+        tooltipMap.merge(identifier, tooltip, (a, b) -> chain(a, NEW_LINE, b));
     }
 
     private static void addItemTooltip(ItemStack item, Supplier<String> tooltip) {
         if (item == null || tooltip == null) return;
         String identifier = getStackIdentifier(item);
-        Supplier<String> previous = tooltipMap.get(identifier);
-        if (previous == null) {
-            tooltipMap.put(identifier, tooltip);
-        } else {
-            tooltipMap.put(identifier, chain(previous, NEW_LINE, tooltip));
-        }
+        tooltipMap.merge(identifier, tooltip, (a, b) -> chain(a, NEW_LINE, b));
     }
 
     private static String getStackIdentifier(ItemStack stack) {
