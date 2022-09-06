@@ -2758,6 +2758,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         return this.mUniverse == null ? null : this.mUniverse.getSaveHandler().getWorldDirectory();
     }
 
+    public long getAnimationTicks() {
+        return 0L;
+    }
+
+    public float getPartialRenderTicks() {
+        return 0;
+    }
+
     public void registerUnificationEntries() {
         GregTech_API.sUnification.mConfig.save();
         GregTech_API.sUnification.mConfig.load();
