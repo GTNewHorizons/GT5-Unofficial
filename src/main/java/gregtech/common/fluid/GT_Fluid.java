@@ -22,6 +22,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     private final short[] colorRGBA;
     private final FluidState fluidState;
     private final int temperature;
+    private Fluid registeredFluid;
 
     /**
      * Constructs this {@link IGT_Fluid} implementation from an {@link GT_FluidBuilder} instance
@@ -76,7 +77,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
         GregTech_API.sGTBlockIconload.add(this);
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(), localizedName);
 
-        final Fluid registeredFluid = registerFluid();
+        registeredFluid = registerFluid();
         if (registeredFluid.getTemperature() == new Fluid("test").getTemperature()) {
             registeredFluid.setTemperature(temperature);
         }
@@ -90,7 +91,8 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     public IGT_Fluid registerContainers(
             final ItemStack fullContainer, final ItemStack emptyContainer, final int containerSize) {
         if (fullContainer == null || emptyContainer == null) return this;
-        final FluidStack fluidStack = new FluidStack(this, containerSize);
+        if (registeredFluid == null) addFluid();
+        final FluidStack fluidStack = new FluidStack(registeredFluid, containerSize);
         if (!FluidContainerRegistry.registerFluidContainer(fluidStack, fullContainer, emptyContainer)) {
             GT_Values.RA.addFluidCannerRecipe(
                     fullContainer, GT_Utility.getContainerItem(fullContainer, false), null, fluidStack);
@@ -136,21 +138,22 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
      */
     @Override
     public IGT_Fluid configureMaterials(final Materials material) {
+        if (registeredFluid == null) addFluid();
         switch (fluidState) {
             case SLURRY:
-                material.mSolid = this;
+                material.mSolid = registeredFluid;
                 break;
             case LIQUID:
-                material.mFluid = this;
+                material.mFluid = registeredFluid;
                 break;
             case GAS:
-                material.mGas = this;
+                material.mGas = registeredFluid;
                 break;
             case PLASMA:
-                material.mPlasma = this;
+                material.mPlasma = registeredFluid;
                 break;
             case MOLTEN:
-                material.mStandardMoltenFluid = this;
+                material.mStandardMoltenFluid = registeredFluid;
                 break;
             default:
                 throw new IllegalStateException("Unexpected FluidState: " + fluidState);
@@ -178,12 +181,12 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
                 break;
             case LIQUID: // Fluid
             case MOLTEN: // Molten
+                final int luminosity = temperature >= 3500
+                        ? 15
+                        : temperature < 1000 ? 0 : 14 * (temperature - 1000) / 2500 + 1;
                 setGaseous(false)
                         .setViscosity(1000)
-                        .setLuminosity(
-                                temperature >= 5000
-                                        ? 15
-                                        : temperature < 1000 ? 0 : 14 * (temperature - 1000) / 4000 + 1);
+                        .setLuminosity(luminosity);
                 break;
             case GAS: // Gas
                 setGaseous(true).setDensity(-100).setViscosity(200);
