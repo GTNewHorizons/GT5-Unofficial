@@ -42,7 +42,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     }
 
     /**
-     * @inheritDoc from {@link Fluid#getColor()}
+     * @inheritDoc
      */
     @Override
     public int getColor() {
@@ -55,7 +55,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
      * This {@link Runnable#run()} implementation is scheduled within the {@link GregTech_API#sGTBlockIconload}
      * to load this {@link IGT_Fluid}'s texture icons.
      *
-     * @inheritDoc from {@link Runnable#run()}
+     * @see Runnable#run()
      */
     @Override
     public void run() {
@@ -69,29 +69,39 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     }
 
     /**
-     * @inheritDoc from {@link IGT_Fluid#addFluid()}
+     * @inheritDoc
      */
     @Override
     public IGT_Fluid addFluid() {
-        // Adds self the block icons loader run() tasks
-        GregTech_API.sGTBlockIconload.add(this);
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(), localizedName);
 
-        registeredFluid = registerFluid();
-        if (registeredFluid.getTemperature() == new Fluid("test").getTemperature()) {
-            registeredFluid.setTemperature(temperature);
+        if (FluidRegistry.registerFluid(this)) {
+            // Registered as a new Fluid
+            // Adds self as Runnable to the block icons loader run() tasks
+            GregTech_API.sGTBlockIconload.add(this);
+            // Adds a server-side localized-name
+            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(), localizedName);
+            registeredFluid = this;
+        } else {
+            // Promotes Fluid from the registry to enable GT_Fluid methods
+            registeredFluid = FluidRegistry.getFluid(fluidName);
+            // Sets temperature of already registered fluids if they use the default (temperature = 300)
+            if (registeredFluid.getTemperature() == new Fluid("test").getTemperature()) {
+                registeredFluid.setTemperature(temperature);
+            }
         }
         return this;
     }
 
     /**
-     * @inheritDoc from {@link IGT_Fluid#registerContainers(ItemStack, ItemStack, int)}
+     * @inheritDoc
      */
     @Override
     public IGT_Fluid registerContainers(
             final ItemStack fullContainer, final ItemStack emptyContainer, final int containerSize) {
         if (fullContainer == null || emptyContainer == null) return this;
-        if (registeredFluid == null) addFluid();
+        if (registeredFluid == null) {
+            throw new IllegalStateException("Cannot register containers for an unregistered fluid");
+        }
         final FluidStack fluidStack = new FluidStack(registeredFluid, containerSize);
         if (!FluidContainerRegistry.registerFluidContainer(fluidStack, fullContainer, emptyContainer)) {
             GT_Values.RA.addFluidCannerRecipe(
@@ -101,7 +111,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     }
 
     /**
-     * @inheritDoc from {@link IGT_Fluid#registerBContainers(ItemStack, ItemStack)}
+     * @inheritDoc
      */
     @Override
     public IGT_Fluid registerBContainers(final ItemStack fullContainer, final ItemStack emptyContainer) {
@@ -109,7 +119,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     }
 
     /**
-     * @inheritDoc from {@link IGT_Fluid#registerPContainers(ItemStack, ItemStack)}
+     * @inheritDoc
      */
     @Override
     public IGT_Fluid registerPContainers(final ItemStack fullContainer, final ItemStack emptyContainer) {
@@ -117,7 +127,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     }
 
     /**
-     * @inheritDoc from {@link IGT_Fluid#getStillIconResourceLocation()}
+     * @inheritDoc
      */
     @Override
     public ResourceLocation getStillIconResourceLocation() {
@@ -125,7 +135,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     }
 
     /**
-     * @inheritDoc from {@link IGT_Fluid#getFlowingIconResourceLocation()}
+     * @inheritDoc
      */
     @Override
     public ResourceLocation getFlowingIconResourceLocation() {
@@ -133,12 +143,14 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     }
 
     /**
-     * @throws IllegalStateException if {@link FluidState} in invalid
-     * @inheritDoc from {@link IGT_Fluid#configureMaterials(Materials)}
+     * @inheritDoc
      */
     @Override
     public IGT_Fluid configureMaterials(final Materials material) {
-        if (registeredFluid == null) addFluid();
+        if (registeredFluid == null) {
+            throw new IllegalStateException("Cannot configure Materials with an unregistered fluid");
+        }
+
         switch (fluidState) {
             case SLURRY:
                 material.mSolid = registeredFluid;
@@ -162,46 +174,37 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     }
 
     /**
-     * @inheritDoc from {@link IGT_Fluid#asFluid()}
+     * @inheritDoc
      */
     @Override
     public Fluid asFluid() {
-        return this;
+        return registeredFluid == null ? this : registeredFluid;
     }
 
     /**
      * Adjusts this {@link Fluid}'s settings based on this {@link IGT_Fluid}'s state
      *
-     * @throws IllegalStateException if {@link FluidState} in invalid
+     * @throws IllegalStateException if {@link FluidState} is unknown
      */
     protected void configureFromStateTemperature() {
         switch (fluidState) {
-            case SLURRY: // Solid
+            case SLURRY:
                 setGaseous(false).setViscosity(10000);
                 break;
-            case LIQUID: // Fluid
-            case MOLTEN: // Molten
+            case LIQUID:
+            case MOLTEN:
                 final int luminosity =
                         temperature >= 3500 ? 15 : temperature < 1000 ? 0 : 14 * (temperature - 1000) / 2500 + 1;
                 setGaseous(false).setViscosity(1000).setLuminosity(luminosity);
                 break;
-            case GAS: // Gas
+            case GAS:
                 setGaseous(true).setDensity(-100).setViscosity(200);
                 break;
-            case PLASMA: // Plasma
+            case PLASMA:
                 setGaseous(true).setDensity(55536).setViscosity(10).setLuminosity(15);
                 break;
             default:
                 throw new IllegalStateException("Unexpected FluidState: " + fluidState);
         }
-    }
-
-    /**
-     * Registers this {@link IGT_Fluid} to the {@link FluidRegistry}
-     *
-     * @return the {@link Fluid} from the {@link FluidRegistry}
-     */
-    protected Fluid registerFluid() {
-        return FluidRegistry.registerFluid(this) ? this : FluidRegistry.getFluid(this.fluidName);
     }
 }

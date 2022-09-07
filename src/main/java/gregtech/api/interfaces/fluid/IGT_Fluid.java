@@ -8,10 +8,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
+@SuppressWarnings("unused") // API might legitimately expose unused methods within this local project's scope
 public interface IGT_Fluid {
 
     /**
-     * Registers this {@link IGT_Fluid} to ths {@link FluidRegistry}
+     * Adds this {@link IGT_Fluid} to the {@link FluidRegistry} and internally-implemented registrations
      *
      * @return {@link IGT_Fluid} self for call chaining
      */
@@ -24,6 +25,8 @@ public interface IGT_Fluid {
      * @param emptyContainer The empty fluid container
      * @param containerSize  The size of the container
      * @return The {@link IGT_Fluid} for chaining
+     *
+     * @throws IllegalStateException on attempt to register containers for an unregistered fluid
      */
     IGT_Fluid registerContainers(
             final ItemStack fullContainer, final ItemStack emptyContainer, final int containerSize);
@@ -34,6 +37,8 @@ public interface IGT_Fluid {
      * @param fullContainer  The full container to associate with this {@link IGT_Fluid}
      * @param emptyContainer The empty container associate with this {@link IGT_Fluid}
      * @return {@link IGT_Fluid} self for call chaining
+     *
+     * @throws IllegalStateException on attempt to register containers for an unregistered fluid
      */
     IGT_Fluid registerBContainers(final ItemStack fullContainer, final ItemStack emptyContainer);
 
@@ -43,6 +48,8 @@ public interface IGT_Fluid {
      * @param fullContainer  The full container to associate with this {@link IGT_Fluid}
      * @param emptyContainer The empty container associate with this {@link IGT_Fluid}
      * @return {@link IGT_Fluid} self for call chaining
+     *
+     * @throws IllegalStateException on attempt to register containers for an unregistered fluid
      */
     IGT_Fluid registerPContainers(final ItemStack fullContainer, final ItemStack emptyContainer);
 
@@ -51,6 +58,9 @@ public interface IGT_Fluid {
      *
      * @param material the {@link Materials} to configure based on this {@link IGT_Fluid} and {@link FluidState}
      * @return The {@link IGT_Fluid} for chaining
+     *
+     * @throws IllegalStateException on unknown {@link FluidState}
+     * @throws IllegalStateException on attempt to register containers for an unregistered fluid
      */
     IGT_Fluid configureMaterials(final Materials material);
 

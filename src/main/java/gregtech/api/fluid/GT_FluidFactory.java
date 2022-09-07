@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.FluidRegistry;
  *     </li>
  * </ol>
  */
+@SuppressWarnings("unused") // API might legitimately expose unused methods within this local project's scope
 public class GT_FluidFactory {
 
     /**
