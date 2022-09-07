@@ -187,4 +187,30 @@ public class TextureSet {
         this("CUSTOM/" + aSetName);
         this.is_custom = is_custom;
     }
+
+    /**
+     * Construct a TextureSet that will delegate some of its textures to the origin TextureSet.
+     *
+     * This assumes you want to construct a custom texture set.
+     */
+    private TextureSet(String aSetName, TextureSet origin, boolean overrideBlock, boolean overrideItem) {
+        this("CUSTOM/" + aSetName);
+        this.is_custom = true;
+
+        for (int i = 0; i < mTextures.length; i++) {
+            if (mTextures[i] instanceof Textures.ItemIcons.CustomIcon) {
+                if (!overrideItem) {
+                    mTextures[i] = origin.mTextures[i];
+                }
+            } else if (mTextures[i] instanceof Textures.BlockIcons.CustomIcon) {
+                if (!overrideBlock) {
+                    mTextures[i] = origin.mTextures[i];
+                }
+            }
+        }
+    }
+
+    public TextureSet withBlockTextures(String aNewSetName) {
+        return new TextureSet(aNewSetName, this, true, false);
+    }
 }
