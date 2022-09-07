@@ -76,7 +76,7 @@ public class MaterialsBotania {
             .constructMaterial();
     public static Materials GaiaSpirit = new Materials(
             205,
-            TextureSet.SET_METALLIC,
+            TextureSet.SET_METALLIC.withBlockTextures("GaiaSpirit"),
             32.0F,
             850000,
             12,
