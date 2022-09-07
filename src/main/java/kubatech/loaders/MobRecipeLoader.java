@@ -226,7 +226,11 @@ public class MobRecipeLoader {
         }
 
         public ItemStack[] generateOutputs(
-                Random rnd, GT_MetaTileEntity_ExtremeExterminationChamber MTE, double attackDamage, int lootinglevel) {
+                Random rnd,
+                GT_MetaTileEntity_ExtremeExterminationChamber MTE,
+                double attackDamage,
+                int lootinglevel,
+                boolean preferInfernalDrops) {
             MTE.mEUt = mEUt;
             MTE.mMaxProgresstime = Math.max(55, (int) ((maxEntityHealth / attackDamage) * 10d));
             ArrayList<ItemStack> stacks = new ArrayList<>(mOutputs.size());
@@ -266,7 +270,7 @@ public class MobRecipeLoader {
                             .contains(MTE.getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
                 int p = 0;
                 int mods = 0;
-                if (alwaysinfernal || rnd.nextInt(InfernalHelper.getEliteRarity()) == 0) {
+                if (alwaysinfernal || (preferInfernalDrops && rnd.nextInt(InfernalHelper.getEliteRarity()) == 0)) {
                     p = 1;
                     if (rnd.nextInt(InfernalHelper.getUltraRarity()) == 0) {
                         p = 2;
