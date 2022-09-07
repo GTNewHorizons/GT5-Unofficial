@@ -24,7 +24,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#withColorRGBA(short[])}
+     * @inheritDoc
      */
     @Override
     public IGT_FluidBuilder withColorRGBA(final short[] colorRGBA) {
@@ -33,7 +33,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#withLocalizedName(String)}
+     * @inheritDoc
      */
     @Override
     public IGT_FluidBuilder withLocalizedName(final String localizedName) {
@@ -42,7 +42,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#withStateAndTemperature(FluidState, int)}
+     * @inheritDoc
      */
     @Override
     public IGT_FluidBuilder withStateAndTemperature(final FluidState fluidState, final int temperature) {
@@ -52,7 +52,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#withStillIconResourceLocation(ResourceLocation)}
+     * @inheritDoc
      */
     @Override
     public IGT_FluidBuilder withStillIconResourceLocation(final ResourceLocation stillIconResourceLocation) {
@@ -61,7 +61,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#withFlowingIconResourceLocation(ResourceLocation)}
+     * @inheritDoc
      */
     @Override
     public IGT_FluidBuilder withFlowingIconResourceLocation(final ResourceLocation flowingIconResourceLocation) {
@@ -70,7 +70,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#withTextureName(String)}
+     * @inheritDoc
      */
     @Override
     public IGT_FluidBuilder withTextureName(final String textureName) {
@@ -80,7 +80,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#withTextureFrom(IGT_Fluid)}
+     * @inheritDoc
      */
     @Override
     public IGT_FluidBuilder withTextureFrom(final IGT_Fluid fromGTFluid) {
@@ -90,7 +90,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#withFluidBlock}
+     * @inheritDoc
      */
     @Override
     public IGT_FluidBuilder withFluidBlock(final Block fluidBlock) {
@@ -99,7 +99,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#withTextures(ResourceLocation, ResourceLocation)}
+     * @inheritDoc
      */
     @Override
     public IGT_FluidBuilder withTextures(
@@ -110,7 +110,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#build()
+     * @inheritDoc
      */
     @Override
     public IGT_Fluid build() {
@@ -121,7 +121,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     }
 
     /**
-     * @inheritDoc from {@link IGT_FluidBuilder#buildAndRegister()
+     * @inheritDoc
      */
     @Override
     public IGT_Fluid buildAndRegister() {

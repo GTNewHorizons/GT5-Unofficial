@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+@SuppressWarnings("unused") // API might legitimately expose unused methods within this local project's scope
 public interface IGT_FluidBuilder {
     /**
      * @param colorRGBA The {@code short[]} RGBA color of the {@link Fluid} or {@code null} for no defined RGBA color
