@@ -60,7 +60,6 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntity;
@@ -594,7 +593,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
         }
 
         if (Loader.isModLoaded("Avaritia")) {
-            CosmicItemRendererGT.registerItemWithMeta(Item.getItemFromBlock(GregTech_API.sBlockCasings5), 14);
+            // TODO make this work
+            // CosmicItemRendererGT.registerItemWithMeta(Item.getItemFromBlock(GregTech_API.sBlockCasings5), 14);
             CosmicItemRendererGT.init();
         }
     }
