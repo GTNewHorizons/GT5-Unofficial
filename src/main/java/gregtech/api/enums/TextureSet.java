@@ -2,9 +2,6 @@ package gregtech.api.enums;
 
 import gregtech.api.interfaces.IIconContainer;
 
-import java.util.BitSet;
-import java.util.Map;
-
 public class TextureSet {
 
     public boolean is_custom = false;
