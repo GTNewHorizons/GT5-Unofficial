@@ -594,7 +594,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
         }
 
         if (Loader.isModLoaded("Avaritia")) {
-            CosmicItemRendererGT.registerItemWithMeta(Item.getItemFromBlock(GregTech_API.sBlockCasings5), 14);
+            // TODO make this work
+            // CosmicItemRendererGT.registerItemWithMeta(Item.getItemFromBlock(GregTech_API.sBlockCasings5), 14);
             CosmicItemRendererGT.init();
         }
     }
