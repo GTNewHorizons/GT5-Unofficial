@@ -2,7 +2,6 @@ package gregtech.client;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
