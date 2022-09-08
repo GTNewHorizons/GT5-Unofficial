@@ -1,6 +1,8 @@
 package com.detrav.utils;
 
 import gtPlusPlus.core.block.base.BlockBaseOre;
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
@@ -36,6 +38,15 @@ public class GTppHelper {
 		encodeoresGTpp.put(MISC_MATERIALS.RARE_EARTH_MID, (short) (n + 1));
 		decodeoresGTpp.put((short) (++n + 1), MISC_MATERIALS.RARE_EARTH_HIGH);
 		encodeoresGTpp.put(MISC_MATERIALS.RARE_EARTH_HIGH, (short) (n + 1));
+		// Koboldite
+		decodeoresGTpp.put((short) (++n + 1), ALLOY.KOBOLDITE);
+		encodeoresGTpp.put(ALLOY.KOBOLDITE, (short) (n + 1));
+		// Runite
+		decodeoresGTpp.put((short) (++n + 1), ELEMENT.STANDALONE.RUNITE);
+		encodeoresGTpp.put(ELEMENT.STANDALONE.RUNITE, (short) (n + 1));
+		// Ancient granite
+		decodeoresGTpp.put((short) (++n + 1), ELEMENT.STANDALONE.GRANITE);
+		encodeoresGTpp.put(ELEMENT.STANDALONE.GRANITE, (short) (n + 1));
 	}
 
 
