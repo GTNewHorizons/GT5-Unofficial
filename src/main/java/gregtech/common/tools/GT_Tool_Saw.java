@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -100,8 +101,19 @@ public class GT_Tool_Saw extends GT_Tool {
         } else if (((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce))
                 && (aDrops.isEmpty())) {
             aDrops.add(new ItemStack(aBlock, 1, aMetaData));
-            aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
             aEvent.dropChance = 1.0F;
+            EntityCreature iceBreaker = new EntityCreature(aPlayer.worldObj) {
+                @Override
+                public void onUpdate() {
+                    aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
+                    setDead();
+                }
+            };
+            iceBreaker.forceSpawn = true;
+            iceBreaker.posX = aX;
+            iceBreaker.posY = aY;
+            iceBreaker.posZ = aZ;
+            aPlayer.worldObj.spawnEntityInWorld(iceBreaker);
             return 1;
         }
         return 0;
