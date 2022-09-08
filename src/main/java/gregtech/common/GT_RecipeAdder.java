@@ -2556,10 +2556,12 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 aEUt,
                 0);
         List<ItemStack> tItemInputList = new ArrayList<>(Arrays.asList(ItemInputArray));
-        List<ItemStack> tItemOutputList = new ArrayList<>(Arrays.asList(ItemOutputArray));
-        List<FluidStack> tFluidInputList = new ArrayList<>(Arrays.asList(FluidInputArray));
-        List<FluidStack> tFluidOutputList = new ArrayList<>(Arrays.asList(FluidOutputArray));
-
+        List<FluidStack> tFluidInputList;
+        if (FluidInputArray != null) {
+            tFluidInputList = new ArrayList<>(Arrays.asList(FluidInputArray));
+        } else {
+            tFluidInputList = new ArrayList<>(1);
+        }
         for (int i = 0; i < tItemInputList.size(); i++) {
             if (tItemInputList.get(i) != null) {
                 if (GT_Utility.getFluidForFilledItem(tItemInputList.get(i), true) != null
@@ -2568,6 +2570,14 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                     tItemInputList.set(i, null);
                 }
             }
+        }
+        List<ItemStack> tItemOutputList = new ArrayList<>(Arrays.asList(ItemOutputArray));
+        List<FluidStack> tFluidOutputList;
+        if (FluidOutputArray != null) {
+            tFluidOutputList = new ArrayList<>(Arrays.asList(FluidOutputArray));
+            ;
+        } else {
+            tFluidOutputList = new ArrayList<>(1);
         }
         for (int i = 0; i < tItemOutputList.size(); i++) {
             if (tItemOutputList.get(i) != null) {
