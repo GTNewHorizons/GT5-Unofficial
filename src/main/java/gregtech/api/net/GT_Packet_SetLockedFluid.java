@@ -83,6 +83,7 @@ public class GT_Packet_SetLockedFluid extends GT_Packet_New {
         IFluidLockable mteToLock = (IFluidLockable) mte;
         if (!mteToLock.allowChangingLockedFluid(tFluid.getName())) return;
 
+        mteToLock.lockFluid(true);
         mteToLock.setLockedFluidName(tFluid.getName());
         GT_Utility.sendChatToPlayer(
                 mPlayer,
