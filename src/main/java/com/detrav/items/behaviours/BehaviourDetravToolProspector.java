@@ -4,6 +4,7 @@ import com.detrav.DetravScannerMod;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.utils.BartWorksHelper;
 import com.detrav.utils.GTppHelper;
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -256,7 +257,8 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                                 addOreToHashMap(name, aPlayer);
                         } else if (DetravScannerMod.isBartWorksLoaded && BartWorksHelper.isOre(tBlock)){
                             if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
-                            addOreToHashMap(GT_LanguageManager.getTranslation((BartWorksHelper.isSmallOre(tBlock) ? "bw.blockores.02." : "bw.blockores.01.") + ((BartWorksHelper.getMetaFromBlock(aChunk,x,y,z,tBlock))*-1) + ".name"), aPlayer);
+                            final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) ((BartWorksHelper.getMetaFromBlock(aChunk,x,y,z,tBlock))*-1), null);
+                            addOreToHashMap(werkstoff.getLocalizedName() +  " Ore", aPlayer);
                         } else if (data == 1) {
                             tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {

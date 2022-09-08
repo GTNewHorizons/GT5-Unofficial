@@ -68,9 +68,9 @@ public class ProspectingPacket extends DetravPacket {
                         rgba = tMaterial.getRGBA();
                         name = tMaterial.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name"));
                     } else {
-                        name = GT_LanguageManager.getTranslation("bw.blockores.01." + (meta * -1) + ".name");
                         final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) (meta * -1), null);
-                        rgba = werkstoff != null ? werkstoff.getRGBA() : new short[]{0,0,0,0}; 
+                        name = werkstoff.getLocalizedName() + " Ore";
+                        rgba = werkstoff != null ? werkstoff.getRGBA() : new short[]{0,0,0,0};
                     }
                 } else {
                     gtPlusPlus.core.material.Material pMaterial = GTppHelper.decodeoresGTpp.get((short) (meta - 7000));
