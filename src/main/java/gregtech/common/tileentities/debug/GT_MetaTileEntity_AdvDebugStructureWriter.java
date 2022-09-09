@@ -34,7 +34,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     private static final HashMap<GT_MetaTileEntity_AdvDebugStructureWriter, BoundHighlighter> bondingBoxes =
             new HashMap<>(1);
     private final BoundHighlighter boundingBox = new BoundHighlighter();
-    public short[] numbers = {0, 0, 0, 3, 3, 3};
+    public short[] numbers = new short[6];
     public boolean transpose = false;
     public boolean showHighlightBox = true;
     public String[] result = new String[] {"Undefined"};
@@ -132,8 +132,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()
-                && aBaseMetaTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_AdvDebugStructureWriter
-                && aTick % 10 == 0) {
+                && aBaseMetaTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_AdvDebugStructureWriter) {
             GT_MetaTileEntity_AdvDebugStructureWriter writer =
                     (GT_MetaTileEntity_AdvDebugStructureWriter) aBaseMetaTileEntity.getMetaTileEntity();
             ExtendedFacing writerFacing = ExtendedFacing.of(
