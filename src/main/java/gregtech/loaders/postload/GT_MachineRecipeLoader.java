@@ -5179,67 +5179,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new ItemStack(Items.string, 32),
                 80,
                 48);
-
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.EnergeticAlloy, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.EnergeticAlloy, 4L),
-                200,
-                16);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.EnergeticAlloy, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.EnergeticAlloy, 8L),
-                400,
-                30);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Iridium, 4L),
-                200,
-                16);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Iridium, 8L),
-                400,
-                30);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Osmiridium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 4L),
-                200,
-                16);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Osmiridium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 8L),
-                400,
-                30);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Europium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 4L),
-                200,
-                16);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Europium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 8L),
-                400,
-                30);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Neutronium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 4L),
-                200,
-                16);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 8L),
-                400,
-                30);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Americium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 4L),
-                200,
-                16);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Americium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 8L),
-                400,
-                30);
         GT_Values.RA.addWiremillRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.SpaceTime, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 2L),
