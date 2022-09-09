@@ -52,8 +52,7 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
             if (x >= 44 && x <= 60) {
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.inputfromoutput.name"));
             }
-        }
-        else if(x >= 152 && x <= 168){
+        } else if (x >= 152 && x <= 168) {
             if (y >= 12 && y <= 28) {
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.name"));
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.tooltip"));
