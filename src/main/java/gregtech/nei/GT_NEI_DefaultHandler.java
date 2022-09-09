@@ -416,11 +416,14 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
         if (mPower.getDurationTicks() > 0) {
             if (GT_Mod.gregtechproxy.mNEIRecipeSecondMode) {
-                if(mPower.getDurationSeconds() > 1.0d){
+                if (mPower.getDurationSeconds() > 1.0d) {
                     drawLine(lineCounter, GT_Utility.trans("158", "Time: ") + mPower.getDurationStringSeconds());
-                }
-                else{
-                    drawLine(lineCounter, GT_Utility.trans("158", "Time: ") + mPower.getDurationStringSeconds() + String.format(" (%s)", mPower.getDurationStringTicks()));
+                } else {
+                    drawLine(
+                            lineCounter,
+                            GT_Utility.trans("158", "Time: ")
+                                    + mPower.getDurationStringSeconds()
+                                    + String.format(" (%s)", mPower.getDurationStringTicks()));
                 }
             } else {
                 drawLine(lineCounter, GT_Utility.trans("158", "Time: ") + mPower.getDurationStringTicks());
