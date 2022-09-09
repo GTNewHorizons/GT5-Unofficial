@@ -258,7 +258,9 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                         } else if (DetravScannerMod.isBartWorksLoaded && BartWorksHelper.isOre(tBlock)){
                             if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
                             final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) ((BartWorksHelper.getMetaFromBlock(aChunk,x,y,z,tBlock))*-1), null);
-                            addOreToHashMap(werkstoff.getLocalizedName() +  " Ore", aPlayer);
+                            String type = BartWorksHelper.isSmallOre(tBlock) ? "oreSmall" : "ore";
+                            String translated = GT_LanguageManager.getTranslation("bw.blocktype." + type);
+                            addOreToHashMap(translated.replace("%material", werkstoff.getLocalizedName()), aPlayer);
                         } else if (data == 1) {
                             tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
