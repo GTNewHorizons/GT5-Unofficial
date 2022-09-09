@@ -11,10 +11,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Map;
@@ -218,9 +220,8 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
         if (!getSaveDirectory(w).isDirectory())
             // nothing to load...
             return;
-        try {
-            Map<ChunkCoordIntPair, SuperRegion> worldData = Files.list(
-                            getSaveDirectory(w).toPath())
+        try (Stream<Path> stream = Files.list(getSaveDirectory(w).toPath())) {
+            Map<ChunkCoordIntPair, SuperRegion> worldData = stream
                     .map(f -> {
                         Matcher matcher = FILE_PATTERN.matcher(f.getFileName().toString());
                         return matcher.matches() ? matcher : null;
@@ -242,7 +243,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
                     .filter(Objects::nonNull)
                     .collect(Collectors.toMap(SuperRegion::getCoord, Function.identity()));
             masterMap.put(w.provider.dimensionId, worldData);
-        } catch (IOException e) {
+        } catch (IOException | UncheckedIOException e) {
             GT_Log.err.println("Error loading all region");
             e.printStackTrace(GT_Log.err);
         }
