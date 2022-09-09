@@ -50,15 +50,16 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip1"));
             }
             if (x >= 44 && x <= 60) {
+                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.inputfromoutput.name"));
+            }
+        } else if (x >= 152 && x <= 168) {
+            if (y >= 12 && y <= 28) {
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.name"));
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.tooltip"));
             }
-            if (x >= 62 && x <= 78) {
+            if (y >= 30 && y <= 46) {
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.name"));
                 list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.tooltip"));
-            }
-            if (x >= 80 && x <= 96) {
-                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.inputfromoutput.name"));
             }
         }
         if (!list.isEmpty()) drawHoveringText(list, x2, y2, fontRendererObj);
@@ -91,13 +92,13 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
                 drawTexturedModalRect(x + 7, y + 63, 176, 18, 18, 18);
             }
             if (((GT_Container_DigitalTank) mContainer).mVoidFluidPart) {
-                drawTexturedModalRect(x + 43, y + 63, 176, 36, 18, 18);
+                drawTexturedModalRect(x + 151, y + 7, 176, 36, 18, 18);
             }
             if (((GT_Container_DigitalTank) mContainer).mVoidFluidFull) {
-                drawTexturedModalRect(x + 61, y + 63, 176, 54, 18, 18);
+                drawTexturedModalRect(x + 151, y + 25, 176, 54, 18, 18);
             }
             if (((GT_Container_DigitalTank) mContainer).mAllowInputFromOutputSide) {
-                drawTexturedModalRect(x + 79, y + 63, 176, 72, 18, 18);
+                drawTexturedModalRect(x + 43, y + 63, 176, 72, 18, 18);
             }
         }
     }

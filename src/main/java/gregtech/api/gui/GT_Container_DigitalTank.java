@@ -31,9 +31,9 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
         addSlotToContainer(new GT_Slot_Render(mTileEntity, 2, 59, 42));
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 3, 8, 64, false, true, 1));
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 4, 26, 64, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 5, 44, 64, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 6, 62, 64, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 7, 80, 64, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 5, 152, 8, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 6, 152, 26, false, true, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 7, 44, 64, false, true, 1));
     }
 
     @Override
