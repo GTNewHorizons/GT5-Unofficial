@@ -1193,7 +1193,14 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         currenttip.add(String.format(
                 "Progress: %d s / %d s",
                 tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
-        super.getWailaBody(itemStack, currenttip, accessor, config);
+
+        currenttip.add(String.format(
+                "Main Facing: %s", ForgeDirection.getOrientation(mMainFacing).name()));
+
+        currenttip.add(String.format(
+                "Output Facing: %s",
+                ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing())
+                        .name()));
     }
 
     @Override
