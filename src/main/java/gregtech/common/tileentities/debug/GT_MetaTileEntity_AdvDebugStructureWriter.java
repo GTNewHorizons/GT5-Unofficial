@@ -253,12 +253,14 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
         }
     }
 
+    @SideOnly(Side.CLIENT)
     private static class BoundHighlighter {
         public Vec3Impl pos1;
         public Vec3Impl pos2;
         public boolean showHighlightBox;
         public int dim;
 
+        @SideOnly(Side.CLIENT)
         private void renderHighlightedBlock(RenderWorldLastEvent event) {
             if (pos1 == null || pos2 == null || !showHighlightBox) {
                 return;
@@ -292,6 +294,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
             GL11.glPopMatrix();
         }
 
+        @SideOnly(Side.CLIENT)
         static void renderHighLightedArenaOutline(double x1, double y1, double z1, double x2, double y2, double z2) {
             GL11.glBegin(GL11.GL_LINE_STRIP);
 
