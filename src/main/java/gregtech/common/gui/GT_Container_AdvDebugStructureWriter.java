@@ -69,7 +69,7 @@ public class GT_Container_AdvDebugStructureWriter extends GT_ContainerMetaTile_M
         Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
             GT_MetaTileEntity_AdvDebugStructureWriter dsw =
-                (GT_MetaTileEntity_AdvDebugStructureWriter) mTileEntity.getMetaTileEntity();
+                    (GT_MetaTileEntity_AdvDebugStructureWriter) mTileEntity.getMetaTileEntity();
             if (dsw.numbers == null) {
                 return null;
             }
@@ -170,7 +170,7 @@ public class GT_Container_AdvDebugStructureWriter extends GT_ContainerMetaTile_M
             return;
         }
         GT_MetaTileEntity_AdvDebugStructureWriter dsw =
-            (GT_MetaTileEntity_AdvDebugStructureWriter) mTileEntity.getMetaTileEntity();
+                (GT_MetaTileEntity_AdvDebugStructureWriter) mTileEntity.getMetaTileEntity();
         if (numbers != null) {
             System.arraycopy(dsw.numbers, 0, numbers, 0, dsw.numbers.length);
         }
@@ -199,8 +199,7 @@ public class GT_Container_AdvDebugStructureWriter extends GT_ContainerMetaTile_M
         super.updateProgressBar(par1, par2);
         if (par1 == 106) {
             transpose = par2 > 0;
-        }
-        else if (par1 == 107) {
+        } else if (par1 == 107) {
             showHighlightBox = par2 > 0;
         } else {
             if (numbers != null && par1 >= 100 && par1 <= 105) {

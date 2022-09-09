@@ -1455,8 +1455,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 .getStackForm(1L));
 
         ItemList.AdvDebugStructureWriter.set(new GT_MetaTileEntity_AdvDebugStructureWriter(
-            349, "advdebugstructurewriter", "Advanced Debug Structure Writer", 5)
-            .getStackForm(1L));
+                        349, "advdebugstructurewriter", "Advanced Debug Structure Writer", 5)
+                .getStackForm(1L));
 
         if (GregTech_API.mAE2) {
             ItemList.Hatch_Output_Bus_ME.set(

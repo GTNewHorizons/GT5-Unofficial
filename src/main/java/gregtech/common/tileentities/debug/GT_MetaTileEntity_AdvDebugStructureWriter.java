@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.debug;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -14,6 +17,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachi
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.GT_Container_AdvDebugStructureWriter;
 import gregtech.common.gui.GT_GUIContainer_AdvDebugStructureWriter;
+import java.util.HashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,25 +30,21 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
-import java.util.HashMap;
-
-import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity_TieredMachineBlock {
-    private static final HashMap<GT_MetaTileEntity_AdvDebugStructureWriter, BoundHighlighter> bondingBoxes = new HashMap<>(1);
+    private static final HashMap<GT_MetaTileEntity_AdvDebugStructureWriter, BoundHighlighter> bondingBoxes =
+            new HashMap<>(1);
     private final BoundHighlighter boundingBox = new BoundHighlighter();
     public short[] numbers = {0, 0, 0, 3, 3, 3};
     public boolean transpose = false;
     public boolean showHighlightBox = true;
-    public String[] result = new String[] { "Undefined" };
+    public String[] result = new String[] {"Undefined"};
 
     public GT_MetaTileEntity_AdvDebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
     }
 
     public GT_MetaTileEntity_AdvDebugStructureWriter(
-        String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+            String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -55,23 +55,23 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
 
     @Override
     public ITexture[] getTexture(
-        IGregTechTileEntity aBaseMetaTileEntity,
-        byte aSide,
-        byte aFacing,
-        byte aColorIndex,
-        boolean aActive,
-        boolean aRedstone) {
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-            aSide != aFacing ? TextureFactory.of(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE)
-                    .glow()
-                    .build()) : TextureFactory.of(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.STRUCTURE_MARK)
-                    .glow()
-                    .build())
+            aSide != aFacing
+                    ? TextureFactory.of(TextureFactory.builder()
+                            .addIcon(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE)
+                            .glow()
+                            .build())
+                    : TextureFactory.of(TextureFactory.builder()
+                            .addIcon(Textures.BlockIcons.STRUCTURE_MARK)
+                            .glow()
+                            .build())
         };
     }
 
@@ -131,9 +131,13 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_AdvDebugStructureWriter && aTick % 10 == 0) {
-            GT_MetaTileEntity_AdvDebugStructureWriter writer = (GT_MetaTileEntity_AdvDebugStructureWriter)aBaseMetaTileEntity.getMetaTileEntity();
-            ExtendedFacing writerFacing = ExtendedFacing.of(ForgeDirection.getOrientation(writer.getBaseMetaTileEntity().getFrontFacing()));
+        if (aBaseMetaTileEntity.isServerSide()
+                && aBaseMetaTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_AdvDebugStructureWriter
+                && aTick % 10 == 0) {
+            GT_MetaTileEntity_AdvDebugStructureWriter writer =
+                    (GT_MetaTileEntity_AdvDebugStructureWriter) aBaseMetaTileEntity.getMetaTileEntity();
+            ExtendedFacing writerFacing = ExtendedFacing.of(
+                    ForgeDirection.getOrientation(writer.getBaseMetaTileEntity().getFrontFacing()));
             double[] abc = new double[3];
             double[] xyz = new double[3];
             boundingBox.dim = aBaseMetaTileEntity.getWorld().provider.dimensionId;
@@ -142,12 +146,18 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
             abc[1] = -writer.numbers[1] - 0.5;
             abc[2] = -writer.numbers[2] - 0.5;
             writerFacing.getWorldOffset(abc, xyz);
-            boundingBox.pos1 = new Vec3Impl(aBaseMetaTileEntity.getXCoord() + (int)(xyz[0] + 0.5), aBaseMetaTileEntity.getYCoord() + (int)(xyz[1] + 0.5), aBaseMetaTileEntity.getZCoord() + (int)(xyz[2] + 0.5));
+            boundingBox.pos1 = new Vec3Impl(
+                    aBaseMetaTileEntity.getXCoord() + (int) (xyz[0] + 0.5),
+                    aBaseMetaTileEntity.getYCoord() + (int) (xyz[1] + 0.5),
+                    aBaseMetaTileEntity.getZCoord() + (int) (xyz[2] + 0.5));
             abc[0] = -writer.numbers[0] + writer.numbers[3] - 0.5;
             abc[1] = -writer.numbers[1] + writer.numbers[4] - 0.5;
             abc[2] = -writer.numbers[2] + writer.numbers[5] - 0.5;
             writerFacing.getWorldOffset(abc, xyz);
-            boundingBox.pos2 = new Vec3Impl(aBaseMetaTileEntity.getXCoord() + (int)(xyz[0] + 0.5), aBaseMetaTileEntity.getYCoord() + (int)(xyz[1] + 0.5), aBaseMetaTileEntity.getZCoord() + (int)(xyz[2] + 0.5));
+            boundingBox.pos2 = new Vec3Impl(
+                    aBaseMetaTileEntity.getXCoord() + (int) (xyz[0] + 0.5),
+                    aBaseMetaTileEntity.getYCoord() + (int) (xyz[1] + 0.5),
+                    aBaseMetaTileEntity.getZCoord() + (int) (xyz[2] + 0.5));
         }
     }
 
@@ -166,22 +176,23 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     public void printStructure(EntityPlayer aPlayer) {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
         String pseudoJavaCode = StructureUtility.getPseudoJavaCode(
-            aBaseMetaTileEntity.getWorld(),
-            ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
-            aBaseMetaTileEntity.getXCoord(),
-            aBaseMetaTileEntity.getYCoord(),
-            aBaseMetaTileEntity.getZCoord(),
-            numbers[0],
-            numbers[1],
-            numbers[2],
-            te -> te.getClass().getCanonicalName(),
-            numbers[3],
-            numbers[4],
-            numbers[5],
-            transpose);
+                aBaseMetaTileEntity.getWorld(),
+                ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord(),
+                numbers[0],
+                numbers[1],
+                numbers[2],
+                te -> te.getClass().getCanonicalName(),
+                numbers[3],
+                numbers[4],
+                numbers[5],
+                transpose);
         GT_FML_LOGGER.info(pseudoJavaCode);
         result = pseudoJavaCode.split("\\n");
-        aPlayer.addChatMessage(new ChatComponentTranslation(translateToLocal("GT5U.machines.advdebugstructurewriter.printed")));
+        aPlayer.addChatMessage(
+                new ChatComponentTranslation(translateToLocal("GT5U.machines.advdebugstructurewriter.printed")));
     }
 
     @Override
@@ -212,7 +223,8 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     public String[] getDescription() {
         return new String[] {
             translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip"), // Scans Blocks Around
-            translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip.1"), // Prints Multiblock NonTE structure check code
+            translateToLocal(
+                    "GT5U.machines.advdebugstructurewriter.tooltip.1"), // Prints Multiblock NonTE structure check code
             translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip.2") // ABC axes aligned to machine front
         };
     }

@@ -1,19 +1,19 @@
 package gregtech.common.gui;
 
-import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.entity.player.InventoryPlayer;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_AdvDebugStructureWriter extends GT_GUIContainerMetaTile_Machine {
     public GT_GUIContainer_AdvDebugStructureWriter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(new GT_Container_AdvDebugStructureWriter(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "AdvDebugStructureWriter.png");
+        super(
+                new GT_Container_AdvDebugStructureWriter(aInventoryPlayer, aTileEntity),
+                RES_PATH_GUI + "AdvDebugStructureWriter.png");
     }
 
     @Override
@@ -23,12 +23,14 @@ public class GT_GUIContainer_AdvDebugStructureWriter extends GT_GUIContainerMeta
             if (dsw.numbers == null) {
                 return;
             }
-            fontRendererObj.drawString(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.origin"), 46, 8, 16448255);
+            fontRendererObj.drawString(
+                    translateToLocal("GT5U.machines.advdebugstructurewriter.gui.origin"), 46, 8, 16448255);
             fontRendererObj.drawString("A: " + dsw.numbers[0], 46, 18, 16448255);
             fontRendererObj.drawString("B: " + dsw.numbers[1], 46, 26, 16448255);
             fontRendererObj.drawString("C: " + dsw.numbers[2], 46, 34, 16448255);
 
-            fontRendererObj.drawString(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.size"), 46, 60, 16448255);
+            fontRendererObj.drawString(
+                    translateToLocal("GT5U.machines.advdebugstructurewriter.gui.size"), 46, 60, 16448255);
             fontRendererObj.drawString("A: " + dsw.numbers[3], 46, 70, 16448255);
             fontRendererObj.drawString("B: " + dsw.numbers[4], 46, 78, 16448255);
             fontRendererObj.drawString("C: " + dsw.numbers[5], 46, 86, 16448255);
@@ -50,11 +52,9 @@ public class GT_GUIContainer_AdvDebugStructureWriter extends GT_GUIContainerMeta
         if (y >= 129 && y <= 147) {
             if (x >= 12 && x <= 30) {
                 list.add(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.print"));
-            }
-            else if (x >= 33 && x <= 51) {
+            } else if (x >= 33 && x <= 51) {
                 list.add(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.transpose"));
-            }
-            else if (x >= 54 && x <= 72) {
+            } else if (x >= 54 && x <= 72) {
                 list.add(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.highlight"));
             }
         }
