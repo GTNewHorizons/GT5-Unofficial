@@ -253,7 +253,6 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
         }
     }
 
-    @SideOnly(Side.CLIENT)
     private static class BoundHighlighter {
         public Vec3Impl pos1;
         public Vec3Impl pos2;
