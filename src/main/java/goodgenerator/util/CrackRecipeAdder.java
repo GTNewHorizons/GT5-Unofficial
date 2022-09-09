@@ -449,19 +449,94 @@ public class CrackRecipeAdder {
         }
         GT_Values.RA.addWiremillRecipe(
                 material.get(OrePrefixes.ingot, 1),
+                GT_Utility.getIntegratedCircuit(1),
                 material.get(OrePrefixes.wireGt01, 2),
-                (int) material.getStats().getMass() * 4,
-                90);
+                100,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.ingot, 1),
+                GT_Utility.getIntegratedCircuit(2),
+                material.get(OrePrefixes.wireGt02, 1),
+                150,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.ingot, 2),
+                GT_Utility.getIntegratedCircuit(4),
+                material.get(OrePrefixes.wireGt04, 1),
+                200,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.ingot, 4),
+                GT_Utility.getIntegratedCircuit(8),
+                material.get(OrePrefixes.wireGt08, 1),
+                250,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.ingot, 6),
+                GT_Utility.getIntegratedCircuit(12),
+                material.get(OrePrefixes.wireGt12, 1),
+                300,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.ingot, 8),
+                GT_Utility.getIntegratedCircuit(16),
+                material.get(OrePrefixes.wireGt16, 1),
+                350,
+                4);
         GT_Values.RA.addWiremillRecipe(
                 material.get(OrePrefixes.stick, 1),
+                GT_Utility.getIntegratedCircuit(1),
                 material.get(OrePrefixes.wireGt01, 1),
-                (int) material.getStats().getMass(),
-                90);
+                50,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.stick, 2),
+                GT_Utility.getIntegratedCircuit(2),
+                material.get(OrePrefixes.wireGt02, 1),
+                100,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.stick, 4),
+                GT_Utility.getIntegratedCircuit(4),
+                material.get(OrePrefixes.wireGt04, 1),
+                150,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.stick, 8),
+                GT_Utility.getIntegratedCircuit(8),
+                material.get(OrePrefixes.wireGt08, 1),
+                200,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.stick, 12),
+                GT_Utility.getIntegratedCircuit(12),
+                material.get(OrePrefixes.wireGt12, 1),
+                250,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.stick, 16),
+                GT_Utility.getIntegratedCircuit(16),
+                material.get(OrePrefixes.wireGt16, 1),
+                300,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.ingot, 1),
+                GT_Utility.getIntegratedCircuit(3),
+                material.get(OrePrefixes.wireFine, 8),
+                100,
+                4);
+        GT_Values.RA.addWiremillRecipe(
+                material.get(OrePrefixes.stick, 1),
+                GT_Utility.getIntegratedCircuit(3),
+                material.get(OrePrefixes.wireFine, 4),
+                50,
+                4);
         GT_Values.RA.addWiremillRecipe(
                 material.get(OrePrefixes.wireGt01, 1),
+                GT_Utility.getIntegratedCircuit(1),
                 material.get(OrePrefixes.wireFine, 4),
-                (int) material.getStats().getMass() * 4,
-                7);
+                200,
+                8);
         GT_Values.RA.addExtruderRecipe(
                 material.get(OrePrefixes.ingot, 1),
                 ItemList.Shape_Extruder_Wire.get(0),
