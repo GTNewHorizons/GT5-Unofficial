@@ -32,6 +32,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import net.minecraft.item.ItemStack;
 
@@ -101,11 +102,13 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                     8 * tVoltageMultiplier);
             GT_Values.RA.addWiremillRecipe(
                     werkstoff.get(ingot),
+                    GT_Utility.getIntegratedCircuit(3),
                     werkstoff.get(wireFine, 8),
                     (int) Math.max(werkstoff.getStats().getMass(), 1),
                     8 * tVoltageMultiplier);
             GT_Values.RA.addWiremillRecipe(
                     werkstoff.get(stick),
+                    GT_Utility.getIntegratedCircuit(3),
                     werkstoff.get(wireFine, 4),
                     (int) Math.max(werkstoff.getStats().getMass() * 0.5F, 1F),
                     8 * tVoltageMultiplier);
