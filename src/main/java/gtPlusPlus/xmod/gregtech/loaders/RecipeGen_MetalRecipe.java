@@ -96,30 +96,5 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
             } else {
                 Logger.WARNING("Lathe Screw Recipe: " + material.getLocalizedName() + " - Failed");
             }
-
-        // Fine Wire
-        if (ItemUtils.checkForInvalidItems(material.getFineWire(1))
-                && (ItemUtils.checkForInvalidItems(material.getIngot(1))
-                        || ItemUtils.checkForInvalidItems(material.getWire01(1))))
-            if (GT_Values.RA.addWiremillRecipe(
-                    ItemUtils.checkForInvalidItems(material.getWire01(1))
-                            ? material.getWire01(1)
-                            : material.getIngot(1),
-                    material.getFineWire(ItemUtils.checkForInvalidItems(material.getWire01(1)) ? 4 : 8),
-                    100,
-                    4)) {
-                Logger.WARNING("Wiremill Fine Wire Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Wiremill Fine Wire Recipe: " + material.getLocalizedName() + " - Failed");
-            }
-
-        // Fine Wire
-        if (ItemUtils.checkForInvalidItems(material.getFineWire(1))
-                && (ItemUtils.checkForInvalidItems(material.getRod(1))))
-            if (GT_Values.RA.addWiremillRecipe(material.getRod(1), material.getFineWire(4), 50, 4)) {
-                Logger.WARNING("Wiremill Fine Wire Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Wiremill Fine Wire Recipe: " + material.getLocalizedName() + " - Failed");
-            }
     }
 }
