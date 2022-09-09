@@ -3,6 +3,7 @@ package com.detrav.net;
 import com.detrav.DetravScannerMod;
 import com.detrav.gui.DetravScannerGUI;
 import com.detrav.gui.textures.DetravMapTexture;
+import com.detrav.utils.BartWorksHelper;
 import com.detrav.utils.GTppHelper;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.google.common.base.Objects;
@@ -68,9 +69,10 @@ public class ProspectingPacket extends DetravPacket {
                         rgba = tMaterial.getRGBA();
                         name = tMaterial.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name"));
                     } else {
-                        name = GT_LanguageManager.getTranslation("bw.blockores.01." + (meta * -1) + ".name");
                         final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) (meta * -1), null);
-                        rgba = werkstoff != null ? werkstoff.getRGBA() : new short[]{0,0,0,0}; 
+                        String translated = GT_LanguageManager.getTranslation("bw.blocktype.ore");
+                        name = translated.replace("%material", werkstoff.getLocalizedName());
+                        rgba = werkstoff != null ? werkstoff.getRGBA() : new short[]{0,0,0,0};
                     }
                 } else {
                     gtPlusPlus.core.material.Material pMaterial = GTppHelper.decodeoresGTpp.get((short) (meta - 7000));
