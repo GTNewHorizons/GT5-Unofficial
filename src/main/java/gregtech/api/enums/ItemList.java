@@ -1902,7 +1902,8 @@ public enum ItemList implements IItemContainer {
     VOLUMETRIC_FLASK,
 
     Hatch_Input_Bus_ME,
-    Hatch_CraftingInput_Bus_ME;
+    Hatch_CraftingInput_Bus_ME,
+    AdvDebugStructureWriter;
     public static final ItemList[]
             DYE_ONLY_ITEMS =
                     {
