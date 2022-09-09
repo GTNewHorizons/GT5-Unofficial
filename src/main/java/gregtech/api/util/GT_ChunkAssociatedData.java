@@ -221,8 +221,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
             // nothing to load...
             return;
         try (Stream<Path> stream = Files.list(getSaveDirectory(w).toPath())) {
-            Map<ChunkCoordIntPair, SuperRegion> worldData = stream
-                    .map(f -> {
+            Map<ChunkCoordIntPair, SuperRegion> worldData = stream.map(f -> {
                         Matcher matcher = FILE_PATTERN.matcher(f.getFileName().toString());
                         return matcher.matches() ? matcher : null;
                     })
