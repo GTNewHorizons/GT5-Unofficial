@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergy;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;

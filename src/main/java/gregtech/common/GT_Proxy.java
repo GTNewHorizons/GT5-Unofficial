@@ -76,6 +76,7 @@ import gregtech.common.gui.GT_ContainerVolumetricFlask;
 import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
@@ -95,8 +96,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
-
-import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -1270,7 +1269,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
-
     }
 
     public void onServerStarted() {
