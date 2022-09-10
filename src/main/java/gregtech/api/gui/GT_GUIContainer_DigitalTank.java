@@ -21,6 +21,13 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
     private final int textColorTitle = this.getTextColorOrDefault("title", 0x404040);
     private final int textColorValue = this.getTextColorOrDefault("value", 0xFAFAFF);
 
+    private static final String DIGITALTANK_AUTOOUTPUT_TOOLTIP = "GT5U.machines.digitaltank.autooutput.tooltip";
+    private static final String DIGITALTANK_LOCKFLUID_TOOLTIP = "GT5U.machines.digitaltank.lockfluid.tooltip";
+    private static final String DIGITALTANK_VOIDOVERFLOW_TOOLTIP = "GT5U.machines.digitaltank.voidoverflow.tooltip";
+    private static final String DIGITALTANK_VOIDFULL_TOOLTIP = "GT5U.machines.digitaltank.voidfull.tooltip";
+    private static final String DIGITALTANK_INPUTFROMOUTPUT_TOOLTIP =
+            "GT5U.machines.digitaltank.inputfromoutput.tooltip";
+
     public GT_GUIContainer_DigitalTank(
             InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
         super(new GT_Container_DigitalTank(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "DigitalTank.png");
@@ -30,17 +37,15 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
     @Override
     protected void setupTooltips() {
         addToolTip(new GT_GuiSlotTooltip(
-                getContainer().slotAutoOutput, mTooltipCache.getData("GT5U.machines.digitaltank.autooutput.tooltip")));
+                getContainer().slotAutoOutput, mTooltipCache.getData(DIGITALTANK_AUTOOUTPUT_TOOLTIP)));
         addToolTip(new GT_GuiSlotTooltip(
-                getContainer().slotLockFLuid, mTooltipCache.getData("GT5U.machines.digitaltank.lockfluid.tooltip")));
+                getContainer().slotLockFLuid, mTooltipCache.getData(DIGITALTANK_LOCKFLUID_TOOLTIP)));
         addToolTip(new GT_GuiSlotTooltip(
-                getContainer().slotVoidOverFlow,
-                mTooltipCache.getData("GT5U.machines.digitaltank.voidoverflow.tooltip")));
+                getContainer().slotVoidOverFlow, mTooltipCache.getData(DIGITALTANK_VOIDOVERFLOW_TOOLTIP)));
         addToolTip(new GT_GuiSlotTooltip(
-                getContainer().slotVoidFull, mTooltipCache.getData("GT5U.machines.digitaltank.voidfull.tooltip")));
+                getContainer().slotVoidFull, mTooltipCache.getData(DIGITALTANK_VOIDFULL_TOOLTIP)));
         addToolTip(new GT_GuiSlotTooltip(
-                getContainer().slotInputFromOutput,
-                mTooltipCache.getData("GT5U.machines.digitaltank.inputfromoutput.tooltip")));
+                getContainer().slotInputFromOutput, mTooltipCache.getData(DIGITALTANK_INPUTFROMOUTPUT_TOOLTIP)));
     }
 
     private GT_Container_DigitalTank getContainer() {
