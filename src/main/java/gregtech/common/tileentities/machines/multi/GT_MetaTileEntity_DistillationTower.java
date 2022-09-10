@@ -358,7 +358,9 @@ public class GT_MetaTileEntity_DistillationTower
     @Override
     protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
         for (int i = 0; i < mOutputFluids2.length && i < mOutputHatchesByLayer.size(); i++) {
-            FluidStack tStack = mOutputFluids2[i].copy();
+            final FluidStack fluidStack = mOutputFluids2[i];
+            if (fluidStack == null) continue;
+            FluidStack tStack = fluidStack.copy();
             if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true))
                 dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
         }
