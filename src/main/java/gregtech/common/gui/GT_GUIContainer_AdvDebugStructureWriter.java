@@ -4,9 +4,8 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
+import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_AdvDebugStructureWriter extends GT_GUIContainerMetaTile_Machine {
@@ -38,27 +37,14 @@ public class GT_GUIContainer_AdvDebugStructureWriter extends GT_GUIContainerMeta
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3) {
-        super.drawScreen(par1, par2, par3);
-        drawTooltip(par1, par2);
+    protected void setupTooltips() {
+        addToolTip(new GT_GuiSlotTooltip(getContainer().printSlot, mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.print")));
+        addToolTip(new GT_GuiSlotTooltip(getContainer().transposeSlot, mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.transpose")));
+        addToolTip(new GT_GuiSlotTooltip(getContainer().highlightSlot, mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.highlight")));
     }
 
-    private void drawTooltip(int x2, int y2) {
-        int xStart = (width - xSize) / 2;
-        int yStart = (height - ySize) / 2;
-        int x = x2 - xStart;
-        int y = y2 - yStart + 5;
-        List<String> list = new ArrayList<>();
-        if (y >= 129 && y <= 147) {
-            if (x >= 12 && x <= 30) {
-                list.add(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.print"));
-            } else if (x >= 33 && x <= 51) {
-                list.add(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.transpose"));
-            } else if (x >= 54 && x <= 72) {
-                list.add(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.highlight"));
-            }
-        }
-        if (!list.isEmpty()) drawHoveringText(list, x2, y2, fontRendererObj);
+    private GT_Container_AdvDebugStructureWriter getContainer() {
+        return ((GT_Container_AdvDebugStructureWriter) this.mContainer);
     }
 
     @Override

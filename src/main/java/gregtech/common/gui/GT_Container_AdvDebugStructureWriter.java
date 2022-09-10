@@ -17,6 +17,10 @@ public class GT_Container_AdvDebugStructureWriter extends GT_ContainerMetaTile_M
     public boolean transpose;
     public boolean showHighlightBox;
 
+    public Slot printSlot;
+    public Slot transposeSlot;
+    public Slot highlightSlot;
+
     public GT_Container_AdvDebugStructureWriter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
@@ -51,10 +55,9 @@ public class GT_Container_AdvDebugStructureWriter extends GT_ContainerMetaTile_M
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 134, 81, false, false, 1));
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 134, 99, false, false, 1));
 
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 12, 129, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 33, 129, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 54, 129, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 75, 129, false, false, 1));
+        printSlot = addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 12, 129, false, false, 1));
+        transposeSlot = addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 33, 129, false, false, 1));
+        highlightSlot = addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 54, 129, false, false, 1));
     }
 
     public boolean doesBindPlayerInventory() {

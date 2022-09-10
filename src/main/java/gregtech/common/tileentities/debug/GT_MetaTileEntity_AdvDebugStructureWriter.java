@@ -131,27 +131,24 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()
-                && aBaseMetaTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_AdvDebugStructureWriter) {
-            GT_MetaTileEntity_AdvDebugStructureWriter writer =
-                    (GT_MetaTileEntity_AdvDebugStructureWriter) aBaseMetaTileEntity.getMetaTileEntity();
+        if (aBaseMetaTileEntity.isServerSide()) {
             ExtendedFacing writerFacing = ExtendedFacing.of(
-                    ForgeDirection.getOrientation(writer.getBaseMetaTileEntity().getFrontFacing()));
+                    ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()));
             double[] abc = new double[3];
             double[] xyz = new double[3];
             boundingBox.dim = aBaseMetaTileEntity.getWorld().provider.dimensionId;
-            boundingBox.showHighlightBox = writer.showHighlightBox;
-            abc[0] = -writer.numbers[0] - 0.5;
-            abc[1] = -writer.numbers[1] - 0.5;
-            abc[2] = -writer.numbers[2] - 0.5;
+            boundingBox.showHighlightBox = showHighlightBox;
+            abc[0] = -numbers[0] - 0.5;
+            abc[1] = -numbers[1] - 0.5;
+            abc[2] = -numbers[2] - 0.5;
             writerFacing.getWorldOffset(abc, xyz);
             boundingBox.pos1 = new Vec3Impl(
                     aBaseMetaTileEntity.getXCoord() + (int) (xyz[0] + 0.5),
                     aBaseMetaTileEntity.getYCoord() + (int) (xyz[1] + 0.5),
                     aBaseMetaTileEntity.getZCoord() + (int) (xyz[2] + 0.5));
-            abc[0] = -writer.numbers[0] + writer.numbers[3] - 0.5;
-            abc[1] = -writer.numbers[1] + writer.numbers[4] - 0.5;
-            abc[2] = -writer.numbers[2] + writer.numbers[5] - 0.5;
+            abc[0] = -numbers[0] + numbers[3] - 0.5;
+            abc[1] = -numbers[1] + numbers[4] - 0.5;
+            abc[2] = -numbers[2] + numbers[5] - 0.5;
             writerFacing.getWorldOffset(abc, xyz);
             boundingBox.pos2 = new Vec3Impl(
                     aBaseMetaTileEntity.getXCoord() + (int) (xyz[0] + 0.5),
