@@ -15,11 +15,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_ExoticEnergyInputHelper;
-import gregtech.api.util.GT_Log;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Single_Recipe_Check;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import java.util.ArrayList;
@@ -1248,12 +1245,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         currentTip.add((tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
                 + "  Efficiency: " + tag.getFloat("efficiency") + "%");
 
-        if (getBaseMetaTileEntity().isActive()) {
-            currentTip.add(
-                    String.format("Progress: %d s / %d s", tag.getInteger("progress"), tag.getInteger("maxProgress")));
-        } else {
-            currentTip.add("Idle");
-        }
+        currentTip.add(GT_Waila.getMachineProgressString(
+                tag.getBoolean("isActive"), tag.getInteger("maxProgress"), tag.getInteger("progress")));
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
@@ -1265,9 +1258,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
-        tag.setInteger("progress", mProgresstime / 20);
-        tag.setInteger("maxProgress", mMaxProgresstime / 20);
+        tag.setInteger("progress", mProgresstime);
+        tag.setInteger("maxProgress", mMaxProgresstime);
         tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
+
+        IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
+        if (tileEntity != null) {
+            tag.setBoolean("isActive", tileEntity.isActive());
+        }
     }
 
     public List<GT_MetaTileEntity_Hatch> getExoticEnergyHatches() {
