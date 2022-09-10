@@ -1,9 +1,12 @@
 package gregtech.common.misc;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.event.world.WorldEvent;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -22,9 +25,9 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
     private static final String GlobalEnergyNameNBTTag = "GregTech_GlobalEnergyName_MapNBTTag";
     private static final String GlobalEnergyTeamNBTTag = "GregTech_GlobalEnergyTeam_MapNBTTag";
 
-    private static void loadInstance() {
+    private static void loadInstance(World world) {
         if (INSTANCE == null) {
-            MapStorage storage = DimensionManager.getWorld(0).mapStorage;
+            MapStorage storage = world.mapStorage;
             INSTANCE = (GlobalEnergyWorldSavedData) storage.loadData(GlobalEnergyWorldSavedData.class, DATA_NAME);
             if (INSTANCE == null) {
                 INSTANCE = new GlobalEnergyWorldSavedData();
@@ -34,6 +37,14 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
         INSTANCE.markDirty();
     }
 
+    @SuppressWarnings("unused")
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load event){
+        if(!event.world.isRemote && event.world.provider.dimensionId == 0){
+            loadInstance(event.world);
+        }
+    }
+
 
     public GlobalEnergyWorldSavedData() {
         super(DATA_NAME);
@@ -41,6 +52,7 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        System.out.println("JFIWEANIFDWAI2313");
 
         try {
             byte[] ba = nbtTagCompound.getByteArray(GlobalEnergyNBTTag);
@@ -52,6 +64,8 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             System.out.println(GlobalEnergyNBTTag + " FAILED");
             System.out.println(ignored);
         }
+
+        GlobalEnergy.put("D", BigInteger.TEN);
 
         try {
             byte[] ba = nbtTagCompound.getByteArray(GlobalEnergyNameNBTTag);
@@ -79,6 +93,7 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
 
     @Override
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
+        System.out.println("WOMPAMIJ32941414");
 
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
