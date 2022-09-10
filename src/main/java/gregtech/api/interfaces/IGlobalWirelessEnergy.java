@@ -1,12 +1,11 @@
 package gregtech.api.interfaces;
 
-import java.math.BigInteger;
-import java.util.UUID;
+import static gregtech.common.misc.GlobalVariableStorage.*;
 
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
+import java.math.BigInteger;
+import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
-
-import static gregtech.common.misc.GlobalVariableStorage.*;
 
 // If you are adding very late-game content feel free to tap into this interface.
 // The eventual goal is to bypass laser/dynamo stuff and have energy deposited directly from ultra-endgame
@@ -134,5 +133,3 @@ public interface IGlobalWirelessEnergy {
         GlobalEnergyTeam.clear();
     }
 }
-
-
