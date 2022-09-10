@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergy;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
@@ -9,6 +10,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 import java.math.BigInteger;
+
+import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -129,13 +132,11 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
                 owner_uuid = aBaseMetaTileEntity.getOwnerUuid().toString();
                 owner_name = aBaseMetaTileEntity.getOwnerName();
 
-                // Attempt to load in map from file.
-                if (GlobalEnergy.size() == 0) loadGlobalEnergyInfo(aBaseMetaTileEntity.getWorld());
-
                 strongCheckOrAddUser(owner_uuid, owner_name);
 
                 if (addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation.negate()))
                     setEUVar(eu_transferred_per_operation_long);
+
             }
 
             // This is set up in a way to be as optimised as possible. If a user has a relatively plentiful energy
@@ -144,7 +145,7 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
 
             // Every ticks_between_energy_addition add eu_transferred_per_operation to internal EU storage from network.
             if (aTick % ticks_between_energy_addition == 0L) {
-                long total_eu = this.getBaseMetaTileEntity().getStoredEU();
+                long total_eu = getBaseMetaTileEntity().getStoredEU();
 
                 // Can the machine store the EU being added?
                 long new_eu_storage = total_eu + eu_transferred_per_operation_long;
