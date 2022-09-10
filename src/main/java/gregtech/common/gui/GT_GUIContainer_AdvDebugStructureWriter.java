@@ -38,9 +38,14 @@ public class GT_GUIContainer_AdvDebugStructureWriter extends GT_GUIContainerMeta
 
     @Override
     protected void setupTooltips() {
-        addToolTip(new GT_GuiSlotTooltip(getContainer().printSlot, mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.print")));
-        addToolTip(new GT_GuiSlotTooltip(getContainer().transposeSlot, mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.transpose")));
-        addToolTip(new GT_GuiSlotTooltip(getContainer().highlightSlot, mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.highlight")));
+        addToolTip(new GT_GuiSlotTooltip(
+                getContainer().printSlot, mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.print")));
+        addToolTip(new GT_GuiSlotTooltip(
+                getContainer().transposeSlot,
+                mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.transpose")));
+        addToolTip(new GT_GuiSlotTooltip(
+                getContainer().highlightSlot,
+                mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.highlight")));
     }
 
     private GT_Container_AdvDebugStructureWriter getContainer() {
