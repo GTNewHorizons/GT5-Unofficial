@@ -1189,18 +1189,22 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public void getWailaBody(
             ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
+        IGregTechTileEntity baseTileEntity = getBaseMetaTileEntity();
 
-        currenttip.add(String.format(
-                "Progress: %d s / %d s",
-                tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
+        if (baseTileEntity.isActive()) {
+            currenttip.add(String.format(
+                    "Progress: %d s / %d s",
+                    tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
+        } else {
+            currenttip.add("Idle");
+        }
 
         currenttip.add(String.format(
                 "Machine Facing: %s", ForgeDirection.getOrientation(mMainFacing).name()));
 
         currenttip.add(String.format(
                 "Output Facing: %s",
-                ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing())
-                        .name()));
+                ForgeDirection.getOrientation(baseTileEntity.getFrontFacing()).name()));
     }
 
     @Override

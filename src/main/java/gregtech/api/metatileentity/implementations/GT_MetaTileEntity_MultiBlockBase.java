@@ -1248,8 +1248,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         currentTip.add((tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
                 + "  Efficiency: " + tag.getFloat("efficiency") + "%");
 
-        currentTip.add(
-                String.format("Progress: %d s / %d s", tag.getInteger("progress"), tag.getInteger("maxProgress")));
+        if (getBaseMetaTileEntity().isActive()) {
+            currentTip.add(
+                    String.format("Progress: %d s / %d s", tag.getInteger("progress"), tag.getInteger("maxProgress")));
+        } else {
+            currentTip.add("Idle");
+        }
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
