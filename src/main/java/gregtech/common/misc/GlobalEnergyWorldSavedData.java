@@ -1,24 +1,20 @@
 package gregtech.common.misc;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.storage.MapStorage;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.event.world.WorldEvent;
+import static gregtech.common.misc.GlobalVariableStorage.*;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import java.io.*;
 import java.math.BigInteger;
 import java.util.HashMap;
-import static gregtech.common.misc.GlobalVariableStorage.*;
-
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.MapStorage;
+import net.minecraftforge.event.world.WorldEvent;
 
 public class GlobalEnergyWorldSavedData extends WorldSavedData {
 
     public static GlobalEnergyWorldSavedData INSTANCE;
-
 
     private static final String DATA_NAME = "GregTech_WirelessEUWorldSavedData";
 
@@ -38,12 +34,11 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public void onWorldLoad(WorldEvent.Load event){
-        if(!event.world.isRemote && event.world.provider.dimensionId == 0){
+    public void onWorldLoad(WorldEvent.Load event) {
+        if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
             loadInstance(event.world);
         }
     }
-
 
     public GlobalEnergyWorldSavedData() {
         super(DATA_NAME);
@@ -89,7 +84,6 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             System.out.println(GlobalEnergyTeamNBTTag + " FAILED");
             System.out.println(ignored);
         }
-
     }
 
     @Override
@@ -130,6 +124,5 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             System.out.println(GlobalEnergyTeamNBTTag + " SAVE FAILED");
             System.out.println(ignored);
         }
-
     }
 }
