@@ -58,7 +58,11 @@ public interface IGlobalWirelessEnergy {
     default boolean addEUToGlobalEnergyMap(String user_uuid, BigInteger EU) {
 
         // Mark the data as dirty and in need of saving.
-        GlobalEnergyWorldSavedData.INSTANCE.markDirty();
+        try {
+            GlobalEnergyWorldSavedData.INSTANCE.markDirty();
+        } catch(Exception ignored) {
+            System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN ADD EU" + ignored);
+        }
 
         // Get the team UUID. Users are by default in a team with a UUID equal to their player UUID.
         String team_uuid = GlobalEnergyTeam.getOrDefault(user_uuid, user_uuid);
@@ -106,7 +110,11 @@ public interface IGlobalWirelessEnergy {
     // This overwrites the EU in the network. Only use this if you are absolutely sure you know what you are doing.
     default void setUserEU(String user_uuid, BigInteger EU) {
         // Mark the data as dirty and in need of saving.
-        GlobalEnergyWorldSavedData.INSTANCE.markDirty();
+        try {
+            GlobalEnergyWorldSavedData.INSTANCE.markDirty();
+        } catch(Exception ignored) {
+            System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN SET EU" + ignored);
+        }
 
         GlobalEnergy.put(GlobalEnergyTeam.get(user_uuid), EU);
     }
