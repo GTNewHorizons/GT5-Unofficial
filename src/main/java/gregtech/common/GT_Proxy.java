@@ -76,6 +76,7 @@ import gregtech.common.gui.GT_ContainerVolumetricFlask;
 import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
@@ -1038,6 +1039,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     GT_OreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
         }
 
+        MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
+
         // IC2 Hazmat
         addFullHazmatToIC2Item("hazmatHelmet");
         addFullHazmatToIC2Item("hazmatChestplate");
@@ -1297,8 +1300,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public void onServerStopping() {
         File tSaveDirectory = getSaveDirectory();
         GregTech_API.sWirelessRedstone.clear();
-        saveGlobalEnergyInfo(mUniverse.getWorldInfo().getWorldName());
-        clearMaps();
+        clearGlobalEnergyInformationMaps();
         if (tSaveDirectory != null) {
             try {
                 for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
