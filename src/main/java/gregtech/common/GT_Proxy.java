@@ -95,6 +95,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
+
+import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -1266,6 +1268,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
+        GlobalEnergyWorldSavedData test = new GlobalEnergyWorldSavedData();
     }
 
     public void onServerStarted() {
@@ -1297,8 +1300,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public void onServerStopping() {
         File tSaveDirectory = getSaveDirectory();
         GregTech_API.sWirelessRedstone.clear();
-        saveGlobalEnergyInfo(mUniverse.getWorldInfo().getWorldName());
-        clearMaps();
+        clearGlobalEnergyInformationMaps();
         if (tSaveDirectory != null) {
             try {
                 for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
