@@ -139,7 +139,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
                             'C',
                             buildHatchAdder(GregtechMTE_FrothFlotationCell.class)
                                     .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
-                                    .casingIndex(TAE.GTPP_INDEX(1))
+                                    .casingIndex(getCasingTextureId())
                                     .dot(1)
                                     .buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
