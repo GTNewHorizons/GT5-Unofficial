@@ -59,7 +59,7 @@ public interface IGlobalWirelessEnergy {
         // Mark the data as dirty and in need of saving.
         try {
             GlobalEnergyWorldSavedData.INSTANCE.markDirty();
-        } catch(Exception ignored) {
+        } catch (Exception ignored) {
             System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN ADD EU" + ignored);
         }
 
@@ -111,7 +111,7 @@ public interface IGlobalWirelessEnergy {
         // Mark the data as dirty and in need of saving.
         try {
             GlobalEnergyWorldSavedData.INSTANCE.markDirty();
-        } catch(Exception ignored) {
+        } catch (Exception ignored) {
             System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN SET EU" + ignored);
         }
 
