@@ -3,25 +3,23 @@ package gregtech.api.gui;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
 import gregtech.api.interfaces.IDragAndDropSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GT_Packet_SetLockedFluid;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine implements IDragAndDropSupport {
 
     private final String mName;
-    private final int textColor = this.getTextColorOrDefault("text", 0xFAFAFF),
-            textColorTitle = this.getTextColorOrDefault("title", 0x404040),
-            textColorValue = this.getTextColorOrDefault("value", 0xFAFAFF);
+    private final int textColor = this.getTextColorOrDefault("text", 0xFAFAFF);
+    private final int textColorTitle = this.getTextColorOrDefault("title", 0x404040);
+    private final int textColorValue = this.getTextColorOrDefault("value", 0xFAFAFF);
 
     public GT_GUIContainer_DigitalTank(
             InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
@@ -30,39 +28,23 @@ public class GT_GUIContainer_DigitalTank extends GT_GUIContainerMetaTile_Machine
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3) {
-        super.drawScreen(par1, par2, par3);
-        drawTooltip(par1, par2);
+    protected void setupTooltips() {
+        addToolTip(new GT_GuiSlotTooltip(
+                getContainer().slotAutoOutput, mTooltipCache.getData("GT5U.machines.digitaltank.autooutput.tooltip")));
+        addToolTip(new GT_GuiSlotTooltip(
+                getContainer().slotLockFLuid, mTooltipCache.getData("GT5U.machines.digitaltank.lockfluid.tooltip")));
+        addToolTip(new GT_GuiSlotTooltip(
+                getContainer().slotVoidOverFlow,
+                mTooltipCache.getData("GT5U.machines.digitaltank.voidoverflow.tooltip")));
+        addToolTip(new GT_GuiSlotTooltip(
+                getContainer().slotVoidFull, mTooltipCache.getData("GT5U.machines.digitaltank.voidfull.tooltip")));
+        addToolTip(new GT_GuiSlotTooltip(
+                getContainer().slotInputFromOutput,
+                mTooltipCache.getData("GT5U.machines.digitaltank.inputfromoutput.tooltip")));
     }
 
-    private void drawTooltip(int x2, int y2) {
-        int xStart = (width - xSize) / 2;
-        int yStart = (height - ySize) / 2;
-        int x = x2 - xStart;
-        int y = y2 - yStart + 5;
-        List<String> list = new ArrayList<>();
-        if (y >= 68 && y <= 84) {
-            if (x >= 8 && x <= 24) {
-                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.autooutput.name"));
-            } else if (x >= 26 && x <= 42) {
-                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.name"));
-                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip"));
-                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip1"));
-            }
-            if (x >= 44 && x <= 60) {
-                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.inputfromoutput.name"));
-            }
-        } else if (x >= 152 && x <= 168) {
-            if (y >= 12 && y <= 28) {
-                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.name"));
-                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.tooltip"));
-            }
-            if (y >= 30 && y <= 46) {
-                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.name"));
-                list.add(StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.tooltip"));
-            }
-        }
-        if (!list.isEmpty()) drawHoveringText(list, x2, y2, fontRendererObj);
+    private GT_Container_DigitalTank getContainer() {
+        return (GT_Container_DigitalTank) mContainer;
     }
 
     @Override
