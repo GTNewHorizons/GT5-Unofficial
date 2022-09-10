@@ -1195,7 +1195,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
 
         currenttip.add(String.format(
-                "Main Facing: %s", ForgeDirection.getOrientation(mMainFacing).name()));
+                "Machine Facing: %s", ForgeDirection.getOrientation(mMainFacing).name()));
 
         currenttip.add(String.format(
                 "Output Facing: %s",
