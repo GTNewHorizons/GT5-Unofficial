@@ -14,11 +14,18 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_DigitalTank extends GT_Container_BasicTank {
-    public boolean outputFluid = false,
-            mLockFluid = false,
-            mVoidFluidPart = false,
-            mVoidFluidFull = false,
-            mAllowInputFromOutputSide = false;
+
+    public boolean outputFluid = false;
+    public boolean mLockFluid = false;
+    public boolean mVoidFluidPart = false;
+    public boolean mVoidFluidFull = false;
+    public boolean mAllowInputFromOutputSide = false;
+
+    public Slot slotAutoOutput;
+    public Slot slotLockFLuid;
+    public Slot slotVoidOverFlow;
+    public Slot slotVoidFull;
+    public Slot slotInputFromOutput;
 
     public GT_Container_DigitalTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -29,11 +36,11 @@ public class GT_Container_DigitalTank extends GT_Container_BasicTank {
         addSlotToContainer(new Slot(mTileEntity, 0, 81, 17));
         addSlotToContainer(new GT_Slot_Output(mTileEntity, 1, 81, 44));
         addSlotToContainer(new GT_Slot_Render(mTileEntity, 2, 59, 42));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 3, 8, 64, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 4, 26, 64, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 5, 152, 8, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 6, 152, 26, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 7, 44, 64, false, true, 1));
+        addSlotToContainer(slotAutoOutput = new GT_Slot_Holo(mTileEntity, 3, 8, 64, false, true, 1));
+        addSlotToContainer(slotLockFLuid = new GT_Slot_Holo(mTileEntity, 4, 26, 64, false, true, 1));
+        addSlotToContainer(slotVoidOverFlow = new GT_Slot_Holo(mTileEntity, 5, 152, 8, false, true, 1));
+        addSlotToContainer(slotVoidFull = new GT_Slot_Holo(mTileEntity, 6, 152, 26, false, true, 1));
+        addSlotToContainer(slotInputFromOutput = new GT_Slot_Holo(mTileEntity, 7, 44, 64, false, true, 1));
     }
 
     @Override
