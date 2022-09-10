@@ -17,7 +17,7 @@ import static gregtech.common.misc.GlobalVariableStorage.*;
 
 public class GlobalEnergyWorldSavedData extends WorldSavedData {
 
-    private static GlobalEnergyWorldSavedData INSTANCE;
+    public static GlobalEnergyWorldSavedData INSTANCE;
 
 
     private static final String DATA_NAME = "GregTech_WirelessEUWorldSavedData";
@@ -56,7 +56,6 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        System.out.println("JFIWEANIFDWAI2313");
 
         try {
             byte[] ba = nbtTagCompound.getByteArray(GlobalEnergyNBTTag);
@@ -68,8 +67,6 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             System.out.println(GlobalEnergyNBTTag + " FAILED");
             System.out.println(ignored);
         }
-
-        GlobalEnergy.put("D", BigInteger.TEN);
 
         try {
             byte[] ba = nbtTagCompound.getByteArray(GlobalEnergyNameNBTTag);
@@ -97,7 +94,6 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
 
     @Override
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
-        System.out.println("WOMPAMIJ32941414");
 
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

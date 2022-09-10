@@ -1040,7 +1040,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     GT_OreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
         }
 
-        MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData());
+        MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
 
         // IC2 Hazmat
         addFullHazmatToIC2Item("hazmatHelmet");

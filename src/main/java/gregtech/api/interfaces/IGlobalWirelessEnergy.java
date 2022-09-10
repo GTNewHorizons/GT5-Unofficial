@@ -3,6 +3,7 @@ package gregtech.api.interfaces;
 import java.math.BigInteger;
 import java.util.UUID;
 
+import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import net.minecraft.entity.player.EntityPlayer;
 
 import static gregtech.common.misc.GlobalVariableStorage.*;
@@ -56,6 +57,9 @@ public interface IGlobalWirelessEnergy {
     // as infrequently as possible and bulk store values to add to the global map.
     default boolean addEUToGlobalEnergyMap(String user_uuid, BigInteger EU) {
 
+        // Mark the data as dirty and in need of saving.
+        GlobalEnergyWorldSavedData.INSTANCE.markDirty();
+
         // Get the team UUID. Users are by default in a team with a UUID equal to their player UUID.
         String team_uuid = GlobalEnergyTeam.getOrDefault(user_uuid, user_uuid);
 
@@ -101,6 +105,9 @@ public interface IGlobalWirelessEnergy {
 
     // This overwrites the EU in the network. Only use this if you are absolutely sure you know what you are doing.
     default void setUserEU(String user_uuid, BigInteger EU) {
+        // Mark the data as dirty and in need of saving.
+        GlobalEnergyWorldSavedData.INSTANCE.markDirty();
+
         GlobalEnergy.put(GlobalEnergyTeam.get(user_uuid), EU);
     }
 

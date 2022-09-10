@@ -10,6 +10,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 import java.math.BigInteger;
+
+import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -134,6 +136,7 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
 
                 if (addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation.negate()))
                     setEUVar(eu_transferred_per_operation_long);
+
             }
 
             // This is set up in a way to be as optimised as possible. If a user has a relatively plentiful energy
