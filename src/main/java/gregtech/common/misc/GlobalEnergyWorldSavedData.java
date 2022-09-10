@@ -4,6 +4,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.WorldEvent;
@@ -26,13 +27,11 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
     private static final String GlobalEnergyTeamNBTTag = "GregTech_GlobalEnergyTeam_MapNBTTag";
 
     private static void loadInstance(World world) {
+        MapStorage storage = world.mapStorage;
+        INSTANCE = (GlobalEnergyWorldSavedData) storage.loadData(GlobalEnergyWorldSavedData.class, DATA_NAME);
         if (INSTANCE == null) {
-            MapStorage storage = world.mapStorage;
-            INSTANCE = (GlobalEnergyWorldSavedData) storage.loadData(GlobalEnergyWorldSavedData.class, DATA_NAME);
-            if (INSTANCE == null) {
-                INSTANCE = new GlobalEnergyWorldSavedData();
-                storage.setData(DATA_NAME, INSTANCE);
-            }
+            INSTANCE = new GlobalEnergyWorldSavedData();
+            storage.setData(DATA_NAME, INSTANCE);
         }
         INSTANCE.markDirty();
     }
@@ -48,6 +47,11 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
 
     public GlobalEnergyWorldSavedData() {
         super(DATA_NAME);
+    }
+
+    @SuppressWarnings("unused")
+    public GlobalEnergyWorldSavedData(String name) {
+        super(name);
     }
 
     @Override
