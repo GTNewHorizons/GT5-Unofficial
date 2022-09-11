@@ -1,5 +1,6 @@
 package gregtech.globalenergymap;
 
+import static gregtech.common.misc.GlobalVariableStorage.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
@@ -24,7 +25,8 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         addEUToGlobalEnergyMap(test_id, 1L);
         assertEquals(GlobalEnergy.get(test_id), new BigInteger("3"), message);
 
-        clearMaps();
+        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
+
     }
 
     @Test
@@ -50,7 +52,7 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         assertTrue(addEUToGlobalEnergyMap(user_uuid, new BigInteger("-2")));
         assertEquals(getUserEU(user_uuid), BigInteger.ZERO, message);
 
-        clearMaps();
+        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
     }
 
     @Test
@@ -63,7 +65,7 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         assertEquals(GlobalEnergyTeam.get(user_uuid), user_uuid, message);
         assertEquals(GlobalEnergyName.get(user_uuid), user_name, message);
 
-        clearMaps();
+        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
     }
 
     @Test
@@ -91,7 +93,7 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         assertEquals(GlobalEnergyName.get(user_uuid), user_name_0, message);
         assertEquals(GlobalEnergyName.get(user_name_0), user_uuid, message);
 
-        clearMaps();
+        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
     }
 
     @Test
@@ -147,7 +149,7 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         assertEquals(getUserEU(user_uuid_1), BigInteger.ONE, message);
         assertEquals(getUserEU(user_uuid_2), BigInteger.ONE, message);
 
-        clearMaps();
+        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
     }
 
     @Test
@@ -169,6 +171,6 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         assertEquals(GetUsernameFromUUID(user_uuid_0), user_name_1, message);
         assertEquals(GetUsernameFromUUID(user_uuid_1), user_name_1, message);
 
-        clearMaps();
+        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
     }
 }
