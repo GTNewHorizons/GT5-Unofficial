@@ -55,6 +55,7 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
 
         try {
@@ -63,9 +64,9 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             Object data = objectInputStream.readObject();
             GlobalEnergy = (HashMap<String, BigInteger>) data;
-        } catch (IOException | ClassNotFoundException ignored) {
+        } catch (IOException | ClassNotFoundException exception) {
             System.out.println(GlobalEnergyNBTTag + " FAILED");
-            System.out.println(ignored);
+            exception.printStackTrace();
         }
 
         try {
@@ -74,9 +75,9 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             Object data = objectInputStream.readObject();
             GlobalEnergyName = (HashMap<String, String>) data;
-        } catch (IOException | ClassNotFoundException ignored) {
+        } catch (IOException | ClassNotFoundException exception) {
             System.out.println(GlobalEnergyNameNBTTag + " FAILED");
-            System.out.println(ignored);
+            exception.printStackTrace();
         }
 
         try {
@@ -85,9 +86,9 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             Object data = objectInputStream.readObject();
             GlobalEnergyTeam = (HashMap<String, String>) data;
-        } catch (IOException | ClassNotFoundException ignored) {
+        } catch (IOException | ClassNotFoundException exception) {
             System.out.println(GlobalEnergyTeamNBTTag + " FAILED");
-            System.out.println(ignored);
+            exception.printStackTrace();
         }
     }
 
@@ -101,9 +102,9 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             objectOutputStream.flush();
             byte[] data = byteArrayOutputStream.toByteArray();
             nbtTagCompound.setByteArray(GlobalEnergyNBTTag, data);
-        } catch (IOException ignored) {
+        } catch (IOException exception) {
             System.out.println(GlobalEnergyNBTTag + " SAVE FAILED");
-            System.out.println(ignored);
+            exception.printStackTrace();
         }
 
         try {
@@ -113,9 +114,9 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             objectOutputStream.flush();
             byte[] data = byteArrayOutputStream.toByteArray();
             nbtTagCompound.setByteArray(GlobalEnergyNameNBTTag, data);
-        } catch (IOException ignored) {
+        } catch (Exception exception) {
             System.out.println(GlobalEnergyNameNBTTag + " SAVE FAILED");
-            System.out.println(ignored);
+            exception.printStackTrace();
         }
 
         try {
@@ -125,9 +126,9 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             objectOutputStream.flush();
             byte[] data = byteArrayOutputStream.toByteArray();
             nbtTagCompound.setByteArray(GlobalEnergyTeamNBTTag, data);
-        } catch (IOException ignored) {
+        } catch (IOException exception) {
             System.out.println(GlobalEnergyTeamNBTTag + " SAVE FAILED");
-            System.out.println(ignored);
+            exception.printStackTrace();
         }
     }
 }
