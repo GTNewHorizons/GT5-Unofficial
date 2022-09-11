@@ -359,7 +359,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
         // On first tick (aTick restarts from 0 upon world reload).
         if (not_processed_lsc && tileEntity.isServerSide()) {
             // Add user to wireless network.
-            loadGlobalEnergyInfo(tileEntity.getWorld());
             strongCheckOrAddUser(tileEntity.getOwnerUuid(), tileEntity.getOwnerName());
 
             // Get team UUID.

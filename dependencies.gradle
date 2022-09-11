@@ -1,12 +1,11 @@
 // Add your dependencies here
 
 dependencies {
-
-    compile 'com.github.GTNewHorizons:GT5-Unofficial:5.09.41.12:dev'
+    compile 'com.github.GTNewHorizons:GT5-Unofficial:5.09.41.39:dev'
     compile 'com.github.GTNewHorizons:TecTech:5.0.21-pre:dev'
-    compile 'com.github.GTNewHorizons:bartworks:0.5.75:dev'
-    compile 'com.github.GTNewHorizons:StructureLib:1.1.6:dev'
-    compile 'com.github.GTNewHorizons:ThaumicTinkerer:2.6.5:dev'
+    compile 'com.github.GTNewHorizons:bartworks:0.5.72-pre:dev'
+    compile 'com.github.GTNewHorizons:StructureLib:1.1.12:dev'
+    compile 'com.github.GTNewHorizons:ThaumicTinkerer:2.6.4:dev'
 
     compile 'thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev'
     compileOnly 'org.joml:joml:1.10.2'
