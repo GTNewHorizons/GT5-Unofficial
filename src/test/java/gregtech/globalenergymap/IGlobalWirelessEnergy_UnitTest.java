@@ -26,7 +26,6 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         assertEquals(GlobalEnergy.get(test_id), new BigInteger("3"), message);
 
         IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
-
     }
 
     @Test

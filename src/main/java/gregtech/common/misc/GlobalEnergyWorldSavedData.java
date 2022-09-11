@@ -2,9 +2,8 @@ package gregtech.common.misc;
 
 import static gregtech.common.misc.GlobalVariableStorage.*;
 
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
-import gregtech.api.interfaces.IGlobalWirelessEnergy.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.interfaces.IGlobalWirelessEnergy.*;
 import java.io.*;
 import java.math.BigInteger;
 import java.util.HashMap;
