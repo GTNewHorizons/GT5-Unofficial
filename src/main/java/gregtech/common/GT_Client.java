@@ -43,6 +43,7 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
+import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.preload.GT_PreLoad;
 import ic2.api.tile.IWrenchable;
@@ -522,6 +523,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 .getResourcePackRepository()
                 .rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
+
+        new GT_MetaTileEntity_AdvDebugStructureWriter.ForgeEventHandler();
 
         final String[] arr = {
             "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321", "Goshen_Ithilien", "manf", "Bimgo",

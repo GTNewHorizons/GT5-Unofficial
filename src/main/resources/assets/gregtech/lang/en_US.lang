@@ -188,6 +188,15 @@ GT5U.machines.industrialapiary.infoextended.tooltip.5=Lifespan Modifier: %6$d %%
 GT5U.machines.industrialapiary.infoextended.tooltip.6=Terrority: %7$d x %8$d x %9$d
 GT5U.machines.industrialapiary.upgradeslot.tooltip=Upgrade slot
 GT5U.machines.industrialapiary.upgradeslot.tooltip.1=§7Also accepts gendustry upgrades
+GT5U.machines.advdebugstructurewriter.tooltip=Scans Blocks Around
+GT5U.machines.advdebugstructurewriter.tooltip.1=Prints Multiblock NonTE structure check code
+GT5U.machines.advdebugstructurewriter.tooltip.2=ABC axes aligned to machine front
+GT5U.machines.advdebugstructurewriter.printed=Printed structure to console
+GT5U.machines.advdebugstructurewriter.gui.origin=Origin
+GT5U.machines.advdebugstructurewriter.gui.size=Structure Size
+GT5U.machines.advdebugstructurewriter.gui.print.tooltip=Print Structure
+GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip=Show Bounding Box
+GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip=Transpose
 
 GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
 
