@@ -17,6 +17,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -24,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.Sys;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,7 +85,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                             {"                                 ", "                                 ", "                                 ", "               C C               ", "              CCCCC              ", "                D                ", "                A                ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "    C                       C    ", "   CC                       CC   ", "    CDA                   ADC    ", "   CC                       CC   ", "    C                       C    ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                A                ", "                D                ", "              CCCCC              ", "               C C               ", "                                 ", "                                 ", "                                 "},
                             {"                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "                D                ", "             SEEAEES             ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "       S                 S       ", "       E                 E       ", "    CC E                 E CC    ", "      DA                 AD      ", "    CC E                 E CC    ", "       E                 E       ", "       S                 S       ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "             SEEAEES             ", "                D                ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 "},
                             {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "              CCCCC              ", "                D                ", "                A                ", "                A                ", "                                 ", "                                 ", "                                 ", "                                 ", "      C                   C      ", "     CC                   CC     ", "      CDAA             AADC      ", "     CC                   CC     ", "      C                   C      ", "                                 ", "                                 ", "                                 ", "                                 ", "                A                ", "                A                ", "                D                ", "              CCCCC              ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
-                            {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "                D                ", "                D                ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "      CC                 CC      ", "        DD             DD        ", "      CC                 CC      ", "                                 ", "                                 ", "                                 ", "                D                ", "                D                ", "                D                ", "                D                ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
+                            {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "                D                ", "                D                ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "      CC                 CC      ", "        DD             DD        ", "      CC                 CC      ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                D                ", "                D                ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
                             {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "                D                ", "                D                ", "             DDDDDDD             ", "            DD     DD            ", "            D  EEE  D            ", "       CCC  D EAAAE D  CCC       ", "          DDD EAAAE DDD          ", "       CCC  D EAAAE D  CCC       ", "            D  EEE  D            ", "            DD     DD            ", "             DDDDDDD             ", "                D                ", "                D                ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
                             {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "               C C               ", "              DDDDD              ", "             DDCDCDD             ", "         CCCCDCCDCCDCCCC         ", "             DDDDDDD             ", "         CCCCDCCDCCDCCCC         ", "             DDCDCDD             ", "              DDDDD              ", "               C C               ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
                             {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "            CCCCCCCCC            ", "               C C               ", "            CCCCCCCCC            ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "}
@@ -235,7 +237,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("All EU generated is directly deposited into your wireless EU network.")
                 .addSeparator()
                 .beginStructureBlock(33, 33, 33, false)
-                .toolTipFinisher(CommonValues.TEC_MARK_EM + " & " + AuthorColen.substring(10));
+                .toolTipFinisher(CommonValues.TEC_MARK_EM + " & " + AuthorColen.substring(8));
         return tt;
     }
 
@@ -286,26 +288,103 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
     }
 
+    private final static ItemStack[] item_list = {Materials.Iron.getDust(1), Materials.Copper.getDust(1)};
+
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
         if (aTick % ticks_between_hatch_drain == 0) {
             drainFluidFromHatchesAndStoreInternally();
+
+            int i = 0;
+            for(GT_MetaTileEntity_Hatch_OutputBus output_bus : mOutputBusses) {
+                if (!outputItemsToQuantumChest(output_bus, item_list[i], 1_000_000)) {
+                    continue;
+                }
+                if (i++ >= item_list.length) {
+                    break;
+                }
+            }
         }
+    }
+
+    private void addItemsToQuantumChest(IGregTechTileEntity quantum_chest, long amount) {
+        long stored_quantity = quantum_chest.getProgress();
+        int max_inventory_size = quantum_chest.getMaxItemCount();
+
+        if ((stored_quantity + amount) > max_inventory_size) {
+            quantum_chest.setItemCount(max_inventory_size);
+        } else {
+            quantum_chest.setItemCount((int) (amount + stored_quantity));
+        }
+    }
+
+    private boolean outputItemsToQuantumChest(GT_MetaTileEntity_Hatch_OutputBus output_bus, ItemStack item, int amount) {
+
+        IGregTechTileEntity tile_entity = output_bus.getBaseMetaTileEntity();
+        
+        int x = tile_entity.getXCoord();
+        int y = tile_entity.getYCoord();
+        int z = tile_entity.getZCoord();
+
+        // Get direction that the output bus is currently facing.
+        switch (tile_entity.getFrontFacing()) {
+            case 0:
+                y -= 1;
+            case 1:
+                y += 1;
+            case 2:
+                z -= 1;
+            case 3:
+                z += 1;
+            case 4:
+                x -= 1;
+            case 5:
+                x += 1;
+        }
+
+        try {
+            // Get block in front of output bus.
+            IGregTechTileEntity quantum_chest = (IGregTechTileEntity) getBaseMetaTileEntity().getTileEntity(x, y, z);
+
+            // Slot 0 = Top input slot of quantum chest.
+            // Slot 1 = Bottom output slot of quantum chest.
+            // Slot 2 = Stored item slot.
+            ItemStack quantum_chest_stored_item = quantum_chest.getStackInSlot(2);
+
+            // Adjust sizes so no extra items from quantum chest nonsense.
+            amount = amount - 64;
+            item.stackSize = 64;
+
+            // Check if chest contains item already. If not, add it.
+            if (quantum_chest_stored_item == null) {
+                quantum_chest.setInventorySlotContents(0, item);
+                addItemsToQuantumChest(quantum_chest, amount);
+                return true;
+            } else if (quantum_chest_stored_item.isItemEqual(item)) {
+                addItemsToQuantumChest(quantum_chest, amount);
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("TEST FAILURE 13214");
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     @Override
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        str.add(GOLD + "--------------- Control Block Statistics ---------------");
+        str.add(GOLD + "---------------- Control Block Statistics ----------------");
         str.add("Spacetime Compression Field Grade: " + BLUE + SpacetimeCompressionFieldMetadata);
         str.add("Time Dilation Field Grade: " + BLUE + TimeAccelerationFieldMetadata);
         str.add("Stabilisation Field Grade: " + BLUE + TimeAccelerationFieldMetadata);
-        str.add(GOLD + "---------------- Internal Fluids Stored ---------------");
+        str.add(GOLD + "----------------- Internal Fluids Stored ----------------");
         valid_fluid_map.forEach((key, value) -> str.add(BLUE + key.getLocalizedName() + RESET +
                 " : " + RED + GT_Utility.formatNumbers(value)));
-        str.add(GOLD + "-------------------------------------------------------");
+        str.add(GOLD + "-----------------------------------------------------");
         return str.toArray(new String[0]);
     }
 
