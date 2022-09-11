@@ -2,6 +2,8 @@ package gregtech.common.misc;
 
 import static gregtech.common.misc.GlobalVariableStorage.*;
 
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
+import gregtech.api.interfaces.IGlobalWirelessEnergy.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import java.io.*;
 import java.math.BigInteger;
@@ -23,6 +25,11 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
     private static final String GlobalEnergyTeamNBTTag = "GregTech_GlobalEnergyTeam_MapNBTTag";
 
     private static void loadInstance(World world) {
+
+        GlobalEnergy.clear();
+        GlobalEnergyTeam.clear();
+        GlobalEnergyName.clear();
+
         MapStorage storage = world.mapStorage;
         INSTANCE = (GlobalEnergyWorldSavedData) storage.loadData(GlobalEnergyWorldSavedData.class, DATA_NAME);
         if (INSTANCE == null) {

@@ -126,7 +126,7 @@ public interface IGlobalWirelessEnergy {
         return GlobalEnergyTeam.getOrDefault(GlobalEnergyName.getOrDefault(username, ""), "");
     }
 
-    default void clearGlobalEnergyInformationMaps() {
+    static void clearGlobalEnergyInformationMaps() {
         // Do not use this unless you are 100% certain you know what you are doing.
         GlobalEnergy.clear();
         GlobalEnergyName.clear();

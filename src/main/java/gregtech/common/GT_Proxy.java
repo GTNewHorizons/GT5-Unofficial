@@ -1300,7 +1300,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public void onServerStopping() {
         File tSaveDirectory = getSaveDirectory();
         GregTech_API.sWirelessRedstone.clear();
-        clearGlobalEnergyInformationMaps();
         if (tSaveDirectory != null) {
             try {
                 for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
