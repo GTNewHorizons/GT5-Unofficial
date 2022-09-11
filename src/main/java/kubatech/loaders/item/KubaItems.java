@@ -100,11 +100,6 @@ public class KubaItems extends Item {
         return p_77647_1_;
     }
 
-    @Override
-    public String getUnlocalizedName() {
-        return super.getUnlocalizedName();
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {

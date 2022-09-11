@@ -293,12 +293,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
             e.setPosition(mc.thePlayer.posX + 5, mc.thePlayer.posY, mc.thePlayer.posZ);
             // ARGS: x, y, scale, rot, rot, entity
             GuiInventory.func_147046_a(
-                    mobx,
-                    moby,
-                    Math.round(scaled),
-                    (float) (x + mobx) - mouseX,
-                    (float) (y + moby - eheight * scaled) - mouseZ,
-                    e);
+                    mobx, moby, Math.round(scaled), (x + mobx) - mouseX, y + moby - eheight * scaled - mouseZ, e);
         } catch (Throwable ex) {
             Tessellator tes = Tessellator.instance;
             try {

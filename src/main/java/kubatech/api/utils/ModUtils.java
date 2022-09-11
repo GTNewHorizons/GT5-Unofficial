@@ -54,6 +54,7 @@ public class ModUtils {
 
     public static String getModListVersion() {
         if (modListVersion != null) return modListVersion;
+        @SuppressWarnings("unchecked")
         ArrayList<ModContainer> modlist = (ArrayList<ModContainer>)
                 ((ArrayList<ModContainer>) Loader.instance().getActiveModList()).clone();
         String sortedList = modlist.stream()

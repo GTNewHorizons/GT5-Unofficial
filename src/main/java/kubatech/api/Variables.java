@@ -26,5 +26,4 @@ public class Variables {
     public static final String StructureHologram =
             "To see the structure, use a " + EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech"
                     + EnumChatFormatting.RESET + "" + EnumChatFormatting.GRAY + " Blueprint on the Controller!";
-    ;
 }

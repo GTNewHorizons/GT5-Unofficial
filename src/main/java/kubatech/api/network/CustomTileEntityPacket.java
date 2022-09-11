@@ -37,7 +37,7 @@ import net.minecraft.world.World;
 
 public class CustomTileEntityPacket implements IMessage {
     public int w, x, y, z;
-    public ByteBuf customdata = Unpooled.buffer();
+    public final ByteBuf customdata = Unpooled.buffer();
 
     @SuppressWarnings("unused")
     public CustomTileEntityPacket() {}

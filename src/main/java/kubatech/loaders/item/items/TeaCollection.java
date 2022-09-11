@@ -159,7 +159,7 @@ public class TeaCollection extends ItemProxy {
             super("Tea");
         }
 
-        LinkedList<Achievement> unlockedAchievements = new LinkedList<>();
+        final LinkedList<Achievement> unlockedAchievements = new LinkedList<>();
 
         @Override
         public List<Achievement> getAchievements() {

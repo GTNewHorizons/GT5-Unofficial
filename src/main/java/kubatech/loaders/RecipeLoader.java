@@ -20,7 +20,6 @@
 package kubatech.loaders;
 
 import static kubatech.api.enums.ItemList.*;
-import static kubatech.api.enums.ItemList.YellowTea;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
