@@ -9,6 +9,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_AdvDebugStructureWriter extends GT_GUIContainerMetaTile_Machine {
+
+    private static final String ADVDEBUGSTRUCTUREWRITER_PRINT_TOOLTIP =
+            "GT5U.machines.advdebugstructurewriter.gui.print.tooltip";
+    private static final String ADVDEBUGSTRUCTUREWRITER_TRANSPOSE_TOOLTIP =
+            "GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip";
+    private static final String ADVDEBUGSTRUCTUREWRITER_HIGHLIGHT_TOOLTIP =
+            "GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip";
+
     public GT_GUIContainer_AdvDebugStructureWriter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(
                 new GT_Container_AdvDebugStructureWriter(aInventoryPlayer, aTileEntity),
@@ -39,13 +47,11 @@ public class GT_GUIContainer_AdvDebugStructureWriter extends GT_GUIContainerMeta
     @Override
     protected void setupTooltips() {
         addToolTip(new GT_GuiSlotTooltip(
-                getContainer().printSlot, mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.print")));
+                getContainer().printSlot, mTooltipCache.getData(ADVDEBUGSTRUCTUREWRITER_PRINT_TOOLTIP)));
         addToolTip(new GT_GuiSlotTooltip(
-                getContainer().transposeSlot,
-                mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.transpose")));
+                getContainer().transposeSlot, mTooltipCache.getData(ADVDEBUGSTRUCTUREWRITER_TRANSPOSE_TOOLTIP)));
         addToolTip(new GT_GuiSlotTooltip(
-                getContainer().highlightSlot,
-                mTooltipCache.getData("GT5U.machines.advdebugstructurewriter.gui.highlight")));
+                getContainer().highlightSlot, mTooltipCache.getData(ADVDEBUGSTRUCTUREWRITER_HIGHLIGHT_TOOLTIP)));
     }
 
     private GT_Container_AdvDebugStructureWriter getContainer() {
