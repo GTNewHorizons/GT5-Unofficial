@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 // If you are adding very late-game content feel free to tap into this interface.
 // The eventual goal is to bypass laser/dynamo stuff and have energy deposited directly from ultra-endgame
 // multi-blocks directly into the users network.
+@SuppressWarnings("unused")
 public interface IGlobalWirelessEnergy {
 
     // User 0 will join user 1 by calling this function. They will share the same energy network.
@@ -59,8 +60,9 @@ public interface IGlobalWirelessEnergy {
         // Mark the data as dirty and in need of saving.
         try {
             GlobalEnergyWorldSavedData.INSTANCE.markDirty();
-        } catch (Exception ignored) {
-            System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN ADD EU" + ignored);
+        } catch (Exception exception) {
+            System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN ADD EU");
+            exception.printStackTrace();
         }
 
         // Get the team UUID. Users are by default in a team with a UUID equal to their player UUID.
@@ -111,8 +113,9 @@ public interface IGlobalWirelessEnergy {
         // Mark the data as dirty and in need of saving.
         try {
             GlobalEnergyWorldSavedData.INSTANCE.markDirty();
-        } catch (Exception ignored) {
-            System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN SET EU" + ignored);
+        } catch (Exception exception) {
+            System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN SET EU");
+            exception.printStackTrace();
         }
 
         GlobalEnergy.put(GlobalEnergyTeam.get(user_uuid), EU);
