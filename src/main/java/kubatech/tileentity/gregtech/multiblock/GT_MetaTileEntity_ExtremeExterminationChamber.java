@@ -85,6 +85,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderHell;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -456,6 +457,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         if (aStack.getTagCompound() == null) return false;
         String mobType = aStack.getTagCompound().getString("mobType");
         if (mobType.isEmpty()) return false;
+
+        if (mobType.equals("Skeleton")
+                && getBaseMetaTileEntity().getWorld().provider instanceof WorldProviderHell
+                && rand.nextInt(5) > 0) mobType = "witherSkeleton";
 
         MobRecipeLoader.MobRecipe recipe = MobNameToRecipeMap.get(mobType);
 
