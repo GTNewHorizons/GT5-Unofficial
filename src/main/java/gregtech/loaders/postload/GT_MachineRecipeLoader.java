@@ -6544,13 +6544,13 @@ public class GT_MachineRecipeLoader implements Runnable {
         // Giga chad trophy.
         GT_Values.RA.addPlasmaForgeRecipe(
                 new ItemStack[] {
-                    Materials.SpaceTime.getBlocks(64),
-                    ItemList.Field_Generator_UMV.get(64),
-                    Materials.SpaceTime.getBlocks(64)
+                    ItemList.Field_Generator_UEV.get(64),
+                    ItemList.Field_Generator_UIV.get(64),
+                    ItemList.Field_Generator_UMV.get(64)
                 },
                 new FluidStack[] {Materials.ExcitedDTEC.getFluid(100_000_000)},
                 new ItemStack[] {ItemList.GigaChad.get(1)},
-                new FluidStack[] {GT_Values.NF},
+                new FluidStack[] {Materials.SpaceTime.getMolten(64 * 2 * 9 * 144)},
                 86400 * 20 * 2,
                 2_000_000_000,
                 13500);
