@@ -64,6 +64,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.init.Items;
@@ -611,10 +612,15 @@ public class MobRecipeLoader {
                 if (s.version.equals(ModUtils.getModListVersion())) {
                     for (Map.Entry<String, ArrayList<MobDrop>> entry : s.moblist.entrySet()) {
                         try {
-                            EntityLiving e =
-                                    (EntityLiving) ((Class<?>) EntityList.stringToClassMapping.get(entry.getKey()))
-                                            .getConstructor(new Class[] {World.class})
-                                            .newInstance(new Object[] {f});
+                            EntityLiving e;
+                            if (entry.getKey().equals("witherSkeleton")
+                                    && !EntityList.stringToClassMapping.containsKey("witherSkeleton")) {
+                                e = new EntitySkeleton(f);
+                                ((EntitySkeleton) e).setSkeletonType(1);
+                            } else
+                                e = (EntityLiving) ((Class<?>) EntityList.stringToClassMapping.get(entry.getKey()))
+                                        .getConstructor(new Class[] {World.class})
+                                        .newInstance(new Object[] {f});
                             ArrayList<MobDrop> drops = entry.getValue();
                             drops.forEach(MobDrop::reconstructStack);
                             GeneralMobList.put(entry.getKey(), new GeneralMappedMob(e, new MobRecipe(e, drops), drops));
@@ -674,7 +680,12 @@ public class MobRecipeLoader {
         dropCollector collector = new dropCollector();
 
         // Stupid MC code, I need to cast myself
-        ((Map<String, Class<? extends Entity>>) EntityList.stringToClassMapping).forEach((k, v) -> {
+        Map<String, Class<? extends Entity>> stringToClassMapping =
+                (Map<String, Class<? extends Entity>>) EntityList.stringToClassMapping;
+        boolean registeringWitherSkeleton = !stringToClassMapping.containsKey("witherSkeleton");
+        if (registeringWitherSkeleton) stringToClassMapping.put("witherSkeleton", EntitySkeleton.class);
+
+        stringToClassMapping.forEach((k, v) -> {
             if (v == null) return;
 
             if (Modifier.isAbstract(v.getModifiers())) {
@@ -702,7 +713,9 @@ public class MobRecipeLoader {
                 return;
             }
 
-            if (StatCollector.translateToLocal("entity." + k + ".name").equals("entity." + k + ".name")) {
+            if (registeringWitherSkeleton && e instanceof EntitySkeleton && k.equals("witherSkeleton"))
+                ((EntitySkeleton) e).setSkeletonType(1);
+            else if (StatCollector.translateToLocal("entity." + k + ".name").equals("entity." + k + ".name")) {
                 LOG.info("Entity " + k + " does't have localized name, skipping");
                 return;
             }
@@ -867,92 +880,102 @@ public class MobRecipeLoader {
             frand.newRound();
             collector.newRound();
 
-            try {
-                Class<?> cl = e.getClass();
-                boolean detectedException;
-                do {
-                    detectedException = false;
-                    try {
-                        cl.getDeclaredMethod(addRandomArmorName);
-                    } catch (Exception ex) {
-                        detectedException = true;
-                        cl = cl.getSuperclass();
+            if (registeringWitherSkeleton && e instanceof EntitySkeleton && k.equals("witherSkeleton")) {
+                dropinstance i = new dropinstance(new ItemStack(Items.stone_sword), additionaldrops);
+                i.isDamageRandomized = true;
+                int maxdamage = i.stack.getMaxDamage();
+                int max = Math.max(maxdamage - 25, 1);
+                for (int d = Math.min(max, 25); d <= max; d++) i.damagesPossible.put(d, 1);
+                additionaldrops.add(i, 1d);
+            } else
+                try {
+                    Class<?> cl = e.getClass();
+                    boolean detectedException;
+                    do {
+                        detectedException = false;
+                        try {
+                            cl.getDeclaredMethod(addRandomArmorName);
+                        } catch (Exception ex) {
+                            detectedException = true;
+                            cl = cl.getSuperclass();
+                        }
+                    } while (detectedException && !cl.equals(Entity.class));
+                    if (cl.equals(EntityLiving.class) || cl.equals(Entity.class)) throw new Exception();
+                    cl = e.getClass();
+                    do {
+                        detectedException = false;
+                        try {
+                            cl.getDeclaredMethod(enchantEquipmentName);
+                        } catch (Exception ex) {
+                            detectedException = true;
+                            cl = cl.getSuperclass();
+                        }
+                    } while (detectedException && !cl.equals(EntityLiving.class));
+                    boolean usingVanillaEnchantingMethod = cl.equals(EntityLiving.class);
+                    double chanceModifierLocal = 1f;
+                    if (v.getName().startsWith("twilightforest.entity")) {
+                        frand.forceFloatValue = 0f;
+                        chanceModifierLocal = 0.25f;
                     }
-                } while (detectedException && !cl.equals(Entity.class));
-                if (cl.equals(EntityLiving.class) || cl.equals(Entity.class)) throw new Exception();
-                cl = e.getClass();
-                do {
-                    detectedException = false;
-                    try {
-                        cl.getDeclaredMethod(enchantEquipmentName);
-                    } catch (Exception ex) {
-                        detectedException = true;
-                        cl = cl.getSuperclass();
-                    }
-                } while (detectedException && !cl.equals(EntityLiving.class));
-                boolean usingVanillaEnchantingMethod = cl.equals(EntityLiving.class);
-                double chanceModifierLocal = 1f;
-                if (v.getName().startsWith("twilightforest.entity")) {
-                    frand.forceFloatValue = 0f;
-                    chanceModifierLocal = 0.25f;
-                }
-                second = false;
-                do {
-                    addRandomArmor.invoke(e);
-                    if (!usingVanillaEnchantingMethod) enchantEquipment.invoke(e);
-                    ItemStack[] lastActiveItems = e.getLastActiveItems();
-                    for (int j = 0, lastActiveItemsLength = lastActiveItems.length; j < lastActiveItemsLength; j++) {
-                        ItemStack stack = lastActiveItems[j];
-                        if (stack != null) {
-                            if (LoaderReference.Thaumcraft)
-                                if (stack.getItem() instanceof ItemWandCasting)
-                                    continue; // crashes the game when rendering in GUI
+                    second = false;
+                    do {
+                        addRandomArmor.invoke(e);
+                        if (!usingVanillaEnchantingMethod) enchantEquipment.invoke(e);
+                        ItemStack[] lastActiveItems = e.getLastActiveItems();
+                        for (int j = 0, lastActiveItemsLength = lastActiveItems.length;
+                                j < lastActiveItemsLength;
+                                j++) {
+                            ItemStack stack = lastActiveItems[j];
+                            if (stack != null) {
+                                if (LoaderReference.Thaumcraft)
+                                    if (stack.getItem() instanceof ItemWandCasting)
+                                        continue; // crashes the game when rendering in GUI
 
-                            int randomenchant = -1;
-                            if (stack.hasTagCompound()
-                                    && stack.stackTagCompound.hasKey(randomEnchantmentDetectedString)) {
-                                randomenchant = stack.stackTagCompound.getInteger(randomEnchantmentDetectedString);
-                                stack.stackTagCompound.removeTag("ench");
-                            }
-                            dropinstance i = additionaldrops.add(
-                                    new dropinstance(stack.copy(), additionaldrops),
-                                    frand.chance
-                                            * chanceModifierLocal
-                                            * (usingVanillaEnchantingMethod ? (j == 0 ? 0.75d : 0.5d) : 1d));
-                            if (!i.isDamageRandomized && i.stack.isItemStackDamageable()) {
-                                i.isDamageRandomized = true;
-                                int maxdamage = i.stack.getMaxDamage();
-                                int max = Math.max(maxdamage - 25, 1);
-                                for (int d = Math.min(max, 25); d <= max; d++) i.damagesPossible.put(d, 1);
-                            }
-                            if (!i.isEnchatmentRandomized && randomenchant != -1) {
-                                i.isEnchatmentRandomized = true;
-                                i.enchantmentLevel = randomenchant;
-                            }
-                            if (usingVanillaEnchantingMethod) {
-                                if (!stack.hasTagCompound()) stack.stackTagCompound = new NBTTagCompound();
-                                stack.stackTagCompound.setInteger(randomEnchantmentDetectedString, 14);
-                                dropinstance newdrop = additionaldrops.add(
+                                int randomenchant = -1;
+                                if (stack.hasTagCompound()
+                                        && stack.stackTagCompound.hasKey(randomEnchantmentDetectedString)) {
+                                    randomenchant = stack.stackTagCompound.getInteger(randomEnchantmentDetectedString);
+                                    stack.stackTagCompound.removeTag("ench");
+                                }
+                                dropinstance i = additionaldrops.add(
                                         new dropinstance(stack.copy(), additionaldrops),
-                                        frand.chance * chanceModifierLocal * (j == 0 ? 0.25d : 0.5d));
-                                newdrop.isEnchatmentRandomized = true;
-                                newdrop.enchantmentLevel = 14;
-                                newdrop.isDamageRandomized = i.isDamageRandomized;
-                                newdrop.damagesPossible = (HashMap<Integer, Integer>) i.damagesPossible.clone();
+                                        frand.chance
+                                                * chanceModifierLocal
+                                                * (usingVanillaEnchantingMethod ? (j == 0 ? 0.75d : 0.5d) : 1d));
+                                if (!i.isDamageRandomized && i.stack.isItemStackDamageable()) {
+                                    i.isDamageRandomized = true;
+                                    int maxdamage = i.stack.getMaxDamage();
+                                    int max = Math.max(maxdamage - 25, 1);
+                                    for (int d = Math.min(max, 25); d <= max; d++) i.damagesPossible.put(d, 1);
+                                }
+                                if (!i.isEnchatmentRandomized && randomenchant != -1) {
+                                    i.isEnchatmentRandomized = true;
+                                    i.enchantmentLevel = randomenchant;
+                                }
+                                if (usingVanillaEnchantingMethod) {
+                                    if (!stack.hasTagCompound()) stack.stackTagCompound = new NBTTagCompound();
+                                    stack.stackTagCompound.setInteger(randomEnchantmentDetectedString, 14);
+                                    dropinstance newdrop = additionaldrops.add(
+                                            new dropinstance(stack.copy(), additionaldrops),
+                                            frand.chance * chanceModifierLocal * (j == 0 ? 0.25d : 0.5d));
+                                    newdrop.isEnchatmentRandomized = true;
+                                    newdrop.enchantmentLevel = 14;
+                                    newdrop.isDamageRandomized = i.isDamageRandomized;
+                                    newdrop.damagesPossible = (HashMap<Integer, Integer>) i.damagesPossible.clone();
+                                }
                             }
                         }
-                    }
-                    Arrays.fill(e.getLastActiveItems(), null);
+                        Arrays.fill(e.getLastActiveItems(), null);
 
-                    if (second && frand.chance < 0.0000001d) {
-                        LOG.warn("Skipping " + k + " additional dropmap because it's too randomized");
-                        break;
-                    }
-                    second = true;
+                        if (second && frand.chance < 0.0000001d) {
+                            LOG.warn("Skipping " + k + " additional dropmap because it's too randomized");
+                            break;
+                        }
+                        second = true;
 
-                } while (frand.nextRound());
-            } catch (Exception ignored) {
-            }
+                    } while (frand.nextRound());
+                } catch (Exception ignored) {
+                }
 
             frand.newRound();
             collector.newRound();
@@ -1061,6 +1084,8 @@ public class MobRecipeLoader {
 
             LOG.info("Mapped " + k);
         });
+
+        if (registeringWitherSkeleton) stringToClassMapping.remove("witherSkeleton");
 
         time -= System.currentTimeMillis();
         time = -time;

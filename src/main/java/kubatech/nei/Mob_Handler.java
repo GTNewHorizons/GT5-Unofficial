@@ -54,6 +54,7 @@ import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -530,7 +531,9 @@ public class Mob_Handler extends TemplateRecipeHandler {
             this.mInput = new ArrayList<>();
             int id = EntityList.getEntityID(mob);
             mobname = EntityList.getEntityString(mob);
-            localizedName = StatCollector.translateToLocal("entity." + mobname + ".name");
+            localizedName = mobname.equals("Skeleton") && ((EntitySkeleton) mob).getSkeletonType() == 1
+                    ? "Wither Skeleton"
+                    : StatCollector.translateToLocal("entity." + mobname + ".name");
             if (id != 0) {
                 this.mInput.add(new ItemStack(Items.spawn_egg, 1, id));
                 this.mInput.add(new ItemStack(Blocks.mob_spawner, 1, id));
