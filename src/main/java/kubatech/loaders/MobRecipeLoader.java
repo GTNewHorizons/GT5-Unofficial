@@ -64,6 +64,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.init.Items;
@@ -611,10 +612,15 @@ public class MobRecipeLoader {
                 if (s.version.equals(ModUtils.getModListVersion())) {
                     for (Map.Entry<String, ArrayList<MobDrop>> entry : s.moblist.entrySet()) {
                         try {
-                            EntityLiving e =
-                                    (EntityLiving) ((Class<?>) EntityList.stringToClassMapping.get(entry.getKey()))
-                                            .getConstructor(new Class[] {World.class})
-                                            .newInstance(new Object[] {f});
+                            EntityLiving e;
+                            if (entry.getKey().equals("witherSkeleton")
+                                    && !EntityList.stringToClassMapping.containsKey("witherSkeleton")) {
+                                e = new EntitySkeleton(f);
+                                ((EntitySkeleton) e).setSkeletonType(1);
+                            } else
+                                e = (EntityLiving) ((Class<?>) EntityList.stringToClassMapping.get(entry.getKey()))
+                                        .getConstructor(new Class[] {World.class})
+                                        .newInstance(new Object[] {f});
                             ArrayList<MobDrop> drops = entry.getValue();
                             drops.forEach(MobDrop::reconstructStack);
                             GeneralMobList.put(entry.getKey(), new GeneralMappedMob(e, new MobRecipe(e, drops), drops));
@@ -674,7 +680,12 @@ public class MobRecipeLoader {
         dropCollector collector = new dropCollector();
 
         // Stupid MC code, I need to cast myself
-        ((Map<String, Class<? extends Entity>>) EntityList.stringToClassMapping).forEach((k, v) -> {
+        Map<String, Class<? extends Entity>> stringToClassMapping =
+                (Map<String, Class<? extends Entity>>) EntityList.stringToClassMapping;
+        boolean registeringWitherSkeleton = !stringToClassMapping.containsKey("witherSkeleton");
+        if (registeringWitherSkeleton) stringToClassMapping.put("witherSkeleton", EntitySkeleton.class);
+
+        stringToClassMapping.forEach((k, v) -> {
             if (v == null) return;
 
             if (Modifier.isAbstract(v.getModifiers())) {
@@ -702,7 +713,9 @@ public class MobRecipeLoader {
                 return;
             }
 
-            if (StatCollector.translateToLocal("entity." + k + ".name").equals("entity." + k + ".name")) {
+            if (registeringWitherSkeleton && e instanceof EntitySkeleton && k.equals("witherSkeleton"))
+                ((EntitySkeleton) e).setSkeletonType(1);
+            else if (StatCollector.translateToLocal("entity." + k + ".name").equals("entity." + k + ".name")) {
                 LOG.info("Entity " + k + " does't have localized name, skipping");
                 return;
             }
@@ -1061,6 +1074,8 @@ public class MobRecipeLoader {
 
             LOG.info("Mapped " + k);
         });
+
+        if (registeringWitherSkeleton) stringToClassMapping.remove("witherSkeleton");
 
         time -= System.currentTimeMillis();
         time = -time;
