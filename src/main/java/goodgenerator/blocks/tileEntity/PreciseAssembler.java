@@ -198,7 +198,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                             tRecipe.mEUt,
                             tRecipe.mDuration,
                             1,
-                            Math.min(GT_Values.V[machineTier - 1], getMaxInputVoltage()));
+                            Math.min(getMachineVoltageLimit(), getMaxInputEnergyPA()));
                     this.updateSlots();
                     if (this.mEUt > 0) {
                         this.mEUt = (-this.mEUt);
