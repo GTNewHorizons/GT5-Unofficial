@@ -58,7 +58,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     @Override
     public boolean canProvideEnergy(final ItemStack itemStack) {
-        return false;
+        return true;
     }
 
     @Override
@@ -179,10 +179,6 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             final boolean ignoreTransferLimit,
             final boolean externally,
             final boolean simulate) {
-        if (!simulate) {
-            ElectricItem.manager.discharge(stack, amount, tier, ignoreTransferLimit, externally, simulate);
-        }
-
         return ElectricItem.manager.discharge(stack, amount, tier, ignoreTransferLimit, externally, simulate);
     }
 
@@ -306,11 +302,13 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                 if (aFood != null) {
                     // Hunger Check
                     hunger = 20 - aFood.getFoodLevel();
-                    this.discharge(aBaubleStack, (1638400) * hunger, 6, true, true, false);
                     // Saturation Check
-                    saturation = 20f - aFood.getSaturationLevel();
-                    this.discharge(aBaubleStack, (1638400) * saturation, 6, true, true, false);
-                    aFood.addStats(hunger, saturation);
+                    if (hunger > 0) {
+                        saturation = 20f - aFood.getSaturationLevel();
+                        saturation /= hunger * 2f;
+                        this.discharge(aBaubleStack, (1638400) * (hunger + saturation), 6, true, true, false);
+                        aFood.addStats(hunger, saturation);
+                    }
                 }
 
                 // Only show Messages if they're enabled.
