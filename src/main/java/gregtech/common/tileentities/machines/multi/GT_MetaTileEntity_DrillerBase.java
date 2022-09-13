@@ -76,6 +76,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
                                             t.getCasingBlockItem().get(0).getItemDamage())))
                             .addElement('b', lazy(t -> buildHatchAdder(GT_MetaTileEntity_DrillerBase.class)
                                     .atLeastList(t.getAllowedHatches())
+                                    .adder(GT_MetaTileEntity_DrillerBase::addToMachineList)
                                     .casingIndex(t.casingTextureIndex)
                                     .dot(1)
                                     .buildAndChain(
@@ -565,6 +566,12 @@ public abstract class GT_MetaTileEntity_DrillerBase
         return rList;
     }
 
+    @Override
+    public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        return super.addToMachineList(aTileEntity, aBaseCasingIndex)
+                || addDataAccessToMachineList(aTileEntity, aBaseCasingIndex);
+    }
+
     public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -604,7 +611,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
                 DataHatchElement.DataAccess);
     }
 
-    private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_DrillerBase> {
+    protected enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_DrillerBase> {
         DataAccess;
 
         @Override
