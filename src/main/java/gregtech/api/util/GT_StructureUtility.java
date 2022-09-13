@@ -82,12 +82,25 @@ public class GT_StructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                ItemStack tFrameStack = GT_OreDictUnificator.get(OrePrefixes.frameGt, aFrameMaterial, 1);
+                ItemStack tFrameStack = getFrameStack();
                 if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
                     return false;
                 ItemBlock tFrameStackItem = (ItemBlock) tFrameStack.getItem();
                 return tFrameStackItem.placeBlockAt(
                         tFrameStack, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tFrameStack));
+            }
+
+            private ItemStack getFrameStack() {
+                return GT_OreDictUnificator.get(OrePrefixes.frameGt, aFrameMaterial, 1);
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(
+                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+                ItemStack tFrameStack = getFrameStack();
+                if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
+                    return BlocksToPlace.errored;
+                return BlocksToPlace.create(tFrameStack);
             }
 
             @Override
@@ -109,7 +122,7 @@ public class GT_StructureUtility {
             public PlaceResult survivalPlaceBlock(
                     T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
                 if (check(t, world, x, y, z)) return SKIP;
-                ItemStack tFrameStack = GT_OreDictUnificator.get(OrePrefixes.frameGt, aFrameMaterial, 1);
+                ItemStack tFrameStack = getFrameStack();
                 if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
                     return REJECT; // honestly, this is more like a programming error or pack issue
                 return StructureUtility.survivalPlaceBlock(
@@ -192,6 +205,14 @@ public class GT_StructureUtility {
             }
 
             @Override
+            public BlocksToPlace getBlocksToPlace(
+                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+                Class<? extends IMetaTileEntity> clazz = aMetaId.apply(t);
+                if (clazz == null) return BlocksToPlace.createEmpty();
+                return BlocksToPlace.create(is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is)));
+            }
+
+            @Override
             public PlaceResult survivalPlaceBlock(
                     T t,
                     World world,
@@ -261,6 +282,15 @@ public class GT_StructureUtility {
             public boolean placeBlock(T t, World world, int i, int i1, int i2, ItemStack itemStack) {
                 // TODO
                 return false;
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(
+                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+                GT_Item_Machines item = (GT_Item_Machines) Item.getItemFromBlock(GregTech_API.sBlockMachines);
+                int meta = aMetaId.applyAsInt(t);
+                if (meta < 0) return BlocksToPlace.createEmpty();
+                return BlocksToPlace.create(ItemStackPredicate.from(item).setMeta(meta));
             }
 
             @Override
@@ -422,6 +452,12 @@ public class GT_StructureUtility {
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 return world.setBlock(x, y, z, GregTech_API.sBlockCasings5, getMetaFromHint(trigger), 3);
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(
+                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+                return BlocksToPlace.create(GregTech_API.sBlockCasings5, getMetaFromHint(trigger));
             }
 
             @Override

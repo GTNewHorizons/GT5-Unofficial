@@ -26,6 +26,8 @@ import gregtech.api.util.GT_Single_Recipe_Check;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -315,6 +317,20 @@ public class GT_MetaTileEntity_LargeChemicalReactor
                 EntityPlayerMP actor,
                 Consumer<IChatComponent> chatter) {
             return survivalPlaceBlock(t, world, x, y, z, trigger, AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
+        }
+
+        @Override
+        public BlocksToPlace getBlocksToPlace(
+                GT_MetaTileEntity_LargeChemicalReactor gt_metaTileEntity_largeChemicalReactor,
+                World world,
+                int x,
+                int y,
+                int z,
+                ItemStack trigger,
+                AutoPlaceEnvironment env) {
+            return BlocksToPlace.create(IntStream.range(0, 8)
+                    .mapToObj(i -> new ItemStack(GregTech_API.sBlockCasings5, 1, i))
+                    .collect(Collectors.toList()));
         }
 
         @Override
