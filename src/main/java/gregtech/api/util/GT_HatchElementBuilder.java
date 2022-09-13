@@ -375,6 +375,12 @@ public class GT_HatchElementBuilder<T> {
                 return tHint;
             }
 
+            @Override
+            public BlocksToPlace getBlocksToPlace(
+                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+                return BlocksToPlace.create(mHatchItemFilter.apply(t, trigger));
+            }
+
             @Deprecated
             @Override
             public PlaceResult survivalPlaceBlock(
