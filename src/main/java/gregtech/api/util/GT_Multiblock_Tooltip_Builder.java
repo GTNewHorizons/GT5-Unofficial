@@ -476,7 +476,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addSubChannelUsage(String channel, String purpose) {
-        sLines.add(StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
         return this;
     }
 

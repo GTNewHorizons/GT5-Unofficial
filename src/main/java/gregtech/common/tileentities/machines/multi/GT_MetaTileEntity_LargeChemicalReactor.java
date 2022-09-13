@@ -4,11 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -271,10 +267,10 @@ public class GT_MetaTileEntity_LargeChemicalReactor
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         mCoilAmount = 0;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     private enum CoilStructureElement implements IStructureElement<GT_MetaTileEntity_LargeChemicalReactor> {
@@ -318,13 +314,35 @@ public class GT_MetaTileEntity_LargeChemicalReactor
                 IItemSource s,
                 EntityPlayerMP actor,
                 Consumer<IChatComponent> chatter) {
+            return survivalPlaceBlock(t, world, x, y, z, trigger, AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
+        }
+
+        @Override
+        public PlaceResult survivalPlaceBlock(
+                GT_MetaTileEntity_LargeChemicalReactor t,
+                World world,
+                int x,
+                int y,
+                int z,
+                ItemStack trigger,
+                AutoPlaceEnvironment env) {
             if (t.mCoilAmount > 0) return PlaceResult.SKIP;
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-            if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, actor)) return PlaceResult.REJECT;
-            ItemStack result = s.takeOne(ItemStackPredicate.from(GregTech_API.sBlockCasings5), true);
+            if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return PlaceResult.REJECT;
+            ItemStack result = env.getSource().takeOne(ItemStackPredicate.from(GregTech_API.sBlockCasings5), true);
             if (result == null) return PlaceResult.REJECT;
             PlaceResult ret = StructureUtility.survivalPlaceBlock(
-                    result, ItemStackPredicate.NBTMode.EXACT, null, true, world, x, y, z, s, actor, chatter);
+                    result,
+                    ItemStackPredicate.NBTMode.EXACT,
+                    null,
+                    true,
+                    world,
+                    x,
+                    y,
+                    z,
+                    env.getSource(),
+                    env.getActor(),
+                    env.getChatter());
             if (ret == PlaceResult.ACCEPT) t.mCoilAmount++;
             return ret;
         }

@@ -37,7 +37,7 @@ GT5U.MBTT.StructureHint=Some blocks have multiple candidates or can use any tier
 GT5U.MBTT.Mod=Added by
 GT5U.MBTT.Air=Mandatory Air
 
-GT5U.MBTT.subchannel=Uses sub channel §6%s§r for %s
+GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 
