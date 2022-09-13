@@ -3073,8 +3073,10 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.SpaceTime, 16L),
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Quantum, 16L),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 16L),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16L),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 8L),
                         ItemList.Sensor_UMV.get(16L),
                         ItemList.Emitter_UMV.get(16L),
                         GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 16L)
