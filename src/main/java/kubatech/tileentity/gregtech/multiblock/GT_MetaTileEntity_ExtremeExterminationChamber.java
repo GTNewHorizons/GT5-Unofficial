@@ -95,6 +95,9 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         implements CustomTileEntityPacketHandler {
 
     public static final HashMap<String, MobRecipeLoader.MobRecipe> MobNameToRecipeMap = new HashMap<>();
+    public static final double DIAMOND_SPIKES_DAMAGE = 9d;
+    // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
+    public static final int MOB_SPAWN_INTERVAL = 55;
     public final Random rand = new FastRandom();
 
     @SuppressWarnings("unused")
@@ -474,7 +477,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 5000)};
             this.mOutputItems = recipe.generateOutputs(rand, this, 3, 0, mIsProducingInfernalDrops);
         } else {
-            double attackDamage = 9d; // damage from spikes
+            double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
             GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.size() == 0 ? null : this.mInputBusses.get(0);
             if (inputbus != null && !isValidMetaTileEntity(inputbus)) inputbus = null;
             ItemStack lootingholder = inputbus == null ? null : inputbus.getStackInSlot(0);
@@ -595,8 +598,9 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             if (weaponCache.isValid) {
                 info.add("Weapon attack damage: " + EnumChatFormatting.YELLOW + weaponCache.attackdamage);
                 info.add("Weapon looting level: " + EnumChatFormatting.YELLOW + weaponCache.looting);
-                info.add("Total attack damage: " + EnumChatFormatting.YELLOW + (9 + weaponCache.attackdamage));
-            } else info.add("Total attack damage: " + EnumChatFormatting.YELLOW + 9);
+                info.add("Total attack damage: " + EnumChatFormatting.YELLOW
+                        + (DIAMOND_SPIKES_DAMAGE + weaponCache.attackdamage));
+            } else info.add("Total attack damage: " + EnumChatFormatting.YELLOW + DIAMOND_SPIKES_DAMAGE);
         }
         return info.toArray(new String[0]);
     }

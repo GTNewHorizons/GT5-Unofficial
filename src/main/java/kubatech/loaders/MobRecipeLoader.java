@@ -21,7 +21,7 @@ package kubatech.loaders;
 
 import static kubatech.api.utils.ModUtils.isClientSided;
 import static kubatech.api.utils.ModUtils.isDeobfuscatedEnvironment;
-import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber.MobNameToRecipeMap;
+import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber.*;
 
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import atomicstryker.infernalmobs.common.MobModifier;
@@ -207,9 +207,8 @@ public class MobRecipeLoader {
                 if (o.damages != null) for (int v : o.damages.values()) maxdamagechance += v;
             }
             mMaxDamageChance = maxdamagechance;
-            // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
             maxEntityHealth = e.getMaxHealth();
-            mDuration = 55 + (int) (maxEntityHealth * 10);
+            mDuration = Math.max(MOB_SPAWN_INTERVAL, (int) ((maxEntityHealth / DIAMOND_SPIKES_DAMAGE) * 10d));
             entity = e;
         }
 
@@ -233,7 +232,7 @@ public class MobRecipeLoader {
                 int lootinglevel,
                 boolean preferInfernalDrops) {
             MTE.mEUt = mEUt;
-            MTE.mMaxProgresstime = Math.max(55, (int) ((maxEntityHealth / attackDamage) * 10d));
+            MTE.mMaxProgresstime = Math.max(MOB_SPAWN_INTERVAL, (int) ((maxEntityHealth / attackDamage) * 10d));
             ArrayList<ItemStack> stacks = new ArrayList<>(mOutputs.size());
             for (MobDrop o : mOutputs) {
                 int chance = o.chance;
