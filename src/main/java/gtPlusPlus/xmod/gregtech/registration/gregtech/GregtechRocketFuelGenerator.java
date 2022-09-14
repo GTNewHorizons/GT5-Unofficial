@@ -57,11 +57,13 @@ public class GregtechRocketFuelGenerator {
             "RFR",
             "PWP",
             'R',
-            OrePrefixes.pipeLarge.get(Materials.TungstenSteel),
+            OrePrefixes.pipeMedium.get(Materials.TungstenSteel),
             'F',
             ItemList.Casing_RobustTungstenSteel,
             'P',
-            ALLOY.NITINOL_60.getGear(1)
+            ALLOY.NITINOL_60.getGear(1),
+            'W',
+            OrePrefixes.stickLong.get(Materials.TungstenSteel)
         });
 
         GregtechItemList.Rocket_Engine_EV.set(new GregtechMetaTileEntityRocketFuelGenerator(

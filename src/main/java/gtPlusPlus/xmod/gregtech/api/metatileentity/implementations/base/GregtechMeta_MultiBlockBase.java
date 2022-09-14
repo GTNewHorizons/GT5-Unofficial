@@ -1898,7 +1898,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 
     public boolean addAirIntakeToMachineList(final IGregTechTileEntity aMetaTileEntity, final int aBaseCasingIndex) {
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_AirIntake) {
-            return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
+            return addToMachineListInternal(mAirIntakes, aMetaTileEntity, aBaseCasingIndex);
         }
         return false;
     }
