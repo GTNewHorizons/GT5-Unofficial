@@ -603,13 +603,19 @@ public class MobRecipeLoader {
         File cache = Config.getConfigFile("MobRecipeLoader.cache");
         Gson gson = GSONUtils.GSON_BUILDER.create();
 
-        if (cache.exists()) {
+        String modlistversion;
+        if (Config.regenerationTrigger == Config._CacheRegenerationTrigger.ModAdditionRemoval)
+            modlistversion = ModUtils.getModListVersionIgnoringModVersions();
+        else modlistversion = ModUtils.getModListVersion();
+
+        if (Config.regenerationTrigger != Config._CacheRegenerationTrigger.Always && cache.exists()) {
             LOG.info("Parsing Cached map");
             Reader reader = null;
             try {
                 reader = Files.newReader(cache, StandardCharsets.UTF_8);
                 MobRecipeLoaderCacheStructure s = gson.fromJson(reader, MobRecipeLoaderCacheStructure.class);
-                if (s.version.equals(ModUtils.getModListVersion())) {
+                if (Config.regenerationTrigger == Config._CacheRegenerationTrigger.Never
+                        || s.version.equals(modlistversion)) {
                     for (Map.Entry<String, ArrayList<MobDrop>> entry : s.moblist.entrySet()) {
                         try {
                             EntityLiving e;
@@ -642,7 +648,7 @@ public class MobRecipeLoader {
                     }
             }
         } else {
-            LOG.info("Cached map doesn't exist, generating a new one");
+            LOG.info("Cached map doesn't exist or config option forced, generating a new one");
         }
 
         isInGenerationProcess = true;
@@ -1096,7 +1102,7 @@ public class MobRecipeLoader {
 
         LOG.info("Saving generated map to file");
         MobRecipeLoaderCacheStructure s = new MobRecipeLoaderCacheStructure();
-        s.version = ModUtils.getModListVersion();
+        s.version = modlistversion;
         s.moblist = new HashMap<>();
         GeneralMobList.forEach((k, v) -> s.moblist.put(k, v.drops));
         Writer writer = null;

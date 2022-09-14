@@ -30,6 +30,19 @@ public class Config {
     }
 
     public static boolean mobHandlerEnabled = true;
+
+    public enum _CacheRegenerationTrigger {
+        Never,
+        ModAdditionRemoval,
+        ModAdditionRemovalChange,
+        Always;
+
+        public static _CacheRegenerationTrigger get(int oridinal) {
+            return values()[oridinal];
+        }
+    }
+
+    public static _CacheRegenerationTrigger regenerationTrigger = _CacheRegenerationTrigger.ModAdditionRemovalChange;
     public static boolean includeEmptyMobs = true;
     public static String[] mobBlacklist;
     public static File configFile;
@@ -55,6 +68,16 @@ public class Config {
                         true,
                         "Enable \"Mob Drops\" NEI page and Extreme Extermination Chamber")
                 .getBoolean();
+        StringBuilder c = new StringBuilder("When will cache regeneration trigger? ");
+        for (_CacheRegenerationTrigger value : _CacheRegenerationTrigger.values())
+            c.append(value.ordinal()).append(" - ").append(value.name()).append(", ");
+        regenerationTrigger = _CacheRegenerationTrigger.get(configuration
+                .get(
+                        Categories.mobHandler,
+                        "CacheRegenerationTrigger",
+                        _CacheRegenerationTrigger.ModAdditionRemovalChange.ordinal(),
+                        c.toString())
+                .getInt());
         includeEmptyMobs = configuration
                 .get(Categories.mobHandler, "IncludeEmptyMobs", true, "Include mobs that have no drops in NEI")
                 .getBoolean();

@@ -75,4 +75,29 @@ public class ModUtils {
             return sortedList;
         }
     }
+
+    private static String modListVersionIgnoringModVersions = null;
+
+    public static String getModListVersionIgnoringModVersions() {
+        if (modListVersionIgnoringModVersions != null) return modListVersionIgnoringModVersions;
+        @SuppressWarnings("unchecked")
+        ArrayList<ModContainer> modlist = (ArrayList<ModContainer>)
+                ((ArrayList<ModContainer>) Loader.instance().getActiveModList()).clone();
+        String sortedList = modlist.stream()
+                .filter(m -> m.getMod() != null)
+                .sorted(Comparator.comparing(ModContainer::getModId))
+                .collect(StringBuilder::new, (a, b) -> a.append(b.getModId()), (a, b) -> a.append(", ")
+                        .append(b))
+                .toString();
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            modListVersionIgnoringModVersions = DatatypeConverter.printHexBinary(
+                            md.digest(sortedList.getBytes(StandardCharsets.UTF_8)))
+                    .toUpperCase();
+            return modListVersionIgnoringModVersions;
+        } catch (Exception e) {
+            modListVersionIgnoringModVersions = sortedList;
+            return sortedList;
+        }
+    }
 }
