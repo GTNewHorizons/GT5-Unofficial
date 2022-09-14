@@ -240,8 +240,8 @@ public class RecipeLoader_NuclearFuelProcessing {
                 FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 1000),
                 new FluidStack[] {NUCLIDE.LiFBeF2.getFluidStack(250)},
                 null,
-                120 * 60 * 20,
-                MaterialUtils.getVoltageForTier(3));
+                450 * 20,
+                MaterialUtils.getVoltageForTier(5));
 
         // UF6 -> UF4 reduction
         // UF6 + LiFBeF2 + H2 -> LiFBeF2UF4 + HF
@@ -251,9 +251,9 @@ public class RecipeLoader_NuclearFuelProcessing {
                 new ItemStack[] {ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2), CI.emptyCells(1)
                 },
                 new FluidStack[] {NUCLIDE.LiFBeF2UF4.getFluidStack(3000)},
-                20 * 60 * 10,
-                MaterialUtils.getVoltageForTier(4),
-                6500);
+                300 * 10,
+                MaterialUtils.getVoltageForTier(5),
+                5400);
 
         // LiFBeF2ZrF4U235 - We can't add both ZrF4 and U235 here, so best we leave this disabled.
         /*CORE.RA.addReactorProcessingUnitRecipe(

@@ -582,7 +582,7 @@ public final class ModItems {
             // MaterialGenerator.generate(MISC_MATERIALS.AMMONIUM); //LFTR fuel component
             MaterialGenerator.generateNuclearDusts(FLUORIDES.AMMONIUM_BIFLUORIDE); // LFTR fuel component
             MaterialGenerator.generateNuclearDusts(FLUORIDES.BERYLLIUM_HYDROXIDE); // LFTR fuel component
-            MaterialGenerator.generateNuclearDusts(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE); // LFTR fuel component
+            // MaterialGenerator.generateNuclearDusts(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE); // LFTR fuel component
 
             // Generate Fluorides
             MaterialGenerator.generateNuclearDusts(FLUORIDES.BERYLLIUM_FLUORIDE);

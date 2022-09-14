@@ -66,7 +66,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
                 .addMufflerHatch("Base platform", 1)
                 .addMaintenanceHatch("Base platform", 1)
                 .addEnergyHatch("Base platform", 1)
-                .addStructureInfo("Muffler's Tier must be LuV+")
+                .addStructureInfo("Muffler's Tier must be IV+")
                 .addStructureInfo("4x Input Hatches, 2x Output Hatches, 1x Output Bus")
                 .addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch")
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
@@ -131,7 +131,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler
-                    && ((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity).mTier >= 6) {
+                    && ((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity).mTier >= 5) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
             }
         }

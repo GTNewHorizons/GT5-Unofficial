@@ -75,10 +75,10 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
         tt.addMachineType(getMachineType())
                 .addInfo("Controller Block for the Liquid Fluoride Thorium Reactor.")
                 .addInfo("Produces Heat & Energy from Radioactive Beta Decay.")
-                .addInfo("Outputs U233 every 10 seconds, on average")
-                .addInfo("Input Fluorine and Helium for bonus byproducts")
-                .addInfo("Input Li2BeF4 and a molten salt as fuel.")
-                .addInfo("LiFBeF2ThF4UF4, LiFBeF2ZrF4UF4 or LiFBeF2ZrF4U235")
+                .addInfo("Input Li2BeF4 and a molten salt as fuel, and match the 4 Dynamo Hatches:")
+                .addInfo("LFTR Fuel 1 (4 IV amps), LFTR Fuel 2 (4 LuV amps), LFTR Fuel 3 (4 ZPM amps)")
+                .addInfo("Outputs U233 every 10 seconds, on average, while the reactor is running")
+                .addInfo("Check NEI to see the other outputs - they differ between fuels")
                 .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
                 .beginStructureBlock(7, 4, 7, true)
@@ -90,7 +90,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
                 .addDynamoHatch("Top or bottom layer edges", 1)
                 .addMaintenanceHatch("Top or bottom layer edges", 1)
                 .addMufflerHatch("Top 3x3", 2)
-                .addStructureInfo("All dynamos must be IV or LuV tier.")
+                .addStructureInfo("All dynamos must be between EV and LuV tier.")
                 .addStructureInfo("All other hatches must be IV+ tier.")
                 .addStructureInfo("3x Output Hatches, 2x Input Hatches, 4x Dynamo Hatches")
                 .addStructureInfo("2x Maintenance Hatches, 4x Mufflers")
@@ -190,7 +190,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
             } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo
-                    && (((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity).mTier >= 5
+                    && (((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity).mTier >= 4
                             && ((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity).mTier <= 6)) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
             } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input
@@ -245,7 +245,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
                                     buildHatchAdder(GregtechMTE_NuclearReactor.class)
                                             .atLeast(Dynamo)
                                             .adder(GregtechMTE_NuclearReactor::addNuclearReactorEdgeList)
-                                            .hatchItemFilterAnd(t -> filterByMTETier(5, 6))
+                                            .hatchItemFilterAnd(t -> filterByMTETier(4, 6))
                                             .casingIndex(TAE.GTPP_INDEX(12))
                                             .dot(1)
                                             .build(),
