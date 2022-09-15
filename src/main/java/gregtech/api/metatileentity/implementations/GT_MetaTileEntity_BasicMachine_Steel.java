@@ -8,7 +8,10 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEEL_SIDE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEEL_TOP;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import gregtech.api.enums.Dyes;
+import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.power.Power;
@@ -187,5 +190,15 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
                     Dyes.getModulation(aColor, Dyes._NULL.mRGBa)),
             TextureFactory.of(OVERLAY_PIPE_OUT)
         };
+    }
+
+    @Override
+    protected UITexture getBackground() {
+        return GT_UITextures.SINGLEBLOCK_BACKGROUND_STEEL;
+    }
+
+    @Override
+    protected IDrawable getPlayerInventorySlotBackground() {
+        return GT_UITextures.ITEM_SLOT_STEEL;
     }
 }

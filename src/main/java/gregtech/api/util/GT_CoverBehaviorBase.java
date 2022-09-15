@@ -2,7 +2,13 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.E;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.ModularUI.GT_UIInfo;
+import gregtech.api.gui.ModularUI.IHasModularUI;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
@@ -14,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 /**
@@ -21,7 +28,7 @@ import net.minecraftforge.fluids.Fluid;
  *
  * @author glease
  */
-public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
+public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> implements IHasModularUI {
 
     public EntityPlayer lastPlayer = null;
     private final Class<T> typeToken;
@@ -202,6 +209,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return onCoverShiftRightClickImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity, aPlayer);
     }
 
+    /**
+     * @deprecated Use {@link #createWindow}
+     */
+    @Deprecated
     public final Object getClientGUI(
             byte aSide,
             int aCoverID,
@@ -210,6 +221,43 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             EntityPlayer aPlayer,
             World aWorld) {
         return getClientGUIImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity, aPlayer, aWorld);
+    }
+
+    /**
+     * For back compatibility.
+     * @return False if this supports ModularUI
+     */
+    public boolean useOldGUI() {
+        return true;
+    }
+
+    @Override
+    public ModularWindow createWindow(UIBuildContext buildContext) {
+        ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
+        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
+        builder.setGuiTint(GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA()));
+        if (showPlayerInventory()) {
+            builder.bindPlayerInventory(buildContext.getPlayer());
+        }
+        addUIWidgets(builder);
+        return builder.build();
+    }
+
+    /**
+     * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
+     */
+    protected void addUIWidgets(ModularWindow.Builder builder) {}
+
+    protected int getGUIWidth() {
+        return 176;
+    }
+
+    protected int getGUIHeight() {
+        return 107;
+    }
+
+    protected boolean showPlayerInventory() {
+        return false;
     }
 
     /**
@@ -466,10 +514,20 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
-            GT_Values.NW.sendToPlayer(
-                    new GT_Packet_TileEntityCoverGUI(
-                            aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
-                    (EntityPlayerMP) aPlayer);
+            if (useOldGUI()) {
+                GT_Values.NW.sendToPlayer(
+                        new GT_Packet_TileEntityCoverGUI(
+                                aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
+                        (EntityPlayerMP) aPlayer);
+            } else {
+                GT_UIInfo.CoverUI.get(ForgeDirection.VALID_DIRECTIONS[aSide])
+                        .open(
+                                aPlayer,
+                                aPlayer.worldObj,
+                                aTileEntity.getXCoord(),
+                                aTileEntity.getYCoord(),
+                                aTileEntity.getZCoord());
+            }
             return true;
         }
         return false;

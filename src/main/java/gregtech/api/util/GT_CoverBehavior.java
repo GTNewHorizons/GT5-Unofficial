@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.E;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.ModularUI.GT_UIInfo;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
@@ -10,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 /**
@@ -316,10 +318,20 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
             byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
-            GT_Values.NW.sendToPlayer(
-                    new GT_Packet_TileEntityCoverGUI(
-                            aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
-                    (EntityPlayerMP) aPlayer);
+            if (useOldGUI()) {
+                GT_Values.NW.sendToPlayer(
+                        new GT_Packet_TileEntityCoverGUI(
+                                aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
+                        (EntityPlayerMP) aPlayer);
+            } else {
+                GT_UIInfo.CoverUI.get(ForgeDirection.VALID_DIRECTIONS[aSide])
+                        .open(
+                                aPlayer,
+                                aPlayer.worldObj,
+                                aTileEntity.getXCoord(),
+                                aTileEntity.getYCoord(),
+                                aTileEntity.getZCoord());
+            }
             return true;
         }
         return false;

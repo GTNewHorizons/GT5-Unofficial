@@ -1,7 +1,10 @@
 package gregtech.api.interfaces.metatileentity;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.gui.ModularUI.IHasModularUI;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -38,6 +41,7 @@ public interface IMetaTileEntity
                 IFluidHandler,
                 IGearEnergyTileEntity,
                 IMachineBlockUpdateable,
+                IHasModularUI,
                 IGregtechWailaProvider {
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
@@ -193,13 +197,34 @@ public interface IMetaTileEntity
 
     /**
      * @return the Server Side Container
+     * @deprecated Use {@link #createWindow}
      */
-    Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity);
+    @Deprecated
+    default Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * @return the Client Side GUI Container
+     * @deprecated Use {@link #createWindow}
      */
-    Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity);
+    @Deprecated
+    default Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * For back compatibility.
+     * @return False if this supports ModularUI
+     */
+    default boolean useOldGUI() {
+        return true;
+    }
+
+    @Override
+    default ModularWindow createWindow(UIBuildContext buildContext) {
+        return null;
+    }
 
     /**
      * From new ISidedInventory

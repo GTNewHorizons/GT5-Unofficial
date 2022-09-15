@@ -6,13 +6,21 @@ import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AECableType;
 import appeng.me.helpers.AENetworkProxy;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -23,6 +31,7 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import java.io.File;
@@ -82,6 +91,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     public long mSoundRequests = 0;
 
+    protected GT_GUIColorOverride colorOverride;
+
     /**
      * This registers your Machine at the List.
      * Use only ID's larger than 2048, because i reserved these ones.
@@ -115,6 +126,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public MetaTileEntity(String aName, int aInvSlotCount) {
         mInventory = new ItemStack[aInvSlotCount];
         mName = aName;
+        colorOverride = new GT_GUIColorOverride(getBackground().location.getResourcePath());
     }
 
     /**
@@ -987,16 +999,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    @Override
     public boolean connectsToItemPipe(byte aSide) {
         return false;
     }
@@ -1167,6 +1169,77 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     public boolean shouldTriggerBlockUpdate() {
         return false;
+    }
+
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return null;
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return null;
+    }
+
+    @Override
+    public ModularWindow createWindow(UIBuildContext buildContext) {
+        ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
+        builder.setBackground(getBackground());
+        builder.setGuiTint(getColorization());
+        if (showPlayerInventory()) {
+            builder.bindPlayerInventory(buildContext.getPlayer(), 7, getPlayerInventorySlotBackground());
+        }
+        addUIWidgets(builder);
+        return builder.build();
+    }
+
+    /**
+     * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
+     */
+    protected void addUIWidgets(ModularWindow.Builder builder) {}
+
+    protected UITexture getBackground() {
+        return GT_UITextures.SINGLEBLOCK_BACKGROUND_DEFAULT;
+    }
+
+    protected int getGUIWidth() {
+        return 176;
+    }
+
+    protected int getGUIHeight() {
+        return 166;
+    }
+
+    protected boolean showPlayerInventory() {
+        return true;
+    }
+
+    protected IDrawable getPlayerInventorySlotBackground() {
+        return ModularUITextures.ITEM_SLOT;
+    }
+
+    /**
+     * @return The color used to render this machine's GUI
+     */
+    private int getColorization() {
+        Dyes dye = Dyes.dyeWhite;
+        if (this.colorOverride.sLoaded()) {
+            if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
+                dye = getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+                return this.colorOverride.getGuiTintOrDefault(dye.mName, GT_Util.getRGBInt(dye.getRGBA()));
+            }
+        } else if (GregTech_API.sColoredGUI) {
+            if (GregTech_API.sMachineMetalGUI) {
+                dye = Dyes.MACHINE_METAL;
+            } else if (getBaseMetaTileEntity() != null) {
+                dye = getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+            }
+        }
+        return GT_Util.getRGBInt(dye.getRGBA());
+    }
+
+    private Dyes getDyeFromIndex(short index) {
+        return index != -1 ? Dyes.get(index) : Dyes.MACHINE_METAL;
     }
 
     @Optional.Method(modid = "appliedenergistics2")
