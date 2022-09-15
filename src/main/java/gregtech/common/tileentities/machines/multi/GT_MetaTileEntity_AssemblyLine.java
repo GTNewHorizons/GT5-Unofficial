@@ -498,7 +498,7 @@ public class GT_MetaTileEntity_AssemblyLine
             build = survivialBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false);
+        return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
     }
 
     private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_AssemblyLine> {
