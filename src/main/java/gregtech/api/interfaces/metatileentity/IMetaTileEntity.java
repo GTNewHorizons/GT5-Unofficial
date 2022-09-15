@@ -4,7 +4,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.gui.ModularUI.IHasModularUI;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -41,7 +40,6 @@ public interface IMetaTileEntity
                 IFluidHandler,
                 IGearEnergyTileEntity,
                 IMachineBlockUpdateable,
-                IHasModularUI,
                 IGregtechWailaProvider {
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
@@ -221,7 +219,10 @@ public interface IMetaTileEntity
         return true;
     }
 
-    @Override
+    /**
+     * Creates UI with ModularUI system. Start building UI with {@link ModularWindow#builder}
+     * and call {@link ModularWindow.Builder#build} to finish.
+     */
     default ModularWindow createWindow(UIBuildContext buildContext) {
         return null;
     }

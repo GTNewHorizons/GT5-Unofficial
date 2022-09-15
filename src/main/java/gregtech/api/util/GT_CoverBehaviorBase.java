@@ -8,7 +8,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.ModularUI.GT_UIInfo;
-import gregtech.api.gui.ModularUI.IHasModularUI;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
@@ -28,7 +27,7 @@ import net.minecraftforge.fluids.Fluid;
  *
  * @author glease
  */
-public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> implements IHasModularUI {
+public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     public EntityPlayer lastPlayer = null;
     private final Class<T> typeToken;
@@ -231,7 +230,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> implem
         return true;
     }
 
-    @Override
+    /**
+     * Creates UI with ModularUI system. Start building UI with {@link ModularWindow#builder}
+     * and call {@link ModularWindow.Builder#build} to finish.
+     */
     public ModularWindow createWindow(UIBuildContext buildContext) {
         ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
