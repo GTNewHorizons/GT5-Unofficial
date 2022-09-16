@@ -12,8 +12,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -34,7 +34,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -53,9 +52,7 @@ public class GT_MetaTileEntity_MultiFurnace
             StructureDefinition.<GT_MetaTileEntity_MultiFurnace>builder()
                     .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
                         {"ccc", "cmc", "ccc"},
-                        {
-                            "CCC", "C-C", "CCC",
-                        },
+                        {"CCC", "C-C", "CCC"},
                         {"b~b", "bbb", "bbb"}
                     }))
                     .addElement('c', ofBlock(GregTech_API.sBlockCasings1, CASING_INDEX))
@@ -324,8 +321,8 @@ public class GT_MetaTileEntity_MultiFurnace
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
     }
 }

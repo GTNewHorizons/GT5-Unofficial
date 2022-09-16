@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.ToLongFunction;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IHatchElement<T> {
     List<? extends Class<? extends IMetaTileEntity>> mteClasses();
@@ -59,6 +60,17 @@ public interface IHatchElement<T> {
                 .casingIndex(aCasingIndex)
                 .dot(aDot)
                 .continueIfSuccess()
+                .build();
+    }
+
+    default <T2 extends T> IStructureElement<T2> newAny(int aCasingIndex, int aDot, ForgeDirection... allowedFacings) {
+        if (aCasingIndex < 0 || aDot < 0) throw new IllegalArgumentException();
+        return GT_StructureUtility.<T2>buildHatchAdder()
+                .anyOf(this)
+                .casingIndex(aCasingIndex)
+                .dot(aDot)
+                .continueIfSuccess()
+                .allowOnly(allowedFacings)
                 .build();
     }
 
