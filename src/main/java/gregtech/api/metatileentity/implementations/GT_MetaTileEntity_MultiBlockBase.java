@@ -308,7 +308,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mEfficiency < 0) mEfficiency = 0;
             if (mUpdated) {
-                mUpdate = 50;
+                // duct tape fix for too many updates on an overloaded server, causing the structure check to not run
+                if (mUpdate <= 0) mUpdate = 50;
                 mUpdated = false;
             }
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
