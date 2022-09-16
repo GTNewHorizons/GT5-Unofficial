@@ -289,7 +289,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     }
 
     protected int getCurrentLayerOutputHatchCount() {
-        return mOutputHatchesByLayer.size() < mHeight
+        return mOutputHatchesByLayer.size() < mHeight || mHeight <= 0
                 ? 0
                 : mOutputHatchesByLayer.get(mHeight - 1).size();
     }

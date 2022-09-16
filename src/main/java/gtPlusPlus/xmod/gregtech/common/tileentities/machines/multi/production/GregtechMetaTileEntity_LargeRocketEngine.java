@@ -130,7 +130,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine
                     .addElement(
                             'S',
                             buildHatchAdder(GregtechMetaTileEntity_LargeRocketEngine.class)
-                                    .atLeast(ImmutableMap.of(InputBus, 1, InputHatch, 3, Maintenance, 1, AirIntake, 8))
+                                    .atLeast(ImmutableMap.of(AirIntake, 8, InputBus, 1, InputHatch, 3, Maintenance, 1))
                                     .casingIndex(getCasingTextureIndex())
                                     .dot(1)
                                     .buildAndChain(onElementPass(
@@ -139,7 +139,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine
                     .addElement(
                             'T',
                             buildHatchAdder(GregtechMetaTileEntity_LargeRocketEngine.class)
-                                    .atLeast(ImmutableMap.of(Dynamo.or(TTDynamo), 1, Maintenance, 1, AirIntake, 8))
+                                    .atLeast(ImmutableMap.of(AirIntake, 8, Dynamo.or(TTDynamo), 1, Maintenance, 1))
                                     .casingIndex(getCasingTextureIndex())
                                     .dot(2)
                                     .buildAndChain(onElementPass(
