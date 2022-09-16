@@ -73,7 +73,7 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
             boolean aActive,
             boolean aRedstone) {
         int texturePointer =
-            (byte) (actualTexture & 0x7F); // just to be sure, from my testing the 8th bit cannot be set clientside
+                (byte) (actualTexture & 0x7F); // just to be sure, from my testing the 8th bit cannot be set clientside
         int textureIndex = texturePointer | (mTexturePage << 7); // Shift seven since one page is 128 textures!
         try {
             if (aSide != aFacing) {
