@@ -29,7 +29,8 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
 
     public int mMaxProgresstime = 0;
-    public volatile int mUpdate = 5;
+    private volatile boolean mUpdated;
+    public int mUpdate = 5;
     public int mProgresstime = 0;
     public boolean mMachine = false;
     private boolean mChimneyBlocked = false;
@@ -211,7 +212,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public void onMachineBlockUpdate() {
-        this.mUpdate = 5;
+        mUpdated = true;
     }
 
     @Override
@@ -231,6 +232,11 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                     .run();
         }
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (mUpdated) {
+                // duct tape fix for too many updates on an overloaded server, causing the structure check to not run
+                if (mUpdate < 0) mUpdate = 5;
+                mUpdated = false;
+            }
             if (this.mUpdate-- == 0) {
                 this.mMachine = checkMachine();
             }
