@@ -11,6 +11,7 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -1187,7 +1188,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         builder.setBackground(getBackground());
         builder.setGuiTint(getColorization());
         if (showPlayerInventory()) {
-            builder.bindPlayerInventory(buildContext.getPlayer(), 7, getPlayerInventorySlotBackground());
+            builder.bindPlayerInventory(buildContext.getPlayer(), 7, getSlotBackground());
         }
         addUIWidgets(builder);
         return builder.build();
@@ -1196,10 +1197,19 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     /**
      * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
      */
-    protected void addUIWidgets(ModularWindow.Builder builder) {}
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        addGregTechLogo(builder);
+    }
+
+    protected void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
+                .setSize(17, 17)
+                .setPos(152, 63));
+    }
 
     protected UITexture getBackground() {
-        return GT_UITextures.SINGLEBLOCK_BACKGROUND_DEFAULT;
+        return GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT;
     }
 
     protected int getGUIWidth() {
@@ -1214,7 +1224,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         return true;
     }
 
-    protected IDrawable getPlayerInventorySlotBackground() {
+    protected IDrawable getSlotBackground() {
         return ModularUITextures.ITEM_SLOT;
     }
 

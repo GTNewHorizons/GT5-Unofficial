@@ -6,6 +6,8 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
@@ -422,6 +424,14 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
+    protected void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_BRONZE)
+                .setSize(17, 17)
+                .setPos(152, 63));
+    }
+
+    @Override
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
         return new ITexture[] {
             TextureFactory.of(
@@ -433,11 +443,11 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     protected UITexture getBackground() {
-        return GT_UITextures.SINGLEBLOCK_BACKGROUND_BRONZE;
+        return GT_UITextures.BACKGROUND_SINGLEBLOCK_BRONZE;
     }
 
     @Override
-    protected IDrawable getPlayerInventorySlotBackground() {
-        return GT_UITextures.ITEM_SLOT_BRONZE;
+    protected IDrawable getSlotBackground() {
+        return GT_UITextures.SLOT_ITEM_BRONZE;
     }
 }

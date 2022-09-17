@@ -10,6 +10,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.enums.Dyes;
 import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -193,12 +195,20 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
     }
 
     @Override
-    protected UITexture getBackground() {
-        return GT_UITextures.SINGLEBLOCK_BACKGROUND_STEEL;
+    protected void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEEL)
+                .setSize(17, 17)
+                .setPos(152, 63));
     }
 
     @Override
-    protected IDrawable getPlayerInventorySlotBackground() {
-        return GT_UITextures.ITEM_SLOT_STEEL;
+    protected UITexture getBackground() {
+        return GT_UITextures.BACKGROUND_SINGLEBLOCK_STEEL;
+    }
+
+    @Override
+    protected IDrawable getSlotBackground() {
+        return GT_UITextures.SLOT_ITEM_STEEL;
     }
 }
