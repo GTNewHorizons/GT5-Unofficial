@@ -4897,7 +4897,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new FluidStack[] {
                     Materials.SulfuricHeavyFuel.getFluid(10),
                     Materials.SulfuricLightFuel.getFluid(50),
-                    Materials.SulfuricNaphtha.getFluid(170),
+                    Materials.SulfuricNaphtha.getFluid(150),
                     Materials.SulfuricGas.getGas(60)
                 },
                 null,
