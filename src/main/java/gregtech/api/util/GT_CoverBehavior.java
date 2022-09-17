@@ -318,12 +318,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
             byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
-            if (useOldGUI()) {
-                GT_Values.NW.sendToPlayer(
-                        new GT_Packet_TileEntityCoverGUI(
-                                aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
-                        (EntityPlayerMP) aPlayer);
-            } else {
+            if (useModularUI()) {
                 GT_UIInfo.CoverUI.get(ForgeDirection.VALID_DIRECTIONS[aSide])
                         .open(
                                 aPlayer,
@@ -331,6 +326,11 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
                                 aTileEntity.getXCoord(),
                                 aTileEntity.getYCoord(),
                                 aTileEntity.getZCoord());
+            } else {
+                GT_Values.NW.sendToPlayer(
+                        new GT_Packet_TileEntityCoverGUI(
+                                aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
+                        (EntityPlayerMP) aPlayer);
             }
             return true;
         }

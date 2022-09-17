@@ -2368,7 +2368,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 return null;
             }
             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-            if (tMetaTileEntity != null && tMetaTileEntity.useOldGUI()) {
+            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
                 return tMetaTileEntity.getServerGUI(aID, aPlayer.inventory, (IGregTechTileEntity) tTileEntity);
             }
         }
@@ -2392,7 +2392,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 byte side = (byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
                 GT_CoverBehaviorBase<?> cover = tile.getCoverBehaviorAtSideNew(side);
 
-                if (cover.hasCoverGUI() && cover.useOldGUI()) {
+                if (cover.hasCoverGUI() && !cover.useModularUI()) {
                     return cover.getClientGUI(
                             side,
                             tile.getCoverIDAtSide(side),
@@ -2404,7 +2404,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 return null;
             }
             IMetaTileEntity tMetaTileEntity = tile.getMetaTileEntity();
-            if (tMetaTileEntity != null && tMetaTileEntity.useOldGUI()) {
+            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
                 return tMetaTileEntity.getClientGUI(aID, aPlayer.inventory, tile);
             }
         }

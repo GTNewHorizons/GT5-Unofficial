@@ -213,10 +213,10 @@ public interface IMetaTileEntity
 
     /**
      * For back compatibility.
-     * @return False if this supports ModularUI
+     * @return True if this supports ModularUI
      */
-    default boolean useOldGUI() {
-        return true;
+    default boolean useModularUI() {
+        return false;
     }
 
     /**

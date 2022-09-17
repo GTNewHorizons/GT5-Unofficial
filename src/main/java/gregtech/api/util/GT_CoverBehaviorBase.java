@@ -224,10 +224,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     /**
      * For back compatibility.
-     * @return False if this supports ModularUI
+     * @return True if this supports ModularUI
      */
-    public boolean useOldGUI() {
-        return true;
+    public boolean useModularUI() {
+        return false;
     }
 
     /**
@@ -516,12 +516,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
-            if (useOldGUI()) {
-                GT_Values.NW.sendToPlayer(
-                        new GT_Packet_TileEntityCoverGUI(
-                                aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
-                        (EntityPlayerMP) aPlayer);
-            } else {
+            if (useModularUI()) {
                 GT_UIInfo.CoverUI.get(ForgeDirection.VALID_DIRECTIONS[aSide])
                         .open(
                                 aPlayer,
@@ -529,6 +524,11 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
                                 aTileEntity.getXCoord(),
                                 aTileEntity.getYCoord(),
                                 aTileEntity.getZCoord());
+            } else {
+                GT_Values.NW.sendToPlayer(
+                        new GT_Packet_TileEntityCoverGUI(
+                                aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
+                        (EntityPlayerMP) aPlayer);
             }
             return true;
         }

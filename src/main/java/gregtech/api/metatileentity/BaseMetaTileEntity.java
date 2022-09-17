@@ -1658,7 +1658,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                     }
                 }
 
-                if (hasValidMetaTileEntity() && !getMetaTileEntity().useOldGUI()) {
+                if (hasValidMetaTileEntity() && getMetaTileEntity().useModularUI()) {
                     GT_UIInfo.GTTileEntityUI.open(aPlayer, worldObj, xCoord, yCoord, zCoord);
                 }
             }
@@ -2362,7 +2362,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
     @Override
     public ModularWindow createWindow(UIBuildContext uiBuildContext) {
-        if (hasValidMetaTileEntity() && !getMetaTileEntity().useOldGUI()) {
+        if (hasValidMetaTileEntity() && getMetaTileEntity().useModularUI()) {
             return getMetaTileEntity().createWindow(uiBuildContext);
         }
         return null;
