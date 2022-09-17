@@ -101,7 +101,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor
                 .addController("Front center")
                 .addCasingInfo("Chemically Inert Machine Casing", 8)
                 .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
-                .addOtherStructurePart("Cupronickel Coil Block", "Adjacent to the PTFE Pipe Machine Casing", 1)
+                .addOtherStructurePart("Heating Coil", "Adjacent to the PTFE Pipe Machine Casing", 1)
                 .addEnergyHatch("Any casing", 1, 2)
                 .addMaintenanceHatch("Any casing", 1, 2)
                 .addInputBus("Any casing", 1, 2)
