@@ -52,12 +52,8 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
             StructureDefinition.<GT_MetaTileEntity_ElectricBlastFurnace>builder()
                     .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
                         {"ttt", "tmt", "ttt"},
-                        {
-                            "CCC", "C-C", "CCC",
-                        },
-                        {
-                            "CCC", "C-C", "CCC",
-                        },
+                        {"CCC", "C-C", "CCC"},
+                        {"CCC", "C-C", "CCC"},
                         {"b~b", "bbb", "bbb"}
                     }))
                     .addElement(
