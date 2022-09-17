@@ -18,7 +18,9 @@ import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
 import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
 import ic2.core.Ic2Items;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -2745,6 +2747,124 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public void addRecipe(Object o, FluidStack[] fluidInputArray, FluidStack[] fluidOutputArray) {}
+
+        /**
+         * @return Display positions for this recipemap, including border (18x18 size)
+         */
+        public List<Point> getItemInputPositions(int xOffset, int yOffset) {
+            switch (mUsualInputCount) {
+                case 0:
+                    return Collections.emptyList();
+                case 1: // 1x1
+                    return getItemGridPositions(mUsualInputCount, 52, 24, 1, 1, xOffset, yOffset);
+                case 2: // 2x1
+                    return getItemGridPositions(mUsualInputCount, 34, 24, 2, 1, xOffset, yOffset);
+                case 3: //
+                    return getItemGridPositions(mUsualInputCount, 16, 24, 3, 1, xOffset, yOffset);
+                case 4:
+                case 5:
+                    return getItemGridPositions(mUsualInputCount, 16, 24, 3, 2, xOffset, yOffset);
+                case 6:
+                    return getItemGridPositions(mUsualInputCount, 16, 15, 3, 2, xOffset, yOffset);
+                default:
+                    return getItemGridPositions(mUsualInputCount, 16, 6, 3, 3, xOffset, yOffset);
+            }
+        }
+
+        /**
+         * @return Display positions for this recipemap, including border (18x18 size)
+         */
+        public List<Point> getItemOutputPositions(int xOffset, int yOffset) {
+            switch (mUsualOutputCount) {
+                case 0:
+                    return Collections.emptyList();
+                case 1:
+                    return getItemGridPositions(mUsualOutputCount, 106, 24, 1, 1, xOffset, yOffset);
+                case 2:
+                    return getItemGridPositions(mUsualOutputCount, 106, 24, 2, 1, xOffset, yOffset);
+                case 3:
+                    return getItemGridPositions(mUsualOutputCount, 106, 24, 3, 1, xOffset, yOffset);
+                case 4:
+                    return getItemGridPositions(mUsualOutputCount, 106, 15, 2, 2, xOffset, yOffset);
+                case 5:
+                case 6:
+                    return getItemGridPositions(mUsualOutputCount, 106, 15, 3, 2, xOffset, yOffset);
+                default:
+                    return getItemGridPositions(mUsualOutputCount, 106, 4, 3, 3, xOffset, yOffset);
+            }
+        }
+
+        /**
+         * @return Display position for this recipemap, including border (18x18 size)
+         */
+        public Point getSpecialItemPosition(int xOffset, int yOffset) {
+            return new Point(124 + xOffset, 62 + yOffset);
+        }
+
+        /**
+         * @return Display positions for this recipemap, including border (18x18 size)
+         */
+        public List<Point> getFluidInputPositions(int fluidCount, int xOffset, int yOffset) {
+            List<Point> results = new ArrayList<>();
+            if (fluidCount > 0) {
+                results.add(new Point(52 + xOffset, 62 + yOffset));
+            }
+            if (fluidCount > 1) {
+                results.add(new Point(34 + xOffset, 62 + yOffset));
+            }
+            return results;
+        }
+
+        /**
+         * @return Display positions for this recipemap, including border (18x18 size)
+         */
+        public List<Point> getFluidOutputPositions(int fluidCount, int xOffset, int yOffset) {
+            List<Point> results = new ArrayList<>();
+            if (fluidCount == 1) {
+                results.add(new Point(106 + xOffset, 62 + yOffset));
+            } else {
+                if (fluidCount > 0) {
+                    results.add(new Point(124 + xOffset, 15 + yOffset));
+                }
+                if (fluidCount > 1) {
+                    results.add(new Point(142 + xOffset, 15 + yOffset));
+                }
+                if (fluidCount > 2) {
+                    results.add(new Point(106 + xOffset, 33 + yOffset));
+                }
+                if (fluidCount > 3) {
+                    results.add(new Point(124 + xOffset, 33 + yOffset));
+                }
+                if (fluidCount > 4) {
+                    results.add(new Point(142 + xOffset, 33 + yOffset));
+                }
+            }
+            return results;
+        }
+
+        private List<Point> getItemGridPositions(
+                int itemCount, int xOrigin, int yOrigin, int xDirMaxCount, int yDirMaxCount, int xOffset, int yOffset) {
+            // 18 pixels to get to a new grid for placing an item tile since they are 16x16 and have 1 pixel buffers
+            // around them.
+            int distanceGrid = 18;
+            int xMax = xOrigin + xDirMaxCount * distanceGrid;
+
+            List<Point> results = new ArrayList<>();
+            // Temp variables to keep track of current coordinates to place item at.
+            int xCoord = xOrigin;
+            int yCoord = yOrigin;
+
+            for (int i = 0; i < itemCount; i++) {
+                results.add(new Point(xCoord + xOffset, yCoord + yOffset));
+                xCoord += distanceGrid;
+                if (xCoord == xMax) {
+                    xCoord = xOrigin;
+                    yCoord += distanceGrid;
+                }
+            }
+
+            return results;
+        }
     }
 
     // -----------------------------------------------------------------------------------------------------------------
