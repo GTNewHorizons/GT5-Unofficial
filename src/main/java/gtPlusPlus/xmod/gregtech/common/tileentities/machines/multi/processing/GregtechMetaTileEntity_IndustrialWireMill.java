@@ -176,6 +176,7 @@ public class GregtechMetaTileEntity_IndustrialWireMill
             if (checkRecipeGeneric(
                     tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll))
                 return true;
+            buffer.clear();
         }
         return false;
     }
