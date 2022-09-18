@@ -22,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_HatchElementBuilder<T> {
     private interface Builtin {}
@@ -32,9 +33,10 @@ public class GT_HatchElementBuilder<T> {
     private BiPredicate<? super T, ? super IGregTechTileEntity> mShouldSkip;
     private BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> mHatchItemFilter;
     private Supplier<String> mHatchItemType;
-    private Predicate<? super T> mReject, mBuiltinReject;
+    private Predicate<? super T> mReject;
     private boolean mCacheHint;
     private boolean mNoStop;
+    private EnumSet<ForgeDirection> mDisallowedDirection = EnumSet.noneOf(ForgeDirection.class);
 
     private GT_HatchElementBuilder() {}
 
@@ -151,15 +153,6 @@ public class GT_HatchElementBuilder<T> {
         return this;
     }
 
-    // avoid loooooong lines like
-    // shouldSkip((BiPredicate<.....> & Builtin) (c, t) -> ....)
-    // private <P extends BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin> GT_HatchElementBuilder<T>
-    // shouldSkipInternal(P aShouldSkip) {
-    //     if (mShouldSkip == null) mShouldSkip = aShouldSkip;
-    //     return this;
-    // }
-    // turns out javac doesn't like this... so...
-
     public GT_HatchElementBuilder<T> shouldReject(Predicate<? super T> aShouldReject) {
         if (aShouldReject == null) throw new IllegalArgumentException();
         mReject = aShouldReject;
@@ -225,6 +218,37 @@ public class GT_HatchElementBuilder<T> {
 
     public GT_HatchElementBuilder<T> stopIfSuccess() {
         mNoStop = false;
+        return this;
+    }
+
+    /**
+     * Help automatic hatch side determination code by ruling out some directions. Note the automatic hatch side
+     * determination code will choose to use the default facing if the final allowed facing set is empty.
+     * <p>
+     * This will clear the sides set by previous call to this or {@link #allowOnly(ForgeDirection...)}
+     * <p>
+     * Usually mandatory for multis with multiple slices, and otherwise not needed if it contains a single slice only.
+     * @param facings disallowed direction in ABC coordinate system
+     */
+    public GT_HatchElementBuilder<T> disallowOnly(ForgeDirection... facings) {
+        if (facings == null) throw new IllegalArgumentException();
+        mDisallowedDirection = EnumSet.copyOf(Arrays.asList(facings));
+        return this;
+    }
+
+    /**
+     * Help automatic hatch side determination code by allowing only some directions. Note the automatic hatch side
+     * determination code will choose to use the default facing if the final allowed facing set is empty.
+     * <p>
+     * This will clear the sides set by previous call to this or {@link #disallowOnly(ForgeDirection...)}
+     * <p>
+     * Usually mandatory for multis with multiple slices, and otherwise not needed if it contains a single slice only.
+     * @param facings allowed direction in ABC coordinate system
+     */
+    public GT_HatchElementBuilder<T> allowOnly(ForgeDirection... facings) {
+        if (facings == null) throw new IllegalArgumentException();
+        mDisallowedDirection = EnumSet.complementOf(EnumSet.copyOf(Arrays.asList(facings)));
+        mDisallowedDirection.remove(ForgeDirection.UNKNOWN);
         return this;
     }
     // endregion
@@ -352,6 +376,13 @@ public class GT_HatchElementBuilder<T> {
             }
 
             @Override
+            public BlocksToPlace getBlocksToPlace(
+                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+                return BlocksToPlace.create(mHatchItemFilter.apply(t, trigger));
+            }
+
+            @Deprecated
+            @Override
             public PlaceResult survivalPlaceBlock(
                     T t,
                     World world,
@@ -362,24 +393,73 @@ public class GT_HatchElementBuilder<T> {
                     IItemSource s,
                     EntityPlayerMP actor,
                     Consumer<IChatComponent> chatter) {
+                return survivalPlaceBlock(
+                        t, world, x, y, z, trigger, AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(
+                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
                 if (mShouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     if (tileEntity instanceof IGregTechTileEntity
                             && mShouldSkip.test(t, (IGregTechTileEntity) tileEntity)) return PlaceResult.SKIP;
                 }
-                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, actor)) return PlaceResult.REJECT;
+                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
+                    return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
-                ItemStack taken = s.takeOne(mHatchItemFilter.apply(t, trigger), true);
+                ItemStack taken = env.getSource().takeOne(mHatchItemFilter.apply(t, trigger), true);
                 if (GT_Utility.isStackInvalid(taken)) {
                     String type = getHint();
-                    chatter.accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
+                    env.getChatter().accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
                     return PlaceResult.REJECT;
                 }
-                return StructureUtility.survivalPlaceBlock(
-                                        taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor)
-                                == PlaceResult.ACCEPT
-                        ? (mNoStop ? PlaceResult.ACCEPT : PlaceResult.ACCEPT_STOP)
-                        : PlaceResult.REJECT;
+                if (StructureUtility.survivalPlaceBlock(
+                                taken,
+                                ItemStackPredicate.NBTMode.IGNORE,
+                                null,
+                                true,
+                                world,
+                                x,
+                                y,
+                                z,
+                                env.getSource(),
+                                env.getActor())
+                        != PlaceResult.ACCEPT) {
+                    return PlaceResult.REJECT;
+                }
+                // try to infer facing
+                EnumSet<ForgeDirection> allowed = EnumSet.noneOf(ForgeDirection.class);
+                // first find which face of block is not contained in structure
+                if (env.getAPILevel() == AutoPlaceEnvironment.APILevel.Legacy) {
+                    // a legacy decorator isn't passing down necessary information
+                    // in that case, we just assume all facing is allowed
+                    allowed.addAll(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
+                } else {
+                    for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+                        // as noted on getWorldDirection Y axis should be flipped before use
+                        if (env.isContainedInPiece(direction.offsetX, -direction.offsetY, direction.offsetZ)) continue;
+                        // explicitly rejected, probably obstructed by another slice
+                        if (mDisallowedDirection.contains(direction)) continue;
+                        ForgeDirection rotated = env.getFacing()
+                                .getWorldDirection(direction.offsetY != 0 ? direction.getOpposite() : direction);
+                        allowed.add(rotated);
+                    }
+                }
+                if (!allowed.isEmpty()) {
+                    TileEntity tileEntity = world.getTileEntity(x, y, z);
+                    if (tileEntity instanceof IGregTechTileEntity) {
+                        ForgeDirection result = null;
+                        // find the first facing available, but prefer a facing that isn't up/down
+                        for (ForgeDirection facing : allowed) {
+                            result = facing;
+                            if (facing.offsetY == 0) break;
+                        }
+                        assert result != null;
+                        ((IGregTechTileEntity) tileEntity).setFrontFacing((byte) result.ordinal());
+                    }
+                }
+                return mNoStop ? PlaceResult.ACCEPT : PlaceResult.ACCEPT_STOP;
             }
         };
     }

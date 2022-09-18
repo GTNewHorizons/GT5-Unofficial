@@ -14,8 +14,8 @@ import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
@@ -34,7 +34,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import java.util.ArrayList;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -556,9 +555,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
-                STRUCTURE_PIECE_MAIN, stackSize, 7, 1, 12, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 1, 12, elementBudget, env, false, true);
     }
 }
