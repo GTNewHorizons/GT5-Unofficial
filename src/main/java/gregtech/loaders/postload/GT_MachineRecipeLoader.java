@@ -1560,6 +1560,12 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new ItemStack(Blocks.anvil, 1, 0),
                 128,
                 16);
+        GT_Values.RA.addFluidSolidifierRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                Materials.Boron.getMolten(144L),
+                Materials.Boron.getDust(1),
+                30,
+                30);
 
         GT_Values.RA.addChemicalBathRecipe(
                 ItemList.Food_Raw_Fries.get(1L),
@@ -8231,6 +8237,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L),
                 110,
                 480);
+        GT_Values.RA.addVacuumFreezerRecipe(Materials.Boron.getPlasma(144L), Materials.Boron.getMolten(144L), 20, 120);
 
         GT_Values.RA.addAlloySmelterRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L),
