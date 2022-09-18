@@ -4,7 +4,7 @@ import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
+import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTech_API;
@@ -55,12 +55,11 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -68,7 +67,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -2692,24 +2690,24 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
                 return meta + minMeta;
             }
 
+            @Nullable
+            @Override
+            public BlocksToPlace getBlocksToPlace(
+                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+                return BlocksToPlace.create(aBlock, getMeta(trigger));
+            }
+
             @Override
             public PlaceResult survivalPlaceBlock(
-                    T t,
-                    World world,
-                    int x,
-                    int y,
-                    int z,
-                    ItemStack trigger,
-                    IItemSource s,
-                    EntityPlayerMP actor,
-                    Consumer<IChatComponent> chatter) {
+                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
                 if (world.getBlock(x, y, z) == aBlock) {
                     if (world.getBlockMetadata(x, y, z) == getMeta(trigger)) {
                         return PlaceResult.SKIP;
                     }
                     return PlaceResult.REJECT;
                 }
-                return StructureUtility.survivalPlaceBlock(aBlock, getMeta(trigger), world, x, y, z, s, actor, chatter);
+                return StructureUtility.survivalPlaceBlock(
+                        aBlock, getMeta(trigger), world, x, y, z, env.getSource(), env.getActor(), env.getChatter());
             }
         };
     }

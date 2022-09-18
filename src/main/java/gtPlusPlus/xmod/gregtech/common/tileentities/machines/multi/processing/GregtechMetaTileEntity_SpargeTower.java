@@ -7,8 +7,8 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.IHatchElement;
@@ -28,9 +28,9 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_SpargeTower>
@@ -57,6 +57,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
                         'b',
                         buildHatchAdder(GregtechMetaTileEntity_SpargeTower.class)
                                 .atLeast(Energy, InputHatch, InputBus, Maintenance)
+                                .disallowOnly(ForgeDirection.UP)
                                 .casingIndex(getCasingIndex())
                                 .dot(1)
                                 .buildAndChain(onElementPass(
@@ -67,6 +68,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
                         ofChain(
                                 buildHatchAdder(GregtechMetaTileEntity_SpargeTower.class)
                                         .atLeast(layeredOutputHatch)
+                                        .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                                         .casingIndex(getCasingIndex())
                                         .dot(2)
                                         .build(),
@@ -399,22 +401,21 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         mHeight = 0;
-        int built = survivialBuildPiece(
-                STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, source, actor, false, true);
+        int built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int tTotalHeight = 8; // min 2 output layer, so at least 1 + 2 height
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivialBuildPiece(
-                    STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, source, actor, false, true);
+                    STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
         mHeight = tTotalHeight - 1;
         return survivialBuildPiece(
-                STRUCTURE_PIECE_TOP_HINT, stackSize, 1, tTotalHeight - 1, 0, elementBudget, source, actor, false, true);
+                STRUCTURE_PIECE_TOP_HINT, stackSize, 1, tTotalHeight - 1, 0, elementBudget, env, false, true);
     }
 
     @Override

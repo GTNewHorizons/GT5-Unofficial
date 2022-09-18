@@ -8,8 +8,8 @@ import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
@@ -24,8 +24,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.Random;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_IndustrialMacerator
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMacerator>
@@ -94,12 +94,13 @@ public class GregtechMetaTileEntity_IndustrialMacerator
                                     buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
                                             .atLeast(OutputBus)
                                             .shouldReject(t -> t.mPerLayer + 1 == t.mOutputBusses.size())
+                                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                                             .casingIndex(TAE.GTPP_INDEX(7))
                                             .dot(2)
                                             .build(),
                                     buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
                                             .atLeast(Energy, Maintenance, Muffler)
-                                            .shouldReject(t -> t.mPerLayer + 1 == t.mOutputBusses.size())
+                                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                                             .casingIndex(TAE.GTPP_INDEX(7))
                                             .dot(2)
                                             .build(),
@@ -109,6 +110,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator
                             ofChain(
                                     buildHatchAdder(GregtechMetaTileEntity_IndustrialMacerator.class)
                                             .atLeast(Energy, Maintenance, InputBus)
+                                            .disallowOnly(ForgeDirection.UP)
                                             .casingIndex(TAE.GTPP_INDEX(7))
                                             .dot(2)
                                             .build(),
@@ -129,24 +131,24 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int built;
-        built = survivialBuildPiece(mName + "bottom", stackSize, 1, 0, 0, elementBudget, source, actor, false, true);
+        built = survivialBuildPiece(mName + "bottom", stackSize, 1, 0, 0, elementBudget, env, false, true);
         mPerLayer = 0;
         if (built >= 0) return built;
-        built = survivialBuildPiece(mName + "mid", stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
+        built = survivialBuildPiece(mName + "mid", stackSize, 1, 1, 0, elementBudget, env, false, true);
         mPerLayer = 1;
         if (built >= 0) return built;
-        built = survivialBuildPiece(mName + "mid", stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
+        built = survivialBuildPiece(mName + "mid", stackSize, 1, 2, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         mPerLayer = 2;
-        built = survivialBuildPiece(mName + "mid", stackSize, 1, 3, 0, elementBudget, source, actor, false, true);
+        built = survivialBuildPiece(mName + "mid", stackSize, 1, 3, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         mPerLayer = 3;
-        built = survivialBuildPiece(mName + "mid", stackSize, 1, 4, 0, elementBudget, source, actor, false, true);
+        built = survivialBuildPiece(mName + "mid", stackSize, 1, 4, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        return survivialBuildPiece(mName + "top", stackSize, 1, 5, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(mName + "top", stackSize, 1, 5, 0, elementBudget, env, false, true);
     }
 
     @Override

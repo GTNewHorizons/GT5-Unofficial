@@ -10,6 +10,7 @@ import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.G
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTEnergy;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.*;
 import gregtech.api.enums.GT_Values;
@@ -38,17 +39,16 @@ import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_PowerSubStation;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_PowerSubStation;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import java.util.function.Consumer;
+import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_PowerSubStationController
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_PowerSubStationController>
@@ -106,6 +106,8 @@ public class GregtechMetaTileEntity_PowerSubStationController
                 .addCasingInfo("Sub-Station External Casings", 10)
                 .addDynamoHatch("Any Casing", 1)
                 .addEnergyHatch("Any Casing", 1)
+                .addSubChannelUsage("capacitor", "Vanadium Capacitor Cell Tier")
+                .addSubChannelUsage("height", "Height of structure")
                 .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
     }
@@ -245,44 +247,66 @@ public class GregtechMetaTileEntity_PowerSubStationController
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_PowerSubStationController>builder()
                     .addShape(
-                            mName + "bottom", transpose(new String[][] {{"CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"}}))
+                            mName + "bottom", transpose(new String[][] {{"BB~BB", "BBBBB", "BBBBB", "BBBBB", "BBBBB"}}))
                     .addShape(
                             mName + "layer", transpose(new String[][] {{"CCCCC", "CIIIC", "CIIIC", "CIIIC", "CCCCC"}}))
                     .addShape(mName + "mid", transpose(new String[][] {{"CCCCC", "CHHHC", "CHHHC", "CHHHC", "CCCCC"}}))
-                    .addShape(mName + "top", transpose(new String[][] {{"CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"}}))
+                    .addShape(mName + "top", transpose(new String[][] {{"TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT"}}))
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_PowerSubStationController.class)
                                     .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
+                                    .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                                    .casingIndex(TAE.GTPP_INDEX(24))
+                                    .dot(1)
+                                    .buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
+                    .addElement(
+                            'B',
+                            buildHatchAdder(GregtechMetaTileEntity_PowerSubStationController.class)
+                                    .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
+                                    .disallowOnly(ForgeDirection.UP)
+                                    .casingIndex(TAE.GTPP_INDEX(24))
+                                    .dot(1)
+                                    .buildAndChain(
+                                            onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
+                    .addElement(
+                            'T',
+                            buildHatchAdder(GregtechMetaTileEntity_PowerSubStationController.class)
+                                    .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
+                                    .disallowOnly(ForgeDirection.DOWN)
                                     .casingIndex(TAE.GTPP_INDEX(24))
                                     .dot(1)
                                     .buildAndChain(
                                             onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                     .addElement(
                             'I',
-                            ofChain(
-                                    onlyIf(
-                                            x -> x.topState != TopState.NotTop,
-                                            onElementPass(
-                                                    x -> x.topState = TopState.Top,
-                                                    ofHatchAdderOptional(
-                                                            GregtechMetaTileEntity_PowerSubStationController
-                                                                    ::addPowerSubStationList,
-                                                            TAE.GTPP_INDEX(24),
-                                                            1,
-                                                            ModBlocks.blockCasings2Misc,
-                                                            8))),
-                                    onlyIf(
-                                            x -> x.topState != TopState.Top,
-                                            onElementPass(
-                                                    x -> x.topState = TopState.NotTop,
-                                                    ofChain(
-                                                            onElementPass(x -> ++x.cellCount[0], ofCell(4)),
-                                                            onElementPass(x -> ++x.cellCount[1], ofCell(5)),
-                                                            onElementPass(x -> ++x.cellCount[2], ofCell(6)),
-                                                            onElementPass(x -> ++x.cellCount[3], ofCell(7)),
-                                                            onElementPass(x -> ++x.cellCount[4], ofCell(8)),
-                                                            onElementPass(x -> ++x.cellCount[5], ofCell(9)))))))
+                            withChannel(
+                                    "cell",
+                                    ofChain(
+                                            onlyIf(
+                                                    x -> x.topState != TopState.NotTop,
+                                                    onElementPass(
+                                                            x -> x.topState = TopState.Top,
+                                                            ofHatchAdderOptional(
+                                                                    GregtechMetaTileEntity_PowerSubStationController
+                                                                            ::addPowerSubStationList,
+                                                                    TAE.GTPP_INDEX(24),
+                                                                    1,
+                                                                    ModBlocks.blockCasings2Misc,
+                                                                    8))),
+                                            onlyIf(
+                                                    x -> x.topState != TopState.Top,
+                                                    onElementPass(
+                                                            x -> x.topState = TopState.NotTop,
+                                                            ofChain(
+                                                                    onElementPass(x -> ++x.cellCount[0], ofCell(4)),
+                                                                    onElementPass(x -> ++x.cellCount[1], ofCell(5)),
+                                                                    onElementPass(x -> ++x.cellCount[2], ofCell(6)),
+                                                                    onElementPass(x -> ++x.cellCount[3], ofCell(7)),
+                                                                    onElementPass(x -> ++x.cellCount[4], ofCell(8)),
+                                                                    onElementPass(
+                                                                            x -> ++x.cellCount[5], ofCell(9))))))))
                     .addElement('H', ofCell(4))
                     .build();
         }
@@ -327,17 +351,16 @@ public class GregtechMetaTileEntity_PowerSubStationController
                         3);
             }
 
+            @Nullable
+            @Override
+            public BlocksToPlace getBlocksToPlace(
+                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+                return BlocksToPlace.create(getBlockFromTier(trigger.stackSize), getMetaFromTier(trigger.stackSize));
+            }
+
             @Override
             public PlaceResult survivalPlaceBlock(
-                    T t,
-                    World world,
-                    int x,
-                    int y,
-                    int z,
-                    ItemStack trigger,
-                    IItemSource s,
-                    EntityPlayerMP actor,
-                    Consumer<IChatComponent> chatter) {
+                    T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
                 int tier = getCellTier(block, meta);
@@ -349,9 +372,9 @@ public class GregtechMetaTileEntity_PowerSubStationController
                         x,
                         y,
                         z,
-                        s,
-                        actor,
-                        chatter);
+                        env.getSource(),
+                        env.getActor(),
+                        env.getChatter());
             }
         };
     }
@@ -374,18 +397,17 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int layer = Math.min(stackSize.stackSize + 3, 18);
+        int layer = Math.min(ChannelDataAccessor.getChannelData(stackSize, "height") + 3, 18);
         int built;
-        built = survivialBuildPiece(mName + "bottom", stackSize, 2, 0, 0, elementBudget, source, actor, false, true);
+        built = survivialBuildPiece(mName + "bottom", stackSize, 2, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         for (int i = 1; i < layer - 1; i++) {
-            built = survivialBuildPiece(mName + "mid", stackSize, 2, i, 0, elementBudget, source, actor, false, true);
+            built = survivialBuildPiece(mName + "mid", stackSize, 2, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        return survivialBuildPiece(
-                mName + "top", stackSize, 2, layer - 1, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(mName + "top", stackSize, 2, layer - 1, 0, elementBudget, env, false, true);
     }
 
     @Override

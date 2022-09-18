@@ -37,14 +37,12 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.annotation.Nullable;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
@@ -312,6 +310,21 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
                         3);
             }
 
+            @Nullable
+            @Override
+            public BlocksToPlace getBlocksToPlace(
+                    GregtechMTE_ChemicalPlant gregtechMTE_chemicalPlant,
+                    World world,
+                    int x,
+                    int y,
+                    int z,
+                    ItemStack trigger,
+                    AutoPlaceEnvironment env) {
+                return BlocksToPlace.create(
+                        mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_1(),
+                        mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_2());
+            }
+
             @Override
             public PlaceResult survivalPlaceBlock(
                     GregtechMTE_ChemicalPlant t,
@@ -320,9 +333,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
                     int y,
                     int z,
                     ItemStack trigger,
-                    IItemSource s,
-                    EntityPlayerMP actor,
-                    Consumer<IChatComponent> chatter) {
+                    AutoPlaceEnvironment env) {
                 if (check(getIndex(trigger.stackSize), world, x, y, z)) return PlaceResult.SKIP;
                 return StructureUtility.survivalPlaceBlock(
                         mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_1(),
@@ -331,9 +342,9 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
                         x,
                         y,
                         z,
-                        s,
-                        actor,
-                        chatter);
+                        env.getSource(),
+                        env.getActor(),
+                        env.getChatter());
             }
         };
     }
@@ -344,9 +355,9 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 3, 6, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(mName, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
     @Override

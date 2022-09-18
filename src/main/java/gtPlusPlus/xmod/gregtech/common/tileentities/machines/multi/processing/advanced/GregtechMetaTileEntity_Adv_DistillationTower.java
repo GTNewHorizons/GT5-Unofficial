@@ -7,8 +7,8 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
@@ -31,10 +31,10 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Adv_DistillationTower
@@ -78,25 +78,42 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
                     .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] {
                         {"b~b", "bbb", "bbb"},
                     }))
-                    .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] {{"lll", "lcl", "lll"}}))
-                    .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] {{"lll", "l-l", "lll"}}))
-                    .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] {{"ttt", "ttt", "ttt"}}))
+                    .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] {
+                        {"lll", "lcl", "lll"},
+                    }))
+                    .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] {
+                        {"lll", "l-l", "lll"},
+                    }))
+                    .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] {
+                        {"ttt", "ttt", "ttt"},
+                    }))
                     .addElement(
                             'b',
                             ofChain(
                                     buildHatchAdder(GregtechMetaTileEntity_Adv_DistillationTower.class)
                                             .atLeast(Energy, OutputBus, InputHatch, InputBus, Maintenance)
+                                            .disallowOnly(ForgeDirection.UP)
                                             .casingIndex(getCasingTextureId())
                                             .dot(1)
                                             .build(),
                                     ofBlock(GregTech_API.sBlockCasings4, 1)))
                     .addElement(
                             'l',
-                            buildHatchAdder(GregtechMetaTileEntity_Adv_DistillationTower.class)
-                                    .atLeast(layeredOutputHatch, Muffler, Energy, Maintenance)
-                                    .casingIndex(getCasingTextureId())
-                                    .dot(2)
-                                    .buildAndChain(GregTech_API.sBlockCasings4, 1))
+                            ofChain(
+                                    buildHatchAdder(GregtechMetaTileEntity_Adv_DistillationTower.class)
+                                            .atLeast(layeredOutputHatch, Energy, Maintenance)
+                                            .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                                            .casingIndex(getCasingTextureId())
+                                            .dot(2)
+                                            .build(),
+                                    onElementPass(
+                                            GregtechMetaTileEntity_Adv_DistillationTower::onTopLayerFound,
+                                            ofHatchAdder(
+                                                    GregtechMetaTileEntity_Adv_DistillationTower
+                                                            ::addMufflerToMachineList,
+                                                    getCasingTextureId(),
+                                                    3)),
+                                    ofBlock(GregTech_API.sBlockCasings4, 1)))
                     .addElement(
                             'c',
                             ofChain(
@@ -129,6 +146,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
                             't',
                             buildHatchAdder(GregtechMetaTileEntity_Adv_DistillationTower.class)
                                     .atLeast(layeredOutputHatch, Muffler)
+                                    .disallowOnly(ForgeDirection.DOWN)
                                     .casingIndex(getCasingTextureId())
                                     .dot(2)
                                     .buildAndChain(GregTech_API.sBlockCasings4, 1))
@@ -194,21 +212,20 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         mHeight = 0;
-        int built = survivialBuildPiece(
-                STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, source, actor, false, true);
+        int built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int tTotalHeight = Math.min(12, stackSize.stackSize + 2); // min 2 output layer, so at least 1 + 2 height
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivialBuildPiece(
-                    STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, source, actor, false, true);
+                    STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
         mHeight = tTotalHeight - 1;
         return survivialBuildPiece(
-                STRUCTURE_PIECE_TOP_HINT, stackSize, 1, tTotalHeight - 1, 0, elementBudget, source, actor, false, true);
+                STRUCTURE_PIECE_TOP_HINT, stackSize, 1, tTotalHeight - 1, 0, elementBudget, env, false, true);
     }
 
     @Override
