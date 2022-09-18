@@ -89,17 +89,19 @@ public class GregtechMetaTileEntity_LargeRocketEngine
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
                 .addInfo("Controller Block for the Large Rocket Engine")
-                .addInfo("Supply Rocket Fuels and 1000L of " + mLubricantName + " per hour")
+                .addInfo("Supply GT++ Rocket Fuels and 1000L of " + mLubricantName + " per hour")
                 .addInfo("Produces as much energy as you put fuel in, with optional boosting")
-                .addInfo("Supply 4L of " + mCoolantName + " per second, per 2100 EU/t to boost")
-                .addInfo("Takes 3x the amount of fuel and " + mLubricantName + "to run 3x faster")
                 .addInfo("Consumes 2000L/s of air and pollutes 1500 gibbl/s per 16384 eu/t produced")
-                .addInfo("If producing more than 18.4k EU/t, fuel will be consumed less efficiently:")
-                .addInfo("- 75% of max fuel efficiency at 44k EU/t output energy")
-                .addInfo("- 50% of max fuel efficiency at 105k EU/t output energy")
-                .addInfo("- 25% of max fuel efficiency at 294k EU/t output energy")
-                .addInfo("(These thresholds are 3x higher when boosted)")
-                .addInfo("formula: x = input of energy (10K^(1/3)/ x^(1/3)) * (40K^(1/3)/ x^(1/3))")
+                .addInfo("If it runs out of air, it will shut down and have to be manually restarted")
+                .addInfo("Supply 3L of " + mCoolantName + " per second, per 1000 EU/t to boost")
+                .addInfo("Takes 3x the amount of " + mLubricantName + " and maintains efficiency")
+                .addInfo("Fuel efficiency starts at ~160%, falls more slowly at higher EU/t if boosted")
+                .addInfo("If producing more than 30k EU/t, fuel efficiency will be lower:")
+                .addInfo("(These thresholds are 3x higher when boosted, boosted values displayed second)")
+                .addInfo("- 75% of max fuel efficiency at 53k or 159k EU/t output energy")
+                .addInfo("- 50% of max fuel efficiency at 69k or 207k EU/t output energy")
+                .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
+                .addInfo("formula: x = input of energy (30K^(1/3)/ x^(1/3)) * (80K^(1/3)/ x^(1/3))")
                 .addSeparator()
                 .beginStructureBlock(3, 3, 10, false)
                 .addController("Front Center")
@@ -169,7 +171,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine
         this.mAirIntakes.clear();
         return checkPiece(this.mName, 1, 1, 0)
                 && this.mCasing >= 64 - 48
-                && this.mAirIntakes.size() >= 8
+                && this.mAirIntakes.size() >= 1
                 && checkHatch();
     }
 
@@ -239,6 +241,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine
         int aAirToConsume = this.euProduction / 100;
         if (aircount < aAirToConsume) {
             log("Not Enough Air to Run " + aircount);
+            criticalStopMachine();
             return false;
         } else {
             int aTotalAir = 0;
@@ -367,17 +370,17 @@ public class GregtechMetaTileEntity_LargeRocketEngine
         energy /= 20;
         double energyEfficiency;
         double tDivideEnergy = Math.cbrt(energy);
-        if (energy > 10000) {
-            // cbrt(10 000) /
-            energyEfficiency = (21.5443469 / tDivideEnergy);
-            if (energy >= 40000)
-                // cbrt(40 000) /
-                energyEfficiency *= (34.19951893 / tDivideEnergy);
+        if (energy > 30000) {
+            // cbrt(30 000) /
+            energyEfficiency = (31.072325 / tDivideEnergy);
+            if (energy >= 80000)
+                // cbrt(80 000) /
+                energyEfficiency *= (43.0886938 / tDivideEnergy);
             energyEfficiency *= energy;
         } else {
             energyEfficiency = energy;
         }
-        this.euProduction = (int) (energyEfficiency * 1.84);
+        this.euProduction = (int) (energyEfficiency);
         if (this.boostEu) this.euProduction *= 3;
     }
 
