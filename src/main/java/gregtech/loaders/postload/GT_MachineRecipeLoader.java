@@ -12112,9 +12112,9 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.OilMedium.getFluid(1000),
                 new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
                 new FluidStack[] {
-                    Materials.SulfuricHeavyFuel.getFluid(150),
+                    Materials.SulfuricHeavyFuel.getFluid(100),
                     Materials.SulfuricLightFuel.getFluid(500),
-                    Materials.SulfuricNaphtha.getFluid(200),
+                    Materials.SulfuricNaphtha.getFluid(1500),
                     MaterialsKevlar.NaphthenicAcid.getFluid(25),
                     Materials.SulfuricGas.getGas(600)
                 },
