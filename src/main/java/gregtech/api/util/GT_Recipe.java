@@ -2356,13 +2356,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         private boolean mUsesSpecialSlot = false;
 
         /**
-         * How many fluid inputs does this recipemap has. Currently used only for NEI slot placements
+         * How many fluid inputs does this recipemap has at most. Currently used only for NEI slot placements
          * and does not actually restrict number of fluids used in the recipe.
          */
         private int maxFluidInputCount;
 
         /**
-         * How many fluid outputs does this recipemap has. Currently used only for NEI slot placements
+         * How many fluid outputs does this recipemap has at most. Currently used only for NEI slot placements
          * and does not actually restrict number of fluids used in the recipe.
          */
         private int maxFluidOutputCount;
@@ -2376,15 +2376,24 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * Overlays used for GUI.
          * 1 = If it's fluid slot.
          * 2 = If it's output slot.
-         * 4 = If it's first slot showing up.
+         * 4 = If it's first slot in the same section, e.g. first slot in the item output slots
          * 8 = If it's special item slot.
          */
         private final TByteObjectMap<IDrawable> slotOverlays = new TByteObjectHashMap<>();
 
+        /**
+         * Progressbar used for BasicMachine GUI and/or NEI.
+         * Size should be (20, 36), consisting of two parts;
+         * First is (20, 18) size of "empty" image at the top,
+         * Second is (20, 18) size of "filled" image at the bottom.
+         */
         public UITexture progressBarTexture;
 
         public ProgressBar.Direction progressBarDirection;
 
+        /**
+         * Other textures shown in GUI.
+         */
         public final List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures = new ArrayList<>();
 
         public Pos2d neiBackgroundOffset = new Pos2d(2, 3);
