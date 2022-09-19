@@ -57,11 +57,15 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_CANNER = UITexture.fullImage(MODID, "gui/overlay_slot/canner");
     public static final UITexture OVERLAY_SLOT_CAULDRON = UITexture.fullImage(MODID, "gui/overlay_slot/cauldron");
     public static final UITexture OVERLAY_SLOT_CENTRIFUGE = UITexture.fullImage(MODID, "gui/overlay_slot/centrifuge");
+    public static final UITexture OVERLAY_SLOT_CENTRIFUGE_FLUID =
+            UITexture.fullImage(MODID, "gui/overlay_slot/centrifuge_fluid");
     public static final UITexture OVERLAY_SLOT_CENTRIFUGE_BRONZE =
             UITexture.fullImage(MODID, "gui/overlay_slot/centrifuge_bronze");
     public static final UITexture OVERLAY_SLOT_CENTRIFUGE_STEEL =
             UITexture.fullImage(MODID, "gui/overlay_slot/centrifuge_steel");
     public static final UITexture OVERLAY_SLOT_CHARGER = UITexture.fullImage(MODID, "gui/overlay_slot/charger");
+    public static final UITexture OVERLAY_SLOT_CHARGER_FLUID =
+            UITexture.fullImage(MODID, "gui/overlay_slot/charger_fluid");
     public static final UITexture OVERLAY_SLOT_CIRCUIT = UITexture.fullImage(MODID, "gui/overlay_slot/circuit");
     public static final UITexture OVERLAY_SLOT_COAL_BRONZE = UITexture.fullImage(MODID, "gui/overlay_slot/coal_bronze");
     public static final UITexture OVERLAY_SLOT_COAL_STEEL = UITexture.fullImage(MODID, "gui/overlay_slot/coal_steel");
@@ -75,6 +79,8 @@ public class GT_UITextures {
             UITexture.fullImage(MODID, "gui/overlay_slot/crushed_ore_bronze");
     public static final UITexture OVERLAY_SLOT_CRUSHED_ORE_STEEL =
             UITexture.fullImage(MODID, "gui/overlay_slot/crushed_ore_steel");
+    public static final UITexture OVERLAY_SLOT_CUTTER_SLICED =
+            UITexture.fullImage(MODID, "gui/overlay_slot/cutter_sliced");
     public static final UITexture OVERLAY_SLOT_DATA_ORB = UITexture.fullImage(MODID, "gui/overlay_slot/data_orb");
     public static final UITexture OVERLAY_SLOT_DATA_STICK = UITexture.fullImage(MODID, "gui/overlay_slot/data_stick");
     public static final UITexture OVERLAY_SLOT_DUST = UITexture.fullImage(MODID, "gui/overlay_slot/dust");
@@ -125,8 +131,9 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_RECYCLE = UITexture.fullImage(MODID, "gui/overlay_slot/recycle");
     public static final UITexture OVERLAY_SLOT_ROD_1 = UITexture.fullImage(MODID, "gui/overlay_slot/rod_1");
     public static final UITexture OVERLAY_SLOT_ROD_2 = UITexture.fullImage(MODID, "gui/overlay_slot/rod_2");
-    public static final UITexture OVERLAY_SLOT_SLICE = UITexture.fullImage(MODID, "gui/overlay_slot/slice");
     public static final UITexture OVERLAY_SLOT_SLICE_SHAPE = UITexture.fullImage(MODID, "gui/overlay_slot/slice_shape");
+    public static final UITexture OVERLAY_SLOT_SLICER_SLICED =
+            UITexture.fullImage(MODID, "gui/overlay_slot/slicer_sliced");
     public static final UITexture OVERLAY_SLOT_SQUARE = UITexture.fullImage(MODID, "gui/overlay_slot/square");
     public static final UITexture OVERLAY_SLOT_UUA = UITexture.fullImage(MODID, "gui/overlay_slot/uua");
     public static final UITexture OVERLAY_SLOT_UUM = UITexture.fullImage(MODID, "gui/overlay_slot/uum");
