@@ -17,8 +17,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_Log;
@@ -88,18 +86,8 @@ public class GTNHLanthanides {
         //
         GT_Log.out.print("We are done loading");
         BotRecipes.removeRecipes();
+        RecipeLoader.removeCeriumSources();
 
         GT_Log.out.print("blah blah " + WerkstoffMaterialPool.PTMEGElastomer.hasGenerationFeature(OrePrefixes.ingot));
-    }
-
-    // This is horrifying and I'm sorry
-    @EventHandler
-    public static void onServerAboutToStart(FMLServerAboutToStartEvent e) {
-        // RecipeLoader.removeCeriumSources();
-    }
-
-    @EventHandler
-    public static void onServerStart(FMLServerStartedEvent e) {
-        RecipeLoader.removeCeriumSources();
     }
 }
