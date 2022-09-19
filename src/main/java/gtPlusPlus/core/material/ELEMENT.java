@@ -822,7 +822,7 @@ public final class ELEMENT {
                 MaterialState.SOLID,
                 TextureSets.NUCLEAR.get(),
                 new short[] {220, 120, 75, 2},
-                12255,
+                11255,
                 19377,
                 240,
                 251,
