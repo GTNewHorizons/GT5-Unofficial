@@ -50,12 +50,13 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
         implements ISurvivalConstructable {
 
     protected int baseEff = 0;
-    protected int optFlow = 0;
+    protected long optFlow = 0;
     protected double realOptFlow = 0;
     protected int storedFluid = 0;
     protected int counter = 0;
     protected boolean mFastMode = false;
     protected double mufflerReduction = 1;
+    protected float[] flowMultipliers = new float[] {1, 1, 1};
 
     public ITexture frontFace;
     public ITexture frontFaceActive;
@@ -475,9 +476,16 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
                                                 .getSpeedMultiplier()
                                         * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
                                         * 50));
+                        if (aTotalOptimalFlow < 0) {
+                            log("Int overflow, report to issue tracker");
+                            aTotalOptimalFlow = 100;
+                        }
                         // log("Bumped base optimal flow to "+aTotalOptimalFlow);
                     }
 
+                    flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;
+                    flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mGasMultiplier;
+                    flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
                     // log("Running checkRecipeGeneric(2)");
                     // log("Total base eff: "+aTotalBaseEff);
                     // log("Total base optimal flow: "+aTotalOptimalFlow);
@@ -499,7 +507,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
             // log("Total optimal flow: "+optFlow);
 
             // How much the turbine should be producing with this flow
-            int newPower = fluidIntoPower(tFluids, optFlow, baseEff);
+            int newPower = fluidIntoPower(tFluids, optFlow, baseEff, flowMultipliers);
             // log("Bumped newPower to "+newPower);
             // log("New Power: "+newPower);
             int difference = newPower - this.mEUt; // difference between current output and new output
@@ -589,7 +597,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
         return (getFullTurbineAssemblies().size());
     }
 
-    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff);
+    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers);
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
@@ -665,7 +673,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
                     + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW
                     + Long.toString(maxEnergy) + EnumChatFormatting.RESET + " EU",
             StatCollector.translateToLocal("GT5U.turbine.flow") + ": " + EnumChatFormatting.YELLOW
-                    + MathUtils.safeInt((long) realOptFlow) + EnumChatFormatting.RESET + " L/t"
+                    + MathUtils.safeInt((long) realOptFlow) + EnumChatFormatting.RESET + " L/s"
                     + EnumChatFormatting.YELLOW + " ("
                     + (isLooseMode()
                             ? StatCollector.translateToLocal("GT5U.turbine.loose")

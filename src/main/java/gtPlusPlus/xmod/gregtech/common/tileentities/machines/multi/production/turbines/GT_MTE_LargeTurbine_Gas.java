@@ -62,7 +62,7 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;
@@ -82,7 +82,7 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
                 return GT_Utility.safeInt((long) aOptFlow * (long) aBaseEff / 10000L);
             }
 
-            actualOptimalFlow = GT_Utility.safeInt((long) aOptFlow / fuelValue);
+            actualOptimalFlow = GT_Utility.safeInt((long) (aOptFlow * (double) flowMultipliers[1] / fuelValue));
             this.realOptFlow = actualOptimalFlow;
 
             int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow

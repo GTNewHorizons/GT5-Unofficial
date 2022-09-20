@@ -61,7 +61,7 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
         if (looseFit) {
             aOptFlow *= 4;
             if (aBaseEff > 10000) {
@@ -80,7 +80,7 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
         int remainingFlow = MathUtils.safeInt((long) (aOptFlow
                 * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for
         // multi-hatch scenarios.
-        this.realOptFlow = aOptFlow;
+        this.realOptFlow = (double) aOptFlow * (double) flowMultipliers[0];
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
