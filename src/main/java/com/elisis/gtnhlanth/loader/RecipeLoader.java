@@ -15,7 +15,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.*;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -1542,21 +1541,6 @@ public class RecipeLoader {
         GT_Log.out.print("Electrolyzer done!\n");
 
         if (Loader.isModLoaded("miscutils")) {
-            // Blame alk. She made some shit in it, NEI will break down if anyone modify the hash list directly.
-            // For Multi Centrifuge
-            GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.clear();
-            RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-                    GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes,
-                    GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT);
-            GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.reInit();
-
-            // For Multi Electrolyzer
-            GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.clear();
-            RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-                    GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes,
-                    GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT);
-            GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.reInit();
-
             // For Simple Washer
             for (GT_Recipe recipe : GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList) {
                 ItemStack input = recipe.mInputs[0];
