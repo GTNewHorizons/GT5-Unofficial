@@ -284,6 +284,7 @@ public class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_CoverBehaviorBa
             privateButton.setChecked(coverVariable.uuid != null);
             invertButton.setChecked(coverVariable.invert);
             resetTextBox(frequencyBox);
+            GregTech_API.resetAdvancedRedstoneFrequency(coverVariable.uuid, coverVariable.frequency);
         }
 
         @Override

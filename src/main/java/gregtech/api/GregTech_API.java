@@ -192,6 +192,12 @@ public class GregTech_API {
             .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
     }
 
+    public static void resetAdvancedRedstoneFrequency(UUID uuid, int frequency) {
+        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+        if (frequencies == null) return;
+        frequencies.computeIfPresent(frequency, (k, longByteMap) -> new ConcurrentHashMap<>());
+    }
+
     public static void removeAdvancedRedstone(UUID uuid, int frequency, long hash) {
         Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
         if (frequencies == null) return;
