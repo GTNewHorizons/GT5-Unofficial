@@ -204,7 +204,7 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            frequencyBox = new GT_Cover_AdvancedRedstoneReceiverBase.GUI.GT_GuiShortTextBox(this, 2, startX, startY + 2, spaceX * 5 - 3, 12);
+            frequencyBox = new GT_Cover_AdvancedRedstoneReceiverBase.GUI.GT_GuiShortTextBox(this, 0, startX, startY + 2, spaceX * 5 - 3, 12);
             privateButton = new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * 1, GT_GuiIcon.CHECKMARK, null);
         }
 

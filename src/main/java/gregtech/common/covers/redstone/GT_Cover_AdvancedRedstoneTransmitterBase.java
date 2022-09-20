@@ -218,9 +218,9 @@ public class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_CoverBehaviorBa
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
+            frequencyBox = new GT_Cover_AdvancedRedstoneTransmitterBase.GUI.GT_GuiShortTextBox(this, 0, startX, startY + 2, spaceX * 5 - 3, 12);
             privateButton = new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * 1, GT_GuiIcon.CHECKMARK, null);
-            invertButton = new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * 2, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
-            frequencyBox = new GT_Cover_AdvancedRedstoneTransmitterBase.GUI.GT_GuiShortTextBox(this, 2, startX, startY + 2, spaceX * 5 - 3, 12);
+            invertButton = new GT_GuiIconCheckButton(this, 1, startX, startY + spaceY * 2, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
         }
 
         @Override
