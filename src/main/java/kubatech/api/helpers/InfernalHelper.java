@@ -17,7 +17,7 @@
  *
  */
 
-package kubatech.api.utils;
+package kubatech.api.helpers;
 
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import atomicstryker.infernalmobs.common.mods.api.ModifierLoader;

@@ -38,9 +38,9 @@ import java.util.Objects;
 import java.util.Random;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
+import kubatech.api.helpers.InfernalHelper;
 import kubatech.api.mobhandler.MobDrop;
 import kubatech.api.utils.FastRandom;
-import kubatech.api.utils.InfernalHelper;
 import kubatech.api.utils.MobUtils;
 import kubatech.api.utils.ModUtils;
 import kubatech.config.Config;
@@ -82,6 +82,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
         INFERNAL_CANNOT,
         INFERNAL_CAN,
         INFERNAL_ALWAYS,
+        CANNOT_USE_VIAL,
         CHANCE,
         AVERAGE_REMINDER,
         MOD,
@@ -350,18 +351,23 @@ public class Mob_Handler extends TemplateRecipeHandler {
         MobRecipeLoader.MobRecipe MBRecipe =
                 GT_MetaTileEntity_ExtremeExterminationChamber.MobNameToRecipeMap.get(currentrecipe.mobname);
         if (MBRecipe != null) {
-            GuiDraw.drawString(
-                    GT_Utility.trans("153", "Usage: ") + GT_Utility.formatNumbers(MBRecipe.mEUt) + " EU/t",
-                    x,
-                    y += yshift,
-                    0xFF555555,
-                    false);
-            GuiDraw.drawString(
-                    GT_Utility.trans("158", "Time: ") + GT_Utility.formatNumbers(MBRecipe.mDuration / 20d) + " secs",
-                    x,
-                    y += yshift,
-                    0xFF555555,
-                    false);
+            if (MBRecipe.isUsable) {
+                GuiDraw.drawString(
+                        GT_Utility.trans("153", "Usage: ") + GT_Utility.formatNumbers(MBRecipe.mEUt) + " EU/t",
+                        x,
+                        y += yshift,
+                        0xFF555555,
+                        false);
+                GuiDraw.drawString(
+                        GT_Utility.trans("158", "Time: ") + GT_Utility.formatNumbers(MBRecipe.mDuration / 20d)
+                                + " secs",
+                        x,
+                        y += yshift,
+                        0xFF555555,
+                        false);
+            } else {
+                GuiDraw.drawString(CANNOT_USE_VIAL.get(), x, y += yshift, 0xFF555555, false);
+            }
         }
 
         x = 6;
