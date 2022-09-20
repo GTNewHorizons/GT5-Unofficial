@@ -21,7 +21,6 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
     private final ResourceLocation flowingIconResourceLocation;
     private final short[] colorRGBA;
     private final FluidState fluidState;
-    private final int temperature;
     private Fluid registeredFluid;
 
     /**
