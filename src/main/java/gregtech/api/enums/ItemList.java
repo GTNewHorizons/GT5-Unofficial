@@ -1529,6 +1529,11 @@ public enum ItemList implements IItemContainer {
     Hatch_Output_Bus_ME,
 
     NULL,
+    Cover_AdvancedRedstoneTransmitterExternal,
+    Cover_AdvancedRedstoneTransmitterInternal,
+    Cover_AdvancedRedstoneReceiverExternal,
+    Cover_AdvancedRedstoneReceiverInternal,
+
     Cover_RedstoneTransmitterExternal,
     Cover_RedstoneTransmitterInternal,
     Cover_RedstoneReceiverExternal,

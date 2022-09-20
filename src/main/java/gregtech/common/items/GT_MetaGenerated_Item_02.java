@@ -8,6 +8,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
@@ -16,6 +17,11 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.covers.GT_Cover_RedstoneReceiverExternal;
+import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverExternal;
+import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverInternal;
+import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterExternal;
+import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterInternal;
 import gregtech.common.items.behaviors.Behaviour_Arrow;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.enchantment.Enchantment;
@@ -31,6 +37,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.World;
+
+import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
     public static GT_MetaGenerated_Item_02 INSTANCE;
@@ -2296,6 +2304,68 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 "ALIEN ATTACK!!!, throw the CHEEEEESE!!!",
                 new GT_FoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
+
+
+
+        ItemList.Cover_AdvancedRedstoneTransmitterExternal.set(addItem(
+            tLastID = 577,
+            "Advanced Redstone Transmitter (External)",
+            "Transfers Redstone signals wirelessly",
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
+        ItemList.Cover_AdvancedRedstoneTransmitterInternal.set(addItem(
+            tLastID = 578,
+            "Advanced Redstone Transmitter (Internal)",
+            "Transfers Redstone signals wirelessly",
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
+        ItemList.Cover_AdvancedRedstoneReceiverExternal.set(addItem(
+            tLastID = 579,
+            "Advanced Redstone Receiver (External)",
+            "Transfers Redstone signals wirelessly",
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
+        ItemList.Cover_AdvancedRedstoneReceiverInternal.set(addItem(
+            tLastID = 580,
+            "Advanced Redstone Receiver (Internal)",
+            "Transfers Redstone signals wirelessly",
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
+
+        final ITexture redstoneTransmitterExternalCoverTexture = TextureFactory.of(
+            TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
+                .glow()
+                .build());
+
+        final ITexture redstoneTransmitterInternalCoverTexture = TextureFactory.of(
+            TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
+                .glow()
+                .build());
+
+        GregTech_API.registerCover(
+            ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], redstoneTransmitterExternalCoverTexture),
+            new GT_Cover_AdvancedRedstoneTransmitterExternal(redstoneTransmitterExternalCoverTexture));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], redstoneTransmitterInternalCoverTexture),
+            new GT_Cover_AdvancedRedstoneTransmitterInternal(redstoneTransmitterInternalCoverTexture));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
+            new GT_Cover_AdvancedRedstoneReceiverExternal(TextureFactory.of(OVERLAY_FLUIDDETECTOR)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
+            new GT_Cover_AdvancedRedstoneReceiverInternal(TextureFactory.of(OVERLAY_FLUIDDETECTOR)));
+
 
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 0), new ItemStack(Items.dye, 2, 1));
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 1), new ItemStack(Items.dye, 2, 12));

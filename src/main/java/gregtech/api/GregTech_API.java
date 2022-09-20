@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.IntFunction;
@@ -172,6 +173,29 @@ public class GregTech_API {
      * The Redstone Frequencies
      */
     public static final Map<Integer, Byte> sWirelessRedstone = new ConcurrentHashMap<>();
+    /**
+     * The Advanced Redstone Frequencies
+     */
+    public static final Map<String, Map<Integer, Byte>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
+
+    public static Byte getAdvancedRedstone(UUID uuid, int frequency) {
+        Map<Integer, Byte> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+        if (frequencies == null) return 0;
+        return frequencies.getOrDefault(frequency, (byte) 0);
+    }
+
+    public static void removeAdvancedRedstone(UUID uuid, int frequency) {
+        Map<Integer, Byte> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+        if (frequencies == null) return;
+        frequencies.remove(frequency);
+    }
+
+    public static void setAdvancedRedstone(UUID uuid, int frequency, byte value) {
+        String key = String.valueOf(uuid);
+        Map<Integer, Byte> frequencies = GregTech_API.sAdvancedWirelessRedstone.computeIfAbsent(key, k -> new ConcurrentHashMap<>());
+        frequencies.put(frequency, value);
+    }
+
     /**
      * The IDSU Frequencies
      */
