@@ -11,6 +11,7 @@ mobhandler.infernal_always=Always spawns infernal
 mobhandler.mod=Mod: 
 mobhandler.max_health=Max health: 
 mobhandler.boss=BOSS
+mobhandler.cannot_use_vial=Can't be in soul vial
 mobhandler.chance=Chance: 
 mobhandler.average_reminder=§7§oPlease remember that these are average drops.
 mobhandler.lootable=Looting is applied
