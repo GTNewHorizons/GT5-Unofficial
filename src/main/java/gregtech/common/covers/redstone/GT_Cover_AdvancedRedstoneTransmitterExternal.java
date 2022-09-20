@@ -12,14 +12,16 @@ public class GT_Cover_AdvancedRedstoneTransmitterExternal extends GT_Cover_Advan
 
     @Override
     public TransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
-                                             TransmitterData aCoverVariable, ICoverable tile, long aTimer) {
+                                             TransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte outputRedstone = aInputRedstone;
         if (aCoverVariable.isInvert()) {
             if (outputRedstone > 0) outputRedstone = 0;
             else outputRedstone = 15;
         }
 
-        GregTech_API.setAdvancedRedstone(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), outputRedstone);
+        long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
+        GregTech_API.setAdvancedRedstone(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, outputRedstone);
+
         return aCoverVariable;
     }
 

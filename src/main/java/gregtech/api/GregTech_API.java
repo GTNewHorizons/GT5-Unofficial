@@ -20,6 +20,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.items.GT_CoolantCellIC_Item;
 import gregtech.api.items.GT_CoolantCell_Item;
@@ -176,24 +177,50 @@ public class GregTech_API {
     /**
      * The Advanced Redstone Frequencies
      */
-    public static final Map<String, Map<Integer, Byte>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
+    public static final Map<String, Map<Integer, Map<Long, Byte>>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
 
     public static Byte getAdvancedRedstone(UUID uuid, int frequency) {
-        Map<Integer, Byte> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
         if (frequencies == null) return 0;
-        return frequencies.getOrDefault(frequency, (byte) 0);
+
+        // TODO: Implement All Modes
+        Map<Long, Byte> signals = frequencies.get(frequency);
+        if (signals == null) return 0;
+
+        return (byte) (signals.values().stream()
+            .map(signal -> signal > 0)
+            .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
     }
 
-    public static void removeAdvancedRedstone(UUID uuid, int frequency) {
-        Map<Integer, Byte> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+    public static void removeAdvancedRedstone(UUID uuid, int frequency, long hash) {
+        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
         if (frequencies == null) return;
-        frequencies.remove(frequency);
+        frequencies.computeIfPresent(frequency, (freq, longByteMap) -> {
+            longByteMap.remove(hash);
+            return longByteMap.isEmpty() ? null : longByteMap;
+        });
     }
 
-    public static void setAdvancedRedstone(UUID uuid, int frequency, byte value) {
-        String key = String.valueOf(uuid);
-        Map<Integer, Byte> frequencies = GregTech_API.sAdvancedWirelessRedstone.computeIfAbsent(key, k -> new ConcurrentHashMap<>());
-        frequencies.put(frequency, value);
+    public static void setAdvancedRedstone(UUID uuid, int frequency, long hash, byte value) {
+        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.computeIfAbsent(String.valueOf(uuid), k -> new ConcurrentHashMap<>());
+        Map<Long, Byte> signals = frequencies.computeIfAbsent(frequency, k -> new ConcurrentHashMap<>());
+        signals.put(hash, value);
+    }
+
+    /**
+     *  x    hashed into first 20 bytes
+     *  y    hashed into second 20 bytes
+     *  z    hashed into fifth 10 bytes
+     *  dim  hashed into sixth 10 bytes
+     *  side hashed into last 4 bytes
+     */
+    public static long hashCoverCoords(ICoverable tile, byte side) {
+        return (((((long)
+            tile.getXCoord() << 20) +
+            tile.getZCoord() << 10) +
+            tile.getYCoord() << 10) +
+            tile.getWorld().provider.dimensionId << 4) +
+            side;
     }
 
     /**

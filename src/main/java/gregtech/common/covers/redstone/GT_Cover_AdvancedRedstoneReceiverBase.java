@@ -47,7 +47,8 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
     @Override
     public boolean onCoverRemovalImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity,
                                       boolean aForced) {
-        GregTech_API.removeAdvancedRedstone(aCoverVariable.uuid, aCoverVariable.frequency);
+        long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
+        GregTech_API.removeAdvancedRedstone(aCoverVariable.uuid, aCoverVariable.frequency, hash);
         return true;
     }
 
