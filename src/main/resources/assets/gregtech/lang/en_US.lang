@@ -37,7 +37,7 @@ GT5U.MBTT.StructureHint=Some blocks have multiple candidates or can use any tier
 GT5U.MBTT.Mod=Added by
 GT5U.MBTT.Air=Mandatory Air
 
-GT5U.MBTT.subchannel=Uses sub channel §6%s§r for %s
+GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 
@@ -102,6 +102,8 @@ GT5U.machines.separatebus=Input buses are separated
 GT5U.machines.pumpareaset=Pumping area set to
 GT5U.machines.oilfluidpump=Oil/Fluid Pump
 GT5U.machines.minermulti=Multiblock Miner
+GT5U.machines.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
+GT5U.machines.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
 GT5U.machines.digitaltank.tooltip=Stores %sL of fluid
 GT5U.machines.digitaltank.tooltip1=Can keep its contents when harvested
 GT5U.machines.digitaltank.tooltip2=Sneak when harvesting to void its contents
@@ -185,9 +187,18 @@ GT5U.machines.industrialapiary.infoextended.tooltip.2=Humidity: %3$s
 GT5U.machines.industrialapiary.infoextended.tooltip.3=Production Modifier: %4$d %%
 GT5U.machines.industrialapiary.infoextended.tooltip.4=Flowering Chance: %5$d %%
 GT5U.machines.industrialapiary.infoextended.tooltip.5=Lifespan Modifier: %6$d %%
-GT5U.machines.industrialapiary.infoextended.tooltip.6=Terrority: %7$d x %8$d x %9$d
+GT5U.machines.industrialapiary.infoextended.tooltip.6=Territory: %7$d x %8$d x %9$d
 GT5U.machines.industrialapiary.upgradeslot.tooltip=Upgrade slot
 GT5U.machines.industrialapiary.upgradeslot.tooltip.1=§7Also accepts gendustry upgrades
+GT5U.machines.advdebugstructurewriter.tooltip=Scans Blocks Around
+GT5U.machines.advdebugstructurewriter.tooltip.1=Prints Multiblock NonTE structure check code
+GT5U.machines.advdebugstructurewriter.tooltip.2=ABC axes aligned to machine front
+GT5U.machines.advdebugstructurewriter.printed=Printed structure to console
+GT5U.machines.advdebugstructurewriter.gui.origin=Origin
+GT5U.machines.advdebugstructurewriter.gui.size=Structure Size
+GT5U.machines.advdebugstructurewriter.gui.print.tooltip=Print Structure
+GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip=Show Bounding Box
+GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip=Transpose
 
 GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
 

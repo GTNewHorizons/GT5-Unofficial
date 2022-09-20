@@ -277,7 +277,9 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         GT_Utility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal(
-                        mVoidOverflow ? "GT5U.machines.voidoveflow.enabled" : "GT5U.machines.voidoveflow.disabled"));
+                        mVoidOverflow
+                                ? "GT5U.machines.digitalchest.voidoverflow.enabled"
+                                : "GT5U.machines.digitalchest.voidoverflow.disabled"));
     }
 
     @Override

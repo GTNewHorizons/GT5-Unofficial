@@ -11,6 +11,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 
 public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_PrimitiveBlastFurnace
@@ -26,6 +27,7 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
                 .glow()
                 .build()
     };
+    private GT_Multiblock_Tooltip_Builder tooltipBuilder;
 
     public GT_MetaTileEntity_BrickedBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -54,21 +56,24 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
     }
 
     protected GT_Multiblock_Tooltip_Builder getTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Blast Furnace")
-                .addInfo("Controller Block for the Bricked Blast Furnace")
-                .addInfo("Usable for Steel and general Pyrometallurgy")
-                .addInfo("Has a useful interface, unlike other gregtech multis")
-                .addPollutionAmount(GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond)
-                .addSeparator()
-                .beginStructureBlock(3, 4, 3, true)
-                .addController("Front center")
-                .addOtherStructurePart("Firebricks", "Everything except the controller")
-                .addStructureInfo("The top block is also empty")
-                .addStructureInfo("You can share the walls of GT multis, so")
-                .addStructureInfo("each additional one costs less, up to 4")
-                .toolTipFinisher("Gregtech");
-        return tt;
+        if (tooltipBuilder == null) {
+            tooltipBuilder = new GT_Multiblock_Tooltip_Builder();
+            tooltipBuilder
+                    .addMachineType("Blast Furnace")
+                    .addInfo("Controller Block for the Bricked Blast Furnace")
+                    .addInfo("Usable for Steel and general Pyrometallurgy")
+                    .addInfo("Has a useful interface, unlike other gregtech multis")
+                    .addPollutionAmount(GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond)
+                    .addSeparator()
+                    .beginStructureBlock(3, 4, 3, true)
+                    .addController("Front center")
+                    .addOtherStructurePart("Firebricks", "Everything except the controller")
+                    .addStructureInfo("The top block is also empty")
+                    .addStructureInfo("You can share the walls of GT multis, so")
+                    .addStructureInfo("each additional one costs less, up to 4")
+                    .toolTipFinisher("Gregtech");
+        }
+        return tooltipBuilder;
     }
 
     @Override
@@ -91,17 +96,22 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
     }
 
     @Override
-    protected boolean isCorrectCasingBlock(Block block) {
-        return block == GregTech_API.sBlockCasings4;
+    protected Block getCasingBlock() {
+        return GregTech_API.sBlockCasings4;
     }
 
     @Override
-    protected boolean isCorrectCasingMetaID(int metaID) {
-        return metaID == 15;
+    protected int getCasingMetaID() {
+        return 15;
     }
 
     @Override
     public String getName() {
         return "Bricked Blast Furnace";
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
+        return getTooltip().getStructureHint();
     }
 }

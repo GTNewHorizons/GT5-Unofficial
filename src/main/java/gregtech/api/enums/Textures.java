@@ -1266,7 +1266,9 @@ public class Textures {
         OVERLAY_ME_INPUT_HATCH,
         OVERLAY_ME_INPUT_HATCH_ACTIVE,
         OVERLAY_ME_CRAFTING_HATCH,
-        OVERLAY_ME_CRAFTING_HATCH_ACTIVE;
+        OVERLAY_ME_CRAFTING_HATCH_ACTIVE,
+
+        STRUCTURE_MARK;
 
         /**
          * Icon for Fresh CFoam
