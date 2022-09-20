@@ -55,6 +55,7 @@ import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -87,6 +88,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
         AVERAGE_REMINDER,
         MOD,
         MAX_HEALTH,
+        BOSS,
         LOOTABLE,
         PLAYER_ONLY,
         ;
@@ -289,6 +291,13 @@ public class Mob_Handler extends TemplateRecipeHandler {
 
         GL11.glPushMatrix();
 
+        float healthScale = BossStatus.healthScale;
+        int statusBarTime = BossStatus.statusBarTime;
+        String bossName = BossStatus.bossName;
+        boolean hasColorModifier = BossStatus.hasColorModifier;
+
+        BossStatus.statusBarTime = 0;
+
         try {
             EntityLiving e = currentrecipe.mob;
 
@@ -300,6 +309,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
 
             int mobx = 30, moby = 50;
             e.setPosition(mc.thePlayer.posX + 5, mc.thePlayer.posY, mc.thePlayer.posZ);
+
             // ARGS: x, y, scale, rot, rot, entity
             GuiInventory.func_147046_a(
                     mobx, moby, Math.round(scaled), (x + mobx) - mouseX, y + moby - eheight * scaled - mouseZ, e);
@@ -310,6 +320,13 @@ public class Mob_Handler extends TemplateRecipeHandler {
             } catch (Exception ignored) {
             }
         }
+
+        if (BossStatus.statusBarTime > 0 && currentrecipe.isBoss.isEmpty()) currentrecipe.isBoss = BossStatus.bossName;
+
+        BossStatus.healthScale = healthScale;
+        BossStatus.statusBarTime = statusBarTime;
+        BossStatus.bossName = bossName;
+        BossStatus.hasColorModifier = hasColorModifier;
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
         stackdepth -= GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
@@ -348,6 +365,10 @@ public class Mob_Handler extends TemplateRecipeHandler {
                 GuiDraw.drawString(INFERNAL_ALWAYS.get(), x, y += yshift, 0xFFFF0000, false);
                 break;
         }
+
+        if (!currentrecipe.isBoss.isEmpty())
+            GuiDraw.drawString(EnumChatFormatting.BOLD + "" + BOSS.get(), x, y += yshift, 0xFFD68F00, false);
+
         MobRecipeLoader.MobRecipe MBRecipe =
                 GT_MetaTileEntity_ExtremeExterminationChamber.MobNameToRecipeMap.get(currentrecipe.mobname);
         if (MBRecipe != null) {
@@ -371,7 +392,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
         }
 
         x = 6;
-        y = 83;
+        y = Math.max(83, 83 + (y - 67));
         yshift = nextRowYShift;
         if (currentrecipe.normalOutputsCount > 0) {
             GuiDraw.drawString(NORMAL_DROPS.get(), x, y, 0xFF555555, false);
@@ -531,6 +552,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
         public final int rareOutputsCount;
         public final int additionalOutputsCount;
         public final int infernalOutputsCount;
+        public String isBoss = "";
 
         public MobCachedRecipe(
                 EntityLiving mob,

@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -142,6 +143,12 @@ public class EntityRenderer extends EntityFX {
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         float desiredScale = MobUtils.getDesiredScale(entityToRender, 2f);
         if (desiredScale < 1f) GL11.glScalef(desiredScale, desiredScale, desiredScale);
+
+        float healthScale = BossStatus.healthScale;
+        int statusBarTime = BossStatus.statusBarTime;
+        String bossName = BossStatus.bossName;
+        boolean hasColorModifier = BossStatus.hasColorModifier;
+
         try {
             instance.renderEntityWithPosYaw(entityToRender, 0f, 0f, 0f, f1, p_147936_2_);
         } catch (Throwable ex) {
@@ -151,6 +158,11 @@ public class EntityRenderer extends EntityFX {
             } catch (Exception ignored) {
             }
         }
+
+        BossStatus.healthScale = healthScale;
+        BossStatus.statusBarTime = statusBarTime;
+        BossStatus.bossName = bossName;
+        BossStatus.hasColorModifier = hasColorModifier;
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
         stackdepth -= GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
