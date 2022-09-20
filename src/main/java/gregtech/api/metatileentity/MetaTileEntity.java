@@ -1172,6 +1172,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         return false;
     }
 
+    // === ModularUI or old GUI ===
+
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return null;
@@ -1191,15 +1193,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             builder.bindPlayerInventory(buildContext.getPlayer(), 7, getSlotBackground());
         }
         addUIWidgets(builder);
+        addGregTechLogo(builder);
         return builder.build();
     }
 
     /**
      * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
      */
-    protected void addUIWidgets(ModularWindow.Builder builder) {
-        addGregTechLogo(builder);
-    }
+    protected void addUIWidgets(ModularWindow.Builder builder) {}
 
     protected void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
@@ -1252,6 +1253,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         return index != -1 ? Dyes.get(index) : Dyes.MACHINE_METAL;
     }
 
+    // === AE2 compat ===
+
     @Optional.Method(modid = "appliedenergistics2")
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return AECableType.NONE;
@@ -1264,6 +1267,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
+
+    // === Waila compat ===
 
     @Override
     public void getWailaBody(

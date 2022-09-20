@@ -25,8 +25,6 @@ public class GT_UITextures {
             AdaptableUITexture.of(MODID, "gui/background/PlasmaForge_nei", 176, 166, 4);
     public static final UITexture BACKGROUND_FUSION_COMPUTER =
             AdaptableUITexture.of(MODID, "gui/background/FusionComputer", 176, 166, 4);
-    public static final UITexture BACKGROUND_ADV_DEBUG_STRUCTURE_WRITER =
-            AdaptableUITexture.of(MODID, "gui/background/AdvDebugStructureWriter", 176, 166, 4);
 
     public static final AdaptableUITexture SLOT_ITEM_BRONZE =
             AdaptableUITexture.of(MODID, "gui/slot/item_bronze", 18, 18, 1);
@@ -211,13 +209,11 @@ public class GT_UITextures {
     public static final UITexture TAB_COVER_HIGHLIGHT = UITexture.fullImage(MODID, "gui/tab/cover_highlight");
     public static final UITexture TAB_COVER_DISABLED = UITexture.fullImage(MODID, "gui/tab/cover_disabled");
 
+    public static final UITexture BUTTON_STANDARD = UITexture.fullImage(MODID, "gui/button/standard");
+    public static final UITexture BUTTON_STANDARD_TOGGLE = UITexture.fullImage(MODID, "gui/button/standard_toggle");
     public static final UITexture BUTTON_AUTOOUTPUT_ITEM = UITexture.fullImage(MODID, "gui/button/autooutput_item");
     public static final UITexture BUTTON_AUTOOUTPUT_FLUID = UITexture.fullImage(MODID, "gui/button/autooutput_fluid");
     public static final UITexture BUTTON_CROSS = UITexture.fullImage(MODID, "gui/button/cross");
-    public static final UITexture BUTTON_MINUS_SMALL = UITexture.fullImage(MODID, "gui/button/minus_small");
-    public static final UITexture BUTTON_MINUS_LARGE = UITexture.fullImage(MODID, "gui/button/minus_large");
-    public static final UITexture BUTTON_PLUS_SMALL = UITexture.fullImage(MODID, "gui/button/plus_small");
-    public static final UITexture BUTTON_PLUS_LARGE = UITexture.fullImage(MODID, "gui/button/plus_large");
     public static final UITexture BUTTON_PRINT = UITexture.fullImage(MODID, "gui/button/print");
     public static final UITexture BUTTON_TRANSPOSE = UITexture.fullImage(MODID, "gui/button/transpose");
     public static final UITexture BUTTON_BOUNDINGBOX = UITexture.fullImage(MODID, "gui/button/boundingbox");
@@ -260,6 +256,24 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_ARROW_GREEN_DOWN =
             UITexture.fullImage(MODID, "gui/overlay_button/arrow_green_down");
     public static final UITexture OVERLAY_BUTTON_CYCLIC = UITexture.fullImage(MODID, "gui/overlay_button/cyclic");
+    public static final UITexture OVERLAY_BUTTON_PRINT = UITexture.fullImage(MODID, "gui/overlay_button/print");
+    public static final UITexture OVERLAY_BUTTON_TRANSPOSE = UITexture.fullImage(MODID, "gui/overlay_button/transpose");
+    public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX =
+            UITexture.fullImage(MODID, "gui/overlay_button/bounding_box");
+    public static final UITexture OVERLAY_BUTTON_MINUS_SMALL =
+            UITexture.fullImage(MODID, "gui/overlay_button/minus_small");
+    public static final UITexture OVERLAY_BUTTON_MINUS_LARGE =
+            UITexture.fullImage(MODID, "gui/overlay_button/minus_large");
+    public static final UITexture OVERLAY_BUTTON_PLUS_SMALL =
+            UITexture.fullImage(MODID, "gui/overlay_button/plus_small");
+    public static final UITexture OVERLAY_BUTTON_PLUS_LARGE =
+            UITexture.fullImage(MODID, "gui/overlay_button/plus_large");
+
+    /**
+     * Can adjust size as needed.
+     */
+    public static final AdaptableUITexture PICTURE_SCREEN_BLACK =
+            AdaptableUITexture.of(MODID, "gui/picture/screen_black", 16, 16, 2);
 
     public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT =
             UITexture.fullImage(MODID, "gui/picture/gt_logo_17x17_transparent");
