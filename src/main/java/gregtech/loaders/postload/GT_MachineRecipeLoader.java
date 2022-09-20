@@ -6555,8 +6555,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     ItemList.Field_Generator_UMV.get(64)
                 },
                 new FluidStack[] {
-                    Materials.ExcitedDTEC.getFluid(100_000_000),
-                    Materials.SpaceTime.getMolten(64 * 2 * 9 * 144)
+                    Materials.ExcitedDTEC.getFluid(100_000_000), Materials.SpaceTime.getMolten(64 * 2 * 9 * 144)
                 },
                 new ItemStack[] {ItemList.GigaChad.get(1)},
                 new FluidStack[] {GT_Values.NF},
