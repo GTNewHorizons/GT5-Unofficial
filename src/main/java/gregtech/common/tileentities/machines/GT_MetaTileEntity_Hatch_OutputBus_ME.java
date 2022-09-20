@@ -237,8 +237,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                     NBTTagCompound tagItemStack = tag.getCompoundTag("itemStack");
                     final IAEItemStack s =
                             AEApi.instance().storage().createItemStack(GT_Utility.loadItem(tagItemStack));
-                    s.setStackSize(tag.getLong("size"));
-                    itemCache.add(s);
+                    if (s != null) {
+                        s.setStackSize(tag.getLong("size"));
+                        itemCache.add(s);
+                    }
                 }
             }
             getProxy().readFromNBT(aNBT);
