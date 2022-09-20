@@ -57,6 +57,7 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.entity.IEntityDefinition;
 import minetweaker.api.item.IItemStack;
 import minetweaker.mc1710.item.MCItemStack;
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -67,6 +68,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -82,7 +84,7 @@ import thaumcraft.common.items.wands.ItemWandCasting;
 
 public class MobRecipeLoader {
 
-    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Mob Handler]");
+    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Mob Recipe Loader]");
 
     public static final MobRecipeLoader instance = new MobRecipeLoader();
 
@@ -580,7 +582,7 @@ public class MobRecipeLoader {
 
         if (alreadyGenerated) return;
         alreadyGenerated = true;
-        if (!Config.mobHandlerEnabled) return;
+        if (!Config.MobHandler.mobHandlerEnabled) return;
 
         World f = new GT_DummyWorld() {
             @Override
@@ -593,6 +595,17 @@ public class MobRecipeLoader {
             public List getEntitiesWithinAABB(Class p_72872_1_, AxisAlignedBB p_72872_2_) {
                 return new ArrayList();
             }
+
+            @Override
+            public Block getBlock(int aX, int aY, int aZ) {
+                if (LoaderReference.TwilightForest
+                        && new Throwable()
+                                .getStackTrace()[1]
+                                .getClassName()
+                                .equals("twilightforest.client.renderer.entity.RenderTFSnowQueenIceShield"))
+                    return Blocks.packed_ice;
+                return super.getBlock(aX, aY, aZ);
+            }
         };
         f.isRemote = true; // quick hack to get around achievements
 
@@ -603,17 +616,18 @@ public class MobRecipeLoader {
         Gson gson = GSONUtils.GSON_BUILDER.create();
 
         String modlistversion;
-        if (Config.regenerationTrigger == Config._CacheRegenerationTrigger.ModAdditionRemoval)
+        if (Config.MobHandler.regenerationTrigger == Config.MobHandler._CacheRegenerationTrigger.ModAdditionRemoval)
             modlistversion = ModUtils.getModListVersionIgnoringModVersions();
         else modlistversion = ModUtils.getModListVersion();
 
-        if (Config.regenerationTrigger != Config._CacheRegenerationTrigger.Always && cache.exists()) {
+        if (Config.MobHandler.regenerationTrigger != Config.MobHandler._CacheRegenerationTrigger.Always
+                && cache.exists()) {
             LOG.info("Parsing Cached map");
             Reader reader = null;
             try {
                 reader = Files.newReader(cache, StandardCharsets.UTF_8);
                 MobRecipeLoaderCacheStructure s = gson.fromJson(reader, MobRecipeLoaderCacheStructure.class);
-                if (Config.regenerationTrigger == Config._CacheRegenerationTrigger.Never
+                if (Config.MobHandler.regenerationTrigger == Config.MobHandler._CacheRegenerationTrigger.Never
                         || s.version.equals(modlistversion)) {
                     for (Map.Entry<String, ArrayList<MobDrop>> entry : s.moblist.entrySet()) {
                         try {
@@ -1133,7 +1147,7 @@ public class MobRecipeLoader {
         for (Map.Entry<String, GeneralMappedMob> entry : GeneralMobList.entrySet()) {
             String k = entry.getKey();
             GeneralMappedMob v = entry.getValue();
-            if (Arrays.asList(Config.mobBlacklist).contains(k)) {
+            if (Arrays.asList(Config.MobHandler.mobBlacklist).contains(k)) {
                 LOG.info("Entity " + k + " is blacklisted, skipping");
                 continue;
             }
@@ -1167,7 +1181,7 @@ public class MobRecipeLoader {
 
             if (drops.isEmpty()) {
                 LOG.info("Entity " + k + " doesn't drop any items, skipping EEC map");
-                if (!Config.includeEmptyMobs) continue;
+                if (!Config.MobHandler.includeEmptyMobs) continue;
                 LoadConfigPacket.instance.mobsToLoad.add(k);
                 LOG.info("Registered " + k);
                 continue;

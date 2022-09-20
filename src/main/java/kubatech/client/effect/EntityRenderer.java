@@ -1,23 +1,29 @@
 package kubatech.client.effect;
 
 import static net.minecraft.client.renderer.entity.RenderManager.*;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW_STACK_DEPTH;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import kubatech.Tags;
 import kubatech.api.utils.MobUtils;
+import kubatech.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.util.glu.GLU;
 
 @SideOnly(Side.CLIENT)
 public class EntityRenderer extends EntityFX {
+    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Entity Renderer]");
     private EntityLiving entityToRender = null;
 
     public EntityRenderer(World p_i1218_1_, double x, double y, double z, int age) {
@@ -79,38 +85,36 @@ public class EntityRenderer extends EntityFX {
         entityToRender.worldObj = this.worldObj;
         entityToRender.setPosition(this.posX, this.posY, this.posZ);
 
+        Minecraft mc = Minecraft.getMinecraft();
+
         double rotation;
-        // double headrotation;
+        double headrotation;
         {
             double x1 = this.posX;
-            double x2 = Minecraft.getMinecraft().thePlayer.posX;
+            double x2 = mc.thePlayer.posX;
             double y1 = this.posZ;
-            double y2 = Minecraft.getMinecraft().thePlayer.posZ;
+            double y2 = mc.thePlayer.posZ;
             double k = Math.toDegrees(Math.atan2(x2 - x1, y1 - y2));
             if (k < 0d) k += 360d;
             k -= 180d;
             rotation = k;
         }
-        /*
-               {
-                   double y1 = this.posY;
-                   double y2 = Minecraft.getMinecraft().thePlayer.posY;
-                   double d = Minecraft.getMinecraft()
-                           .thePlayer
-                           .getDistance(this.posX, Minecraft.getMinecraft().thePlayer.posY, this.posZ);
-                   double k = Math.toDegrees(Math.atan2(y1 - y2, d));
-                   if (k < 0d) k += 360d;
-                   headrotation = k;
-               }
 
-        */
+        {
+            double y1 = this.posY + entityToRender.getEyeHeight();
+            double y2 = mc.thePlayer.posY + mc.thePlayer.getEyeHeight();
+            double d = mc.thePlayer.getDistance(this.posX, y2, this.posZ);
+            double k = Math.toDegrees(Math.atan2(y1 - y2, d));
+            if (k < 0d) k += 360d;
+            headrotation = k;
+        }
 
         entityToRender.prevRotationYawHead = entityToRender.rotationYawHead;
         entityToRender.prevRenderYawOffset = entityToRender.renderYawOffset;
-        // entityToRender.prevRotationPitch = entityToRender.rotationPitch;
+        entityToRender.prevRotationPitch = entityToRender.rotationPitch;
         entityToRender.renderYawOffset = (float) rotation;
         entityToRender.rotationYawHead = (float) rotation;
-        // entityToRender.rotationPitch = (float)headrotation;
+        entityToRender.rotationPitch = (float) headrotation;
 
         float p_147936_2_ = 0.5f;
 
@@ -128,7 +132,10 @@ public class EntityRenderer extends EntityFX {
         GL11.glColor4f(1f, 1f, 1f, 1F);
         RenderHelper.enableStandardItemLighting();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        int stackdepth = GL11.glGetInteger(GL_MODELVIEW_STACK_DEPTH);
+
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
+        int stackdepth = GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
         GL11.glPushMatrix();
         GL11.glTranslatef(
                 (float) (this.posX - renderPosX), (float) (this.posY - renderPosY), (float) (this.posZ - renderPosZ));
@@ -145,8 +152,18 @@ public class EntityRenderer extends EntityFX {
             }
         }
 
-        stackdepth -= GL11.glGetInteger(GL_MODELVIEW_STACK_DEPTH);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        stackdepth -= GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
         if (stackdepth < 0) for (; stackdepth < 0; stackdepth++) GL11.glPopMatrix();
+        if (stackdepth > 0) for (; stackdepth > 0; stackdepth--) GL11.glPushMatrix();
+
+        GL11.glPopAttrib();
+
+        int err;
+        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR)
+            if (Config.Debug.showRenderErrors)
+                LOG.error(EntityList.getEntityString(entityToRender) + " | GL ERROR: " + err + " / "
+                        + GLU.gluErrorString(err));
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_COLOR_MATERIAL);

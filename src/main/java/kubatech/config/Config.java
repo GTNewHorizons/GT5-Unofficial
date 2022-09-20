@@ -25,26 +25,108 @@ import net.minecraftforge.common.config.Configuration;
 
 public class Config {
 
-    private static class Categories {
-        public static final String mobHandler = "MobHandler";
-    }
+    private enum Category {
+        MOB_HANDLER("MobHandler"),
+        DEBUG("Debug");
+        final String categoryName;
 
-    public static boolean mobHandlerEnabled = true;
+        Category(String s) {
+            categoryName = s;
+        }
 
-    public enum _CacheRegenerationTrigger {
-        Never,
-        ModAdditionRemoval,
-        ModAdditionRemovalChange,
-        Always;
+        public String get() {
+            return categoryName;
+        }
 
-        public static _CacheRegenerationTrigger get(int oridinal) {
-            return values()[oridinal];
+        @Override
+        public String toString() {
+            return get();
         }
     }
 
-    public static _CacheRegenerationTrigger regenerationTrigger = _CacheRegenerationTrigger.ModAdditionRemovalChange;
-    public static boolean includeEmptyMobs = true;
-    public static String[] mobBlacklist;
+    public static class MobHandler {
+
+        public static boolean mobHandlerEnabled = true;
+
+        public enum _CacheRegenerationTrigger {
+            Never,
+            ModAdditionRemoval,
+            ModAdditionRemovalChange,
+            Always;
+
+            public static _CacheRegenerationTrigger get(int oridinal) {
+                return values()[oridinal];
+            }
+        }
+
+        public static _CacheRegenerationTrigger regenerationTrigger =
+                _CacheRegenerationTrigger.ModAdditionRemovalChange;
+        public static boolean includeEmptyMobs = true;
+        public static String[] mobBlacklist;
+
+        private static void load(Configuration configuration) {
+            Category category = Category.MOB_HANDLER;
+            mobHandlerEnabled = configuration
+                    .get(
+                            category.get(),
+                            "Enabled",
+                            true,
+                            "Enable \"Mob Drops\" NEI page and Extreme Extermination Chamber")
+                    .getBoolean();
+            StringBuilder c = new StringBuilder("When will cache regeneration trigger? ");
+            for (_CacheRegenerationTrigger value : _CacheRegenerationTrigger.values())
+                c.append(value.ordinal()).append(" - ").append(value.name()).append(", ");
+            regenerationTrigger = _CacheRegenerationTrigger.get(configuration
+                    .get(
+                            category.get(),
+                            "CacheRegenerationTrigger",
+                            _CacheRegenerationTrigger.ModAdditionRemovalChange.ordinal(),
+                            c.toString())
+                    .getInt());
+            includeEmptyMobs = configuration
+                    .get(category.get(), "IncludeEmptyMobs", true, "Include mobs that have no drops in NEI")
+                    .getBoolean();
+            mobBlacklist = configuration
+                    .get(
+                            category.get(),
+                            "MobBlacklist",
+                            new String[] {
+                                "Giant",
+                                "Thaumcraft.TravelingTrunk",
+                                "chisel.snowman",
+                                "OpenBlocks.Luggage",
+                                "OpenBlocks.MiniMe",
+                                "SpecialMobs.SpecialCreeper",
+                                "SpecialMobs.SpecialZombie",
+                                "SpecialMobs.SpecialPigZombie",
+                                "SpecialMobs.SpecialSlime",
+                                "SpecialMobs.SpecialSkeleton",
+                                "SpecialMobs.SpecialEnderman",
+                                "SpecialMobs.SpecialCaveSpider",
+                                "SpecialMobs.SpecialGhast",
+                                "SpecialMobs.SpecialWitch",
+                                "SpecialMobs.SpecialSpider",
+                                "TwilightForest.HydraHead",
+                                "TwilightForest.RovingCube",
+                                "TwilightForest.Harbinger Cube",
+                                "TwilightForest.Adherent",
+                                "SpecialMobs.SpecialSilverfish",
+                            },
+                            "These mobs will be skipped when generating recipe map")
+                    .getStringList();
+        }
+    }
+
+    public static class Debug {
+        public static boolean showRenderErrors = false;
+
+        private static void load(Configuration configuration) {
+            Category category = Category.DEBUG;
+            showRenderErrors =
+                    configuration.get(category.get(), "ShowRenderErrors", false).getBoolean();
+        }
+    }
+
     public static File configFile;
     public static File configDirectory;
 
@@ -61,54 +143,8 @@ public class Config {
         Configuration configuration = new Configuration(configFile);
         configuration.load();
 
-        mobHandlerEnabled = configuration
-                .get(
-                        Categories.mobHandler,
-                        "Enabled",
-                        true,
-                        "Enable \"Mob Drops\" NEI page and Extreme Extermination Chamber")
-                .getBoolean();
-        StringBuilder c = new StringBuilder("When will cache regeneration trigger? ");
-        for (_CacheRegenerationTrigger value : _CacheRegenerationTrigger.values())
-            c.append(value.ordinal()).append(" - ").append(value.name()).append(", ");
-        regenerationTrigger = _CacheRegenerationTrigger.get(configuration
-                .get(
-                        Categories.mobHandler,
-                        "CacheRegenerationTrigger",
-                        _CacheRegenerationTrigger.ModAdditionRemovalChange.ordinal(),
-                        c.toString())
-                .getInt());
-        includeEmptyMobs = configuration
-                .get(Categories.mobHandler, "IncludeEmptyMobs", true, "Include mobs that have no drops in NEI")
-                .getBoolean();
-        mobBlacklist = configuration
-                .get(
-                        Categories.mobHandler,
-                        "MobBlacklist",
-                        new String[] {
-                            "Giant",
-                            "Thaumcraft.TravelingTrunk",
-                            "chisel.snowman",
-                            "OpenBlocks.Luggage",
-                            "OpenBlocks.MiniMe",
-                            "SpecialMobs.SpecialCreeper",
-                            "SpecialMobs.SpecialZombie",
-                            "SpecialMobs.SpecialPigZombie",
-                            "SpecialMobs.SpecialSlime",
-                            "SpecialMobs.SpecialSkeleton",
-                            "SpecialMobs.SpecialEnderman",
-                            "SpecialMobs.SpecialCaveSpider",
-                            "SpecialMobs.SpecialGhast",
-                            "SpecialMobs.SpecialWitch",
-                            "SpecialMobs.SpecialSpider",
-                            "TwilightForest.HydraHead",
-                            "TwilightForest.RovingCube",
-                            "TwilightForest.Harbinger Cube",
-                            "TwilightForest.Adherent",
-                            "SpecialMobs.SpecialSilverfish",
-                        },
-                        "These mobs will be skipped when generating recipe map")
-                .getStringList();
+        MobHandler.load(configuration);
+        Debug.load(configuration);
 
         if (configuration.hasChanged()) {
             configuration.save();

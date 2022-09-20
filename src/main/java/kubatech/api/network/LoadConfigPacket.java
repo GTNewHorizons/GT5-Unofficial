@@ -61,7 +61,7 @@ public class LoadConfigPacket implements IMessage {
 
     @Override
     public void toBytes(ByteBuf buf) {
-        if (!Config.mobHandlerEnabled) buf.writeBoolean(false);
+        if (!Config.MobHandler.mobHandlerEnabled) buf.writeBoolean(false);
         else {
             buf.writeBoolean(true);
             buf.writeInt(mobsToLoad.size());

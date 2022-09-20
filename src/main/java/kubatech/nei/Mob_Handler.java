@@ -20,7 +20,6 @@
 package kubatech.nei;
 
 import static kubatech.nei.Mob_Handler.Translations.*;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW_STACK_DEPTH;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientUtils;
@@ -37,12 +36,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.mobhandler.MobDrop;
 import kubatech.api.utils.FastRandom;
 import kubatech.api.utils.InfernalHelper;
 import kubatech.api.utils.MobUtils;
 import kubatech.api.utils.ModUtils;
+import kubatech.config.Config;
 import kubatech.kubatech;
 import kubatech.loaders.MobRecipeLoader;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
@@ -64,9 +65,12 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.GLU;
 
 public class Mob_Handler extends TemplateRecipeHandler {
 
@@ -109,6 +113,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
         }
     }
 
+    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Mob Handler]");
     private static final Mob_Handler instance = new Mob_Handler();
     private static final List<MobCachedRecipe> cachedRecipes = new ArrayList<>();
     public static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
@@ -277,7 +282,9 @@ public class Mob_Handler extends TemplateRecipeHandler {
         float x = buf.get(12);
         float y = buf.get(13);
 
-        int stackdepth = GL11.glGetInteger(GL_MODELVIEW_STACK_DEPTH);
+        int stackdepth = GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
+
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
         GL11.glPushMatrix();
 
@@ -303,8 +310,17 @@ public class Mob_Handler extends TemplateRecipeHandler {
             }
         }
 
-        stackdepth -= GL11.glGetInteger(GL_MODELVIEW_STACK_DEPTH);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        stackdepth -= GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
         if (stackdepth < 0) for (; stackdepth < 0; stackdepth++) GL11.glPopMatrix();
+        if (stackdepth > 0) for (; stackdepth > 0; stackdepth--) GL11.glPushMatrix();
+
+        GL11.glPopAttrib();
+
+        int err;
+        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR)
+            if (Config.Debug.showRenderErrors)
+                LOG.error(currentrecipe.mobname + " | GL ERROR: " + err + " / " + GLU.gluErrorString(err));
 
         GL11.glDisable(GL11.GL_DEPTH_TEST);
     }

@@ -13,4 +13,5 @@ public class LoaderReference {
     public static final boolean GTNHCoreMod = Loader.isModLoaded("dreamcraft");
     public static final boolean GTPlusPlus = Loader.isModLoaded("miscutils");
     public static final boolean HarvestCraft = Loader.isModLoaded("harvestcraft");
+    public static final boolean TwilightForest = Loader.isModLoaded("TwilightForest");
 }
