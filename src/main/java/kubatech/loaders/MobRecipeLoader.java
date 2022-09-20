@@ -44,10 +44,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
+import kubatech.api.helpers.EnderIOHelper;
+import kubatech.api.helpers.InfernalHelper;
 import kubatech.api.mobhandler.MobDrop;
 import kubatech.api.network.LoadConfigPacket;
 import kubatech.api.utils.GSONUtils;
-import kubatech.api.utils.InfernalHelper;
 import kubatech.api.utils.ModUtils;
 import kubatech.config.Config;
 import kubatech.config.OverridesConfig;
@@ -117,6 +118,7 @@ public class MobRecipeLoader {
         public final boolean isPeacefulAllowed;
         public final EntityLiving entity;
         public final float maxEntityHealth;
+        public final boolean isUsable;
 
         @SuppressWarnings("unchecked")
         public MobRecipe copy() {
@@ -128,7 +130,8 @@ public class MobRecipeLoader {
                     alwaysinfernal,
                     isPeacefulAllowed,
                     entity,
-                    maxEntityHealth);
+                    maxEntityHealth,
+                    isUsable);
         }
 
         private MobRecipe(
@@ -139,7 +142,8 @@ public class MobRecipeLoader {
                 boolean alwaysinfernal,
                 boolean isPeacefulAllowed,
                 EntityLiving entity,
-                float maxEntityHealth) {
+                float maxEntityHealth,
+                boolean isUsable) {
             this.mOutputs = mOutputs;
             this.mDuration = mDuration;
             this.mMaxDamageChance = mMaxDamageChance;
@@ -148,10 +152,15 @@ public class MobRecipeLoader {
             this.isPeacefulAllowed = isPeacefulAllowed;
             this.entity = entity;
             this.maxEntityHealth = maxEntityHealth;
+            this.isUsable = isUsable;
+        }
+
+        public static MobRecipe generateMobRecipe(EntityLiving e, String entityID, ArrayList<MobDrop> outputs) {
+            return new MobRecipe(e, entityID, outputs);
         }
 
         @SuppressWarnings("unchecked")
-        public MobRecipe(EntityLiving e, ArrayList<MobDrop> outputs) {
+        private MobRecipe(EntityLiving e, String entityID, ArrayList<MobDrop> outputs) {
             if (infernaldrops == null && LoaderReference.InfernalMobs) {
                 infernaldrops = new droplist();
                 LOG.info("Generating Infernal drops");
@@ -212,6 +221,7 @@ public class MobRecipeLoader {
             maxEntityHealth = e.getMaxHealth();
             mDuration = Math.max(MOB_SPAWN_INTERVAL, (int) ((maxEntityHealth / DIAMOND_SPIKES_DAMAGE) * 10d));
             entity = e;
+            isUsable = EnderIOHelper.canEntityBeCapturedWithSoulVial(e, entityID);
         }
 
         public void refresh() {
@@ -632,17 +642,20 @@ public class MobRecipeLoader {
                     for (Map.Entry<String, ArrayList<MobDrop>> entry : s.moblist.entrySet()) {
                         try {
                             EntityLiving e;
-                            if (entry.getKey().equals("witherSkeleton")
+                            String mobName = entry.getKey();
+                            if (mobName.equals("witherSkeleton")
                                     && !EntityList.stringToClassMapping.containsKey("witherSkeleton")) {
                                 e = new EntitySkeleton(f);
                                 ((EntitySkeleton) e).setSkeletonType(1);
                             } else
-                                e = (EntityLiving) ((Class<?>) EntityList.stringToClassMapping.get(entry.getKey()))
+                                e = (EntityLiving) ((Class<?>) EntityList.stringToClassMapping.get(mobName))
                                         .getConstructor(new Class[] {World.class})
                                         .newInstance(new Object[] {f});
                             ArrayList<MobDrop> drops = entry.getValue();
                             drops.forEach(MobDrop::reconstructStack);
-                            GeneralMobList.put(entry.getKey(), new GeneralMappedMob(e, new MobRecipe(e, drops), drops));
+                            GeneralMobList.put(
+                                    mobName,
+                                    new GeneralMappedMob(e, MobRecipe.generateMobRecipe(e, mobName, drops), drops));
                         } catch (Exception ignored) {
                         }
                     }
@@ -1001,7 +1014,7 @@ public class MobRecipeLoader {
 
             if (drops.isEmpty() && raredrops.isEmpty() && additionaldrops.isEmpty()) {
                 ArrayList<MobDrop> arr = new ArrayList<>();
-                GeneralMobList.put(k, new GeneralMappedMob(e, new MobRecipe(e, arr), arr));
+                GeneralMobList.put(k, new GeneralMappedMob(e, MobRecipe.generateMobRecipe(e, k, arr), arr));
                 LOG.info("Mapped " + k);
                 return;
             }
@@ -1099,7 +1112,7 @@ public class MobRecipeLoader {
                         false));
             }
 
-            GeneralMobList.put(k, new GeneralMappedMob(e, new MobRecipe(e, moboutputs), moboutputs));
+            GeneralMobList.put(k, new GeneralMappedMob(e, MobRecipe.generateMobRecipe(e, k, moboutputs), moboutputs));
 
             LOG.info("Mapped " + k);
         });
