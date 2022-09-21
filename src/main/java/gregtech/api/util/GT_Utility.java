@@ -4254,6 +4254,12 @@ public class GT_Utility {
         return Textures.BlockIcons.ERROR_TEXTURE_INDEX;
     }
 
+    public static byte convertRatioToRedstone(long value, long max) {
+        if (value <= 0) return 0;               // Empty
+        if (value >= max) return 15;            // Full
+        return (byte) (1 + (14 * value) / max); // Range 1-14
+    }
+
     @AutoValue
     public abstract static class ItemId {
         /** This method copies NBT, as it is mutable. */

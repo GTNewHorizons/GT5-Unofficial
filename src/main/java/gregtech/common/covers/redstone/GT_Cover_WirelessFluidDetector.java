@@ -1,11 +1,13 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
+import gregtech.api.GregTech_API;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.GT_Cover_LiquidMeter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -35,6 +37,10 @@ public class GT_Cover_WirelessFluidDetector extends GT_Cover_AdvancedRedstoneTra
     @Override
     public FluidTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
                                                   FluidTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        byte signal = GT_Cover_LiquidMeter.computeSignalBasedOnFluid(aTileEntity, aCoverVariable.invert, aCoverVariable.threshold);
+        long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
+        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
+
         return aCoverVariable;
     }
 
@@ -51,6 +57,7 @@ public class GT_Cover_WirelessFluidDetector extends GT_Cover_AdvancedRedstoneTra
     }
 
     public static class FluidTransmitterData extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData {
+        /** The special value {@code 0} means threshold check is disabled. */
         private int threshold;
 
         public FluidTransmitterData(int frequency, UUID uuid, boolean invert, int threshold) {
