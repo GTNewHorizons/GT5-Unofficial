@@ -251,7 +251,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             frequencyBox.setFocused(true);
         }
 
-        protected void genericMouseWheel(GT_GuiIntegerTextBox box, int delta, int maxValue, int minValue,
+        protected void genericMouseWheel(GT_GuiIntegerTextBox box, int delta, int minValue, int maxValue,
                                          int baseStep, int ctrlStep, int shiftStep) {
             long step = Math.max(1, Math.abs(delta / 120));
             step = (isShiftKeyDown() ? shiftStep : isCtrlKeyDown() ? ctrlStep : baseStep) * (delta > 0 ? step : -step);
@@ -263,14 +263,14 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             box.setText(Long.toString(value));
         }
 
-        protected void genericMouseWheel(GT_GuiIntegerTextBox box, int delta, int maxValue, int minValue) {
-            genericMouseWheel(box, delta, maxValue, minValue, 1, 50, 1000);
+        protected void genericMouseWheel(GT_GuiIntegerTextBox box, int delta, int minValue, int maxValue) {
+            genericMouseWheel(box, delta, minValue, maxValue, 1, 50, 1000);
         }
 
         @Override
         public void onMouseWheel(int x, int y, int delta) {
             if (frequencyBox.isFocused()) {
-                genericMouseWheel(frequencyBox, delta, Integer.MAX_VALUE, 0);
+                genericMouseWheel(frequencyBox, delta, 0, Integer.MAX_VALUE);
             }
         }
 

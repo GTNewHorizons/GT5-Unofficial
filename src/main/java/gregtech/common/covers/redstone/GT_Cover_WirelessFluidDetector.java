@@ -148,7 +148,7 @@ public class GT_Cover_WirelessFluidDetector extends GT_Cover_AdvancedRedstoneTra
         public void onMouseWheel(int x, int y, int delta) {
             super.onMouseWheel(x, y, delta);
             if (thresholdBox.isFocused()) {
-                genericMouseWheel(thresholdBox, delta, Integer.MAX_VALUE, 0);
+                genericMouseWheel(thresholdBox, delta, 0, Integer.MAX_VALUE);
             }
         }
 
