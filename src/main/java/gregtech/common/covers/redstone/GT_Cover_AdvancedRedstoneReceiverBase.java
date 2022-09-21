@@ -127,19 +127,9 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             this.getFontRenderer().drawString(
-                GT_Utility.trans("246", "Frequency"),
-                startX + spaceX * 5,
-                4 + startY,
-                textColor);
-            this.getFontRenderer().drawString(
-                GT_Utility.trans("601", "Use Private Frequency"),
-                startX + spaceX * 5,
-                startY + spaceY * 1 + 4,
-                textColor);
-            this.getFontRenderer().drawString(
                 GT_Utility.trans("601", "Gate Mode"),
                 startX + spaceX * 5,
-                startY + spaceY * 2 + 4,
+                4 + startY + spaceY * 2,
                 textColor);
         }
 

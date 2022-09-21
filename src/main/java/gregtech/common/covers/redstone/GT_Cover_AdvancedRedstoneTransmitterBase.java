@@ -114,28 +114,22 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
         private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
         private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
+        public TransmitterGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity, int frequencyRow, int buttonRow) {
+            super(aSide, aCoverID, aCoverVariable, aTileEntity, frequencyRow, buttonRow);
+            invertButton = new GT_GuiIconCheckButton(this, 1, startX + spaceX * 9, startY + spaceY * buttonRow, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
+        }
+
         public TransmitterGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
-            super(aSide, aCoverID, aCoverVariable, aTileEntity);
-            invertButton = new GT_GuiIconCheckButton(this, 1, startX + spaceX * 8, startY + spaceY * 1, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
+            this(aSide, aCoverID, aCoverVariable, aTileEntity, 0, 1);
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             this.getFontRenderer().drawString(
-                GT_Utility.trans("246", "Frequency"),
-                startX + spaceX * 5,
-                4 + startY,
-                textColor);
-            this.getFontRenderer().drawString(
-                GT_Utility.trans("601", "Use Private Frequency"),
-                startX + spaceX,
-                startY + spaceY * 1 + 4,
-                textColor);
-            this.getFontRenderer().drawString(
                 coverVariable.invert ? INVERTED : NORMAL,
-                startX + spaceX * 9,
-                startY + spaceY * 1 + 4,
+                startX + spaceX * 10,
+                4 + startY + spaceY * buttonRow,
                 textColor);
         }
 

@@ -204,19 +204,43 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
         protected static final int spaceX = 18;
         protected static final int spaceY = 18;
 
+        protected final int frequencyRow;
+        protected final int buttonRow;
+
         protected final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
 
         private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverLong.png";
 
-        public WirelessGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
+        public WirelessGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity, int frequencyRow, int buttonRow) {
             super(aTileEntity, 250, 107, GT_Utility.intToStack(aCoverID));
             this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
             this.side = aSide;
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
+            this.frequencyRow = frequencyRow;
+            this.buttonRow = buttonRow;
 
-            frequencyBox = new GT_GuiShortTextBox(this, 0, startX, startY + 2, spaceX * 5 - 3, 12);
-            privateButton = new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * 1, GT_GuiIcon.CHECKMARK, null);
+            frequencyBox = new GT_GuiShortTextBox(this, 0, 1 + startX, 2 + startY + spaceY * frequencyRow, spaceX * 5 - 4, 12);
+            privateButton = new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * buttonRow, GT_GuiIcon.CHECKMARK, null);
+        }
+
+        public WirelessGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
+            this(aSide, aCoverID, aCoverVariable, aTileEntity, 0, 1);
+        }
+
+        @Override
+        public void drawExtras(int mouseX, int mouseY, float parTicks) {
+            super.drawExtras(mouseX, mouseY, parTicks);
+            this.getFontRenderer().drawString(
+                GT_Utility.trans("246", "Frequency"),
+                startX + spaceX * 5,
+                4 + startY + spaceY * frequencyRow,
+                textColor);
+            this.getFontRenderer().drawString(
+                GT_Utility.trans("601", "Use Private Frequency"),
+                startX + spaceX,
+                4 + startY + spaceY * buttonRow,
+                textColor);
         }
 
         @Override
