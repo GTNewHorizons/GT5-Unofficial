@@ -15,11 +15,22 @@ import codechicken.nei.recipe.ICraftingHandler;
 import codechicken.nei.recipe.IUsageHandler;
 import codechicken.nei.recipe.RecipeCatalysts;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import com.gtnewhorizons.modularui.api.GlStateManager;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.UIInfos;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer;
+import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.ItemData;
@@ -54,6 +65,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.Range;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
 public class GT_NEI_DefaultHandler extends RecipeMapHandler {
@@ -77,6 +89,16 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
      * Can be referenced from cached recipes.
      */
     public static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
+    /**
+     * Basically {@link #cycleTicksStatic} but always updated even while holding shift
+     */
+    private static int drawTicks;
+
+    protected static final int PROGRESSBAR_CYCLE_TICKS = 200;
+
+    private final ModularWindow modularWindow;
+    protected static final int UI_OFFSET_X = -5, UI_OFFSET_Y = -11;
+    protected static final Pos2d UI_OFFSET = new Pos2d(UI_OFFSET_X, UI_OFFSET_Y);
 
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
@@ -89,6 +111,11 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             this.transferRects.add(new RecipeTransferRect(new Rectangle(74, 23, 18, 18), getOverlayIdentifier()));
         } else {
             this.transferRects.add(new RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
+        }
+        if (mRecipeMap.useModularUI) {
+            modularWindow = buildUI();
+        } else {
+            modularWindow = null;
         }
     }
 
@@ -238,15 +265,20 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     @Override
     public void drawBackground(int recipe) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GuiDraw.changeTexture(getGuiTexture());
-        GuiDraw.drawTexturedModalRect(-4, -8, 1, 3, 174, 78);
+        if (modularWindow != null) {
+            drawUI(modularWindow);
+        } else {
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GuiDraw.changeTexture(getGuiTexture());
+            GuiDraw.drawTexturedModalRect(-4, -8, 1, 3, 174, 78);
+        }
     }
 
     @Override
     public void onUpdate() {
         super.onUpdate();
         if (!NEIClientUtils.shiftKey()) cycleTicksStatic++;
+        drawTicks++;
     }
 
     @Override
@@ -576,8 +608,73 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
     }
 
+    private ModularWindow buildUI() {
+        ModularWindow.Builder builder =
+                ModularWindow.builder(mRecipeMap.neiBackgroundSize).setBackground(ModularUITextures.VANILLA_BACKGROUND);
+        mRecipeMap.placeSlots(
+                UI_OFFSET_X,
+                UI_OFFSET_Y,
+                (i, pos) -> mRecipeMap.addFakeSlot(builder, pos.x, pos.y, false, false, i == 0, false),
+                (i, pos) -> mRecipeMap.addFakeSlot(builder, pos.x, pos.y, false, true, i == 0, false),
+                pos -> {
+                    if (mRecipeMap.usesSpecialSlot())
+                        mRecipeMap.addFakeSlot(builder, pos.x, pos.y, false, false, true, true);
+                },
+                (i, pos) -> {
+                    if (mRecipeMap.getMaxFluidInputCount() > i)
+                        mRecipeMap.addFakeSlot(builder, pos.x, pos.y, true, false, i == 0, false);
+                },
+                (i, pos) -> {
+                    if (mRecipeMap.getMaxFluidOutputCount() > i)
+                        mRecipeMap.addFakeSlot(builder, pos.x, pos.y, true, true, i == 0, false);
+                });
+        builder.widget(new ProgressBar()
+                        .setTexture(mRecipeMap.progressBarTexture, 20)
+                        .setDirection(mRecipeMap.progressBarDirection)
+                        .setProgress(() -> ((float) drawTicks % PROGRESSBAR_CYCLE_TICKS) / PROGRESSBAR_CYCLE_TICKS)
+                        .setSynced(false, false)
+                        .setSize(20, 18)
+                        .setPos(GT_NEI_DefaultHandler.this.mRecipeMap.getProgressBarPosition(UI_OFFSET_X, UI_OFFSET_Y)))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
+                        .setSize(17, 17)
+                        .setPos(152 + UI_OFFSET_X, 63 + UI_OFFSET_Y));
+        for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : mRecipeMap.specialTextures) {
+            builder.widget(new DrawableWidget()
+                    .setDrawable(specialTexture.getLeft())
+                    .setSize(specialTexture.getRight().getLeft())
+                    .setPos(specialTexture.getRight().getRight().add(UI_OFFSET)));
+        }
+
+        ModularWindow window = builder.build();
+        UIInfos.initializeWindow(Minecraft.getMinecraft().thePlayer, window);
+        return window;
+    }
+
+    protected void drawUI(ModularWindow window) {
+        for (IDrawable background : window.getBackground()) {
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(
+                    UI_OFFSET_X + mRecipeMap.neiBackgroundOffset.x, UI_OFFSET_Y + mRecipeMap.neiBackgroundOffset.y, 0);
+            GlStateManager.color(1f, 1f, 1f, 1f);
+            background.draw(Pos2d.ZERO, window.getSize(), 0);
+            GlStateManager.popMatrix();
+        }
+        for (Widget widget : window.getChildren()) {
+            // NEI already did translation, so we can't use Widget#drawInternal here
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(widget.getPos().x, widget.getPos().y, 0);
+            GlStateManager.color(1, 1, 1, window.getAlpha());
+            GlStateManager.enableBlend();
+            // maybe we can use Minecraft#timer but none of the IDrawables use partialTicks
+            widget.drawBackground(0);
+            widget.draw(0);
+            GlStateManager.popMatrix();
+        }
+    }
+
     protected int getDescriptionYOffset() {
-        return 73;
+        return 77;
     }
 
     public static class GT_RectHandler implements IContainerInputHandler, IContainerTooltipHandler {
@@ -730,114 +827,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         public final List<PositionedStack> mOutputs;
         public final List<PositionedStack> mInputs;
 
-        // Draw a grid of fluids and items (in that order).
-        @SuppressWarnings("unused") // Public API method
-        public void drawNEIItemAndFluidGrid(
-                ItemStack[] ItemArray,
-                FluidStack[] FluidArray,
-                int x_coord_origin,
-                int y_coord_origin,
-                int x_dir_max_items,
-                int y_max_dir_max_items,
-                GT_Recipe Recipe,
-                boolean is_input) {
-            if (ItemArray.length + FluidArray.length > x_dir_max_items * y_max_dir_max_items) {
-                GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items/fluids.");
-            }
-
-            int x_max = x_coord_origin + x_dir_max_items * 18;
-
-            int x_coord = x_coord_origin;
-            int y_coord = y_coord_origin;
-
-            for (FluidStack fluid : FluidArray) {
-                if (fluid != GT_Values.NF) {
-                    if (is_input) {
-                        this.mInputs.add(new FixedPositionedStack(
-                                GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord, true));
-                    } else {
-                        this.mOutputs.add(new FixedPositionedStack(
-                                GT_Utility.getFluidDisplayStack(fluid, true),
-                                x_coord,
-                                y_coord,
-                                GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
-                    }
-                    x_coord += 18;
-                    if (x_coord == x_max) {
-                        x_coord = x_coord_origin;
-                        y_coord += 18;
-                    }
-                }
-            }
-
-            // Iterate over all items in array and display them.
-            int special_counter = 0;
-            for (ItemStack item : ItemArray) {
-                if (item != GT_Values.NI) {
-                    if (is_input) {
-                        mInputs.add(new FixedPositionedStack(item, x_coord, y_coord, true));
-                    } else {
-                        mOutputs.add(new FixedPositionedStack(
-                                item,
-                                x_coord,
-                                y_coord,
-                                Recipe.getOutputChance(special_counter),
-                                GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
-                        special_counter++;
-                    }
-                    x_coord += 18;
-                    if (x_coord == x_max) {
-                        x_coord = x_coord_origin;
-                        y_coord += 18;
-                    }
-                }
-            }
-        }
-
-        // Draws a grid of items for NEI rendering.
-        private void drawNEIItemGrid(
-                ItemStack[] ItemArray,
-                int x_coord_origin,
-                int y_coord_origin,
-                int x_dir_max_items,
-                int y_max_dir_max_items,
-                GT_Recipe Recipe,
-                boolean is_input) {
-            if (ItemArray.length > x_dir_max_items * y_max_dir_max_items) {
-                GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items.");
-            }
-            // 18 pixels to get to a new grid for placing an item tile since they are 16x16 and have 1 pixel buffers
-            // around them.
-            int x_max = x_coord_origin + x_dir_max_items * 18;
-
-            // Temp variables to keep track of current coordinates to place item at.
-            int x_coord = x_coord_origin;
-            int y_coord = y_coord_origin;
-
-            // Iterate over all items in array and display them.
-            int special_counter = 0;
-            for (ItemStack item : ItemArray) {
-                if (item != GT_Values.NI) {
-                    if (is_input) {
-                        mInputs.add(new FixedPositionedStack(item, x_coord, y_coord, true));
-                    } else {
-                        mOutputs.add(new FixedPositionedStack(
-                                item,
-                                x_coord,
-                                y_coord,
-                                Recipe.getOutputChance(special_counter),
-                                GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
-                        special_counter++;
-                    }
-                    x_coord += 18;
-                    if (x_coord == x_max) {
-                        x_coord = x_coord_origin;
-                        y_coord += 18;
-                    }
-                }
-            }
-        }
-
         @SuppressWarnings("deprecation")
         public CachedDefaultRecipe(GT_Recipe aRecipe) {
             super();
@@ -887,107 +876,50 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 return;
             }
 
+            // Default GT NEI handler for drawing fluids/items on screen.
             mOutputs = new ArrayList<>();
             mInputs = new ArrayList<>();
 
-            // Default GT NEI handler for drawing fluids/items on screen.
-            switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualInputCount) {
-                case 0:
-                    break;
-                case 1: // 1x1
-                    drawNEIItemGrid(aRecipe.mInputs, 48, 14, 1, 1, aRecipe, true);
-                    break;
-                case 2: // 2x1
-                    drawNEIItemGrid(aRecipe.mInputs, 30, 14, 2, 1, aRecipe, true);
-                    break;
-                case 3: //
-                    drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 1, aRecipe, true);
-                    break;
-                case 4:
-                case 5:
-                    drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
-                    break;
-                case 6:
-                    drawNEIItemGrid(aRecipe.mInputs, 12, 5, 3, 2, aRecipe, true);
-                    break;
-                default:
-                    drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 3, aRecipe, true);
-            }
-
-            switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount) {
-                case 0:
-                    break;
-                case 1:
-                    drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 1, 1, aRecipe, false);
-                    break;
-                case 2:
-                    drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 2, 1, aRecipe, false);
-                    break;
-                case 3:
-                    drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 3, 1, aRecipe, false);
-                    break;
-                case 4:
-                    drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 2, 2, aRecipe, false);
-                    break;
-                case 5:
-                case 6:
-                    drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
-                    break;
-                default:
-                    drawNEIItemGrid(aRecipe.mOutputs, 102, -4, 3, 3, aRecipe, false);
-            }
-
-            // ??? No idea what this does. Leaving it alone.
-            if (aRecipe.mSpecialItems != null) {
-                this.mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, 120, 52));
-            }
-
-            if ((aRecipe.mFluidInputs.length > 0)
-                    && (aRecipe.mFluidInputs[0] != null)
-                    && (aRecipe.mFluidInputs[0].getFluid() != null)) {
-                this.mInputs.add(new FixedPositionedStack(
-                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 48, 52));
-                if ((aRecipe.mFluidInputs.length > 1)
-                        && (aRecipe.mFluidInputs[1] != null)
-                        && (aRecipe.mFluidInputs[1].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, 52));
-                }
-            }
-
-            if (aRecipe.mFluidOutputs.length > 1) {
-                if (aRecipe.mFluidOutputs[0] != null && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 120, 5));
-                }
-                if (aRecipe.mFluidOutputs[1] != null && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 138, 5));
-                }
-                if (aRecipe.mFluidOutputs.length > 2
-                        && aRecipe.mFluidOutputs[2] != null
-                        && (aRecipe.mFluidOutputs[2].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 102, 23));
-                }
-                if (aRecipe.mFluidOutputs.length > 3
-                        && aRecipe.mFluidOutputs[3] != null
-                        && (aRecipe.mFluidOutputs[3].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 120, 23));
-                }
-                if (aRecipe.mFluidOutputs.length > 4
-                        && aRecipe.mFluidOutputs[4] != null
-                        && (aRecipe.mFluidOutputs[4].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 138, 23));
-                }
-            } else if ((aRecipe.mFluidOutputs.length > 0)
-                    && (aRecipe.mFluidOutputs[0] != null)
-                    && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                this.mOutputs.add(new FixedPositionedStack(
-                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
-            }
+            // item position is off by 1 from slot position, including border
+            GT_NEI_DefaultHandler.this.mRecipeMap.placeSlots(
+                    UI_OFFSET_X + 1,
+                    UI_OFFSET_Y + 1,
+                    (i, pos) -> {
+                        if (aRecipe.mInputs.length > i && aRecipe.mInputs[i] != null) {
+                            mInputs.add(new FixedPositionedStack(aRecipe.mInputs[i], pos.x, pos.y, true));
+                        }
+                    },
+                    (i, pos) -> {
+                        if (aRecipe.mOutputs.length > i && aRecipe.mOutputs[i] != null) {
+                            mOutputs.add(new FixedPositionedStack(
+                                    aRecipe.mOutputs[i],
+                                    pos.x,
+                                    pos.y,
+                                    aRecipe.getOutputChance(i),
+                                    GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
+                        }
+                    },
+                    pos -> {
+                        if (aRecipe.mSpecialItems != null) {
+                            mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, pos.x, pos.y));
+                        }
+                    },
+                    (i, pos) -> {
+                        if (aRecipe.mFluidInputs.length > i
+                                && aRecipe.mFluidInputs[i] != null
+                                && aRecipe.mFluidInputs[i].getFluid() != null) {
+                            mInputs.add(new FixedPositionedStack(
+                                    GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[i], true), pos.x, pos.y));
+                        }
+                    },
+                    (i, pos) -> {
+                        if (aRecipe.mFluidOutputs.length > i
+                                && aRecipe.mFluidOutputs[i] != null
+                                && aRecipe.mFluidOutputs[i].getFluid() != null) {
+                            mOutputs.add(new FixedPositionedStack(
+                                    GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[i], true), pos.x, pos.y));
+                        }
+                    });
         }
 
         @Override

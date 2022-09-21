@@ -17,6 +17,8 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructableProvider;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GT_Mod;
@@ -28,6 +30,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
+import gregtech.api.gui.ModularUI.GT_UIInfo;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
@@ -1654,6 +1657,11 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         return true;
                     }
                 }
+
+                if (hasValidMetaTileEntity() && getMetaTileEntity().useModularUI()) {
+                    GT_UIInfo.GTTileEntityUI.open(aPlayer, worldObj, xCoord, yCoord, zCoord);
+                    return true;
+                }
             }
         }
 
@@ -2351,6 +2359,14 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             indexShift += newOutputSize - oldOutputSize;
         }
         return slotIndex + indexShift;
+    }
+
+    @Override
+    public ModularWindow createWindow(UIBuildContext uiBuildContext) {
+        if (hasValidMetaTileEntity() && getMetaTileEntity().useModularUI()) {
+            return getMetaTileEntity().createWindow(uiBuildContext);
+        }
+        return null;
     }
 
     @Override

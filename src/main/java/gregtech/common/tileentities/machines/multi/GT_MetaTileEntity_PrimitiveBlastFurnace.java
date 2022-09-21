@@ -3,6 +3,13 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -16,6 +23,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.gui.ModularUI.GT_UITextures;
+import gregtech.api.gui.ModularUI.SteamTexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -24,11 +33,8 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
-import gregtech.common.gui.GT_Container_PrimitiveBlastFurnace;
-import gregtech.common.gui.GT_GUIContainer_PrimitiveBlastFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -180,29 +186,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         for (int i = 0; i < OUTPUT_SLOTS; i++) {
             this.mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
         }
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
-        return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_PrimitiveBlastFurnace(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_PrimitiveBlastFurnace(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                getName(),
-                GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.mNEIName);
     }
 
     @Override
@@ -380,6 +363,10 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         return GT_MetaTileEntity_Cleanroom.class;
     }
 
+    protected GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
+    }
+
     private void addOutputProducts() {
         if (this.mOutputItems == null) {
             return;
@@ -413,8 +400,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         }
         ItemStack[] inputs = new ItemStack[INPUT_SLOTS];
         System.arraycopy(mInventory, 0, inputs, 0, INPUT_SLOTS);
-        GT_Recipe recipe = GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.findRecipe(
-                getBaseMetaTileEntity(), false, 0, null, inputs);
+        GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, 0, null, inputs);
         if (recipe == null) {
             this.mOutputItems = null;
             return false;
@@ -463,6 +449,8 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     public abstract String getName();
 
+    protected abstract SteamTexture.Variant getVariant();
+
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
@@ -507,5 +495,63 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                         2,
                         0,
                         hintsOnly);
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        builder.widget(new SlotWidget(inventoryHandler, 0)
+                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getVariant()))
+                        .setPos(33, 15))
+                .widget(new SlotWidget(inventoryHandler, 1)
+                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getVariant()))
+                        .setPos(33, 33))
+                .widget(new SlotWidget(inventoryHandler, 2)
+                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_FURNACE_STEAM.get(getVariant()))
+                        .setPos(33, 51))
+                .widget(new SlotWidget(inventoryHandler, 3)
+                        .setAccess(true, false)
+                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getVariant()))
+                        .setPos(85, 24))
+                .widget(new SlotWidget(inventoryHandler, 4)
+                        .setAccess(true, false)
+                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getVariant()))
+                        .setPos(103, 24))
+                .widget(new SlotWidget(inventoryHandler, 5)
+                        .setAccess(true, false)
+                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getVariant()))
+                        .setPos(121, 24))
+                .widget(new ProgressBar()
+                        .setTexture(GT_UITextures.PROGRESSBAR_ARROW_2_STEAM.get(getVariant()), 20)
+                        .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
+                        .setNEITransferRect(getRecipeMap().mNEIName)
+                        .setPos(58, 24)
+                        .setSize(20, 18))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_BLAST_FURNACE_STRUCTURE_STEAM.get(getVariant()))
+                        .setPos(11, 12)
+                        .setSize(17, 50))
+                .widget(new TextWidget(getName())
+                        .setDefaultColor(COLOR_TEXT.get())
+                        .setPos(8, 4));
+    }
+
+    @Override
+    protected IDrawable getGregTechLogo() {
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getVariant());
+    }
+
+    @Override
+    protected UITexture getBackground() {
+        return GT_UITextures.BACKGROUND_STEAM.get(getVariant());
+    }
+
+    @Override
+    protected IDrawable getSlotBackground() {
+        return GT_UITextures.SLOT_ITEM_STEAM.get(getVariant());
     }
 }

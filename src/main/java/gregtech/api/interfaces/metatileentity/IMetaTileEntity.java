@@ -1,5 +1,7 @@
 package gregtech.api.interfaces.metatileentity;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.ITexture;
@@ -193,13 +195,37 @@ public interface IMetaTileEntity
 
     /**
      * @return the Server Side Container
+     * @deprecated Use {@link #createWindow}
      */
-    Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity);
+    @Deprecated
+    default Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * @return the Client Side GUI Container
+     * @deprecated Use {@link #createWindow}
      */
-    Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity);
+    @Deprecated
+    default Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * For back compatibility.
+     * @return True if this supports ModularUI
+     */
+    default boolean useModularUI() {
+        return false;
+    }
+
+    /**
+     * Creates UI with ModularUI system. Start building UI with {@link ModularWindow#builder}
+     * and call {@link ModularWindow.Builder#build} to finish.
+     */
+    default ModularWindow createWindow(UIBuildContext buildContext) {
+        return null;
+    }
 
     /**
      * From new ISidedInventory

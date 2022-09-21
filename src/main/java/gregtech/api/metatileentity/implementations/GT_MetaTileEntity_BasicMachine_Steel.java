@@ -8,7 +8,11 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEEL_SIDE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEEL_TOP;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import gregtech.api.enums.Dyes;
+import gregtech.api.gui.ModularUI.GT_UITextures;
+import gregtech.api.gui.ModularUI.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.power.Power;
@@ -187,5 +191,20 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
                     Dyes.getModulation(aColor, Dyes._NULL.mRGBa)),
             TextureFactory.of(OVERLAY_PIPE_OUT)
         };
+    }
+
+    @Override
+    protected IDrawable getGregTechLogo() {
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamTexture.Variant.STEEL);
+    }
+
+    @Override
+    protected UITexture getBackground() {
+        return GT_UITextures.BACKGROUND_STEAM.get(SteamTexture.Variant.STEEL);
+    }
+
+    @Override
+    protected IDrawable getSlotBackground() {
+        return GT_UITextures.SLOT_ITEM_STEAM.get(SteamTexture.Variant.STEEL);
     }
 }

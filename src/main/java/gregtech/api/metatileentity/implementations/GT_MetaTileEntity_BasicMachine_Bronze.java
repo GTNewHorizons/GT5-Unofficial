@@ -4,10 +4,14 @@ import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.gui.ModularUI.GT_UITextures;
+import gregtech.api.gui.ModularUI.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -419,6 +423,11 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
+    protected IDrawable getGregTechLogo() {
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamTexture.Variant.BRONZE);
+    }
+
+    @Override
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
         return new ITexture[] {
             TextureFactory.of(
@@ -426,5 +435,15 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
                     Dyes.getModulation(aColor, Dyes._NULL.mRGBa)),
             TextureFactory.of(OVERLAY_PIPE_OUT)
         };
+    }
+
+    @Override
+    protected UITexture getBackground() {
+        return GT_UITextures.BACKGROUND_STEAM.get(SteamTexture.Variant.BRONZE);
+    }
+
+    @Override
+    protected IDrawable getSlotBackground() {
+        return GT_UITextures.SLOT_ITEM_STEAM.get(SteamTexture.Variant.BRONZE);
     }
 }

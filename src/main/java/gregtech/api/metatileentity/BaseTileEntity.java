@@ -7,6 +7,9 @@ import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.SIDE_DOWN;
 import static gregtech.api.enums.GT_Values.SIDE_UP;
 
+import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.interfaces.tileentity.IGTEnet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -38,7 +41,8 @@ import net.minecraftforge.fluids.IFluidHandler;
  * <p/>
  * Basically everything a TileEntity should have.
  */
-public abstract class BaseTileEntity extends TileEntity implements IHasWorldObjectAndCoords, IIC2Enet, IGTEnet {
+public abstract class BaseTileEntity extends TileEntity
+        implements IHasWorldObjectAndCoords, IIC2Enet, IGTEnet, ITileWithModularUI {
     protected boolean mInventoryChanged = false;
 
     /**
@@ -534,6 +538,11 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Deprecated
     public String trans(String aKey, String aEnglish) {
         return GT_Utility.trans(aKey, aEnglish);
+    }
+
+    @Override
+    public ModularWindow createWindow(UIBuildContext uiBuildContext) {
+        return null;
     }
 
     /*
