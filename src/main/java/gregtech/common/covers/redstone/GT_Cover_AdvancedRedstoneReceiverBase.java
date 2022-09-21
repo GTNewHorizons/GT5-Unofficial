@@ -1,35 +1,24 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
-import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCoverNew;
-import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
-public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<GT_Cover_AdvancedRedstoneReceiverBase.ReceiverData> {
+public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_AdvancedWirelessRedstoneBase<GT_Cover_AdvancedRedstoneReceiverBase.ReceiverData> {
 
     public GT_Cover_AdvancedRedstoneReceiverBase(ITexture coverTexture) {
         super(ReceiverData.class, coverTexture);
@@ -46,57 +35,18 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
     }
 
     @Override
-    public boolean letsEnergyInImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsEnergyOutImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsFluidInImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsFluidOutImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsItemsInImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsItemsOutImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
     public String getDescriptionImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
         return GT_Utility.trans("081", "Frequency: ") + aCoverVariable.frequency + ", Transmission: " + (aCoverVariable.uuid == null ? "Public" : "Private");
-    }
-
-    @Override
-    public int getTickRateImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
-        return 5;
     }
 
     /**
      * GUI Stuff
      */
-    @Override
-    public boolean hasCoverGUI() {
-        return true;
-    }
 
     @Override
     public Object getClientGUIImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity,
                                    EntityPlayer aPlayer, World aWorld) {
-        return new GT_Cover_AdvancedRedstoneReceiverBase.GUI(aSide, aCoverID, aCoverVariable, aTileEntity);
+        return new ReceiverGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
     public enum GateMode {
@@ -106,7 +56,7 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
         NOR
     }
 
-    public static class ReceiverData implements ISerializableObject {
+    public static class ReceiverData implements IWirelessObject {
         private int frequency;
 
         /**
@@ -125,12 +75,24 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
             this(0, null, GateMode.AND);
         }
 
+        @Override
         public UUID getUuid() {
             return uuid;
         }
 
+        @Override
+        public void setFrequency(int frequency) {
+            this.frequency = frequency;
+        }
+
+        @Override
         public int getFrequency() {
             return frequency;
+        }
+
+        @Override
+        public void setUuid(UUID uuid) {
+            this.uuid = uuid;
         }
 
         public GateMode getGateMode() {
@@ -190,33 +152,12 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
         }
     }
 
-    private class GUI extends GT_GUICover {
+    private class ReceiverGUI extends WirelessGUI {
 
-        private final byte side;
-        private final int coverID;
-        private final GT_GuiIntegerTextBox frequencyBox;
-        private final GT_GuiIconCheckButton privateButton;
-        private final ReceiverData coverVariable;
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
         private static final int gateModeButtonIdStart = 1;
 
-        private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverLong.png";
-
-        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
-
-        public GUI(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 250, 107, GT_Utility.intToStack(aCoverID));
-            this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            frequencyBox = new GT_Cover_AdvancedRedstoneReceiverBase.GUI.GT_GuiShortTextBox(this, 0, startX, startY + 2, spaceX * 5 - 3, 12);
-            privateButton = new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * 1, GT_GuiIcon.CHECKMARK, null);
+        public ReceiverGUI(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
+            super(aSide, aCoverID, aCoverVariable, aTileEntity);
 
             new GT_GuiIconButton(this, gateModeButtonIdStart + 0, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.AND_GATE)
                 .setTooltipText(GT_Utility.trans("006", "AND Gate"));
@@ -249,45 +190,8 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
         }
 
         @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            update();
-            frequencyBox.setFocused(true);
-        }
-
-        @Override
-        public void onMouseWheel(int x, int y, int delta) {
-            if (frequencyBox.isFocused()) {
-                long step = Math.max(1, Math.abs(delta / 120));
-                step = (isShiftKeyDown() ? 1000 : isCtrlKeyDown() ? 50 : 1) * (delta > 0 ? step : -step);
-
-                long frequency = parseTextBox(frequencyBox) + step;
-                if (frequency > Integer.MAX_VALUE) frequency = Integer.MAX_VALUE;
-                else if (frequency < 0) frequency = 0;
-
-                frequencyBox.setText(Long.toString(frequency));
-            }
-        }
-
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            if (box == frequencyBox) {
-                coverVariable.frequency = parseTextBox(frequencyBox);
-            }
-
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-            update();
-        }
-
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            if (box == frequencyBox) {
-                frequencyBox.setText(Integer.toString(coverVariable.frequency));
-            }
-        }
-
-        private void update() {
-            privateButton.setChecked(coverVariable.uuid != null);
-            resetTextBox(frequencyBox);
+        protected void update() {
+            super.update();
             updateButtons();
         }
 
@@ -301,56 +205,11 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
 
         @Override
         public void buttonClicked(GuiButton btn) {
-            if (btn == privateButton) {
-                coverVariable.uuid = coverVariable.uuid == null ? Minecraft.getMinecraft().thePlayer.getUniqueID() : null;
-            } else if (btn.enabled) {
+            if (btn.enabled) {
                 coverVariable.mode = GateMode.values()[btn.id - gateModeButtonIdStart];
             }
 
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-            update();
-        }
-
-        private int parseTextBox(GT_GuiIntegerTextBox box) {
-            if (box == frequencyBox) {
-                String text = box.getText();
-                if (text == null) {
-                    return 0;
-                }
-
-                long frequency;
-                try {
-                    frequency = Long.parseLong(text.trim());
-                } catch (NumberFormatException e) {
-                    return 0;
-                }
-
-                if (frequency > Integer.MAX_VALUE) frequency = Integer.MAX_VALUE;
-                else if (frequency < 0) frequency = 0;
-
-                return (int) frequency;
-            }
-
-            throw new UnsupportedOperationException("Unknown text box: " + box);
-        }
-
-        private class GT_GuiShortTextBox extends GT_GuiIntegerTextBox {
-
-            public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height) {
-                super(gui, id, x, y, width, height);
-            }
-
-            @Override
-            public boolean textboxKeyTyped(char c, int key) {
-                if (!super.textboxKeyTyped(c, key)) return false;
-
-                String text = getText().trim();
-                if (text.length() > 0) {
-                    setText(String.valueOf(parseTextBox(this)));
-                }
-
-                return true;
-            }
+            super.buttonClicked(btn);
         }
     }
 }
