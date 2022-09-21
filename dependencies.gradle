@@ -4,7 +4,7 @@
 // also being more explicit about what is depended on.
 
 dependencies {
-    compile("com.github.GTNewHorizons:StructureLib:1.1.6:dev")
+    compile("com.github.GTNewHorizons:StructureLib:1.2.0-beta.2:dev")
     compile fileTree(dir: 'lib', includes: ['*jar'])
 //    compile("com.github.GTNewHorizons:ModularUI:0.0.3:dev")
 

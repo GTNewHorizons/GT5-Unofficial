@@ -1560,6 +1560,12 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new ItemStack(Blocks.anvil, 1, 0),
                 128,
                 16);
+        GT_Values.RA.addFluidSolidifierRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                Materials.Boron.getMolten(144L),
+                Materials.Boron.getDust(1),
+                30,
+                30);
 
         GT_Values.RA.addChemicalBathRecipe(
                 ItemList.Food_Raw_Fries.get(1L),
@@ -4895,9 +4901,9 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.OilMedium.getFluid(100),
                 new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
                 new FluidStack[] {
-                    Materials.SulfuricHeavyFuel.getFluid(15),
+                    Materials.SulfuricHeavyFuel.getFluid(10),
                     Materials.SulfuricLightFuel.getFluid(50),
-                    Materials.SulfuricNaphtha.getFluid(20),
+                    Materials.SulfuricNaphtha.getFluid(150),
                     Materials.SulfuricGas.getGas(60)
                 },
                 null,
@@ -6548,9 +6554,11 @@ public class GT_MachineRecipeLoader implements Runnable {
                     ItemList.Field_Generator_UIV.get(64),
                     ItemList.Field_Generator_UMV.get(64)
                 },
-                new FluidStack[] {Materials.ExcitedDTEC.getFluid(100_000_000)},
+                new FluidStack[] {
+                    Materials.ExcitedDTEC.getFluid(100_000_000), Materials.SpaceTime.getMolten(64 * 2 * 9 * 144)
+                },
                 new ItemStack[] {ItemList.GigaChad.get(1)},
-                new FluidStack[] {Materials.SpaceTime.getMolten(64 * 2 * 9 * 144)},
+                new FluidStack[] {GT_Values.NF},
                 86400 * 20 * 2,
                 2_000_000_000,
                 13500);
@@ -8231,6 +8239,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L),
                 110,
                 480);
+        GT_Values.RA.addVacuumFreezerRecipe(Materials.Boron.getPlasma(144L), Materials.Boron.getMolten(144L), 20, 120);
 
         GT_Values.RA.addAlloySmelterRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L),
@@ -12105,9 +12114,9 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.OilMedium.getFluid(1000),
                 new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
                 new FluidStack[] {
-                    Materials.SulfuricHeavyFuel.getFluid(150),
+                    Materials.SulfuricHeavyFuel.getFluid(100),
                     Materials.SulfuricLightFuel.getFluid(500),
-                    Materials.SulfuricNaphtha.getFluid(200),
+                    Materials.SulfuricNaphtha.getFluid(1500),
                     MaterialsKevlar.NaphthenicAcid.getFluid(25),
                     Materials.SulfuricGas.getGas(600)
                 },
@@ -18028,7 +18037,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addUniversalDistillationRecipe(
                 Materials.Gas.getLightlyHydroCracked(1000),
                 new FluidStack[] {
-                    Materials.Methane.getGas(1400), Materials.Hydrogen.getGas(1340), Materials.Helium.getGas(20)
+                    Materials.Methane.getGas(1300), Materials.Hydrogen.getGas(1500), Materials.Helium.getGas(100)
                 },
                 GT_Values.NI,
                 120,
@@ -18036,7 +18045,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addUniversalDistillationRecipe(
                 Materials.Gas.getModeratelyHydroCracked(1000),
                 new FluidStack[] {
-                    Materials.Methane.getGas(1400), Materials.Hydrogen.getGas(3340), Materials.Helium.getGas(20)
+                    Materials.Methane.getGas(1400), Materials.Hydrogen.getGas(3000), Materials.Helium.getGas(150)
                 },
                 GT_Values.NI,
                 120,
@@ -18044,7 +18053,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addUniversalDistillationRecipe(
                 Materials.Gas.getSeverelyHydroCracked(1000),
                 new FluidStack[] {
-                    Materials.Methane.getGas(1400), Materials.Hydrogen.getGas(4340), Materials.Helium.getGas(20)
+                    Materials.Methane.getGas(1500), Materials.Hydrogen.getGas(4000), Materials.Helium.getGas(200)
                 },
                 GT_Values.NI,
                 120,
@@ -18052,11 +18061,11 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addUniversalDistillationRecipe(
                 Materials.Gas.getLightlySteamCracked(1000),
                 new FluidStack[] {
-                    Materials.Propene.getGas(45),
-                    Materials.Ethane.getGas(8),
-                    Materials.Ethylene.getGas(85),
-                    Materials.Methane.getGas(1026),
-                    Materials.Helium.getGas(20)
+                    Materials.Propene.getGas(50),
+                    Materials.Ethane.getGas(10),
+                    Materials.Ethylene.getGas(100),
+                    Materials.Methane.getGas(500),
+                    Materials.Helium.getGas(50)
                 },
                 Materials.Carbon.getDustTiny(1),
                 120,
@@ -18064,11 +18073,11 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addUniversalDistillationRecipe(
                 Materials.Gas.getModeratelySteamCracked(1000),
                 new FluidStack[] {
-                    Materials.Propene.getGas(8),
-                    Materials.Ethane.getGas(45),
-                    Materials.Ethylene.getGas(92),
-                    Materials.Methane.getGas(1018),
-                    Materials.Helium.getGas(20)
+                    Materials.Propene.getGas(10),
+                    Materials.Ethane.getGas(50),
+                    Materials.Ethylene.getGas(200),
+                    Materials.Methane.getGas(600),
+                    Materials.Helium.getGas(70)
                 },
                 Materials.Carbon.getDustTiny(1),
                 120,
@@ -18076,11 +18085,11 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addUniversalDistillationRecipe(
                 Materials.Gas.getSeverelySteamCracked(1000),
                 new FluidStack[] {
-                    Materials.Propene.getGas(8),
-                    Materials.Ethane.getGas(8),
-                    Materials.Ethylene.getGas(25),
-                    Materials.Methane.getGas(1143),
-                    Materials.Helium.getGas(20)
+                    Materials.Propene.getGas(10),
+                    Materials.Ethane.getGas(10),
+                    Materials.Ethylene.getGas(300),
+                    Materials.Methane.getGas(700),
+                    Materials.Helium.getGas(100)
                 },
                 Materials.Carbon.getDustTiny(1),
                 120,

@@ -12,6 +12,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_BronzeBlastFurnace extends GT_MetaTileEntity_PrimitiveBlastFurnace {
     private static final ITexture[] FACING_SIDE = {TextureFactory.of(MACHINE_BRONZEPLATEDBRICKS)};
@@ -57,13 +58,13 @@ public class GT_MetaTileEntity_BronzeBlastFurnace extends GT_MetaTileEntity_Prim
     }
 
     @Override
-    protected boolean isCorrectCasingBlock(Block block) {
-        return block == GregTech_API.sBlockCasings1;
+    protected Block getCasingBlock() {
+        return GregTech_API.sBlockCasings1;
     }
 
     @Override
-    protected boolean isCorrectCasingMetaID(int metaID) {
-        return metaID == 10;
+    protected int getCasingMetaID() {
+        return 10;
     }
 
     @Override
@@ -74,5 +75,10 @@ public class GT_MetaTileEntity_BronzeBlastFurnace extends GT_MetaTileEntity_Prim
     @Override
     protected SteamTexture.Variant getVariant() {
         return SteamTexture.Variant.BRONZE;
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
+        return new String[0];
     }
 }
