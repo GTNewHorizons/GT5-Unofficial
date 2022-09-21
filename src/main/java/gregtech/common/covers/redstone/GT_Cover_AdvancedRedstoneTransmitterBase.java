@@ -121,7 +121,7 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
 
         public TransmitterGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
             super(aSide, aCoverID, aCoverVariable, aTileEntity);
-            invertButton = new GT_GuiIconCheckButton(this, 1, startX, startY + spaceY * 2, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
+            invertButton = new GT_GuiIconCheckButton(this, 1, startX + spaceX * 8, startY + spaceY * 1, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
         }
 
         @Override
@@ -139,8 +139,8 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
                 textColor);
             this.getFontRenderer().drawString(
                 coverVariable.invert ? INVERTED : NORMAL,
-                startX + spaceX,
-                startY + spaceY * 2 + 4,
+                startX + spaceX * 9,
+                startY + spaceY * 1 + 4,
                 textColor);
         }
 
