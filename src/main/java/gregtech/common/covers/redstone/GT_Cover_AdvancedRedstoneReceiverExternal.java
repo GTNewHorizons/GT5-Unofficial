@@ -13,7 +13,7 @@ public class GT_Cover_AdvancedRedstoneReceiverExternal extends GT_Cover_Advanced
     @Override
     public ReceiverData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         aTileEntity.setOutputRedstoneSignal(aSide,
-            GregTech_API.getAdvancedRedstone(aCoverVariable.getUuid(), aCoverVariable.getFrequency()));
+            GregTech_API.getAdvancedRedstone(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), aCoverVariable.getGateMode()));
 
         return aCoverVariable;
     }

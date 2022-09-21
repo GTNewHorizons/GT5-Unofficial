@@ -5,6 +5,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
+import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.IGuiScreen;
@@ -106,6 +107,13 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
         return new GT_Cover_AdvancedRedstoneReceiverBase.GUI(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
+    public enum GateMode {
+        AND,
+        NAND,
+        OR,
+        NOR
+    }
+
     public static class ReceiverData implements ISerializableObject {
         private int frequency;
 
@@ -113,14 +121,16 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
          * If UUID is set to null, the cover frequency is public, rather than private
          **/
         private UUID uuid;
+        private GateMode mode;
 
-        public ReceiverData(int frequency, UUID uuid) {
+        public ReceiverData(int frequency, UUID uuid, GateMode mode) {
             this.frequency = frequency;
             this.uuid = uuid;
+            this.mode = mode;
         }
 
         public ReceiverData() {
-            this(0, null);
+            this(0, null, GateMode.AND);
         }
 
         public UUID getUuid() {
@@ -131,10 +141,14 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
             return frequency;
         }
 
+        public GateMode getGateMode() {
+            return mode;
+        }
+
         @Nonnull
         @Override
         public ISerializableObject copy() {
-            return new ReceiverData(frequency, uuid);
+            return new ReceiverData(frequency, uuid, mode);
         }
 
         @Nonnull
@@ -145,6 +159,7 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
             if (uuid != null) {
                 tag.setString("uuid", uuid.toString());
             }
+            tag.setByte("mode", (byte) mode.ordinal());
 
             return tag;
         }
@@ -157,6 +172,7 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
                 aBuf.writeLong(uuid.getLeastSignificantBits());
                 aBuf.writeLong(uuid.getMostSignificantBits());
             }
+            aBuf.writeByte(mode.ordinal());
         }
 
         @Override
@@ -166,6 +182,7 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
             if (tag.hasKey("uuid")) {
                 uuid = UUID.fromString(tag.getString("uuid"));
             }
+            mode = GateMode.values()[tag.getByte("mode")];
         }
 
         @Nonnull
@@ -175,6 +192,7 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
             if (aBuf.readBoolean()) {
                 uuid = new UUID(aBuf.readLong(), aBuf.readLong());
             }
+            mode = GateMode.values()[aBuf.readByte()];
 
             return this;
         }
@@ -192,6 +210,7 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
+        private static final int gateModeButtonIdStart = 1;
 
         private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverLong.png";
 
@@ -206,6 +225,15 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
 
             frequencyBox = new GT_Cover_AdvancedRedstoneReceiverBase.GUI.GT_GuiShortTextBox(this, 0, startX, startY + 2, spaceX * 5 - 3, 12);
             privateButton = new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * 1, GT_GuiIcon.CHECKMARK, null);
+
+            new GT_GuiIconButton(this, gateModeButtonIdStart + 0, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.AND_GATE)
+                .setTooltipText(GT_Utility.trans("006", "AND Gate"));
+            new GT_GuiIconButton(this, gateModeButtonIdStart + 1, startX + spaceX * 1, startY + spaceY * 2, GT_GuiIcon.NAND_GATE)
+                .setTooltipText(GT_Utility.trans("006", "NAND Gate"));
+            new GT_GuiIconButton(this, gateModeButtonIdStart + 2, startX + spaceX * 2, startY + spaceY * 2, GT_GuiIcon.OR_GATE)
+                .setTooltipText(GT_Utility.trans("006", "OR Gate"));
+            new GT_GuiIconButton(this, gateModeButtonIdStart + 3, startX + spaceX * 3, startY + spaceY * 2, GT_GuiIcon.NOR_GATE)
+                .setTooltipText(GT_Utility.trans("006", "NOR Gate"));
         }
 
         @Override
@@ -218,8 +246,13 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
                 textColor);
             this.getFontRenderer().drawString(
                 GT_Utility.trans("601", "Use Private Frequency"),
-                startX + spaceX,
+                startX + spaceX * 5,
                 startY + spaceY * 1 + 4,
+                textColor);
+            this.getFontRenderer().drawString(
+                GT_Utility.trans("601", "Gate Mode"),
+                startX + spaceX * 5,
+                startY + spaceY * 2 + 4,
                 textColor);
         }
 
@@ -263,12 +296,23 @@ public class GT_Cover_AdvancedRedstoneReceiverBase extends GT_CoverBehaviorBase<
         private void update() {
             privateButton.setChecked(coverVariable.uuid != null);
             resetTextBox(frequencyBox);
+            updateButtons();
+        }
+
+        private void updateButtons() {
+            GuiButton button;
+            for (int i = gateModeButtonIdStart; i < gateModeButtonIdStart + 4; ++i) {
+                button = (GuiButton) this.buttonList.get(i);
+                button.enabled = (button.id - gateModeButtonIdStart) != coverVariable.mode.ordinal();
+            }
         }
 
         @Override
         public void buttonClicked(GuiButton btn) {
             if (btn == privateButton) {
                 coverVariable.uuid = coverVariable.uuid == null ? Minecraft.getMinecraft().thePlayer.getUniqueID() : null;
+            } else if (btn.enabled) {
+                coverVariable.mode = GateMode.values()[btn.id - gateModeButtonIdStart];
             }
 
             GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));

@@ -42,6 +42,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverBase;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -179,17 +180,33 @@ public class GregTech_API {
      */
     public static final Map<String, Map<Integer, Map<Long, Byte>>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
 
-    public static Byte getAdvancedRedstone(UUID uuid, int frequency) {
+    public static Byte getAdvancedRedstone(UUID uuid, int frequency, GT_Cover_AdvancedRedstoneReceiverBase.GateMode mode) {
         Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
         if (frequencies == null) return 0;
 
-        // TODO: Implement All Modes
         Map<Long, Byte> signals = frequencies.get(frequency);
-        if (signals == null) return 0;
+        if (signals == null) signals = new ConcurrentHashMap<>();
 
-        return (byte) (signals.values().stream()
-            .map(signal -> signal > 0)
-            .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
+        switch (mode) {
+            case AND:
+                return (byte) (signals.values().stream()
+                    .map(signal -> signal > 0)
+                    .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
+            case NAND:
+                return (byte) (signals.values().stream()
+                    .map(signal -> signal > 0)
+                    .reduce(true, (signalA, signalB) -> signalA && signalB) ? 0 : 15);
+            case OR:
+                return (byte) (signals.values().stream()
+                    .map(signal -> signal > 0)
+                    .reduce(false, (signalA, signalB) -> signalA || signalB) ? 15 : 0);
+            case NOR:
+                return (byte) (signals.values().stream()
+                    .map(signal -> signal > 0)
+                    .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
+            default:
+                return 0;
+        }
     }
 
     public static void resetAdvancedRedstoneFrequency(UUID uuid, int frequency) {
