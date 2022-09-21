@@ -63,12 +63,6 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
         }
     }
 
-    public static void resetSignalAt(UUID uuid, int frequency) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
-        if (frequencies == null) return;
-        frequencies.computeIfPresent(frequency, (k, longByteMap) -> new ConcurrentHashMap<>());
-    }
-
     public static void removeSignalAt(UUID uuid, int frequency, long hash) {
         Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
         if (frequencies == null) return;

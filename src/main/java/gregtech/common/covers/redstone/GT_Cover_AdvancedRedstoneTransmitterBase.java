@@ -17,7 +17,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_AdvancedWirelessRedstoneBase<GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData> {
@@ -106,17 +105,8 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            int oldFrequency = frequency;
-            UUID oldUuid = uuid;
-            boolean oldInvert = invert;
-
             super.readFromPacket(aBuf, aPlayer);
             invert = aBuf.readBoolean();
-
-            if (oldFrequency != frequency || !Objects.equals(oldUuid, uuid) || oldInvert != invert) {
-                resetSignalAt(uuid, frequency);
-                resetSignalAt(oldUuid, oldFrequency);
-            }
 
             return this;
         }
