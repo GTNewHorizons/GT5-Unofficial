@@ -1198,7 +1198,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
         builder.setBackground(getBackground());
         builder.setGuiTint(getColorization());
-        if (showPlayerInventory()) {
+        if (doesBindPlayerInventory()) {
             builder.bindPlayerInventory(buildContext.getPlayer(), 7, getSlotBackground());
         }
         addUIWidgets(builder);
@@ -1234,7 +1234,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         return 166;
     }
 
-    protected boolean showPlayerInventory() {
+    protected boolean doesBindPlayerInventory() {
         return true;
     }
 

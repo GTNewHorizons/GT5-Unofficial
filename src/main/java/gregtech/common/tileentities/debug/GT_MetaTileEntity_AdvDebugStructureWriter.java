@@ -324,7 +324,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    protected boolean showPlayerInventory() {
+    protected boolean doesBindPlayerInventory() {
         return false;
     }
 

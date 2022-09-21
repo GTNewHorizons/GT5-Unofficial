@@ -205,9 +205,6 @@ public class GT_UITextures {
     public static final UITexture BUTTON_AUTOOUTPUT_ITEM = UITexture.fullImage(MODID, "gui/button/autooutput_item");
     public static final UITexture BUTTON_AUTOOUTPUT_FLUID = UITexture.fullImage(MODID, "gui/button/autooutput_fluid");
     public static final UITexture BUTTON_CROSS = UITexture.fullImage(MODID, "gui/button/cross");
-    public static final UITexture BUTTON_PRINT = UITexture.fullImage(MODID, "gui/button/print");
-    public static final UITexture BUTTON_TRANSPOSE = UITexture.fullImage(MODID, "gui/button/transpose");
-    public static final UITexture BUTTON_BOUNDINGBOX = UITexture.fullImage(MODID, "gui/button/boundingbox");
     public static final UITexture BUTTON_EMIT_ENERGY = UITexture.fullImage(MODID, "gui/button/emit_energy");
     public static final UITexture BUTTON_EMIT_REDSTONE = UITexture.fullImage(MODID, "gui/button/emit_redstone");
     public static final UITexture BUTTON_INVERT_REDSTONE = UITexture.fullImage(MODID, "gui/button/invert_redstone");
