@@ -162,16 +162,18 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
     }
 
-    protected void calculateOverclockedNessMultiPara(int aEUt, int aDuration, int mAmperage, long maxInputPower) {
+    protected void calculateOverclockedNessMultiPara(long aEUt, int aDuration, int mAmperage, long maxInputPower) {
+        // Prevent overclocking beyond MAX
+        maxInputPower = Math.min(maxInputPower, Integer.MAX_VALUE - 1);
         while (aEUt <= maxInputPower && aDuration >= 1) {
             aEUt = aEUt << 2;
             aDuration = aDuration >> 1;
         }
         aEUt = aEUt >> 2;
         aDuration = aDuration << 1;
-        if (aDuration == 0) aDuration = 1;
-        if (aEUt == maxInputPower) aEUt = (int) (maxInputPower * 0.9);
-        this.mEUt = aEUt;
+        if (aDuration <= 0) aDuration = 1;
+        if (aEUt == maxInputPower) aEUt = (long) (maxInputPower * 0.9);
+        this.mEUt = GT_Utility.safeInt(aEUt);
         this.mMaxProgresstime = aDuration;
     }
 
