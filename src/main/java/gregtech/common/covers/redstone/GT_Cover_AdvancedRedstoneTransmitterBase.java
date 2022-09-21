@@ -49,53 +49,16 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_
         return GT_Utility.trans("081", "Frequency: ") + aCoverVariable.frequency + ", Transmission: " + (aCoverVariable.uuid == null ? "Public" : "Private");
     }
 
-    /**
-     * GUI Stuff
-     */
-
-    @Override
-    public Object getClientGUIImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity,
-                                   EntityPlayer aPlayer, World aWorld) {
-        return new TransmitterGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    public static class TransmitterData implements IWirelessObject {
-        private int frequency;
-
-        /**
-         * If UUID is set to null, the cover frequency is public, rather than private
-         **/
-        private UUID uuid;
+    public static class TransmitterData extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData {
         private boolean invert;
 
         public TransmitterData(int frequency, UUID uuid, boolean invert) {
-            this.frequency = frequency;
-            this.uuid = uuid;
+            super(frequency, uuid);
             this.invert = invert;
         }
 
         public TransmitterData() {
             this(0, null, false);
-        }
-
-        @Override
-        public UUID getUuid() {
-            return uuid;
-        }
-
-        @Override
-        public void setUuid(UUID uuid) {
-            this.uuid = uuid;
-        }
-
-        @Override
-        public int getFrequency() {
-            return frequency;
-        }
-
-        @Override
-        public void setFrequency(int frequency) {
-            this.frequency = frequency;
         }
 
         public boolean isInvert() {
@@ -111,11 +74,7 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_
         @Nonnull
         @Override
         public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("frequency", frequency);
-            if (uuid != null) {
-                tag.setString("uuid", uuid.toString());
-            }
+            NBTTagCompound tag = (NBTTagCompound) super.saveDataToNBT();
             tag.setBoolean("invert", invert);
 
             return tag;
@@ -123,22 +82,15 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_
 
         @Override
         public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeInt(frequency);
-            aBuf.writeBoolean(uuid != null);
-            if (uuid != null) {
-                aBuf.writeLong(uuid.getLeastSignificantBits());
-                aBuf.writeLong(uuid.getMostSignificantBits());
-            }
+            super.writeToByteBuf(aBuf);
             aBuf.writeBoolean(invert);
         }
 
         @Override
         public void loadDataFromNBT(NBTBase aNBT) {
+            super.loadDataFromNBT(aNBT);
+
             NBTTagCompound tag = (NBTTagCompound) aNBT;
-            frequency = tag.getInteger("frequency");
-            if (tag.hasKey("uuid")) {
-                uuid = UUID.fromString(tag.getString("uuid"));
-            }
             invert = tag.getBoolean("invert");
         }
 
@@ -149,10 +101,7 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_
             UUID oldUuid = uuid;
             boolean oldInvert = invert;
 
-            frequency = aBuf.readInt();
-            if (aBuf.readBoolean()) {
-                uuid = new UUID(aBuf.readLong(), aBuf.readLong());
-            }
+            super.readFromPacket(aBuf, aPlayer);
             invert = aBuf.readBoolean();
 
             if (oldFrequency != frequency || !Objects.equals(oldUuid, uuid) || oldInvert != invert) {
@@ -164,7 +113,17 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_
         }
     }
 
-    private class TransmitterGUI extends WirelessGUI {
+    /**
+     * GUI Stuff
+     */
+
+    @Override
+    public Object getClientGUIImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity,
+                                   EntityPlayer aPlayer, World aWorld) {
+        return new TransmitterGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
+    }
+
+    private class TransmitterGUI extends WirelessGUI<TransmitterData> {
 
         private final GT_GuiIconCheckButton invertButton;
 

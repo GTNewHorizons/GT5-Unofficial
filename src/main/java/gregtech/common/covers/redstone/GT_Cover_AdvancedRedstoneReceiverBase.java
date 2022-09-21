@@ -56,43 +56,16 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
         NOR
     }
 
-    public static class ReceiverData implements IWirelessObject {
-        private int frequency;
-
-        /**
-         * If UUID is set to null, the cover frequency is public, rather than private
-         **/
-        private UUID uuid;
+    public static class ReceiverData extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData {
         private GateMode mode;
 
         public ReceiverData(int frequency, UUID uuid, GateMode mode) {
-            this.frequency = frequency;
-            this.uuid = uuid;
+            super(frequency, uuid);
             this.mode = mode;
         }
 
         public ReceiverData() {
             this(0, null, GateMode.AND);
-        }
-
-        @Override
-        public UUID getUuid() {
-            return uuid;
-        }
-
-        @Override
-        public void setFrequency(int frequency) {
-            this.frequency = frequency;
-        }
-
-        @Override
-        public int getFrequency() {
-            return frequency;
-        }
-
-        @Override
-        public void setUuid(UUID uuid) {
-            this.uuid = uuid;
         }
 
         public GateMode getGateMode() {
@@ -108,11 +81,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
         @Nonnull
         @Override
         public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("frequency", frequency);
-            if (uuid != null) {
-                tag.setString("uuid", uuid.toString());
-            }
+            NBTTagCompound tag = (NBTTagCompound) super.saveDataToNBT();
             tag.setByte("mode", (byte) mode.ordinal());
 
             return tag;
@@ -120,39 +89,29 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
 
         @Override
         public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeInt(frequency);
-            aBuf.writeBoolean(uuid != null);
-            if (uuid != null) {
-                aBuf.writeLong(uuid.getLeastSignificantBits());
-                aBuf.writeLong(uuid.getMostSignificantBits());
-            }
+            super.writeToByteBuf(aBuf);
             aBuf.writeByte(mode.ordinal());
         }
 
         @Override
         public void loadDataFromNBT(NBTBase aNBT) {
+            super.loadDataFromNBT(aNBT);
+
             NBTTagCompound tag = (NBTTagCompound) aNBT;
-            frequency = tag.getInteger("frequency");
-            if (tag.hasKey("uuid")) {
-                uuid = UUID.fromString(tag.getString("uuid"));
-            }
             mode = GateMode.values()[tag.getByte("mode")];
         }
 
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            frequency = aBuf.readInt();
-            if (aBuf.readBoolean()) {
-                uuid = new UUID(aBuf.readLong(), aBuf.readLong());
-            }
+            super.readFromPacket(aBuf, aPlayer);
             mode = GateMode.values()[aBuf.readByte()];
 
             return this;
         }
     }
 
-    private class ReceiverGUI extends WirelessGUI {
+    private class ReceiverGUI extends WirelessGUI<ReceiverData> {
 
         private static final int gateModeButtonIdStart = 1;
 
@@ -205,7 +164,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
 
         @Override
         public void buttonClicked(GuiButton btn) {
-            if (btn.enabled) {
+            if (btn.id >= gateModeButtonIdStart && btn.enabled) {
                 coverVariable.mode = GateMode.values()[btn.id - gateModeButtonIdStart];
             }
 

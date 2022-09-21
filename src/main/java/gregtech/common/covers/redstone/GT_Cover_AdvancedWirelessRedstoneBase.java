@@ -1,5 +1,6 @@
 package gregtech.common.covers.redstone;
 
+import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
@@ -11,12 +12,20 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
-public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends IWirelessObject> extends GT_CoverBehaviorBase<T> {
+import javax.annotation.Nonnull;
+import java.util.UUID;
+
+public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData> extends GT_CoverBehaviorBase<T> {
 
     public GT_Cover_AdvancedWirelessRedstoneBase(Class<T> typeToken, ITexture coverTexture) {
         super(typeToken, coverTexture);
@@ -57,6 +66,71 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends IWirelessO
         return 5;
     }
 
+
+    public static abstract class WirelessData implements ISerializableObject {
+        protected int frequency;
+
+        /**
+         * If UUID is set to null, the cover frequency is public, rather than private
+         **/
+        protected UUID uuid;
+
+        public WirelessData(int frequency, UUID uuid) {
+            this.frequency = frequency;
+            this.uuid = uuid;
+        }
+
+        public UUID getUuid() {
+            return uuid;
+        }
+
+        public int getFrequency() {
+            return frequency;
+        }
+
+        @Nonnull
+        @Override
+        public NBTBase saveDataToNBT() {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setInteger("frequency", frequency);
+            if (uuid != null) {
+                tag.setString("uuid", uuid.toString());
+            }
+
+            return tag;
+        }
+
+        @Override
+        public void writeToByteBuf(ByteBuf aBuf) {
+            aBuf.writeInt(frequency);
+            aBuf.writeBoolean(uuid != null);
+            if (uuid != null) {
+                aBuf.writeLong(uuid.getLeastSignificantBits());
+                aBuf.writeLong(uuid.getMostSignificantBits());
+            }
+        }
+
+        @Override
+        public void loadDataFromNBT(NBTBase aNBT) {
+            NBTTagCompound tag = (NBTTagCompound) aNBT;
+            frequency = tag.getInteger("frequency");
+            if (tag.hasKey("uuid")) {
+                uuid = UUID.fromString(tag.getString("uuid"));
+            }
+        }
+
+        @Nonnull
+        @Override
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+            frequency = aBuf.readInt();
+            if (aBuf.readBoolean()) {
+                uuid = new UUID(aBuf.readLong(), aBuf.readLong());
+            }
+
+            return this;
+        }
+    }
+
     /**
      * GUI Stuff
      */
@@ -65,13 +139,13 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends IWirelessO
         return true;
     }
 
-    protected abstract class WirelessGUI extends GT_GUICover {
+    protected abstract class WirelessGUI<X extends WirelessData> extends GT_GUICover {
 
         protected final byte side;
         protected final int coverID;
         protected final GT_GuiIntegerTextBox frequencyBox;
         protected final GT_GuiIconCheckButton privateButton;
-        protected final T coverVariable;
+        protected final X coverVariable;
 
         protected static final int startX = 10;
         protected static final int startY = 25;
@@ -82,14 +156,14 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends IWirelessO
 
         private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverLong.png";
 
-        public WirelessGUI(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+        public WirelessGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 250, 107, GT_Utility.intToStack(aCoverID));
             this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
             this.side = aSide;
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            frequencyBox = new WirelessGUI.GT_GuiShortTextBox(this, 0, startX, startY + 2, spaceX * 5 - 3, 12);
+            frequencyBox = new GT_GuiShortTextBox(this, 0, startX, startY + 2, spaceX * 5 - 3, 12);
             privateButton = new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * 1, GT_GuiIcon.CHECKMARK, null);
         }
 
@@ -116,7 +190,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends IWirelessO
         @Override
         public void applyTextBox(GT_GuiIntegerTextBox box) {
             if (box == frequencyBox) {
-                coverVariable.setFrequency(parseTextBox(frequencyBox));
+                coverVariable.frequency = parseTextBox(frequencyBox);
             }
 
             GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
@@ -126,21 +200,19 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends IWirelessO
         @Override
         public void resetTextBox(GT_GuiIntegerTextBox box) {
             if (box == frequencyBox) {
-                frequencyBox.setText(Integer.toString(coverVariable.getFrequency()));
+                frequencyBox.setText(Integer.toString(coverVariable.frequency));
             }
         }
 
         protected void update() {
-            privateButton.setChecked(coverVariable.getUuid() != null);
+            privateButton.setChecked(coverVariable.uuid != null);
             resetTextBox(frequencyBox);
         }
 
         @Override
         public void buttonClicked(GuiButton btn) {
             if (btn == privateButton) {
-                coverVariable.setUuid(
-                    coverVariable.getUuid() == null ? Minecraft.getMinecraft().thePlayer.getUniqueID() : null
-                );
+                coverVariable.uuid = coverVariable.uuid == null ? Minecraft.getMinecraft().thePlayer.getUniqueID() : null;
             }
 
             GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
