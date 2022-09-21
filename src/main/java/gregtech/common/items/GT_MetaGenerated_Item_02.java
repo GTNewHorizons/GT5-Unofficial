@@ -21,6 +21,7 @@ import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverExternal
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverInternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterExternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterInternal;
+import gregtech.common.covers.redstone.GT_Cover_WirelessFluidDetector;
 import gregtech.common.items.behaviors.Behaviour_Arrow;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.enchantment.Enchantment;
@@ -2388,6 +2389,11 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
             new GT_Cover_AdvancedRedstoneReceiverInternal(TextureFactory.of(OVERLAY_FLUIDDETECTOR)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_WirelessFluidDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
+            new GT_Cover_WirelessFluidDetector(TextureFactory.of(OVERLAY_FLUIDDETECTOR)));
 
 
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 0), new ItemStack(Items.dye, 2, 1));

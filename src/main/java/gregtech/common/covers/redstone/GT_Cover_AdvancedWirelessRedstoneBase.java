@@ -191,7 +191,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
         return true;
     }
 
-    protected abstract class WirelessGUI<X extends WirelessData> extends GT_GUICover {
+    protected abstract static class WirelessGUI<X extends WirelessData> extends GT_GUICover {
 
         protected final byte side;
         protected final int coverID;
@@ -251,17 +251,21 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             frequencyBox.setFocused(true);
         }
 
+        protected void genericMouseWheel(GT_GuiIntegerTextBox box, int delta, int maxValue, int minValue) {
+            long step = Math.max(1, Math.abs(delta / 120));
+            step = (isShiftKeyDown() ? 1000 : isCtrlKeyDown() ? 50 : 1) * (delta > 0 ? step : -step);
+
+            long value = parseTextBox(box) + step;
+            if (value > maxValue) value = maxValue;
+            else if (value < minValue) value = minValue;
+
+            box.setText(Long.toString(value));
+        }
+
         @Override
         public void onMouseWheel(int x, int y, int delta) {
             if (frequencyBox.isFocused()) {
-                long step = Math.max(1, Math.abs(delta / 120));
-                step = (isShiftKeyDown() ? 1000 : isCtrlKeyDown() ? 50 : 1) * (delta > 0 ? step : -step);
-
-                long frequency = parseTextBox(frequencyBox) + step;
-                if (frequency > Integer.MAX_VALUE) frequency = Integer.MAX_VALUE;
-                else if (frequency < 0) frequency = 0;
-
-                frequencyBox.setText(Long.toString(frequency));
+                genericMouseWheel(frequencyBox, delta, Integer.MAX_VALUE, 0);
             }
         }
 
@@ -297,27 +301,23 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             update();
         }
 
-        private int parseTextBox(GT_GuiIntegerTextBox box) {
-            if (box == frequencyBox) {
-                String text = box.getText();
-                if (text == null) {
-                    return 0;
-                }
-
-                long frequency;
-                try {
-                    frequency = Long.parseLong(text.trim());
-                } catch (NumberFormatException e) {
-                    return 0;
-                }
-
-                if (frequency > Integer.MAX_VALUE) frequency = Integer.MAX_VALUE;
-                else if (frequency < 0) frequency = 0;
-
-                return (int) frequency;
+        protected int parseTextBox(GT_GuiIntegerTextBox box) {
+            String text = box.getText();
+            if (text == null) {
+                return 0;
             }
 
-            throw new UnsupportedOperationException("Unknown text box: " + box);
+            long frequency;
+            try {
+                frequency = Long.parseLong(text.trim());
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+
+            if (frequency > Integer.MAX_VALUE) frequency = Integer.MAX_VALUE;
+            else if (frequency < 0) frequency = 0;
+
+            return (int) frequency;
         }
 
         private class GT_GuiShortTextBox extends GT_GuiIntegerTextBox {
