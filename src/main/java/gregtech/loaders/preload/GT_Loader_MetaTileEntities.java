@@ -12387,7 +12387,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     Materials.StainlessSteel.getMolten(864L),
                     ItemList.Machine_Multi_Cleanroom.get(1L),
                     1200,
-                    480);
+                    120);
         } else {
             if (isNEILoaded) {
                 API.hideItem(ItemList.Machine_Multi_Cleanroom.get(1L));
