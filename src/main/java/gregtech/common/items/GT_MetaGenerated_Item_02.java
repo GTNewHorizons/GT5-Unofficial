@@ -17,7 +17,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.covers.GT_Cover_RedstoneReceiverExternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverExternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverInternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterExternal;
@@ -2331,6 +2330,30 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             "Transfers Redstone signals wirelessly",
             new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
             new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
+
+        ItemList.Cover_WirelessFluidDetector.set(addItem(
+            tLastID = 581,
+            "Wireless Fluid Detector Cover",
+            "Transfers Fluid Amount as Redstone wirelessly",
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
+        ItemList.Cover_ItemDetector.set(addItem(
+            tLastID = 582,
+            "Wireless Item Detector Cover",
+            "Transfers Item Amount as Redstone wirelessly",
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L)));
+
+        ItemList.Cover_NeedsMaintainance.set(addItem(
+            tLastID = 583,
+            "Wireless Needs Maintenance Cover",
+            "Transfers Maintenance Issues as Redstone wirelessly",
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 3L)));
 
         final ITexture redstoneTransmitterExternalCoverTexture = TextureFactory.of(
             TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
