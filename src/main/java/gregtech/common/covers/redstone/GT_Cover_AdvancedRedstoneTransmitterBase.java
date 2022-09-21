@@ -42,6 +42,14 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
         unregisterSignal(aSide, aCoverVariable, aTileEntity);
     }
 
+    @Override
+    protected T onCoverScrewdriverClickImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        aCoverVariable.invert = !aCoverVariable.invert;
+        GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("055", aCoverVariable.invert ? "Inverted" : "Normal"));
+
+        return aCoverVariable;
+    }
+
     public static class TransmitterData extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData {
         protected boolean invert;
 
