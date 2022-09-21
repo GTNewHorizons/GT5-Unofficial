@@ -320,6 +320,14 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return false;
     }
 
+    protected void onBaseTEDestroyed() {
+        for (byte side = 0; side < 6; ++side) {
+            GT_CoverBehaviorBase<?> behavior = getCoverBehaviorAtSideNew(side);
+            if (behavior != GregTech_API.sNoBehavior)
+                behavior.onBaseTEDestroyed(side, getCoverIDAtSide(side), mCoverData[side], this);
+        }
+    }
+
     @Override
     public void setOutputRedstoneSignal(byte aSide, byte aStrength) {
         aStrength = (byte) Math.min(Math.max(0, aStrength), 15);

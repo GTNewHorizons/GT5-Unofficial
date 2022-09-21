@@ -222,6 +222,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
+     * Called upon Base TE being destroyed (once getDrops is called),
+     * thus getting called only when destroyed in survival.
+     */
+    public final void onBaseTEDestroyed(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        onBaseTEDestroyedImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
      * Gives a small Text for the status of the Cover.
      */
     public final String getDescription(
@@ -411,6 +419,8 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     protected void onDataChangedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
 
     protected void onDroppedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
+
+    protected void onBaseTEDestroyedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
 
     protected boolean isRedstoneSensitiveImpl(
             byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, long aTimer) {
