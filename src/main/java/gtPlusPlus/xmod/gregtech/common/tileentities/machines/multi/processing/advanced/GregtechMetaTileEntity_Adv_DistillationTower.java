@@ -308,11 +308,6 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
     }
 
     @Override
-    public void startProcess() {
-        this.sendLoopStart((byte) 1);
-    }
-
-    @Override
     public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (mHeight < 11) {
             PlayerUtils.messagePlayer(aPlayer, "Cannot switch mode if not in full height.");
