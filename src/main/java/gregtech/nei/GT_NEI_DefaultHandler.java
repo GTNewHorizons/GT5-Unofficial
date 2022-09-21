@@ -632,6 +632,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                         .setTexture(mRecipeMap.progressBarTexture, 20)
                         .setDirection(mRecipeMap.progressBarDirection)
                         .setProgress(() -> ((float) drawTicks % PROGRESSBAR_CYCLE_TICKS) / PROGRESSBAR_CYCLE_TICKS)
+                        .setSynced(false, false)
                         .setSize(20, 18)
                         .setPos(GT_NEI_DefaultHandler.this.mRecipeMap.getProgressBarPosition(UI_OFFSET_X, UI_OFFSET_Y)))
                 .widget(new DrawableWidget()
