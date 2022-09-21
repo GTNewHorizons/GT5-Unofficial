@@ -188,37 +188,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         }
     }
 
-    private boolean checkMachine() {
-        int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 3; j++) {
-                for (int k = -1; k < 2; k++) {
-                    if ((xDir + i != 0) || (j != 0) || (zDir + k != 0)) {
-                        if ((i != 0) || (j == -1) || (k != 0)) {
-                            if (!isCorrectCasingBlock(getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k))
-                                    || !isCorrectCasingMetaID(
-                                            getBaseMetaTileEntity().getMetaIDOffset(xDir + i, j, zDir + k))) {
-                                mChimneyBlocked = false;
-                                return false;
-                            }
-                        } else if ((!GT_Utility.arrayContains(
-                                        getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k),
-                                        Blocks.lava,
-                                        Blocks.flowing_lava,
-                                        null))
-                                && (!getBaseMetaTileEntity().getAirOffset(xDir + i, j, zDir + k))) {
-                            mChimneyBlocked = true;
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        mChimneyBlocked = false;
-        return true;
-    }
-
     @Override
     public ExtendedFacing getExtendedFacing() {
         return ExtendedFacing.of(
@@ -481,7 +450,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     public abstract String getName();
 
     protected abstract SteamTexture.Variant getVariant();
-    
+
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
