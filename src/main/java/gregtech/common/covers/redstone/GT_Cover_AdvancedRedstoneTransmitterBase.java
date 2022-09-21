@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 import java.util.UUID;
 
 public class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_CoverBehaviorBase<GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData> {
@@ -180,11 +181,20 @@ public class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_CoverBehaviorBa
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+            int oldFrequency = frequency;
+            UUID oldUuid = uuid;
+            boolean oldInvert = invert;
+
             frequency = aBuf.readInt();
             if (aBuf.readBoolean()) {
                 uuid = new UUID(aBuf.readLong(), aBuf.readLong());
             }
             invert = aBuf.readBoolean();
+
+            if (oldFrequency != frequency || !Objects.equals(oldUuid, uuid) || oldInvert != invert) {
+                GregTech_API.resetAdvancedRedstoneFrequency(uuid, frequency);
+                GregTech_API.resetAdvancedRedstoneFrequency(oldUuid, oldFrequency);
+            }
 
             return this;
         }
@@ -284,7 +294,6 @@ public class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_CoverBehaviorBa
             privateButton.setChecked(coverVariable.uuid != null);
             invertButton.setChecked(coverVariable.invert);
             resetTextBox(frequencyBox);
-            GregTech_API.resetAdvancedRedstoneFrequency(coverVariable.uuid, coverVariable.frequency);
         }
 
         @Override
