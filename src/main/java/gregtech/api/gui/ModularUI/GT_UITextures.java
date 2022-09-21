@@ -11,6 +11,8 @@ public class GT_UITextures {
 
     public static final UITexture BACKGROUND_SINGLEBLOCK_DEFAULT =
             AdaptableUITexture.of(MODID, "gui/background/singleblock_default", 176, 166, 4);
+    public static final SteamTexture BACKGROUND_STEAM =
+            SteamTexture.adaptableTexture(MODID, "gui/background/%s", 176, 166, 4);
     public static final UITexture BACKGROUND_SINGLEBLOCK_BRONZE =
             AdaptableUITexture.of(MODID, "gui/background/singleblock_bronze", 176, 166, 4);
     public static final UITexture BACKGROUND_SINGLEBLOCK_STEEL =
@@ -26,12 +28,7 @@ public class GT_UITextures {
     public static final UITexture BACKGROUND_FUSION_COMPUTER =
             AdaptableUITexture.of(MODID, "gui/background/FusionComputer", 176, 166, 4);
 
-    public static final AdaptableUITexture SLOT_ITEM_BRONZE =
-            AdaptableUITexture.of(MODID, "gui/slot/item_bronze", 18, 18, 1);
-    public static final AdaptableUITexture SLOT_ITEM_STEEL =
-            AdaptableUITexture.of(MODID, "gui/slot/item_steel", 18, 18, 1);
-    public static final AdaptableUITexture SLOT_ITEM_PRIMITIVE =
-            AdaptableUITexture.of(MODID, "gui/slot/item_primitive", 18, 18, 1);
+    public static final SteamTexture SLOT_ITEM_STEAM = SteamTexture.fullImage(MODID, "gui/slot/item_%s");
     public static final AdaptableUITexture SLOT_TRANSPARENT =
             AdaptableUITexture.of(MODID, "gui/slot/transparent", 18, 18, 1);
     public static final AdaptableUITexture SLOT_GRAY = AdaptableUITexture.of(MODID, "gui/slot/gray", 18, 18, 1);
@@ -82,20 +79,14 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_DATA_ORB = UITexture.fullImage(MODID, "gui/overlay_slot/data_orb");
     public static final UITexture OVERLAY_SLOT_DATA_STICK = UITexture.fullImage(MODID, "gui/overlay_slot/data_stick");
     public static final UITexture OVERLAY_SLOT_DUST = UITexture.fullImage(MODID, "gui/overlay_slot/dust");
-    public static final UITexture OVERLAY_SLOT_DUST_BRONZE = UITexture.fullImage(MODID, "gui/overlay_slot/dust_bronze");
-    public static final UITexture OVERLAY_SLOT_DUST_STEEL = UITexture.fullImage(MODID, "gui/overlay_slot/dust_steel");
-    public static final UITexture OVERLAY_SLOT_DUST_PRIMITIVE =
-            UITexture.fullImage(MODID, "gui/overlay_slot/dust_primitive");
+    public static final SteamTexture OVERLAY_SLOT_DUST_STEAM =
+            SteamTexture.fullImage(MODID, "gui/overlay_slot/dust_%s");
     public static final UITexture OVERLAY_SLOT_EXPLOSIVE = UITexture.fullImage(MODID, "gui/overlay_slot/explosive");
     public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE =
             UITexture.fullImage(MODID, "gui/overlay_slot/extruder_shape");
     public static final UITexture OVERLAY_SLOT_FURNACE = UITexture.fullImage(MODID, "gui/overlay_slot/furnace");
-    public static final UITexture OVERLAY_SLOT_FURNACE_BRONZE =
-            UITexture.fullImage(MODID, "gui/overlay_slot/furnace_bronze");
-    public static final UITexture OVERLAY_SLOT_FURNACE_STEEL =
-            UITexture.fullImage(MODID, "gui/overlay_slot/furnace_steel");
-    public static final UITexture OVERLAY_SLOT_FURNACE_PRIMITIVE =
-            UITexture.fullImage(MODID, "gui/overlay_slot/furnace_primitive");
+    public static final SteamTexture OVERLAY_SLOT_FURNACE_STEAM =
+            SteamTexture.fullImage(MODID, "gui/overlay_slot/furnace_%s");
     public static final UITexture OVERLAY_SLOT_GEM = UITexture.fullImage(MODID, "gui/overlay_slot/gem");
     public static final UITexture OVERLAY_SLOT_HAMMER = UITexture.fullImage(MODID, "gui/overlay_slot/hammer");
     public static final UITexture OVERLAY_SLOT_HAMMER_BRONZE =
@@ -108,8 +99,8 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_IN = UITexture.fullImage(MODID, "gui/overlay_slot/in");
     public static final UITexture OVERLAY_SLOT_IN_BRONZE = UITexture.fullImage(MODID, "gui/overlay_slot/in_bronze");
     public static final UITexture OVERLAY_SLOT_IN_STEEL = UITexture.fullImage(MODID, "gui/overlay_slot/in_steel");
-    public static final UITexture OVERLAY_SLOT_INGOT_PRIMITIVE =
-            UITexture.fullImage(MODID, "gui/overlay_slot/ingot_primitive");
+    public static final SteamTexture OVERLAY_SLOT_INGOT_STEAM =
+            SteamTexture.fullImage(MODID, "gui/overlay_slot/ingot_%s");
     public static final UITexture OVERLAY_SLOT_INT_CIRCUIT = UITexture.fullImage(MODID, "gui/overlay_slot/int_circuit");
     public static final UITexture OVERLAY_SLOT_LENS = UITexture.fullImage(MODID, "gui/overlay_slot/lens");
     public static final UITexture OVERLAY_SLOT_MICROSCOPE = UITexture.fullImage(MODID, "gui/overlay_slot/microscope");
@@ -145,10 +136,10 @@ public class GT_UITextures {
             .toArray(new UITexture[] {});
 
     public static final UITexture PROGRESSBAR_ARROW = UITexture.fullImage(MODID, "gui/progressbar/arrow");
-    public static final UITexture PROGRESSBAR_ARROW_BRONZE = UITexture.fullImage(MODID, "gui/progressbar/arrow_bronze");
-    public static final UITexture PROGRESSBAR_ARROW_STEEL = UITexture.fullImage(MODID, "gui/progressbar/arrow_steel");
-    public static final UITexture PROGRESSBAR_ARROW_PRIMITIVE =
-            UITexture.fullImage(MODID, "gui/progressbar/arrow_primitive");
+    public static final SteamTexture PROGRESSBAR_ARROW_STEAM =
+            SteamTexture.fullImage(MODID, "gui/progressbar/arrow_%s");
+    public static final SteamTexture PROGRESSBAR_ARROW_2_STEAM =
+            SteamTexture.fullImage(MODID, "gui/progressbar/arrow_2_%s");
     public static final UITexture PROGRESSBAR_ARROW_MULTIPLE =
             UITexture.fullImage(MODID, "gui/progressbar/arrow_multiple");
     public static final UITexture PROGRESSBAR_ASSEMBLE = UITexture.fullImage(MODID, "gui/progressbar/assemble");
@@ -277,12 +268,10 @@ public class GT_UITextures {
 
     public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT =
             UITexture.fullImage(MODID, "gui/picture/gt_logo_17x17_transparent");
-    public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT_BRONZE =
-            UITexture.fullImage(MODID, "gui/picture/gt_logo_17x17_transparent_bronze");
-    public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT_STEEL =
-            UITexture.fullImage(MODID, "gui/picture/gt_logo_17x17_transparent_steel");
     public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY =
             UITexture.fullImage(MODID, "gui/picture/gt_logo_17x17_transparent_gray");
+    public static final SteamTexture PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM =
+            SteamTexture.fullImage(MODID, "gui/picture/gt_logo_17x17_transparent_%s");
     public static final UITexture PICTURE_GT_LOGO_18x18 = UITexture.fullImage(MODID, "gui/picture/gt_logo_18x18");
     public static final UITexture PICTURE_GT_LOGO_19x19 = UITexture.fullImage(MODID, "gui/picture/gt_logo_19x19");
     public static final UITexture PICTURE_INFORMATION = UITexture.fullImage(MODID, "gui/picture/information");
@@ -297,4 +286,6 @@ public class GT_UITextures {
     public static final UITexture PICTURE_SLOTS_HOLO_3BY3 = UITexture.fullImage(MODID, "gui/picture/slots_holo_3by3");
     public static final UITexture PICTURE_ARROW_DOUBLE = UITexture.fullImage(MODID, "gui/picture/arrow_double");
     public static final UITexture PICTURE_SUPER_BUFFER = UITexture.fullImage(MODID, "gui/picture/super_buffer");
+    public static final SteamTexture PICTURE_BLAST_FURNACE_STRUCTURE_STEAM =
+            SteamTexture.fullImage(MODID, "gui/picture/blast_furnace_structure_%s");
 }

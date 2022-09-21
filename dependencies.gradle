@@ -6,6 +6,7 @@
 dependencies {
     compile("com.github.GTNewHorizons:StructureLib:1.1.6:dev")
     compile fileTree(dir: 'lib', includes: ['*jar'])
+//    compile("com.github.GTNewHorizons:ModularUI:0.0.3:dev")
 
     compile("com.github.GTNewHorizons:NotEnoughItems:2.3.1-GTNH:dev")
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.4:dev")

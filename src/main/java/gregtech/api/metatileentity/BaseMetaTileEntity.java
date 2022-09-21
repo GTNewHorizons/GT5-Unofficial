@@ -1660,6 +1660,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
                 if (hasValidMetaTileEntity() && getMetaTileEntity().useModularUI()) {
                     GT_UIInfo.GTTileEntityUI.open(aPlayer, worldObj, xCoord, yCoord, zCoord);
+                    return true;
                 }
             }
         }

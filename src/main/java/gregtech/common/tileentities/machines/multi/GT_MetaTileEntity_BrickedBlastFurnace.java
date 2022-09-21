@@ -4,6 +4,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.gui.ModularUI.SteamTexture;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -103,5 +104,10 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
     @Override
     public String getName() {
         return "Bricked Blast Furnace";
+    }
+
+    @Override
+    protected SteamTexture.Variant getVariant() {
+        return SteamTexture.Variant.PRIMITIVE;
     }
 }

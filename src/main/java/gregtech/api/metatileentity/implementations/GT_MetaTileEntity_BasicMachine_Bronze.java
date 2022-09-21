@@ -6,13 +6,12 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.ModularUI.GT_UITextures;
+import gregtech.api.gui.ModularUI.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -424,11 +423,8 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    protected void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_BRONZE)
-                .setSize(17, 17)
-                .setPos(152, 63));
+    protected IDrawable getGregTechLogo() {
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamTexture.Variant.BRONZE);
     }
 
     @Override
@@ -443,11 +439,11 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     protected UITexture getBackground() {
-        return GT_UITextures.BACKGROUND_SINGLEBLOCK_BRONZE;
+        return GT_UITextures.BACKGROUND_STEAM.get(SteamTexture.Variant.BRONZE);
     }
 
     @Override
     protected IDrawable getSlotBackground() {
-        return GT_UITextures.SLOT_ITEM_BRONZE;
+        return GT_UITextures.SLOT_ITEM_STEAM.get(SteamTexture.Variant.BRONZE);
     }
 }

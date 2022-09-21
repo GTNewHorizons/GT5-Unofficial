@@ -9,6 +9,7 @@ import appeng.me.helpers.AENetworkProxy;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -39,6 +40,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Supplier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
@@ -92,6 +94,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     public long mSoundRequests = 0;
 
+    /**
+     * Wrapper for ModularUI
+     */
+    protected final ItemStackHandler inventoryHandler;
+
     protected GT_GUIColorOverride colorOverride;
 
     /**
@@ -119,6 +126,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         getBaseMetaTileEntity().setMetaTileID((short) aID);
         GT_LanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
         mInventory = new ItemStack[aInvSlotCount];
+        inventoryHandler = new ItemStackHandler(mInventory);
     }
 
     /**
@@ -127,6 +135,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public MetaTileEntity(String aName, int aInvSlotCount) {
         mInventory = new ItemStack[aInvSlotCount];
         mName = aName;
+        inventoryHandler = new ItemStackHandler(mInventory);
         colorOverride = new GT_GUIColorOverride(getBackground().location.getResourcePath());
     }
 
@@ -1204,9 +1213,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     protected void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
-                .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
+                .setDrawable(getGregTechLogo())
                 .setSize(17, 17)
                 .setPos(152, 63));
+    }
+
+    protected IDrawable getGregTechLogo() {
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT;
     }
 
     protected UITexture getBackground() {
@@ -1228,6 +1241,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     protected IDrawable getSlotBackground() {
         return ModularUITextures.ITEM_SLOT;
     }
+
+    protected int getTextColorOrDefault(String textType, int defaultColor) {
+        return colorOverride.getTextColorOrDefault(textType, defaultColor);
+    }
+
+    protected Supplier<Integer> COLOR_TEXT = () -> getTextColorOrDefault("title", 0x404040);
 
     /**
      * @return The color used to render this machine's GUI
