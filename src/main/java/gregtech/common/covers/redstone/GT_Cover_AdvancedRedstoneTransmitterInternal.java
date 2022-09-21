@@ -4,10 +4,20 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
-public class GT_Cover_AdvancedRedstoneTransmitterInternal extends GT_Cover_AdvancedRedstoneTransmitterBase {
+public class GT_Cover_AdvancedRedstoneTransmitterInternal extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData> {
 
     public GT_Cover_AdvancedRedstoneTransmitterInternal(ITexture coverTexture) {
-        super(coverTexture);
+        super(TransmitterData.class, coverTexture);
+    }
+
+    @Override
+    public TransmitterData createDataObject() {
+        return new TransmitterData();
+    }
+
+    @Override
+    public TransmitterData createDataObject(int aLegacyData) {
+        return createDataObject();
     }
 
     @Override

@@ -19,20 +19,10 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
-public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_AdvancedWirelessRedstoneBase<GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData> {
+public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData> extends GT_Cover_AdvancedWirelessRedstoneBase<T> {
 
-    public GT_Cover_AdvancedRedstoneTransmitterBase(ITexture coverTexture) {
-        super(TransmitterData.class, coverTexture);
-    }
-
-    @Override
-    public TransmitterData createDataObject() {
-        return new TransmitterData();
-    }
-
-    @Override
-    public TransmitterData createDataObject(int aLegacyData) {
-        return createDataObject();
+    public GT_Cover_AdvancedRedstoneTransmitterBase(Class<T> typeToken, ITexture coverTexture) {
+        super(typeToken, coverTexture);
     }
 
     private static void unregisterSignal(byte aSide, TransmitterData aCoverVariable, ICoverable aTileEntity) {
@@ -58,7 +48,7 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_
     }
 
     public static class TransmitterData extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData {
-        private boolean invert;
+        protected boolean invert;
 
         public TransmitterData(int frequency, UUID uuid, boolean invert) {
             super(frequency, uuid);
@@ -119,17 +109,17 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_
     @Override
     public Object getClientGUIImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity,
                                    EntityPlayer aPlayer, World aWorld) {
-        return new TransmitterGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
+        return new TransmitterGUI<>(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
-    private class TransmitterGUI extends WirelessGUI<TransmitterData> {
+    protected class TransmitterGUI<X extends TransmitterData> extends WirelessGUI<X> {
 
         private final GT_GuiIconCheckButton invertButton;
 
         private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
         private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
-        public TransmitterGUI(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity) {
+        public TransmitterGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
             super(aSide, aCoverID, aCoverVariable, aTileEntity);
             invertButton = new GT_GuiIconCheckButton(this, 1, startX, startY + spaceY * 2, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
         }
