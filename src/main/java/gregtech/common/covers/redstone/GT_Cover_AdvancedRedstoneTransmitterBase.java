@@ -36,12 +36,21 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_
         return createDataObject();
     }
 
+    private static void unregisterSignal(byte aSide, TransmitterData aCoverVariable, ICoverable aTileEntity) {
+        long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
+        GregTech_API.removeAdvancedRedstone(aCoverVariable.uuid, aCoverVariable.frequency, hash);
+    }
+
     @Override
     public boolean onCoverRemovalImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity,
                                       boolean aForced) {
-        long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
-        GregTech_API.removeAdvancedRedstone(aCoverVariable.uuid, aCoverVariable.frequency, hash);
+        unregisterSignal(aSide, aCoverVariable, aTileEntity);
         return true;
+    }
+
+    @Override
+    protected void onBaseTEDestroyedImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity) {
+        unregisterSignal(aSide, aCoverVariable, aTileEntity);
     }
 
     @Override
