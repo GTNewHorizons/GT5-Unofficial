@@ -115,7 +115,7 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
         private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
         public TransmitterGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity, int frequencyRow, int buttonRow) {
-            super(aSide, aCoverID, aCoverVariable, aTileEntity, frequencyRow, buttonRow);
+            super(aSide, aCoverID, aCoverVariable, aTileEntity, frequencyRow, buttonRow, true);
             invertButton = new GT_GuiIconCheckButton(this, 1, startX + spaceX * 9, startY + spaceY * buttonRow, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
         }
 

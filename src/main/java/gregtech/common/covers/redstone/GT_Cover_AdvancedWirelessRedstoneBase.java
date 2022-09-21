@@ -206,12 +206,13 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
 
         protected final int frequencyRow;
         protected final int buttonRow;
+        private final int privateExtraColumn;
 
         protected final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
 
         private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverLong.png";
 
-        public WirelessGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity, int frequencyRow, int buttonRow) {
+        public WirelessGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity, int frequencyRow, int buttonRow, boolean shiftPrivateLeft) {
             super(aTileEntity, 250, 107, GT_Utility.intToStack(aCoverID));
             this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
             this.side = aSide;
@@ -219,13 +220,14 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             this.coverVariable = aCoverVariable;
             this.frequencyRow = frequencyRow;
             this.buttonRow = buttonRow;
+            this.privateExtraColumn = shiftPrivateLeft ? 1 : 5;
 
             frequencyBox = new GT_GuiShortTextBox(this, 0, 1 + startX, 2 + startY + spaceY * frequencyRow, spaceX * 5 - 4, 12);
             privateButton = new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * buttonRow, GT_GuiIcon.CHECKMARK, null);
         }
 
         public WirelessGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
-            this(aSide, aCoverID, aCoverVariable, aTileEntity, 0, 1);
+            this(aSide, aCoverID, aCoverVariable, aTileEntity, 0, 1, false);
         }
 
         @Override
@@ -238,7 +240,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
                 textColor);
             this.getFontRenderer().drawString(
                 GT_Utility.trans("601", "Use Private Frequency"),
-                startX + spaceX,
+                startX + spaceX * privateExtraColumn,
                 4 + startY + spaceY * buttonRow,
                 textColor);
         }
