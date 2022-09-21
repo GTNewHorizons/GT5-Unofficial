@@ -1,6 +1,5 @@
 package gregtech.common.covers.redstone;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
@@ -13,7 +12,7 @@ public class GT_Cover_AdvancedRedstoneReceiverExternal extends GT_Cover_Advanced
     @Override
     public ReceiverData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         aTileEntity.setOutputRedstoneSignal(aSide,
-            GregTech_API.getAdvancedRedstone(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), aCoverVariable.getGateMode()));
+            getSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), aCoverVariable.getGateMode()));
 
         return aCoverVariable;
     }

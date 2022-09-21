@@ -42,7 +42,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverBase;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +54,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.IntFunction;
@@ -179,56 +177,6 @@ public class GregTech_API {
      * The Advanced Redstone Frequencies
      */
     public static final Map<String, Map<Integer, Map<Long, Byte>>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
-
-    public static Byte getAdvancedRedstone(UUID uuid, int frequency, GT_Cover_AdvancedRedstoneReceiverBase.GateMode mode) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
-        if (frequencies == null) return 0;
-
-        Map<Long, Byte> signals = frequencies.get(frequency);
-        if (signals == null) signals = new ConcurrentHashMap<>();
-
-        switch (mode) {
-            case AND:
-                return (byte) (signals.values().stream()
-                    .map(signal -> signal > 0)
-                    .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
-            case NAND:
-                return (byte) (signals.values().stream()
-                    .map(signal -> signal > 0)
-                    .reduce(true, (signalA, signalB) -> signalA && signalB) ? 0 : 15);
-            case OR:
-                return (byte) (signals.values().stream()
-                    .map(signal -> signal > 0)
-                    .reduce(false, (signalA, signalB) -> signalA || signalB) ? 15 : 0);
-            case NOR:
-                return (byte) (signals.values().stream()
-                    .map(signal -> signal > 0)
-                    .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
-            default:
-                return 0;
-        }
-    }
-
-    public static void resetAdvancedRedstoneFrequency(UUID uuid, int frequency) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
-        if (frequencies == null) return;
-        frequencies.computeIfPresent(frequency, (k, longByteMap) -> new ConcurrentHashMap<>());
-    }
-
-    public static void removeAdvancedRedstone(UUID uuid, int frequency, long hash) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
-        if (frequencies == null) return;
-        frequencies.computeIfPresent(frequency, (freq, longByteMap) -> {
-            longByteMap.remove(hash);
-            return longByteMap.isEmpty() ? null : longByteMap;
-        });
-    }
-
-    public static void setAdvancedRedstone(UUID uuid, int frequency, long hash, byte value) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.computeIfAbsent(String.valueOf(uuid), k -> new ConcurrentHashMap<>());
-        Map<Long, Byte> signals = frequencies.computeIfAbsent(frequency, k -> new ConcurrentHashMap<>());
-        signals.put(hash, value);
-    }
 
     /**
      *  x    hashed into first 20 bytes

@@ -38,7 +38,7 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_
 
     private static void unregisterSignal(byte aSide, TransmitterData aCoverVariable, ICoverable aTileEntity) {
         long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
-        GregTech_API.removeAdvancedRedstone(aCoverVariable.uuid, aCoverVariable.frequency, hash);
+        removeSignalAt(aCoverVariable.uuid, aCoverVariable.frequency, hash);
     }
 
     @Override
@@ -114,8 +114,8 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase extends GT_Cover_
             invert = aBuf.readBoolean();
 
             if (oldFrequency != frequency || !Objects.equals(oldUuid, uuid) || oldInvert != invert) {
-                GregTech_API.resetAdvancedRedstoneFrequency(uuid, frequency);
-                GregTech_API.resetAdvancedRedstoneFrequency(oldUuid, oldFrequency);
+                resetSignalAt(uuid, frequency);
+                resetSignalAt(oldUuid, oldFrequency);
             }
 
             return this;

@@ -20,7 +20,7 @@ public class GT_Cover_AdvancedRedstoneTransmitterInternal extends GT_Cover_Advan
         }
 
         long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
-        GregTech_API.setAdvancedRedstone(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, outputRedstone);
+        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, outputRedstone);
         return aCoverVariable;
     }
 

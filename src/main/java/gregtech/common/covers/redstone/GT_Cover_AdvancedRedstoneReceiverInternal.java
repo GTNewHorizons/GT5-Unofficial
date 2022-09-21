@@ -18,7 +18,7 @@ public class GT_Cover_AdvancedRedstoneReceiverInternal extends GT_Cover_Advanced
             if (getRedstoneInput(aSide, aInputRedstone, aCoverID, aCoverVariable, aTileEntity) > 0) {
                 machine.enableWorking();
             } else {
-                machine.disableWorking();;
+                machine.disableWorking();
             }
 
             machine.setWorkDataValue(aInputRedstone);
@@ -29,6 +29,6 @@ public class GT_Cover_AdvancedRedstoneReceiverInternal extends GT_Cover_Advanced
 
     @Override
     protected byte getRedstoneInputImpl(byte aSide, byte aInputRedstone, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
-        return GregTech_API.getAdvancedRedstone(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), aCoverVariable.getGateMode());
+        return getSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), aCoverVariable.getGateMode());
     }
 }
