@@ -34,11 +34,6 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
         return createDataObject();
     }
 
-    @Override
-    public String getDescriptionImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
-        return GT_Utility.trans("081", "Frequency: ") + aCoverVariable.frequency + ", Transmission: " + (aCoverVariable.uuid == null ? "Public" : "Private");
-    }
-
     /**
      * GUI Stuff
      */

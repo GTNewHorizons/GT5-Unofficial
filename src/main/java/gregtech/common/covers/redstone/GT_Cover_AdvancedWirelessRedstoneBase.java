@@ -109,6 +109,11 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
     }
 
     @Override
+    public String getDescriptionImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+        return GT_Utility.trans("081", "Frequency: ") + aCoverVariable.frequency + ", Transmission: " + (aCoverVariable.uuid == null ? "Public" : "Private");
+    }
+
+    @Override
     public int getTickRateImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return 5;
     }

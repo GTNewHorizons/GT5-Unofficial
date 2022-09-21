@@ -42,11 +42,6 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
         unregisterSignal(aSide, aCoverVariable, aTileEntity);
     }
 
-    @Override
-    public String getDescriptionImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity) {
-        return GT_Utility.trans("081", "Frequency: ") + aCoverVariable.frequency + ", Transmission: " + (aCoverVariable.uuid == null ? "Public" : "Private");
-    }
-
     public static class TransmitterData extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData {
         protected boolean invert;
 
