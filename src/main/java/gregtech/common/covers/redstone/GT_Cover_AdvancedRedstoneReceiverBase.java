@@ -48,7 +48,8 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
         AND,
         NAND,
         OR,
-        NOR
+        NOR,
+        SINGLE_SOURCE
     }
 
     public static class ReceiverData extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData {
@@ -106,7 +107,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
         }
     }
 
-    private class ReceiverGUI extends WirelessGUI<ReceiverData> {
+    private static class ReceiverGUI extends WirelessGUI<ReceiverData> {
 
         private static final int gateModeButtonIdStart = 1;
 
@@ -120,7 +121,9 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
             new GT_GuiIconButton(this, gateModeButtonIdStart + 2, startX + spaceX * 2, startY + spaceY * 2, GT_GuiIcon.OR_GATE)
                 .setTooltipText(GT_Utility.trans("006", "OR Gate"));
             new GT_GuiIconButton(this, gateModeButtonIdStart + 3, startX + spaceX * 3, startY + spaceY * 2, GT_GuiIcon.NOR_GATE)
-                .setTooltipText(GT_Utility.trans("006", "NOR Gate"));
+                    .setTooltipText(GT_Utility.trans("006", "NOR Gate"));
+            new GT_GuiIconButton(this, gateModeButtonIdStart + 4, startX + spaceX * 4, startY + spaceY * 2, GT_GuiIcon.PROGRESS)
+                    .setTooltipText("ANALOG Mode", "Only use this mode with ONE transmitter in total,", "no logic involved");
         }
 
         @Override
@@ -141,7 +144,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
 
         private void updateButtons() {
             GuiButton button;
-            for (int i = gateModeButtonIdStart; i < gateModeButtonIdStart + 4; ++i) {
+            for (int i = gateModeButtonIdStart; i < gateModeButtonIdStart + 5; ++i) {
                 button = (GuiButton) this.buttonList.get(i);
                 button.enabled = (button.id - gateModeButtonIdStart) != coverVariable.mode.ordinal();
             }

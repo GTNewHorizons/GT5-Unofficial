@@ -60,6 +60,12 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
                 return (byte) (signals.values().stream()
                     .map(signal -> signal > 0)
                     .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
+            case SINGLE_SOURCE:
+                if (signals.values().isEmpty()) {
+                    return 0;
+                }
+                
+                return (Byte) signals.values().toArray()[0];
             default:
                 return 0;
         }
