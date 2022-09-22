@@ -16,6 +16,7 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.gui.ModularUI.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -25,10 +26,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
-import gregtech.common.gui.GT_Container_Boiler;
-import gregtech.common.gui.GT_GUIContainer_Boiler;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -90,16 +88,6 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
     @Override
     public int maxProgresstime() {
         return 500;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_Boiler(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Boiler(aPlayerInventory, aBaseMetaTileEntity, "BronzeBoiler.png");
     }
 
     @Override
@@ -317,5 +305,10 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
                                 Materials.Ash,
                                 1L));
         }
+    }
+
+    @Override
+    protected SteamTexture.Variant getVariant() {
+        return SteamTexture.Variant.BRONZE;
     }
 }

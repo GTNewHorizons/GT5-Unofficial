@@ -536,7 +536,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                         .setPos(11, 12)
                         .setSize(17, 50))
                 .widget(new TextWidget(getName())
-                        .setDefaultColor(COLOR_TEXT.get())
+                        .setDefaultColor(COLOR_TITLE.get())
                         .setPos(8, 4));
     }
 

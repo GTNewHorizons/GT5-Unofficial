@@ -1246,7 +1246,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 
-    protected Supplier<Integer> COLOR_TEXT = () -> getTextColorOrDefault("title", 0x404040);
+    protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);
 
     /**
      * @return The color used to render this machine's GUI

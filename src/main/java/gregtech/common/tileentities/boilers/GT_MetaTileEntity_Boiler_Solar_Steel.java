@@ -4,12 +4,11 @@ import static gregtech.api.enums.ConfigCategories.machineconfig;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.gui.ModularUI.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.GT_GUIContainer_Boiler;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boiler_Solar {
     public GT_MetaTileEntity_Boiler_Solar_Steel(int aID, String aName, String aNameRegional) {
@@ -59,13 +58,13 @@ public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boil
     }
 
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Boiler(aPlayerInventory, aBaseMetaTileEntity, "SolarHPBoiler.png");
+    public int getCapacity() {
+        return 32000;
     }
 
     @Override
-    public int getCapacity() {
-        return 32000;
+    protected SteamTexture.Variant getVariant() {
+        return SteamTexture.Variant.STEEL;
     }
 
     @Override

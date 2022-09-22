@@ -5,8 +5,11 @@ import static gregtech.api.enums.ConfigCategories.machineconfig;
 import static mcp.mobius.waila.api.SpecialChars.GOLD;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.gui.ModularUI.GT_UITextures;
+import gregtech.api.gui.ModularUI.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -14,13 +17,10 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_Container_Boiler;
-import gregtech.common.gui.GT_GUIContainer_Boiler;
 import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -121,16 +121,6 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
             };
         }
         return rTextures;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_Boiler(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Boiler(aPlayerInventory, aBaseMetaTileEntity, "SolarBoiler.png");
     }
 
     @Override
@@ -254,6 +244,11 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
+    protected SteamTexture.Variant getVariant() {
+        return SteamTexture.Variant.BRONZE;
+    }
+
+    @Override
     public boolean isGivingInformation() {
         return true;
     }
@@ -287,6 +282,16 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Boiler_Solar(mName, mTier, mDescriptionArray, mTextures, mConfig);
+    }
+
+    @Override
+    protected IDrawable[] getFuelSlotBackground() {
+        return new IDrawable[] {GT_UITextures.SLOT_TRANSPARENT};
+    }
+
+    @Override
+    protected IDrawable[] getAshSlotBackground() {
+        return new IDrawable[] {GT_UITextures.SLOT_TRANSPARENT};
     }
 
     @Override

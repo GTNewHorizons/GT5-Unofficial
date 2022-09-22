@@ -45,10 +45,8 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_BOX = UITexture.fullImage(MODID, "gui/overlay_slot/box");
     public static final UITexture OVERLAY_SLOT_BOXED = UITexture.fullImage(MODID, "gui/overlay_slot/boxed");
     public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.fullImage(MODID, "gui/overlay_slot/canister");
-    public static final UITexture OVERLAY_SLOT_CANISTER_BRONZE =
-            UITexture.fullImage(MODID, "gui/overlay_slot/canister_bronze");
-    public static final UITexture OVERLAY_SLOT_CANISTER_STEEL =
-            UITexture.fullImage(MODID, "gui/overlay_slot/canister_steel");
+    public static final SteamTexture OVERLAY_SLOT_CANISTER_STEAM =
+            SteamTexture.fullImage(MODID, "gui/overlay_slot/canister_%s");
     public static final UITexture OVERLAY_SLOT_CANNER = UITexture.fullImage(MODID, "gui/overlay_slot/canner");
     public static final UITexture OVERLAY_SLOT_CAULDRON = UITexture.fullImage(MODID, "gui/overlay_slot/cauldron");
     public static final UITexture OVERLAY_SLOT_CENTRIFUGE = UITexture.fullImage(MODID, "gui/overlay_slot/centrifuge");
@@ -62,8 +60,8 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_CHARGER_FLUID =
             UITexture.fullImage(MODID, "gui/overlay_slot/charger_fluid");
     public static final UITexture OVERLAY_SLOT_CIRCUIT = UITexture.fullImage(MODID, "gui/overlay_slot/circuit");
-    public static final UITexture OVERLAY_SLOT_COAL_BRONZE = UITexture.fullImage(MODID, "gui/overlay_slot/coal_bronze");
-    public static final UITexture OVERLAY_SLOT_COAL_STEEL = UITexture.fullImage(MODID, "gui/overlay_slot/coal_steel");
+    public static final SteamTexture OVERLAY_SLOT_COAL_STEAM =
+            SteamTexture.fullImage(MODID, "gui/overlay_slot/coal_%s");
     public static final UITexture OVERLAY_SLOT_COMPRESSOR = UITexture.fullImage(MODID, "gui/overlay_slot/compressor");
     public static final UITexture OVERLAY_SLOT_COMPRESSOR_BRONZE =
             UITexture.fullImage(MODID, "gui/overlay_slot/compressor_bronze");
@@ -97,8 +95,7 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_HEATER_2 = UITexture.fullImage(MODID, "gui/overlay_slot/heater_2");
     public static final UITexture OVERLAY_SLOT_IMPLOSION = UITexture.fullImage(MODID, "gui/overlay_slot/implosion");
     public static final UITexture OVERLAY_SLOT_IN = UITexture.fullImage(MODID, "gui/overlay_slot/in");
-    public static final UITexture OVERLAY_SLOT_IN_BRONZE = UITexture.fullImage(MODID, "gui/overlay_slot/in_bronze");
-    public static final UITexture OVERLAY_SLOT_IN_STEEL = UITexture.fullImage(MODID, "gui/overlay_slot/in_steel");
+    public static final SteamTexture OVERLAY_SLOT_IN_STEAM = SteamTexture.fullImage(MODID, "gui/overlay_slot/in_%s");
     public static final SteamTexture OVERLAY_SLOT_INGOT_STEAM =
             SteamTexture.fullImage(MODID, "gui/overlay_slot/ingot_%s");
     public static final UITexture OVERLAY_SLOT_INT_CIRCUIT = UITexture.fullImage(MODID, "gui/overlay_slot/int_circuit");
@@ -109,8 +106,7 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_MOLECULAR_2 = UITexture.fullImage(MODID, "gui/overlay_slot/molecular_2");
     public static final UITexture OVERLAY_SLOT_MOLECULAR_3 = UITexture.fullImage(MODID, "gui/overlay_slot/molecular_3");
     public static final UITexture OVERLAY_SLOT_OUT = UITexture.fullImage(MODID, "gui/overlay_slot/out");
-    public static final UITexture OVERLAY_SLOT_OUT_BRONZE = UITexture.fullImage(MODID, "gui/overlay_slot/out_bronze");
-    public static final UITexture OVERLAY_SLOT_OUT_STEEL = UITexture.fullImage(MODID, "gui/overlay_slot/out_steel");
+    public static final SteamTexture OVERLAY_SLOT_OUT_STEAM = SteamTexture.fullImage(MODID, "gui/overlay_slot/out_%s");
     public static final UITexture OVERLAY_SLOT_PAGE_BLANK = UITexture.fullImage(MODID, "gui/overlay_slot/page_blank");
     public static final UITexture OVERLAY_SLOT_PAGE_PRINTED =
             UITexture.fullImage(MODID, "gui/overlay_slot/page_printed");
@@ -148,10 +144,8 @@ public class GT_UITextures {
             UITexture.fullImage(MODID, "gui/progressbar/assemblyline_arrow");
     public static final UITexture PROGRESSBAR_BATH = UITexture.fullImage(MODID, "gui/progressbar/bath");
     public static final UITexture PROGRESSBAR_BENDING = UITexture.fullImage(MODID, "gui/progressbar/bending");
-    public static final UITexture PROGRESSBAR_BOILER_EMPTY_BRONZE =
-            UITexture.fullImage(MODID, "gui/progressbar/boiler_empty_bronze");
-    public static final UITexture PROGRESSBAR_BOILER_EMPTY_STEEL =
-            UITexture.fullImage(MODID, "gui/progressbar/boiler_empty_steel");
+    public static final SteamTexture PROGRESSBAR_BOILER_EMPTY_STEAM =
+            SteamTexture.fullImage(MODID, "gui/progressbar/boiler_empty_%s");
     public static final UITexture PROGRESSBAR_BOILER_HEAT = UITexture.fullImage(MODID, "gui/progressbar/boiler_heat");
     public static final UITexture PROGRESSBAR_BOILER_STEAM = UITexture.fullImage(MODID, "gui/progressbar/boiler_steam");
     public static final UITexture PROGRESSBAR_BOILER_WATER = UITexture.fullImage(MODID, "gui/progressbar/boiler_water");
@@ -170,8 +164,7 @@ public class GT_UITextures {
     public static final UITexture PROGRESSBAR_EXTRACT_STEEL =
             UITexture.fullImage(MODID, "gui/progressbar/extract_steel");
     public static final UITexture PROGRESSBAR_EXTRUDE = UITexture.fullImage(MODID, "gui/progressbar/extrude");
-    public static final UITexture PROGRESSBAR_FUEL_BRONZE = UITexture.fullImage(MODID, "gui/progressbar/fuel_bronze");
-    public static final UITexture PROGRESSBAR_FUEL_STEEL = UITexture.fullImage(MODID, "gui/progressbar/fuel_steel");
+    public static final SteamTexture PROGRESSBAR_FUEL_STEAM = SteamTexture.fullImage(MODID, "gui/progressbar/fuel_%s");
     public static final UITexture PROGRESSBAR_HAMMER = UITexture.fullImage(MODID, "gui/progressbar/hammer");
     public static final UITexture PROGRESSBAR_HAMMER_BASE = UITexture.fullImage(MODID, "gui/progressbar/hammer_base");
     public static final UITexture PROGRESSBAR_HAMMER_BRONZE =
