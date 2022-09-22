@@ -144,10 +144,10 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             this.getFontRenderer().drawString(
-                coverVariable.invert ? INVERTED : NORMAL,
-                startX + spaceX * 10,
-                4 + startY + spaceY * buttonRow,
-                textColor);
+                    coverVariable.invert ? INVERTED : NORMAL,
+                    startX + spaceX * 10,
+                    4 + startY + spaceY * buttonRow,
+                    textColor);
         }
 
         @Override
