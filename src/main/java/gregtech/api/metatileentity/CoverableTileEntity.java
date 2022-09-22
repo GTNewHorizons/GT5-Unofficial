@@ -422,10 +422,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public void receiveCoverData(
             byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
         if ((aCoverSide >= 0 && aCoverSide < 6)) {
+            GT_CoverBehaviorBase<?> behaviorBase = getCoverBehaviorAtSideNew(aCoverSide);
+            behaviorBase.preDataChanged(aCoverSide, getCoverIDAtSide(aCoverSide), aCoverID, getComplexCoverDataAtSide(aCoverSide), aCoverData, this);
+            
             setCoverIDAtSideNoUpdate(aCoverSide, aCoverID);
             setCoverDataAtSide(aCoverSide, aCoverData);
-            if (isClientSide()) {
-                getCoverBehaviorAtSideNew(aCoverSide).onDataChanged(aCoverSide, aCoverID, aCoverData, this);
+            if (!isClientSide()) {
+                behaviorBase.onDataChanged(aCoverSide, aCoverID, aCoverData, this);
             }
         }
     }

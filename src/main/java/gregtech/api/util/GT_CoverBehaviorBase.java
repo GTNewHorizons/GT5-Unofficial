@@ -131,6 +131,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
+     * Called before receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.
+     */
+    public final void preDataChanged(
+            byte aSide, int aCoverID, int aNewCoverId, ISerializableObject aCoverVariable, ISerializableObject aNewCoverVariable, ICoverable aTileEntity) {
+        preDataChangedImpl(aSide, aCoverID, aNewCoverId, forceCast(aCoverVariable), forceCast(aNewCoverVariable), aTileEntity);
+    }
+
+    /**
      * Called upon cover being removed. Called on both server and client.
      */
     public final void onDropped(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
@@ -417,6 +425,9 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     protected void onDataChangedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
+    
+    protected void preDataChangedImpl(
+            byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable, ICoverable aTileEntity) {}
 
     protected void onDroppedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
 

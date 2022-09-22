@@ -50,6 +50,11 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
         return aCoverVariable;
     }
 
+    @Override
+    protected void preDataChangedImpl(byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable, ICoverable aTileEntity) {
+        unregisterSignal(aSide, aCoverVariable, aTileEntity);
+    }
+
     public static class TransmitterData extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData {
         protected boolean invert;
 
