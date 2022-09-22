@@ -1,5 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
+import com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage;
 import com.github.technus.tectech.thing.casing.TT_Block_SpacetimeCompressionFieldGenerators;
 import com.github.technus.tectech.thing.casing.TT_Block_StabilisationFieldGenerators;
 import com.github.technus.tectech.thing.casing.TT_Block_TimeAccelerationFieldGenerators;
@@ -13,9 +15,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -25,12 +29,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.Sys;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
@@ -41,8 +41,8 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static java.lang.Math.*;
 import static net.minecraft.util.EnumChatFormatting.*;
 
-
-public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+@SuppressWarnings("SpellCheckingInspection")
+public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable, IGlobalWirelessEnergy {
     //region variables
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
@@ -51,8 +51,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private int TimeAccelerationFieldMetadata = -1;
     private int StabilisationFieldMetadata = -1;
 
+    private String user_uuid = "";
+    private String user_name = "";
+    private long eu_output = 0;
+
     // Multiblock structure.
-    @SuppressWarnings("SpellCheckingInspection")
     private static final IStructureDefinition<GT_MetaTileEntity_EM_EyeOfHarmony> STRUCTURE_DEFINITION = IStructureDefinition
             .<GT_MetaTileEntity_EM_EyeOfHarmony>builder()
             .addShape("main", transpose(new String[][]{
@@ -146,14 +149,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private double hydrogen_overflow_probability_adjustment;
     private double helium_overflow_probability_adjustment;
 
-    private double max_percentage_chance_gain_from_computation_per_second = 0.3;
+    private static final double max_percentage_chance_gain_from_computation_per_second = 0.3;
 
-    private long ticks_between_hatch_drain = 20;
+    private static final long ticks_between_hatch_drain = 20;
 
-    private void calculate_hydrogen_helium_input_excess_values(long hydrogen_recipe_requirement, long helium_recipe_requirement) {
+    List<Pair<ItemStack, Long>> output_items;
 
-        long hydrogen_stored = valid_fluid_map.get(Materials.Hydrogen.getFluid(1L));
-        long helium_stored =  valid_fluid_map.get(Materials.Helium.getFluid(1L));
+    private void calculateHydrogenHeliumInputExcessValues(long hydrogen_recipe_requirement, long helium_recipe_requirement) {
+
+        long hydrogen_stored = valid_fluid_map.get(Materials.Hydrogen.getGas(1L));
+        long helium_stored =  valid_fluid_map.get(Materials.Helium.getGas(1L));
 
         double hydrogen_excess_percentage = abs(1 - hydrogen_stored / hydrogen_recipe_requirement);
         double helium_excess_percentage = abs(1 - helium_stored / helium_recipe_requirement);
@@ -168,19 +173,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 + StabilisationFieldMetadata * 0.05
                 - hydrogen_overflow_probability_adjustment
                 - helium_overflow_probability_adjustment
-                + max_percentage_chance_gain_from_computation_per_second * (1 - exp(-10e-5 * eAvailableData))); // eAvailableData = computation/s maybe?.
+                + max_percentage_chance_gain_from_computation_per_second * (1 - exp(-10e-5 * eAvailableData))); // eAvailableData = computation/s (kinda).
 
-        if (chance < 0) {
-            return 0;
-        }
-
-        if (chance > 1) {
-            return 1;
-        }
-
-        return chance;
+        return clamp_probability(chance);
     }
 
+    // Restrict number between 0 and 1. MathHelper.clamp was giving NoClassDefFoundError, so I wrote this.
+    private double clamp_probability(double number) {
+        if (number > (double) 1) { return 1; }
+        return Math.max(number, 0);
+    }
 
     private double recipeYieldCalculator() {
         double yield = 1
@@ -188,20 +190,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 - helium_overflow_probability_adjustment
                 - StabilisationFieldMetadata * 0.05;
 
-        if (yield < 0) {
-            return 0;
-        }
-
-        if (yield > 1) {
-            return 1;
-        }
-
-        return yield;
+        // Restrict value between 0 and 1 given it is a probability.
+        return clamp_probability(yield);
     }
 
-    private double recipeProcessTimeCalculator(double recipe_time, long recipe_spacetime_casing_required) {
-        long spacetime_casing_difference = (SpacetimeCompressionFieldMetadata - recipe_spacetime_casing_required);
-        return recipe_time * pow(2, -TimeAccelerationFieldMetadata) * pow(1.03, spacetime_casing_difference);
+    private long recipeProcessTimeCalculator(long recipe_time, long recipe_spacetime_casing_required) {
+
+        double double_recipe_time = (double) recipe_time;
+
+        long spacetime_casing_difference = (recipe_spacetime_casing_required - SpacetimeCompressionFieldMetadata);
+        return (long) (double_recipe_time * pow(2, -TimeAccelerationFieldMetadata) * pow(1.03, spacetime_casing_difference));
     }
 
     @Override
@@ -288,24 +286,113 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
     }
 
-    private final static ItemStack[] item_list = {Materials.Iron.getDust(1), Materials.Copper.getDust(1)};
+    @Override
+    public boolean checkRecipe_EM(ItemStack aStack) {
+
+
+        long hydrogen_stored = valid_fluid_map.get(Materials.Hydrogen.getGas(1));
+        long helium_stored = valid_fluid_map.get(Materials.Helium.getGas(1));
+
+        EyeOfHarmonyRecipe recipe;
+
+        recipe = EyeOfHarmonyRecipeStorage.recipe_0;
+        if ((hydrogen_stored >= recipe.getHydrogenRequirement()) & (helium_stored >= recipe.getHeliumRequirement())) {
+            return processRecipe(recipe);
+        }
+
+        return false;
+    }
+
+
+    public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
+
+        mMaxProgresstime = (int) max(1, recipeProcessTimeCalculator(recipeObject.getRecipeTime(), recipeObject.getSpacetimeCasingTierRequired()));
+
+        calculateHydrogenHeliumInputExcessValues(recipeObject.getHydrogenRequirement(), recipeObject.getHeliumRequirement());
+        // DEBUG ! DELETE THESE TWO LINES:
+        hydrogen_overflow_probability_adjustment = 0;
+        helium_overflow_probability_adjustment = 0;
+
+        success_chance = recipeChanceCalculator(recipeObject.getBaseRecipeSuccessChance());
+
+        // Remove EU from the users network.
+        if (!addEUToGlobalEnergyMap(user_uuid, -recipeObject.getEUStartCost())) {
+            return false;
+        }
+
+        // Determine EU recipe output.
+        eu_output = recipeObject.getEUOutput();
+
+        // Reduce internal storage by hydrogen and helium quantity required for recipe.
+        valid_fluid_map.put(Materials.Hydrogen.getGas(1), 0L);
+        valid_fluid_map.put(Materials.Helium.getGas(1), 0L);
+
+        double yield = recipeYieldCalculator();
+
+        List<Pair<ItemStack, Long>> tmp_items_output = recipeObject.getOutputItems();
+        FluidStack[] tmp_fluids_output = recipeObject.getOutputFluids().clone();
+
+        // Iterate over item output list and apply yield values.
+        for (int i = 0; i < tmp_items_output.size(); i++) {
+            Pair<ItemStack, Long> tmp_0 = tmp_items_output.get(i);
+            Pair<ItemStack, Long> tmp_1 = Pair.of(tmp_0.getLeft(), (long) (tmp_0.getRight() * yield));
+            tmp_items_output.set(i, tmp_1);
+        }
+
+        // Iterate over fluid output list and apply yield values.
+        for (FluidStack fluidStack : tmp_fluids_output) {
+            fluidStack.amount *= yield;
+        }
+
+        output_items = tmp_items_output;
+        mOutputFluids = tmp_fluids_output;
+        updateSlots();
+
+        return true;
+    }
+
+    private double success_chance;
+
+    private void outputFailedChance() {
+
+    }
+
+    public void outputAfterRecipe_EM() {
+
+        if (success_chance > random()) {
+            outputFailedChance();
+            return;
+        }
+
+        addEUToGlobalEnergyMap(user_uuid, eu_output);
+        eu_output = 0;
+
+        int index = 0;
+        for (Pair<ItemStack, Long> item : output_items) {
+            // If you can output the item, increment the input hatch index.
+            try {
+                if (outputItemToQuantumChest(mOutputBusses.get(index), item.getLeft(), item.getRight())) {
+                    index++;
+                }
+            } catch(Exception ignored) { break; }
+        }
+
+        super.outputAfterRecipe_EM();
+    }
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
+        if (aTick == 1) {
+            user_uuid = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());
+            user_name = getBaseMetaTileEntity().getOwnerName();
+
+            strongCheckOrAddUser(user_uuid, user_name);
+        }
+
         if (aTick % ticks_between_hatch_drain == 0) {
             drainFluidFromHatchesAndStoreInternally();
-
-            int i = 0;
-            for(GT_MetaTileEntity_Hatch_OutputBus output_bus : mOutputBusses) {
-                if (!outputItemsToQuantumChest(output_bus, item_list[i], 1_000_000)) {
-                    continue;
-                }
-                if (i++ >= item_list.length) {
-                    break;
-                }
-            }
         }
     }
 
@@ -320,10 +407,10 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
     }
 
-    private boolean outputItemsToQuantumChest(GT_MetaTileEntity_Hatch_OutputBus output_bus, ItemStack item, int amount) {
+    private int[] coordinate_calculator(GT_MetaTileEntity_Hatch output_bus) {
 
         IGregTechTileEntity tile_entity = output_bus.getBaseMetaTileEntity();
-        
+
         int x = tile_entity.getXCoord();
         int y = tile_entity.getYCoord();
         int z = tile_entity.getZCoord();
@@ -343,6 +430,22 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             case 5:
                 x += 1;
         }
+
+        int[] coordinates = new int[3];
+
+        coordinates[0] = x;
+        coordinates[1] = y;
+        coordinates[2] = z;
+
+        return coordinates;
+    }
+
+    private boolean outputItemToQuantumChest(GT_MetaTileEntity_Hatch_OutputBus output_bus, ItemStack item, long amount) {
+
+        int[] coords = coordinate_calculator(output_bus);
+        int x = coords[0];
+        int y = coords[1];
+        int z = coords[2];
 
         try {
             // Get block in front of output bus.
@@ -367,12 +470,13 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 return true;
             }
         } catch (Exception e) {
-            System.out.println("TEST FAILURE 13214");
             e.printStackTrace();
         }
 
         return false;
     }
+
+
 
     @Override
     public String[] getInfoData() {
@@ -380,7 +484,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         str.add(GOLD + "---------------- Control Block Statistics ----------------");
         str.add("Spacetime Compression Field Grade: " + BLUE + SpacetimeCompressionFieldMetadata);
         str.add("Time Dilation Field Grade: " + BLUE + TimeAccelerationFieldMetadata);
-        str.add("Stabilisation Field Grade: " + BLUE + TimeAccelerationFieldMetadata);
+        str.add("Stabilisation Field Grade: " + BLUE + StabilisationFieldMetadata);
         str.add(GOLD + "----------------- Internal Fluids Stored ----------------");
         valid_fluid_map.forEach((key, value) -> str.add(BLUE + key.getLocalizedName() + RESET +
                 " : " + RED + GT_Utility.formatNumbers(value)));
@@ -390,7 +494,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
-        return new String[] {"TEST1", "TEST2"};
+        return new String[] {"?? No idea what this does."};
     }
 
     @Override
