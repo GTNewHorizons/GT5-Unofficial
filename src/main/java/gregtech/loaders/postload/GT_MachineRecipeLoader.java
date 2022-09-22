@@ -2123,6 +2123,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                 200,
                 48);
 
+        GT_Values.RA.addAssemblerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1L),
+                Materials.Concrete.getMolten(144L),
+                ItemList.Block_Plascrete.get(1L),
+                200,
+                48);
+
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1L),
                 Materials.Concrete.getMolten(144L),

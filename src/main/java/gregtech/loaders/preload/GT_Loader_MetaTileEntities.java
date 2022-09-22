@@ -12375,6 +12375,19 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 'C',
                 OrePrefixes.circuit.get(Materials.Advanced)
             });
+            GT_Values.RA.addAssemblerRecipe(
+                    new ItemStack[] {
+                        ItemList.Hull_HV.get(1L),
+                        ItemList.Component_Filter.get(2L),
+                        GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L),
+                        ItemList.Electric_Motor_HV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                        GT_Utility.getIntegratedCircuit(1)
+                    },
+                    Materials.StainlessSteel.getMolten(864L),
+                    ItemList.Machine_Multi_Cleanroom.get(1L),
+                    1200,
+                    120);
         } else {
             if (isNEILoaded) {
                 API.hideItem(ItemList.Machine_Multi_Cleanroom.get(1L));
