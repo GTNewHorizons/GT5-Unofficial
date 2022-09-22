@@ -4636,25 +4636,25 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_RedstoneTransmitterExternal.set(addItem(
                 tLastID = 741,
-                "Redstone Transmitter (Out)",
+                "Redstone Transmitter (External)",
                 "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneTransmitterInternal.set(addItem(
                 tLastID = 742,
-                "Redstone Transmitter (In)",
+                "Redstone Transmitter (Internal)",
                 "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneReceiverExternal.set(addItem(
                 tLastID = 746,
-                "Redstone Receiver (Out)",
+                "Redstone Receiver (External)",
                 "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneReceiverInternal.set(addItem(
                 tLastID = 747,
-                "Redstone Receiver (In)",
+                "Redstone Receiver (Internal)",
                 "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
