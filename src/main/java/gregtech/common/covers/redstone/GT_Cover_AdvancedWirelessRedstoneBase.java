@@ -24,9 +24,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData> extends GT_CoverBehaviorBase<T> {
 
@@ -323,7 +325,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             else if (value < min) return min;
             return (int) value;
         }
-        
+
         protected int parseTextBox(GT_GuiIntegerTextBox box) {
             return parseTextBox(box, 0, Integer.MAX_VALUE);
         }
@@ -332,11 +334,21 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
 
             private final int min;
             private final int max;
+            private final Map<String, String> translation;
+            private final Map<String, String> inverseTranslation;
 
-            public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height, int min, int max) {
+            public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height, int min, int max,
+                                      Map<String, String> translate) {
                 super(gui, id, x, y, width, height);
                 this.min = min;
                 this.max = max;
+                this.translation = translate;
+                this.inverseTranslation = translate.entrySet().stream()
+                    .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+            }
+
+            public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height, int min, int max) {
+                this(gui, id, x, y, width, height, min, max, new HashMap<>());
             }
 
             public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height) {
@@ -353,6 +365,17 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
                 }
 
                 return true;
+            }
+
+            @Override
+            public String getText() {
+                String text = super.getText();
+                return inverseTranslation.getOrDefault(text, text);
+            }
+
+            @Override
+            public void setText(String text) {
+                super.setText(translation.getOrDefault(text, text));
             }
         }
     }
