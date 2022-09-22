@@ -4254,10 +4254,29 @@ public class GT_Utility {
         return Textures.BlockIcons.ERROR_TEXTURE_INDEX;
     }
 
-    public static byte convertRatioToRedstone(long value, long max) {
-        if (value <= 0) return 0;               // Empty
-        if (value >= max) return 15;            // Full
-        return (byte) (1 + (14 * value) / max); // Range 1-14
+    public static byte convertRatioToRedstone(long used, long max, int threshold, boolean inverted) {
+        byte signal;
+        if (used <= 0) {           // Empty
+            signal = 0;
+        } else if (used >= max) {  // Full
+            signal = 15;
+        } else {                    // Range 1-14
+            signal = (byte) (1 + (14 * used) / max);
+        }
+
+        if (inverted) {
+            signal = (byte) (15 - signal);
+        }
+
+        if (threshold > 0) {
+            if (inverted && used >= threshold) {
+                return 0;
+            } else if (!inverted && used < threshold) {
+                return 0;
+            }
+        }
+
+        return signal;
     }
 
     @AutoValue

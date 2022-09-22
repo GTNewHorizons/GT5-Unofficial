@@ -100,21 +100,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
             }
         }
 
-        byte signal = GT_Utility.convertRatioToRedstone(used, max);
-
-        if (inverted) {
-            signal = (byte) (15 - signal);
-        }
-
-        if (threshold > 0) {
-            if (inverted && used >= threshold) {
-                return 0;
-            } else if (!inverted && used < threshold) {
-                return 0;
-            }
-        }
-        
-        return signal;
+       return GT_Utility.convertRatioToRedstone(used, max, threshold, inverted);
     }
 
     @Override
