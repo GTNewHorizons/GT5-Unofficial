@@ -256,7 +256,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             long step = Math.max(1, Math.abs(delta / 120));
             step = (isShiftKeyDown() ? shiftStep : isCtrlKeyDown() ? ctrlStep : baseStep) * (delta > 0 ? step : -step);
 
-            long value = parseTextBox(box) + step;
+            long value = parseTextBox(box, minValue, maxValue) + step;
             if (value > maxValue) value = maxValue;
             else if (value < minValue) value = minValue;
 
@@ -306,29 +306,41 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             update();
         }
 
-        protected int parseTextBox(GT_GuiIntegerTextBox box) {
+        protected int parseTextBox(GT_GuiIntegerTextBox box, int min, int max) {
             String text = box.getText();
             if (text == null) {
                 return 0;
             }
 
-            long frequency;
+            long value;
             try {
-                frequency = Long.parseLong(text.trim());
+                value = Long.parseLong(text.trim());
             } catch (NumberFormatException e) {
                 return 0;
             }
 
-            if (frequency > Integer.MAX_VALUE) frequency = Integer.MAX_VALUE;
-            else if (frequency < 0) frequency = 0;
-
-            return (int) frequency;
+            if (value >= max) return max;
+            else if (value < min) return min;
+            return (int) value;
+        }
+        
+        protected int parseTextBox(GT_GuiIntegerTextBox box) {
+            return parseTextBox(box, 0, Integer.MAX_VALUE);
         }
 
-        private class GT_GuiShortTextBox extends GT_GuiIntegerTextBox {
+        protected class GT_GuiShortTextBox extends GT_GuiIntegerTextBox {
+
+            private final int min;
+            private final int max;
+
+            public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height, int min, int max) {
+                super(gui, id, x, y, width, height);
+                this.min = min;
+                this.max = max;
+            }
 
             public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height) {
-                super(gui, id, x, y, width, height);
+                this(gui, id, x, y, width, height, 0, Integer.MAX_VALUE);
             }
 
             @Override
@@ -337,7 +349,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
 
                 String text = getText().trim();
                 if (text.length() > 0) {
-                    setText(String.valueOf(parseTextBox(this)));
+                    setText(String.valueOf(parseTextBox(this, min, max)));
                 }
 
                 return true;

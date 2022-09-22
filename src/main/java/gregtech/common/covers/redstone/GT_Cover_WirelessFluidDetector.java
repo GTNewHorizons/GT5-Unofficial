@@ -125,7 +125,7 @@ public class GT_Cover_WirelessFluidDetector extends GT_Cover_AdvancedRedstoneTra
         public FluidTransmitterGUI(byte aSide, int aCoverID, FluidTransmitterData aCoverVariable, ICoverable aTileEntity) {
             super(aSide, aCoverID, aCoverVariable, aTileEntity, 1, 2);
 
-            thresholdBox = new GT_GuiIntegerTextBox(this,1, 1 + startX, 2 + startY, spaceX * 5 - 4, 12);
+            thresholdBox = new GT_GuiShortTextBox(this,1, 1 + startX, 2 + startY, spaceX * 5 - 4, 12);
         }
 
         @Override
