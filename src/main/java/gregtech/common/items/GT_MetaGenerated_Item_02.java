@@ -22,6 +22,7 @@ import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverInternal
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterExternal;
 import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterInternal;
 import gregtech.common.covers.redstone.GT_Cover_WirelessFluidDetector;
+import gregtech.common.covers.redstone.GT_Cover_WirelessItemDetector;
 import gregtech.common.items.behaviors.Behaviour_Arrow;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.enchantment.Enchantment;
@@ -2340,7 +2341,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
             new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
             new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
-        ItemList.Cover_ItemDetector.set(addItem(
+        ItemList.Cover_WirelessItemDetector.set(addItem(
             tLastID = 582,
             "Wireless Item Detector Cover",
             "Transfers Item Amount as Redstone wirelessly",
@@ -2349,7 +2350,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
             new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L)));
 
-        ItemList.Cover_NeedsMaintainance.set(addItem(
+        ItemList.Cover_WirelessNeedsMaintainance.set(addItem(
             tLastID = 583,
             "Wireless Needs Maintenance Cover",
             "Transfers Maintenance Issues as Redstone wirelessly",
@@ -2394,6 +2395,11 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             ItemList.Cover_WirelessFluidDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
             new GT_Cover_WirelessFluidDetector(TextureFactory.of(OVERLAY_FLUIDDETECTOR)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_WirelessItemDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ITEMDETECTOR)),
+            new GT_Cover_WirelessItemDetector(TextureFactory.of(OVERLAY_ITEMDETECTOR)));
 
 
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 0), new ItemStack(Items.dye, 2, 1));
