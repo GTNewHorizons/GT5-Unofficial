@@ -2,6 +2,8 @@ package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.GregTech_API;
+import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
+import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -13,6 +15,7 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -140,6 +143,8 @@ public class GT_Cover_WirelessItemDetector extends GT_Cover_AdvancedRedstoneTran
         private final GT_GuiIntegerTextBox thresholdBox;
         private final GT_GuiIntegerTextBox slotBox;
 
+        private final GT_GuiFakeItemButton fakeItemSlot;
+
         private final int maxSlot;
 
         public ItemTransmitterGUI(byte aSide, int aCoverID, ItemTransmitterData aCoverVariable, ICoverable aTileEntity) {
@@ -153,10 +158,12 @@ public class GT_Cover_WirelessItemDetector extends GT_Cover_AdvancedRedstoneTran
             }
 
             thresholdBox = new GT_GuiShortTextBox(this, 1, 1 + startX, 2 + startY + spaceY * 2, spaceX * 5 - 4, 12, 0, getMaxCount());
-            slotBox = new GT_GuiShortTextBox(this, 2, 1 + startX, 2 + startY + spaceY * 3, spaceX * 3 - 4, 12, -1, maxSlot,
+            slotBox = new GT_GuiShortTextBox(this, 2, 1 + startX, 2 + startY + spaceY * 3, spaceX * 4 - 8, 12, -1, maxSlot,
                     Collections.singletonMap("-1", "All"));
+            fakeItemSlot = new GT_GuiFakeItemButton(this, startX + spaceX * 4 - 1, startY + spaceY * 3, GT_GuiIcon.SLOT_GRAY);
 
             slotBox.setEnabled(maxSlot >= 0);
+            fakeItemSlot.setMimicSlot(true);
         }
 
         @Override
@@ -210,6 +217,14 @@ public class GT_Cover_WirelessItemDetector extends GT_Cover_AdvancedRedstoneTran
             super.update();
             resetTextBox(thresholdBox);
             resetTextBox(slotBox);
+
+            if (coverVariable.slot >= 0 && tile instanceof TileEntity && !tile.isDead() && 
+                    tile.getSizeInventory() >= coverVariable.slot) {
+                ItemStack itemStack = tile.getStackInSlot(coverVariable.slot);
+                fakeItemSlot.setItem(itemStack);
+            } else {
+                fakeItemSlot.setItem(null);
+            }
         }
 
         private int getMaxCount() {
