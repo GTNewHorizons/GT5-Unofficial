@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData> extends GT_Cover_AdvancedWirelessRedstoneBase<T> {
@@ -52,7 +53,10 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
 
     @Override
     protected void preDataChangedImpl(byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable, ICoverable aTileEntity) {
-        unregisterSignal(aSide, aCoverVariable, aTileEntity);
+        if (aCoverVariable.frequency != aNewCoverVariable.frequency ||
+                !Objects.equals(aCoverVariable.uuid, aNewCoverVariable.uuid)) {
+            unregisterSignal(aSide, aCoverVariable, aTileEntity);
+        }
     }
 
     public static class TransmitterData extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData {
