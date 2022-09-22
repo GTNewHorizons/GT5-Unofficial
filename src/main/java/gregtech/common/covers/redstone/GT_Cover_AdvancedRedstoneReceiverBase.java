@@ -122,7 +122,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
                 .setTooltipText(GT_Utility.trans("006", "OR Gate"));
             new GT_GuiIconButton(this, gateModeButtonIdStart + 3, startX + spaceX * 3, startY + spaceY * 2, GT_GuiIcon.NOR_GATE)
                     .setTooltipText(GT_Utility.trans("006", "NOR Gate"));
-            new GT_GuiIconButton(this, gateModeButtonIdStart + 4, startX + spaceX * 4, startY + spaceY * 2, GT_GuiIcon.PROGRESS)
+            new GT_GuiIconButton(this, gateModeButtonIdStart + 4, startX + spaceX * 4, startY + spaceY * 2, GT_GuiIcon.ANALOG_MODE)
                     .setTooltipText("ANALOG Mode", "Only use this mode with ONE transmitter in total,", "no logic involved");
         }
 
