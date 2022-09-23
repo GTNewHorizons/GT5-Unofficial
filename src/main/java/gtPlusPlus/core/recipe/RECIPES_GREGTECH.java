@@ -1497,7 +1497,7 @@ public class RECIPES_GREGTECH {
                     ItemUtils.getItemStackOfAmountFromOreDict("stickBlackSteel", 8)
                 },
                 null,
-                ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard, 32),
+                ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard, 64),
                 30 * 20,
                 500);
 
@@ -1710,7 +1710,7 @@ public class RECIPES_GREGTECH {
             CORE.RA.addSixSlotAssemblingRecipe(
                     new ItemStack[] {
                         ItemUtils.getGregtechCircuit(17),
-                        ItemUtils.getItemStackOfAmountFromOreDict("plateRefinedTrinium", GTNH ? 64 : 32),
+                        ItemUtils.getItemStackOfAmountFromOreDict("plateTrinium", GTNH ? 64 : 32),
                         CI.getSensor(6, GTNH ? 6 : 3),
                         CI.getBolt(7, GTNH ? 64 : 32),
                         ItemUtils.getItemStackOfAmountFromOreDict("wireFinePlatinum", GTNH ? 64 : 32),
