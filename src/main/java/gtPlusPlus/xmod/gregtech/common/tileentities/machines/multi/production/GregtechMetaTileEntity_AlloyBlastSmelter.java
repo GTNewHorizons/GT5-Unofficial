@@ -90,7 +90,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
                 .addSeparator()
                 .beginStructureBlock(3, 4, 3, true)
                 .addController("Bottom Center")
-                .addCasingInfo("Blast Smelter Casings", 10)
+                .addCasingInfo("Blast Smelter Casings", 5)
                 .addCasingInfo("Blast Smelter Heat Containment Coils", 16)
                 .addInputBus("Any Casing", 1)
                 .addInputHatch("Any Casing", 1)
@@ -140,7 +140,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 3, 0) && mCasing >= 10 && mEnergyHatches.size() == 1 && checkHatch();
+        return checkPiece(mName, 1, 3, 0) && mCasing >= 5 && mEnergyHatches.size() == 1 && checkHatch();
     }
 
     @Override
