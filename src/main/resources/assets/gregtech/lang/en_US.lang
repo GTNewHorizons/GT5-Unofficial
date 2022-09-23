@@ -201,6 +201,8 @@ GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip=Show Bounding Box
 GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip=Transpose
 
 GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
+GT5U.type_filter.representation_slot.tooltip.0=left click to forward
+GT5U.type_filter.representation_slot.tooltip.1=right click to back
 
 GT5U.gui.select.current=Current:
 

@@ -3,17 +3,22 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR_GLOW;
 
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_Container_Regulator;
-import gregtech.common.gui.GT_GUIContainer_Regulator;
 import java.util.Collections;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -58,17 +63,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex < 9;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_Regulator(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Regulator(aPlayerInventory, aBaseMetaTileEntity);
+        return aIndex < 9 || aIndex == 19;
     }
 
     @Override
@@ -162,6 +157,58 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
         if (aBaseMetaTileEntity.isServerSide()) {
             charge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
             decharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
+        }
+    }
+
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        addEmitEnergyButton(builder);
+        addChargerSlot(builder, 43, 62);
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(84, true))
+                        .setPos(65, 60)
+                        .setSize(84, 22))
+                .widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
+                        .startFromSlot(0)
+                        .endAtSlot(8)
+                        .build()
+                        .setPos(7, 5))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
+                        .setPos(62, 5)
+                        .setSize(54, 54))
+                .widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
+                        .phantom(true)
+                        .startFromSlot(9)
+                        .endAtSlot(17)
+                        .applyForWidget(widget -> widget.setBackground(GT_UITextures.SLOT_TRANSPARENT))
+                        .build()
+                        .setPos(62, 5))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
+                        .setPos(117, 5)
+                        .setSize(54, 54));
+
+        int xBase = 117, yBase = 5;
+        for (int i = 0; i < mTargetSlots.length; i++) {
+            final int index = i;
+            int xPos = xBase + (i % 3) * 18, yPos = yBase + (i / 3) * 18;
+            builder.widget(
+                            new SlotWidget(BaseSlot.empty()) {
+                                @Override
+                                protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+                                    mTargetSlots[index] = Math.min(
+                                            99,
+                                            Math.max(
+                                                    0,
+                                                    mTargetSlots[index]
+                                                            + (clickData.mouseButton == 0 ? -1 : 1)
+                                                                    * (clickData.shift ? 16 : 1)));
+                                }
+                            }.setBackground(GT_UITextures.SLOT_TRANSPARENT).setPos(xPos, yPos))
+                    .widget(new DynamicTextWidget(
+                                    () -> new Text(String.valueOf(mTargetSlots[index])).color(COLOR_TEXT_WHITE.get()))
+                            .setPos(xPos + 2 + (i % 3 == 0 ? 1 : 0), yPos + 3 + (i / 3 == 0 ? 1 : 0)));
         }
     }
 }

@@ -13,6 +13,7 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -1183,11 +1184,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     // === ModularUI or old GUI ===
 
+    @Deprecated
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return null;
     }
 
+    @Deprecated
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return null;
@@ -1210,6 +1213,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
      */
     protected void addUIWidgets(ModularWindow.Builder builder) {}
+
+    protected void addChargerSlot(ModularWindow.Builder builder, int x, int y) {
+        builder.widget(new SlotWidget(inventoryHandler, rechargerSlotStartIndex())
+                .disableShiftInsert()
+                .setBackground(ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_CHARGER)
+                .setPos(x, y));
+    }
 
     protected void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
@@ -1247,6 +1257,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);
+    protected Supplier<Integer> COLOR_TEXT_WHITE = () -> getTextColorOrDefault("text_white", 0xfafaff);
 
     /**
      * @return The color used to render this machine's GUI

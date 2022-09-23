@@ -2,6 +2,7 @@ package gregtech.api.gui.ModularUI;
 
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -198,18 +199,11 @@ public class GT_UITextures {
     public static final UITexture BUTTON_AUTOOUTPUT_ITEM = UITexture.fullImage(MODID, "gui/button/autooutput_item");
     public static final UITexture BUTTON_AUTOOUTPUT_FLUID = UITexture.fullImage(MODID, "gui/button/autooutput_fluid");
     public static final UITexture BUTTON_CROSS = UITexture.fullImage(MODID, "gui/button/cross");
-    public static final UITexture BUTTON_EMIT_ENERGY = UITexture.fullImage(MODID, "gui/button/emit_energy");
-    public static final UITexture BUTTON_EMIT_REDSTONE = UITexture.fullImage(MODID, "gui/button/emit_redstone");
-    public static final UITexture BUTTON_INVERT_REDSTONE = UITexture.fullImage(MODID, "gui/button/invert_redstone");
-    public static final UITexture BUTTON_BUFFER_TRANSFERMODE =
-            UITexture.fullImage(MODID, "gui/button/buffer_transfermode");
     public static final UITexture BUTTON_LOCK = UITexture.fullImage(MODID, "gui/button/lock");
     public static final UITexture BUTTON_INPUT_FROM_OUTPUT_SIDE =
             UITexture.fullImage(MODID, "gui/button/input_from_output_side");
     public static final UITexture BUTTON_VOID_EXCESS = UITexture.fullImage(MODID, "gui/button/void_excess");
     public static final UITexture BUTTON_VOID_ALL = UITexture.fullImage(MODID, "gui/button/void_all");
-    public static final UITexture BUTTON_INVERT_FILTER = UITexture.fullImage(MODID, "gui/button/invert_filter");
-    public static final UITexture BUTTON_NBT = UITexture.fullImage(MODID, "gui/button/nbt");
     public static final UITexture BUTTON_COVER_NORMAL = UITexture.fullImage(MODID, "gui/button/cover_normal");
     public static final UITexture BUTTON_COVER_NORMAL_HOVERED =
             UITexture.fullImage(MODID, "gui/button/cover_normal_hovered");
@@ -237,6 +231,17 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_ARROW_GREEN_DOWN =
             UITexture.fullImage(MODID, "gui/overlay_button/arrow_green_down");
     public static final UITexture OVERLAY_BUTTON_CYCLIC = UITexture.fullImage(MODID, "gui/overlay_button/cyclic");
+    public static final UITexture OVERLAY_BUTTON_EMIT_ENERGY =
+            UITexture.fullImage(MODID, "gui/overlay_button/emit_energy");
+    public static final UITexture OVERLAY_BUTTON_EMIT_REDSTONE =
+            UITexture.fullImage(MODID, "gui/overlay_button/emit_redstone");
+    public static final UITexture OVERLAY_BUTTON_INVERT_REDSTONE =
+            UITexture.fullImage(MODID, "gui/overlay_button/invert_redstone");
+    public static final UITexture OVERLAY_BUTTON_STOCKING_MODE =
+            UITexture.fullImage(MODID, "gui/overlay_button/stocking_mode");
+    public static final UITexture OVERLAY_BUTTON_INVERT_FILTER =
+            UITexture.fullImage(MODID, "gui/overlay_button/invert_filter");
+    public static final UITexture OVERLAY_BUTTON_NBT = UITexture.fullImage(MODID, "gui/overlay_button/nbt");
     public static final UITexture OVERLAY_BUTTON_PRINT = UITexture.fullImage(MODID, "gui/overlay_button/print");
     public static final UITexture OVERLAY_BUTTON_TRANSPOSE = UITexture.fullImage(MODID, "gui/overlay_button/transpose");
     public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX =
@@ -268,9 +273,66 @@ public class GT_UITextures {
     public static final UITexture PICTURE_SHORTAGE_ELECTRICITY =
             UITexture.fullImage(MODID, "gui/picture/shortage_electricity");
     public static final UITexture PICTURE_SHORTAGE_STEAM = UITexture.fullImage(MODID, "gui/picture/shortage_steam");
-    public static final UITexture PICTURE_ARROW_RED = UITexture.fullImage(MODID, "gui/picture/arrow_red");
-    public static final UITexture PICTURE_ARROW_BLUE = UITexture.fullImage(MODID, "gui/picture/arrow_blue");
-    public static final UITexture PICTURE_ARROW_WHITE = UITexture.fullImage(MODID, "gui/picture/arrow_white");
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_RED =
+            (width, fromRight) -> UITexture.partly(
+                    MODID,
+                    "gui/picture/arrow_22_red",
+                    87,
+                    22,
+                    fromRight ? 87 - width : 0,
+                    0,
+                    fromRight ? 87 : width,
+                    22);
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_BLUE =
+            (width, fromRight) -> UITexture.partly(
+                    MODID,
+                    "gui/picture/arrow_22_blue",
+                    87,
+                    22,
+                    fromRight ? 87 - width : 0,
+                    0,
+                    fromRight ? 87 : width,
+                    22);
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_WHITE =
+            (width, fromRight) -> UITexture.partly(
+                    MODID,
+                    "gui/picture/arrow_22_white",
+                    87,
+                    22,
+                    fromRight ? 87 - width : 0,
+                    0,
+                    fromRight ? 87 : width,
+                    22);
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_RED =
+            (width, fromRight) -> UITexture.partly(
+                    MODID,
+                    "gui/picture/arrow_24_red",
+                    69,
+                    24,
+                    fromRight ? 69 - width : 0,
+                    0,
+                    fromRight ? 69 : width,
+                    24);
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_BLUE =
+            (width, fromRight) -> UITexture.partly(
+                    MODID,
+                    "gui/picture/arrow_24_blue",
+                    69,
+                    24,
+                    fromRight ? 69 - width : 0,
+                    0,
+                    fromRight ? 69 : width,
+                    24);
+    public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_24_WHITE =
+            (width, fromRight) -> UITexture.partly(
+                    MODID,
+                    "gui/picture/arrow_24_white",
+                    69,
+                    24,
+                    fromRight ? 69 - width : 0,
+                    0,
+                    fromRight ? 69 : width,
+                    24);
     public static final UITexture PICTURE_FLUID_WINDOW = UITexture.fullImage(MODID, "gui/picture/fluid_window");
     public static final UITexture PICTURE_FLUID_TANK = UITexture.fullImage(MODID, "gui/picture/fluid_tank");
     public static final UITexture PICTURE_SLOTS_HOLO_3BY3 = UITexture.fullImage(MODID, "gui/picture/slots_holo_3by3");

@@ -3,6 +3,10 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -224,12 +228,12 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     public abstract ITexture getOverlayIcon();
 
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
-        return true;
-    }
+    //    @Override
+    //    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    //        if (aBaseMetaTileEntity.isClientSide()) return true;
+    //        aBaseMetaTileEntity.openGUI(aPlayer);
+    //        return true;
+    //    }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -426,5 +430,92 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
             return true;
         }
         return super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    protected void addEmitEnergyButton(ModularWindow.Builder builder) {
+        builder.widget(new ButtonWidget()
+                .setOnClick(((clickData, widget) -> {
+                    bOutput = !bOutput;
+                    if (bOutput) {
+                        GT_Utility.sendChatToPlayer(
+                                widget.getContext().getPlayer(), GT_Utility.trans("116", "Emit Energy to Outputside"));
+                    } else {
+                        GT_Utility.sendChatToPlayer(
+                                widget.getContext().getPlayer(), GT_Utility.trans("117", "Don't emit Energy"));
+                    }
+                }))
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
+                .setPos(7, 62)
+                .setSize(18, 18));
+    }
+
+    protected void addEmitRedstoneButton(ModularWindow.Builder builder) {
+        builder.widget(new ButtonWidget()
+                .setOnClick(((clickData, widget) -> {
+                    bRedstoneIfFull = !bRedstoneIfFull;
+                    if (bRedstoneIfFull) {
+                        GT_Utility.sendChatToPlayer(
+                                widget.getContext().getPlayer(),
+                                GT_Utility.trans("118", "Emit Redstone if no Slot is free"));
+                    } else {
+                        GT_Utility.sendChatToPlayer(
+                                widget.getContext().getPlayer(), GT_Utility.trans("119", "Don't emit Redstone"));
+                    }
+                }))
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE)
+                .setPos(25, 62)
+                .setSize(18, 18));
+    }
+
+    protected void addInvertRedstoneButton(ModularWindow.Builder builder) {
+        builder.widget(new ButtonWidget()
+                .setOnClick(((clickData, widget) -> {
+                    bInvert = !bInvert;
+                    if (bInvert) {
+                        GT_Utility.sendChatToPlayer(
+                                widget.getContext().getPlayer(), GT_Utility.trans("120", "Invert Redstone"));
+                    } else {
+                        GT_Utility.sendChatToPlayer(
+                                widget.getContext().getPlayer(), GT_Utility.trans("121", "Don't invert Redstone"));
+                    }
+                }))
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
+                .setPos(43, 62)
+                .setSize(18, 18));
+    }
+
+    protected void addStockingModeButton(ModularWindow.Builder builder) {
+        builder.widget(new ButtonWidget()
+                .setOnClick(((clickData, widget) -> {
+                    bStockingMode = !bStockingMode;
+                    if (bStockingMode) {
+                        GT_Utility.sendChatToPlayer(
+                                widget.getContext().getPlayer(),
+                                GT_Utility.trans(
+                                        "217",
+                                        "Stocking mode. Keeps this many items in destination input slots. This mode can be server unfriendly."));
+                    } else {
+                        GT_Utility.sendChatToPlayer(
+                                widget.getContext().getPlayer(),
+                                GT_Utility.trans(
+                                        "218",
+                                        "Transfer size mode. Add exactly this many items in destination input slots as long as there is room."));
+                    }
+                }))
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE)
+                .setPos(61, 62)
+                .setSize(18, 18));
+    }
+
+    protected void addInventorySlots(ModularWindow.Builder builder) {
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 9)
+                .endAtSlot(26)
+                .build()
+                .setPos(7, 4));
     }
 }
