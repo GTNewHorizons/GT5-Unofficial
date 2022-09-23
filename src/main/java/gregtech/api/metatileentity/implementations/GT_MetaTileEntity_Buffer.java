@@ -228,13 +228,6 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     public abstract ITexture getOverlayIcon();
 
-    //    @Override
-    //    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-    //        if (aBaseMetaTileEntity.isClientSide()) return true;
-    //        aBaseMetaTileEntity.openGUI(aPlayer);
-    //        return true;
-    //    }
-
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setBoolean("bInvert", bInvert);
