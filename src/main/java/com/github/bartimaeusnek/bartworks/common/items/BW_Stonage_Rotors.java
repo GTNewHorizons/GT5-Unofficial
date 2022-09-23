@@ -32,16 +32,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.IKineticRotor;
 import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
 import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
+import ic2.core.util.StackUtil;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraft.nbt.NBTTagCompound;
-import ic2.core.util.StackUtil;
 
 public class BW_Stonage_Rotors extends Item implements IKineticRotor {
 
@@ -99,7 +99,8 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
         }
         info.add(StatCollector.translateToLocal("tooltip.rotor.0.name") + " " + this.DiaMinMax[0]);
         info.add(StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
-                + ((this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100) + "/" + (this.getMaxDamageEx() / 100));
+                + ((this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100) + "/"
+                + (this.getMaxDamageEx() / 100));
         info.add(StatCollector.translateToLocal("tooltip.rotor.2.name") + " " + this.eff);
         info.add(StatCollector.translateToLocal("tooltip.rotor.3.name") + " " + this.speed);
         info.add(StatCollector.translateToLocal("tooltip.rotor.4.name") + " " + this.mRotor);

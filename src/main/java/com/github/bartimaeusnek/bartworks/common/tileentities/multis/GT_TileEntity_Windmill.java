@@ -28,10 +28,9 @@ import static gregtech.api.enums.GT_Values.V;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.BW_GUIContainer_Windmill;
-import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
 import com.github.bartimaeusnek.bartworks.common.items.BW_Stonage_Rotors;
+import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
 import com.github.bartimaeusnek.bartworks.server.container.BW_Container_Windmill;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -41,9 +40,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -56,11 +53,11 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -72,7 +69,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import ic2.api.item.IKineticRotor;
 
 public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_Windmill>
         implements ISurvivalConstructable {
@@ -182,43 +178,49 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
     }
 
     private float[] multiplierRecipe(ItemStack itemStack) {
-        //will return max and min value of the multiplier, the average of these is used to calculate the multiplier.
+        // will return max and min value of the multiplier, the average of these is used to calculate the multiplier.
         if (itemStack.getItem().equals(Items.wheat)) return new float[] {1.13f, 1.5f};
         else if (itemStack.getItem().equals(Items.bone)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.glowstone)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.pumpkin)) return new float[] {0.8f, 1f};
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.glowstone)
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.pumpkin)) return new float[] {0.8f, 1f};
         else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.gravel)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.cobblestone)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.stone)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.sandstone)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.clay)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.hardened_clay)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.stained_hardened_clay)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.wool)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.netherrack)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.log)
-              || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.log2)) return new float[] {1f, 1.5f};
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.cobblestone)
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.stone)
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.sandstone)
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.clay)
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.hardened_clay)
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.stained_hardened_clay)
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.wool)
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.netherrack)
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.log)
+                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.log2)) return new float[] {1f, 1.5f};
         else if (GT_OreDictUnificator.getAssociation(itemStack) == null
-              || GT_OreDictUnificator.getAssociation(itemStack).mPrefix == null
-              || GT_OreDictUnificator.getAssociation(itemStack).mMaterial == null
-              || GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial == null
-              || GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.getDust(1) == null) return new float[] {1f, 1f};
+                || GT_OreDictUnificator.getAssociation(itemStack).mPrefix == null
+                || GT_OreDictUnificator.getAssociation(itemStack).mMaterial == null
+                || GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial == null
+                || GT_OreDictUnificator.getAssociation(itemStack)
+                                .mMaterial
+                                .mMaterial
+                                .getDust(1)
+                        == null) return new float[] {1f, 1f};
         else if (OrePrefixes.ore.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.oreNetherrack.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.oreEndstone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.oreBlackgranite.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.oreRedgranite.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.oreMarble.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.oreBasalt.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)) return new float[] {0.5f, 1f};
+                || OrePrefixes.oreNetherrack.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.oreEndstone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.oreBlackgranite.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.oreRedgranite.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.oreMarble.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.oreBasalt.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix))
+            return new float[] {0.5f, 1f};
         else if (OrePrefixes.stone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.stoneBricks.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.stoneChiseled.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.stoneCobble.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.stoneCracked.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.stoneMossy.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.stoneMossyBricks.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.stoneSmooth.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-              || OrePrefixes.cobblestone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)) return new float[] {1f, 1.5f};
+                || OrePrefixes.stoneBricks.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.stoneChiseled.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.stoneCobble.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.stoneCracked.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.stoneMossy.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.stoneMossyBricks.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.stoneSmooth.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
+                || OrePrefixes.cobblestone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix))
+            return new float[] {1f, 1.5f};
         return new float[] {1f, 1f};
     }
 
@@ -245,13 +247,17 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
             this.updateSlots();
             this.mOutputItems[0] = tRecipe.getOutput(0);
             float[] mRecipe = multiplierRecipe(itemStack);
-            float multiper = Math.min(mRecipe[1], Math.max(mRecipe[0] ,
-                 2f * ((float) Math.sqrt((float)1 / (this.rotorBlock.getWindStrength() + 1)))
-                    * OutputMultiplier(rotorBlock)
-                    * (mRecipe[0] + mRecipe[1])));
+            float multiper = Math.min(
+                    mRecipe[1],
+                    Math.max(
+                            mRecipe[0],
+                            2f
+                                    * ((float) Math.sqrt((float) 1 / (this.rotorBlock.getWindStrength() + 1)))
+                                    * OutputMultiplier(rotorBlock)
+                                    * (mRecipe[0] + mRecipe[1])));
             int amount = Math.round(multiper * (this.mOutputItems[0].stackSize * this.mMulti));
 
-            //Split ItemStack --by gtpp
+            // Split ItemStack --by gtpp
             List<ItemStack> splitStacks = new ArrayList<>();
             while (amount > this.mOutputItems[0].getMaxStackSize()) {
                 ItemStack tmp = this.mOutputItems[0];
@@ -264,7 +270,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
             splitStacks.add(tmp);
             mOutputItems = splitStacks.toArray(new ItemStack[splitStacks.size()]);
         }
-        this.mMaxProgresstime =  (tRecipe.mDuration * 2 * 100 * this.mMulti) / (int) getSpeed(rotorBlock);
+        this.mMaxProgresstime = (tRecipe.mDuration * 2 * 100 * this.mMulti) / (int) getSpeed(rotorBlock);
         this.mMulti = 16;
         return true;
     }
@@ -490,7 +496,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
     public float OutputMultiplier(BW_RotorBlock rotorBlock) {
         try {
             return ((BW_Stonage_Rotors) rotorBlock.rotorSlot.get().getItem()).getmRotor();
-        } catch (Exception e){
+        } catch (Exception e) {
             return 1f;
         }
     }
@@ -498,15 +504,16 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
     public int getSpeed(BW_RotorBlock rotorBlock) {
         try {
             return ((BW_Stonage_Rotors) rotorBlock.rotorSlot.get().getItem()).getSpeed();
-        } catch (Exception e){
+        } catch (Exception e) {
             return 1;
         }
     }
 
     public void setRotorDamage(BW_RotorBlock rotorBlock, int damage) {
         try {
-            ((BW_Stonage_Rotors) rotorBlock.rotorSlot.get().getItem()).damageItemStack(rotorBlock.rotorSlot.get() , damage);
-        } catch (Exception e){
+            ((BW_Stonage_Rotors) rotorBlock.rotorSlot.get().getItem())
+                    .damageItemStack(rotorBlock.rotorSlot.get(), damage);
+        } catch (Exception e) {
             rotorBlock.rotorSlot.damage(damage, false);
         }
     }
