@@ -146,7 +146,6 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                 }
             }
 
-
             // How much the turbine should be producing with this flow
             int newPower = fluidIntoPower(tFluids, optFlow, baseEff, flowMultipliers);
             int difference = newPower - this.mEUt; // difference between current output and new output
@@ -227,7 +226,6 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
             }
             if (totalFlow <= 0) return 0;
             tEU = GT_Utility.safeInt((long) ((fuelValue / 20D) * (double) totalFlow));
-
 
             if (totalFlow == actualOptimalFlow) {
                 tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
