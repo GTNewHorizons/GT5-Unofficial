@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+
+import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_2by2;
 import gregtech.api.gui.GT_GUIContainer_2by2;
@@ -8,6 +12,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -35,12 +40,16 @@ public class GT_MetaTileEntity_Hatch_Steam_BusOutput extends GT_MetaTileEntity_H
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
+                ? new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN)}
+                : new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
+                ? new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN)}
+                : new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT)};
     }
 
     @Override

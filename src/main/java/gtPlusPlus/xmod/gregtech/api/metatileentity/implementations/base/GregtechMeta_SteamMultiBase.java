@@ -1,22 +1,24 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.*;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusOutput;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -807,5 +809,44 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
             if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
         for (GT_MetaTileEntity_Hatch_Steam_BusInput tHatch : mSteamInputs)
             if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
+    }
+
+    protected static <T extends GregtechMeta_SteamMultiBase<T>> GT_HatchElementBuilder<T> buildSteamInput(
+            Class<T> typeToken) {
+        return buildHatchAdder(typeToken)
+                .adder(GregtechMeta_SteamMultiBase::addToMachineList)
+                .hatchIds(31040)
+                .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
+    }
+
+    protected enum SteamHatchElement implements IHatchElement<GregtechMeta_SteamMultiBase<?>> {
+        InputBus_Steam {
+            @Override
+            public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+                return Collections.singletonList(GT_MetaTileEntity_Hatch_Steam_BusInput.class);
+            }
+
+            @Override
+            public long count(GregtechMeta_SteamMultiBase<?> t) {
+                return t.mSteamInputs.size();
+            }
+        },
+        OutputBus_Steam {
+            @Override
+            public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+                return Collections.singletonList(GT_MetaTileEntity_Hatch_Steam_BusOutput.class);
+            }
+
+            @Override
+            public long count(GregtechMeta_SteamMultiBase<?> t) {
+                return t.mSteamOutputs.size();
+            }
+        },
+        ;
+
+        @Override
+        public IGT_HatchAdder<? super GregtechMeta_SteamMultiBase<?>> adder() {
+            return GregtechMeta_SteamMultiBase::addToMachineList;
+        }
     }
 }

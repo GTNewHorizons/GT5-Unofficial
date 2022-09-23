@@ -5,9 +5,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTech_API.sBlockCasings1;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,13 +18,11 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusOutput;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
 import net.minecraft.item.ItemStack;
 
-public class GregtechMetaTileEntity_SteamCompressor extends GregtechMeta_SteamMultiBase {
+public class GregtechMetaTileEntity_SteamCompressor
+        extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamCompressor> implements ISurvivalConstructable {
 
     private String mCasingName = "Bronze Plated Bricks";
     private IStructureDefinition<GregtechMetaTileEntity_SteamCompressor> STRUCTURE_DEFINITION = null;
@@ -85,33 +85,30 @@ public class GregtechMetaTileEntity_SteamCompressor extends GregtechMeta_SteamMu
                     .addElement(
                             'C',
                             ofChain(
-                                    ofHatchAdder(GregtechMetaTileEntity_SteamCompressor::addSteamMultiList, 10, 1),
+                                    buildSteamInput(GregtechMetaTileEntity_SteamCompressor.class)
+                                            .casingIndex(10)
+                                            .dot(1)
+                                            .build(),
+                                    buildHatchAdder(GregtechMetaTileEntity_SteamCompressor.class)
+                                            .atLeast(
+                                                    SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                                            .casingIndex(10)
+                                            .dot(1)
+                                            .build(),
                                     onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings1, 10))))
                     .build();
         }
         return STRUCTURE_DEFINITION;
     }
 
-    public final boolean addSteamMultiList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CustomFluidBase
-                    && aMetaTileEntity.getBaseMetaTileEntity().getMetaTileID() == 31040) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusInput) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusOutput) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            }
-        }
-        return false;
-    }
-
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override

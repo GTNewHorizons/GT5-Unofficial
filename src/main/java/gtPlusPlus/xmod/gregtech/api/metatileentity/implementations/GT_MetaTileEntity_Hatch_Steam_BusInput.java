@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.Textures.BlockIcons.ITEM_IN_SIGN;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
+
+import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_2by2;
 import gregtech.api.gui.GT_GUIContainer_2by2;
@@ -8,6 +12,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -43,12 +48,16 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_IN)};
+        return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
+                ? new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN)}
+                : new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_IN)};
+        return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
+                ? new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN)}
+                : new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN)};
     }
 
     @Override
