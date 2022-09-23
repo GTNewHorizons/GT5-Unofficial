@@ -40,6 +40,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.nbt.NBTTagCompound;
+import ic2.core.util.StackUtil;
 
 public class BW_Stonage_Rotors extends Item implements IKineticRotor {
 
@@ -48,10 +50,16 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
     private final IKineticRotor.GearboxType type;
     private final ResourceLocation tex;
     private final String itemTex;
+    private final int speed;
+    private final float mRotor;
+    private final int maxDamageEx;
+    private int dura;
 
     public BW_Stonage_Rotors(
             int diameter,
             float eff,
+            int speed,
+            float mRotor,
             int min,
             int max,
             int durability,
@@ -63,9 +71,12 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
         this.DiaMinMax[1] = min;
         this.DiaMinMax[2] = max;
         this.eff = eff;
+        this.mRotor = mRotor;
+        this.speed = speed;
         this.type = type;
         this.tex = tex;
-        this.setMaxDamage(durability);
+        this.setMaxDamage(30000);
+        this.maxDamageEx = durability;
         this.setUnlocalizedName(Name);
         this.setCreativeTab(MainMod.BWT);
         this.itemTex = itemTex;
@@ -88,8 +99,10 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
         }
         info.add(StatCollector.translateToLocal("tooltip.rotor.0.name") + " " + this.DiaMinMax[0]);
         info.add(StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
-                + (this.getMaxDamage() - this.getDamage(itemStack)) + "/" + this.getMaxDamage());
+                + ((this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100) + "/" + (this.getMaxDamageEx() / 100));
         info.add(StatCollector.translateToLocal("tooltip.rotor.2.name") + " " + this.eff);
+        info.add(StatCollector.translateToLocal("tooltip.rotor.3.name") + " " + this.speed);
+        info.add(StatCollector.translateToLocal("tooltip.rotor.4.name") + " " + this.mRotor);
         if (type != null) {
             info.add(StatCollector.translateToLocal(("ic2.itemrotor.fitsin." + this.isAcceptedType(itemStack, type))));
         }
@@ -124,5 +137,41 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
     @Override
     public boolean isAcceptedType(ItemStack itemStack, IKineticRotor.GearboxType gearboxType) {
         return gearboxType.equals(this.type);
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public float getmRotor() {
+        return mRotor;
+    }
+
+    public void setDamageForStack(ItemStack stack, int advDmg) {
+        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+        nbtData.setInteger("DmgEx", advDmg);
+        if (this.maxDamageEx > 0) {
+            double p = (double) advDmg / (double) this.maxDamageEx;
+            int newDmg = (int) (stack.getMaxDamage() * p);
+            if (newDmg >= stack.getMaxDamage()) {
+                newDmg = stack.getMaxDamage() - 1;
+            }
+            stack.setItemDamage(newDmg);
+            this.dura = newDmg;
+        }
+    }
+
+    public int getDamageOfStack(ItemStack stack) {
+        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
+        this.dura = nbtData.getInteger("DmgEx");
+        return this.dura;
+    }
+
+    public int getMaxDamageEx() {
+        return this.maxDamageEx;
+    }
+
+    public void damageItemStack(ItemStack stack, int Dmg) {
+        setDamageForStack(stack, getDamageOfStack(stack) + Dmg);
     }
 }

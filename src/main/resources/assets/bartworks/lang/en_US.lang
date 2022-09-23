@@ -75,6 +75,8 @@ tooltip.windmeter.8.name=The wind here seems to be
 tooltip.rotor.0.name=Diameter:
 tooltip.rotor.1.name=Durability:
 tooltip.rotor.2.name=Efficiency:
+tooltip.rotor.3.name=Speed:
+tooltip.rotor.4.name=Output:
 tooltip.cp.0.name=Has Circuit inside?
 
 tooltip.bw.0.name=Added by
