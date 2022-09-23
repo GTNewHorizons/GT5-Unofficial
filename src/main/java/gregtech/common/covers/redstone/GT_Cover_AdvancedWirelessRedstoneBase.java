@@ -86,6 +86,22 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
         signals.put(hash, value);
     }
 
+    /**
+     *  x    hashed into first 20 bytes
+     *  y    hashed into second 20 bytes
+     *  z    hashed into fifth 10 bytes
+     *  dim  hashed into sixth 10 bytes
+     *  side hashed into last 4 bytes
+     */
+    public static long hashCoverCoords(ICoverable tile, byte side) {
+        return (((((long)
+            tile.getXCoord() << 20) +
+            tile.getZCoord() << 10) +
+            tile.getYCoord() << 10) +
+            tile.getWorld().provider.dimensionId << 4) +
+            side;
+    }
+
     @Override
     public boolean letsEnergyInImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return true;

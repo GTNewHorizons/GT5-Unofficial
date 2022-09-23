@@ -1,7 +1,6 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.GregTech_API;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -38,7 +37,7 @@ public class GT_Cover_WirelessFluidDetector extends GT_Cover_AdvancedRedstoneTra
     public FluidTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
                                                   FluidTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = GT_Cover_LiquidMeter.computeSignalBasedOnFluid(aTileEntity, aCoverVariable.invert, aCoverVariable.threshold);
-        long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
+        long hash = hashCoverCoords(aTileEntity, aSide);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
         return aCoverVariable;

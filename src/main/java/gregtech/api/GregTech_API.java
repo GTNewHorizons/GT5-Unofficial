@@ -20,7 +20,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.items.GT_CoolantCellIC_Item;
 import gregtech.api.items.GT_CoolantCell_Item;
@@ -177,22 +176,6 @@ public class GregTech_API {
      * The Advanced Redstone Frequencies
      */
     public static final Map<String, Map<Integer, Map<Long, Byte>>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
-
-    /**
-     *  x    hashed into first 20 bytes
-     *  y    hashed into second 20 bytes
-     *  z    hashed into fifth 10 bytes
-     *  dim  hashed into sixth 10 bytes
-     *  side hashed into last 4 bytes
-     */
-    public static long hashCoverCoords(ICoverable tile, byte side) {
-        return (((((long)
-            tile.getXCoord() << 20) +
-            tile.getZCoord() << 10) +
-            tile.getYCoord() << 10) +
-            tile.getWorld().provider.dimensionId << 4) +
-            side;
-    }
 
     /**
      * The IDSU Frequencies

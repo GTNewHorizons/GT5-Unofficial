@@ -1,7 +1,6 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.GregTech_API;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.ITexture;
@@ -96,7 +95,7 @@ public class GT_Cover_WirelessMaintenanceDetector extends GT_Cover_AdvancedRedst
     public MaintenanceTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
                                                         MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = computeSignalBasedOnMaintenance(aCoverVariable, aTileEntity);
-        long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
+        long hash = hashCoverCoords(aTileEntity, aSide);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
         
         return aCoverVariable;

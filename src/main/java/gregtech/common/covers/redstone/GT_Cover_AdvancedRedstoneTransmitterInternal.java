@@ -1,6 +1,5 @@
 package gregtech.common.covers.redstone;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
@@ -29,7 +28,7 @@ public class GT_Cover_AdvancedRedstoneTransmitterInternal extends GT_Cover_Advan
             else outputRedstone = 15;
         }
 
-        long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
+        long hash = hashCoverCoords(aTileEntity, aSide);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, outputRedstone);
         return aCoverVariable;
     }

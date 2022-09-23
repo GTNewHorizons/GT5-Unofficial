@@ -1,7 +1,6 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.GregTech_API;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
@@ -46,7 +45,7 @@ public class GT_Cover_WirelessItemDetector extends GT_Cover_AdvancedRedstoneTran
                                                  ItemTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = GT_Cover_ItemMeter.computeSignalBasedOnItems(
                 aTileEntity, aCoverVariable.invert, aCoverVariable.threshold, aCoverVariable.slot, aSide);
-        long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
+        long hash = hashCoverCoords(aTileEntity, aSide);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
         return aCoverVariable;

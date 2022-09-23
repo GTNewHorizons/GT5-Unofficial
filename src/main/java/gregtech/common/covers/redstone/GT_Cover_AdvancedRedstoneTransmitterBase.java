@@ -1,7 +1,6 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.GregTech_API;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.ITexture;
@@ -27,7 +26,7 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
     }
 
     private static void unregisterSignal(byte aSide, TransmitterData aCoverVariable, ICoverable aTileEntity) {
-        long hash = GregTech_API.hashCoverCoords(aTileEntity, aSide);
+        long hash = hashCoverCoords(aTileEntity, aSide);
         removeSignalAt(aCoverVariable.uuid, aCoverVariable.frequency, hash);
     }
 
