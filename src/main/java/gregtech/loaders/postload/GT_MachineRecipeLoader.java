@@ -7153,6 +7153,20 @@ public class GT_MachineRecipeLoader implements Runnable {
                 30,
                 30);
         GT_Values.RA.addElectrolyzerRecipe(
+                GT_ModHandler.getIC2Item("electrolyzedWaterCell", 1L),
+                GT_Utility.getIntegratedCircuit(1),
+                GT_Values.NF,
+                Materials.Hydrogen.getGas(2000L),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L),
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                null,
+                30,
+                30);
+        GT_Values.RA.addElectrolyzerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L),
                 0,
                 GT_ModHandler.getIC2Item("electrolyzedWaterCell", 1L),
