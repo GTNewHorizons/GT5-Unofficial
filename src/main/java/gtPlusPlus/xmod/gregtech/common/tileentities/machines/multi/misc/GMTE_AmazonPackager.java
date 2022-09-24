@@ -13,7 +13,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,12 +40,6 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     private long mVoltage;
     private byte mTier;
     private int mCasing;
-
-    private ItemStack mSchematicCache;
-    ;
-    private ItemStack mInputCache;
-    private ItemStack mOutputCache;
-    private GT_Recipe mCachedRecipe;
 
     private IStructureDefinition<GMTE_AmazonPackager> STRUCTURE_DEFINITION = null;
 
@@ -256,128 +249,6 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
         return false;
     }
 
-    private ItemStack getSchematic(ItemStack[] aInputs) {
-        for (ItemStack aStack : aInputs) {
-            if (ItemList.Schematic_Dust.isStackEqual(aStack)
-                    || ItemList.Schematic_1by1.isStackEqual(aStack)
-                    || ItemList.Schematic_2by2.isStackEqual(aStack)
-                    || ItemList.Schematic_3by3.isStackEqual(aStack)) {
-                return aStack;
-            }
-        }
-        return null;
-    }
-
-    private ItemStack getRecipeInput(ItemStack[] aInputs) {
-        for (ItemStack aStack : aInputs) {
-            if (!ItemList.Schematic_Dust.isStackEqual(aStack)
-                    && !ItemList.Schematic_1by1.isStackEqual(aStack)
-                    && !ItemList.Schematic_2by2.isStackEqual(aStack)
-                    && !ItemList.Schematic_3by3.isStackEqual(aStack)) {
-                return aStack;
-            }
-        }
-        return null;
-    }
-
-    private boolean hasValidCache(ItemStack aStack, ItemStack aSchematic, boolean aClearOnFailure) {
-        if (mSchematicCache != null && mInputCache != null && mOutputCache != null && mCachedRecipe != null) {
-            if (GT_Utility.areStacksEqual(aStack, mInputCache)
-                    && GT_Utility.areStacksEqual(aSchematic, mSchematicCache)) {
-                return true;
-            }
-        }
-        // clear cache if it was invalid
-        if (aClearOnFailure) {
-            mSchematicCache = null;
-            mInputCache = null;
-            mOutputCache = null;
-            mCachedRecipe = null;
-        }
-        return false;
-    }
-
-    private void cacheItem(ItemStack aSchematic, ItemStack aInputItem, ItemStack aOutputItem, GT_Recipe aRecipe) {
-        mSchematicCache = aSchematic.copy();
-        mInputCache = aInputItem.copy();
-        mOutputCache = aOutputItem.copy();
-        mCachedRecipe = aRecipe;
-    }
-
-    private GT_Recipe generatePackageRecipe(ItemStack aSchematic, ItemStack aInput) {
-        boolean tIsCached = hasValidCache(aInput, aSchematic, true);
-        if (tIsCached) {
-            ItemStack tOutput = mOutputCache.copy();
-            if (tOutput != null) {
-                if (mCachedRecipe != null
-                        && GT_Utility.areStacksEqual(aInput, mInputCache)
-                        && GT_Utility.areStacksEqual(tOutput, mOutputCache)) {
-                    int aRequiredInputSize = 0;
-                    if (ItemList.Schematic_Dust.isStackEqual(aSchematic)) {
-                        if (OrePrefixes.dustTiny.contains(aInput)) {
-                            aRequiredInputSize = 9;
-                        }
-                        if (OrePrefixes.dustSmall.contains(aInput)) {
-                            aRequiredInputSize = 4;
-                        }
-                        if (OrePrefixes.dust.contains(aInput)) {
-                            aRequiredInputSize = 1;
-                        }
-                    }
-                    if (ItemList.Schematic_1by1.isStackEqual(aSchematic)) {
-                        aRequiredInputSize = 1;
-                    }
-                    if (ItemList.Schematic_2by2.isStackEqual(aSchematic)) {
-                        aRequiredInputSize = 4;
-                    }
-                    if (ItemList.Schematic_3by3.isStackEqual(aSchematic)) {
-                        aRequiredInputSize = 9;
-                    }
-                    if (aInput.stackSize >= aRequiredInputSize) {
-                        log("Using Cached Recipe. Require: " + aRequiredInputSize + ", Found: " + aInput.stackSize);
-                        return mCachedRecipe;
-                    } else {
-                        log("Not enough input");
-                    }
-                }
-            }
-        }
-        // We can package this
-        GT_Recipe aRecipe = lookupRecipe();
-        log("Looking up new recipe");
-        if (aRecipe != null) {
-            // Cache it
-            aInput = aInput != null ? aInput : getRecipeInput(aRecipe.mInputs);
-            cacheItem(aSchematic, aInput, aRecipe.mOutputs[0], aRecipe);
-            if (hasValidCache(aInput, aSchematic, false)) {
-                log("Caching Recipe");
-                return aRecipe;
-            }
-        }
-        return null;
-    }
-
-    private GT_Recipe lookupRecipe() {
-        ArrayList<ItemStack> aItems = getStoredInputs();
-        if (this.getGUIItemStack() != null) {
-            aItems.add(this.getGUIItemStack());
-        }
-        ItemStack[] aItemInputs = aItems.toArray(new ItemStack[aItems.size()]);
-        GT_Recipe tRecipe = findRecipe(
-                getBaseMetaTileEntity(),
-                mLastRecipe,
-                false,
-                false,
-                gregtech.api.enums.GT_Values.V[mTier],
-                sNoFluids,
-                aItemInputs);
-
-        if (tRecipe != null) {
-            return tRecipe;
-        }
-        return null;
-    }
-
     @Override
     public boolean checkRecipeGeneric(
             ItemStack[] aItemInputs,
@@ -400,13 +271,16 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
         long tEnergy = getMaxInputEnergy();
         log("Running checkRecipeGeneric(0)");
 
-        ItemStack aInput = getRecipeInput(aItemInputs);
-        ItemStack aSchematic = getSchematic(aItemInputs);
-        GT_Recipe tRecipe = generatePackageRecipe(aSchematic, aInput);
+        GT_Recipe tRecipe = findRecipe(
+                getBaseMetaTileEntity(),
+                mLastRecipe,
+                false,
+                false,
+                gregtech.api.enums.GT_Values.V[tTier],
+                aFluidInputs,
+                aItemInputs);
 
-        ItemStack[] aRealInputs = new ItemStack[] {aSchematic, aInput};
         log("Running checkRecipeGeneric(1)");
-        // Remember last recipe - an optimization for findRecipe()
         this.mLastRecipe = tRecipe;
 
         if (tRecipe == null) {
@@ -442,8 +316,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
         }
 
         if (parallelRecipes == 0) {
-            mCachedRecipe = null;
-            log("BAD RETURN - 3 - Reset Cached Recipe");
+            log("BAD RETURN - 3");
             return false;
         }
 
