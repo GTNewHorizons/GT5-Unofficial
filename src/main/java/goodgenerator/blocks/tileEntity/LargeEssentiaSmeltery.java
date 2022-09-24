@@ -25,7 +25,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import java.util.ArrayList;
 import java.util.Map;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -469,7 +468,7 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
                     default:
                         y += 1;
                 }
-                if (WORLD.getBlock(x, y, z) instanceof BlockAir) generateFluxGas(WORLD, x, y, z);
+                generateFluxGas(WORLD, x, y, z);
             }
         }
         return super.onRunningTick(aStack);
