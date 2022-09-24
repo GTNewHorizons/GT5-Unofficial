@@ -915,8 +915,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         Materials.Ice.mGas = Materials.Water.mGas;
         Materials.Water.mGas.setTemperature(375).setGaseous(true);
 
-        ItemList.sOilExtraHeavy = GT_FluidFactory.of("liquid_extra_heavy_oil", "Very Heavy Oil", LIQUID, 295)
-                .asFluid();
+        ItemList.sOilExtraHeavy = GT_FluidFactory.of("liquid_extra_heavy_oil", "Very Heavy Oil", LIQUID, 295);
         ItemList.sEpichlorhydrin = GT_FluidFactory.builder("liquid_epichlorhydrin")
                 .withLocalizedName("Epichlorohydrin")
                 .withStateAndTemperature(LIQUID, 295)
@@ -924,8 +923,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 .configureMaterials(Materials.Epichlorohydrin)
                 .registerBContainers(Materials.Epichlorohydrin.getCells(1), Materials.Empty.getCells(1))
                 .asFluid();
-        ItemList.sDrillingFluid = GT_FluidFactory.of("liquid_drillingfluid", "Drilling Fluid", LIQUID, 295)
-                .asFluid();
+        ItemList.sDrillingFluid = GT_FluidFactory.of("liquid_drillingfluid", "Drilling Fluid", LIQUID, 295);
         ItemList.sToluene = GT_FluidFactory.builder("liquid_toluene")
                 .withLocalizedName("Toluene")
                 .withStateAndTemperature(LIQUID, 295)
@@ -1321,21 +1319,23 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         for (byte i = 0; i < Dyes.VALUES.length; i = (byte) (i + 1)) {
             Dyes tDye = Dyes.VALUES[i];
             Fluid tFluid;
-            tDye.addFluidDye((Fluid)
+            tDye.addFluidDye(
                     GT_FluidFactory.builder("dye.watermixed." + tDye.name().toLowerCase(Locale.ENGLISH))
                             .withTextureName("dyes")
                             .withLocalizedName("Water Mixed " + tDye.mName + " Dye")
                             .withColorRGBA(tDye.getRGBA())
                             .withStateAndTemperature(LIQUID, 295)
-                            .buildAndRegister());
-            tDye.addFluidDye((Fluid) GT_FluidFactory.builder(
-                            "dye.chemical." + tDye.name().toLowerCase(Locale.ENGLISH))
-                    .withTextureName("dyes")
-                    .withLocalizedName("Chemical " + tDye.mName + " Dye")
-                    .withColorRGBA(tDye.getRGBA())
-                    .withStateAndTemperature(LIQUID, 295)
-                    .buildAndRegister()
-                    .registerContainers(ItemList.SPRAY_CAN_DYES[i].get(1L), ItemList.Spray_Empty.get(1L), 2304));
+                            .buildAndRegister()
+                            .asFluid());
+            tDye.addFluidDye(
+                    GT_FluidFactory.builder("dye.chemical." + tDye.name().toLowerCase(Locale.ENGLISH))
+                            .withTextureName("dyes")
+                            .withLocalizedName("Chemical " + tDye.mName + " Dye")
+                            .withColorRGBA(tDye.getRGBA())
+                            .withStateAndTemperature(LIQUID, 295)
+                            .buildAndRegister()
+                            .registerContainers(ItemList.SPRAY_CAN_DYES[i].get(1L), ItemList.Spray_Empty.get(1L), 2304)
+                            .asFluid());
         }
         GT_FluidFactory.builder("ice")
                 .withLocalizedName("Crushed Ice")

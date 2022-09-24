@@ -6,21 +6,27 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.FluidState;
 import gregtech.api.interfaces.fluid.IGT_Fluid;
 import gregtech.api.interfaces.fluid.IGT_FluidBuilder;
+import gregtech.api.interfaces.fluid.IGT_RegisteredFluid;
 import java.util.Locale;
+import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
 
 public class GT_FluidBuilder implements IGT_FluidBuilder {
-    protected final String fluidName;
-    protected String localizedName;
-    protected ResourceLocation stillIconResourceLocation = null, flowingIconResourceLocation = null;
-    protected short[] colorRGBA = Dyes._NULL.getRGBA();
-    protected Block fluidBlock = null;
-    protected FluidState fluidState;
-    protected int temperature;
+    final String fluidName;
+    String localizedName;
+    ResourceLocation stillIconResourceLocation = null, flowingIconResourceLocation = null;
+    short[] colorRGBA = Dyes._NULL.getRGBA();
+    Block fluidBlock = null;
+    FluidState fluidState;
+    int temperature;
+    IIcon stillIcon;
+    IIcon flowingIcon;
 
     public GT_FluidBuilder(final String fluidName) {
-        this.fluidName = fluidName;
+        this.fluidName = fluidName.toLowerCase(Locale.ENGLISH);
     }
 
     /**
@@ -83,10 +89,8 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
      * @inheritDoc
      */
     @Override
-    public IGT_FluidBuilder withTextureFrom(final IGT_Fluid fromGTFluid) {
-        this.stillIconResourceLocation = fromGTFluid.getStillIconResourceLocation();
-        this.flowingIconResourceLocation = fromGTFluid.getFlowingIconResourceLocation();
-        return this;
+    public IGT_FluidBuilder withIconsFrom(@Nonnull final Fluid fromFluid) {
+        return withIcons(fromFluid.getStillIcon(), fromFluid.getFlowingIcon());
     }
 
     /**
@@ -95,6 +99,16 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     @Override
     public IGT_FluidBuilder withFluidBlock(final Block fluidBlock) {
         this.fluidBlock = fluidBlock;
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public IGT_FluidBuilder withIcons(final IIcon stillIcon, final IIcon flowingIcon) {
+        this.stillIcon = stillIcon;
+        this.flowingIcon = flowingIcon;
         return this;
     }
 
@@ -114,8 +128,14 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
      */
     @Override
     public IGT_Fluid build() {
+        if (colorRGBA == null) {
+            colorRGBA = Dyes._NULL.getRGBA();
+        }
         if (stillIconResourceLocation == null) {
             withTextureName(fluidName.toLowerCase(Locale.ENGLISH));
+        }
+        if (localizedName == null) {
+            localizedName = fluidName;
         }
         return new GT_Fluid(this);
     }
@@ -124,7 +144,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
      * @inheritDoc
      */
     @Override
-    public IGT_Fluid buildAndRegister() {
+    public IGT_RegisteredFluid buildAndRegister() {
         if (stillIconResourceLocation == null) {
             withTextureName(fluidName.toLowerCase(Locale.ENGLISH));
         }
