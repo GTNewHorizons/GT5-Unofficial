@@ -1143,7 +1143,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public final boolean checkRecipe(ItemStack itemStack) { // do recipe checks, based on "machine content and state"
         hatchesStatusUpdate_EM();
+        startRecipeProcessing();
         boolean result = checkRecipe_EM(itemStack); // if had no - set default params
+        endRecipeProcessing();
         hatchesStatusUpdate_EM();
         return result;
     }
