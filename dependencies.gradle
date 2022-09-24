@@ -2,11 +2,11 @@
 
 dependencies {
 
-	compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.41.34:dev')
-	compile('com.github.GTNewHorizons:StructureLib:1.1.4:dev')
+	compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.41.44:dev')
+	compile('com.github.GTNewHorizons:StructureLib:1.1.7:dev')
 	compile('com.github.GTNewHorizons:bartworks:0.5.75:dev')
 	compile('com.github.GTNewHorizons:NotEnoughItems:2.2.28-GTNH:dev')
-	compile('com.github.GTNewHorizons:TecTech:5.0.26:dev')
+	compile('com.github.GTNewHorizons:TecTech:5.0.37:dev')
 
 	compile('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
 	compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
