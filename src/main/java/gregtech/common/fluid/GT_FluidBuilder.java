@@ -145,9 +145,6 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
      */
     @Override
     public IGT_RegisteredFluid buildAndRegister() {
-        if (stillIconResourceLocation == null) {
-            withTextureName(fluidName.toLowerCase(Locale.ENGLISH));
-        }
         return build().addFluid();
     }
 }
