@@ -31,18 +31,18 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
             final String aDescription,
             final ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
-        int pollMin = (int) (CORE.ConfigSwitches.baseMinPollutionPerSecondRocketFuelGenerator
+        pollMin = (int) (CORE.ConfigSwitches.baseMinPollutionPerSecondRocketFuelGenerator
                 * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
-        int pollMax = (int) (CORE.ConfigSwitches.baseMaxPollutionPerSecondRocketFuelGenerator
+        pollMax = (int) (CORE.ConfigSwitches.baseMaxPollutionPerSecondRocketFuelGenerator
                 * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
     }
 
     public GregtechRocketFuelGeneratorBase(
             final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
-        int pollMin = (int) (CORE.ConfigSwitches.baseMinPollutionPerSecondRocketFuelGenerator
+        pollMin = (int) (CORE.ConfigSwitches.baseMinPollutionPerSecondRocketFuelGenerator
                 * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
-        int pollMax = (int) (CORE.ConfigSwitches.baseMaxPollutionPerSecondRocketFuelGenerator
+        pollMax = (int) (CORE.ConfigSwitches.baseMaxPollutionPerSecondRocketFuelGenerator
                 * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
     }
 
