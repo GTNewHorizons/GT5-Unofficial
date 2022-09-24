@@ -10771,11 +10771,11 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_Values.NF,
                 Materials.Quicklime.getDust(18),
                 Materials.Potash.getDust(9),
-                Materials.Magnesia.getDust(9),
-                Materials.PhosphorousPentoxide.getDust(4),
-                Materials.SodaAsh.getDust(4),
+                Materials.Magnesia.getDust(1),
+                Materials.PhosphorousPentoxide.getDust(2),
+                Materials.SodaAsh.getDust(1),
                 Materials.BandedIron.getDust(4),
-                new int[] {6400, 6000, 500, 5000, 2500, 10000},
+                new int[] {6400, 6000, 4500, 10000, 10000, 10000},
                 6000,
                 30);
         // Stone Dust and Metal Mixture centrifuge recipes
@@ -10788,9 +10788,9 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.PotassiumFeldspar.getDust(9),
                 Materials.Marble.getDust(8),
                 Materials.Biotite.getDust(4),
-                Materials.MetalMixture.getDust(4),
-                Materials.Sodalite.getDust(4),
-                new int[] {10000, 10000, 10000, 10000, 7500, 5000},
+                Materials.MetalMixture.getDust(3),
+                Materials.Sodalite.getDust(2),
+                new int[] {10000, 10000, 10000, 10000, 10000, 10000},
                 8640,
                 30);
         GT_Values.RA.addCentrifugeRecipe(
@@ -10802,9 +10802,9 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.Bauxite.getDust(9),
                 Materials.Pyrolusite.getDust(8),
                 Materials.Barite.getDust(4),
-                Materials.Chromite.getDust(4),
-                Materials.Ilmenite.getDust(4),
-                new int[] {10000, 10000, 10000, 10000, 7500, 5000},
+                Materials.Chromite.getDust(3),
+                Materials.Ilmenite.getDust(2),
+                new int[] {10000, 10000, 10000, 10000, 10000, 10000},
                 13125,
                 1920);
 
