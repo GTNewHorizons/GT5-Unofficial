@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             int overflowMultiplier,
             float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
-            aOptFlow *= 40; // CHANGED THINGS HERE, check recipe runs once per 20 ticks
+            aOptFlow *= 800; // CHANGED THINGS HERE, check recipe runs once per 20 ticks
             int tEU = 0;
 
             int actualOptimalFlow = 0;
@@ -165,7 +165,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                 }
             }
             if (totalFlow <= 0) return 0;
-            tEU = GT_Utility.safeInt((long) ((fuelValue) * (double) totalFlow));
+            tEU = GT_Utility.safeInt((long) ((fuelValue / 20D) * (double) totalFlow));
 
             // GT_FML_LOGGER.info(totalFlow+" : "+fuelValue+" : "+aOptFlow+" : "+actualOptimalFlow+" : "+tEU);
 
