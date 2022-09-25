@@ -417,7 +417,6 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
 
     @Override
     public boolean checkRecipe(final ItemStack aStack) {
-        log("1");
         return checkRecipeGeneric(
                 new ItemStack[] {}, getStoredFluids().toArray(new FluidStack[] {}), 1, 100, 100, 10000);
     }
@@ -676,13 +675,14 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
 
         String[] ret = new String[] {
             // 8 Lines available for information panels
-            tRunning + ": " + EnumChatFormatting.RED + mEUt + EnumChatFormatting.RESET + " EU/t",
+            tRunning + ": " + EnumChatFormatting.RED + (((long) mEUt * mEfficiency) / 10000) + EnumChatFormatting.RESET
+                    + " EU/t",
             tMaintainance,
             StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": " + EnumChatFormatting.YELLOW
                     + (mEfficiency / 100F) + EnumChatFormatting.RESET + "%",
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN
-                    + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW
-                    + Long.toString(maxEnergy) + EnumChatFormatting.RESET + " EU",
+                    + storedEnergy + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW
+                    + maxEnergy + EnumChatFormatting.RESET + " EU",
             StatCollector.translateToLocal("GT5U.turbine.flow") + ": " + EnumChatFormatting.YELLOW
                     + MathUtils.safeInt((long) realOptFlow) + EnumChatFormatting.RESET + " L/s"
                     + EnumChatFormatting.YELLOW + " ("
