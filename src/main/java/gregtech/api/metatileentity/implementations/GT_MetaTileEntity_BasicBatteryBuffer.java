@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.V;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.ModularUI.GT_UIInfo;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -207,8 +208,7 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        // aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfo.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 

@@ -30,7 +30,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
-import gregtech.api.gui.ModularUI.GT_UIInfo;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
@@ -1656,11 +1655,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         }
                         return true;
                     }
-                }
-
-                if (hasValidMetaTileEntity() && getMetaTileEntity().useModularUI()) {
-                    GT_UIInfo.GTTileEntityUI.open(aPlayer, worldObj, xCoord, yCoord, zCoord);
-                    return true;
                 }
             }
         }

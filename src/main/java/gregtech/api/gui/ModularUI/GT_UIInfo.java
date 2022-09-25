@@ -5,9 +5,11 @@ import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.common.builder.UIBuilder;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -42,5 +44,15 @@ public class GT_UIInfo {
                             })
                             .build());
         }
+    }
+
+    public static void openGTTileEntityUI(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) return;
+        GTTileEntityUI.open(
+                aPlayer,
+                aBaseMetaTileEntity.getWorld(),
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord());
     }
 }

@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import gregtech.api.gui.ModularUI.GT_UIInfo;
 import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -69,8 +70,7 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        // aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfo.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 

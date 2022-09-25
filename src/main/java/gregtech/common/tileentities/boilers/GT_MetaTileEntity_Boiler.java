@@ -15,6 +15,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.gui.ModularUI.GT_UIInfo;
 import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.gui.ModularUI.SteamTexture;
 import gregtech.api.interfaces.ITexture;
@@ -135,7 +136,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
                     aPlayer.getCurrentEquippedItem().func_150996_a(Items.bucket);
                 }
             } else {
-                // aBaseMetaTileEntity.openGUI(aPlayer);
+                GT_UIInfo.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             }
         }
         return true;
