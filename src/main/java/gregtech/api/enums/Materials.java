@@ -1566,8 +1566,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         RockSalt.setOreMultiplier(2).setSmeltingMultiplier(2);
         Scheelite.setOreMultiplier(2).setSmeltingMultiplier(2);
         Tungstate.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Cassiterite.setOreMultiplier(6).setSmeltingMultiplier(2);
-        CassiteriteSand.setOreMultiplier(6).setSmeltingMultiplier(2);
+        Cassiterite.setOreMultiplier(2).setSmeltingMultiplier(2);
+        CassiteriteSand.setOreMultiplier(2).setSmeltingMultiplier(2);
         NetherQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
         CertusQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
         TricalciumPhosphate.setOreMultiplier(3).setSmeltingMultiplier(3);
