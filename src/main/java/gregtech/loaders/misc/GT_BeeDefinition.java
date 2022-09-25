@@ -1200,7 +1200,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             dis -> {
                 IBeeMutationCustom tMutation = dis.registerMutation(FIRESTONE, COAL, 4);
-                tMutation.requireResource("industrialTNT");
+                tMutation.requireResource(GameRegistry.findBlock("IC2", "blockITNT"), 0);
             }),
     // Alloy
     REDALLOY(
