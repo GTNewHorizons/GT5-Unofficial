@@ -148,7 +148,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine
             return false;
         }
         ArrayList<FluidStack> tFluids = getStoredFluids();
-        if (tFluids.size() > 0) {
+        if (!tFluids.isEmpty()) {
 
             if (baseEff == 0
                     || optFlow == 0
@@ -305,8 +305,8 @@ public abstract class GT_MetaTileEntity_LargeTurbine
         }
         String[] ret = new String[] {
             // 8 Lines available for information panels
-            tRunning + ": " + EnumChatFormatting.RED + GT_Utility.formatNumbers(mEUt) + EnumChatFormatting.RESET
-                    + " EU/t", /* 1 */
+            tRunning + ": " + EnumChatFormatting.RED + GT_Utility.formatNumbers(((long) mEUt * mEfficiency) / 10000)
+                    + EnumChatFormatting.RESET + " EU/t", /* 1 */
             tMaintainance, /* 2 */
             StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": " + EnumChatFormatting.YELLOW
                     + (mEfficiency / 100F) + EnumChatFormatting.RESET + "%", /* 2 */
