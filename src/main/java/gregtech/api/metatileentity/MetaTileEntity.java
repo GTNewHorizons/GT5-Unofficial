@@ -8,12 +8,15 @@ import appeng.api.util.AECableType;
 import appeng.me.helpers.AENetworkProxy;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -1213,6 +1216,66 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
      */
     protected void addUIWidgets(ModularWindow.Builder builder) {}
+
+    protected void add1by1Slot(ModularWindow.Builder builder, IDrawable... background) {
+        if (background.length == 0) {
+            background = new IDrawable[] {ModularUITextures.ITEM_SLOT};
+        }
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 1)
+                        .startFromSlot(0)
+                        .endAtSlot(0)
+                        .background(background)
+                        .build()
+                        .setPos(79, 34))
+                .widget(new TextWidget(new Text(getLocalName()))
+                        .setDefaultColor(COLOR_TITLE.get())
+                        .setPos(8, 4));
+    }
+
+    protected void add2by2Slots(ModularWindow.Builder builder, IDrawable... background) {
+        if (background.length == 0) {
+            background = new IDrawable[] {ModularUITextures.ITEM_SLOT};
+        }
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
+                        .startFromSlot(0)
+                        .endAtSlot(3)
+                        .background(background)
+                        .build()
+                        .setPos(70, 25))
+                .widget(new TextWidget(new Text(getLocalName()))
+                        .setDefaultColor(COLOR_TITLE.get())
+                        .setPos(8, 4));
+    }
+
+    protected void add3by3Slots(ModularWindow.Builder builder, IDrawable... background) {
+        if (background.length == 0) {
+            background = new IDrawable[] {ModularUITextures.ITEM_SLOT};
+        }
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
+                        .startFromSlot(0)
+                        .endAtSlot(8)
+                        .background(background)
+                        .build()
+                        .setPos(61, 16))
+                .widget(new TextWidget(new Text(getLocalName()))
+                        .setDefaultColor(COLOR_TITLE.get())
+                        .setPos(8, 4));
+    }
+
+    protected void add4by4Slots(ModularWindow.Builder builder, IDrawable... background) {
+        if (background.length == 0) {
+            background = new IDrawable[] {ModularUITextures.ITEM_SLOT};
+        }
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
+                        .startFromSlot(0)
+                        .endAtSlot(15)
+                        .background(background)
+                        .build()
+                        .setPos(52, 7))
+                .widget(new TextWidget(new Text(getLocalName()))
+                        .setDefaultColor(COLOR_TITLE.get())
+                        .setPos(8, 4));
+    }
 
     protected void addChargerSlot(ModularWindow.Builder builder, int x, int y) {
         builder.widget(new SlotWidget(inventoryHandler, rechargerSlotStartIndex())

@@ -12,23 +12,40 @@ import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
+import appeng.client.render.AppEngRenderItem;
+import appeng.core.AELog;
+import appeng.integration.IntegrationRegistry;
+import appeng.integration.IntegrationType;
+import appeng.integration.abstraction.INEI;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
+import com.gtnewhorizons.modularui.api.GlStateManager;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
+import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.GT_Container_InputBus_ME;
-import gregtech.common.gui.GT_GUIContainer_InputBus_ME;
+import gregtech.api.util.GT_Utility;
+import java.util.Collections;
+import java.util.List;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -69,16 +86,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH)};
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_InputBus_ME(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_InputBus_ME(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -304,5 +311,116 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public boolean isValidSlot(int aIndex) {
         return false;
+    }
+
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
+                        .startFromSlot(0)
+                        .endAtSlot(15)
+                        .phantom(true)
+                        .background(ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_ARROW_ME)
+                        .widgetCreator(slot -> new SlotWidget(slot) {
+                            @Override
+                            protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+                                if (clickData.mouseButton != 0) return;
+                                int aSlotIndex = getMcSlot().getSlotIndex();
+                                if (cursorStack == null) {
+                                    getMcSlot().putStack(null);
+                                } else {
+                                    if (containsSuchStack(cursorStack)) return;
+                                    getMcSlot().putStack(GT_Utility.copyAmount(1L, cursorStack));
+                                }
+                                if (getBaseMetaTileEntity().isServerSide()) {
+                                    ItemStack newInfo = updateInformationSlot(aSlotIndex, cursorStack);
+                                    ((Slot) getContext()
+                                                    .getContainer()
+                                                    .inventorySlots
+                                                    .get(getMcSlot().slotNumber + 16))
+                                            .putStack(newInfo);
+                                }
+                            }
+
+                            private boolean containsSuchStack(ItemStack tStack) {
+                                for (int i = 0; i < 16; ++i) {
+                                    if (GT_Utility.areStacksEqual(mInventory[i], tStack, false)) return true;
+                                }
+                                return false;
+                            }
+                        })
+                        .build()
+                        .setPos(7, 9))
+                .widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
+                        .startFromSlot(16)
+                        .endAtSlot(31)
+                        .phantom(true)
+                        .background(GT_UITextures.SLOT_GRAY)
+                        .widgetCreator(slot -> new SlotWidget(slot) {
+
+                            private final AppEngRenderItem aeRenderItem = new AppEngRenderItem();
+
+                            @Override
+                            protected void phantomClick(ClickData clickData, ItemStack cursorStack) {}
+
+                            @Override
+                            protected void drawSlot(Slot slotIn) {
+                                final RenderItem pIR = this.setItemRender(this.aeRenderItem);
+                                try {
+                                    getContext().getScreen().setZ(0f);
+                                    ModularGui.getItemRenderer().zLevel = 0f;
+                                    GlStateManager.pushMatrix();
+                                    // revert SlotGroup and SlotWidget offset
+                                    GlStateManager.translate(-97 - getPos().x, -9 - getPos().y, 0);
+                                    this.aeRenderItem.setAeStack(Platform.getAEStackInSlot(slotIn));
+                                    this.safeDrawSlot(slotIn);
+                                    // and restore
+                                    GlStateManager.popMatrix();
+                                } catch (final Exception err) {
+                                    AELog.warn("[AppEng] AE prevented crash while drawing slot: " + err);
+                                }
+                                this.setItemRender(pIR);
+                            }
+
+                            @Optional.Method(modid = "appliedenergistics2")
+                            private RenderItem setItemRender(final RenderItem item) {
+                                if (IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.NEI)) {
+                                    return ((INEI) IntegrationRegistry.INSTANCE.getInstance(IntegrationType.NEI))
+                                            .setItemRender(item);
+                                } else {
+                                    final RenderItem ri = ModularGui.getItemRenderer();
+                                    ModularGui.setItemRenderer(item);
+                                    return ri;
+                                }
+                            }
+
+                            @Optional.Method(modid = "appliedenergistics2")
+                            private void safeDrawSlot(final Slot s) {
+                                try {
+                                    GuiContainer.class
+                                            .getDeclaredMethod("func_146977_a_original", Slot.class)
+                                            .invoke(getContext().getScreen(), s);
+                                } catch (final Exception ignored) {
+                                }
+                            }
+
+                            @Override
+                            public List<String> getExtraTooltip() {
+                                return Collections.emptyList();
+                            }
+                        }.disableShiftInsert())
+                        .build()
+                        .setPos(97, 9))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
+                        .setPos(82, 40)
+                        .setSize(12, 12));
+    }
+
+    @Override
+    protected void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(80, 63));
     }
 }

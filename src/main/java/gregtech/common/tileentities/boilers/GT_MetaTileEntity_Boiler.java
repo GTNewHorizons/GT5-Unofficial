@@ -135,7 +135,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
                     aPlayer.getCurrentEquippedItem().func_150996_a(Items.bucket);
                 }
             } else {
-                aBaseMetaTileEntity.openGUI(aPlayer);
+                // aBaseMetaTileEntity.openGUI(aPlayer);
             }
         }
         return true;
