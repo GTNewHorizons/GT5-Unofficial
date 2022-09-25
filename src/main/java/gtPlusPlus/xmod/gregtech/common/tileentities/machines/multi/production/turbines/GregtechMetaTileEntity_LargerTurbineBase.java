@@ -294,16 +294,21 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
     }
 
     protected ArrayList<ItemStack> getAllBufferedTurbines() {
+        startRecipeProcessing();
         ArrayList<ItemStack> aTurbinesInStorage = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_InputBus aBus : this.mInputBusses) {
-            if (isValidMetaTileEntity(aBus)) {
-                for (ItemStack aContent : aBus.mInventory) {
-                    if (isValidTurbine(aContent)) {
-                        aTurbinesInStorage.add(aContent);
-                    }
+        for (ItemStack aStack : getStoredInputs()) {
+            if (isValidTurbine(aStack)) {
+                int stackSize = aStack.stackSize;
+                while (stackSize > 0) {
+                    int tmpStackSize = Math.min(stackSize, aStack.getMaxStackSize());
+                    ItemStack copy = aStack.copy();
+                    copy.stackSize = tmpStackSize;
+                    aTurbinesInStorage.add(copy);
+                    stackSize -= tmpStackSize;
                 }
             }
         }
+        endRecipeProcessing();
         return aTurbinesInStorage;
     }
 
@@ -391,16 +396,22 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
     }
 
     protected boolean depleteTurbineFromStock(ItemStack aTurbine) {
+        if (aTurbine == null) {
+            return false;
+        }
+        startRecipeProcessing();
         for (GT_MetaTileEntity_Hatch_InputBus aInputBus : this.mInputBusses) {
-            for (int slot = 0; slot < aInputBus.mInventory.length; slot++) {
+            for (int slot = aInputBus.getSizeInventory() - 1; slot >= 0; slot--) {
                 ItemStack aStack = aInputBus.getStackInSlot(slot);
                 if (aStack != null && GT_Utility.areStacksEqual(aStack, aTurbine)) {
-                    aInputBus.setInventorySlotContents(slot, null);
+                    aStack.stackSize -= aTurbine.stackSize;
                     updateSlots();
+                    endRecipeProcessing();
                     return true;
                 }
             }
         }
+        endRecipeProcessing();
         return false;
     }
 
