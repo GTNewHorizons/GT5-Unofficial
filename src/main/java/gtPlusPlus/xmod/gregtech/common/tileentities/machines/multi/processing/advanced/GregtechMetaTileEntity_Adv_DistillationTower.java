@@ -168,7 +168,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
         while (mOutputHatchesByLayer.size() < mHeight) mOutputHatchesByLayer.add(new ArrayList<>());
         GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aTileEntity.getMetaTileEntity();
         tHatch.updateTexture(aBaseCasingIndex);
-        return mOutputHatchesByLayer.get(mHeight - 1).add(tHatch);
+        return mOutputHatchesByLayer.get(mHeight - 1).add(tHatch) && mOutputHatches.add(tHatch);
     }
 
     protected void onTopLayerFound() {
@@ -257,6 +257,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
         if (check && mHeight < 11) {
             // force the mode to DT if not in full height
             mMode = Mode.DistillationTower;
+            mLastRecipe = null;
         }
         return check;
     }
@@ -315,6 +316,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower
         }
         mMode = mMode.next();
         PlayerUtils.messagePlayer(aPlayer, "Now running in " + mMode + " Mode.");
+        mLastRecipe = null;
     }
 
     public int getDamageToComponent(ItemStack aStack) {

@@ -374,6 +374,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
         mDehydratorMode = Utils.invertBoolean(mDehydratorMode);
         String aMode = mDehydratorMode ? "Dehydrator" : "Vacuum Furnace";
         PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);
+        mLastRecipe = null;
     }
 
     @Override

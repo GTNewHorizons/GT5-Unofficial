@@ -292,6 +292,7 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
                     "[" + EnumChatFormatting.RED + "MODE" + EnumChatFormatting.RESET + "] " + EnumChatFormatting.GRAY
                             + "Cannot change mode, structure not large enough." + EnumChatFormatting.RESET);
         }
+        mLastRecipe = null;
     }
 
     @Override

@@ -340,5 +340,6 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Chemical Bath Mode.");
         }
+        mLastRecipe = null;
     }
 }

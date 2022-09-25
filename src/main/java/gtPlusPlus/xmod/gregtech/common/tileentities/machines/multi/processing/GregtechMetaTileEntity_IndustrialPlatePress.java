@@ -232,5 +232,6 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Bending Mode.");
         }
+        mLastRecipe = null;
     }
 }

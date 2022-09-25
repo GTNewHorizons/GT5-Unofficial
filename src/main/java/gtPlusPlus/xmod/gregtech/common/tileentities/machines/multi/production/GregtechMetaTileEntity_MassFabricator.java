@@ -19,7 +19,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -30,7 +29,6 @@ import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -659,19 +657,7 @@ public class GregtechMetaTileEntity_MassFabricator
             this.mMode = MODE_SCRAP;
             PlayerUtils.messagePlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
         }
-        GT_Recipe_Map r = this.getRecipeMap();
-        final Collection<GT_Recipe> x = r.mRecipeList;
-        Logger.INFO("Dumping " + r.mUnlocalizedName + " Recipes for Debug. size: " + x.size());
-        for (final GT_Recipe newBo : x) {
-            Logger.INFO("========================");
-            Logger.INFO("Dumping Input: " + ItemUtils.getArrayStackNames(newBo.mInputs));
-            Logger.INFO("Dumping Inputs " + ItemUtils.getFluidArrayStackNames(newBo.mFluidInputs));
-            Logger.INFO("Dumping Duration: " + newBo.mDuration);
-            Logger.INFO("Dumping EU/t: " + newBo.mEUt);
-            Logger.INFO("Dumping Output: " + ItemUtils.getArrayStackNames(newBo.mOutputs));
-            Logger.INFO("Dumping Output: " + ItemUtils.getFluidArrayStackNames(newBo.mFluidOutputs));
-            Logger.INFO("========================");
-        }
+        mLastRecipe = null;
     }
 
     @Override

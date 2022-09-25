@@ -510,6 +510,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine
         String mModeString =
                 (mInternalMode == 0 ? "Metal" : mInternalMode == 1 ? "Fluid" : mInternalMode == 2 ? "Misc." : "null");
         PlayerUtils.messagePlayer(aPlayer, "Multi-Machine is now in " + mModeString + " mode.");
+        mLastRecipe = null;
     }
 
     @Override

@@ -199,6 +199,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine
         mCuttingMode = Utils.invertBoolean(mCuttingMode);
         String aMode = mCuttingMode ? "Cutting" : "Slicing";
         PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);
+        mLastRecipe = null;
     }
 
     @Override
