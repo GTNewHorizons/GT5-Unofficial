@@ -284,6 +284,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         mOutputBusses.clear();
         mDynamoHatches.clear();
         mEnergyHatches.clear();
+        for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
+            IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
+            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
+                iGTTileEntity.setActive(false);
+            }
+        }
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
     }
@@ -1266,6 +1272,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             tag.setBoolean("isActive", tileEntity.isActive());
+        }
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        // Deactivate mufflers
+        for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
+            IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
+            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
+                iGTTileEntity.setActive(false);
+            }
         }
     }
 
