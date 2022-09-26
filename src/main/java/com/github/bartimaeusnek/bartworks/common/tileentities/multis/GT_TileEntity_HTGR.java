@@ -370,7 +370,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 }
             }
             if (this.fuelsupply < maxcapacity) {
-
+                startRecipeProcessing();
                 for (ItemStack itemStack : this.getStoredInputs()) {
                     int type = -1;
                     if (itemStack == null) continue;
@@ -386,6 +386,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     itemStack.stackSize -= toget;
                     updateneeded = true;
                 }
+                endRecipeProcessing();
             }
             if (updateneeded) this.updateSlots();
         }

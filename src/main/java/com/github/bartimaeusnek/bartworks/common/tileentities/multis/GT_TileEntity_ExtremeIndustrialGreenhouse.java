@@ -313,6 +313,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
             }
         }
         if (aBaseMetaTileEntity.isServerSide() && this.mMaxProgresstime > 0 && setupphase > 0 && aTick % 5 == 0) {
+            startRecipeProcessing();
             if (setupphase == 1 && mStorage.size() < mMaxSlots) {
                 List<ItemStack> inputs = getStoredInputs();
                 for (ItemStack input : inputs) if (addCrop(input)) break;
@@ -324,6 +325,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
                 this.mStorage.remove(0);
                 this.updateSlots();
             }
+            endRecipeProcessing();
         }
     }
 

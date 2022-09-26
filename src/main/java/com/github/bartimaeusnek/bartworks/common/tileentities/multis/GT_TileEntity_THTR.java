@@ -351,6 +351,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 }
             }
             if (this.fuelsupply < maxcapacity) {
+                startRecipeProcessing();
                 for (ItemStack itemStack : this.getStoredInputs()) {
                     if (GT_Utility.areStacksEqual(
                             itemStack,
@@ -361,6 +362,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                         this.fuelsupply += toget;
                     }
                 }
+                endRecipeProcessing();
                 this.updateSlots();
             }
         }
