@@ -2640,14 +2640,46 @@ public class DreamCraftRecipeLoader {
                     ItemList.Circuit_Chip_QPIC.get(2L),
                     new Object[] {OrePrefixes.circuit.get(Materials.Infinite), 2L},
                     ItemList.UHV_Coil.get(2L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
                     ItemList.Electric_Pump_UHV.get(1L)
                 },
                 new FluidStack[] {
@@ -2670,14 +2702,46 @@ public class DreamCraftRecipeLoader {
                     ItemList.Circuit_Chip_QPIC.get(2L),
                     new Object[] {OrePrefixes.circuit.get(Materials.Infinite), 2L},
                     ItemList.UHV_Coil.get(2L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
-                    ItemList.Reactor_Coolant_He_6.get(1L),
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
+                    new ItemStack[] {
+                        ItemList.Reactor_Coolant_He_6.get(1L),
+                        ItemList.Reactor_Coolant_NaK_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_2.get(1L)
+                    },
                     ItemList.Electric_Pump_UHV.get(1L)
                 },
                 new FluidStack[] {
