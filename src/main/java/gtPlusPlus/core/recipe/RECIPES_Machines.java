@@ -4253,7 +4253,7 @@ public class RECIPES_Machines {
                     },
                     CI.getAlternativeTieredFluid(i, 144 * 8),
                     mSuperBusesInput[i].get(1),
-                    20 * 30 * 2 * i,
+                    20 * 30 * 2,
                     (int) GT_Values.V[i]);
         }
         // Output Buses
@@ -4269,7 +4269,7 @@ public class RECIPES_Machines {
                     },
                     CI.getTertiaryTieredFluid(i, 144 * 8),
                     mSuperBusesOutput[i].get(1),
-                    20 * 30 * 2 * i,
+                    20 * 30 * 2,
                     (int) GT_Values.V[i]);
         }
     }
