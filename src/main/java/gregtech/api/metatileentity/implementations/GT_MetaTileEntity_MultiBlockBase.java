@@ -284,12 +284,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         mOutputBusses.clear();
         mDynamoHatches.clear();
         mEnergyHatches.clear();
-        for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
-            IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
-            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
-                iGTTileEntity.setActive(false);
-            }
-        }
+        setMufflers(false);
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
     }
@@ -343,12 +338,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                     | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
-            for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
-                IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
-                if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
-                    iGTTileEntity.setActive(active);
-                }
-            }
+            setMufflers(active);
         }
     }
 
@@ -1275,16 +1265,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         }
     }
 
+    protected void setMufflers(boolean state) {
+        for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
+            IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
+            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
+                iGTTileEntity.setActive(state);
+            }
+        }
+    }
+
     @Override
     public void onRemoval() {
         super.onRemoval();
         // Deactivate mufflers
-        for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
-            IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
-            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
-                iGTTileEntity.setActive(false);
-            }
-        }
+        setMufflers(false);
     }
 
     public List<GT_MetaTileEntity_Hatch> getExoticEnergyHatches() {
