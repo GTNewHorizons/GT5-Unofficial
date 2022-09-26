@@ -275,7 +275,7 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         super.onPostTick(aBaseMetaTileEntity, aTick);
         boolean anyWorking = false;
         if (aBaseMetaTileEntity.isServerSide()) {
-
+            startRecipeProcessing();
             for (ItemStack input : getStoredInputs()) {
                 if (input.isItemEqual(Materials.Graphite.getDust(1))
                         || input.isItemEqual(Materials.Beryllium.getDust(1))) {
@@ -318,6 +318,7 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                 this.mOutputFluids = null;
                 this.mOutputItems = new ItemStack[] {ItemRefer.Radioactive_Waste.get(4)};
             }
+            endRecipeProcessing();
         }
     }
 
