@@ -39,6 +39,7 @@ import net.minecraft.world.World;
 
 public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider {
     private static final String DOT_NAME = ".name";
+    private static final String DOT_TOOLTIP = ".tooltip";
     public static ThreadLocal<GT_TileEntity_Ores> mTemporaryTileEntity = new ThreadLocal<>();
     public static boolean FUCKING_LOCK = false;
     public static boolean tHideOres;
@@ -66,11 +67,17 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
                                     ? getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i])
                                     : getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
                     GT_LanguageManager.addStringLocalization(
+                            getUnlocalizedName() + "." + (i + (j * 1000)) + DOT_TOOLTIP,
+                            GregTech_API.sGeneratedMaterials[i].getToolTip());
+                    GT_LanguageManager.addStringLocalization(
                             getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_NAME,
                             "Small "
                                     + (GT_LanguageManager.i18nPlaceholder
                                             ? getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i])
                                             : getLocalizedName(GregTech_API.sGeneratedMaterials[i])));
+                    GT_LanguageManager.addStringLocalization(
+                            getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_TOOLTIP,
+                            GregTech_API.sGeneratedMaterials[i].getToolTip());
                     if ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0
                             && !aBlockedOres.contains(GregTech_API.sGeneratedMaterials[i])) {
                         GT_OreDictUnificator.registerOre(
