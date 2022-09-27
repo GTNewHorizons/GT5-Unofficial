@@ -2,7 +2,6 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import gregtech.api.gui.ModularUI.GT_UIInfo;
 import gregtech.api.gui.ModularUI.GT_UITextures;
