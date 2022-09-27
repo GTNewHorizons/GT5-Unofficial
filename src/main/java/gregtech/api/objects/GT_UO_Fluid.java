@@ -53,9 +53,9 @@ public class GT_UO_Fluid {
 
     public int getRandomAmount(
             Random aRandom) { // generates some random ass number that correlates to extraction speeds
-        int div = (int) Math.floor(Math.pow((MaxAmount - MinAmount) * 100.d * DIVIDER, 0.2d));
-        int min = (int) Math.floor(Math.pow(MinAmount * 100.d * DIVIDER, 0.2d));
-        double amount = min + aRandom.nextInt(div) + aRandom.nextDouble();
-        return (int) (Math.pow(amount, 5) / 100); // reverses the computation above
+        int smax = (int) Math.floor(Math.pow(MaxAmount * 100.d * DIVIDER, 0.2d)); // use scaled max and min values for the randomness to make high values more rare. 
+        double smin = Math.pow(MinAmount * 100.d * DIVIDER, 0.2d);
+        double samount = Math.max(smin, aRandom.nextInt(smax) + aRandom.nextDouble());
+        return (int) (Math.pow(samount, 5) / 100); // reverses the computation above
     }
 }
