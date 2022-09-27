@@ -228,7 +228,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
                 drawText(
                         10,
                         73,
-                        trans("152", "Max Total: ")
+                        trans("152", "Max EU: ")
                                 + GT_Utility.formatNumbers(
                                         (1 + (computation - minComputationPerSec) / minComputationPerSec)
                                                 * (long) tEUt
