@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
-import com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage;
 import com.github.technus.tectech.thing.casing.TT_Block_SpacetimeCompressionFieldGenerators;
 import com.github.technus.tectech.thing.casing.TT_Block_StabilisationFieldGenerators;
 import com.github.technus.tectech.thing.casing.TT_Block_TimeAccelerationFieldGenerators;
@@ -32,6 +31,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
+import static com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage.recipe_0;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -53,7 +53,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private String user_uuid = "";
     private String user_name = "";
-    private long eu_output = 0;
+    private long euOutput = 0;
+
+    private final long[] computationStack = new long[computationTickCacheSize];
 
     // Multiblock structure.
     private static final IStructureDefinition<GT_MetaTileEntity_EM_EyeOfHarmony> STRUCTURE_DEFINITION = IStructureDefinition
@@ -157,8 +159,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private void calculateHydrogenHeliumInputExcessValues(long hydrogen_recipe_requirement, long helium_recipe_requirement) {
 
-        long hydrogen_stored = valid_fluid_map.get(Materials.Hydrogen.getGas(1L));
-        long helium_stored =  valid_fluid_map.get(Materials.Helium.getGas(1L));
+        long hydrogen_stored = validFluidMap.get(Materials.Hydrogen.getGas(1L));
+        long helium_stored =  validFluidMap.get(Materials.Helium.getGas(1L));
 
         double hydrogen_excess_percentage = abs(1 - hydrogen_stored / hydrogen_recipe_requirement);
         double helium_excess_percentage = abs(1 - helium_stored / helium_recipe_requirement);
@@ -173,7 +175,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 + StabilisationFieldMetadata * 0.05
                 - hydrogen_overflow_probability_adjustment
                 - helium_overflow_probability_adjustment
-                + max_percentage_chance_gain_from_computation_per_second * (1 - exp(-10e-5 * eAvailableData))); // eAvailableData = computation/s (kinda).
+                + max_percentage_chance_gain_from_computation_per_second * (1 - exp(-10e-5 * getComputation())));
 
         return clamp_probability(chance);
     }
@@ -199,7 +201,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         double double_recipe_time = (double) recipe_time;
 
         long spacetime_casing_difference = (recipe_spacetime_casing_required - SpacetimeCompressionFieldMetadata);
-        return (long) (double_recipe_time * pow(2, -TimeAccelerationFieldMetadata) * pow(1.03, spacetime_casing_difference));
+        return (long) (double_recipe_time * pow(2, -TimeAccelerationFieldMetadata) * pow(0.97, spacetime_casing_difference));
     }
 
     @Override
@@ -229,11 +231,52 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Spacetime Manipulator")
+                .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("Creates a pocket of spacetime that is bigger on the inside using")
                 .addInfo("transdimensional engineering. Certified Time Lord regulation compliant.")
                 .addInfo("This multi outputs too much EU to be handled with conventional means.")
-                .addInfo("All EU generated is directly deposited into your wireless EU network.")
+                .addInfo("All EU requirements are handled directly by your wireless EU network.")
+                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo("This multiblock will constantly consume hydrogen and helium when it is")
+                .addInfo("not running. It will store this internally, you can see the totals by")
+                .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + "7" + GRAY + " tiers")
+                .addInfo("each. They are as follows and have the associated effects on the multi.")
+                .addInfo(BLUE + "Spacetime Compression Field Generator:")
+                .addInfo("- The tier of this block determines what recipes can be run. If the multiblocks")
+                .addInfo("  spacetime compression field block exceeds the requirements of the recipe it")
+                .addInfo("  will decrease the processing time by " + RED + "3%" + GRAY + " per tier over the requirement. This")
+                .addInfo("  is multiplicative.")
+                .addInfo(BLUE + "Time Dilation Field Generator:")
+                .addInfo("- Decreases the time required by a recipe by a factor of " + RED + "2" + GRAY + " per tier of block.")
+                .addInfo("  Decreases the probability of a recipe succeeding by " + RED + "10%" + GRAY + " per tier (additive)")
+                .addInfo(BLUE + "Stabilisation Field Generator:")
+                .addInfo("- Increases the probability of a recipe succeeding by " + RED + "5%" + GRAY + " per tier (additive).")
+                .addInfo("  Decreases the yield of a recipe by " + RED + "5%" + GRAY + " per tier (additive). ")
+                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo("Computation/s provided to the multiblock can increase the chance by up to " + RED + GT_Utility.formatNumbers(max_percentage_chance_gain_from_computation_per_second * 100) + GRAY + "%.")
+                .addInfo("The associated formula is " + GREEN + "additional_chance = 0.3 * exp(10^(-5) * computation_per_second)" + GRAY + ".")
+                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo("Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe")
+                .addInfo("chance. All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
+                .addInfo(GREEN + "percentage_overflow = abs(1 - fluid_stored/recipe_requirement)")
+                .addInfo(GREEN + "adjustment_value = 1 - exp(-(30 * percentage_overflow)^2)")
+                .addInfo("The value of adjustment_value is then subtracted from the total yield and recipe chance.")
+                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo("It should be noted that base recipe chance is determined per recipe and yield always")
+                .addInfo("starts at 1 and subtracts depending on penalities. All fluid/item outputs are multiplied")
+                .addInfo("by the yield calculated.")
+                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo("This multiblock requires a quantum chest to be placed in front each output bus for")
+                .addInfo("items to output properly. Items will be instantly deposited into them when the recipe")
+                .addInfo("finishes. If a quantum chest is full it will void any items over the max it can hold.")
+                .addInfo("If a quantum chest is occupied by another item it will be passed over. If no chest is")
+                .addInfo("avaliable the items will be " + UNDERLINE + DARK_RED + "voided" + RESET + GRAY + ".")
+                .addInfo(GOLD + "--------------------------------------------------------------------------------")
+                .addInfo("Recipes that fail will return a random amount of the fluid back from the recipe and some")
+                .addInfo("exotic materials that reject conventional physics.")
+
                 .addSeparator()
+
                 .beginStructureBlock(33, 33, 33, false)
                 .toolTipFinisher(CommonValues.TEC_MARK_EM + " & " + AuthorColen.substring(8));
         return tt;
@@ -263,7 +306,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         structureBuild_EM("main", 16, 16, 0, stackSize, hintsOnly);
     }
 
-    private final Map<FluidStack, Long> valid_fluid_map =  new HashMap<FluidStack, Long>() {{
+    private final Map<FluidStack, Long> validFluidMap =  new HashMap<FluidStack, Long>() {{
         put(Materials.Hydrogen.getGas(1), 0L);
         put(Materials.Helium.getGas(1), 0L);
     }};
@@ -277,9 +320,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             }
 
             // Iterate over valid fluids and store them in a hashmap.
-            for (FluidStack valid_fluid : valid_fluid_map.keySet()) {
+            for (FluidStack valid_fluid : validFluidMap.keySet()) {
                 if (fluid_in_hatch.isFluidEqual(valid_fluid)) {
-                    valid_fluid_map.put(valid_fluid, valid_fluid_map.get(valid_fluid) + (long) fluid_in_hatch.amount);
+                    validFluidMap.put(valid_fluid, validFluidMap.get(valid_fluid) + (long) fluid_in_hatch.amount);
                     input_hatch.setFillableStack(null);
                 }
             }
@@ -289,24 +332,31 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
 
+        long hydrogen_stored = validFluidMap.get(Materials.Hydrogen.getGas(1));
+        long helium_stored = validFluidMap.get(Materials.Helium.getGas(1));
 
-        long hydrogen_stored = valid_fluid_map.get(Materials.Hydrogen.getGas(1));
-        long helium_stored = valid_fluid_map.get(Materials.Helium.getGas(1));
+        System.out.println("TEST123VC" + recipe_0.getEUOutput());
 
-        EyeOfHarmonyRecipe recipe;
-
-        recipe = EyeOfHarmonyRecipeStorage.recipe_0;
-        if ((hydrogen_stored >= recipe.getHydrogenRequirement()) & (helium_stored >= recipe.getHeliumRequirement())) {
-            return processRecipe(recipe);
+        if ((hydrogen_stored >= recipe_0.getHydrogenRequirement()) & (helium_stored >= recipe_0.getHeliumRequirement())) {
+            return processRecipe(recipe_0);
         }
 
         return false;
     }
 
-
     public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
-        mMaxProgresstime = (int) max(1, recipeProcessTimeCalculator(recipeObject.getRecipeTime(), recipeObject.getSpacetimeCasingTierRequired()));
+        // Check tier of spacetime compression blocks is high enough.
+        if (SpacetimeCompressionFieldMetadata <= recipeObject.getSpacetimeCasingTierRequired()) {
+            return false;
+        }
+
+        // Remove EU from the users network.
+        if (!addEUToGlobalEnergyMap(user_uuid, -recipeObject.getEUStartCost())) {
+            return false;
+        }
+
+        mMaxProgresstime = (int) Math.max(1, recipeProcessTimeCalculator(recipeObject.getRecipeTime(), recipeObject.getSpacetimeCasingTierRequired()));
 
         calculateHydrogenHeliumInputExcessValues(recipeObject.getHydrogenRequirement(), recipeObject.getHeliumRequirement());
         // DEBUG ! DELETE THESE TWO LINES:
@@ -315,17 +365,15 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         success_chance = recipeChanceCalculator(recipeObject.getBaseRecipeSuccessChance());
 
-        // Remove EU from the users network.
-        if (!addEUToGlobalEnergyMap(user_uuid, -recipeObject.getEUStartCost())) {
-            return false;
-        }
-
         // Determine EU recipe output.
-        eu_output = recipeObject.getEUOutput();
+        euOutput = recipeObject.getEUOutput();
+
+        // Set expected recipe computation.
+        eRequiredData = getComputation();
 
         // Reduce internal storage by hydrogen and helium quantity required for recipe.
-        valid_fluid_map.put(Materials.Hydrogen.getGas(1), 0L);
-        valid_fluid_map.put(Materials.Helium.getGas(1), 0L);
+        validFluidMap.put(Materials.Hydrogen.getGas(1), 0L);
+        validFluidMap.put(Materials.Helium.getGas(1), 0L);
 
         double yield = recipeYieldCalculator();
 
@@ -348,6 +396,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         mOutputFluids = tmp_fluids_output;
         updateSlots();
 
+        recipeRunning = true;
         return true;
     }
 
@@ -357,15 +406,23 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     }
 
+    @Override
+    public void stopMachine() {
+        super.stopMachine();
+        recipeRunning = false;
+    }
+
     public void outputAfterRecipe_EM() {
+        recipeRunning = false;
+        eRequiredData = 0L;
 
         if (success_chance > random()) {
             outputFailedChance();
             return;
         }
 
-        addEUToGlobalEnergyMap(user_uuid, eu_output);
-        eu_output = 0;
+        addEUToGlobalEnergyMap(user_uuid, euOutput);
+        euOutput = 0;
 
         int index = 0;
         for (Pair<ItemStack, Long> item : output_items) {
@@ -380,20 +437,53 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         super.outputAfterRecipe_EM();
     }
 
+    private void pushComputation() {
+        // Add computation to finite "stack".
+        for (int i = computationTickCacheSize - 1 ; i > 2; i--) {
+            computationStack[i-1] = computationStack[i];
+        }
+        computationStack[0] = eAvailableData;
+    }
+
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
         if (aTick == 1) {
+
             user_uuid = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());
             user_name = getBaseMetaTileEntity().getOwnerName();
 
             strongCheckOrAddUser(user_uuid, user_name);
         }
 
-        if (aTick % ticks_between_hatch_drain == 0) {
-            drainFluidFromHatchesAndStoreInternally();
+        // Add computation to stack. Prevents small interruptions causing issues.
+        pushComputation();
+
+        if (!recipeRunning) {
+            if (aTick % ticks_between_hatch_drain == 0) {
+                drainFluidFromHatchesAndStoreInternally();
+            }
         }
+    }
+
+    private boolean recipeRunning = false;
+    private final static int computationTickCacheSize = 5;
+
+    private long getComputation() {
+        return max(computationStack);
+    }
+
+    private long max(long[] array) {
+        long max = array[0];
+
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > max) {
+                max = array[i];
+            }
+        }
+
+        return max;
     }
 
     private void addItemsToQuantumChest(IGregTechTileEntity quantum_chest, long amount) {
@@ -476,8 +566,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         return false;
     }
 
-
-
     @Override
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>(Arrays.asList(super.getInfoData()));
@@ -486,7 +574,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         str.add("Time Dilation Field Grade: " + BLUE + TimeAccelerationFieldMetadata);
         str.add("Stabilisation Field Grade: " + BLUE + StabilisationFieldMetadata);
         str.add(GOLD + "----------------- Internal Fluids Stored ----------------");
-        valid_fluid_map.forEach((key, value) -> str.add(BLUE + key.getLocalizedName() + RESET +
+        validFluidMap.forEach((key, value) -> str.add(BLUE + key.getLocalizedName() + RESET +
                 " : " + RED + GT_Utility.formatNumbers(value)));
         str.add(GOLD + "-----------------------------------------------------");
         return str.toArray(new String[0]);
@@ -494,14 +582,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
-        return new String[] {"?? No idea what this does."};
+        return new String[] {"Eye of Harmony multiblock"};
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
 
         // Save the quantity of fluid stored inside the controller.
-        valid_fluid_map.forEach((key, value) -> aNBT.setLong("stored." + key.getUnlocalizedName(), value));
+        validFluidMap.forEach((key, value) -> aNBT.setLong("stored." + key.getUnlocalizedName(), value));
+
+        aNBT.setBoolean("eye_of_harmony_recipeRunning", recipeRunning);
 
         super.saveNBTData(aNBT);
     }
@@ -510,7 +600,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     public void loadNBTData(final NBTTagCompound aNBT) {
 
         // Load the quantity of fluid stored inside the controller.
-        valid_fluid_map.forEach((key, value) -> valid_fluid_map.put(key, aNBT.getLong("stored." + key.getUnlocalizedName())));
+        validFluidMap.forEach((key, value) -> validFluidMap.put(key, aNBT.getLong("stored." + key.getUnlocalizedName())));
+
+        recipeRunning = aNBT.getBoolean("eye_of_harmony_recipeRunning");
 
         super.loadNBTData(aNBT);
     }

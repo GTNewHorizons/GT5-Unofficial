@@ -11,17 +11,17 @@ public class EyeOfHarmonyRecipe {
     private final List<Pair<ItemStack, Long>> output_items;
     private final FluidStack[] output_fluids;
 
-    private long hydrogen_requirement = Long.MAX_VALUE;
-    private long helium_requirement = Long.MAX_VALUE;
+    private long hydrogen_requirement;
+    private long helium_requirement;
 
-    private long eu_output = 0;
-    private long eu_start_cost = Long.MAX_VALUE;
+    private long eu_output;
+    private long eu_start_cost;
 
-    private long recipe_processing_time_in_ticks = Long.MAX_VALUE;
+    private long recipe_processing_time_in_ticks;
 
-    private double success_chance = 0;
+    private double base_success_chance;
 
-    private long spacetime_casing_tier_required = Long.MAX_VALUE;
+    private long spacetime_casing_tier_required;
 
     public EyeOfHarmonyRecipe(List<Pair<ItemStack, Long>> _output_items,
                               FluidStack[] _output_fluids,
@@ -30,7 +30,7 @@ public class EyeOfHarmonyRecipe {
                               long _eu_output,
                               long _eu_start_cost,
                               long _recipe_processing_time_in_ticks,
-                              double _success_chance,
+                              double _base_success_chance,
                               long _spacetime_casing_tier_required) {
 
         output_items = _output_items;
@@ -44,7 +44,7 @@ public class EyeOfHarmonyRecipe {
 
         recipe_processing_time_in_ticks = _recipe_processing_time_in_ticks;
 
-        success_chance = _success_chance;
+        base_success_chance = _base_success_chance;
 
         // 0 - 7;
         spacetime_casing_tier_required = _spacetime_casing_tier_required;
@@ -79,7 +79,7 @@ public class EyeOfHarmonyRecipe {
     }
 
     public double getBaseRecipeSuccessChance() {
-        return success_chance;
+        return base_success_chance;
     }
 
     public long getSpacetimeCasingTierRequired() {
