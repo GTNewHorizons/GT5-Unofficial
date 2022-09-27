@@ -58,7 +58,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex < 9 || aIndex == rechargerSlotStartIndex();
+        return aIndex < 9;
     }
 
     @Override
