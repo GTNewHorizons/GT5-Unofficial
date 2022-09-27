@@ -1219,7 +1219,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     protected void add1by1Slot(ModularWindow.Builder builder, IDrawable... background) {
         if (background.length == 0) {
-            background = new IDrawable[] {ModularUITextures.ITEM_SLOT};
+            background = new IDrawable[] {getSlotBackground()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 1)
                         .startFromSlot(0)
@@ -1234,7 +1234,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     protected void add2by2Slots(ModularWindow.Builder builder, IDrawable... background) {
         if (background.length == 0) {
-            background = new IDrawable[] {ModularUITextures.ITEM_SLOT};
+            background = new IDrawable[] {getSlotBackground()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
                         .startFromSlot(0)
@@ -1249,7 +1249,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     protected void add3by3Slots(ModularWindow.Builder builder, IDrawable... background) {
         if (background.length == 0) {
-            background = new IDrawable[] {ModularUITextures.ITEM_SLOT};
+            background = new IDrawable[] {getSlotBackground()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
                         .startFromSlot(0)
@@ -1264,7 +1264,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     protected void add4by4Slots(ModularWindow.Builder builder, IDrawable... background) {
         if (background.length == 0) {
-            background = new IDrawable[] {ModularUITextures.ITEM_SLOT};
+            background = new IDrawable[] {getSlotBackground()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
                         .startFromSlot(0)
@@ -1280,7 +1280,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     protected void addChargerSlot(ModularWindow.Builder builder, int x, int y) {
         builder.widget(new SlotWidget(inventoryHandler, rechargerSlotStartIndex())
                 .disableShiftInsert()
-                .setBackground(ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_CHARGER)
+                .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_CHARGER)
                 .setPos(x, y));
     }
 

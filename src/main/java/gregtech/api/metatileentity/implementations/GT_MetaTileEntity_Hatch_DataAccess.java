@@ -136,10 +136,10 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     protected void addUIWidgets(ModularWindow.Builder builder) {
         switch (mTier) {
             case 4:
-                add2by2Slots(builder, ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_CIRCUIT);
+                add2by2Slots(builder, getSlotBackground(), GT_UITextures.OVERLAY_SLOT_CIRCUIT);
                 break;
             default:
-                add4by4Slots(builder, ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_CIRCUIT);
+                add4by4Slots(builder, getSlotBackground(), GT_UITextures.OVERLAY_SLOT_CIRCUIT);
                 break;
         }
     }

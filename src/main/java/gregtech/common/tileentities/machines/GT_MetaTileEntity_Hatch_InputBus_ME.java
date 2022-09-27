@@ -319,7 +319,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                         .startFromSlot(0)
                         .endAtSlot(15)
                         .phantom(true)
-                        .background(ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_ARROW_ME)
+                        .background(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_ARROW_ME)
                         .widgetCreator(slot -> new SlotWidget(slot) {
                             @Override
                             protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
