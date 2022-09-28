@@ -10,6 +10,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -195,6 +196,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
                         hintOnly);
     }
 
+    @Deprecated
     protected final int survivialBuildPiece(
             String piece,
             ItemStack trigger,
@@ -232,12 +234,57 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
             int verticalOffset,
             int depthOffset,
             int elementsBudget,
+            ISurvivalBuildEnvironment env,
+            boolean check) {
+        final IGregTechTileEntity tTile = getBaseMetaTileEntity();
+        return getCastedStructureDefinition()
+                .survivalBuild(
+                        this,
+                        trigger,
+                        piece,
+                        tTile.getWorld(),
+                        getExtendedFacing(),
+                        tTile.getXCoord(),
+                        tTile.getYCoord(),
+                        tTile.getZCoord(),
+                        horizontalOffset,
+                        verticalOffset,
+                        depthOffset,
+                        elementsBudget,
+                        env,
+                        check);
+    }
+
+    @Deprecated
+    protected final int survivialBuildPiece(
+            String piece,
+            ItemStack trigger,
+            int horizontalOffset,
+            int verticalOffset,
+            int depthOffset,
+            int elementsBudget,
             IItemSource source,
             EntityPlayerMP actor,
             boolean check,
             boolean checkIfPlaced) {
         int built = survivialBuildPiece(
                 piece, trigger, horizontalOffset, verticalOffset, depthOffset, elementsBudget, source, actor, check);
+        if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
+        return built;
+    }
+
+    protected final int survivialBuildPiece(
+            String piece,
+            ItemStack trigger,
+            int horizontalOffset,
+            int verticalOffset,
+            int depthOffset,
+            int elementsBudget,
+            ISurvivalBuildEnvironment env,
+            boolean check,
+            boolean checkIfPlaced) {
+        int built = survivialBuildPiece(
+                piece, trigger, horizontalOffset, verticalOffset, depthOffset, elementsBudget, env, check);
         if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
         return built;
     }

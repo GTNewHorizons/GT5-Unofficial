@@ -43,6 +43,7 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
+import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.preload.GT_PreLoad;
 import ic2.api.tile.IWrenchable;
@@ -60,7 +61,6 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntity;
@@ -167,6 +167,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
     private boolean mFirstTick = false;
     public static final int ROTATION_MARKER_RESOLUTION = 120;
     private int mReloadCount;
+    private float renderTickTime;
 
     public GT_Client() {
         mCapeRenderer = new GT_CapeRenderer(mCapeList);
@@ -523,6 +524,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 .rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
 
+        new GT_MetaTileEntity_AdvDebugStructureWriter.ForgeEventHandler();
+
         final String[] arr = {
             "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321", "Goshen_Ithilien", "manf", "Bimgo",
                     "leagris",
@@ -557,6 +560,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
         mPollutionRenderer.preLoad();
 
         mPreference = new GT_ClientPreference(GregTech_API.sClientDataFile);
+
+        Materials.initClient();
     }
 
     @Override
@@ -591,7 +596,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
         }
 
         if (Loader.isModLoaded("Avaritia")) {
-            CosmicItemRendererGT.registerItemWithMeta(Item.getItemFromBlock(GregTech_API.sBlockCasings5), 14);
+            // TODO make this work
+            // CosmicItemRendererGT.registerItemWithMeta(Item.getItemFromBlock(GregTech_API.sBlockCasings5), 14);
             CosmicItemRendererGT.init();
         }
     }
@@ -795,6 +801,13 @@ public class GT_Client extends GT_Proxy implements Runnable {
     }
 
     @SubscribeEvent
+    public void onRenderStart(cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent aEvent) {
+        if (aEvent.phase == TickEvent.Phase.START) {
+            renderTickTime = aEvent.renderTickTime;
+        }
+    }
+
+    @SubscribeEvent
     public void onClientTickEvent(cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent aEvent) {
         if (aEvent.phase == cpw.mods.fml.common.gameevent.TickEvent.Phase.END) {
             if (changeDetected > 0) changeDetected--;
@@ -879,6 +892,16 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if (tmp > 255) tmp = 255;
         if (tmp < 0) tmp = 0;
         return (short) tmp;
+    }
+
+    @Override
+    public long getAnimationTicks() {
+        return mAnimationTick;
+    }
+
+    @Override
+    public float getPartialRenderTicks() {
+        return renderTickTime;
     }
 
     @Override

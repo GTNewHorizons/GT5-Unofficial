@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
         tt.addMachineType("Combustion Generator")
                 .addInfo("Controller block for the Extreme Combustion Engine")
                 .addInfo("Supply High Octane Gasoline and 8000L of Lubricant per hour to run")
-                .addInfo("Supply 80L/s of Liquid Oxygen to boost output (optional)")
+                .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
                 .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
                 .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
                 .addInfo("You need to wait for it to reach 300% to output full power")
@@ -169,7 +169,7 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
 
     @Override
     protected int getAdditiveFactor() {
-        return 2;
+        return 1;
     }
 
     @Override

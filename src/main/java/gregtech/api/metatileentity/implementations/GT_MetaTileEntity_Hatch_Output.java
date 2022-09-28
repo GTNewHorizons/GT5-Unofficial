@@ -377,11 +377,20 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     @Override
     public void setLockedFluidName(String lockedFluidName) {
         this.lockedFluidName = lockedFluidName;
+        markDirty();
     }
 
     @Override
     public void lockFluid(boolean lock) {
-        this.mMode = (byte) (lock ? 9 : 0);
+        if (lock) {
+            if (!isFluidLocked()) {
+                this.mMode = 9;
+                markDirty();
+            }
+        } else {
+            this.mMode = 0;
+            markDirty();
+        }
     }
 
     @Override

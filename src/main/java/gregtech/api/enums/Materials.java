@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 
@@ -7,6 +8,7 @@ import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -15,6 +17,8 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
+import gregtech.common.render.items.GaiaSpiritRenderer;
+import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import java.util.*;
@@ -54,7 +58,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Barium                  = new Materials(  63, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 255, 255, 255,   0,   "Barium"                  ,   "Barium"                        ,    0,       0,       1000,    0, false, false,   1,   1,   1, Dyes._NULL          , Element.Ba        , Collections.singletonList(new TC_AspectStack(TC_Aspects.VINCULUM, 3)));
     public static Materials Beryllium               = new Materials(   8, TextureSet.SET_METALLIC          ,  14.0F,     64,  2, 1|2  |8   |32|64          , 100, 180, 100,   0,   "Beryllium"               ,   "Beryllium"                     ,    0,       0,       1560,    0, false, false,   6,   1,   1, Dyes.dyeGreen       , Element.Be        , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.LUCRUM, 1)));
     public static Materials Bismuth                 = new Materials(  90, TextureSet.SET_METALLIC          ,   6.0F,     64,  1, 1|2  |8   |32|64|128      , 100, 160, 160,   0,   "Bismuth"                 ,   "Bismuth"                       ,    0,       0,        544,    0, false, false,   2,   1,   1, Dyes.dyeCyan        , Element.Bi        , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.INSTRUMENTUM, 1)));
-    public static Materials Boron                   = new Materials(   9, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1|32                      , 210, 250, 210,   0,   "Boron"                   ,   "Boron"                         ,    0,       0,       2349,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Element.B         , Collections.singletonList(new TC_AspectStack(TC_Aspects.VITREUS, 3)));
+    public static Materials Boron                   = new Materials(   9, TextureSet.SET_DULL              ,   1.0F,      0,  2, 1         |32             , 210, 250, 210,   0,   "Boron"                   ,   "Boron"                         ,    0,       0,       2349,    0, false, false,   1,   1,   1, Dyes.dyeWhite       , Element.B         , Collections.singletonList(new TC_AspectStack(TC_Aspects.VITREUS, 3)));
     public static Materials Caesium                 = new Materials(  62, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 176, 196, 222,   0,   "Caesium"                 ,   "Caesium"                       ,    0,       0,        301,    0, false, false,   4,   1,   1, Dyes._NULL          , Element.Cs        , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
     public static Materials Calcium                 = new Materials(  26, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1         |32             , 255, 245, 245,   0,   "Calcium"                 ,   "Calcium"                       ,    0,       0,       1115, 1115,  true, false,   4,   1,   1, Dyes.dyePink        , Element.Ca        , Arrays.asList(new TC_AspectStack(TC_Aspects.SANO, 1), new TC_AspectStack(TC_Aspects.TUTAMEN, 1)));
     public static Materials Carbon                  = new Materials(  10, TextureSet.SET_DULL              ,   1.0F,     64,  2, 1|2    |16|32|64|128      ,  20,  20,  20,   0,   "Carbon"                  ,   "Carbon"                        ,    0,       0,       3800,    0, false, false,   2,   1,   1, Dyes.dyeBlack       , Element.C         , Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1), new TC_AspectStack(TC_Aspects.IGNIS, 1)));
@@ -517,7 +521,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials FluidNaquadahFuel       = new MaterialBuilder(600, TextureSet.SET_FLUID      ,                                                                                                 "Naquadah Fuel").setName("FluidNaqudahFuel").addCell().addFluid().setRGB(62, 62, 62).setColor(Dyes.dyeBlack).constructMaterial();
     public static Materials EnrichedNaquadria       = new MaterialBuilder(601, TextureSet.SET_FLUID      ,                                                                                                 "Enriched Naquadria").setName("EnrichedNaquadria").addCell().addFluid().setRGB(52, 52, 52).setColor(Dyes.dyeBlack).constructMaterial();
 
-    public static Materials ReinforceGlass          = new MaterialBuilder(602, TextureSet.SET_FLUID      ,                                                                                                     "Molten Reinforced Glass").setName("ReinforcedGlass").addCell().addFluid().setRGB(192, 245, 254).setColor(Dyes.dyeWhite).setLiquidTemperature(2000).constructMaterial();
+    public static Materials ReinforceGlass          = new MaterialBuilder(602, TextureSet.SET_FLUID      ,                                                                                                     "Reinforced Glass").setName("ReinforcedGlass").setRGB(192, 245, 254).setColor(Dyes.dyeWhite).setMeltingPoint(2000).constructMaterial().disableAutoGeneratedRecycleRecipes();
     public static Materials BioMediumRaw            = new MaterialBuilder(603, TextureSet.SET_FLUID      ,                                                                                                     "Raw Bio Catalyst Medium").setName("BioMediumRaw").addCell().addFluid().setRGB(97, 147, 46).setColor(Dyes.dyeLime).constructMaterial();
     public static Materials BioMediumSterilized     = new MaterialBuilder(604, TextureSet.SET_FLUID      ,                                                                                                     "Sterilized Bio Catalyst Medium").setName("BiohMediumSterilized").addCell().addFluid().setRGB(162, 253, 53).setColor(Dyes.dyeLime).constructMaterial();
 
@@ -882,7 +886,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials DimensionallyTranscendentResidue = new Materials( 589, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             , 0, 0, 0, 1,   "DimensionallyTranscendentResidue"           ,   "Dimensionally Transcendent Residue"                ,    -1,       -1,         25,    1, false,  true,   1,   1,   1, Dyes.dyeBlack);
 
     public static Materials SpaceTime                = new Materials(   588, new TextureSet("spacetime", true)           ,   320.0F,      4*2621440,  25, 1|2|64|128,   255,   255, 255,  0,   "SpaceTime"                ,   "SpaceTime"                      ,    -1,      -1,         0,    0, false,  true,   2,   1,   1, Dyes._NULL         , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1)));
-    public static Materials TranscendentMetal        = new Materials(   581, new TextureSet("transcendentmetal", true)   ,   290.0F,      3*2621440,  22, 1|2|64|128,   50,     50,  50,255,   "TranscendentMetal" ,   "Transcendent Metal"             ,    -1,      -1,         0,    3000, true,  true,   200,   1000,   1000, Dyes.dyeBlack  , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
+    public static Materials TranscendentMetal        = new Materials(   581, TextureSet.SET_METALLIC          ,  290.0F,      3*2621440,  22, 1|2|64|128,   50,     50,  50,0,   "TranscendentMetal" ,   "Transcendent Metal"             ,    -1,      -1,         0,    3000, true,  true,   200,   1000,   1000, Dyes.dyeBlack  , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
 
     // spotless:on
 
@@ -945,6 +949,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             mBlastFurnaceRequired = false,
             mAutoGenerateBlastFurnaceRecipes = true,
             mAutoGenerateVacuumFreezerRecipes = true,
+            mAutoGenerateRecycleRecipes = true,
             mTransparent = false,
             mHasParentMod = true,
             mHasPlasma = false,
@@ -1561,8 +1566,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         RockSalt.setOreMultiplier(2).setSmeltingMultiplier(2);
         Scheelite.setOreMultiplier(2).setSmeltingMultiplier(2);
         Tungstate.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Cassiterite.setOreMultiplier(6).setSmeltingMultiplier(2);
-        CassiteriteSand.setOreMultiplier(6).setSmeltingMultiplier(2);
+        Cassiterite.setOreMultiplier(2).setSmeltingMultiplier(2);
+        CassiteriteSand.setOreMultiplier(2).setSmeltingMultiplier(2);
         NetherQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
         CertusQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
         TricalciumPhosphate.setOreMultiplier(3).setSmeltingMultiplier(3);
@@ -2289,6 +2294,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         Concrete.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
         ConstructionFoam.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.EXPLOSIVE, SubTag.NO_SMELTING);
+        ReinforceGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
         Redstone.add(
                 SubTag.STONE,
                 SubTag.NO_SMASHING,
@@ -2426,6 +2432,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Mithril.add(SubTag.MAGICAL);
 
         Carbon.add(SubTag.NO_SMELTING);
+        Boron.add(SubTag.SMELTING_TO_FLUID);
     }
 
     public static void init() {
@@ -2466,6 +2473,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         }
 
         fillGeneratedMaterialsMap();
+    }
+
+    /**
+     * Init rendering properties. Will be called at pre init by GT client proxy.
+     */
+    public static void initClient() {
+        TranscendentMetal.renderer = new TranscendentMetalRenderer();
+        MaterialsBotania.GaiaSpirit.renderer = new GaiaSpiritRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {
@@ -2602,8 +2617,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             }
             aMaterial.mHasGas = GregTech_API.sMaterialProperties.get(aConfigPath, "AddGas", aMaterial.mHasGas);
             if (aMaterial.mHasGas) {
-                GT_Mod.gregtechproxy.addFluid(
-                        aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, 2, aMaterial.mGasTemp);
+                GT_FluidFactory.of(
+                        aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName, aMaterial, GAS, aMaterial.mGasTemp);
             }
         }
     }
@@ -2831,6 +2846,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         mSteamMultiplier = steamMultiplier;
         mGasMultiplier = gasMultiplier;
         mPlasmaMultiplier = plasmaMultiplier;
+        return this;
+    }
+
+    public Materials disableAutoGeneratedRecycleRecipes() {
+        mAutoGenerateRecycleRecipes = false;
         return this;
     }
 

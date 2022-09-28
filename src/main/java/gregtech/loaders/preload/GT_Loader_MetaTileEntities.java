@@ -10,6 +10,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.util.*;
 import gregtech.common.tileentities.automation.*;
 import gregtech.common.tileentities.boilers.*;
+import gregtech.common.tileentities.debug.*;
 import gregtech.common.tileentities.generators.*;
 import gregtech.common.tileentities.machines.*;
 import gregtech.common.tileentities.machines.basic.*;
@@ -26,7 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
-//    349
 //    356
 //    357
 //    358
@@ -1452,6 +1452,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 .getStackForm(1L));
         ItemList.Long_Distance_Pipeline_Item.set(new GT_MetaTileEntity_LongDistancePipelineItem(
                         2701, "long.distance.pipeline.item", "Long Distance Item Pipeline", 1)
+                .getStackForm(1L));
+
+        ItemList.AdvDebugStructureWriter.set(new GT_MetaTileEntity_AdvDebugStructureWriter(
+                        349, "advdebugstructurewriter", "Advanced Debug Structure Writer", 5)
                 .getStackForm(1L));
 
         if (GregTech_API.mAE2) {
@@ -12371,6 +12375,19 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 'C',
                 OrePrefixes.circuit.get(Materials.Advanced)
             });
+            GT_Values.RA.addAssemblerRecipe(
+                    new ItemStack[] {
+                        ItemList.Hull_HV.get(1L),
+                        ItemList.Component_Filter.get(2L),
+                        GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L),
+                        ItemList.Electric_Motor_HV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                        GT_Utility.getIntegratedCircuit(1)
+                    },
+                    Materials.StainlessSteel.getMolten(864L),
+                    ItemList.Machine_Multi_Cleanroom.get(1L),
+                    1200,
+                    120);
         } else {
             if (isNEILoaded) {
                 API.hideItem(ItemList.Machine_Multi_Cleanroom.get(1L));

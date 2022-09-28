@@ -124,9 +124,6 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
                 owner_uuid = aBaseMetaTileEntity.getOwnerUuid().toString();
                 owner_name = aBaseMetaTileEntity.getOwnerName();
 
-                // Attempt to load in map from file.
-                if (GlobalEnergy.size() == 0) loadGlobalEnergyInfo(aBaseMetaTileEntity.getWorld());
-
                 strongCheckOrAddUser(owner_uuid, owner_name);
             }
 

@@ -55,10 +55,19 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
         GT_Runnable_MachineBlockUpdate.isEnabled = isEnabled;
     }
 
+    public static boolean isCurrentThreadEnabled() {
+        return perThreadEnable.get();
+    }
+
+    public static void setCurrentThreadEnabled(boolean perThreadEnable) {
+        GT_Runnable_MachineBlockUpdate.perThreadEnable.set(perThreadEnable);
+    }
+
     protected static boolean isEnabled = true;
+    protected static final ThreadLocal<Boolean> perThreadEnable = ThreadLocal.withInitial(() -> true);
 
     public static void setMachineUpdateValues(World aWorld, ChunkCoordinates aCoords) {
-        if (isEnabled) {
+        if (isEnabled() && isCurrentThreadEnabled()) {
             EXECUTOR_SERVICE.submit(new GT_Runnable_MachineBlockUpdate(aWorld, aCoords));
         }
     }

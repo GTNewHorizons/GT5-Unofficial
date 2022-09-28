@@ -57,8 +57,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_MetaTileEntity_BasicHull_NonElectric {
     public static int minimalDistancePoints = 64;
-    protected GT_MetaTileEntity_LongDistancePipelineBase mTarget = null, mSender = null;
-    protected ChunkCoordinates mTargetPos = null;
+    protected GT_MetaTileEntity_LongDistancePipelineBase mTarget = null;
+    // these two are updated by machine block update thread, so must be volatile
+    protected volatile GT_MetaTileEntity_LongDistancePipelineBase mSender = null;
+    protected volatile ChunkCoordinates mTargetPos = null;
     protected GT_MetaTileEntity_LongDistancePipelineBase mTooCloseTarget = null, mTooCloseSender = null;
 
     public GT_MetaTileEntity_LongDistancePipelineBase(

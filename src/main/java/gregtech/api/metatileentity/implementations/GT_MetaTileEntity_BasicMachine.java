@@ -1190,10 +1190,24 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
 
+        if (tag.getBoolean("stutteringSingleBlock")) {
+            currenttip.add("Status: insufficient energy");
+        } else {
+            currenttip.add(GT_Waila.getMachineProgressString(
+                    tag.getBoolean("isActiveSingleBlock"),
+                    tag.getInteger("maxProgressSingleBlock"),
+                    tag.getInteger("progressSingleBlock")));
+        }
+
         currenttip.add(String.format(
-                "Progress: %d s / %d s",
-                tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
-        super.getWailaBody(itemStack, currenttip, accessor, config);
+                "Machine Facing: %s",
+                ForgeDirection.getOrientation(tag.getInteger("mainFacingSingleBlock"))
+                        .name()));
+
+        currenttip.add(String.format(
+                "Output Facing: %s",
+                ForgeDirection.getOrientation(tag.getInteger("outputFacingSingleBlock"))
+                        .name()));
     }
 
     @Override
@@ -1201,8 +1215,16 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
-        tag.setInteger("progressSingleBlock", mProgresstime / 20);
-        tag.setInteger("maxProgressSingleBlock", mMaxProgresstime / 20);
+        tag.setInteger("progressSingleBlock", mProgresstime);
+        tag.setInteger("maxProgressSingleBlock", mMaxProgresstime);
+        tag.setInteger("mainFacingSingleBlock", mMainFacing);
+        tag.setBoolean("stutteringSingleBlock", mStuttering);
+
+        IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
+        if (tileEntity != null) {
+            tag.setBoolean("isActiveSingleBlock", tileEntity.isActive());
+            tag.setInteger("outputFacingSingleBlock", tileEntity.getFrontFacing());
+        }
     }
 
     public Power getPower() {

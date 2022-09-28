@@ -48,7 +48,7 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch im
                 ArrayExt.of(
                         "Item Input for Multiblocks",
                         "Shift + right click with screwdriver to turn Sort mode on/off",
-                        "Capacity: " + slots + " stack" + (slots >= 2 ? "s" : "")));
+                        "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
     }
 
     @Deprecated

@@ -1,10 +1,12 @@
 package gregtech.loaders.load;
 
-import gregtech.GT_Mod;
+import static gregtech.api.enums.FluidState.LIQUID;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -12,20 +14,20 @@ import gregtech.api.util.GT_Recipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 
 public class GT_FuelLoader implements Runnable {
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Initializing various Fuels.");
         ItemList.sBlueVitriol =
-                GT_Mod.gregtechproxy.addFluid("solution.bluevitriol", "Blue Vitriol water solution", null, 1, 295);
+                (Fluid) GT_FluidFactory.of("solution.bluevitriol", "Blue Vitriol water solution", LIQUID, 295);
         ItemList.sNickelSulfate =
-                GT_Mod.gregtechproxy.addFluid("solution.nickelsulfate", "Nickel sulfate water solution", null, 1, 295);
-        ItemList.sIndiumConcentrate = GT_Mod.gregtechproxy.addFluid(
-                "indiumconcentrate", "Indium Concentrate", null, 1, 295); // TODO CHECK NEW x3
-        ItemList.sLeadZincSolution =
-                GT_Mod.gregtechproxy.addFluid("leadzincsolution", "Lead-Zinc solution", null, 1, 295);
-        ItemList.sRocketFuel = GT_Mod.gregtechproxy.addFluid("rocket_fuel", "Rocket Fuel", null, 1, 295);
+                (Fluid) GT_FluidFactory.of("solution.nickelsulfate", "Nickel sulfate water solution", LIQUID, 295);
+        ItemList.sIndiumConcentrate =
+                (Fluid) GT_FluidFactory.of("indiumconcentrate", "Indium Concentrate", LIQUID, 295); // TODO CHECK NEW x3
+        ItemList.sLeadZincSolution = (Fluid) GT_FluidFactory.of("leadzincsolution", "Lead-Zinc solution", LIQUID, 295);
+        ItemList.sRocketFuel = (Fluid) GT_FluidFactory.of("rocket_fuel", "Rocket Fuel", LIQUID, 295);
         new GT_Recipe(
                 new ItemStack(Items.lava_bucket),
                 new ItemStack(Blocks.obsidian),

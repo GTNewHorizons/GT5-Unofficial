@@ -238,6 +238,10 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                                 * ((GT_MetaGenerated_Tool) aStack.getItem()).getPrimaryMaterial(aStack).mToolSpeed
                                 * 50));
                 overflowMultiplier = getOverflowMultiplier(aStack);
+
+                flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;
+                flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mGasMultiplier;
+                flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
             } else {
                 counter++;
             }
@@ -323,8 +327,8 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
         }
         String[] ret = new String[] {
             // 8 Lines available for information panels
-            tRunning + ": " + EnumChatFormatting.RED + GT_Utility.formatNumbers(mEUt) + EnumChatFormatting.RESET
-                    + " EU/t", /* 1 */
+            tRunning + ": " + EnumChatFormatting.RED + GT_Utility.formatNumbers(((long) mEUt * mEfficiency) / 10000)
+                    + EnumChatFormatting.RESET + " EU/t", /* 1 */
             tMaintainance, /* 2 */
             StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": " + EnumChatFormatting.YELLOW
                     + (mEfficiency / 100F) + EnumChatFormatting.RESET + "%", /* 2 */
