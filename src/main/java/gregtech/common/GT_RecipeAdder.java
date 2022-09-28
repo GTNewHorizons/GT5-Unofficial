@@ -2555,7 +2555,13 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 aDuration,
                 aEUt,
                 0);
-        List<ItemStack> tItemInputList = new ArrayList<>(Arrays.asList(ItemInputArray));
+        List<ItemStack> tItemInputList;
+        if (ItemInputArray == null) {
+            tItemInputList = new ArrayList<>(1);
+        }
+        else {
+                tItemInputList = new ArrayList<>(Arrays.asList(ItemInputArray));
+        }
         List<FluidStack> tFluidInputList;
         if (FluidInputArray != null) {
             tFluidInputList = new ArrayList<>(Arrays.asList(FluidInputArray));
@@ -2571,7 +2577,13 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 }
             }
         }
-        List<ItemStack> tItemOutputList = new ArrayList<>(Arrays.asList(ItemOutputArray));
+        List<ItemStack> tItemOutputList;
+        if (ItemInputArray == null) {
+            tItemOutputList = new ArrayList<>(1);
+        }
+        else {
+            tItemOutputList = new ArrayList<>(Arrays.asList(ItemInputArray));
+        }
         List<FluidStack> tFluidOutputList;
         if (FluidOutputArray != null) {
             tFluidOutputList = new ArrayList<>(Arrays.asList(FluidOutputArray));
