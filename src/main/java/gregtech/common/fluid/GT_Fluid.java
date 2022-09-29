@@ -5,17 +5,18 @@ import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.fluid.IGT_Fluid;
+import gregtech.api.interfaces.fluid.IGT_RegisteredFluid;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
+public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, Runnable {
     private final String localizedName;
     private final ResourceLocation stillIconResourceLocation;
     private final ResourceLocation flowingIconResourceLocation;
@@ -28,17 +29,50 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
      *
      * @param builder The {@link GT_FluidBuilder} instance to construct this {@link IGT_Fluid} implementation
      */
-    protected GT_Fluid(final GT_FluidBuilder builder) {
+    protected GT_Fluid(@Nonnull final GT_FluidBuilder builder) {
         super(builder.fluidName);
         this.localizedName = builder.localizedName;
         this.stillIconResourceLocation = builder.stillIconResourceLocation;
         this.flowingIconResourceLocation = builder.flowingIconResourceLocation;
+        this.stillIcon = builder.stillIcon;
+        this.flowingIcon = builder.flowingIcon;
         this.block = builder.fluidBlock;
         this.colorRGBA = builder.colorRGBA;
         this.fluidState = builder.fluidState;
         this.temperature = builder.temperature;
         configureFromStateTemperature();
     }
+
+    /**
+     * Adjusts this {@link Fluid}'s settings based on this {@link IGT_Fluid}'s state
+     */
+    protected void configureFromStateTemperature() {
+        switch (fluidState) {
+            case SLURRY:
+                setGaseous(false).setViscosity(10000);
+                break;
+            case GAS:
+                setGaseous(true).setDensity(-100).setViscosity(200);
+                break;
+            case PLASMA:
+                setGaseous(true).setDensity(55536).setViscosity(10).setLuminosity(15);
+                break;
+            case MOLTEN:
+                final int luminosity;
+                if (temperature >= 3500) {
+                    luminosity = 15;
+                } else {
+                    luminosity = temperature < 1000 ? 0 : 14 * (temperature - 1000) / 2500 + 1;
+                }
+                setLuminosity(luminosity);
+            case LIQUID:
+            default:
+                setGaseous(false).setViscosity(1000);
+                break;
+        }
+    }
+
+    // ----- Fluid implementations -----
 
     /**
      * @inheritDoc
@@ -50,42 +84,40 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
                 | Math.max(0, Math.min(255, colorRGBA[2]));
     }
 
-    /**
-     * This {@link Runnable#run()} implementation is scheduled within the {@link GregTech_API#sGTBlockIconload}
-     * to load this {@link IGT_Fluid}'s texture icons.
-     *
-     * @see Runnable#run()
-     */
-    @Override
-    public void run() {
-        final IIcon stillIcon = GregTech_API.sBlockIcons.registerIcon(stillIconResourceLocation.toString());
-        if (flowingIconResourceLocation == null) {
-            setIcons(stillIcon);
+    // ----- IGT_Fluid interface implementations -----
+
+    public IGT_RegisteredFluid addFluid() {
+        if (FluidRegistry.registerFluid(GT_Fluid.this)) {
+            // Registered as a new Fluid
+            registeredFluid = this;
+            // Schedules the gtFluid for the block icons loader run() tasks
+            GregTech_API.sGTBlockIconload.add(this);
+            // Adds a server-side localized-name
+            GT_LanguageManager.addStringLocalization(getUnlocalizedName(), localizedName);
         } else {
-            final IIcon flowingIcon = GregTech_API.sBlockIcons.registerIcon(flowingIconResourceLocation.toString());
-            setIcons(stillIcon, flowingIcon);
+            // Fluid already registered, get it from the registry
+            registeredFluid = FluidRegistry.getFluid(GT_Fluid.this.fluidName);
+            // Sets temperature of already registered fluids if they use the default (temperature = 300)
+            if (registeredFluid.getTemperature() == new Fluid("test").getTemperature()) {
+                registeredFluid.setTemperature(GT_Fluid.this.temperature);
+            }
         }
+        return this;
     }
+
+    // ----- IGT_RegisteredFluid interface implementations -----
 
     /**
      * @inheritDoc
      */
     @Override
-    public IGT_Fluid addFluid() {
-
-        if (FluidRegistry.registerFluid(this)) {
-            // Registered as a new Fluid
-            // Adds self as Runnable to the block icons loader run() tasks
-            GregTech_API.sGTBlockIconload.add(this);
-            // Adds a server-side localized-name
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(), localizedName);
-            registeredFluid = this;
-        } else {
-            // Promotes Fluid from the registry to enable GT_Fluid methods
-            registeredFluid = FluidRegistry.getFluid(fluidName);
-            // Sets temperature of already registered fluids if they use the default (temperature = 300)
-            if (registeredFluid.getTemperature() == new Fluid("test").getTemperature()) {
-                registeredFluid.setTemperature(temperature);
+    public IGT_RegisteredFluid registerContainers(
+            final ItemStack fullContainer, final ItemStack emptyContainer, final int containerSize) {
+        if (fullContainer != null && emptyContainer != null) {
+            final FluidStack fluidStack = new FluidStack(registeredFluid, containerSize);
+            if (!FluidContainerRegistry.registerFluidContainer(fluidStack, fullContainer, emptyContainer)) {
+                GT_Values.RA.addFluidCannerRecipe(
+                        fullContainer, GT_Utility.getContainerItem(fullContainer, false), null, fluidStack);
             }
         }
         return this;
@@ -95,25 +127,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
      * @inheritDoc
      */
     @Override
-    public IGT_Fluid registerContainers(
-            final ItemStack fullContainer, final ItemStack emptyContainer, final int containerSize) {
-        if (fullContainer == null || emptyContainer == null) return this;
-        if (registeredFluid == null) {
-            throw new IllegalStateException("Cannot register containers for an unregistered fluid");
-        }
-        final FluidStack fluidStack = new FluidStack(registeredFluid, containerSize);
-        if (!FluidContainerRegistry.registerFluidContainer(fluidStack, fullContainer, emptyContainer)) {
-            GT_Values.RA.addFluidCannerRecipe(
-                    fullContainer, GT_Utility.getContainerItem(fullContainer, false), null, fluidStack);
-        }
-        return this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public IGT_Fluid registerBContainers(final ItemStack fullContainer, final ItemStack emptyContainer) {
+    public IGT_RegisteredFluid registerBContainers(final ItemStack fullContainer, final ItemStack emptyContainer) {
         return registerContainers(fullContainer, emptyContainer, 1000);
     }
 
@@ -121,7 +135,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
      * @inheritDoc
      */
     @Override
-    public IGT_Fluid registerPContainers(final ItemStack fullContainer, final ItemStack emptyContainer) {
+    public IGT_RegisteredFluid registerPContainers(final ItemStack fullContainer, final ItemStack emptyContainer) {
         return registerContainers(fullContainer, emptyContainer, 250);
     }
 
@@ -129,45 +143,26 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
      * @inheritDoc
      */
     @Override
-    public ResourceLocation getStillIconResourceLocation() {
-        return stillIconResourceLocation;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public ResourceLocation getFlowingIconResourceLocation() {
-        return flowingIconResourceLocation;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public IGT_Fluid configureMaterials(final Materials material) {
-        if (registeredFluid == null) {
-            throw new IllegalStateException("Cannot configure Materials with an unregistered fluid");
-        }
-
-        switch (fluidState) {
-            case SLURRY:
-                material.mSolid = registeredFluid;
-                break;
-            case LIQUID:
-                material.mFluid = registeredFluid;
-                break;
-            case GAS:
-                material.mGas = registeredFluid;
-                break;
-            case PLASMA:
-                material.mPlasma = registeredFluid;
-                break;
-            case MOLTEN:
-                material.mStandardMoltenFluid = registeredFluid;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected FluidState: " + fluidState);
+    public IGT_RegisteredFluid configureMaterials(final Materials material) {
+        if (material != null) {
+            switch (fluidState) {
+                case SLURRY:
+                    material.mSolid = registeredFluid;
+                    break;
+                case GAS:
+                    material.mGas = registeredFluid;
+                    break;
+                case PLASMA:
+                    material.mPlasma = registeredFluid;
+                    break;
+                case MOLTEN:
+                    material.mStandardMoltenFluid = registeredFluid;
+                    break;
+                case LIQUID:
+                default:
+                    material.mFluid = registeredFluid;
+                    break;
+            }
         }
         return this;
     }
@@ -177,33 +172,24 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, Runnable {
      */
     @Override
     public Fluid asFluid() {
-        return registeredFluid == null ? this : registeredFluid;
+        return registeredFluid;
     }
 
+    // ----- Runnable interface implementations -----
+
     /**
-     * Adjusts this {@link Fluid}'s settings based on this {@link IGT_Fluid}'s state
+     * This {@link Runnable#run()} implementation is scheduled within the {@link GregTech_API#sGTBlockIconload}
+     * to load this {@link IGT_Fluid}'s texture icons.
      *
-     * @throws IllegalStateException if {@link FluidState} is unknown
+     * @see Runnable#run()
      */
-    protected void configureFromStateTemperature() {
-        switch (fluidState) {
-            case SLURRY:
-                setGaseous(false).setViscosity(10000);
-                break;
-            case LIQUID:
-            case MOLTEN:
-                final int luminosity =
-                        temperature >= 3500 ? 15 : temperature < 1000 ? 0 : 14 * (temperature - 1000) / 2500 + 1;
-                setGaseous(false).setViscosity(1000).setLuminosity(luminosity);
-                break;
-            case GAS:
-                setGaseous(true).setDensity(-100).setViscosity(200);
-                break;
-            case PLASMA:
-                setGaseous(true).setDensity(55536).setViscosity(10).setLuminosity(15);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected FluidState: " + fluidState);
+    @Override
+    public void run() {
+        if (stillIconResourceLocation != null) {
+            stillIcon = GregTech_API.sBlockIcons.registerIcon(stillIconResourceLocation.toString());
+        }
+        if (flowingIconResourceLocation != null) {
+            flowingIcon = GregTech_API.sBlockIcons.registerIcon(flowingIconResourceLocation.toString());
         }
     }
 }

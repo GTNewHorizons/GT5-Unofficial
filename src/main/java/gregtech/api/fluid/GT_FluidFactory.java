@@ -39,9 +39,9 @@ public class GT_FluidFactory {
      * @param material The {@link Materials} of this {@link IGT_Fluid}
      * @param state The {@link FluidState} of this {@link IGT_Fluid}
      * @param temperature The fluid temperature in Kelvin
-     * @return the registered {@link IGT_Fluid}
+     * @return the registered {@link Fluid}
      */
-    public static IGT_Fluid of(
+    public static Fluid of(
             final String fluidName,
             final String localizedName,
             final Materials material,
@@ -51,7 +51,8 @@ public class GT_FluidFactory {
                 .withLocalizedName(localizedName)
                 .withStateAndTemperature(state, temperature)
                 .buildAndRegister()
-                .configureMaterials(material);
+                .configureMaterials(material)
+                .asFluid();
     }
 
     /**
@@ -60,14 +61,15 @@ public class GT_FluidFactory {
      * @param localizedName The localized name of this {@link IGT_Fluid}
      * @param state The {@link FluidState} of this {@link IGT_Fluid}
      * @param temperature The fluid temperature in Kelvin
-     * @return the registered {@link IGT_Fluid}
+     * @return the registered {@link Fluid}
      */
-    public static IGT_Fluid of(
+    public static Fluid of(
             final String fluidName, final String localizedName, final FluidState state, final int temperature) {
         return builder(fluidName)
                 .withLocalizedName(localizedName)
                 .withStateAndTemperature(state, temperature)
-                .buildAndRegister();
+                .buildAndRegister()
+                .asFluid();
     }
 
     /**
