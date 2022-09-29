@@ -360,14 +360,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                 120);
         GT_Values.RA.addMixerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 3L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Electrum, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Electrum, 2L),
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Utility.getIntegratedCircuit(1),
                 GT_Values.NF,
                 GT_Values.NF,
-                GT_OreDictUnificator.getDust(Materials.BlackBronze, 4L * OrePrefixes.dust.mMaterialAmount),
+                GT_OreDictUnificator.getDust(Materials.BlackBronze, 5L * OrePrefixes.dust.mMaterialAmount),
                 (int) (500L * OrePrefixes.dust.mMaterialAmount / 3628800L),
                 8);
         GT_Values.RA.addMixerRecipe(
