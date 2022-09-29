@@ -4636,58 +4636,45 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_RedstoneTransmitterExternal.set(addItem(
                 tLastID = 741,
-                "Redstone Transmitter (Out)",
-                "Transfers Redstonesignals wireless",
+                "Redstone Transmitter (External)",
+                "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneTransmitterInternal.set(addItem(
                 tLastID = 742,
-                "Redstone Transmitter (In)",
-                "Transfers Redstonesignals wireless",
+                "Redstone Transmitter (Internal)",
+                "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneReceiverExternal.set(addItem(
                 tLastID = 746,
-                "Redstone Receiver (Out)",
-                "Transfers Redstonesignals wireless",
+                "Redstone Receiver (External)",
+                "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneReceiverInternal.set(addItem(
                 tLastID = 747,
-                "Redstone Receiver (In)",
-                "Transfers Redstonesignals wireless",
+                "Redstone Receiver (Internal)",
+                "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
 
-        final ITexture redstoneTransmitterExternalCoverTexture = TextureFactory.of(
-                TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
-                        .glow()
-                        .build());
         GregTech_API.registerCover(
                 ItemList.Cover_RedstoneTransmitterExternal.get(1L),
-                TextureFactory.of(MACHINE_CASINGS[2][0], redstoneTransmitterExternalCoverTexture),
-                new GT_Cover_RedstoneTransmitterExternal(redstoneTransmitterExternalCoverTexture));
-
-        final ITexture redstoneTransmitterInternalCoverTexture = TextureFactory.of(
-                TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
-                        .glow()
-                        .build());
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
+                new GT_Cover_RedstoneTransmitterExternal(TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)));
         GregTech_API.registerCover(
                 ItemList.Cover_RedstoneTransmitterInternal.get(1L),
-                TextureFactory.of(MACHINE_CASINGS[2][0], redstoneTransmitterInternalCoverTexture),
-                new GT_Cover_RedstoneTransmitterInternal(redstoneTransmitterInternalCoverTexture));
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
+                new GT_Cover_RedstoneTransmitterInternal(TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)));
         GregTech_API.registerCover(
                 ItemList.Cover_RedstoneReceiverExternal.get(1L),
-                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
-                new GT_Cover_RedstoneReceiverExternal(TextureFactory.of(OVERLAY_FLUIDDETECTOR)));
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
+                new GT_Cover_RedstoneReceiverExternal(TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)));
         GregTech_API.registerCover(
                 ItemList.Cover_RedstoneReceiverInternal.get(1L),
-                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
-                new GT_Cover_RedstoneReceiverInternal(TextureFactory.of(OVERLAY_FLUIDDETECTOR)));
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
+                new GT_Cover_RedstoneReceiverInternal(TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)));
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -4728,16 +4715,11 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "Attach to Multiblock Controller. Emits Redstone Signal if needs Maintenance",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
-        final ITexture needMaintenanceCoverTexture = TextureFactory.of(
-                TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
-                        .glow()
-                        .build());
         GregTech_API.registerCover(
                 ItemList.Cover_NeedsMaintainance.get(1L),
-                TextureFactory.of(MACHINE_CASINGS[2][0], needMaintenanceCoverTexture),
-                new GT_Cover_NeedMaintainance(needMaintenanceCoverTexture));
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)),
+                new GT_Cover_NeedMaintainance(TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)));
+        
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Emitter_MV.get(1L),

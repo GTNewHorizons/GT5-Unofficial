@@ -776,6 +776,8 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         if (hasCover) tNBT.setIntArray("mCoverSides", mCoverSides);
         if (hasValidMetaTileEntity()) mMetaTileEntity.setItemNBT(tNBT);
         if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
+
+        onBaseTEDestroyed();
         return new ArrayList<>(Collections.singletonList(rStack));
     }
 

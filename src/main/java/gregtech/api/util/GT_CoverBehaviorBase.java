@@ -131,6 +131,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
+     * Called before receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.
+     */
+    public final void preDataChanged(
+            byte aSide, int aCoverID, int aNewCoverId, ISerializableObject aCoverVariable, ISerializableObject aNewCoverVariable, ICoverable aTileEntity) {
+        preDataChangedImpl(aSide, aCoverID, aNewCoverId, forceCast(aCoverVariable), forceCast(aNewCoverVariable), aTileEntity);
+    }
+
+    /**
      * Called upon cover being removed. Called on both server and client.
      */
     public final void onDropped(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
@@ -219,6 +227,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     public final boolean onCoverRemoval(
             byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity, boolean aForced) {
         return onCoverRemovalImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity, aForced);
+    }
+
+    /**
+     * Called upon Base TE being destroyed (once getDrops is called),
+     * thus getting called only when destroyed in survival.
+     */
+    public final void onBaseTEDestroyed(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        onBaseTEDestroyedImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
     }
 
     /**
@@ -409,8 +425,13 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     protected void onDataChangedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
+    
+    protected void preDataChangedImpl(
+            byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable, ICoverable aTileEntity) {}
 
     protected void onDroppedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
+
+    protected void onBaseTEDestroyedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
 
     protected boolean isRedstoneSensitiveImpl(
             byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, long aTimer) {
