@@ -8,6 +8,8 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
+import java.util.UUID;
+import javax.annotation.Nonnull;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,10 +17,8 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import java.util.UUID;
-
-public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_AdvancedWirelessRedstoneBase<GT_Cover_AdvancedRedstoneReceiverBase.ReceiverData> {
+public abstract class GT_Cover_AdvancedRedstoneReceiverBase
+        extends GT_Cover_AdvancedWirelessRedstoneBase<GT_Cover_AdvancedRedstoneReceiverBase.ReceiverData> {
 
     public GT_Cover_AdvancedRedstoneReceiverBase(ITexture coverTexture) {
         super(ReceiverData.class, coverTexture);
@@ -37,10 +37,14 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
     /**
      * GUI Stuff
      */
-
     @Override
-    public Object getClientGUIImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity,
-                                   EntityPlayer aPlayer, World aWorld) {
+    public Object getClientGUIImpl(
+            byte aSide,
+            int aCoverID,
+            ReceiverData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            World aWorld) {
         return new ReceiverGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
@@ -114,26 +118,53 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase extends GT_Cover_Adv
         public ReceiverGUI(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
             super(aSide, aCoverID, aCoverVariable, aTileEntity);
 
-            new GT_GuiIconButton(this, gateModeButtonIdStart + 0, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.AND_GATE)
-                .setTooltipText(GT_Utility.trans("006", "AND Gate"));
-            new GT_GuiIconButton(this, gateModeButtonIdStart + 1, startX + spaceX * 1, startY + spaceY * 2, GT_GuiIcon.NAND_GATE)
-                .setTooltipText(GT_Utility.trans("006", "NAND Gate"));
-            new GT_GuiIconButton(this, gateModeButtonIdStart + 2, startX + spaceX * 2, startY + spaceY * 2, GT_GuiIcon.OR_GATE)
-                .setTooltipText(GT_Utility.trans("006", "OR Gate"));
-            new GT_GuiIconButton(this, gateModeButtonIdStart + 3, startX + spaceX * 3, startY + spaceY * 2, GT_GuiIcon.NOR_GATE)
+            new GT_GuiIconButton(
+                            this,
+                            gateModeButtonIdStart + 0,
+                            startX + spaceX * 0,
+                            startY + spaceY * 2,
+                            GT_GuiIcon.AND_GATE)
+                    .setTooltipText(GT_Utility.trans("006", "AND Gate"));
+            new GT_GuiIconButton(
+                            this,
+                            gateModeButtonIdStart + 1,
+                            startX + spaceX * 1,
+                            startY + spaceY * 2,
+                            GT_GuiIcon.NAND_GATE)
+                    .setTooltipText(GT_Utility.trans("006", "NAND Gate"));
+            new GT_GuiIconButton(
+                            this,
+                            gateModeButtonIdStart + 2,
+                            startX + spaceX * 2,
+                            startY + spaceY * 2,
+                            GT_GuiIcon.OR_GATE)
+                    .setTooltipText(GT_Utility.trans("006", "OR Gate"));
+            new GT_GuiIconButton(
+                            this,
+                            gateModeButtonIdStart + 3,
+                            startX + spaceX * 3,
+                            startY + spaceY * 2,
+                            GT_GuiIcon.NOR_GATE)
                     .setTooltipText(GT_Utility.trans("006", "NOR Gate"));
-            new GT_GuiIconButton(this, gateModeButtonIdStart + 4, startX + spaceX * 4, startY + spaceY * 2, GT_GuiIcon.ANALOG_MODE)
-                    .setTooltipText("ANALOG Mode", "Only use this mode with ONE transmitter in total,", "no logic involved");
+            new GT_GuiIconButton(
+                            this,
+                            gateModeButtonIdStart + 4,
+                            startX + spaceX * 4,
+                            startY + spaceY * 2,
+                            GT_GuiIcon.ANALOG_MODE)
+                    .setTooltipText(
+                            "ANALOG Mode", "Only use this mode with ONE transmitter in total,", "no logic involved");
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(
-                GT_Utility.trans("601", "Gate Mode"),
-                startX + spaceX * 5,
-                4 + startY + spaceY * 2,
-                textColor);
+            this.getFontRenderer()
+                    .drawString(
+                            GT_Utility.trans("601", "Gate Mode"),
+                            startX + spaceX * 5,
+                            4 + startY + spaceY * 2,
+                            textColor);
         }
 
         @Override

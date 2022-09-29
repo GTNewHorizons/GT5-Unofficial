@@ -73,8 +73,9 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
             byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
     }
-    
-    public static byte computeSignalBasedOnItems(ICoverable tileEntity, boolean inverted, int threshold, int slot, int side) {
+
+    public static byte computeSignalBasedOnItems(
+            ICoverable tileEntity, boolean inverted, int threshold, int slot, int side) {
         long max = 0;
         long used = 0;
         IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
@@ -99,7 +100,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
             }
         }
 
-       return GT_Utility.convertRatioToRedstone(used, max, threshold, inverted);
+        return GT_Utility.convertRatioToRedstone(used, max, threshold, inverted);
     }
 
     @Override
@@ -110,7 +111,8 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
             ItemMeterData aCoverVariable,
             ICoverable aTileEntity,
             long aTimer) {
-        byte signal = computeSignalBasedOnItems(aTileEntity, aCoverVariable.inverted, aCoverVariable.threshold, aCoverVariable.slot, aSide);
+        byte signal = computeSignalBasedOnItems(
+                aTileEntity, aCoverVariable.inverted, aCoverVariable.threshold, aCoverVariable.slot, aSide);
         aTileEntity.setOutputRedstoneSignal(aSide, signal);
 
         return aCoverVariable;

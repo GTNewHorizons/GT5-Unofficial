@@ -8,6 +8,9 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
+import java.util.Objects;
+import java.util.UUID;
+import javax.annotation.Nonnull;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,11 +18,9 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import java.util.Objects;
-import java.util.UUID;
-
-public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData> extends GT_Cover_AdvancedWirelessRedstoneBase<T> {
+public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
+                T extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData>
+        extends GT_Cover_AdvancedWirelessRedstoneBase<T> {
 
     public GT_Cover_AdvancedRedstoneTransmitterBase(Class<T> typeToken, ITexture coverTexture) {
         super(typeToken, coverTexture);
@@ -31,19 +32,28 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
     }
 
     @Override
-    public boolean onCoverRemovalImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity,
-                                      boolean aForced) {
+    public boolean onCoverRemovalImpl(
+            byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity, boolean aForced) {
         unregisterSignal(aSide, aCoverVariable, aTileEntity);
         return true;
     }
 
     @Override
-    protected void onBaseTEDestroyedImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity) {
+    protected void onBaseTEDestroyedImpl(
+            byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity) {
         unregisterSignal(aSide, aCoverVariable, aTileEntity);
     }
 
     @Override
-    protected T onCoverScrewdriverClickImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected T onCoverScrewdriverClickImpl(
+            byte aSide,
+            int aCoverID,
+            T aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
         aCoverVariable.invert = !aCoverVariable.invert;
         GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("055", aCoverVariable.invert ? "Inverted" : "Normal"));
 
@@ -51,9 +61,10 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
     }
 
     @Override
-    protected void preDataChangedImpl(byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable, ICoverable aTileEntity) {
-        if (aCoverVariable.frequency != aNewCoverVariable.frequency ||
-                !Objects.equals(aCoverVariable.uuid, aNewCoverVariable.uuid)) {
+    protected void preDataChangedImpl(
+            byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable, ICoverable aTileEntity) {
+        if (aCoverVariable.frequency != aNewCoverVariable.frequency
+                || !Objects.equals(aCoverVariable.uuid, aNewCoverVariable.uuid)) {
             unregisterSignal(aSide, aCoverVariable, aTileEntity);
         }
     }
@@ -116,10 +127,14 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
     /**
      * GUI Stuff
      */
-
     @Override
-    public Object getClientGUIImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity,
-                                   EntityPlayer aPlayer, World aWorld) {
+    public Object getClientGUIImpl(
+            byte aSide,
+            int aCoverID,
+            TransmitterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            World aWorld) {
         return new TransmitterGUI<>(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
@@ -130,9 +145,18 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
         private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
         private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
-        public TransmitterGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity, int frequencyRow, int buttonRow) {
+        public TransmitterGUI(
+                byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity, int frequencyRow, int buttonRow) {
             super(aSide, aCoverID, aCoverVariable, aTileEntity, frequencyRow, buttonRow, true);
-            invertButton = new GT_GuiIconCheckButton(this, 1, startX + spaceX * 9, startY + spaceY * buttonRow, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
+            invertButton = new GT_GuiIconCheckButton(
+                    this,
+                    1,
+                    startX + spaceX * 9,
+                    startY + spaceY * buttonRow,
+                    GT_GuiIcon.REDSTONE_ON,
+                    GT_GuiIcon.REDSTONE_OFF,
+                    INVERTED,
+                    NORMAL);
         }
 
         public TransmitterGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
@@ -142,11 +166,12 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(
-                    coverVariable.invert ? INVERTED : NORMAL,
-                    startX + spaceX * 10,
-                    4 + startY + spaceY * buttonRow,
-                    textColor);
+            this.getFontRenderer()
+                    .drawString(
+                            coverVariable.invert ? INVERTED : NORMAL,
+                            startX + spaceX * 10,
+                            4 + startY + spaceY * buttonRow,
+                            textColor);
         }
 
         @Override

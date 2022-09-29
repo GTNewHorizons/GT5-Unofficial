@@ -4277,13 +4277,13 @@ public class GT_Utility {
         return false;
     }
 
-public static byte convertRatioToRedstone(long used, long max, int threshold, boolean inverted) {
+    public static byte convertRatioToRedstone(long used, long max, int threshold, boolean inverted) {
         byte signal;
-        if (used <= 0) {           // Empty
+        if (used <= 0) { // Empty
             signal = 0;
-        } else if (used >= max) {  // Full
+        } else if (used >= max) { // Full
             signal = 15;
-        } else {                    // Range 1-14
+        } else { // Range 1-14
             signal = (byte) (1 + (14 * used) / max);
         }
 
@@ -4300,6 +4300,7 @@ public static byte convertRatioToRedstone(long used, long max, int threshold, bo
         }
 
         return signal;
+    }
 
     @AutoValue
     public abstract static class ItemId {
