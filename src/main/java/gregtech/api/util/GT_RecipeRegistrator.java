@@ -490,13 +490,13 @@ public class GT_RecipeRegistrator {
                 filter.put(list, shape);
             }
         }
-        List<Integer> emptySlotIndexes = new ArrayList<>(9);
+        List<Integer> buffer = new ArrayList<>(9);
         for (IRecipe tRecipe : allRecipeList) {
             if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe) {
                 // we don't target shapeless recipes
                 continue;
             }
-            emptySlotIndexes.clear();
+            buffer.clear();
             ItemStack tStack = tRecipe.getRecipeOutput();
             if (GT_Utility.isStackValid(tStack)
                     && tStack.getMaxStackSize() == 1
@@ -506,68 +506,24 @@ public class GT_RecipeRegistrator {
                     && !GT_ModHandler.isElectricItem(tStack)
                     && !GT_Utility.isStackInList(tStack, GT_ModHandler.sNonReplaceableItems)) {
                 if (tRecipe instanceof ShapedOreRecipe) {
-                    boolean allValid = true;
                     ShapedOreRecipe tShapedRecipe = (ShapedOreRecipe) tRecipe;
-                    Object[] input = tShapedRecipe.getInput();
-                    int tRecipeWidth = getRecipeWidth(tShapedRecipe);
-                    int tRecipeHeight = getRecipeHeight(tShapedRecipe);
-                    for (int y = 0; y < 3; y++) {
-                        for (int x = 0; x < 3; x++) {
-                            if (x >= tRecipeWidth || y >= tRecipeHeight) {
-                                emptySlotIndexes.add(x + y * 3);
-                                continue;
-                            }
-                            Object tObject = input[x + y * tRecipeWidth];
-                            if (tObject != null) {
-                                if (tObject instanceof ItemStack
-                                        && (((ItemStack) tObject).getItem() == null
-                                                || ((ItemStack) tObject).getMaxStackSize() < 2
-                                                || ((ItemStack) tObject).getMaxDamage() > 0
-                                                || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
-                                    allValid = false;
-                                    break;
-                                }
-                                if (tObject instanceof List && ((List<?>) tObject).isEmpty()) {
-                                    allValid = false;
-                                    break;
-                                }
-                            } else {
-                                emptySlotIndexes.add(x + y * 3);
-                            }
-                        }
-                    }
-                    if (allValid) {
-                        for (RecipeShape s : filter.get(emptySlotIndexes)) {
+                    if (checkRecipeShape(
+                            buffer,
+                            tShapedRecipe.getInput(),
+                            getRecipeWidth(tShapedRecipe),
+                            getRecipeHeight(tShapedRecipe))) {
+                        for (RecipeShape s : filter.get(buffer)) {
                             result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
                         }
                     }
                 } else if (tRecipe instanceof ShapedRecipes) {
-                    boolean allValid = true;
                     ShapedRecipes tShapedRecipe = (ShapedRecipes) tRecipe;
-                    ItemStack[] recipeItems = tShapedRecipe.recipeItems;
-                    int tRecipeWidth = getRecipeWidth(tShapedRecipe);
-                    int tRecipeHeight = getRecipeHeight(tShapedRecipe);
-                    for (int y = 0; y < 3; y++) {
-                        for (int x = 0; x < 3; x++) {
-                            if (x >= tRecipeWidth || y >= tRecipeHeight) {
-                                emptySlotIndexes.add(x + y * 3);
-                                continue;
-                            }
-                            ItemStack tObject = recipeItems[x + y * tRecipeWidth];
-                            if (tObject != null
-                                    && (tObject.getItem() == null
-                                            || tObject.getMaxStackSize() < 2
-                                            || tObject.getMaxDamage() > 0
-                                            || tObject.getItem() instanceof ItemBlock)) {
-                                allValid = false;
-                                break;
-                            } else {
-                                emptySlotIndexes.add(x + y * 3);
-                            }
-                        }
-                    }
-                    if (allValid) {
-                        for (RecipeShape s : filter.get(emptySlotIndexes)) {
+                    if (checkRecipeShape(
+                            buffer,
+                            tShapedRecipe.recipeItems,
+                            getRecipeWidth(tShapedRecipe),
+                            getRecipeHeight(tShapedRecipe))) {
+                        for (RecipeShape s : filter.get(buffer)) {
                             result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
                         }
                     }
@@ -581,6 +537,34 @@ public class GT_RecipeRegistrator {
             }
         }
         return result;
+    }
+
+    private static boolean checkRecipeShape(
+            List<Integer> emptySlotIndexesBuffer, Object[] input, int tRecipeWidth, int tRecipeHeight) {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                if (x >= tRecipeWidth || y >= tRecipeHeight) {
+                    emptySlotIndexesBuffer.add(x + y * 3);
+                    continue;
+                }
+                Object tObject = input[x + y * tRecipeWidth];
+                if (tObject == null) {
+                    emptySlotIndexesBuffer.add(x + y * 3);
+                    continue;
+                }
+                if (tObject instanceof ItemStack
+                        && (((ItemStack) tObject).getItem() == null
+                                || ((ItemStack) tObject).getMaxStackSize() < 2
+                                || ((ItemStack) tObject).getMaxDamage() > 0
+                                || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
+                    return false;
+                }
+                if (tObject instanceof List && ((List<?>) tObject).isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private static synchronized void registerStickStuff(String aPlate, ItemData aItemData, boolean aRecipeReplacing) {

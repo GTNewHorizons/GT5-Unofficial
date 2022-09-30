@@ -472,12 +472,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             return true;
         }
         if (mEUt < 0) {
-            if (!drainEnergyInput(((long) -mEUt * 10000) / Math.max(1000, mEfficiency))) {
+            if (!drainEnergyInput(getActualEnergyUsage())) {
                 criticalStopMachine();
                 return false;
             }
         }
         return true;
+    }
+
+    protected long getActualEnergyUsage() {
+        return ((long) -mEUt * 10000) / Math.max(1000, mEfficiency);
     }
 
     /**
@@ -1159,7 +1163,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                     + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
             /* 3*/ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(-mEUt) + EnumChatFormatting.RESET + " EU/t",
+                    + GT_Utility.formatNumbers(getActualEnergyUsage()) + EnumChatFormatting.RESET + " EU/t",
             /* 4*/ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*2A) "
                     + StatCollector.translateToLocal("GT5U.machines.tier")
