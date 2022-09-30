@@ -297,7 +297,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             }
         }
 
-        //for scanner
+        // for scanner
         setCurrentParallelism(tRealUsed);
 
         if (tRealUsed == 0) {
@@ -652,21 +652,21 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         return new GT_MetaTileEntity_IntegratedOreFactory(mName);
     }
 
-    private void setCurrentParallelism(int parallelism){
+    private void setCurrentParallelism(int parallelism) {
         this.currentParallelism = parallelism;
-
     }
 
-    private int getCurrentParallelism(){
+    private int getCurrentParallelism() {
         return this.currentParallelism;
     }
+
     @Override
-    public String[] getInfoData(){
+    public String[] getInfoData() {
         List<String> informationData = Arrays.asList(super.getInfoData());
-        String parallelism = StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": " + EnumChatFormatting.BLUE
-            + getCurrentParallelism() + EnumChatFormatting.RESET;
+        String parallelism = StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.BLUE + getCurrentParallelism() + EnumChatFormatting.RESET;
         informationData.add(parallelism);
-        return  informationData.toArray(new String[0]);
+        return informationData.toArray(new String[0]);
     }
 
     @Override
