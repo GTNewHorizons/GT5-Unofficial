@@ -3,7 +3,6 @@ package gregtech.api.interfaces.fluid;
 import gregtech.api.enums.FluidState;
 import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -59,14 +58,6 @@ public interface IGT_FluidBuilder {
      */
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
     IGT_FluidBuilder withFluidBlock(final Block fluidBlock);
-
-    /**
-     * @param stillIcon   The {@link IIcon} of the still fluid texture
-     * @param flowingIcon The {@link IIcon} of the flowing fluid texture
-     * @return {@link IGT_FluidBuilder} self for call chaining
-     */
-    @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
-    IGT_FluidBuilder withIcons(final IIcon stillIcon, final IIcon flowingIcon);
 
     /**
      * @param fromFluid the {@link Fluid} to copy the icons from
