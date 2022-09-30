@@ -215,10 +215,12 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_064", "Emit if 5 Maintenance Needed");
         addStringLocalization("Interaction_DESCRIPTION_Index_065", "Emit if 5 Maintenance Needed(inverted)");
         addStringLocalization("Interaction_DESCRIPTION_Index_066", "Emit if rotor needs maintenance low accuracy mod");
-        addStringLocalization("Interaction_DESCRIPTION_Index_067", "Emit if rotor needs maintenance low accuracy mod(inverted)");
+        addStringLocalization(
+                "Interaction_DESCRIPTION_Index_067", "Emit if rotor needs maintenance low accuracy mod(inverted)");
         addStringLocalization("Interaction_DESCRIPTION_Index_068", "Emit if rotor needs maintenance high accuracy mod");
         addStringLocalization("Interaction_DESCRIPTION_Index_068.1", "Emit if any Player is close");
-        addStringLocalization("Interaction_DESCRIPTION_Index_069", "Emit if rotor needs maintenance high accuracy mod(inverted)");
+        addStringLocalization(
+                "Interaction_DESCRIPTION_Index_069", "Emit if rotor needs maintenance high accuracy mod(inverted)");
         addStringLocalization("Interaction_DESCRIPTION_Index_069.1", "Emit if other Player is close");
         addStringLocalization("Interaction_DESCRIPTION_Index_070", "Emit if you are close");
         addStringLocalization("Interaction_DESCRIPTION_Index_071", "Conducts strongest Input");
@@ -365,7 +367,8 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_203", " gibbl");
         addStringLocalization("Interaction_DESCRIPTION_Index_204", "No Pollution in Chunk! HAYO!");
         addStringLocalization("Interaction_DESCRIPTION_Index_206", "Scan for Assembly Line");
-        addStringLocalization("Interaction_DESCRIPTION_Index_207", "Pump speed: %dL every %d ticks, %.2f L/sec on average");
+        addStringLocalization(
+                "Interaction_DESCRIPTION_Index_207", "Pump speed: %dL every %d ticks, %.2f L/sec on average");
         addStringLocalization("Interaction_DESCRIPTION_Index_208", " L");
         addStringLocalization("Interaction_DESCRIPTION_Index_209", " ticks");
         addStringLocalization("Interaction_DESCRIPTION_Index_210", "Average: %.2f L/sec");
@@ -380,7 +383,8 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222", "Fluid threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222.1", "Energy threshold");
-        addStringLocalization("Interaction_DESCRIPTION_Index_223", "Single recipe locking enabled. Will lock to next recipe.");
+        addStringLocalization(
+                "Interaction_DESCRIPTION_Index_223", "Single recipe locking enabled. Will lock to next recipe.");
         addStringLocalization("Interaction_DESCRIPTION_Index_224", "Always On");
         addStringLocalization("Interaction_DESCRIPTION_Index_225", "Active with Redstone Signal");
         addStringLocalization("Interaction_DESCRIPTION_Index_226", "Inactive with Redstone Signal");
@@ -422,7 +426,8 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_261", "Electricity Storage(Including Batteries)");
         addStringLocalization("Interaction_DESCRIPTION_Index_262", "Fluid Auto Output Disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_263", "Fluid Auto Output Enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_264", "currently none, will be locked to the next that is put in");
+        addStringLocalization(
+                "Interaction_DESCRIPTION_Index_264", "currently none, will be locked to the next that is put in");
         addStringLocalization("Interaction_DESCRIPTION_Index_265", "1 specific Fluid");
         addStringLocalization("Interaction_DESCRIPTION_Index_266", "Lock Fluid Mode Disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_267", "Overflow Voiding Mode Disabled");
