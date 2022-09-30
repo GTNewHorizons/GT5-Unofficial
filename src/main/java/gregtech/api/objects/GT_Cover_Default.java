@@ -32,10 +32,10 @@ public class GT_Cover_Default extends GT_CoverBehavior {
         aCoverVariable = ((aCoverVariable + 1) & 15);
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                ((aCoverVariable & 1) != 0 ? GT_Utility.trans("128", "Redstone ") : "")
-                        + ((aCoverVariable & 2) != 0 ? GT_Utility.trans("129", "Energy ") : "")
-                        + ((aCoverVariable & 4) != 0 ? GT_Utility.trans("130", "Fluids ") : "")
-                        + ((aCoverVariable & 8) != 0 ? GT_Utility.trans("131", "Items ") : ""));
+                ((aCoverVariable & 1) != 0 ? GT_Utility.trans("128.1", "Redstone ") : "")
+                        + ((aCoverVariable & 2) != 0 ? GT_Utility.trans("129.1", "Energy ") : "")
+                        + ((aCoverVariable & 4) != 0 ? GT_Utility.trans("130.1", "Fluids ") : "")
+                        + ((aCoverVariable & 8) != 0 ? GT_Utility.trans("131.1", "Items ") : ""));
         return aCoverVariable;
     }
 
