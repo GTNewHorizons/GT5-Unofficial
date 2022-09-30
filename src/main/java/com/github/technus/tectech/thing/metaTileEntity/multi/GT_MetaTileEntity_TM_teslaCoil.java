@@ -178,8 +178,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                             ofBlocksTiered(
                                     (block, meta) ->
                                             block != sBlockCasingsBA0 ? -1 : meta <= 5 ? meta : meta == 9 ? 6 : -1,
-                                    IntStream.range(0, 6)
-                                            .map(tier -> tier == 5 ? 9 : tier)
+                                    IntStream.range(0, 7)
+                                            .map(tier -> tier == 6 ? 9 : tier)
                                             .mapToObj(meta -> Pair.of(sBlockCasingsBA0, meta))
                                             .collect(Collectors.toList()),
                                     -1,
