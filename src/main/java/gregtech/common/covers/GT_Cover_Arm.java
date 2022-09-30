@@ -359,7 +359,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
 
             this.getFontRenderer()
                     .drawString(
-                            GT_Utility.trans("254", "Internal slot#"),
+                            GT_Utility.trans("254.1", "Internal slot#"),
                             startX + spaceX * 3,
                             4 + startY + spaceY * 1,
                             textColor);

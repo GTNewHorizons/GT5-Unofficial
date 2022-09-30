@@ -36,7 +36,7 @@ public class GT_Container_OutputHatch extends GT_Container_BasicTank {
             if (tReadyLockFluid == null
                     || (tMode >= 8 && tReadyLockFluid.getFluid().getName().equals(tHatch.getLockedFluidName()))) {
                 tHatch.setLockedFluidName(null);
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("300", "Fluid Lock Cleared."));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("300.1", "Fluid Lock Cleared."));
                 tHatch.lockFluid(false);
             } else {
                 tHatch.setLockedFluidName(tReadyLockFluid.getFluid().getName());
