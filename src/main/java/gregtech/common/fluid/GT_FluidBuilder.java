@@ -24,6 +24,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     int temperature;
     IIcon stillIcon;
     IIcon flowingIcon;
+    Fluid iconsFrom;
 
     public GT_FluidBuilder(final String fluidName) {
         this.fluidName = fluidName.toLowerCase(Locale.ENGLISH);
@@ -90,7 +91,8 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
      */
     @Override
     public IGT_FluidBuilder withIconsFrom(@Nonnull final Fluid fromFluid) {
-        return withIcons(fromFluid.getStillIcon(), fromFluid.getFlowingIcon());
+        this.iconsFrom = fromFluid;
+        return this;
     }
 
     /**
@@ -99,16 +101,6 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
     @Override
     public IGT_FluidBuilder withFluidBlock(final Block fluidBlock) {
         this.fluidBlock = fluidBlock;
-        return this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public IGT_FluidBuilder withIcons(final IIcon stillIcon, final IIcon flowingIcon) {
-        this.stillIcon = stillIcon;
-        this.flowingIcon = flowingIcon;
         return this;
     }
 
