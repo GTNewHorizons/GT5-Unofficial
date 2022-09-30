@@ -19,7 +19,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -186,6 +189,12 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                 .addSeparator()
                 .beginStructureBlock(6, 12, 11, false)
                 .addController("The third layer")
+                .addStructureInfo("128 advanced iridium plated machine casing")
+                .addStructureInfo("105 clean stainless steel machine casing")
+                .addStructureInfo("48 reinforced glass")
+                .addStructureInfo("30 tungstensteel pipe casing")
+                .addStructureInfo("16 tungstensteel frame box")
+                .addStructureInfo("16 steel gear box casing")
                 .addEnergyHatch("Button Casing", 1)
                 .addMaintenanceHatch("Button Casing", 1)
                 .addInputBus("Input ore/crushed ore", 2)

@@ -62,7 +62,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex < 9 || aIndex == 19;
+        return aIndex < 9 || aIndex == rechargerSlotStartIndex();
     }
 
     @Override
@@ -126,8 +126,10 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
-                && (GT_Utility.areStacksEqual(aStack, this.mInventory[(aIndex + 9)]));
+        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)
+                && aIndex >= 0
+                && aIndex <= 8
+                && GT_Utility.areStacksEqual(aStack, this.mInventory[(aIndex + 9)]);
     }
 
     @Override

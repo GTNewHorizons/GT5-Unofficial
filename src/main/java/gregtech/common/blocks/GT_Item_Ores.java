@@ -2,11 +2,14 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.StringUtils;
 
 public class GT_Item_Ores extends ItemBlock {
     public GT_Item_Ores(Block block) {
@@ -82,5 +85,12 @@ public class GT_Item_Ores extends ItemBlock {
             this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);
         }
         return true;
+    }
+
+    @Override
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+        String formula = StatCollector.translateToLocal(
+                field_150939_a.getUnlocalizedName() + '.' + getDamage(aStack) + ".tooltip");
+        if (!StringUtils.isBlank(formula)) aList.add(formula);
     }
 }

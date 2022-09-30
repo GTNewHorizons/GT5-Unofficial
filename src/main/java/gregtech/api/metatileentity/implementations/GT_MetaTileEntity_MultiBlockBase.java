@@ -284,6 +284,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         mOutputBusses.clear();
         mDynamoHatches.clear();
         mEnergyHatches.clear();
+        setMufflers(false);
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
     }
@@ -337,12 +338,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                     | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
-            for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
-                IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
-                if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
-                    iGTTileEntity.setActive(active);
-                }
-            }
+            setMufflers(active);
         }
     }
 
@@ -476,12 +472,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             return true;
         }
         if (mEUt < 0) {
-            if (!drainEnergyInput(((long) -mEUt * 10000) / Math.max(1000, mEfficiency))) {
+            if (!drainEnergyInput(getActualEnergyUsage())) {
                 criticalStopMachine();
                 return false;
             }
         }
         return true;
+    }
+
+    protected long getActualEnergyUsage() {
+        return ((long) -mEUt * 10000) / Math.max(1000, mEfficiency);
     }
 
     /**
@@ -1163,7 +1163,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                     + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
             /* 3*/ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(-mEUt) + EnumChatFormatting.RESET + " EU/t",
+                    + GT_Utility.formatNumbers(getActualEnergyUsage()) + EnumChatFormatting.RESET + " EU/t",
             /* 4*/ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*2A) "
                     + StatCollector.translateToLocal("GT5U.machines.tier")
@@ -1267,6 +1267,22 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         if (tileEntity != null) {
             tag.setBoolean("isActive", tileEntity.isActive());
         }
+    }
+
+    protected void setMufflers(boolean state) {
+        for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
+            IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
+            if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
+                iGTTileEntity.setActive(state);
+            }
+        }
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        // Deactivate mufflers
+        setMufflers(false);
     }
 
     public List<GT_MetaTileEntity_Hatch> getExoticEnergyHatches() {

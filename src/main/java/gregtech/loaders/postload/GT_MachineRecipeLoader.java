@@ -360,14 +360,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                 120);
         GT_Values.RA.addMixerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 3L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Electrum, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Electrum, 2L),
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Utility.getIntegratedCircuit(1),
                 GT_Values.NF,
                 GT_Values.NF,
-                GT_OreDictUnificator.getDust(Materials.BlackBronze, 4L * OrePrefixes.dust.mMaterialAmount),
+                GT_OreDictUnificator.getDust(Materials.BlackBronze, 5L * OrePrefixes.dust.mMaterialAmount),
                 (int) (500L * OrePrefixes.dust.mMaterialAmount / 3628800L),
                 8);
         GT_Values.RA.addMixerRecipe(
@@ -2115,6 +2115,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                 null,
                 200,
                 4);
+        GT_Values.RA.addAssemblerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1L),
+                Materials.Concrete.getMolten(144L),
+                ItemList.Block_Plascrete.get(1L),
+                200,
+                48);
+
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1L),
@@ -7145,6 +7153,20 @@ public class GT_MachineRecipeLoader implements Runnable {
                 30,
                 30);
         GT_Values.RA.addElectrolyzerRecipe(
+                GT_ModHandler.getIC2Item("electrolyzedWaterCell", 1L),
+                GT_Utility.getIntegratedCircuit(1),
+                GT_Values.NF,
+                Materials.Hydrogen.getGas(2000L),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L),
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                null,
+                30,
+                30);
+        GT_Values.RA.addElectrolyzerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L),
                 0,
                 GT_ModHandler.getIC2Item("electrolyzedWaterCell", 1L),
@@ -10749,11 +10771,11 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_Values.NF,
                 Materials.Quicklime.getDust(18),
                 Materials.Potash.getDust(9),
-                Materials.Magnesia.getDust(9),
-                Materials.PhosphorousPentoxide.getDust(4),
-                Materials.SodaAsh.getDust(4),
+                Materials.Magnesia.getDust(1),
+                Materials.PhosphorousPentoxide.getDust(2),
+                Materials.SodaAsh.getDust(1),
                 Materials.BandedIron.getDust(4),
-                new int[] {6400, 6000, 500, 5000, 2500, 10000},
+                new int[] {6400, 6000, 4500, 10000, 10000, 10000},
                 6000,
                 30);
         // Stone Dust and Metal Mixture centrifuge recipes
@@ -10766,9 +10788,9 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.PotassiumFeldspar.getDust(9),
                 Materials.Marble.getDust(8),
                 Materials.Biotite.getDust(4),
-                Materials.MetalMixture.getDust(4),
-                Materials.Sodalite.getDust(4),
-                new int[] {10000, 10000, 10000, 10000, 7500, 5000},
+                Materials.MetalMixture.getDust(3),
+                Materials.Sodalite.getDust(2),
+                new int[] {10000, 10000, 10000, 10000, 10000, 10000},
                 8640,
                 30);
         GT_Values.RA.addCentrifugeRecipe(
@@ -10780,9 +10802,9 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.Bauxite.getDust(9),
                 Materials.Pyrolusite.getDust(8),
                 Materials.Barite.getDust(4),
-                Materials.Chromite.getDust(4),
-                Materials.Ilmenite.getDust(4),
-                new int[] {10000, 10000, 10000, 10000, 7500, 5000},
+                Materials.Chromite.getDust(3),
+                Materials.Ilmenite.getDust(2),
+                new int[] {10000, 10000, 10000, 10000, 10000, 10000},
                 13125,
                 1920);
 
