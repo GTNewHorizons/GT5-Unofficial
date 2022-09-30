@@ -227,7 +227,7 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
                 drawText(
                         10,
                         73,
-                        trans("152", "Max EU: ")
+                        trans("152.1", "Max EU: ")
                                 + GT_Utility.formatNumbers(
                                         (1 + (computation - minComputationPerSec) / minComputationPerSec)
                                                 * (long) tEUt
