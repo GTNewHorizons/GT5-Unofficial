@@ -334,6 +334,7 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
+        addTitleToUI(builder);
         switch (mInventory.length) {
             case 4:
                 add2by2Slots(builder);

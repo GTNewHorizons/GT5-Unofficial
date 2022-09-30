@@ -330,6 +330,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
+        addTitleToUI(builder);
         if (mAuto) {
             add2by2Slots(builder);
         } else {

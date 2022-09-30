@@ -17,7 +17,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -511,6 +510,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
+        addTitleToUI(builder);
         builder.widget(new SlotWidget(inventoryHandler, 0)
                         .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getVariant()))
                         .setPos(33, 15))
@@ -541,10 +541,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                 .widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.PICTURE_BLAST_FURNACE_STRUCTURE_STEAM.get(getVariant()))
                         .setPos(11, 12)
-                        .setSize(17, 50))
-                .widget(new TextWidget(getName())
-                        .setDefaultColor(COLOR_TITLE.get())
-                        .setPos(8, 4));
+                        .setSize(17, 50));
     }
 
     @Override

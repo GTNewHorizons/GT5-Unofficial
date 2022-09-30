@@ -3,13 +3,12 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR_GLOW;
 
-import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -206,8 +205,8 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
                                                                     * (clickData.shift ? 16 : 1)));
                                 }
                             }.setBackground(GT_UITextures.SLOT_TRANSPARENT).setPos(xPos, yPos))
-                    .widget(new DynamicTextWidget(
-                                    () -> new Text(String.valueOf(mTargetSlots[index])).color(COLOR_TEXT_WHITE.get()))
+                    .widget(TextWidget.dynamicString(() -> String.valueOf(mTargetSlots[index]))
+                            .setDefaultColor(COLOR_TEXT_WHITE.get())
                             .setPos(xPos + 2 + (i % 3 == 0 ? 1 : 0), yPos + 3 + (i / 3 == 0 ? 1 : 0)));
         }
     }

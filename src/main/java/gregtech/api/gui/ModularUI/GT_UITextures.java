@@ -196,9 +196,6 @@ public class GT_UITextures {
 
     public static final UITexture BUTTON_STANDARD = UITexture.fullImage(MODID, "gui/button/standard");
     public static final UITexture BUTTON_STANDARD_TOGGLE = UITexture.fullImage(MODID, "gui/button/standard_toggle");
-    public static final UITexture BUTTON_AUTOOUTPUT_ITEM = UITexture.fullImage(MODID, "gui/button/autooutput_item");
-    public static final UITexture BUTTON_AUTOOUTPUT_FLUID = UITexture.fullImage(MODID, "gui/button/autooutput_fluid");
-    public static final UITexture BUTTON_CROSS = UITexture.fullImage(MODID, "gui/button/cross");
     public static final UITexture BUTTON_LOCK = UITexture.fullImage(MODID, "gui/button/lock");
     public static final UITexture BUTTON_INPUT_FROM_OUTPUT_SIDE =
             UITexture.fullImage(MODID, "gui/button/input_from_output_side");
@@ -222,6 +219,10 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_PROGRESS = UITexture.fullImage(MODID, "gui/overlay_button/progress");
     public static final UITexture OVERLAY_BUTTON_EXPORT = UITexture.fullImage(MODID, "gui/overlay_button/export");
     public static final UITexture OVERLAY_BUTTON_IMPORT = UITexture.fullImage(MODID, "gui/overlay_button/import");
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM =
+            UITexture.fullImage(MODID, "gui/overlay_button/autooutput_item");
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID =
+            UITexture.fullImage(MODID, "gui/overlay_button/autooutput_fluid");
     public static final UITexture OVERLAY_BUTTON_ALLOW_INPUT =
             UITexture.fullImage(MODID, "gui/overlay_button/allow_input");
     public static final UITexture OVERLAY_BUTTON_BLOCK_INPUT =
@@ -270,9 +271,9 @@ public class GT_UITextures {
     public static final UITexture PICTURE_GT_LOGO_18x18 = UITexture.fullImage(MODID, "gui/picture/gt_logo_18x18");
     public static final UITexture PICTURE_GT_LOGO_19x19 = UITexture.fullImage(MODID, "gui/picture/gt_logo_19x19");
     public static final UITexture PICTURE_INFORMATION = UITexture.fullImage(MODID, "gui/picture/information");
-    public static final UITexture PICTURE_SHORTAGE_ELECTRICITY =
-            UITexture.fullImage(MODID, "gui/picture/shortage_electricity");
-    public static final UITexture PICTURE_SHORTAGE_STEAM = UITexture.fullImage(MODID, "gui/picture/shortage_steam");
+    public static final UITexture PICTURE_STALLED_ELECTRICITY =
+            UITexture.fullImage(MODID, "gui/picture/stalled_electricity");
+    public static final UITexture PICTURE_STALLED_STEAM = UITexture.fullImage(MODID, "gui/picture/stalled_steam");
     public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_RED =
             (width, fromRight) -> UITexture.partly(
                     MODID,
@@ -340,4 +341,6 @@ public class GT_UITextures {
     public static final UITexture PICTURE_SUPER_BUFFER = UITexture.fullImage(MODID, "gui/picture/super_buffer");
     public static final SteamTexture PICTURE_BLAST_FURNACE_STRUCTURE_STEAM =
             SteamTexture.fullImage(MODID, "gui/picture/blast_furnace_structure_%s");
+    public static final UITexture PICTURE_SQUARE_LIGHT_GRAY =
+            UITexture.fullImage(MODID, "gui/picture/square_light_gray");
 }

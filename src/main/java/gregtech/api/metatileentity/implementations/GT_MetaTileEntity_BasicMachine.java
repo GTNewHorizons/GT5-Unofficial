@@ -6,12 +6,20 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
+import gregtech.api.gui.ModularUI.GT_UIInfo;
+import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -24,6 +32,7 @@ import gregtech.common.power.Power;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
@@ -482,12 +491,20 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (!GT_Mod.gregtechproxy.mForceFreeFace) {
-            aBaseMetaTileEntity.openGUI(aPlayer);
+            if (useModularUI()) {
+                GT_UIInfo.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            } else {
+                aBaseMetaTileEntity.openGUI(aPlayer);
+            }
             return true;
         }
         for (byte i = 0; i < 6; i++) {
             if (aBaseMetaTileEntity.getAirAtSide(i)) {
-                aBaseMetaTileEntity.openGUI(aPlayer);
+                if (useModularUI()) {
+                    GT_UIInfo.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                } else {
+                    aBaseMetaTileEntity.openGUI(aPlayer);
+                }
                 return true;
             }
         }
@@ -1239,5 +1256,66 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     @Override
     public int getCircuitSlotY() {
         return 63;
+    }
+
+    @Override
+    protected void addChargerSlot(ModularWindow.Builder builder, int x, int y) {
+        if (isSteampowered()) {
+            addChargerSlot(builder, x, y, UNUSED_SLOT_TOOLTIP, new String[0]);
+        } else {
+            super.addChargerSlot(builder, x, y);
+        }
+    }
+
+    protected void addItemAutoOutputButton(ModularWindow.Builder builder, int x, int y) {
+        builder.widget(new CycleButtonWidget()
+                .setToggle(() -> mItemTransfer, val -> mItemTransfer = val)
+                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
+                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                .addTooltips(mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP).text)
+                .addTooltipsShift(mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP).shiftText)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(x, y)
+                .setSize(18, 18));
+    }
+
+    protected void addFluidAutoOutputButton(ModularWindow.Builder builder) {
+        builder.widget(new CycleButtonWidget()
+                .setToggle(() -> mFluidTransfer, val -> mFluidTransfer = val)
+                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
+                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                .addTooltips(mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP).text)
+                .addTooltipsShift(mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP).shiftText)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(7, 62)
+                .setSize(18, 18));
+    }
+
+    protected void addSpecialSlot(ModularWindow.Builder builder, String tooltipKey, IDrawable... background) {
+        if (background.length == 0) {
+            background = new IDrawable[] {getSlotBackground()};
+        }
+        builder.widget(new SlotWidget(inventoryHandler, 3)
+                .disableShiftInsert()
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .addTooltips(mTooltipCache.getData(tooltipKey).text)
+                .setBackground(background)
+                .setPos(124, 62));
+    }
+
+    protected Widget getErrorStatusArea(
+            int x,
+            int y,
+            IDrawable picture,
+            Supplier<List<String>> tooltipGetter,
+            Supplier<List<String>> tooltipShiftGetter) {
+        return new DrawableWidget()
+                .setDrawable(picture)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setEnabledDynamic(widget -> !widget.getTooltip().isEmpty())
+                .dynamicTooltip(tooltipGetter)
+                .dynamicTooltipShift(tooltipShiftGetter)
+                .setPos(x, y)
+                .setSize(18, 18);
     }
 }

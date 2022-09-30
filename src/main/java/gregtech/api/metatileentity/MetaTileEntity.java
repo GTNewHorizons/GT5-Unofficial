@@ -15,7 +15,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
@@ -37,6 +36,7 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
@@ -97,13 +97,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     private IGregTechTileEntity mBaseMetaTileEntity;
 
     public long mSoundRequests = 0;
-
-    /**
-     * Wrapper for ModularUI
-     */
-    protected final ItemStackHandler inventoryHandler;
-
-    protected GT_GUIColorOverride colorOverride;
 
     /**
      * This registers your Machine at the List.
@@ -1187,6 +1180,29 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     // === ModularUI or old GUI ===
 
+    /**
+     * Wrapper for ModularUI
+     */
+    protected final ItemStackHandler inventoryHandler;
+
+    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    protected GT_GUIColorOverride colorOverride;
+
+    // Tooltip localization keys
+    protected static final String BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
+            BATTERY_SLOT_TOOLTIP_ALT = "GT5U.machines.battery_slot.tooltip.alternative",
+            UNUSED_SLOT_TOOLTIP = "GT5U.machines.unused_slot.tooltip",
+            SPECIAL_SLOT_TOOLTIP = "GT5U.machines.special_slot.tooltip",
+            FLUID_INPUT_TOOLTIP = "GT5U.machines.fluid_input_slot.tooltip",
+            FLUID_OUTPUT_TOOLTIP = "GT5U.machines.fluid_output_slot.tooltip",
+            STALLED_STUTTERING_TOOLTIP = "GT5U.machines.stalled_stuttering.tooltip",
+            STALLED_VENT_TOOLTIP = "GT5U.machines.stalled_vent.tooltip",
+            FLUID_TRANSFER_TOOLTIP = "GT5U.machines.fluid_transfer.tooltip",
+            ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip",
+            POWER_SOURCE_KEY = "GT5U.machines.powersource.";
+
+    protected final int TOOLTIP_DELAY = 5;
+
     @Deprecated
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -1217,19 +1233,26 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      */
     protected void addUIWidgets(ModularWindow.Builder builder) {}
 
+    protected void addTitleToUI(ModularWindow.Builder builder, String title) {
+        builder.widget(new TextWidget(new Text(title))
+                .setDefaultColor(COLOR_TITLE.get())
+                .setPos(8, 4));
+    }
+
+    protected void addTitleToUI(ModularWindow.Builder builder) {
+        addTitleToUI(builder, getLocalName());
+    }
+
     protected void add1by1Slot(ModularWindow.Builder builder, IDrawable... background) {
         if (background.length == 0) {
             background = new IDrawable[] {getSlotBackground()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 1)
-                        .startFromSlot(0)
-                        .endAtSlot(0)
-                        .background(background)
-                        .build()
-                        .setPos(79, 34))
-                .widget(new TextWidget(new Text(getLocalName()))
-                        .setDefaultColor(COLOR_TITLE.get())
-                        .setPos(8, 4));
+                .startFromSlot(0)
+                .endAtSlot(0)
+                .background(background)
+                .build()
+                .setPos(79, 34));
     }
 
     protected void add2by2Slots(ModularWindow.Builder builder, IDrawable... background) {
@@ -1237,14 +1260,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             background = new IDrawable[] {getSlotBackground()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
-                        .startFromSlot(0)
-                        .endAtSlot(3)
-                        .background(background)
-                        .build()
-                        .setPos(70, 25))
-                .widget(new TextWidget(new Text(getLocalName()))
-                        .setDefaultColor(COLOR_TITLE.get())
-                        .setPos(8, 4));
+                .startFromSlot(0)
+                .endAtSlot(3)
+                .background(background)
+                .build()
+                .setPos(70, 25));
     }
 
     protected void add3by3Slots(ModularWindow.Builder builder, IDrawable... background) {
@@ -1252,14 +1272,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             background = new IDrawable[] {getSlotBackground()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
-                        .startFromSlot(0)
-                        .endAtSlot(8)
-                        .background(background)
-                        .build()
-                        .setPos(61, 16))
-                .widget(new TextWidget(new Text(getLocalName()))
-                        .setDefaultColor(COLOR_TITLE.get())
-                        .setPos(8, 4));
+                .startFromSlot(0)
+                .endAtSlot(8)
+                .background(background)
+                .build()
+                .setPos(61, 16));
     }
 
     protected void add4by4Slots(ModularWindow.Builder builder, IDrawable... background) {
@@ -1267,21 +1284,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             background = new IDrawable[] {getSlotBackground()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
-                        .startFromSlot(0)
-                        .endAtSlot(15)
-                        .background(background)
-                        .build()
-                        .setPos(52, 7))
-                .widget(new TextWidget(new Text(getLocalName()))
-                        .setDefaultColor(COLOR_TITLE.get())
-                        .setPos(8, 4));
-    }
-
-    protected void addChargerSlot(ModularWindow.Builder builder, int x, int y) {
-        builder.widget(new SlotWidget(inventoryHandler, rechargerSlotStartIndex())
-                .disableShiftInsert()
-                .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_CHARGER)
-                .setPos(x, y));
+                .startFromSlot(0)
+                .endAtSlot(15)
+                .background(background)
+                .build()
+                .setPos(52, 7));
     }
 
     protected void addGregTechLogo(ModularWindow.Builder builder) {

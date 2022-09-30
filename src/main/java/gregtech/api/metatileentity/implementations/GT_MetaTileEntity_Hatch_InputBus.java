@@ -264,6 +264,7 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch im
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
+        addTitleToUI(builder);
         switch (mTier) {
             case 0:
                 add1by1Slot(builder);

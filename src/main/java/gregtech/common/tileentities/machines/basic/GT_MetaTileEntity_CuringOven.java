@@ -116,6 +116,7 @@ public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
+        addTitleToUI(builder);
         add1by1Slot(builder);
     }
 }
