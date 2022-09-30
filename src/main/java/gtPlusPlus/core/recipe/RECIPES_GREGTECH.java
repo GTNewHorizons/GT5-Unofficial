@@ -1034,15 +1034,18 @@ public class RECIPES_GREGTECH {
         CORE.RA.addBlastSmelterRecipe(
                 new ItemStack[] {
                     ItemUtils.getGregtechCircuit(21),
-                    ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedIron", 12),
-                    ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPyrite", 16),
-                    ELEMENT.getInstance().CARBON.getDust(64),
+                    ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedZinc", 3),
+                    ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPyrite", 4),
+                    ELEMENT.getInstance().CARBON.getDust(16),
                 },
-                Materials.SulfuricAcid.getFluid(5000),
-                ELEMENT.getInstance().THALLIUM.getFluidStack(288 + 144),
-                0,
-                20 * 300,
-                8000);
+                Materials.SulfuricAcid.getFluid(1250),
+                ELEMENT.getInstance().THALLIUM.getFluidStack(288),
+                new ItemStack[] {},
+                new int[] {0},
+                20 * 75,
+                8000,
+                3700,
+                false);
 
         // Strontium processing
         CORE.RA.addBlastSmelterRecipe(
@@ -1060,6 +1063,21 @@ public class RECIPES_GREGTECH {
                 new int[] {10000, 10000}, // Output Chance
                 20 * 120,
                 480 * 4);
+
+        // molten botmium
+        CORE.RA.addBlastSmelterRecipe(
+                new ItemStack[] {
+                    ItemUtils.getGregtechCircuit(4),
+                    ItemUtils.getItemStackOfAmountFromOreDict("dustNitinol60", 1),
+                    ItemUtils.getItemStackOfAmountFromOreDict("dustOsmium", 6),
+                    ItemUtils.getItemStackOfAmountFromOreDict("dustRuthenium", 6),
+                    ItemUtils.getItemStackOfAmountFromOreDict("dustThallium", 3)
+                },
+                GT_Values.NF,
+                ALLOY.BOTMIUM.getFluidStack(2304),
+                0,
+                20 * 120,
+                491520);
     }
 
     private static void fluidcannerRecipes() {

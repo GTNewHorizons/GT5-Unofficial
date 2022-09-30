@@ -537,6 +537,20 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
             int aDuration,
             int aEUt,
             int aSpecialValue) {
+        return addBlastSmelterRecipe(
+                aInput, aInputFluid, aOutput, aOutputStack, aChance, aDuration, aEUt, aSpecialValue, true);
+    }
+
+    public boolean addBlastSmelterRecipe(
+            ItemStack[] aInput,
+            FluidStack aInputFluid,
+            FluidStack aOutput,
+            ItemStack[] aOutputStack,
+            int[] aChance,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue,
+            boolean aOptimizeRecipe) {
         if ((aInput == null) || (aOutput == null)) {
             Logger.WARNING("Fail - Input or Output was null.");
             return false;
@@ -570,7 +584,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         int aSize = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.mRecipeList.size();
         int aSize2 = aSize;
         GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.addRecipe(
-                true,
+                aOptimizeRecipe,
                 aInput,
                 aOutputStack,
                 null,
@@ -581,10 +595,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                 Math.max(1, aEUt),
                 aSpecialValue);
         aSize = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.mRecipeList.size();
-
-        /*GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.addRecipe(true, aInput, aOutputStack, null,
-        aChance, new FluidStack[] { aInputFluid }, new FluidStack[] { aOutput }, aDuration, aEUt,
-        aSpecialValue);*/
 
         return aSize > aSize2;
     }

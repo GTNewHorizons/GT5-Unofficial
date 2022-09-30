@@ -673,7 +673,10 @@ public final class ModItems {
             MaterialGenerator.generate(ALLOY.PIKYONIUM);
             MaterialGenerator.generate(ALLOY.ABYSSAL);
             MaterialGenerator.generate(ALLOY.LAURENIUM);
-            MaterialGenerator.generate(ALLOY.BOTMIUM);
+
+            // abs recipe in RECIPES_GREGTECH.java
+            MaterialGenerator.generate(ALLOY.BOTMIUM, true, false);
+
             MaterialGenerator.generate(ALLOY.HS188A);
 
             MaterialGenerator.generate(ALLOY.TITANSTEEL);
