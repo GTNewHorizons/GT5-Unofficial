@@ -153,7 +153,7 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
         if (aPlayer.isSneaking()) {
             disableSort = !disableSort;
             GT_Utility.sendChatToPlayer(
-                    aPlayer, trans("200", "Automatic Item Shuffling: " + (disableSort ? "Disabled" : "Enabled")));
+                    aPlayer, trans("200.1", "Automatic Item Shuffling: ") + (disableSort ? trans("087", "Disabled") : trans("088", "Enabled")));
         }
     }
 

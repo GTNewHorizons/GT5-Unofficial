@@ -41,7 +41,7 @@ public class GUI_MatterFab extends GT_GUIContainerMetaTile_Machine {
                 this.fontRendererObj.drawString("Pipe is loose.", 10, 16, 16448255);
             }
             if ((((CONTAINER_MatterFab) this.mContainer).mDisplayErrorCode & 2) != 0) {
-                this.fontRendererObj.drawString("Screws are missing.", 10, 24, 16448255);
+                this.fontRendererObj.drawString("Screws are loose.", 10, 24, 16448255);
             }
             if ((((CONTAINER_MatterFab) this.mContainer).mDisplayErrorCode & 4) != 0) {
                 this.fontRendererObj.drawString("Something is stuck.", 10, 32, 16448255);
@@ -61,7 +61,7 @@ public class GUI_MatterFab extends GT_GUIContainerMetaTile_Machine {
 
             if (((CONTAINER_MatterFab) this.mContainer).mDisplayErrorCode == 0) {
                 if (((CONTAINER_MatterFab) this.mContainer).mActive == 0) {
-                    this.fontRendererObj.drawString("Hit with Soft Hammer", 10, 16, 16448255);
+                    this.fontRendererObj.drawString("Hit with Soft Mallet", 10, 16, 16448255);
                     this.fontRendererObj.drawString("to (re-)start the Machine", 10, 24, 16448255);
                     this.fontRendererObj.drawString("if it doesn't start.", 10, 32, 16448255);
                 } else {

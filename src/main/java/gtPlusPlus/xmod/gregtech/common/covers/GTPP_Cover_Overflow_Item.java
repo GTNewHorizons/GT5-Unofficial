@@ -122,7 +122,7 @@ public class GTPP_Cover_Overflow_Item extends GT_CoverBehavior {
             aCoverVariable = mMaxItemCapacity;
         }
         GT_Utility.sendChatToPlayer(
-                aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L"));
+                aPlayer, LangUtils.trans("322", "Overflow point: ") + aCoverVariable + trans("323", "L"));
         return aCoverVariable;
     }
 
@@ -149,7 +149,7 @@ public class GTPP_Cover_Overflow_Item extends GT_CoverBehavior {
             aCoverVariable = mMaxItemCapacity;
         }
         GT_Utility.sendChatToPlayer(
-                aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L"));
+                aPlayer, LangUtils.trans("322", "Overflow point: ") + aCoverVariable + trans("323", "L"));
         aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
         return true;
     }

@@ -29,7 +29,7 @@ public class GUI_MultiMachine_Default extends GT_GUIContainerMetaTile_Machine {
                 this.fontRendererObj.drawString(this.trans("132", "Pipe is loose."), 10, 16, 16448255);
             }
             if ((((CONTAINER_MultiMachine) this.mContainer).mDisplayErrorCode & 0x2) != 0x0) {
-                this.fontRendererObj.drawString(this.trans("133", "Screws are missing."), 10, 24, 16448255);
+                this.fontRendererObj.drawString(this.trans("133", "Screws are loose."), 10, 24, 16448255);
             }
             if ((((CONTAINER_MultiMachine) this.mContainer).mDisplayErrorCode & 0x4) != 0x0) {
                 this.fontRendererObj.drawString(this.trans("134", "Something is stuck."), 10, 32, 16448255);
@@ -48,7 +48,7 @@ public class GUI_MultiMachine_Default extends GT_GUIContainerMetaTile_Machine {
             }
             if (((CONTAINER_MultiMachine) this.mContainer).mDisplayErrorCode == 0) {
                 if (((CONTAINER_MultiMachine) this.mContainer).mActive == 0) {
-                    this.fontRendererObj.drawString(this.trans("139", "Hit with Soft Hammer"), 10, 16, 16448255);
+                    this.fontRendererObj.drawString(this.trans("139", "Hit with Soft Mallet"), 10, 16, 16448255);
                     this.fontRendererObj.drawString(this.trans("140", "to (re-)start the Machine"), 10, 24, 16448255);
                     this.fontRendererObj.drawString(this.trans("141", "if it doesn't start."), 10, 32, 16448255);
                 } else {

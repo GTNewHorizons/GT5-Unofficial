@@ -29,7 +29,7 @@ public class GUI_Multi_Basic_Slotted extends GT_GUIContainerMetaTile_Machine {
             }
 
             if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 2) != 0) {
-                this.fontRendererObj.drawString(this.trans("133", "Screws are missing."), 10, 24, 16448255);
+                this.fontRendererObj.drawString(this.trans("133", "Screws are loose."), 10, 24, 16448255);
             }
 
             if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 4) != 0) {
@@ -45,7 +45,7 @@ public class GUI_Multi_Basic_Slotted extends GT_GUIContainerMetaTile_Machine {
             }
 
             if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 32) != 0) {
-                this.fontRendererObj.drawString(this.trans("137", "That doesn\'t belong there."), 10, 56, 16448255);
+                this.fontRendererObj.drawString(this.trans("137", "That doesn't belong there."), 10, 56, 16448255);
             }
 
             if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 64) != 0) {
@@ -54,9 +54,9 @@ public class GUI_Multi_Basic_Slotted extends GT_GUIContainerMetaTile_Machine {
 
             if (((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode == 0) {
                 if (((GT_Container_MultiMachine) this.mContainer).mActive == 0) {
-                    this.fontRendererObj.drawString(this.trans("139", "Hit with Soft Hammer"), 10, 16, 16448255);
+                    this.fontRendererObj.drawString(this.trans("139", "Hit with Soft Mallet"), 10, 16, 16448255);
                     this.fontRendererObj.drawString(this.trans("140", "to (re-)start the Machine"), 10, 24, 16448255);
-                    this.fontRendererObj.drawString(this.trans("141", "if it doesn\'t start."), 10, 32, 16448255);
+                    this.fontRendererObj.drawString(this.trans("141", "if it doesn't start."), 10, 32, 16448255);
                 } else {
                     this.fontRendererObj.drawString(this.trans("142", "Running perfectly."), 10, 16, 16448255);
                 }
