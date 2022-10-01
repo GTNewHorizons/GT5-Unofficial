@@ -394,7 +394,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                         originalPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
                         drawLine(
                                 lineCounter,
-                                GT_Utility.trans("228", "Original voltage: ") + originalPower.getVoltageString());
+                                GT_Utility.trans("275", "Original voltage: ") + originalPower.getVoltageString());
                         lineCounter++;
                     }
                 }
@@ -452,14 +452,14 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 drawLine(
                         lineCounter,
                         EnumChatFormatting.ITALIC
-                                + GT_Utility.trans("226", "Original Recipe by: ")
+                                + GT_Utility.trans("273", "Original Recipe by: ")
                                 + recipe.owners.get(0).getName());
                 lineCounter++;
                 for (int i = 1; i < recipe.owners.size(); i++) {
                     drawLine(
                             lineCounter,
                             EnumChatFormatting.ITALIC
-                                    + GT_Utility.trans("227", "Modified by: ")
+                                    + GT_Utility.trans("274", "Modified by: ")
                                     + recipe.owners.get(i).getName());
                     lineCounter++;
                 }
@@ -467,7 +467,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 drawLine(
                         lineCounter,
                         EnumChatFormatting.ITALIC
-                                + GT_Utility.trans("225", "Recipe by: ")
+                                + GT_Utility.trans("272", "Recipe by: ")
                                 + recipe.owners.get(0).getName());
                 lineCounter++;
             }
@@ -502,7 +502,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         } else if (specialValue == -201) {
             specialInfo = GT_Utility.trans("206", "Scan for Assembly Line");
         } else if (specialValue == -300 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-            specialInfo = GT_Utility.trans("160", "Needs Cleanroom & LowGrav");
+            specialInfo = GT_Utility.trans("160.1", "Needs Cleanroom & LowGrav");
         } else if (specialValue == -400) {
             specialInfo = GT_Utility.trans("216", "Deprecated Recipe");
         } else if (hasSpecialValueFormat()) {

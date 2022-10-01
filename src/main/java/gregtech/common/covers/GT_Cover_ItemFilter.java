@@ -130,8 +130,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         GT_Utility.sendChatToPlayer(
                 aPlayer,
                 aCoverVariable.mWhitelist
-                        ? GT_Utility.trans("125", "Whitelist Mode")
-                        : GT_Utility.trans("124", "Blacklist Mode"));
+                        ? GT_Utility.trans("125.1", "Whitelist Mode")
+                        : GT_Utility.trans("124.1", "Blacklist Mode"));
         return aCoverVariable;
     }
 
@@ -290,8 +290,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
                     startY + spaceY * 0,
                     GT_GuiIcon.WHITELIST,
                     GT_GuiIcon.BLACKLIST,
-                    GT_Utility.trans("125", "Whitelist Mode"),
-                    GT_Utility.trans("124", "Blacklist Mode"));
+                    GT_Utility.trans("125.1", "Whitelist Mode"),
+                    GT_Utility.trans("124.1", "Blacklist Mode"));
 
             itemFilterButtons =
                     new GT_GuiFakeItemButton(this, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.SLOT_GRAY);

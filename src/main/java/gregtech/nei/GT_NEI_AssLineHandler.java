@@ -322,7 +322,7 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
                             10,
                             y,
                             EnumChatFormatting.ITALIC
-                                    + GT_Utility.trans("226", "Original Recipe by: ")
+                                    + GT_Utility.trans("273", "Original Recipe by: ")
                                     + recipe.owners.get(0).getName(),
                             0xFF000000);
                     y += 10;
@@ -331,7 +331,7 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
                                 10,
                                 y,
                                 EnumChatFormatting.ITALIC
-                                        + GT_Utility.trans("227", "Modified by: ")
+                                        + GT_Utility.trans("274", "Modified by: ")
                                         + recipe.owners.get(i).getName(),
                                 0xFF000000);
                         y += 10;
@@ -341,7 +341,7 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
                             10,
                             y,
                             EnumChatFormatting.ITALIC
-                                    + GT_Utility.trans("225", "Recipe by: ")
+                                    + GT_Utility.trans("272", "Recipe by: ")
                                     + recipe.owners.get(0).getName(),
                             0xFF000000);
                     y += 10;
