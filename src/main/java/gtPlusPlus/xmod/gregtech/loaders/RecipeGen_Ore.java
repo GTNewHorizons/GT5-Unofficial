@@ -4,7 +4,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -625,17 +624,20 @@ public class RecipeGen_Ore extends RecipeGen_Base {
             Logger.MATERIALS("[Electrolyzer] Fail 2.");
             return false;
         }
-        GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.addRecipe(
-                true,
-                new ItemStack[] {aInput1, aInput2},
-                new ItemStack[] {aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6},
-                null,
+        GT_Values.RA.addElectrolyzerRecipe(
+                aInput1,
+                aInput2,
+                aFluidInput,
+                aFluidOutput,
+                aOutput1,
+                aOutput2,
+                aOutput3,
+                aOutput4,
+                aOutput5,
+                aOutput6,
                 aChances,
-                new FluidStack[] {aFluidInput},
-                new FluidStack[] {aFluidOutput},
                 aDuration,
-                aEUt,
-                0);
+                aEUt);
         Logger.MATERIALS("[Electrolyzer] Recipe added.");
         return true;
     }
