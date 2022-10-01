@@ -167,8 +167,8 @@ public class DustLoader implements IWerkstoffRunnable {
                 }
                 ItemStack input = werkstoff.get(dust);
                 input.stackSize = werkstoff.getContents().getKey();
-                if (werkstoff.getStats().isElektrolysis())
-                    GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.add(new BWRecipes.DynamicGTRecipe(
+                if (werkstoff.getStats().isElektrolysis()) {
+                    GT_Recipe tRecipe = new BWRecipes.DynamicGTRecipe(
                             true,
                             new ItemStack[] {input, cells > 0 ? Materials.Empty.getCells(cells) : null},
                             stOutputs.toArray(new ItemStack[0]),
@@ -181,8 +181,11 @@ public class DustLoader implements IWerkstoffRunnable {
                                     Math.abs(werkstoff.getStats().getProtons()
                                             / werkstoff.getContents().getValue().size())),
                             Math.min(4, werkstoff.getContents().getValue().size()) * 30,
-                            0));
-                if (werkstoff.getStats().isCentrifuge())
+                            0);
+                    GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.add(tRecipe);
+                    GT_Recipe.GT_Recipe_Map.sMultiblockElectrolyzerRecipes.add(tRecipe);
+                }
+                if (werkstoff.getStats().isCentrifuge()) {
                     GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.add(new BWRecipes.DynamicGTRecipe(
                             true,
                             new ItemStack[] {input, cells > 0 ? Materials.Empty.getCells(cells) : null},
@@ -197,6 +200,22 @@ public class DustLoader implements IWerkstoffRunnable {
                                             / werkstoff.getContents().getValue().size())),
                             Math.min(4, werkstoff.getContents().getValue().size()) * 5,
                             0));
+                    GT_Recipe tRecipe = new GT_Recipe(
+                            false,
+                            stOutputs.toArray(new ItemStack[0]),
+                            new ItemStack[] {input},
+                            null,
+                            null,
+                            new FluidStack[] {flOutputs.size() > 0 ? flOutputs.get(0) : null},
+                            null,
+                            (int) Math.max(
+                                    1L,
+                                    Math.abs(werkstoff.getStats().getProtons()
+                                            / werkstoff.getContents().getValue().size())),
+                            Math.min(4, werkstoff.getContents().getValue().size()) * 30,
+                            0);
+                    GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.add(tRecipe);
+                }
                 if (werkstoff.getGenerationFeatures().hasChemicalRecipes()) {
                     if (cells > 0) stOutputs.add(Materials.Empty.getCells(cells));
                     GT_Recipe.GT_Recipe_Map.sChemicalRecipes.add(new BWRecipes.DynamicGTRecipe(
@@ -247,6 +266,21 @@ public class DustLoader implements IWerkstoffRunnable {
                                             / werkstoff.getContents().getValue().size())),
                             Math.min(4, werkstoff.getContents().getValue().size()) * 5,
                             0));
+                    GT_Recipe tRecipe = new GT_Recipe(
+                            false,
+                            stOutputs.toArray(new ItemStack[0]),
+                            new ItemStack[] {input},
+                            null,
+                            null,
+                            new FluidStack[] {flOutputs.size() > 0 ? flOutputs.get(0) : null},
+                            null,
+                            (int) Math.max(
+                                    1L,
+                                    Math.abs(werkstoff.getStats().getProtons()
+                                            / werkstoff.getContents().getValue().size())),
+                            Math.min(4, werkstoff.getContents().getValue().size()) * 30,
+                            0);
+                    GT_Recipe.GT_Recipe_Map.sMultiblockMixerRecipes.add(tRecipe);
                 }
             }
 
