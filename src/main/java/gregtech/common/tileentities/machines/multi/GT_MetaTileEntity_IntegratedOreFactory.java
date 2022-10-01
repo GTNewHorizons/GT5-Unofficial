@@ -114,6 +114,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     private ItemStack[] sMidProduct;
     private int sMode = 0;
     private boolean sVoidStone = false;
+    private int currentParallelism = 0;
 
     private static void initHash() {
         for (String name : OreDictionary.getOreNames()) {
@@ -296,6 +297,9 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             }
         }
 
+        // for scanner
+        setCurrentParallelism(tRealUsed);
+
         if (tRealUsed == 0) {
             return false;
         }
@@ -397,6 +401,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     public void loadNBTData(NBTTagCompound aNBT) {
         sMode = aNBT.getInteger("ssMode");
         sVoidStone = aNBT.getBoolean("ssStone");
+        currentParallelism = aNBT.getInteger("currentParallelism");
         super.loadNBTData(aNBT);
     }
 
@@ -404,6 +409,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("ssMode", sMode);
         aNBT.setBoolean("ssStone", sVoidStone);
+        aNBT.setInteger("currentParallelism", currentParallelism);
         super.saveNBTData(aNBT);
     }
 
@@ -644,6 +650,23 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_IntegratedOreFactory(mName);
+    }
+
+    private void setCurrentParallelism(int parallelism) {
+        this.currentParallelism = parallelism;
+    }
+
+    private int getCurrentParallelism() {
+        return this.currentParallelism;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        List<String> informationData = Arrays.asList(super.getInfoData());
+        String parallelism = StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.BLUE + getCurrentParallelism() + EnumChatFormatting.RESET;
+        informationData.add(parallelism);
+        return informationData.toArray(new String[0]);
     }
 
     @Override
