@@ -4254,6 +4254,29 @@ public class GT_Utility {
         return Textures.BlockIcons.ERROR_TEXTURE_INDEX;
     }
 
+    public static boolean isCellEmpty(ItemStack itemStack) {
+        if (itemStack == null) return false;
+        ItemStack tStack = ItemList.Cell_Empty.get(1);
+        tStack.stackSize = itemStack.stackSize;
+        return GT_Utility.areStacksEqual(itemStack, tStack);
+    }
+
+    public static FluidStack convertCellToFluid(ItemStack itemStack) {
+        if (itemStack == null) return null;
+        if (getFluidForFilledItem(itemStack, true) != null) {
+            FluidStack fluidStack = getFluidForFilledItem(itemStack, true);
+            if (fluidStack != null) fluidStack.amount = fluidStack.amount * itemStack.stackSize;
+            return fluidStack;
+        }
+        return null;
+    }
+
+    public static boolean checkIfSameIntegratedCircuit(ItemStack itemStack) {
+        if (itemStack == null) return false;
+        for (int i = 0; i < 25; i++) if (itemStack.isItemEqual(GT_Utility.getIntegratedCircuit(i))) return true;
+        return false;
+    }
+
     @AutoValue
     public abstract static class ItemId {
         /** This method copies NBT, as it is mutable. */

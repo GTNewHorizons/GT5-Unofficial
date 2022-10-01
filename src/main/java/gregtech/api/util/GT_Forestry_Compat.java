@@ -137,6 +137,8 @@ public class GT_Forestry_Compat {
                 }
                 GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(
                         true, new ItemStack[] {tRecipe.getInput()}, tOutputs, null, tChances, null, null, 128, 5, 0);
+                GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.addRecipe(
+                        true, new ItemStack[] {tRecipe.getInput()}, tOutputs, null, tChances, null, null, 128, 5, 0);
             }
         } catch (Throwable e) {
             if (GT_Values.D1) {

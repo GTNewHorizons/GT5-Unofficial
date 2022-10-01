@@ -223,6 +223,45 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 aDuration,
                 aEUt,
                 aCleanroom ? -100 : 0);
+        ItemStack[] itemInputs = {aInput1, aInput2};
+        ItemStack[] itemOutputs = {aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6};
+        FluidStack[] fluidInputs = {aFluidInput, null, null};
+        FluidStack[] fluidOutputs = {aFluidOutput, null, null, null, null, null, null};
+
+        byte iNumber = 0;
+        byte oNumber = 0;
+
+        for (ItemStack item : itemInputs) {
+            if (item != null) {
+                if (GT_Utility.getFluidForFilledItem(aInput1, true) != null || GT_Utility.isCellEmpty(item)) {
+                    fluidInputs[iNumber + 1] = GT_Utility.convertCellToFluid(item);
+                    itemInputs[iNumber] = null;
+                }
+            }
+            iNumber++;
+        }
+
+        for (ItemStack item : itemOutputs) {
+            if (item != null) {
+                if (GT_Utility.getFluidForFilledItem(item, true) != null || GT_Utility.isCellEmpty(item)) {
+                    fluidOutputs[oNumber + 1] = GT_Utility.convertCellToFluid(item);
+                    itemOutputs[oNumber] = null;
+                }
+            }
+            oNumber++;
+        }
+
+        GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.addRecipe(
+                false,
+                itemInputs,
+                itemOutputs,
+                null,
+                aChances,
+                fluidInputs,
+                fluidOutputs,
+                aDuration,
+                aEUt,
+                aCleanroom ? -100 : 0);
         return true;
     }
 
@@ -308,6 +347,38 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 aDuration,
                 aEUt,
                 0);
+        ItemStack[] itemInputs = {aInput1, aInput2};
+        ItemStack[] itemOutputs = {aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6};
+        FluidStack[] fluidInputs = {aFluidInput, null, null};
+        FluidStack[] fluidOutputs = {aFluidOutput, null, null, null, null, null, null};
+
+        byte iNumber = 0;
+        byte oNumber = 0;
+
+        for (ItemStack item : itemInputs) {
+            if (item != null) {
+                if (GT_Utility.getFluidForFilledItem(aInput1, true) != null
+                        || GT_Utility.isCellEmpty(item)
+                        || GT_Utility.checkIfSameIntegratedCircuit(item)) {
+                    fluidInputs[iNumber + 1] = GT_Utility.convertCellToFluid(item);
+                    itemInputs[iNumber] = null;
+                }
+            }
+            iNumber++;
+        }
+
+        for (ItemStack item : itemOutputs) {
+            if (item != null) {
+                if (GT_Utility.getFluidForFilledItem(item, true) != null || GT_Utility.isCellEmpty(item)) {
+                    fluidOutputs[oNumber + 1] = GT_Utility.convertCellToFluid(item);
+                    itemOutputs[oNumber] = null;
+                }
+            }
+            oNumber++;
+        }
+
+        GT_Recipe.GT_Recipe_Map.sMultiblockElectrolyzerRecipes.addRecipe(
+                false, itemInputs, itemOutputs, null, aChances, fluidInputs, fluidOutputs, aDuration, aEUt, 0);
         return true;
     }
 
@@ -2423,6 +2494,36 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 aDuration,
                 aEUt,
                 0);
+        ItemStack[] itemInputs = {aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9};
+        ItemStack[] itemOutputs = {aOutput};
+        FluidStack[] fluidInputs = {aFluidInput, null, null, null, null, null, null, null, null, null};
+        FluidStack[] fluidOutputs = {aFluidOutput, null};
+
+        byte iNumber = 0;
+        byte oNumber = 0;
+
+        for (ItemStack item : itemInputs) {
+            if (item != null) {
+                if (GT_Utility.getFluidForFilledItem(aInput1, true) != null || GT_Utility.isCellEmpty(item)) {
+                    fluidInputs[iNumber + 1] = GT_Utility.convertCellToFluid(item);
+                    itemInputs[iNumber] = null;
+                }
+            }
+            iNumber++;
+        }
+
+        for (ItemStack item : itemOutputs) {
+            if (item != null) {
+                if (GT_Utility.getFluidForFilledItem(item, true) != null || GT_Utility.isCellEmpty(item)) {
+                    fluidOutputs[oNumber + 1] = GT_Utility.convertCellToFluid(item);
+                    itemOutputs[oNumber] = null;
+                }
+            }
+            oNumber++;
+        }
+
+        GT_Recipe.GT_Recipe_Map.sMultiblockMixerRecipes.addRecipe(
+                false, itemInputs, itemOutputs, null, null, fluidInputs, fluidOutputs, aDuration, aEUt, 0);
         return true;
     }
 
@@ -2442,6 +2543,73 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 null,
                 FluidInputArray,
                 FluidOutputArray,
+                aDuration,
+                aEUt,
+                0);
+        List<ItemStack> tItemInputList;
+        if (ItemInputArray == null) {
+            tItemInputList = new ArrayList<>(1);
+        } else {
+            tItemInputList = new ArrayList<>(Arrays.asList(ItemInputArray));
+        }
+        List<FluidStack> tFluidInputList;
+        if (FluidInputArray != null) {
+            tFluidInputList = new ArrayList<>(Arrays.asList(FluidInputArray));
+        } else {
+            tFluidInputList = new ArrayList<>(1);
+        }
+        for (int i = 0; i < tItemInputList.size(); i++) {
+            if (tItemInputList.get(i) != null) {
+                if (GT_Utility.getFluidForFilledItem(tItemInputList.get(i), true) != null
+                        || GT_Utility.isCellEmpty(tItemInputList.get(i))) {
+                    tFluidInputList.add(GT_Utility.convertCellToFluid(tItemInputList.get(i)));
+                    tItemInputList.set(i, null);
+                }
+            }
+        }
+        List<ItemStack> tItemOutputList;
+        if (ItemInputArray == null) {
+            tItemOutputList = new ArrayList<>(1);
+        } else {
+            tItemOutputList = new ArrayList<>(Arrays.asList(ItemInputArray));
+        }
+        List<FluidStack> tFluidOutputList;
+        if (FluidOutputArray != null) {
+            tFluidOutputList = new ArrayList<>(Arrays.asList(FluidOutputArray));
+            ;
+        } else {
+            tFluidOutputList = new ArrayList<>(1);
+        }
+        for (int i = 0; i < tItemOutputList.size(); i++) {
+            if (tItemOutputList.get(i) != null) {
+                if (GT_Utility.getFluidForFilledItem(tItemOutputList.get(i), true) != null
+                        || GT_Utility.isCellEmpty(tItemOutputList.get(i))) {
+                    tFluidInputList.add(GT_Utility.convertCellToFluid(tItemOutputList.get(i)));
+                    tItemOutputList.set(i, null);
+                }
+            }
+        }
+
+        ItemStack[] tItemInputArray = new ItemStack[tItemInputList.size()];
+        for (int i = 0; i < tItemInputArray.length; i++) tItemInputArray[i] = tItemInputList.get(i);
+
+        FluidStack[] tFluidInputArray = new FluidStack[tFluidInputList.size()];
+        for (int i = 0; i < tFluidInputArray.length; i++) tFluidInputArray[i] = tFluidInputList.get(i);
+
+        ItemStack[] tItemOutputArray = new ItemStack[tItemOutputList.size()];
+        for (int i = 0; i < tItemOutputArray.length; i++) tItemOutputArray[i] = tItemOutputList.get(i);
+
+        FluidStack[] tFluidOutputArray = new FluidStack[tFluidOutputList.size()];
+        for (int i = 0; i < tFluidOutputArray.length; i++) tFluidOutputArray[i] = tFluidOutputList.get(i);
+
+        GT_Recipe.GT_Recipe_Map.sMultiblockMixerRecipes.addRecipe(
+                false,
+                tItemInputArray,
+                tItemOutputArray,
+                null,
+                null,
+                tFluidInputArray,
+                tFluidOutputArray,
                 aDuration,
                 aEUt,
                 0);
@@ -2491,6 +2659,36 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 aDuration,
                 aEUt,
                 0);
+        ItemStack[] itemInputs = {aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9};
+        ItemStack[] itemOutputs = {aOutput1, aOutput2, aOutput3, aOutput4};
+        FluidStack[] fluidInputs = {aFluidInput, null, null, null, null, null, null, null, null, null};
+        FluidStack[] fluidOutputs = {aFluidOutput, null, null, null, null};
+
+        byte iNumber = 0;
+        byte oNumber = 0;
+
+        for (ItemStack item : itemInputs) {
+            if (item != null) {
+                if (GT_Utility.getFluidForFilledItem(aInput1, true) != null || GT_Utility.isCellEmpty(item)) {
+                    fluidInputs[iNumber + 1] = GT_Utility.convertCellToFluid(item);
+                    itemInputs[iNumber] = null;
+                }
+            }
+            iNumber++;
+        }
+
+        for (ItemStack item : itemOutputs) {
+            if (item != null) {
+                if (GT_Utility.getFluidForFilledItem(item, true) != null || GT_Utility.isCellEmpty(item)) {
+                    fluidOutputs[oNumber + 1] = GT_Utility.convertCellToFluid(item);
+                    itemOutputs[oNumber] = null;
+                }
+            }
+            oNumber++;
+        }
+
+        GT_Recipe.GT_Recipe_Map.sMultiblockMixerRecipes.addRecipe(
+                false, itemInputs, itemOutputs, null, null, fluidInputs, fluidOutputs, aDuration, aEUt, 0);
         return true;
     }
 
