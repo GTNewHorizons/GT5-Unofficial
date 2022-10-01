@@ -15,6 +15,12 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,14 +29,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-
-public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData> extends GT_CoverBehaviorBase<T> {
+public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
+                T extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData>
+        extends GT_CoverBehaviorBase<T> {
 
     public GT_Cover_AdvancedWirelessRedstoneBase(Class<T> typeToken, ITexture coverTexture) {
         super(typeToken, coverTexture);
@@ -45,26 +46,38 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
 
         switch (mode) {
             case AND:
-                return (byte) (signals.values().stream()
-                    .map(signal -> signal > 0)
-                    .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
+                return (byte)
+                        (signals.values().stream()
+                                        .map(signal -> signal > 0)
+                                        .reduce(true, (signalA, signalB) -> signalA && signalB)
+                                ? 15
+                                : 0);
             case NAND:
-                return (byte) (signals.values().stream()
-                    .map(signal -> signal > 0)
-                    .reduce(true, (signalA, signalB) -> signalA && signalB) ? 0 : 15);
+                return (byte)
+                        (signals.values().stream()
+                                        .map(signal -> signal > 0)
+                                        .reduce(true, (signalA, signalB) -> signalA && signalB)
+                                ? 0
+                                : 15);
             case OR:
-                return (byte) (signals.values().stream()
-                    .map(signal -> signal > 0)
-                    .reduce(false, (signalA, signalB) -> signalA || signalB) ? 15 : 0);
+                return (byte)
+                        (signals.values().stream()
+                                        .map(signal -> signal > 0)
+                                        .reduce(false, (signalA, signalB) -> signalA || signalB)
+                                ? 15
+                                : 0);
             case NOR:
-                return (byte) (signals.values().stream()
-                    .map(signal -> signal > 0)
-                    .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
+                return (byte)
+                        (signals.values().stream()
+                                        .map(signal -> signal > 0)
+                                        .reduce(false, (signalA, signalB) -> signalA || signalB)
+                                ? 0
+                                : 15);
             case SINGLE_SOURCE:
                 if (signals.values().isEmpty()) {
                     return 0;
                 }
-                
+
                 return (Byte) signals.values().toArray()[0];
             default:
                 return 0;
@@ -81,7 +94,8 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
     }
 
     public static void setSignalAt(UUID uuid, int frequency, long hash, byte value) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.computeIfAbsent(String.valueOf(uuid), k -> new ConcurrentHashMap<>());
+        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.computeIfAbsent(
+                String.valueOf(uuid), k -> new ConcurrentHashMap<>());
         Map<Long, Byte> signals = frequencies.computeIfAbsent(frequency, k -> new ConcurrentHashMap<>());
         signals.put(hash, value);
     }
@@ -94,12 +108,10 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
      *  side hashed into last 4 bytes
      */
     public static long hashCoverCoords(ICoverable tile, byte side) {
-        return (((((long)
-            tile.getXCoord() << 20) +
-            tile.getZCoord() << 10) +
-            tile.getYCoord() << 10) +
-            tile.getWorld().provider.dimensionId << 4) +
-            side;
+        return (((((long) tile.getXCoord() << 20) + tile.getZCoord() << 10) + tile.getYCoord() << 10)
+                                + tile.getWorld().provider.dimensionId
+                        << 4)
+                + side;
     }
 
     @Override
@@ -134,7 +146,8 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
 
     @Override
     public String getDescriptionImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
-        return GT_Utility.trans("081", "Frequency: ") + aCoverVariable.frequency + ", Transmission: " + (aCoverVariable.uuid == null ? "Public" : "Private");
+        return GT_Utility.trans("081", "Frequency: ") + aCoverVariable.frequency + ", Transmission: "
+                + (aCoverVariable.uuid == null ? "Public" : "Private");
     }
 
     @Override
@@ -142,8 +155,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
         return 5;
     }
 
-
-    public static abstract class WirelessData implements ISerializableObject {
+    public abstract static class WirelessData implements ISerializableObject {
         protected int frequency;
 
         /**
@@ -236,7 +248,14 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
 
         private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverLong.png";
 
-        public WirelessGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity, int frequencyRow, int buttonRow, boolean shiftPrivateLeft) {
+        public WirelessGUI(
+                byte aSide,
+                int aCoverID,
+                X aCoverVariable,
+                ICoverable aTileEntity,
+                int frequencyRow,
+                int buttonRow,
+                boolean shiftPrivateLeft) {
             super(aTileEntity, 250, 107, GT_Utility.intToStack(aCoverID));
             this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
             this.side = aSide;
@@ -246,8 +265,10 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             this.buttonRow = buttonRow;
             this.privateExtraColumn = shiftPrivateLeft ? 1 : 5;
 
-            frequencyBox = new GT_GuiShortTextBox(this, 0, 1 + startX, 2 + startY + spaceY * frequencyRow, spaceX * 5 - 4, 12);
-            privateButton = new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * buttonRow, GT_GuiIcon.CHECKMARK, null);
+            frequencyBox =
+                    new GT_GuiShortTextBox(this, 0, 1 + startX, 2 + startY + spaceY * frequencyRow, spaceX * 5 - 4, 12);
+            privateButton =
+                    new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * buttonRow, GT_GuiIcon.CHECKMARK, null);
         }
 
         public WirelessGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
@@ -257,16 +278,18 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(
-                GT_Utility.trans("246", "Frequency"),
-                startX + spaceX * 5,
-                4 + startY + spaceY * frequencyRow,
-                textColor);
-            this.getFontRenderer().drawString(
-                GT_Utility.trans("601", "Use Private Frequency"),
-                startX + spaceX * privateExtraColumn,
-                4 + startY + spaceY * buttonRow,
-                textColor);
+            this.getFontRenderer()
+                    .drawString(
+                            GT_Utility.trans("246", "Frequency"),
+                            startX + spaceX * 5,
+                            4 + startY + spaceY * frequencyRow,
+                            textColor);
+            this.getFontRenderer()
+                    .drawString(
+                            GT_Utility.trans("601", "Use Private Frequency"),
+                            startX + spaceX * privateExtraColumn,
+                            4 + startY + spaceY * buttonRow,
+                            textColor);
         }
 
         @Override
@@ -275,8 +298,14 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             frequencyBox.setFocused(true);
         }
 
-        protected void genericMouseWheel(GT_GuiIntegerTextBox box, int delta, int minValue, int maxValue,
-                                         int baseStep, int ctrlStep, int shiftStep) {
+        protected void genericMouseWheel(
+                GT_GuiIntegerTextBox box,
+                int delta,
+                int minValue,
+                int maxValue,
+                int baseStep,
+                int ctrlStep,
+                int shiftStep) {
             long step = Math.max(1, Math.abs(delta / 120));
             step = (isShiftKeyDown() ? shiftStep : isCtrlKeyDown() ? ctrlStep : baseStep) * (delta > 0 ? step : -step);
 
@@ -323,7 +352,9 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
         @Override
         public void buttonClicked(GuiButton btn) {
             if (btn == privateButton) {
-                coverVariable.uuid = coverVariable.uuid == null ? Minecraft.getMinecraft().thePlayer.getUniqueID() : null;
+                coverVariable.uuid = coverVariable.uuid == null
+                        ? Minecraft.getMinecraft().thePlayer.getUniqueID()
+                        : null;
             }
 
             GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
@@ -359,14 +390,22 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             private final Map<String, String> translation;
             private final Map<String, String> inverseTranslation;
 
-            public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height, int min, int max,
-                                      Map<String, String> translate) {
+            public GT_GuiShortTextBox(
+                    IGuiScreen gui,
+                    int id,
+                    int x,
+                    int y,
+                    int width,
+                    int height,
+                    int min,
+                    int max,
+                    Map<String, String> translate) {
                 super(gui, id, x, y, width, height);
                 this.min = min;
                 this.max = max;
                 this.translation = translate;
-                this.inverseTranslation = translate.entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+                this.inverseTranslation =
+                        translate.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
             }
 
             public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height, int min, int max) {

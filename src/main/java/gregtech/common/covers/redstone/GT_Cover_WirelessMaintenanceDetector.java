@@ -12,6 +12,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.GT_Cover_NeedMaintainance;
 import io.netty.buffer.ByteBuf;
+import java.util.UUID;
+import javax.annotation.Nonnull;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,10 +23,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import java.util.UUID;
-
-public class GT_Cover_WirelessMaintenanceDetector extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessMaintenanceDetector.MaintenanceTransmitterData> {
+public class GT_Cover_WirelessMaintenanceDetector
+        extends GT_Cover_AdvancedRedstoneTransmitterBase<
+                GT_Cover_WirelessMaintenanceDetector.MaintenanceTransmitterData> {
 
     public GT_Cover_WirelessMaintenanceDetector(ITexture coverTexture) {
         super(MaintenanceTransmitterData.class, coverTexture);
@@ -40,7 +41,8 @@ public class GT_Cover_WirelessMaintenanceDetector extends GT_Cover_AdvancedRedst
         return createDataObject();
     }
 
-    private static byte computeSignalBasedOnMaintenance(MaintenanceTransmitterData coverVariable, ICoverable tileEntity) {
+    private static byte computeSignalBasedOnMaintenance(
+            MaintenanceTransmitterData coverVariable, ICoverable tileEntity) {
         boolean signal = false;
 
         if (tileEntity instanceof IGregTechTileEntity) {
@@ -73,8 +75,7 @@ public class GT_Cover_WirelessMaintenanceDetector extends GT_Cover_AdvancedRedst
                             } else {
                                 long expectedDamage = Math.round(Math.min(
                                         (double) multiTE.mEUt / multiTE.damageFactorLow,
-                                        Math.pow(multiTE.mEUt, multiTE.damageFactorHigh)
-                                ));
+                                        Math.pow(multiTE.mEUt, multiTE.damageFactorHigh)));
                                 signal = current + expectedDamage * 2 >= max;
                             }
                         } else {
@@ -87,34 +88,40 @@ public class GT_Cover_WirelessMaintenanceDetector extends GT_Cover_AdvancedRedst
         if (coverVariable.invert) {
             signal = !signal;
         }
-        
+
         return (byte) (signal ? 15 : 0);
     }
 
     @Override
-    public MaintenanceTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
-                                                        MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public MaintenanceTransmitterData doCoverThingsImpl(
+            byte aSide,
+            byte aInputRedstone,
+            int aCoverID,
+            MaintenanceTransmitterData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
         byte signal = computeSignalBasedOnMaintenance(aCoverVariable, aTileEntity);
         long hash = hashCoverCoords(aTileEntity, aSide);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
-        
+
         return aCoverVariable;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
-                                         ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOutImpl(
+            byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
-                                                         ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(
+            byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRateImpl(byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRateImpl(
+            byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return 60;
     }
 
@@ -184,15 +191,19 @@ public class GT_Cover_WirelessMaintenanceDetector extends GT_Cover_AdvancedRedst
     /**
      * GUI Stuff
      */
-
-    private static final String[] extraTexts = new String[]{
-            "No Issues", ">= 1 Issue", ">= 2 Issues", ">= 3 Issues",
-            ">= 4 Issues", ">= 5 Issues", "Rotor < 80%", "Rotor < 100%"
+    private static final String[] extraTexts = new String[] {
+        "No Issues", ">= 1 Issue", ">= 2 Issues", ">= 3 Issues",
+        ">= 4 Issues", ">= 5 Issues", "Rotor < 80%", "Rotor < 100%"
     };
 
     @Override
-    public Object getClientGUIImpl(byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity,
-                                   EntityPlayer aPlayer, World aWorld) {
+    public Object getClientGUIImpl(
+            byte aSide,
+            int aCoverID,
+            MaintenanceTransmitterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            World aWorld) {
         return new MaintenanceTransmitterGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
@@ -201,13 +212,20 @@ public class GT_Cover_WirelessMaintenanceDetector extends GT_Cover_AdvancedRedst
         private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverBig.png";
         private static final int maintenanceButtonIdStart = 2;
 
-        public MaintenanceTransmitterGUI(byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
+        public MaintenanceTransmitterGUI(
+                byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
             super(aSide, aCoverID, aCoverVariable, aTileEntity);
             this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
             this.gui_height = 143;
 
             for (int i = 0; i < 8; ++i) {
-                new GT_GuiIconCheckButton(this, maintenanceButtonIdStart + i, startX + spaceX * (i % 2 == 0 ? 0 : 6), startY + spaceY * (2 + i / 2), GT_GuiIcon.CHECKMARK, null);
+                new GT_GuiIconCheckButton(
+                        this,
+                        maintenanceButtonIdStart + i,
+                        startX + spaceX * (i % 2 == 0 ? 0 : 6),
+                        startY + spaceY * (2 + i / 2),
+                        GT_GuiIcon.CHECKMARK,
+                        null);
             }
         }
 
@@ -215,11 +233,12 @@ public class GT_Cover_WirelessMaintenanceDetector extends GT_Cover_AdvancedRedst
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             for (int i = 0; i < 8; ++i) {
-                this.getFontRenderer().drawString(
-                        extraTexts[i],
-                        startX + spaceX * (i % 2 == 0 ? 1 : 7),
-                        4 + startY + spaceY * (2 + i / 2),
-                        textColor);
+                this.getFontRenderer()
+                        .drawString(
+                                extraTexts[i],
+                                startX + spaceX * (i % 2 == 0 ? 1 : 7),
+                                4 + startY + spaceY * (2 + i / 2),
+                                textColor);
             }
         }
 

@@ -1,6 +1,5 @@
 package gregtech.common.covers.redstone;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
@@ -12,7 +11,13 @@ public class GT_Cover_AdvancedRedstoneReceiverInternal extends GT_Cover_Advanced
     }
 
     @Override
-    public ReceiverData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public ReceiverData doCoverThingsImpl(
+            byte aSide,
+            byte aInputRedstone,
+            int aCoverID,
+            ReceiverData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
         if (aTileEntity instanceof IMachineProgress) {
             IMachineProgress machine = ((IMachineProgress) aTileEntity);
             if (getRedstoneInput(aSide, aInputRedstone, aCoverID, aCoverVariable, aTileEntity) > 0) {
@@ -28,7 +33,8 @@ public class GT_Cover_AdvancedRedstoneReceiverInternal extends GT_Cover_Advanced
     }
 
     @Override
-    protected byte getRedstoneInputImpl(byte aSide, byte aInputRedstone, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
+    protected byte getRedstoneInputImpl(
+            byte aSide, byte aInputRedstone, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
         return getSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), aCoverVariable.getGateMode());
     }
 }

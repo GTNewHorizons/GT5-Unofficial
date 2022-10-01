@@ -8,16 +8,16 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.GT_Cover_LiquidMeter;
 import io.netty.buffer.ByteBuf;
+import java.util.UUID;
+import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import java.util.UUID;
-
-public class GT_Cover_WirelessFluidDetector extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessFluidDetector.FluidTransmitterData> {
+public class GT_Cover_WirelessFluidDetector
+        extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessFluidDetector.FluidTransmitterData> {
 
     public GT_Cover_WirelessFluidDetector(ITexture coverTexture) {
         super(FluidTransmitterData.class, coverTexture);
@@ -34,9 +34,15 @@ public class GT_Cover_WirelessFluidDetector extends GT_Cover_AdvancedRedstoneTra
     }
 
     @Override
-    public FluidTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
-                                                  FluidTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        byte signal = GT_Cover_LiquidMeter.computeSignalBasedOnFluid(aTileEntity, aCoverVariable.invert, aCoverVariable.threshold);
+    public FluidTransmitterData doCoverThingsImpl(
+            byte aSide,
+            byte aInputRedstone,
+            int aCoverID,
+            FluidTransmitterData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
+        byte signal = GT_Cover_LiquidMeter.computeSignalBasedOnFluid(
+                aTileEntity, aCoverVariable.invert, aCoverVariable.threshold);
         long hash = hashCoverCoords(aTileEntity, aSide);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
@@ -44,14 +50,14 @@ public class GT_Cover_WirelessFluidDetector extends GT_Cover_AdvancedRedstoneTra
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, FluidTransmitterData aCoverVariable,
-                                         ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOutImpl(
+            byte aSide, int aCoverID, FluidTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, FluidTransmitterData aCoverVariable,
-                                                         ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(
+            byte aSide, int aCoverID, FluidTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
@@ -111,30 +117,32 @@ public class GT_Cover_WirelessFluidDetector extends GT_Cover_AdvancedRedstoneTra
     /**
      * GUI Stuff
      */
-
     @Override
-    public Object getClientGUIImpl(byte aSide, int aCoverID, FluidTransmitterData aCoverVariable, ICoverable aTileEntity,
-                                   EntityPlayer aPlayer, World aWorld) {
+    public Object getClientGUIImpl(
+            byte aSide,
+            int aCoverID,
+            FluidTransmitterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            World aWorld) {
         return new FluidTransmitterGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
     private class FluidTransmitterGUI extends TransmitterGUI<FluidTransmitterData> {
         private final GT_GuiIntegerTextBox thresholdBox;
 
-        public FluidTransmitterGUI(byte aSide, int aCoverID, FluidTransmitterData aCoverVariable, ICoverable aTileEntity) {
+        public FluidTransmitterGUI(
+                byte aSide, int aCoverID, FluidTransmitterData aCoverVariable, ICoverable aTileEntity) {
             super(aSide, aCoverID, aCoverVariable, aTileEntity, 1, 2);
 
-            thresholdBox = new GT_GuiShortTextBox(this,1, 1 + startX, 2 + startY, spaceX * 5 - 4, 12);
+            thresholdBox = new GT_GuiShortTextBox(this, 1, 1 + startX, 2 + startY, spaceX * 5 - 4, 12);
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(
-                GT_Utility.trans("222", "Fluid Threshold"),
-                startX + spaceX * 5,
-                4 + startY,
-                textColor);
+            this.getFontRenderer()
+                    .drawString(GT_Utility.trans("222", "Fluid Threshold"), startX + spaceX * 5, 4 + startY, textColor);
         }
 
         @Override

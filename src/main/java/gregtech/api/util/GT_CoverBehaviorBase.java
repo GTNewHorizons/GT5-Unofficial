@@ -134,8 +134,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
      * Called before receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.
      */
     public final void preDataChanged(
-            byte aSide, int aCoverID, int aNewCoverId, ISerializableObject aCoverVariable, ISerializableObject aNewCoverVariable, ICoverable aTileEntity) {
-        preDataChangedImpl(aSide, aCoverID, aNewCoverId, forceCast(aCoverVariable), forceCast(aNewCoverVariable), aTileEntity);
+            byte aSide,
+            int aCoverID,
+            int aNewCoverId,
+            ISerializableObject aCoverVariable,
+            ISerializableObject aNewCoverVariable,
+            ICoverable aTileEntity) {
+        preDataChangedImpl(
+                aSide, aCoverID, aNewCoverId, forceCast(aCoverVariable), forceCast(aNewCoverVariable), aTileEntity);
     }
 
     /**
@@ -233,7 +239,8 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
      * Called upon Base TE being destroyed (once getDrops is called),
      * thus getting called only when destroyed in survival.
      */
-    public final void onBaseTEDestroyed(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+    public final void onBaseTEDestroyed(
+            byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         onBaseTEDestroyedImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
     }
 
@@ -425,7 +432,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     protected void onDataChangedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
-    
+
     protected void preDataChangedImpl(
             byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable, ICoverable aTileEntity) {}
 

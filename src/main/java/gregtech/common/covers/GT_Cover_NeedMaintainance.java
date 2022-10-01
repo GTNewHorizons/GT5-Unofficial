@@ -33,11 +33,10 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
     }
 
     public static boolean isRotor(ItemStack rotor) {
-        return (rotor != null &&
-                rotor.getItem() instanceof GT_MetaGenerated_Tool &&
-                rotor.getItemDamage() >= 170 &&
-                rotor.getItemDamage() <= 176
-        );
+        return (rotor != null
+                && rotor.getItem() instanceof GT_MetaGenerated_Tool
+                && rotor.getItemDamage() >= 170
+                && rotor.getItemDamage() <= 176);
     }
 
     @Override
