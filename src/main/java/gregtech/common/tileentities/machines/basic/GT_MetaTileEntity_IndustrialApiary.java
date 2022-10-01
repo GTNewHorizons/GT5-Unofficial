@@ -1027,7 +1027,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 .widget(new ButtonWidget()
                         .setOnClick((clickData, widget) -> cancelProcess())
                         .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS)
-                        .addTooltips(mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP).text)
+                        .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
                         .setTooltipShowUpDelay(TOOLTIP_DELAY)
                         .setPos(7, 26)
                         .setSize(18, 18))
@@ -1041,7 +1041,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                         .startFromSlot(7)
                         .endAtSlot(10)
                         .slotCreator(i -> new ApiarySlot(inventoryHandler, i))
-                        .applyForWidget(widget -> widget.addTooltips(mTooltipCache.getData(UPGRADE_TOOLTIP).text)
+                        .applyForWidget(widget -> widget.setGTTooltip(() -> mTooltipCache.getData(UPGRADE_TOOLTIP))
                                 .setTooltipShowUpDelay(TOOLTIP_DELAY))
                         .build()
                         .setPos(61, 23))
@@ -1053,7 +1053,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                         .setPos(106, 5))
                 .widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.PICTURE_INFORMATION)
-                        .dynamicTooltip(() -> {
+                        .setGTTooltip(() -> {
                             String energyreq = GT_Utility.formatNumbers(
                                     (int) ((float) GT_MetaTileEntity_IndustrialApiary.baseEUtUsage
                                                     * getEnergyModifier()
@@ -1076,27 +1076,26 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                                             .map(i -> (int) ((float) i * tmod))
                                             .toArray();
                                     return mTooltipCache.getUncachedTooltipData(
-                                                    INFO_WITH_BEE_TOOLTIP,
-                                                    energyreq,
-                                                    Temp,
-                                                    Hum,
-                                                    Math.round(100f
-                                                            * getProductionModifier(null, 1f)
-                                                            * genome.getSpeed()
-                                                            * mod.getProductionModifier(null, 1f)),
-                                                    Math.round(getFloweringModifier(null, 1f)
-                                                            * genome.getFlowering()
-                                                            * mod.getFloweringModifier(null, 1f)),
-                                                    Math.round(getLifespanModifier(null, null, 1f)
-                                                            * genome.getLifespan()
-                                                            * mod.getLifespanModifier(null, null, 1f)),
-                                                    t[0],
-                                                    t[1],
-                                                    t[2])
-                                            .text;
+                                            INFO_WITH_BEE_TOOLTIP,
+                                            energyreq,
+                                            Temp,
+                                            Hum,
+                                            Math.round(100f
+                                                    * getProductionModifier(null, 1f)
+                                                    * genome.getSpeed()
+                                                    * mod.getProductionModifier(null, 1f)),
+                                            Math.round(getFloweringModifier(null, 1f)
+                                                    * genome.getFlowering()
+                                                    * mod.getFloweringModifier(null, 1f)),
+                                            Math.round(getLifespanModifier(null, null, 1f)
+                                                    * genome.getLifespan()
+                                                    * mod.getLifespanModifier(null, null, 1f)),
+                                            t[0],
+                                            t[1],
+                                            t[2]);
                                 }
                             }
-                            return mTooltipCache.getUncachedTooltipData(INFO_TOOLTIP, energyreq, Temp, Hum).text;
+                            return mTooltipCache.getUncachedTooltipData(INFO_TOOLTIP, energyreq, Temp, Hum);
                         })
                         .attachSyncer(
                                 new FakeSyncWidget.ItemStackSyncer(() -> usedQueen, val -> usedQueen = val),
@@ -1120,11 +1119,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                                 if (mLockedSpeed) mSpeed = getMaxSpeed();
                             }
                         })
-                        .dynamicTooltip(() -> mTooltipCache.getUncachedTooltipData(
-                                        mLockedSpeed ? SPEED_LOCKED_TOOLTIP : SPEED_TOOLTIP,
-                                        getAcceleration(),
-                                        GT_Utility.formatNumbers(getAdditionalEnergyUsage()))
-                                .text)
+                        .setGTTooltip(() -> mTooltipCache.getUncachedTooltipData(
+                                mLockedSpeed ? SPEED_LOCKED_TOOLTIP : SPEED_TOOLTIP,
+                                getAcceleration(),
+                                GT_Utility.formatNumbers(getAdditionalEnergyUsage())))
                         .attachSyncer(
                                 new FakeSyncWidget.IntegerSyncer(() -> mSpeed, val -> mSpeed = val),
                                 builder,
@@ -1138,7 +1136,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                         .setPos(25, 62)
                         .setSize(18, 18))
                 .widget(getErrorStatusArea(
-                                // Don't show "Progress was lost" tooltip as this machine does not lose progress
+                                // Don't show shift tooltip of "Progress was lost"
+                                // as this machine does not lose progress
                                 100,
                                 62,
                                 GT_UITextures.PICTURE_STALLED_ELECTRICITY,

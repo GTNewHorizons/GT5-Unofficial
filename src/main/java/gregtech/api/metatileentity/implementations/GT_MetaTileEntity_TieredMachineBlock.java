@@ -134,8 +134,7 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
             ModularWindow.Builder builder, int x, int y, String tooltipKey, Object[] tooltipArgs) {
         builder.widget(new SlotWidget(inventoryHandler, rechargerSlotStartIndex())
                 .disableShiftInsert()
-                .addTooltips(mTooltipCache.getData(tooltipKey, tooltipArgs).text)
-                .addTooltipsShift(mTooltipCache.getData(tooltipKey, tooltipArgs).shiftText)
+                .setGTTooltip(() -> mTooltipCache.getData(tooltipKey, tooltipArgs))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_CHARGER)
                 .setPos(x, y));

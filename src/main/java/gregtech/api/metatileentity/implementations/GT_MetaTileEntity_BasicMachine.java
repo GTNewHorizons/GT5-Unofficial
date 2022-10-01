@@ -1272,8 +1272,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 .setToggle(() -> mItemTransfer, val -> mItemTransfer = val)
                 .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .addTooltips(mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP).text)
-                .addTooltipsShift(mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP).shiftText)
+                .setGTTooltip(() -> mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(x, y)
                 .setSize(18, 18));
@@ -1284,8 +1283,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 .setToggle(() -> mFluidTransfer, val -> mFluidTransfer = val)
                 .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .addTooltips(mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP).text)
-                .addTooltipsShift(mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP).shiftText)
+                .setGTTooltip(() -> mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(7, 62)
                 .setSize(18, 18));
@@ -1297,8 +1295,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         }
         builder.widget(new SlotWidget(inventoryHandler, 3)
                 .disableShiftInsert()
+                .setGTTooltip(() -> mTooltipCache.getData(tooltipKey))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .addTooltips(mTooltipCache.getData(tooltipKey).text)
                 .setBackground(background)
                 .setPos(124, 62));
     }
@@ -1312,7 +1310,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return new DrawableWidget()
                 .setDrawable(picture)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setEnabledDynamic(widget -> !widget.getTooltip().isEmpty())
+                .setEnabled(widget -> !widget.getTooltip().isEmpty())
                 .dynamicTooltip(tooltipGetter)
                 .dynamicTooltipShift(tooltipShiftGetter)
                 .setPos(x, y)

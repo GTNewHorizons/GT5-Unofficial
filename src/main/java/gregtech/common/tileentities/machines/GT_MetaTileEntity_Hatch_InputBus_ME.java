@@ -359,9 +359,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                             private final AppEngRenderItem aeRenderItem = new AppEngRenderItem();
 
                             @Override
-                            protected void phantomClick(ClickData clickData, ItemStack cursorStack) {}
-
-                            @Override
                             protected void drawSlot(Slot slotIn) {
                                 final RenderItem pIR = this.setItemRender(this.aeRenderItem);
                                 try {
@@ -406,7 +403,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                             public List<String> getExtraTooltip() {
                                 return Collections.emptyList();
                             }
-                        }.disableShiftInsert())
+                        }.disableInteraction())
                         .build()
                         .setPos(97, 9))
                 .widget(new DrawableWidget()
