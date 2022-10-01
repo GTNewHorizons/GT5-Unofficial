@@ -28,8 +28,8 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
     protected int gui_height = 107;
     protected int guiTop, guiLeft;
     protected boolean drawButtons = true;
+    protected ResourceLocation mGUIbackgroundLocation;
 
-    private ResourceLocation mGUIbackgroundLocation;
     private GuiButton selectedButton;
     private GT_GUIColorOverride colorOverride;
     private final int textColor;

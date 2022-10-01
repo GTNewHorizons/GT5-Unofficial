@@ -4276,6 +4276,30 @@ public class GT_Utility {
         for (int i = 0; i < 25; i++) if (itemStack.isItemEqual(GT_Utility.getIntegratedCircuit(i))) return true;
         return false;
     }
+public static byte convertRatioToRedstone(long used, long max, int threshold, boolean inverted) {
+        byte signal;
+        if (used <= 0) { // Empty
+            signal = 0;
+        } else if (used >= max) { // Full
+            signal = 15;
+        } else { // Range 1-14
+            signal = (byte) (1 + (14 * used) / max);
+        }
+
+        if (inverted) {
+            signal = (byte) (15 - signal);
+        }
+
+        if (threshold > 0) {
+            if (inverted && used >= threshold) {
+                return 0;
+            } else if (!inverted && used < threshold) {
+                return 0;
+            }
+        }
+
+        return signal;
+    }
 
     @AutoValue
     public abstract static class ItemId {

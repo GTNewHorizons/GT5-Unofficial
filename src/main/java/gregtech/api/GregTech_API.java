@@ -173,6 +173,12 @@ public class GregTech_API {
      */
     public static final Map<Integer, Byte> sWirelessRedstone = new ConcurrentHashMap<>();
     /**
+     * The Advanced Redstone Frequencies
+     */
+    public static final Map<String, Map<Integer, Map<Long, Byte>>> sAdvancedWirelessRedstone =
+            new ConcurrentHashMap<>();
+
+    /**
      * The IDSU Frequencies
      */
     public static final Map<Integer, Integer> sIDSUList = new ConcurrentHashMap<>();
