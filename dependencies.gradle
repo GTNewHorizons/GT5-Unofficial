@@ -30,7 +30,7 @@ dependencies {
         transitive = false
     }
 
-    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.47o:api") {
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.47:api") {
         transitive = false
     }
 
