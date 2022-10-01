@@ -120,7 +120,7 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
             } else if (tSpecialA[1] == -200 && GT_Mod.gregtechproxy.mEnableCleanroom) {
                 drawText(10, lines[7], this.trans("160", "Needs Cleanroom"), -16777216);
             } else if (tSpecialA[1] == -300 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-                drawText(10, lines[7], this.trans("160", "Needs Cleanroom & LowGrav"), -16777216);
+                drawText(10, lines[7], this.trans("160.1", "Needs Cleanroom & LowGrav"), -16777216);
             } else if (tSpecialA[1] == -400) {
                 drawText(10, lines[7], this.trans("216", "Deprecated Recipe"), -16777216);
             } else if (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)
