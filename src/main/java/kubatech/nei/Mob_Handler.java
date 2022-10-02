@@ -392,7 +392,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
         }
 
         x = 6;
-        y = Math.max(83, 83 + (y - 67));
+        y = 83;
         yshift = nextRowYShift;
         if (currentrecipe.normalOutputsCount > 0) {
             GuiDraw.drawString(NORMAL_DROPS.get(), x, y, 0xFF555555, false);

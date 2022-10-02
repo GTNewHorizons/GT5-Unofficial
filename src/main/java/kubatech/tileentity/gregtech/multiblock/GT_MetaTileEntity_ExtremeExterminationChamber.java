@@ -60,6 +60,7 @@ import java.util.HashMap;
 import java.util.Random;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
+import kubatech.api.helpers.GTHelper;
 import kubatech.api.helpers.ReflectionHelper;
 import kubatech.api.network.CustomTileEntityPacket;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
@@ -213,6 +214,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addInfo("Spawns and Exterminates monsters for you")
                 .addInfo("You have to insert the powered spawner in controller")
                 .addInfo("Base energy usage: 2,000 EU/t")
+                .addInfo("Supports perfect OC and past 1 tick (multiplies outputs)")
                 .addInfo("Recipe time is based on mob health")
                 .addInfo("You can additionally put a weapon to the ULV input bus")
                 .addInfo("It will speed up the process and apply looting level from the weapon")
@@ -472,11 +474,14 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 && this.getBaseMetaTileEntity().getWorld().difficultySetting == EnumDifficulty.PEACEFUL) return false;
 
         if (isInRitualMode && isRitualValid()) {
-            this.mMaxProgresstime = 400;
-            this.mEUt /= 4;
+            if (getMaxInputVoltage() < recipe.mEUt / 4) return false;
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 5000)};
             this.mOutputItems = recipe.generateOutputs(rand, this, 3, 0, mIsProducingInfernalDrops);
+            this.mEUt /= 4;
+            this.mMaxProgresstime = 400;
         } else {
+            if (getMaxInputVoltage() < recipe.mEUt) return false;
+
             double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
             GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.size() == 0 ? null : this.mInputBusses.get(0);
             if (inputbus != null && !isValidMetaTileEntity(inputbus)) inputbus = null;
@@ -510,19 +515,17 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
             this.mOutputItems = recipe.generateOutputs(
                     rand, this, attackDamage, weaponCache.isValid ? weaponCache.looting : 0, mIsProducingInfernalDrops);
-            int eut = this.mEUt;
-            calculatePerfectOverclockedNessMulti(this.mEUt, this.mMaxProgresstime, 2, getMaxInputVoltage());
+            this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 120)};
+            int times = GTHelper.calculateOverclockedNessMulti(this, this.mEUt, this.mMaxProgresstime, true);
             //noinspection ConstantConditions
             if (weaponCache.isValid && lootingholder.isItemStackDamageable()) {
-                do {
+                for (int i = 0; i < times + 1; i++)
                     if (lootingholder.attemptDamageItem(1, rand)) {
                         //noinspection ConstantConditions
                         inputbus.setInventorySlotContents(0, null);
                         break;
                     }
-                } while ((eut <<= 2) < this.mEUt);
             }
-            this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 120)};
         }
         if (this.mEUt > 0) this.mEUt = -this.mEUt;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
