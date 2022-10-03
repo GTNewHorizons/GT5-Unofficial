@@ -383,6 +383,7 @@ public class GT_LanguageManager {
         addStringLocalization(
                 "Interaction_DESCRIPTION_Index_223", "Single recipe locking enabled. Will lock to next recipe.");
         addStringLocalization("Interaction_DESCRIPTION_Index_224", " ticks");
+        addStringLocalization("Interaction_DESCRIPTION_Index_225", " tick");
         addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
         addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
 

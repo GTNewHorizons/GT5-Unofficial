@@ -39,6 +39,9 @@ public abstract class Power {
     }
 
     public String getDurationStringTicks() {
+        if (getDurationTicks() == 1) {
+            return GT_Utility.formatNumbers(getDurationTicks()) + GT_Utility.trans("225", " tick");
+        }
         return GT_Utility.formatNumbers(getDurationTicks()) + GT_Utility.trans("224", " ticks");
     }
 
