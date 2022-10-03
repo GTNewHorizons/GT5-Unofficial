@@ -2028,9 +2028,9 @@ public class ItemComb extends Item {
                     return Materials.PhosphoricAcid.getFluid(fluidAmount);
                 case 4:
                     /**EV**/
-                    return Materials.PhthalicAcid.getFluid(fluidAmount);
-                default:
                     return Materials.HydrofluoricAcid.getFluid(this.getFluidAmount());
+                default:
+                    return Materials.PhthalicAcid.getFluid(fluidAmount);
             }
         }
         /**@return additional required UU-Matter amount for Autoclave process related to the Tier**/
