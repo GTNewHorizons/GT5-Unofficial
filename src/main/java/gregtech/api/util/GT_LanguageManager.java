@@ -371,6 +371,7 @@ public class GT_LanguageManager {
                 "Interaction_DESCRIPTION_Index_207", "Pump speed: %dL every %d ticks, %.2f L/sec on average");
         addStringLocalization("Interaction_DESCRIPTION_Index_208", " L");
         addStringLocalization("Interaction_DESCRIPTION_Index_209", " ticks");
+        addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " ticks");
         addStringLocalization("Interaction_DESCRIPTION_Index_210", "Average: %.2f L/sec");
         addStringLocalization("Interaction_DESCRIPTION_Index_211", "Items per side: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_212", "Input enabled");
