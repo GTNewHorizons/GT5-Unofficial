@@ -1,5 +1,7 @@
 package gregtech.api.items;
 
+import static gregtech.api.util.GT_Utility.formatNumbers;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
 import ic2.api.reactor.IReactor;
@@ -13,8 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-
-import static gregtech.api.util.GT_Utility.formatNumbers;
 
 /**
  * A {@link ic2.core.item.reactor.ItemReactorLithiumCell}, but can be used to produce anything!

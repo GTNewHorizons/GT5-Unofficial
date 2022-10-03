@@ -270,7 +270,9 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
                     + EnumChatFormatting.GRAY);
             aList.add(EnumChatFormatting.BLUE
                     + String.format(
-                            transItem("013", "%sL / %sL"), "" + (tFluid == null ? 0 : formatNumbers(tFluid.amount)), "" + formatNumbers(tStats[0]))
+                            transItem("013", "%sL / %sL"),
+                            "" + (tFluid == null ? 0 : formatNumbers(tFluid.amount)),
+                            "" + formatNumbers(tStats[0]))
                     + EnumChatFormatting.GRAY);
         }
 

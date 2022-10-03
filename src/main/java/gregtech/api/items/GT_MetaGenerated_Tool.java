@@ -449,7 +449,8 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                         EnumChatFormatting.GRAY
                                 + String.format(
                                         transItem("001", "Durability: %s/%s"),
-                                        "" + EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
+                                        "" + EnumChatFormatting.GREEN
+                                                + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
                                         " " + formatNumbers(tMaxDamage))
                                 + EnumChatFormatting.GRAY);
                 aList.add(
@@ -516,7 +517,8 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                     + String.format(
                                             transItem("501", "Optimal Steam flow (Loose): %s L/t"),
                                             "" + EnumChatFormatting.GOLD
-                                                    + formatNumbers((aOptFlowLoose * getPrimaryMaterial(aStack).mSteamMultiplier))
+                                                    + formatNumbers((aOptFlowLoose
+                                                            * getPrimaryMaterial(aStack).mSteamMultiplier))
                                                     + EnumChatFormatting.GRAY));
                     aList.add(
                             tOffset + 7,
@@ -584,11 +586,12 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
 
             } else {
                 aList.add(
-                    tOffset,
+                        tOffset,
                         EnumChatFormatting.WHITE
                                 + String.format(
                                         transItem("001", "Durability: %s/%s"),
-                                        "" + EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
+                                        "" + EnumChatFormatting.GREEN
+                                                + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
                                         " " + formatNumbers(tMaxDamage))
                                 + EnumChatFormatting.GRAY);
                 aList.add(
