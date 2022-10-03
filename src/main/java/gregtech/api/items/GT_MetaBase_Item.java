@@ -2,6 +2,7 @@ package gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
@@ -233,7 +234,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
                 aList.add(EnumChatFormatting.AQUA
                         + String.format(
                                 transItem("009", "Contains %s EU   Tier: %s"),
-                                GT_Utility.formatNumbers(tStats[3]),
+                                formatNumbers(tStats[3]),
                                 "" + (tStats[2] >= 0 ? tStats[2] : 0))
                         + EnumChatFormatting.GRAY);
             } else {
@@ -246,8 +247,8 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
                     aList.add(String.valueOf(EnumChatFormatting.AQUA)
                             + String.format(
                                     transItem("011", "%s / %s EU - Voltage: %s"),
-                                    GT_Utility.formatNumbers(tCharge),
-                                    GT_Utility.formatNumbers(Math.abs(tStats[0])),
+                                    formatNumbers(tCharge),
+                                    formatNumbers(Math.abs(tStats[0])),
                                     ""
                                             + V[
                                                     (int)
@@ -269,7 +270,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
                     + EnumChatFormatting.GRAY);
             aList.add(EnumChatFormatting.BLUE
                     + String.format(
-                            transItem("013", "%sL / %sL"), "" + (tFluid == null ? 0 : tFluid.amount), "" + tStats[0])
+                            transItem("013", "%sL / %sL"), "" + (tFluid == null ? 0 : formatNumbers(tFluid.amount)), "" + formatNumbers(tStats[0]))
                     + EnumChatFormatting.GRAY);
         }
 

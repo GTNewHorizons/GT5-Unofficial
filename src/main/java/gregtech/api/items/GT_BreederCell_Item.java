@@ -14,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
+import static gregtech.api.util.GT_Utility.formatNumbers;
+
 /**
  * A {@link ic2.core.item.reactor.ItemReactorLithiumCell}, but can be used to produce anything!
  *
@@ -69,8 +71,8 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
         }
         aList.add(String.format(
                 transItem("020", "Progress: %s/%s"),
-                "" + color2 + aStack.getItemDamage() + EnumChatFormatting.RESET,
-                "" + getMaxDamage()));
+                "" + color2 + formatNumbers(aStack.getItemDamage()) + EnumChatFormatting.RESET,
+                "" + formatNumbers(getMaxDamage())));
         if (aStack.getItemDamage() > 0) aList.add(EnumChatFormatting.RED + transItem("021", "Radiation Hazard"));
     }
 

@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import static gregtech.api.util.GT_Utility.formatNumbers;
+
 public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable {
     protected int cellCount;
     protected int maxDmg;
@@ -153,8 +155,8 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
         aList.add(color1
                 + String.format(
                         transItem("001", "Durability: %s/%s"),
-                        "" + color2 + (this.maxDmg - getDurabilityOfStack(aStack)) + color1,
-                        "" + this.maxDmg));
+                        "" + color2 + formatNumbers(this.maxDmg - getDurabilityOfStack(aStack)) + color1,
+                        "" + formatNumbers(this.maxDmg)));
     }
 
     @Override
