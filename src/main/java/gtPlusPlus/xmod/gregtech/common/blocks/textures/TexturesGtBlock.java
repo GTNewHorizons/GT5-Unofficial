@@ -3,7 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
@@ -96,8 +96,8 @@ public class TexturesGtBlock {
         }
     }
 
-    public static GT_RenderedTexture getTextureFromIcon(CustomIcon aIcon, short[] aRGB) {
-        return new GT_RenderedTexture(aIcon, aRGB);
+    public static ITexture getTextureFromIcon(CustomIcon aIcon, short[] aRGB) {
+        return TextureFactory.of(aIcon, aRGB);
     }
 
     /*
@@ -744,68 +744,72 @@ public class TexturesGtBlock {
 
     // Overlay Arrays
     public static ITexture[] OVERLAYS_ENERGY_OUT_BUFFER = new ITexture[] {
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER, new short[] {220, 220, 220, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER, new short[] {220, 220, 220, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER, new short[] {255, 100, 0, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER, new short[] {255, 255, 30, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER, new short[] {128, 128, 128, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER, new short[] {240, 240, 245, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER, new short[] {240, 240, 245, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER, new short[] {240, 240, 245, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER, new short[] {240, 240, 245, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER, new short[] {240, 240, 245, 0})
+        TextureFactory.of(OVERLAY_ENERGY_OUT_BUFFER, new short[] {220, 220, 220, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_BUFFER, new short[] {220, 220, 220, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_BUFFER, new short[] {255, 100, 0, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_BUFFER, new short[] {255, 255, 30, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_BUFFER, new short[] {128, 128, 128, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_BUFFER, new short[] {240, 240, 245, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_BUFFER, new short[] {240, 240, 245, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_BUFFER, new short[] {240, 240, 245, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_BUFFER, new short[] {240, 240, 245, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_BUFFER, new short[] {240, 240, 245, 0})
     };
 
     public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI_BUFFER = new ITexture[] {
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {220, 220, 220, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {220, 220, 220, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {255, 100, 0, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {255, 255, 30, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {128, 128, 128, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {240, 240, 245, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {240, 240, 245, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {240, 240, 245, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {240, 240, 245, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {240, 240, 245, 0})
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {220, 220, 220, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {220, 220, 220, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {255, 100, 0, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {255, 255, 30, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {128, 128, 128, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {240, 240, 245, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {240, 240, 245, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {240, 240, 245, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {240, 240, 245, 0}),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] {240, 240, 245, 0})
     };
 
     public static ITexture[] OVERLAYS_CABINET_FRONT = new ITexture[] {
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_1, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_2, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_3, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_4, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_5, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_6, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_7, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_8, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_9, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_10, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_11, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_12, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_13, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_14, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_15, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_16, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_1, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_2, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_3, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_4, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_5, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_6, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_7, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_8, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_9, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_10, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_11, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_12, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_13, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_14, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_15, new short[] {255, 255, 255, 0}),
+        TextureFactory.of(OVERLAY_CABINET_16, new short[] {255, 255, 255, 0}),
     };
 
-    public static ITexture[] OVERLAYS_COMPARTMENT_FRONT = new ITexture[] {
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_1, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_2, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_3, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_4, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_5, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_6, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_7, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_8, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_9, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_10, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_11, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_12, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_13, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_14, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_15, new short[] {255, 255, 255, 0}),
-        new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_16, new short[] {255, 255, 255, 0}),
-    };
+    public static ITexture[] OVERLAYS_COMPARTMENT_FRONT;
+
+    static {
+        OVERLAYS_COMPARTMENT_FRONT = new ITexture[] {
+            TextureFactory.of(OVERLAY_COMPARTMENT_1, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_2, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_3, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_4, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_5, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_6, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_7, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_8, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_9, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_10, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_11, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_12, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_13, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_14, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_15, new short[] {255, 255, 255, 0}),
+            TextureFactory.of(OVERLAY_COMPARTMENT_16, new short[] {255, 255, 255, 0}),
+        };
+    }
 
     public static IIconContainer[] CONNECTED_FUSION_HULLS = new IIconContainer[] {
         TEXTURE_CASING_FUSION_COIL_II_1, TEXTURE_CASING_FUSION_COIL_II_2, TEXTURE_CASING_FUSION_COIL_II_3,

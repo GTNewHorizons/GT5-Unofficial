@@ -4,7 +4,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
@@ -50,7 +50,7 @@ public class GT_MetaTileEntity_RedstoneStrengthScale extends GT_MetaTileEntity_R
         if (aSide == aFacing) {
             return new ITexture[] {
                 Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                new GT_RenderedTexture(sIconList[mType * 16 + mRedstoneStrength])
+                TextureFactory.of(sIconList[mType * 16 + mRedstoneStrength])
             };
         }
         return this.mTextures[

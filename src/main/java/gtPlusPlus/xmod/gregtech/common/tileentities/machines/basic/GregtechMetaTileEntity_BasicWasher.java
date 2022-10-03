@@ -5,7 +5,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
@@ -27,14 +27,14 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
                 "PotionBrewer.png",
                 "",
                 new ITexture[] {
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER)
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE),
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER),
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE),
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER),
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER),
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER)
                 });
     }
 

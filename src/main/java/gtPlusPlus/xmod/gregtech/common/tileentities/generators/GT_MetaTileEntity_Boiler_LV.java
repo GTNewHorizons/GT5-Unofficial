@@ -4,7 +4,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_Boiler_LV extends GT_MetaTileEntity_Boiler_Base {
@@ -23,23 +23,21 @@ public class GT_MetaTileEntity_Boiler_LV extends GT_MetaTileEntity_Boiler_Base {
     }
 
     @Override
-    protected GT_RenderedTexture getCasingTexture() {
-        return new GT_RenderedTexture(Textures.BlockIcons.MACHINE_LV_SIDE);
+    protected ITexture getCasingTexture() {
+        return TextureFactory.of(Textures.BlockIcons.MACHINE_LV_SIDE);
     }
 
     @Override
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] {
-            super.getFront(aColor)[0], this.getCasingTexture(), new GT_RenderedTexture(Textures.BlockIcons.BOILER_FRONT)
+            super.getFront(aColor)[0], this.getCasingTexture(), TextureFactory.of(Textures.BlockIcons.BOILER_FRONT)
         };
     }
 
     @Override
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] {
-            super.getTop(aColor)[0],
-            this.getCasingTexture(),
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Potin)
+            super.getTop(aColor)[0], this.getCasingTexture(), TextureFactory.of(TexturesGtBlock.Casing_Material_Potin)
         };
     }
 
@@ -48,7 +46,7 @@ public class GT_MetaTileEntity_Boiler_LV extends GT_MetaTileEntity_Boiler_Base {
         return new ITexture[] {
             super.getFrontActive(aColor)[0],
             this.getCasingTexture(),
-            new GT_RenderedTexture(Textures.BlockIcons.BOILER_FRONT_ACTIVE)
+            TextureFactory.of(Textures.BlockIcons.BOILER_FRONT_ACTIVE)
         };
     }
 

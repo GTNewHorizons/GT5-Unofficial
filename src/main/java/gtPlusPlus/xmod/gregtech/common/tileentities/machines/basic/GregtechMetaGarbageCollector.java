@@ -4,7 +4,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -81,70 +81,70 @@ public class GregtechMetaGarbageCollector extends GregtechMetaTileEntity {
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)
+            TextureFactory.of(TexturesGtBlock.Casing_Material_RedSteel)
         };
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)
+            TextureFactory.of(TexturesGtBlock.Casing_Material_RedSteel)
         };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)
+            TextureFactory.of(TexturesGtBlock.Casing_Material_Grisium)
         };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)
+            TextureFactory.of(TexturesGtBlock.Casing_Material_Grisium)
         };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redox_3)
+            TextureFactory.of(TexturesGtBlock.Casing_Redox_3)
         };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)
+            TextureFactory.of(TexturesGtBlock.Casing_Material_RedSteel)
         };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)
+            TextureFactory.of(TexturesGtBlock.Casing_Material_RedSteel)
         };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)
+            TextureFactory.of(TexturesGtBlock.Casing_Material_Grisium)
         };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Grisium)
+            TextureFactory.of(TexturesGtBlock.Casing_Material_Grisium)
         };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier + 3][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redox_3)
+            TextureFactory.of(TexturesGtBlock.Casing_Redox_3)
         };
     }
 

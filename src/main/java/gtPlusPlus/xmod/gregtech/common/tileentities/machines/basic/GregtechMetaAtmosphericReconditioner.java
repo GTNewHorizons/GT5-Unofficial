@@ -11,7 +11,7 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -59,14 +59,14 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
                 "Recycler.png",
                 "",
                 new ITexture[] {
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent_Fast),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB)
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
+                    TextureFactory.of(TexturesGtBlock.Overlay_MatterFab_Active),
+                    TextureFactory.of(TexturesGtBlock.Overlay_MatterFab),
+                    TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent_Fast),
+                    TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent),
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB)
                 });
         mPollutionEnabled = PollutionUtils.isPollutionEnabled();
     }

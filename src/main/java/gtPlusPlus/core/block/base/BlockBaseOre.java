@@ -5,6 +5,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
@@ -14,8 +15,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPP_RenderedTexture;
 import java.lang.reflect.Field;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,6 +22,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
@@ -101,11 +101,11 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
     public ITexture[] getTexture(Block block, byte side) {
         if (this.blockMaterial != null) {
-            GTPP_RenderedTexture aIconSet = new GTPP_RenderedTexture(
+            ITexture aIconSet = TextureFactory.of(
                     blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex],
                     this.blockMaterial.getRGBA());
             if (aIconSet != null) {
-                return new ITexture[] {new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};
+                return new ITexture[] {TextureFactory.of(Blocks.stone, 0, ForgeDirection.DOWN), aIconSet};
             }
         }
 
@@ -126,7 +126,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                 }
             }
         }
-        return new ITexture[] {new GTPP_RenderedTexture(hiddenTextureArray[0], new short[] {240, 240, 240, 0})};
+        return new ITexture[] {TextureFactory.of(hiddenTextureArray[0], new short[] {240, 240, 240, 0})};
     }
 
     @Override
@@ -214,11 +214,11 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
         public ITexture[] getTexture(Block block, byte side) {
             if (this.blockMaterial != null) {
-                GTPP_RenderedTexture aIconSet = new GTPP_RenderedTexture(
+                ITexture aIconSet = TextureFactory.of(
                         blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex],
                         this.blockMaterial.getRGBA());
                 if (aIconSet != null) {
-                    return new ITexture[] {new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};
+                    return new ITexture[] {TextureFactory.of(Blocks.stone, 0, ForgeDirection.DOWN), aIconSet};
                 }
             }
 
@@ -239,7 +239,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                     }
                 }
             }
-            return new ITexture[] {new GTPP_RenderedTexture(hiddenTextureArray[0], new short[] {240, 240, 240, 0})};
+            return new ITexture[] {TextureFactory.of(hiddenTextureArray[0], new short[] {240, 240, 240, 0})};
         }
     }
 }

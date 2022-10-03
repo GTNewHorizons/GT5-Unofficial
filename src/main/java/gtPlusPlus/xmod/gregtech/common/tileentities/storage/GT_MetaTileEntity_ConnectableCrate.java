@@ -7,7 +7,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -534,15 +534,15 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
             boolean aRedstone) {
         return aBaseMetaTileEntity.getFrontFacing() == 0 && aSide == 4
                 ? new ITexture[] {
-                    new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST)
+                    TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_AMAZON),
+                    TextureFactory.of(BlockIcons.OVERLAY_QCHEST)
                 }
                 : (aSide == aBaseMetaTileEntity.getFrontFacing()
                         ? new ITexture[] {
-                            new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON),
-                            new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST)
+                            TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_AMAZON),
+                            TextureFactory.of(BlockIcons.OVERLAY_QCHEST)
                         }
-                        : new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON)});
+                        : new ITexture[] {TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_AMAZON)});
     }
 
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {

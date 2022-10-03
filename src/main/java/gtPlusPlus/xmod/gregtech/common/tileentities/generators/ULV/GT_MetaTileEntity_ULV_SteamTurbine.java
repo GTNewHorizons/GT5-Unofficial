@@ -8,7 +8,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_SteamTurbine;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -56,7 +56,7 @@ public class GT_MetaTileEntity_ULV_SteamTurbine extends GT_MetaTileEntity_SteamT
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] {
             super.getSidesActive(aColor)[0],
-            new GT_RenderedTexture((IIconContainer) TexturesGtBlock.Overlay_Machine_Turbine_Active)
+            TextureFactory.of((IIconContainer) TexturesGtBlock.Overlay_Machine_Turbine_Active)
         };
     }
 }

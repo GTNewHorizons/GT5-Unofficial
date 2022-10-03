@@ -9,7 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -114,28 +114,28 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
         };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
         };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo)
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Screen_Logo)
         };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
         };
     }
 
@@ -149,28 +149,28 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
         };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
         };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo)
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Screen_Logo)
         };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
         };
     }
 
@@ -178,10 +178,10 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
     	ITexture[][][] rTextures = new ITexture[2][17][];
     	for (byte i = -1; i < 16; i++) {
-    		rTextures[0][i + 1] = new ITexture[] { new GT_RenderedTexture(
+    		rTextures[0][i + 1] = new ITexture[] { TextureFactory.of(
     				Textures.BlockIcons.MACHINE_HEATPROOFCASING) };
     		rTextures[1][i + 1] = new ITexture[] {
-    				new GT_RenderedTexture(
+    				TextureFactory.of(
     						Textures.BlockIcons.MACHINE_HEATPROOFCASING),
     						mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]
     								: Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
@@ -192,21 +192,21 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     /*
      * @Override public ITexture[][][] getTextureSet(ITexture[] aTextures) {
      * ITexture[][][] rTextures = new ITexture[5][17][]; for (byte i = -1; i <
-     * 16; i = (byte) (i + 1)) { ITexture[] tmp0 = { new GT_RenderedTexture(
+     * 16; i = (byte) (i + 1)) { ITexture[] tmp0 = { TextureFactory.of(
      * Textures.BlockIcons.MACHINE_STEEL_BOTTOM, Dyes.getModulation(i,
      * Dyes._NULL.mRGBa)) }; rTextures[0][(i + 1)] = tmp0; ITexture[] tmp1 = {
-     * new GT_RenderedTexture( Textures.BlockIcons.MACHINE_STEEL_TOP) };
-     * rTextures[1][(i + 1)] = tmp1; ITexture[] tmp2 = { new GT_RenderedTexture(
+     * TextureFactory.of( Textures.BlockIcons.MACHINE_STEEL_TOP) };
+     * rTextures[1][(i + 1)] = tmp1; ITexture[] tmp2 = { TextureFactory.of(
      * Textures.BlockIcons.MACHINE_STEEL_SIDE, Dyes.getModulation(i,
      * Dyes._NULL.mRGBa)), new
      * GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE) }; rTextures[2][(i +
-     * 1)] = tmp2; ITexture[] tmp4 = { new GT_RenderedTexture(
+     * 1)] = tmp2; ITexture[] tmp4 = { TextureFactory.of(
      * Textures.BlockIcons.MACHINE_STEEL_SIDE, Dyes.getModulation(i,
      * Dyes._NULL.mRGBa)), new
      * GT_RenderedTexture(Textures.BlockIcons.BOILER_FRONT) }; rTextures[3][(i +
-     * 1)] = tmp4; ITexture[] tmp5 = { new GT_RenderedTexture(
+     * 1)] = tmp4; ITexture[] tmp5 = { TextureFactory.of(
      * Textures.BlockIcons.MACHINE_STEEL_SIDE, Dyes.getModulation(i,
-     * Dyes._NULL.mRGBa)), new GT_RenderedTexture(
+     * Dyes._NULL.mRGBa)), TextureFactory.of(
      * Textures.BlockIcons.BOILER_FRONT_ACTIVE) }; rTextures[4][(i + 1)] = tmp5;
      * } return rTextures; }
      */

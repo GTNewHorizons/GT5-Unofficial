@@ -4,7 +4,7 @@ import gregtech.GT_Mod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
@@ -188,11 +188,11 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
 
     @Override
     protected ITexture getTextureFrontFace() {
-        return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI5);
+        return TextureFactory.of(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI5);
     }
 
     @Override
     protected ITexture getTextureFrontFaceActive() {
-        return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE5);
+        return TextureFactory.of(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE5);
     }
 }

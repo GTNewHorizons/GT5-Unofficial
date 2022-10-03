@@ -5,7 +5,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -32,14 +32,14 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
                 "Compressor.png",
                 "",
                 new ITexture[] {
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                    new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB)
+                    TextureFactory.of(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+                    TextureFactory.of(BlockIcons.OVERLAY_SIDE_MASSFAB),
+                    TextureFactory.of(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
+                    TextureFactory.of(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
+                    TextureFactory.of(TexturesGtBlock.Overlay_MatterFab_Active),
+                    TextureFactory.of(TexturesGtBlock.Overlay_MatterFab),
+                    TextureFactory.of(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+                    TextureFactory.of(BlockIcons.OVERLAY_BOTTOM_MASSFAB)
                 });
     }
 

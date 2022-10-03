@@ -6,7 +6,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull_NonElectric;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.core.util.Utils;
@@ -25,12 +25,10 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
     public String mOldDesc = "";
     public boolean mLocked = false;
     protected byte mIndex = (byte) MathUtils.randInt(1, 3);
-    public static GT_RenderedTexture texBottom =
-            new GT_RenderedTexture(new CustomIcon("TileEntities/gt4/machine_bottom"));
-    public static GT_RenderedTexture texTop = new GT_RenderedTexture(new CustomIcon("TileEntities/gt4/machine_top"));
-    public static GT_RenderedTexture texSide = new GT_RenderedTexture(new CustomIcon("TileEntities/gt4/machine_side"));
-    public static GT_RenderedTexture texSideCabinet =
-            new GT_RenderedTexture(new CustomIcon("TileEntities/gt4/machine_side_cabinet"));
+    public static ITexture texBottom = TextureFactory.of(new CustomIcon("TileEntities/gt4/machine_bottom"));
+    public static ITexture texTop = TextureFactory.of(new CustomIcon("TileEntities/gt4/machine_top"));
+    public static ITexture texSide = TextureFactory.of(new CustomIcon("TileEntities/gt4/machine_side"));
+    public static ITexture texSideCabinet = TextureFactory.of(new CustomIcon("TileEntities/gt4/machine_side_cabinet"));
 
     public GT4Entity_Shelf(final int aID, final String aName, final String aNameRegional, final String aDescription) {
         super(aID, aName, aNameRegional, 0, aDescription);
@@ -282,9 +280,9 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
         return tmp;
     }
 
-    private static GT_RenderedTexture x1 = new GT_RenderedTexture(TexturesGtBlock.OVERLAY_WOODEN_SHELF_FRONT);
-    private static GT_RenderedTexture x2 = new GT_RenderedTexture(TexturesGtBlock.OVERLAY_WOODEN_SHELF_PAPER_FRONT);
-    private static GT_RenderedTexture x3 = new GT_RenderedTexture(TexturesGtBlock.OVERLAY_WOODEN_SHELF_CANS_FRONT);
+    private static ITexture x1 = TextureFactory.of(TexturesGtBlock.OVERLAY_WOODEN_SHELF_FRONT);
+    private static ITexture x2 = TextureFactory.of(TexturesGtBlock.OVERLAY_WOODEN_SHELF_PAPER_FRONT);
+    private static ITexture x3 = TextureFactory.of(TexturesGtBlock.OVERLAY_WOODEN_SHELF_CANS_FRONT);
 
     public ITexture[] getFrontNormal() {
         return new ITexture[] {x1};
@@ -299,19 +297,19 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks)};
+        return new ITexture[] {TextureFactory.of(TexturesGtBlock.VanillaIcon_OakPlanks)};
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log)};
+        return new ITexture[] {TextureFactory.of(TexturesGtBlock.Casing_Machine_Acacia_Log)};
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks)};
+        return new ITexture[] {TextureFactory.of(TexturesGtBlock.VanillaIcon_OakPlanks)};
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks)};
+        return new ITexture[] {TextureFactory.of(TexturesGtBlock.VanillaIcon_OakPlanks)};
     }
 
     public ITexture[] getFrontActive(final byte aColor) {

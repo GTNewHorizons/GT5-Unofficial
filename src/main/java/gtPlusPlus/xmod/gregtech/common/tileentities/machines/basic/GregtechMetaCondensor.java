@@ -5,7 +5,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -44,28 +44,28 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase {
         final ITexture[][][] rTextures = new ITexture[5][17][];
         for (byte i = -1; i < 16; i++) {
             rTextures[0][(i + 1)] = new ITexture[] {
-                new GT_RenderedTexture(
+                TextureFactory.of(
                         Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa))
             };
             rTextures[1][(i + 1)] = new ITexture[] {
-                new GT_RenderedTexture(
+                TextureFactory.of(
                         Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE)
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE)
             };
             rTextures[2][(i + 1)] = new ITexture[] {
-                new GT_RenderedTexture(
+                TextureFactory.of(
                         Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE)
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE)
             };
             rTextures[3][(i + 1)] = new ITexture[] {
-                new GT_RenderedTexture(
+                TextureFactory.of(
                         Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER)
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER)
             };
             rTextures[4][(i + 1)] = new ITexture[] {
-                new GT_RenderedTexture(
+                TextureFactory.of(
                         Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)),
-                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE)
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE)
             };
         }
         return rTextures;

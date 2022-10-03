@@ -8,7 +8,7 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
@@ -276,8 +276,8 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
     private ITexture getFrontFacingTurbineTexture() {
         if (!mHasController) {
             return this.getBaseMetaTileEntity().isActive()
-                    ? new GT_RenderedTexture(LargeTurbineTextureHandler.OVERLAY_LP_TURBINE_ACTIVE[4])
-                    : new GT_RenderedTexture(LargeTurbineTextureHandler.OVERLAY_LP_TURBINE[4]);
+                    ? TextureFactory.of(LargeTurbineTextureHandler.OVERLAY_LP_TURBINE_ACTIVE[4])
+                    : TextureFactory.of(LargeTurbineTextureHandler.OVERLAY_LP_TURBINE[4]);
         } else {
             if (usingAnimations()) {
                 if (isControllerActive()) {

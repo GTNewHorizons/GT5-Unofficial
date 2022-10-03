@@ -4,7 +4,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -45,14 +45,14 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
                 "ChemicalReactor.png",
                 "",
                 new ITexture[] {
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Side_Active),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Side),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Front_Active),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Front),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top_Active),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top_Active),
-                    new GT_RenderedTexture(TexturesGtBlock.Overlay_FluidReactor_Top)
+                    TextureFactory.of(TexturesGtBlock.Overlay_FluidReactor_Side_Active),
+                    TextureFactory.of(TexturesGtBlock.Overlay_FluidReactor_Side),
+                    TextureFactory.of(TexturesGtBlock.Overlay_FluidReactor_Front_Active),
+                    TextureFactory.of(TexturesGtBlock.Overlay_FluidReactor_Front),
+                    TextureFactory.of(TexturesGtBlock.Overlay_FluidReactor_Top_Active),
+                    TextureFactory.of(TexturesGtBlock.Overlay_FluidReactor_Top),
+                    TextureFactory.of(TexturesGtBlock.Overlay_FluidReactor_Top_Active),
+                    TextureFactory.of(TexturesGtBlock.Overlay_FluidReactor_Top)
                 });
     }
 

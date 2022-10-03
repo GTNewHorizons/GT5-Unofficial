@@ -11,7 +11,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
@@ -112,7 +111,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
             final boolean aRedstone) {
         if (aSide == aFacing) {
             return new ITexture[] {
-                new GT_RenderedTexture(
+                TextureFactory.of(
                         Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
                 TextureFactory.builder()
                         .addIcon(this.getIconOverlay())
@@ -121,12 +120,12 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
             };
         } else if (!aActive) {
             return new ITexture[] {
-                new GT_RenderedTexture(
+                TextureFactory.of(
                         Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa))
             };
         } else {
             return new ITexture[] {
-                new GT_RenderedTexture(
+                TextureFactory.of(
                         TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA, Dyes.getModulation(-1, Dyes._NULL.mRGBa))
             };
         }
@@ -134,7 +133,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 
     @Override
     public ITexture getTextureOverlay() {
-        return new GT_RenderedTexture(
+        return TextureFactory.of(
                 this.mMaxProgresstime > 0
                         ? TexturesGtBlock.Casing_Machine_Screen_3
                         : TexturesGtBlock.Casing_Machine_Screen_1);

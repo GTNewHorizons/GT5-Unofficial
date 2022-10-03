@@ -4,7 +4,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines.GregtechMetaTreeFarmerBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -47,7 +47,7 @@ public class GregtechMetaTreeFarmerStructural extends GregtechMetaTreeFarmerBase
 
     @Override
     public ITexture getOverlayIcon() {
-        return new GT_RenderedTexture(Textures.BlockIcons.VOID);
+        return TextureFactory.of(Textures.BlockIcons.VOID);
     }
 
     @Override

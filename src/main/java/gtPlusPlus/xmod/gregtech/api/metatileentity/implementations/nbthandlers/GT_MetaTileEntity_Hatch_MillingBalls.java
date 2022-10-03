@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -24,12 +24,12 @@ public class GT_MetaTileEntity_Hatch_MillingBalls extends GT_MetaTileEntity_Hatc
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Bus_Milling_Balls)};
+        return new ITexture[] {aBaseTexture, TextureFactory.of(TexturesGtBlock.Overlay_Bus_Milling_Balls)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Bus_Milling_Balls)};
+        return new ITexture[] {aBaseTexture, TextureFactory.of(TexturesGtBlock.Overlay_Bus_Milling_Balls)};
     }
 
     @Override

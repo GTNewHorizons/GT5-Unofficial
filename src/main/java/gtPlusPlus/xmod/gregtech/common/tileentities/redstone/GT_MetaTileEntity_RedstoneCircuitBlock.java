@@ -8,7 +8,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_Container_RedstoneCircuitBlock;
 import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_GUIContainer_RedstoneCircuitBlock;
@@ -456,47 +456,47 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                 aColorIndex + 1];
     }
 
-    private GT_RenderedTexture getBase() {
-        return new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
+    private ITexture getBase() {
+        return TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top);
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_Off)};
+        return new ITexture[] {getBase(), TextureFactory.of(TexturesGtBlock.Casing_Redstone_Top_Off)};
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_On)};
+        return new ITexture[] {getBase(), TextureFactory.of(TexturesGtBlock.Casing_Redstone_Top_On)};
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] {
             getBase(),
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Off),
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red)
+            TextureFactory.of(TexturesGtBlock.Casing_Redstone_Side_Off),
+            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Red)
         };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] {
             getBase(),
-            new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_On),
-            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red_Redstone)
+            TextureFactory.of(TexturesGtBlock.Casing_Redstone_Side_On),
+            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Red_Redstone)
         };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_Off)};
+        return new ITexture[] {getBase(), TextureFactory.of(TexturesGtBlock.Casing_Redstone_Bottom_Off)};
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] {getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_On)};
+        return new ITexture[] {getBase(), TextureFactory.of(TexturesGtBlock.Casing_Redstone_Bottom_On)};
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Off)};
+        return new ITexture[] {getBase(), TextureFactory.of(TexturesGtBlock.Casing_Redstone_Side_Off)};
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] {getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_On)};
+        return new ITexture[] {getBase(), TextureFactory.of(TexturesGtBlock.Casing_Redstone_Side_On)};
     }
 }

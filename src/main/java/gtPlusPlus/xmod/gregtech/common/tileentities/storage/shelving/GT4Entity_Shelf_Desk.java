@@ -3,7 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT4Entity_Shelf_Desk extends GT4Entity_Shelf {
@@ -28,18 +28,18 @@ public class GT4Entity_Shelf_Desk extends GT4Entity_Shelf {
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks)};
+        return new ITexture[] {TextureFactory.of(TexturesGtBlock.VanillaIcon_OakPlanks)};
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks)};
+        return new ITexture[] {TextureFactory.of(TexturesGtBlock.VanillaIcon_OakPlanks)};
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks)};
+        return new ITexture[] {TextureFactory.of(TexturesGtBlock.VanillaIcon_OakPlanks)};
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks)};
+        return new ITexture[] {TextureFactory.of(TexturesGtBlock.VanillaIcon_OakPlanks)};
     }
 }
