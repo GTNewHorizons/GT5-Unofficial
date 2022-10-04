@@ -72,6 +72,9 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
     private boolean not_processed_lsc = true;
     private int counter = 1;
 
+    private final Queue<Long> energyInputValues = new LinkedList<>();
+    private final Queue<Long> energyOutputValues = new LinkedList<>();
+
     private long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
 
     private enum Capacitor {
@@ -120,6 +123,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 	private static final Item LSC_PART_ITEM = Item.getItemFromBlock(LSC_PART);
 	private static final int CASING_META = 0;
 	private static final int CASING_TEXTURE_ID = (42 << 7) | 127;
+
+    private static final int DURATION_AVERAGE_TICKS = 100;
 
     // height channel for height.
     // glass channel for glass
@@ -601,6 +606,18 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
         tBMTE.injectEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), inputLastTick, 1L);
         tBMTE.drainEnergyUnits((byte)ForgeDirection.UNKNOWN.ordinal(), outputLastTick, 1L);
 
+        //Add I/O values to Queues
+        if(energyInputValues.size() > DURATION_AVERAGE_TICKS){
+            energyInputValues.remove();
+        }
+        energyInputValues.offer(inputLastTick);
+
+        if(energyOutputValues.size() > DURATION_AVERAGE_TICKS){
+            energyOutputValues.remove();
+        }
+
+        energyOutputValues.offer(outputLastTick);
+
         return true;
     }
 
@@ -649,19 +666,36 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
         return min(hatchWatts, remStoredLimited.longValue());
     }
 
+    private long getAvgIn(){
+        long sum = 0L;
+        for(long l: energyInputValues){
+            sum += l;
+        }
+        return sum /energyInputValues.size();
+    }
+
+    private long getAvgOut(){
+        long sum = 0L;
+        for(long l: energyOutputValues){
+            sum += l;
+        }
+        return sum /energyOutputValues.size();
+    }
+
     @Override
     public String[] getInfoData() {
-        final IGregTechTileEntity tGTTE = getBaseMetaTileEntity();
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        int secInterval = DURATION_AVERAGE_TICKS/20;
 
         final ArrayList<String> ll = new ArrayList<>();
         ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
-        ll.add("Used Capacity: " + NumberFormat.getNumberInstance().format(stored) + "EU");
-        ll.add("Total Capacity: " + NumberFormat.getNumberInstance().format(capacity) + "EU");
-        ll.add("Passive Loss: " + NumberFormat.getNumberInstance().format(passiveDischargeAmount) + "EU/t");
+        ll.add("Used Capacity: " + nf.format(stored) + "EU");
+        ll.add("Total Capacity: " + nf.format(capacity) + "EU");
+        ll.add("Passive Loss: " + nf.format(passiveDischargeAmount) + "EU/t");
         ll.add("EU IN: " + GT_Utility.formatNumbers(inputLastTick) + "EU/t");
         ll.add("EU OUT: " + GT_Utility.formatNumbers(outputLastTick) + "EU/t");
-        ll.add("Avg EU IN: " + NumberFormat.getNumberInstance().format(tGTTE.getAverageElectricInput()));
-        ll.add("Avg EU OUT: " + NumberFormat.getNumberInstance().format(tGTTE.getAverageElectricOutput()));
+        ll.add("Avg EU IN: " + nf.format(getAvgIn()) + " (last " + secInterval + " seconds)");
+        ll.add("Avg EU OUT: " + nf.format(getAvgOut()) + " (last " + secInterval + " seconds)");
         ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
             ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
             : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
