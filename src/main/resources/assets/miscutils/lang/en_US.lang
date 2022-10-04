@@ -97,9 +97,6 @@ item.itemPLACEHOLDER_Circuit.name=Quark Manipulator (UV)
 item.itemPlateEnrichedSoularium.name=Enriched Soularium Plate
 item.itemHeliumBlob.name=Mysterious Hydrogen Substance
 item.itemAlkalusDisk.name=Alkalus Disk
-# The following 2 keys have been deprecated and overwritten
-# item.itemHotIngotRaisinBread.name=Hot Loaf of Raisin Bread
-# item.itemIngotRaisinBread.name=§5ImQ009's §fRaisin Bread
 
 //Misc Blocks
 tile.blockCompressedObsidian.0.name=Compressed Obsidian (9)
@@ -135,13 +132,10 @@ item.Ammonium.name=Ammonium Cell
 item.AmmoniumTetrafluoroberyllate.name=Ammonium Tetrafluoroberyllate Cell
 
 //Resources
-item.itemStickyRubber.name=Gumlet of Sticky Rubber
 item.itemCoalCoke.name=Coking Coal
 item.itemHydrogenBlob.name=Mysterious Hydrogen Blob
-item.itemHeliumBlob.name=Mysterious Hydrogen Substance
 
 //Normal Items
-item.itemAlkalusDisk.name=Alkalus Disk
 item.itemSimpleFiremaker.name=Basic Firemaker
 item.itemFiber.name=Plant Fiber
 item.itemRope.name=Rope
@@ -1735,9 +1729,6 @@ item.rfEUBattery.name=Universally Chargeable Battery
 item.personalCloakingDevice.name=§9Personal Cloaking Device§7
 item.personalHealingDevice.name=§9Personal Healing NanoBooster§r
 item.SlowBuildingRing.name=§eSlow Building Ring§7
-item.itemStaballoyPickaxe.name=Tunnel Digger
-item.itemStaballoyAxe.name=Tree Feller
-item.itemSandstoneHammer.name=Cobblestone Breaker
 item.itemBufferCore1.name=Energy Core [ULV].
 item.itemBufferCore2.name=Energy Core [LV].
 item.itemBufferCore3.name=Energy Core [MV].
@@ -1748,7 +1739,6 @@ item.itemBufferCore7.name=Energy Core [LuV].
 item.itemBufferCore8.name=Energy Core [ZPM].
 item.itemBufferCore9.name=Energy Core [UV].
 item.itemBufferCore10.name=Energy Core [MAX].
-item.itemPLACEHOLDER_Circuit.name=Quark Manipulator (UV)
 item.itembookgt.name=§oThermal Boiler Manual
 
 // Everglade Items
@@ -1946,7 +1936,6 @@ tile.blockBlackGate.name=Wither Cage
 tile.blockTankXpConverter.name=Experience Converter
 
 //Everglades Blocks
-tile.fluidSludge.0.name=Stagnant Waste Water
 tile.blockDarkWorldPortal.name=A Glimpse of the Future
 tile.blockDarkWorldGround.name=Unstable Earth
 tile.blockDarkWorldGround2.name=Polluted Soil
@@ -1959,10 +1948,6 @@ tile.Block of Plutonium-239.name=Block of Plutonium-239
 tile.Fluorite Ore [Old].name=Fluorite Ore [Deprecated]
 tile.blockMiningPipeFake.name=Strengthened Mining Pipe
 tile.blockMiningHeadFake.name=Bedrock Drill
-# The following 3 keys have been deprecated and overwritten
-# item.itemCellLiFBeF2ThF4UF4.name=Cell of Molten Salt [LiFBeF2ThF4UF4]
-# item.itemCellLiFBeF2ZrF4UF4.name=Cell of Molten Salt [LiFBeF2ZrF4UF4]
-# item.itemCellLiFBeF2ZrF4U235.name=Cell of Molten Salt [LiFBeF2ZrF4U235]
 item.itemPlateMeatRaw.name=Fleshy Panel
 tile.Block of MeatRaw.name=Block of Raw Meat
 
@@ -2027,7 +2012,6 @@ description.villager.profession.miscutils.aboriginal=Native Australian
 item.itemHatTinFoil.name=Tin Foil Hat
 
 //Added 13/9/18
-entity.WiseVillager.name=Wise Villager
 entity.Aboriginal.name=Native
 entity.miscutils.constructStaballoy.name=Staballoy Construct
 entity.miscutils.sickBlaze.name=Infected Zealot
@@ -2480,9 +2464,6 @@ tile.Lafium Compound Frame Box.name=Lafium Compound Frame Box
 
 item.itemIngotKoboldite.name=Koboldite Ingot
 item.itemHotIngotKoboldite.name=Hot Koboldite Ingot
-item.itemDustKoboldite.name=Koboldite Dust
-item.itemDustTinyKoboldite.name=Tiny Pile of Koboldite Dust
-item.itemDustSmallKoboldite.name=Small Pile of Koboldite Dust
 item.itemNuggetKoboldite.name=Koboldite Nugget
 item.itemPlateKoboldite.name=Koboldite Plate
 item.itemPlateDoubleKoboldite.name=Double Koboldite Plate
