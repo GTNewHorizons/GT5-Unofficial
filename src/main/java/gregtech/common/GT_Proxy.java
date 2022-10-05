@@ -5,6 +5,7 @@ import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
+import static gregtech.api.enums.GT_Values.MOD_ID;
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.enums.GT_Values.MOD_ID_TC;
 import static gregtech.api.enums.GT_Values.MOD_ID_TE;
@@ -43,7 +44,6 @@ import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.IProjectileItem;
-import gregtech.api.interfaces.fluid.IGT_Fluid;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -51,7 +51,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.GT_ChunkManager;
-import gregtech.api.objects.GT_Fluid;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_UO_DimensionList;
@@ -119,6 +118,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
@@ -138,7 +138,6 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
@@ -2552,7 +2551,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         } else return;
         for (int i = 0; i < 3; i++) {
             crackedFluids[i] = GT_FluidFactory.builder(namePrefixes[i] + aMaterial.mName.toLowerCase(Locale.ENGLISH))
-                    .withTextureFrom((IGT_Fluid) uncrackedFluid)
+                    .withIconsFrom(uncrackedFluid)
                     .withLocalizedName(orePrefixes[i].mLocalizedMaterialPre + aMaterial.mDefaultLocalName)
                     .withColorRGBA(aMaterial.mRGBa)
                     .withStateAndTemperature(GAS, 775)
@@ -2603,7 +2602,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         } else return;
         for (int i = 0; i < 3; i++) {
             crackedFluids[i] = GT_FluidFactory.builder(namePrefixes[i] + aMaterial.mName.toLowerCase(Locale.ENGLISH))
-                    .withTextureFrom((IGT_Fluid) uncrackedFluid)
+                    .withIconsFrom(uncrackedFluid)
                     .withLocalizedName(orePrefixes[i].mLocalizedMaterialPre + aMaterial.mDefaultLocalName)
                     .withColorRGBA(aMaterial.mRGBa)
                     .withStateAndTemperature(GAS, 775)
@@ -2640,19 +2639,19 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     }
 
     /**
-     * @deprecated use {@link IGT_Fluid#addFluid}
+     * @deprecated use {@link GT_FluidFactory#builder}
      * @see GT_FluidFactory#of(String, String, Materials, FluidState, int)
      * @see GT_FluidFactory#of(String, String, FluidState, int)
      */
     @Deprecated
     public Fluid addFluid(String aName, String aLocalized, Materials aMaterial, int aState, int aTemperatureK) {
-        return addFluid(aName, aLocalized, aMaterial, aState, aTemperatureK, null, null, 0);
+        return GT_FluidFactory.of(aName, aLocalized, aMaterial, FluidState.VALID_STATES[aState], aTemperatureK);
     }
 
     /**
-     * @deprecated use {@link IGT_Fluid#addFluid}
-     * @see GT_FluidFactory#builder
+     * @deprecated use {@link GT_FluidFactory#builder}
      */
+    @SuppressWarnings({"MethodWithTooManyParameters"}) // Deprecated method
     @Deprecated
     public Fluid addFluid(
             String aName,
@@ -2663,24 +2662,20 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             ItemStack aFullContainer,
             ItemStack aEmptyContainer,
             int aFluidAmount) {
-        return addFluid(
-                aName,
-                aName.toLowerCase(Locale.ENGLISH),
-                aLocalized,
-                aMaterial,
-                null,
-                aState,
-                aTemperatureK,
-                aFullContainer,
-                aEmptyContainer,
-                aFluidAmount);
+        return GT_FluidFactory.builder(aName)
+                .withLocalizedName(aLocalized)
+                .withStateAndTemperature(FluidState.fromValue(aState), aTemperatureK)
+                .buildAndRegister()
+                .configureMaterials(aMaterial)
+                .registerContainers(aFullContainer, aEmptyContainer, aFluidAmount)
+                .asFluid();
     }
 
     /**
-     * @deprecated use {@link IGT_Fluid#addFluid}
-     * @see GT_FluidFactory#builder
+     * @deprecated use {@link GT_FluidFactory#builder}
      */
     @Deprecated
+    @SuppressWarnings({"MethodWithTooManyParameters"}) // Deprecated method
     public Fluid addFluid(
             String aName,
             String aTexture,
@@ -2692,67 +2687,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             ItemStack aFullContainer,
             ItemStack aEmptyContainer,
             int aFluidAmount) {
-        aName = aName.toLowerCase(Locale.ENGLISH);
-
-        Fluid rFluid = new GT_Fluid(aName, aTexture, aRGBa != null ? aRGBa : Dyes._NULL.getRGBA());
-        GT_LanguageManager.addStringLocalization(rFluid.getUnlocalizedName(), aLocalized == null ? aName : aLocalized);
-        if (FluidRegistry.registerFluid(rFluid)) {
-            switch (aState) {
-                case 0:
-                    rFluid.setGaseous(false);
-                    rFluid.setViscosity(10000);
-                    break;
-                case 1:
-                case 4:
-                    rFluid.setGaseous(false);
-                    rFluid.setViscosity(1000);
-                    break;
-                case 2:
-                    rFluid.setGaseous(true);
-                    rFluid.setDensity(-100);
-                    rFluid.setViscosity(200);
-                    break;
-                case 3:
-                    rFluid.setGaseous(true);
-                    rFluid.setDensity(55536);
-                    rFluid.setViscosity(10);
-                    rFluid.setLuminosity(15);
-            }
-        } else {
-            rFluid = FluidRegistry.getFluid(aName);
-        }
-        if (rFluid.getTemperature() == new Fluid("test").getTemperature()) {
-            rFluid.setTemperature(aTemperatureK);
-        }
-        if (aMaterial != null) {
-            switch (aState) {
-                case 0:
-                    aMaterial.mSolid = rFluid;
-                    break;
-                case 1:
-                    aMaterial.mFluid = rFluid;
-                    break;
-                case 2:
-                    aMaterial.mGas = rFluid;
-                    break;
-                case 3:
-                    aMaterial.mPlasma = rFluid;
-                    break;
-                case 4:
-                    aMaterial.mStandardMoltenFluid = rFluid;
-            }
-        }
-        if ((aFullContainer != null)
-                && (aEmptyContainer != null)
-                && (!FluidContainerRegistry.registerFluidContainer(
-                        new FluidStack(rFluid, aFluidAmount), aFullContainer, aEmptyContainer))) {
-            GT_Values.RA.addFluidCannerRecipe(
-                    aFullContainer,
-                    GT_Utility.getContainerItem(aFullContainer, false),
-                    null,
-                    new FluidStack(rFluid, aFluidAmount));
-        }
-        return rFluid;
+        return GT_FluidFactory.builder(aName)
+                .withLocalizedName(aLocalized)
+                .withStillIconResourceLocation(new ResourceLocation(MOD_ID, "fluids/fluid." + aTexture))
+                .withColorRGBA(aRGBa)
+                .withStateAndTemperature(FluidState.fromValue(aState), aTemperatureK)
+                .buildAndRegister()
+                .configureMaterials(aMaterial)
+                .registerContainers(aFullContainer, aEmptyContainer, aFluidAmount)
+                .asFluid();
     }
 
     public File getSaveDirectory() {

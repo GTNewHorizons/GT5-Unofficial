@@ -461,7 +461,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             textColor);
             this.getFontRenderer()
                     .drawString(
-                            GT_Utility.trans("229", "Conditional"),
+                            GT_Utility.trans("230", "Conditional"),
                             startX + spaceX * 4,
                             4 + startY + spaceY * 1,
                             textColor);

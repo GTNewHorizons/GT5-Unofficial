@@ -426,7 +426,9 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
             // I was so proud of all this but I literally just copied code from OutputBus
             bSortStacks = !bSortStacks;
             GT_Utility.sendChatToPlayer(
-                    aPlayer, GT_Utility.trans("200", "Sort mode: " + (bSortStacks ? "Enabled" : "Disabled")));
+                    aPlayer,
+                    GT_Utility.trans("200", "Sort mode: ")
+                            + (bSortStacks ? GT_Utility.trans("088", "Enabled") : GT_Utility.trans("087", "Disabled")));
             return true;
         }
         return super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);

@@ -1425,6 +1425,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
         if (hasValidMetaTileEntity()) mMetaTileEntity.setItemNBT(tNBT);
         if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
+
+        onBaseTEDestroyed();
         return new ArrayList<>(Collections.singletonList(rStack));
     }
 

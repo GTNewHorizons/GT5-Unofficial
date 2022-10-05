@@ -1433,7 +1433,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             dis -> {
                 IBeeMutationCustom tMutation = dis.registerMutation(Explosive, DIAMOND, 2);
-                if (Loader.isModLoaded("TwilightForest"))
+                if (Loader.isModLoaded("ExtraUtilities"))
                     tMutation.requireResource(GameRegistry.findBlock("ExtraUtilities", "block_bedrockium"), 0);
             }),
 

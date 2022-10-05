@@ -233,6 +233,7 @@ GT5U.multiblock.efficiency=Efficiency
 GT5U.multiblock.problems=Problems
 GT5U.multiblock.mei=Max Energy Income
 GT5U.multiblock.usage=Probably uses
+GT5U.multiblock.parallelism=Max parallelism
 
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation

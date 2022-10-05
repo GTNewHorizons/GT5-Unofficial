@@ -330,8 +330,10 @@ public class GT_MetaTileEntity_ProcessingArray
                 tOut[h].stackSize = 0;
             }
         }
-        FluidStack tFOut = null;
-        if (aRecipe.getFluidOutput(0) != null) tFOut = aRecipe.getFluidOutput(0).copy();
+        FluidStack[] tFOut = new FluidStack[aRecipe.mFluidOutputs.length];
+        for (int i = 0; i < aRecipe.mFluidOutputs.length; i++)
+            if (aRecipe.getFluidOutput(i) != null)
+                tFOut[i] = aRecipe.getFluidOutput(i).copy();
         for (int f = 0; f < tOut.length; f++) {
             if (aRecipe.mOutputs[f] != null && tOut[f] != null) {
                 for (int g = 0; g < parallel; g++) {
@@ -340,9 +342,13 @@ public class GT_MetaTileEntity_ProcessingArray
                 }
             }
         }
-        if (tFOut != null) {
-            int tSize = tFOut.amount;
-            tFOut.amount = tSize * parallel;
+        byte oNumber = 0;
+        for (FluidStack fluidStack : tFOut) {
+            if (fluidStack != null) {
+                int tSize = fluidStack.amount;
+                tFOut[oNumber].amount = tSize * parallel;
+            }
+            oNumber++;
         }
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
         this.mOutputItems = Arrays.stream(tOut)
@@ -350,7 +356,7 @@ public class GT_MetaTileEntity_ProcessingArray
                 .flatMap(GT_MetaTileEntity_ProcessingArray::splitOversizedStack)
                 .filter(is -> is.stackSize > 0)
                 .toArray(ItemStack[]::new);
-        this.mOutputFluids = new FluidStack[] {tFOut};
+        this.mOutputFluids = tFOut;
         updateSlots();
         return true;
     }

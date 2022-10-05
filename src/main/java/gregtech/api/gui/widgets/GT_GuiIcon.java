@@ -30,6 +30,12 @@ public enum GT_GuiIcon implements IGuiIcon {
     GREEN_ARROW_DOWN(0, 32 * 5, 32 * 2),
     CYCLIC(0, 32 * 6, 32 * 2),
 
+    AND_GATE(0, 0, 32 * 3),
+    NAND_GATE(0, 32, 32 * 3),
+    OR_GATE(0, 32 * 2, 32 * 3),
+    NOR_GATE(0, 32 * 3, 32 * 3),
+    ANALOG_MODE(0, 32 * 4, 32 * 3),
+
     SLOT_DARKGRAY(1, 176, 0, 18, 18),
     SLOT_GRAY(1, 176, 18, 18, 18),
 

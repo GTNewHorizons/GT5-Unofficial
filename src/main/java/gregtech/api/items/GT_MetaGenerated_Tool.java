@@ -2,6 +2,7 @@ package gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam.calculateLooseFlow;
 
 import buildcraft.api.tools.IToolWrench;
@@ -448,8 +449,9 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                         EnumChatFormatting.GRAY
                                 + String.format(
                                         transItem("001", "Durability: %s/%s"),
-                                        "" + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " ",
-                                        " " + tMaxDamage)
+                                        "" + EnumChatFormatting.GREEN
+                                                + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
+                                        " " + formatNumbers(tMaxDamage))
                                 + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 1,
@@ -472,13 +474,13 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                 + String.format(
                                         transItem("006", "Optimal Steam flow: %s L/t"),
                                         "" + EnumChatFormatting.GOLD
-                                                + GT_Utility.safeInt((long) (Math.max(
+                                                + formatNumbers(GT_Utility.safeInt((long) (Math.max(
                                                         Float.MIN_NORMAL,
                                                         tStats.getSpeedMultiplier()
                                                                 * getPrimaryMaterial(aStack).mToolSpeed
                                                                 * (1000
                                                                         * getPrimaryMaterial(aStack).mSteamMultiplier
-                                                                        / 20))))
+                                                                        / 20)))))
                                                 + EnumChatFormatting.GRAY));
                 aList.add(
                         tOffset + 4,
@@ -486,7 +488,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                 + String.format(
                                         transItem("900", "Energy from Optimal Steam Flow: %s EU/t"),
                                         "" + EnumChatFormatting.GOLD
-                                                + GT_Utility.safeInt((long) (Math.max(
+                                                + formatNumbers(GT_Utility.safeInt((long) (Math.max(
                                                                 Float.MIN_NORMAL,
                                                                 tStats.getSpeedMultiplier()
                                                                         * getPrimaryMaterial(aStack).mToolSpeed
@@ -495,7 +497,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                                                                         .mSteamMultiplier
                                                                                 / 20))
                                                         * (50.0F + (10.0F * getToolCombatDamage(aStack)))
-                                                        / 200))
+                                                        / 200)))
                                                 + EnumChatFormatting.GRAY));
                 {
                     long[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
@@ -515,7 +517,8 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                     + String.format(
                                             transItem("501", "Optimal Steam flow (Loose): %s L/t"),
                                             "" + EnumChatFormatting.GOLD
-                                                    + (aOptFlowLoose * getPrimaryMaterial(aStack).mSteamMultiplier)
+                                                    + formatNumbers((aOptFlowLoose
+                                                            * getPrimaryMaterial(aStack).mSteamMultiplier))
                                                     + EnumChatFormatting.GRAY));
                     aList.add(
                             tOffset + 7,
@@ -523,10 +526,10 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                     + String.format(
                                             transItem("901", "Energy from Optimal Steam Flow (Loose): %s EU/t"),
                                             "" + EnumChatFormatting.GOLD
-                                                    + (aOptFlowLoose
+                                                    + formatNumbers((aOptFlowLoose
                                                                     * getPrimaryMaterial(aStack).mSteamMultiplier
                                                                     / 10000)
-                                                            * (aBaseEffLoose / 2)
+                                                            * (aBaseEffLoose / 2))
                                                     + EnumChatFormatting.GRAY));
                     aList.add(
                             tOffset + 8,
@@ -538,14 +541,14 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                 + String.format(
                                         transItem("007", "Energy from Optimal Gas Flow: %s EU/t"),
                                         "" + EnumChatFormatting.GOLD
-                                                + GT_Utility.safeInt((long) (Math.max(
+                                                + formatNumbers(GT_Utility.safeInt((long) (Math.max(
                                                                 Float.MIN_NORMAL,
                                                                 tStats.getSpeedMultiplier()
                                                                         * getPrimaryMaterial(aStack).mToolSpeed
                                                                         * 50
                                                                         * getPrimaryMaterial(aStack).mGasMultiplier)
                                                         * (50.0F + (10.0F * getToolCombatDamage(aStack)))
-                                                        / 100))
+                                                        / 100)))
                                                 + EnumChatFormatting.GRAY));
                 aList.add(
                         tOffset + 10,
@@ -553,14 +556,14 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                 + String.format(
                                         transItem("008", "Energy from Optimal Plasma Flow: %s EU/t"),
                                         "" + EnumChatFormatting.GOLD
-                                                + GT_Utility.safeInt((long) (Math.max(
+                                                + formatNumbers(GT_Utility.safeInt((long) (Math.max(
                                                                 Float.MIN_NORMAL,
                                                                 tStats.getSpeedMultiplier()
                                                                         * getPrimaryMaterial(aStack).mToolSpeed
                                                                         * 2000
                                                                         * getPrimaryMaterial(aStack).mPlasmaMultiplier)
                                                         * (50.0F + (10.0F * getToolCombatDamage(aStack)))
-                                                        * (1.05 / 100)))
+                                                        * (1.05 / 100))))
                                                 + EnumChatFormatting.GRAY));
                 aList.add(
                         tOffset + 12,
@@ -583,12 +586,13 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
 
             } else {
                 aList.add(
-                        tOffset + 0,
+                        tOffset,
                         EnumChatFormatting.WHITE
                                 + String.format(
                                         transItem("001", "Durability: %s/%s"),
-                                        "" + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " ",
-                                        " " + tMaxDamage)
+                                        "" + EnumChatFormatting.GREEN
+                                                + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
+                                        " " + formatNumbers(tMaxDamage))
                                 + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 1,

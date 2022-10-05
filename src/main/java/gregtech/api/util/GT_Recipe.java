@@ -2300,6 +2300,54 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 " EU",
                 true,
                 true);
+        public static final GT_Recipe_Map sMultiblockElectrolyzerRecipes = new GT_Recipe_Map(
+                new HashSet<>(300),
+                "gt.recipe.largeelectrolyzer",
+                "Large(PA) Electrolyzer",
+                null,
+                RES_PATH_GUI + "basicmachines/LCRNEI",
+                1,
+                9,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                true,
+                false);
+        public static final GT_Recipe_Map sMultiblockCentrifugeRecipes = new GT_Recipe_Map(
+                new HashSet<>(1200),
+                "gt.recipe.largecentrifuge",
+                "Large(PA) Centrifuge",
+                null,
+                RES_PATH_GUI + "basicmachines/LCRNEI",
+                1,
+                9,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                true,
+                false);
+        public static final GT_Recipe_Map sMultiblockMixerRecipes = new GT_Recipe_Map(
+                new HashSet<>(900),
+                "gt.recipe.largemixer",
+                "Large(PA) Mixer",
+                null,
+                RES_PATH_GUI + "basicmachines/LCRNEI",
+                9,
+                3,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                true,
+                false);
         public static final GT_Recipe_Map_LargeBoilerFakeFuels sLargeBoilerFakeFuels =
                 new GT_Recipe_Map_LargeBoilerFakeFuels();
 
