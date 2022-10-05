@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 /**
@@ -29,7 +28,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         super(ISerializableObject.LegacyCoverData.class, coverTexture);
     }
 
-    private static int convert(ISerializableObject.LegacyCoverData data) {
+    protected static int convert(ISerializableObject.LegacyCoverData data) {
         return data == null ? 0 : data.get();
     }
 
@@ -107,6 +106,10 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         return onCoverShiftRightclick(aSide, aCoverID, convert(aCoverVariable), aTileEntity, aPlayer);
     }
 
+    /**
+     * @deprecated Use {@link #createWindow}
+     */
+    @Deprecated
     @Override
     protected Object getClientGUIImpl(
             byte aSide,
@@ -319,13 +322,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
             if (useModularUI()) {
-                GT_UIInfo.CoverUI.get(ForgeDirection.VALID_DIRECTIONS[aSide])
-                        .open(
-                                aPlayer,
-                                aPlayer.worldObj,
-                                aTileEntity.getXCoord(),
-                                aTileEntity.getYCoord(),
-                                aTileEntity.getZCoord());
+                GT_UIInfo.openCoverUI(aTileEntity, aPlayer, aSide);
             } else {
                 GT_Values.NW.sendToPlayer(
                         new GT_Packet_TileEntityCoverGUI(
@@ -337,6 +334,10 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         return false;
     }
 
+    /**
+     * @deprecated Use {@link #createWindow}
+     */
+    @Deprecated
     public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
         return null;
     }

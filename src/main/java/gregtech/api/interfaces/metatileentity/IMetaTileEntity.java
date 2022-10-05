@@ -212,8 +212,7 @@ public interface IMetaTileEntity
     }
 
     /**
-     * For back compatibility.
-     * @return True if this supports ModularUI
+     * For back compatibility, you need to override this if this MetaTileEntity uses ModularUI.
      */
     default boolean useModularUI() {
         return false;
@@ -221,7 +220,7 @@ public interface IMetaTileEntity
 
     /**
      * Creates UI with ModularUI system. Start building UI with {@link ModularWindow#builder}
-     * and call {@link ModularWindow.Builder#build} to finish.
+     * and call {@link ModularWindow.Builder#build} to build.
      */
     default ModularWindow createWindow(UIBuildContext buildContext) {
         return null;

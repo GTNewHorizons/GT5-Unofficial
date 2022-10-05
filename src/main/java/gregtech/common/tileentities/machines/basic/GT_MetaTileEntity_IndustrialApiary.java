@@ -8,7 +8,9 @@ import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -165,17 +167,26 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (!GT_Mod.gregtechproxy.mForceFreeFace) {
-            GT_UIInfo.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer, GT_ModularUIContainer_IndustrialApiary::new);
+            openGUI(aBaseMetaTileEntity, aPlayer);
             return true;
         }
         for (byte i = 0; i < 6; i++) {
             if (aBaseMetaTileEntity.getAirAtSide(i)) {
-                GT_UIInfo.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer, GT_ModularUIContainer_IndustrialApiary::new);
+                openGUI(aBaseMetaTileEntity, aPlayer);
                 return true;
             }
         }
         GT_Utility.sendChatToPlayer(aPlayer, "No free Side!");
         return true;
+    }
+
+    private void openGUI(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        IndustrialApiaryUI.open(
+                aPlayer,
+                aBaseMetaTileEntity.getWorld(),
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord());
     }
 
     @Override
@@ -1201,6 +1212,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             onInventoryUpdate(getSlotIndex());
         }
     }
+
+    private static final UIInfo<?, ?> IndustrialApiaryUI =
+            GT_UIInfo.GTTileEntityUIFactory.apply(GT_ModularUIContainer_IndustrialApiary::new, ModularGui::new);
 
     private static class GT_ModularUIContainer_IndustrialApiary extends ModularUIContainer {
 

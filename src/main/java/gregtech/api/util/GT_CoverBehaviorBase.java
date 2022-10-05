@@ -3,15 +3,22 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.E;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.ModularUI.GT_CoverUIBuildContext;
 import gregtech.api.gui.ModularUI.GT_UIInfo;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.api.objects.GT_ItemStack;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,7 +26,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 /**
@@ -40,6 +46,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     protected GT_CoverBehaviorBase(Class<T> typeToken, ITexture coverTexture) {
         this.typeToken = typeToken;
         this.coverFGTexture = coverTexture;
+        this.colorOverride = new GT_GUIColorOverride(guiTexturePath);
     }
 
     public abstract T createDataObject(int aLegacyData);
@@ -223,46 +230,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
-     * For back compatibility.
-     * @return True if this supports ModularUI
-     */
-    public boolean useModularUI() {
-        return false;
-    }
-
-    /**
-     * Creates UI with ModularUI system. Start building UI with {@link ModularWindow#builder}
-     * and call {@link ModularWindow.Builder#build} to finish.
-     */
-    public ModularWindow createWindow(UIBuildContext buildContext) {
-        ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
-        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
-        builder.setGuiTint(GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA()));
-        if (showPlayerInventory()) {
-            builder.bindPlayerInventory(buildContext.getPlayer());
-        }
-        addUIWidgets(builder);
-        return builder.build();
-    }
-
-    /**
-     * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
-     */
-    protected void addUIWidgets(ModularWindow.Builder builder) {}
-
-    protected int getGUIWidth() {
-        return 176;
-    }
-
-    protected int getGUIHeight() {
-        return 107;
-    }
-
-    protected boolean showPlayerInventory() {
-        return false;
-    }
-
-    /**
      * Removes the Cover if this returns true, or if aForced is true.
      * Doesn't get called when the Machine Block is getting broken, only if you break the Cover away from the Machine.
      */
@@ -431,6 +398,135 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
     // endregion
 
+    // region UI stuff
+
+    private GT_CoverUIBuildContext uiContextClient;
+    private GT_CoverUIBuildContext uiContextServer;
+
+    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    protected GT_GUIColorOverride colorOverride;
+    private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
+
+    /**
+     * For back compatibility, you need to override this if this cover uses ModularUI.
+     */
+    public boolean useModularUI() {
+        return false;
+    }
+
+    /**
+     * Creates UI with ModularUI system. Start building UI with {@link ModularWindow#builder}
+     * and call {@link ModularWindow.Builder#build} to build.
+     */
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        // client and server have different tile and player,
+        // so using the same field results in wrong behavior on SP
+        if (NetworkUtils.isClient()) {
+            this.uiContextClient = buildContext;
+        } else {
+            this.uiContextServer = buildContext;
+        }
+        ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
+        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
+        builder.setGuiTint(GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA()));
+        if (doesBindPlayerInventory()) {
+            builder.bindPlayerInventory(buildContext.getPlayer());
+        }
+        addTitleToUI(builder);
+        addUIWidgets(builder);
+        return builder.build();
+    }
+
+    /**
+     * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
+     */
+    protected void addUIWidgets(ModularWindow.Builder builder) {}
+
+    public GT_CoverUIBuildContext getUIContext() {
+        if (NetworkUtils.isClient()) {
+            return uiContextClient;
+        } else {
+            return uiContextServer;
+        }
+    }
+
+    /**
+     * Server only.
+     * Can return null when cover data is invalid e.g. tile is broken or cover is removed
+     */
+    @Nullable
+    protected T getCoverData() {
+        if (isCoverValid()) {
+            return forceCast(getUIContext()
+                    .getTile()
+                    .getComplexCoverDataAtSide(getUIContext().getCoverSide()));
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Server only
+     */
+    protected boolean setCoverData(T data) {
+        if (isCoverValid()) {
+            getUIContext()
+                    .getTile()
+                    .receiveCoverData(
+                            getUIContext().getCoverSide(),
+                            getUIContext().getCoverID(),
+                            data,
+                            getUIContext().getPlayer() instanceof EntityPlayerMP
+                                    ? (EntityPlayerMP) getUIContext().getPlayer()
+                                    : null);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Expected to be called by ModularUI widgets.
+     */
+    protected boolean isCoverValid() {
+        return !getUIContext().getTile().isDead()
+                && getUIContext()
+                                .getTile()
+                                .getCoverBehaviorAtSideNew(getUIContext().getCoverSide())
+                        != GregTech_API.sNoBehavior;
+    }
+
+    protected void addTitleToUI(ModularWindow.Builder builder) {
+        ItemStack coverItem = GT_Utility.intToStack(getUIContext().getCoverID());
+        if (coverItem != null) {
+            builder.widget(new ItemDrawable(coverItem).asWidget().setPos(5, 5).setSize(16, 16))
+                    .widget(new TextWidget(coverItem.getDisplayName())
+                            .setDefaultColor(COLOR_TITLE.get())
+                            .setPos(25, 9));
+        }
+    }
+
+    protected int getGUIWidth() {
+        return 176;
+    }
+
+    protected int getGUIHeight() {
+        return 107;
+    }
+
+    protected boolean doesBindPlayerInventory() {
+        return false;
+    }
+
+    protected int getTextColorOrDefault(String textType, int defaultColor) {
+        return colorOverride.getTextColorOrDefault(textType, defaultColor);
+    }
+
+    protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("text_gray", 0x222222);
+    protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
+
+    // endregion ModularUI or old GUI
+
     // region impl
 
     protected Block getFacadeBlockImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
@@ -517,13 +613,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
             if (useModularUI()) {
-                GT_UIInfo.CoverUI.get(ForgeDirection.VALID_DIRECTIONS[aSide])
-                        .open(
-                                aPlayer,
-                                aPlayer.worldObj,
-                                aTileEntity.getXCoord(),
-                                aTileEntity.getYCoord(),
-                                aTileEntity.getZCoord());
+                GT_UIInfo.openCoverUI(aTileEntity, aPlayer, aSide);
             } else {
                 GT_Values.NW.sendToPlayer(
                         new GT_Packet_TileEntityCoverGUI(
@@ -535,6 +625,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return false;
     }
 
+    /**
+     * @deprecated Use {@link #createWindow}
+     */
+    @Deprecated
     protected Object getClientGUIImpl(
             byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
         return null;

@@ -1005,6 +1005,24 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         //
     }
 
+    /**
+     * @deprecated Use {@link #createWindow}
+     */
+    @Deprecated
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return null;
+    }
+
+    /**
+     * @deprecated Use {@link #createWindow}
+     */
+    @Deprecated
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return null;
+    }
+
     @Override
     public boolean connectsToItemPipe(byte aSide) {
         return false;
@@ -1201,19 +1219,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip",
             POWER_SOURCE_KEY = "GT5U.machines.powersource.";
 
-    protected final int TOOLTIP_DELAY = 5;
-
-    @Deprecated
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    @Deprecated
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
+    protected static final int TOOLTIP_DELAY = 5;
 
     @Override
     public ModularWindow createWindow(UIBuildContext buildContext) {
