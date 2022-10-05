@@ -472,6 +472,7 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_327", "Private");
         addStringLocalization("Interaction_DESCRIPTION_Index_328", "Channel");
         addStringLocalization("Interaction_DESCRIPTION_Index_329", "Public/Private");
+        addStringLocalization("Interaction_DESCRIPTION_Index_330", "Sneak Rightclick to switch Mode");
         addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
         addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
         addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");

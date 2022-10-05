@@ -6,6 +6,7 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.tools.*;
+import gregtech.common.tools.pocket.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -72,6 +73,15 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
 
     @Deprecated
     public static final short TURBINE_BLADE = 178;
+
+    public static final short POCKET_MULTITOOL = 180;
+    public static final short POCKET_BRANCHCUTTER = 182;
+    public static final short POCKET_FILE = 184;
+    public static final short POCKET_KNIFE = 186;
+    public static final short POCKET_SAW = 188;
+    public static final short POCKET_SCREWDRIVER = 190;
+    public static final short POCKET_WIRECUTTER = 192;
+
 
     public static GT_MetaGenerated_Tool_01 INSTANCE;
 
@@ -490,6 +500,68 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
         addTool(TURBINE, "Turbine", "Turbine Rotors for your power station", new GT_Tool_Turbine_Normal());
         addTool(TURBINE_LARGE, "Large Turbine", "Turbine Rotors for your power station", new GT_Tool_Turbine_Large());
         addTool(TURBINE_HUGE, "Huge Turbine", "Turbine Rotors for your power station", new GT_Tool_Turbine_Huge());
+
+        addTool(POCKET_MULTITOOL,
+            "Pocket Multitool",
+            "6 useful Tools in one!",
+            new GT_Tool_Pocket_Multitool(POCKET_KNIFE),
+            null,
+            new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 6),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 3),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3));
+        addTool(POCKET_KNIFE,
+            "Pocket Multitool (Knife)",
+            "",
+            new GT_Tool_Pocket_Knife(POCKET_SAW),
+            ToolDictNames.craftingToolKnife,
+            ToolDictNames.craftingToolBlade,
+            new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 6),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 3),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3));
+        addTool(POCKET_SAW,
+            "Pocket Multitool (Saw)",
+            "Can also harvest Ice",
+            new GT_Tool_Pocket_Saw(POCKET_FILE),
+            ToolDictNames.craftingToolSaw,
+            new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 6),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 3),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3));
+        addTool(POCKET_FILE,
+            "Pocket Multitool (File)",
+            "",
+            new GT_Tool_Pocket_File(POCKET_SCREWDRIVER),
+            ToolDictNames.craftingToolFile,
+            new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 6),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 3),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3));
+        GregTech_API.registerTool(
+            addTool(POCKET_SCREWDRIVER,
+                "Pocket Multitool (Screwdriver)",
+                "Adjusts Covers and Machines",
+                new GT_Tool_Pocket_Screwdriver(POCKET_WIRECUTTER),
+                ToolDictNames.craftingToolScrewdriver,
+                new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 6),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 3),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3)),
+            GregTech_API.sScrewdriverList);
+        GregTech_API.registerTool(
+            addTool(POCKET_WIRECUTTER,
+                "Pocket Multitool (Wire Cutter)",
+                "",
+                new GT_Tool_Pocket_WireCutter(POCKET_BRANCHCUTTER),
+                ToolDictNames.craftingToolWireCutter,
+                new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 6),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 3),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3)),
+            GregTech_API.sWireCutterList);
+        addTool(POCKET_BRANCHCUTTER,
+            "Pocket Multitool (Branch Cutter)",
+            "",
+            new GT_Tool_Pocket_BranchCutter(POCKET_MULTITOOL),
+            ToolDictNames.craftingToolBranchCutter,
+            new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 6),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 3),
+            new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3));
 
         GT_ModHandler.addCraftingRecipe(
                 INSTANCE.getToolWithStats(MORTAR, 1, Materials.Flint, Materials.Stone, null),
