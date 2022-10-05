@@ -151,6 +151,16 @@ public class RecipeLoader_GlueLine {
                 FluidUtils.getWater(1000),
                 MISC_MATERIALS.SODIUM_CYANIDE.getDust(3),
                 10 * 20);
+        // #addChemicalRecipe won't generate LCR recipe if config >= 10
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] {
+                    CI.getNumberedCircuit(17), ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3)
+                },
+                new FluidStack[] {MISC_MATERIALS.HYDROGEN_CYANIDE.getFluidStack(1000)},
+                new FluidStack[] {FluidUtils.getWater(1000)},
+                new ItemStack[] {MISC_MATERIALS.SODIUM_CYANIDE.getDust(3)},
+                10 * 20,
+                30);
 
         // CaCO3 + 2HCl = CaCl2 + CO2 + H2O
         if (LoadedMods.BartWorks) {
@@ -180,6 +190,14 @@ public class RecipeLoader_GlueLine {
                 FluidUtils.getFluidStack("dilutedsulfuricacid", 1000),
                 MISC_MATERIALS.COPPER_SULFATE.getDust(6),
                 5 * 20);
+        // #addChemicalRecipe won't generate LCR recipe if config >= 10
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] {CI.getNumberedCircuit(19), ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1)},
+                new FluidStack[] {FluidUtils.getFluidStack("sulfuricacid", 2000)},
+                new FluidStack[] {FluidUtils.getFluidStack("dilutedsulfuricacid", 1000)},
+                new ItemStack[] {MISC_MATERIALS.COPPER_SULFATE.getDust(6)},
+                5 * 20,
+                30);
     }
 
     private static void dehydratorRecipes() {
