@@ -166,6 +166,50 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
+    protected boolean letsRedstoneGoInImpl(
+            byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected boolean letsRedstoneGoOutImpl(
+            byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected boolean letsEnergyInImpl(
+            byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected boolean letsEnergyOutImpl(
+            byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsItemsInImpl(
+            byte aSide,
+            int aCoverID,
+            GT_Cover_Fluidfilter.FluidFilterData aCoverVariable,
+            int aSlot,
+            ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsItemsOutImpl(
+            byte aSide,
+            int aCoverID,
+            GT_Cover_Fluidfilter.FluidFilterData aCoverVariable,
+            int aSlot,
+            ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
     protected boolean letsFluidInImpl(
             byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         if (aFluid == null) return true;
