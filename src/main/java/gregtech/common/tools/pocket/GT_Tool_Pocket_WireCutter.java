@@ -25,7 +25,7 @@ public class GT_Tool_Pocket_WireCutter extends GT_Tool_WireCutter {
     }
 
     @Override
-    public  short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa;
     }
 
