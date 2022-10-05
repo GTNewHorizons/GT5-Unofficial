@@ -1217,7 +1217,7 @@ public class MyMaterial implements Runnable {
     public static final Werkstoff dalisenite = new Werkstoff(
             new short[] {0xb0, 0xb8, 0x12},
             "Dalisenite",
-            new Werkstoff.Stats().setBlastFurnace(true).setMeltingPoint(8700).setCentrifuge(true),
+            new Werkstoff.Stats().setMeltingPoint(8700).setCentrifuge(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures()
                     .onlyDust()
