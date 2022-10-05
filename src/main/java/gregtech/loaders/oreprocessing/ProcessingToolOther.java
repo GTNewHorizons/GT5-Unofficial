@@ -178,29 +178,22 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                             'L',
                             ItemList.Battery_RE_HV_Lithium.get(1L)
                         });
-                GT_ModHandler.addCraftingRecipe(
-                        (GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.POCKET_MULTITOOL, 1, aMaterial, aMaterial, null)),
-                        GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] {
-                            "ABC",
-                            "DEF",
-                            "CFG",
-                            'A',
-                            OrePrefixes.stickLong.get(aMaterial),
-                            'B',
-                            OrePrefixes.toolHeadSaw.get(aMaterial),
-                            'C',
-                            OrePrefixes.ring.get(aMaterial),
-                            'D',
-                            OrePrefixes.toolHeadFile.get(aMaterial),
-                            'E',
-                            OrePrefixes.plate.get(aMaterial),
-                            'F',
-                            OrePrefixes.toolHeadSword.get(aMaterial),
-                            'G',
-                            Dyes.dyeBlue
-                        });
+                GT_ModHandler.addCraftingRecipe((
+                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.POCKET_MULTITOOL,
+                        1,
+                        aMaterial,
+                        aMaterial,
+                        null)),
+                    GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
+                       new Object[] {"ABC","DEF","CFG",
+                           'A', OrePrefixes.stickLong.get(aMaterial),
+                           'B', OrePrefixes.toolHeadSaw.get(aMaterial),
+                           'C', OrePrefixes.ring.get(aMaterial),
+                           'D', OrePrefixes.toolHeadFile.get(aMaterial),
+                           'E', OrePrefixes.plate.get(aMaterial),
+                           'F', OrePrefixes.toolHeadSword.get(aMaterial),
+                           'G', Dyes.dyeBlue});
             }
         }
     }

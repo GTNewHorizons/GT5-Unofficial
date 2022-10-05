@@ -1,16 +1,18 @@
 package gregtech.common.items.behaviors;
 
 import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class Behaviour_Switch_Metadata extends Behaviour_None {
     public final int mSwitchIndex;
@@ -19,11 +21,9 @@ public class Behaviour_Switch_Metadata extends Behaviour_None {
     public Behaviour_Switch_Metadata(int aSwitchIndex) {
         this(aSwitchIndex, false);
     }
-
     public Behaviour_Switch_Metadata(int aSwitchIndex, boolean aCheckTarget) {
         this(aSwitchIndex, aCheckTarget, false);
     }
-
     public Behaviour_Switch_Metadata(int aSwitchIndex, boolean aCheckTarget, boolean aShowModeSwitchTooltip) {
         mSwitchIndex = aSwitchIndex;
         mCheckTarget = aCheckTarget;
@@ -37,18 +37,7 @@ public class Behaviour_Switch_Metadata extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUseFirst(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float aHitX,
-            float aHitY,
-            float aHitZ) {
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float aHitX, float aHitY, float aHitZ) {
         if (aStack != null && (aPlayer == null || aPlayer.isSneaking()) && !aWorld.isRemote) {
             if (mCheckTarget) {
                 Block aBlock = aWorld.blockExists(aX, aY, aZ) ? aWorld.getBlock(aX, aY, aZ) : Blocks.air;

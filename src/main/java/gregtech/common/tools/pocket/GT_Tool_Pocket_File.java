@@ -3,6 +3,7 @@ package gregtech.common.tools.pocket;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.common.items.behaviors.Behaviour_Cover_Tool;
 import gregtech.common.items.behaviors.Behaviour_Switch_Metadata;
 import gregtech.common.tools.GT_Tool_File;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,7 @@ public class GT_Tool_Pocket_File extends GT_Tool_File {
     }
 
     @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+    public  short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa;
     }
 

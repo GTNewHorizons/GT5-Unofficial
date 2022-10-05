@@ -25,7 +25,7 @@ public class GT_Tool_Pocket_Saw extends GT_Tool_Saw {
     }
 
     @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+    public  short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa;
     }
 
