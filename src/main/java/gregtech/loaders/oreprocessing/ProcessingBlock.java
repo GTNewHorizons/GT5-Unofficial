@@ -18,6 +18,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (aMaterial != Materials.Clay) {
             GT_Values.RA.addCutterRecipe(
                     GT_Utility.copyAmount(1L, aStack),
+                    aMaterial == MaterialsBotania.Livingrock ? GT_Utility.getIntegratedCircuit(2) : null,
                     GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L),
                     null,
                     (int) Math.max(aMaterial.getMass() * 10L, 1L),
