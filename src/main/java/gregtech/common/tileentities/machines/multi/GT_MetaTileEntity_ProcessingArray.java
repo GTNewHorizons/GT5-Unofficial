@@ -211,26 +211,8 @@ public class GT_MetaTileEntity_ProcessingArray
             if (aMachine != null) tTier = ((GT_MetaTileEntity_TieredMachineBlock) aMachine).mTier;
             mMult = 0;
             if (downtierUEV && tTier > 9) {
-                switch (tTier) {
-                    default:
-                        tTier = 0;
-                        break;
-                    case 10:
-                        tTier = 9;
-                        mMult = 2; // Parallels are 4x as strong
-                        break;
-                    case 11:
-                        tTier = 9;
-                        mMult = 4; // Parallels are 16x as strong
-                        break;
-                    case 12:
-                    case 13:
-                    case 14:
-                    case 15:
-                        tTier = 9;
-                        mMult = 6; // Parallels are 64x as strong
-                        break;
-                }
+                tTier--; // Lowers down the tier by 1 to allow for bigger parallel
+                mMult = 2; // Multiplies Parallels by 4x, keeping the energy cost
             }
         }
         ArrayList<FluidStack> tFluidList = getStoredFluids();
