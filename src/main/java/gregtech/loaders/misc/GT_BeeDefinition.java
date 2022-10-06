@@ -317,7 +317,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 tMutation.restrictTemperature(HOT);
                 tMutation.requireResource(GameRegistry.findBlock("gregtech", "gt.blockgem2"), 8);
             }),
-    // Tea bee, Humidity: normal, Parents: Ash, Fertilizer, Mutationrate: 10%, combrate: 10%
+    // Tea bee, Humidity: normal, Parents: Ash and Fertilizer, Mutationrate: 10%, combrate: 10%
     TEA(
             GT_BranchDefinition.ORGANIC,
             "Tea",
@@ -326,8 +326,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0x9a9679),
             beeSpecies -> {
                 if (Loader.isModLoaded("harvestcraft")) {
-                    beeSpecies.addProduct(GT_ModHandler.getModItem("harvestcraft", "tealeafItem", 1, 0), 0.10f);
-                }
+                    beeSpecies.addProduct(GT_ModHandler.getModItem("harvestcraft", "tealeafItem", 1, ItemList.Crop_Drop_TeaLeaf.get(1)), 0.10f);   }
 
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(NORMAL);
