@@ -325,9 +325,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0x65D13A),
             new Color(0x9a9679),
             beeSpecies -> {
-                if (Loader.isModLoaded("harvestcraft")) {
-                    beeSpecies.addProduct(GT_ModHandler.getModItem("harvestcraft", "tealeafItem", 1, ItemList.Crop_Drop_TeaLeaf.get(1)), 0.10f);   }
-
+                beeSpecies.addProduct(
+                        GT_ModHandler.getModItem("harvestcraft", "tealeafItem", 1, ItemList.Crop_Drop_TeaLeaf.get(1)),
+                        0.10f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(NORMAL);
                 beeSpecies.setNocturnal();
