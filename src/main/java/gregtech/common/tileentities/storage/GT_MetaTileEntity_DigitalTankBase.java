@@ -439,7 +439,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public FluidTankInfo getInfo() {
-        return new FluidTankInfo(getFluid(), getCapacity());
+        return new FluidTankInfo(getFluid(), getRealCapacity());
     }
 
     @Override
