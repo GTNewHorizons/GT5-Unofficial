@@ -335,7 +335,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(FERTILIZER, ASH, 10);
+                dis.registerMutation(FERTILIZER, ASH, 10);
             }),
     // Mica bee, Humidity: normal, Parents: Silicon & PEAT, Mutationrate: 15%, Combrate: 25%
     MICA(
