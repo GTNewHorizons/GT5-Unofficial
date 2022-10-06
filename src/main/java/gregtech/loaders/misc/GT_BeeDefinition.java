@@ -330,7 +330,6 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                         0.10f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(NORMAL);
-                beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
