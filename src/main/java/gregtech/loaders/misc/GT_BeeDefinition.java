@@ -317,7 +317,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 tMutation.restrictTemperature(HOT);
                 tMutation.requireResource(GameRegistry.findBlock("gregtech", "gt.blockgem2"), 8);
             }),
-    // Tea bee, Humidity: normal, Parents:Ssh, Fertilizer, Mutationrate: 10%, combrate: 10%
+    // Tea bee, Humidity: normal, Parents: Ash, Fertilizer, Mutationrate: 10%, combrate: 10%
     TEA(
             GT_BranchDefinition.ORGANIC,
             "Tea",
