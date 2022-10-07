@@ -194,6 +194,8 @@ public class GT_MetaTileEntity_HeatExchanger
         float steam_output_multiplier = 20f; // default: multiply output by 4 * 10 (boosted x5)
         float penalty = 0.0f; // penalty to apply to output based on circuitry level (1-25).
         boolean do_lava = false;
+        boolean do_coolant = false;
+        boolean do_solarSalt = false;
 
         // Do we have an integrated circuit with a valid configuration?
         if (mInventory[1] != null && mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit")) {
@@ -214,6 +216,11 @@ public class GT_MetaTileEntity_HeatExchanger
         } else if (mInputHotFluidHatch.getFluid().isFluidEqual(FluidRegistry.getFluidStack("ic2hotcoolant", 1))) {
             steam_output_multiplier /= 2f; // was boosted x2 on top of x5 -> total x10 -> nerf with this code back to 5x
             superheated_threshold /= 5f; // 10x smaller since the Hot Things production in reactor is the same.
+            do_coolant = true;
+        } else if (mInputHotFluidHatch.getFluid().isFluidEqual(FluidRegistry.getFluidStack("molten.solarsalthot", 1))) {
+            steam_output_multiplier *= 2.5f; // Solar Salt:Steam value is 5x higher than Hot Coolant's value
+            superheated_threshold /= 25f; // Given that, multiplier is 5x higher and threshold is 5x lower
+            do_solarSalt = true;
         } else {
             // If we're working with neither, fail out
             superheated_threshold = 0;
@@ -230,8 +237,12 @@ public class GT_MetaTileEntity_HeatExchanger
         this.mEUt = (int) (fluidAmountToConsume * steam_output_multiplier * efficiency);
         if (do_lava) {
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2pahoehoelava", fluidAmountToConsume), true);
-        } else {
+        } else if (do_coolant) {
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2coolant", fluidAmountToConsume), true);
+        } else if (do_solarSalt) {
+            mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("molten.solarsaltcold", fluidAmountToConsume), true);
+        } else {
+            return false;
         }
         this.mEfficiencyIncrease = 80;
         return true;
