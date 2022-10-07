@@ -55,6 +55,7 @@ public class GT_MetaTileEntity_ProcessingArray
     private int mMult = 0;
     private boolean mSeparate = false;
     private boolean downtierUEV = true;
+    private boolean mUseMultiparallelMode = false;
     private String mMachineName = "";
 
     public GT_MetaTileEntity_ProcessingArray(int aID, String aName, String aNameRegional) {
@@ -243,7 +244,8 @@ public class GT_MetaTileEntity_ProcessingArray
         int machines = mInventory[1].stackSize << mMult;
         int parallel = tSingleRecipeCheck.checkRecipeInputs(true, machines);
 
-        return processRecipeOutputs(tSingleRecipeCheck.getRecipe(), tSingleRecipeCheck.getRecipeAmperage(), parallel);
+        return processRecipeOutputs(
+                tSingleRecipeCheck.getRecipe(), tSingleRecipeCheck.getRecipeAmperage(), parallel, 1);
     }
 
     public boolean processRecipe(ItemStack[] tInputs, FluidStack[] tFluids, GT_Recipe.GT_Recipe_Map map) {
@@ -282,10 +284,19 @@ public class GT_MetaTileEntity_ProcessingArray
             }
         }
 
-        return processRecipeOutputs(tRecipe, map.mAmperage, i);
+        // Check how many times we can run the same recipe
+        int multiplier = 1;
+        if (mUseMultiparallelMode && i == machines) {
+            for (; multiplier < 128; ++multiplier) {
+                if (!tRecipe.isRecipeInputEqual(true, false, machines, tFluids, tInputs)) {
+                    break;
+                }
+            }
+        }
+        return processRecipeOutputs(tRecipe, map.mAmperage, i, multiplier);
     }
 
-    public boolean processRecipeOutputs(GT_Recipe aRecipe, int aAmperage, int parallel) {
+    public boolean processRecipeOutputs(GT_Recipe aRecipe, int aAmperage, int parallel, int multiplier) {
         this.mEUt = 0;
         this.mOutputItems = null;
         this.mOutputFluids = null;
@@ -293,10 +304,11 @@ public class GT_MetaTileEntity_ProcessingArray
             return false;
         }
 
-        this.mMaxProgresstime = aRecipe.mDuration;
+        this.mMaxProgresstime = aRecipe.mDuration * multiplier;
+
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
-        calculateOverclockedNessMulti(aRecipe.mEUt, aRecipe.mDuration, aAmperage, GT_Values.V[tTier]);
+        calculateOverclockedNessMulti(aRecipe.mEUt, aRecipe.mDuration * multiplier, aAmperage, GT_Values.V[tTier]);
         // In case recipe is too OP for that machine
         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
         this.mEUt = GT_Utility.safeInt((long) this.mEUt * parallel, 1);
@@ -318,7 +330,7 @@ public class GT_MetaTileEntity_ProcessingArray
                 tFOut[i] = aRecipe.getFluidOutput(i).copy();
         for (int f = 0; f < tOut.length; f++) {
             if (aRecipe.mOutputs[f] != null && tOut[f] != null) {
-                for (int g = 0; g < parallel; g++) {
+                for (int g = 0; g < parallel * multiplier; g++) {
                     if (getBaseMetaTileEntity().getRandomNumber(10000) < aRecipe.getOutputChance(f))
                         tOut[f].stackSize += aRecipe.mOutputs[f].stackSize;
                 }
@@ -328,7 +340,7 @@ public class GT_MetaTileEntity_ProcessingArray
         for (FluidStack fluidStack : tFOut) {
             if (fluidStack != null) {
                 int tSize = fluidStack.amount;
-                tFOut[oNumber].amount = tSize * parallel;
+                tFOut[oNumber].amount = tSize * parallel * multiplier;
             }
             oNumber++;
         }
@@ -391,6 +403,7 @@ public class GT_MetaTileEntity_ProcessingArray
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
         aNBT.setBoolean("downtierUEV", downtierUEV);
+        aNBT.setBoolean("mUseMultiparallelMode", mUseMultiparallelMode);
     }
 
     @Override
@@ -398,6 +411,7 @@ public class GT_MetaTileEntity_ProcessingArray
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
         downtierUEV = aNBT.getBoolean("downtierUEV");
+        mUseMultiparallelMode = aNBT.getBoolean("mUseMultiparallelMode");
     }
 
     @Override
@@ -415,10 +429,20 @@ public class GT_MetaTileEntity_ProcessingArray
     @Override
     public boolean onWireCutterRightClick(
             byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        downtierUEV = !downtierUEV;
-        mLastRecipe = null; // clears last recipe
-        GT_Utility.sendChatToPlayer(aPlayer, "Treat UEV+ machines as multiple UHV " + downtierUEV);
-        return true;
+        if (aPlayer.isSneaking()) {
+            mUseMultiparallelMode = !mUseMultiparallelMode;
+            if (mUseMultiparallelMode) {
+                GT_Utility.sendChatToPlayer(aPlayer, "Batch recipes");
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, "Don't batch recipes");
+            }
+            return true;
+        } else {
+            downtierUEV = !downtierUEV;
+            mLastRecipe = null; // clears last recipe
+            GT_Utility.sendChatToPlayer(aPlayer, "Treat UEV+ machines as multiple UHV " + downtierUEV);
+            return true;
+        }
     }
 
     @Override

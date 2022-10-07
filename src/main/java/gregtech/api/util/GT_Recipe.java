@@ -538,7 +538,16 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
     public boolean isRecipeInputEqual(
             boolean aDecreaseStacksizeBySuccess, FluidStack[] aFluidInputs, ItemStack... aInputs) {
-        return isRecipeInputEqual(aDecreaseStacksizeBySuccess, false, aFluidInputs, aInputs);
+        return isRecipeInputEqual(aDecreaseStacksizeBySuccess, false, 1, aFluidInputs, aInputs);
+    }
+
+    // For non-multiplied recipe amount values
+    public boolean isRecipeInputEqual(
+            boolean aDecreaseStacksizeBySuccess,
+            boolean aDontCheckStackSizes,
+            FluidStack[] aFluidInputs,
+            ItemStack... aInputs) {
+        return isRecipeInputEqual(aDecreaseStacksizeBySuccess, false, 1, aFluidInputs, aInputs);
     }
 
     /**
@@ -563,6 +572,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     public boolean isRecipeInputEqual(
             boolean aDecreaseStacksizeBySuccess,
             boolean aDontCheckStackSizes,
+            int amountMultiplier,
             FluidStack[] aFluidInputs,
             ItemStack... aInputs) {
         if (mInputs.length > 0 && aInputs == null) return false;
@@ -581,7 +591,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             for (FluidStack recipeFluidCost : mFluidInputs) {
                 if (recipeFluidCost != null) {
                     inputFound = false;
-                    remainingCost = recipeFluidCost.amount;
+                    remainingCost = recipeFluidCost.amount * amountMultiplier;
 
                     for (int i = 0; i < aFluidInputs.length; i++) {
                         FluidStack providedFluid = aFluidInputs[i];
@@ -620,7 +630,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 ItemStack unifiedItemCost = GT_OreDictUnificator.get_nocopy(true, recipeItemCost);
                 if (unifiedItemCost != null) {
                     inputFound = false;
-                    remainingCost = recipeItemCost.stackSize;
+                    remainingCost = recipeItemCost.stackSize * amountMultiplier;
 
                     for (int i = 0; i < aInputs.length; i++) {
                         ItemStack providedItem = aInputs[i];
