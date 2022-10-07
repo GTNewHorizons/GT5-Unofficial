@@ -547,7 +547,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             boolean aDontCheckStackSizes,
             FluidStack[] aFluidInputs,
             ItemStack... aInputs) {
-        return isRecipeInputEqual(aDecreaseStacksizeBySuccess, false, 1, aFluidInputs, aInputs);
+        return isRecipeInputEqual(aDecreaseStacksizeBySuccess, aDontCheckStackSizes, 1, aFluidInputs, aInputs);
     }
 
     /**
