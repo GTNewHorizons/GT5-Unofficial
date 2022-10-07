@@ -698,6 +698,30 @@ public class RECIPES_GREGTECH {
                     20 * 60 * 30 * (GTNH ? 2 : 1),
                     (int) MaterialUtils.getVoltageForTier(8));
         }
+        GT_Values.RA.addAssemblylineRecipe(
+                GregtechItemList.Industrial_AlloyBlastSmelter.get(1, new Object() {}),
+                20 * 60 * 30,
+                new Object[] {
+                    GregtechItemList.Industrial_AlloyBlastSmelter.get(64L, new Object() {}),
+                    GregtechItemList.Industrial_AlloyBlastSmelter.get(64L, new Object() {}),
+                    GregtechItemList.Industrial_AlloyBlastSmelter.get(64L, new Object() {}),
+                    GregtechItemList.Industrial_AlloyBlastSmelter.get(64L, new Object() {}),
+                    ItemList.UV_Coil.get(16L, new Object() {}),
+                    ItemList.Conveyor_Module_UV.get(4L, new Object() {}),
+                    new Object[] {OrePrefixes.circuit.get(Materials.Superconductor), 8},
+                    new Object[] {OrePrefixes.circuit.get(Materials.Ultimate), 16},
+                    ItemList.Circuit_Chip_PPIC.get(16, new Object() {}),
+                    ALLOY.PIKYONIUM.getPlate(16),
+                    ALLOY.CINOBITE.getScrew(32)
+                },
+                new FluidStack[] {
+                    ALLOY.PIKYONIUM.getFluidStack(144 * 8),
+                    ALLOY.INDALLOY_140.getFluidStack(144 * 9),
+                    Materials.SolderingAlloy.getMolten(144 * 10)
+                },
+                GregtechItemList.Mega_AlloyBlastSmelter.get(1L),
+                60 * 20,
+                1000000);
     }
 
     private static void laserEngraverRecipes() {

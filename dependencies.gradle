@@ -16,10 +16,12 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:EnderIO:2.3.1.47:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:EnderCore:0.2.10:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:SC2:2.0.1:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Binnie:2.0.43:dev') {transitive = false}
-
+    compileOnly('com.github.GTNewHorizons:Binnie:2.0.42:dev') {transitive = false}
+    compileOnly("com.github.GTNewHorizons:bartworks:0.5.67:dev") {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
     compileOnly('com.github.GTNewHorizons:BuildCraft:7.1.27:dev') {transitive=false}
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Chisel:2.10.16-GTNH:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:Chisel:2.10.15-GTNH:dev') {transitive=false}
+
+    runtime("com.github.GTNewHorizons:bartworks:0.5.67:dev")
 }
