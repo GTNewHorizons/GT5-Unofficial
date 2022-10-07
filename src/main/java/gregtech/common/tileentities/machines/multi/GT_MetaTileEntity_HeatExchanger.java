@@ -237,9 +237,9 @@ public class GT_MetaTileEntity_HeatExchanger
         this.mEUt = (int) (fluidAmountToConsume * steam_output_multiplier * efficiency);
         if (do_lava) {
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2pahoehoelava", fluidAmountToConsume), true);
-        } else if (do_coolant){
+        } else if (do_coolant) {
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2coolant", fluidAmountToConsume), true);
-        } else if (do_solarSalt){
+        } else if (do_solarSalt) {
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("molten.solarsaltcold", fluidAmountToConsume), true);
         } else {
             return false;
