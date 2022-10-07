@@ -453,7 +453,7 @@ public class RecipeLoader_02 {
                 new FluidStack[] {
                     Materials.Draconium.getMolten(36864),
                     new FluidStack(solderIndalloy, 30240),
-                    Materials.Transcendent.getMolten(1440),
+                    Materials.TranscendentMetal.getMolten(1440),
                     Materials.InfinityCatalyst.getMolten(5670)
                 },
                 ItemRefer.Fluid_Storage_Core_T9.get(1),
@@ -478,7 +478,7 @@ public class RecipeLoader_02 {
                 new FluidStack[] {
                     Materials.Draconium.getMolten(36864),
                     new FluidStack(solderIndalloy, 46080),
-                    Materials.Transcendent.getMolten(4320),
+                    Materials.TranscendentMetal.getMolten(4320),
                     Materials.InfinityCatalyst.getMolten(17010)
                 },
                 ItemRefer.Fluid_Storage_Core_T10.get(1),
@@ -698,7 +698,7 @@ public class RecipeLoader_02 {
                 },
                 new FluidStack[] {
                     Materials.DraconiumAwakened.getMolten(14400),
-                    Materials.Transcendent.getMolten(1440),
+                    Materials.TranscendentMetal.getMolten(1440),
                     FluidRegistry.getFluidStack("supercoolant", 46080),
                     Materials.Lubricant.getFluid(46080)
                 },
