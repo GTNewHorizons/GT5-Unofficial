@@ -1034,7 +1034,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
 
     INDIUM(
             GT_BranchDefinition.RAREMETAL,
-            "Electrotine",
+            "Indium",
             false,
             new Color(0xFFA9FF),
             new Color(0x8F5D99),
@@ -1043,9 +1043,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(HOT);
             },
-            template -> AlleleHelper.instance.set(template, SPEED, Speed.FAST),
+            template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(LEAD, OSMIUM, 3);
+                IBeeMutationCustom tMutation = dis.registerMutation(LEAD, OSMIUM, 1);
                 tMutation.requireResource("blockIndium");
                 tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(39, "Venus")); // Venus Dim
             }),
