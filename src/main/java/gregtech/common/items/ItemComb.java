@@ -231,10 +231,10 @@ public class ItemComb extends Item {
                 new int[] {50 * 100, 100 * 100},
                 Voltage.MV);
         addCentrifugeToItemStack(
-            CombType.BLIZZ,
-            new ItemStack[] {ItemList.FR_RefractoryWax.get(1), Materials.Blizz.getDust(1)},
-            new int[] {50 * 100, 100 * 100},
-            Voltage.MV);
+                CombType.BLIZZ,
+                new ItemStack[] {ItemList.FR_RefractoryWax.get(1), Materials.Blizz.getDust(1)},
+                new int[] {50 * 100, 100 * 100},
+                Voltage.MV);
 
         // Alloy
         addProcessGT(CombType.REDALLOY, new Materials[] {Materials.RedAlloy}, Voltage.LV);
