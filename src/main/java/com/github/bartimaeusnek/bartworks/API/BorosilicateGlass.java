@@ -2,6 +2,8 @@ package com.github.bartimaeusnek.bartworks.API;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks2;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.ArrayList;
@@ -26,7 +28,14 @@ public class BorosilicateGlass {
     private static List<Pair<Block, Integer>> representatives;
 
     private static Block getGlassBlock() {
-        if (block == null) block = GameRegistry.findBlock("bartworks", "BW_GlasBlocks");
+        if (block == null || !(block instanceof BW_GlasBlocks))
+            block = GameRegistry.findBlock("bartworks", "BW_GlasBlocks");
+        return block;
+    }
+
+    private static Block getGlassBlock2() {
+        if (block == null || !(block instanceof BW_GlasBlocks2))
+            block = GameRegistry.findBlock("bartworks", "BW_GlasBlocks2");
         return block;
     }
 
@@ -42,6 +51,9 @@ public class BorosilicateGlass {
             ret.add(Pair.of(block, 5));
             ret.add(Pair.of(block, 13));
             ret.add(Pair.of(block, 14));
+            ret.add(Pair.of(block, 15));
+            block = getGlassBlock2();
+            ret.add(Pair.of(block, 0));
             representatives = ret;
         }
         return representatives;
@@ -55,7 +67,7 @@ public class BorosilicateGlass {
      * Check if there is at least one type of boroglass in that tier.
      */
     public static boolean hasGlassInTier(int tier) {
-        return tier >= 3 && tier <= 10;
+        return tier >= 3 && tier <= 12;
     }
 
     /**
@@ -121,6 +133,7 @@ public class BorosilicateGlass {
      */
     public static byte getTier(Block block, int meta) {
         byte ret;
+        if (block instanceof BW_GlasBlocks2) meta += 16;
         switch (meta) {
             case 1:
                 ret = 4;
@@ -144,9 +157,21 @@ public class BorosilicateGlass {
             case 14:
                 ret = 10;
                 break;
+            case 15:
+                ret = 11;
+                break;
+            case 16:
+                ret = 12;
+                break;
             default:
                 ret = 3;
         }
-        return block == getGlassBlock() ? ret : -1;
+        if (block instanceof BW_GlasBlocks) {
+            return block == getGlassBlock() ? ret : -1;
+        }
+        if (block instanceof BW_GlasBlocks2) {
+            return block == getGlassBlock2() ? ret : -1;
+        }
+        return -1;
     }
 }

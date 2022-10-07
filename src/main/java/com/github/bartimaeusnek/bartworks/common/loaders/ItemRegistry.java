@@ -28,10 +28,7 @@ import static com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler.ne
 
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
-import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
-import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
-import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer_MachineBlock;
+import com.github.bartimaeusnek.bartworks.common.blocks.*;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.items.*;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
@@ -152,6 +149,7 @@ public class ItemRegistry {
                 MainMod.MOD_ID + ":ThoriumYttriumGlass",
                 MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
                 MainMod.MOD_ID + ":CosmicNeutroniumReinforcedBoronSilicateGlassBlock",
+                MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock",
             },
             new short[][] {
                 Materials.BorosilicateGlass.getRGBA(),
@@ -168,15 +166,30 @@ public class ItemRegistry {
                 new short[] {0x80, 0x33, 0},
                 WerkstoffLoader.YttriumOxide.getRGBA(),
                 Materials.Neutronium.getRGBA(),
-                Materials.CosmicNeutronium.getRGBA()
+                Materials.CosmicNeutronium.getRGBA(),
+                new short[] {0xda, 0xeb, 0xff},
             },
             MainMod.BIO_TAB,
             true,
             false);
+    public static final Block bw_realglas2 = new BW_GlasBlocks2(
+            "BW_GlasBlocks2",
+            new String[] {MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock"},
+            new short[][] {new short[] {50, 50, 50}},
+            MainMod.BIO_TAB,
+            true,
+            false);
 
-    public static final Block[] bw_glasses = {bw_realglas};
+    public static final Block[] bw_glasses = {bw_realglas, bw_realglas2};
     public static final Block bw_fake_glasses = new BW_GlasBlocks(
             "BW_GlasBlocks", new String[] {MainMod.MOD_ID + ":BoronSilicateGlassBlockRandlos"}, null, null, true, true);
+    public static final Block bw_fake_glasses2 = new BW_GlasBlocks2(
+            "BW_GlasBlocks2",
+            new String[] {MainMod.MOD_ID + ":BoronSilicateGlassBlockRandlos"},
+            null,
+            null,
+            true,
+            true);
     public static final Block[] BW_BLOCKS = {
         new BW_Blocks(
                 "BW_ItemBlocks",
@@ -225,6 +238,7 @@ public class ItemRegistry {
     public static void run() {
         if (newStuff) {
             GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses, "BW_FakeGlasBlock");
+            GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses2, "BW_FakeGlasBlocks2");
             GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BW_ItemBlocks.class, "BW_Machinery_Casings");
             GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
             GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");

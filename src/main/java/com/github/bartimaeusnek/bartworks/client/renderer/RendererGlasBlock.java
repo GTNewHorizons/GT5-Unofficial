@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.client.renderer;
 
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks2;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -78,16 +79,29 @@ public class RendererGlasBlock implements ISimpleBlockRenderingHandler {
     public boolean renderWorldBlock(
             IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         // renderer.setRenderBounds(0.001,0.001,0.001,0.999,0.999,0.999);
-        renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses, x, y, z);
         // renderer.setRenderBounds(0,0,0,1,1,1);
-        renderer.renderStandardBlockWithColorMultiplier(
-                block,
-                x,
-                y,
-                z,
-                ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
-                ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
-                ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
+        if (block instanceof BW_GlasBlocks) {
+            renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses, x, y, z);
+            renderer.renderStandardBlockWithColorMultiplier(
+                    block,
+                    x,
+                    y,
+                    z,
+                    ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
+                    ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
+                    ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
+        }
+        if (block instanceof BW_GlasBlocks2) {
+            renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses2, x, y, z);
+            renderer.renderStandardBlockWithColorMultiplier(
+                    block,
+                    x,
+                    y,
+                    z,
+                    ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
+                    ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
+                    ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
+        }
         return true;
     }
 

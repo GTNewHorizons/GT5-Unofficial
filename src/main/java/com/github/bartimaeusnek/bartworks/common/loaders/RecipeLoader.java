@@ -411,6 +411,18 @@ public class RecipeLoader {
                     new ItemStack(ItemRegistry.bw_glasses[0], 1, 14),
                     800,
                     BW_Util.getMachineVoltageFromTier(9));
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack(ItemRegistry.bw_glasses[0], 1, 0),
+                    Materials.Infinity.getMolten(1152),
+                    new ItemStack(ItemRegistry.bw_glasses[0], 1, 15),
+                    800,
+                    BW_Util.getMachineVoltageFromTier(10));
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    new ItemStack(ItemRegistry.bw_glasses[0], 1, 0),
+                    Materials.TranscendentMetal.getMolten(1152),
+                    new ItemStack(ItemRegistry.bw_glasses[1], 1, 0),
+                    800,
+                    BW_Util.getMachineVoltageFromTier(11));
 
             for (int i = 0; i < Dyes.dyeBrown.getSizeOfFluidList(); ++i) {
                 GT_Values.RA.addChemicalBathRecipe(
@@ -514,6 +526,18 @@ public class RecipeLoader {
                     null,
                     800,
                     BW_Util.getMachineVoltageFromTier(10));
+            GT_Values.RA.addPulveriserRecipe(
+                    new ItemStack(ItemRegistry.bw_glasses[0], 1, 15),
+                    new ItemStack[] {Materials.BorosilicateGlass.getDust(9), Materials.Infinity.getDust(8)},
+                    null,
+                    800,
+                    BW_Util.getMachineVoltageFromTier(11));
+            GT_Values.RA.addPulveriserRecipe(
+                    new ItemStack(ItemRegistry.bw_glasses[1], 1, 0),
+                    new ItemStack[] {Materials.BorosilicateGlass.getDust(9), Materials.TranscendentMetal.getDust(8)},
+                    null,
+                    800,
+                    BW_Util.getMachineVoltageFromTier(12));
 
             for (int i = 6; i < 11; i++) {
                 GT_Values.RA.addPulveriserRecipe(

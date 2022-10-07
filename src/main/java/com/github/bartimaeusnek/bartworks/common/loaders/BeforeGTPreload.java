@@ -92,6 +92,7 @@ public class BeforeGTPreload implements Runnable {
                     .getField("bw_glasses")
                     .get(null);
             GameRegistry.registerBlock(bw_glasses[0], BW_ItemBlocks.class, "BW_GlasBlocks");
+            GameRegistry.registerBlock(bw_glasses[1], BW_ItemBlocks.class, "BW_GlasBlocks2");
             OreDictionary.registerOre("blockGlassHV", new ItemStack(Blocks.glass, 1, Short.MAX_VALUE));
             OreDictionary.registerOre("blockGlassHV", new ItemStack(bw_glasses[0], 1, 0));
             OreDictionary.registerOre("blockGlassEV", Ic2Items.reinforcedGlass);
@@ -103,6 +104,8 @@ public class BeforeGTPreload implements Runnable {
             OreDictionary.registerOre("blockGlassUV", new ItemStack(bw_glasses[0], 1, 5));
             OreDictionary.registerOre("blockGlassUHV", new ItemStack(bw_glasses[0], 1, 13));
             OreDictionary.registerOre("blockGlassUEV", new ItemStack(bw_glasses[0], 1, 14));
+            OreDictionary.registerOre("blockGlassUIV", new ItemStack(bw_glasses[0], 1, 15));
+            OreDictionary.registerOre("blockGlassUMV", new ItemStack(bw_glasses[1], 1, 0));
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException e) {
             e.printStackTrace();
             FMLCommonHandler.instance().exitJava(-1, true);
