@@ -1034,7 +1034,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
 
     INDIUM(
             GT_BranchDefinition.RAREMETAL,
-            "Electrotine",
+            "Indium",
             false,
             new Color(0xFFA9FF),
             new Color(0x8F5D99),
