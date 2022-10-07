@@ -1019,7 +1019,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     // Sulfur bee, Humidity: normal, Temperature: Hot, Parents: PEAT & Ash, Mutationrate: 15%, Combrate: 80%
     SULFUR(
             GT_BranchDefinition.RAREMETAL,
-            "Electrotine",
+            "Sulfur",
             false,
             new Color(0x1E90FF),
             new Color(0x3CB4C8),
@@ -1176,7 +1176,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0x5af7ff),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.COOLANT), 0.20f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.CRYOTHEUM), 0.15f);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.BLIZZ), 0.15f);
                 beeSpecies.setHumidity(ARID);
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setHasEffect();
