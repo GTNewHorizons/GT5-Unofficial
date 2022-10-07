@@ -227,6 +227,11 @@ public class ItemComb extends Item {
                 30 * 100);
         addCentrifugeToItemStack(
                 CombType.CRYOTHEUM,
+                new ItemStack[] {ItemList.FR_RefractoryWax.get(1), Materials.Cryotheum.getDust(1)},
+                new int[] {50 * 100, 100 * 100},
+                Voltage.MV);
+        addCentrifugeToItemStack(
+                CombType.BLIZZ,
                 new ItemStack[] {ItemList.FR_RefractoryWax.get(1), Materials.Blizz.getDust(1)},
                 new int[] {50 * 100, 100 * 100},
                 Voltage.MV);

@@ -18,7 +18,7 @@ public enum CombType {
     ENERGY(7, "energy", true, Materials._NULL, 80, 0xC11F1F, 0xEBB9B9),
     LAPOTRON(8, "lapotron", true, Materials._NULL, 60, 0x1414FF, 0x6478FF),
     PYROTHEUM(9, "pyrotheum", true, Materials.Pyrotheum, 50, 0xffebc4, 0xe36400),
-    CRYOTHEUM(10, "cryotheum", true, Materials.Pyrotheum, 50, 0x2660ff, 0x5af7ff),
+    CRYOTHEUM(10, "cryotheum", true, Materials.Cryotheum, 50, 0x2660ff, 0x5af7ff),
 
     // Alloy Line
     REDALLOY(11, "redalloy", true, Materials.RedAlloy, 100, 0xE60000, 0xB80000),
@@ -198,6 +198,7 @@ public enum CombType {
     // ESSENTIA gets a use soon. Dont remove.
     ESSENTIA(158, "essentia", true, Materials._NULL, 100, 0xED3601, 0xFF6D50),
     INDIUM(159, "indium", true, Materials.Indium, 100, 0x8F5D99, 0xFFA9FF),
+    BLIZZ(160, "cryotheum", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
