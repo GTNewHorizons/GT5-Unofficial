@@ -32,7 +32,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.*;
 import net.bdew.gendustry.api.ApiaryModifiers;
-import net.bdew.gendustry.api.items.IApiaryUpgrade;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -553,7 +552,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     || beeRoot.isMember(aStack, EnumBeeType.PRINCESS.ordinal());
         else if (aIndex == drone) return beeRoot.isMember(aStack, EnumBeeType.DRONE.ordinal());
         else if (aIndex < getOutputSlot()) {
-            if (!(aStack.getItem() instanceof IApiaryUpgrade) && !GT_ApiaryUpgrade.isUpgrade(aStack)) return false;
+            if (!GT_ApiaryUpgrade.isUpgrade(aStack)) return false;
             for (int i = drone + 1; i < drone + 1 + 4; i++) {
                 if (aIndex == i) continue;
                 ItemStack s = getStackInSlot(i);
@@ -828,15 +827,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         for (int i = 2; i < 2 + 4; i++) {
             ItemStack s = getInputAt(i);
             if (s == null) continue;
-            if (s.getItem() instanceof IApiaryUpgrade) {
-                IApiaryUpgrade up = (IApiaryUpgrade) s.getItem();
-                up.applyModifiers(mods, s);
-            } else if (GT_ApiaryUpgrade.isUpgrade(s)) {
+            if (GT_ApiaryUpgrade.isUpgrade(s)) {
                 GT_ApiaryUpgrade upgrade = GT_ApiaryUpgrade.getUpgrade(s);
-                if (upgrade != null) {
-                    maxspeed = upgrade.applyMaxSpeedModifier(maxspeed);
-                    upgrade.applyModifiers(mods, s);
-                }
+                maxspeed = upgrade.applyMaxSpeedModifier(maxspeed);
+                upgrade.applyModifiers(mods, s);
             }
         }
 
