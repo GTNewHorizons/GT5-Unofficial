@@ -22,6 +22,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_ApiaryModifier;
 import gregtech.api.util.GT_ApiaryUpgrade;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
@@ -31,7 +32,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.*;
-import net.bdew.gendustry.api.ApiaryModifiers;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -818,19 +818,16 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private float temperatureMod = 0f;
     private boolean isAutomated = false;
     private boolean isRetrievingPollen = false;
-
     private int maxspeed = 0;
 
     public void updateModifiers() {
-        maxspeed = 0;
-        ApiaryModifiers mods = new ApiaryModifiers();
+        GT_ApiaryModifier mods = new GT_ApiaryModifier();
         for (int i = 2; i < 2 + 4; i++) {
             ItemStack s = getInputAt(i);
             if (s == null) continue;
             if (GT_ApiaryUpgrade.isUpgrade(s)) {
                 GT_ApiaryUpgrade upgrade = GT_ApiaryUpgrade.getUpgrade(s);
-                maxspeed = upgrade.applyMaxSpeedModifier(maxspeed);
-                upgrade.applyModifiers(mods, s);
+                upgrade.applyModifiers(mods);
             }
         }
 
@@ -849,6 +846,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         temperatureMod = mods.temperature;
         isAutomated = mods.isAutomated;
         isRetrievingPollen = mods.isCollectingPollen;
+        maxspeed = mods.maxSpeed;
 
         if (mLockedSpeed) mSpeed = maxspeed;
         else mSpeed = Math.min(mSpeed, maxspeed);

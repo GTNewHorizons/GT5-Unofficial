@@ -4,20 +4,20 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
 import java.util.*;
 import java.util.function.Consumer;
-import net.bdew.gendustry.api.ApiaryModifiers;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public enum GT_ApiaryUpgrade {
-    speed1(UNIQUE_INDEX.SPEED_UPGRADE, 32200, 1, 1),
-    speed2(UNIQUE_INDEX.SPEED_UPGRADE, 32201, 1, 2),
-    speed3(UNIQUE_INDEX.SPEED_UPGRADE, 32202, 1, 3),
-    speed4(UNIQUE_INDEX.SPEED_UPGRADE, 32203, 1, 4),
-    speed5(UNIQUE_INDEX.SPEED_UPGRADE, 32204, 1, 5),
-    speed6(UNIQUE_INDEX.SPEED_UPGRADE, 32205, 1, 6),
-    speed7(UNIQUE_INDEX.SPEED_UPGRADE, 32206, 1, 7),
-    speed8(UNIQUE_INDEX.SPEED_UPGRADE, 32207, 1, 8),
-    speed8upgraded(UNIQUE_INDEX.SPEED_UPGRADE, 32208, 1, 8, (mods) -> {
+    speed1(UNIQUE_INDEX.SPEED_UPGRADE, 32200, 1, (mods) -> mods.maxSpeed = 1),
+    speed2(UNIQUE_INDEX.SPEED_UPGRADE, 32201, 1, (mods) -> mods.maxSpeed = 2),
+    speed3(UNIQUE_INDEX.SPEED_UPGRADE, 32202, 1, (mods) -> mods.maxSpeed = 3),
+    speed4(UNIQUE_INDEX.SPEED_UPGRADE, 32203, 1, (mods) -> mods.maxSpeed = 4),
+    speed5(UNIQUE_INDEX.SPEED_UPGRADE, 32204, 1, (mods) -> mods.maxSpeed = 5),
+    speed6(UNIQUE_INDEX.SPEED_UPGRADE, 32205, 1, (mods) -> mods.maxSpeed = 6),
+    speed7(UNIQUE_INDEX.SPEED_UPGRADE, 32206, 1, (mods) -> mods.maxSpeed = 7),
+    speed8(UNIQUE_INDEX.SPEED_UPGRADE, 32207, 1, (mods) -> mods.maxSpeed = 8),
+    speed8upgraded(UNIQUE_INDEX.SPEED_UPGRADE, 32208, 1, (mods) -> {
+        mods.maxSpeed = 8;
         mods.production = 2f;
         mods.energy *= 14.75;
     }),
@@ -142,43 +142,17 @@ public enum GT_ApiaryUpgrade {
 
     private int meta = 0;
     private int maxnumber = 1;
-    private int maxspeedmodifier = 0; // formula: maxspeed = modifier
 
     private final GT_Utility.ItemId id;
     private final UNIQUE_INDEX unique_index;
-    private final Consumer<ApiaryModifiers> applier;
+    private final Consumer<GT_ApiaryModifier> applier;
 
-    private final HashSet<GT_Utility.ItemId> blacklistedUpgrades =
-            new HashSet<>(); // additionalGendustryUpgrades are blacklisted by default
+    private final HashSet<GT_Utility.ItemId> blacklistedUpgrades = new HashSet<>();
 
-    GT_ApiaryUpgrade(UNIQUE_INDEX unique_index, int meta, int maxnumber, Consumer<ApiaryModifiers> applier) {
+    GT_ApiaryUpgrade(UNIQUE_INDEX unique_index, int meta, int maxnumber, Consumer<GT_ApiaryModifier> applier) {
         this.unique_index = unique_index;
         this.meta = meta;
         this.maxnumber = maxnumber;
-        this.maxspeedmodifier = 0;
-        this.applier = applier;
-        this.id = GT_Utility.ItemId.createNoCopy(get(1));
-    }
-
-    GT_ApiaryUpgrade(UNIQUE_INDEX unique_index, int meta, int maxnumber, int maxspeedmodifier) {
-        this.unique_index = unique_index;
-        this.meta = meta;
-        this.maxnumber = maxnumber;
-        this.maxspeedmodifier = maxspeedmodifier;
-        applier = null;
-        this.id = GT_Utility.ItemId.createNoCopy(get(1));
-    }
-
-    GT_ApiaryUpgrade(
-            UNIQUE_INDEX unique_index,
-            int meta,
-            int maxnumber,
-            int maxspeedmodifier,
-            Consumer<ApiaryModifiers> applier) {
-        this.unique_index = unique_index;
-        this.meta = meta;
-        this.maxnumber = maxnumber;
-        this.maxspeedmodifier = maxspeedmodifier;
         this.applier = applier;
         this.id = GT_Utility.ItemId.createNoCopy(get(1));
     }
@@ -213,7 +187,7 @@ public enum GT_ApiaryUpgrade {
         return maxnumber;
     }
 
-    public void applyModifiers(ApiaryModifiers mods, ItemStack s) {
+    public void applyModifiers(GT_ApiaryModifier mods) {
         if (applier != null) applier.accept(mods);
     }
 
@@ -223,10 +197,6 @@ public enum GT_ApiaryUpgrade {
 
     public static boolean isUpgrade(ItemStack s) {
         return OrePrefixes.apiaryUpgrade.contains(s);
-    }
-
-    public int applyMaxSpeedModifier(int maxspeed) {
-        return Math.max(maxspeed, maxspeedmodifier);
     }
 
     private static final HashMap<Integer, GT_ApiaryUpgrade> quickLookup = new HashMap<>();
