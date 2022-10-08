@@ -14,6 +14,7 @@ import forestry.api.core.*;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IEffectData;
 import forestry.api.genetics.IIndividual;
+import forestry.apiculture.genetics.Bee;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
 import gregtech.api.interfaces.ITexture;
@@ -232,9 +233,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 IAlleleBeeSpecies primary = genome.getPrimary();
                 IAlleleBeeSpecies secondary = genome.getSecondary();
 
-                float speed = genome.getSpeed()
-                        * getProductionModifier(null, 1f)
-                        * beemodifier.getProductionModifier(null, 1.f);
+                float speed = genome.getSpeed();
+                float prodMod = getProductionModifier(null, 1f) * beemodifier.getProductionModifier(null, 1.f);
 
                 HashMap<GT_Utility.ItemId, Float> drops = new HashMap<>();
                 HashMap<GT_Utility.ItemId, ItemStack> dropstacks = new HashMap<>();
@@ -244,7 +244,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(entry.getKey());
                     drops.merge(
                             id,
-                            Math.min(1f, entry.getValue() * speed) * (float) entry.getKey().stackSize * cycles,
+                            Bee.getFinalChance(entry.getValue(), speed, prodMod, 8f)
+                                    * (float) entry.getKey().stackSize
+                                    * cycles,
                             Float::sum);
                     dropstacks.computeIfAbsent(id, k -> entry.getKey());
                 }
@@ -253,7 +255,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(entry.getKey());
                     drops.merge(
                             id,
-                            Math.min(1f, (float) Math.round(entry.getValue() / 2.0F) * speed)
+                            Bee.getFinalChance(entry.getValue() / 2f, speed, prodMod, 8f)
                                     * (float) entry.getKey().stackSize
                                     * cycles,
                             Float::sum);
@@ -265,7 +267,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                         GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(entry.getKey());
                         drops.merge(
                                 id,
-                                Math.min(1f, entry.getValue() * speed) * (float) entry.getKey().stackSize * cycles,
+                                Bee.getFinalChance(entry.getValue(), speed, prodMod, 8f)
+                                        * (float) entry.getKey().stackSize
+                                        * cycles,
                                 Float::sum);
                         dropstacks.computeIfAbsent(id, k -> entry.getKey());
                     }
