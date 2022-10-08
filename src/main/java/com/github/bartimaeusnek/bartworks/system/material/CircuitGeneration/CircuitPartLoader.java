@@ -65,7 +65,8 @@ public class CircuitPartLoader implements Runnable {
                     || single == Circuit_Parts_Capacitor
                     || single == Circuit_Parts_Diode
                     || single == Circuit_Parts_Resistor
-                    || single == Circuit_Parts_Transistor) {
+                    || single == Circuit_Parts_Transistor
+                    || single == Circuit_Parts_Coil) {
 
                 CircuitImprintLoader.blacklistSet.add(single.get(1));
             }
@@ -121,7 +122,7 @@ public class CircuitPartLoader implements Runnable {
             Circuit_Board_Bio,
             Circuit_Board_Bio_Ultra,
             Circuit_Parts_ResistorSMD,
-            Circuit_Parts_Coil,
+            Circuit_Parts_InductorSMD,
             Circuit_Parts_DiodeSMD,
             Circuit_Parts_TransistorSMD,
             Circuit_Parts_CapacitorSMD,
@@ -157,5 +158,7 @@ public class CircuitPartLoader implements Runnable {
             Circuit_Parts_ResistorXSMD,
             Circuit_Parts_DiodeXSMD,
             Circuit_Parts_TransistorXSMD,
-            Circuit_Parts_CapacitorXSMD));
+            Circuit_Parts_CapacitorXSMD,
+            Circuit_Parts_InductorASMD,
+            Circuit_Parts_InductorXSMD));
 }
