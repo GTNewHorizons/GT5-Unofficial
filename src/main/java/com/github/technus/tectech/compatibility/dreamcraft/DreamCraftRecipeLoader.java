@@ -2939,7 +2939,9 @@ public class DreamCraftRecipeLoader {
                 new Object[] {
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 2),
                     ItemList.Circuit_Wetwaresupercomputer.get(2L),
-                    ItemList.ZPM_Coil.get(16L),
+                    new ItemStack[] {
+                        ItemList.Circuit_Parts_InductorASMD.get(16L), ItemList.Circuit_Parts_InductorXSMD.get(4L)
+                    },
                     new ItemStack[] {
                         ItemList.Circuit_Parts_CapacitorASMD.get(16L), ItemList.Circuit_Parts_CapacitorXSMD.get(4L)
                     },
@@ -3009,7 +3011,9 @@ public class DreamCraftRecipeLoader {
                 new Object[] {
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 4L),
                     ItemList.Circuit_Biowaresupercomputer.get(2L),
-                    ItemList.UV_Coil.get(16L),
+                    new ItemStack[] {
+                        ItemList.Circuit_Parts_InductorASMD.get(24L), ItemList.Circuit_Parts_InductorXSMD.get(6L)
+                    },
                     new ItemStack[] {
                         ItemList.Circuit_Parts_TransistorASMD.get(24L), ItemList.Circuit_Parts_TransistorXSMD.get(6L)
                     },
