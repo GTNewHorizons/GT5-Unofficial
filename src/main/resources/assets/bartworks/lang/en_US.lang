@@ -149,6 +149,7 @@ tile.biovat.name=Bacterial Vat
 tile.radiohatch.name=Radio Hatch
 tile.bw.windmill.name=Windmill
 tile.manutrafo.name=Manual Trafo
+tile.BioFluidBlock.name=Bio Fluid Block
 
 item.TRISOPellet.name=TRISO pebble
 item.TRISOPelletBall.name=TRISO pebble ball
