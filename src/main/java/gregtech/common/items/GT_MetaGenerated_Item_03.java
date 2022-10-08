@@ -617,6 +617,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.WovenKevlar.set(addItem(tLastID = 193, "Woven Kevlar", "For make Kevlar Plates", o));
         ItemList.Spinneret.set(addItem(tLastID = 194, "Spinneret", "For make Kevlar Fiber", o));
 
+        ItemList.IndustrialApiary_Upgrade_Frame.set(addItem(tLastID = 199, "Upgrade Frame", "Crafting component", o));
+
         ItemList.IndustrialApiary_Upgrade_Acceleration_1.set(addItem(
                 tLastID = 200,
                 "Acceleration Upgrade x2",
