@@ -70,7 +70,7 @@ public enum GT_ApiaryUpgrade {
         mods.energy *= 1.05f;
     }),
     lifespan(UNIQUE_INDEX.LIFESPAN_UPGRADE, 32221, 4, (mods) -> {
-        mods.lifespan *= 0.67f;
+        mods.lifespan /= 1.5f;
         mods.energy *= 1.05f;
     }),
     seal(UNIQUE_INDEX.SEAL_UPGRADE, 32222, 1, (mods) -> {
