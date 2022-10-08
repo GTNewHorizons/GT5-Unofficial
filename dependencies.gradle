@@ -16,7 +16,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:EnderCore:0.2.10:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.14:dev") {
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.5.0:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:gendustry:1.6.5.4-GTNH:dev") {
