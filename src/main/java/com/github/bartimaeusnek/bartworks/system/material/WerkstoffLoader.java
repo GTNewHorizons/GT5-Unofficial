@@ -1820,6 +1820,7 @@ public class WerkstoffLoader {
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {
             WerkstoffLoader.items.put(plate, new BW_MetaGenerated_Items(plate));
+            WerkstoffLoader.items.put(foil, new BW_MetaGenerated_Items(foil));
             WerkstoffLoader.items.put(stick, new BW_MetaGenerated_Items(stick));
             WerkstoffLoader.items.put(stickLong, new BW_MetaGenerated_Items(stickLong));
             WerkstoffLoader.items.put(toolHeadWrench, new BW_MetaGenerated_Items(toolHeadWrench));
