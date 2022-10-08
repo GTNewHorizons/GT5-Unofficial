@@ -7322,6 +7322,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             ItemList.Machine_IndustrialApiary.set(new GT_MetaTileEntity_IndustrialApiary(
                             9399, "basicmachine.industrialapiary", "Industrial Apiary", 8)
                     .getStackForm(1L));
+
             /* Conversion recipes */
             GT_ModHandler.addShapelessCraftingRecipe(
                     ItemList.Machine_IndustrialApiary.get(1L),
@@ -7389,130 +7390,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             GT_ModHandler.addShapelessCraftingRecipe(
                     ItemList.IndustrialApiary_Upgrade_SIEVE.get(1L),
                     new Object[] {GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 15)});
-
-            /* NEW UPGRADES */
-            GT_ModHandler.addCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(6L), bitsd, new Object[] {
-                        "PFP",
-                        "FAF",
-                        "OFO",
-                        'O',
-                        OrePrefixes.gearGtSmall.get(Materials.Osmium),
-                        'P',
-                        OrePrefixes.gearGtSmall.get(Materials.Palladium),
-                        'F',
-                        GT_ModHandler.getModItem("gendustry", "UpgradeFrame", 1, 0),
-                        'A',
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11100)
-                    });
-            GT_ModHandler.addCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_Acceleration_2.get(6L), bitsd, new Object[] {
-                        "PFP",
-                        "FAF",
-                        "OFO",
-                        'O',
-                        OrePrefixes.gearGtSmall.get(Materials.Osmium),
-                        'P',
-                        OrePrefixes.gearGtSmall.get(Materials.Palladium),
-                        'F',
-                        GT_ModHandler.getModItem("gendustry", "UpgradeFrame", 1, 0),
-                        'A',
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11101)
-                    });
-            GT_ModHandler.addCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_Acceleration_3.get(6L), bitsd, new Object[] {
-                        "PFP",
-                        "FAF",
-                        "OFO",
-                        'O',
-                        OrePrefixes.gearGtSmall.get(Materials.Osmium),
-                        'P',
-                        OrePrefixes.gearGtSmall.get(Materials.Palladium),
-                        'F',
-                        GT_ModHandler.getModItem("gendustry", "UpgradeFrame", 1, 0),
-                        'A',
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11102)
-                    });
-            GT_ModHandler.addCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_Acceleration_4.get(6L), bitsd, new Object[] {
-                        "PFP",
-                        "FAF",
-                        "OFO",
-                        'O',
-                        OrePrefixes.gearGtSmall.get(Materials.Osmium),
-                        'P',
-                        OrePrefixes.gearGtSmall.get(Materials.Palladium),
-                        'F',
-                        GT_ModHandler.getModItem("gendustry", "UpgradeFrame", 1, 0),
-                        'A',
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11103)
-                    });
-            GT_ModHandler.addCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_Acceleration_5.get(6L), bitsd, new Object[] {
-                        "PFP",
-                        "FAF",
-                        "OFO",
-                        'O',
-                        OrePrefixes.gearGtSmall.get(Materials.Osmium),
-                        'P',
-                        OrePrefixes.gearGtSmall.get(Materials.Palladium),
-                        'F',
-                        GT_ModHandler.getModItem("gendustry", "UpgradeFrame", 1, 0),
-                        'A',
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11104)
-                    });
-            GT_ModHandler.addCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_Acceleration_6.get(6L), bitsd, new Object[] {
-                        "PFP",
-                        "FAF",
-                        "OFO",
-                        'O',
-                        OrePrefixes.gearGtSmall.get(Materials.Osmium),
-                        'P',
-                        OrePrefixes.gearGtSmall.get(Materials.Palladium),
-                        'F',
-                        GT_ModHandler.getModItem("gendustry", "UpgradeFrame", 1, 0),
-                        'A',
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11105)
-                    });
-            GT_ModHandler.addCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_Acceleration_7.get(6L), bitsd, new Object[] {
-                        "PFP",
-                        "FAF",
-                        "OFO",
-                        'O',
-                        OrePrefixes.gearGtSmall.get(Materials.Osmium),
-                        'P',
-                        OrePrefixes.gearGtSmall.get(Materials.Palladium),
-                        'F',
-                        GT_ModHandler.getModItem("gendustry", "UpgradeFrame", 1, 0),
-                        'A',
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11106)
-                    });
-            GT_ModHandler.addCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_Acceleration_8.get(6L), bitsd, new Object[] {
-                        "PFP",
-                        "FAF",
-                        "OFO",
-                        'O',
-                        OrePrefixes.gearGtSmall.get(Materials.Osmium),
-                        'P',
-                        OrePrefixes.gearGtSmall.get(Materials.Palladium),
-                        'F',
-                        GT_ModHandler.getModItem("gendustry", "UpgradeFrame", 1, 0),
-                        'A',
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11107)
-                    });
-            GT_ModHandler.addCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.get(1L), bitsd, new Object[] {
-                        "PPP",
-                        "PAP",
-                        "PPP",
-                        'P',
-                        ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(1),
-                        'A',
-                        ItemList.IndustrialApiary_Upgrade_Acceleration_8.get(1)
-                    });
         }
 
         ItemList.Machine_LV_Massfab.set(
