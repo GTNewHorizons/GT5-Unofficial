@@ -40,12 +40,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_DummyWorld;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
@@ -316,13 +316,26 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
             startRecipeProcessing();
             if (setupphase == 1 && mStorage.size() < mMaxSlots) {
                 List<ItemStack> inputs = getStoredInputs();
-                for (ItemStack input : inputs) if (addCrop(input)) break;
+                for (ItemStack input : inputs) addCrop(input);
                 this.updateSlots();
             } else if (setupphase == 2 && mStorage.size() > 0) {
-                this.addOutput(this.mStorage.get(0).input.copy());
-                if (this.mStorage.get(0).undercrop != null)
-                    this.addOutput(this.mStorage.get(0).undercrop.copy());
-                this.mStorage.remove(0);
+                int emptySlots = 0;
+                boolean ignoreEmptiness = false;
+                for (GT_MetaTileEntity_Hatch_OutputBus i : mOutputBusses) {
+                    if (i instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
+                        ignoreEmptiness = true;
+                        break;
+                    }
+                    for (int j = 0; j < i.getSizeInventory(); j++)
+                        if (i.isValidSlot(j)) if (i.getStackInSlot(j) == null) emptySlots++;
+                }
+                while (mStorage.size() > 0) {
+                    if (!ignoreEmptiness && (emptySlots -= 2) < 0) break;
+                    this.addOutput(this.mStorage.get(0).input.copy());
+                    if (this.mStorage.get(0).undercrop != null)
+                        this.addOutput(this.mStorage.get(0).undercrop.copy());
+                    this.mStorage.remove(0);
+                }
                 this.updateSlots();
             }
             endRecipeProcessing();
@@ -366,8 +379,34 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
 
         waterusage = 0;
         for (GreenHouseSlot s : mStorage) waterusage += s.input.stackSize;
+        waterusage *= 1000;
 
-        if (!depleteInput(new FluidStack(FluidRegistry.WATER, waterusage * 1000)) && !debug) return false;
+        List<GT_MetaTileEntity_Hatch_Input> fluids = mInputHatches;
+        List<GT_MetaTileEntity_Hatch_Input> fluidsToUse = new ArrayList<>(fluids.size());
+        int watercheck = waterusage;
+        FluidStack waterStack = new FluidStack(FluidRegistry.WATER, 1);
+        for (GT_MetaTileEntity_Hatch_Input i : fluids) {
+            if (!isValidMetaTileEntity(i)) continue;
+            if (i instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+                int amount = ((GT_MetaTileEntity_Hatch_MultiInput) i).getFluidAmount(waterStack);
+                if (amount == 0) continue;
+                watercheck -= amount;
+            } else {
+                FluidStack stack = i.getDrainableStack();
+                if (stack == null) continue;
+                if (!stack.isFluidEqual(waterStack)) continue;
+                if (stack.amount <= 0) continue;
+                watercheck -= stack.amount;
+            }
+            fluidsToUse.add(i);
+            if (watercheck <= 0) break;
+        }
+        if (watercheck > 0 && !debug) return false;
+        watercheck = waterusage;
+        for (GT_MetaTileEntity_Hatch_Input i : fluidsToUse) {
+            int used = i.drain(watercheck, true).amount;
+            watercheck -= used;
+        }
 
         // OVERCLOCK
         // FERTILIZER IDEA - IC2 +10% per fertilizer per crop per operation, NORMAL +200% per fertilizer per crop per
@@ -459,7 +498,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
                                 ? (isIC2Mode ? "IC2 crops" : "Normal crops")
                                 : ("Setup mode " + (setupphase == 1 ? "(input)" : "(output)")))
                         + EnumChatFormatting.RESET,
-                "Uses " + waterusage * 1000 + "L/operation of water",
+                "Uses " + waterusage + "L/operation of water",
                 "Max slots: " + EnumChatFormatting.GREEN + this.mMaxSlots + EnumChatFormatting.RESET,
                 "Used slots: " + ((mStorage.size() > mMaxSlots) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
                         + this.mStorage.size() + EnumChatFormatting.RESET));
