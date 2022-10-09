@@ -1034,7 +1034,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
 
     INDIUM(
             GT_BranchDefinition.RAREMETAL,
-            "Indium",
+            "Electrotine",
             false,
             new Color(0xFFA9FF),
             new Color(0x8F5D99),
@@ -1043,9 +1043,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(HOT);
             },
-            template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST),
+            template -> AlleleHelper.instance.set(template, SPEED, Speed.FAST),
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(LEAD, OSMIUM, 1);
+                IBeeMutationCustom tMutation = dis.registerMutation(LEAD, OSMIUM, 3);
                 tMutation.requireResource("blockIndium");
                 tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(39, "Venus")); // Venus Dim
             }),
@@ -3770,6 +3770,24 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 tMutation.restrictTemperature(ICY);
                 tMutation.requireResource(GameRegistry.findBlock("gregtech", "gt.blockgem1"), 7);
             }),
+    LIFEANDDEATH(
+        GT_BranchDefinition.INFUSEDSHARD,
+        "Life and Death",
+        false,
+        new Color(0xB3240C),
+        new Color(0x325249),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LIFEANDDEATH), 0.30f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        },
+        template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
+        dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(NETHERSHARD, ENDSHARD, 15);
+            tMutation.restrictTemperature(ICY);
+            tMutation.requireResource(GameRegistry.findBlock("AWWayOfTime", "blockCrystal"), 0);
+        }),
     // Organic branch 2.0
     UNKNOWNWATER(
             GT_BranchDefinition.ORGANIC,

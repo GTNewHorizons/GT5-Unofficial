@@ -199,6 +199,7 @@ public enum CombType {
     ESSENTIA(158, "essentia", true, Materials._NULL, 100, 0xED3601, 0xFF6D50),
     INDIUM(159, "indium", true, Materials.Indium, 100, 0x8F5D99, 0xFFA9FF),
     BLIZZ(160, "cryotheum", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff),
+    LIFEANDDEATH(161, "cryotheum", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
