@@ -10,7 +10,8 @@ import org.lwjgl.opengl.GL11;
 
 public class TESR_SETether extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation tetherBeamTexture = new ResourceLocation(KekzCore.MODID, "textures/effects/Tether_beam.png");
+    private static final ResourceLocation tetherBeamTexture =
+            new ResourceLocation(KekzCore.MODID, "textures/effects/Tether_beam.png");
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
@@ -46,7 +47,7 @@ public class TESR_SETether extends TileEntitySpecialRenderer {
         final double uv_x1 = 0.0D;
         final double uv_x2 = 1.0D;
         final double uv_y1 = -1.0D; // This makes the beam stream upwards if you add a time sensitive number to it
-        final double uv_y2 = (double)(256.0F * beamLengthScale) * (0.5D / halfBeamWidth) + uv_y1;
+        final double uv_y2 = (double) (256.0F * beamLengthScale) * (0.5D / halfBeamWidth) + uv_y1;
         // Construct mesh with texture
         tessellator.addVertexWithUV(x + d_rot1, y + height, z + d_rot2, uv_x2, uv_y2);
         tessellator.addVertexWithUV(x + d_rot1, y, z + d_rot2, uv_x2, uv_y1);
@@ -72,5 +73,4 @@ public class TESR_SETether extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
     }
-
 }

@@ -1,7 +1,6 @@
 package common.blocks;
 
 import common.tileentities.TE_BeamTransmitter;
-import common.tileentities.TE_SpaceElevatorTether;
 import cpw.mods.fml.common.registry.GameRegistry;
 import kekztech.KekzCore;
 import net.minecraft.block.Block;
@@ -41,15 +40,12 @@ public class Block_BeamTransmitter extends Block {
     }
 
     @Override
-    public boolean isOpaqueCube()
-    {
+    public boolean isOpaqueCube() {
         return false;
     }
 
     @Override
-    public boolean renderAsNormalBlock()
-    {
+    public boolean renderAsNormalBlock() {
         return false;
     }
-
 }

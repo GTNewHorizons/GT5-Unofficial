@@ -1,6 +1,5 @@
 package common.tileentities;
 
-import client.GTTexture;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -8,6 +7,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import java.util.HashMap;
 import kekztech.MultiFluidHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,16 +18,16 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import java.util.HashMap;
-
 public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
 
     private static final HashMap<Integer, Integer> vals = new HashMap<>();
+
     static {
         vals.put(3, 2000);
         vals.put(5, 20000);
         vals.put(7, 200000);
     }
+
     private static final int INV_SLOT_COUNT = 2;
 
     private MultiFluidHandler mfh;
@@ -35,10 +35,10 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
 
     public GTMTE_TFFTMultiHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, INV_SLOT_COUNT, new String[] {
-                "All-in-one access for the T.F.F.T",
-                "Right-click with a screwdriver to toggle auto-output",
-                "Throughput: " + vals.get(aTier) + "L/s per fluid"}
-        );
+            "All-in-one access for the T.F.F.T",
+            "Right-click with a screwdriver to toggle auto-output",
+            "Throughput: " + vals.get(aTier) + "L/s per fluid"
+        });
     }
 
     public GTMTE_TFFTMultiHatch(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -67,14 +67,16 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        //return new ITexture[]{aBaseTexture, new GT_RenderedTexture(GTTexture.MULTI_HATCH_ON)};
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL)};
+        // return new ITexture[]{aBaseTexture, new GT_RenderedTexture(GTTexture.MULTI_HATCH_ON)};
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        //return new ITexture[]{aBaseTexture, new GT_RenderedTexture(GTTexture.MULTI_HATCH_OFF)};
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_PIPE_POLYTETRAFLUOROETHYLENE)};
+        // return new ITexture[]{aBaseTexture, new GT_RenderedTexture(GTTexture.MULTI_HATCH_OFF)};
+        return new ITexture[] {
+            aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_PIPE_POLYTETRAFLUOROETHYLENE)
+        };
     }
 
     @Override
@@ -101,7 +103,7 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && mfh != null) {
-            if(outputting && (aTick % 20 == 0)) {
+            if (outputting && (aTick % 20 == 0)) {
                 doAutoOutputPerSecond(aBaseMetaTileEntity);
             }
         }
@@ -114,14 +116,15 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
      */
     private void doAutoOutputPerSecond(IGregTechTileEntity aBaseMetaTileEntity) {
         final ForgeDirection outSide = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing());
-        final TileEntity adjacentTE = aBaseMetaTileEntity.getTileEntityOffset(outSide.offsetX, outSide.offsetY, outSide.offsetZ);
-        if(adjacentTE instanceof IFluidHandler) {
+        final TileEntity adjacentTE =
+                aBaseMetaTileEntity.getTileEntityOffset(outSide.offsetX, outSide.offsetY, outSide.offsetZ);
+        if (adjacentTE instanceof IFluidHandler) {
             final IFluidHandler adjFH = (IFluidHandler) adjacentTE;
             // Cycle through fluids
-            for(int i = 0; i < mfh.getDistinctFluids(); i++) {
+            for (int i = 0; i < mfh.getDistinctFluids(); i++) {
                 final FluidStack fluidCopy = mfh.getFluidCopy(i);
                 // Make sure the adjacent IFluidHandler can accept this fluid
-                if(adjFH.canFill(outSide.getOpposite(), fluidCopy.getFluid())) {
+                if (adjFH.canFill(outSide.getOpposite(), fluidCopy.getFluid())) {
 
                     // Limit to output rate
                     fluidCopy.amount = Math.min(fluidCopy.amount, vals.get(super.mTier));
@@ -136,7 +139,6 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
                     mfh.pullFluid(fluidCopy, true);
                 }
             }
-
         }
     }
 
@@ -166,16 +168,15 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
      */
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        if(mfh != null) {
+        if (mfh != null) {
             final FluidStack drain = mfh.getFluidCopy(0);
-            if(drain != null) {
+            if (drain != null) {
                 // If there's no integrated circuit in the T.F.F.T. controller, output slot 0
                 final byte selectedSlot = (mfh.getSelectedFluid() == -1) ? 0 : mfh.getSelectedFluid();
 
                 return new FluidStack(
                         drain.getFluid(),
-                        mfh.pullFluid(new FluidStack(drain.getFluid(), maxDrain), selectedSlot, doDrain)
-                );
+                        mfh.pullFluid(new FluidStack(drain.getFluid(), maxDrain), selectedSlot, doDrain));
             }
         }
         return null;
@@ -183,14 +184,13 @@ public class GTMTE_TFFTMultiHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        if (mfh == null)
-            return null;
+        if (mfh == null) return null;
         FluidStack[] fluids = mfh.getAllFluids();
         int length = fluids.length;
         int maxCapcity = mfh.getCapacity();
         FluidTankInfo[] tankInfo = new FluidTankInfo[length];
         for (int i = 0; i < length; i++) {
-            tankInfo[i] = new FluidTankInfo(fluids[i],maxCapcity);
+            tankInfo[i] = new FluidTankInfo(fluids[i], maxCapcity);
         }
         return tankInfo;
     }

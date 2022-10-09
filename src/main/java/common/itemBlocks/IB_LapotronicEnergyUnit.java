@@ -1,10 +1,11 @@
 package common.itemBlocks;
 
-import java.math.BigInteger;
-import java.util.List;
+import static com.google.common.math.LongMath.pow;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
+import java.math.BigInteger;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -12,60 +13,79 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import static com.google.common.math.LongMath.pow;
-
 public class IB_LapotronicEnergyUnit extends ItemBlock {
 
     public IB_LapotronicEnergyUnit(Block block) {
-		super(block);
-	}
+        super(block);
+    }
 
-	@Override
-	public int getMetadata(int meta) {
-		return meta;
-	}
+    @Override
+    public int getMetadata(int meta) {
+        return meta;
+    }
 
-	@Override
-	public boolean getHasSubtypes() {
-		return true;
-	}
+    @Override
+    public boolean getHasSubtypes() {
+        return true;
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack stack) {
-		return super.getUnlocalizedName() + "." + stack.getItemDamage();
-	}
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        return super.getUnlocalizedName() + "." + stack.getItemDamage();
+    }
 
     // 5 Minutes, 5 mins * 60s * 20 ticks.
     public static long LSC_time_between_wireless_rebalance_in_ticks = 5L * 60L * 20L;
 
     // 60 Trillion EU.
-    public static BigInteger LSC_wireless_eu_cap = BigInteger.valueOf(60 * pow(10,12));
+    public static BigInteger LSC_wireless_eu_cap = BigInteger.valueOf(60 * pow(10, 12));
 
     // 10 Billion EU/t
-    private static BigInteger UHV_cap_eu_per_tick = LSC_wireless_eu_cap.divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
+    private static BigInteger UHV_cap_eu_per_tick =
+            LSC_wireless_eu_cap.divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
-    public static long EV_cap_storage  = 60_000_000L;
-    public static long IV_cap_storage  = 600_000_000L;
+    public static long EV_cap_storage = 60_000_000L;
+    public static long IV_cap_storage = 600_000_000L;
     public static long LuV_cap_storage = 6_000_000_000L;
     public static long ZPM_cap_storage = 60_000_000_000L;
-    public static long UV_cap_storage  = 600_000_000_000L;
+    public static long UV_cap_storage = 600_000_000_000L;
     public static long UHV_cap_storage = Long.MAX_VALUE;
 
     @SuppressWarnings("unchecked")
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
-		lines.add(StatCollector.translateToLocal("tile.kekztech_lapotronicenergyunit_block.desc"));
-		switch(stack.getItemDamage()) {
-		case 1: lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(IV_cap_storage) + EnumChatFormatting.GRAY + "EU"); break;
-        case 2: lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(LuV_cap_storage) + EnumChatFormatting.GRAY + "EU"); break;
-        case 3: lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(ZPM_cap_storage) + EnumChatFormatting.GRAY + "EU"); break;
-        case 4: lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UV_cap_storage) + EnumChatFormatting.GRAY + "EU"); break;
-		case 5:
-            lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UHV_cap_storage) + EnumChatFormatting.GRAY + "EU");
-            lines.add("Supports up to " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UHV_cap_eu_per_tick) + EnumChatFormatting.GRAY + "EU/t of wireless transfer per " + GT_Values.TIER_COLORS[9] + GT_Values.VN[9] + EnumChatFormatting.GRAY + " capacitor.");
-            break;
-		case 6: lines.add("Capacity: None"); break;
-		case 7: lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(EV_cap_storage) + EnumChatFormatting.GRAY + " EU"); break;
-		}
-	}
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
+        lines.add(StatCollector.translateToLocal("tile.kekztech_lapotronicenergyunit_block.desc"));
+        switch (stack.getItemDamage()) {
+            case 1:
+                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(IV_cap_storage)
+                        + EnumChatFormatting.GRAY + "EU");
+                break;
+            case 2:
+                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(LuV_cap_storage)
+                        + EnumChatFormatting.GRAY + "EU");
+                break;
+            case 3:
+                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(ZPM_cap_storage)
+                        + EnumChatFormatting.GRAY + "EU");
+                break;
+            case 4:
+                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UV_cap_storage)
+                        + EnumChatFormatting.GRAY + "EU");
+                break;
+            case 5:
+                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UHV_cap_storage)
+                        + EnumChatFormatting.GRAY + "EU");
+                lines.add("Supports up to " + EnumChatFormatting.RED + GT_Utility.formatNumbers(UHV_cap_eu_per_tick)
+                        + EnumChatFormatting.GRAY + "EU/t of wireless transfer per " + GT_Values.TIER_COLORS[9]
+                        + GT_Values.VN[9] + EnumChatFormatting.GRAY + " capacitor.");
+                break;
+            case 6:
+                lines.add("Capacity: None");
+                break;
+            case 7:
+                lines.add("Capacity: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(EV_cap_storage)
+                        + EnumChatFormatting.GRAY + " EU");
+                break;
+        }
+    }
 }

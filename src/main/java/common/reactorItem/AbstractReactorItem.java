@@ -7,7 +7,7 @@ public abstract class AbstractReactorItem extends Item {
 
     private final int[] behaviourID;
 
-    protected AbstractReactorItem(int...behaviourID) {
+    protected AbstractReactorItem(int... behaviourID) {
         this.behaviourID = behaviourID;
     }
 
@@ -19,7 +19,8 @@ public abstract class AbstractReactorItem extends Item {
 
     @Override
     public final String getUnlocalizedName(ItemStack stack) {
-        return super.hasSubtypes ? (super.getUnlocalizedName() + "." + stack.getItemDamage())
+        return super.hasSubtypes
+                ? (super.getUnlocalizedName() + "." + stack.getItemDamage())
                 : super.getUnlocalizedName();
     }
 

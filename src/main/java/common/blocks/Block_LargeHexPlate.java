@@ -32,8 +32,8 @@ public class Block_LargeHexPlate extends Block {
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
-        for(int x = 0; x < BATCH_SIZE; x++) {
-            for(int z = 0; z < BATCH_SIZE; z++) {
+        for (int x = 0; x < BATCH_SIZE; x++) {
+            for (int z = 0; z < BATCH_SIZE; z++) {
                 parts[x][z] = ir.registerIcon("kekztech:LargeHexTile_" + x + "_" + z);
             }
         }
@@ -41,13 +41,16 @@ public class Block_LargeHexPlate extends Block {
 
     @Override
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        final int xMod = x >= 0 ? Math.abs(x % BATCH_SIZE) : Math.abs((Math.abs(x) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
-        final int yMod = y >= 0 ? Math.abs(y % BATCH_SIZE) : Math.abs((Math.abs(y) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
-        final int zMod = z >= 0 ? Math.abs(z % BATCH_SIZE) : Math.abs((Math.abs(z) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
+        final int xMod =
+                x >= 0 ? Math.abs(x % BATCH_SIZE) : Math.abs((Math.abs(x) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
+        final int yMod =
+                y >= 0 ? Math.abs(y % BATCH_SIZE) : Math.abs((Math.abs(y) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
+        final int zMod =
+                z >= 0 ? Math.abs(z % BATCH_SIZE) : Math.abs((Math.abs(z) % BATCH_SIZE) - BATCH_SIZE) % BATCH_SIZE;
 
-        if(side == 0 || side == 1) {
+        if (side == 0 || side == 1) {
             return parts[xMod][zMod];
-        } else if(side == 2 || side == 3) {
+        } else if (side == 2 || side == 3) {
             return parts[xMod][yMod];
         } else {
             return parts[zMod][yMod];

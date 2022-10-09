@@ -1,12 +1,14 @@
 package common.itemBlocks;
 
-        import net.minecraft.block.Block;
-        import net.minecraft.item.ItemBlock;
-        import net.minecraft.item.ItemStack;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 
 public class IB_IchorJar extends ItemBlock {
 
-    public IB_IchorJar(Block block) { super(block); }
+    public IB_IchorJar(Block block) {
+        super(block);
+    }
 
     @Override
     public int getMetadata(int meta) {
@@ -23,4 +25,3 @@ public class IB_IchorJar extends ItemBlock {
         return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 }
-
