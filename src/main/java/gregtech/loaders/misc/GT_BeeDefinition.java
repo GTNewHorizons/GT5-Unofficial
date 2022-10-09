@@ -3778,6 +3778,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         new Color(0x325249),
         beeSpecies -> {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LIFEANDDEATH), 0.30f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.DEATHANDLIFE), 0.30f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setNocturnal();
             beeSpecies.setHasEffect();
