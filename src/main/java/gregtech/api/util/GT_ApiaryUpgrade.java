@@ -204,5 +204,6 @@ public enum GT_ApiaryUpgrade {
     static {
         EnumSet.allOf(GT_ApiaryUpgrade.class).forEach(GT_ApiaryUpgrade::setup_static_variables);
         speed8upgraded.blacklistedUpgrades.add(production.id);
+        production.blacklistedUpgrades.add(speed8upgraded.id);
     }
 }
