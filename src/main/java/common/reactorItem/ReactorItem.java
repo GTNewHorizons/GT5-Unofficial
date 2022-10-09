@@ -27,9 +27,7 @@ public class ReactorItem extends AbstractReactorItem {
     }
 
     @Override
-    public void registerIcons(IIconRegister reg) {
-
-    }
+    public void registerIcons(IIconRegister reg) {}
 
     @Override
     public IIcon getIconFromDamage(int meta) {

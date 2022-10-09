@@ -1,6 +1,5 @@
 package common.blocks;
 
-
 import gregtech.api.GregTech_API;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,7 +22,7 @@ public abstract class BaseGTUpdateableBlock extends Block {
     }
 
     @Override
-    public int damageDropped(int meta){
+    public int damageDropped(int meta) {
         return meta;
     }
 

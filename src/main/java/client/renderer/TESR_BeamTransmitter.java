@@ -12,7 +12,8 @@ import org.lwjgl.opengl.GL11;
 
 public class TESR_BeamTransmitter extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation beamTexture = new ResourceLocation(KekzCore.MODID, "textures/effects/Tether_beam.png");
+    private static final ResourceLocation beamTexture =
+            new ResourceLocation(KekzCore.MODID, "textures/effects/Tether_beam.png");
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
@@ -35,14 +36,16 @@ public class TESR_BeamTransmitter extends TileEntitySpecialRenderer {
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA(255, 255, 255, 32);
         // Variables stuff II
-        final float exactTime = (float)beamTransmitter.getWorldObj().getTotalWorldTime() + partialTick;
+        final float exactTime = (float) beamTransmitter.getWorldObj().getTotalWorldTime() + partialTick;
         final float streamTextureOffset = -exactTime * 0.2F - (float) MathHelper.floor_float(-exactTime * 0.1F);
 
         final double halfBeamWidth = 0.1D;
         final double height = beamTransmitter.getDistanceFromTarget();
         final double uv_x1 = 0.0D;
         final double uv_x2 = 1.0D;
-        final double uv_y1 = -1.0D - streamTextureOffset; // This makes the beam stream upwards if you subtract a time sensitive number from it
+        final double uv_y1 = -1.0D
+                - streamTextureOffset; // This makes the beam stream upwards if you subtract a time sensitive number
+        // from it
         final double uv_y2 = height * (0.5D / (halfBeamWidth * 2)) + uv_y1;
         // Construct mesh with texture
         tessellator.addVertexWithUV(x + 0.5 + halfBeamWidth, y + 0.5, z + 0.5, uv_x2, uv_y2);

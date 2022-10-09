@@ -9,18 +9,16 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import java.util.ArrayList;
+import java.util.HashSet;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 import util.Vector3i;
 import util.Vector3ic;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 
 public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -29,7 +27,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
     private static final Block TETHER_BLOCK = Blocks.spaceElevatorTether;
     private static final int BASE_META = 0;
     private static final int COIL_HOLDER_META = 1;
-    private final static String glassNameBorosilicate = "BW_GlasBlocks";
+    private static final String glassNameBorosilicate = "BW_GlasBlocks";
     private static final int HATCH_OVERLAY_ID = 16;
 
     // Scan positions for capacitor banks
@@ -47,7 +45,9 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
         super(aID, aName, aNameRegional);
     }
 
-    public GTMTE_SpaceElevator(String aName) { super(aName); }
+    public GTMTE_SpaceElevator(String aName) {
+        super(aName);
+    }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity var1) {
@@ -56,8 +56,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public String[] getDescription() {
-    	return new String[]{"Disabled"};
-    	/*
+        return new String[] {"Disabled"};
+        /*
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b.addInfo("Access for your Space Station!")
                 .addInfo("Check out the wiki on my github if you are having trouble with the structure")
@@ -82,20 +82,30 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-                                 boolean aActive, boolean aRedstone) {
-        ITexture[] sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
-                Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
+        ITexture[] sTexture = new ITexture[] {
+            new GT_RenderedTexture(
+                    Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa))
+        };
         if (aSide == aFacing && aActive) {
-            sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW,
-                    Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+            sTexture = new ITexture[] {
+                new GT_RenderedTexture(
+                        Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW,
+                        Dyes.getModulation(-1, Dyes._NULL.mRGBa))
+            };
         }
         return sTexture;
     }
 
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-                "MultiblockDisplay.png");
+        return new GT_GUIContainer_MultiMachine(
+                aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MultiblockDisplay.png");
     }
 
     @Override
@@ -127,7 +137,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
         // Make sure the controller is either facing up or down
-        if(thisController.getFrontFacing() > 1) {
+        if (thisController.getFrontFacing() > 1) {
             return false;
         }
 
@@ -135,17 +145,16 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
-                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
-        );
+                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
         boolean formationChecklist = true;
         int minCasingAmount = 320;
         int firstCoilMeta = -1;
         capacitors.clear();
 
         // Base floor
-        for(int X = -7; X <= 7; X++){
-            for(int Y = -7; Y <= 7; Y++){
-                if(X == 0 && Y == 0){
+        for (int X = -7; X <= 7; X++) {
+            for (int Y = -7; Y <= 7; Y++) {
+                if (X == 0 && Y == 0) {
                     continue; // Skip controller
                 }
 
@@ -154,8 +163,9 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
                         thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
                 // Tries to add TE as either of those kinds of hatches.
-                // The number is the texture index number for the texture that needs to be painted over the hatch texture
-                if (   !super.addMaintenanceToMachineList(currentTE, HATCH_OVERLAY_ID)
+                // The number is the texture index number for the texture that needs to be painted over the hatch
+                // texture
+                if (!super.addMaintenanceToMachineList(currentTE, HATCH_OVERLAY_ID)
                         && !this.addEnergyInputToMachineList(currentTE, HATCH_OVERLAY_ID)) {
 
                     // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
@@ -171,34 +181,39 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
         }
         System.out.println("");
         // Capacitor banks
-        for(int bank = 0; bank < 4; bank++) {
-            for(int Z = 1; Z <= 5; Z++) {
-                for(int scan = 0; scan < 5; scan++){
-                    final Vector3ic offset = rotateOffsetVector(forgeDirection,
+        for (int bank = 0; bank < 4; bank++) {
+            for (int Z = 1; Z <= 5; Z++) {
+                for (int scan = 0; scan < 5; scan++) {
+                    final Vector3ic offset = rotateOffsetVector(
+                            forgeDirection,
                             bankOffsetsX[bank] + scanOffsetsX[scan],
                             bankOffsetsY[bank] + scanOffsetsY[scan],
                             Z);
-                    if(Z == 1 || Z == 5) {
+                    if (Z == 1 || Z == 5) {
                         // Check for casings
-                        if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == BASE_BLOCK
+                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == BASE_BLOCK
                                 && thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == BASE_META) {
                             minCasingAmount--;
                         } else {
                             formationChecklist = false;
                         }
                     } else {
-                        if(scan == 4){
+                        if (scan == 4) {
                             // Check for capacitors
-                            final TileEntity te = thisController.getTileEntityOffset(offset.x(), offset.y(), offset.z());
-                            if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CAP_BLOCK
-                                    &&  te instanceof  TE_SpaceElevatorCapacitor) {
+                            final TileEntity te =
+                                    thisController.getTileEntityOffset(offset.x(), offset.y(), offset.z());
+                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CAP_BLOCK
+                                    && te instanceof TE_SpaceElevatorCapacitor) {
                                 capacitors.add((TE_SpaceElevatorCapacitor) te);
                             } else {
                                 formationChecklist = false;
                             }
                         } else {
                             // Check for Glass
-                            if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassNameBorosilicate)) {
+                            if (!thisController
+                                    .getBlockOffset(offset.x(), offset.y(), offset.z())
+                                    .getUnlocalizedName()
+                                    .equals(glassNameBorosilicate)) {
                                 formationChecklist = false;
                             }
                         }
@@ -212,11 +227,11 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
         // Coils
 
-        if(minCasingAmount > 0) {
+        if (minCasingAmount > 0) {
             formationChecklist = false;
         }
 
-        for(TE_SpaceElevatorCapacitor cap : capacitors){
+        for (TE_SpaceElevatorCapacitor cap : capacitors) {
             cap.setIsDamaged(false);
         }
 
@@ -228,9 +243,10 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
         final ArrayList<String> ll = new ArrayList<>();
         ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
 
-        ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
-                ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
+        ll.add("Maintenance Status: "
+                + ((super.getRepairStatus() == super.getIdealStatus())
+                        ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
+                        : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
         ll.add("---------------------------------------------");
 
         final String[] a = new String[ll.size()];
@@ -243,14 +259,22 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack stack) { return 10000; }
+    public int getMaxEfficiency(ItemStack stack) {
+        return 10000;
+    }
 
     @Override
-    public int getPollutionPerTick(ItemStack stack) { return 0; }
+    public int getPollutionPerTick(ItemStack stack) {
+        return 0;
+    }
 
     @Override
-    public int getDamageToComponent(ItemStack stack) { return 0; }
+    public int getDamageToComponent(ItemStack stack) {
+        return 0;
+    }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) { return false; }
+    public boolean explodesOnComponentBreak(ItemStack stack) {
+        return false;
+    }
 }

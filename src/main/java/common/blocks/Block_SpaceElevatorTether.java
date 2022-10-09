@@ -1,9 +1,7 @@
 package common.blocks;
 
-import common.tileentities.TE_ItemProxyCable;
 import common.tileentities.TE_SpaceElevatorTether;
 import cpw.mods.fml.common.registry.GameRegistry;
-import kekztech.KekzCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -56,15 +54,12 @@ public class Block_SpaceElevatorTether extends BaseGTUpdateableBlock {
     }
 
     @Override
-    public boolean isOpaqueCube()
-    {
+    public boolean isOpaqueCube() {
         return false;
     }
 
     @Override
-    public boolean renderAsNormalBlock()
-    {
+    public boolean renderAsNormalBlock() {
         return false;
     }
-
 }

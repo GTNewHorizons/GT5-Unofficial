@@ -9,7 +9,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class TESR_SECapacitor extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation capSide = new ResourceLocation(KekzCore.MODID, "textures/blocks/SpaceElevatorCapacitor_side_renderbase.png");
+    private static final ResourceLocation capSide =
+            new ResourceLocation(KekzCore.MODID, "textures/blocks/SpaceElevatorCapacitor_side_renderbase.png");
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
@@ -38,7 +39,7 @@ public class TESR_SECapacitor extends TileEntitySpecialRenderer {
         // Prepare Tessellator
         tessellator.startDrawingQuads();
         // Render the caps as red if there are maintenance issues
-        if(teCap.isDamaged()) {
+        if (teCap.isDamaged()) {
             final float wave = (float) Math.abs(Math.sin((te.getWorldObj().getTotalWorldTime() + partialTick) / 20.0D));
             final int redSat = 64 + (int) Math.ceil(191 * wave);
             tessellator.setColorRGBA(redSat, 0, 0, 255);

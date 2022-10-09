@@ -6,7 +6,9 @@ import net.minecraft.item.ItemStack;
 
 public class IB_ThaumiumReinforcedJar extends ItemBlock {
 
-    public IB_ThaumiumReinforcedJar(Block block) { super(block); }
+    public IB_ThaumiumReinforcedJar(Block block) {
+        super(block);
+    }
 
     @Override
     public int getMetadata(int meta) {
