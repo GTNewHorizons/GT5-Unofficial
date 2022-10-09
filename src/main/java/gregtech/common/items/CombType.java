@@ -209,6 +209,7 @@ public enum CombType {
 
     private final int id;
     private final String name;
+    private final String localizedName;
     private final int[] color;
 
     CombType(String pName, boolean show, Materials material, int chance, int... color) {
@@ -218,6 +219,8 @@ public enum CombType {
         this.chance = chance;
         this.showInList = show;
         this.color = color;
+        this.localizedName = GT_LanguageManager.addStringLocalization(
+                "comb." + this.name, this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Comb");
     }
 
     CombType(int id, String pName, boolean show, Materials material, int chance, int... color) {
@@ -228,6 +231,8 @@ public enum CombType {
         this.chance = chance;
         this.showInList = show;
         this.color = color;
+        this.localizedName = GT_LanguageManager.addStringLocalization(
+                "comb." + this.name, this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Comb");
     }
 
     public void setHidden() {
@@ -236,8 +241,7 @@ public enum CombType {
 
     public String getName() {
 
-        return GT_LanguageManager.addStringLocalization(
-                "comb." + this.name, this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Comb");
+        return this.localizedName;
     }
 
     public int[] getColours() {
