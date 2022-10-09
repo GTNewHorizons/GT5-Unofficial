@@ -671,7 +671,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
         for(long l: energyInputValues){
             sum += l;
         }
-        return sum /energyInputValues.size();
+        return sum / Math.max(energyInputValues.size(), 1);
     }
 
     private long getAvgOut(){
@@ -679,7 +679,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
         for(long l: energyOutputValues){
             sum += l;
         }
-        return sum /energyOutputValues.size();
+        return sum / Math.max(energyOutputValues.size(), 1);
     }
 
     @Override
