@@ -746,6 +746,22 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 IBeeMutationCustom tMutation = dis.registerMutation(LEAD, SILVER, 9);
                 tMutation.requireResource("blockCryolite");
             }),
+    TANTALUM(
+        GT_BranchDefinition.METAL,
+        "Tantalum",
+        true,
+        new Color(0xBFEEFF),
+        new Color(0x1E7AD9),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.TANTALUM), 0.30f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(COLD);
+        },
+        template -> AlleleHelper.instance.set(template, SPEED, Speed.NORMAL),
+        dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(CRYOLITE, SILVER, 10);
+            tMutation.requireResource("blockTantalum");
+        }),
     GOLD(
             GT_BranchDefinition.METAL,
             "Gold",
