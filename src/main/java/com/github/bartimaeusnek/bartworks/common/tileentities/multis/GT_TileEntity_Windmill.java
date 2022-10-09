@@ -240,7 +240,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
             // Decrease input stack by appropriate amount (Not always 1)
             for (int i = 0; i < this.mMulti; i++) {
                 if (!tRecipe.isRecipeInputEqual(true, null, itemStack)) {
-                    this.mMulti = i + 1;
+                    this.mMulti = i;
                     break;
                 }
             }
@@ -255,7 +255,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
                                     * ((float) Math.sqrt((float) 1 / (this.rotorBlock.getWindStrength() + 1)))
                                     * OutputMultiplier(rotorBlock)
                                     * (mRecipe[0] + mRecipe[1])));
-            int amount = Math.round(multiper * (this.mOutputItems[0].stackSize * this.mMulti));
+            int amount = (int) Math.floor(multiper * (this.mOutputItems[0].stackSize * this.mMulti));
 
             // Split ItemStack --by gtpp
             List<ItemStack> splitStacks = new ArrayList<>();
