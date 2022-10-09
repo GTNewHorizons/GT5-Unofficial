@@ -7329,6 +7329,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                         ItemList.Machine_IndustrialApiary.get(1L),
                         new Object[] {GT_ModHandler.getModItem("gendustry", "IndustrialApiary", 1, 0)});
                 GT_ModHandler.addShapelessCraftingRecipe(
+                        ItemList.IndustrialApiary_Upgrade_Frame.get(1),
+                        new Object[] {GT_ModHandler.getModItem("gendustry", "UpgradeFrame", 1)});
+                GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(1L),
                         new Object[] {GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0)});
                 GT_ModHandler.addShapelessCraftingRecipe(
