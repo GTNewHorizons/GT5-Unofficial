@@ -83,13 +83,12 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             if (mFluid != null && mFluid.amount >= 0) {
                 aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
             }
-            aNBT.setBoolean("mOutputFluid", this.mOutputFluid);
-            aNBT.setBoolean("mVoidOverflow", this.mVoidFluidPart);
-            aNBT.setBoolean("mVoidFluidFull", this.mVoidFluidFull);
-            aNBT.setBoolean("mLockFluid", mLockFluid);
+            if (mOutputFluid) aNBT.setBoolean("mOutputFluid", true);
+            if (mVoidFluidPart) aNBT.setBoolean("mVoidOverflow", true);
+            if (mVoidFluidFull) aNBT.setBoolean("mVoidFluidFull", true);
+            if (mLockFluid) aNBT.setBoolean("mLockFluid", true);
             if (GT_Utility.isStringValid(lockedFluidName)) aNBT.setString("lockedFluidName", lockedFluidName);
-            else aNBT.removeTag("lockedFluidName");
-            aNBT.setBoolean("mAllowInputFromOutputSide", this.mAllowInputFromOutputSide);
+            if (this.mAllowInputFromOutputSide) aNBT.setBoolean("mAllowInputFromOutputSide", true);
         }
         super.setItemNBT(aNBT);
     }
