@@ -163,10 +163,20 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
             // only allow OC robot fake player
             if (aPlayer instanceof FakePlayer
                     && !aPlayer.getGameProfile().getName().endsWith(".robot")) return false;
-            if (aPlayer.getCurrentEquippedItem() != null
-                    && aPlayer.getCurrentEquippedItem().getItem() instanceof ItemToolbox)
-                applyToolbox(aPlayer.getCurrentEquippedItem(), aPlayer);
-            else aBaseMetaTileEntity.openGUI(aPlayer);
+            ItemStack tStack = aPlayer.getCurrentEquippedItem();
+            if (tStack != null) {
+                if (tStack.getItem() instanceof ItemToolbox) {
+                    applyToolbox(tStack, aPlayer);
+                } else if (ItemList.Duct_Tape.isStackEqual(tStack)) {
+                    mWrench = mScrewdriver = mSoftHammer = mHardHammer = mCrowbar = mSolderingTool = true;
+                    getBaseMetaTileEntity().setActive(false);
+                    if (--tStack.stackSize == 0) {
+                        aPlayer.inventory.mainInventory[aPlayer.inventory.currentItem] = null;
+                    }
+                } else aBaseMetaTileEntity.openGUI(aPlayer);
+            } else {
+                aBaseMetaTileEntity.openGUI(aPlayer);
+            }
             return true;
         }
         return false;
