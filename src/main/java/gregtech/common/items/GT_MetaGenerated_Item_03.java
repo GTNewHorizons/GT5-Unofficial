@@ -617,50 +617,157 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.WovenKevlar.set(addItem(tLastID = 193, "Woven Kevlar", "For make Kevlar Plates", o));
         ItemList.Spinneret.set(addItem(tLastID = 194, "Spinneret", "For make Kevlar Fiber", o));
 
+        ItemList.IndustrialApiary_Upgrade_Frame.set(addItem(tLastID = 199, "Upgrade Frame", "Crafting component", o));
+
         ItemList.IndustrialApiary_Upgrade_Acceleration_1.set(addItem(
                 tLastID = 200,
                 "Acceleration Upgrade x2",
-                "Acceleration upgrade for Industrial Apiary/n Unlocks 2x acceleration level",
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 2x acceleration level/n * Energy Consumption +1 AMP LV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_2.set(addItem(
                 tLastID = 201,
                 "Acceleration Upgrade x4",
-                "Acceleration upgrade for Industrial Apiary/n Unlocks 4x acceleration level",
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 4x acceleration level/n * Energy Consumption +1 AMP MV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_3.set(addItem(
                 tLastID = 202,
                 "Acceleration Upgrade x8",
-                "Acceleration upgrade for Industrial Apiary/n Unlocks 8x acceleration level",
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 8x acceleration level/n * Energy Consumption +1 AMP HV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_4.set(addItem(
                 tLastID = 203,
                 "Acceleration Upgrade x16",
-                "Acceleration upgrade for Industrial Apiary/n Unlocks 16x acceleration level",
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 16x acceleration level/n * Energy Consumption +1 AMP EV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_5.set(addItem(
                 tLastID = 204,
                 "Acceleration Upgrade x32",
-                "Acceleration upgrade for Industrial Apiary/n Unlocks 32x acceleration level",
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 32x acceleration level/n * Energy Consumption +1 AMP IV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_6.set(addItem(
                 tLastID = 205,
                 "Acceleration Upgrade x64",
-                "Acceleration upgrade for Industrial Apiary/n Unlocks 64x acceleration level",
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 64x acceleration level/n * Energy Consumption +1 AMP LuV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_7.set(addItem(
                 tLastID = 206,
                 "Acceleration Upgrade x128",
-                "Acceleration upgrade for Industrial Apiary/n Unlocks 128x acceleration level",
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 128x acceleration level/n * Energy Consumption +1 AMP ZPM",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_8.set(addItem(
                 tLastID = 207,
                 "Acceleration Upgrade x256",
-                "Acceleration upgrade for Industrial Apiary/n Unlocks 256x acceleration level",
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 256x acceleration level/n * Energy Consumption +1 AMP UV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.set(addItem(
                 tLastID = 208,
                 "Upgraded Acceleration Upgrade x256",
-                "Acceleration upgrade for Industrial Apiary/n Unlocks 256x acceleration level/n Will also grant 8x production upgrade",
+                "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 256x acceleration level/n * Will also grant 8x production upgrade/n * Energy Consumption +1 AMP UV",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_PRODUCTION.set(addItem(
+                tLastID = 209,
+                "Production Upgrade",
+                "Production upgrade for Industrial Apiary/n Maximum Installed: 8/n Increases production modifier by 0.25/n Energy Consumption +40%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_PLAINS.set(addItem(
+                tLastID = 210,
+                "Plains Emulation Upgrade",
+                "Plains emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Plains/n * Energy Consumption +40%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_LIGHT.set(addItem(
+                tLastID = 211,
+                "Light Upgrade",
+                "Light upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Lighting/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_FLOWERING.set(addItem(
+                tLastID = 212,
+                "Flowering Upgrade",
+                "Flowering upgrade for Industrial Apiary/n Maximum Installed: 8/n * Flowering and Pollination +20%/n * Energy Consumption +10%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_WINTER.set(addItem(
+                tLastID = 213,
+                "Winter Emulation Upgrade",
+                "Winter emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Taiga/n * Energy Consumption +50%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_DRYER.set(addItem(
+                tLastID = 214,
+                "Dryer Upgrade",
+                "Dryer upgrade for Industrial Apiary/n Maximum Installed: 8/n * Humidity -25%/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_AUTOMATION.set(addItem(
+                tLastID = 215,
+                "Automation Upgrade",
+                "Automation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Automation/n * Energy Consumption +10%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_HUMIDIFIER.set(addItem(
+                tLastID = 216,
+                "Humidifier Upgrade",
+                "Humidifier upgrade for Industrial Apiary/n Maximum Installed: 8/n * Humidity +25%/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_HELL.set(addItem(
+                tLastID = 217,
+                "HELL Upgrade",
+                "HELL upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: HELL/n * Energy Consumption +50%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_POLLEN.set(addItem(
+                tLastID = 218,
+                "Pollen Scrubber Upgrade",
+                "Pollen scrubber upgrade for Industrial Apiary/n Maximum Installed: 1/n * Flowering and Pollination -100%/n * Energy Consumption +30%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_DESERT.set(addItem(
+                tLastID = 219,
+                "Desert Upgrade",
+                "Desert upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Desert/n * Energy Consumption +20%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_COOLER.set(addItem(
+                tLastID = 220,
+                "Cooler Upgrade",
+                "Cooler upgrade for Industrial Apiary/n Maximum Installed: 8/n * Temperature -25%/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_LIFESPAN.set(addItem(
+                tLastID = 221,
+                "Lifespan Upgrade",
+                "Lifespan upgrade for Industrial Apiary/n Maximum Installed: 4/n * Lifespan -33%/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_SEAL.set(addItem(
+                tLastID = 222,
+                "Seal Upgrade",
+                "Seal upgrade for Industrial Apiary/n Maximum Installed: 1/n * Rain Protection/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_STABILIZER.set(addItem(
+                tLastID = 223,
+                "Genetic Stabilizer Upgrade",
+                "Genetic stabilizer upgrade for Industrial Apiary/n Maximum Installed: 1/n * Genetic Decay -100%/n * Energy Consumption +150%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_JUNGLE.set(addItem(
+                tLastID = 224,
+                "Jungle Emulation Upgrade",
+                "Jungle emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Jungle/n * Energy Consumption +20%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_TERRITORY.set(addItem(
+                tLastID = 225,
+                "Territory Upgrade",
+                "Territory upgrade for Industrial Apiary/n Maximum Installed: 4/n * Territory +50%/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_OCEAN.set(addItem(
+                tLastID = 226,
+                "Ocean Emulation Upgrade",
+                "Ocean emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Ocean/n * Energy Consumption +20%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_SKY.set(addItem(
+                tLastID = 227,
+                "Open Sky Upgrade",
+                "Open sky upgrade for Industrial Apiary/n Maximum Installed: 1/n * Open Sky Simulation/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_HEATER.set(addItem(
+                tLastID = 228,
+                "Heater Upgrade",
+                "Heater upgrade for Industrial Apiary/n Maximum Installed: 8/n * Temperature +25%/n * Energy Consumption +5%",
+                OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_SIEVE.set(addItem(
+                tLastID = 229,
+                "Sieve Upgrade",
+                "Sieve upgrade for Industrial Apiary/n Maximum Installed: 1/n * Pollen Collection/n * Energy Consumption +25%",
                 OrePrefixes.apiaryUpgrade.name()));
 
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(1L));
@@ -672,6 +779,27 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_7.get(1L));
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_8.get(1L));
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_PLAINS.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_LIGHT.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_FLOWERING.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_WINTER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_DRYER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_AUTOMATION.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_HUMIDIFIER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_HELL.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_POLLEN.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_DESERT.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_COOLER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_LIFESPAN.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SEAL.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_STABILIZER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_JUNGLE.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_TERRITORY.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_OCEAN.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SKY.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_HEATER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SIEVE.get(1L));
     }
 
     @Override
