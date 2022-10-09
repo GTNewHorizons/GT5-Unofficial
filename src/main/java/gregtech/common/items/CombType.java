@@ -201,6 +201,7 @@ public enum CombType {
     BLIZZ(160, "cryotheum", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff),
     LIFEANDDEATH(161, "lifeanddeath", true, Materials._NULL, 50, 0x2EDF64, 0xFF1A00),
     DEATHANDLIFE(162, "deathandlife", true, Materials._NULL, 50, 0xFF1A00, 0x2EDF64),
+    TANTALUM(163, "tantalum", true, Materials.Tantalum, 50, 0x00FFEE, 0x1E7AD9),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
