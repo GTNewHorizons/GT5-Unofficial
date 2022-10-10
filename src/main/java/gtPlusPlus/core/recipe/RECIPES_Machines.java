@@ -1026,13 +1026,13 @@ public class RECIPES_Machines {
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] {
                     CI.getNumberedBioCircuit(19),
-                    CI.getTieredGTPPMachineCasing(1, 6),
-                    CI.getTieredComponentOfMaterial(Materials.Steel, OrePrefixes.gearGt, 6),
-                    CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.plate, 32),
-                    CI.getTieredComponentOfMaterial(Materials.CobaltBrass, OrePrefixes.dust, 16),
+                    CI.getTieredGTPPMachineCasing(2, 4),
+                    CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.gearGt, 4),
+                    CI.getTieredComponentOfMaterial(Materials.AnnealedCopper, OrePrefixes.plate, 16),
+                    CI.getTieredComponentOfMaterial(Materials.Plastic, OrePrefixes.pipeLarge, 4),
                     CI.getTieredComponent(OrePrefixes.frameGt, 2, 4),
                 },
-                ALLOY.STEEL.getFluidStack(2 * (144 * 4)),
+                ALLOY.STEEL_BLACK.getFluidStack(2 * (144 * 4)),
                 GregtechItemList.ChemicalPlant_Controller.get(1),
                 120 * 20,
                 MaterialUtils.getVoltageForTier(2));
