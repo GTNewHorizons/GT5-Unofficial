@@ -284,8 +284,7 @@ public class GT_MetaTileEntity_HeatExchanger
                 } else {
                     if (dryHeatCounter < dryHeatMaximum) {
                         dryHeatCounter += 1;
-                    }
-                    else {
+                    } else {
                         GT_Log.exp.println(this.mName + " was too hot and had no more Distilled Water!");
                         explodeMultiblock(); // Generate crater
                     }
