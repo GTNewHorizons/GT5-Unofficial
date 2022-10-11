@@ -14,12 +14,6 @@ public class GT_UITextures {
             AdaptableUITexture.of(MODID, "gui/background/singleblock_default", 176, 166, 4);
     public static final SteamTexture BACKGROUND_STEAM =
             SteamTexture.adaptableTexture(MODID, "gui/background/%s", 176, 166, 4);
-    public static final UITexture BACKGROUND_SINGLEBLOCK_BRONZE =
-            AdaptableUITexture.of(MODID, "gui/background/singleblock_bronze", 176, 166, 4);
-    public static final UITexture BACKGROUND_SINGLEBLOCK_STEEL =
-            AdaptableUITexture.of(MODID, "gui/background/singleblock_steel", 176, 166, 4);
-    public static final UITexture BACKGROUND_PRIMITIVE =
-            AdaptableUITexture.of(MODID, "gui/background/primitive", 176, 166, 4);
     public static final UITexture BACKGROUND_MULTIBLOCK_DEFAULT =
             AdaptableUITexture.of(MODID, "gui/background/multiblock_default", 176, 166, 4);
     public static final UITexture BACKGROUND_MULTIBLOCK_NEI_DEFAULT =
@@ -28,6 +22,8 @@ public class GT_UITextures {
             AdaptableUITexture.of(MODID, "gui/background/PlasmaForge_nei", 176, 166, 4);
     public static final UITexture BACKGROUND_FUSION_COMPUTER =
             AdaptableUITexture.of(MODID, "gui/background/FusionComputer", 176, 166, 4);
+    public static final AdaptableUITexture BACKGROUND_TEXT_FIELD =
+            AdaptableUITexture.of(MODID, "gui/background/text_field", 142, 28, 1);
 
     public static final SteamTexture SLOT_ITEM_STEAM = SteamTexture.fullImage(MODID, "gui/slot/item_%s");
     public static final AdaptableUITexture SLOT_TRANSPARENT =

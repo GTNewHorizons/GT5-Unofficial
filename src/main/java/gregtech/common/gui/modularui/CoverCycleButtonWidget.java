@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
  * Fires click action on mouse release, not on press.
  * Draws different backgrounds depending on whether the mouse is being pressed or the widget is hovered.
  */
-public class GT_CoverCycleButtonWidget extends CycleButtonWidget {
+public class CoverCycleButtonWidget extends CycleButtonWidget {
 
     private static final UITexture BUTTON_NORMAL_NOT_PRESSED =
             GT_UITextures.BUTTON_COVER_NORMAL.getSubArea(0, 0, 1, 0.5f);
@@ -26,7 +26,7 @@ public class GT_CoverCycleButtonWidget extends CycleButtonWidget {
 
     private static final int TOOLTIP_DELAY = 5;
 
-    public GT_CoverCycleButtonWidget() {
+    public CoverCycleButtonWidget() {
         setSize(16, 16);
         setTooltipShowUpDelay(TOOLTIP_DELAY);
     }
@@ -48,7 +48,8 @@ public class GT_CoverCycleButtonWidget extends CycleButtonWidget {
     }
 
     protected boolean onClickImpl(int buttonId) {
-        return false;
+        super.onClick(buttonId, false);
+        return true;
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
