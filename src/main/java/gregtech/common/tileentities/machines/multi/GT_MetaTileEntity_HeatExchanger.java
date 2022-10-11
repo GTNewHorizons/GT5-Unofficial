@@ -38,7 +38,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT_MetaTileEntity_HeatExchanger
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_HeatExchanger>
         implements ISurvivalConstructable {
-    private static int dryHeatCounter = 0; // Counts up to dryHeatMaximum to check for explosion conditions
+    private int dryHeatCounter = 0; // Counts up to dryHeatMaximum to check for explosion conditions
     private static final int dryHeatMaximum = 2000; // 2000 ticks = 100 seconds
     private static final int CASING_INDEX = 50;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -280,9 +280,7 @@ public class GT_MetaTileEntity_HeatExchanger
                     } else {
                         addOutput(GT_ModHandler.getSteam(tGeneratedEU)); // Generate regular steam
                     }
-                    if (dryHeatCounter != 0) {
-                        dryHeatCounter = 0;
-                    }
+                    dryHeatCounter = 0;
                 } else {
                     if (dryHeatCounter < dryHeatMaximum) {
                         dryHeatCounter += 1;
