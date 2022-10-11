@@ -414,8 +414,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void receiveCoverData(byte aCoverSide, int aCoverID, int aCoverData) {
-        if ((aCoverSide >= 0 && aCoverSide < 6)) setCoverIDAtSideNoUpdate(aCoverSide, aCoverID);
-        setCoverDataAtSide(aCoverSide, aCoverData);
+        if ((aCoverSide >= 0 && aCoverSide < 6)) {
+            GT_CoverBehaviorBase<?> behaviorBase = getCoverBehaviorAtSideNew(aCoverSide);
+            if (behaviorBase == GregTech_API.sNoBehavior) return;
+
+            setCoverIDAtSideNoUpdate(aCoverSide, aCoverID);
+            setCoverDataAtSide(aCoverSide, aCoverData);
+        }
     }
 
     @Override
@@ -423,6 +428,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
         if ((aCoverSide >= 0 && aCoverSide < 6)) {
             GT_CoverBehaviorBase<?> behaviorBase = getCoverBehaviorAtSideNew(aCoverSide);
+            if (behaviorBase == GregTech_API.sNoBehavior) return;
+
             behaviorBase.preDataChanged(
                     aCoverSide,
                     getCoverIDAtSide(aCoverSide),
