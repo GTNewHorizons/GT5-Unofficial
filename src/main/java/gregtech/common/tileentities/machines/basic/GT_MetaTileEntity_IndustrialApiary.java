@@ -10,7 +10,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -1214,7 +1213,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     }
 
     private static final UIInfo<?, ?> IndustrialApiaryUI =
-            GT_UIInfo.GTTileEntityUIFactory.apply(GT_ModularUIContainer_IndustrialApiary::new, ModularGui::new);
+            GT_UIInfo.GTTileEntityUIFactory.apply(GT_ModularUIContainer_IndustrialApiary::new);
 
     private static class GT_ModularUIContainer_IndustrialApiary extends ModularUIContainer {
 

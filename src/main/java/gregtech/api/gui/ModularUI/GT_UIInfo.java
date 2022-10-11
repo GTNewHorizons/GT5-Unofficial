@@ -15,7 +15,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -31,32 +30,31 @@ public class GT_UIInfo {
      * Instead, store to <code>static final</code> field, just like {@link #GTTileEntityDefaultUI}.
      * Such mistake can be easily overlooked by testing only SP.
      */
-    public static final BiFunction<UIContainerConstructor, GuiContainerConstructor, UIInfo<?, ?>>
-            GTTileEntityUIFactory = (uiContainerConstructor, guiContainerConstructor) -> UIBuilder.of()
-            .container((player, world, x, y, z) -> {
-                TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof ITileWithModularUI) {
-                    return createTileEntityContainer(
-                            player, ((ITileWithModularUI) te)::createWindow, te::markDirty, uiContainerConstructor);
-                }
-                return null;
-            })
-            .gui(((player, world, x, y, z) -> {
-                if (!world.isRemote) return null;
-                TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof ITileWithModularUI) {
-                    return createTileEntityGuiContainer(
-                            player,
-                            ((ITileWithModularUI) te)::createWindow,
-                            uiContainerConstructor,
-                            guiContainerConstructor);
-                }
-                return null;
-            }))
-            .build();
+    public static final Function<ContainerConstructor, UIInfo<?, ?>> GTTileEntityUIFactory =
+            containerConstructor -> UIBuilder.of()
+                    .container((player, world, x, y, z) -> {
+                        TileEntity te = world.getTileEntity(x, y, z);
+                        if (te instanceof ITileWithModularUI) {
+                            return createTileEntityContainer(
+                                    player,
+                                    ((ITileWithModularUI) te)::createWindow,
+                                    te::markDirty,
+                                    containerConstructor);
+                        }
+                        return null;
+                    })
+                    .gui(((player, world, x, y, z) -> {
+                        if (!world.isRemote) return null;
+                        TileEntity te = world.getTileEntity(x, y, z);
+                        if (te instanceof ITileWithModularUI) {
+                            return createTileEntityGuiContainer(
+                                    player, ((ITileWithModularUI) te)::createWindow, containerConstructor);
+                        }
+                        return null;
+                    }))
+                    .build();
 
-    private static final UIInfo<?, ?> GTTileEntityDefaultUI =
-            GTTileEntityUIFactory.apply(ModularUIContainer::new, ModularGui::new);
+    private static final UIInfo<?, ?> GTTileEntityDefaultUI = GTTileEntityUIFactory.apply(ModularUIContainer::new);
 
     private static final Map<Byte, UIInfo<?, ?>> coverUI = new HashMap<>();
 
@@ -125,7 +123,7 @@ public class GT_UIInfo {
             EntityPlayer player,
             Function<UIBuildContext, ModularWindow> windowCreator,
             Runnable onWidgetUpdate,
-            UIContainerConstructor containerCreator) {
+            ContainerConstructor containerCreator) {
         UIBuildContext buildContext = new UIBuildContext(player);
         ModularWindow window = windowCreator.apply(buildContext);
         return containerCreator.of(new ModularUIContext(buildContext, onWidgetUpdate), window);
@@ -135,10 +133,8 @@ public class GT_UIInfo {
     private static ModularGui createTileEntityGuiContainer(
             EntityPlayer player,
             Function<UIBuildContext, ModularWindow> windowCreator,
-            UIContainerConstructor uiContainerConstructor,
-            GuiContainerConstructor guiContainerConstructor) {
-        return guiContainerConstructor.of(
-                createTileEntityContainer(player, windowCreator, null, uiContainerConstructor));
+            ContainerConstructor containerConstructor) {
+        return new ModularGui(createTileEntityContainer(player, windowCreator, null, containerConstructor));
     }
 
     private static ModularUIContainer createCoverContainer(
@@ -164,12 +160,7 @@ public class GT_UIInfo {
     }
 
     @FunctionalInterface
-    public interface UIContainerConstructor {
+    public interface ContainerConstructor {
         ModularUIContainer of(ModularUIContext context, ModularWindow mainWindow);
-    }
-
-    @FunctionalInterface
-    public interface GuiContainerConstructor {
-        ModularGui of(ModularUIContainer container);
     }
 }
