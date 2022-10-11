@@ -55,7 +55,7 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
             float aY,
             float aZ) {
         aCoverVariable.invert = !aCoverVariable.invert;
-        GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("055", aCoverVariable.invert ? "Inverted" : "Normal"));
+        GT_Utility.sendChatToPlayer(aPlayer, aCoverVariable.invert ? GT_Utility.trans("054" ,"Inverted")  : GT_Utility.trans("055" ,"Normal"));
 
         return aCoverVariable;
     }
