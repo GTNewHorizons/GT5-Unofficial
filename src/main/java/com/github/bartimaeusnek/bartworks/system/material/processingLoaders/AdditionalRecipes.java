@@ -207,7 +207,7 @@ public class AdditionalRecipes {
                                 new BWRecipes.BacteriaVatRecipe(
                                         true,
                                         new ItemStack[] {
-                                            GT_Utility.getIntegratedCircuit(0), new ItemStack(Items.sugar, 64)
+                                            GT_Utility.getIntegratedCircuit(1), new ItemStack(Items.sugar, 64)
                                         },
                                         null,
                                         BioItemList.getPetriDish(bioCulture),
