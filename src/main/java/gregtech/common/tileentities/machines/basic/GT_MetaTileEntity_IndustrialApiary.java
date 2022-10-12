@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
@@ -15,8 +16,10 @@ import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IEffectData;
 import forestry.api.genetics.IIndividual;
 import forestry.apiculture.genetics.Bee;
+import forestry.apiculture.genetics.alleles.AlleleEffectThrottled;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
+import gregtech.api.interfaces.IAlleleBeeAcceleratableEffect;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -31,6 +34,7 @@ import gregtech.common.gui.GT_GUIContainer_IndustrialApiary;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -47,9 +51,11 @@ import net.minecraft.world.biome.BiomeGenBase;
 public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicMachine
         implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener {
 
+    public static final int beeCycleLength = 550;
     public static final int baseEUtUsage = 37;
     static final int queen = 5;
     static final int drone = 6;
+    private static Field AlleleBeeEffectThrottledField;
 
     IBeeRoot beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
 
@@ -67,9 +73,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 aNameRegional,
                 aTier,
                 4,
-                new String[] {
-                    "BEES GOES BRRRR", EnumChatFormatting.GRAY + "Added by " + EnumChatFormatting.GOLD + "kuba6000"
-                },
+                new String[] {"BEES GOES BRRRR", EnumChatFormatting.GRAY + AuthorKuba},
                 6,
                 9,
                 "IndustrialApiary.png",
@@ -163,6 +167,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         if (usedQueen != null) aNBT.setTag("usedQueen", usedQueen.writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("retrievingPollenInThisOperation", retrievingPollenInThisOperation);
         aNBT.setInteger("pollinationDelay", pollinationDelay);
+        aNBT.setFloat("usedBeeLife", usedBeeLife);
     }
 
     @Override
@@ -173,11 +178,13 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         if (aNBT.hasKey("usedQueen")) usedQueen = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("usedQueen"));
         retrievingPollenInThisOperation = aNBT.getBoolean("retrievingPollenInThisOperation");
         pollinationDelay = aNBT.getInteger("pollinationDelay");
+        usedBeeLife = aNBT.getFloat("usedBeeLife");
     }
 
     boolean retrievingPollenInThisOperation = false;
     IIndividual retrievedpollen = null;
     int pollinationDelay = 100;
+    float usedBeeLife = 0f;
 
     @Override
     public int checkRecipe() {
@@ -335,7 +342,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
                 // Overclock
 
-                this.mMaxProgresstime = (int) (cycles * 550.f);
+                usedBeeLife = cycles * (float)beeCycleLength;
+                this.mMaxProgresstime = (int) usedBeeLife;
                 int timemaxdivider = this.mMaxProgresstime / 100;
                 int useddivider = 1 << this.mSpeed;
                 int actualdivider = useddivider;
@@ -391,6 +399,68 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     @Override
     protected boolean hasEnoughEnergyToCheckRecipe() {
         return getBaseMetaTileEntity().isUniversalEnergyStored(V[mSpeed] * 8L);
+    }
+
+    private void doEffect() {
+        IBeeGenome genome = usedQueenBee.getGenome();
+        IAlleleBeeEffect effect = genome.getEffect();
+        if (!(effect instanceof IAlleleBeeAcceleratableEffect)) {
+            effectData[0] = effect.validateStorage(effectData[0]);
+            effect.doEffect(genome, effectData[0], this);
+        }
+
+        if (!effect.isCombinable()) return;
+
+        IAlleleBeeEffect secondary = (IAlleleBeeEffect) genome.getInactiveAllele(EnumBeeChromosome.EFFECT);
+        if (!secondary.isCombinable()) return;
+
+        if (!(secondary instanceof IAlleleBeeAcceleratableEffect)) {
+            effectData[1] = secondary.validateStorage(effectData[1]);
+            secondary.doEffect(genome, effectData[1], this);
+        }
+    }
+
+    private void doAcceleratedEffects() {
+        IBeeGenome genome = usedQueenBee.getGenome();
+        IAlleleBeeEffect effect = genome.getEffect();
+        try {
+            if (AlleleBeeEffectThrottledField == null) {
+                AlleleBeeEffectThrottledField = AlleleEffectThrottled.class.getDeclaredField("throttle");
+                AlleleBeeEffectThrottledField.setAccessible(true);
+            }
+            if (effect instanceof IAlleleBeeAcceleratableEffect) {
+                effectData[0] = effect.validateStorage(effectData[0]);
+                effectData[0] = ((IAlleleBeeAcceleratableEffect) effect)
+                        .doEffectAccelerated(
+                                genome,
+                                effectData[0],
+                                this,
+                                usedBeeLife
+                                        / (effect instanceof AlleleEffectThrottled
+                                                ? (float) AlleleBeeEffectThrottledField.getInt(effect)
+                                                : 1f));
+            }
+
+            if (!effect.isCombinable()) return;
+
+            IAlleleBeeEffect secondary = (IAlleleBeeEffect) genome.getInactiveAllele(EnumBeeChromosome.EFFECT);
+            if (!secondary.isCombinable()) return;
+
+            if (secondary instanceof IAlleleBeeAcceleratableEffect) {
+                effectData[1] = secondary.validateStorage(effectData[1]);
+                effectData[1] = ((IAlleleBeeAcceleratableEffect) secondary)
+                        .doEffectAccelerated(
+                                genome,
+                                effectData[0],
+                                this,
+                                usedBeeLife
+                                        / (secondary instanceof AlleleEffectThrottled
+                                                ? (float) AlleleBeeEffectThrottledField.getInt(secondary)
+                                                : 1f));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -456,7 +526,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 this.mProgresstime++;
                 if (usedQueen != null) {
                     if (usedQueenBee == null) usedQueenBee = beeRoot.getMember(usedQueen);
-                    effectData = usedQueenBee.doEffect(effectData, this);
+                    doEffect();
                     if (!retrievingPollenInThisOperation
                             && floweringMod > 0f
                             && this.mProgresstime % pollinationDelay == 0) {
@@ -475,6 +545,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 }
 
                 if (this.mProgresstime >= this.mMaxProgresstime) {
+                    if (usedQueenBee != null) doAcceleratedEffects();
                     updateModifiers();
                     for (int i = 0; i < mOutputItems.length; i++)
                         if (mOutputItems[i] != null)
@@ -806,7 +877,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private float terrorityMod = 1f;
     private float mutationMod = 1f;
     private float lifespanMod = 1f;
-    private float productionMod = 1f;
+    private float productionMod = 0f;
     private float floweringMod = 1f;
     private float geneticDecayMod = 1f;
     private float energyMod = 1f;
