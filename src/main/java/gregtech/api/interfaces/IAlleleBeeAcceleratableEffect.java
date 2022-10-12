@@ -5,5 +5,5 @@ import forestry.api.apiculture.IBeeHousing;
 import forestry.api.genetics.IEffectData;
 
 public interface IAlleleBeeAcceleratableEffect {
-    IEffectData doEffectAccelerated(IBeeGenome genome, IEffectData storedData, IBeeHousing housing, double did);
+    IEffectData doEffectAccelerated(IBeeGenome genome, IEffectData storedData, IBeeHousing housing, float did);
 }
