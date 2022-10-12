@@ -51,6 +51,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicMachine
         implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener {
 
+    public static final int beeCycleLength = 550;
     public static final int baseEUtUsage = 37;
     static final int queen = 5;
     static final int drone = 6;
@@ -341,7 +342,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
                 // Overclock
 
-                usedBeeLife = cycles * 550.f;
+                usedBeeLife = cycles * (float)beeCycleLength;
                 this.mMaxProgresstime = (int) usedBeeLife;
                 int timemaxdivider = this.mMaxProgresstime / 100;
                 int useddivider = 1 << this.mSpeed;
