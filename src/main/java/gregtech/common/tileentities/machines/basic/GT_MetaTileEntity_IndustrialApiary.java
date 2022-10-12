@@ -166,6 +166,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         if (usedQueen != null) aNBT.setTag("usedQueen", usedQueen.writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("retrievingPollenInThisOperation", retrievingPollenInThisOperation);
         aNBT.setInteger("pollinationDelay", pollinationDelay);
+        aNBT.setFloat("usedBeeLife", usedBeeLife);
     }
 
     @Override
@@ -176,6 +177,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         if (aNBT.hasKey("usedQueen")) usedQueen = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("usedQueen"));
         retrievingPollenInThisOperation = aNBT.getBoolean("retrievingPollenInThisOperation");
         pollinationDelay = aNBT.getInteger("pollinationDelay");
+        usedBeeLife = aNBT.getFloat("usedBeeLife");
     }
 
     boolean retrievingPollenInThisOperation = false;
