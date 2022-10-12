@@ -41,6 +41,7 @@ public class BaseItemComponent extends Item {
     public final Material componentMaterial;
     public final String materialName;
     public final String unlocalName;
+    public final String translatedMaterialName;
     public final ComponentTypes componentType;
     public final int componentColour;
     public Object extraData;
@@ -52,6 +53,7 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = material;
         this.unlocalName = "item" + componentType.COMPONENT_NAME + material.getUnlocalizedName();
         this.materialName = material.getLocalizedName();
+        this.translatedMaterialName = material.getTranslatedName();
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
@@ -76,6 +78,18 @@ public class BaseItemComponent extends Item {
             }
         }
         registerComponent();
+
+        String aFormattedLangName = componentType.getName();
+        if (!aFormattedLangName.startsWith(" ")) {
+            if (aFormattedLangName.contains("@")) {
+                String[] aSplit = aFormattedLangName.split("@");
+                aFormattedLangName = aSplit[0] + " %material " + aSplit[1];
+            }
+        }
+        if (aFormattedLangName.equals(componentType.getName())) {
+            aFormattedLangName = "%material" + aFormattedLangName;
+        }
+        GT_LanguageManager.addStringLocalization("gtplusplus.item." + unlocalName + ".name", aFormattedLangName);
     }
 
     // For Cell Generation
@@ -93,6 +107,8 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = aTempMaterial;
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
+        this.translatedMaterialName =
+                GT_LanguageManager.addStringLocalization("gtplusplus.fluid." + this.unlocalName, this.materialName);
         this.componentType = ComponentTypes.CELL;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(aFormattedNameForFluids);
@@ -106,6 +122,18 @@ public class BaseItemComponent extends Item {
                 ComponentTypes.CELL.getOreDictName() + Utils.sanitizeStringKeepBrackets(localName),
                 ItemUtils.getSimpleStack(this));
         registerComponent();
+
+        String aFormattedLangName = componentType.getName();
+        if (!aFormattedLangName.startsWith(" ")) {
+            if (aFormattedLangName.contains("@")) {
+                String[] aSplit = aFormattedLangName.split("@");
+                aFormattedLangName = aSplit[0] + " %material " + aSplit[1];
+            }
+        }
+        if (aFormattedLangName.equals(componentType.getName())) {
+            aFormattedLangName = "%material" + aFormattedLangName;
+        }
+        GT_LanguageManager.addStringLocalization("gtplusplus.item." + unlocalName + ".name", aFormattedLangName);
     }
 
     public boolean registerComponent() {
@@ -181,30 +209,10 @@ public class BaseItemComponent extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        if (componentMaterial == null) {
-            String aFormattedLangName = componentType.getName();
-            if (!aFormattedLangName.startsWith(" ")) {
-                if (aFormattedLangName.contains("@")) {
-                    String[] aSplit = aFormattedLangName.split("@");
-                    aFormattedLangName = aSplit[0] + " " + getMaterialName() + " " + aSplit[1];
-                }
-            }
-            if (aFormattedLangName.equals(componentType.getName())) {
-                aFormattedLangName = getMaterialName() + aFormattedLangName;
-            }
-            return GT_LanguageManager.addStringLocalization(unlocalName, aFormattedLangName);
-        }
-        String aFormattedLangName = componentType.getName();
-        if (!aFormattedLangName.startsWith(" ")) {
-            if (aFormattedLangName.contains("@")) {
-                String[] aSplit = aFormattedLangName.split("@");
-                aFormattedLangName = aSplit[0] + " " + componentMaterial.getLocalizedName() + " " + aSplit[1];
-            }
-        }
-        if (aFormattedLangName.equals(componentType.getName())) {
-            aFormattedLangName = componentMaterial.getLocalizedName() + aFormattedLangName;
-        }
-        return GT_LanguageManager.addStringLocalization(unlocalName, aFormattedLangName);
+        return GT_LanguageManager.getTranslation("gtplusplus.item." + unlocalName + ".name")
+                .replace("%s", "%temp")
+                .replace("%material", translatedMaterialName)
+                .replace("%temp", "%s");
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

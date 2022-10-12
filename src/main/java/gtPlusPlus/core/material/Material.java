@@ -6,6 +6,7 @@ import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
@@ -46,6 +47,7 @@ public class Material {
 
     private String unlocalizedName;
     private String localizedName;
+    private String translatedName;
 
     private MaterialState materialState;
     private TextureSet textureSet;
@@ -514,6 +516,8 @@ public class Material {
         try {
             this.unlocalizedName = Utils.sanitizeString(materialName);
             this.localizedName = materialName;
+            this.translatedName =
+                    GT_LanguageManager.addStringLocalization("gtplusplus.material." + unlocalizedName, localizedName);
             mMaterialCache.put(getLocalizedName().toLowerCase(), this);
             Logger.INFO("Stored " + getLocalizedName() + " to cache with key: "
                     + getLocalizedName().toLowerCase());
@@ -1002,6 +1006,13 @@ public class Material {
             return this.unlocalizedName;
         }
         return "ERROR.BAD.UNLOCALIZED.NAME";
+    }
+
+    public final String getTranslatedName() {
+        if (this.translatedName != null) {
+            return this.translatedName;
+        }
+        return "ERROR.BAD.TRANSLATED.NAME";
     }
 
     public final MaterialState getState() {
