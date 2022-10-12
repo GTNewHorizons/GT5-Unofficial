@@ -193,13 +193,13 @@ public class GT_Cover_WirelessItemDetector
             super.drawExtras(mouseX, mouseY, parTicks);
             this.getFontRenderer()
                     .drawString(
-                            GT_Utility.trans("221", "Item Threshold"),
+                            GT_Utility.trans("221", "Item threshold"),
                             startX + spaceX * 5,
                             4 + startY + spaceY * 2,
                             textColor);
             this.getFontRenderer()
                     .drawString(
-                            GT_Utility.trans("254", "Detect Slot"),
+                            GT_Utility.trans("254.0", "Detect Slot"),
                             startX + spaceX * 5,
                             4 + startY + spaceY * 3,
                             textColor);

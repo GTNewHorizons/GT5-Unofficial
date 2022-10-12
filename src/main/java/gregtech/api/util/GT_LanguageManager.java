@@ -371,7 +371,7 @@ public class GT_LanguageManager {
                 "Interaction_DESCRIPTION_Index_207", "Pump speed: %dL every %d ticks, %.2f L/sec on average");
         addStringLocalization("Interaction_DESCRIPTION_Index_208", " L");
         addStringLocalization("Interaction_DESCRIPTION_Index_209", " ticks");
-        addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " ticks");
+        addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " tick");
         addStringLocalization("Interaction_DESCRIPTION_Index_210", "Average: %.2f L/sec");
         addStringLocalization("Interaction_DESCRIPTION_Index_211", "Items per side: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_212", "Input enabled");
@@ -417,6 +417,7 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_252", "Rotor < 80%");
         addStringLocalization("Interaction_DESCRIPTION_Index_253", "Rotor < 100%");
         addStringLocalization("Interaction_DESCRIPTION_Index_254", "Detect slot#");
+        addStringLocalization("Interaction_DESCRIPTION_Index_254.0", "Detect Slot");
         addStringLocalization("Interaction_DESCRIPTION_Index_254.1", "Internal slot#");
         addStringLocalization("Interaction_DESCRIPTION_Index_255", "Adjacent slot#");
         addStringLocalization("Interaction_DESCRIPTION_Index_256", "Universal Storage");
@@ -473,6 +474,11 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_328", "Channel");
         addStringLocalization("Interaction_DESCRIPTION_Index_329", "Public/Private");
         addStringLocalization("Interaction_DESCRIPTION_Index_330", "Sneak Rightclick to switch Mode");
+        addStringLocalization("Interaction_DESCRIPTION_Index_331", "AND Gate");
+        addStringLocalization("Interaction_DESCRIPTION_Index_332", "NAND Gate");
+        addStringLocalization("Interaction_DESCRIPTION_Index_333", "OR Gate");
+        addStringLocalization("Interaction_DESCRIPTION_Index_334", "NOR Gate");
+        addStringLocalization("Interaction_DESCRIPTION_Index_335", "Gate Mode");
         addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
         addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
         addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");
@@ -480,7 +486,7 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_505", "Enable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_506", "Disable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_507", "Safe Mode");
-        addStringLocalization("Interaction_DESCRIPTION_Index_601", "Use Private Frequency");
+        addStringLocalization("Interaction_DESCRIPTION_Index_602", "Use Private Frequency");
         addStringLocalization("Interaction_DESCRIPTION_Index_756", "Connectable: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_ALL", "All");
         addStringLocalization("Interaction_DESCRIPTION_Index_ANY", "Any");
@@ -494,9 +500,9 @@ public class GT_LanguageManager {
         addStringLocalization("Item_DESCRIPTION_Index_003", "Attack Damage: %s");
         addStringLocalization("Item_DESCRIPTION_Index_004", "Mining Speed: %s");
         addStringLocalization("Item_DESCRIPTION_Index_005", "Turbine Efficiency: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_006", "Optimal Steam flow: %sL/sec");
-        addStringLocalization("Item_DESCRIPTION_Index_007", "Optimal Gas flow(EU burnvalue per tick): %sEU/t");
-        addStringLocalization("Item_DESCRIPTION_Index_008", "Optimal Plasma flow(Plasma energyvalue per tick): %sEU/t");
+        addStringLocalization("Item_DESCRIPTION_Index_006", "Optimal Steam flow: %s L/t");
+        addStringLocalization("Item_DESCRIPTION_Index_007", "Energy from Optimal Gas Flow: %s EU/t");
+        addStringLocalization("Item_DESCRIPTION_Index_008", "Energy from Optimal Plasma Flow: %s EU/t");
         addStringLocalization("Item_DESCRIPTION_Index_009", "Contains %s EU   Tier: %s");
         addStringLocalization("Item_DESCRIPTION_Index_010", "Empty. You should recycle it properly.");
         addStringLocalization("Item_DESCRIPTION_Index_011", "%s / %s EU - Voltage: %s");
@@ -504,11 +510,15 @@ public class GT_LanguageManager {
         addStringLocalization("Item_DESCRIPTION_Index_013", "%sL / %sL");
         addStringLocalization("Item_DESCRIPTION_Index_014", "Missing Coodinates!");
         addStringLocalization("Item_DESCRIPTION_Index_015", "Device at:");
-        addStringLocalization("Item_DESCRIPTION_Index_016", "Amount: %s L");
-        addStringLocalization("Item_DESCRIPTION_Index_017", "Temperature: %s K");
         addStringLocalization("Item_DESCRIPTION_Index_018", "State: %s");
+        addStringLocalization("Item_DESCRIPTION_Index_019", "Bath with neutron in a hot reactor");
+        addStringLocalization("Item_DESCRIPTION_Index_020", "Progress: %s/%s");
+        addStringLocalization("Item_DESCRIPTION_Index_021", "Radiation Hazard");
         addStringLocalization("Item_DESCRIPTION_Index_500", "Turbine Efficiency (Loose): %s");
         addStringLocalization("Item_DESCRIPTION_Index_501", "Optimal Steam flow (Loose): %s L/t");
+        addStringLocalization("Item_DESCRIPTION_Index_502", "Overflow Efficiency Tier: %s");
+        addStringLocalization("Item_DESCRIPTION_Index_900", "Energy from Optimal Steam Flow: %s EU/t");
+        addStringLocalization("Item_DESCRIPTION_Index_901", "Energy from Optimal Steam Flow (Loose): %s EU/t");
 
         addStringLocalization(FACE_ANY, "Any Side");
         addStringLocalization(FACE_BOTTOM, "Bottom");

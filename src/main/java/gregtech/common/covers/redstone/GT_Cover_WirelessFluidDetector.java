@@ -142,7 +142,7 @@ public class GT_Cover_WirelessFluidDetector
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             this.getFontRenderer()
-                    .drawString(GT_Utility.trans("222", "Fluid Threshold"), startX + spaceX * 5, 4 + startY, textColor);
+                    .drawString(GT_Utility.trans("222", "Fluid threshold"), startX + spaceX * 5, 4 + startY, textColor);
         }
 
         @Override

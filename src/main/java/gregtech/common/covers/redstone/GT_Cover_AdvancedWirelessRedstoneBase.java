@@ -286,7 +286,7 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
                             textColor);
             this.getFontRenderer()
                     .drawString(
-                            GT_Utility.trans("601", "Use Private Frequency"),
+                            GT_Utility.trans("602", "Use Private Frequency"),
                             startX + spaceX * privateExtraColumn,
                             4 + startY + spaceY * buttonRow,
                             textColor);
