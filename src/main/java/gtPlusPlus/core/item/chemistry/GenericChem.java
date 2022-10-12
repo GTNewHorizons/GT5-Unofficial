@@ -912,7 +912,7 @@ public class GenericChem extends ItemPackage {
                     Materials.Naquadria.getDust(10)
                 },
                 GT_Values.NF,
-                ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 1),
+                ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 5),
                 5 * 20,
                 1966080);
     }
