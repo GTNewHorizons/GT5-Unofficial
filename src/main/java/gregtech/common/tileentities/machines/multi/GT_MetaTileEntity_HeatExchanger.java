@@ -38,6 +38,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT_MetaTileEntity_HeatExchanger
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_HeatExchanger>
         implements ISurvivalConstructable {
+    private int dryHeatCounter = 0; // Counts up to dryHeatMaximum to check for explosion conditions
+    private static final int dryHeatMaximum = 2000; // 2000 ticks = 100 seconds
     private static final int CASING_INDEX = 50;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_HeatExchanger> STRUCTURE_DEFINITION =
@@ -278,9 +280,14 @@ public class GT_MetaTileEntity_HeatExchanger
                     } else {
                         addOutput(GT_ModHandler.getSteam(tGeneratedEU)); // Generate regular steam
                     }
+                    dryHeatCounter = 0;
                 } else {
-                    GT_Log.exp.println(this.mName + " had no more Distilled water!");
-                    explodeMultiblock(); // Generate crater
+                    if (dryHeatCounter < dryHeatMaximum) {
+                        dryHeatCounter += 1;
+                    } else {
+                        GT_Log.exp.println(this.mName + " was too hot and had no more Distilled Water!");
+                        explodeMultiblock(); // Generate crater
+                    }
                 }
             }
             return true;
