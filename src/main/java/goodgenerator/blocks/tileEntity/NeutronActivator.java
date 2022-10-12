@@ -2,10 +2,12 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static goodgenerator.util.StructureHelper.addFrame;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronAccelerator;
@@ -19,8 +21,10 @@ import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -28,13 +32,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import ic2.core.Ic2Items;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,7 +44,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
-public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
+public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
+        implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<NeutronActivator> multiDefinition = null;
     protected final ArrayList<NeutronAccelerator> mNeutronAccelerator = new ArrayList<>();
@@ -209,19 +212,31 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     .addElement(
                             'C',
                             ofChain(
-                                    ofHatchAdder(NeutronActivator::addClassicInputToMachineList, 49, 1),
-                                    onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 1))))
+                                    buildHatchAdder(NeutronActivator.class)
+                                            .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.InputBus)
+                                            .casingIndex(49)
+                                            .dot(1)
+                                            .build(),
+                                    onElementPass(
+                                            NeutronActivator::onCasingFound, ofBlock(GregTech_API.sBlockCasings4, 1))))
                     .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 6))
-                    .addElement('F', addFrame(Materials.Steel))
+                    .addElement('F', ofFrame(Materials.Steel))
                     .addElement('G', ofBlock(Block.getBlockFromItem(Ic2Items.reinforcedGlass.getItem()), 0))
                     .addElement('P', ofBlock(Loaders.speedingPipe, 0))
                     .addElement(
                             'X',
                             ofChain(
-                                    ofHatchAdder(NeutronActivator::addClassicOutputToMachineList, 49, 2),
-                                    ofHatchAdder(NeutronActivator::addMaintenanceToMachineList, 49, 2),
-                                    ofHatchAdder(NeutronActivator::addAcceleratorAndSensor, 49, 2),
-                                    onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 1))))
+                                    buildHatchAdder(NeutronActivator.class)
+                                            .atLeast(
+                                                    GT_HatchElement.OutputHatch,
+                                                    GT_HatchElement.OutputBus,
+                                                    NeutronHatchElement.NeutronAccelerator,
+                                                    NeutronHatchElement.NeutronSensor)
+                                            .casingIndex(49)
+                                            .dot(2)
+                                            .build(),
+                                    onElementPass(
+                                            NeutronActivator::onCasingFound, ofBlock(GregTech_API.sBlockCasings4, 1))))
                     .build();
         }
         return multiDefinition;
@@ -405,5 +420,58 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                 };
         }
         return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(49)};
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+
+        int built = 0;
+        built += survivialBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, source, actor, false, true);
+        int heights = stackSize.stackSize + 3;
+        built += survivialBuildPiece(
+                NA_TOP, stackSize, 2, heights + 1, 0, elementBudget - built, source, actor, false, true);
+        while (heights > 0) {
+            built += survivialBuildPiece(
+                    NA_MID, stackSize, 2, heights, 0, elementBudget - built, source, actor, false, true);
+            heights--;
+        }
+        return built;
+    }
+
+    protected void onCasingFound() {
+        casingAmount++;
+    }
+
+    private enum NeutronHatchElement implements IHatchElement<NeutronActivator> {
+        NeutronSensor(NeutronActivator::addAcceleratorAndSensor, NeutronSensor.class) {
+            @Override
+            public long count(NeutronActivator t) {
+                return t.mNeutronSensor.size();
+            }
+        },
+        NeutronAccelerator(NeutronActivator::addAcceleratorAndSensor, NeutronAccelerator.class) {
+            @Override
+            public long count(NeutronActivator t) {
+                return t.mNeutronAccelerator.size();
+            }
+        };
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGT_HatchAdder<NeutronActivator> adder;
+
+        @SafeVarargs
+        NeutronHatchElement(IGT_HatchAdder<NeutronActivator> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGT_HatchAdder<? super NeutronActivator> adder() {
+            return adder;
+        }
     }
 }

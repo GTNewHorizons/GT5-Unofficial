@@ -2,11 +2,13 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
@@ -15,6 +17,7 @@ import goodgenerator.items.MyMaterial;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
+import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -31,6 +34,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -41,7 +45,8 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigBlocks;
 
-public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
+public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
+        implements IConstructable, ISurvivalConstructable {
 
     private IStructureDefinition<LargeEssentiaGenerator> multiDefinition = null;
     protected int mStableValue = 0;
@@ -218,7 +223,14 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
                     .addElement(
                             'X',
                             ofChain(
-                                    ofHatchAdder(LargeEssentiaGenerator::addLargeEssentiaGeneratorList, 1536, 1),
+                                    buildHatchAdder(LargeEssentiaGenerator.class)
+                                            .atLeast(
+                                                    HatchElement.DynamoMulti.or(GT_HatchElement.Dynamo),
+                                                    GT_HatchElement.Maintenance,
+                                                    GT_HatchElement.InputHatch)
+                                            .casingIndex(1536)
+                                            .dot(1)
+                                            .build(),
                                     ofBlock(Loaders.magicCasing, 0),
                                     ofTileAdder(LargeEssentiaGenerator::addEssentiaHatch, Loaders.magicCasing, 0)))
                     .build();
@@ -555,5 +567,11 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     public boolean isValidEssentia(Aspect aspect) {
         int type = LargeEssentiaEnergyData.getAspectTypeIndex(aspect);
         return type != -1 && (mUpgrade & (1 << type)) != 0;
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 4, 0, 4, elementBudget, source, actor, false, true);
     }
 }

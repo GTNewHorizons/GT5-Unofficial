@@ -5,9 +5,11 @@ package goodgenerator.blocks.tileEntity.base;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.*;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementCheckOnly;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -21,6 +23,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import java.util.ArrayList;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +33,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GT_MetaTileEntity_LargeTurbineBase
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeTurbineBase> {
+        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeTurbineBase>
+        implements ISurvivalConstructable {
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeTurbineBase>> STRUCTURE_DEFINITION =
             new ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeTurbineBase>>() {
@@ -55,20 +59,12 @@ public abstract class GT_MetaTileEntity_LargeTurbineBase
                                 },
                             }))
                             .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
-                            .addElement(
-                                    'd',
-                                    lazy(t -> ofHatchAdder(
-                                            GT_MetaTileEntity_LargeTurbineBase::addDynamoToMachineList,
-                                            t.getCasingTextureIndex(),
-                                            1)))
-                            .addElement(
-                                    'h',
-                                    lazy(t -> ofHatchAdderOptional(
-                                            GT_MetaTileEntity_LargeTurbineBase::addToMachineList,
-                                            t.getCasingTextureIndex(),
-                                            2,
-                                            t.getCasingBlock(),
-                                            t.getCasingMeta())))
+                            .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 1)))
+                            .addElement('h', lazy(t -> buildHatchAdder(GT_MetaTileEntity_LargeTurbineBase.class)
+                                    .atLeast(Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler)
+                                    .casingIndex(t.getCasingTextureIndex())
+                                    .dot(2)
+                                    .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
                             .addElement('x', (IStructureElementCheckOnly<GT_MetaTileEntity_LargeTurbineBase>)
                                     (aContext, aWorld, aX, aY, aZ) -> {
                                         TileEntity tTile = aWorld.getTileEntity(aX, aY, aZ);
@@ -312,5 +308,11 @@ public abstract class GT_MetaTileEntity_LargeTurbineBase
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 2, 1);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 1, elementBudget, source, actor, false, true);
     }
 }

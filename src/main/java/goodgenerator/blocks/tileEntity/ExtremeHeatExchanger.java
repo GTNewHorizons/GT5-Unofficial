@@ -4,9 +4,12 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
@@ -14,6 +17,8 @@ import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_HatchElement;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -21,12 +26,13 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import ic2.core.Ic2Items;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -34,7 +40,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
+public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
+        implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<ExtremeHeatExchanger> multiDefinition = null;
 
@@ -87,17 +94,35 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
                     .addElement(
                             'B',
                             ofChain(
-                                    ofHatchAdder(ExtremeHeatExchanger::addClassicInputToMachineList, 48, 1),
-                                    ofHatchAdder(ExtremeHeatExchanger::addMaintenanceToMachineList, 48, 1),
+                                    buildHatchAdder(ExtremeHeatExchanger.class)
+                                            .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.Maintenance)
+                                            .casingIndex(48)
+                                            .dot(1)
+                                            .build(),
                                     onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
                     .addElement(
                             'T',
                             ofChain(
-                                    ofHatchAdder(ExtremeHeatExchanger::addClassicOutputToMachineList, 48, 2),
-                                    ofHatchAdder(ExtremeHeatExchanger::addMaintenanceToMachineList, 48, 2),
+                                    buildHatchAdder(ExtremeHeatExchanger.class)
+                                            .atLeast(GT_HatchElement.OutputHatch, GT_HatchElement.Maintenance)
+                                            .casingIndex(48)
+                                            .dot(1)
+                                            .build(),
                                     onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
-                    .addElement('F', ofHatchAdder(ExtremeHeatExchanger::addHotFluidInputToMachineList, 48, 3))
-                    .addElement('E', ofHatchAdder(ExtremeHeatExchanger::addColdFluidOutputToMachineList, 48, 4))
+                    .addElement(
+                            'F',
+                            buildHatchAdder(ExtremeHeatExchanger.class)
+                                    .atLeast(EHEHatches.HotInputHatch)
+                                    .casingIndex(48)
+                                    .dot(3)
+                                    .build())
+                    .addElement(
+                            'E',
+                            buildHatchAdder(ExtremeHeatExchanger.class)
+                                    .atLeast(EHEHatches.ColdOutputHatch)
+                                    .casingIndex(48)
+                                    .dot(4)
+                                    .build())
                     .addElement(
                             'C',
                             ofChain(
@@ -330,5 +355,45 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
             };
         }
         return new ITexture[] {casingTexturePages[0][48]};
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 2, 5, 0, elementBudget, source, actor, false, true);
+    }
+
+    private enum EHEHatches implements IHatchElement<ExtremeHeatExchanger> {
+        HotInputHatch(ExtremeHeatExchanger::addHotFluidInputToMachineList, GT_MetaTileEntity_Hatch_Input.class) {
+            @Override
+            public long count(ExtremeHeatExchanger t) {
+                if (t.mHotFluidHatch == null) return 0;
+                return 1;
+            }
+        },
+        ColdOutputHatch(ExtremeHeatExchanger::addColdFluidOutputToMachineList, GT_MetaTileEntity_Hatch_Output.class) {
+            @Override
+            public long count(ExtremeHeatExchanger t) {
+                if (t.mCooledFluidHatch == null) return 0;
+                return 1;
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGT_HatchAdder<ExtremeHeatExchanger> adder;
+
+        EHEHatches(IGT_HatchAdder<ExtremeHeatExchanger> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGT_HatchAdder<? super ExtremeHeatExchanger> adder() {
+            return adder;
+        }
     }
 }

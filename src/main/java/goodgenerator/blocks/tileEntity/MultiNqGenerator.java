@@ -3,7 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.main.GG_Config_Loader.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
@@ -11,6 +11,8 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
@@ -20,6 +22,7 @@ import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -34,6 +37,7 @@ import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -41,7 +45,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
-        implements TecTechEnabledMulti, IConstructable {
+        implements TecTechEnabledMulti, IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<MultiNqGenerator> multiDefinition = null;
     protected long leftEnergy = 0;
@@ -122,8 +126,15 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     .addElement(
                             'X',
                             ofChain(
-                                    ofHatchAdder(
-                                            MultiNqGenerator::addToGeneratorList, 44, GregTech_API.sBlockCasings3, 12),
+                                    buildHatchAdder(MultiNqGenerator.class)
+                                            .atLeast(
+                                                    HatchElement.DynamoMulti.or(GT_HatchElement.Dynamo),
+                                                    GT_HatchElement.InputHatch,
+                                                    GT_HatchElement.OutputHatch,
+                                                    GT_HatchElement.Maintenance)
+                                            .casingIndex(44)
+                                            .dot(1)
+                                            .build(),
                                     ofBlock(GregTech_API.sBlockCasings3, 12)))
                     .addElement('A', ofBlock(GregTech_API.sBlockCasings3, 12))
                     .addElement('N', ofBlock(Loaders.radiationProtectionSteelFrame, 0))
@@ -423,5 +434,11 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     @Override
     public List<GT_MetaTileEntity_Hatch_EnergyMulti> getTecTechEnergyMultis() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 3, 7, 0, elementBudget, source, actor, false, true);
     }
 }

@@ -3,13 +3,15 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -17,6 +19,7 @@ import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockB
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.MyRecipeAdder;
+import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -30,6 +33,7 @@ import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -37,7 +41,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
-        implements TecTechEnabledMulti, IConstructable {
+        implements TecTechEnabledMulti, IConstructable, ISurvivalConstructable {
 
     private IStructureDefinition<FuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
@@ -95,9 +99,16 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
                     }))
                     .addElement(
                             'X',
-                            ofChain(
-                                    ofHatchAdder(FuelRefineFactory::addToFRFList, 179, Loaders.FRF_Casings, 0),
-                                    ofBlock(Loaders.FRF_Casings, 0)))
+                            buildHatchAdder(FuelRefineFactory.class)
+                                    .atLeast(
+                                            GT_HatchElement.Maintenance,
+                                            GT_HatchElement.InputHatch,
+                                            GT_HatchElement.InputBus,
+                                            GT_HatchElement.OutputHatch,
+                                            HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
+                                    .casingIndex(50)
+                                    .dot(1)
+                                    .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
                     .addElement('C', ofBlock(Loaders.FRF_Casings, 0))
                     .addElement('G', ofBlock(Loaders.fieldRestrictingGlass, 0))
                     .addElement(
@@ -357,5 +368,11 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
             };
         }
         return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(179)};
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 7, 12, 1, elementBudget, source, actor, false, true);
     }
 }

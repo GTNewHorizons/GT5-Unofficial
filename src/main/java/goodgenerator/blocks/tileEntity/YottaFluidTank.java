@@ -2,15 +2,12 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static goodgenerator.util.StructureHelper.addFrame;
-import static goodgenerator.util.StructureHelper.addTieredBlock;
 import static gregtech.api.util.GT_StructureUtility.*;
 
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.*;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.YOTTAHatch;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.client.GUI.YOTTankGUIClient;
@@ -18,6 +15,7 @@ import goodgenerator.common.container.YOTTankGUIContainer;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.CharExchanger;
 import goodgenerator.util.DescTextLocalization;
+import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -32,6 +30,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,7 +39,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
+public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
+        implements IConstructable, ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow =
@@ -184,24 +184,42 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
                     .addElement('C', ofBlock(Loaders.yottaFluidTankCasing, 0))
                     .addElement(
                             'G',
-                            addTieredBlock(
-                                    ItemRegistry.bw_realglas, YottaFluidTank::setMeta, YottaFluidTank::getMeta, 14))
+                            withChannel(
+                                    "glass",
+                                    BorosilicateGlass.ofBoroGlass(
+                                            (byte) 0, (byte) 1, Byte.MAX_VALUE, YottaFluidTank::setMeta, te ->
+                                                    (byte) te.getMeta())))
                     .addElement('R', ofChain(cells(10)))
-                    .addElement('F', addFrame(Materials.Steel))
+                    .addElement('F', ofFrame(Materials.Steel))
                     .addElement(
                             'I',
-                            ofHatchAdderOptional(YottaFluidTank::addInput, 1537, 1, Loaders.yottaFluidTankCasing, 0))
+                            ofChain(
+                                    buildHatchAdder(YottaFluidTank.class)
+                                            .atLeast(GT_HatchElement.InputHatch)
+                                            .adder(YottaFluidTank::addInput)
+                                            .casingIndex(1537)
+                                            .dot(1)
+                                            .build(),
+                                    ofBlock(Loaders.yottaFluidTankCasing, 0)))
                     .addElement(
                             'M',
-                            ofHatchAdderOptional(
-                                    YottaFluidTank::addClassicMaintenanceToMachineList,
-                                    1537,
-                                    2,
-                                    Loaders.yottaFluidTankCasing,
-                                    0))
+                            ofChain(
+                                    buildHatchAdder(YottaFluidTank.class)
+                                            .atLeast(GT_HatchElement.Maintenance)
+                                            .casingIndex(1537)
+                                            .dot(2)
+                                            .build(),
+                                    ofBlock(Loaders.yottaFluidTankCasing, 0)))
                     .addElement(
                             'O',
-                            ofHatchAdderOptional(YottaFluidTank::addOutput, 1537, 3, Loaders.yottaFluidTankCasing, 0))
+                            ofChain(
+                                    buildHatchAdder(YottaFluidTank.class)
+                                            .atLeast(GT_HatchElement.OutputHatch)
+                                            .adder(YottaFluidTank::addOutput)
+                                            .casingIndex(1537)
+                                            .dot(1)
+                                            .build(),
+                                    ofBlock(Loaders.yottaFluidTankCasing, 0)))
                     .build();
         }
         return multiDefinition;
@@ -415,5 +433,22 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
                     TextureFactory.builder().addIcon(textureFontOff_Glow).glow().build()
                 };
         } else return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(1537)};
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        int built = 0;
+        built += survivialBuildPiece(YOTTANK_BOTTOM, stackSize, 2, 0, 0, elementBudget, source, actor, false, true);
+        int height = stackSize.stackSize;
+        if (height > 15) height = 15;
+        built += survivialBuildPiece(
+                YOTTANK_TOP, stackSize, 2, height + 2, 0, elementBudget - built, source, actor, false, true);
+        while (height > 0) {
+            built += survivialBuildPiece(
+                    YOTTANK_MID, stackSize, 2, height, 0, elementBudget - built, source, actor, false, true);
+            height--;
+        }
+        return built;
     }
 }

@@ -4,15 +4,18 @@ import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.ge
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static goodgenerator.util.StructureHelper.addTieredBlock;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.loader.Loaders;
@@ -30,19 +33,24 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
-public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
+public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
+        implements IConstructable, ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow =
@@ -79,24 +87,42 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     }))
                     .addElement(
                             'C',
-                            ofChain(
-                                    ofHatchAdder(PreciseAssembler::addToPAssList, 0, 1),
-                                    onElementPass(
+                            GT_HatchElementBuilder.<PreciseAssembler>builder()
+                                    .atLeast(
+                                            InputBus,
+                                            InputHatch,
+                                            OutputHatch,
+                                            OutputBus,
+                                            Maintenance,
+                                            Muffler,
+                                            HatchElement.EnergyMulti.or(Energy))
+                                    .adder(PreciseAssembler::addToPAssList)
+                                    .casingIndex(1539)
+                                    .dot(1)
+                                    .buildAndChain(onElementPass(
                                             x -> x.casingAmount++,
-                                            addTieredBlock(
-                                                    Loaders.preciseUnitCasing,
+                                            StructureUtility.ofBlocksTiered(
+                                                    (block, meta) -> block == Loaders.preciseUnitCasing ? meta : -2,
+                                                    IntStream.range(0, 3)
+                                                            .mapToObj(meta -> org.apache.commons.lang3.tuple.Pair.of(
+                                                                    Loaders.preciseUnitCasing, meta))
+                                                            .collect(Collectors.toList()),
+                                                    -1,
                                                     PreciseAssembler::setCasingTier,
-                                                    PreciseAssembler::getCasingTier,
-                                                    3))))
+                                                    PreciseAssembler::getCasingTier))))
                     .addElement('F', ofFrame(Materials.TungstenSteel))
                     .addElement('G', ofBlock(Block.getBlockFromItem(Ic2Items.reinforcedGlass.getItem()), 0))
                     .addElement(
                             'M',
-                            addTieredBlock(
-                                    GregTech_API.sBlockCasings1,
+                            StructureUtility.ofBlocksTiered(
+                                    (block, meta) -> block == GregTech_API.sBlockCasings1 ? meta : -2,
+                                    IntStream.range(0, 10)
+                                            .mapToObj(meta -> org.apache.commons.lang3.tuple.Pair.of(
+                                                    GregTech_API.sBlockCasings1, meta))
+                                            .collect(Collectors.toList()),
+                                    -1,
                                     PreciseAssembler::setMachineTier,
-                                    PreciseAssembler::getMachineTier,
-                                    10))
+                                    PreciseAssembler::getMachineTier))
                     .build();
         }
         return multiDefinition;
@@ -179,7 +205,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        if (casingTier <= 0 || machineTier <= 0) return false;
+        if (casingTier < 0 || machineTier < 0) return false;
         FluidStack[] inputFluids = getStoredFluids().toArray(new FluidStack[0]);
         if (this.mode == 0) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
@@ -191,7 +217,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                                 Math.min(getMachineVoltageLimit(), getMaxInputEnergyPA()),
                                 inputFluids,
                                 getStoredItemFromHatch(bus));
-                if (tRecipe != null && tRecipe.mSpecialValue <= casingTier) {
+                if (tRecipe != null && tRecipe.mSpecialValue <= (casingTier + 1)) {
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     tRecipe.isRecipeInputEqual(true, inputFluids, getStoredItemFromHatch(bus));
@@ -223,7 +249,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     this.mEfficiencyIncrease = 10000;
                     long fullInput = getMaxInputEnergy_EM();
                     int pall = handleParallelRecipe(tRecipe, inputFluids, getStoredItemFromHatch(bus), (int)
-                            Math.min((long) Math.pow(2, 4 + casingTier), fullInput / tRecipe.mEUt));
+                            Math.min((long) Math.pow(2, 4 + (casingTier + 1)), fullInput / tRecipe.mEUt));
                     if (pall <= 0) continue;
                     Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(tRecipe, pall);
                     long lEUt = (long) tRecipe.mEUt * (long) pall;
@@ -278,9 +304,9 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     public long getMachineVoltageLimit() {
-        if (machineTier <= 0) return 0;
-        if (machineTier >= 10) return GT_Values.V[energyHatchTier];
-        else return GT_Values.V[Math.min(machineTier - 1, energyHatchTier)];
+        if (machineTier < 0) return 0;
+        if (machineTier > 9) return GT_Values.V[energyHatchTier];
+        else return GT_Values.V[Math.min(machineTier, energyHatchTier)];
     }
 
     public ItemStack[] getStoredItemFromHatch(GT_MetaTileEntity_Hatch_InputBus tHatch) {
@@ -342,15 +368,24 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) {
+            return -1;
+        } else {
+            return survivialBuildPiece(mName, stackSize, 4, 4, 0, elementBudget, source, actor, false, true);
+        }
+    }
+
+    @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.machineTier = 0;
+        this.machineTier = -1;
         this.casingAmount = 0;
-        this.casingTier = 0;
+        this.casingTier = -1;
         this.energyHatchTier = 0;
         if (structureCheck_EM(mName, 4, 4, 0)) {
             energyHatchTier = checkEnergyHatchTier();
-            if (casingTier != 0) {
-                reUpdate(1538 + casingTier);
+            if (casingTier >= 0) {
+                reUpdate(1539 + casingTier);
             }
             GoodGenerator.CHANNEL.sendToAllAround(
                     new MessageResetTileTexture(aBaseMetaTileEntity, casingTier),
@@ -361,8 +396,8 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                             aBaseMetaTileEntity.getZCoord(),
                             16));
             return casingAmount >= 42
-                    && machineTier != 0
-                    && casingTier != 0
+                    && machineTier >= 0
+                    && casingTier >= 0
                     && mMaintenanceHatches.size() == 1
                     && !mMufflerHatches.isEmpty();
         }
@@ -481,21 +516,20 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             byte aColorIndex,
             boolean aActive,
             boolean aRedstone) {
-        int t = 1;
-        if (getCasingTier() != 0) t = getCasingTier();
+        int t = Math.max(getCasingTier(), 0);
         if (aSide == aFacing) {
             if (aActive)
                 return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(1538 + t),
+                    Textures.BlockIcons.getCasingTextureForId(1539 + t),
                     TextureFactory.of(textureFontOn),
                     TextureFactory.builder().addIcon(textureFontOn_Glow).glow().build()
                 };
             else
                 return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(1538 + t),
+                    Textures.BlockIcons.getCasingTextureForId(1539 + t),
                     TextureFactory.of(textureFontOff),
                     TextureFactory.builder().addIcon(textureFontOff_Glow).glow().build()
                 };
-        } else return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(1538 + t)};
+        } else return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(1539 + t)};
     }
 }

@@ -5,13 +5,15 @@ import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.ha
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.client.GUI.LargeFusionComputerGUIClient;
+import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -23,10 +25,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -37,7 +41,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
-        implements IConstructable {
+        implements IConstructable, ISurvivalConstructable {
 
     public static final String MAIN_NAME = "largeFusionPP";
     private boolean isLoadedChunk;
@@ -53,30 +57,24 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
                             .addElement('H', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
                             .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(), x.getCasingMeta())))
                             .addElement('B', lazy(x -> ofBlock(x.getGlassBlock(), x.getGlassMeta())))
-                            .addElement(
-                                    'I',
-                                    lazy(x -> ofHatchAdderOptional(
-                                            LargeFusionComputerPP::addInjector,
-                                            x.textureIndex(),
-                                            1,
-                                            x.getGlassBlock(),
-                                            x.getGlassMeta())))
-                            .addElement(
-                                    'O',
-                                    lazy(x -> ofHatchAdderOptional(
-                                            LargeFusionComputerPP::addExtractor,
-                                            x.textureIndex(),
-                                            2,
-                                            x.getGlassBlock(),
-                                            x.getGlassMeta())))
-                            .addElement(
-                                    'E',
-                                    lazy(x -> ofHatchAdderOptional(
-                                            LargeFusionComputerPP::addEnergyInjector,
-                                            x.textureIndex(),
-                                            3,
-                                            x.getCasingBlock(),
-                                            x.getCasingMeta())))
+                            .addElement('I', lazy(x -> GT_HatchElementBuilder.<LargeFusionComputerPP>builder()
+                                    .atLeast(GT_HatchElement.InputHatch)
+                                    .adder(LargeFusionComputerPP::addInjector)
+                                    .casingIndex(x.textureIndex())
+                                    .dot(1)
+                                    .buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
+                            .addElement('O', lazy(x -> GT_HatchElementBuilder.<LargeFusionComputerPP>builder()
+                                    .atLeast(GT_HatchElement.OutputHatch)
+                                    .adder(LargeFusionComputerPP::addExtractor)
+                                    .casingIndex(x.textureIndex())
+                                    .dot(2)
+                                    .buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
+                            .addElement('E', lazy(x -> GT_HatchElementBuilder.<LargeFusionComputerPP>builder()
+                                    .atLeast(HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
+                                    .adder(LargeFusionComputerPP::addEnergyInjector)
+                                    .casingIndex(x.textureIndex())
+                                    .dot(3)
+                                    .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
                             .addElement('F', lazy(x -> ofFrame(x.getFrameBox())))
                             .build();
                 }
@@ -171,6 +169,25 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) {
+            return -1;
+        } else {
+            return survivialBuildPiece(
+                    MAIN_NAME,
+                    stackSize,
+                    23,
+                    3,
+                    40,
+                    elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5),
+                    source,
+                    actor,
+                    false,
+                    true);
+        }
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
             // if machine has stopped, stop chunkloading
@@ -217,7 +234,17 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                 checkRecipe(mInventory[1]);
             }
-            if (--mUpdate == 0 || --mStartUpCheck == 0) {
+            if (mUpdated) {
+                mUpdate = 50;
+                mUpdated = false;
+            }
+            if (--mUpdate == 0
+                    || --mStartUpCheck == 0
+                    || cyclicUpdate_EM()
+                    || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
+                if (mUpdate <= -1000) {
+                    mUpdate = 5000;
+                }
                 checkStructure(true, aBaseMetaTileEntity);
             }
             if (mStartUpCheck < 0) {

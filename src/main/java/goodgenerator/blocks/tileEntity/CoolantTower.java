@@ -3,16 +3,18 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.*;
 
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -24,10 +26,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
+public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
+        implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<CoolantTower> multiDefinition = null;
     private final int CASING_INDEX = 1542;
@@ -219,9 +223,11 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM imp
                     .addElement('C', ofFrame(Materials.TungstenCarbide))
                     .addElement(
                             'H',
-                            ofChain(
-                                    ofHatchAdder(CoolantTower::addIOFluidToMachineList, CASING_INDEX, 1),
-                                    ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8)))
+                            ofChain(buildHatchAdder(CoolantTower.class)
+                                    .atLeast(GT_HatchElement.InputHatch, GT_HatchElement.OutputHatch)
+                                    .casingIndex(CASING_INDEX)
+                                    .dot(1)
+                                    .buildAndChain(ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8))))
                     .build();
         }
         return multiDefinition;
@@ -361,5 +367,11 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM imp
             };
         }
         return new ITexture[] {casingTexturePages[12][6]};
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, source, actor, false, true);
     }
 }

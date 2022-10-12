@@ -2,17 +2,20 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.crossmod.LoadedList;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
+import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -25,6 +28,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import java.util.ArrayList;
 import java.util.Map;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -38,7 +42,8 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
-public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
+public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
+        implements IConstructable, ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn =
             new Textures.BlockIcons.CustomIcon("icons/LargeEssentiaSmeltery_On");
@@ -148,16 +153,27 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
                     .addElement(
                             'A',
                             ofChain(
-                                    ofHatchAdder(LargeEssentiaSmeltery::addMaintenanceToMachineList, CASING_INDEX, 1),
-                                    ofHatchAdder(LargeEssentiaSmeltery::addInputToMachineList, CASING_INDEX, 1),
-                                    ofHatchAdder(LargeEssentiaSmeltery::addEnergyHatchToMachineList, CASING_INDEX, 1),
+                                    buildHatchAdder(LargeEssentiaSmeltery.class)
+                                            .atLeast(
+                                                    GT_HatchElement.Maintenance,
+                                                    GT_HatchElement.Energy,
+                                                    GT_HatchElement.InputBus)
+                                            .casingIndex(CASING_INDEX)
+                                            .dot(1)
+                                            .build(),
                                     ofTileAdder(
                                             LargeEssentiaSmeltery::addEssentiaOutputHatchToMachineList,
                                             Loaders.magicCasing,
                                             0),
                                     onElementPass(
                                             LargeEssentiaSmeltery::onCasingFound, ofBlock(Loaders.magicCasing, 0))))
-                    .addElement('B', ofHatchAdder(LargeEssentiaSmeltery::addMufflerToMachineList, CASING_INDEX, 2))
+                    .addElement(
+                            'B',
+                            buildHatchAdder(LargeEssentiaSmeltery.class)
+                                    .atLeast(GT_HatchElement.Muffler)
+                                    .casingIndex(CASING_INDEX)
+                                    .dot(2)
+                                    .build())
                     .build();
         }
         return this.multiDefinition;
@@ -507,5 +523,23 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     @Override
     protected void maintenance_EM() {
         super.maintenance_EM();
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        int built = 0;
+        built += survivialBuildPiece(
+                STRUCTURE_PIECE_FIRST, stackSize, 2, 2, 0, elementBudget, source, actor, false, true);
+        int lenght = stackSize.stackSize + 2;
+        if (lenght > MAX_CONFIGURABLE_LENGTH) lenght = MAX_CONFIGURABLE_LENGTH + 2;
+        built += survivialBuildPiece(
+                STRUCTURE_PIECE_LAST, stackSize, 2, 2, lenght + 1, elementBudget - built, source, actor, false, true);
+        while (lenght > 0) {
+            built += survivialBuildPiece(
+                    STRUCTURE_PIECE_LATER, stackSize, 2, 2, lenght, elementBudget - built, source, actor, false, true);
+            lenght--;
+        }
+        return built;
     }
 }
