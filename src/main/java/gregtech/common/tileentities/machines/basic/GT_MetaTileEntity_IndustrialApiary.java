@@ -342,7 +342,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
                 // Overclock
 
-                usedBeeLife = cycles * (float)beeCycleLength;
+                usedBeeLife = cycles * (float) beeCycleLength;
                 this.mMaxProgresstime = (int) usedBeeLife;
                 int timemaxdivider = this.mMaxProgresstime / 100;
                 int useddivider = 1 << this.mSpeed;
