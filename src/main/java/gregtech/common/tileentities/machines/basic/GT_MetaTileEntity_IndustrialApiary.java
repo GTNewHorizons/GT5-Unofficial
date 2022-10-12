@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
@@ -71,9 +72,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 aNameRegional,
                 aTier,
                 4,
-                new String[] {
-                    "BEES GOES BRRRR", EnumChatFormatting.GRAY + "Added by " + EnumChatFormatting.GOLD + "kuba6000"
-                },
+                new String[] {"BEES GOES BRRRR", EnumChatFormatting.GRAY + AuthorKuba},
                 6,
                 9,
                 "IndustrialApiary.png",
