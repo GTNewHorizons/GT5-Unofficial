@@ -88,6 +88,12 @@ public class RecipeLoader_02 {
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.hikarium, 1200, 30720, 5400, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.tairitsu, 1200, 1966080, 7400, true);
 
+        GT_Values.RA.addVacuumFreezerRecipe(
+                MyMaterial.dalisenite.get(OrePrefixes.ingotHot, 1),
+                MyMaterial.dalisenite.get(OrePrefixes.ingot, 1),
+                315,
+                120);
+
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     MyMaterial.zircaloy4.get(OrePrefixes.plate, 4),
