@@ -2255,7 +2255,7 @@ public class RECIPES_Machines {
                         new ItemStack[] {
                             GT_Utility.getIntegratedCircuit(2),
                             ALLOY.TUMBAGA.getFrameBox(1),
-                            ALLOY.TUMBAGA.getComponentByPrefix(OrePrefixes.pipeTiny, 1),
+                            ItemUtils.getItemStackOfAmountFromOreDict("pipeTinySteel", 1),
                             ItemList.MV_Coil.get(1),
                             ItemList.IC2_Plantball.get(4),
                             GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 8),
