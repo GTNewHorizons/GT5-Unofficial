@@ -312,34 +312,6 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
                     }
             }
         }
-        if (aBaseMetaTileEntity.isServerSide() && this.mMaxProgresstime > 0 && setupphase > 0 && aTick % 5 == 0) {
-            startRecipeProcessing();
-            if (setupphase == 1 && mStorage.size() < mMaxSlots) {
-                List<ItemStack> inputs = getStoredInputs();
-                for (ItemStack input : inputs) addCrop(input);
-                this.updateSlots();
-            } else if (setupphase == 2 && mStorage.size() > 0) {
-                int emptySlots = 0;
-                boolean ignoreEmptiness = false;
-                for (GT_MetaTileEntity_Hatch_OutputBus i : mOutputBusses) {
-                    if (i instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
-                        ignoreEmptiness = true;
-                        break;
-                    }
-                    for (int j = 0; j < i.getSizeInventory(); j++)
-                        if (i.isValidSlot(j)) if (i.getStackInSlot(j) == null) emptySlots++;
-                }
-                while (mStorage.size() > 0) {
-                    if (!ignoreEmptiness && (emptySlots -= 2) < 0) break;
-                    this.addOutput(this.mStorage.get(0).input.copy());
-                    if (this.mStorage.get(0).undercrop != null)
-                        this.addOutput(this.mStorage.get(0).undercrop.copy());
-                    this.mStorage.remove(0);
-                }
-                this.updateSlots();
-            }
-            endRecipeProcessing();
-        }
     }
 
     @Override
@@ -368,7 +340,32 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
         if (setupphase > 0) {
             if ((mStorage.size() >= mMaxSlots && setupphase == 1) || (mStorage.size() == 0 && setupphase == 2))
                 return false;
-            this.mMaxProgresstime = 20;
+
+            if (setupphase == 1) {
+                List<ItemStack> inputs = getStoredInputs();
+                for (ItemStack input : inputs) addCrop(input);
+            } else if (setupphase == 2) {
+                int emptySlots = 0;
+                boolean ignoreEmptiness = false;
+                for (GT_MetaTileEntity_Hatch_OutputBus i : mOutputBusses) {
+                    if (i instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
+                        ignoreEmptiness = true;
+                        break;
+                    }
+                    for (int j = 0; j < i.getSizeInventory(); j++)
+                        if (i.isValidSlot(j)) if (i.getStackInSlot(j) == null) emptySlots++;
+                }
+                while (mStorage.size() > 0) {
+                    if (!ignoreEmptiness && (emptySlots -= 2) < 0) break;
+                    this.addOutput(this.mStorage.get(0).input.copy());
+                    if (this.mStorage.get(0).undercrop != null)
+                        this.addOutput(this.mStorage.get(0).undercrop.copy());
+                    this.mStorage.remove(0);
+                }
+            }
+
+            this.updateSlots();
+            this.mMaxProgresstime = 5;
             this.mEUt = 0;
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
@@ -802,6 +799,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
                     boolean cangrow = false;
                     ArrayList<ItemStack> inputs = tileEntity.getStoredInputs();
                     for (ItemStack a : inputs) {
+                        if (a.stackSize <= 0) continue;
                         Block b = Block.getBlockFromItem(a.getItem());
                         if (b == Blocks.air) continue;
                         world.setBlock(xyz[0], xyz[1] - 2, xyz[2], b, a.getItemDamage(), 0);
