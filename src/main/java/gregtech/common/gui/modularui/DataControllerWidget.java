@@ -9,6 +9,7 @@ import gregtech.api.gui.ModularUI.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
 import java.io.IOException;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import net.minecraft.network.PacketBuffer;
@@ -45,6 +46,13 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
     }
 
     @Override
+    public void onPostInit() {
+        super.onPostInit();
+        lastData = dataGetter.get();
+        updateChildren();
+    }
+
+    @Override
     public void detectAndSendChanges(boolean init) {
         T actualValue = dataGetter.get();
         if (actualValue == null) {
@@ -54,17 +62,16 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
         }
         if (init || !actualValue.equals(getLastData())) {
             // init sync or someone else edited data
+            lastData = actualValue;
             syncDataToClient(actualValue);
         }
     }
 
     protected void syncDataToClient(T data) {
-        lastData = data;
         syncToClient(0, buffer -> writeToPacket(buffer, data));
     }
 
     protected void syncDataToServer(T data) {
-        lastData = data;
         syncToServer(0, buffer -> writeToPacket(buffer, data));
         updateChildren();
     }
@@ -93,8 +100,8 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
     protected void updateChildren() {
         for (Widget child : getChildren()) {
             if (child instanceof IDataFollowerWidget) {
-                //noinspection rawtypes,unchecked
-                ((IDataFollowerWidget) child).updateState(getLastData());
+                //noinspection unchecked
+                ((IDataFollowerWidget<T, ?, ?>) child).updateState(getLastData());
             }
         }
     }
@@ -120,19 +127,27 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
 
     /**
      * @param widget widget to add
-     * @param dataToStateGetter given data -> state of the child widget
-     * @param dataUpdater (current data, state of the child widget) -> new data to set
-     * @param <U> state type stored in child widget
+     * @param dataToStateGetter given data -> state of the widget to add
+     * @param dataUpdater (current data, state of the widget to add) -> new data to set
+     * @param applyForWidget methods to call for the widget to add
+     * @param <U> state type stored in the widget to add
      * @param <W> widget type to add
      */
     @SuppressWarnings("UnusedReturnValue")
     public <U, W extends Widget & IDataFollowerWidget<T, U, W>> DataControllerWidget<T> addFollower(
-            W widget, Function<T, U> dataToStateGetter, BiFunction<T, U, T> dataUpdater) {
+            W widget, Function<T, U> dataToStateGetter, BiFunction<T, U, T> dataUpdater, Consumer<W> applyForWidget) {
         widget.setDataToStateGetter(dataToStateGetter).setSetter(state -> {
             T newData = dataUpdater.apply(getLastData(), state);
+            lastData = newData;
             syncDataToServer(newData);
         });
+        applyForWidget.accept(widget);
         addChild(widget);
         return this;
+    }
+
+    public <U, W extends Widget & IDataFollowerWidget<T, U, W>> DataControllerWidget<T> addFollower(
+            W widget, Function<T, U> dataToStateGetter, BiFunction<T, U, T> dataUpdater) {
+        return addFollower(widget, dataToStateGetter, dataUpdater, w -> {});
     }
 }

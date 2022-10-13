@@ -10,13 +10,16 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.net.GT_Packet_SendCoverData;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -110,6 +113,16 @@ public class GT_UIInfo {
      * Opens cover UI, created by {@link GT_CoverBehaviorBase#createWindow}.
      */
     public static void openCoverUI(ICoverable tileEntity, EntityPlayer player, byte side) {
+        if (player instanceof EntityPlayerMP) {
+            GT_Values.NW.sendToPlayer(
+                    new GT_Packet_SendCoverData(
+                            side,
+                            tileEntity.getCoverIDAtSide(side),
+                            tileEntity.getComplexCoverDataAtSide(side),
+                            tileEntity),
+                    (EntityPlayerMP) player);
+        }
+
         coverUI.get(side)
                 .open(
                         player,
@@ -150,7 +163,7 @@ public class GT_UIInfo {
     }
 
     @SideOnly(Side.CLIENT)
-    public static ModularGui createCoverGuiContainer(
+    private static ModularGui createCoverGuiContainer(
             EntityPlayer player,
             Function<GT_CoverUIBuildContext, ModularWindow> windowCreator,
             int coverID,
