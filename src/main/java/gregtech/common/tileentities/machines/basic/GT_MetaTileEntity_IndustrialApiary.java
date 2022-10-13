@@ -19,7 +19,6 @@ import forestry.apiculture.genetics.Bee;
 import forestry.apiculture.genetics.alleles.AlleleEffectThrottled;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
-import gregtech.api.interfaces.IAlleleBeeAcceleratableEffect;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
