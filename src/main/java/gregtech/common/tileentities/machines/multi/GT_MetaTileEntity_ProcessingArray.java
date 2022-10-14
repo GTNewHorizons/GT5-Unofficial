@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
@@ -57,6 +58,8 @@ public class GT_MetaTileEntity_ProcessingArray
     private boolean downtierUEV = true;
     private boolean mUseMultiparallelMode = false;
     private String mMachineName = "";
+    // Value needed so that the PA can use energy above MAX voltage
+    private long mEUPerTick = 0;
 
     public GT_MetaTileEntity_ProcessingArray(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -297,7 +300,7 @@ public class GT_MetaTileEntity_ProcessingArray
     }
 
     public boolean processRecipeOutputs(GT_Recipe aRecipe, int aAmperage, int parallel, int multiplier) {
-        this.mEUt = 0;
+        this.mEUPerTick = 0;
         this.mOutputItems = null;
         this.mOutputFluids = null;
         if (parallel == 0) {
@@ -308,14 +311,15 @@ public class GT_MetaTileEntity_ProcessingArray
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
-        calculateOverclockedNessMulti(aRecipe.mEUt, aRecipe.mDuration * multiplier, aAmperage, GT_Values.V[tTier]);
+        ProcessingArrayCalculateOverclock(
+                aRecipe.mEUt, aRecipe.mDuration * multiplier, aAmperage, GT_Values.V[tTier], false);
         // In case recipe is too OP for that machine
-        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-        this.mEUt = GT_Utility.safeInt((long) this.mEUt * parallel, 1);
-        if (mEUt == Integer.MAX_VALUE - 1) return false;
+        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUPerTick == Long.MAX_VALUE - 1) return false;
+        mEUPerTick = mEUPerTick * parallel;
+        if (mEUPerTick == Long.MAX_VALUE - 1) return false;
 
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
+        if (mEUPerTick > 0) {
+            mEUPerTick = (-mEUPerTick);
         }
         ItemStack[] tOut = new ItemStack[aRecipe.mOutputs.length];
         for (int h = 0; h < aRecipe.mOutputs.length; h++) {
@@ -404,6 +408,7 @@ public class GT_MetaTileEntity_ProcessingArray
         aNBT.setBoolean("mSeparate", mSeparate);
         aNBT.setBoolean("downtierUEV", downtierUEV);
         aNBT.setBoolean("mUseMultiparallelMode", mUseMultiparallelMode);
+        aNBT.setLong("mEUPerTick", mEUPerTick);
     }
 
     @Override
@@ -412,6 +417,7 @@ public class GT_MetaTileEntity_ProcessingArray
         mSeparate = aNBT.getBoolean("mSeparate");
         downtierUEV = aNBT.getBoolean("downtierUEV");
         mUseMultiparallelMode = aNBT.getBoolean("mUseMultiparallelMode");
+        mEUPerTick = aNBT.getLong("mEUPerTick");
     }
 
     @Override
@@ -498,7 +504,7 @@ public class GT_MetaTileEntity_ProcessingArray
                     + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(-mEUt) + EnumChatFormatting.RESET + " EU/t",
+                    + GT_Utility.formatNumbers(-mEUPerTick) + EnumChatFormatting.RESET + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(
                             GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
@@ -531,5 +537,65 @@ public class GT_MetaTileEntity_ProcessingArray
         tHatches.addAll(mExoticEnergyHatches);
         tHatches.addAll(mEnergyHatches);
         return tHatches;
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (mEUPerTick < 0) {
+            if (!drainEnergyInput(-mEUPerTick)) {
+                mEUPerTick = 0;
+                criticalStopMachine();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected void ProcessingArrayCalculateOverclock(
+            long aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
+        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
+        if (mTier == 0) {
+            // Long time calculation
+            long xMaxProgresstime = ((long) aDuration) << 1;
+            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
+                // make impossible if too long
+                mEUPerTick = Long.MAX_VALUE - 1;
+                mMaxProgresstime = Integer.MAX_VALUE - 1;
+            } else {
+                mEUPerTick = aEUt >> 2;
+                mMaxProgresstime = (int) xMaxProgresstime;
+            }
+        } else {
+            // Long EUt calculation
+            long xEUt = aEUt;
+            // Isnt too low EUt check?
+            long tempEUt = Math.max(xEUt, V[1]);
+
+            mMaxProgresstime = aDuration;
+
+            final int ocTimeShift = perfectOC ? 2 : 1;
+
+            while (tempEUt <= V[mTier - 1] * mAmperage) {
+                tempEUt <<= 2; // this actually controls overclocking
+                // xEUt *= 4;//this is effect of everclocking
+                int oldTime = mMaxProgresstime;
+                mMaxProgresstime >>= ocTimeShift; // this is effect of overclocking
+                if (mMaxProgresstime < 1) {
+                    if (oldTime == 1) break;
+                    xEUt *= oldTime * (perfectOC ? 1 : 2);
+                    break;
+                } else {
+                    xEUt <<= 2;
+                }
+            }
+            if (xEUt > Long.MAX_VALUE - 1) {
+                mEUPerTick = Long.MAX_VALUE - 1;
+                mMaxProgresstime = Integer.MAX_VALUE - 1;
+            } else {
+                mEUPerTick = xEUt;
+                if (mEUPerTick == 0) mEUPerTick = 1;
+                if (mMaxProgresstime == 0) mMaxProgresstime = 1; // set time to 1 tick
+            }
+        }
     }
 }
