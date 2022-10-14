@@ -1,7 +1,5 @@
 package gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_FR;
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam.calculateLooseFlow;
 
@@ -62,10 +60,10 @@ import net.minecraftforge.event.world.BlockEvent;
  */
 @Optional.InterfaceList(
         value = {
-            @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = MOD_ID_FR),
-            @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = MOD_ID_RC),
-            @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"),
-            @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")
+            @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = "ForestryAPI|arboriculture"),
+            @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = "RailcraftAPI|items"),
+            @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraftAPI|tools"),
+            @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIOAPI|Tools")
         })
 public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool {
