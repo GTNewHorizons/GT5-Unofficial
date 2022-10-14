@@ -260,17 +260,17 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
             // Split ItemStack --by gtpp
             List<ItemStack> splitStacks = new ArrayList<>();
             while (amount > this.mOutputItems[0].getMaxStackSize()) {
-                ItemStack tmp = this.mOutputItems[0];
+                ItemStack tmp = this.mOutputItems[0].copy();
                 tmp.stackSize = this.mOutputItems[0].getMaxStackSize();
                 amount -= this.mOutputItems[0].getMaxStackSize();
                 splitStacks.add(tmp);
             }
-            ItemStack tmp = this.mOutputItems[0];
+            ItemStack tmp = this.mOutputItems[0].copy();
             tmp.stackSize = amount;
             splitStacks.add(tmp);
             mOutputItems = splitStacks.toArray(new ItemStack[splitStacks.size()]);
         }
-        this.mMaxProgresstime = (tRecipe.mDuration * 2 * 100 * this.mMulti) / (int) getSpeed(rotorBlock);
+        this.mMaxProgresstime = (tRecipe.mDuration * 2 * 100 * this.mMulti) / getSpeed(rotorBlock);
         this.mMulti = 16;
         return true;
     }
