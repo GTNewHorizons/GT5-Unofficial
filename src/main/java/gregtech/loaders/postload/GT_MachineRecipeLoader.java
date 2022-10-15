@@ -7795,11 +7795,11 @@ public class GT_MachineRecipeLoader implements Runnable {
                 160,
                 4);
         GT_Values.RA.addPulveriserRecipe(
-            GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 18),
-            new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1L)},
-            null,
-            21,
-            4);
+                GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 18),
+                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1L)},
+                null,
+                21,
+                4);
 
         // reactor parts vacuum
         // reactor heat switch
