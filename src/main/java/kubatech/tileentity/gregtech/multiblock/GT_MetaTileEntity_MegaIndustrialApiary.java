@@ -281,6 +281,10 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // TODO: Look for proper fix
+            if (mUpdate < 0) mUpdate = 600;
+        }
         // Beeeee rendering inside ?
     }
 
@@ -325,7 +329,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                         if (!input.isItemEqual(royalJelly)) continue;
                         int consumed = Math.min(input.stackSize, toConsume);
                         toConsume -= consumed;
-                        input.stackSize -= toConsume;
+                        input.stackSize -= consumed;
                         if (toConsume == 0) break;
                     }
                     double boosted = 1d;
@@ -343,7 +347,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                     return true;
                 } else {
                     if (!depleteInput(PluginApiculture.items.royalJelly.getItemStack(64))
-                            && !depleteInput(PluginApiculture.items.royalJelly.getItemStack(36))) {
+                            || !depleteInput(PluginApiculture.items.royalJelly.getItemStack(36))) {
                         this.updateSlots();
                         return false;
                     }
