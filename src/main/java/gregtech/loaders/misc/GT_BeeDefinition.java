@@ -1974,7 +1974,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
-                //Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+                // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
                 beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
             },
             template -> {
@@ -3404,7 +3404,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
-                //Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+                // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
                 beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
@@ -3425,7 +3425,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(HELLISH);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
-                //Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+                // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
                 beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
             },
             template -> {
@@ -3450,7 +3450,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
-                //Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+                // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
                 beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
@@ -3552,7 +3552,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
-                //Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+                // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
                 beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
