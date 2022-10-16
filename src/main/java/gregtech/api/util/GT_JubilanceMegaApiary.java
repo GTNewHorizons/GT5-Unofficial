@@ -7,9 +7,9 @@ import forestry.api.apiculture.IJubilanceProvider;
 
 public class GT_JubilanceMegaApiary implements IJubilanceProvider {
 
-    public static final GT_JubilanceMegaApiary instance = new GT_JubilanceMegaApiary ();
+    public static final GT_JubilanceMegaApiary instance = new GT_JubilanceMegaApiary();
 
-    protected GT_JubilanceMegaApiary () {}
+    protected GT_JubilanceMegaApiary() {}
 
     @Override
     public boolean isJubilant(IAlleleBeeSpecies species, IBeeGenome genome, IBeeHousing housing) {
