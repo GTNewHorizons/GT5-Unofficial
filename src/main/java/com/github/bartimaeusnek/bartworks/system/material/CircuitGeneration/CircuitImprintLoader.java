@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -38,7 +39,10 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -203,11 +207,30 @@ public class CircuitImprintLoader {
     private static void replaceCircuits(
             BiMap<ItemList, Short> inversed, GT_Recipe original, ItemStack[] in, int index) {
         for (ItemList il : inversed.keySet()) {
-            if (GT_Utility.areStacksEqual(il.get(1), original.mInputs[index])) {
+            if (GT_Utility.areStacksEqual(il.get(1), replaceCircuitParts(original.mInputs[index]))) {
                 in[index] =
                         BW_Meta_Items.getNEWCIRCUITS().getStack(inversed.get(il), original.mInputs[index].stackSize);
             }
         }
+    }
+
+    private static final List<Pair<ItemStack, ItemStack>> circuitPartsToReplace =
+            Collections.unmodifiableList(Arrays.asList(
+                    new Pair<>(ItemList.Circuit_Parts_Resistor.get(1), ItemList.Circuit_Parts_ResistorSMD.get(1)),
+                    new Pair<>(ItemList.Circuit_Parts_Diode.get(1), ItemList.Circuit_Parts_DiodeSMD.get(1)),
+                    new Pair<>(ItemList.Circuit_Parts_Transistor.get(1), ItemList.Circuit_Parts_TransistorSMD.get(1)),
+                    new Pair<>(ItemList.Circuit_Parts_Capacitor.get(1), ItemList.Circuit_Parts_CapacitorSMD.get(1)),
+                    new Pair<>(ItemList.Circuit_Parts_Coil.get(1), ItemList.Circuit_Parts_InductorSMD.get(1))));
+
+    private static ItemStack replaceCircuitParts(ItemStack stack) {
+        for (Pair<ItemStack, ItemStack> pair : circuitPartsToReplace) {
+            if (GT_Utility.areStacksEqual(pair.getKey(), stack)) {
+                ItemStack newStack = pair.getValue();
+                newStack.stackSize = stack.stackSize;
+                return newStack;
+            }
+        }
+        return stack;
     }
 
     @SuppressWarnings("deprecation")

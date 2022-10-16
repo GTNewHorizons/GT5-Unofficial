@@ -61,12 +61,7 @@ public class CircuitPartLoader implements Runnable {
                     || single == Circuit_Integrated
                     || single == Circuit_Parts_PetriDish
                     || single == Circuit_Parts_Vacuum_Tube
-                    || single == Circuit_Integrated_Good
-                    || single == Circuit_Parts_Capacitor
-                    || single == Circuit_Parts_Diode
-                    || single == Circuit_Parts_Resistor
-                    || single == Circuit_Parts_Transistor
-                    || single == Circuit_Parts_Coil) {
+                    || single == Circuit_Integrated_Good) {
 
                 CircuitImprintLoader.blacklistSet.add(single.get(1));
             }
