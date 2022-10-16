@@ -3,105 +3,106 @@ package gregtech.api.util;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public enum GT_ApiaryUpgrade {
-    speed1(UNIQUE_INDEX.SPEED_UPGRADE, 32200, 1, (mods) -> mods.maxSpeed = 1),
-    speed2(UNIQUE_INDEX.SPEED_UPGRADE, 32201, 1, (mods) -> mods.maxSpeed = 2),
-    speed3(UNIQUE_INDEX.SPEED_UPGRADE, 32202, 1, (mods) -> mods.maxSpeed = 3),
-    speed4(UNIQUE_INDEX.SPEED_UPGRADE, 32203, 1, (mods) -> mods.maxSpeed = 4),
-    speed5(UNIQUE_INDEX.SPEED_UPGRADE, 32204, 1, (mods) -> mods.maxSpeed = 5),
-    speed6(UNIQUE_INDEX.SPEED_UPGRADE, 32205, 1, (mods) -> mods.maxSpeed = 6),
-    speed7(UNIQUE_INDEX.SPEED_UPGRADE, 32206, 1, (mods) -> mods.maxSpeed = 7),
-    speed8(UNIQUE_INDEX.SPEED_UPGRADE, 32207, 1, (mods) -> mods.maxSpeed = 8),
-    speed8upgraded(UNIQUE_INDEX.SPEED_UPGRADE, 32208, 1, (mods) -> {
+    speed1(UNIQUE_INDEX.SPEED_UPGRADE, 32200, 1, (mods, n) -> mods.maxSpeed = 1),
+    speed2(UNIQUE_INDEX.SPEED_UPGRADE, 32201, 1, (mods, n) -> mods.maxSpeed = 2),
+    speed3(UNIQUE_INDEX.SPEED_UPGRADE, 32202, 1, (mods, n) -> mods.maxSpeed = 3),
+    speed4(UNIQUE_INDEX.SPEED_UPGRADE, 32203, 1, (mods, n) -> mods.maxSpeed = 4),
+    speed5(UNIQUE_INDEX.SPEED_UPGRADE, 32204, 1, (mods, n) -> mods.maxSpeed = 5),
+    speed6(UNIQUE_INDEX.SPEED_UPGRADE, 32205, 1, (mods, n) -> mods.maxSpeed = 6),
+    speed7(UNIQUE_INDEX.SPEED_UPGRADE, 32206, 1, (mods, n) -> mods.maxSpeed = 7),
+    speed8(UNIQUE_INDEX.SPEED_UPGRADE, 32207, 1, (mods, n) -> mods.maxSpeed = 8),
+    speed8upgraded(UNIQUE_INDEX.SPEED_UPGRADE, 32208, 1, (mods, n) -> {
         mods.maxSpeed = 8;
         mods.production = 2f;
         mods.energy *= 14.75;
     }),
-    production(UNIQUE_INDEX.PRODUCTION_UPGRADE, 32209, 8, (mods) -> {
-        mods.production += 0.25f;
-        mods.energy *= 1.4f;
+    production(UNIQUE_INDEX.PRODUCTION_UPGRADE, 32209, 8, (mods, n) -> {
+        mods.production += 0.25f * n;
+        mods.energy *= Math.pow(1.4f, n);
     }),
-    plains(UNIQUE_INDEX.PLAINS_UPGRADE, 32210, 1, (mods) -> {
+    plains(UNIQUE_INDEX.PLAINS_UPGRADE, 32210, 1, (mods, n) -> {
         mods.biomeOverride = BiomeGenBase.plains;
         mods.energy *= 1.2f;
     }),
-    light(UNIQUE_INDEX.LIGHT_UPGRADE, 32211, 1, (mods) -> {
+    light(UNIQUE_INDEX.LIGHT_UPGRADE, 32211, 1, (mods, n) -> {
         mods.isSelfLighted = true;
         mods.energy *= 1.05f;
     }),
-    flowering(UNIQUE_INDEX.FLOWERING_UPGRADE, 32212, 8, (mods) -> {
-        mods.flowering *= 1.2f;
-        mods.energy *= 1.1f;
+    flowering(UNIQUE_INDEX.FLOWERING_UPGRADE, 32212, 8, (mods, n) -> {
+        mods.flowering *= Math.pow(1.2f, n);
+        mods.energy *= Math.pow(1.1f, n);
     }),
-    winter(UNIQUE_INDEX.WINTER_UPGRADE, 32213, 1, (mods) -> {
+    winter(UNIQUE_INDEX.WINTER_UPGRADE, 32213, 1, (mods, n) -> {
         mods.biomeOverride = BiomeGenBase.taiga;
         mods.energy *= 1.5f;
     }),
-    dryer(UNIQUE_INDEX.DRYER_UPGRADE, 32214, 8, (mods) -> {
-        mods.humidity -= 0.25f;
-        mods.energy *= 1.05f;
+    dryer(UNIQUE_INDEX.DRYER_UPGRADE, 32214, 8, (mods, n) -> {
+        mods.humidity -= 0.25f * n;
+        mods.energy *= Math.pow(1.05f, n);
     }),
-    automation(UNIQUE_INDEX.AUTOMATION_UPGRADE, 32215, 1, (mods) -> {
+    automation(UNIQUE_INDEX.AUTOMATION_UPGRADE, 32215, 1, (mods, n) -> {
         mods.isAutomated = true;
         mods.energy *= 1.1f;
     }),
-    humidifier(UNIQUE_INDEX.HUMIDIFIER_UPGRADE, 32216, 8, (mods) -> {
-        mods.humidity += 0.25f;
-        mods.energy *= 1.1f;
+    humidifier(UNIQUE_INDEX.HUMIDIFIER_UPGRADE, 32216, 8, (mods, n) -> {
+        mods.humidity += 0.25f * n;
+        mods.energy *= Math.pow(1.1f, n);
     }),
-    hell(UNIQUE_INDEX.HELL_UPGRADE, 32217, 1, (mods) -> {
+    hell(UNIQUE_INDEX.HELL_UPGRADE, 32217, 1, (mods, n) -> {
         mods.biomeOverride = BiomeGenBase.hell;
         mods.energy *= 1.5f;
     }),
-    pollen(UNIQUE_INDEX.POLLEN_UPGRADE, 32218, 1, (mods) -> {
+    pollen(UNIQUE_INDEX.POLLEN_UPGRADE, 32218, 1, (mods, n) -> {
         mods.flowering = 0f;
         mods.energy *= 1.3f;
     }),
-    desert(UNIQUE_INDEX.DESERT_UPGRADE, 32219, 1, (mods) -> {
+    desert(UNIQUE_INDEX.DESERT_UPGRADE, 32219, 1, (mods, n) -> {
         mods.biomeOverride = BiomeGenBase.desert;
         mods.energy *= 1.2f;
     }),
-    cooler(UNIQUE_INDEX.COOLER_UPGRADE, 32220, 8, (mods) -> {
-        mods.temperature -= 0.25f;
-        mods.energy *= 1.05f;
+    cooler(UNIQUE_INDEX.COOLER_UPGRADE, 32220, 8, (mods, n) -> {
+        mods.temperature -= 0.25f * n;
+        mods.energy *= Math.pow(1.05f, n);
     }),
-    lifespan(UNIQUE_INDEX.LIFESPAN_UPGRADE, 32221, 4, (mods) -> {
-        mods.lifespan /= 1.5f;
-        mods.energy *= 1.05f;
+    lifespan(UNIQUE_INDEX.LIFESPAN_UPGRADE, 32221, 4, (mods, n) -> {
+        mods.lifespan /= Math.pow(1.5f, n);
+        mods.energy *= Math.pow(1.05f, n);
     }),
-    seal(UNIQUE_INDEX.SEAL_UPGRADE, 32222, 1, (mods) -> {
+    seal(UNIQUE_INDEX.SEAL_UPGRADE, 32222, 1, (mods, n) -> {
         mods.isSealed = true;
         mods.energy *= 1.05f;
     }),
-    stabilizer(UNIQUE_INDEX.STABILIZER_UPGRADE, 32223, 1, (mods) -> {
+    stabilizer(UNIQUE_INDEX.STABILIZER_UPGRADE, 32223, 1, (mods, n) -> {
         mods.geneticDecay = 0f;
         mods.energy *= 2.50f;
     }),
-    jungle(UNIQUE_INDEX.JUNGLE_UPGRADE, 32224, 1, (mods) -> {
+    jungle(UNIQUE_INDEX.JUNGLE_UPGRADE, 32224, 1, (mods, n) -> {
         mods.biomeOverride = BiomeGenBase.jungle;
         mods.energy *= 1.20f;
     }),
-    territory(UNIQUE_INDEX.TERRITORY_UPGRADE, 32225, 4, (mods) -> {
-        mods.territory *= 1.5f;
-        mods.energy *= 1.05f;
+    territory(UNIQUE_INDEX.TERRITORY_UPGRADE, 32225, 4, (mods, n) -> {
+        mods.territory *= Math.pow(1.5f, n);
+        mods.energy *= Math.pow(1.05f, n);
     }),
-    ocean(UNIQUE_INDEX.OCEAN_UPGRADE, 32226, 1, (mods) -> {
+    ocean(UNIQUE_INDEX.OCEAN_UPGRADE, 32226, 1, (mods, n) -> {
         mods.biomeOverride = BiomeGenBase.ocean;
         mods.energy *= 1.20f;
     }),
-    sky(UNIQUE_INDEX.SKY_UPGRADE, 32227, 1, (mods) -> {
+    sky(UNIQUE_INDEX.SKY_UPGRADE, 32227, 1, (mods, n) -> {
         mods.isSunlightSimulated = true;
         mods.energy *= 1.05f;
     }),
-    heater(UNIQUE_INDEX.HEATER_UPGRADE, 32228, 8, (mods) -> {
-        mods.temperature += 0.25f;
-        mods.energy *= 1.05f;
+    heater(UNIQUE_INDEX.HEATER_UPGRADE, 32228, 8, (mods, n) -> {
+        mods.temperature += 0.25f * n;
+        mods.energy *= Math.pow(1.05f, n);
     }),
-    sieve(UNIQUE_INDEX.SIEVE_UPGRADE, 32229, 1, (mods) -> {
+    sieve(UNIQUE_INDEX.SIEVE_UPGRADE, 32229, 1, (mods, n) -> {
         mods.isCollectingPollen = true;
         mods.energy *= 1.05f;
     }),
@@ -145,11 +146,12 @@ public enum GT_ApiaryUpgrade {
 
     private final GT_Utility.ItemId id;
     private final UNIQUE_INDEX unique_index;
-    private final Consumer<GT_ApiaryModifier> applier;
+    private final BiConsumer<GT_ApiaryModifier, Integer> applier;
 
     private final HashSet<GT_Utility.ItemId> blacklistedUpgrades = new HashSet<>();
 
-    GT_ApiaryUpgrade(UNIQUE_INDEX unique_index, int meta, int maxnumber, Consumer<GT_ApiaryModifier> applier) {
+    GT_ApiaryUpgrade(
+            UNIQUE_INDEX unique_index, int meta, int maxnumber, BiConsumer<GT_ApiaryModifier, Integer> applier) {
         this.unique_index = unique_index;
         this.meta = meta;
         this.maxnumber = maxnumber;
@@ -187,8 +189,8 @@ public enum GT_ApiaryUpgrade {
         return maxnumber;
     }
 
-    public void applyModifiers(GT_ApiaryModifier mods) {
-        if (applier != null) applier.accept(mods);
+    public void applyModifiers(GT_ApiaryModifier mods, ItemStack stack) {
+        if (applier != null) applier.accept(mods, stack.stackSize);
     }
 
     public ItemStack get(int count) {
