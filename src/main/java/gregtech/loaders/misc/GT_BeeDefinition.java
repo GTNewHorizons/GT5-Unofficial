@@ -26,6 +26,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_JubilanceMegaApiary;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -1968,11 +1969,13 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0xE6E6FF),
             new Color(0xC8C8C8),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.AMERICIUM), 0.05f);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.AMERICIUM), 0.05f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(EnumTemperature.NORMAL);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
+                //Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+                beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
             },
             template -> {
                 AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
@@ -3396,11 +3399,13 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0x484848),
             new Color(0x323232),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.COSMICNEUTRONIUM), 0.25f);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.COSMICNEUTRONIUM), 0.25f);
                 beeSpecies.setHumidity(DAMP);
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
+                //Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+                beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
             dis -> {
@@ -3415,11 +3420,13 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0xFFFFFF),
             new Color(0xFFFFFF),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.INFINITYCATALYST), 0.02f);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.INFINITYCATALYST), 0.02f);
                 beeSpecies.setHumidity(DAMP);
                 beeSpecies.setTemperature(HELLISH);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
+                //Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+                beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
             },
             template -> {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
@@ -3438,11 +3445,13 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0xFFFFFF),
             new Color(0xFFFFFF),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.INFINITY), 0.02f);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.INFINITY), 0.02f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
+                //Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+                beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
             dis -> {
@@ -3538,11 +3547,13 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0x8A97B0),
             new Color(0x160822),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.XENON), 0.35f);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.XENON), 0.35f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
+                //Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+                beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
             dis -> {
