@@ -281,6 +281,10 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // TODO: Look for proper fix
+            if (mUpdate < 0) mUpdate = 600;
+        }
         // Beeeee rendering inside ?
     }
 
