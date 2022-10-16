@@ -108,7 +108,7 @@ public class BaseItemComponent extends Item {
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
         this.translatedMaterialName =
-                GT_LanguageManager.addStringLocalization("gtplusplus.fluid." + this.unlocalName, this.materialName);
+                getFluidName("fluid." + this.materialName.toLowerCase().replace(" ", ""));
         this.componentType = ComponentTypes.CELL;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(aFormattedNameForFluids);
@@ -205,6 +205,17 @@ public class BaseItemComponent extends Item {
 
     public final String getMaterialName() {
         return this.materialName;
+    }
+
+    public String getFluidName(String aKey) {
+        String trans;
+        trans = GT_LanguageManager.getTranslation(aKey);
+        if (!trans.equals(aKey)) return trans;
+        aKey = "fluid." + aKey;
+        trans = GT_LanguageManager.getTranslation(aKey);
+        if (!trans.equals(aKey)) return trans;
+        return GT_LanguageManager.addStringLocalization(
+                "gtplusplus.fluid." + this.materialName.toLowerCase().replace(" ", ""), this.materialName);
     }
 
     @Override
