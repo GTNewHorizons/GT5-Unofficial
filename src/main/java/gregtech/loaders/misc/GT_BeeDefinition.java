@@ -1040,11 +1040,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0xFFA9FF),
             new Color(0x8F5D99),
             beeSpecies -> {
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.INDIUM), 0.05f);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.INDIUM), 0.05f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(HOT);
-                //Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
-                beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
             },
             template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST),
             dis -> {
