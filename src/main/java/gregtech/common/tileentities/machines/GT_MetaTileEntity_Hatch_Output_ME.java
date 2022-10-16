@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.machines;
 
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
+
 import appeng.api.AEApi;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.BaseActionSource;
@@ -26,6 +29,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,18 +40,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
-
-
 public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output {
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
     IItemList<IAEFluidStack> fluidCache =
-        GregTech_API.mAE2 ? AEApi.instance().storage().createFluidList() : null;
+            GregTech_API.mAE2 ? AEApi.instance().storage().createFluidList() : null;
     long lastOutputTick = 0;
     long tickCounter = 0;
     boolean lastOutputFailed = false;
@@ -54,20 +52,19 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     public GT_MetaTileEntity_Hatch_Output_ME(int aID, String aName, String aNameRegional) {
         super(
-            aID,
-            aName,
-            aNameRegional,
-            1,
-            new String[] {
-                "Fluid Output for Multiblocks", "Stores directly into ME",
-                "To use in GT++ multiblocks", "  turn off overflow control",
-                "  with a soldering iron."
-            },
-            0);
+                aID,
+                aName,
+                aNameRegional,
+                1,
+                new String[] {
+                    "Fluid Output for Multiblocks", "Stores directly into ME",
+                    "To use in GT++ multiblocks", "  turn off overflow control",
+                    "  with a soldering iron."
+                },
+                0);
     }
 
-    public GT_MetaTileEntity_Hatch_Output_ME(
-        String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Output_ME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -97,8 +94,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         if (!GregTech_API.mAE2) return 0;
         if (doFill) {
             return tryFillAE(aFluid);
-        }
-        else {
+        } else {
             if ((!infiniteCache && lastOutputFailed) || aFluid == null) return 0;
             return aFluid.amount;
         }
@@ -145,22 +141,21 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     }
 
     @Override
-    public void updateFluidDisplayItem() {
-    }
+    public void updateFluidDisplayItem() {}
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        //Don't allow to lock fluid in me fluid hatch
+        // Don't allow to lock fluid in me fluid hatch
         if (!getBaseMetaTileEntity()
-            .getCoverBehaviorAtSideNew(aSide)
-            .isGUIClickable(
-                aSide,
-                getBaseMetaTileEntity().getCoverIDAtSide(aSide),
-                getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
-                getBaseMetaTileEntity())) return;
+                .getCoverBehaviorAtSideNew(aSide)
+                .isGUIClickable(
+                        aSide,
+                        getBaseMetaTileEntity().getCoverIDAtSide(aSide),
+                        getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
+                        getBaseMetaTileEntity())) return;
         infiniteCache = !infiniteCache;
         GT_Utility.sendChatToPlayer(
-            aPlayer, StatCollector.translateToLocal("GT5U.hatch.infiniteCacheFluid." + infiniteCache));
+                aPlayer, StatCollector.translateToLocal("GT5U.hatch.infiniteCacheFluid." + infiniteCache));
     }
 
     @Override
@@ -169,12 +164,12 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                    (IGridProxyable) getBaseMetaTileEntity(), "proxy", ItemList.Hatch_Output_ME.get(1), true);
+                        (IGridProxyable) getBaseMetaTileEntity(), "proxy", ItemList.Hatch_Output_ME.get(1), true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 if (getBaseMetaTileEntity().getWorld() != null)
                     gridProxy.setOwner(getBaseMetaTileEntity()
-                        .getWorld()
-                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                            .getWorld()
+                            .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
             }
         }
         return this.gridProxy;
@@ -249,13 +244,13 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                     NBTTagCompound tag = l.getCompoundTagAt(i);
                     NBTTagCompound tagFluidStack = tag.getCompoundTag("fluidStack");
                     final IAEFluidStack s =
-                        AEApi.instance().storage().createFluidStack(GT_Utility.loadFluid(tagFluidStack));
+                            AEApi.instance().storage().createFluidStack(GT_Utility.loadFluid(tagFluidStack));
                     if (s != null) {
                         s.setStackSize(tag.getLong("size"));
                         fluidCache.add(s);
                     } else {
                         GT_Mod.GT_FML_LOGGER.warn(
-                            "An error occurred while loading contents of ME Output Hatch, some fluids have been voided");
+                                "An error occurred while loading contents of ME Output Hatch, some fluids have been voided");
                     }
                 }
             }
@@ -277,10 +272,10 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         if (!GregTech_API.mAE2) return new String[] {};
         List<String> ss = new ArrayList<>();
         ss.add("The hatch is "
-            + ((getProxy() != null && getProxy().isActive())
-            ? EnumChatFormatting.GREEN + "online"
-            : EnumChatFormatting.RED + "offline" + getAEDiagnostics())
-            + EnumChatFormatting.RESET);
+                + ((getProxy() != null && getProxy().isActive())
+                        ? EnumChatFormatting.GREEN + "online"
+                        : EnumChatFormatting.RED + "offline" + getAEDiagnostics())
+                + EnumChatFormatting.RESET);
         if (fluidCache.isEmpty()) {
             ss.add("The bus has no cached fluids");
         } else {
@@ -289,11 +284,10 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             int counter = 0;
             for (IAEFluidStack s : fluidCache) {
                 ss.add(s.getFluidStack().getLocalizedName() + ": " + EnumChatFormatting.GOLD
-                    + nc.toWideReadableForm(s.getStackSize()) + " mB"+ EnumChatFormatting.RESET);
+                        + nc.toWideReadableForm(s.getStackSize()) + " mB" + EnumChatFormatting.RESET);
                 if (++counter > 100) break;
             }
         }
         return ss.toArray(new String[fluidCache.size() + 2]);
     }
-
 }

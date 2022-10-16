@@ -47,12 +47,12 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     public GT_MetaTileEntity_Hatch_Output(
-        int aID, String aName, String aNameRegional, int aTier, String[] aDescription, int inventorySize) {
+            int aID, String aName, String aNameRegional, int aTier, String[] aDescription, int inventorySize) {
         super(aID, aName, aNameRegional, aTier, inventorySize, aDescription);
     }
 
     public GT_MetaTileEntity_Hatch_Output(
-        String name, int tier, int slots, String[] description, ITexture[][][] textures) {
+            String name, int tier, int slots, String[] description, ITexture[][][] textures) {
         super(name, tier, slots, description, textures);
     }
 
