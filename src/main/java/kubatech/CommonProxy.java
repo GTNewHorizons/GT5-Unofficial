@@ -52,6 +52,7 @@ public class CommonProxy {
         CommandHandler cmd = new CommandHandler();
         cmd.addCommand(new CommandHelp());
         cmd.addCommand(new CommandConfig());
+        // cmd.addCommand(new CommandBees());
         event.registerServerCommand(cmd);
     }
 

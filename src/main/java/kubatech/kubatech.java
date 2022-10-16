@@ -44,7 +44,7 @@ import org.apache.logging.log4j.Logger;
         acceptedMinecraftVersions = "[1.7.10]",
         dependencies = "required-after:gregtech; " + "required-after:spongemixins@[1.4.0,); " + "after:EnderIO; "
                 + "after:AWWayofTime; " + "after:ExtraUtilities; " + "after: InfernalMobs; " + "after: Thaumcraft; "
-                + "after: MineTweaker3; " + "after: miscutils; " + "after: harvestcraft; ")
+                + "after: MineTweaker3; " + "after: miscutils; " + "after: harvestcraft; " + "after: Forestry; ")
 public class kubatech {
 
     public static kubatech instance = null;
@@ -73,6 +73,7 @@ public class kubatech {
         public void displayAllReleventItems(List p_78018_1_) {
             super.displayAllReleventItems(p_78018_1_);
             p_78018_1_.add(ItemList.ExtremeExterminationChamber.get(1));
+            p_78018_1_.add(ItemList.ExtremeIndustrialApiary.get(1));
         }
     };
 

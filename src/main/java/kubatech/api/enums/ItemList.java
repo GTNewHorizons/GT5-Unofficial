@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 
 public enum ItemList implements IItemContainer {
     ExtremeExterminationChamber,
+    ExtremeIndustrialApiary,
     LegendaryBlackTea,
     LegendaryButterflyTea,
     LegendaryEarlGrayTea,

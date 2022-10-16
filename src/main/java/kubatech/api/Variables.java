@@ -19,10 +19,27 @@
 
 package kubatech.api;
 
+import kubatech.api.utils.StringUtils;
 import net.minecraft.util.EnumChatFormatting;
 
 public class Variables {
-    public static final String Author = "Author: " + EnumChatFormatting.GOLD + "kuba6000";
+    public static final String Author =
+            "Author: " + StringUtils.applyRainbow("kuba6000", 0, EnumChatFormatting.BOLD.toString());
+
+    public static String buildAuthorList(String... authors) {
+        if (authors.length == 0) return "Author: Unknown";
+        StringBuilder b = new StringBuilder("Author: ")
+                .append(StringUtils.applyRainbow(authors[0], 0, EnumChatFormatting.BOLD.toString()));
+        for (int i = 1; i < authors.length; i++) {
+            String author = authors[i];
+            b.append(EnumChatFormatting.RESET)
+                    .append(" & ")
+                    .append(EnumChatFormatting.GOLD)
+                    .append(author);
+        }
+        return b.toString();
+    }
+
     public static final String StructureHologram =
             "To see the structure, use a " + EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech"
                     + EnumChatFormatting.RESET + "" + EnumChatFormatting.GRAY + " Blueprint on the Controller!";
