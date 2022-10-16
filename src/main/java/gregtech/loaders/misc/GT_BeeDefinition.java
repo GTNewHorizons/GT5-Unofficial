@@ -1040,7 +1040,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0xFFA9FF),
             new Color(0x8F5D99),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.INDIUM), 0.075f);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.INDIUM), 0.05f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(HOT);
             },
@@ -3528,7 +3528,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0x8A97B0),
             new Color(0x160822),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.KRYPTON), 0.525f);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.KRYPTON), 0.35f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setNocturnal();
@@ -3547,7 +3547,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0x8A97B0),
             new Color(0x160822),
             beeSpecies -> {
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.XENON), 0.35f);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.XENON), 0.525f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setNocturnal();
