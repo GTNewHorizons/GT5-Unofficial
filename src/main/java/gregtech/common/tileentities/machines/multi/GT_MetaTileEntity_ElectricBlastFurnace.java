@@ -116,9 +116,9 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                 .addInputBus("Any bottom layer casing", 3)
                 .addInputHatch("Any bottom layer casing", 3)
                 .addOutputBus("Any bottom layer casing", 3)
-                .addOutputHatch("Gasses, Any top layer casing", 1)
+                .addOutputHatch("Liquid form of fluids, Any bottom layer casing")
+                .addOutputHatch("Gas form of fluids, Any top layer casing", 1)
                 .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
-                .addOutputHatch("Platline fluids, Any bottom layer casing")
                 .toolTipFinisher("Gregtech");
         return tt;
     }
