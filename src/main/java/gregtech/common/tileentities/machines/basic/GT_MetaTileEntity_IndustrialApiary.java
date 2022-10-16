@@ -897,7 +897,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             if (s == null) continue;
             if (GT_ApiaryUpgrade.isUpgrade(s)) {
                 GT_ApiaryUpgrade upgrade = GT_ApiaryUpgrade.getUpgrade(s);
-                upgrade.applyModifiers(mods);
+                upgrade.applyModifiers(mods, s);
             }
         }
 
