@@ -1549,6 +1549,7 @@ public enum ItemList implements IItemContainer {
     Long_Distance_Pipeline_Item_Pipe,
 
     Hatch_Output_Bus_ME,
+    Hatch_Output_ME,
 
     NULL,
     Cover_AdvancedRedstoneTransmitterExternal,

@@ -46,6 +46,16 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
         super(aName, aTier, 4, aDescription, aTextures);
     }
 
+    public GT_MetaTileEntity_Hatch_Output(
+            int aID, String aName, String aNameRegional, int aTier, String[] aDescription, int inventorySize) {
+        super(aID, aName, aNameRegional, aTier, inventorySize, aDescription);
+    }
+
+    public GT_MetaTileEntity_Hatch_Output(
+            String name, int tier, int slots, String[] description, ITexture[][][] textures) {
+        super(name, tier, slots, description, textures);
+    }
+
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
