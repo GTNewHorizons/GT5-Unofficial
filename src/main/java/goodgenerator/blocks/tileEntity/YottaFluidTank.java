@@ -118,7 +118,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         return true;
     }
 
-    public boolean reduceFluid(int amount) {
+    public boolean reduceFluid(long amount) {
         BigInteger tmp = new BigInteger(amount + "");
         if (mStorageCurrent.compareTo(tmp) < 0) {
             return false;
@@ -128,7 +128,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         }
     }
 
-    public boolean addFluid(int amount) {
+    public boolean addFluid(long amount) {
         BigInteger tmp = new BigInteger(amount + "");
         if (mStorage.subtract(mStorageCurrent).compareTo(tmp) < 0) {
             return false;
@@ -138,16 +138,11 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         }
     }
 
-    private int calGlassTier(int meta) {
-        if (meta >= 1 && meta <= 6) return meta; // returns correct meta for Tiers 1-6, 7-12 is colour variations of HV
-        if (meta >= 7 && meta <= 12) return 1; // For all the HV Glass colour variations
-        return meta; // returns the rest
-    }
-
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mStorage = BigInteger.ZERO;
         glassMeta = 0;
+        maxCell = 0;
         mYottaHatch.clear();
         if (!structureCheck_EM(YOTTANK_BOTTOM, 2, 0, 0)) return false;
         int cnt = 0;
@@ -156,8 +151,8 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         }
         if (cnt > 15 || cnt < 1) return false;
         if (!structureCheck_EM(YOTTANK_TOP, 2, cnt + 2, 0)) return false;
-        // maxCell+1 = Tier of highest Cell. maxCell itself just return Tier-1
-        if (mMaintenanceHatches.size() == 1 && maxCell + 1 <= calGlassTier(glassMeta)) {
+        // maxCell+1 = Tier of highest Cell. glassMeta is the glass voltage tier
+        if (mMaintenanceHatches.size() == 1 && maxCell + 3 <= glassMeta) {
             if (mStorage.compareTo(mStorageCurrent) < 0) mStorageCurrent = mStorage;
             if (FluidRegistry.getFluidStack(mFluidName, 1) == null) {
                 mStorageCurrent = BigInteger.ZERO;

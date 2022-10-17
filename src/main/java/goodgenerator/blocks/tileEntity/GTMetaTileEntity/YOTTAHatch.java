@@ -10,7 +10,10 @@ import appeng.api.networking.events.MENetworkStorageEvent;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.storage.IStorageGrid;
-import appeng.api.storage.*;
+import appeng.api.storage.ICellContainer;
+import appeng.api.storage.IMEInventory;
+import appeng.api.storage.IMEInventoryHandler;
+import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
@@ -75,7 +78,9 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
     private YottaFluidTank host;
     private AENetworkProxy gridProxy = null;
     private int priority;
-    private byte ticksSinceUpdate;
+    private byte tickRate = 20;
+    private String lastFluid = "";
+    private BigInteger lastAmt = BigInteger.ZERO;
     private AccessRestriction readMode = AccessRestriction.READ_WRITE;
     private final AccessRestriction[] AEModes = new AccessRestriction[] {
         AccessRestriction.NO_ACCESS, AccessRestriction.READ, AccessRestriction.WRITE, AccessRestriction.READ_WRITE
@@ -181,10 +186,10 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
         if (host.mFluidName == null
                 || host.mFluidName.equals("")
                 || host.mStorageCurrent.compareTo(BigInteger.ZERO) <= 0) return out;
-        int ready;
-        if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
-            ready = Integer.MAX_VALUE;
-        } else ready = host.mStorageCurrent.intValue();
+        long ready;
+        if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
+            ready = Long.MAX_VALUE;
+        } else ready = host.mStorageCurrent.longValue();
         out.add(FluidUtil.createAEFluidStack(FluidRegistry.getFluid(host.mFluidName), ready));
         return out;
     }
@@ -192,10 +197,9 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
     @Override
     @Optional.Method(modid = "appliedenergistics2")
     public IAEFluidStack injectItems(IAEFluidStack input, Actionable type, BaseActionSource src) {
-        FluidStack rInput = input.getFluidStack();
-        int amt = fill(null, rInput, false);
-        if (amt == rInput.amount) {
-            if (type.equals(Actionable.MODULATE)) fill(null, rInput, true);
+        long amt = fill(null, input, false);
+        if (amt == input.getStackSize()) {
+            if (type.equals(Actionable.MODULATE)) fill(null, input, true);
             return null;
         }
         return input;
@@ -204,10 +208,10 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
     @Override
     @Optional.Method(modid = "appliedenergistics2")
     public IAEFluidStack extractItems(IAEFluidStack request, Actionable mode, BaseActionSource src) {
-        FluidStack ready = drain(null, request.getFluidStack(), false);
+        IAEFluidStack ready = drain(null, request, false);
         if (ready != null) {
             if (mode.equals(Actionable.MODULATE)) drain(null, request.getFluidStack(), true);
-            return FluidUtil.createAEFluidStack(ready.getFluid(), ready.amount);
+            return ready;
         } else return null;
     }
 
@@ -225,25 +229,29 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        ticksSinceUpdate++;
-        if (ticksSinceUpdate > 20) {
-            IGridNode node = getGridNode(null);
-            if (node != null) {
-                IGrid grid = node.getGrid();
-                if (grid != null) {
-                    grid.postEvent(new MENetworkCellArrayUpdate());
-                    IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
-                    if (storageGrid == null) {
-                        node.getGrid().postEvent(new MENetworkStorageEvent(null, StorageChannel.FLUIDS));
-                    } else {
-                        node.getGrid()
-                                .postEvent(new MENetworkStorageEvent(
-                                        storageGrid.getFluidInventory(), StorageChannel.FLUIDS));
+        if (shouldTick(aTick)) {
+            if (isChanged()) {
+                IGridNode node = getGridNode(null);
+                if (node != null) {
+                    IGrid grid = node.getGrid();
+                    if (grid != null) {
+                        grid.postEvent(new MENetworkCellArrayUpdate());
+                        IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
+                        if (storageGrid == null) {
+                            node.getGrid().postEvent(new MENetworkStorageEvent(null, StorageChannel.FLUIDS));
+                        } else {
+                            node.getGrid()
+                                    .postEvent(new MENetworkStorageEvent(
+                                            storageGrid.getFluidInventory(), StorageChannel.FLUIDS));
+                        }
+                        node.getGrid().postEvent(new MENetworkCellArrayUpdate());
                     }
-                    node.getGrid().postEvent(new MENetworkCellArrayUpdate());
                 }
+                faster();
+                update();
+            } else {
+                slower();
             }
-            ticksSinceUpdate = 0;
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
@@ -279,6 +287,27 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
         return 0;
     }
 
+    public long fill(ForgeDirection from, IAEFluidStack resource, boolean doFill) {
+        if (host == null
+                || host.getBaseMetaTileEntity() == null
+                || !host.getBaseMetaTileEntity().isActive()) return 0;
+        if (host.mFluidName == null
+                || host.mFluidName.equals("")
+                || host.mFluidName.equals(resource.getFluid().getName())) {
+            host.mFluidName = resource.getFluid().getName();
+            if (host.mStorage.subtract(host.mStorageCurrent).compareTo(BigInteger.valueOf(resource.getStackSize()))
+                    >= 0) {
+                if (doFill) host.addFluid(resource.getStackSize());
+                return resource.getStackSize();
+            } else {
+                long added = host.mStorage.subtract(host.mStorageCurrent).longValue();
+                if (doFill) host.addFluid(added);
+                return added;
+            }
+        }
+        return 0;
+    }
+
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         if (host == null
@@ -296,6 +325,26 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
             host.reduceFluid(ready);
         }
         return new FluidStack(resource.getFluid(), ready);
+    }
+
+    public IAEFluidStack drain(ForgeDirection from, IAEFluidStack resource, boolean doDrain) {
+        if (host == null
+                || host.getBaseMetaTileEntity() == null
+                || !host.getBaseMetaTileEntity().isActive()) return null;
+        if (host.mFluidName == null
+                || host.mFluidName.equals("")
+                || !host.mFluidName.equals(resource.getFluid().getName())) return null;
+        long ready;
+        if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
+            ready = Long.MAX_VALUE;
+        } else ready = host.mStorageCurrent.longValue();
+        ready = Math.min(ready, resource.getStackSize());
+        if (doDrain) {
+            host.reduceFluid(ready);
+        }
+        IAEFluidStack copy = resource.copy();
+        copy.setStackSize(ready);
+        return copy;
     }
 
     @Override
@@ -415,5 +464,33 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
     @Override
     public void saveChanges(IMEInventory cellInventory) {
         // This is handled by host itself.
+    }
+
+    private boolean isChanged() {
+        if (this.host == null) return false;
+        return !this.lastAmt.equals(this.host.mStorageCurrent) || !this.lastFluid.equals(this.host.mFluidName);
+    }
+
+    private void update() {
+        if (this.host == null) return;
+        this.lastAmt = this.host.mStorageCurrent;
+        this.lastFluid = this.host.mFluidName;
+    }
+
+    private void faster() {
+        if (this.tickRate > 15) {
+            this.tickRate -= 5;
+        }
+    }
+
+    private void slower() {
+        if (this.tickRate < 100) {
+            this.tickRate += 5;
+        }
+    }
+
+    private boolean shouldTick(long tick) {
+        if (this.host == null) return false;
+        return tick % this.tickRate == 0;
     }
 }
