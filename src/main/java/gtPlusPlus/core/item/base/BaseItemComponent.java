@@ -1022,11 +1022,11 @@ public class BaseItemComponent extends Item {
         INGOT("Ingot", " Ingot", "ingot", OrePrefixes.ingot),
         HOTINGOT("HotIngot", "Hot@Ingot", "ingotHot", OrePrefixes.ingotHot),
         PLATE("Plate", " Plate", "plate", OrePrefixes.plate),
-        PLATEDOUBLE("PlateDouble", " Double Plate", "plateDouble", OrePrefixes.plateDouble),
+        PLATEDOUBLE("PlateDouble", "Double@Plate", "plateDouble", OrePrefixes.plateDouble),
         ROD("Rod", " Rod", "stick", OrePrefixes.stick),
-        RODLONG("RodLong", " Long Rod", "stickLong", OrePrefixes.stickLong),
+        RODLONG("RodLong", "Long@Rod", "stickLong", OrePrefixes.stickLong),
         GEAR("Gear", " Gear", "gearGt", OrePrefixes.gearGt),
-        SMALLGEAR("SmallGear", " Gear", "gearGtSmall", OrePrefixes.gearGtSmall), // TODO
+        SMALLGEAR("SmallGear", "Small@Gear", "gearGtSmall", OrePrefixes.gearGtSmall), // TODO
         SCREW("Screw", " Screw", "screw", OrePrefixes.screw),
         BOLT("Bolt", " Bolt", "bolt", OrePrefixes.bolt),
         ROTOR("Rotor", " Rotor", "rotor", OrePrefixes.rotor),
