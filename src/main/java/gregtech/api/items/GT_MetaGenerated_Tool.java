@@ -64,7 +64,8 @@ import net.minecraftforge.event.world.BlockEvent;
             @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = "ForestryAPI|arboriculture"),
             @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = "RailcraftAPI|items"),
             @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraftAPI|tools"),
-            @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIOAPI|Tools")
+            @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIOAPI|Tools"),
+            @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = "ProjRed|Core"),
         })
 public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver {
