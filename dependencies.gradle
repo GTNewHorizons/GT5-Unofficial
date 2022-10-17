@@ -64,6 +64,9 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Avaritia:1.29:dev") {
         transitive = false
     }
+    compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.7-GTNH:dev") {
+        transitive = false
+    }
     compileOnly("com.google.auto.value:auto-value-annotations:1.9") {
         transitive = false
     }
