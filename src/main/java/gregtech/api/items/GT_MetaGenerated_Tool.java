@@ -21,7 +21,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tools.GT_Tool_Screwdriver;
 import gregtech.common.tools.GT_Tool_Turbine;
 import java.util.ArrayList;
 import java.util.HashMap;
