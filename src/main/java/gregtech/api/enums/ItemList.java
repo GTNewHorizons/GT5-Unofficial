@@ -1431,6 +1431,7 @@ public enum ItemList implements IItemContainer {
     Machine_HV_Miner,
 
     Machine_IndustrialApiary,
+    IndustrialApiary_Upgrade_Frame,
     IndustrialApiary_Upgrade_Acceleration_1,
     IndustrialApiary_Upgrade_Acceleration_2,
     IndustrialApiary_Upgrade_Acceleration_3,
@@ -1440,6 +1441,27 @@ public enum ItemList implements IItemContainer {
     IndustrialApiary_Upgrade_Acceleration_7,
     IndustrialApiary_Upgrade_Acceleration_8,
     IndustrialApiary_Upgrade_Acceleration_8_Upgraded,
+    IndustrialApiary_Upgrade_PRODUCTION,
+    IndustrialApiary_Upgrade_PLAINS,
+    IndustrialApiary_Upgrade_LIGHT,
+    IndustrialApiary_Upgrade_FLOWERING,
+    IndustrialApiary_Upgrade_WINTER,
+    IndustrialApiary_Upgrade_DRYER,
+    IndustrialApiary_Upgrade_AUTOMATION,
+    IndustrialApiary_Upgrade_HUMIDIFIER,
+    IndustrialApiary_Upgrade_HELL,
+    IndustrialApiary_Upgrade_POLLEN,
+    IndustrialApiary_Upgrade_DESERT,
+    IndustrialApiary_Upgrade_COOLER,
+    IndustrialApiary_Upgrade_LIFESPAN,
+    IndustrialApiary_Upgrade_SEAL,
+    IndustrialApiary_Upgrade_STABILIZER,
+    IndustrialApiary_Upgrade_JUNGLE,
+    IndustrialApiary_Upgrade_TERRITORY,
+    IndustrialApiary_Upgrade_OCEAN,
+    IndustrialApiary_Upgrade_SKY,
+    IndustrialApiary_Upgrade_HEATER,
+    IndustrialApiary_Upgrade_SIEVE,
 
     Neutron_Reflector,
 
@@ -1527,6 +1549,7 @@ public enum ItemList implements IItemContainer {
     Long_Distance_Pipeline_Item_Pipe,
 
     Hatch_Output_Bus_ME,
+    Hatch_Output_ME,
 
     NULL,
     Cover_AdvancedRedstoneTransmitterExternal,

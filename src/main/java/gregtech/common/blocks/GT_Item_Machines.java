@@ -328,8 +328,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
         super.onUpdate(aStack, aWorld, aPlayer, aTimer, aIsInHand);
         final short tDamage = (short) getDamage(aStack);
         final EntityLivingBase tPlayer = (EntityPlayer) aPlayer;
-        if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_SuperChest
-                || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumChest
+        if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumChest
                 || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_SuperTank
                 || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumTank) {
             final NBTTagCompound tNBT = aStack.stackTagCompound;
@@ -342,19 +341,19 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                     || (tNBT.hasKey("mFluid")
                             && FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid")).amount > 64000)) {
                 final FluidStack tFluid = FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid"));
-                int tLasing = 1200;
+                int tEffectDuration = 1200;
                 if (tFluid != null) {
                     final double tFluidAmount = tFluid.amount;
                     final double tMiddlePoint = 4096000;
                     final double tSmoothingCoefficient = 2000000;
-                    final int tMaxLastingTime = 12000;
+                    final int tMaxDuration = 12000;
                     final double tmp = (tFluidAmount - tMiddlePoint) / tSmoothingCoefficient;
-                    tLasing = (int) (Math.exp(tmp) / (Math.exp(tmp) + Math.exp(-tmp)) * tMaxLastingTime);
+                    tEffectDuration = (int) (Math.exp(tmp) / (Math.exp(tmp) + Math.exp(-tmp)) * tMaxDuration);
                 }
-                tPlayer.addPotionEffect(new PotionEffect(Potion.hunger.id, tLasing, 1));
-                tPlayer.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, tLasing, 1));
-                tPlayer.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, tLasing, 1));
-                tPlayer.addPotionEffect(new PotionEffect(Potion.weakness.id, tLasing, 1));
+                tPlayer.addPotionEffect(new PotionEffect(Potion.hunger.id, tEffectDuration, 1));
+                tPlayer.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, tEffectDuration, 1));
+                tPlayer.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, tEffectDuration, 1));
+                tPlayer.addPotionEffect(new PotionEffect(Potion.weakness.id, tEffectDuration, 1));
             }
         }
     }

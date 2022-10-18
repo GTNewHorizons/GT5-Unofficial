@@ -25,7 +25,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -412,8 +411,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         if (tTileEntity instanceof IGregTechTileEntity) {
             final IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
             mTemporaryTileEntity.set(tGregTechTileEntity);
-            if (!(tGregTechTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_SuperChest
-                    || tGregTechTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_QuantumChest)) {
+            if (!(tGregTechTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_QuantumChest)) {
                 for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); i++) {
                     final ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
                     if ((tItem != null) && (tItem.stackSize > 0) && (tGregTechTileEntity.isValidSlot(i))) {

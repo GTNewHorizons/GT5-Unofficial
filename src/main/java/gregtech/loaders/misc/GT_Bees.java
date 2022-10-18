@@ -51,6 +51,7 @@ public class GT_Bees {
             drop.initDropsRecipes();
             combs = new ItemComb();
             combs.initCombsRecipes();
+            combs.registerOreDict();
             GT_BeeDefinition.initBees();
         }
     }

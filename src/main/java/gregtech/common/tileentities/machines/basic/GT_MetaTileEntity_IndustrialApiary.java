@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
@@ -27,6 +28,8 @@ import forestry.api.core.*;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IEffectData;
 import forestry.api.genetics.IIndividual;
+import forestry.apiculture.genetics.Bee;
+import forestry.apiculture.genetics.alleles.AlleleEffectThrottled;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
 import gregtech.GT_Mod;
@@ -37,16 +40,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_ApiaryModifier;
 import gregtech.api.util.GT_ApiaryUpgrade;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
-import net.bdew.gendustry.api.ApiaryModifiers;
-import net.bdew.gendustry.api.items.IApiaryUpgrade;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -64,9 +67,11 @@ import net.minecraft.world.biome.BiomeGenBase;
 public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicMachine
         implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener {
 
+    public static final int beeCycleLength = 550;
     public static final int baseEUtUsage = 37;
     static final int queen = 5;
     static final int drone = 6;
+    private static Field AlleleBeeEffectThrottledField;
 
     IBeeRoot beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
 
@@ -84,9 +89,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 aNameRegional,
                 aTier,
                 4,
-                new String[] {
-                    "BEES GOES BRRRR", EnumChatFormatting.GRAY + "Added by " + EnumChatFormatting.GOLD + "kuba6000"
-                },
+                new String[] {"BEES GOES BRRRR", EnumChatFormatting.GRAY + AuthorKuba},
                 6,
                 9,
                 "IndustrialApiary.png",
@@ -196,6 +199,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         if (usedQueen != null) aNBT.setTag("usedQueen", usedQueen.writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("retrievingPollenInThisOperation", retrievingPollenInThisOperation);
         aNBT.setInteger("pollinationDelay", pollinationDelay);
+        aNBT.setFloat("usedBeeLife", usedBeeLife);
     }
 
     @Override
@@ -206,11 +210,13 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         if (aNBT.hasKey("usedQueen")) usedQueen = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("usedQueen"));
         retrievingPollenInThisOperation = aNBT.getBoolean("retrievingPollenInThisOperation");
         pollinationDelay = aNBT.getInteger("pollinationDelay");
+        usedBeeLife = aNBT.getFloat("usedBeeLife");
     }
 
     boolean retrievingPollenInThisOperation = false;
     IIndividual retrievedpollen = null;
     int pollinationDelay = 100;
+    float usedBeeLife = 0f;
 
     @Override
     public int checkRecipe() {
@@ -265,9 +271,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 IAlleleBeeSpecies primary = genome.getPrimary();
                 IAlleleBeeSpecies secondary = genome.getSecondary();
 
-                float speed = genome.getSpeed()
-                        * getProductionModifier(null, 1f)
-                        * beemodifier.getProductionModifier(null, 1.f);
+                float speed = genome.getSpeed();
+                float prodMod = getProductionModifier(null, 1f) * beemodifier.getProductionModifier(null, 1.f);
 
                 HashMap<GT_Utility.ItemId, Float> drops = new HashMap<>();
                 HashMap<GT_Utility.ItemId, ItemStack> dropstacks = new HashMap<>();
@@ -277,7 +282,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(entry.getKey());
                     drops.merge(
                             id,
-                            Math.min(1f, entry.getValue() * speed) * (float) entry.getKey().stackSize * cycles,
+                            Bee.getFinalChance(entry.getValue(), speed, prodMod, 8f)
+                                    * (float) entry.getKey().stackSize
+                                    * cycles,
                             Float::sum);
                     dropstacks.computeIfAbsent(id, k -> entry.getKey());
                 }
@@ -286,7 +293,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(entry.getKey());
                     drops.merge(
                             id,
-                            Math.min(1f, (float) Math.round(entry.getValue() / 2.0F) * speed)
+                            Bee.getFinalChance(entry.getValue() / 2f, speed, prodMod, 8f)
                                     * (float) entry.getKey().stackSize
                                     * cycles,
                             Float::sum);
@@ -298,7 +305,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                         GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(entry.getKey());
                         drops.merge(
                                 id,
-                                Math.min(1f, entry.getValue() * speed) * (float) entry.getKey().stackSize * cycles,
+                                Bee.getFinalChance(entry.getValue(), speed, prodMod, 8f)
+                                        * (float) entry.getKey().stackSize
+                                        * cycles,
                                 Float::sum);
                         dropstacks.computeIfAbsent(id, k -> entry.getKey());
                     }
@@ -365,7 +374,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
                 // Overclock
 
-                this.mMaxProgresstime = (int) (cycles * 550.f);
+                usedBeeLife = cycles * (float) beeCycleLength;
+                this.mMaxProgresstime = (int) usedBeeLife;
                 int timemaxdivider = this.mMaxProgresstime / 100;
                 int useddivider = 1 << this.mSpeed;
                 int actualdivider = useddivider;
@@ -421,6 +431,68 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     @Override
     protected boolean hasEnoughEnergyToCheckRecipe() {
         return getBaseMetaTileEntity().isUniversalEnergyStored(V[mSpeed] * 8L);
+    }
+
+    private void doEffect() {
+        IBeeGenome genome = usedQueenBee.getGenome();
+        IAlleleBeeEffect effect = genome.getEffect();
+        if (!(effect instanceof IAlleleBeeAcceleratableEffect)) {
+            effectData[0] = effect.validateStorage(effectData[0]);
+            effect.doEffect(genome, effectData[0], this);
+        }
+
+        if (!effect.isCombinable()) return;
+
+        IAlleleBeeEffect secondary = (IAlleleBeeEffect) genome.getInactiveAllele(EnumBeeChromosome.EFFECT);
+        if (!secondary.isCombinable()) return;
+
+        if (!(secondary instanceof IAlleleBeeAcceleratableEffect)) {
+            effectData[1] = secondary.validateStorage(effectData[1]);
+            secondary.doEffect(genome, effectData[1], this);
+        }
+    }
+
+    private void doAcceleratedEffects() {
+        IBeeGenome genome = usedQueenBee.getGenome();
+        IAlleleBeeEffect effect = genome.getEffect();
+        try {
+            if (AlleleBeeEffectThrottledField == null) {
+                AlleleBeeEffectThrottledField = AlleleEffectThrottled.class.getDeclaredField("throttle");
+                AlleleBeeEffectThrottledField.setAccessible(true);
+            }
+            if (effect instanceof IAlleleBeeAcceleratableEffect) {
+                effectData[0] = effect.validateStorage(effectData[0]);
+                effectData[0] = ((IAlleleBeeAcceleratableEffect) effect)
+                        .doEffectAccelerated(
+                                genome,
+                                effectData[0],
+                                this,
+                                usedBeeLife
+                                        / (effect instanceof AlleleEffectThrottled
+                                                ? (float) AlleleBeeEffectThrottledField.getInt(effect)
+                                                : 1f));
+            }
+
+            if (!effect.isCombinable()) return;
+
+            IAlleleBeeEffect secondary = (IAlleleBeeEffect) genome.getInactiveAllele(EnumBeeChromosome.EFFECT);
+            if (!secondary.isCombinable()) return;
+
+            if (secondary instanceof IAlleleBeeAcceleratableEffect) {
+                effectData[1] = secondary.validateStorage(effectData[1]);
+                effectData[1] = ((IAlleleBeeAcceleratableEffect) secondary)
+                        .doEffectAccelerated(
+                                genome,
+                                effectData[0],
+                                this,
+                                usedBeeLife
+                                        / (secondary instanceof AlleleEffectThrottled
+                                                ? (float) AlleleBeeEffectThrottledField.getInt(secondary)
+                                                : 1f));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -486,7 +558,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 this.mProgresstime++;
                 if (usedQueen != null) {
                     if (usedQueenBee == null) usedQueenBee = beeRoot.getMember(usedQueen);
-                    effectData = usedQueenBee.doEffect(effectData, this);
+                    doEffect();
                     if (!retrievingPollenInThisOperation
                             && floweringMod > 0f
                             && this.mProgresstime % pollinationDelay == 0) {
@@ -505,6 +577,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 }
 
                 if (this.mProgresstime >= this.mMaxProgresstime) {
+                    if (usedQueenBee != null) doAcceleratedEffects();
                     updateModifiers();
                     for (int i = 0; i < mOutputItems.length; i++)
                         if (mOutputItems[i] != null)
@@ -582,7 +655,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     || beeRoot.isMember(aStack, EnumBeeType.PRINCESS.ordinal());
         else if (aIndex == drone) return beeRoot.isMember(aStack, EnumBeeType.DRONE.ordinal());
         else if (aIndex < getOutputSlot()) {
-            if (!(aStack.getItem() instanceof IApiaryUpgrade) && !GT_ApiaryUpgrade.isUpgrade(aStack)) return false;
+            if (!GT_ApiaryUpgrade.isUpgrade(aStack)) return false;
             for (int i = drone + 1; i < drone + 1 + 4; i++) {
                 if (aIndex == i) continue;
                 ItemStack s = getStackInSlot(i);
@@ -850,7 +923,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private float terrorityMod = 1f;
     private float mutationMod = 1f;
     private float lifespanMod = 1f;
-    private float productionMod = 1f;
+    private float productionMod = 0f;
     private float floweringMod = 1f;
     private float geneticDecayMod = 1f;
     private float energyMod = 1f;
@@ -862,24 +935,16 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private float temperatureMod = 0f;
     private boolean isAutomated = false;
     private boolean isRetrievingPollen = false;
-
     private int maxspeed = 0;
 
     public void updateModifiers() {
-        maxspeed = 0;
-        ApiaryModifiers mods = new ApiaryModifiers();
+        GT_ApiaryModifier mods = new GT_ApiaryModifier();
         for (int i = 2; i < 2 + 4; i++) {
             ItemStack s = getInputAt(i);
             if (s == null) continue;
-            if (s.getItem() instanceof IApiaryUpgrade) {
-                IApiaryUpgrade up = (IApiaryUpgrade) s.getItem();
-                up.applyModifiers(mods, s);
-            } else if (GT_ApiaryUpgrade.isUpgrade(s)) {
+            if (GT_ApiaryUpgrade.isUpgrade(s)) {
                 GT_ApiaryUpgrade upgrade = GT_ApiaryUpgrade.getUpgrade(s);
-                if (upgrade != null) {
-                    maxspeed = upgrade.applyMaxSpeedModifier(maxspeed);
-                    upgrade.applyModifiers(mods, s);
-                }
+                upgrade.applyModifiers(mods, s);
             }
         }
 
@@ -898,6 +963,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         temperatureMod = mods.temperature;
         isAutomated = mods.isAutomated;
         isRetrievingPollen = mods.isCollectingPollen;
+        maxspeed = mods.maxSpeed;
 
         if (mLockedSpeed) mSpeed = maxspeed;
         else mSpeed = Math.min(mSpeed, maxspeed);
@@ -1090,10 +1156,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                                             energyreq,
                                             Temp,
                                             Hum,
-                                            Math.round(100f
-                                                    * getProductionModifier(null, 1f)
-                                                    * genome.getSpeed()
-                                                    * mod.getProductionModifier(null, 1f)),
+                                            genome.getSpeed(),
+                                            getProductionModifier(null, 1f) * mod.getProductionModifier(null, 1f),
                                             Math.round(getFloweringModifier(null, 1f)
                                                     * genome.getFlowering()
                                                     * mod.getFloweringModifier(null, 1f)),
@@ -1237,11 +1301,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             if (slotStack != null && !GT_Utility.areStacksEqual(slotStack, s)) return null; // super would replace item
             if (slotStack == null && !slot.isItemValid(s))
                 return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            if (!(s.getItem() instanceof IApiaryUpgrade) && !GT_ApiaryUpgrade.isUpgrade(s))
-                return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            int max;
-            if (s.getItem() instanceof IApiaryUpgrade) max = ((IApiaryUpgrade) s.getItem()).getMaxNumber(s);
-            else max = GT_ApiaryUpgrade.getUpgrade(s).getMaxNumber();
+            if (!GT_ApiaryUpgrade.isUpgrade(s)) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
+            int max = GT_ApiaryUpgrade.getUpgrade(s).getMaxNumber();
             if (slotStack != null) max = Math.max(0, max - slotStack.stackSize);
             max = Math.min(max, s.stackSize);
             if (max == 0) return null;
@@ -1260,8 +1321,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             if (aSlotIndex >= playerInventorySlot) return super.transferStackInSlot(aPlayer, aSlotIndex);
             ItemStack aStack = s.getStack();
             if (aStack == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            if (!(aStack.getItem() instanceof IApiaryUpgrade) && !GT_ApiaryUpgrade.isUpgrade(aStack))
-                return super.transferStackInSlot(aPlayer, aSlotIndex);
+            if (!GT_ApiaryUpgrade.isUpgrade(aStack)) return super.transferStackInSlot(aPlayer, aSlotIndex);
             for (int i = playerInventorySlot + 2; i < playerInventorySlot + 2 + 4; i++) {
                 Slot iSlot = getSlot(i);
                 ItemStack iStack = iSlot.getStack();
@@ -1270,10 +1330,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 } else {
                     if (!GT_Utility.areStacksEqual(aStack, iStack)) continue;
                 }
-                int max;
-                if (aStack.getItem() instanceof IApiaryUpgrade)
-                    max = ((IApiaryUpgrade) aStack.getItem()).getMaxNumber(aStack);
-                else max = GT_ApiaryUpgrade.getUpgrade(aStack).getMaxNumber();
+                int max = GT_ApiaryUpgrade.getUpgrade(aStack).getMaxNumber();
                 if (iStack == null) {
                     max = Math.min(max, aStack.stackSize);
                     ItemStack newstack = aStack.splitStack(max);

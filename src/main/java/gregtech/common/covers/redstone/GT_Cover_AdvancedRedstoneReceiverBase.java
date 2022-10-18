@@ -124,28 +124,28 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
                             startX + spaceX * 0,
                             startY + spaceY * 2,
                             GT_GuiIcon.AND_GATE)
-                    .setTooltipText(GT_Utility.trans("006", "AND Gate"));
+                    .setTooltipText(GT_Utility.trans("331", "AND Gate"));
             new GT_GuiIconButton(
                             this,
                             gateModeButtonIdStart + 1,
                             startX + spaceX * 1,
                             startY + spaceY * 2,
                             GT_GuiIcon.NAND_GATE)
-                    .setTooltipText(GT_Utility.trans("006", "NAND Gate"));
+                    .setTooltipText(GT_Utility.trans("332", "NAND Gate"));
             new GT_GuiIconButton(
                             this,
                             gateModeButtonIdStart + 2,
                             startX + spaceX * 2,
                             startY + spaceY * 2,
                             GT_GuiIcon.OR_GATE)
-                    .setTooltipText(GT_Utility.trans("006", "OR Gate"));
+                    .setTooltipText(GT_Utility.trans("333", "OR Gate"));
             new GT_GuiIconButton(
                             this,
                             gateModeButtonIdStart + 3,
                             startX + spaceX * 3,
                             startY + spaceY * 2,
                             GT_GuiIcon.NOR_GATE)
-                    .setTooltipText(GT_Utility.trans("006", "NOR Gate"));
+                    .setTooltipText(GT_Utility.trans("334", "NOR Gate"));
             new GT_GuiIconButton(
                             this,
                             gateModeButtonIdStart + 4,
@@ -161,7 +161,7 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
             super.drawExtras(mouseX, mouseY, parTicks);
             this.getFontRenderer()
                     .drawString(
-                            GT_Utility.trans("601", "Gate Mode"),
+                            GT_Utility.trans("335", "Gate Mode"),
                             startX + spaceX * 5,
                             4 + startY + spaceY * 2,
                             textColor);

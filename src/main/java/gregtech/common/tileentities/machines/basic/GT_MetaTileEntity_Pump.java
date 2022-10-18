@@ -59,6 +59,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     private int radiusConfig; // Pump configured radius
     private boolean mRetractDone = false;
 
+    private boolean mDisallowRetract = true;
+
     public GT_MetaTileEntity_Pump(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, new String[] {
             "The best way to empty Oceans! Outputs on top",
@@ -68,8 +70,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                     + (getMaxDistanceForTier(aTier) * 2 + 1),
             "Use Screwdriver to regulate pumping area",
             "Use Soft Mallet to disable and retract the pipe",
-            "Disable itself upon hitting rocks",
-            "Disable the bottom pump to retract the pipe!"
+            "Disable the bottom pump to retract the pipe!",
+            "Use Soldering Iron to auto retract the pipe when hitting a rock",
         });
         radiusConfig = getMaxDistanceForTier(mTier);
     }
@@ -107,6 +109,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                         : Block.blockRegistry.getNameForObject(this.mSecondaryPumpedBlock));
         aNBT.setBoolean("wasPumping", wasPumping);
         aNBT.setInteger("radiusConfig", radiusConfig);
+        aNBT.setBoolean("mRetractDone", mRetractDone);
+        aNBT.setBoolean("mDisallowRetract", mDisallowRetract);
     }
 
     @Override
@@ -116,6 +120,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
         if (aNBT.hasKey("radiusConfig")) this.radiusConfig = aNBT.getInteger("radiusConfig");
         this.mPrimaryPumpedBlock = Block.getBlockFromName(aNBT.getString("mPumpedBlock1"));
         this.mSecondaryPumpedBlock = Block.getBlockFromName(aNBT.getString("mPumpedBlock2"));
+        this.mRetractDone = aNBT.getBoolean("mRetractDone");
+        this.mDisallowRetract = aNBT.getBoolean("mDisallowRetract");
 
         if (debugBlockPump) {
             GT_Log.out.println("PUMP: NBT:Load - WasPumping - " + this.wasPumping + "("
@@ -127,6 +133,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
         aNBT.setInteger("radiusConfig", radiusConfig);
+        aNBT.setBoolean("mDisallowRetract", mDisallowRetract);
     }
 
     @Override
@@ -150,6 +157,18 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                         + (radiusConfig * 2 + 1)); // TODO Add translation support
 
         clearQueue(false);
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ)) return true;
+        mDisallowRetract = !mDisallowRetract;
+        GT_Utility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal(
+                        mDisallowRetract ? "GT5U.machines.autoretract.disabled" : "GT5U.machines.autoretract.enabled"));
+        return true;
     }
 
     @Override
@@ -296,7 +315,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                                 //  1) We just moved down
                                 //  2) We were previously pumping (and possibly just reloaded)
                                 //  3) We have an empty queue and enough time has passed
-                                //  4) A long while has has passed
+                                //  4) A long while has passed
                                 if (debugBlockPump) {
                                     GT_Log.out.println("PUMP: Rebuilding pump list - Size " + this.mPumpList.size()
                                             + " WasPumping: " + this.wasPumping + " Timer "
@@ -370,7 +389,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                         }
                     }
                 }
-                getBaseMetaTileEntity().setActive(!this.mPumpList.isEmpty());
+                if (!mDisallowRetract) getBaseMetaTileEntity().setActive(!this.mPumpList.isEmpty());
             }
 
             if (this.mFluid != null && (aTick % 20 == 0)) {
@@ -431,7 +450,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
             }
             return false;
         }
-        // Try to set the block below us to a a tip
+        // Try to set the block below us to a tip
         if (!GT_Utility.setBlockByFakePlayer(
                 getFakePlayer(getBaseMetaTileEntity()), x, yHead - 1, z, MINING_PIPE_TIP_BLOCK, 0, false)) {
             if (debugBlockPump) {

@@ -11,6 +11,7 @@ import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
@@ -18,6 +19,7 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.CoverDataFollower_TextFieldWidget;
 import gregtech.common.gui.modularui.CoverDataFollower_ToggleButtonWidget;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
 import io.netty.buffer.ByteBuf;
 import java.util.Arrays;
 import javax.annotation.Nonnull;
@@ -68,7 +70,13 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
             if (tanks != null) {
                 for (FluidTankInfo tank : tanks) {
                     if (tank != null) {
-                        max += tank.capacity;
+                        if (tileEntity instanceof BaseMetaTileEntity
+                                && ((BaseMetaTileEntity) tileEntity).getMetaTileEntity()
+                                        instanceof GT_MetaTileEntity_DigitalTankBase) {
+                            max += ((GT_MetaTileEntity_DigitalTankBase)
+                                            ((BaseMetaTileEntity) tileEntity).getMetaTileEntity())
+                                    .getRealCapacity();
+                        } else max += tank.capacity;
                         FluidStack tLiquid = tank.fluid;
                         if (tLiquid != null) {
                             used += tLiquid.amount;

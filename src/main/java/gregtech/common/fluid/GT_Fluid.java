@@ -24,7 +24,6 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
     private final FluidState fluidState;
     private final Fluid iconsFrom;
     private Fluid registeredFluid;
-    private boolean hasRun = false;
 
     /**
      * Constructs this {@link IGT_Fluid} implementation from an {@link GT_FluidBuilder} instance
@@ -186,21 +185,18 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
      */
     @Override
     public void run() {
-        if (!hasRun) {
-            if (iconsFrom instanceof GT_Fluid) {
-                // Needs the GT_Fluid to have registered its icons
-                ((GT_Fluid) iconsFrom).run();
-                stillIcon = iconsFrom.getStillIcon();
-                flowingIcon = iconsFrom.getFlowingIcon();
-            } else {
-                if (stillIconResourceLocation != null) {
-                    stillIcon = GregTech_API.sBlockIcons.registerIcon(stillIconResourceLocation.toString());
-                }
-                if (flowingIconResourceLocation != null) {
-                    flowingIcon = GregTech_API.sBlockIcons.registerIcon(flowingIconResourceLocation.toString());
-                }
+        if (iconsFrom instanceof GT_Fluid) {
+            // Needs the GT_Fluid to have registered its icons
+            ((GT_Fluid) iconsFrom).run();
+            stillIcon = iconsFrom.getStillIcon();
+            flowingIcon = iconsFrom.getFlowingIcon();
+        } else {
+            if (stillIconResourceLocation != null) {
+                stillIcon = GregTech_API.sBlockIcons.registerIcon(stillIconResourceLocation.toString());
             }
-            hasRun = true;
+            if (flowingIconResourceLocation != null) {
+                flowingIcon = GregTech_API.sBlockIcons.registerIcon(flowingIconResourceLocation.toString());
+            }
         }
     }
 }

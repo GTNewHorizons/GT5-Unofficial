@@ -1277,6 +1277,8 @@ public class Textures {
         OVERLAY_ME_INPUT_HATCH_ACTIVE,
         OVERLAY_ME_CRAFTING_HATCH,
         OVERLAY_ME_CRAFTING_HATCH_ACTIVE,
+        OVERLAY_ME_FLUID_HATCH,
+        OVERLAY_ME_FLUID_HATCH_ACTIVE,
 
         STRUCTURE_MARK;
 
@@ -2159,7 +2161,14 @@ public class Textures {
         TURBINE,
         TURBINE_SMALL,
         TURBINE_LARGE,
-        TURBINE_HUGE;
+        TURBINE_HUGE,
+        POCKET_MULTITOOL_CLOSED,
+        POCKET_MULTITOOL_BRANCHCUTTER,
+        POCKET_MULTITOOL_FILE,
+        POCKET_MULTITOOL_KNIFE,
+        POCKET_MULTITOOL_SAW,
+        POCKET_MULTITOOL_SCREWDRIVER,
+        POCKET_MULTITOOL_WIRECUTTER;
         public static final IIconContainer[]
                 DURABILITY_BAR =
                         {

@@ -230,7 +230,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
                             textColor);
             this.getFontRenderer()
                     .drawString(
-                            GT_Utility.trans("601", "Use Private Frequency"),
+                            GT_Utility.trans("602", "Use Private Frequency"),
                             startX + spaceX * 1,
                             startY + spaceY * 2 + 4,
                             textColor);
