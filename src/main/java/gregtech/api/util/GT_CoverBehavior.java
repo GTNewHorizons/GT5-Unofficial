@@ -334,10 +334,6 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         return false;
     }
 
-    /**
-     * @deprecated Use {@link #createWindow}
-     */
-    @Deprecated
     public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
         return null;
     }

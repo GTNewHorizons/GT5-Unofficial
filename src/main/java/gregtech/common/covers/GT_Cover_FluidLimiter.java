@@ -1,6 +1,9 @@
 package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
@@ -10,6 +13,8 @@ import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_TextFieldWidget;
 import io.netty.buffer.ByteBuf;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -168,9 +173,41 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         }
     }
 
-    /*
-    GUI
-     */
+    // GUI stuff
+
+    @Override
+    public boolean hasCoverGUI() {
+        return true;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        final int startX = 10;
+        final int startY = 25;
+        final int spaceX = 18;
+        final int spaceY = 18;
+
+        builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
+                        .addFollower(
+                                new CoverDataFollower_TextFieldWidget<>(),
+                                coverData -> String.valueOf(Math.round(coverData.threshold * 100)),
+                                (coverData, val) -> {
+                                    coverData.threshold = (float) (MathExpression.parseMathExpression(val) / 100);
+                                    return coverData;
+                                },
+                                widget -> widget.setNumbers(0, 100)
+                                        .setFocusOnGuiOpen(true)
+                                        .setPos(startX, startY + spaceY * 2 - 24)
+                                        .setSize(spaceX * 4 - 3, 12)))
+                .widget(new TextWidget("Percent threshold")
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX, startY + spaceY * 2 - 35));
+    }
 
     @Override
     protected Object getClientGUIImpl(
@@ -181,11 +218,6 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
             EntityPlayer aPlayer,
             World aWorld) {
         return new GUI(aSide, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean hasCoverGUI() {
-        return true;
     }
 
     private static class GUI extends GT_GUICover {

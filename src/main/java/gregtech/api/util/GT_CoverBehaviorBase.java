@@ -229,10 +229,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return onCoverShiftRightClickImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity, aPlayer);
     }
 
-    /**
-     * @deprecated Use {@link #createWindow}
-     */
-    @Deprecated
     public final Object getClientGUI(
             byte aSide,
             int aCoverID,
@@ -474,7 +470,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
-     * Server only.
+     * Expected to be called by ModularUI widgets.
      * Can return null when cover data is invalid e.g. tile is broken or cover is removed
      */
     @Nullable
@@ -489,7 +485,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
-     * Server only
+     * Expected to be called by ModularUI widgets.
      */
     protected boolean setCoverData(T data) {
         if (isCoverValid()) {
@@ -653,10 +649,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return false;
     }
 
-    /**
-     * @deprecated Use {@link #createWindow}
-     */
-    @Deprecated
     protected Object getClientGUIImpl(
             byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
         return null;

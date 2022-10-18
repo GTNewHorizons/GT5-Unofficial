@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui;
 
 import com.gtnewhorizons.modularui.api.widget.ISyncedWidget;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -41,15 +42,18 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
         this.dataSetter = dataSetter;
     }
 
-    public T getLastData() {
+    protected T getLastData() {
         return lastData;
     }
 
     @Override
     public void onPostInit() {
         super.onPostInit();
+        // client _should_ have received initial cover data from `GT_UIInfos#openCoverUI`
         lastData = dataGetter.get();
-        updateChildren();
+        if (NetworkUtils.isClient()) {
+            updateChildren(true);
+        }
     }
 
     @Override
@@ -80,6 +84,7 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
     public void readOnClient(int id, PacketBuffer buf) throws IOException {
         if (id == 0) {
             lastData = readFromPacket(buf);
+            dataSetter.apply(getLastData());
             updateChildren();
         }
     }
@@ -96,14 +101,22 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
         }
     }
 
+    @SuppressWarnings("unchecked")
     @SideOnly(Side.CLIENT)
-    protected void updateChildren() {
+    protected void updateChildren(boolean postInit) {
         for (Widget child : getChildren()) {
             if (child instanceof IDataFollowerWidget) {
-                //noinspection unchecked
-                ((IDataFollowerWidget<T, ?, ?>) child).updateState(getLastData());
+                ((IDataFollowerWidget<T, ?>) child).updateState(getLastData());
+                if (postInit) {
+                    ((IDataFollowerWidget<T, ?>) child).onPostInit();
+                }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void updateChildren() {
+        updateChildren(false);
     }
 
     protected abstract void writeToPacket(PacketBuffer buffer, T data);
@@ -126,28 +139,24 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
     }
 
     /**
-     * @param widget widget to add
+     * @param widget widget to add that implements {@link IDataFollowerWidget}
      * @param dataToStateGetter given data -> state of the widget to add
      * @param dataUpdater (current data, state of the widget to add) -> new data to set
      * @param applyForWidget methods to call for the widget to add
      * @param <U> state type stored in the widget to add
      * @param <W> widget type to add
      */
-    @SuppressWarnings("UnusedReturnValue")
-    public <U, W extends Widget & IDataFollowerWidget<T, U, W>> DataControllerWidget<T> addFollower(
+    public <U, W extends Widget & IDataFollowerWidget<T, U>> DataControllerWidget<T> addFollower(
             W widget, Function<T, U> dataToStateGetter, BiFunction<T, U, T> dataUpdater, Consumer<W> applyForWidget) {
-        widget.setDataToStateGetter(dataToStateGetter).setSetter(state -> {
+        widget.setDataToStateGetter(dataToStateGetter);
+        widget.setSetter(state -> {
             T newData = dataUpdater.apply(getLastData(), state);
             lastData = newData;
+            dataSetter.apply(getLastData());
             syncDataToServer(newData);
         });
         applyForWidget.accept(widget);
         addChild(widget);
         return this;
-    }
-
-    public <U, W extends Widget & IDataFollowerWidget<T, U, W>> DataControllerWidget<T> addFollower(
-            W widget, Function<T, U> dataToStateGetter, BiFunction<T, U, T> dataUpdater) {
-        return addFollower(widget, dataToStateGetter, dataUpdater, w -> {});
     }
 }

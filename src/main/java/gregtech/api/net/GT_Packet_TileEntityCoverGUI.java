@@ -189,7 +189,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
                 gtTile.setCoverDataAtSide(side, coverData); // Set it client side to read later.
 
                 GT_CoverBehaviorBase<?> cover = gtTile.getCoverBehaviorAtSideNew(side);
-                if (cover.hasCoverGUI() && !cover.useModularUI()) {
+                if (cover.hasCoverGUI()) {
                     GuiScreen gui = (GuiScreen) cover.getClientGUI(
                             side,
                             gtTile.getCoverIDAtSide(side),

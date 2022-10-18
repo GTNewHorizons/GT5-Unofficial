@@ -1,8 +1,12 @@
 package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
+import gregtech.api.gui.ModularUI.GT_UITextures;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
@@ -16,11 +20,16 @@ import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_CycleButtonWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
@@ -205,6 +214,86 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @SuppressWarnings("PointlessArithmeticExpression")
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        final int startX = 10;
+        final int startY = 25;
+        final int spaceX = 18;
+        final int spaceY = 18;
+        final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
+        final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
+
+        builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
+                        .addFollower(
+                                new CoverDataFollower_CycleButtonWidget<>(),
+                                coverData -> coverData.type.ordinal(),
+                                (coverData, state) -> {
+                                    coverData.type = EnergyType.getEnergyType(state);
+                                    return coverData;
+                                },
+                                widget -> widget.setLength(EnergyType.values().length)
+                                        .addTooltip(state ->
+                                                EnergyType.getEnergyType(state).getTooltip())
+                                        .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                        .setPos(spaceX * 0, spaceY * 0))
+                        .addFollower(
+                                CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                                coverData -> coverData.inverted ? 1 : 0,
+                                (coverData, state) -> {
+                                    coverData.inverted = state == 1;
+                                    return coverData;
+                                },
+                                widget -> widget.addTooltip(0, NORMAL)
+                                        .addTooltip(1, INVERTED)
+                                        .setPos(spaceX * 0, spaceY * 1))
+                        .addFollower(
+                                new CoverDataFollower_TextFieldWidget<>(),
+                                coverData -> String.valueOf(coverData.threshold),
+                                (coverData, state) -> {
+                                    coverData.threshold = (long) MathExpression.parseMathExpression(state);
+                                    return coverData;
+                                },
+                                widget -> widget.setNumbersLong(() -> 0L, () -> Long.MAX_VALUE)
+                                        .setOnScrollNumbersLong((val, direction) -> {
+                                            long step = 1000;
+                                            if (GuiScreen.isShiftKeyDown()) {
+                                                step *= 100;
+                                            }
+                                            if (GuiScreen.isCtrlKeyDown()) {
+                                                step /= 10;
+                                            }
+                                            try {
+                                                val = Math.addExact(val, direction * step);
+                                            } catch (ArithmeticException e) {
+                                                val = Long.MAX_VALUE;
+                                            }
+                                            return Math.max(0, val);
+                                        })
+                                        .setFocusOnGuiOpen(true)
+                                        .setPos(spaceX * 0, spaceY * 2 + 2)
+                                        .setSize(spaceX * 8, 12))
+                        .setPos(startX, startY))
+                .widget(TextWidget.dynamicString(() ->
+                                getCoverData() != null ? getCoverData().type.getTitle() : "")
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX, 4 + startY))
+                .widget(TextWidget.dynamicString(
+                                () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX, 4 + startY + spaceY))
+                .widget(new TextWidget(GT_Utility.trans("222.1", "Energy threshold"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX, startY + spaceY * 3 + 4));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
@@ -11,6 +13,9 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_ToggleButtonWidget;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
@@ -149,12 +154,61 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
         return 0;
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @SuppressWarnings("PointlessArithmeticExpression")
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        final int startX = 10;
+        final int startY = 25;
+        final int spaceX = 18;
+        final int spaceY = 18;
+
+        builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                                this::getCoverData,
+                                this::setCoverData,
+                                this,
+                                (index, coverData) -> index == convert(coverData),
+                                (index, coverData) -> new ISerializableObject.LegacyCoverData(index))
+                        .addToggleButton(
+                                0,
+                                CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                widget -> widget.setPos(spaceX * 0, spaceY * 0))
+                        .addToggleButton(
+                                1,
+                                CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                widget -> widget.setPos(spaceX * 0, spaceY * 1))
+                        .addToggleButton(
+                                2,
+                                CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                        .addToggleButton(
+                                3,
+                                CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                widget -> widget.setPos(spaceX * 0, spaceY * 3))
+                        .setPos(startX, startY))
+                .widget(new TextWidget(GT_Utility.trans("082", "Open if work enabled"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
+                .widget(new TextWidget(GT_Utility.trans("083", "Open if work disabled"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
+                .widget(new TextWidget(GT_Utility.trans("084", "Only Output allowed"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
+                .widget(new TextWidget(GT_Utility.trans("085", "Only Input allowed"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
     }
 
     @Override

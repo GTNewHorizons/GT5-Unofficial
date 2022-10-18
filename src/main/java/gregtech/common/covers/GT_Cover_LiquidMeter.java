@@ -1,6 +1,9 @@
 package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
@@ -12,10 +15,14 @@ import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 import java.util.Arrays;
 import javax.annotation.Nonnull;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
@@ -156,12 +163,78 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     protected int getTickRateImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
         return 5;
     }
-    /**
-     * GUI Stuff
-     */
+
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @SuppressWarnings("PointlessArithmeticExpression")
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        final int startX = 10;
+        final int startY = 25;
+        final int spaceX = 18;
+        final int spaceY = 18;
+        final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
+        final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
+        final int maxCapacity;
+
+        if (getUIContext().getTile() instanceof IFluidHandler) {
+            FluidTankInfo[] tanks = ((IFluidHandler) getUIContext().getTile()).getTankInfo(ForgeDirection.UNKNOWN);
+            maxCapacity = Arrays.stream(tanks).mapToInt(tank -> tank.capacity).sum();
+        } else {
+            maxCapacity = -1;
+        }
+
+        builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
+                        .addFollower(
+                                CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                                coverData -> coverData.inverted ? 1 : 0,
+                                (coverData, state) -> {
+                                    coverData.inverted = state == 1;
+                                    return coverData;
+                                },
+                                widget -> widget.addTooltip(0, NORMAL)
+                                        .addTooltip(1, INVERTED)
+                                        .setPos(spaceX * 0, spaceY * 0))
+                        .addFollower(
+                                new CoverDataFollower_TextFieldWidget<>(),
+                                coverData -> String.valueOf(coverData.threshold),
+                                (coverData, state) -> {
+                                    coverData.threshold = (int) MathExpression.parseMathExpression(state);
+                                    return coverData;
+                                },
+                                widget -> widget.setNumbers(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
+                                        .setOnScrollNumbers((val, direction) -> {
+                                            int step = 1000;
+                                            if (GuiScreen.isShiftKeyDown()) {
+                                                step *= 100;
+                                            }
+                                            if (GuiScreen.isCtrlKeyDown()) {
+                                                step /= 10;
+                                            }
+                                            return val + step * direction;
+                                        })
+                                        .setFocusOnGuiOpen(true)
+                                        .setPos(spaceX * 0, spaceY * 1 + 2)
+                                        .setSize(spaceX * 4 + 5, 12))
+                        .setPos(startX, startY))
+                .widget(TextWidget.dynamicString(
+                                () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
+                .widget(new TextWidget(GT_Utility.trans("222", "Fluid threshold"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 5 - 10, startY + spaceY * 1 + 4));
     }
 
     @Override
