@@ -12,7 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.ModularUI.SteamTexture;
+import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;

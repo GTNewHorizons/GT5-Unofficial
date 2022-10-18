@@ -1,4 +1,4 @@
-package gregtech.api.gui.ModularUI;
+package gregtech.api.gui.modularui;
 
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import cpw.mods.fml.relauncher.Side;

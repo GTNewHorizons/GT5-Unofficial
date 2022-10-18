@@ -4,7 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import gregtech.GT_Mod;
-import gregtech.api.gui.ModularUI.GT_UIInfo;
+import gregtech.api.gui.modularui.GT_UIInfo;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

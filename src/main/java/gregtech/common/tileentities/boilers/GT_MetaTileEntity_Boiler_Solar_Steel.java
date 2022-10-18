@@ -4,7 +4,7 @@ import static gregtech.api.enums.ConfigCategories.machineconfig;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.ModularUI.SteamTexture;
+import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;

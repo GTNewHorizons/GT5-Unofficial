@@ -6,7 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBLASTFURNACE_
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.gui.ModularUI.SteamTexture;
+import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;

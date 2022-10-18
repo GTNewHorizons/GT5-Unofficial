@@ -7,7 +7,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.ModularUI.GT_UITextures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;

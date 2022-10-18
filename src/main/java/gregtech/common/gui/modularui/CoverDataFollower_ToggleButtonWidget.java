@@ -1,7 +1,7 @@
 package gregtech.common.gui.modularui;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import gregtech.api.gui.ModularUI.GT_UITextures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject>

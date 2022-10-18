@@ -6,7 +6,7 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import gregtech.GT_Mod;
-import gregtech.api.gui.ModularUI.GT_UIInfo;
+import gregtech.api.gui.modularui.GT_UIInfo;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;

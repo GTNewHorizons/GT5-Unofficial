@@ -2,7 +2,7 @@ package gregtech.common.gui.modularui;
 
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
-import gregtech.api.gui.ModularUI.IDataFollowerWidget;
+import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import java.io.IOException;

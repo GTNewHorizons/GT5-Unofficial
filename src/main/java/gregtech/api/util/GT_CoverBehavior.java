@@ -3,7 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.E;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.ModularUI.GT_UIInfo;
+import gregtech.api.gui.modularui.GT_UIInfo;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;

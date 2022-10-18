@@ -10,7 +10,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_TOP;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 
 import gregtech.GT_Mod;
-import gregtech.api.gui.ModularUI.SteamTexture;
+import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
