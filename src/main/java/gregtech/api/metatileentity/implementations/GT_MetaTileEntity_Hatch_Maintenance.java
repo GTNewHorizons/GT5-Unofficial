@@ -18,7 +18,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.modularui.GT_UIInfo;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -169,7 +169,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
             if (aPlayer.getCurrentEquippedItem() != null
                     && aPlayer.getCurrentEquippedItem().getItem() instanceof ItemToolbox)
                 applyToolbox(aPlayer.getCurrentEquippedItem(), aPlayer);
-            else GT_UIInfo.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            else GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             return true;
         }
         return false;

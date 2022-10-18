@@ -23,7 +23,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GT_UIInfo {
+public class GT_UIInfos {
 
     /**
      * Generator for {@link UIInfo} which is responsible for registering and opening UIs.

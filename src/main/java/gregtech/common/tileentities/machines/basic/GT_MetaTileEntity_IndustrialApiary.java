@@ -30,7 +30,7 @@ import forestry.api.genetics.IIndividual;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
 import gregtech.GT_Mod;
-import gregtech.api.gui.modularui.GT_UIInfo;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -1213,7 +1213,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     }
 
     private static final UIInfo<?, ?> IndustrialApiaryUI =
-            GT_UIInfo.GTTileEntityUIFactory.apply(GT_ModularUIContainer_IndustrialApiary::new);
+            GT_UIInfos.GTTileEntityUIFactory.apply(GT_ModularUIContainer_IndustrialApiary::new);
 
     private static class GT_ModularUIContainer_IndustrialApiary extends ModularUIContainer {
 

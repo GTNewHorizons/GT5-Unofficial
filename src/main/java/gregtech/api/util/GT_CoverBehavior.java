@@ -3,7 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.E;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UIInfo;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
@@ -322,7 +322,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
             if (useModularUI()) {
-                GT_UIInfo.openCoverUI(aTileEntity, aPlayer, aSide);
+                GT_UIInfos.openCoverUI(aTileEntity, aPlayer, aSide);
             } else {
                 GT_Values.NW.sendToPlayer(
                         new GT_Packet_TileEntityCoverGUI(

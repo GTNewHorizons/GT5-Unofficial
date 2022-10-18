@@ -18,7 +18,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
-import gregtech.api.gui.modularui.GT_UIInfo;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
@@ -492,7 +492,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (!GT_Mod.gregtechproxy.mForceFreeFace) {
             if (useModularUI()) {
-                GT_UIInfo.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             } else {
                 aBaseMetaTileEntity.openGUI(aPlayer);
             }
@@ -501,7 +501,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         for (byte i = 0; i < 6; i++) {
             if (aBaseMetaTileEntity.getAirAtSide(i)) {
                 if (useModularUI()) {
-                    GT_UIInfo.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                    GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
                 } else {
                     aBaseMetaTileEntity.openGUI(aPlayer);
                 }
