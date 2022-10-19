@@ -651,6 +651,39 @@ public class StaticRecipeChangeLoaders {
                     128_000_000,
                     1); // aSpecialVaue has no meaning here.
         }
+
+        eicMap.addRecipe(
+                false,
+                new ItemStack[] {GT_ModHandler.getModItem("GoodGenerator", "highDensityPlutoniumNugget", 5L)},
+                new ItemStack[] {GT_ModHandler.getModItem("GoodGenerator", "highDensityPlutonium", 1L)},
+                null,
+                new FluidStack[] {Materials.Infinity.getMolten(9L)},
+                new FluidStack[] {GT_Values.NF},
+                1,
+                7_864_320,
+                1);
+
+        eicMap.addRecipe(
+                false,
+                new ItemStack[] {GT_ModHandler.getModItem("GoodGenerator", "highDensityUraniumNugget", 5L)},
+                new ItemStack[] {GT_ModHandler.getModItem("GoodGenerator", "highDensityUranium", 1L)},
+                null,
+                new FluidStack[] {Materials.Infinity.getMolten(9L)},
+                new FluidStack[] {GT_Values.NF},
+                1,
+                7_864_320,
+                1);
+
+        eicMap.addRecipe(
+                false,
+                new ItemStack[] {GT_ModHandler.getModItem("GoodGenerator", "highDensityThoriumNugget", 5L)},
+                new ItemStack[] {GT_ModHandler.getModItem("GoodGenerator", "highDensityThorium", 1L)},
+                null,
+                new FluidStack[] {Materials.Infinity.getMolten(9L)},
+                new FluidStack[] {GT_Values.NF},
+                1,
+                7_864_320,
+                1);
     }
 
     private static boolean checkForExplosives(ItemStack input) {
