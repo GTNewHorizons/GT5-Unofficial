@@ -217,6 +217,11 @@ public interface IMetaTileEntity
     boolean isValidSlot(int aIndex);
 
     /**
+     * @return True if this MTE should drop its inventory content on block break
+     */
+    boolean shouldDropInventory();
+
+    /**
      * @return if aIndex can be set to Zero stackSize, when being removed.
      */
     boolean setStackToZeroInsteadOfNull(int aIndex);

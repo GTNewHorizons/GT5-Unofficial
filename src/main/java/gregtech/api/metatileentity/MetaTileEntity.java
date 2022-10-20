@@ -482,6 +482,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
+    public boolean shouldDropInventory() {
+        return true;
+    }
+
+    @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
         return false;
     }

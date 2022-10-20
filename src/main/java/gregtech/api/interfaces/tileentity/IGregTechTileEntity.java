@@ -138,6 +138,12 @@ public interface IGregTechTileEntity
 
     ArrayList<ItemStack> getDrops();
 
+    /** Check if this block should drop its inventory content
+     *
+     * @return True if it should drop, else false
+     */
+    boolean shouldDropInventory();
+
     /**
      * 255 = 100%
      */

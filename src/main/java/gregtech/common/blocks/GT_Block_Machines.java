@@ -411,7 +411,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         if (tTileEntity instanceof IGregTechTileEntity) {
             final IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
             mTemporaryTileEntity.set(tGregTechTileEntity);
-            if (!(tGregTechTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_QuantumChest)) {
+            if (!(tGregTechTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_QuantumChest)
+                && tGregTechTileEntity.shouldDropInventory()) {
                 for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); i++) {
                     final ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
                     if ((tItem != null) && (tItem.stackSize > 0) && (tGregTechTileEntity.isValidSlot(i))) {
