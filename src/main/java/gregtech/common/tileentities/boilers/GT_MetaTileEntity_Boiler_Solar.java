@@ -286,12 +286,12 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 
     @Override
     protected IDrawable[] getFuelSlotBackground() {
-        return new IDrawable[] {GT_UITextures.SLOT_TRANSPARENT};
+        return new IDrawable[] {GT_UITextures.TRANSPARENT};
     }
 
     @Override
     protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] {GT_UITextures.SLOT_TRANSPARENT};
+        return new IDrawable[] {GT_UITextures.TRANSPARENT};
     }
 
     @Override

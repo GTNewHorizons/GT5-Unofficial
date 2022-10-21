@@ -80,12 +80,12 @@ public class CoverDataControllerWidget<T extends ISerializableObject> extends Da
          * @param widget widget to add
          * @param applyForWidget methods to call for widget to add
          */
-        public <W extends CoverDataFollower_CycleButtonWidget<T>>
+        public <W extends CoverDataFollower_ToggleButtonWidget<T>>
                 CoverDataIndexedControllerWidget_ToggleButtons<T> addToggleButton(
-                        int index, W widget, Consumer<CoverDataFollower_CycleButtonWidget<T>> applyForWidget) {
+                        int index, W widget, Consumer<CoverDataFollower_ToggleButtonWidget<T>> applyForWidget) {
             addFollower(
                     widget,
-                    data -> dataToStateGetter.apply(index, data) ? 1 : 0,
+                    data -> dataToStateGetter.apply(index, data),
                     (data, state) -> dataUpdater.apply(index, data),
                     applyForWidget);
             return this;

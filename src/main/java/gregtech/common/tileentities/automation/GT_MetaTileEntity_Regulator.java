@@ -182,7 +182,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
                         .phantom(true)
                         .startFromSlot(9)
                         .endAtSlot(17)
-                        .applyForWidget(widget -> widget.setBackground(GT_UITextures.SLOT_TRANSPARENT))
+                        .applyForWidget(widget -> widget.setBackground(GT_UITextures.TRANSPARENT))
                         .build()
                         .setPos(62, 5))
                 .widget(new DrawableWidget()
@@ -206,7 +206,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
                                                             + (clickData.mouseButton == 0 ? -1 : 1)
                                                                     * (clickData.shift ? 16 : 1)));
                                 }
-                            }.setBackground(GT_UITextures.SLOT_TRANSPARENT).setPos(xPos, yPos))
+                            }.setBackground(GT_UITextures.TRANSPARENT).setPos(xPos, yPos))
                     .widget(TextWidget.dynamicString(() -> String.valueOf(mTargetSlots[index]))
                             .setDefaultColor(COLOR_TEXT_WHITE.get())
                             .setPos(xPos + 2 + (i % 3 == 0 ? 1 : 0), yPos + 3 + (i / 3 == 0 ? 1 : 0)));

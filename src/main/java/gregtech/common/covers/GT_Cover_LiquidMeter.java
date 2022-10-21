@@ -24,7 +24,6 @@ import io.netty.buffer.ByteBuf;
 import java.util.Arrays;
 import javax.annotation.Nonnull;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
@@ -184,13 +183,14 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         return true;
     }
 
+    private static final int startX = 10;
+    private static final int startY = 25;
+    private static final int spaceX = 18;
+    private static final int spaceY = 18;
+
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final int startX = 10;
-        final int startY = 25;
-        final int spaceX = 18;
-        final int spaceY = 18;
         final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
         final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
         final int maxCapacity;
@@ -205,9 +205,9 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
                         .addFollower(
                                 CoverDataFollower_ToggleButtonWidget.ofRedstone(),
-                                coverData -> coverData.inverted ? 1 : 0,
+                                coverData -> coverData.inverted,
                                 (coverData, state) -> {
-                                    coverData.inverted = state == 1;
+                                    coverData.inverted = state;
                                     return coverData;
                                 },
                                 widget -> widget.addTooltip(0, NORMAL)
@@ -220,17 +220,8 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
                                     coverData.threshold = (int) MathExpression.parseMathExpression(state);
                                     return coverData;
                                 },
-                                widget -> widget.setNumbers(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
-                                        .setOnScrollNumbers((val, direction) -> {
-                                            int step = 1000;
-                                            if (GuiScreen.isShiftKeyDown()) {
-                                                step *= 100;
-                                            }
-                                            if (GuiScreen.isCtrlKeyDown()) {
-                                                step /= 10;
-                                            }
-                                            return val + step * direction;
-                                        })
+                                widget -> widget.setOnScrollNumbers(1000, 100, 100000)
+                                        .setNumbers(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
                                         .setFocusOnGuiOpen(true)
                                         .setPos(spaceX * 0, spaceY * 1 + 2)
                                         .setSize(spaceX * 4 + 5, 12))

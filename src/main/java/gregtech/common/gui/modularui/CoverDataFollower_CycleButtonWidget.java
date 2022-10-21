@@ -19,13 +19,14 @@ public class CoverDataFollower_CycleButtonWidget<T extends ISerializableObject> 
         setSynced(false, false);
     }
 
+    @Override
     public CoverDataFollower_CycleButtonWidget<T> setDataToStateGetter(Function<T, Integer> dataToStateGetter) {
         this.dataToStateGetter = dataToStateGetter;
         return this;
     }
 
     @Override
-    public CoverDataFollower_CycleButtonWidget<T> setSetter(Consumer<Integer> setter) {
+    public CoverDataFollower_CycleButtonWidget<T> setStateSetter(Consumer<Integer> setter) {
         super.setSetter(setter);
         return this;
     }

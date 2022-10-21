@@ -2,12 +2,14 @@ package gregtech.common.gui.modularui;
 
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import net.minecraft.client.gui.GuiScreen;
 
 public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> extends TextFieldWidget
         implements IDataFollowerWidget<T, String> {
@@ -33,16 +35,19 @@ public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> ex
         // On second call, it contains correct text to update #lastText,
         // but #shouldGetFocus call is skipped by Cursor#updateFocused,
         // so we need to manually call this.
-        shouldGetFocus();
+        if (focusOnGuiOpen) {
+            shouldGetFocus();
+        }
     }
 
+    @Override
     public CoverDataFollower_TextFieldWidget<T> setDataToStateGetter(Function<T, String> dataToStateGetter) {
         this.dataToStateGetter = dataToStateGetter;
         return this;
     }
 
     @Override
-    public CoverDataFollower_TextFieldWidget<T> setSetter(Consumer<String> setter) {
+    public CoverDataFollower_TextFieldWidget<T> setStateSetter(Consumer<String> setter) {
         super.setSetter(setter);
         return this;
     }
@@ -50,5 +55,56 @@ public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> ex
     @Override
     public void updateState(T data) {
         setText(dataToStateGetter.apply(data));
+    }
+
+    public CoverDataFollower_TextFieldWidget<T> setOnScrollNumbers(int baseStep, int ctrlStep, int shiftStep) {
+        setOnScrollNumbers((val, direction) -> {
+            int step = (GuiScreen.isShiftKeyDown() ? shiftStep : GuiScreen.isCtrlKeyDown() ? ctrlStep : baseStep)
+                    * direction;
+            try {
+                val = Math.addExact(val, step);
+            } catch (ArithmeticException ignored) {
+                val = Integer.MAX_VALUE;
+            }
+            return val;
+        });
+        return this;
+    }
+
+    public CoverDataFollower_TextFieldWidget<T> setOnScrollNumbers() {
+        return setOnScrollNumbers(1, 50, 1000);
+    }
+
+    public CoverDataFollower_TextFieldWidget<T> setOnScrollText(int baseStep, int ctrlStep, int shiftStep) {
+        setOnScroll((text, direction) -> {
+            int val = (int) MathExpression.parseMathExpression(text, -1);
+            int step = (GuiScreen.isShiftKeyDown() ? shiftStep : GuiScreen.isCtrlKeyDown() ? ctrlStep : baseStep)
+                    * direction;
+            try {
+                val = Math.addExact(val, step);
+            } catch (ArithmeticException ignored) {
+                val = Integer.MAX_VALUE;
+            }
+            return TextFieldWidget.format.format(val);
+        });
+        return this;
+    }
+
+    public CoverDataFollower_TextFieldWidget<T> setOnScrollText() {
+        return setOnScrollText(1, 5, 50);
+    }
+
+    public CoverDataFollower_TextFieldWidget<T> setOnScrollNumbersLong(long baseStep, long ctrlStep, long shiftStep) {
+        setOnScrollNumbersLong((val, direction) -> {
+            long step = (GuiScreen.isShiftKeyDown() ? shiftStep : GuiScreen.isCtrlKeyDown() ? ctrlStep : baseStep)
+                    * direction;
+            try {
+                val = Math.addExact(val, step);
+            } catch (ArithmeticException ignored) {
+                val = Long.MAX_VALUE;
+            }
+            return val;
+        });
+        return this;
     }
 }

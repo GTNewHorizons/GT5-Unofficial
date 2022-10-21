@@ -1,12 +1,16 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 import java.util.Objects;
 import java.util.UUID;
@@ -126,9 +130,56 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
         }
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
+    @Override
+    protected int getFrequencyRow() {
+        return 0;
+    }
+
+    @Override
+    protected int getButtonRow() {
+        return 1;
+    }
+
+    @Override
+    protected boolean isShiftPrivateLeft() {
+        return true;
+    }
+
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        super.addUIWidgets(builder);
+        builder.widget(TextWidget.dynamicString(() -> {
+                    T coverData = getCoverData();
+                    if (coverData != null) {
+                        return getCoverData().invert
+                                ? GT_Utility.trans("INVERTED", "Inverted")
+                                : GT_Utility.trans("NORMAL", "Normal");
+                    } else {
+                        return "";
+                    }
+                })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
+    }
+
+    @Override
+    protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
+        super.addUIForDataController(controller);
+        controller.addFollower(
+                CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                coverData -> coverData.invert,
+                (coverData, state) -> {
+                    coverData.invert = state;
+                    return coverData;
+                },
+                widget -> widget.addTooltip(0, GT_Utility.trans("NORMAL", "Normal"))
+                        .addTooltip(1, GT_Utility.trans("INVERTED", "Inverted"))
+                        .setPos(spaceX * 9, spaceY * getButtonRow()));
+    }
+
     @Override
     public Object getClientGUIImpl(
             byte aSide,

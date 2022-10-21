@@ -290,20 +290,23 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
         return true;
     }
 
+    private static final int startX = 10;
+    private static final int startY = 25;
+    private static final int spaceX = 18;
+    private static final int spaceY = 18;
+
+    private int maxSlot;
+
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final int startX = 10;
-        final int startY = 25;
-        final int spaceX = 18;
-        final int spaceY = 18;
-
+        maxSlot = getMaxSlot();
         builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
                         .addFollower(
                                 CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                coverData -> getFlagExport(convert(coverData)) > 0 ? 1 : 0,
+                                coverData -> getFlagExport(convert(coverData)) > 0,
                                 (coverData, state) -> {
-                                    if (state == 1) {
+                                    if (state) {
                                         return new ISerializableObject.LegacyCoverData(
                                                 convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
                                     } else {
@@ -316,9 +319,9 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                                         .setPos(spaceX * 0, spaceY * 0))
                         .addFollower(
                                 CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                coverData -> getFlagExport(convert(coverData)) == 0 ? 1 : 0,
+                                coverData -> getFlagExport(convert(coverData)) == 0,
                                 (coverData, state) -> {
-                                    if (state == 1) {
+                                    if (state) {
                                         return new ISerializableObject.LegacyCoverData(
                                                 convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
                                     } else {
@@ -339,29 +342,14 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                                             | (getFlagAdjacentSlot(coverVariable) << 14)
                                             | CONVERTED_BIT);
                                 },
-                                widget -> widget.setValidator(val -> {
+                                widget -> widget.setOnScrollText()
+                                        .setValidator(val -> {
                                             final int valSlot = getIntFromText(val);
-                                            final int maxSlot;
-                                            if (getUIContext().getTile() instanceof TileEntity
-                                                    && !getUIContext().getTile().isDead()) {
-                                                maxSlot =
-                                                        getUIContext().getTile().getSizeInventory() - 1;
-                                            } else {
-                                                maxSlot = -1;
-                                            }
                                             if (valSlot > -1) {
                                                 return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
                                             } else {
                                                 return ANY_TEXT;
                                             }
-                                        })
-                                        .setOnScroll((text, direction) -> {
-                                            final int val = (int) MathExpression.parseMathExpression(text, -1);
-                                            int step = (GuiScreen.isShiftKeyDown()
-                                                            ? 50
-                                                            : GuiScreen.isCtrlKeyDown() ? 5 : 1)
-                                                    * direction;
-                                            return TextFieldWidget.format.format(val + step);
                                         })
                                         .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
                                         .setFocusOnGuiOpen(true)
@@ -379,27 +367,27 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                                 },
                                 widget -> widget.setValidator(val -> {
                                             final int valSlot = getIntFromText(val);
-                                            final int maxSlot;
-                                            if (getUIContext().getTile() instanceof TileEntity
-                                                    && !getUIContext().getTile().isDead()) {
-                                                TileEntity adj = getUIContext()
-                                                        .getTile()
-                                                        .getTileEntityAtSide(
-                                                                getUIContext().getCoverSide());
+                                            final int adjacentMaxSlot;
+                                            final ICoverable tile =
+                                                    getUIContext().getTile();
+                                            if (tile instanceof TileEntity && !tile.isDead()) {
+                                                TileEntity adj = tile.getTileEntityAtSide(
+                                                        getUIContext().getCoverSide());
                                                 if (adj instanceof IInventory)
-                                                    maxSlot = ((IInventory) adj).getSizeInventory() - 1;
-                                                else maxSlot = -1;
+                                                    adjacentMaxSlot = ((IInventory) adj).getSizeInventory() - 1;
+                                                else adjacentMaxSlot = -1;
                                             } else {
-                                                maxSlot = -1;
+                                                adjacentMaxSlot = -1;
                                             }
                                             if (valSlot > -1) {
-                                                return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
+                                                return TextFieldWidget.format.format(
+                                                        Math.min(valSlot, adjacentMaxSlot));
                                             } else {
                                                 return ANY_TEXT;
                                             }
                                         })
                                         .setOnScroll((text, direction) -> {
-                                            final int val = (int) MathExpression.parseMathExpression(text, -1);
+                                            final int val = getIntFromText(text);
                                             int step = (GuiScreen.isShiftKeyDown()
                                                             ? 50
                                                             : GuiScreen.isCtrlKeyDown() ? 5 : 1)
@@ -422,6 +410,15 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                 .widget(new TextWidget(GT_Utility.trans("255", "Adjacent slot#"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2));
+    }
+
+    private int getMaxSlot() {
+        final ICoverable tile = getUIContext().getTile();
+        if (tile instanceof TileEntity && !tile.isDead()) {
+            return tile.getSizeInventory() - 1;
+        } else {
+            return -1;
+        }
     }
 
     private String getTextFieldContent(int val) {

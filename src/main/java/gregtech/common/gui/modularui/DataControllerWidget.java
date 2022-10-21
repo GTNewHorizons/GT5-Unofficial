@@ -149,7 +149,7 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
     public <U, W extends Widget & IDataFollowerWidget<T, U>> DataControllerWidget<T> addFollower(
             W widget, Function<T, U> dataToStateGetter, BiFunction<T, U, T> dataUpdater, Consumer<W> applyForWidget) {
         widget.setDataToStateGetter(dataToStateGetter);
-        widget.setSetter(state -> {
+        widget.setStateSetter(state -> {
             T newData = dataUpdater.apply(getLastData(), state);
             lastData = newData;
             dataSetter.apply(getLastData());

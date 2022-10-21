@@ -185,13 +185,13 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         return true;
     }
 
+    private static final int startX = 10;
+    private static final int startY = 25;
+    private static final int spaceX = 18;
+    private static final int spaceY = 18;
+
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final int startX = 10;
-        final int startY = 25;
-        final int spaceX = 18;
-        final int spaceY = 18;
-
         builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
                         .addFollower(
                                 new CoverDataFollower_TextFieldWidget<>(),

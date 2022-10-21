@@ -39,8 +39,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import java.util.Collections;
-import java.util.List;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -392,16 +390,12 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                             @Optional.Method(modid = "appliedenergistics2")
                             private void safeDrawSlot(final Slot s) {
                                 try {
+                                    //noinspection JavaReflectionMemberAccess
                                     GuiContainer.class
                                             .getDeclaredMethod("func_146977_a_original", Slot.class)
                                             .invoke(getContext().getScreen(), s);
                                 } catch (final Exception ignored) {
                                 }
-                            }
-
-                            @Override
-                            public List<String> getExtraTooltip() {
-                                return Collections.emptyList();
                             }
                         }.disableInteraction())
                         .build()

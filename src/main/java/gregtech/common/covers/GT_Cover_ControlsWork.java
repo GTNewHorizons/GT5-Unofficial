@@ -184,14 +184,14 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
         return true;
     }
 
+    private static final int startX = 10;
+    private static final int startY = 25;
+    private static final int spaceX = 18;
+    private static final int spaceY = 18;
+
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final int startX = 10;
-        final int startY = 25;
-        final int spaceX = 18;
-        final int spaceY = 18;
-
         builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                                 this::getCoverData,
                                 this::setCoverData,
@@ -218,7 +218,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
                 .widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
                         .addFollower(
                                 CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
-                                coverData -> convert(coverData) > 2 ? 1 : 0,
+                                coverData -> convert(coverData) > 2,
                                 (coverData, state) -> new ISerializableObject.LegacyCoverData(
                                         adjustCoverVariable(state, convert(coverData))),
                                 widget -> widget.setPos(spaceX * 0, spaceY * 3))
@@ -249,8 +249,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
         return ((id != coverVariable && id != coverVariable - 3) || id == 3);
     }
 
-    private int adjustCoverVariable(int state, int coverVariable) {
-        boolean safeMode = state == 1;
+    private int adjustCoverVariable(boolean safeMode, int coverVariable) {
         if (safeMode && coverVariable <= 2) {
             coverVariable += 3;
         }

@@ -2,14 +2,38 @@ package gregtech.common.gui.modularui;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject>
-        extends CoverDataFollower_CycleButtonWidget<T> {
+public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject> extends CoverCycleButtonWidget
+        implements IDataFollowerWidget<T, Boolean> {
+
+    private Function<T, Boolean> dataToStateGetter;
 
     public CoverDataFollower_ToggleButtonWidget() {
         super();
+        setGetter(() -> 0); // fake getter; used only for init
+        setSynced(false, false);
         setLength(2);
+    }
+
+    @Override
+    public CoverDataFollower_ToggleButtonWidget<T> setDataToStateGetter(Function<T, Boolean> dataToStateGetter) {
+        this.dataToStateGetter = dataToStateGetter;
+        return this;
+    }
+
+    @Override
+    public CoverDataFollower_ToggleButtonWidget<T> setStateSetter(Consumer<Boolean> setter) {
+        super.setSetter(val -> setter.accept(val == 1));
+        return this;
+    }
+
+    @Override
+    public void updateState(T data) {
+        setState(dataToStateGetter.apply(data) ? 1 : 0, false, false);
     }
 
     public CoverDataFollower_ToggleButtonWidget<T> setToggleTexture(IDrawable active, IDrawable inactive) {
@@ -24,7 +48,7 @@ public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject>
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofCheck() {
         return new CoverDataFollower_ToggleButtonWidget<T>()
-                .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.SLOT_TRANSPARENT);
+                .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT);
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofRedstone() {
@@ -33,7 +57,7 @@ public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject>
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofDisableable() {
-        return new CoverDataFollower_DisableableToggleButtonWidget<T>();
+        return new CoverDataFollower_DisableableToggleButtonWidget<>();
     }
 
     /**

@@ -10,6 +10,8 @@ public class GT_UITextures {
 
     private static final String MODID = "gregtech";
 
+    public static final UITexture TRANSPARENT = UITexture.fullImage(MODID, "gui/picture/transparent");
+
     public static final UITexture BACKGROUND_SINGLEBLOCK_DEFAULT =
             AdaptableUITexture.of(MODID, "gui/background/singleblock_default", 176, 166, 4);
     public static final SteamTexture BACKGROUND_STEAM =
@@ -26,8 +28,6 @@ public class GT_UITextures {
             AdaptableUITexture.of(MODID, "gui/background/text_field", 142, 28, 1);
 
     public static final SteamTexture SLOT_ITEM_STEAM = SteamTexture.fullImage(MODID, "gui/slot/item_%s");
-    public static final AdaptableUITexture SLOT_TRANSPARENT =
-            AdaptableUITexture.of(MODID, "gui/slot/transparent", 18, 18, 1);
     public static final AdaptableUITexture SLOT_GRAY = AdaptableUITexture.of(MODID, "gui/slot/gray", 18, 18, 1);
     public static final AdaptableUITexture SLOT_MAINTENANCE =
             AdaptableUITexture.of(MODID, "gui/slot/maintenance", 20, 20, 1);
@@ -251,6 +251,11 @@ public class GT_UITextures {
             UITexture.fullImage(MODID, "gui/overlay_button/plus_small");
     public static final UITexture OVERLAY_BUTTON_PLUS_LARGE =
             UITexture.fullImage(MODID, "gui/overlay_button/plus_large");
+    public static final UITexture OVERLAY_BUTTON_GATE_AND = UITexture.fullImage(MODID, "gui/overlay_button/gate_and");
+    public static final UITexture OVERLAY_BUTTON_GATE_NAND = UITexture.fullImage(MODID, "gui/overlay_button/gate_nand");
+    public static final UITexture OVERLAY_BUTTON_GATE_OR = UITexture.fullImage(MODID, "gui/overlay_button/gate_or");
+    public static final UITexture OVERLAY_BUTTON_GATE_NOR = UITexture.fullImage(MODID, "gui/overlay_button/gate_nor");
+    public static final UITexture OVERLAY_BUTTON_ANALOG = UITexture.fullImage(MODID, "gui/overlay_button/analog");
 
     /**
      * Can adjust size as needed.

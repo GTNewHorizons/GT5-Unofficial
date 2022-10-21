@@ -4,9 +4,13 @@ import static gregtech.api.util.GT_Utility.intToStack;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
@@ -16,6 +20,9 @@ import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_SlotWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 import java.util.Collections;
 import java.util.List;
@@ -194,12 +201,67 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         return 1;
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
+    private static final int startX = 10;
+    private static final int startY = 25;
+    private static final int spaceX = 18;
+    private static final int spaceY = 18;
+
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @SuppressWarnings("PointlessArithmeticExpression")
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        ItemStackHandler filterInvHandler = new ItemStackHandler(1);
+        if (getCoverData() != null) {
+            filterInvHandler.setStackInSlot(0, setStackSize1(getCoverData().mFilter));
+        }
+        builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
+                        .addFollower(
+                                new CoverDataFollower_ToggleButtonWidget<>(),
+                                coverData -> coverData.mWhitelist,
+                                (coverData, state) -> {
+                                    coverData.mWhitelist = state;
+                                    return coverData;
+                                },
+                                widget -> widget.setToggleTexture(
+                                                GT_UITextures.OVERLAY_BUTTON_WHITELIST,
+                                                GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
+                                        .addTooltip(0, GT_Utility.trans("124.1", "Blacklist Mode"))
+                                        .addTooltip(1, GT_Utility.trans("125.1", "Whitelist Mode"))
+                                        .setPos(spaceX * 0, spaceY * 0))
+                        .addFollower(
+                                new CoverDataFollower_SlotWidget<>(filterInvHandler, 0, true),
+                                coverData -> setStackSize1(coverData.mFilter),
+                                (coverData, stack) -> {
+                                    coverData.mFilter = setStackSize1(stack);
+                                    return coverData;
+                                },
+                                widget -> widget.setBackground(GT_UITextures.SLOT_GRAY)
+                                        .setPos(spaceX * 0, spaceY * 2))
+                        .setPos(startX, startY))
+                .widget(new TextWidget(GT_Utility.trans("317", "Filter: "))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 0, 3 + startY + spaceY * 1))
+                .widget(new TextWidget(GT_Utility.trans("318", "Check Mode"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0));
+    }
+
+    private ItemStack setStackSize1(ItemStack stack) {
+        if (stack != null) {
+            stack.stackSize = 1;
+        }
+        return stack;
     }
 
     @Override

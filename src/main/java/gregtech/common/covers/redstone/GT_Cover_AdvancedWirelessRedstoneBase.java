@@ -1,6 +1,9 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
@@ -14,6 +17,9 @@ import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 import java.util.HashMap;
 import java.util.Map;
@@ -219,13 +225,79 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
         }
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    protected int getGUIWidth() {
+        return 250;
+    }
+
+    protected static final int startX = 10;
+    protected static final int startY = 25;
+    protected static final int spaceX = 18;
+    protected static final int spaceY = 18;
+
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        final int privateExtraColumn = isShiftPrivateLeft() ? 1 : 5;
+
+        CoverDataControllerWidget<T> dataController =
+                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this);
+        dataController.setPos(startX, startY);
+        addUIForDataController(dataController);
+
+        builder.widget(dataController)
+                .widget(new TextWidget(GT_Utility.trans("246", "Frequency"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
+                .widget(new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
+    }
+
+    protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
+        controller
+                .addFollower(
+                        new CoverDataFollower_TextFieldWidget<>(),
+                        coverData -> String.valueOf(coverData.frequency),
+                        (coverData, state) -> {
+                            coverData.frequency = (int) MathExpression.parseMathExpression(state);
+                            return coverData;
+                        },
+                        widget -> widget.setOnScrollNumbers()
+                                .setNumbers(0, Integer.MAX_VALUE)
+                                .setFocusOnGuiOpen(true)
+                                .setPos(1, 2 + spaceY * getFrequencyRow())
+                                .setSize(spaceX * 5 - 4, 12))
+                .addFollower(
+                        CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                        coverData -> coverData.uuid != null,
+                        (coverData, state) -> {
+                            if (state) {
+                                coverData.uuid = getUIContext().getPlayer().getUniqueID();
+                            } else {
+                                coverData.uuid = null;
+                            }
+                            return coverData;
+                        },
+                        widget -> widget.setPos(0, spaceY * getButtonRow()));
+    }
+
+    protected abstract int getFrequencyRow();
+
+    protected abstract int getButtonRow();
+
+    protected abstract boolean isShiftPrivateLeft();
 
     protected abstract static class WirelessGUI<X extends WirelessData> extends GT_GUICover {
 

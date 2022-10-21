@@ -153,8 +153,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer {
                         .startFromSlot(0)
                         .endAtSlot(8)
                         .phantom(true)
-                        .applyForWidget(
-                                widget -> widget.disableShiftInsert().setBackground(GT_UITextures.SLOT_TRANSPARENT))
+                        .applyForWidget(widget -> widget.disableShiftInsert().setBackground(GT_UITextures.TRANSPARENT))
                         .build()
                         .setPos(16, 4))
                 .widget(SlotGroup.ofItemHandler(inventoryHandler, 3)

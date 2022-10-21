@@ -1,5 +1,8 @@
 package gregtech.common.covers;
 
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
@@ -13,6 +16,9 @@ import gregtech.api.net.GT_Packet_WirelessRedstoneCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.CoverDataFollower_ToggleButtonWidget;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -175,12 +181,65 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
-    /**
-     * GUI Stuff
-     */
+
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    protected int getGUIWidth() {
+        return 250;
+    }
+
+    private static final int startX = 10;
+    private static final int startY = 25;
+    private static final int spaceX = 18;
+    private static final int spaceY = 18;
+
+    @SuppressWarnings("PointlessArithmeticExpression")
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder) {
+        builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
+                        .addFollower(
+                                new CoverDataFollower_TextFieldWidget<>(),
+                                coverData -> String.valueOf(getFlagFrequency(convert(coverData))),
+                                (coverData, text) -> new ISerializableObject.LegacyCoverData(
+                                        (int) MathExpression.parseMathExpression(text)
+                                                | getFlagCheckbox(convert(coverData))),
+                                widget -> widget.setOnScrollNumbers()
+                                        .setNumbers(0, MAX_CHANNEL)
+                                        .setFocusOnGuiOpen(true)
+                                        .setPos(spaceX * 0, spaceY * 0 + 2)
+                                        .setSize(spaceX * 4 - 3, 12))
+                        .addFollower(
+                                CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                coverData -> getFlagCheckbox(convert(coverData)) > 0,
+                                (coverData, state) -> new ISerializableObject.LegacyCoverData(
+                                        getFlagFrequency(convert(coverData)) | (state ? CHECKBOX_MASK : 0)),
+                                widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                        .setPos(startX, startY))
+                .widget(new TextWidget(GT_Utility.trans("246", "Frequency"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
+                .widget(new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
+    }
+
+    private int getFlagFrequency(int coverVariable) {
+        return coverVariable & PUBLIC_MASK;
+    }
+
+    private int getFlagCheckbox(int coverVariable) {
+        return coverVariable & CHECKBOX_MASK;
     }
 
     @Override

@@ -210,6 +210,11 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
         return true;
     }
 
+    private static final int startX = 10;
+    private static final int startY = 25;
+    private static final int spaceX = 18;
+    private static final int spaceY = 18;
+
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
@@ -234,11 +239,6 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
             GT_Utility.trans("INVERTED", "Inverted"),
             GT_Utility.trans("NORMAL", "Normal"),
         };
-
-        final int startX = 10;
-        final int startY = 25;
-        final int spaceX = 18;
-        final int spaceY = 18;
 
         builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                                 this::getCoverData,

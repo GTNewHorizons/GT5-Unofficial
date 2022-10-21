@@ -366,7 +366,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
                                         ((EntityPlayerMP) getContext().getPlayer()).updateHeldItem();
                                     }
                                 }
-                            }.setBackground(GT_UITextures.SLOT_TRANSPARENT).setPos(79, 34))
+                            }.setBackground(GT_UITextures.TRANSPARENT).setPos(79, 34))
                     .widget(new TextWidget(new Text(getLocalName()))
                             .setDefaultColor(COLOR_TITLE.get())
                             .setPos(8, 4))

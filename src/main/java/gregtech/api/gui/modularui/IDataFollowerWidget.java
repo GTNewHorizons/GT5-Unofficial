@@ -31,7 +31,7 @@ public interface IDataFollowerWidget<T, U> {
      * Sets setter called when this widget gets action from player.
      * Basically the same functionality with widgets that have getter/setter.
      */
-    Widget setSetter(Consumer<U> setter);
+    Widget setStateSetter(Consumer<U> setter);
 
     /**
      * Updates state of this widget with provided data.
