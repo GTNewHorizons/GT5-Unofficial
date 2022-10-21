@@ -101,6 +101,7 @@ public class GT_UIInfos {
      * Opens TileEntity UI, created by {@link gregtech.api.metatileentity.MetaTileEntity#createWindow}.
      */
     public static void openGTTileEntityUI(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) return;
         GTTileEntityDefaultUI.open(
                 aPlayer,
                 aBaseMetaTileEntity.getWorld(),
@@ -113,15 +114,15 @@ public class GT_UIInfos {
      * Opens cover UI, created by {@link GT_CoverBehaviorBase#createWindow}.
      */
     public static void openCoverUI(ICoverable tileEntity, EntityPlayer player, byte side) {
-        if (player instanceof EntityPlayerMP) {
-            GT_Values.NW.sendToPlayer(
-                    new GT_Packet_SendCoverData(
-                            side,
-                            tileEntity.getCoverIDAtSide(side),
-                            tileEntity.getComplexCoverDataAtSide(side),
-                            tileEntity),
-                    (EntityPlayerMP) player);
-        }
+        if (tileEntity.isClientSide()) return;
+
+        GT_Values.NW.sendToPlayer(
+                new GT_Packet_SendCoverData(
+                        side,
+                        tileEntity.getCoverIDAtSide(side),
+                        tileEntity.getComplexCoverDataAtSide(side),
+                        tileEntity),
+                (EntityPlayerMP) player);
 
         coverUI.get(side)
                 .open(

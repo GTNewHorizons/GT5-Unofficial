@@ -41,5 +41,8 @@ public interface IDataFollowerWidget<T, U> {
     @SideOnly(Side.CLIENT)
     void updateState(T data);
 
+    /**
+     * Called on {@link Widget#onPostInit}.
+     */
     default void onPostInit() {}
 }

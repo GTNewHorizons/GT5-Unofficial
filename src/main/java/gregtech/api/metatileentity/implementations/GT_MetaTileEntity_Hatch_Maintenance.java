@@ -7,7 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
-import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -340,7 +339,6 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        addTitleToUI(builder);
         if (mAuto) {
             add2by2Slots(builder);
         } else {
@@ -367,9 +365,6 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
                                     }
                                 }
                             }.setBackground(GT_UITextures.TRANSPARENT).setPos(79, 34))
-                    .widget(new TextWidget(new Text(getLocalName()))
-                            .setDefaultColor(COLOR_TITLE.get())
-                            .setPos(8, 4))
                     .widget(new TextWidget("Click with Tool to repair.")
                             .setDefaultColor(COLOR_TEXT_GRAY.get())
                             .setPos(8, 12));

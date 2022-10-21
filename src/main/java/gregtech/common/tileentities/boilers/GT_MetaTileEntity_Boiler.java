@@ -8,7 +8,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -475,10 +474,12 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
                 .widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.OVERLAY_SLOT_CANISTER_STEAM.get(getVariant()))
                         .setPos(43, 43)
-                        .setSize(18, 18))
-                .widget(new TextWidget("Boiler")
-                        .setDefaultColor(COLOR_TITLE.get())
-                        .setPos(8, 4));
+                        .setSize(18, 18));
+    }
+
+    @Override
+    protected void addTitleToUI(ModularWindow.Builder builder) {
+        addTitleToUI(builder, "Boiler");
     }
 
     @Override

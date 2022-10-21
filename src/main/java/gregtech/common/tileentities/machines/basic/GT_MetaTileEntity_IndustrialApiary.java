@@ -1094,7 +1094,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        addTitleToUI(builder, "Ind. Apiary");
         builder.widget(new ProgressBar()
                         .setProgress(() -> (float) getProgresstime() / Math.max(maxProgresstime(), 1))
                         .setTexture(GT_UITextures.PROGRESSBAR_ARROW, 20)
@@ -1244,6 +1243,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         addItemAutoOutputButton(builder, 7, 62);
         addChargerSlot(builder, 79, 62);
         addSpecialSlot(builder, UNUSED_SLOT_TOOLTIP);
+    }
+
+    @Override
+    protected void addTitleToUI(ModularWindow.Builder builder) {
+        addTitleToUI(builder, "Ind. Apiary");
     }
 
     private int getAcceleration() {

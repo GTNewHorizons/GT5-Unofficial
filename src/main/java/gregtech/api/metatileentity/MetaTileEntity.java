@@ -1230,6 +1230,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             builder.bindPlayerInventory(buildContext.getPlayer(), 7, getSlotBackground());
         }
         addUIWidgets(builder);
+        addTitleToUI(builder);
         addGregTechLogo(builder);
         return builder.build();
     }

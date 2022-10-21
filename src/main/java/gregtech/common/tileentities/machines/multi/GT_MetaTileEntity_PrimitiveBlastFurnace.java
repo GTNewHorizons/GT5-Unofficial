@@ -510,7 +510,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        addTitleToUI(builder);
         builder.widget(new SlotWidget(inventoryHandler, 0)
                         .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getVariant()))
                         .setPos(33, 15))
