@@ -47,6 +47,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import kubatech.Tags;
@@ -56,6 +57,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class GT_MetaTileEntity_MegaIndustrialApiary
@@ -155,6 +157,10 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated();
     }
 
+    private String voltageFormatted(int v) {
+        return GT_Values.TIER_COLORS[v] + GT_Values.VN[v] + EnumChatFormatting.GRAY;
+    }
+
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -163,8 +169,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 .addInfo(buildAuthorList("kuba6000", "Runakai"))
                 .addInfo("The ideal home for your bees")
                 .addInfo("AKA. Mega Apiary")
-                .addInfo("Use scredriver to change primary mode (INPUT/OUTPUT/OPERATING)")
-                .addInfo("Use scredriver + shift to change operation mode (NORMAL/SWARMER)")
+                .addInfo("Use screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)")
+                .addInfo("Use screwdriver + shift to change operation mode (NORMAL/SWARMER)")
                 .addInfo("--------------------- INPUT MODE ---------------------")
                 .addInfo("- Does not take power")
                 .addInfo("- Put your queens in the input bus to put them in the internal buffer")
@@ -173,15 +179,15 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 .addInfo("- Will give your bees back to output bus")
                 .addInfo("------------------- OPERATING MODE -------------------")
                 .addInfo("- NORMAL:")
-                .addInfo("  - For each LuV amp you can insert 1 bee")
+                .addInfo("  - For each " + voltageFormatted(6) + " amp you can insert 1 bee")
                 .addInfo("  - Processing time: 5 seconds")
-                .addInfo("  - Uses 1 LuV amp per bee")
+                .addInfo("  - Uses 1 " + voltageFormatted(6) + " amp per queen")
                 .addInfo("  - All bees are accelerated 64 times")
                 .addInfo("  - 8 production upgrades are applied")
                 .addInfo("  - Genetic Stabilizer upgrade applied")
                 .addInfo("  - Simulates perfect environment for your bees")
                 .addInfo("  - Additionally you can provide royal jelly to increase the outputs:")
-                .addInfo("    - 1 royal jelly grants 5% bonus")
+                .addInfo("    - 1 royal jelly grants 5% bonus per bee")
                 .addInfo("    - They will be consumed on each start of operation")
                 .addInfo("    - and be applied to that operation only")
                 .addInfo("    - Max bonus: 200%")
@@ -190,7 +196,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 .addInfo("  - It will slowly produce ignoble princesses")
                 .addInfo("  - Consumes 100 royal jelly per operation")
                 .addInfo("  - Base processing time: 1 minute")
-                .addInfo("  - Uses 1 amp IV")
+                .addInfo("  - Uses 1 amp " + voltageFormatted(5))
                 .addInfo("  - Can overclock")
                 .addInfo(StructureHologram)
                 .addSeparator()
@@ -365,11 +371,42 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     }
 
     @Override
+    public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add("Running in mode: " + EnumChatFormatting.GOLD
+                + (mPrimaryMode == 0
+                        ? "Input mode"
+                        : (mPrimaryMode == 1
+                                ? "Output mode"
+                                : (mSecondaryMode == 0 ? "Operating mode (NORMAL)" : "Operating mode (SWARMER)"))));
+        info.add("Bee storage (" + EnumChatFormatting.GOLD + mStorage.size() + EnumChatFormatting.RESET + "/"
+                + (mStorage.size() > mMaxSlots
+                        ? EnumChatFormatting.DARK_RED.toString()
+                        : EnumChatFormatting.GOLD.toString())
+                + mMaxSlots + EnumChatFormatting.RESET + "):");
+        for (int i = 0; i < mStorage.size(); i++) {
+            StringBuilder builder = new StringBuilder();
+            if (i > mMaxSlots) builder.append(EnumChatFormatting.DARK_RED);
+            builder.append("#");
+            builder.append(i);
+            builder.append(": ");
+            builder.append(EnumChatFormatting.GOLD);
+            builder.append(mStorage.get(i).queenStack.getDisplayName());
+            builder.append(EnumChatFormatting.GREEN);
+            mStorage.get(i).dropProgress.values().forEach(v -> builder.append(" ")
+                    .append(String.format("%d%%", (int) (v * 100d))));
+            info.add(builder.toString());
+        }
+
+        return info.toArray(new String[0]);
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mGlassTier = 0;
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0)) return false;
-        if (this.mGlassTier < 8 && !this.mEnergyHatches.isEmpty())
+        if (this.mGlassTier < 10 && !this.mEnergyHatches.isEmpty())
             for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
                 if (this.mGlassTier < hatchEnergy.mTier) return false;
         boolean valid = this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() >= 1 && this.mCasing >= 190;
@@ -476,7 +513,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         }
 
         public BeeSimulator(NBTTagCompound tag) {
-            queenStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("queenstack"));
+            queenStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("queenStack"));
             isValid = tag.getBoolean("isValid");
             // isBreadingMode = tag.getBoolean("isBreadingMode");
             // isInfinite = tag.getBoolean("isInfinite");
@@ -499,7 +536,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             tag.setInteger("dropssize", drops.size());
             for (int i = 0; i < drops.size(); i++)
                 tag.setTag("drops" + i, drops.get(i).toNBTTagCompound());
-            tag.setInteger("specialDropssize", drops.size());
+            tag.setInteger("specialDropssize", specialDrops.size());
             for (int i = 0; i < specialDrops.size(); i++)
                 tag.setTag("specialDrops" + i, specialDrops.get(i).toNBTTagCompound());
             tag.setFloat("beeSpeed", beeSpeed);
