@@ -1,9 +1,5 @@
 package gregtech.common.tileentities.machines.steam;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
@@ -21,6 +17,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+
 public class GT_MetaTileEntity_Macerator_Steel extends GT_MetaTileEntity_BasicMachine_Steel {
     public GT_MetaTileEntity_Macerator_Steel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, "Macerating your Ores", 1, 1, true);
@@ -36,12 +36,7 @@ public class GT_MetaTileEntity_Macerator_Steel extends GT_MetaTileEntity_BasicMa
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                getLocalName(),
-                "SteelMacerator.png",
-                GT_Recipe_Map.sMaceratorRecipes.mUnlocalizedName);
+        return new GT_GUIContainer_BasicMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "SteelMacerator.png", GT_Recipe_Map.sMaceratorRecipes.mUnlocalizedName);
     }
 
     @Override
@@ -57,18 +52,19 @@ public class GT_MetaTileEntity_Macerator_Steel extends GT_MetaTileEntity_BasicMa
             final byte topFacing = (byte) ForgeDirection.UP.ordinal();
 
             if (aBaseMetaTileEntity.getFrontFacing() != topFacing
-                    && aBaseMetaTileEntity.getCoverIDAtSide(topFacing) == 0
-                    && !aBaseMetaTileEntity.getOpacityAtSide(topFacing)) {
+                && aBaseMetaTileEntity.getCoverIDAtSide(topFacing) == 0
+                && !aBaseMetaTileEntity.getOpacityAtSide(topFacing)) {
 
                 new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                        .setMotion(0.0D, 0.0D, 0.0D)
-                        .setIdentifier(ParticleFX.SMOKE)
-                        .setPosition(
-                                aBaseMetaTileEntity.getXCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F,
-                                aBaseMetaTileEntity.getYCoord() + 0.9F + XSTR_INSTANCE.nextFloat() * 0.2F,
-                                aBaseMetaTileEntity.getZCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F)
-                        .setWorld(getBaseMetaTileEntity().getWorld())
-                        .run();
+                    .setMotion(0.0D, 0.0D, 0.0D)
+                    .setIdentifier(ParticleFX.SMOKE)
+                    .setPosition(
+                        aBaseMetaTileEntity.getXCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F,
+                        aBaseMetaTileEntity.getYCoord() + 0.9F + XSTR_INSTANCE.nextFloat() * 0.2F,
+                        aBaseMetaTileEntity.getZCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F
+                    )
+                    .setWorld(getBaseMetaTileEntity().getWorld())
+                    .run();
             }
         }
     }
@@ -80,8 +76,7 @@ public class GT_MetaTileEntity_Macerator_Steel extends GT_MetaTileEntity_BasicMa
 
     @Override
     public int checkRecipe() {
-        GT_Recipe tRecipe = getRecipeList()
-                .findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[mTier], null, null, getAllInputs());
+        GT_Recipe tRecipe = getRecipeList().findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[mTier], null, null, getAllInputs());
         if (tRecipe == null) return DID_NOT_FIND_RECIPE;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
         if (!canOutput(tRecipe)) {
@@ -89,7 +84,7 @@ public class GT_MetaTileEntity_Macerator_Steel extends GT_MetaTileEntity_BasicMa
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
 
-        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] {getFillableStack()}, getAllInputs()))
+        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[]{getFillableStack()}, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.getOutput(0) != null) mOutputItems[0] = tRecipe.getOutput(0);
         calculateOverclockedNess(tRecipe);
@@ -97,10 +92,8 @@ public class GT_MetaTileEntity_Macerator_Steel extends GT_MetaTileEntity_BasicMa
     }
 
     @Override
-    public boolean allowPutStackValidated(
-            IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
-                && GT_Recipe_Map.sMaceratorRecipes.containsInput(GT_Utility.copyAmount(64L, aStack));
+    public boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) && GT_Recipe_Map.sMaceratorRecipes.containsInput(GT_Utility.copyAmount(64L, aStack));
     }
 
     @Override
@@ -118,97 +111,60 @@ public class GT_MetaTileEntity_Macerator_Steel extends GT_MetaTileEntity_BasicMa
 
     @Override
     public ITexture[] getSideFacingActive(byte aColor) {
-        return new ITexture[] {
+        return new ITexture[]{
             super.getSideFacingActive(aColor)[0],
             TextureFactory.of(OVERLAY_SIDE_STEAM_MACERATOR_ACTIVE),
-            TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_STEAM_MACERATOR_ACTIVE_GLOW)
-                    .glow()
-                    .build()
-        };
+            TextureFactory.builder().addIcon(OVERLAY_SIDE_STEAM_MACERATOR_ACTIVE_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getSideFacingInactive(byte aColor) {
-        return new ITexture[] {
+        return new ITexture[]{
             super.getSideFacingInactive(aColor)[0],
             TextureFactory.of(OVERLAY_SIDE_STEAM_MACERATOR),
-            TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_STEAM_MACERATOR_GLOW)
-                    .glow()
-                    .build()
-        };
+            TextureFactory.builder().addIcon(OVERLAY_SIDE_STEAM_MACERATOR_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getFrontFacingActive(byte aColor) {
-        return new ITexture[] {
+        return new ITexture[]{
             super.getFrontFacingActive(aColor)[0],
             TextureFactory.of(OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE),
-            TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE_GLOW)
-                    .glow()
-                    .build()
-        };
+            TextureFactory.builder().addIcon(OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getFrontFacingInactive(byte aColor) {
-        return new ITexture[] {
-            super.getFrontFacingInactive(aColor)[0],
+        return new ITexture[]{super.getFrontFacingInactive(aColor)[0],
             TextureFactory.of(OVERLAY_FRONT_STEAM_MACERATOR),
-            TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_STEAM_MACERATOR_GLOW)
-                    .glow()
-                    .build()
-        };
+            TextureFactory.builder().addIcon(OVERLAY_FRONT_STEAM_MACERATOR_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getTopFacingActive(byte aColor) {
-        return new ITexture[] {
-            super.getTopFacingActive(aColor)[0],
+        return new ITexture[]{super.getTopFacingActive(aColor)[0],
             TextureFactory.of(OVERLAY_TOP_STEAM_MACERATOR_ACTIVE),
-            TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_STEAM_MACERATOR_ACTIVE_GLOW)
-                    .glow()
-                    .build()
-        };
+            TextureFactory.builder().addIcon(OVERLAY_TOP_STEAM_MACERATOR_ACTIVE_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getTopFacingInactive(byte aColor) {
-        return new ITexture[] {
-            super.getTopFacingInactive(aColor)[0],
+        return new ITexture[]{super.getTopFacingInactive(aColor)[0],
             TextureFactory.of(OVERLAY_TOP_STEAM_MACERATOR),
-            TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_STEAM_MACERATOR_GLOW)
-                    .glow()
-                    .build()
-        };
+            TextureFactory.builder().addIcon(OVERLAY_TOP_STEAM_MACERATOR_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getBottomFacingActive(byte aColor) {
-        return new ITexture[] {
-            super.getBottomFacingActive(aColor)[0],
+        return new ITexture[]{super.getBottomFacingActive(aColor)[0],
             TextureFactory.of(OVERLAY_BOTTOM_STEAM_MACERATOR_ACTIVE),
-            TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_STEAM_MACERATOR_ACTIVE_GLOW)
-                    .glow()
-                    .build()
-        };
+            TextureFactory.builder().addIcon(OVERLAY_BOTTOM_STEAM_MACERATOR_ACTIVE_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getBottomFacingInactive(byte aColor) {
-        return new ITexture[] {
-            super.getBottomFacingInactive(aColor)[0],
+        return new ITexture[]{super.getBottomFacingInactive(aColor)[0],
             TextureFactory.of(OVERLAY_BOTTOM_STEAM_MACERATOR),
-            TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_STEAM_MACERATOR_GLOW)
-                    .glow()
-                    .build()
-        };
+            TextureFactory.builder().addIcon(OVERLAY_BOTTOM_STEAM_MACERATOR_GLOW).glow().build()};
     }
 }

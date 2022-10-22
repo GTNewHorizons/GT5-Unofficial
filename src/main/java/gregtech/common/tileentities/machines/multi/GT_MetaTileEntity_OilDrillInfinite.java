@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.GT_Values.VN;
-
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -10,7 +8,9 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDrillBase {
+import static gregtech.api.enums.GT_Values.VN;
+
+public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDrillBase{
     public GT_MetaTileEntity_OilDrillInfinite(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -47,7 +47,7 @@ public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDri
     }
 
     @Override
-    protected FluidStack pumpOil(float speed) {
+    protected FluidStack pumpOil(float speed){
         return super.pumpOil(-speed);
     }
 
@@ -72,8 +72,8 @@ public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDri
     }
 
     @Override
-    protected float computeSpeed() {
-        return .5F + (GT_Utility.getTier(getMaxInputVoltage()) - getMinTier() + 5) * .25F;
+    protected float computeSpeed(){
+        return .5F+(GT_Utility.getTier(getMaxInputVoltage()) - getMinTier()+5) *.25F;
     }
 
     @Override

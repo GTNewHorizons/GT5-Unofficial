@@ -1,11 +1,12 @@
 package gregtech.common.items;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CombTypeTest {
     @Test
@@ -19,8 +20,10 @@ class CombTypeTest {
     @Test
     void noNegativeID() {
         for (CombType value : CombType.values()) {
-            if (value == CombType._NULL) assertTrue(value.getId() <= 0, "Comb type ID must be negative for _NULL");
-            else assertTrue(value.getId() >= 0, "Comb type ID must not be negative");
+            if (value == CombType._NULL)
+                assertTrue(value.getId() <= 0, "Comb type ID must be negative for _NULL");
+            else
+                assertTrue(value.getId() >= 0, "Comb type ID must not be negative");
         }
     }
 

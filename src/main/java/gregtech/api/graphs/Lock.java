@@ -1,7 +1,8 @@
 package gregtech.api.graphs;
 
-import java.util.ArrayList;
 import net.minecraft.tileentity.TileEntity;
+
+import java.util.ArrayList;
 
 public class Lock {
     protected ArrayList<TileEntity> tiles = new ArrayList<>();
@@ -24,7 +25,7 @@ public class Lock {
         return !tiles.isEmpty();
     }
 
-    // i want to check for the exact object not equals
+    //i want to check for the exact object not equals
     protected int contains(TileEntity tileEntity) {
         for (int i = 0; i < tiles.size(); i++) {
             if (tiles.get(i) == tileEntity) {

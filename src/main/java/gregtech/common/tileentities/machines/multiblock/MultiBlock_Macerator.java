@@ -1,5 +1,16 @@
 package gregtech.common.tileentities.machines.multiblock;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
+import gregtech.api.multitileentity.multiblock.base.MultiBlock_Stackable;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
@@ -11,15 +22,6 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
-
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.multitileentity.multiblock.base.MultiBlock_Stackable;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import net.minecraft.block.Block;
 
 public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macerator> {
     private IStructureDefinition<MultiBlock_Macerator> STRUCTURE_DEFINITION = null;
@@ -33,59 +35,52 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     public IStructureDefinition<MultiBlock_Macerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MultiBlock_Macerator>builder()
-                    .addShape(STACKABLE_TOP, transpose(new String[][] {
-                        {" CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC "},
-                    }))
-                    .addShape(STACKABLE_MIDDLE, transpose(new String[][] {
-                        {"  BBB  ", " B---B ", "DC---CD", " B---B ", "  BBB  "},
-                    }))
-                    .addShape(STACKABLE_BOTTOM, transpose(new String[][] {
-                        {" A~A ", "AAAAA", "AAAAA", "AAAAA", " AAA "},
-                    }))
-                    .addElement('A', ofChain(addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), ENERGY_IN)))
-                    .addElement(
-                            'B',
-                            ofChain(addMultiTileCasing(
-                                    getCasingRegistryID(), getCasingMeta(), FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT)))
-                    .addElement('C', addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), NOTHING))
-                    .addElement('D', addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), NOTHING))
-                    .build();
+                .addShape(STACKABLE_TOP, transpose(new String[][] {
+                    {" CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC "},
+                }))
+                .addShape(STACKABLE_MIDDLE, transpose(new String[][] {
+                    {"  BBB  ", " B---B ", "DC---CD", " B---B ", "  BBB  "},
+                }))
+                .addShape(STACKABLE_BOTTOM, transpose(new String[][] {
+                    {" A~A ", "AAAAA", "AAAAA", "AAAAA", " AAA "},
+                }))
+                .addElement('A', ofChain(addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), ENERGY_IN)))
+                .addElement('B', ofChain(addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT)))
+                .addElement('C', addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), NOTHING))
+                .addElement('D', addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), NOTHING))
+                .build();
         }
         return STRUCTURE_DEFINITION;
     }
 
-    @Override
-    public short getCasingRegistryID() {
+    @Override public short getCasingRegistryID() {
         return getMultiTileEntityRegistryID();
     }
 
-    @Override
-    public short getCasingMeta() {
+    @Override public short getCasingMeta() {
         return 18000;
     }
 
     @Override
-    public boolean hasTop() {
-        return true;
-    }
+    public boolean hasTop() { return true; }
+
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Macerator")
-                .addInfo("Controller for the Macerator")
-                .addSeparator()
-                .beginVariableStructureBlock(7, 9, 2 + getMinStacks(), 2 + getMaxStacks(), 7, 9, true)
-                .addController("Bottom Front Center")
-                .addCasingInfo("Test Casing", 60)
-                .addEnergyHatch("Any bottom layer casing")
-                .addInputHatch("Any non-optional external facing casing on the stacks")
-                .addInputBus("Any non-optional external facing casing on the stacks")
-                .addOutputHatch("Any non-optional external facing casing on the stacks")
-                .addOutputBus("Any non-optional external facing casing on the stacks")
-                .addStructureInfo(
-                        String.format("Stackable middle stacks between %d-%d time(s).", getMinStacks(), getMaxStacks()))
-                .toolTipFinisher("Wildcard");
+            .addInfo("Controller for the Macerator")
+            .addSeparator()
+            .beginVariableStructureBlock(7, 9, 2 + getMinStacks(), 2+getMaxStacks(), 7, 9, true)
+            .addController("Bottom Front Center")
+            .addCasingInfo("Test Casing", 60)
+            .addEnergyHatch("Any bottom layer casing")
+            .addInputHatch("Any non-optional external facing casing on the stacks")
+            .addInputBus("Any non-optional external facing casing on the stacks")
+            .addOutputHatch("Any non-optional external facing casing on the stacks")
+            .addOutputBus("Any non-optional external facing casing on the stacks")
+            .addStructureInfo(String.format("Stackable middle stacks between %d-%d time(s).", getMinStacks(), getMaxStacks()))
+            .toolTipFinisher("Wildcard");
         return tt;
     }
 
@@ -98,6 +93,7 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     public int getMaxStacks() {
         return 10;
     }
+
 
     @Override
     public Vec3Impl getStartingStructureOffset() {
@@ -121,20 +117,15 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
 
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-        if (mFacing == aSide) {
-            return new ITexture[] {
+        if(mFacing == aSide) {
+            return new ITexture[]{
                 MACHINE_CASINGS[1][0],
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW).extFacing().glow().build()
             };
         }
-        return new ITexture[] {MACHINE_CASINGS[1][0]};
+        return new ITexture[]{ MACHINE_CASINGS[1][0]};
     }
+
+
 }

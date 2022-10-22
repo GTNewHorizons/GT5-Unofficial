@@ -1,7 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
-
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.GT_Container_2by2_Fluid;
 import gregtech.api.gui.GT_GUIContainer_2by2_Fluid;
@@ -16,6 +14,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
+
 public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_Input {
 
     public FluidStack[] mStoredFluid;
@@ -27,8 +27,7 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
         mCapacityPer = 8000 * (1 << aTier) / aSlot;
     }
 
-    public GT_MetaTileEntity_Hatch_MultiInput(
-            String aName, int aSlot, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_MultiInput(String aName, int aSlot, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aSlot, aTier, aDescription, aTextures);
         this.mStoredFluid = new FluidStack[aSlot];
         mCapacityPer = 8000 * (1 << aTier) / aSlot;
@@ -68,12 +67,12 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2)};
+        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2)};
+        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2)};
     }
 
     public int getMaxType() {
@@ -83,7 +82,8 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     @Override
     public FluidStack getFluid() {
         for (FluidStack tFluid : mStoredFluid) {
-            if (tFluid != null && tFluid.amount > 0) return tFluid;
+            if (tFluid != null && tFluid.amount > 0)
+                return tFluid;
         }
         return null;
     }
@@ -108,7 +108,8 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
 
     public int getFirstEmptySlot() {
         for (int i = 0; i < mStoredFluid.length; i++) {
-            if (mStoredFluid[i] == null || mStoredFluid[i].amount <= 0) return i;
+            if (mStoredFluid[i] == null || mStoredFluid[i].amount <= 0)
+                return i;
         }
         return -1;
     }
@@ -116,7 +117,8 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     public boolean hasFluid(FluidStack aFluid) {
         if (aFluid == null) return false;
         for (FluidStack tFluid : mStoredFluid) {
-            if (aFluid.isFluidEqual(tFluid)) return true;
+            if (aFluid.isFluidEqual(tFluid))
+                return true;
         }
         return false;
     }
@@ -124,7 +126,8 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     public int getFluidSlot(FluidStack tFluid) {
         if (tFluid == null) return -1;
         for (int i = 0; i < mStoredFluid.length; i++) {
-            if (tFluid.equals(mStoredFluid[i])) return i;
+            if (tFluid.equals(mStoredFluid[i]))
+                return i;
         }
         return -1;
     }
@@ -158,11 +161,8 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid == null
-                || aFluid.getFluid().getID() <= 0
-                || aFluid.amount <= 0
-                || !canTankBeFilled()
-                || !isFluidInputAllowed(aFluid)) return 0;
+        if (aFluid == null || aFluid.getFluid().getID() <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid))
+            return 0;
         if (!hasFluid(aFluid) && getFirstEmptySlot() != -1) {
             int tFilled = Math.min(aFluid.amount, mCapacityPer);
             if (doFill) {
@@ -261,7 +261,7 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && mStoredFluid != null) {
-            for (int i = 0; i < getMaxType(); i++) {
+            for (int i = 0; i < getMaxType(); i ++) {
                 if (mStoredFluid[i] != null && mStoredFluid[i].amount <= 0) {
                     mStoredFluid[i] = null;
                 }
@@ -277,10 +277,12 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
 
     @Override
     public void updateFluidDisplayItem() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i ++) {
             if (getFluid(i) == null || getFluid(i).amount <= 0) {
-                if (ItemList.Display_Fluid.isStackEqual(mInventory[i], true, true)) mInventory[i] = null;
-            } else {
+                if (ItemList.Display_Fluid.isStackEqual(mInventory[i], true, true))
+                    mInventory[i] = null;
+            }
+            else {
                 mInventory[i] = GT_Utility.getFluidDisplayStack(getFluid(i), true, !displaysStackSize());
             }
         }

@@ -5,14 +5,9 @@ package gregtech.api.interfaces;
  */
 public interface IGuiIcon {
     int getX();
-
     int getY();
-
     int getWidth();
-
     int getHeight();
-
     int getTexId();
-
     IGuiIcon getOverlay();
 }

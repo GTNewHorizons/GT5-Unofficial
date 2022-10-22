@@ -24,26 +24,16 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     private static final int CHECKBOX_MASK = 0x00010000;
 
     @Override
-    public boolean onCoverRemoval(
-            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
+    public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
         GregTech_API.sWirelessRedstone.put(aCoverVariable, (byte) 0);
         return true;
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(
-            byte aSide,
-            int aCoverID,
-            ISerializableObject.LegacyCoverData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((aSide > 3) && ((aY > 0.375D) && (aY < 0.625D)))) {
             GregTech_API.sWirelessRedstone.put(aCoverVariable.get(), (byte) 0);
-            aCoverVariable.set((aCoverVariable.get() & (PRIVATE_MASK | CHECKBOX_MASK))
-                    | (((Integer) GT_Utility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode() & PUBLIC_MASK));
+            aCoverVariable.set((aCoverVariable.get() & (PRIVATE_MASK | CHECKBOX_MASK)) | (((Integer)GT_Utility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode() & PUBLIC_MASK));
             GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("081", "Frequency: ") + aCoverVariable);
             return true;
         }
@@ -52,43 +42,24 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean onCoverRightclick(
-            byte aSide,
-            int aCoverID,
-            int aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((aSide > 3) && ((aY > 0.375D) && (aY < 0.625D)))) {
             GregTech_API.sWirelessRedstone.put(aCoverVariable, (byte) 0);
 
-            int val = GT_Utility.stackToInt(aPlayer.inventory.getCurrentItem())
-                    * (1 + aPlayer.inventory.getCurrentItem().getItemDamage());
+            int val = GT_Utility.stackToInt(aPlayer.inventory.getCurrentItem()) * (1 + aPlayer.inventory.getCurrentItem().getItemDamage());
 
             aCoverVariable = (aCoverVariable & (PRIVATE_MASK | CHECKBOX_MASK)) | (val & PUBLIC_MASK);
 
             aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
-            GT_Utility.sendChatToPlayer(
-                    aPlayer, GT_Utility.trans("081", "Frequency: ") + (aCoverVariable & PUBLIC_MASK));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("081", "Frequency: ") + (aCoverVariable & PUBLIC_MASK));
             return true;
         }
         return false;
     }
 
     @Override
-    public int onCoverScrewdriverclick(
-            byte aSide,
-            int aCoverID,
-            int aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
-        if (((aX > 0.375D) && (aX < 0.625D))
-                || ((aSide <= 3) || (((aY > 0.375D) && (aY < 0.625D)) || ((((aZ <= 0.375D) || (aZ >= 0.625D))))))) {
+    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (((aX > 0.375D) && (aX < 0.625D)) || ((aSide <= 3) || (((aY > 0.375D) && (aY < 0.625D)) || ((((aZ <= 0.375D) || (aZ >= 0.625D))))))) {
             GregTech_API.sWirelessRedstone.put(aCoverVariable, (byte) 0);
             float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
 
@@ -112,9 +83,11 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
 
             if (tPublicChannel < 0) {
                 aCoverVariable = aCoverVariable & ~PUBLIC_MASK;
-            } else if (tPublicChannel > MAX_CHANNEL) {
+            }
+            else if (tPublicChannel > MAX_CHANNEL) {
                 aCoverVariable = (aCoverVariable & (PRIVATE_MASK | CHECKBOX_MASK)) | MAX_CHANNEL;
-            } else {
+            }
+            else {
                 aCoverVariable = (aCoverVariable & (PRIVATE_MASK | CHECKBOX_MASK)) | tPublicChannel;
             }
         }
@@ -164,13 +137,14 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     /**
      * GUI Stuff
      */
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
+    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity)  {
         return new GUI(aSide, aCoverID, coverData, aTileEntity);
     }
 
@@ -185,36 +159,26 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
+
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            fBox = new GT_GuiShortTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 0 + 2, spaceX * 4 - 3, 12);
+            fBox = new GT_GuiShortTextBox(this, 2,startX + spaceX*0,startY+spaceY*0 + 2, spaceX*4-3,12);
             fBox.setText(String.valueOf(coverVariable & PUBLIC_MASK));
             fBox.setMaxStringLength(12);
 
             GuiButton b;
-            b = new GT_GuiIconCheckButton(
-                    this, 0, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.CHECKMARK, null);
+            b = new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.CHECKMARK, null);
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("246", "Frequency"),
-                            startX + spaceX * 4,
-                            4 + startY + spaceY * 0,
-                            0xFF555555);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("601", "Use Private Frequency"),
-                            startX + spaceX * 1,
-                            startY + spaceY * 2 + 4,
-                            0xFF555555);
+            this.getFontRenderer().drawString(GT_Utility.trans("246", "Frequency"),  startX + spaceX*4, 4+startY+spaceY*0, 0xFF555555);
+            this.getFontRenderer().drawString(GT_Utility.trans("601", "Use Private Frequency"), startX + spaceX * 1, startY + spaceY * 2 + 4, 0xFF555555);
         }
 
         @Override
@@ -225,7 +189,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
 
         @Override
         public void onMouseWheel(int x, int y, int delta) {
-            for (GT_GuiIntegerTextBox box : textBoxes) {
+            for (GT_GuiIntegerTextBox box : textBoxes){
                 if (box.isFocused()) {
                     int step = Math.max(1, Math.abs(delta / 120));
                     step = (isShiftKeyDown() ? 1000 : isCtrlKeyDown() ? 50 : 1) * (delta > 0 ? step : -step);
@@ -236,8 +200,10 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
                         return;
                     }
                     tCoverVariable = tCoverVariable + step;
-                    if (tCoverVariable > MAX_CHANNEL) tCoverVariable = MAX_CHANNEL;
-                    else if (tCoverVariable < 0) tCoverVariable = 0;
+                    if (tCoverVariable > MAX_CHANNEL)
+                        tCoverVariable = MAX_CHANNEL;
+                    else if (tCoverVariable < 0)
+                        tCoverVariable = 0;
 
                     box.setText(String.valueOf(tCoverVariable));
                     return;
@@ -256,16 +222,17 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
                 return;
             }
 
-            if (tPublicChannel > MAX_CHANNEL) tPublicChannel = MAX_CHANNEL;
-            else if (tPublicChannel < 0) tPublicChannel = 0;
+            if (tPublicChannel > MAX_CHANNEL)
+                tPublicChannel = MAX_CHANNEL;
+            else if (tPublicChannel < 0)
+                tPublicChannel = 0;
 
-            int tCheckBoxValue = ((GT_GuiIconCheckButton) this.buttonList.get(0)).isChecked() ? CHECKBOX_MASK : 0;
+            int tCheckBoxValue = ((GT_GuiIconCheckButton)this.buttonList.get(0)).isChecked() ? CHECKBOX_MASK : 0;
 
             coverVariable = tCheckBoxValue | tPublicChannel;
 
             fBox.setText(Integer.toString(tPublicChannel));
-            GT_Values.NW.sendToServer(
-                    new GT_Packet_WirelessRedstoneCover(side, coverID, tile, tPublicChannel, tCheckBoxValue));
+            GT_Values.NW.sendToServer(new GT_Packet_WirelessRedstoneCover(side, coverID, tile, tPublicChannel, tCheckBoxValue));
         }
 
         @Override
@@ -291,8 +258,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
 
             coverVariable = tCheckBoxValue | tPublicChannel;
 
-            GT_Values.NW.sendToServer(
-                    new GT_Packet_WirelessRedstoneCover(side, coverID, tile, tPublicChannel, tCheckBoxValue));
+            GT_Values.NW.sendToServer(new GT_Packet_WirelessRedstoneCover(side, coverID, tile, tPublicChannel, tCheckBoxValue));
         }
 
         private class GT_GuiShortTextBox extends GT_GuiIntegerTextBox {
@@ -305,7 +271,8 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
             public boolean textboxKeyTyped(char c, int key) {
                 int tValue = 0;
 
-                if (!super.textboxKeyTyped(c, key)) return false;
+                if(!super.textboxKeyTyped(c, key))
+                    return false;
 
                 int cursorPos = this.getCursorPosition();
 
@@ -313,11 +280,12 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
                 if (tText.length() > 0) {
                     try {
                         tValue = Integer.parseInt(tText);
-                    } catch (NumberFormatException ignored) {
-                    }
+                    } catch (NumberFormatException ignored) {}
 
-                    if (tValue > MAX_CHANNEL) setText(String.valueOf(MAX_CHANNEL));
-                    else setText(String.valueOf(tValue));
+                    if (tValue > MAX_CHANNEL)
+                        setText(String.valueOf(MAX_CHANNEL));
+                    else
+                        setText(String.valueOf(tValue));
 
                     setCursorPosition(cursorPos);
                 }

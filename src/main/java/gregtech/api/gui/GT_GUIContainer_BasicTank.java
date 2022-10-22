@@ -1,11 +1,11 @@
 package gregtech.api.gui;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
-
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
+
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_BasicTank extends GT_GUIContainerMetaTile_Machine {
 
@@ -22,8 +22,7 @@ public class GT_GUIContainer_BasicTank extends GT_GUIContainerMetaTile_Machine {
         fontRendererObj.drawString(mName, 8, 6, 4210752);
         if (mContainer != null) {
             fontRendererObj.drawString("Liquid Amount", 10, 20, 16448255);
-            fontRendererObj.drawString(
-                    GT_Utility.parseNumberToString(((GT_Container_BasicTank) mContainer).mContent), 10, 30, 16448255);
+            fontRendererObj.drawString(GT_Utility.parseNumberToString(((GT_Container_BasicTank) mContainer).mContent), 10, 30, 16448255);
         }
     }
 

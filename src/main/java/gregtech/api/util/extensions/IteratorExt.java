@@ -1,6 +1,7 @@
 package gregtech.api.util.extensions;
 
 import gregtech.api.objects.iterators.MergedIterator;
+
 import java.util.Iterator;
 
 public class IteratorExt {

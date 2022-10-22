@@ -37,8 +37,7 @@ public class GT_Packet_Block_Event extends GT_Packet_New {
 
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
-        return new GT_Packet_Block_Event(
-                aData.readInt(), aData.readShort(), aData.readInt(), aData.readByte(), aData.readByte());
+        return new GT_Packet_Block_Event(aData.readInt(), aData.readShort(), aData.readInt(), aData.readByte(), aData.readByte());
     }
 
     @Override

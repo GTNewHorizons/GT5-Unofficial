@@ -1,9 +1,5 @@
 package gregtech.common.tileentities.automation;
 
-import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
-
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,42 +12,39 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
+import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
+
 public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilter {
     public int mRotationIndex = 0;
     public OrePrefixes mPrefix = OrePrefixes.ore;
 
     public GT_MetaTileEntity_TypeFilter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, new String[] {
-            "Filters 1 Item Type",
-            "Use Screwdriver to regulate output stack size",
-            "Does not consume energy to move Item"
-        });
+        super(aID, aName, aNameRegional, aTier, new String[]{
+                "Filters 1 Item Type",
+                "Use Screwdriver to regulate output stack size",
+                "Does not consume energy to move Item"});
     }
 
-    public GT_MetaTileEntity_TypeFilter(
-            String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_TypeFilter(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_TypeFilter(
-            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_TypeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_TypeFilter(
-                this.mName, this.mTier, this.mInventory.length, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_TypeFilter(this.mName, this.mTier, this.mInventory.length, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
                 TextureFactory.of(AUTOMATION_TYPEFILTER),
-                TextureFactory.builder()
-                        .addIcon(AUTOMATION_TYPEFILTER_GLOW)
-                        .glow()
-                        .build());
+                TextureFactory.builder().addIcon(AUTOMATION_TYPEFILTER_GLOW).glow().build());
     }
 
     public void clickTypeIcon(boolean aRightClick, ItemStack aHandStack) {
@@ -80,8 +73,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
                                 }
                             } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
                         }
-                        if (!OrePrefixes.values()[i].mPrefixedItems.isEmpty()
-                                && OrePrefixes.values()[i].mPrefixInto == OrePrefixes.values()[i])
+                        if (!OrePrefixes.values()[i].mPrefixedItems.isEmpty() && OrePrefixes.values()[i].mPrefixInto == OrePrefixes.values()[i])
                             mPrefix = OrePrefixes.values()[i];
                     }
                 }
@@ -98,10 +90,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
             this.mInventory[SPECIAL_SLOT_INDEX] = null;
             return;
         }
-        this.mInventory[SPECIAL_SLOT_INDEX] = GT_Utility.copyAmount(
-                1L,
-                this.mPrefix.mPrefixedItems.get(
-                        this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
+        this.mInventory[SPECIAL_SLOT_INDEX] = GT_Utility.copyAmount(1L, this.mPrefix.mPrefixedItems.get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
         if (this.mInventory[SPECIAL_SLOT_INDEX] == null) return;
         if (this.mInventory[SPECIAL_SLOT_INDEX].getItemDamage() == W) this.mInventory[9].setItemDamage(0);
         this.mInventory[SPECIAL_SLOT_INDEX].setStackDisplayName(this.mPrefix.toString());
@@ -126,19 +115,19 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
             ItemData tData = GT_OreDictUnificator.getItemData(aStack);
             if (tData != null && tData.mPrefix != null) {
                 OrePrefixes tFix = tData.mPrefix;
-                if (tFix == OrePrefixes.oreBlackgranite
-                        || tFix == OrePrefixes.oreDense
-                        || tFix == OrePrefixes.oreEnd
-                        || tFix == OrePrefixes.oreEndstone
-                        || tFix == OrePrefixes.oreNether
-                        || tFix == OrePrefixes.oreNetherrack
-                        || tFix == OrePrefixes.oreNormal
-                        || tFix == OrePrefixes.orePoor
-                        || tFix == OrePrefixes.oreRedgranite
-                        || tFix == OrePrefixes.oreRich
-                        || tFix == OrePrefixes.oreSmall
-                        || tFix == OrePrefixes.oreBasalt
-                        || tFix == OrePrefixes.oreMarble) tAllowPrefix = true;
+                if (tFix == OrePrefixes.oreBlackgranite ||
+                        tFix == OrePrefixes.oreDense ||
+                        tFix == OrePrefixes.oreEnd ||
+                        tFix == OrePrefixes.oreEndstone ||
+                        tFix == OrePrefixes.oreNether ||
+                        tFix == OrePrefixes.oreNetherrack ||
+                        tFix == OrePrefixes.oreNormal ||
+                        tFix == OrePrefixes.orePoor ||
+                        tFix == OrePrefixes.oreRedgranite ||
+                        tFix == OrePrefixes.oreRich ||
+                        tFix == OrePrefixes.oreSmall ||
+                        tFix == OrePrefixes.oreBasalt ||
+                        tFix == OrePrefixes.oreMarble) tAllowPrefix = true;
             }
         }
         return tAllowPrefix;

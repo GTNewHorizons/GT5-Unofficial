@@ -1,20 +1,22 @@
 package gregtech.api.gui;
 
-import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import java.util.List;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
+
+import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -23,7 +25,10 @@ import net.minecraft.item.ItemStack;
  */
 public class GT_Container_BasicMachine extends GT_Container_BasicTank {
 
-    public boolean mFluidTransfer = false, mItemTransfer = false, mStuttering = false;
+    public boolean
+            mFluidTransfer = false,
+            mItemTransfer = false,
+            mStuttering = false;
 
     private Runnable circuitSlotClickCallback;
 
@@ -196,7 +201,9 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         addSlotToContainer(slotBattery = new Slot(mTileEntity, 1, 80, 63));
         addSlotToContainer(slotSpecial = new Slot(mTileEntity, 3, 125, 63));
         addSlotToContainer(slotFluidInput = new GT_Slot_Render(mTileEntity, tStartIndex++, 53, 63));
-        slotFluidInput.setEnabled(recipes != null ? (recipes.hasFluidInputs()) : (machine.getCapacity() != 0));
+        slotFluidInput.setEnabled(recipes != null
+            ? (recipes.hasFluidInputs())
+            : (machine.getCapacity() != 0));
     }
 
     @Override
@@ -220,7 +227,8 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                     ItemStack newCircuit;
                     if (aShifthold == 1) {
                         if (aMouseclick == 0) {
-                            if (circuitSlotClickCallback != null) circuitSlotClickCallback.run();
+                            if (circuitSlotClickCallback != null)
+                                circuitSlotClickCallback.run();
                             return null;
                         } else {
                             // clear
@@ -231,9 +239,7 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                         List<ItemStack> tCircuits = machine.getConfigurationCircuits();
                         int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
                         if (index < 0) {
-                            int curIndex = GT_Utility.findMatchingStackInList(
-                                            tCircuits, machine.getStackInSlot(machine.getCircuitSlot()))
-                                    + 1;
+                            int curIndex = GT_Utility.findMatchingStackInList(tCircuits, machine.getStackInSlot(machine.getCircuitSlot())) + 1;
                             if (aMouseclick == 0) {
                                 curIndex += 1;
                             } else {
@@ -251,25 +257,19 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                 }
                 return null;
             default:
-                if (aSlotNumber == OTHER_SLOT_COUNT + 1 + machine.mInputSlotCount + machine.mOutputItems.length
-                        && aMouseclick < 2) {
+                if (aSlotNumber == OTHER_SLOT_COUNT + 1 + machine.mInputSlotCount + machine.mOutputItems.length && aMouseclick < 2) {
                     if (mTileEntity.isClientSide()) {
                         // see parent class slotClick for an explanation on why doing this
-                        GT_MetaTileEntity_BasicTank tTank =
-                                (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
+                        GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
                         tTank.setFillableStack(GT_Utility.getFluidFromDisplayStack(tTank.getStackInSlot(2)));
                     }
                     GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
                     BasicTankFluidAccess tFillableAccess = BasicTankFluidAccess.from(tTank, true);
                     GT_Recipe_Map recipes = machine.getRecipeList();
-                    // If the  machine has recipes but no fluid inputs, disallow filling this slot with fluids.
-                    ItemStack tToken = handleFluidSlotClick(
-                            tFillableAccess,
-                            aPlayer,
-                            aMouseclick == 0,
-                            true,
-                            (recipes == null || recipes.hasFluidInputs()));
-                    if (mTileEntity.isServerSide() && tToken != null) mTileEntity.markInventoryBeenModified();
+                    //If the  machine has recipes but no fluid inputs, disallow filling this slot with fluids.
+                    ItemStack tToken = handleFluidSlotClick(tFillableAccess, aPlayer, aMouseclick == 0, true, (recipes == null || recipes.hasFluidInputs()));
+                    if (mTileEntity.isServerSide() && tToken != null)
+                        mTileEntity.markInventoryBeenModified();
                     return tToken;
                 } else {
                     return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);

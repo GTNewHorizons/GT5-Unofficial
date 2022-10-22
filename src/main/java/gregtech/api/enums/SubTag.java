@@ -2,6 +2,7 @@ package gregtech.api.enums;
 
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.ISubTagContainer;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,13 +29,13 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * Add this to your Material if you want to have its Ore Calcite heated in a Blast Furnace for more output. Already listed are:
      * Iron, Pyrite, PigIron, DeepIron, ShadowIron, WroughtIron and MeteoricIron.
      */
-    public static final SubTag BLASTFURNACE_CALCITE_DOUBLE = getNewSubTag("BLASTFURNACE_CALCITE_DOUBLE"),
-            BLASTFURNACE_CALCITE_TRIPLE = getNewSubTag("BLASTFURNACE_CALCITE_TRIPLE");
+    public static final SubTag BLASTFURNACE_CALCITE_DOUBLE = getNewSubTag("BLASTFURNACE_CALCITE_DOUBLE"), BLASTFURNACE_CALCITE_TRIPLE = getNewSubTag("BLASTFURNACE_CALCITE_TRIPLE");
 
     /**
      * Add this to a material with Direct Smelting to prevent the automatic generation of a Bricked/Bronze Blast Furnace recipe. Already listed are:
      * Chalcopyrite, Tetrahedrite
      */
+
     public static final SubTag DONT_ADD_DEFAULT_BBF_RECIPE = getNewSubTag("DONT_ADD_DEFAULT_BBF_RECIPE");
 
     /**
@@ -53,9 +54,9 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag WASHING_MERCURY = getNewSubTag("WASHING_MERCURY");
     /**
-     * Add this to your Material if you want to have its Ore Mercury washed with 99% output chance. Already listed are:
-     * Silver
-     */
+    * Add this to your Material if you want to have its Ore Mercury washed with 99% output chance. Already listed are:
+    * Silver
+    */
     public static final SubTag WASHING_MERCURY_99_PERCENT = getNewSubTag("WASHING_MERCURY_99_PERCENT");
     /**
      * Add this to your Material if you want to have its Ore electromagnetically separated to give Gold.
@@ -68,8 +69,7 @@ public final class SubTag implements ICondition<ISubTagContainer> {
     /**
      * Add this to your Material if you want to have its Ore electromagnetically separated to give Neodymium.
      */
-    public static final SubTag ELECTROMAGNETIC_SEPERATION_NEODYMIUM =
-            getNewSubTag("ELECTROMAGNETIC_SEPERATION_NEODYMIUM");
+    public static final SubTag ELECTROMAGNETIC_SEPERATION_NEODYMIUM = getNewSubTag("ELECTROMAGNETIC_SEPERATION_NEODYMIUM");
     /**
      * Add this to your Material if you want to have its Ore giving Cinnabar Crystals on Pulverization. Already listed are:
      * Redstone
@@ -239,7 +239,6 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * Projectile Tag for Arrows
      */
     public static final SubTag PROJECTILE_ARROW = getNewSubTag("PROJECTILE_ARROW");
-
     public final Collection<ISubTagContainer> mRelevantTaggedItems = new HashSet<>(1);
 
     private SubTag(String aName) {
@@ -249,7 +248,9 @@ public final class SubTag implements ICondition<ISubTagContainer> {
     }
 
     public static SubTag getNewSubTag(String aName) {
-        for (SubTag tSubTag : sSubTags.values()) if (tSubTag.mName.equals(aName)) return tSubTag;
+        for (SubTag tSubTag : sSubTags.values())
+            if (tSubTag.mName.equals(aName))
+                return tSubTag;
         return new SubTag(aName);
     }
 
@@ -268,7 +269,9 @@ public final class SubTag implements ICondition<ISubTagContainer> {
 
     public SubTag addTo(ISubTagContainer... aContainers) {
         if (aContainers != null)
-            for (ISubTagContainer aContainer : aContainers) if (aContainer != null) aContainer.add(this);
+            for (ISubTagContainer aContainer : aContainers)
+                if (aContainer != null)
+                    aContainer.add(this);
         return this;
     }
 

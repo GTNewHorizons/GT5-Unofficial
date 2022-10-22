@@ -1,7 +1,8 @@
 package gregtech.api.interfaces.tileentity;
 
-import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
+
+import java.util.ArrayList;
 
 public interface IDebugableTileEntity {
     /**

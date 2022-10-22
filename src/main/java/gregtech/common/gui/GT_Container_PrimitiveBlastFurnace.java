@@ -19,8 +19,7 @@ public class GT_Container_PrimitiveBlastFurnace extends GT_ContainerMetaTile_Mac
             addSlotToContainer(new Slot(this.mTileEntity, i, 34, 16 + 18 * i));
         }
         for (int i = 0; i < GT_MetaTileEntity_PrimitiveBlastFurnace.OUTPUT_SLOTS; i++) {
-            addSlotToContainer(new GT_Slot_Output(
-                    mTileEntity, GT_MetaTileEntity_PrimitiveBlastFurnace.INPUT_SLOTS + i, 86 + i * 18, 25));
+            addSlotToContainer(new GT_Slot_Output(mTileEntity, GT_MetaTileEntity_PrimitiveBlastFurnace.INPUT_SLOTS + i, 86 + i * 18, 25));
         }
     }
 

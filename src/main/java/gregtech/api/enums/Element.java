@@ -293,14 +293,7 @@ public enum Element {
      * @param aDecayTo         String representing the Elements it decays to. Separated by an '&' Character.
      * @param aName            Name of the Element
      */
-    Element(
-            long aProtons,
-            long aNeutrons,
-            long aAdditionalMass,
-            long aHalfLifeSeconds,
-            String aDecayTo,
-            String aName,
-            boolean aIsIsotope) {
+    Element(long aProtons, long aNeutrons, long aAdditionalMass, long aHalfLifeSeconds, String aDecayTo, String aName, boolean aIsIsotope) {
         mProtons = aProtons;
         mNeutrons = aNeutrons;
         mAdditionalMass = aAdditionalMass;

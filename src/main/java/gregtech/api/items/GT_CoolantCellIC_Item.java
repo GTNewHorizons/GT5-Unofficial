@@ -1,27 +1,23 @@
 package gregtech.api.items;
 
+
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import net.minecraft.item.ItemStack;
 
-public class GT_CoolantCellIC_Item extends GT_CoolantCell_Item implements IReactorComponent {
+public class GT_CoolantCellIC_Item
+        extends GT_CoolantCell_Item
+        implements IReactorComponent {
     public GT_CoolantCellIC_Item(String aUnlocalized, String aEnglish, int aMaxStore) {
         super(aUnlocalized, aEnglish, aMaxStore);
     }
 
     @Override
-    public void processChamber(IReactor aReactor, ItemStack aStack, int x, int y, boolean aHeatRun) {}
+    public void processChamber(IReactor aReactor, ItemStack aStack, int x, int y, boolean aHeatRun) {
+    }
 
     @Override
-    public boolean acceptUraniumPulse(
-            IReactor aReactor,
-            ItemStack aStack,
-            ItemStack pulsingStack,
-            int youX,
-            int youY,
-            int pulseX,
-            int pulseY,
-            boolean aHeatRun) {
+    public boolean acceptUraniumPulse(IReactor aReactor, ItemStack aStack, ItemStack pulsingStack, int youX, int youY, int pulseX, int pulseY, boolean aHeatRun) {
         return false;
     }
 

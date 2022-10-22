@@ -31,15 +31,11 @@ public interface IRenderedBlock {
 
     /** returning true stops all the other Rendering from happening. */
     @SideOnly(Side.CLIENT)
-    default boolean renderItem(Block aBlock, RenderBlocks aRenderer) {
-        return false;
-    }
+    default boolean renderItem(Block aBlock, RenderBlocks aRenderer) { return false; }
 
     /** returning true stops all the other Rendering from happening. */
     @SideOnly(Side.CLIENT)
-    default boolean renderBlock(Block aBlock, RenderBlocks aRenderer, IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return false;
-    }
+    default boolean renderBlock(Block aBlock, RenderBlocks aRenderer, IBlockAccess aWorld, int aX, int aY, int aZ) { return false; }
 
     /** if this Block lets the TileEntity or a similar Handler do all the Inventory Render work. */
     @SideOnly(Side.CLIENT)
@@ -52,47 +48,14 @@ public interface IRenderedBlock {
     class ErrorRenderer implements IRenderedBlockSideCheck, IRenderedBlock {
         public static final ErrorRenderer INSTANCE = new ErrorRenderer();
         public ITexture[] mErrorTexture = Textures.BlockIcons.ERROR_RENDERING;
-
-        @Override
-        public ITexture[] getTexture(Block aBlock, byte aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {
-            return mErrorTexture;
-        }
-
-        @Override
-        public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-            return mErrorTexture;
-        }
-
-        @Override
-        public int getRenderPasses(Block aBlock) {
-            return 1;
-        }
-
-        @Override
-        public boolean usesRenderPass(int aRenderPass) {
-            return true;
-        }
-
-        @Override
-        public boolean setBlockBounds(Block aBlock, int aRenderPass) {
-            aBlock.setBlockBounds(-0.25F, -0.25F, -0.25F, 1.25F, 1.25F, 1.25F);
-            return true;
-        }
-
-        @Override
-        public boolean renderFullBlockSide(Block aBlock, RenderBlocks aRenderer, byte aSide) {
-            return true;
-        }
-
-        @Override
-        public IRenderedBlock passRenderingToObject(ItemStack aStack) {
-            return this;
-        }
-
-        @Override
-        public IRenderedBlock passRenderingToObject(IBlockAccess aWorld, int aX, int aY, int aZ) {
-            return this;
-        }
+        @Override public ITexture[] getTexture(Block aBlock, byte aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {return mErrorTexture;}
+        @Override public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {return mErrorTexture;}
+        @Override public int getRenderPasses(Block aBlock) {return 1;}
+        @Override public boolean usesRenderPass(int aRenderPass) {return true;}
+        @Override public boolean setBlockBounds(Block aBlock, int aRenderPass) {aBlock.setBlockBounds(-0.25F, -0.25F, -0.25F, 1.25F, 1.25F, 1.25F); return true;}
+        @Override public boolean renderFullBlockSide(Block aBlock, RenderBlocks aRenderer, byte aSide) {return true;}
+        @Override public IRenderedBlock passRenderingToObject(ItemStack aStack) {return this;}
+        @Override public IRenderedBlock passRenderingToObject(IBlockAccess aWorld, int aX, int aY, int aZ) {return this;}
 
         @Override
         public boolean renderBlock(Block aBlock, RenderBlocks aRenderer, IBlockAccess aWorld, int aX, int aY, int aZ) {

@@ -1,9 +1,10 @@
 package gregtech.api.damagesources;
 
-import javax.annotation.Nullable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+
+import javax.annotation.Nullable;
 
 public class GT_DamageSources {
     public static DamageSource getElectricDamage() {
@@ -56,8 +57,7 @@ public class GT_DamageSources {
 
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(
-                    EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " got frozen");
+            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " got frozen");
         }
     }
 
@@ -69,8 +69,7 @@ public class GT_DamageSources {
 
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName()
-                    + EnumChatFormatting.WHITE + " was boiled alive");
+            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " was boiled alive");
         }
     }
 
@@ -98,8 +97,7 @@ public class GT_DamageSources {
 
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(
-                    EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " exploded");
+            return new ChatComponentText(EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " exploded");
         }
     }
 }

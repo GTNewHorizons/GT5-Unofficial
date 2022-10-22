@@ -17,7 +17,7 @@ public interface IMachineBlockUpdateable {
     /**
      * Should recurse?
      */
-    default boolean isMachineBlockUpdateRecursive() {
+    default boolean isMachineBlockUpdateRecursive(){
         return true;
     }
 }

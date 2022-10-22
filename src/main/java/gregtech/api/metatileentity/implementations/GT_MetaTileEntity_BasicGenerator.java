@@ -1,7 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.V;
-
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -20,14 +18,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import static gregtech.api.enums.GT_Values.V;
+
 public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity_BasicTank {
-    public GT_MetaTileEntity_BasicGenerator(
-            int aID, String aName, String aNameRegional, int aTier, String aDescription, ITexture... aTextures) {
+    public GT_MetaTileEntity_BasicGenerator(int aID, String aName, String aNameRegional, int aTier, String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_BasicGenerator(
-            int aID, String aName, String aNameRegional, int aTier, String[] aDescription, ITexture... aTextures) {
+    public GT_MetaTileEntity_BasicGenerator(int aID, String aName, String aNameRegional, int aTier, String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
@@ -58,21 +56,8 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        return mTextures[
-                (aActive ? 5 : 0)
-                        + (aSide == aFacing
-                                ? 0
-                                : aSide == GT_Utility.getOppositeSide(aFacing)
-                                        ? 1
-                                        : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][
-                aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        return mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1];
     }
 
     @Override
@@ -91,23 +76,23 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     public ITexture[] getFront(byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
     }
 
     public ITexture[] getBack(byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
     }
 
     public ITexture[] getBottom(byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
     }
 
     public ITexture[] getTop(byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
     }
 
     public ITexture[] getSides(byte aColor) {
-        return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1]};
     }
 
     public ITexture[] getFrontActive(byte aColor) {
@@ -173,7 +158,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     @Override
     public boolean doesFillContainers() {
         return getBaseMetaTileEntity().isAllowedToWork();
-        // return false;
+        //return false;
     }
 
     @Override
@@ -208,7 +193,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
 
     @Override
     public boolean isLiquidOutput(byte aSide) {
-        // return super.isLiquidOutput(aSide);
+        //return super.isLiquidOutput(aSide);
         return false;
     }
 
@@ -221,50 +206,39 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
                 } else {
                     if (mInventory[getStackDisplaySlot()] == null)
                         mInventory[getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
-                    mInventory[getStackDisplaySlot()].setStackDisplayName("Draining internal buffer: "
-                            + GT_Utility.formatNumbers(
-                                    aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU())
-                            + " EU");
+                    mInventory[getStackDisplaySlot()].setStackDisplayName("Draining internal buffer: " + GT_Utility.formatNumbers(aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU()) + " EU");
                 }
             } else {
                 long tFuelValue = getFuelValue(mFluid), tConsumed = consumedFluidPerOperation(mFluid);
                 if (tFuelValue > 0 && tConsumed > 0 && mFluid.amount >= tConsumed) {
-                    long tFluidAmountToUse = Math.min(
-                            mFluid.amount / tConsumed,
-                            (maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
-                    // long tFluidAmountToUse = Math.min(mFluid.amount / tConsumed, (maxEUOutput() * 20 +
-                    // getMinimumStoredEU() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);//TODO CHECK
-                    if (tFluidAmountToUse > 0
-                            && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)) {
+                    long tFluidAmountToUse = Math.min(mFluid.amount / tConsumed, (maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
+					//long tFluidAmountToUse = Math.min(mFluid.amount / tConsumed, (maxEUOutput() * 20 + getMinimumStoredEU() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);//TODO CHECK
+                    if (tFluidAmountToUse > 0 && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)) {
                         // divided by two because this is called every 10 ticks, not 20
-                        GT_Pollution.addPollution(getBaseMetaTileEntity(), getPollution() / 2);
+                        GT_Pollution.addPollution(getBaseMetaTileEntity(),getPollution()/2);
                         mFluid.amount -= tFluidAmountToUse * tConsumed;
                     }
                 }
             }
 
-            if (mInventory[getInputSlot()] != null
-                    && aBaseMetaTileEntity.getUniversalEnergyStored() < (maxEUOutput() * 20 + getMinimumStoredEU())
-                    && ((GT_Utility.getFluidForFilledItem(mInventory[getInputSlot()], true) != null)
-                            || solidFuelOverride(mInventory[getInputSlot()]))) {
+            if (mInventory[getInputSlot()] != null && aBaseMetaTileEntity.getUniversalEnergyStored() < (maxEUOutput() * 20 + getMinimumStoredEU()) && ((GT_Utility.getFluidForFilledItem(mInventory[getInputSlot()], true) != null) || solidFuelOverride(mInventory[getInputSlot()]))) {
                 long tFuelValue = getFuelValue(mInventory[getInputSlot()]);
                 if (tFuelValue <= 0) tFuelValue = getFuelValue(mInventory[getInputSlot()], true);
-                // System.out.println(" tFuelValue : " + tFuelValue );
+                //System.out.println(" tFuelValue : " + tFuelValue );
                 if (tFuelValue > 0) {
                     ItemStack tEmptyContainer = getEmptyContainer(mInventory[getInputSlot()]);
                     if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tEmptyContainer)) {
                         aBaseMetaTileEntity.increaseStoredEnergyUnits(tFuelValue, true);
                         aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                         // divided by two because this is called every 10 ticks, not 20
-                        GT_Pollution.addPollution(getBaseMetaTileEntity(), getPollution() / 2);
+                        GT_Pollution.addPollution(getBaseMetaTileEntity(),getPollution()/2);
                     }
                 }
             }
         }
 
         if (aBaseMetaTileEntity.isServerSide())
-            aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork()
-                    && aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU());
+            aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.getUniversalEnergyStored() >= maxEUOutput() + getMinimumStoredEU());
     }
 
     /**
@@ -272,24 +246,18 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
      * @return if the stack is a solid fuel
      */
     public boolean solidFuelOverride(ItemStack stack) {
-        // this could be used for a coal generator for example aswell...
+        //this could be used for a coal generator for example aswell...
         ItemData association = GT_OreDictUnificator.getAssociation(stack);
-        // if it is a gregtech Item, make sure its not a VOLUMETRIC_FLASK or any type of cell, else do vanilla checks
+        //if it is a gregtech Item, make sure its not a VOLUMETRIC_FLASK or any type of cell, else do vanilla checks
         if (association != null) {
-            return !OrePrefixes.CELL_TYPES.contains(association.mPrefix)
-                    && !GT_Utility.areStacksEqual(ItemList.VOLUMETRIC_FLASK.get(1L), stack, true);
+            return !OrePrefixes.CELL_TYPES.contains(association.mPrefix) &&
+                    !GT_Utility.areStacksEqual(ItemList.VOLUMETRIC_FLASK.get(1L), stack, true);
         } else {
-            return stack != null
-                    && // when the stack is null its not a solid
-                    stack.getItem() != null
-                    && // when the item in the stack is null its not a solid
-                    !(stack.getItem() instanceof IFluidContainerItem)
-                    && // when the item is a fluid container its not a solid...
-                    !(stack.getItem() instanceof IFluidHandler)
-                    && // when the item is a fluid handler its not a solid...
-                    !stack.getItem()
-                            .getUnlocalizedName()
-                            .contains("bucket"); // since we cant really check for buckets...
+            return stack != null && //when the stack is null its not a solid
+                    stack.getItem() != null && //when the item in the stack is null its not a solid
+                    !(stack.getItem() instanceof IFluidContainerItem) && //when the item is a fluid container its not a solid...
+                    !(stack.getItem() instanceof IFluidHandler) &&  //when the item is a fluid handler its not a solid...
+                    !stack.getItem().getUnlocalizedName().contains("bucket"); //since we cant really check for buckets...
         }
     }
 
@@ -341,9 +309,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)
-                && (getFuelValue(aStack, true) > 0
-                        || getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true), true) > 0);
+        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack) && (getFuelValue(aStack, true) > 0 || getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true), true) > 0);
     }
 
     @Override

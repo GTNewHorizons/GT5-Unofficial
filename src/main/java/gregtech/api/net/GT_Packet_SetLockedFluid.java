@@ -18,76 +18,76 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_Packet_SetLockedFluid extends GT_Packet_New {
-    protected int mX;
-    protected short mY;
-    protected int mZ;
+	protected int mX;
+	protected short mY;
+	protected int mZ;
 
-    protected int mFluidID;
+	protected int mFluidID;
 
-    private EntityPlayerMP mPlayer;
+	private EntityPlayerMP mPlayer;
 
-    public GT_Packet_SetLockedFluid() {
-        super(true);
-    }
+	public GT_Packet_SetLockedFluid() {
+		super(true);
+	}
 
-    public GT_Packet_SetLockedFluid(IGregTechTileEntity aTile, FluidStack aSource) {
-        this(aTile.getXCoord(), aTile.getYCoord(), aTile.getZCoord(), aSource.getFluidID());
-    }
+	public GT_Packet_SetLockedFluid(IGregTechTileEntity aTile, FluidStack aSource) {
+		this(aTile.getXCoord(), aTile.getYCoord(), aTile.getZCoord(), aSource.getFluidID());
+	}
 
-    public GT_Packet_SetLockedFluid(int x, short y, int z, int aFluidID) {
-        super(false);
+	public GT_Packet_SetLockedFluid(int x, short y, int z, int aFluidID) {
+		super(false);
 
-        this.mX = x;
-        this.mY = y;
-        this.mZ = z;
+		this.mX = x;
+		this.mY = y;
+		this.mZ = z;
 
-        this.mFluidID = aFluidID;
-    }
+		this.mFluidID = aFluidID;
+	}
 
-    @Override
-    public byte getPacketID() {
-        return 14;
-    }
+	@Override
+	public byte getPacketID() {
+		return 14;
+	}
 
-    @Override
-    public void encode(ByteBuf aOut) {
-        aOut.writeInt(mX);
-        aOut.writeShort(mY);
-        aOut.writeInt(mZ);
+	@Override
+	public void encode(ByteBuf aOut) {
+		aOut.writeInt(mX);
+		aOut.writeShort(mY);
+		aOut.writeInt(mZ);
 
-        aOut.writeInt(mFluidID);
-    }
+		aOut.writeInt(mFluidID);
+	}
 
-    @Override
-    public void setINetHandler(INetHandler aHandler) {
-        if (aHandler instanceof NetHandlerPlayServer) {
-            mPlayer = ((NetHandlerPlayServer) aHandler).playerEntity;
-        }
-    }
+	@Override
+	public void setINetHandler(INetHandler aHandler) {
+		if (aHandler instanceof NetHandlerPlayServer) {
+			mPlayer = ((NetHandlerPlayServer) aHandler).playerEntity;
+		}
+	}
 
-    @Override
-    public GT_Packet_New decode(ByteArrayDataInput aData) {
-        return new GT_Packet_SetLockedFluid(aData.readInt(), aData.readShort(), aData.readInt(), aData.readInt());
-    }
+	@Override
+	public GT_Packet_New decode(ByteArrayDataInput aData) {
+		return new GT_Packet_SetLockedFluid(
+				aData.readInt(),
+				aData.readShort(),
+				aData.readInt(),
 
-    @Override
-    public void process(IBlockAccess aWorld) {
-        if (mPlayer == null) return;
-        World world = mPlayer.worldObj;
-        TileEntity tile = world.getTileEntity(mX, mY, mZ);
-        if (!(tile instanceof IGregTechTileEntity) || ((IGregTechTileEntity) tile).isDead()) return;
-        IMetaTileEntity mte = ((IGregTechTileEntity) tile).getMetaTileEntity();
-        if (!(mte instanceof GT_MetaTileEntity_Hatch_Output)) return;
-        Fluid tFluid = FluidRegistry.getFluid(mFluidID);
-        if (tFluid == null) return;
+				aData.readInt());
+	}
+
+	@Override
+	public void process(IBlockAccess aWorld) {
+		if (mPlayer == null) return;
+		World world = mPlayer.worldObj;
+		TileEntity tile = world.getTileEntity(mX, mY, mZ);
+		if (!(tile instanceof IGregTechTileEntity) || ((IGregTechTileEntity) tile).isDead()) return;
+		IMetaTileEntity mte = ((IGregTechTileEntity) tile).getMetaTileEntity();
+		if (!(mte instanceof GT_MetaTileEntity_Hatch_Output)) return;
+		Fluid tFluid = FluidRegistry.getFluid(mFluidID);
+		if (tFluid == null) return;
         GT_MetaTileEntity_Hatch_Output hatch = (GT_MetaTileEntity_Hatch_Output) mte;
         hatch.setLockedFluidName(tFluid.getName());
         hatch.mMode = 9;
-        GT_Utility.sendChatToPlayer(
-                mPlayer,
-                String.format(
-                        GT_LanguageManager.addStringLocalization(
-                                "Interaction_DESCRIPTION_Index_151.4", "Sucessfully locked Fluid to %s", false),
-                        new FluidStack(tFluid, 1).getLocalizedName()));
-    }
+		GT_Utility.sendChatToPlayer(mPlayer, String.format(GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_151.4", "Sucessfully locked Fluid to %s", false), new FluidStack(tFluid, 1).getLocalizedName()));
+	}
 }

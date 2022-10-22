@@ -18,7 +18,7 @@ public interface ITexture {
     void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
 
     boolean isValidTexture();
-
+    
     /**
      * @return {@code true} if this texture is from the old package
      */

@@ -11,7 +11,6 @@ public class Harvestcraft {
     public static void init() {
         if (!Loader.isModLoaded("harvestcraft")) return;
 
-        ((BlockPamFruitingLog) BlockRegistry.pamPaperbark)
-                .setDropItem(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Paper, 1));
+        ((BlockPamFruitingLog) BlockRegistry.pamPaperbark).setDropItem(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Paper, 1));
     }
 }

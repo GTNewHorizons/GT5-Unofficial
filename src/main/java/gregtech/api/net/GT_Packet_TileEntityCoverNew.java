@@ -17,6 +17,7 @@ import net.minecraftforge.common.DimensionManager;
 /**
  * Client -> Server: Update cover data
  */
+
 public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
     protected int mX;
     protected short mY;
@@ -32,8 +33,7 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
         super(true);
     }
 
-    public GT_Packet_TileEntityCoverNew(
-            int mX, short mY, int mZ, byte coverSide, int coverID, ISerializableObject coverData, int dimID) {
+    public GT_Packet_TileEntityCoverNew(int mX, short mY, int mZ, byte coverSide, int coverID, ISerializableObject coverData, int dimID) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -45,7 +45,6 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
 
         this.dimID = dimID;
     }
-
     public GT_Packet_TileEntityCoverNew(byte coverSide, int coverID, ISerializableObject coverData, ICoverable tile) {
         super(false);
         this.mX = tile.getXCoord();
@@ -91,16 +90,18 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
                 aData.readInt(),
                 aData.readShort(),
                 aData.readInt(),
+
                 aData.readByte(),
                 coverId = aData.readInt(),
                 GregTech_API.getCoverBehaviorNew(coverId).createDataObject().readFromPacket(aData, mPlayer),
+
                 aData.readInt());
     }
 
     @Override
     public void process(IBlockAccess aWorld) {
         if (mPlayer == null) // impossible, but who knows
-        return;
+            return;
         World world = DimensionManager.getWorld(dimID);
         if (world != null) {
             TileEntity tile = world.getTileEntity(mX, mY, mZ);

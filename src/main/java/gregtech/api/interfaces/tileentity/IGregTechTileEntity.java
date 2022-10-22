@@ -5,9 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.common.blocks.GT_Block_Machines;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,6 +13,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * A simple compound Interface for all my TileEntities.
  * <p/>
@@ -23,18 +24,7 @@ import net.minecraftforge.fluids.IFluidHandler;
  * <p/>
  * It can cause Problems to include this Interface!
  */
-public interface IGregTechTileEntity
-        extends ITexturedTileEntity,
-                IGearEnergyTileEntity,
-                ICoverable,
-                IFluidHandler,
-                ITurnable,
-                IGregTechDeviceInformation,
-                IUpgradableMachine,
-                IDigitalChest,
-                IDescribable,
-                IMachineBlockUpdateable,
-                IGregtechWailaProvider {
+public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTileEntity, ICoverable, IFluidHandler, ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable, IGregtechWailaProvider {
     /**
      * gets the Error displayed on the GUI
      */
@@ -143,14 +133,7 @@ public interface IGregTechTileEntity
      */
     int getLightOpacity();
 
-    void addCollisionBoxesToList(
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            AxisAlignedBB inputAABB,
-            List<AxisAlignedBB> outputAABB,
-            Entity collider);
+    void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider);
 
     AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ);
 
@@ -160,8 +143,8 @@ public interface IGregTechTileEntity
      * Checks validity of meta tile and delegates to it
      */
     @Override
-    default void onMachineBlockUpdate() {
-        if (!isDead() && getMetaTileEntity() != null && getMetaTileEntity().getBaseMetaTileEntity() == this) {
+    default void onMachineBlockUpdate(){
+        if(!isDead() && getMetaTileEntity() != null && getMetaTileEntity().getBaseMetaTileEntity() == this){
             getMetaTileEntity().onMachineBlockUpdate();
         }
     }
@@ -171,15 +154,12 @@ public interface IGregTechTileEntity
      */
     @Override
     default boolean isMachineBlockUpdateRecursive() {
-        return !isDead()
-                && getMetaTileEntity() != null
-                && getMetaTileEntity().getBaseMetaTileEntity() == this
-                && getMetaTileEntity().isMachineBlockUpdateRecursive();
+        return !isDead() && getMetaTileEntity() != null &&
+                getMetaTileEntity().getBaseMetaTileEntity() == this &&
+                getMetaTileEntity().isMachineBlockUpdateRecursive();
     }
 
-    default void setShutdownStatus(boolean newStatus) {
-        return;
-    }
+    default void setShutdownStatus(boolean newStatus) {return;}
 
     /**
      * A randomly called display update to be able to add particles or other items for display

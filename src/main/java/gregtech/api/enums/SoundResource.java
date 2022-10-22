@@ -1,13 +1,14 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_IC2;
-
 import com.google.common.collect.Maps;
+import net.minecraft.util.ResourceLocation;
+
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import net.minecraft.util.ResourceLocation;
+
+import static gregtech.api.enums.GT_Values.MOD_ID_IC2;
 
 /**
  * Enumerates known sounds with id and resource-location
@@ -16,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
  * a plausible yet unimplemented network packet weight optimization.</p>
  */
 public enum SoundResource {
+
     RANDOM_BREAK(0, "random.break"),
     RANDOM_ANVIL_USE(1, "random.anvil_use"),
     RANDOM_ANVIL_BREAK(2, "random.anvil_break"),
@@ -294,8 +296,8 @@ public enum SoundResource {
         EnumSet.allOf(SoundResource.class).forEach(sound -> {
             if (sound.id >= 0) ID_SOUND_MAP.put(sound.id, sound);
         });
-        EnumSet.allOf(SoundResource.class)
-                .forEach(sound -> RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
+        EnumSet.allOf(SoundResource.class).forEach(sound ->
+            RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
     }
 
     /**

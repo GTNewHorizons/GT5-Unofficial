@@ -13,18 +13,12 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.block.Block;
 import org.lwjgl.input.Keyboard;
 
-public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_PrimitiveBlastFurnace
-        implements ISecondaryDescribable {
+public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_PrimitiveBlastFurnace implements ISecondaryDescribable {
     private static final ITexture[] FACING_SIDE = {TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS)};
-    private static final ITexture[] FACING_FRONT = {
-        TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE)
-    };
+    private static final ITexture[] FACING_FRONT = {TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE)};
     private static final ITexture[] FACING_ACTIVE = {
-        TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE),
-        TextureFactory.builder()
-                .addIcon(BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW)
-                .glow()
-                .build()
+            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE),
+            TextureFactory.builder().addIcon(BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW).glow().build()
     };
 
     public GT_MetaTileEntity_BrickedBlastFurnace(int aID, String aName, String aNameRegional) {
@@ -72,13 +66,7 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             return aActive ? FACING_ACTIVE : FACING_FRONT;
         }
@@ -105,3 +93,4 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
         return "Bricked Blast Furnace";
     }
 }
+

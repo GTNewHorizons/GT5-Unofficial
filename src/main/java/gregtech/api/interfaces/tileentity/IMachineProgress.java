@@ -49,9 +49,7 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
      * used to control Machines via Redstone Signal Strength by special Covers
      * In case of 0 the Machine is very likely doing nothing, or is just not being controlled at all.
      */
-    default byte getWorkDataValue() {
-        return 0;
-    }
+    default byte getWorkDataValue() { return 0; }
 
     /**
      * used to control Machines via Redstone Signal Strength by special Covers
@@ -75,4 +73,5 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
     default boolean wasShutdown() {
         return false;
     }
+
 }

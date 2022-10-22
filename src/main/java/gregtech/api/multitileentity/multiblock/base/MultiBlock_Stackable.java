@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+
 import net.minecraft.item.ItemStack;
 
 public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> extends MultiBlockController<T> {
@@ -24,7 +25,7 @@ public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> ex
             buildPiece(STACKABLE_MIDDLE, trigger, hintsOnly, buildState.getCurrentOffset());
             buildState.addOffset(getPerStackOffset());
         }
-        if (hasTop()) {
+        if(hasTop()) {
             buildState.addOffset(getAfterLastStackOffset());
             buildPiece(STACKABLE_TOP, trigger, hintsOnly, buildState.stopBuilding());
         } else {
@@ -85,7 +86,8 @@ public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> ex
         int stackCount = 0;
 
         buildState.startBuilding(getStartingStructureOffset());
-        if (!checkPiece(STACKABLE_BOTTOM, buildState.getCurrentOffset())) return buildState.failBuilding();
+        if (!checkPiece(STACKABLE_BOTTOM, buildState.getCurrentOffset()))
+            return buildState.failBuilding();
 
         buildState.addOffset(getStartingStackOffset());
 
@@ -97,7 +99,8 @@ public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> ex
                 break;
             }
         }
-        if (stackCount < getMinStacks()) return buildState.failBuilding();
+        if (stackCount < getMinStacks())
+            return buildState.failBuilding();
 
         buildState.addOffset(getAfterLastStackOffset());
         return checkPiece(STACKABLE_TOP, buildState.stopBuilding());
@@ -107,4 +110,5 @@ public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> ex
     public boolean checkRecipe(ItemStack aStack) {
         return false;
     }
+
 }

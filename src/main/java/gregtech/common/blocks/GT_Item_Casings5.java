@@ -4,20 +4,19 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.util.GT_LanguageManager;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
 
 public class GT_Item_Casings5 extends GT_Item_Casings_Abstract {
     public GT_Item_Casings5(Block block) {
         super(block);
     }
 
-    protected static final String mCoilHeatTooltip =
-            GT_LanguageManager.addStringLocalization("gt.coilheattooltip", "Base Heating Capacity = ");
-    protected static final String mCoilUnitTooltip =
-            GT_LanguageManager.addStringLocalization("gt.coilunittooltip", " Kelvin");
+    protected static final String mCoilHeatTooltip = GT_LanguageManager.addStringLocalization("gt.coilheattooltip", "Base Heating Capacity = ");
+    protected static final String mCoilUnitTooltip = GT_LanguageManager.addStringLocalization("gt.coilunittooltip", " Kelvin");
 
     @Override
     @SideOnly(Side.CLIENT)

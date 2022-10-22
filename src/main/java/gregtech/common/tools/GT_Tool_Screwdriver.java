@@ -6,8 +6,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.common.items.behaviors.Behaviour_Screwdriver;
-import java.util.Arrays;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -20,18 +18,14 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class GT_Tool_Screwdriver extends GT_Tool {
-    public static final List<String> mEffectiveList = Arrays.asList(
-            EntityCaveSpider.class.getName(),
-            EntitySpider.class.getName(),
-            "EntityTFHedgeSpider",
-            "EntityTFKingSpider",
-            "EntityTFSwarmSpider",
-            "EntityTFTowerBroodling");
+    public static final List<String> mEffectiveList = Arrays.asList(EntityCaveSpider.class.getName(), EntitySpider.class.getName(), "EntityTFHedgeSpider", "EntityTFKingSpider", "EntityTFSwarmSpider", "EntityTFTowerBroodling");
 
     @Override
-    public float getNormalDamageAgainstEntity(
-            float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {
+    public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {
         String tName = aEntity.getClass().getName();
         tName = tName.substring(tName.lastIndexOf('.') + 1);
         return mEffectiveList.contains(tName) ? aOriginalDamage * 2.0F : aOriginalDamage;
@@ -109,8 +103,8 @@ public class GT_Tool_Screwdriver extends GT_Tool {
 
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "screwdriver")
-                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.circuits);
+        return GT_ToolHarvestHelper.isAppropriateTool(aBlock , aMetaData ,"screwdriver")
+                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock ,Material.circuits);
     }
 
     @Override
@@ -120,18 +114,12 @@ public class GT_Tool_Screwdriver extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead
-                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack)
-                        .mIconSet
-                        .mTextures[gregtech.api.enums.OrePrefixes.toolHeadScrewdriver.mTextureIndex]
-                : Textures.ItemIcons.HANDLE_SCREWDRIVER;
+        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadScrewdriver.mTextureIndex] : Textures.ItemIcons.HANDLE_SCREWDRIVER;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead
-                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
@@ -141,8 +129,6 @@ public class GT_Tool_Screwdriver extends GT_Tool {
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " is screwed! (by "
-                        + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + ")");
+        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " is screwed! (by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE + ")");
     }
 }

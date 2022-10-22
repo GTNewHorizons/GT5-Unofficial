@@ -1,6 +1,7 @@
 package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.GT_Proxy;
@@ -16,6 +17,7 @@ import net.minecraftforge.common.DimensionManager;
  */
 public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
 
+
     protected int mX;
     protected short mY;
     protected int mZ;
@@ -29,8 +31,7 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
         super(true);
     }
 
-    public GT_Packet_GtTileEntityGuiRequest(
-            int mX, short mY, int mZ, int guiId, int dimID, int playerID, int parentGuiId) {
+    public GT_Packet_GtTileEntityGuiRequest(int mX, short mY, int mZ, int guiId, int dimID, int playerID, int parentGuiId) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -68,9 +69,12 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
                 aData.readInt(),
                 aData.readShort(),
                 aData.readInt(),
+
+                aData.readInt(),
+
                 aData.readInt(),
                 aData.readInt(),
-                aData.readInt(),
+                
                 aData.readInt());
     }
 
@@ -87,23 +91,22 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
         if (!(tile instanceof IGregTechTileEntity) || ((IGregTechTileEntity) tile).isDead()) return;
 
         IGregTechTileEntity gtTile = ((IGregTechTileEntity) tile);
-        EntityPlayerMP player = (EntityPlayerMP) world.getEntityByID(playerId);
+        EntityPlayerMP player =  (EntityPlayerMP) world.getEntityByID(playerId);
         // If the requested Gui ID corresponds to a cover, send the cover data  to the client so they can open it.
-        if (GT_Proxy.GUI_ID_COVER_SIDE_BASE <= guiId && guiId < GT_Proxy.GUI_ID_COVER_SIDE_BASE + 6) {
+        if (GT_Proxy.GUI_ID_COVER_SIDE_BASE <= guiId && guiId < GT_Proxy.GUI_ID_COVER_SIDE_BASE+6) {
             byte coverSide = (byte) (guiId - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
             GT_Packet_TileEntityCoverGUI packet = new GT_Packet_TileEntityCoverGUI(
-                    this.mX,
-                    this.mY,
-                    this.mZ,
-                    coverSide,
-                    gtTile.getCoverIDAtSide(coverSide),
-                    gtTile.getComplexCoverDataAtSide(coverSide),
-                    this.dimId,
-                    this.playerId,
-                    parentGuiId);
+                this.mX, this.mY, this.mZ,
+                coverSide,
+                gtTile.getCoverIDAtSide(coverSide),
+                gtTile.getComplexCoverDataAtSide(coverSide),
+                this.dimId,
+                this.playerId,
+                parentGuiId);
             GT_Values.NW.sendToPlayer(packet, player);
         } else if (guiId == 0) {
             gtTile.openGUI(player);
         }
     }
+    
 }

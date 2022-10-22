@@ -6,8 +6,6 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.*;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -18,27 +16,18 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class Behaviour_Cover_Tool extends Behaviour_None {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Behaviour_Cover_Tool extends Behaviour_None  {
     public static final IItemBehaviour<GT_MetaBase_Item> INSTANCE = new Behaviour_Cover_Tool();
-    private final String mTooltip =
-            GT_LanguageManager.addStringLocalization("gt.behaviour.cover_copy_paste", "Can copy/paste cover data.");
+    private final String mTooltip = GT_LanguageManager.addStringLocalization("gt.behaviour.cover_copy_paste", "Can copy/paste cover data.");
 
     private ISerializableObject mStoredData = GregTech_API.sNoBehavior.createDataObject();
     private int mCoverType;
 
     @Override
-    public boolean onItemUseFirst(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -53,7 +42,8 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
                 aItem.discharge(aStack, 100.0D, Integer.MAX_VALUE, true, false, false);
                 writeListToNBT(tList, tNBT, aPlayer);
                 saveDataToNBT(tNBT);
-            } else {
+            }
+            else {
                 doPaste(tTileEntity, aSide, hitX, hitY, hitZ, aPlayer);
                 aItem.discharge(aStack, 25.0D, Integer.MAX_VALUE, true, false, false);
             }
@@ -67,8 +57,10 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
             mCoverType = aNBT.getInteger("mCoverType");
             GT_CoverBehaviorBase<?> tBehavior = GregTech_API.getCoverBehaviorNew(mCoverType);
             NBTBase tData = aNBT.getTag("mCoverData");
-            if (tData != null) mStoredData = tBehavior.createDataObject(tData);
-            else mStoredData = GregTech_API.sNoBehavior.createDataObject();
+            if (tData != null)
+                mStoredData = tBehavior.createDataObject(tData);
+            else
+                mStoredData = GregTech_API.sNoBehavior.createDataObject();
         }
     }
 
@@ -91,46 +83,42 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void doCopy(
-            TileEntity aTileEntity,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ,
-            List aList) {
+    private void doCopy(TileEntity aTileEntity, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ, List aList) {
         aList.add(
-                "----- X: " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(aX) + EnumChatFormatting.RESET + " Y: "
-                        + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(aY) + EnumChatFormatting.RESET + " Z: "
-                        + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(aZ) + EnumChatFormatting.RESET + " D: "
-                        + EnumChatFormatting.AQUA + aWorld.provider.dimensionId + EnumChatFormatting.RESET + " -----");
+                "----- X: " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(aX) + EnumChatFormatting.RESET +
+                        " Y: " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(aY) + EnumChatFormatting.RESET +
+                        " Z: " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(aZ) + EnumChatFormatting.RESET +
+                        " D: " + EnumChatFormatting.AQUA + aWorld.provider.dimensionId + EnumChatFormatting.RESET + " -----"
+        );
         if (aTileEntity instanceof ICoverable) {
             ICoverable tCoverable = (ICoverable) aTileEntity;
-            int tSide = tCoverable.getCoverItemAtSide((byte) aSide) != null
-                    ? aSide
-                    : tCoverable.getCoverItemAtSide(GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ))
-                                    != null
-                            ? GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ)
-                            : -1;
+            int tSide = tCoverable.getCoverItemAtSide((byte) aSide) != null ? aSide :
+                    tCoverable.getCoverItemAtSide(GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ)) != null ?
+                            GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ) : -1;
             if (tSide != -1) {
                 mStoredData = tCoverable.getComplexCoverDataAtSide((byte) tSide);
                 mCoverType = tCoverable.getCoverIDAtSide((byte) tSide);
-                aList.add("Block Side: " + EnumChatFormatting.AQUA
-                        + ForgeDirection.getOrientation(tSide).name() + EnumChatFormatting.RESET);
-                aList.add("Cover Type: " + EnumChatFormatting.GREEN
-                        + tCoverable.getCoverItemAtSide((byte) tSide).getDisplayName() + EnumChatFormatting.RESET);
-            } else {
+                aList.add(
+                        "Block Side: " + EnumChatFormatting.AQUA + ForgeDirection.getOrientation(tSide).name() + EnumChatFormatting.RESET
+                );
+                aList.add(
+                        "Cover Type: " + EnumChatFormatting.GREEN + tCoverable.getCoverItemAtSide((byte) tSide).getDisplayName() + EnumChatFormatting.RESET
+                );
+            }
+            else {
                 mStoredData = GregTech_API.sNoBehavior.createDataObject();
                 mCoverType = 0;
-                aList.add("No Cover Found");
+                aList.add(
+                        "No Cover Found"
+                );
             }
-        } else {
+        }
+        else {
             mStoredData = GregTech_API.sNoBehavior.createDataObject();
             mCoverType = 0;
-            aList.add("No Cover Found");
+            aList.add(
+                    "No Cover Found"
+            );
         }
     }
 
@@ -141,21 +129,20 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
                 GT_Utility.sendChatToPlayer(aPlayer, "Please Copy a Valid Cover First.");
                 return;
             }
-            int tSide = tCoverable.getCoverItemAtSide((byte) aSide) != null
-                    ? aSide
-                    : tCoverable.getCoverItemAtSide(GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ))
-                                    != null
-                            ? GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ)
-                            : -1;
+            int tSide = tCoverable.getCoverItemAtSide((byte) aSide) != null ? aSide :
+                    tCoverable.getCoverItemAtSide(GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ)) != null ?
+                            GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ) : -1;
             if (tSide != -1) {
                 int tCoverID = tCoverable.getCoverIDAtSide((byte) tSide);
                 if (tCoverID == mCoverType) {
                     tCoverable.setCoverDataAtSide((byte) tSide, mStoredData);
                     GT_Utility.sendChatToPlayer(aPlayer, "Cover Data Pasted.");
-                } else {
+                }
+                else {
                     GT_Utility.sendChatToPlayer(aPlayer, "Not Matched Cover.");
                 }
-            } else {
+            }
+            else {
                 GT_Utility.sendChatToPlayer(aPlayer, "No Cover Found.");
             }
         }
@@ -167,11 +154,11 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
             NBTTagCompound tNBT = aStack.getTagCompound();
             int tSize = tNBT.getInteger("dataLinesCount");
             if (tSize < 1) throw new Exception();
-            aList.add(EnumChatFormatting.BLUE + "Stored Cover Data:");
+            aList.add(EnumChatFormatting.BLUE+"Stored Cover Data:");
             for (int i = 0; i < tSize; i++) {
                 aList.add(EnumChatFormatting.RESET + tNBT.getString("dataLines" + i));
             }
-        } catch (Exception e) {
+        } catch (Exception e){
             aList.add(this.mTooltip);
         }
         return aList;

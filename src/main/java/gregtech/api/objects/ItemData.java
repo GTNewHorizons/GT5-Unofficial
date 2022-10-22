@@ -2,8 +2,9 @@ package gregtech.api.objects;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import java.util.*;
 import net.minecraft.item.ItemStack;
+
+import java.util.*;
 
 public class ItemData {
     private static final MaterialStack[] EMPTY_MATERIALSTACK_ARRAY = new MaterialStack[0];
@@ -19,9 +20,7 @@ public class ItemData {
         mPrefix = aPrefix;
         mMaterial = aMaterial == null ? null : new MaterialStack(aMaterial, aPrefix.mMaterialAmount);
         mBlackListed = aBlackListed;
-        mByProducts = aPrefix.mSecondaryMaterial == null || aPrefix.mSecondaryMaterial.mMaterial == null
-                ? EMPTY_MATERIALSTACK_ARRAY
-                : new MaterialStack[] {aPrefix.mSecondaryMaterial.clone()};
+        mByProducts = aPrefix.mSecondaryMaterial == null || aPrefix.mSecondaryMaterial.mMaterial == null ? EMPTY_MATERIALSTACK_ARRAY : new MaterialStack[]{aPrefix.mSecondaryMaterial.clone()};
     }
 
     public ItemData(OrePrefixes aPrefix, Materials aMaterial) {
@@ -35,8 +34,7 @@ public class ItemData {
         if (aByProducts == null) {
             mByProducts = EMPTY_MATERIALSTACK_ARRAY;
         } else {
-            MaterialStack[] tByProducts =
-                    aByProducts.length < 1 ? EMPTY_MATERIALSTACK_ARRAY : new MaterialStack[aByProducts.length];
+            MaterialStack[] tByProducts = aByProducts.length < 1 ? EMPTY_MATERIALSTACK_ARRAY : new MaterialStack[aByProducts.length];
             int j = 0;
             for (int i = 0; i < aByProducts.length; i++)
                 if (aByProducts[i] != null && aByProducts[i].mMaterial != null)

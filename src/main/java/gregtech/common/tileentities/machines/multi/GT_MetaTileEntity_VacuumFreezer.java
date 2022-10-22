@@ -1,11 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTech_API;
@@ -22,8 +16,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_VacuumFreezer
-        extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_VacuumFreezer> {
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+
+public class GT_MetaTileEntity_VacuumFreezer extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_VacuumFreezer> {
     public GT_MetaTileEntity_VacuumFreezer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -58,52 +57,29 @@ public class GT_MetaTileEntity_VacuumFreezer
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] rTexture;
         if (aSide == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
-                    casingTexturePages[0][17],
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
+                rTexture = new ITexture[]{
+                        casingTexturePages[0][17],
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW).extFacing().glow().build()};
             } else {
-                rTexture = new ITexture[] {
-                    casingTexturePages[0][17],
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_VACUUM_FREEZER)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
+                rTexture = new ITexture[]{
+                        casingTexturePages[0][17],
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER).extFacing().build(),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW).extFacing().glow().build()};
             }
         } else {
-            rTexture = new ITexture[] {casingTexturePages[0][17]};
+            rTexture = new ITexture[]{casingTexturePages[0][17]};
         }
         return rTexture;
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "VacuumFreezer.png");
+        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "VacuumFreezer.png");
     }
 
     @Override
@@ -123,23 +99,22 @@ public class GT_MetaTileEntity_VacuumFreezer
 
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        GT_Recipe tRecipe = getRecipeMap()
-                .findRecipe(
-                        getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluidList, tInputList);
+        GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluidList, tInputList);
         if (tRecipe != null) {
             if (tRecipe.isRecipeInputEqual(true, tFluidList, tInputList)) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
 
                 calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
-                // In case recipe is too OP for that machine
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
+                //In case recipe is too OP for that machine
+                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                    return false;
                 if (this.mEUt > 0) {
                     this.mEUt = (-this.mEUt);
                 }
                 this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                this.mOutputItems = new ItemStack[] {tRecipe.getOutput(0)};
-                this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
+                this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
+                this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
                 updateSlots();
                 return true;
             }

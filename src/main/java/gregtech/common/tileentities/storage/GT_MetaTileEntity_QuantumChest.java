@@ -47,7 +47,8 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_DigitalChe
                     mInvData.appendTag(tNBT);
                 }
             }
-            if (mItemStack != null) aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
+            if (mItemStack != null)
+                aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
             aNBT.setTag("Inventory", mInvData);
             aNBT.setInteger("mItemCount", getItemCount());
             aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
@@ -57,7 +58,7 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_DigitalChe
 
     @Override
     protected String chestName() {
-        return "Quantum Chest";
+        return  "Quantum Chest";
     }
 
     @Override
@@ -72,7 +73,7 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_DigitalChe
 
     @Override
     protected ItemStack getItemStack() {
-        return mItemStack;
+        return  mItemStack;
     }
 
     @Override

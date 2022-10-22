@@ -26,41 +26,21 @@ public class GT_Circuit_BasicLogic extends GT_CircuitryBehavior {
     @Override
     public void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         if (aCircuitData[0] < 2) {
-            aRedstoneCircuitBlock.setRedstone(
-                    (byte) (aCircuitData[0] % 2 == (getAnyRedstone(aRedstoneCircuitBlock) ? 0 : 1) ? 15 : 0),
-                    aRedstoneCircuitBlock.getOutputFacing());
+            aRedstoneCircuitBlock.setRedstone((byte) (aCircuitData[0] % 2 == (getAnyRedstone(aRedstoneCircuitBlock) ? 0 : 1) ? 15 : 0), aRedstoneCircuitBlock.getOutputFacing());
         } else if (aCircuitData[0] < 4) {
-            aRedstoneCircuitBlock.setRedstone(
-                    (byte) (aCircuitData[0] % 2 == (getOneRedstone(aRedstoneCircuitBlock) ? 0 : 1) ? 15 : 0),
-                    aRedstoneCircuitBlock.getOutputFacing());
+            aRedstoneCircuitBlock.setRedstone((byte) (aCircuitData[0] % 2 == (getOneRedstone(aRedstoneCircuitBlock) ? 0 : 1) ? 15 : 0), aRedstoneCircuitBlock.getOutputFacing());
         } else if (aCircuitData[0] < 6) {
-            aRedstoneCircuitBlock.setRedstone(
-                    (byte) (aCircuitData[0] % 2 == (getAllRedstone(aRedstoneCircuitBlock) ? 0 : 1) ? 15 : 0),
-                    aRedstoneCircuitBlock.getOutputFacing());
+            aRedstoneCircuitBlock.setRedstone((byte) (aCircuitData[0] % 2 == (getAllRedstone(aRedstoneCircuitBlock) ? 0 : 1) ? 15 : 0), aRedstoneCircuitBlock.getOutputFacing());
         } else if (aCircuitData[0] < 7) {
-            aRedstoneCircuitBlock.setRedstone(
-                    (byte) (15 - getStrongestRedstone(aRedstoneCircuitBlock)), aRedstoneCircuitBlock.getOutputFacing());
+            aRedstoneCircuitBlock.setRedstone((byte) (15 - getStrongestRedstone(aRedstoneCircuitBlock)), aRedstoneCircuitBlock.getOutputFacing());
         } else if (aCircuitData[0] < 9) {
-            aRedstoneCircuitBlock.setRedstone(
-                    (byte) ((aCircuitData[0] % 2 == 0 ? 15 : 0)
-                            ^ (getStrongestRedstone(aRedstoneCircuitBlock)
-                                    | getWeakestRedstone(aRedstoneCircuitBlock))),
-                    aRedstoneCircuitBlock.getOutputFacing());
+            aRedstoneCircuitBlock.setRedstone((byte) ((aCircuitData[0] % 2 == 0 ? 15 : 0) ^ (getStrongestRedstone(aRedstoneCircuitBlock) | getWeakestRedstone(aRedstoneCircuitBlock))), aRedstoneCircuitBlock.getOutputFacing());
         } else if (aCircuitData[0] < 11) {
-            aRedstoneCircuitBlock.setRedstone(
-                    (byte) ((aCircuitData[0] % 2 == 0 ? 15 : 0)
-                            ^ getStrongestRedstone(aRedstoneCircuitBlock)
-                            ^ getWeakestRedstone(aRedstoneCircuitBlock)),
-                    aRedstoneCircuitBlock.getOutputFacing());
+            aRedstoneCircuitBlock.setRedstone((byte) ((aCircuitData[0] % 2 == 0 ? 15 : 0) ^ getStrongestRedstone(aRedstoneCircuitBlock) ^ getWeakestRedstone(aRedstoneCircuitBlock)), aRedstoneCircuitBlock.getOutputFacing());
         } else if (aCircuitData[0] < 13) {
-            aRedstoneCircuitBlock.setRedstone(
-                    (byte) ((aCircuitData[0] % 2 == 0 ? 15 : 0)
-                            ^ getStrongestRedstone(aRedstoneCircuitBlock) & getWeakestRedstone(aRedstoneCircuitBlock)),
-                    aRedstoneCircuitBlock.getOutputFacing());
+            aRedstoneCircuitBlock.setRedstone((byte) ((aCircuitData[0] % 2 == 0 ? 15 : 0) ^ getStrongestRedstone(aRedstoneCircuitBlock) & getWeakestRedstone(aRedstoneCircuitBlock)), aRedstoneCircuitBlock.getOutputFacing());
         } else if (aCircuitData[0] < 14) {
-            aRedstoneCircuitBlock.setRedstone(
-                    (byte) (getStrongestRedstone(aRedstoneCircuitBlock) ^ 0xF),
-                    aRedstoneCircuitBlock.getOutputFacing());
+            aRedstoneCircuitBlock.setRedstone((byte) (getStrongestRedstone(aRedstoneCircuitBlock) ^ 0xF), aRedstoneCircuitBlock.getOutputFacing());
         }
     }
 

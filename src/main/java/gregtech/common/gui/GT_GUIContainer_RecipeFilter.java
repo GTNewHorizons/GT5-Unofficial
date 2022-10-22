@@ -8,16 +8,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_RecipeFilter extends GT_GUIContainer_SpecialFilter {
 
-    private static final String REPRESENTATION_SLOT_TOOLTIP = "GT5U.recipe_filter.representation_slot.tooltip";
+	private static final String REPRESENTATION_SLOT_TOOLTIP = "GT5U.recipe_filter.representation_slot.tooltip";
 
-    public GT_GUIContainer_RecipeFilter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(aInventoryPlayer, aTileEntity);
-    }
+	public GT_GUIContainer_RecipeFilter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+		super(aInventoryPlayer, aTileEntity);
+	}
 
-    @Override
-    protected void setupTooltips() {
-        addToolTip(new GT_GuiSlotTooltip(
-                ((GT_Container_SpecialFilter) mContainer).getSpecialSlot(),
-                mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP)));
-    }
+	@Override
+	protected void setupTooltips() {
+		addToolTip(new GT_GuiSlotTooltip(((GT_Container_SpecialFilter) mContainer).getSpecialSlot(), mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP)));
+	}
 }

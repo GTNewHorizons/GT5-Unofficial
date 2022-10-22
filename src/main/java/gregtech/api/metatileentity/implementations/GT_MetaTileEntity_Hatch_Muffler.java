@@ -1,8 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MUFFLER;
-import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -15,19 +12,24 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Pollution;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
-import java.util.Arrays;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.Arrays;
+
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MUFFLER;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+
 @SuppressWarnings("unused") // Unused API is expected within scope
 public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
             "gt.blockmachines.hatch.muffler.desc.format",
-            "Outputs the Pollution (Might cause ... things)%n" + "DO NOT OBSTRUCT THE OUTPUT!%n"
-                    + "Reduces Pollution to %d%%%n"
-                    + "Recovers %d%% of CO2/CO/SO2");
+            "Outputs the Pollution (Might cause ... things)%n" +
+                    "DO NOT OBSTRUCT THE OUTPUT!%n" +
+                    "Reduces Pollution to %d%%%n" +
+                    "Recovers %d%% of CO2/CO/SO2");
     private final int pollutionReduction = calculatePollutionReduction(100);
     private final int pollutionRecover = 100 - pollutionReduction;
     private final String[] description = String.format(localizedDescFormat, pollutionReduction, pollutionRecover)
@@ -39,7 +41,7 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     }
 
     public GT_MetaTileEntity_Hatch_Muffler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        this(aName, aTier, new String[] {aDescription}, aTextures);
+        this(aName, aTier, new String[]{aDescription}, aTextures);
     }
 
     public GT_MetaTileEntity_Hatch_Muffler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -54,12 +56,12 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_MUFFLER)};
+        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_MUFFLER)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_MUFFLER)};
+        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_MUFFLER)};
     }
 
     @Override
@@ -152,25 +154,16 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
                 .setMotion(xSpd, ySpd, zSpd);
 
         if (chk1) {
-            events.setPosition(
-                            xPos + ran1 * 0.5F,
-                            yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                            zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                    .run();
+            events.setPosition(xPos + ran1 * 0.5F, yPos + XSTR_INSTANCE.nextFloat() * 0.5F, zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
+                  .run();
         }
         if (chk2) {
-            events.setPosition(
-                            xPos + ran2 * 0.5F,
-                            yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                            zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                    .run();
+            events.setPosition(xPos + ran2 * 0.5F, yPos + XSTR_INSTANCE.nextFloat() * 0.5F, zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
+                  .run();
         }
         if (chk3) {
-            events.setPosition(
-                            xPos + ran3 * 0.5F,
-                            yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                            zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                    .run();
+            events.setPosition(xPos + ran3 * 0.5F, yPos + XSTR_INSTANCE.nextFloat() * 0.5F, zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
+                  .run();
         }
     }
 

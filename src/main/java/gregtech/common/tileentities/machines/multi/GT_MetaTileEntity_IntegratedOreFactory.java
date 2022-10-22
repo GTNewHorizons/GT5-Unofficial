@@ -1,10 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
-
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -22,8 +17,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import java.util.*;
-import java.util.stream.Collectors;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,8 +25,15 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class GT_MetaTileEntity_IntegratedOreFactory
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IntegratedOreFactory> {
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+
+public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IntegratedOreFactory> {
 
     private static final int CASING_INDEX1 = 183;
     private static final int CASING_INDEX2 = 49;
@@ -45,61 +45,32 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     private static final String SIFTER = "Sifter";
     private static final String CHEM_WASH = "Chemical Bathing";
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_IntegratedOreFactory> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_IntegratedOreFactory>builder()
-                    .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
-                        {"           ", "           ", "       WWW ", "       WWW ", "           ", "           "},
-                        {"           ", "       sss ", "      sppps", "      sppps", "       sss ", "           "},
-                        {"           ", "       sss ", "      s   s", "      s   s", "       sss ", "           "},
-                        {"           ", "       sss ", "      sppps", "      sppps", "       sss ", "           "},
-                        {"           ", "       sss ", "      s   s", "      s   s", "       sss ", "           "},
-                        {"           ", "       sss ", "      sppps", "      sppps", "       sss ", "           "},
-                        {"iiiiii     ", "iIIIIiisssi", "iIIIIis   s", "iIIIIis   s", "iIIIIiisssi", "iiiiii     "},
-                        {"iggggi     ", "gt  t isssi", "g xx  sppps", "g xx  sppps", "gt  t isssi", "iggggi     "},
-                        {"iggggi     ", "gt  t isssi", "g xx  s   s", "g xx  s   s", "gt  t isssi", "iggggi     "},
-                        {"iggggi     ", "gt  t is~si", "g xx  spppO", "g xx  spppO", "gt  t isssi", "iggggi     "},
-                        {"iggggi     ", "gt  t isssi", "g xx  s   O", "g xx  s   O", "gt  t isssi", "iggggi     "},
-                        {"EEEEEE     ", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEE     "}
-                    }))
-                    .addElement('i', ofBlock(GregTech_API.sBlockCasings8, 7))
-                    .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
-                    .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
-                    .addElement('x', ofBlock(GregTech_API.sBlockCasings2, 3))
-                    .addElement('p', ofBlock(GregTech_API.sBlockCasings2, 15))
-                    .addElement('t', ofFrame(Materials.TungstenSteel))
-                    .addElement(
-                            'E',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_IntegratedOreFactory::addButtonHatchToMachineList,
-                                    CASING_INDEX1,
-                                    1,
-                                    GregTech_API.sBlockCasings8,
-                                    7))
-                    .addElement(
-                            'I',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_IntegratedOreFactory::addSolidInputToMachineList,
-                                    CASING_INDEX1,
-                                    2,
-                                    GregTech_API.sBlockCasings8,
-                                    7))
-                    .addElement(
-                            'W',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_IntegratedOreFactory::addFluidInputToMachineList,
-                                    CASING_INDEX2,
-                                    3,
-                                    GregTech_API.sBlockCasings4,
-                                    1))
-                    .addElement(
-                            'O',
-                            ofHatchAdderOptional(
-                                    GT_MetaTileEntity_IntegratedOreFactory::addOutputToMachineList,
-                                    CASING_INDEX2,
-                                    4,
-                                    GregTech_API.sBlockCasings4,
-                                    1))
-                    .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_IntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_IntegratedOreFactory>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
+            {"           ", "           ", "       WWW ", "       WWW ", "           ", "           "},
+            {"           ", "       sss ", "      sppps", "      sppps", "       sss ", "           "},
+            {"           ", "       sss ", "      s   s", "      s   s", "       sss ", "           "},
+            {"           ", "       sss ", "      sppps", "      sppps", "       sss ", "           "},
+            {"           ", "       sss ", "      s   s", "      s   s", "       sss ", "           "},
+            {"           ", "       sss ", "      sppps", "      sppps", "       sss ", "           "},
+            {"iiiiii     ", "iIIIIiisssi", "iIIIIis   s", "iIIIIis   s", "iIIIIiisssi", "iiiiii     "},
+            {"iggggi     ", "gt  t isssi", "g xx  sppps", "g xx  sppps", "gt  t isssi", "iggggi     "},
+            {"iggggi     ", "gt  t isssi", "g xx  s   s", "g xx  s   s", "gt  t isssi", "iggggi     "},
+            {"iggggi     ", "gt  t is~si", "g xx  spppO", "g xx  spppO", "gt  t isssi", "iggggi     "},
+            {"iggggi     ", "gt  t isssi", "g xx  s   O", "g xx  s   O", "gt  t isssi", "iggggi     "},
+            {"EEEEEE     ", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEE     "}
+        }))
+        .addElement('i', ofBlock(GregTech_API.sBlockCasings8, 7))
+        .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
+        .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
+        .addElement('x', ofBlock(GregTech_API.sBlockCasings2, 3))
+        .addElement('p', ofBlock(GregTech_API.sBlockCasings2, 15))
+        .addElement('t', ofFrame(Materials.TungstenSteel))
+        .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_IntegratedOreFactory::addButtonHatchToMachineList, CASING_INDEX1, 1, GregTech_API.sBlockCasings8, 7))
+        .addElement('I', ofHatchAdderOptional(GT_MetaTileEntity_IntegratedOreFactory::addSolidInputToMachineList, CASING_INDEX1, 2, GregTech_API.sBlockCasings8, 7))
+        .addElement('W', ofHatchAdderOptional(GT_MetaTileEntity_IntegratedOreFactory::addFluidInputToMachineList, CASING_INDEX2, 3, GregTech_API.sBlockCasings4, 1))
+        .addElement('O', ofHatchAdderOptional(GT_MetaTileEntity_IntegratedOreFactory::addOutputToMachineList, CASING_INDEX2, 4, GregTech_API.sBlockCasings4, 1))
+        .build();
 
     private static final HashSet<Integer> isCrushedOre = new HashSet<>();
     private static final HashSet<Integer> isCrushedPureOre = new HashSet<>();
@@ -203,24 +174,24 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Ore Processor")
-                .addInfo("Controller Block for the Integrated Ore Factory")
-                .addInfo("It is OP. I mean ore processor.")
-                .addInfo("Do all ore procession in one step.")
-                .addInfo("Can process up to 1024 ores per time.")
-                .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water.")
-                .addInfo("Process time is depend on mode.")
-                .addInfo("Use a screwdriver to switch mode.")
-                .addInfo("Sneak click with screwdriver to void the stone dusts.")
-                .addSeparator()
-                .beginStructureBlock(6, 12, 11, false)
-                .addController("The third layer")
-                .addEnergyHatch("Button Casing", 1)
-                .addMaintenanceHatch("Button Casing", 1)
-                .addInputBus("Input ore/crushed ore", 2)
-                .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
-                .addMufflerHatch("Output Pollution", 3)
-                .addOutputBus("Output products", 4)
-                .toolTipFinisher("Gregtech");
+            .addInfo("Controller Block for the Integrated Ore Factory")
+            .addInfo("It is OP. I mean ore processor.")
+            .addInfo("Do all ore procession in one step.")
+            .addInfo("Can process up to 1024 ores per time.")
+            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water.")
+            .addInfo("Process time is depend on mode.")
+            .addInfo("Use a screwdriver to switch mode.")
+            .addInfo("Sneak click with screwdriver to void the stone dusts.")
+            .addSeparator()
+            .beginStructureBlock(6, 12, 11, false)
+            .addController("The third layer")
+            .addEnergyHatch("Button Casing", 1)
+            .addMaintenanceHatch("Button Casing", 1)
+            .addInputBus("Input ore/crushed ore", 2)
+            .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
+            .addMufflerHatch("Output Pollution", 3)
+            .addOutputBus("Output products", 4)
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -252,7 +223,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             case 4:
                 return 17 * 20;
         }
-        // go to hell
+        //go to hell
         return 1000000000;
     }
 
@@ -288,12 +259,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             if (tCharged <= 0) break;
             int tID = GT_Utility.stackToInt(ore);
             if (tID == 0) continue;
-            if (isPureDust.contains(tID)
-                    || isImpureDust.contains(tID)
-                    || isCrushedPureOre.contains(tID)
-                    || isThermal.contains(tID)
-                    || isCrushedOre.contains(tID)
-                    || isOre.contains(tID)) {
+            if (isPureDust.contains(tID) || isImpureDust.contains(tID) || isCrushedPureOre.contains(tID) ||
+                isThermal.contains(tID) || isCrushedOre.contains(tID) || isOre.contains(tID)) {
                 if (ore.stackSize <= tCharged) {
                     tRealUsed += ore.stackSize;
                     tOres.add(GT_Utility.copy(ore));
@@ -377,33 +344,20 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             sVoidStone = !sVoidStone;
-            GT_Utility.sendChatToPlayer(
-                    aPlayer, StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
+            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
             return;
         }
         sMode = (sMode + 1) % 5;
         String des;
         switch (sMode) {
-            case 0:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + THERMAL + "->" + CRUSH;
-                break;
-            case 1:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + CRUSH + "->" + CENTRIFUGE;
-                break;
-            case 2:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + CRUSH + "->" + CENTRIFUGE;
-                break;
-            case 3:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + SIFTER;
-                break;
-            case 4:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + CHEM_WASH + "->" + CRUSH + "->" + CENTRIFUGE;
-                break;
-            default:
-                des = "";
+            case 0: des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + THERMAL + "->" + CRUSH; break;
+            case 1: des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + CRUSH + "->" + CENTRIFUGE; break;
+            case 2: des = EnumChatFormatting.AQUA + CRUSH + "->" + CRUSH + "->" + CENTRIFUGE; break;
+            case 3: des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + SIFTER; break;
+            case 4: des = EnumChatFormatting.AQUA + CRUSH + "->" + CHEM_WASH + "->" + CRUSH + "->" + CENTRIFUGE; break;
+            default: des = "";
         }
-        GT_Utility.sendChatToPlayer(
-                aPlayer, StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor", des, getTime() / 20));
+        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor", des, getTime() / 20));
     }
 
     @Override
@@ -427,8 +381,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(
-                            getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -449,12 +402,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.findRecipe(
-                            getBaseMetaTileEntity(),
-                            false,
-                            GT_Values.V[15],
-                            new FluidStack[] {GT_ModHandler.getDistilledWater(Integer.MAX_VALUE)},
-                            aStack);
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], new FluidStack[]{GT_ModHandler.getDistilledWater(Integer.MAX_VALUE)}, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -475,8 +423,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.findRecipe(
-                            getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -497,8 +444,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.findRecipe(
-                            getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -519,8 +465,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(
-                            getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -541,15 +486,9 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes.findRecipe(
-                            getBaseMetaTileEntity(),
-                            false,
-                            GT_Values.V[15],
-                            getStoredFluids().toArray(new FluidStack[0]),
-                            aStack);
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], getStoredFluids().toArray(new FluidStack[0]), aStack);
                     if (tRecipe != null && tRecipe.getRepresentativeFluidInput(0) != null) {
-                        FluidStack tInputFluid =
-                                tRecipe.getRepresentativeFluidInput(0).copy();
+                        FluidStack tInputFluid = tRecipe.getRepresentativeFluidInput(0).copy();
                         int tStored = getFluidAmount(tInputFluid);
                         int tWashed = Math.min(tStored / tInputFluid.amount, aStack.stackSize);
                         depleteInput(new FluidStack(tInputFluid.getFluid(), tWashed * tInputFluid.amount));
@@ -581,7 +520,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
 
     private List<ItemStack> getOutputStack(GT_Recipe aRecipe, int aTime) {
         List<ItemStack> tOutput = new ArrayList<>();
-        for (int i = 0; i < aRecipe.mOutputs.length; i++) {
+        for (int i = 0; i < aRecipe.mOutputs.length; i ++) {
             if (aRecipe.getOutput(i) == null) {
                 continue;
             }
@@ -589,13 +528,12 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             if (tChance == 10000) {
                 tOutput.add(GT_Utility.copyAmountUnsafe(aTime * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
             } else {
-                // Use Normal Distribution
+                //Use Normal Distribution
                 double u = aTime * (tChance / 10000D);
                 double e = aTime * (tChance / 10000D) * (1 - (tChance / 10000D));
                 Random random = new Random();
                 int tAmount = (int) Math.ceil(Math.sqrt(e) * random.nextGaussian() + u);
-                tOutput.add(
-                        GT_Utility.copyAmountUnsafe(tAmount * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
+                tOutput.add(GT_Utility.copyAmountUnsafe(tAmount * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
             }
         }
         return tOutput.stream().filter(i -> (i != null && i.stackSize > 0)).collect(Collectors.toList());
@@ -623,15 +561,13 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         for (Integer id : rProduct.keySet()) {
             ItemStack stack = GT_Utility.intToStack(id);
             sMidProduct[cnt] = GT_Utility.copyAmountUnsafe(rProduct.get(id), stack);
-            cnt++;
+            cnt ++;
         }
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 8, 9, 1)
-                && mMaintenanceHatches.size() <= 1
-                && !mMufflerHatches.isEmpty();
+        return checkPiece(STRUCTURE_PIECE_MAIN, 8, 9, 1) && mMaintenanceHatches.size() <= 1 && !mMufflerHatches.isEmpty();
     }
 
     @Override
@@ -660,40 +596,18 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive)
-                return new ITexture[] {
+                return new ITexture[]{
                     Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW).extFacing().glow().build()};
+            return new ITexture[]{
                 Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW).extFacing().glow().build()};
         }
-        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2)};
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2)};
     }
 }

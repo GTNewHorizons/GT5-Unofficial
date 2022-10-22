@@ -1,7 +1,6 @@
 package gregtech.api.interfaces;
 
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -11,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
+
+import java.util.List;
 
 /**
  * The Stats for GT Tools. Not including any Material Modifiers.
@@ -137,18 +138,7 @@ public interface IToolStats {
      *
      * @return the Amount of modified Items.
      */
-    int convertBlockDrops(
-            List<ItemStack> aDrops,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            Block aBlock,
-            int aX,
-            int aY,
-            int aZ,
-            byte aMetaData,
-            int aFortune,
-            boolean aSilkTouch,
-            BlockEvent.HarvestDropsEvent aEvent);
+    int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
 
     /**
      * @return Returns a broken Version of the Item.
@@ -169,6 +159,5 @@ public interface IToolStats {
 
     short[] getRGBa(boolean aIsToolHead, ItemStack aStack);
 
-    float getMiningSpeed(
-            Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World worldObj, int aX, int aY, int aZ);
+    float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World worldObj, int aX, int aY, int aZ);
 }

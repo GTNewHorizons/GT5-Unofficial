@@ -11,11 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class GT_Block_Concretes extends GT_Block_Stones_Abstract implements IBlockOnWalkOver {
+public class GT_Block_Concretes extends GT_Block_Stones_Abstract implements IBlockOnWalkOver{
     public GT_Block_Concretes() {
         super(GT_Item_Concretes.class, "gt.blockconcretes");
         setResistance(20.0F);
-        // this.slipperiness = 0.9F;
+        //this.slipperiness = 0.9F;
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Dark Concrete");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Dark Concrete Cobblestone");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Mossy Dark Concrete Cobblestone");
@@ -70,13 +70,9 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract implements IBlo
 
     @Override
     public void onWalkOver(EntityLivingBase aEntity, World aWorld, int aX, int aY, int aZ) {
-        if ((aEntity.motionX != 0 || aEntity.motionZ != 0)
-                && !aEntity.isInWater()
-                && !aEntity.isWet()
-                && !aEntity.isSneaking()) {
-            double tSpeed = (aWorld.getBlock(aX, aY - 1, aZ).slipperiness >= 0.8 ? 1.5 : 1.2);
-            aEntity.motionX *= tSpeed;
-            aEntity.motionZ *= tSpeed;
+        if ((aEntity.motionX != 0 || aEntity.motionZ != 0) && !aEntity.isInWater() && !aEntity.isWet() && !aEntity.isSneaking()) {
+            double tSpeed = (aWorld.getBlock(aX, aY-1, aZ).slipperiness >= 0.8 ? 1.5 : 1.2);
+            aEntity.motionX *= tSpeed; aEntity.motionZ *= tSpeed;
         }
     }
 }

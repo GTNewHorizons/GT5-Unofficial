@@ -26,7 +26,8 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
             mInput = 0,
             mID = 0,
             mDisplayErrorCode = 0;
-    public long mEnergyLong = 0, mStorageLong = 0;
+    public long mEnergyLong = 0,
+            mStorageLong = 0;
     private int oActive = 0,
             oMaxProgressTime = 0,
             oProgressTime = 0,
@@ -38,8 +39,10 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
             oInput = 0,
             oID = 0,
             oDisplayErrorCode = 0;
-    private long oEnergyLong = 0, oStorageLong = 0;
+    private long oEnergyLong = 0,
+            oStorageLong = 0;
     protected int mTimer = 0;
+
 
     public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -48,21 +51,22 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
 
         if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {
             addSlots(aInventoryPlayer);
-            if (doesBindPlayerInventory()) bindPlayerInventory(aInventoryPlayer);
+            if (doesBindPlayerInventory())
+                bindPlayerInventory(aInventoryPlayer);
             detectAndSendChanges();
         } else {
             aInventoryPlayer.player.openContainer = aInventoryPlayer.player.inventoryContainer;
         }
     }
 
-    public GT_ContainerMetaTile_Machine(
-            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean doesBindInventory) {
+    public GT_ContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean doesBindInventory) {
         super(aInventoryPlayer, aTileEntity);
         mTileEntity = aTileEntity;
 
         if (mTileEntity != null && mTileEntity.getMetaTileEntity() != null) {
             addSlots(aInventoryPlayer);
-            if (doesBindPlayerInventory() && doesBindInventory) bindPlayerInventory(aInventoryPlayer);
+            if (doesBindPlayerInventory() && doesBindInventory)
+                bindPlayerInventory(aInventoryPlayer);
             detectAndSendChanges();
         } else {
             aInventoryPlayer.player.openContainer = aInventoryPlayer.player.inventoryContainer;
@@ -72,7 +76,8 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
+        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null)
+            return;
         mStorage = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getEUCapacity());
         mStorageLong = mTileEntity.getEUCapacity();
         mEnergy = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getStoredEU());

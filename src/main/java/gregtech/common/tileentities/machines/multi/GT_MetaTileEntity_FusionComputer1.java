@@ -1,8 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,15 +8,14 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.block.Block;
 
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
+
 public class GT_MetaTileEntity_FusionComputer1 extends GT_MetaTileEntity_FusionComputer {
 
     private static final ITexture textureOverlay = TextureFactory.of(
             TextureFactory.builder().addIcon(OVERLAY_FUSION1).extFacing().build(),
-            TextureFactory.builder()
-                    .addIcon(OVERLAY_FUSION1_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build());
+            TextureFactory.builder().addIcon(OVERLAY_FUSION1_GLOW).extFacing().glow().build());
 
     public GT_MetaTileEntity_FusionComputer1(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 6);
@@ -96,4 +92,5 @@ public class GT_MetaTileEntity_FusionComputer1 extends GT_MetaTileEntity_FusionC
     public int tierOverclock() {
         return 1;
     }
+
 }

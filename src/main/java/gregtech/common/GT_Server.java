@@ -21,7 +21,8 @@ public class GT_Server extends GT_Proxy {
     }
 
     @Override
-    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {}
+    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {
+    }
 
     @Override
     public int addArmor(String aPrefix) {

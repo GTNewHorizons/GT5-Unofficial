@@ -2,13 +2,14 @@ package gregtech.api.util;
 
 import com.google.common.collect.ImmutableMap;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 /** Processing Array-specialized version of {@link gregtech.api.util.GT_Single_Recipe_Check}. */
 public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Check {
@@ -93,8 +94,12 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
         if (consumeInputs) {
             if (totalItemCost > 0) {
                 int remainingItemCost = totalItemCost * finalParallel;
-                Map<GT_Utility.ItemId, Integer> runningItemCost = itemCost.entrySet().stream()
-                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() * finalParallel));
+                Map<GT_Utility.ItemId, Integer> runningItemCost =
+                        itemCost.entrySet().stream()
+                                .collect(
+                                        Collectors.toMap(
+                                                Map.Entry::getKey,
+                                                entry -> entry.getValue() * finalParallel));
 
                 for (ItemStack itemStack : items) {
                     GT_Utility.ItemId key = GT_Utility.ItemId.createNoCopy(itemStack);
@@ -112,8 +117,12 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
 
             if (totalFluidCost > 0) {
                 int remainingFluidCost = totalFluidCost * finalParallel;
-                Map<Fluid, Integer> runningFluidCost = fluidCost.entrySet().stream()
-                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() * finalParallel));
+                Map<Fluid, Integer> runningFluidCost =
+                        fluidCost.entrySet().stream()
+                                .collect(
+                                        Collectors.toMap(
+                                                Map.Entry::getKey,
+                                                entry -> entry.getValue() * finalParallel));
 
                 for (FluidStack fluidStack : fluids) {
                     Fluid key = fluidStack.getFluid();
@@ -196,12 +205,8 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
             }
 
             return new GT_Single_Recipe_Check_Processing_Array(
-                    multiBlockBase,
-                    recipe,
-                    itemCostBuilder.build(),
-                    fluidCostBuilder.build(),
-                    recipeAmperage,
-                    multiBlockBase.mInventory[1].copy());
+                    multiBlockBase, recipe, itemCostBuilder.build(), fluidCostBuilder.build(),
+                    recipeAmperage, multiBlockBase.mInventory[1].copy());
         }
     }
 }

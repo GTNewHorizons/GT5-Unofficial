@@ -6,12 +6,13 @@ import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Teleporter;
-import java.util.Iterator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import java.util.Iterator;
 
 public class GT_Container_Teleporter extends GT_ContainerMetaTile_Machine {
     public int mEgg = 0;
@@ -19,7 +20,6 @@ public class GT_Container_Teleporter extends GT_ContainerMetaTile_Machine {
     public int mTargetZ = 0;
     public int mTargetY = 0;
     public int mTargetX = 0;
-
     public GT_Container_Teleporter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
@@ -56,68 +56,52 @@ public class GT_Container_Teleporter extends GT_ContainerMetaTile_Machine {
         if ((tSlot != null) && (this.mTileEntity.getMetaTileEntity() != null)) {
             switch (aSlotIndex) {
                 case 0:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX -=
-                            (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX -= (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 1:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY -=
-                            (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY -= (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 2:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ -=
-                            (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ -= (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 3:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD -=
-                            (aShifthold == 1 ? 16 : 8);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD -= (aShifthold == 1 ? 16 : 8);
                     return null;
                 case 4:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX -=
-                            (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX -= (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 5:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY -=
-                            (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY -= (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 6:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ -=
-                            (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ -= (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 7:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD -=
-                            (aShifthold == 1 ? 4 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD -= (aShifthold == 1 ? 4 : 1);
                     return null;
                 case 8:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX +=
-                            (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX += (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 9:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY +=
-                            (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY += (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 10:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ +=
-                            (aShifthold == 1 ? 512 : 64);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ += (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 11:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD +=
-                            (aShifthold == 1 ? 16 : 8);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD += (aShifthold == 1 ? 16 : 8);
                     return null;
                 case 12:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX +=
-                            (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetX += (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 13:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY +=
-                            (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY += (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 14:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ +=
-                            (aShifthold == 1 ? 16 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ += (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 15:
-                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD +=
-                            (aShifthold == 1 ? 4 : 1);
+                    ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD += (aShifthold == 1 ? 4 : 1);
                     return null;
             }
         }
@@ -134,10 +118,7 @@ public class GT_Container_Teleporter extends GT_ContainerMetaTile_Machine {
         this.mTargetY = ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetY;
         this.mTargetZ = ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetZ;
         this.mTargetD = ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD;
-        this.mEgg = (((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity())
-                        .hasDimensionalTeleportCapability()
-                ? 1
-                : 0);
+        this.mEgg = (((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).hasDimensionalTeleportCapability() ? 1 : 0);
 
         Iterator playerIterator = this.crafters.iterator();
         while (playerIterator.hasNext()) {

@@ -1,19 +1,16 @@
 package gregtech.api.gui.widgets;
 
+import net.minecraft.client.gui.FontRenderer;
+
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.gui.FontRenderer;
 
 public class GT_GuiTooltipManager {
     public interface GT_IToolTipRenderer {
         int getGuiLeft();
-
         int getGuiTop();
-
         int getXSize();
-
         FontRenderer getFontRenderer();
-
         void drawHoveringText(List<String> text, int mouseX, int mouseY, FontRenderer font);
     }
 
@@ -32,8 +29,8 @@ public class GT_GuiTooltipManager {
     }
 
     public final void onTick(GT_IToolTipRenderer render, int mouseX, int mouseY) {
-        if ((Math.abs(mouseX - lastMouseX) < 2) && (Math.abs(mouseY - lastMouseY) < 2)) {
-            mouseStopped = Math.min(mouseStopped + 1, 50);
+        if ((Math.abs(mouseX-lastMouseX) < 2 ) && (Math.abs(mouseY-lastMouseY) < 2 )) {
+            mouseStopped = Math.min(mouseStopped+1, 50);
         } else {
             mouseStopped = 0;
         }
@@ -46,9 +43,7 @@ public class GT_GuiTooltipManager {
         for (GT_GuiTooltip tip : tips) {
             // Give the tooltip the opportunity to decide whether they should be enabled
             tip.onTick();
-            if (tip.enabled
-                    && (!tip.isDelayed() || mouseStopped > DELAY)
-                    && tip.getBounds().contains(mouseX, mouseY)) {
+            if (tip.enabled && (!tip.isDelayed() || mouseStopped > DELAY) && tip.getBounds().contains(mouseX, mouseY)) {
                 tip.updateText();
                 drawTooltip(tip, mouseX, mouseY, render);
                 break;
@@ -58,9 +53,10 @@ public class GT_GuiTooltipManager {
 
     private void drawTooltip(GT_GuiTooltip tip, int mouseX, int mouseY, GT_IToolTipRenderer render) {
         List<String> text = tip.getToolTipText();
-        if (text == null) return;
+        if (text == null)
+            return;
 
-        if (mouseX > render.getGuiLeft() + render.getXSize() / 2) {
+        if (mouseX > render.getGuiLeft() + render.getXSize()/2) {
             int maxWidth = 0;
             for (String s : text) {
                 int w = render.getFontRenderer().getStringWidth(s);
@@ -73,4 +69,5 @@ public class GT_GuiTooltipManager {
 
         render.drawHoveringText(text, mouseX, mouseY, render.getFontRenderer());
     }
+
 }

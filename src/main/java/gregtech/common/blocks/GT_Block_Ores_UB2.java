@@ -25,20 +25,10 @@ public class GT_Block_Ores_UB2 extends GT_Block_Ores_Abstract {
     }
 
     @Override
-    public OrePrefixes[]
-            getProcessingPrefix() { // Must have 8 entries; an entry can be null to disable automatic recipes.
-        return new OrePrefixes[] {
-            OrePrefixes.ore,
-            OrePrefixes.ore,
-            OrePrefixes.oreMarble,
-            OrePrefixes.ore,
-            OrePrefixes.ore,
-            OrePrefixes.ore,
-            OrePrefixes.ore,
-            OrePrefixes.ore
-        };
+    public OrePrefixes[] getProcessingPrefix() { //Must have 8 entries; an entry can be null to disable automatic recipes.
+        return new OrePrefixes[]{OrePrefixes.ore, OrePrefixes.ore, OrePrefixes.oreMarble, OrePrefixes.ore, OrePrefixes.ore, OrePrefixes.ore, OrePrefixes.ore, OrePrefixes.ore};
     }
-
+    
     @Override
     public IIcon getIcon(int side, int meta) {
         return aUBBlock.getIcon(side, (meta / 1000) % 8);
@@ -55,43 +45,17 @@ public class GT_Block_Ores_UB2 extends GT_Block_Ores_Abstract {
     }
 
     @Override
-    public Materials[] getDroppedDusts() { // Must have 8 entries; can be null.
-        return new Materials[] {
-            Materials.Stone,
-            Materials.Stone,
-            Materials.Stone,
-            Materials.Stone,
-            Materials.Stone,
-            Materials.Stone,
-            Materials.Stone,
-            Materials.Stone
-        };
+    public Materials[] getDroppedDusts() { //Must have 8 entries; can be null.
+        return new Materials[]{Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone};
     }
 
     @Override
     public boolean[] getEnabledMetas() {
-        return new boolean[] {true, true, true, true, true, true, true, true};
+        return new boolean[]{true, true, true, true, true, true, true, true};
     }
 
     @Override
-    public ITexture[] getTextureSet() { // Must have 16 entries.
-        return new ITexture[] {
-            TextureFactory.of(aUBBlock, 0),
-            TextureFactory.of(aUBBlock, 1),
-            TextureFactory.of(aUBBlock, 2),
-            TextureFactory.of(aUBBlock, 3),
-            TextureFactory.of(aUBBlock, 4),
-            TextureFactory.of(aUBBlock, 5),
-            TextureFactory.of(aUBBlock, 6),
-            TextureFactory.of(aUBBlock, 7),
-            TextureFactory.of(aUBBlock, 0),
-            TextureFactory.of(aUBBlock, 1),
-            TextureFactory.of(aUBBlock, 2),
-            TextureFactory.of(aUBBlock, 3),
-            TextureFactory.of(aUBBlock, 4),
-            TextureFactory.of(aUBBlock, 5),
-            TextureFactory.of(aUBBlock, 6),
-            TextureFactory.of(aUBBlock, 7)
-        };
+    public ITexture[] getTextureSet() { //Must have 16 entries.
+        return new ITexture[]{TextureFactory.of(aUBBlock, 0), TextureFactory.of(aUBBlock, 1), TextureFactory.of(aUBBlock, 2), TextureFactory.of(aUBBlock, 3), TextureFactory.of(aUBBlock, 4), TextureFactory.of(aUBBlock, 5), TextureFactory.of(aUBBlock, 6), TextureFactory.of(aUBBlock, 7), TextureFactory.of(aUBBlock, 0), TextureFactory.of(aUBBlock, 1), TextureFactory.of(aUBBlock, 2), TextureFactory.of(aUBBlock, 3), TextureFactory.of(aUBBlock, 4), TextureFactory.of(aUBBlock, 5), TextureFactory.of(aUBBlock, 6), TextureFactory.of(aUBBlock, 7)};
     }
 }

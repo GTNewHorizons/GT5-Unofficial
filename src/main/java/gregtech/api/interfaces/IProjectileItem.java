@@ -20,6 +20,5 @@ public interface IProjectileItem {
     /**
      * @return an Arrow Entity to be spawned. If null then this is not an Arrow. Note: Other Projectiles still extend EntityArrow
      */
-    EntityArrow getProjectile(
-            SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity, float aSpeed);
+    EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity, float aSpeed);
 }

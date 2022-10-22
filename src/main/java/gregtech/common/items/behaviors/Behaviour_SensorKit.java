@@ -5,7 +5,6 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
-import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -14,30 +13,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class Behaviour_SensorKit extends Behaviour_None {
-    private final String mTooltip = GT_LanguageManager.addStringLocalization(
-            "gt.behaviour.sensorkit.tooltip", "Used to display Information using the Mod Nuclear Control");
+    private final String mTooltip = GT_LanguageManager.addStringLocalization("gt.behaviour.sensorkit.tooltip", "Used to display Information using the Mod Nuclear Control");
 
     @Override
-    public boolean onItemUseFirst(
-            GT_MetaBase_Item aItem,
-            ItemStack aStack,
-            EntityPlayer aPlayer,
-            World aWorld,
-            int aX,
-            int aY,
-            int aZ,
-            int aSide,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if ((aPlayer instanceof EntityPlayerMP)) {
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (((tTileEntity instanceof IInventory)) && (!((IInventory) tTileEntity).isUseableByPlayer(aPlayer))) {
                 return false;
             }
-            if (((tTileEntity instanceof IGregTechDeviceInformation))
-                    && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
+            if (((tTileEntity instanceof IGregTechDeviceInformation)) && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
                 GT_Utility.setStack(aStack, ItemList.NC_SensorCard.get(aStack.stackSize));
                 NBTTagCompound tNBT = aStack.getTagCompound();
                 if (tNBT == null) {

@@ -1,5 +1,6 @@
 package gregtech.api.interfaces.tileentity;
 
+
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 
 /**
@@ -37,7 +38,7 @@ public interface ITurnable {
      */
     default boolean[] getValidFacings() {
         final boolean[] validFacings = new boolean[6];
-        for (byte facing : ALL_VALID_SIDES) {
+        for(byte facing : ALL_VALID_SIDES) {
             validFacings[facing] = isValidFacing(facing);
         }
         return validFacings;

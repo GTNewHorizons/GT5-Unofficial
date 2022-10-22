@@ -1,12 +1,10 @@
 package gregtech.common.tileentities.boilers;
 
-import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -25,6 +23,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+
 public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank {
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
@@ -34,13 +34,11 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     public boolean mHadNoWater = false;
     private int mExcessWater = 0;
 
-    public GT_MetaTileEntity_Boiler(
-            int aID, String aName, String aNameRegional, String aDescription, ITexture... aTextures) {
+    public GT_MetaTileEntity_Boiler(int aID, String aName, String aNameRegional, String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Boiler(
-            int aID, String aName, String aNameRegional, String[] aDescription, ITexture... aTextures) {
+    public GT_MetaTileEntity_Boiler(int aID, String aName, String aNameRegional, String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
     }
 
@@ -53,17 +51,10 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
-        ITexture[] tmp =
-                mTextures[aSide >= 2 ? aSide != aFacing ? 2 : ((byte) (aActive ? 4 : 3)) : aSide][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        ITexture[] tmp = mTextures[aSide >= 2 ? aSide != aFacing ? 2 : ((byte) (aActive ? 4 : 3)) : aSide][aColorIndex + 1];
         if (aSide != aFacing && tmp.length == 2) {
-            tmp = new ITexture[] {tmp[0]};
+            tmp = new ITexture[]{tmp[0]};
         }
         return tmp;
     }
@@ -261,9 +252,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     private void calculateHeatUp(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if ((this.mTemperature < getMaxTemperature())
-                && (this.mProcessingEnergy > 0)
-                && (aTick % getHeatUpRate() == 0L)) {
+        if ((this.mTemperature < getMaxTemperature()) && (this.mProcessingEnergy > 0) && (aTick % getHeatUpRate() == 0L)) {
             this.mProcessingEnergy -= getEnergyConsumption();
             this.mTemperature += getHeatUpAmount();
         }
@@ -311,16 +300,11 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     protected final void pushSteamToSide(IGregTechTileEntity aBaseMetaTileEntity, int aSide) {
         IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide((byte) aSide);
         if (tTileEntity == null) return;
-        FluidStack tDrained = aBaseMetaTileEntity.drain(
-                ForgeDirection.getOrientation(aSide), Math.max(1, this.mSteam.amount / 2), false);
+        FluidStack tDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aSide), Math.max(1, this.mSteam.amount / 2), false);
         if (tDrained == null) return;
-        int tFilledAmount =
-                tTileEntity.fill(ForgeDirection.getOrientation(aSide).getOpposite(), tDrained, false);
+        int tFilledAmount = tTileEntity.fill(ForgeDirection.getOrientation(aSide).getOpposite(), tDrained, false);
         if (tFilledAmount <= 0) return;
-        tTileEntity.fill(
-                ForgeDirection.getOrientation(aSide).getOpposite(),
-                aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aSide), tFilledAmount, true),
-                true);
+        tTileEntity.fill(ForgeDirection.getOrientation(aSide).getOpposite(), aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aSide), tFilledAmount, true), true);
     }
 
     protected void pushSteamToInventories(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -344,6 +328,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation;
+
     }
 
     @Override
@@ -356,13 +341,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         if (aIndex == GT_MetaTileEntity_Boiler.SOUND_EVENT_LET_OFF_EXCESS_STEAM) {
             GT_Utility.doSoundAtClient(SoundResource.RANDOM_FIZZ, 2, 1.0F, aX, aY, aZ);
 
-            new ParticleEventBuilder()
-                    .setIdentifier(ParticleFX.CLOUD)
-                    .setWorld(getBaseMetaTileEntity().getWorld())
-                    .setMotion(0D, 0D, 0D)
-                    .<ParticleEventBuilder>times(8, x -> x.setPosition(
-                                    aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat())
-                            .run());
+            new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD).setWorld(getBaseMetaTileEntity().getWorld()).setMotion(0D, 0D, 0D).<ParticleEventBuilder>times(8, x -> x.setPosition(aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat()).run());
         }
     }
 

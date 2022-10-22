@@ -1,7 +1,8 @@
 package gregtech.api.interfaces;
 
-import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
+
+import java.util.ArrayList;
 
 /**
  * You are allowed to include this File in your Download, as i will not change it.

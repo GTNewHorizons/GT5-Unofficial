@@ -27,7 +27,10 @@ public class GT_Packet_Pollution extends GT_Packet_New {
 
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
-        return new GT_Packet_Pollution(new ChunkCoordIntPair(aData.readInt(), aData.readInt()), aData.readInt());
+        return new GT_Packet_Pollution(
+                new ChunkCoordIntPair(aData.readInt(), aData.readInt()),
+                aData.readInt()
+        );
     }
 
     @Override

@@ -1,14 +1,5 @@
 package gregtech.common.tileentities.boilers;
 
-import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT;
-import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_BOTTOM;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_SIDE;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_TOP;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
-
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -23,6 +14,15 @@ import gregtech.common.gui.GT_GUIContainer_Boiler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.FluidStack;
 
+import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT;
+import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_BOTTOM;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_SIDE;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_TOP;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
+
 public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
 
     public static final int COOLDOWN_INTERVAL = 20;
@@ -31,14 +31,11 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     public static final int PRODUCTION_PER_SECOND = 600;
 
     public GT_MetaTileEntity_Boiler_Lava(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, new String[] {
-            "A Boiler running off Lava",
-            "Produces " + PRODUCTION_PER_SECOND + "L of Steam per second",
-            "Causes " + Integer.toString(GT_Mod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond)
-                    + " Pollution per second",
-            "Consumes " + ((double) CONSUMPTION_PER_HEATUP / ENERGY_PER_LAVA) + "L of Lava every " + COOLDOWN_INTERVAL
-                    + " ticks when fully heat up"
-        });
+        super(aID, aName, aNameRegional, new String[]{
+                "A Boiler running off Lava",
+                "Produces " + PRODUCTION_PER_SECOND + "L of Steam per second",
+                "Causes " + Integer.toString(GT_Mod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond) + " Pollution per second",
+                "Consumes " + ((double) CONSUMPTION_PER_HEATUP / ENERGY_PER_LAVA) + "L of Lava every " + COOLDOWN_INTERVAL + " ticks when fully heat up"});
     }
 
     public GT_MetaTileEntity_Boiler_Lava(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -52,24 +49,18 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[5][17][];
-        final ITexture[] texBottom = {TextureFactory.of(MACHINE_STEELBRICKS_BOTTOM)},
+        final ITexture[]
+                texBottom = {TextureFactory.of(MACHINE_STEELBRICKS_BOTTOM)},
                 texTop = {TextureFactory.of(MACHINE_STEELBRICKS_TOP), TextureFactory.of(OVERLAY_PIPE)},
                 texSide = {TextureFactory.of(MACHINE_STEELBRICKS_SIDE), TextureFactory.of(OVERLAY_PIPE)},
-                texFront =
-                        {
-                            TextureFactory.of(MACHINE_STEELBRICKS_SIDE),
-                            TextureFactory.of(BOILER_LAVA_FRONT),
-                            TextureFactory.of(BOILER_LAVA_FRONT_GLOW)
-                        },
-                texFrontActive =
-                        {
-                            TextureFactory.of(MACHINE_STEELBRICKS_SIDE),
-                            TextureFactory.of(BOILER_LAVA_FRONT_ACTIVE),
-                            TextureFactory.builder()
-                                    .addIcon(BOILER_LAVA_FRONT_ACTIVE_GLOW)
-                                    .glow()
-                                    .build()
-                        };
+                texFront = {
+                        TextureFactory.of(MACHINE_STEELBRICKS_SIDE),
+                        TextureFactory.of(BOILER_LAVA_FRONT),
+                        TextureFactory.of(BOILER_LAVA_FRONT_GLOW)},
+                texFrontActive = {
+                        TextureFactory.of(MACHINE_STEELBRICKS_SIDE),
+                        TextureFactory.of(BOILER_LAVA_FRONT_ACTIVE),
+                        TextureFactory.builder().addIcon(BOILER_LAVA_FRONT_ACTIVE_GLOW).glow().build()};
         for (byte i = 0; i < 17; i++) {
             rTextures[0][i] = texBottom;
             rTextures[1][i] = texTop;
@@ -136,8 +127,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
             this.mProcessingEnergy += 1000 * ENERGY_PER_LAVA;
             aBaseMetaTileEntity.decrStackSize(2, 1);
             aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L));
-        } else if (GT_OreDictUnificator.isItemStackInstanceOf(
-                this.mInventory[2], OrePrefixes.bucketClay.get(Materials.Lava))) {
+        } else if (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.bucketClay.get(Materials.Lava))) {
             this.mProcessingEnergy += 1000 * ENERGY_PER_LAVA;
             aBaseMetaTileEntity.decrStackSize(2, 1);
             // Clay lava buckets break, so you don't get it back.

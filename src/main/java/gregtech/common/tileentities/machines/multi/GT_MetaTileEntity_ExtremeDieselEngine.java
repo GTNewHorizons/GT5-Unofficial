@@ -1,11 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -25,12 +19,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+
 public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_DieselEngine {
 
     public GT_MetaTileEntity_ExtremeDieselEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
-
+    
     public GT_MetaTileEntity_ExtremeDieselEngine(String aName) {
         super(aName);
     }
@@ -69,47 +69,23 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
     }
 
     @Override
-    public ITexture[] getTexture(
-            IGregTechTileEntity aBaseMetaTileEntity,
-            byte aSide,
-            byte aFacing,
-            byte aColorIndex,
-            boolean aActive,
-            boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive)
-                return new ITexture[] {
+            if (aActive) return new ITexture[]{
                     casingTexturePages[0][60],
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE)
-                            .extFacing()
-                            .build(),
-                    TextureFactory.builder()
-                            .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build()
-                };
-            return new ITexture[] {
-                casingTexturePages[0][60],
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE)
-                        .extFacing()
-                        .build(),
-                TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build()
-            };
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW).extFacing().glow().build()};
+            return new ITexture[]{
+                    casingTexturePages[0][60],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW).extFacing().glow().build()};
         }
-        return new ITexture[] {casingTexturePages[0][60]};
+        return new ITexture[]{casingTexturePages[0][60]};
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeExtremeDieselEngine.png");
+        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeExtremeDieselEngine.png");
     }
 
     @Override
@@ -158,9 +134,7 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
     }
 
     @Override
-    protected int getBoostFactor() {
-        return 2;
-    }
+    protected int getBoostFactor() { return 2; }
 
     @Override
     protected Materials getBooster() {
@@ -189,47 +163,42 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
 
     @Override
     public String[] getInfoData() {
-        int mPollutionReduction = 0;
+        int mPollutionReduction=0;
         for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
             if (isValidMetaTileEntity(tHatch)) {
-                mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
+                mPollutionReduction=Math.max(tHatch.calculatePollutionReduction(100),mPollutionReduction);
             }
         }
 
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
+        long storedEnergy=0;
+        long maxEnergy=0;
+        for(GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
             if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+                storedEnergy+=tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy+=tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
-
-        return new String[] {
-            EnumChatFormatting.BLUE + "Extreme Diesel Engine" + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
-            getIdealStatus() == getRepairStatus()
-                    ? EnumChatFormatting.GREEN
-                            + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                            + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED
-                            + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                            + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.engine.output") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(-mEUt * mEfficiency / 10000) + EnumChatFormatting.RESET + " EU/t",
-            StatCollector.translateToLocal("GT5U.engine.consumption") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(fuelConsumption) + EnumChatFormatting.RESET + " L/t",
-            StatCollector.translateToLocal("GT5U.engine.value") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(fuelValue) + EnumChatFormatting.RESET + " EU/L",
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": " + EnumChatFormatting.GOLD
-                    + GT_Utility.formatNumbers(fuelRemaining) + EnumChatFormatting.RESET + " L",
-            StatCollector.translateToLocal("GT5U.engine.efficiency") + ": " + EnumChatFormatting.YELLOW
-                    + (mEfficiency / 100F) + EnumChatFormatting.YELLOW + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN
-                    + mPollutionReduction + EnumChatFormatting.RESET + " %"
+      
+        return new String[]{
+                EnumChatFormatting.BLUE + "Extreme Diesel Engine" + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " +
+                        EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
+                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
+                getIdealStatus() == getRepairStatus() ?
+                        EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false") + EnumChatFormatting.RESET :
+                        EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true") + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.engine.output") + ": " +
+                        EnumChatFormatting.RED + GT_Utility.formatNumbers(-mEUt*mEfficiency/10000) + EnumChatFormatting.RESET + " EU/t",
+                StatCollector.translateToLocal("GT5U.engine.consumption") + ": " +
+                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(fuelConsumption) + EnumChatFormatting.RESET + " L/t",
+                StatCollector.translateToLocal("GT5U.engine.value") + ": " +
+                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(fuelValue) + EnumChatFormatting.RESET + " EU/L",
+                StatCollector.translateToLocal("GT5U.turbine.fuel") + ": " +
+                        EnumChatFormatting.GOLD + GT_Utility.formatNumbers(fuelRemaining) + EnumChatFormatting.RESET + " L",
+                StatCollector.translateToLocal("GT5U.engine.efficiency") + ": " +
+                        EnumChatFormatting.YELLOW + (mEfficiency/100F) + EnumChatFormatting.YELLOW + " %",
+                StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " +
+                        EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %"
         };
     }
 }

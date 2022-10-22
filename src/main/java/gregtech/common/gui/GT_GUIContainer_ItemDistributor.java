@@ -6,9 +6,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_ItemDistributor extends GT_GUIContainerMetaTile_Machine {
     public GT_GUIContainer_ItemDistributor(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(
-                new GT_Container_ItemDistributor(aInventoryPlayer, aTileEntity),
-                "gregtech:textures/gui/ItemDistributor.png");
+        super(new GT_Container_ItemDistributor(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/ItemDistributor.png");
     }
 
     @Override

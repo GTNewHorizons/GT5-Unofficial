@@ -48,7 +48,8 @@ public class GT_Tool_RollingPin extends GT_Tool {
     }
 
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {}
+    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    }
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
@@ -57,8 +58,6 @@ public class GT_Tool_RollingPin extends GT_Tool {
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE
-                + " got flattened by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
-                + EnumChatFormatting.WHITE);
+        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " got flattened by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
     }
 }

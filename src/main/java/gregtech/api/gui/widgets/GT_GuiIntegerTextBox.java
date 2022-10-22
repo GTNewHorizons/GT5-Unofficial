@@ -1,9 +1,10 @@
 package gregtech.api.gui.widgets;
 
 import gregtech.api.interfaces.IGuiScreen;
-import java.awt.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
+
+import java.awt.*;
 
 public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGuiElement {
     private final int x0, y0;
@@ -43,17 +44,7 @@ public class GT_GuiIntegerTextBox extends GuiTextField implements IGuiScreen.IGu
 
     @Override
     public boolean textboxKeyTyped(char c, int key) {
-        if (validChar(c, key)
-                || c == 1
-                || c == 3
-                || c == 22
-                || c == 24
-                || key == 14
-                || key == 199
-                || key == 203
-                || key == 205
-                || key == 207
-                || key == 211) {
+        if (validChar(c, key) || c == 1 || c == 3 || c == 22 || c == 24 || key == 14 || key == 199 || key == 203 || key == 205 || key == 207 || key == 211) {
             return super.textboxKeyTyped(c, key);
         }
         return false;

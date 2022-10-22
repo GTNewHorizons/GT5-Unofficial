@@ -21,12 +21,8 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
                 Textures.BlockIcons.casingTexturePages[0][(i + 16)] = TextureFactory.of(this, i);
             }
         }
-        // Special handler for Pyrolyse Oven Casing on hatches...
-        Textures.BlockIcons.casingTexturePages[0][22] = TextureFactory.of(
-                Block.getBlockFromItem(ItemList.Casing_ULV.get(1).getItem()),
-                0,
-                ForgeDirection.UNKNOWN,
-                Dyes.MACHINE_METAL.mRGBa);
+        //Special handler for Pyrolyse Oven Casing on hatches...
+        Textures.BlockIcons.casingTexturePages[0][22] = TextureFactory.of(Block.getBlockFromItem(ItemList.Casing_ULV.get(1).getItem()), 0, ForgeDirection.UNKNOWN, Dyes.MACHINE_METAL.mRGBa);
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Solid Steel Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Frost Proof Machine Casing");
@@ -60,7 +56,8 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Pipe_Steel.set(new ItemStack(this, 1, 13));
         ItemList.Casing_Pipe_Titanium.set(new ItemStack(this, 1, 14));
         ItemList.Casing_Pipe_TungstenSteel.set(new ItemStack(this, 1, 15));
-    }
+        
+}
 
     @Override
     public IIcon getIcon(int aSide, int aMeta) {
@@ -102,10 +99,7 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
     }
 
     @Override
-    public float getExplosionResistance(
-            Entity aTNT, World aWorld, int aX, int aY, int aZ, double eX, double eY, double eZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ) == 8
-                ? Blocks.bedrock.getExplosionResistance(aTNT)
-                : super.getExplosionResistance(aTNT, aWorld, aX, aY, aZ, eX, eY, eZ);
+    public float getExplosionResistance(Entity aTNT, World aWorld, int aX, int aY, int aZ, double eX, double eY, double eZ) {
+        return aWorld.getBlockMetadata(aX, aY, aZ) == 8 ? Blocks.bedrock.getExplosionResistance(aTNT) : super.getExplosionResistance(aTNT, aWorld, aX, aY, aZ, eX, eY, eZ);
     }
 }

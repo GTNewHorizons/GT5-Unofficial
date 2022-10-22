@@ -32,15 +32,7 @@ public class GT_FoodStat implements IFoodStat {
      *                            Level of the Effect. [0, 1, 2] are for [I, II, III]
      *                            The likelihood that this Potion Effect takes place upon being eaten [1 - 100]
      */
-    public GT_FoodStat(
-            int aFoodLevel,
-            float aSaturation,
-            EnumAction aAction,
-            ItemStack aEmptyContainer,
-            boolean aAlwaysEdible,
-            boolean aInvisibleParticles,
-            boolean aIsRotten,
-            int... aPotionEffects) {
+    public GT_FoodStat(int aFoodLevel, float aSaturation, EnumAction aAction, ItemStack aEmptyContainer, boolean aAlwaysEdible, boolean aInvisibleParticles, boolean aIsRotten, int... aPotionEffects) {
         mFoodLevel = aFoodLevel;
         mSaturation = aSaturation;
         mAction = aAction == null ? EnumAction.eat : aAction;
@@ -92,8 +84,7 @@ public class GT_FoodStat implements IFoodStat {
             }
             for (int i = 3; i < mPotionEffects.length; i += 4) {
                 if (aPlayer.worldObj.rand.nextInt(100) < mPotionEffects[i]) {
-                    aPlayer.addPotionEffect(new PotionEffect(
-                            mPotionEffects[i - 3], mPotionEffects[i - 2], mPotionEffects[i - 1], mInvisibleParticles));
+                    aPlayer.addPotionEffect(new PotionEffect(mPotionEffects[i - 3], mPotionEffects[i - 2], mPotionEffects[i - 1], mInvisibleParticles));
                 }
             }
             if (mExplosive) {

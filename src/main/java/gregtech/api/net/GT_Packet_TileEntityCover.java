@@ -36,7 +36,6 @@ public class GT_Packet_TileEntityCover extends GT_Packet_New {
 
         this.dimID = dimID;
     }
-
     public GT_Packet_TileEntityCover(byte coverSide, int coverID, int coverData, ICoverable tile) {
         super(false);
         this.mX = tile.getXCoord();
@@ -74,9 +73,11 @@ public class GT_Packet_TileEntityCover extends GT_Packet_New {
                 aData.readInt(),
                 aData.readShort(),
                 aData.readInt(),
+
                 aData.readByte(),
                 aData.readInt(),
                 aData.readInt(),
+
                 aData.readInt());
     }
 

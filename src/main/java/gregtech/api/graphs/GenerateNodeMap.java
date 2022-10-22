@@ -1,17 +1,19 @@
 package gregtech.api.graphs;
 
-import static gregtech.api.util.GT_Utility.getOppositeSide;
-
 import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.paths.NodePath;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import java.util.ArrayList;
-import java.util.HashSet;
 import net.minecraft.tileentity.TileEntity;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import static gregtech.api.util.GT_Utility.getOppositeSide;
+
+
 // generates the node map
-public abstract class GenerateNodeMap {
+abstract public class GenerateNodeMap {
     // clearing the node map to make sure it is gone on reset
     public static void clearNodeMap(Node aNode, int aReturnNodeValue) {
         if (aNode.mTileEntity instanceof BaseMetaPipeEntity) {
@@ -31,7 +33,8 @@ public abstract class GenerateNodeMap {
             }
             Node tNextNode = aNode.mNeighbourNodes[i];
             if (tNextNode == null) continue;
-            if (tNextNode.mNodeValue != aReturnNodeValue) clearNodeMap(tNextNode, aNode.mNodeValue);
+            if (tNextNode.mNodeValue != aReturnNodeValue)
+                clearNodeMap(tNextNode, aNode.mNodeValue);
             aNode.mNeighbourNodes[i] = null;
         }
     }
@@ -46,13 +49,8 @@ public abstract class GenerateNodeMap {
     }
 
     // gets the next node
-    protected void generateNextNode(
-            BaseMetaPipeEntity aPipe,
-            Node aPipeNode,
-            byte aInvalidSide,
-            int aNextNodeValue,
-            ArrayList<ConsumerNode> tConsumers,
-            HashSet<Node> tNodeMap) {
+    protected void generateNextNode(BaseMetaPipeEntity aPipe, Node aPipeNode, byte aInvalidSide, int aNextNodeValue,
+                                    ArrayList<ConsumerNode> tConsumers, HashSet<Node> tNodeMap) {
         MetaPipeEntity tMetaPipe = (MetaPipeEntity) aPipe.getMetaTileEntity();
         for (byte i = 0; i < 6; i++) {
             if (i == aInvalidSide) {
@@ -63,14 +61,8 @@ public abstract class GenerateNodeMap {
             ArrayList<MetaPipeEntity> tNewPipes = new ArrayList<>();
             Pair nextTileEntity = getNextValidTileEntity(tNextTileEntity, tNewPipes, i, tNodeMap);
             if (nextTileEntity != null) {
-                Node tNextNode = generateNode(
-                        nextTileEntity.mTileEntity,
-                        aPipeNode,
-                        aNextNodeValue + 1,
-                        tNewPipes,
-                        nextTileEntity.mSide,
-                        tConsumers,
-                        tNodeMap);
+                Node tNextNode = generateNode(nextTileEntity.mTileEntity, aPipeNode, aNextNodeValue + 1, tNewPipes,
+                                              nextTileEntity.mSide, tConsumers, tNodeMap);
                 if (tNextNode != null) {
                     aNextNodeValue = tNextNode.mHighestNodeValue;
                     aPipeNode.mHighestNodeValue = tNextNode.mHighestNodeValue;
@@ -85,14 +77,8 @@ public abstract class GenerateNodeMap {
     }
 
     // on a valid tile entity create a new node
-    protected Node generateNode(
-            TileEntity aTileEntity,
-            Node aPreviousNode,
-            int aNextNodeValue,
-            ArrayList<MetaPipeEntity> aPipes,
-            int aSide,
-            ArrayList<ConsumerNode> aConsumers,
-            HashSet<Node> aNodeMap) {
+    protected Node generateNode(TileEntity aTileEntity, Node aPreviousNode, int aNextNodeValue, ArrayList<MetaPipeEntity> aPipes,
+                                int aSide, ArrayList<ConsumerNode> aConsumers, HashSet<Node> aNodeMap) {
         if (aTileEntity.isInvalid()) return null;
         byte tSideOp = getOppositeSide(aSide);
         byte tInvalidSide = aPreviousNode == null ? -1 : tSideOp;
@@ -110,7 +96,7 @@ public abstract class GenerateNodeMap {
             }
             tPipe.setNode(tPipeNode);
             aNodeMap.add(tPipeNode);
-            tPipeNode.mSelfPath = getNewPath(new MetaPipeEntity[] {tMetaPipe});
+            tPipeNode.mSelfPath = getNewPath(new MetaPipeEntity[]{tMetaPipe});
             tThisNode = tPipeNode;
             if (tInvalidSide > -1) {
                 tPipeNode.mNeighbourNodes[tInvalidSide] = aPreviousNode;
@@ -137,14 +123,14 @@ public abstract class GenerateNodeMap {
     }
 
     // go over the pipes until we see a valid tile entity that needs a node
-    protected Pair getNextValidTileEntity(
-            TileEntity aTileEntity, ArrayList<MetaPipeEntity> aPipes, byte aSide, HashSet<Node> aNodeMap) {
+    protected Pair getNextValidTileEntity(TileEntity aTileEntity, ArrayList<MetaPipeEntity> aPipes, byte aSide, HashSet<Node> aNodeMap) {
         if (isPipe(aTileEntity)) {
             BaseMetaPipeEntity tPipe = (BaseMetaPipeEntity) aTileEntity;
             MetaPipeEntity tMetaPipe = (MetaPipeEntity) tPipe.getMetaTileEntity();
             Node tNode = tPipe.getNode();
             if (tNode != null) {
-                if (aNodeMap.contains(tNode)) return null;
+                if (aNodeMap.contains(tNode))
+                    return null;
             }
             int tConnections = getNumberOfConnections(tMetaPipe);
             if (tConnections == 2) {
@@ -175,15 +161,13 @@ public abstract class GenerateNodeMap {
     }
 
     // checks if the tile entity is a consumer and add to the list
-    protected abstract boolean addConsumer(
-            TileEntity aTileEntity, byte aSide, int aNodeValue, ArrayList<ConsumerNode> aConsumers);
+    abstract protected boolean addConsumer(TileEntity aTileEntity, byte aSide, int aNodeValue, ArrayList<ConsumerNode> aConsumers);
 
     // get correct pathClass  that you need for your node network
     protected abstract NodePath getNewPath(MetaPipeEntity[] aPipes);
 
     // used for if you need to use dead ends for something can be null
-    protected Node getEmptyNode(
-            int aNodeValue, byte aSide, TileEntity aTileEntity, ArrayList<ConsumerNode> aConsumers) {
+    protected Node getEmptyNode(int aNodeValue, byte aSide, TileEntity aTileEntity, ArrayList<ConsumerNode> aConsumers) {
         return null;
     }
 

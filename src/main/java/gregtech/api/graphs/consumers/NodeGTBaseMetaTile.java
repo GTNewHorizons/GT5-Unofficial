@@ -6,14 +6,13 @@ import java.util.ArrayList;
 
 // consumer for gt machines
 public class NodeGTBaseMetaTile extends ConsumerNode {
-    public NodeGTBaseMetaTile(
-            int aNodeValue, BaseMetaTileEntity aTileEntity, byte aSide, ArrayList<ConsumerNode> aConsumers) {
+    public NodeGTBaseMetaTile(int aNodeValue, BaseMetaTileEntity aTileEntity, byte aSide, ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, aTileEntity, aSide, aConsumers);
     }
 
     @Override
     public int injectEnergy(long aVoltage, long aMaxAmps) {
-        return (int) ((IEnergyConnected) mTileEntity).injectEnergyUnits(mSide, aVoltage, aMaxAmps);
+        return (int)((IEnergyConnected) mTileEntity).injectEnergyUnits(mSide,aVoltage, aMaxAmps);
     }
 
     @Override

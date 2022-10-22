@@ -1,14 +1,15 @@
 package gregtech.api.fluid;
 
-import static com.google.common.primitives.Ints.saturatedCast;
-
 import gregtech.api.util.GT_Utility;
-import java.util.Map;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
+
+import java.util.Map;
+
+import static com.google.common.primitives.Ints.saturatedCast;
 
 public class FluidTankGT implements IFluidTank {
     public final FluidTankGT[] AS_ARRAY = new FluidTankGT[] {this};
@@ -17,7 +18,6 @@ public class FluidTankGT implements IFluidTank {
     private boolean mPreventDraining = false, mVoidExcess = false, mChangedFluids = false;
     /** HashMap of adjustable Tank Sizes based on Fluids if needed. */
     private Map<String, Long> mAdjustableCapacity = null;
-
     private long mAdjustableMultiplier = 1;
     /** Gives you a Tank Index in case there is multiple Tanks on a TileEntity that cares. */
     public int mIndex = 0;
@@ -102,7 +102,7 @@ public class FluidTankGT implements IFluidTank {
     @Override
     public FluidStack drain(int aDrained, boolean aDoDrain) {
         if (isEmpty() || aDrained <= 0) return null;
-        if (mAmount < aDrained) aDrained = (int) mAmount;
+        if (mAmount < aDrained) aDrained = (int)mAmount;
         final FluidStack rFluid = new FluidStack(mFluid, aDrained);
         if (aDoDrain) {
             mAmount -= aDrained;
@@ -190,20 +190,11 @@ public class FluidTankGT implements IFluidTank {
             } else mAmount = tCapacity;
             return mVoidExcess ? aFluid.amount : (int) tFilled;
         }
-        return saturatedCast(
-                isEmpty()
-                        ? mVoidExcess ? aFluid.amount : Math.min(capacity(aFluid), aFluid.amount)
-                        : contains(aFluid)
-                                ? mVoidExcess ? aFluid.amount : Math.min(capacity(aFluid) - mAmount, aFluid.amount)
-                                : 0);
+        return saturatedCast(isEmpty() ? mVoidExcess ? aFluid.amount : Math.min(capacity(aFluid), aFluid.amount) : contains(aFluid) ? mVoidExcess ? aFluid.amount : Math.min(capacity(aFluid) - mAmount, aFluid.amount) : 0);
     }
 
     public boolean canFillAll(FluidStack aFluid) {
-        return aFluid == null
-                || aFluid.amount <= 0
-                || (isEmpty()
-                        ? mVoidExcess || aFluid.amount <= capacity(aFluid)
-                        : contains(aFluid) && (mVoidExcess || mAmount + aFluid.amount <= capacity(aFluid)));
+        return aFluid == null || aFluid.amount <= 0 || (isEmpty() ? mVoidExcess || aFluid.amount <= capacity(aFluid) : contains(aFluid) && (mVoidExcess || mAmount + aFluid.amount <= capacity(aFluid)));
     }
 
     public boolean canFillAll(long aAmount) {
@@ -350,22 +341,23 @@ public class FluidTankGT implements IFluidTank {
     }
 
     public long capacity(FluidStack aFluid) {
-        if (mAdjustableCapacity == null || aFluid == null) return mCapacity;
+        if(mAdjustableCapacity == null || aFluid == null)
+            return mCapacity;
         return capacity(aFluid.getFluid());
     }
 
     public long capacity(Fluid aFluid) {
-        if (mAdjustableCapacity == null || aFluid == null) return mCapacity;
+        if(mAdjustableCapacity == null || aFluid == null)
+            return mCapacity;
         return capacity(aFluid.getName());
     }
 
     public long capacity(String aFluid) {
-        if (mAdjustableCapacity == null || aFluid == null) return mCapacity;
+        if( mAdjustableCapacity == null || aFluid == null)
+            return mCapacity;
 
         final Long tSize = mAdjustableCapacity.get(aFluid);
-        return tSize == null
-                ? Math.max(mAmount, mCapacity)
-                : Math.max(tSize * mAdjustableMultiplier, Math.max(mAmount, mCapacity));
+        return tSize == null ? Math.max(mAmount, mCapacity) : Math.max(tSize * mAdjustableMultiplier, Math.max(mAmount, mCapacity));
     }
 
     public boolean isHalf() {
@@ -448,4 +440,5 @@ public class FluidTankGT implements IFluidTank {
     public FluidTankInfo getInfo() {
         return new FluidTankInfo(isEmpty() ? null : mFluid.copy(), saturatedCast(capacity()));
     }
+
 }

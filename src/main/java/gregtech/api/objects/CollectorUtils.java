@@ -20,13 +20,10 @@ public class CollectorUtils {
      * @return a merge function which always throw {@code IllegalStateException}
      */
     public static <T> BinaryOperator<T> throwingMerger() {
-        return (u, v) -> {
-            throw new IllegalStateException(String.format("Duplicate key %s", u));
-        };
+        return (u,v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); };
     }
 
-    public static <K, V, E extends Map.Entry<K, V>, M extends Map<K, V>> Collector<E, ?, M> entriesToMap(
-            Supplier<M> mapSupplier) {
+    public static <K, V, E extends Map.Entry<K, V>, M extends Map<K, V>> Collector<E, ?, M> entriesToMap(Supplier<M> mapSupplier) {
         return Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, CollectorUtils.throwingMerger(), mapSupplier);
     }
 }

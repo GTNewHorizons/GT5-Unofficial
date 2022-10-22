@@ -6,11 +6,12 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
+import net.minecraft.block.Block;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraftforge.common.util.ForgeDirection;
 
 @SuppressWarnings("unused")
 public class GT_TextureBuilder implements ITextureBuilder {
@@ -110,7 +111,8 @@ public class GT_TextureBuilder implements ITextureBuilder {
         if (fromBlock != null) {
             if (worldCoord == Boolean.TRUE || worldCoord == null && isCTMBlock(fromBlock, fromMeta))
                 return new GT_CopiedCTMBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
-            else return new GT_CopiedBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
+            else
+                return new GT_CopiedBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
         }
         if (!textureLayers.isEmpty()) return new GT_MultiTexture(textureLayers.toArray(new ITexture[0]));
         switch (iconContainerList.size()) {
@@ -124,16 +126,14 @@ public class GT_TextureBuilder implements ITextureBuilder {
                         iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
                         iconContainerList.get(ForgeDirection.WEST.ordinal()),
                         iconContainerList.get(ForgeDirection.EAST.ordinal()),
-                        rgba,
-                        allowAlpha);
+                        rgba, allowAlpha);
             default:
                 throw new IllegalStateException("Invalid sideIconContainer count");
         }
     }
 
     private boolean isCTMBlock(Block fromBlock, int fromMeta) {
-        return GT_Mod.gregtechproxy.mCTMBlockCache.computeIfAbsent(
-                fromBlock, (byte) fromMeta, GT_TextureBuilder::apply);
+        return GT_Mod.gregtechproxy.mCTMBlockCache.computeIfAbsent(fromBlock, (byte) fromMeta, GT_TextureBuilder::apply);
     }
 
     private static Boolean apply(Block b, Byte m) {

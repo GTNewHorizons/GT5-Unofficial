@@ -2,10 +2,12 @@ package gregtech.common.items;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
+
+import java.rmi.MarshalException;
 import java.util.Arrays;
 
 public enum CombType {
-    // Organic Line
+    //Organic Line
     LIGNIE(0, "lignite", true, Materials.Lignite, 100, 0x58300B, 0x906237),
     COAL(1, "coal", true, Materials.Coal, 100, 0x525252, 0x666666),
     STICKY(2, "stickyresin", true, Materials._NULL, 50, 0x2E8F5B, 0xDCC289),
@@ -13,14 +15,14 @@ public enum CombType {
     APATITE(4, "apatite", true, Materials.Apatite, 100, 0xc1c1f6, 0x676784),
     ASH(5, "ash", true, Materials.Ash, 100, 0x1e1a18, 0xc6c6c6),
 
-    // IC2 Line
+    //IC2 Line
     COOLANT(6, "coolant", true, Materials._NULL, 100, 0x144F5A, 0x2494A2),
     ENERGY(7, "energy", true, Materials._NULL, 80, 0xC11F1F, 0xEBB9B9),
     LAPOTRON(8, "lapotron", true, Materials._NULL, 60, 0x1414FF, 0x6478FF),
     PYROTHEUM(9, "pyrotheum", true, Materials.Pyrotheum, 50, 0xffebc4, 0xe36400),
     CRYOTHEUM(10, "cryotheum", true, Materials.Pyrotheum, 50, 0x2660ff, 0x5af7ff),
 
-    // Alloy Line
+    //Alloy Line
     REDALLOY(11, "redalloy", true, Materials.RedAlloy, 100, 0xE60000, 0xB80000),
     REDSTONEALLOY(12, "redstonealloy", true, Materials.RedstoneAlloy, 90, 0xB80000, 0xA50808),
     CONDUCTIVEIRON(13, "conductiveiron", true, Materials.ConductiveIron, 80, 0x817671, 0xCEADA3),
@@ -32,7 +34,7 @@ public enum CombType {
     STAINLESSSTEEL(19, "stainlesssteel", true, Materials.StainlessSteel, 75, 0x778899, 0xC8C8DC),
     ENDERIUM(20, "enderium", true, Materials.Enderium, 40, 0x2E8B57, 0x599087),
 
-    // Thaumcraft Line
+    //Thaumcraft Line
     THAUMIUMDUST(21, "thaumiumdust", true, Materials.Thaumium, 100, 0x7A007A, 0x5C005C),
     THAUMIUMSHARD(22, "thaumiumshard", true, Materials._NULL, 85, 0x9966FF, 0xAD85FF),
     AMBER(23, "amber", true, Materials.Amber, 90, 0x774B15, 0xEE7700),
@@ -46,7 +48,7 @@ public enum CombType {
     DIVIDED(31, "divided", true, Materials.Unstable, 40, 0xF0F0F0, 0xDCDCDC),
     SPARKELING(32, "sparkling", true, Materials.NetherStar, 40, 0x7A007A, 0xFFFFFF),
 
-    // Gem Line
+    //Gem Line
     STONE(33, "stone", true, Materials._NULL, 70, 0x808080, 0x999999),
     CERTUS(34, "certus", true, Materials.CertusQuartz, 100, 0x57CFFB, 0xBBEEFF),
     FLUIX(35, "fluix", true, Materials.Fluix, 100, 0xA375FF, 0xB591FF),
@@ -64,7 +66,7 @@ public enum CombType {
     GROSSULAR(47, "grossular", true, Materials.Grossular, 100, 0x9B4E00, 0x8B8B8B),
     FIRESTONE(48, "firestone", true, Materials.Firestone, 100, 0xC00000, 0xFF0000),
 
-    // Metals Line
+    //Metals Line
     SLAG(49, "slag", true, Materials._NULL, 50, 0xD4D4D4, 0x58300B),
     COPPER(50, "copper", true, Materials.Copper, 100, 0xFF6600, 0xE65C00),
     TIN(51, "tin", true, Materials.Tin, 100, 0xD4D4D4, 0xDDDDDD),
@@ -79,7 +81,7 @@ public enum CombType {
     GALLIUM(60, "gallium", true, Materials.Gallium, 75, 0x8B8B8B, 0xC5C5E4),
     ARSENIC(61, "arsenic", true, Materials.Arsenic, 75, 0x736C52, 0x292412),
 
-    // Rare Metals Line
+    //Rare Metals Line
     BAUXITE(62, "bauxite", true, Materials.Bauxite, 85, 0x6B3600, 0x8B8B8B),
     ALUMINIUM(63, "aluminium", true, Materials.Aluminium, 60, 0x008AB8, 0xD6D6FF),
     MANGANESE(64, "manganese", true, Materials.Manganese, 30, 0xD5D5D5, 0xAAAAAA),
@@ -96,7 +98,7 @@ public enum CombType {
     ELECTROTINE(75, "electrotine", true, Materials.Electrotine, 75, 0x1E90FF, 0x3CB4C8),
     ALMANDINE(76, "almandine", true, Materials.Almandine, 85, 0xC60000, 0x8B8B8B),
 
-    // Radioactive Line
+    //Radioactive Line
     URANIUM(77, "uranium", true, Materials.Uranium, 50, 0x19AF19, 0x169E16),
     PLUTONIUM(78, "plutonium", true, Materials.Plutonium, 10, 0x240000, 0x570000),
     NAQUADAH(79, "naquadah", true, Materials.Naquadah, 10, 0x000000, 0x004400),
@@ -107,14 +109,14 @@ public enum CombType {
     AMERICIUM(84, "americium", true, Materials.Americium, 5, 0xE6E6FF, 0xC8C8C8),
     NEUTRONIUM(85, "neutronium", true, Materials.Neutronium, 2, 0xFFF0F0, 0xFAFAFA),
 
-    // Twilight
+    //Twilight
     NAGA(86, "naga", true, Materials._NULL, 100, 0x0D5A0D, 0x28874B),
     LICH(87, "lich", true, Materials._NULL, 90, 0x5C605E, 0xC5C5C5),
     HYDRA(88, "hydra", true, Materials._NULL, 80, 0x872836, 0xB8132C),
     URGHAST(89, "urghast", true, Materials._NULL, 70, 0x7C0618, 0xA7041C),
     SNOWQUEEN(90, "snowqueen", true, Materials._NULL, 60, 0x9C0018, 0xD02001),
 
-    // Space
+    //Space
     SPACE(91, "space", true, Materials._NULL, 100, 0x003366, 0xC0C0C0),
     METEORICIRON(92, "meteoriciron", true, Materials.MeteoricIron, 100, 0x321928, 0x643250),
     DESH(93, "desh", true, Materials.Desh, 90, 0x282828, 0x323232),
@@ -127,7 +129,7 @@ public enum CombType {
     BLACKPLUTONIUM(100, "blackplutonium", true, Materials.Quantium, 25, 0x000000, 0x323232),
     TRINIUM(101, "trinium", true, Materials.Trinium, 25, 0xB0E0E6, 0xC8C8D2),
 
-    // Planet
+    //Planet
     MERCURY(102, "mercury", true, Materials._NULL, 65, 0x4A4033, 0xB5A288),
     VENUS(103, "venus", true, Materials._NULL, 65, 0x120E07, 0x272010),
     MOON(104, "moon", true, Materials._NULL, 90, 0x373735, 0x7E7E78),
@@ -144,12 +146,12 @@ public enum CombType {
     BARNARDA(115, "barnarda", true, Materials._NULL, 10, 0x0D5A0D, 0xE6C18D),
     VEGA(116, "vega", true, Materials._NULL, 10, 0x1A2036, 0xB5C0DE),
 
-    // Infinity
+    //Infinity
     COSMICNEUTRONIUM(117, "cosmicneutronium", true, Materials._NULL, 5, 0x484848, 0x323232),
     INFINITYCATALYST(118, "infinitycatalyst", true, Materials._NULL, 2, 0xFFFFFF, 0xFFFFFF),
     INFINITY(119, "infinity", true, Materials._NULL, 1, 0xFFFFFF, 0xFFFFFF),
 
-    // HEE
+    //HEE
     ENDDUST(120, "enddust", true, Materials._NULL, 50, 0x003A7D, 0xCC00FA),
     ECTOPLASMA(121, "ectoplasma", true, Materials._NULL, 35, 0x381C40, 0xDCB0E5),
     ARCANESHARD(122, "arcaneshard", true, Materials._NULL, 35, 0x333D82, 0x9010AD),
@@ -162,25 +164,24 @@ public enum CombType {
     RUNEII(129, "rune2", true, Materials._NULL, 10, 0xE31010, 0x0104D9),
     FIREESSENSE(130, "fireessence", true, Materials._NULL, 30, 0xFFA157, 0xD41238),
     CRYOLITE(131, "cryolite", true, Materials.Cryolite, 90, 0xBFEFFF, 0x73B9D0),
-    // (NOBLE) GAS LINE
+    //(NOBLE) GAS LINE
     HELIUM(132, "helium", true, Materials.Helium, 90, 0xFFA9FF, 0xFFFFC3),
     ARGON(133, "argon", true, Materials.Argon, 95, 0x89D9E1, 0x160822),
-    // XENON, NEON and KRYPTON Fluid extractor Recipes are located in GT_MachineRecipeLoader.java
+    //XENON, NEON and KRYPTON Fluid extractor Recipes are located in GT_MachineRecipeLoader.java
     XENON(134, "xenon", true, Materials._NULL, 85, 0x160822, 0x8A97B0),
     NEON(135, "neon", true, Materials._NULL, 90, 0xFF7200, 0xFFC826),
     KRYPTON(136, "krypton", true, Materials._NULL, 85, 0x160822, 0x8A97B0),
     NITROGEN(137, "nitrogen", true, Materials.Nitrogen, 100, 0xA52A2A, 0xFFC832),
     OXYGEN(138, "oxygen", true, Materials.Oxygen, 100, 0x8F8FFF, 0xFFFFFF),
     HYDROGEN(139, "hydrogen", true, Materials.Hydrogen, 100, 0xFF1493, 0xFFFFFF),
-    // Those are supposed to be in the organic branch, but that would require shifting all comb IDs and we don't want to
-    // risk it.
+    //Those are supposed to be in the organic branch, but that would require shifting all comb IDs and we don't want to risk it.
     PHOSPHORUS(140, "phosphorus", true, Materials.Phosphorus, 100, 0xC1C1F6, 0xFFC826),
     MICA(141, "mica", true, Materials.Mica, 100, 0x8A97B0, 0x2F3641),
-    // Seaweed is located in the planet line
+    //Seaweed is located in the planet line
     SEAWEED(142, "seaweed", true, Materials._NULL, 90, 0x83FF83, 0xCBCBCB),
-    // just Walrus
+    //just Walrus
     WALRUS(143, "walrus", true, Materials._NULL, 100, 0xB5CFC9, 0xD6D580),
-    // TC infused Air shards line. Recipes in GT_MachineRecipeLoader.java Lines 1500+ + Nether/Endshard
+    //TC infused Air shards line. Recipes in GT_MachineRecipeLoader.java Lines 1500+ + Nether/Endshard
     INFUSEDAER(144, "infusedair", true, Materials._NULL, 100, 0x60602F, 0xFFFF7E),
     INFUSEDTERRA(145, "infusedterra", true, Materials._NULL, 100, 0x003300, 0x008600),
     INFUSEDIGNIS(146, "infusedignis", true, Materials._NULL, 100, 0x3B0E00, 0xED3801),
@@ -197,7 +198,7 @@ public enum CombType {
     UNKNOWNWATER(157, "unknownwater", true, Materials._NULL, 100, 0x36ABFF, 0x4333A5),
     ESSENTIA(158, "essentia", true, Materials._NULL, 100, 0xED3601, 0xFF6D50),
 
-    // ALWAYS KEEP _NULL AT THE BOTTOM
+    //ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
 
     public boolean showInList;
@@ -218,7 +219,8 @@ public enum CombType {
     }
 
     CombType(int id, String pName, boolean show, Materials material, int chance, int... color) {
-        if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
+        if (id < 0 && !"INVALIDCOMB".equals(pName))
+            throw new IllegalArgumentException();
         this.id = id;
         this.name = pName;
         this.material = material;
@@ -233,12 +235,11 @@ public enum CombType {
 
     public String getName() {
 
-        return GT_LanguageManager.addStringLocalization(
-                "comb." + this.name, this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Comb");
+        return GT_LanguageManager.addStringLocalization("comb." + this.name, this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Comb");
     }
 
     public int[] getColours() {
-        return color == null || color.length != 2 ? new int[] {0, 0} : color;
+        return color == null || color.length != 2 ? new int[]{0, 0} : color;
     }
 
     public int getId() {
@@ -253,14 +254,12 @@ public enum CombType {
         private static final CombType[] VALUES;
 
         static {
-            int biggestId = Arrays.stream(CombType.values())
-                    .mapToInt(CombType::getId)
-                    .max()
-                    .getAsInt();
+            int biggestId = Arrays.stream(CombType.values()).mapToInt(CombType::getId).max().getAsInt();
             VALUES = new CombType[biggestId + 1];
             Arrays.fill(VALUES, _NULL);
             for (CombType type : CombType.values()) {
-                if (type != _NULL) VALUES[type.getId()] = type;
+                if (type != _NULL)
+                    VALUES[type.getId()] = type;
             }
         }
     }

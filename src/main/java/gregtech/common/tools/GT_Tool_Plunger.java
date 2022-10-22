@@ -44,7 +44,7 @@ public class GT_Tool_Plunger extends GT_Tool {
 
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "plunger");
+       return GT_ToolHarvestHelper.isAppropriateTool(aBlock,aMetaData , "plunger");
     }
 
     @Override
@@ -54,9 +54,7 @@ public class GT_Tool_Plunger extends GT_Tool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
@@ -64,12 +62,7 @@ public class GT_Tool_Plunger extends GT_Tool {
         aItem.addItemBehavior(aID, new Behaviour_Plunger_Item(getToolDamagePerDropConversion()));
         aItem.addItemBehavior(aID, new Behaviour_Plunger_Fluid(getToolDamagePerDropConversion()));
         try {
-            Object tObject = GT_Utility.callConstructor(
-                    "gregtech.common.items.behaviors.Behaviour_Plunger_Essentia",
-                    0,
-                    null,
-                    false,
-                    getToolDamagePerDropConversion());
+            Object tObject = GT_Utility.callConstructor("gregtech.common.items.behaviors.Behaviour_Plunger_Essentia", 0, null, false, getToolDamagePerDropConversion());
             if ((tObject instanceof IItemBehaviour)) {
                 aItem.addItemBehavior(aID, (IItemBehaviour) tObject);
             }
@@ -79,8 +72,6 @@ public class GT_Tool_Plunger extends GT_Tool {
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE
-                + " got stuck trying to escape through a Pipe while fighting " + EnumChatFormatting.GREEN
-                + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " got stuck trying to escape through a Pipe while fighting " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
     }
 }

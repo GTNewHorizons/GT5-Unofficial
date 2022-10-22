@@ -57,9 +57,7 @@ public class GT_Circuit_Timer extends GT_CircuitryBehavior {
                     aRedstoneCircuitBlock.setRedstone((byte) 15, aRedstoneCircuitBlock.getOutputFacing());
                     aCircuitData[4] = 0;
                 } else {
-                    aRedstoneCircuitBlock.setRedstone(
-                            (byte) ((aCircuitData[4] - aCircuitData[0]) % aCircuitData[2] == 0 ? 15 : 0),
-                            aRedstoneCircuitBlock.getOutputFacing());
+                    aRedstoneCircuitBlock.setRedstone((byte) ((aCircuitData[4] - aCircuitData[0]) % aCircuitData[2] == 0 ? 15 : 0), aRedstoneCircuitBlock.getOutputFacing());
                 }
             } else {
                 aRedstoneCircuitBlock.setRedstone((byte) 15, aRedstoneCircuitBlock.getOutputFacing());

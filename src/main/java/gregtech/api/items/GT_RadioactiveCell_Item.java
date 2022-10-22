@@ -3,13 +3,15 @@ package gregtech.api.items;
 import gregtech.common.items.GT_DepletetCell_Item;
 import ic2.api.item.IBoxable;
 import ic2.core.util.StackUtil;
-import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable {
+import java.util.List;
+
+public class GT_RadioactiveCell_Item
+        extends GT_Generic_Item  implements IBoxable{
     protected int cellCount;
     protected int maxDmg;
     protected int dura;
@@ -39,8 +41,9 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
         return b;
     }
 
-    protected static int triangularNumber(int x) {
-        return (x * x + x) / 2;
+    protected static int triangularNumber(int x)
+    {
+      return (x * x + x) / 2;
     }
 
     protected boolean outputPulseForStack(ItemStack aStack) {
@@ -50,7 +53,7 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
             aStack.setTagCompound(tNBT);
         }
         tNBT.setInteger("output", tNBT.getInteger("output") + 1);
-        return false; // (this.pulserate > 0) || (tNBT.getInteger("output") % -this.pulserate == 0);
+        return false;//(this.pulserate > 0) || (tNBT.getInteger("output") % -this.pulserate == 0);
     }
 
     protected boolean incrementPulseForStack(ItemStack aStack) {
@@ -60,7 +63,7 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
             aStack.setTagCompound(tNBT);
         }
         tNBT.setInteger("pulse", tNBT.getInteger("pulse") + 1);
-        return false; // (this.pulserate > 0) || (tNBT.getInteger("pulse") % -this.pulserate == 0);
+        return false;//(this.pulserate > 0) || (tNBT.getInteger("pulse") % -this.pulserate == 0);
     }
 
     protected void setDurabilityForStack(ItemStack aStack, int aDurability) {
@@ -73,7 +76,7 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
     }
 
     public int getMaxNuclearDurability() {
-        return 0; // return this.maxDelay;
+        return 0;//return this.maxDelay;
     }
 
     public int func_77619_b() {
@@ -130,35 +133,24 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
 
     @Override
     public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
-        super.addAdditionalToolTips(aList, aStack, aPlayer);
-        // aList.add("Time left: " + (this.maxDelay - getDurabilityOfStack(aStack)) + " secs");
+    	super.addAdditionalToolTips(aList, aStack, aPlayer);
+        //aList.add("Time left: " + (this.maxDelay - getDurabilityOfStack(aStack)) + " secs");
         int rDmg = getDurabilityOfStack(aStack) * 6 / this.maxDmg;
         EnumChatFormatting color2;
         switch (rDmg) {
-            case 0:
-            case 1:
-                color2 = EnumChatFormatting.WHITE;
-                break;
-            case 2:
-            case 3:
-            case 4:
-                color2 = EnumChatFormatting.GRAY;
-                break;
-            default:
-                color2 = EnumChatFormatting.DARK_GRAY;
-                break;
+        case 0:
+        case 1: color2 = EnumChatFormatting.WHITE; break;
+        case 2:
+        case 3:
+        case 4: color2 = EnumChatFormatting.GRAY; break;
+        default: color2 = EnumChatFormatting.DARK_GRAY; break;
         }
-        EnumChatFormatting color1 =
-                this instanceof GT_DepletetCell_Item ? color2 = EnumChatFormatting.DARK_GRAY : EnumChatFormatting.WHITE;
-        aList.add(color1
-                + String.format(
-                        transItem("001", "Durability: %s/%s"),
-                        "" + color2 + (this.maxDmg - getDurabilityOfStack(aStack)) + color1,
-                        "" + this.maxDmg));
+        EnumChatFormatting color1 = this instanceof GT_DepletetCell_Item ? color2 = EnumChatFormatting.DARK_GRAY : EnumChatFormatting.WHITE;
+		aList.add(color1 + String.format(transItem("001", "Durability: %s/%s"), "" + color2 + (this.maxDmg - getDurabilityOfStack(aStack)) + color1, "" + this.maxDmg));
     }
 
-    @Override
-    public boolean canBeStoredInToolbox(ItemStack itemstack) {
-        return true;
-    }
+	@Override
+	public boolean canBeStoredInToolbox(ItemStack itemstack) {
+		return true;
+	}
 }

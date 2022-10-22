@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -28,16 +29,15 @@ public class NEI_GT_Config implements IConfigureNEI {
                     .build();
 
     private static final Comparator<RecipeMapHandler> RECIPE_MAP_HANDLER_COMPARATOR =
-            Comparator.comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
+            Comparator.comparingInt(
+                    handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
 
     public static boolean sIsAdded = true;
     public static GT_NEI_AssLineHandler ALH;
 
     private static void addHandler(TemplateRecipeHandler handler) {
         FMLInterModComms.sendRuntimeMessage(
-                GT_Values.GT,
-                "NEIPlugins",
-                "register-crafting-handler",
+                GT_Values.GT, "NEIPlugins", "register-crafting-handler",
                 "gregtech@" + handler.getRecipeName() + "@" + handler.getOverlayIdentifier());
         GuiCraftingRecipe.craftinghandlers.add(handler);
         GuiUsageRecipe.usagehandlers.add(handler);

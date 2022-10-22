@@ -17,11 +17,7 @@ public class ElementStack implements Cloneable {
 
     @Override
     public ElementStack clone() {
-        try {
-            return (ElementStack) super.clone();
-        } catch (Exception e) {
-            return new ElementStack(mElement, mAmount);
-        }
+        try { return (ElementStack) super.clone(); } catch (Exception e) { return new ElementStack(mElement, mAmount); }
     }
 
     @Override
@@ -30,10 +26,7 @@ public class ElementStack implements Cloneable {
         if (aObject == null) return false;
         if (aObject instanceof Element) return aObject == mElement;
         if (aObject instanceof ElementStack)
-            return ((ElementStack) aObject).mElement == mElement
-                    && (mAmount < 0
-                            || ((ElementStack) aObject).mAmount < 0
-                            || ((ElementStack) aObject).mAmount == mAmount);
+            return ((ElementStack) aObject).mElement == mElement && (mAmount < 0 || ((ElementStack) aObject).mAmount < 0 || ((ElementStack) aObject).mAmount == mAmount);
         return false;
     }
 

@@ -13,4 +13,5 @@ package gregtech.api.multitileentity.multiblock.casing;
  *   - etc, etc.
  *
  */
-public class CasingBehaviorBase {}
+public class CasingBehaviorBase {
+}

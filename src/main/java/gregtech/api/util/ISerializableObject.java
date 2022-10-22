@@ -2,9 +2,6 @@ package gregtech.api.util;
 
 import com.google.common.io.ByteArrayDataInput;
 import io.netty.buffer.ByteBuf;
-import java.io.IOException;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,6 +10,10 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.IOException;
 
 /**
  * We could well have used {@link java.io.Serializable}, but that's too slow and should generally be avoided
@@ -57,8 +58,9 @@ public interface ISerializableObject {
      */
     static NBTTagCompound readCompoundTagFromGreggyByteBuf(ByteArrayDataInput aBuf) {
         short size = aBuf.readShort();
-        if (size < 0) return null;
-        else {
+        if (size < 0)
+            return null;
+        else  {
             byte[] buf = new byte[size]; // this is shit, how many copies have we been doing?
             aBuf.readFully(buf);
             try {
@@ -88,7 +90,8 @@ public interface ISerializableObject {
     final class LegacyCoverData implements ISerializableObject {
         private int mData;
 
-        public LegacyCoverData() {}
+        public LegacyCoverData() {
+        }
 
         public LegacyCoverData(int mData) {
             this.mData = mData;

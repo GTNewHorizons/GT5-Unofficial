@@ -1,7 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
-
 import gregtech.api.gui.GT_Container_2by2;
 import gregtech.api.gui.GT_Container_4by4;
 import gregtech.api.gui.GT_GUIContainer_2by2;
@@ -16,32 +14,33 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
+
 public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch {
-    private int timeout = 4;
+    private int timeout=4;
 
     public GT_MetaTileEntity_Hatch_DataAccess(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 16, new String[] {
-            "Data Access for Multiblocks", "Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks"
-        });
+        super(aID, aName, aNameRegional, aTier, 16, new String[]{
+        		"Data Access for Multiblocks",
+        		"Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks"});
     }
 
     public GT_MetaTileEntity_Hatch_DataAccess(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aTier == 4 ? 4 : 16, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Hatch_DataAccess(
-            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_DataAccess(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aTier == 4 ? 4 : 16, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_DATA_ACCESS)};
+        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_DATA_ACCESS)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_DATA_ACCESS)};
+        return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_DATA_ACCESS)};
     }
 
     @Override
@@ -90,24 +89,21 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         switch (mTier) {
             case 4:
-                return new GT_GUIContainer_2by2(
-                        aPlayerInventory, aBaseMetaTileEntity, "Data Access Hatch", "DataAccess");
+                return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, "Data Access Hatch", "DataAccess");
             default:
-                return new GT_GUIContainer_4by4(
-                        aPlayerInventory, aBaseMetaTileEntity, "Data Access Hatch", "DataAccess");
+                return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Data Access Hatch", "DataAccess");
         }
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return mTier >= 8 && !aBaseMetaTileEntity.isActive();
+        return mTier>=8 && !aBaseMetaTileEntity.isActive();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return mTier >= 8 && !aBaseMetaTileEntity.isActive();
+        return mTier>=8 && !aBaseMetaTileEntity.isActive();
     }
-
     @Override
     public int getInventoryStackLimit() {
         return 1;
@@ -121,11 +117,12 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
                 aBaseMetaTileEntity.setActive(false);
             }
         }
+
     }
 
-    public void setActive(boolean mActive) {
+    public void setActive(boolean mActive){
         getBaseMetaTileEntity().setActive(mActive);
-        timeout = mActive ? 4 : 0;
+        timeout=mActive?4:0;
     }
 
     @Override

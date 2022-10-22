@@ -80,8 +80,13 @@ public class GT_Tool_Shovel extends GT_Tool {
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "shovel")
-                || GT_ToolHarvestHelper.isAppropriateMaterial(
-                        aBlock, Material.sand, Material.grass, Material.ground, Material.snow, Material.clay);
+                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock,
+                Material.sand,
+                Material.grass,
+                Material.ground,
+                Material.snow,
+                Material.clay
+        );
     }
 
     @Override
@@ -91,29 +96,20 @@ public class GT_Tool_Shovel extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack)
-                        .mIconSet
-                        .mTextures[gregtech.api.enums.OrePrefixes.toolHeadShovel.mTextureIndex]
-                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack)
-                        .mIconSet
-                        .mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadShovel.mTextureIndex] : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {}
+    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+    }
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " got dug up by "
-                        + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " got dug up by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
     }
 }

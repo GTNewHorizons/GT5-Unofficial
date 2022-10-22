@@ -9,32 +9,20 @@ import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_EnergyOnly extends GT_CoverBehavior {
     @Override
-    public boolean isRedstoneSensitive(
-            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    public int onCoverScrewdriverclick(
-            byte aSide,
-            int aCoverID,
-            int aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + 1) % 3;
-        switch (aCoverVariable) {
+        switch(aCoverVariable) {
             case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("028", "Allow"));
-                break;
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("028", "Allow")); break;
             case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("029", "Allow (conditional)"));
-                break;
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("029", "Allow (conditional)")); break;
             case 2:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("030", "Disallow (conditional)"));
-                break;
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("030", "Disallow (conditional)")); break;
         }
         return aCoverVariable;
     }
@@ -100,27 +88,17 @@ public class GT_Cover_EnergyOnly extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(
-            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return false;
     }
 
     @Override
-    public boolean onCoverRightclick(
-            byte aSide,
-            int aCoverID,
-            int aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            float aX,
-            float aY,
-            float aZ) {
+    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         return false;
     }
 
     @Override
-    public boolean onCoverRemoval(
-            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
+    public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
         return true;
     }
 }
