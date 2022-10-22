@@ -595,6 +595,8 @@ public interface IGT_RecipeAdder {
      */
     boolean addWiremillRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt);
 
+    boolean addWiremillRecipe(ItemStack aInput, ItemStack aCircuit, ItemStack aOutput, int aDuration, int aEUt);
+
     /**
      * Adds a Polariser Recipe
      *
@@ -862,8 +864,9 @@ public interface IGT_RecipeAdder {
     /**
      * Adds a Recipe for the Fluid Heater
      */
-    boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt);
+    boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aOutput, int aDuration, int aEUt);
 
+    boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt);
     /**
      * Adds a Recipe for the Distillery
      */

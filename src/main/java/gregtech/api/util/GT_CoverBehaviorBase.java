@@ -25,9 +25,15 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     public EntityPlayer lastPlayer = null;
     private final Class<T> typeToken;
+    private final ITexture coverFGTexture;
 
     protected GT_CoverBehaviorBase(Class<T> typeToken) {
+        this(typeToken, null);
+    }
+
+    protected GT_CoverBehaviorBase(Class<T> typeToken, ITexture coverTexture) {
         this.typeToken = typeToken;
+        this.coverFGTexture = coverTexture;
     }
 
     public abstract T createDataObject(int aLegacyData);
@@ -88,6 +94,15 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
+     * Get the special foreground cover texture associated with this cover. Return null if one should use the texture passed to
+     * {@link gregtech.api.GregTech_API#registerCover(ItemStack, ITexture, GT_CoverBehaviorBase)} or its overloads.
+     */
+    public final ITexture getSpecialCoverFGTexture(
+            byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        return getSpecialCoverFGTextureImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
      * Get the special cover texture associated with this cover. Return null if one should use the texture passed to
      * {@link gregtech.api.GregTech_API#registerCover(ItemStack, ITexture, GT_CoverBehaviorBase)} or its overloads.
      */
@@ -113,6 +128,20 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     public final void onDataChanged(
             byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         onDataChangedImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
+     * Called before receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.
+     */
+    public final void preDataChanged(
+            byte aSide,
+            int aCoverID,
+            int aNewCoverId,
+            ISerializableObject aCoverVariable,
+            ISerializableObject aNewCoverVariable,
+            ICoverable aTileEntity) {
+        preDataChangedImpl(
+                aSide, aCoverID, aNewCoverId, forceCast(aCoverVariable), forceCast(aNewCoverVariable), aTileEntity);
     }
 
     /**
@@ -204,6 +233,15 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     public final boolean onCoverRemoval(
             byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity, boolean aForced) {
         return onCoverRemovalImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity, aForced);
+    }
+
+    /**
+     * Called upon Base TE being destroyed (once getDrops is called),
+     * thus getting called only when destroyed in survival.
+     */
+    public final void onBaseTEDestroyed(
+            byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        onBaseTEDestroyedImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
     }
 
     /**
@@ -380,6 +418,11 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return GT_Utility.intToStack(aCoverID);
     }
 
+    protected ITexture getSpecialCoverFGTextureImpl(
+            byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+        return coverFGTexture;
+    }
+
     protected ITexture getSpecialCoverTextureImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return null;
     }
@@ -390,7 +433,12 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     protected void onDataChangedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
 
+    protected void preDataChangedImpl(
+            byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable, ICoverable aTileEntity) {}
+
     protected void onDroppedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
+
+    protected void onBaseTEDestroyedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
 
     protected boolean isRedstoneSensitiveImpl(
             byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, long aTimer) {

@@ -22,7 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
 
     public int mContent = 0;
-    private int oContent = 0;
+    protected int oContent = 0;
 
     public GT_Container_BasicTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -42,6 +42,7 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
         if (aSlotIndex == 2 && aMouseclick < 2) {
+            GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
             if (mTileEntity.isClientSide()) {
                 /*
                  * While a logical client don't really need to process fluid cells upon click (it could have just wait
@@ -50,11 +51,10 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
                  * I'd imagine this lag to become only more severe when playing MP over ethernet, which would have much more latency
                  * than a memory connection
                  */
-                GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
-                tTank.setDrainableStack(GT_Utility.getFluidFromDisplayStack(tTank.getStackInSlot(2)));
+                Slot slot = (Slot) inventorySlots.get(aSlotIndex);
+                tTank.setDrainableStack(GT_Utility.getFluidFromDisplayStack(slot.getStack()));
             }
-            GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
-            BasicTankFluidAccess tDrainableAccess = BasicTankFluidAccess.from(tTank, false);
+            IFluidAccess tDrainableAccess = constructFluidAccess(tTank, false);
             return handleFluidSlotClick(
                     tDrainableAccess, aPlayer, aMouseclick == 0, true, !tTank.isDrainableStackSeparate());
         }
@@ -68,6 +68,11 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         if (((GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity()).mFluid != null)
             mContent = ((GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity()).mFluid.amount;
         else mContent = 0;
+        sendProgressBar();
+        oContent = mContent;
+    }
+
+    public void sendProgressBar() {
         for (Object crafter : this.crafters) {
             ICrafting player = (ICrafting) crafter;
             if (mTimer % 500 == 0 || oContent != mContent) {
@@ -75,8 +80,6 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
                 player.sendProgressBarUpdate(this, 101, mContent >>> 16);
             }
         }
-
-        oContent = mContent;
     }
 
     @Override
@@ -103,9 +106,13 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         return 1;
     }
 
+    protected IFluidAccess constructFluidAccess(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
+        return new BasicTankFluidAccess(aTank, aIsFillableStack);
+    }
+
     static class BasicTankFluidAccess implements IFluidAccess {
-        private final GT_MetaTileEntity_BasicTank mTank;
-        private final boolean mIsFillableStack;
+        protected final GT_MetaTileEntity_BasicTank mTank;
+        protected final boolean mIsFillableStack;
 
         public BasicTankFluidAccess(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
             this.mTank = aTank;
@@ -116,6 +123,8 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         public void set(FluidStack stack) {
             if (mIsFillableStack) mTank.setFillableStack(stack);
             else mTank.setDrainableStack(stack);
+            if (mTank instanceof GT_MetaTileEntity_DigitalTankBase)
+                ((GT_MetaTileEntity_DigitalTankBase) mTank).onEmptyingContainerWhenEmpty();
         }
 
         @Override
@@ -126,18 +135,6 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         @Override
         public int getCapacity() {
             return mTank.getCapacity();
-        }
-
-        @Override
-        public int getRealCapacity() {
-            if (mTank instanceof GT_MetaTileEntity_DigitalTankBase) {
-                return ((GT_MetaTileEntity_DigitalTankBase) mTank).getRealCapacity();
-            }
-            return IFluidAccess.super.getRealCapacity();
-        }
-
-        static BasicTankFluidAccess from(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
-            return new BasicTankFluidAccess(aTank, aIsFillableStack);
         }
     }
 }

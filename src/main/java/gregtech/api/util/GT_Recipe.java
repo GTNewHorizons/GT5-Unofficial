@@ -538,7 +538,16 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
     public boolean isRecipeInputEqual(
             boolean aDecreaseStacksizeBySuccess, FluidStack[] aFluidInputs, ItemStack... aInputs) {
-        return isRecipeInputEqual(aDecreaseStacksizeBySuccess, false, aFluidInputs, aInputs);
+        return isRecipeInputEqual(aDecreaseStacksizeBySuccess, false, 1, aFluidInputs, aInputs);
+    }
+
+    // For non-multiplied recipe amount values
+    public boolean isRecipeInputEqual(
+            boolean aDecreaseStacksizeBySuccess,
+            boolean aDontCheckStackSizes,
+            FluidStack[] aFluidInputs,
+            ItemStack... aInputs) {
+        return isRecipeInputEqual(aDecreaseStacksizeBySuccess, aDontCheckStackSizes, 1, aFluidInputs, aInputs);
     }
 
     /**
@@ -563,6 +572,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     public boolean isRecipeInputEqual(
             boolean aDecreaseStacksizeBySuccess,
             boolean aDontCheckStackSizes,
+            int amountMultiplier,
             FluidStack[] aFluidInputs,
             ItemStack... aInputs) {
         if (mInputs.length > 0 && aInputs == null) return false;
@@ -581,7 +591,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             for (FluidStack recipeFluidCost : mFluidInputs) {
                 if (recipeFluidCost != null) {
                     inputFound = false;
-                    remainingCost = recipeFluidCost.amount;
+                    remainingCost = recipeFluidCost.amount * amountMultiplier;
 
                     for (int i = 0; i < aFluidInputs.length; i++) {
                         FluidStack providedFluid = aFluidInputs[i];
@@ -620,7 +630,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 ItemStack unifiedItemCost = GT_OreDictUnificator.get_nocopy(true, recipeItemCost);
                 if (unifiedItemCost != null) {
                     inputFound = false;
-                    remainingCost = recipeItemCost.stackSize;
+                    remainingCost = recipeItemCost.stackSize * amountMultiplier;
 
                     for (int i = 0; i < aInputs.length; i++) {
                         ItemStack providedItem = aInputs[i];
@@ -731,13 +741,16 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     public void reloadOwner() {
         setOwner(Loader.instance().activeModContainer());
 
-        final List<String> excludedClasses =
-                Arrays.asList("java.lang.Thread", "gregtech.api.util.GT_Recipe", "gregtech.common.GT_RecipeAdder");
+        final List<String> excludedClasses = Arrays.asList(
+                "java.lang.Thread",
+                "gregtech.api.util.GT_Recipe",
+                "gregtech.api.util.GT_Recipe$GT_Recipe_Map",
+                "gregtech.common.GT_RecipeAdder");
         if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace) {
             List<StackTraceElement> toAdd = new ArrayList<>();
             for (StackTraceElement stackTrace : Thread.currentThread().getStackTrace()) {
                 if (excludedClasses.stream()
-                        .noneMatch(c -> stackTrace.getClassName().contains(c))) {
+                        .noneMatch(c -> stackTrace.getClassName().equals(c))) {
                     toAdd.add(stackTrace);
                 }
             }
@@ -1418,7 +1431,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 1,
                 0,
                 1,
-                1,
+                0,
                 1,
                 E,
                 1,
@@ -1712,7 +1725,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 "Wiremill",
                 null,
                 RES_PATH_GUI + "basicmachines/Wiremill",
-                1,
+                2,
                 1,
                 1,
                 0,
@@ -2139,6 +2152,54 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 " EU",
                 true,
                 true);
+        public static final GT_Recipe_Map sMultiblockElectrolyzerRecipes = new GT_Recipe_Map(
+                new HashSet<>(300),
+                "gt.recipe.largeelectrolyzer",
+                "Large(PA) Electrolyzer",
+                null,
+                RES_PATH_GUI + "basicmachines/LCRNEI",
+                1,
+                9,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                true,
+                false);
+        public static final GT_Recipe_Map sMultiblockCentrifugeRecipes = new GT_Recipe_Map(
+                new HashSet<>(1200),
+                "gt.recipe.largecentrifuge",
+                "Large(PA) Centrifuge",
+                null,
+                RES_PATH_GUI + "basicmachines/LCRNEI",
+                1,
+                9,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                true,
+                false);
+        public static final GT_Recipe_Map sMultiblockMixerRecipes = new GT_Recipe_Map(
+                new HashSet<>(900),
+                "gt.recipe.largemixer",
+                "Large(PA) Mixer",
+                null,
+                RES_PATH_GUI + "basicmachines/LCRNEI",
+                9,
+                3,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                true,
+                false);
         public static final GT_Recipe_Map_LargeBoilerFakeFuels sLargeBoilerFakeFuels =
                 new GT_Recipe_Map_LargeBoilerFakeFuels();
 

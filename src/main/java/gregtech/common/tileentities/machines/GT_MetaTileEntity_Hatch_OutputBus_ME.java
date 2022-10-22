@@ -19,6 +19,7 @@ import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.common.Optional;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -212,7 +213,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 items.appendTag(tag);
             }
             aNBT.setTag("cachedItems", items);
-            gridProxy.writeToNBT(aNBT);
+            getProxy().writeToNBT(aNBT);
         }
     }
 
@@ -237,8 +238,13 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                     NBTTagCompound tagItemStack = tag.getCompoundTag("itemStack");
                     final IAEItemStack s =
                             AEApi.instance().storage().createItemStack(GT_Utility.loadItem(tagItemStack));
-                    s.setStackSize(tag.getLong("size"));
-                    itemCache.add(s);
+                    if (s != null) {
+                        s.setStackSize(tag.getLong("size"));
+                        itemCache.add(s);
+                    } else {
+                        GT_Mod.GT_FML_LOGGER.warn(
+                                "An error occurred while loading contents of ME Output Bus, some items have been voided");
+                    }
                 }
             }
             getProxy().readFromNBT(aNBT);

@@ -7,6 +7,7 @@ import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.IGuiScreen;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_WirelessRedstoneCover;
 import gregtech.api.util.GT_CoverBehavior;
@@ -14,6 +15,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
 public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
@@ -22,6 +24,18 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     private static final int PRIVATE_MASK = 0xFFFE0000;
     private static final int PUBLIC_MASK = 0x0000FFFF;
     private static final int CHECKBOX_MASK = 0x00010000;
+
+    /**
+     * @deprecated use {@link #GT_Cover_RedstoneWirelessBase(ITexture coverTexture)} instead
+     */
+    @Deprecated
+    public GT_Cover_RedstoneWirelessBase() {
+        this(null);
+    }
+
+    public GT_Cover_RedstoneWirelessBase(ITexture coverTexture) {
+        super(coverTexture);
+    }
 
     @Override
     public boolean onCoverRemoval(
@@ -185,10 +199,13 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
+        private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverLong.png";
+
         private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
 
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
+            super(aTileEntity, 250, 107, GT_Utility.intToStack(aCoverID));
+            this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
             this.side = aSide;
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
@@ -213,7 +230,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
                             textColor);
             this.getFontRenderer()
                     .drawString(
-                            GT_Utility.trans("601", "Use Private Frequency"),
+                            GT_Utility.trans("602", "Use Private Frequency"),
                             startX + spaceX * 1,
                             startY + spaceY * 2 + 4,
                             textColor);

@@ -11,8 +11,8 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -33,12 +33,14 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Multi
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IGT_HatchAdder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_AssemblyLine
@@ -75,22 +77,30 @@ public class GT_MetaTileEntity_AssemblyLine
                     .addElement(
                             'g',
                             ofChain(
+                                    ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
                                     ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
-                                    ofBlockUnlocalizedName(
-                                            "Thaumcraft", "blockCosmeticOpaque", 2, false), // warded glass
-                                    ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true)))
-                    .addElement('e', ofChain(Energy.newAny(16, 1), ofBlock(GregTech_API.sBlockCasings2, 0)))
+                                    // warded glass
+                                    ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
+                    .addElement(
+                            'e',
+                            ofChain(
+                                    Energy.newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
+                                    ofBlock(GregTech_API.sBlockCasings2, 0)))
                     .addElement(
                             'd',
-                            ofChain(
-                                    DataHatchElement.DataAccess.newAny(42, 2),
-                                    ofBlock(GregTech_API.sBlockCasings3, 10)))
+                            buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
+                                    .atLeast(DataHatchElement.DataAccess)
+                                    .dot(2)
+                                    .casingIndex(42)
+                                    .allowOnly(ForgeDirection.NORTH)
+                                    .buildAndChain(GregTech_API.sBlockCasings3, 10))
                     .addElement(
                             'b',
                             buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
                                     .atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
                                     .casingIndex(16)
                                     .dot(3)
+                                    .allowOnly(ForgeDirection.DOWN)
                                     .buildAndChain(
                                             ofBlock(GregTech_API.sBlockCasings2, 0),
                                             ofHatchAdder(
@@ -99,10 +109,10 @@ public class GT_MetaTileEntity_AssemblyLine
                             'I',
                             ofChain(
                                     // all blocks nearby use solid steel casing, so let's use the texture of that
-                                    InputBus.newAny(16, 5),
+                                    InputBus.newAny(16, 5, ForgeDirection.DOWN),
                                     ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
-                    .addElement('i', InputBus.newAny(16, 5))
-                    .addElement('o', OutputBus.newAny(16, 4))
+                    .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
+                    .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN))
                     .build();
 
     public GT_MetaTileEntity_AssemblyLine(int aID, String aName, String aNameRegional) {
@@ -239,12 +249,25 @@ public class GT_MetaTileEntity_AssemblyLine
             // If we run into missing buses/hatches or bad inputs, we go to the next data stick.
             // This check only happens if we have a valid up to date data stick.
 
+            // first validate we have enough input busses and input hatches for this recipe
+            if (mInputBusses.size() < tRecipe.mInputs.length || mInputHatches.size() < tRecipe.mFluidInputs.length) {
+                if (GT_Values.D1) {
+                    GT_FML_LOGGER.info(
+                            "Not enough sources: Need ({}, {}), has ({}, {})",
+                            mInputBusses.size(),
+                            tRecipe.mInputs.length,
+                            mInputHatches.size(),
+                            tRecipe.mFluidInputs.length);
+                }
+                continue;
+            }
+
             // Check Inputs allign
             int aItemCount = tRecipe.mInputs.length;
             tStack = new int[aItemCount];
             for (int i = 0; i < aItemCount; i++) {
                 GT_MetaTileEntity_Hatch_InputBus tInputBus = mInputBusses.get(i);
-                if (tInputBus == null) {
+                if (!isValidMetaTileEntity(tInputBus)) {
                     continue nextDataStick;
                 }
                 ItemStack tSlotStack = tInputBus.getStackInSlot(0);
@@ -262,7 +285,7 @@ public class GT_MetaTileEntity_AssemblyLine
             tFluids = new int[aFluidCount];
             tFluidSlot = new int[aFluidCount];
             for (int i = 0; i < aFluidCount; i++) {
-                if (mInputHatches.get(i) == null) {
+                if (!isValidMetaTileEntity(mInputHatches.get(i))) {
                     continue nextDataStick;
                 } else {
                     if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput) {
@@ -466,19 +489,16 @@ public class GT_MetaTileEntity_AssemblyLine
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(
-                STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, source, actor, false, true);
+        int build = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
         int tLength = Math.min(stackSize.stackSize + 1, 16);
         for (int i = 1; i < tLength - 1; i++) {
-            build = survivialBuildPiece(
-                    STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, source, actor, false, true);
+            build = survivialBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivialBuildPiece(
-                STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, source, actor, false);
+        return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
     }
 
     private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_AssemblyLine> {

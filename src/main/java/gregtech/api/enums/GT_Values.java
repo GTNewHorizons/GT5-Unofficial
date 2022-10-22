@@ -487,4 +487,11 @@ public class GT_Values {
             + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "e"
             + EnumChatFormatting.DARK_PURPLE
             + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "n";
+
+    public static final String AuthorKuba = "Author: " + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + "k"
+            + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "u"
+            + EnumChatFormatting.GOLD + EnumChatFormatting.BOLD + "b" + EnumChatFormatting.YELLOW
+            + EnumChatFormatting.BOLD + "a" + EnumChatFormatting.DARK_GREEN + EnumChatFormatting.BOLD + "6"
+            + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "0" + EnumChatFormatting.AQUA
+            + EnumChatFormatting.BOLD + "0" + EnumChatFormatting.DARK_AQUA + EnumChatFormatting.BOLD + "0";
 }

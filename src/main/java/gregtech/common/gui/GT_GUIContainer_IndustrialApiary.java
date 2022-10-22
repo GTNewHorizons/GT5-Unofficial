@@ -120,10 +120,8 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
                         energyreq,
                         Temp,
                         Hum,
-                        Math.round(100f
-                                * IA.getProductionModifier(null, 1f)
-                                * genome.getSpeed()
-                                * mod.getProductionModifier(null, 1f)),
+                        genome.getSpeed(),
+                        IA.getProductionModifier(null, 1f) * mod.getProductionModifier(null, 1f),
                         Math.round(IA.getFloweringModifier(null, 1f)
                                 * genome.getFlowering()
                                 * mod.getFloweringModifier(null, 1f)),

@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
@@ -16,6 +18,13 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverExternal;
+import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneReceiverInternal;
+import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterExternal;
+import gregtech.common.covers.redstone.GT_Cover_AdvancedRedstoneTransmitterInternal;
+import gregtech.common.covers.redstone.GT_Cover_WirelessFluidDetector;
+import gregtech.common.covers.redstone.GT_Cover_WirelessItemDetector;
+import gregtech.common.covers.redstone.GT_Cover_WirelessMaintenanceDetector;
 import gregtech.common.items.behaviors.Behaviour_Arrow;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.enchantment.Enchantment;
@@ -2296,6 +2305,158 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 "ALIEN ATTACK!!!, throw the CHEEEEESE!!!",
                 new GT_FoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
+
+        ItemList.Cover_AdvancedRedstoneTransmitterExternal.set(addItem(
+                tLastID = 577,
+                "Advanced Redstone Transmitter (External)",
+                "Transfers Redstone signals wirelessly",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
+        ItemList.Cover_AdvancedRedstoneTransmitterInternal.set(addItem(
+                tLastID = 578,
+                "Advanced Redstone Transmitter (Internal)",
+                "Transfers Redstone signals wirelessly",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
+        ItemList.Cover_AdvancedRedstoneReceiverExternal.set(addItem(
+                tLastID = 579,
+                "Advanced Redstone Receiver (External)",
+                "Transfers Redstone signals wirelessly",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
+        ItemList.Cover_AdvancedRedstoneReceiverInternal.set(addItem(
+                tLastID = 580,
+                "Advanced Redstone Receiver (Internal)",
+                "Transfers Redstone signals wirelessly",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
+
+        ItemList.Cover_WirelessFluidDetector.set(addItem(
+                tLastID = 581,
+                "Wireless Fluid Detector Cover",
+                "Transfers Fluid Amount as Redstone wirelessly",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
+        ItemList.Cover_WirelessItemDetector.set(addItem(
+                tLastID = 582,
+                "Wireless Item Detector Cover",
+                "Transfers Item Amount as Redstone wirelessly",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L)));
+
+        ItemList.Cover_WirelessNeedsMaintainance.set(addItem(
+                tLastID = 583,
+                "Wireless Needs Maintenance Cover",
+                "Transfers Maintenance Issues as Redstone wirelessly",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 3L)));
+
+        GregTech_API.registerCover(
+                ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
+                new GT_Cover_AdvancedRedstoneTransmitterExternal(
+                        TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
+
+        GregTech_API.registerCover(
+                ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
+                new GT_Cover_AdvancedRedstoneTransmitterInternal(
+                        TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
+
+        GregTech_API.registerCover(
+                ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
+                new GT_Cover_AdvancedRedstoneReceiverExternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
+
+        GregTech_API.registerCover(
+                ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
+                new GT_Cover_AdvancedRedstoneReceiverInternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
+
+        GregTech_API.registerCover(
+                ItemList.Cover_WirelessFluidDetector.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_FLUID_DETECTOR)),
+                new GT_Cover_WirelessFluidDetector(TextureFactory.of(OVERLAY_WIRELESS_FLUID_DETECTOR)));
+
+        GregTech_API.registerCover(
+                ItemList.Cover_WirelessItemDetector.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)),
+                new GT_Cover_WirelessItemDetector(TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)));
+
+        GregTech_API.registerCover(
+                ItemList.Cover_WirelessNeedsMaintainance.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)),
+                new GT_Cover_WirelessMaintenanceDetector(TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)));
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                    ItemList.Cover_RedstoneTransmitterExternal.get(1L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                    GT_Utility.getIntegratedCircuit(1)
+                },
+                GT_Values.NF,
+                ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
+                3200,
+                128);
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                    ItemList.Cover_RedstoneReceiverExternal.get(1L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                    GT_Utility.getIntegratedCircuit(1)
+                },
+                GT_Values.NF,
+                ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
+                3200,
+                128);
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                    ItemList.Cover_FluidDetector.get(1L),
+                    ItemList.Emitter_EV.get(1L),
+                    GT_Utility.getIntegratedCircuit(1)
+                },
+                GT_Values.NF,
+                ItemList.Cover_WirelessFluidDetector.get(1L),
+                3200,
+                128);
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                    ItemList.Cover_ItemDetector.get(1L), ItemList.Emitter_EV.get(1L), GT_Utility.getIntegratedCircuit(1)
+                },
+                GT_Values.NF,
+                ItemList.Cover_WirelessItemDetector.get(1L),
+                3200,
+                128);
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                    ItemList.Cover_NeedsMaintainance.get(1L),
+                    ItemList.Emitter_EV.get(1L),
+                    GT_Utility.getIntegratedCircuit(1)
+                },
+                GT_Values.NF,
+                ItemList.Cover_WirelessNeedsMaintainance.get(1L),
+                3200,
+                128);
+
+        GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
+                new Object[] {ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L)});
+        GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
+                new Object[] {ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L)});
+        GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
+                new Object[] {ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L)});
+        GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L),
+                new Object[] {ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L)});
 
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 0), new ItemStack(Items.dye, 2, 1));
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 1), new ItemStack(Items.dye, 2, 12));

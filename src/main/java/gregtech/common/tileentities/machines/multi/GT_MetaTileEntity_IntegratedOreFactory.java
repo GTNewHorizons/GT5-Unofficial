@@ -8,8 +8,8 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
@@ -19,7 +19,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -28,7 +31,6 @@ import gregtech.api.util.GT_Utility;
 import java.util.*;
 import java.util.stream.Collectors;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -112,6 +114,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     private ItemStack[] sMidProduct;
     private int sMode = 0;
     private boolean sVoidStone = false;
+    private int currentParallelism = 0;
 
     private static void initHash() {
         for (String name : OreDictionary.getOreNames()) {
@@ -187,6 +190,12 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                 .addSeparator()
                 .beginStructureBlock(6, 12, 11, false)
                 .addController("The third layer")
+                .addStructureInfo("128 advanced iridium plated machine casing")
+                .addStructureInfo("105 clean stainless steel machine casing")
+                .addStructureInfo("48 reinforced glass")
+                .addStructureInfo("30 tungstensteel pipe casing")
+                .addStructureInfo("16 tungstensteel frame box")
+                .addStructureInfo("16 steel gear box casing")
                 .addEnergyHatch("Button Casing", 1)
                 .addMaintenanceHatch("Button Casing", 1)
                 .addInputBus("Input ore/crushed ore", 2)
@@ -208,9 +217,9 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 8, 9, 1, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 8, 9, 1, elementBudget, env, false, true);
     }
 
     @Override
@@ -287,6 +296,9 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                 }
             }
         }
+
+        // for scanner
+        setCurrentParallelism(tRealUsed);
 
         if (tRealUsed == 0) {
             return false;
@@ -389,6 +401,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     public void loadNBTData(NBTTagCompound aNBT) {
         sMode = aNBT.getInteger("ssMode");
         sVoidStone = aNBT.getBoolean("ssStone");
+        currentParallelism = aNBT.getInteger("currentParallelism");
         super.loadNBTData(aNBT);
     }
 
@@ -396,6 +409,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("ssMode", sMode);
         aNBT.setBoolean("ssStone", sVoidStone);
+        aNBT.setInteger("currentParallelism", currentParallelism);
         super.saveNBTData(aNBT);
     }
 
@@ -636,6 +650,23 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_IntegratedOreFactory(mName);
+    }
+
+    private void setCurrentParallelism(int parallelism) {
+        this.currentParallelism = parallelism;
+    }
+
+    private int getCurrentParallelism() {
+        return this.currentParallelism;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        List<String> informationData = Arrays.asList(super.getInfoData());
+        String parallelism = StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.BLUE + getCurrentParallelism() + EnumChatFormatting.RESET;
+        informationData.add(parallelism);
+        return informationData.toArray(new String[0]);
     }
 
     @Override

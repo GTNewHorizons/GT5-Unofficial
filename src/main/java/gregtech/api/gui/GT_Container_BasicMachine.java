@@ -4,6 +4,7 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Basi
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
@@ -214,14 +215,13 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
             default:
                 if (aSlotNumber == OTHER_SLOT_COUNT + 1 + machine.mInputSlotCount + machine.mOutputItems.length
                         && aMouseclick < 2) {
+                    GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
                     if (mTileEntity.isClientSide()) {
                         // see parent class slotClick for an explanation on why doing this
-                        GT_MetaTileEntity_BasicTank tTank =
-                                (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
-                        tTank.setFillableStack(GT_Utility.getFluidFromDisplayStack(tTank.getStackInSlot(2)));
+                        Slot slot = (Slot) inventorySlots.get(aSlotNumber);
+                        tTank.setFillableStack(GT_Utility.getFluidFromDisplayStack(slot.getStack()));
                     }
-                    GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
-                    BasicTankFluidAccess tFillableAccess = BasicTankFluidAccess.from(tTank, true);
+                    IFluidAccess tFillableAccess = constructFluidAccess(tTank, true);
                     GT_Recipe_Map recipes = machine.getRecipeList();
                     // If the  machine has recipes but no fluid inputs, disallow filling this slot with fluids.
                     ItemStack tToken = handleFluidSlotClick(

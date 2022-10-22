@@ -906,6 +906,8 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
         final ArrayList<ItemStack> rList = new ArrayList<>();
         final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID());
         if (tRegistry != null) rList.add(tRegistry.getItem(getMultiTileEntityID(), writeItemNBT(new NBTTagCompound())));
+
+        onBaseTEDestroyed();
         return rList;
     }
 

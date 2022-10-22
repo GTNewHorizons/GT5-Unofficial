@@ -16,18 +16,26 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_QuantumChest;
 import gregtech.common.gui.GT_GUIContainer_QuantumChest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 @Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = "appliedenergistics2", striprefs = true)
 public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock
         implements appeng.api.storage.IMEMonitor<appeng.api.storage.data.IAEItemStack> {
     protected boolean mVoidOverflow = false;
+    protected boolean mDisableFilter;
     public boolean voidBreak;
     private Map<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> listeners =
             null;
@@ -277,7 +285,23 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         GT_Utility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal(
-                        mVoidOverflow ? "GT5U.machines.voidoveflow.enabled" : "GT5U.machines.voidoveflow.disabled"));
+                        mVoidOverflow
+                                ? "GT5U.machines.digitalchest.voidoverflow.enabled"
+                                : "GT5U.machines.digitalchest.voidoverflow.disabled"));
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ)) return true;
+        mDisableFilter = !mDisableFilter;
+        GT_Utility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal(
+                        mDisableFilter
+                                ? "GT5U.machines.digitalchest.inputfilter.disabled"
+                                : "GT5U.machines.digitalchest.inputfilter.enabled"));
+        return true;
     }
 
     @Override
@@ -448,6 +472,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         aNBT.setInteger("mItemCount", getItemCount());
         if (getItemStack() != null) aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
+        aNBT.setBoolean("mDisableFilter", mDisableFilter);
     }
 
     @Override
@@ -456,6 +481,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         if (aNBT.hasKey("mItemStack"))
             setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("mItemStack")));
         mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
+        mDisableFilter = aNBT.getBoolean("mDisableFilter");
     }
 
     @Override
@@ -467,7 +493,11 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         if (GregTech_API.mAE2 && GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection()) return false;
-        return aIndex == 0 && (mInventory[0] == null || GT_Utility.areStacksEqual(mInventory[0], aStack));
+        if (aIndex != 0) return false;
+        if ((mInventory[0] != null && !GT_Utility.areStacksEqual(mInventory[0], aStack))) return false;
+        if (mDisableFilter) return true;
+        if (getItemStack() == null) return mInventory[1] == null || GT_Utility.areStacksEqual(mInventory[1], aStack);
+        return GT_Utility.areStacksEqual(getItemStack(), aStack);
     }
 
     @Override
@@ -484,5 +514,33 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
             TextureFactory.of(OVERLAY_SCHEST),
             TextureFactory.builder().addIcon(OVERLAY_SCHEST_GLOW).glow().build()
         };
+    }
+
+    @Override
+    public void getWailaBody(
+            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        if (tag.hasKey("itemType", Constants.NBT.TAG_COMPOUND)) {
+            currenttip.add("Item Count: " + GT_Utility.parseNumberToString(tag.getInteger("itemCount")));
+            currenttip.add("Item Type: "
+                    + ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType"))
+                            .getDisplayName());
+        } else {
+            currenttip.add("Chest Empty");
+        }
+    }
+
+    @Override
+    public void getWailaNBTData(
+            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        ItemStack is = getItemStack();
+        if (GT_Utility.isStackInvalid(is)) return;
+        int realItemCount = getItemCount();
+        if (GT_Utility.isStackValid(mInventory[1]) && GT_Utility.areStacksEqual(mInventory[1], is))
+            realItemCount += mInventory[1].stackSize;
+        tag.setInteger("itemCount", realItemCount);
+        tag.setTag("itemType", is.writeToNBT(new NBTTagCompound()));
     }
 }

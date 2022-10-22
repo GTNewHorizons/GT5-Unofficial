@@ -64,10 +64,10 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     if (!aMaterial.contains(SubTag.SMELTING_TO_GEM))
                         if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE))
                                 && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true)))
-                            GT_ModHandler.addCraftingRecipe(
+                            GT_ModHandler.addShapelessCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
                                     GT_Proxy.tBits,
-                                    new Object[] {"X", "m", 'X', OrePrefixes.ingot.get(aMaterial)});
+                                    new Object[] {ToolDictNames.craftingToolMortar, OrePrefixes.ingot.get(aMaterial)});
                 }
 
                 if (!aNoSmashing) {

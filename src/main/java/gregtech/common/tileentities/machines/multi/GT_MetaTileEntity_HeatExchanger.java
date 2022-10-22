@@ -9,8 +9,8 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -27,7 +27,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,6 +38,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT_MetaTileEntity_HeatExchanger
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_HeatExchanger>
         implements ISurvivalConstructable {
+    private int dryHeatCounter = 0; // Counts up to dryHeatMaximum to check for explosion conditions
+    private static final int dryHeatMaximum = 2000; // 2000 ticks = 100 seconds
     private static final int CASING_INDEX = 50;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_HeatExchanger> STRUCTURE_DEFINITION =
@@ -195,6 +196,8 @@ public class GT_MetaTileEntity_HeatExchanger
         float steam_output_multiplier = 20f; // default: multiply output by 4 * 10 (boosted x5)
         float penalty = 0.0f; // penalty to apply to output based on circuitry level (1-25).
         boolean do_lava = false;
+        boolean do_coolant = false;
+        boolean do_solarSalt = false;
 
         // Do we have an integrated circuit with a valid configuration?
         if (mInventory[1] != null && mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit")) {
@@ -215,6 +218,11 @@ public class GT_MetaTileEntity_HeatExchanger
         } else if (mInputHotFluidHatch.getFluid().isFluidEqual(FluidRegistry.getFluidStack("ic2hotcoolant", 1))) {
             steam_output_multiplier /= 2f; // was boosted x2 on top of x5 -> total x10 -> nerf with this code back to 5x
             superheated_threshold /= 5f; // 10x smaller since the Hot Things production in reactor is the same.
+            do_coolant = true;
+        } else if (mInputHotFluidHatch.getFluid().isFluidEqual(FluidRegistry.getFluidStack("molten.solarsalthot", 1))) {
+            steam_output_multiplier *= 2.5f; // Solar Salt:Steam value is 5x higher than Hot Coolant's value
+            superheated_threshold /= 25f; // Given that, multiplier is 5x higher and threshold is 5x lower
+            do_solarSalt = true;
         } else {
             // If we're working with neither, fail out
             superheated_threshold = 0;
@@ -231,8 +239,12 @@ public class GT_MetaTileEntity_HeatExchanger
         this.mEUt = (int) (fluidAmountToConsume * steam_output_multiplier * efficiency);
         if (do_lava) {
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2pahoehoelava", fluidAmountToConsume), true);
-        } else {
+        } else if (do_coolant) {
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2coolant", fluidAmountToConsume), true);
+        } else if (do_solarSalt) {
+            mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("molten.solarsaltcold", fluidAmountToConsume), true);
+        } else {
+            return false;
         }
         this.mEfficiencyIncrease = 80;
         return true;
@@ -268,9 +280,14 @@ public class GT_MetaTileEntity_HeatExchanger
                     } else {
                         addOutput(GT_ModHandler.getSteam(tGeneratedEU)); // Generate regular steam
                     }
+                    dryHeatCounter = 0;
                 } else {
-                    GT_Log.exp.println(this.mName + " had no more Distilled water!");
-                    explodeMultiblock(); // Generate crater
+                    if (dryHeatCounter < dryHeatMaximum) {
+                        dryHeatCounter += 1;
+                    } else {
+                        GT_Log.exp.println(this.mName + " was too hot and had no more Distilled Water!");
+                        explodeMultiblock(); // Generate crater
+                    }
                 }
             }
             return true;
@@ -376,8 +393,8 @@ public class GT_MetaTileEntity_HeatExchanger
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, env, false, true);
     }
 }

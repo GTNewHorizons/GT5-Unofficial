@@ -180,10 +180,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             if ((aMaterial.contains(SubTag.MORTAR_GRINDABLE))
                     && (GregTech_API.sRecipeFile.get(ConfigCategories.Tools.mortar, aMaterial.mName, true))) {
 
-                GT_ModHandler.addCraftingRecipe(
+                GT_ModHandler.addShapelessCraftingRecipe(
                         aMaterial.getDust(1),
                         tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
-                        new Object[] {"X", "m", 'X', OrePrefixes.plate.get(aMaterial)});
+                        new Object[] {ToolDictNames.craftingToolMortar, OrePrefixes.plate.get(aMaterial)});
             }
         }
     }

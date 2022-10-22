@@ -9,8 +9,8 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -27,7 +27,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,12 +52,8 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
             StructureDefinition.<GT_MetaTileEntity_ElectricBlastFurnace>builder()
                     .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
                         {"ttt", "tmt", "ttt"},
-                        {
-                            "CCC", "C-C", "CCC",
-                        },
-                        {
-                            "CCC", "C-C", "CCC",
-                        },
+                        {"CCC", "C-C", "CCC"},
+                        {"CCC", "C-C", "CCC"},
                         {"b~b", "bbb", "bbb"}
                     }))
                     .addElement(
@@ -121,9 +116,9 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                 .addInputBus("Any bottom layer casing", 3)
                 .addInputHatch("Any bottom layer casing", 3)
                 .addOutputBus("Any bottom layer casing", 3)
-                .addOutputHatch("Gasses, Any top layer casing", 1)
+                .addOutputHatch("Liquid form of fluids, Any bottom layer casing")
+                .addOutputHatch("Gas form of fluids, Any top layer casing", 1)
                 .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
-                .addOutputHatch("Platline fluids, Any bottom layer casing")
                 .toolTipFinisher("Gregtech");
         return tt;
     }
@@ -408,9 +403,9 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, env, false, true);
     }
 
     @Override

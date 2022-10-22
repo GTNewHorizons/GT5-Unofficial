@@ -12,7 +12,6 @@ import gregtech.api.util.GT_ApiaryUpgrade;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_IndustrialApiary;
 import java.util.ArrayList;
-import net.bdew.gendustry.api.items.IApiaryUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
@@ -109,11 +108,8 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
         if (slotstack != null && !GT_Utility.areStacksEqual(slotstack, s)) return null; // super would replace item
         if (slotstack == null && !slot.isItemValid(s))
             return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-        if (!(s.getItem() instanceof IApiaryUpgrade) && !GT_ApiaryUpgrade.isUpgrade(s))
-            return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-        int max = 1;
-        if (s.getItem() instanceof IApiaryUpgrade) max = ((IApiaryUpgrade) s.getItem()).getMaxNumber(s);
-        else max = GT_ApiaryUpgrade.getUpgrade(s).getMaxNumber();
+        if (!GT_ApiaryUpgrade.isUpgrade(s)) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
+        int max = GT_ApiaryUpgrade.getUpgrade(s).getMaxNumber();
         if (slotstack != null) max = Math.max(0, max - slotstack.stackSize);
         max = Math.min(max, s.stackSize);
         if (max == 0) return null;
@@ -204,8 +200,7 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
         if (!(s.inventory instanceof InventoryPlayer)) return super.transferStackInSlot(aPlayer, aSlotIndex);
         ItemStack aStack = s.getStack();
         if (aStack == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
-        if (!(aStack.getItem() instanceof IApiaryUpgrade) && !GT_ApiaryUpgrade.isUpgrade(aStack))
-            return super.transferStackInSlot(aPlayer, aSlotIndex);
+        if (!GT_ApiaryUpgrade.isUpgrade(aStack)) return super.transferStackInSlot(aPlayer, aSlotIndex);
         for (int i = getSlotStartIndex() + 2; i < getSlotStartIndex() + 2 + 4; i++) {
             Slot iSlot = getSlot(i);
             ItemStack iStack = iSlot.getStack();
@@ -214,10 +209,7 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
             } else {
                 if (!GT_Utility.areStacksEqual(aStack, iStack)) continue;
             }
-            int max = 1;
-            if (aStack.getItem() instanceof IApiaryUpgrade)
-                max = ((IApiaryUpgrade) aStack.getItem()).getMaxNumber(aStack);
-            else max = GT_ApiaryUpgrade.getUpgrade(aStack).getMaxNumber();
+            int max = GT_ApiaryUpgrade.getUpgrade(aStack).getMaxNumber();
             if (iStack == null) {
                 max = Math.min(max, aStack.stackSize);
                 ItemStack newstack = aStack.splitStack(max);

@@ -4,8 +4,7 @@
 // also being more explicit about what is depended on.
 
 dependencies {
-    compile("com.github.GTNewHorizons:StructureLib:1.1.7:dev")
-
+    compile("com.github.GTNewHorizons:StructureLib:1.2.0-beta.2:dev")
     compile("com.github.GTNewHorizons:NotEnoughItems:2.2.31-GTNH:dev")
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.4:dev")
     compile("com.github.GTNewHorizons:GTNHLib:0.0.1:dev")
@@ -16,7 +15,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:EnderCore:0.2.10:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.14:dev") {
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.5.3:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:gendustry:1.6.5.4-GTNH:dev") {
@@ -32,9 +31,6 @@ dependencies {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.0-17-GTNH:dev") {
-        transitive = false
-    }
-    compileOnly("com.github.GTNewHorizons:harvestcraft:1.0.15-GTNH:dev") {
         transitive = false
     }
     compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-100-GTNH:dev") {
@@ -65,6 +61,9 @@ dependencies {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:Avaritia:1.29:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.7-GTNH:dev") {
         transitive = false
     }
     compileOnly("com.google.auto.value:auto-value-annotations:1.9") {

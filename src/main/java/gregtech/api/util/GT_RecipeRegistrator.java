@@ -4,17 +4,28 @@ import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.Materials.Void;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.SetMultimap;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import ic2.api.reactor.IReactorComponent;
+import java.lang.reflect.Field;
+import java.util.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 /**
  * Class for Automatic Recipe registering.
@@ -73,6 +84,9 @@ public class GT_RecipeRegistrator {
         new RecipeShape(sMt1, sMt1, null, sMt2, null, sMt1, sMt2, null, null),
         new RecipeShape(null, sMt1, sMt1, sMt1, null, sMt2, null, null, sMt2)
     };
+    public static final Field SHAPED_ORE_RECIPE_WIDTH = ReflectionHelper.findField(ShapedOreRecipe.class, "width");
+    public static final Field SHAPED_ORE_RECIPE_HEIGHT = ReflectionHelper.findField(ShapedOreRecipe.class, "height");
+    private static volatile Map<RecipeShape, List<IRecipe>> indexedRecipeListCache;
     private static final String[][] sShapesA = new String[][] {
         null,
         null,
@@ -121,6 +135,11 @@ public class GT_RecipeRegistrator {
     };
     public static volatile int VERSION = 509;
 
+    static {
+        // flush the cache on post load finish
+        GregTech_API.sAfterGTPostload.add(() -> indexedRecipeListCache = null);
+    }
+
     public static void registerMaterialRecycling(
             ItemStack aStack, Materials aMaterial, long aMaterialAmount, MaterialStack aByproduct) {
         if (GT_Utility.isStackInvalid(aStack)) return;
@@ -138,6 +157,7 @@ public class GT_RecipeRegistrator {
                 || GT_Utility.areStacksEqual(new ItemStack(Items.blaze_rod), aStack)
                 || aData == null
                 || !aData.hasValidMaterialData()
+                || !aData.mMaterial.mMaterial.mAutoGenerateRecycleRecipes
                 || aData.mMaterial.mAmount <= 0
                 || GT_Utility.getFluidForFilledItem(aStack, false) != null) return;
         registerReverseMacerating(GT_Utility.copyAmount(1, aStack), aData, aData.mPrefix == null);
@@ -445,6 +465,108 @@ public class GT_RecipeRegistrator {
         }
     }
 
+    private static List<IRecipe> getRecipeList(RecipeShape shape) {
+        boolean force = !GregTech_API.sPostloadStarted || GregTech_API.sPostloadFinished;
+        if (force || indexedRecipeListCache == null) {
+            synchronized (GT_RecipeRegistrator.class) {
+                if (indexedRecipeListCache == null || force) {
+                    indexedRecipeListCache = createIndexedRecipeListCache();
+                }
+            }
+        }
+        return indexedRecipeListCache.get(shape);
+    }
+
+    private static Map<RecipeShape, List<IRecipe>> createIndexedRecipeListCache() {
+        Map<RecipeShape, List<IRecipe>> result = new IdentityHashMap<>();
+        @SuppressWarnings("unchecked")
+        ArrayList<IRecipe> allRecipeList =
+                (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
+        // filter using the empty slots in the shape.
+        // if the empty slots doesn't match, the recipe will definitely fail
+        SetMultimap<List<Integer>, RecipeShape> filter = HashMultimap.create();
+        for (RecipeShape shape : sShapes) {
+            for (List<Integer> list : shape.getEmptySlotsAllVariants()) {
+                filter.put(list, shape);
+            }
+        }
+        List<Integer> buffer = new ArrayList<>(9);
+        for (IRecipe tRecipe : allRecipeList) {
+            if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe) {
+                // we don't target shapeless recipes
+                continue;
+            }
+            buffer.clear();
+            ItemStack tStack = tRecipe.getRecipeOutput();
+            if (GT_Utility.isStackValid(tStack)
+                    && tStack.getMaxStackSize() == 1
+                    && tStack.getMaxDamage() > 0
+                    && !(tStack.getItem() instanceof ItemBlock)
+                    && !(tStack.getItem() instanceof IReactorComponent)
+                    && !GT_ModHandler.isElectricItem(tStack)
+                    && !GT_Utility.isStackInList(tStack, GT_ModHandler.sNonReplaceableItems)) {
+                if (tRecipe instanceof ShapedOreRecipe) {
+                    ShapedOreRecipe tShapedRecipe = (ShapedOreRecipe) tRecipe;
+                    if (checkRecipeShape(
+                            buffer,
+                            tShapedRecipe.getInput(),
+                            getRecipeWidth(tShapedRecipe),
+                            getRecipeHeight(tShapedRecipe))) {
+                        for (RecipeShape s : filter.get(buffer)) {
+                            result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                        }
+                    }
+                } else if (tRecipe instanceof ShapedRecipes) {
+                    ShapedRecipes tShapedRecipe = (ShapedRecipes) tRecipe;
+                    if (checkRecipeShape(
+                            buffer,
+                            tShapedRecipe.recipeItems,
+                            getRecipeWidth(tShapedRecipe),
+                            getRecipeHeight(tShapedRecipe))) {
+                        for (RecipeShape s : filter.get(buffer)) {
+                            result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                        }
+                    }
+                } else {
+                    for (RecipeShape s : sShapes) {
+                        // unknown recipe type. cannot determine empty slots. we choose to add to the recipe list for
+                        // all shapes
+                        result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    private static boolean checkRecipeShape(
+            List<Integer> emptySlotIndexesBuffer, Object[] input, int tRecipeWidth, int tRecipeHeight) {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                if (x >= tRecipeWidth || y >= tRecipeHeight) {
+                    emptySlotIndexesBuffer.add(x + y * 3);
+                    continue;
+                }
+                Object tObject = input[x + y * tRecipeWidth];
+                if (tObject == null) {
+                    emptySlotIndexesBuffer.add(x + y * 3);
+                    continue;
+                }
+                if (tObject instanceof ItemStack
+                        && (((ItemStack) tObject).getItem() == null
+                                || ((ItemStack) tObject).getMaxStackSize() < 2
+                                || ((ItemStack) tObject).getMaxDamage() > 0
+                                || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
+                    return false;
+                }
+                if (tObject instanceof List && ((List<?>) tObject).isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private static synchronized void registerStickStuff(String aPlate, ItemData aItemData, boolean aRecipeReplacing) {
         ItemStack tStack;
         for (Materials tMaterial : sRodMaterialList) {
@@ -457,7 +579,8 @@ public class GT_RecipeRegistrator {
                 for (int i = 0; i < sShapes.length; i++) {
                     RecipeShape tRecipe = sShapes[i];
 
-                    for (ItemStack tCrafted : GT_ModHandler.getVanillyToolRecipeOutputs(tRecipe.shape)) {
+                    for (ItemStack tCrafted :
+                            GT_ModHandler.getRecipeOutputs(getRecipeList(tRecipe), true, tRecipe.shape)) {
                         if (aItemData != null && aItemData.hasValidPrefixMaterialData())
                             GT_OreDictUnificator.addItemData(
                                     tCrafted,
@@ -534,6 +657,30 @@ public class GT_RecipeRegistrator {
         return Arrays.stream(VANILLA_MATS).anyMatch(mat -> mat == materials);
     }
 
+    private static int getRecipeWidth(ShapedOreRecipe r) {
+        try {
+            return (int) SHAPED_ORE_RECIPE_WIDTH.get(r);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static int getRecipeHeight(ShapedOreRecipe r) {
+        try {
+            return (int) SHAPED_ORE_RECIPE_HEIGHT.get(r);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static int getRecipeHeight(ShapedRecipes r) {
+        return r.recipeHeight;
+    }
+
+    private static int getRecipeWidth(ShapedRecipes r) {
+        return r.recipeWidth;
+    }
+
     private static class RecipeShape {
         private final ItemStack[] shape;
         private int amount1;
@@ -546,6 +693,46 @@ public class GT_RecipeRegistrator {
                 if (stack == sMt1) this.amount1++;
                 if (stack == sMt2) this.amount2++;
             }
+        }
+
+        public List<List<Integer>> getEmptySlotsAllVariants() {
+            // "shake" the grid in 8 direction and see if the recipe shape is still valid
+            // also include the "no movement" case
+            ImmutableList.Builder<List<Integer>> b = ImmutableList.builder();
+            for (int i = -1; i < 2; i++) {
+                if (i != 0 && !isColClear(i + 1)) continue;
+                for (int j = -1; j < 2; j++) {
+                    if (j != 0 && !isRowClear(j + 1)) continue;
+                    b.add(getEmptySlots(i, j));
+                }
+            }
+            return b.build();
+        }
+
+        private boolean isRowClear(int row) {
+            for (int i = 0; i < 3; i++) {
+                if (shape[i + row * 3] != null) return false;
+            }
+            return true;
+        }
+
+        private boolean isColClear(int col) {
+            for (int i = 0; i < 3; i++) {
+                if (shape[col + i * 3] != null) return false;
+            }
+            return true;
+        }
+
+        private List<Integer> getEmptySlots(int offsetX, int offsetY) {
+            ImmutableList.Builder<Integer> b = ImmutableList.builder();
+            for (int i = 0; i < shape.length; i++) {
+                int mappedIndex = i - offsetX - offsetY * 3;
+                // empty slot if it either
+                // 1) map to a slot outside the original shape
+                // 2) map to an empty slot in original shape
+                if (mappedIndex < 0 || mappedIndex > 8 || shape[mappedIndex] == null) b.add(i);
+            }
+            return b.build();
         }
     }
 }

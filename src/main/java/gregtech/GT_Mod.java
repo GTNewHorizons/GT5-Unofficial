@@ -29,6 +29,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.internal.IGT_Mod;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.ReverseShapedRecipe;
 import gregtech.api.objects.ReverseShapelessRecipe;
@@ -55,7 +57,6 @@ import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.misc.GT_Command;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
-import gregtech.crossmod.Harvestcraft;
 import gregtech.crossmod.Waila;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.GT_FuelLoader;
@@ -138,7 +139,7 @@ import org.apache.logging.log4j.Logger;
 public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity
-    public static final int VERSION = 509, SUBVERSION = 40;
+    public static final int VERSION = 509, SUBVERSION = 41;
 
     @SuppressWarnings("DeprecatedIsStillUsed") // Need initialization until it is deleted
     @Deprecated
@@ -179,6 +180,14 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.DW = new GT_DummyWorld();
         GT_Values.NW = new GT_Network();
         GT_Values.RA = new GT_RecipeAdder();
+
+        for (int i = 0; i < 4; i++) {
+            GregTech_API.registerTileEntityConstructor(i, i2 -> GregTech_API.constructBaseMetaTileEntity());
+        }
+        for (int i = 4; i < 12; i++) {
+            GregTech_API.registerTileEntityConstructor(i, i2 -> new BaseMetaPipeEntity());
+        }
+
         //noinspection deprecation// Need run-time initialization
         GregTech_API.sRecipeAdder = GT_Values.RA;
 
@@ -310,7 +319,6 @@ public class GT_Mod implements IGT_Mod {
             new GT_FuelLoader().run();
         }
         Waila.init();
-        Harvestcraft.init();
         IMCForNEI.IMCSender();
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
@@ -751,9 +759,8 @@ public class GT_Mod implements IGT_Mod {
         GT_Utility.reInit();
         GT_Recipe.reInit();
         try {
-            for (Map<gregtech.api.objects.GT_ItemStack, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
-                //noinspection rawtypes,unchecked// Deal with legacy Minecraft raw types,rawtypes
-                GT_Utility.reMap((Map) gt_itemStackMap);
+            for (Map<? extends GT_ItemStack, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
+                GT_Utility.reMap(gt_itemStackMap);
             }
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);

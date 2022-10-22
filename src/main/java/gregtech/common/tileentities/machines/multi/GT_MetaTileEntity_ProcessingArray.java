@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
@@ -55,7 +56,10 @@ public class GT_MetaTileEntity_ProcessingArray
     private int mMult = 0;
     private boolean mSeparate = false;
     private boolean downtierUEV = true;
+    private boolean mUseMultiparallelMode = false;
     private String mMachineName = "";
+    // Value needed so that the PA can use energy above MAX voltage
+    private long mEUPerTick = 0;
 
     public GT_MetaTileEntity_ProcessingArray(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -211,23 +215,8 @@ public class GT_MetaTileEntity_ProcessingArray
             if (aMachine != null) tTier = ((GT_MetaTileEntity_TieredMachineBlock) aMachine).mTier;
             mMult = 0;
             if (downtierUEV && tTier > 9) {
-                switch (tTier) {
-                    default:
-                        tTier = 0;
-                        break;
-                    case 10:
-                        tTier = 9;
-                        mMult = 2; // Parallels are 4x as strong and require 4x less EU/t
-                    case 11:
-                        tTier = 9;
-                        mMult = 4; // Parallels are 16x as strong and require 16x less EU/t
-                    case 12:
-                    case 13:
-                    case 14:
-                    case 15:
-                        tTier = 9;
-                        mMult = 6; // Parallels are 64x as strong and require 64x less EU/t
-                }
+                tTier--; // Lowers down the tier by 1 to allow for bigger parallel
+                mMult = 2; // Multiplies Parallels by 4x, keeping the energy cost
             }
         }
         ArrayList<FluidStack> tFluidList = getStoredFluids();
@@ -258,7 +247,8 @@ public class GT_MetaTileEntity_ProcessingArray
         int machines = mInventory[1].stackSize << mMult;
         int parallel = tSingleRecipeCheck.checkRecipeInputs(true, machines);
 
-        return processRecipeOutputs(tSingleRecipeCheck.getRecipe(), tSingleRecipeCheck.getRecipeAmperage(), parallel);
+        return processRecipeOutputs(
+                tSingleRecipeCheck.getRecipe(), tSingleRecipeCheck.getRecipeAmperage(), parallel, 1);
     }
 
     public boolean processRecipe(ItemStack[] tInputs, FluidStack[] tFluids, GT_Recipe.GT_Recipe_Map map) {
@@ -297,28 +287,39 @@ public class GT_MetaTileEntity_ProcessingArray
             }
         }
 
-        return processRecipeOutputs(tRecipe, map.mAmperage, i);
+        // Check how many times we can run the same recipe
+        int multiplier = 1;
+        if (mUseMultiparallelMode && i == machines) {
+            for (; multiplier < 128; ++multiplier) {
+                if (!tRecipe.isRecipeInputEqual(true, false, machines, tFluids, tInputs)) {
+                    break;
+                }
+            }
+        }
+        return processRecipeOutputs(tRecipe, map.mAmperage, i, multiplier);
     }
 
-    public boolean processRecipeOutputs(GT_Recipe aRecipe, int aAmperage, int parallel) {
-        this.mEUt = 0;
+    public boolean processRecipeOutputs(GT_Recipe aRecipe, int aAmperage, int parallel, int multiplier) {
+        this.mEUPerTick = 0;
         this.mOutputItems = null;
         this.mOutputFluids = null;
         if (parallel == 0) {
             return false;
         }
 
-        this.mMaxProgresstime = aRecipe.mDuration;
+        this.mMaxProgresstime = aRecipe.mDuration * multiplier;
+
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
-        calculateOverclockedNessMulti(aRecipe.mEUt, aRecipe.mDuration, aAmperage, GT_Values.V[tTier]);
+        ProcessingArrayCalculateOverclock(
+                aRecipe.mEUt, aRecipe.mDuration * multiplier, aAmperage, GT_Values.V[tTier], false);
         // In case recipe is too OP for that machine
-        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-        this.mEUt = GT_Utility.safeInt(((long) this.mEUt * parallel) >> mMult, 1);
-        if (mEUt == Integer.MAX_VALUE - 1) return false;
+        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUPerTick == Long.MAX_VALUE - 1) return false;
+        mEUPerTick = mEUPerTick * parallel;
+        if (mEUPerTick == Long.MAX_VALUE - 1) return false;
 
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
+        if (mEUPerTick > 0) {
+            mEUPerTick = (-mEUPerTick);
         }
         ItemStack[] tOut = new ItemStack[aRecipe.mOutputs.length];
         for (int h = 0; h < aRecipe.mOutputs.length; h++) {
@@ -327,19 +328,25 @@ public class GT_MetaTileEntity_ProcessingArray
                 tOut[h].stackSize = 0;
             }
         }
-        FluidStack tFOut = null;
-        if (aRecipe.getFluidOutput(0) != null) tFOut = aRecipe.getFluidOutput(0).copy();
+        FluidStack[] tFOut = new FluidStack[aRecipe.mFluidOutputs.length];
+        for (int i = 0; i < aRecipe.mFluidOutputs.length; i++)
+            if (aRecipe.getFluidOutput(i) != null)
+                tFOut[i] = aRecipe.getFluidOutput(i).copy();
         for (int f = 0; f < tOut.length; f++) {
             if (aRecipe.mOutputs[f] != null && tOut[f] != null) {
-                for (int g = 0; g < parallel; g++) {
+                for (int g = 0; g < parallel * multiplier; g++) {
                     if (getBaseMetaTileEntity().getRandomNumber(10000) < aRecipe.getOutputChance(f))
                         tOut[f].stackSize += aRecipe.mOutputs[f].stackSize;
                 }
             }
         }
-        if (tFOut != null) {
-            int tSize = tFOut.amount;
-            tFOut.amount = tSize * parallel;
+        byte oNumber = 0;
+        for (FluidStack fluidStack : tFOut) {
+            if (fluidStack != null) {
+                int tSize = fluidStack.amount;
+                tFOut[oNumber].amount = tSize * parallel * multiplier;
+            }
+            oNumber++;
         }
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
         this.mOutputItems = Arrays.stream(tOut)
@@ -347,7 +354,7 @@ public class GT_MetaTileEntity_ProcessingArray
                 .flatMap(GT_MetaTileEntity_ProcessingArray::splitOversizedStack)
                 .filter(is -> is.stackSize > 0)
                 .toArray(ItemStack[]::new);
-        this.mOutputFluids = new FluidStack[] {tFOut};
+        this.mOutputFluids = tFOut;
         updateSlots();
         return true;
     }
@@ -400,6 +407,8 @@ public class GT_MetaTileEntity_ProcessingArray
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
         aNBT.setBoolean("downtierUEV", downtierUEV);
+        aNBT.setBoolean("mUseMultiparallelMode", mUseMultiparallelMode);
+        aNBT.setLong("mEUPerTick", mEUPerTick);
     }
 
     @Override
@@ -407,6 +416,8 @@ public class GT_MetaTileEntity_ProcessingArray
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
         downtierUEV = aNBT.getBoolean("downtierUEV");
+        mUseMultiparallelMode = aNBT.getBoolean("mUseMultiparallelMode");
+        mEUPerTick = aNBT.getLong("mEUPerTick");
     }
 
     @Override
@@ -424,10 +435,20 @@ public class GT_MetaTileEntity_ProcessingArray
     @Override
     public boolean onWireCutterRightClick(
             byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        downtierUEV = !downtierUEV;
-        mLastRecipe = null; // clears last recipe
-        GT_Utility.sendChatToPlayer(aPlayer, "Treat UEV+ machines as multiple UHV " + downtierUEV);
-        return true;
+        if (aPlayer.isSneaking()) {
+            mUseMultiparallelMode = !mUseMultiparallelMode;
+            if (mUseMultiparallelMode) {
+                GT_Utility.sendChatToPlayer(aPlayer, "Batch recipes");
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, "Don't batch recipes");
+            }
+            return true;
+        } else {
+            downtierUEV = !downtierUEV;
+            mLastRecipe = null; // clears last recipe
+            GT_Utility.sendChatToPlayer(aPlayer, "Treat UEV+ machines as multiple UHV " + downtierUEV);
+            return true;
+        }
     }
 
     @Override
@@ -483,7 +504,7 @@ public class GT_MetaTileEntity_ProcessingArray
                     + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(-mEUt) + EnumChatFormatting.RESET + " EU/t",
+                    + GT_Utility.formatNumbers(-mEUPerTick) + EnumChatFormatting.RESET + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(
                             GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
@@ -504,7 +525,7 @@ public class GT_MetaTileEntity_ProcessingArray
             StatCollector.translateToLocal("GT5U.PA.machinetier") + ": " + EnumChatFormatting.GREEN
                     + tTier + EnumChatFormatting.RESET + " " + StatCollector.translateToLocal("GT5U.PA.discount")
                     + ": " + EnumChatFormatting.GREEN
-                    + (1 << mMult) + EnumChatFormatting.RESET + " x",
+                    + 1 + EnumChatFormatting.RESET + " x",
             StatCollector.translateToLocal("GT5U.PA.parallel") + ": " + EnumChatFormatting.GREEN
                     + GT_Utility.formatNumbers((mInventory[1] != null) ? (mInventory[1].stackSize << mMult) : 0)
                     + EnumChatFormatting.RESET
@@ -516,5 +537,65 @@ public class GT_MetaTileEntity_ProcessingArray
         tHatches.addAll(mExoticEnergyHatches);
         tHatches.addAll(mEnergyHatches);
         return tHatches;
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (mEUPerTick < 0) {
+            if (!drainEnergyInput(-mEUPerTick)) {
+                mEUPerTick = 0;
+                criticalStopMachine();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected void ProcessingArrayCalculateOverclock(
+            long aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
+        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
+        if (mTier == 0) {
+            // Long time calculation
+            long xMaxProgresstime = ((long) aDuration) << 1;
+            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
+                // make impossible if too long
+                mEUPerTick = Long.MAX_VALUE - 1;
+                mMaxProgresstime = Integer.MAX_VALUE - 1;
+            } else {
+                mEUPerTick = aEUt >> 2;
+                mMaxProgresstime = (int) xMaxProgresstime;
+            }
+        } else {
+            // Long EUt calculation
+            long xEUt = aEUt;
+            // Isnt too low EUt check?
+            long tempEUt = Math.max(xEUt, V[1]);
+
+            mMaxProgresstime = aDuration;
+
+            final int ocTimeShift = perfectOC ? 2 : 1;
+
+            while (tempEUt <= V[mTier - 1] * mAmperage) {
+                tempEUt <<= 2; // this actually controls overclocking
+                // xEUt *= 4;//this is effect of everclocking
+                int oldTime = mMaxProgresstime;
+                mMaxProgresstime >>= ocTimeShift; // this is effect of overclocking
+                if (mMaxProgresstime < 1) {
+                    if (oldTime == 1) break;
+                    xEUt *= oldTime * (perfectOC ? 1 : 2);
+                    break;
+                } else {
+                    xEUt <<= 2;
+                }
+            }
+            if (xEUt > Long.MAX_VALUE - 1) {
+                mEUPerTick = Long.MAX_VALUE - 1;
+                mMaxProgresstime = Integer.MAX_VALUE - 1;
+            } else {
+                mEUPerTick = xEUt;
+                if (mEUPerTick == 0) mEUPerTick = 1;
+                if (mMaxProgresstime == 0) mMaxProgresstime = 1; // set time to 1 tick
+            }
+        }
     }
 }

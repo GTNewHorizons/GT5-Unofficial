@@ -64,10 +64,10 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         aCoverVariable.mFlags = ((aCoverVariable.mFlags + 1) & 15);
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                ((aCoverVariable.mFlags & 1) != 0 ? GT_Utility.trans("128", "Redstone ") : "")
-                        + ((aCoverVariable.mFlags & 2) != 0 ? GT_Utility.trans("129", "Energy ") : "")
-                        + ((aCoverVariable.mFlags & 4) != 0 ? GT_Utility.trans("130", "Fluids ") : "")
-                        + ((aCoverVariable.mFlags & 8) != 0 ? GT_Utility.trans("131", "Items ") : ""));
+                ((aCoverVariable.mFlags & 1) != 0 ? GT_Utility.trans("128.1", "Redstone ") : "")
+                        + ((aCoverVariable.mFlags & 2) != 0 ? GT_Utility.trans("129.1", "Energy ") : "")
+                        + ((aCoverVariable.mFlags & 4) != 0 ? GT_Utility.trans("130.1", "Fluids ") : "")
+                        + ((aCoverVariable.mFlags & 8) != 0 ? GT_Utility.trans("131.1", "Items ") : ""));
         return aCoverVariable;
     }
 
@@ -134,6 +134,12 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
     @Override
     protected ItemStack getDropImpl(byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
         return aCoverVariable.mStack;
+    }
+
+    @Override
+    protected ITexture getSpecialCoverFGTextureImpl(
+            byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
+        return getSpecialCoverTextureImpl(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
     @Override

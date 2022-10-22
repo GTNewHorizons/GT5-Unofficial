@@ -1,5 +1,7 @@
 package gregtech.api.items;
 
+import static gregtech.api.util.GT_Utility.formatNumbers;
+
 import gregtech.common.items.GT_DepletetCell_Item;
 import ic2.api.item.IBoxable;
 import ic2.core.util.StackUtil;
@@ -153,8 +155,8 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
         aList.add(color1
                 + String.format(
                         transItem("001", "Durability: %s/%s"),
-                        "" + color2 + (this.maxDmg - getDurabilityOfStack(aStack)) + color1,
-                        "" + this.maxDmg));
+                        "" + color2 + formatNumbers(this.maxDmg - getDurabilityOfStack(aStack)) + color1,
+                        "" + formatNumbers(this.maxDmg)));
     }
 
     @Override

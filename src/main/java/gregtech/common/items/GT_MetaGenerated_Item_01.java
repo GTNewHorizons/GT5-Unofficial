@@ -13,6 +13,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.interfaces.IItemBehaviour;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.objects.ItemData;
@@ -128,9 +129,9 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 2, "Silver GT Credit", "8 Credits", new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
         ItemList.Credit_Greg_Gold.set(addItem(tLastID = 3, "Gold GT Credit", "64 Credits"));
         ItemList.Credit_Greg_Platinum.set(addItem(tLastID = 4, "Platinum GT Credit", "512 Credits"));
-        ItemList.Credit_Greg_Osmium.set(addItem(tLastID = 5, "Osmium GT Credit", "4096 Credits"));
-        ItemList.Credit_Greg_Naquadah.set(addItem(tLastID = 6, "Naquadah GT Credit", "32768 Credits"));
-        ItemList.Credit_Greg_Neutronium.set(addItem(tLastID = 7, "Neutronium GT Credit", "262144 Credits"));
+        ItemList.Credit_Greg_Osmium.set(addItem(tLastID = 5, "Osmium GT Credit", "4,096 Credits"));
+        ItemList.Credit_Greg_Naquadah.set(addItem(tLastID = 6, "Naquadah GT Credit", "32,768 Credits"));
+        ItemList.Credit_Greg_Neutronium.set(addItem(tLastID = 7, "Neutronium GT Credit", "262,144 Credits"));
         ItemList.Coin_Gold_Ancient.set(addItem(
                 tLastID = 8,
                 "Ancient Gold Coin",
@@ -2661,43 +2662,43 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(
                 ItemList.Electric_Pump_LV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_Pump(32));
+                new GT_Cover_Pump(32, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.Electric_Pump_MV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_Pump(128));
+                new GT_Cover_Pump(128, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.Electric_Pump_HV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_Pump(512));
+                new GT_Cover_Pump(512, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.Electric_Pump_EV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_Pump(2048));
+                new GT_Cover_Pump(2048, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.Electric_Pump_IV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_Pump(8192));
+                new GT_Cover_Pump(8192, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.Electric_Pump_LuV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[6][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_Pump(32768));
+                new GT_Cover_Pump(32768, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.Electric_Pump_ZPM.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[7][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_Pump(131072));
+                new GT_Cover_Pump(131072, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.Electric_Pump_UV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_Pump(524288));
+                new GT_Cover_Pump(524288, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.Electric_Pump_UHV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_Pump(1048576));
+                new GT_Cover_Pump(1048576, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.Electric_Pump_UEV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_Pump(2097152));
+                new GT_Cover_Pump(2097152, TextureFactory.of(OVERLAY_PUMP)));
 
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Electric_Pump_LV.get(1L),
@@ -2854,23 +2855,23 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(
                 ItemList.Steam_Valve_LV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)),
-                new GT_Cover_SteamValve(1024));
+                new GT_Cover_SteamValve(102, TextureFactory.of(OVERLAY_VALVE)));
         GregTech_API.registerCover(
                 ItemList.Steam_Valve_MV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_VALVE)),
-                new GT_Cover_SteamValve(2048));
+                new GT_Cover_SteamValve(2048, TextureFactory.of(OVERLAY_VALVE)));
         GregTech_API.registerCover(
                 ItemList.Steam_Valve_HV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_VALVE)),
-                new GT_Cover_SteamValve(4096));
+                new GT_Cover_SteamValve(4096, TextureFactory.of(OVERLAY_VALVE)));
         GregTech_API.registerCover(
                 ItemList.Steam_Valve_EV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_VALVE)),
-                new GT_Cover_SteamValve(8192));
+                new GT_Cover_SteamValve(8192, TextureFactory.of(OVERLAY_VALVE)));
         GregTech_API.registerCover(
                 ItemList.Steam_Valve_IV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_VALVE)),
-                new GT_Cover_SteamValve(16384));
+                new GT_Cover_SteamValve(16384, TextureFactory.of(OVERLAY_VALVE)));
 
         ItemList.FluidRegulator_LV.set(
                 addItem(tLastID = 660, "Fluid Regulator (LV)", FRText1 + GT_Utility.formatNumbers(640) + FRText2));
@@ -2892,42 +2893,42 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(
                 ItemList.FluidRegulator_LV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_FluidRegulator(32));
+                new GT_Cover_FluidRegulator(32, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.FluidRegulator_MV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_FluidRegulator(128));
+                new GT_Cover_FluidRegulator(128, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.FluidRegulator_HV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_FluidRegulator(512));
+                new GT_Cover_FluidRegulator(512, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.FluidRegulator_EV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_FluidRegulator(2048));
+                new GT_Cover_FluidRegulator(2048, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.FluidRegulator_IV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_FluidRegulator(8192));
+                new GT_Cover_FluidRegulator(8192, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.FluidRegulator_LuV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[6][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_FluidRegulator(32768));
+                new GT_Cover_FluidRegulator(32768, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.FluidRegulator_ZPM.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[7][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_FluidRegulator(131072));
+                new GT_Cover_FluidRegulator(131072, TextureFactory.of(OVERLAY_PUMP)));
         GregTech_API.registerCover(
                 ItemList.FluidRegulator_UV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_PUMP)),
-                new GT_Cover_FluidRegulator(524288));
+                new GT_Cover_FluidRegulator(524288, TextureFactory.of(OVERLAY_PUMP)));
 
         ItemList.FluidFilter.set(
                 addItem(669, "Fluid Filter Cover", "Set with Fluid Container to only accept one Fluid Type"));
         GregTech_API.registerCover(
                 ItemList.FluidFilter.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)),
-                new GT_Cover_Fluidfilter());
+                new GT_Cover_Fluidfilter(TextureFactory.of(OVERLAY_SHUTTER)));
         ItemList.ItemFilter_Export.set(addItem(
                 270,
                 "Item Filter Cover (Export)",
@@ -2935,7 +2936,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(
                 ItemList.ItemFilter_Export.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_ItemFilter(true));
+                new GT_Cover_ItemFilter(true, TextureFactory.of(OVERLAY_CONVEYOR)));
         ItemList.ItemFilter_Import.set(addItem(
                 271,
                 "Item Filter Cover (Import)",
@@ -2943,13 +2944,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(
                 ItemList.ItemFilter_Import.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_ItemFilter(false));
+                new GT_Cover_ItemFilter(false, TextureFactory.of(OVERLAY_CONVEYOR)));
         ItemList.Cover_FluidLimiter.set(
                 addItem(272, "Fluid Limiter Cover", "Limits fluid input depending on fill level"));
         GregTech_API.registerCover(
                 ItemList.Cover_FluidLimiter.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)),
-                new GT_Cover_FluidLimiter());
+                new GT_Cover_FluidLimiter(TextureFactory.of(OVERLAY_SHUTTER)));
 
         ItemList.Conveyor_Module_LV.set(addItem(
                 630,
@@ -3134,43 +3135,43 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(
                 ItemList.Conveyor_Module_LV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_Conveyor(400, 1));
+                new GT_Cover_Conveyor(400, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
         GregTech_API.registerCover(
                 ItemList.Conveyor_Module_MV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_Conveyor(100, 1));
+                new GT_Cover_Conveyor(100, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
         GregTech_API.registerCover(
                 ItemList.Conveyor_Module_HV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_Conveyor(20, 1));
+                new GT_Cover_Conveyor(20, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
         GregTech_API.registerCover(
                 ItemList.Conveyor_Module_EV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_Conveyor(4, 1));
+                new GT_Cover_Conveyor(4, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
         GregTech_API.registerCover(
                 ItemList.Conveyor_Module_IV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_Conveyor(1, 1));
+                new GT_Cover_Conveyor(1, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
         GregTech_API.registerCover(
                 ItemList.Conveyor_Module_LuV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[6][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_Conveyor(1, 2));
+                new GT_Cover_Conveyor(1, 2, TextureFactory.of(OVERLAY_CONVEYOR)));
         GregTech_API.registerCover(
                 ItemList.Conveyor_Module_ZPM.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[7][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_Conveyor(1, 4));
+                new GT_Cover_Conveyor(1, 4, TextureFactory.of(OVERLAY_CONVEYOR)));
         GregTech_API.registerCover(
                 ItemList.Conveyor_Module_UV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_Conveyor(1, 8));
+                new GT_Cover_Conveyor(1, 8, TextureFactory.of(OVERLAY_CONVEYOR)));
         GregTech_API.registerCover(
                 ItemList.Conveyor_Module_UHV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_Conveyor(1, 16));
+                new GT_Cover_Conveyor(1, 16, TextureFactory.of(OVERLAY_CONVEYOR)));
         GregTech_API.registerCover(
                 ItemList.Conveyor_Module_UEV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-                new GT_Cover_Conveyor(1, 32));
+                new GT_Cover_Conveyor(1, 32, TextureFactory.of(OVERLAY_CONVEYOR)));
 
         ItemList.Robot_Arm_LV.set(addItem(
                 650,
@@ -3389,23 +3390,23 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(
                 ItemList.Robot_Arm_LV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_ARM)),
-                new GT_Cover_Arm(400));
+                new GT_Cover_Arm(400, TextureFactory.of(OVERLAY_ARM)));
         GregTech_API.registerCover(
                 ItemList.Robot_Arm_MV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ARM)),
-                new GT_Cover_Arm(100));
+                new GT_Cover_Arm(100, TextureFactory.of(OVERLAY_ARM)));
         GregTech_API.registerCover(
                 ItemList.Robot_Arm_HV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_ARM)),
-                new GT_Cover_Arm(20));
+                new GT_Cover_Arm(20, TextureFactory.of(OVERLAY_ARM)));
         GregTech_API.registerCover(
                 ItemList.Robot_Arm_EV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_ARM)),
-                new GT_Cover_Arm(4));
+                new GT_Cover_Arm(4, TextureFactory.of(OVERLAY_ARM)));
         GregTech_API.registerCover(
                 ItemList.Robot_Arm_IV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_ARM)),
-                new GT_Cover_Arm(1));
+                new GT_Cover_Arm(1, TextureFactory.of(OVERLAY_ARM)));
 
         ItemList.QuantumEye.set(addItem(tLastID = 724, "Quantum Eye", "Improved Ender Eye"));
         ItemList.QuantumStar.set(addItem(tLastID = 725, "Quantum Star", "Improved Nether Star"));
@@ -4240,41 +4241,41 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(
                 ItemList.Cover_Controller.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONTROLLER)),
-                new GT_Cover_ControlsWork());
+                new GT_Cover_ControlsWork(TextureFactory.of(OVERLAY_CONTROLLER)));
+
+        final ITexture doesWorkCoverTexture = TextureFactory.of(
+                TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
+                TextureFactory.builder()
+                        .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
+                        .glow()
+                        .build());
         GregTech_API.registerCover(
                 ItemList.Cover_ActivityDetector.get(1L),
-                TextureFactory.of(
-                        MACHINE_CASINGS[2][0],
-                        TextureFactory.of(
-                                TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
-                                TextureFactory.builder()
-                                        .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
-                                        .glow()
-                                        .build())),
-                new GT_Cover_DoesWork());
+                TextureFactory.of(MACHINE_CASINGS[2][0], doesWorkCoverTexture),
+                new GT_Cover_DoesWork(doesWorkCoverTexture));
         GregTech_API.registerCover(
                 ItemList.Cover_FluidDetector.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
-                new GT_Cover_LiquidMeter());
+                new GT_Cover_LiquidMeter(TextureFactory.of(OVERLAY_FLUIDDETECTOR)));
         GregTech_API.registerCover(
                 ItemList.Cover_ItemDetector.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ITEMDETECTOR)),
-                new GT_Cover_ItemMeter());
+                new GT_Cover_ItemMeter(TextureFactory.of(OVERLAY_ITEMDETECTOR)));
         GregTech_API.registerCover(
                 ItemList.Cover_EnergyDetector.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ENERGYDETECTOR)),
-                new GT_Cover_EUMeter());
+                new GT_Cover_EUMeter(TextureFactory.of(OVERLAY_ENERGYDETECTOR)));
+
+        final ITexture playerDectectorCoverTexture = TextureFactory.of(
+                TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
+                TextureFactory.builder()
+                        .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
+                        .glow()
+                        .build());
         GregTech_API.registerCover(
                 ItemList.Cover_PlayerDetector.get(1L),
-                TextureFactory.of(
-                        MACHINE_CASINGS[2][0],
-                        TextureFactory.of(
-                                TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
-                                TextureFactory.builder()
-                                        .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
-                                        .glow()
-                                        .build())),
-                new GT_Cover_PlayerDetector());
+                TextureFactory.of(MACHINE_CASINGS[2][0], playerDectectorCoverTexture),
+                new GT_Cover_PlayerDetector(playerDectectorCoverTexture));
         GregTech_API.registerCover(
                 ItemList.Cover_FluidStorageMonitor.get(1L),
                 TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0),
@@ -4440,29 +4441,25 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 1200,
                 128);
 
+        final ITexture screenCoverTexture = TextureFactory.of(
+                TextureFactory.of(OVERLAY_SCREEN),
+                TextureFactory.builder().addIcon(OVERLAY_SCREEN_GLOW).glow().build());
         GregTech_API.registerCover(
                 ItemList.Cover_Screen.get(1L),
-                TextureFactory.of(
-                        MACHINE_CASINGS[2][0],
-                        TextureFactory.of(
-                                TextureFactory.of(OVERLAY_SCREEN),
-                                TextureFactory.builder()
-                                        .addIcon(OVERLAY_SCREEN_GLOW)
-                                        .glow()
-                                        .build())),
-                new GT_Cover_Screen());
+                TextureFactory.of(MACHINE_CASINGS[2][0], screenCoverTexture),
+                new GT_Cover_Screen(screenCoverTexture));
         GregTech_API.registerCover(
                 ItemList.Cover_Crafting.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CRAFTING)),
-                new GT_Cover_Crafting());
+                new GT_Cover_Crafting(TextureFactory.of(OVERLAY_CRAFTING)));
         GregTech_API.registerCover(
                 ItemList.Cover_Drain.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[0][0], TextureFactory.of(OVERLAY_DRAIN)),
-                new GT_Cover_Drain());
+                new GT_Cover_Drain(TextureFactory.of(OVERLAY_DRAIN)));
         GregTech_API.registerCover(
                 ItemList.Cover_Shutter.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)),
-                new GT_Cover_Shutter());
+                new GT_Cover_Shutter(TextureFactory.of(OVERLAY_SHUTTER)));
 
         ItemList.Cover_SolarPanel.set(addItem(
                 tLastID = 750,
@@ -4639,59 +4636,45 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_RedstoneTransmitterExternal.set(addItem(
                 tLastID = 741,
-                "Redstone Transmitter (Out)",
-                "Transfers Redstonesignals wireless",
+                "Redstone Transmitter (External)",
+                "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneTransmitterInternal.set(addItem(
                 tLastID = 742,
-                "Redstone Transmitter (In)",
-                "Transfers Redstonesignals wireless",
+                "Redstone Transmitter (Internal)",
+                "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneReceiverExternal.set(addItem(
                 tLastID = 746,
-                "Redstone Receiver (Out)",
-                "Transfers Redstonesignals wireless",
+                "Redstone Receiver (External)",
+                "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneReceiverInternal.set(addItem(
                 tLastID = 747,
-                "Redstone Receiver (In)",
-                "Transfers Redstonesignals wireless",
+                "Redstone Receiver (Internal)",
+                "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
 
         GregTech_API.registerCover(
                 ItemList.Cover_RedstoneTransmitterExternal.get(1L),
-                TextureFactory.of(
-                        MACHINE_CASINGS[2][0],
-                        TextureFactory.of(
-                                TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
-                                TextureFactory.builder()
-                                        .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
-                                        .glow()
-                                        .build())),
-                new GT_Cover_RedstoneTransmitterExternal());
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
+                new GT_Cover_RedstoneTransmitterExternal(TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)));
         GregTech_API.registerCover(
                 ItemList.Cover_RedstoneTransmitterInternal.get(1L),
-                TextureFactory.of(
-                        MACHINE_CASINGS[2][0],
-                        TextureFactory.of(
-                                TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
-                                TextureFactory.builder()
-                                        .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
-                                        .glow()
-                                        .build())),
-                new GT_Cover_RedstoneTransmitterInternal());
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
+                new GT_Cover_RedstoneTransmitterInternal(TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)));
         GregTech_API.registerCover(
                 ItemList.Cover_RedstoneReceiverExternal.get(1L),
-                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
-                new GT_Cover_RedstoneReceiverExternal());
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
+                new GT_Cover_RedstoneReceiverExternal(TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)));
         GregTech_API.registerCover(
                 ItemList.Cover_RedstoneReceiverInternal.get(1L),
-                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
-                new GT_Cover_RedstoneReceiverInternal());
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
+                new GT_Cover_RedstoneReceiverInternal(TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)));
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -4734,15 +4717,9 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         GregTech_API.registerCover(
                 ItemList.Cover_NeedsMaintainance.get(1L),
-                TextureFactory.of(
-                        MACHINE_CASINGS[2][0],
-                        TextureFactory.of(
-                                TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
-                                TextureFactory.builder()
-                                        .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
-                                        .glow()
-                                        .build())),
-                new GT_Cover_NeedMaintainance());
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)),
+                new GT_Cover_NeedMaintainance(TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)));
+
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Emitter_MV.get(1L),

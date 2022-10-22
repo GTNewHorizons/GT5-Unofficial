@@ -8,6 +8,7 @@ import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -36,8 +37,16 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     private static final int CONVERTED_BIT = 0x80000000;
     private static final int INVERT_BIT = 0x40000000;
 
+    /**
+     * @deprecated use {@link #GT_Cover_ItemMeter(ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_ItemMeter() {
-        super(ItemMeterData.class);
+        this(null);
+    }
+
+    public GT_Cover_ItemMeter(ITexture coverTexture) {
+        super(ItemMeterData.class, coverTexture);
     }
 
     @Override
@@ -65,6 +74,35 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         return false;
     }
 
+    public static byte computeSignalBasedOnItems(
+            ICoverable tileEntity, boolean inverted, int threshold, int slot, int side) {
+        long max = 0;
+        long used = 0;
+        IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
+        if (mte instanceof GT_MetaTileEntity_DigitalChestBase) {
+            GT_MetaTileEntity_DigitalChestBase dc = (GT_MetaTileEntity_DigitalChestBase) mte;
+            max = dc.getMaxItemCount();
+            used = dc.getProgresstime();
+        } else if (GregTech_API.mAE2 && mte instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
+            if (((GT_MetaTileEntity_Hatch_OutputBus_ME) mte).isLastOutputFailed()) {
+                max = 64;
+                used = 64;
+            }
+        } else {
+            int[] slots = slot >= 0 ? new int[] {slot} : tileEntity.getAccessibleSlotsFromSide(side);
+
+            for (int i : slots) {
+                if (i >= 0 && i < tileEntity.getSizeInventory()) {
+                    max += 64;
+                    ItemStack stack = tileEntity.getStackInSlot(i);
+                    if (stack != null) used += ((long) stack.stackSize << 6) / stack.getMaxStackSize();
+                }
+            }
+        }
+
+        return GT_Utility.convertRatioToRedstone(used, max, threshold, inverted);
+    }
+
     @Override
     protected ItemMeterData doCoverThingsImpl(
             byte aSide,
@@ -73,58 +111,10 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
             ItemMeterData aCoverVariable,
             ICoverable aTileEntity,
             long aTimer) {
-        long tMax = 0;
-        long tUsed = 0;
-        IMetaTileEntity mte = ((IGregTechTileEntity) aTileEntity).getMetaTileEntity();
-        if (mte instanceof GT_MetaTileEntity_DigitalChestBase) {
-            GT_MetaTileEntity_DigitalChestBase dc = (GT_MetaTileEntity_DigitalChestBase) mte;
-            tMax = dc.getMaxItemCount(); // currently it is limited by int, but there is not much reason for that
-            ItemStack[] inv = dc.getStoredItemData();
-            if (inv != null && inv.length > 1 && inv[1] != null) tUsed = inv[1].stackSize;
-        } else if (GregTech_API.mAE2 && mte instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
-            if (((GT_MetaTileEntity_Hatch_OutputBus_ME) mte).isLastOutputFailed()) {
-                tMax = 64;
-                tUsed = 64;
-            }
-        } else {
-            int[] tSlots = aCoverVariable.slot >= 0
-                    ? new int[] {aCoverVariable.slot}
-                    : aTileEntity.getAccessibleSlotsFromSide(aSide);
+        byte signal = computeSignalBasedOnItems(
+                aTileEntity, aCoverVariable.inverted, aCoverVariable.threshold, aCoverVariable.slot, aSide);
+        aTileEntity.setOutputRedstoneSignal(aSide, signal);
 
-            for (int i : tSlots) {
-                if (i >= 0 && i < aTileEntity.getSizeInventory()) {
-                    tMax += 64;
-                    ItemStack tStack = aTileEntity.getStackInSlot(i);
-                    if (tStack != null) tUsed += (tStack.stackSize << 6) / tStack.getMaxStackSize();
-                }
-            }
-        }
-
-        long redstoneSignal;
-        if (tUsed == 0L) {
-            // nothing
-            redstoneSignal = 0;
-        } else if (tUsed >= tMax) {
-            // full
-            redstoneSignal = 15;
-        } else {
-            // 1-14 range
-            redstoneSignal = 1 + (14 * tUsed) / tMax;
-        }
-
-        if (aCoverVariable.inverted) {
-            redstoneSignal = 15 - redstoneSignal;
-        }
-
-        if (aCoverVariable.threshold > 0) {
-            if (aCoverVariable.inverted && tUsed >= aCoverVariable.threshold) {
-                redstoneSignal = 0;
-            } else if (!aCoverVariable.inverted && tUsed < aCoverVariable.threshold) {
-                redstoneSignal = 0;
-            }
-        }
-
-        aTileEntity.setOutputRedstoneSignal(aSide, (byte) redstoneSignal);
         return aCoverVariable;
     }
 

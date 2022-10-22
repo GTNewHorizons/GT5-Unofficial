@@ -12,10 +12,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
@@ -35,7 +36,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -102,21 +102,22 @@ public abstract class GT_MetaTileEntity_LargeBoiler
         // Tooltip differs between the boilers that output Superheated Steam (Titanium and Tungstensteel) and the ones
         // that do not (Bronze and Steel)
         if (isSuperheated()) {
-            tt.addInfo("Produces " + (getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam)
-                            + "L of Superheated Steam with 1 Coal at " + (getEUt() * 40) / superToNormalSteam
+            tt.addInfo("Produces " + formatNumbers((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
+                            + "L of Superheated Steam with 1 Coal at "
+                            + formatNumbers((getEUt() * 40L) / superToNormalSteam)
                             + "L/s") // ?
                     .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                     .addInfo("Only some solid fuels are allowed (check the NEI Large Boiler tab for details)")
                     .addInfo("If there are any disallowed fuels in the input bus, the boiler won't run!");
         } else {
-            tt.addInfo("Produces " + (getEUt() * 40) * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at "
-                            + getEUt() * 40 + "L/s") // ?
+            tt.addInfo("Produces " + formatNumbers((getEUt() * 40) * (runtimeBoost(20) / 20f))
+                            + "L of Steam with 1 Coal at " + formatNumbers(getEUt() * 40) + "L/s") // ?
                     .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                     .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
         }
         tt.addInfo(String.format(
-                        "Diesel fuels have 1/4 efficiency - Takes %.2f seconds to heat up",
-                        500.0 / getEfficiencyIncrease())) // ? check semifluid again
+                        "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
+                        formatNumbers(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
                 .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
                 .beginStructureBlock(3, 5, 3, false)
@@ -474,8 +475,8 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
     }
 }

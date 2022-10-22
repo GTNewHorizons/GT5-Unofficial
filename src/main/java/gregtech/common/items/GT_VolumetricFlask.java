@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 import static ic2.core.util.LiquidUtil.drainContainerStack;
 import static ic2.core.util.LiquidUtil.fillContainerStack;
 import static ic2.core.util.LiquidUtil.placeFluid;
@@ -10,6 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.util.GT_Utility;
 import ic2.core.util.LiquidUtil;
 import java.util.List;
 import net.minecraft.block.Block;
@@ -210,9 +212,9 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         super.addInformation(stack, player, info, b);
         FluidStack fs = getFluid(stack);
         if (fs != null) {
-            info.add(String.format("< %s, %d mB >", FluidRegistry.getFluidName(fs), fs.amount));
+            info.add(String.format("< %s, %s mB >", GT_Utility.getFluidName(fs, true), formatNumbers(fs.amount)));
         } else {
-            info.add(String.format("< Empty, %d mB >", getCapacity(stack)));
+            info.add(String.format("< Empty, %s mB >", formatNumbers(getCapacity(stack))));
         }
         info.add("Rightclick on air to set volume (only while empty)");
     }

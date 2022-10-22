@@ -6,6 +6,7 @@ import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.net.GT_Packet_TileEntityCover;
@@ -27,7 +28,16 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     protected static final int SLOT_ID_MIN = 0;
     protected static final int CONVERTED_BIT = 0x80000000;
 
+    /**
+     * @deprecated use {@link #GT_Cover_Arm(int aTickRate, ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_Arm(int aTickRate) {
+        this(aTickRate, null);
+    }
+
+    public GT_Cover_Arm(int aTickRate, ITexture coverTexture) {
+        super(coverTexture);
         this.mTickRate = aTickRate;
     }
 
@@ -349,7 +359,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
 
             this.getFontRenderer()
                     .drawString(
-                            GT_Utility.trans("254", "Internal slot#"),
+                            GT_Utility.trans("254.1", "Internal slot#"),
                             startX + spaceX * 3,
                             4 + startY + spaceY * 1,
                             textColor);

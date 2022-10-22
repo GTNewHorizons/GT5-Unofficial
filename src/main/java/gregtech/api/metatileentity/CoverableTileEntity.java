@@ -164,8 +164,19 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) {
             return Textures.BlockIcons.HIDDEN_TEXTURE[0]; // See through
         }
-        final ITexture coverTexture = getCoverBehaviorAtSideNew(aSide)
-                .getSpecialCoverTexture(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
+        GT_CoverBehaviorBase<?> coverBehavior = getCoverBehaviorAtSideNew(aSide);
+        final ITexture coverTexture;
+        if (coverBehavior != null) {
+            if (!(this instanceof BaseMetaPipeEntity)) {
+                coverTexture = coverBehavior.getSpecialCoverFGTexture(
+                        aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
+            } else {
+                coverTexture = coverBehavior.getSpecialCoverTexture(
+                        aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
+            }
+        } else {
+            coverTexture = null;
+        }
         return coverTexture != null
                 ? coverTexture
                 : GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
@@ -309,6 +320,14 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return false;
     }
 
+    protected void onBaseTEDestroyed() {
+        for (byte side = 0; side < 6; ++side) {
+            GT_CoverBehaviorBase<?> behavior = getCoverBehaviorAtSideNew(side);
+            if (behavior != GregTech_API.sNoBehavior)
+                behavior.onBaseTEDestroyed(side, getCoverIDAtSide(side), mCoverData[side], this);
+        }
+    }
+
     @Override
     public void setOutputRedstoneSignal(byte aSide, byte aStrength) {
         aStrength = (byte) Math.min(Math.max(0, aStrength), 15);
@@ -395,18 +414,34 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void receiveCoverData(byte aCoverSide, int aCoverID, int aCoverData) {
-        if ((aCoverSide >= 0 && aCoverSide < 6)) setCoverIDAtSideNoUpdate(aCoverSide, aCoverID);
-        setCoverDataAtSide(aCoverSide, aCoverData);
+        if ((aCoverSide >= 0 && aCoverSide < 6)) {
+            GT_CoverBehaviorBase<?> behaviorBase = getCoverBehaviorAtSideNew(aCoverSide);
+            if (behaviorBase == GregTech_API.sNoBehavior) return;
+
+            setCoverIDAtSideNoUpdate(aCoverSide, aCoverID);
+            setCoverDataAtSide(aCoverSide, aCoverData);
+        }
     }
 
     @Override
     public void receiveCoverData(
             byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
         if ((aCoverSide >= 0 && aCoverSide < 6)) {
+            GT_CoverBehaviorBase<?> behaviorBase = getCoverBehaviorAtSideNew(aCoverSide);
+            if (behaviorBase == GregTech_API.sNoBehavior) return;
+
+            behaviorBase.preDataChanged(
+                    aCoverSide,
+                    getCoverIDAtSide(aCoverSide),
+                    aCoverID,
+                    getComplexCoverDataAtSide(aCoverSide),
+                    aCoverData,
+                    this);
+
             setCoverIDAtSideNoUpdate(aCoverSide, aCoverID);
             setCoverDataAtSide(aCoverSide, aCoverData);
             if (isClientSide()) {
-                getCoverBehaviorAtSideNew(aCoverSide).onDataChanged(aCoverSide, aCoverID, aCoverData, this);
+                behaviorBase.onDataChanged(aCoverSide, aCoverID, aCoverData, this);
             }
         }
     }

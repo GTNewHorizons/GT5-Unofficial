@@ -9,16 +9,18 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.GT_ItemStack2;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import javax.annotation.Nullable;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -35,9 +37,9 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class GT_OreDictUnificator {
     private static final Map<String, ItemStack> sName2StackMap = new HashMap<>();
-    private static final Map<GT_ItemStack, ItemData> sItemStack2DataMap = new HashMap<>();
-    private static final Map<GT_ItemStack, List<ItemStack>> sUnificationTable = new HashMap<>();
-    private static final GT_HashSet<GT_ItemStack> sNoUnificationList = new GT_HashSet<>();
+    private static final Map<GT_ItemStack2, ItemData> sItemStack2DataMap = new HashMap<>();
+    private static final Map<GT_ItemStack2, List<ItemStack>> sUnificationTable = new HashMap<>();
+    private static final Set<GT_ItemStack2> sNoUnificationList = new HashSet<>();
     public static volatile int VERSION = 509;
     private static int isRegisteringOre = 0, isAddingOre = 0;
     private static boolean mRunThroughTheList = true;
@@ -53,7 +55,7 @@ public class GT_OreDictUnificator {
      */
     public static void addToBlacklist(ItemStack aStack) {
         if (GT_Utility.isStackValid(aStack) && !GT_Utility.isStackInList(aStack, sNoUnificationList))
-            sNoUnificationList.add(aStack);
+            sNoUnificationList.add(new GT_ItemStack2(aStack));
     }
 
     public static boolean isBlacklisted(ItemStack aStack) {
@@ -250,7 +252,7 @@ public class GT_OreDictUnificator {
                         ItemStack tStack0 = tGTStack0.toStack();
                         ItemStack tStack1 = get_nocopy(false, tStack0);
                         if (!GT_Utility.areStacksEqual(tStack0, tStack1)) {
-                            GT_ItemStack tGTStack1 = new GT_ItemStack(tStack1);
+                            GT_ItemStack2 tGTStack1 = new GT_ItemStack2(tStack1);
                             List<ItemStack> list = sUnificationTable.computeIfAbsent(tGTStack1, k -> new ArrayList<>());
                             // greg's original code tries to dedupe the list using List#contains, which won't work
                             // on vanilla ItemStack. I removed it since it never worked and can be slow.
@@ -267,7 +269,7 @@ public class GT_OreDictUnificator {
         List<ItemStack> rList = new ArrayList<>();
         for (ItemStack aStack : aStacks) {
             rList.add(aStack);
-            List<ItemStack> tList = sUnificationTable.get(new GT_ItemStack(aStack));
+            List<ItemStack> tList = sUnificationTable.get(new GT_ItemStack2(aStack));
             if (tList != null) {
                 for (ItemStack tStack : tList) {
                     ItemStack tStack1 = GT_Utility.copyAmount(aStack.stackSize, tStack);
@@ -294,7 +296,7 @@ public class GT_OreDictUnificator {
                 for (MaterialStack tMaterial : aData.mByProducts) tMaterial.mAmount /= aStack.stackSize;
                 aStack = GT_Utility.copyAmount(1, aStack);
             }
-            sItemStack2DataMap.put(new GT_ItemStack(aStack), aData);
+            sItemStack2DataMap.put(new GT_ItemStack2(aStack), aData);
             if (aData.hasValidMaterialData()) {
                 long tValidMaterialAmount = aData.mMaterial.mMaterial.contains(SubTag.NO_RECYCLING)
                         ? 0
@@ -308,7 +310,7 @@ public class GT_OreDictUnificator {
             if (mRunThroughTheList) {
                 if (GregTech_API.sLoadStarted) {
                     mRunThroughTheList = false;
-                    for (Entry<GT_ItemStack, ItemData> tEntry : sItemStack2DataMap.entrySet())
+                    for (Entry<GT_ItemStack2, ItemData> tEntry : sItemStack2DataMap.entrySet())
                         if (!tEntry.getValue().hasValidPrefixData() || tEntry.getValue().mPrefix.mAllowNormalRecycling)
                             GT_RecipeRegistrator.registerMaterialRecycling(
                                     tEntry.getKey().toStack(), tEntry.getValue());
@@ -335,8 +337,8 @@ public class GT_OreDictUnificator {
 
     public static ItemData getItemData(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return null;
-        ItemData rData = sItemStack2DataMap.get(new GT_ItemStack(aStack));
-        if (rData == null) rData = sItemStack2DataMap.get(new GT_ItemStack(aStack, true));
+        ItemData rData = sItemStack2DataMap.get(new GT_ItemStack2(aStack));
+        if (rData == null) rData = sItemStack2DataMap.get(new GT_ItemStack2(aStack, true));
         return rData;
     }
 

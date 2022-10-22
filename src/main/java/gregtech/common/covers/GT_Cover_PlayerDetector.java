@@ -4,6 +4,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GT_Packet_TileEntityCover;
@@ -18,6 +19,18 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
 
     private String placer = "";
     private int range = 8;
+
+    /**
+     * @deprecated use {@link #GT_Cover_PlayerDetector(ITexture coverTexture)} instead
+     */
+    @Deprecated
+    public GT_Cover_PlayerDetector() {
+        this(null);
+    }
+
+    public GT_Cover_PlayerDetector(ITexture coverTexture) {
+        super(coverTexture);
+    }
 
     @Override
     public boolean isRedstoneSensitive(
@@ -84,10 +97,10 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
         }
         switch (aCoverVariable) {
             case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("068", "Emit if any Player is close"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("068.1", "Emit if any Player is close"));
                 break;
             case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("069", "Emit if other Player is close"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("069.1", "Emit if other Player is close"));
                 break;
             case 2:
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("070", "Emit if you are close"));
@@ -168,9 +181,9 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
             this.coverVariable = aCoverVariable;
 
             new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(GT_Utility.trans("068", "Emit if any Player is close"));
+                    .setTooltipText(GT_Utility.trans("068.1", "Emit if any Player is close"));
             new GT_GuiIconCheckButton(this, 1, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(GT_Utility.trans("069", "Emit if other Player is close"));
+                    .setTooltipText(GT_Utility.trans("069.1", "Emit if other Player is close"));
             new GT_GuiIconCheckButton(this, 2, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.CHECKMARK, null)
                     .setTooltipText(GT_Utility.trans("070", "Emit if you are close"));
         }

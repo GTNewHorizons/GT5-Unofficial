@@ -26,12 +26,14 @@ public class SteamPower extends Power {
 
     @Override
     public String getTotalPowerString() {
-        return GT_Utility.formatNumbers((long) recipeDuration * recipeEuPerTick) + " Steam";
+        // 2L normal steam == 1EU
+        return GT_Utility.formatNumbers(2L * recipeDuration * recipeEuPerTick) + " Steam";
     }
 
     @Override
     public String getPowerUsageString() {
-        return GT_Utility.formatNumbers(20L * recipeEuPerTick) + " L/s  Steam";
+        // 2L normal steam == 1EU
+        return GT_Utility.formatNumbers(20L * 2L * recipeEuPerTick) + " L/s  Steam";
     }
 
     @Override

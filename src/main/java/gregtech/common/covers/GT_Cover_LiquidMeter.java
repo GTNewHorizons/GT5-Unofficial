@@ -6,11 +6,14 @@ import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
 import io.netty.buffer.ByteBuf;
 import java.util.Arrays;
 import javax.annotation.Nonnull;
@@ -26,10 +29,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+/**
+ * TODO: Implement overlay rendering only with
+ * {@link GT_CoverBehaviorBase#getSpecialCoverFGTextureImpl(byte, int, ISerializableObject, ICoverable)}
+ */
 public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMeter.LiquidMeterData> {
 
-    public GT_Cover_LiquidMeter() {
-        super(LiquidMeterData.class);
+    public GT_Cover_LiquidMeter(ITexture coverTexture) {
+        super(LiquidMeterData.class, coverTexture);
     }
 
     @Override
@@ -48,6 +55,35 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         return false;
     }
 
+    public static byte computeSignalBasedOnFluid(ICoverable tileEntity, boolean inverted, int threshold) {
+        if (tileEntity instanceof IFluidHandler) {
+            FluidTankInfo[] tanks = ((IFluidHandler) tileEntity).getTankInfo(ForgeDirection.UNKNOWN);
+            long max = 0;
+            long used = 0;
+            if (tanks != null) {
+                for (FluidTankInfo tank : tanks) {
+                    if (tank != null) {
+                        if (tileEntity instanceof BaseMetaTileEntity
+                                && ((BaseMetaTileEntity) tileEntity).getMetaTileEntity()
+                                        instanceof GT_MetaTileEntity_DigitalTankBase) {
+                            max += ((GT_MetaTileEntity_DigitalTankBase)
+                                            ((BaseMetaTileEntity) tileEntity).getMetaTileEntity())
+                                    .getRealCapacity();
+                        } else max += tank.capacity;
+                        FluidStack tLiquid = tank.fluid;
+                        if (tLiquid != null) {
+                            used += tLiquid.amount;
+                        }
+                    }
+                }
+            }
+
+            return GT_Utility.convertRatioToRedstone(used, max, threshold, inverted);
+        } else {
+            return 0;
+        }
+    }
+
     @Override
     protected LiquidMeterData doCoverThingsImpl(
             byte aSide,
@@ -56,50 +92,9 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
             LiquidMeterData aCoverVariable,
             ICoverable aTileEntity,
             long aTimer) {
-        if ((aTileEntity instanceof IFluidHandler)) {
-            FluidTankInfo[] tTanks = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN);
-            long tMax = 0;
-            long tUsed = 0;
-            if (tTanks != null) {
-                for (FluidTankInfo tTank : tTanks) {
-                    if (tTank != null) {
-                        tMax += tTank.capacity;
-                        FluidStack tLiquid = tTank.fluid;
-                        if (tLiquid != null) {
-                            tUsed += tLiquid.amount;
-                        }
-                    }
-                }
-            }
+        byte signal = computeSignalBasedOnFluid(aTileEntity, aCoverVariable.inverted, aCoverVariable.threshold);
+        aTileEntity.setOutputRedstoneSignal(aSide, signal);
 
-            long redstoneSignal;
-            if (tUsed == 0L) {
-                // nothing
-                redstoneSignal = 0;
-            } else if (tUsed >= tMax) {
-                // full
-                redstoneSignal = 15;
-            } else {
-                // 1-14 range
-                redstoneSignal = 1 + (14 * tUsed) / tMax;
-            }
-
-            if (aCoverVariable.inverted) {
-                redstoneSignal = 15 - redstoneSignal;
-            }
-
-            if (aCoverVariable.threshold > 0) {
-                if (aCoverVariable.inverted && tUsed >= aCoverVariable.threshold) {
-                    redstoneSignal = 0;
-                } else if (!aCoverVariable.inverted && tUsed < aCoverVariable.threshold) {
-                    redstoneSignal = 0;
-                }
-            }
-
-            aTileEntity.setOutputRedstoneSignal(aSide, (byte) redstoneSignal);
-        } else {
-            aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);
-        }
         return aCoverVariable;
     }
 

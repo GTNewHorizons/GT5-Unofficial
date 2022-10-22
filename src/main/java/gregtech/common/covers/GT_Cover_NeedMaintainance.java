@@ -4,6 +4,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -18,11 +19,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
-    private boolean isRotor(ItemStack aRotor) {
-        return !(aRotor == null
-                || !(aRotor.getItem() instanceof GT_MetaGenerated_Tool)
-                || aRotor.getItemDamage() < 170
-                || aRotor.getItemDamage() > 176);
+
+    /**
+     * @deprecated use {@link #GT_Cover_NeedMaintainance(ITexture coverTexture)} instead
+     */
+    @Deprecated
+    public GT_Cover_NeedMaintainance() {
+        this(null);
+    }
+
+    public GT_Cover_NeedMaintainance(ITexture coverTexture) {
+        super(coverTexture);
+    }
+
+    public static boolean isRotor(ItemStack rotor) {
+        return (rotor != null
+                && rotor.getItem() instanceof GT_MetaGenerated_Tool
+                && rotor.getItemDamage() >= 170
+                && rotor.getItemDamage() <= 176);
     }
 
     @Override

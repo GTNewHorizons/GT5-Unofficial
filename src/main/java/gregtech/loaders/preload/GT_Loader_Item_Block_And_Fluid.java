@@ -1,11 +1,24 @@
 package gregtech.loaders.preload;
 
+import static gregtech.api.enums.FluidState.GAS;
+import static gregtech.api.enums.FluidState.LIQUID;
+import static gregtech.api.enums.FluidState.MOLTEN;
+import static gregtech.api.enums.FluidState.SLURRY;
+
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.items.GT_Block_LongDistancePipe;
 import gregtech.api.items.GT_BreederCell_Item;
 import gregtech.api.items.GT_Generic_Item;
@@ -16,8 +29,32 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.*;
-import gregtech.common.items.*;
+import gregtech.common.blocks.GT_Block_Casings1;
+import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.common.blocks.GT_Block_Casings3;
+import gregtech.common.blocks.GT_Block_Casings4;
+import gregtech.common.blocks.GT_Block_Casings5;
+import gregtech.common.blocks.GT_Block_Casings6;
+import gregtech.common.blocks.GT_Block_Casings8;
+import gregtech.common.blocks.GT_Block_Concretes;
+import gregtech.common.blocks.GT_Block_Granites;
+import gregtech.common.blocks.GT_Block_Machines;
+import gregtech.common.blocks.GT_Block_Metal;
+import gregtech.common.blocks.GT_Block_Ores;
+import gregtech.common.blocks.GT_Block_Reinforced;
+import gregtech.common.blocks.GT_Block_Stones;
+import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.items.GT_DepletetCell_Item;
+import gregtech.common.items.GT_FluidDisplayItem;
+import gregtech.common.items.GT_IntegratedCircuit_Item;
+import gregtech.common.items.GT_MetaGenerated_Item_01;
+import gregtech.common.items.GT_MetaGenerated_Item_02;
+import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.common.items.GT_MetaGenerated_Item_98;
+import gregtech.common.items.GT_MetaGenerated_Item_99;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.GT_NeutronReflector_Item;
+import gregtech.common.items.GT_VolumetricFlask;
 import java.util.Locale;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -26,7 +63,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_Loader_Item_Block_And_Fluid implements Runnable {
     @Override
@@ -37,44 +73,49 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_Log.out.println("GT_Mod: Register Books.");
 
-        GT_Utility.getWrittenBook("Manual_Printer", "Printer Manual V2.0", "Gregorius Techneticies", new String[] {
-            "This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.",
-            "1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.",
-            "The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?",
-            "2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.",
-            "Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!",
-            "You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.",
-            "3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.",
-            "4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI."
-        });
+        GT_Utility.getWrittenBook(
+                "Manual_Printer",
+                "Printer Manual V2.0",
+                "Gregorius Techneticies",
+                "This Manual explains the different Functionalities the GregTech Printing Factory has built in, which are not in NEI. Most got NEI Support now, but there is still some left without it.",
+                "1. Coloring Items and Blocks: You know those Crafting Recipes, which have a dye surrounded by 8 Item to dye them? Or the ones which have just one Item and one Dye in the Grid? Those two Recipe Types can be cheaply automated using the Printer.",
+                "The Colorization Functionality even optimizes the Recipes, which normally require 8 Items + 1 Dye to 1 Item and an 8th of the normally used Dye in Fluid Form, isn't that awesome?",
+                "2. Copying Books: This Task got slightly harder. The first Step is putting the written and signed Book inside the Scanner with a Data Stick ready to receive the Data.",
+                "Now insert the Stick into the Data Slot of the Printer and add 3 pieces of Paper together with 144 Liters of actual Ink Fluid. Water mixed and chemical Dyes won't work on Paper without messing things up!",
+                "You got a stack of Pages for your new Book, just put them into the Assembler with some Glue and a piece of Leather for the Binding, and you receive an identical copy of the Book, which would stack together with the original.",
+                "3. Renaming Items: This Functionality is no longer Part of the Printer. There is now a Name Mold for the Forming Press to imprint a Name into an Item, just rename the Mold in an Anvil and use it in the Forming Press on any Item.",
+                "4. Crafting of Books, Maps, Nametags etc etc etc: Those Recipes moved to other Machines, just look them up in NEI.");
 
         GT_Utility.getWrittenBook(
-                "Manual_Punch_Cards", "Punch Card Manual V0.0", "Gregorius Techneticies", new String[] {
-                    "This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.",
-                    "(i1&&i2)?o1=15:o1=0;=10",
-                    "ignore all Whitespace Characters, use Long for saving the Numbers",
-                    "&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F",
-                    "'0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'",
-                    "',' is just a separator for multiple executed Codes in a row.",
-                    "';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.",
-                    "If the '=' Operator is used within Brackets, it returns the value the variable has been set to.",
-                    "The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.",
-                    "A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.",
-                    "For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.",
-                    "A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.",
-                    "Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card."
-                });
+                "Manual_Punch_Cards",
+                "Punch Card Manual V0.0",
+                "Gregorius Techneticies",
+                "This Manual will explain the Functionality of the Punch Cards, once they are fully implemented. And no, they won't be like the IRL Punch Cards. This is just a current Idea Collection.",
+                "(i1&&i2)?o1=15:o1=0;=10",
+                "ignore all Whitespace Characters, use Long for saving the Numbers",
+                "&& || ^^ & | ^ ! ++ -- + - % / // * ** << >> >>> < > <= >= == !=  ~ ( ) ?: , ; ;= ;=X; = i0 i1 i2 i3 i4 i5 o0 o1 o2 o3 o4 o5 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 A B C D E F",
+                "'0' = false, 'everything but 0' = true, '!' turns '0' into '1' and everything else into '0'",
+                "',' is just a separator for multiple executed Codes in a row.",
+                "';' means that the Program waits until the next tick before continuing. ';=10' and ';=10;' both mean that it will wait 10 Ticks instead of 1. And ';=0' or anything < 0 will default to 0.",
+                "If the '=' Operator is used within Brackets, it returns the value the variable has been set to.",
+                "The Program saves the Char Index of the current Task, the 10 Variables (which reset to 0 as soon as the Program Loop stops), the 10 Member Variables and the remaining waiting Time in its NBT.",
+                "A = 10, B = 11, C = 12, D = 13, E = 14, F = 15, just for Hexadecimal Space saving, since Redstone has only 4 Bits.",
+                "For implementing Loops you just need 1 Punch Card per Loop, these Cards can restart once they are finished, depending on how many other Cards there are in the Program Loop you inserted your Card into, since it will process them procedurally.",
+                "A Punch Card Processor can run up to four Loops, each with the length of seven Punch Cards, parallel.",
+                "Why does the Punch Card need Ink to be made, you ask? Because the empty one needs to have some lines on, and the for the punched one it prints the Code to execute in a human readable format on the Card.");
 
-        GT_Utility.getWrittenBook("Manual_Microwave", "Microwave Oven Manual", "Kitchen Industries", new String[] {
-            "Congratulations, you inserted a random seemingly empty Book into the Microwave and these Letters appeared out of nowhere.",
-            "You just got a Microwave Oven and asked yourself 'why do I even need it?'. It's simple, the Microwave can cook for just 128 EU and at an insane speed. Not even a normal E-furnace can do it that fast and cheap!",
-            "This is the cheapest and fastest way to cook for you. That is why the Microwave Oven can be found in almost every Kitchen (see www.youwannabuyakitchen.ly).",
-            "Long time exposure to Microwaves can cause Cancer, but we doubt Steve lives long enough to die because of that.",
-            "Do not insert any Metals. It might result in an Explosion.",
-            "Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.",
-            "Do not insert inflammable Objects. The Oven will catch on Fire.",
-            "Do not insert Explosives such as Eggs. Just don't."
-        });
+        GT_Utility.getWrittenBook(
+                "Manual_Microwave",
+                "Microwave Oven Manual",
+                "Kitchen Industries",
+                "Congratulations, you inserted a random seemingly empty Book into the Microwave and these Letters appeared out of nowhere.",
+                "You just got a Microwave Oven and asked yourself 'why do I even need it?'. It's simple, the Microwave can cook for just 128 EU and at an insane speed. Not even a normal E-furnace can do it that fast and cheap!",
+                "This is the cheapest and fastest way to cook for you. That is why the Microwave Oven can be found in almost every Kitchen (see www.youwannabuyakitchen.ly).",
+                "Long time exposure to Microwaves can cause Cancer, but we doubt Steve lives long enough to die because of that.",
+                "Do not insert any Metals. It might result in an Explosion.",
+                "Do not dry Animals with it. It will result in a Hot Dog, no matter which Animal you put into it.",
+                "Do not insert inflammable Objects. The Oven will catch on Fire.",
+                "Do not insert Explosives such as Eggs. Just don't.");
 
         GT_Log.out.println("GT_Mod: Register Items.");
 
@@ -113,92 +154,18 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         ItemList.Neutron_Reflector.set(
                 new GT_NeutronReflector_Item("neutronreflector", "Iridium Neutron Reflector", 0));
-
         ItemList.Reactor_Coolant_He_1.set(
                 GregTech_API.constructCoolantCellItem("60k_Helium_Coolantcell", "60k He Coolant Cell", 60000));
-        GT_ModHandler.addCraftingRecipe(
-                ItemList.Reactor_Coolant_He_1.get(1L, new Object[0]),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {
-                    " P ",
-                    "PCP",
-                    " P ",
-                    'C',
-                    OrePrefixes.cell.get(Materials.Helium),
-                    'P',
-                    OrePrefixes.plate.get(Materials.Tin)
-                });
-
         ItemList.Reactor_Coolant_He_3.set(
                 GregTech_API.constructCoolantCellItem("180k_Helium_Coolantcell", "180k He Coolant Cell", 180000));
-        GT_ModHandler.addCraftingRecipe(
-                ItemList.Reactor_Coolant_He_3.get(1L, new Object[0]),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {
-                    "PCP", "PCP", "PCP", 'C', ItemList.Reactor_Coolant_He_1, 'P', OrePrefixes.plate.get(Materials.Tin)
-                });
-
         ItemList.Reactor_Coolant_He_6.set(
                 GregTech_API.constructCoolantCellItem("360k_Helium_Coolantcell", "360k He Coolant Cell", 360000));
-        GT_ModHandler.addCraftingRecipe(
-                ItemList.Reactor_Coolant_He_6.get(1L, new Object[0]),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {
-                    "PCP",
-                    "PDP",
-                    "PCP",
-                    'C',
-                    ItemList.Reactor_Coolant_He_3,
-                    'P',
-                    OrePrefixes.plate.get(Materials.Tin),
-                    'D',
-                    OrePrefixes.plateDense.get(Materials.Copper)
-                });
-
         ItemList.Reactor_Coolant_NaK_1.set(
                 GregTech_API.constructCoolantCellItem("60k_NaK_Coolantcell", "60k NaK Coolantcell", 60000));
-        GT_ModHandler.addCraftingRecipe(
-                ItemList.Reactor_Coolant_NaK_1.get(1L, new Object[0]),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {
-                    "TST",
-                    "PCP",
-                    "TST",
-                    'C',
-                    GT_ModHandler.getIC2Item("reactorCoolantSimple", 1L, 1),
-                    'T',
-                    OrePrefixes.plate.get(Materials.Tin),
-                    'S',
-                    OrePrefixes.dust.get(Materials.Sodium),
-                    'P',
-                    OrePrefixes.dust.get(Materials.Potassium)
-                });
-
         ItemList.Reactor_Coolant_NaK_3.set(
                 GregTech_API.constructCoolantCellItem("180k_NaK_Coolantcell", "180k NaK Coolantcell", 180000));
-        GT_ModHandler.addCraftingRecipe(
-                ItemList.Reactor_Coolant_NaK_3.get(1L, new Object[0]),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {
-                    "PCP", "PCP", "PCP", 'C', ItemList.Reactor_Coolant_NaK_1, 'P', OrePrefixes.plate.get(Materials.Tin)
-                });
-
         ItemList.Reactor_Coolant_NaK_6.set(
                 GregTech_API.constructCoolantCellItem("360k_NaK_Coolantcell", "360k NaK Coolantcell", 360000));
-        GT_ModHandler.addCraftingRecipe(
-                ItemList.Reactor_Coolant_NaK_6.get(1L, new Object[0]),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] {
-                    "PCP",
-                    "PDP",
-                    "PCP",
-                    'C',
-                    ItemList.Reactor_Coolant_NaK_3,
-                    'P',
-                    OrePrefixes.plate.get(Materials.Tin),
-                    'D',
-                    OrePrefixes.plateDense.get(Materials.Copper)
-                });
 
         ItemList.Reactor_Coolant_Sp_1.set(
                 GregTech_API.constructCoolantCellItem("180k_Space_Coolantcell", "180k Sp Coolant Cell", 180000));
@@ -240,7 +207,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     0.4F,
                     0,
                     0.25F,
-                    ItemList.Depleted_Thorium_1.get(1, new Object[0]),
+                    ItemList.Depleted_Thorium_1.get(1),
                     false));
             ItemList.ThoriumCell_2.set(new GT_RadioactiveCellIC_Item(
                     "Double_Thoriumcell",
@@ -250,7 +217,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     0.4F,
                     0,
                     0.25F,
-                    ItemList.Depleted_Thorium_2.get(1, new Object[0]),
+                    ItemList.Depleted_Thorium_2.get(1),
                     false));
             ItemList.ThoriumCell_4.set(new GT_RadioactiveCellIC_Item(
                     "Quad_Thoriumcell",
@@ -260,27 +227,27 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     0.4F,
                     0,
                     0.25F,
-                    ItemList.Depleted_Thorium_4.get(1, new Object[0]),
+                    ItemList.Depleted_Thorium_4.get(1),
                     false));
 
             GT_ModHandler.addThermalCentrifugeRecipe(
-                    ItemList.Depleted_Thorium_1.get(1, new Object[0]), 5000, new Object[] {
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L)
-                    });
+                    ItemList.Depleted_Thorium_1.get(1),
+                    5000,
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L));
             GT_ModHandler.addThermalCentrifugeRecipe(
-                    ItemList.Depleted_Thorium_2.get(1, new Object[0]), 5000, new Object[] {
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L)
-                    });
+                    ItemList.Depleted_Thorium_2.get(1),
+                    5000,
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L));
             GT_ModHandler.addThermalCentrifugeRecipe(
-                    ItemList.Depleted_Thorium_4.get(1, new Object[0]), 5000, new Object[] {
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L)
-                    });
+                    ItemList.Depleted_Thorium_4.get(1),
+                    5000,
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L));
 
             ItemList.Depleted_Naquadah_1.set(
                     new GT_DepletetCell_Item("NaquadahcellDep", "Fuel Rod (Depleted Naquadah)", 1));
@@ -296,7 +263,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     4F,
                     1,
                     1F,
-                    ItemList.Depleted_Naquadah_1.get(1, new Object[0]),
+                    ItemList.Depleted_Naquadah_1.get(1),
                     false));
             ItemList.NaquadahCell_2.set(new GT_RadioactiveCellIC_Item(
                     "Double_Naquadahcell",
@@ -306,7 +273,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     4F,
                     1,
                     1F,
-                    ItemList.Depleted_Naquadah_2.get(1, new Object[0]),
+                    ItemList.Depleted_Naquadah_2.get(1),
                     false));
             ItemList.NaquadahCell_4.set(new GT_RadioactiveCellIC_Item(
                     "Quad_Naquadahcell",
@@ -316,7 +283,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     4F,
                     1,
                     1F,
-                    ItemList.Depleted_Naquadah_4.get(1, new Object[0]),
+                    ItemList.Depleted_Naquadah_4.get(1),
                     false));
 
             GT_Values.RA.addCentrifugeRecipe(
@@ -374,7 +341,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     4F,
                     1,
                     1F,
-                    ItemList.Depleted_MNq_1.get(1, new Object[0]),
+                    ItemList.Depleted_MNq_1.get(1),
                     true));
             ItemList.MNqCell_2.set(new GT_RadioactiveCellIC_Item(
                     "Double_MNqCell",
@@ -384,7 +351,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     4F,
                     1,
                     1F,
-                    ItemList.Depleted_MNq_2.get(1, new Object[0]),
+                    ItemList.Depleted_MNq_2.get(1),
                     true));
             ItemList.MNqCell_4.set(new GT_RadioactiveCellIC_Item(
                     "Quad_MNqCell",
@@ -394,7 +361,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     4F,
                     1,
                     1F,
-                    ItemList.Depleted_MNq_4.get(1, new Object[0]),
+                    ItemList.Depleted_MNq_4.get(1),
                     true));
 
             GT_Values.RA.addCentrifugeRecipe(
@@ -805,169 +772,141 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     .getFluid();
         }
 
-        GT_Mod.gregtechproxy.addFluid(
-                "Air",
-                "Air",
-                Materials.Air,
-                2,
-                295,
-                ItemList.Cell_Air.get(1L, new Object[0]),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                2000);
-        GT_Mod.gregtechproxy.addFluid(
-                "LiquidOxygen",
-                "Liquid Oxygen",
-                Materials.LiquidOxygen,
-                2,
-                60,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidOxygen, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "LiquidNitrogen",
-                "Liquid Nitrogen",
-                Materials.LiquidNitrogen,
-                2,
-                77,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidNitrogen, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "LiquidAir",
-                "Liquid Air",
-                Materials.LiquidAir,
-                1,
-                77,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Oxygen",
-                "Oxygen",
-                Materials.Oxygen,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Hydrogen",
-                "Hydrogen",
-                Materials.Hydrogen,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Deuterium",
-                "Deuterium",
-                Materials.Deuterium,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Deuterium, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Tritium",
-                "Tritium",
-                Materials.Tritium,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Tritium, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Helium",
-                "Helium",
-                Materials.Helium,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Argon",
-                "Argon",
-                Materials.Argon,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Argon, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Radon",
-                "Radon",
-                Materials.Radon,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
+        GT_FluidFactory.builder("Air")
+                .withLocalizedName("Air")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Air)
+                .registerContainers(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L), 2000);
+        GT_FluidFactory.builder("LiquidOxygen")
+                .withLocalizedName("Liquid Oxygen")
+                .withStateAndTemperature(GAS, 60)
+                .buildAndRegister()
+                .configureMaterials(Materials.LiquidOxygen)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidOxygen, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("LiquidNitrogen")
+                .withLocalizedName("Liquid Nitrogen")
+                .withStateAndTemperature(GAS, 77)
+                .buildAndRegister()
+                .configureMaterials(Materials.LiquidNitrogen)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidNitrogen, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("LiquidAir")
+                .withLocalizedName("Liquid Air")
+                .withStateAndTemperature(LIQUID, 77)
+                .buildAndRegister()
+                .configureMaterials(Materials.LiquidAir)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidAir, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Oxygen")
+                .withLocalizedName("Oxygen")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Oxygen)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Hydrogen")
+                .withLocalizedName("Hydrogen")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Hydrogen)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Deuterium")
+                .withLocalizedName("Deuterium")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Deuterium)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Deuterium, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Tritium")
+                .withLocalizedName("Tritium")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Tritium)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Tritium, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Helium")
+                .withLocalizedName("Helium")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Helium)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Argon")
+                .withLocalizedName("Argon")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Argon)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Argon, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Radon")
+                .withLocalizedName("Radon")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Radon)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L), ItemList.Cell_Empty.get(1L));
 
-        GT_Mod.gregtechproxy.addFluid(
-                "Fluorine",
-                "Fluorine",
-                Materials.Fluorine,
-                2,
-                53,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Titaniumtetrachloride",
-                "Titaniumtetrachloride",
-                Materials.Titaniumtetrachloride,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Titaniumtetrachloride, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Helium-3",
-                "Helium-3",
-                Materials.Helium_3,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium_3, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Methane",
-                "Methane",
-                Materials.Methane,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Methane, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Nitrogen",
-                "Nitrogen",
-                Materials.Nitrogen,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "NitrogenDioxide",
-                "Nitrogen Dioxide",
-                Materials.NitrogenDioxide,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitrogenDioxide, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Steam",
-                "Steam",
-                Materials.Water,
-                2,
-                375,
-                GT_ModHandler.getIC2Item("steamCell", 1),
-                Materials.Empty.getCells(1),
-                1000);
+        GT_FluidFactory.builder("Fluorine")
+                .withLocalizedName("Fluorine")
+                .withStateAndTemperature(GAS, 53)
+                .buildAndRegister()
+                .configureMaterials(Materials.Fluorine)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Titaniumtetrachloride")
+                .withLocalizedName("Titaniumtetrachloride")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Titaniumtetrachloride)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Titaniumtetrachloride, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Helium-3")
+                .withLocalizedName("Helium-3")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Helium_3)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium_3, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Methane")
+                .withLocalizedName("Methane")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Methane)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Methane, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Nitrogen")
+                .withLocalizedName("Nitrogen")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Nitrogen)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("NitrogenDioxide")
+                .withLocalizedName("Nitrogen Dioxide")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.NitrogenDioxide)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitrogenDioxide, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Steam")
+                .withLocalizedName("Steam")
+                .withStateAndTemperature(GAS, 375)
+                .buildAndRegister()
+                .configureMaterials(Materials.Water)
+                .registerBContainers(GT_ModHandler.getIC2Item("steamCell", 1), Materials.Empty.getCells(1));
         GT_Values.RA.addFluidCannerRecipe(
                 Materials.Empty.getCells(1),
                 GT_ModHandler.getIC2Item("steamCell", 1),
@@ -976,438 +915,384 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         Materials.Ice.mGas = Materials.Water.mGas;
         Materials.Water.mGas.setTemperature(375).setGaseous(true);
 
-        ItemList.sOilExtraHeavy =
-                GT_Mod.gregtechproxy.addFluid("liquid_extra_heavy_oil", "Very Heavy Oil", null, 1, 295);
-        ItemList.sEpichlorhydrin = GT_Mod.gregtechproxy.addFluid(
-                "liquid_epichlorhydrin",
-                "Epichlorohydrin",
-                Materials.Epichlorohydrin,
-                1,
-                295,
-                Materials.Epichlorohydrin.getCells(1),
-                Materials.Empty.getCells(1),
-                1000);
-        ItemList.sDrillingFluid = GT_Mod.gregtechproxy.addFluid("liquid_drillingfluid", "Drilling Fluid", null, 1, 295);
-        ItemList.sToluene = GT_Mod.gregtechproxy.addFluid(
-                "liquid_toluene",
-                "Toluene",
-                Materials.Toluene,
-                1,
-                295,
-                Materials.Toluene.getCells(1),
-                Materials.Empty.getCells(1),
-                1000);
-        ItemList.sNitrationMixture = GT_Mod.gregtechproxy.addFluid(
-                "liquid_nitrationmixture",
-                "Nitration Mixture",
-                Materials.NitrationMixture,
-                1,
-                295,
-                Materials.NitrationMixture.getCells(1),
-                Materials.Empty.getCells(1),
-                1000);
+        ItemList.sOilExtraHeavy = GT_FluidFactory.of("liquid_extra_heavy_oil", "Very Heavy Oil", LIQUID, 295);
+        ItemList.sEpichlorhydrin = GT_FluidFactory.builder("liquid_epichlorhydrin")
+                .withLocalizedName("Epichlorohydrin")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Epichlorohydrin)
+                .registerBContainers(Materials.Epichlorohydrin.getCells(1), Materials.Empty.getCells(1))
+                .asFluid();
+        ItemList.sDrillingFluid = GT_FluidFactory.of("liquid_drillingfluid", "Drilling Fluid", LIQUID, 295);
+        ItemList.sToluene = GT_FluidFactory.builder("liquid_toluene")
+                .withLocalizedName("Toluene")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Toluene)
+                .registerBContainers(Materials.Toluene.getCells(1), Materials.Empty.getCells(1))
+                .asFluid();
+        ItemList.sNitrationMixture = GT_FluidFactory.builder("liquid_nitrationmixture")
+                .withLocalizedName("Nitration Mixture")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.NitrationMixture)
+                .registerBContainers(Materials.NitrationMixture.getCells(1), Materials.Empty.getCells(1))
+                .asFluid();
 
-        GT_Mod.gregtechproxy.addFluid(
-                "liquid_heavy_oil",
-                "Heavy Oil",
-                Materials.OilHeavy,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilHeavy, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "liquid_medium_oil",
-                "Raw Oil",
-                Materials.OilMedium,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilMedium, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "liquid_light_oil",
-                "Light Oil",
-                Materials.OilLight,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilLight, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "gas_natural_gas",
-                "Natural Gas",
-                Materials.NatruralGas,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        ItemList.sHydricSulfur = GT_Mod.gregtechproxy.addFluid(
-                "liquid_hydricsulfur",
-                "Hydrogen Sulfide",
-                Materials.HydricSulfide,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydricSulfide, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "gas_sulfuricgas",
-                "Sulfuric Gas",
-                Materials.SulfuricGas,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricGas, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "gas_gas",
-                "Refinery Gas",
-                Materials.Gas,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Gas, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "liquid_sulfuricnaphtha",
-                "Sulfuric Naphtha",
-                Materials.SulfuricNaphtha,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricNaphtha, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "liquid_sufluriclight_fuel",
-                "Sulfuric Light Fuel",
-                Materials.SulfuricLightFuel,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricLightFuel, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "liquid_sulfuricheavy_fuel",
-                "Sulfuric Heavy Fuel",
-                Materials.SulfuricHeavyFuel,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricHeavyFuel, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "liquid_naphtha",
-                "Naphtha",
-                Materials.Naphtha,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naphtha, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "liquid_light_fuel",
-                "Light Fuel",
-                Materials.LightFuel,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LightFuel, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "liquid_heavy_fuel",
-                "Heavy Fuel",
-                Materials.HeavyFuel,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HeavyFuel, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "liquid_lpg",
-                "LPG",
-                Materials.LPG,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LPG, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
+        GT_FluidFactory.builder("liquid_heavy_oil")
+                .withLocalizedName("Heavy Oil")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.OilHeavy)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilHeavy, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("liquid_medium_oil")
+                .withLocalizedName("Raw Oil")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.OilMedium)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilMedium, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("liquid_light_oil")
+                .withLocalizedName("Light Oil")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.OilLight)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.OilLight, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("gas_natural_gas")
+                .withLocalizedName("Natural Gas")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.NatruralGas)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        ItemList.sHydricSulfur = GT_FluidFactory.builder("liquid_hydricsulfur")
+                .withLocalizedName("Hydrogen Sulfide")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.HydricSulfide)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydricSulfide, 1L),
+                        ItemList.Cell_Empty.get(1L))
+                .asFluid();
+        GT_FluidFactory.builder("gas_sulfuricgas")
+                .withLocalizedName("Sulfuric Gas")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.SulfuricGas)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricGas, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("gas_gas")
+                .withLocalizedName("Refinery Gas")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Gas)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Gas, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("liquid_sulfuricnaphtha")
+                .withLocalizedName("Sulfuric Naphtha")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.SulfuricNaphtha)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricNaphtha, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("liquid_sufluriclight_fuel")
+                .withLocalizedName("Sulfuric Light Fuel")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.SulfuricLightFuel)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricLightFuel, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("liquid_sulfuricheavy_fuel")
+                .withLocalizedName("Sulfuric Heavy Fuel")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.SulfuricHeavyFuel)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricHeavyFuel, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("liquid_naphtha")
+                .withLocalizedName("Naphtha")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Naphtha)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naphtha, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("liquid_light_fuel")
+                .withLocalizedName("Light Fuel")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.LightFuel)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LightFuel, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("liquid_heavy_fuel")
+                .withLocalizedName("Heavy Fuel")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.HeavyFuel)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HeavyFuel, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("liquid_lpg")
+                .withLocalizedName("LPG")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.LPG)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LPG, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("charcoal_byproducts")
+                .withTextureName("molten.autogenerated")
+                .withLocalizedName("Charcoal Byproducts")
+                .withColorRGBA(Materials.CharcoalByproducts.mRGBa)
+                .withStateAndTemperature(GAS, 775)
+                .buildAndRegister()
+                .configureMaterials(Materials.CharcoalByproducts)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.CharcoalByproducts, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("molten.bisphenol_a")
+                .withTextureName("molten.autogenerated")
+                .withLocalizedName("Molten Bisphenol A")
+                .withColorRGBA(Materials.BisphenolA.mRGBa)
+                .withStateAndTemperature(LIQUID, 432)
+                .buildAndRegister()
+                .configureMaterials(Materials.BisphenolA)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.BisphenolA, 1L),
+                        ItemList.Cell_Empty.get(1L));
 
-        GT_Mod.gregtechproxy.addFluid(
-                "charcoal_byproducts",
-                "molten.autogenerated",
-                "Charcoal Byproducts",
-                Materials.CharcoalByproducts,
-                Materials.CharcoalByproducts.mRGBa,
-                2,
-                775,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.CharcoalByproducts, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "molten.bisphenol_a",
-                "molten.autogenerated",
-                "Molten Bisphenol A",
-                Materials.BisphenolA,
-                Materials.BisphenolA.mRGBa,
-                1,
-                432,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.BisphenolA, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
+        GT_FluidFactory.builder("UUAmplifier")
+                .withLocalizedName("UU Amplifier")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.UUAmplifier)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.UUAmplifier, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Chlorine")
+                .withLocalizedName("Chlorine")
+                .withStateAndTemperature(GAS, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Chlorine)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Mercury")
+                .withLocalizedName("Mercury")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Mercury)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Mercury, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("NitroFuel")
+                .withLocalizedName("Cetane-Boosted Diesel")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.NitroFuel)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitroFuel, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("SodiumPersulfate")
+                .withLocalizedName("Sodium Persulfate")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.SodiumPersulfate)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SodiumPersulfate, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("Glyceryl")
+                .withLocalizedName("Glyceryl Trinitrate")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Glyceryl)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glyceryl, 1L),
+                        ItemList.Cell_Empty.get(1L));
 
-        GT_Mod.gregtechproxy.addFluid(
-                "UUAmplifier",
-                "UU Amplifier",
-                Materials.UUAmplifier,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.UUAmplifier, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Chlorine",
-                "Chlorine",
-                Materials.Chlorine,
-                2,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Mercury",
-                "Mercury",
-                Materials.Mercury,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Mercury, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "NitroFuel",
-                "Cetane-Boosted Diesel",
-                Materials.NitroFuel,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitroFuel, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "SodiumPersulfate",
-                "Sodium Persulfate",
-                Materials.SodiumPersulfate,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SodiumPersulfate, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "Glyceryl",
-                "Glyceryl Trinitrate",
-                Materials.Glyceryl,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glyceryl, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
+        GT_FluidFactory.builder("lubricant")
+                .withLocalizedName("Lubricant")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Lubricant)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("creosote")
+                .withLocalizedName("Creosote Oil")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Creosote)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Creosote, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("seedoil")
+                .withLocalizedName("Seed Oil")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.SeedOil)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SeedOil, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("fishoil")
+                .withLocalizedName("Fish Oil")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.FishOil)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FishOil, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("oil")
+                .withLocalizedName("Oil")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Oil)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("fuel")
+                .withLocalizedName("Diesel")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Fuel)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("for.honey")
+                .withLocalizedName("Honey")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Honey)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Honey, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("biomass")
+                .withLocalizedName("Biomass")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Biomass)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Biomass, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("bioethanol")
+                .withLocalizedName("Bio Ethanol")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Ethanol)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ethanol, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("sulfuricacid")
+                .withLocalizedName("Sulfuric Acid")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.SulfuricAcid)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricAcid, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("milk")
+                .withLocalizedName("Milk")
+                .withStateAndTemperature(LIQUID, 290)
+                .buildAndRegister()
+                .configureMaterials(Materials.Milk)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Milk, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("mcguffium")
+                .withLocalizedName("Mc Guffium 239")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.McGuffium239)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.McGuffium239, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("refinedGlue")
+                .withLocalizedName("Refined Glue")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Glue)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glue, 1L), ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("hotfryingoil")
+                .withLocalizedName("Hot Frying Oil")
+                .withStateAndTemperature(LIQUID, 400)
+                .buildAndRegister()
+                .configureMaterials(Materials.FryingOilHot)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FryingOilHot, 1L),
+                        ItemList.Cell_Empty.get(1L));
 
-        GT_Mod.gregtechproxy.addFluid(
-                "lubricant",
-                "Lubricant",
-                Materials.Lubricant,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "creosote",
-                "Creosote Oil",
-                Materials.Creosote,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Creosote, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "seedoil",
-                "Seed Oil",
-                Materials.SeedOil,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SeedOil, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "fishoil",
-                "Fish Oil",
-                Materials.FishOil,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FishOil, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "oil",
-                "Oil",
-                Materials.Oil,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "fuel",
-                "Diesel",
-                Materials.Fuel,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "for.honey",
-                "Honey",
-                Materials.Honey,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Honey, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "biomass",
-                "Biomass",
-                Materials.Biomass,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Biomass, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "bioethanol",
-                "Bio Ethanol",
-                Materials.Ethanol,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ethanol, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "sulfuricacid",
-                "Sulfuric Acid",
-                Materials.SulfuricAcid,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricAcid, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "milk",
-                "Milk",
-                Materials.Milk,
-                1,
-                290,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Milk, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "mcguffium",
-                "Mc Guffium 239",
-                Materials.McGuffium239,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.McGuffium239, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "refinedGlue",
-                "Refined Glue",
-                Materials.Glue,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glue, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "hotfryingoil",
-                "Hot Frying Oil",
-                Materials.FryingOilHot,
-                1,
-                400,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FryingOilHot, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
+        GT_FluidFactory.builder("DimensionallyTranscendentResidue")
+                .withLocalizedName("Dimensionally Transcendent Residue")
+                .withStateAndTemperature(LIQUID, 2000000000)
+                .buildAndRegister()
+                .configureMaterials(Materials.DimensionallyTranscendentResidue)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.DimensionallyTranscendentResidue, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("ExcitedDTCC")
+                .withLocalizedName("Excited Dimensionally Transcendent Crude Catalyst")
+                .withStateAndTemperature(LIQUID, 500000000)
+                .buildAndRegister()
+                .configureMaterials(Materials.ExcitedDTCC)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTCC, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("ExcitedDTPC")
+                .withLocalizedName("Excited Dimensionally Transcendent Prosaic Catalyst")
+                .withStateAndTemperature(LIQUID, 500000000)
+                .buildAndRegister()
+                .configureMaterials(Materials.ExcitedDTPC)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTPC, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("ExcitedDTRC")
+                .withLocalizedName("Excited Dimensionally Transcendent Resplendent Catalyst")
+                .withStateAndTemperature(LIQUID, 500000000)
+                .buildAndRegister()
+                .configureMaterials(Materials.ExcitedDTRC)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTRC, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("ExcitedDTEC")
+                .withLocalizedName("Excited Dimensionally Transcendent Exotic Catalyst")
+                .withStateAndTemperature(LIQUID, 500000000)
+                .buildAndRegister()
+                .configureMaterials(Materials.ExcitedDTEC)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTEC, 1L),
+                        ItemList.Cell_Empty.get(1L));
 
-        GT_Mod.gregtechproxy.addFluid(
-                "DimensionallyTranscendentResidue",
-                "Dimensionally Transcendent Residue",
-                Materials.DimensionallyTranscendentResidue,
-                1,
-                2000000000,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.DimensionallyTranscendentResidue, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "ExcitedDTCC",
-                "Excited Dimensionally Transcendent Crude Catalyst",
-                Materials.ExcitedDTCC,
-                1,
-                500000000,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTCC, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "ExcitedDTPC",
-                "Excited Dimensionally Transcendent Prosaic Catalyst",
-                Materials.ExcitedDTPC,
-                1,
-                500000000,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTPC, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "ExcitedDTRC",
-                "Excited Dimensionally Transcendent Resplendent Catalyst",
-                Materials.ExcitedDTRC,
-                1,
-                500000000,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTRC, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "ExcitedDTEC",
-                "Excited Dimensionally Transcendent Exotic Catalyst",
-                Materials.ExcitedDTEC,
-                1,
-                500000000,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTEC, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-
-        GT_Mod.gregtechproxy.addFluid(
-                "fieryblood",
-                "Fiery Blood",
-                Materials.FierySteel,
-                1,
-                6400,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        GT_Mod.gregtechproxy.addFluid(
-                "holywater",
-                "Holy Water",
-                Materials.HolyWater,
-                1,
-                295,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HolyWater, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
-        if (ItemList.TF_Vial_FieryBlood.get(1L, new Object[0]) != null) {
+        GT_FluidFactory.builder("fieryblood")
+                .withLocalizedName("Fiery Blood")
+                .withStateAndTemperature(LIQUID, 6400)
+                .buildAndRegister()
+                .configureMaterials(Materials.FierySteel)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("holywater")
+                .withLocalizedName("Holy Water")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.HolyWater)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HolyWater, 1L),
+                        ItemList.Cell_Empty.get(1L));
+        if (ItemList.TF_Vial_FieryBlood.get(1L) != null) {
             FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                     Materials.FierySteel.getFluid(250L),
-                    ItemList.TF_Vial_FieryBlood.get(1L, new Object[0]),
-                    ItemList.Bottle_Empty.get(1L, new Object[0])));
+                    ItemList.TF_Vial_FieryBlood.get(1L),
+                    ItemList.Bottle_Empty.get(1L)));
+
+            GT_FluidFactory.builder("liquid_sodium")
+                    .withLocalizedName("Liquid Sodium")
+                    .withStateAndTemperature(LIQUID, 495)
+                    .buildAndRegister()
+                    .configureMaterials(Materials.Sodium)
+                    .registerBContainers(
+                            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
+                            ItemList.Cell_Empty.get(1L));
         }
 
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
@@ -1415,107 +1300,88 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Milk, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
-                Materials.Milk.getFluid(250L),
-                ItemList.Bottle_Milk.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0])));
+                Materials.Milk.getFluid(250L), ItemList.Bottle_Milk.get(1L), ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
-                Materials.HolyWater.getFluid(250L),
-                ItemList.Bottle_Holy_Water.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0])));
+                Materials.HolyWater.getFluid(250L), ItemList.Bottle_Holy_Water.get(1L), ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
-                Materials.McGuffium239.getFluid(250L),
-                ItemList.McGuffium_239.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0])));
+                Materials.McGuffium239.getFluid(250L), ItemList.McGuffium_239.get(1L), ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 Materials.Fuel.getFluid(100L),
-                ItemList.Tool_Lighter_Invar_Full.get(1L, new Object[0]),
-                ItemList.Tool_Lighter_Invar_Empty.get(1L, new Object[0])));
+                ItemList.Tool_Lighter_Invar_Full.get(1L),
+                ItemList.Tool_Lighter_Invar_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 Materials.Fuel.getFluid(1000L),
-                ItemList.Tool_Lighter_Platinum_Full.get(1L, new Object[0]),
-                ItemList.Tool_Lighter_Platinum_Empty.get(1L, new Object[0])));
+                ItemList.Tool_Lighter_Platinum_Full.get(1L),
+                ItemList.Tool_Lighter_Platinum_Empty.get(1L)));
 
-        Dyes.dyeBlack.addFluidDye(GT_Mod.gregtechproxy.addFluid("squidink", "Squid Ink", null, 1, 295));
-        Dyes.dyeBlue.addFluidDye(GT_Mod.gregtechproxy.addFluid("indigo", "Indigo Dye", null, 1, 295));
+        Dyes.dyeBlack.addFluidDye((Fluid) GT_FluidFactory.of("squidink", "Squid Ink", LIQUID, 295));
+        Dyes.dyeBlue.addFluidDye((Fluid) GT_FluidFactory.of("indigo", "Indigo Dye", LIQUID, 295));
         for (byte i = 0; i < Dyes.VALUES.length; i = (byte) (i + 1)) {
             Dyes tDye = Dyes.VALUES[i];
             Fluid tFluid;
             tDye.addFluidDye(
-                    tFluid = GT_Mod.gregtechproxy.addFluid(
-                            "dye.watermixed." + tDye.name().toLowerCase(Locale.ENGLISH),
-                            "dyes",
-                            "Water Mixed " + tDye.mName + " Dye",
-                            null,
-                            tDye.getRGBA(),
-                            1,
-                            295,
-                            null,
-                            null,
-                            0));
+                    GT_FluidFactory.builder("dye.watermixed." + tDye.name().toLowerCase(Locale.ENGLISH))
+                            .withTextureName("dyes")
+                            .withLocalizedName("Water Mixed " + tDye.mName + " Dye")
+                            .withColorRGBA(tDye.getRGBA())
+                            .withStateAndTemperature(LIQUID, 295)
+                            .buildAndRegister()
+                            .asFluid());
             tDye.addFluidDye(
-                    tFluid = GT_Mod.gregtechproxy.addFluid(
-                            "dye.chemical." + tDye.name().toLowerCase(Locale.ENGLISH),
-                            "dyes",
-                            "Chemical " + tDye.mName + " Dye",
-                            null,
-                            tDye.getRGBA(),
-                            1,
-                            295,
-                            null,
-                            null,
-                            0));
-            FluidContainerRegistry.registerFluidContainer(
-                    new FluidStack(tFluid, 2304),
-                    ItemList.SPRAY_CAN_DYES[i].get(1L, new Object[0]),
-                    ItemList.Spray_Empty.get(1L, new Object[0]));
+                    GT_FluidFactory.builder("dye.chemical." + tDye.name().toLowerCase(Locale.ENGLISH))
+                            .withTextureName("dyes")
+                            .withLocalizedName("Chemical " + tDye.mName + " Dye")
+                            .withColorRGBA(tDye.getRGBA())
+                            .withStateAndTemperature(LIQUID, 295)
+                            .buildAndRegister()
+                            .registerContainers(ItemList.SPRAY_CAN_DYES[i].get(1L), ItemList.Spray_Empty.get(1L), 2304)
+                            .asFluid());
         }
-        GT_Mod.gregtechproxy.addFluid(
-                "ice",
-                "Crushed Ice",
-                Materials.Ice,
-                0,
-                270,
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                1000);
+        GT_FluidFactory.builder("ice")
+                .withLocalizedName("Crushed Ice")
+                .withStateAndTemperature(SLURRY, 270)
+                .buildAndRegister()
+                .configureMaterials(Materials.Ice)
+                .registerBContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L), ItemList.Cell_Empty.get(1L));
         Materials.Water.mSolid = Materials.Ice.mSolid;
 
-        GT_Mod.gregtechproxy.addFluid(
-                "molten.glass",
-                "Molten Glass",
-                Materials.Glass,
-                4,
-                1500,
-                GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Glass, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                144);
-        GT_Mod.gregtechproxy.addFluid(
-                "molten.redstone",
-                "Molten Redstone",
-                Materials.Redstone,
-                4,
-                500,
-                GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                144);
-        GT_Mod.gregtechproxy.addFluid(
-                "molten.blaze",
-                "Molten Blaze",
-                Materials.Blaze,
-                4,
-                6400,
-                GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Blaze, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                144);
-        GT_Mod.gregtechproxy.addFluid(
-                "wet.concrete",
-                "Wet Concrete",
-                Materials.Concrete,
-                4,
-                300,
-                GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Concrete, 1L),
-                ItemList.Cell_Empty.get(1L, new Object[0]),
-                144);
+        GT_FluidFactory.builder("molten.glass")
+                .withLocalizedName("Molten Glass")
+                .withStateAndTemperature(MOLTEN, 1500)
+                .buildAndRegister()
+                .configureMaterials(Materials.Glass)
+                .registerContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Glass, 1L),
+                        ItemList.Cell_Empty.get(1L),
+                        144);
+        GT_FluidFactory.builder("molten.redstone")
+                .withLocalizedName("Molten Redstone")
+                .withStateAndTemperature(MOLTEN, 500)
+                .buildAndRegister()
+                .configureMaterials(Materials.Redstone)
+                .registerContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1L),
+                        ItemList.Cell_Empty.get(1L),
+                        144);
+        GT_FluidFactory.builder("molten.blaze")
+                .withLocalizedName("Molten Blaze")
+                .withStateAndTemperature(MOLTEN, 6400)
+                .buildAndRegister()
+                .configureMaterials(Materials.Blaze)
+                .registerContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Blaze, 1L),
+                        ItemList.Cell_Empty.get(1L),
+                        144);
+        GT_FluidFactory.builder("wet.concrete")
+                .withLocalizedName("Wet Concrete")
+                .withStateAndTemperature(MOLTEN, 300)
+                .buildAndRegister()
+                .configureMaterials(Materials.Concrete)
+                .registerContainers(
+                        GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Concrete, 1L),
+                        ItemList.Cell_Empty.get(1L),
+                        144);
 
         for (Materials tMaterial : Materials.values()) {
             if ((tMaterial.mStandardMoltenFluid == null)
@@ -1541,1062 +1407,645 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             }
         }
 
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.awkward",
-                "Awkward Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.thick",
-                "Thick Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 32),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.mundane",
-                "Mundane Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 64),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.damage",
-                "Harming Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8204),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.damage.strong",
-                "Strong Harming Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8236),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.damage.splash",
-                "Splash Harming Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16396),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.damage.strong.splash",
-                "Strong Splash Harming Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16428),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.health",
-                "Healing Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8197),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.health.strong",
-                "Strong Healing Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8229),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.health.splash",
-                "Splash Healing Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16389),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.health.strong.splash",
-                "Strong Splash Healing Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16421),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.speed",
-                "Swiftness Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8194),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.speed.strong",
-                "Strong Swiftness Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8226),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.speed.long",
-                "Stretched Swiftness Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8258),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.speed.splash",
-                "Splash Swiftness Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16386),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.speed.strong.splash",
-                "Strong Splash Swiftness Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16418),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.speed.long.splash",
-                "Stretched Splash Swiftness Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16450),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.strength",
-                "Strength Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8201),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.strength.strong",
-                "Strong Strength Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8233),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.strength.long",
-                "Stretched Strength Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8265),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.strength.splash",
-                "Splash Strength Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16393),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.strength.strong.splash",
-                "Strong Splash Strength Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16425),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.strength.long.splash",
-                "Stretched Splash Strength Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16457),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.regen",
-                "Regenerating Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8193),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.regen.strong",
-                "Strong Regenerating Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8225),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.regen.long",
-                "Stretched Regenerating Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8257),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.regen.splash",
-                "Splash Regenerating Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16385),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.regen.strong.splash",
-                "Strong Splash Regenerating Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16417),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.regen.long.splash",
-                "Stretched Splash Regenerating Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16449),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.poison",
-                "Poisonous Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8196),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.poison.strong",
-                "Strong Poisonous Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8228),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.poison.long",
-                "Stretched Poisonous Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8260),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.poison.splash",
-                "Splash Poisonous Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16388),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.poison.strong.splash",
-                "Strong Splash Poisonous Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16420),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.poison.long.splash",
-                "Stretched Splash Poisonous Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16452),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.fireresistance",
-                "Fire Resistant Brew",
-                null,
-                1,
-                375,
-                new ItemStack(Items.potionitem, 1, 8195),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.fireresistance.long",
-                "Stretched Fire Resistant Brew",
-                null,
-                1,
-                375,
-                new ItemStack(Items.potionitem, 1, 8259),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.fireresistance.splash",
-                "Splash Fire Resistant Brew",
-                null,
-                1,
-                375,
-                new ItemStack(Items.potionitem, 1, 16387),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.fireresistance.long.splash",
-                "Stretched Splash Fire Resistant Brew",
-                null,
-                1,
-                375,
-                new ItemStack(Items.potionitem, 1, 16451),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.nightvision",
-                "Night Vision Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8198),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.nightvision.long",
-                "Stretched Night Vision Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8262),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.nightvision.splash",
-                "Splash Night Vision Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16390),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.nightvision.long.splash",
-                "Stretched Splash Night Vision Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16454),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.weakness",
-                "Weakening Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8200),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.weakness.long",
-                "Stretched Weakening Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8264),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.weakness.splash",
-                "Splash Weakening Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16392),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.weakness.long.splash",
-                "Stretched Splash Weakening Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16456),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.slowness",
-                "Lame Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8202),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.slowness.long",
-                "Stretched Lame Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8266),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.slowness.splash",
-                "Splash Lame Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16394),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.slowness.long.splash",
-                "Stretched Splash Lame Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16458),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.waterbreathing",
-                "Fishy Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8205),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.waterbreathing.long",
-                "Stretched Fishy Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8269),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.waterbreathing.splash",
-                "Splash Fishy Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16397),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.waterbreathing.long.splash",
-                "Stretched Splash Fishy Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16461),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.invisibility",
-                "Invisible Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8206),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.invisibility.long",
-                "Stretched Invisible Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 8270),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.invisibility.splash",
-                "Splash Invisible Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16398),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.invisibility.long.splash",
-                "Stretched Splash Invisible Brew",
-                null,
-                1,
-                295,
-                new ItemStack(Items.potionitem, 1, 16462),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
+        GT_FluidFactory.builder("potion.awkward")
+                .withLocalizedName("Awkward Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.thick")
+                .withLocalizedName("Thick Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 32), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.mundane")
+                .withLocalizedName("Mundane Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 64), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.damage")
+                .withLocalizedName("Harming Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8204), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.damage.strong")
+                .withLocalizedName("Strong Harming Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8236), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.damage.splash")
+                .withLocalizedName("Splash Harming Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16396), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.damage.strong.splash")
+                .withLocalizedName("Strong Splash Harming Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16428), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.health")
+                .withLocalizedName("Healing Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8197), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.health.strong")
+                .withLocalizedName("Strong Healing Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8229), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.health.splash")
+                .withLocalizedName("Splash Healing Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16389), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.health.strong.splash")
+                .withLocalizedName("Strong Splash Healing Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16421), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.speed")
+                .withLocalizedName("Swiftness Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8194), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.speed.strong")
+                .withLocalizedName("Strong Swiftness Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8226), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.speed.long")
+                .withLocalizedName("Stretched Swiftness Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8258), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.speed.splash")
+                .withLocalizedName("Splash Swiftness Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16386), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.speed.strong.splash")
+                .withLocalizedName("Strong Splash Swiftness Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16418), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.speed.long.splash")
+                .withLocalizedName("Stretched Splash Swiftness Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16450), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.strength")
+                .withLocalizedName("Strength Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8201), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.strength.strong")
+                .withLocalizedName("Strong Strength Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8233), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.strength.long")
+                .withLocalizedName("Stretched Strength Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8265), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.strength.splash")
+                .withLocalizedName("Splash Strength Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16393), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.strength.strong.splash")
+                .withLocalizedName("Strong Splash Strength Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16425), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.strength.long.splash")
+                .withLocalizedName("Stretched Splash Strength Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16457), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.regen")
+                .withLocalizedName("Regenerating Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8193), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.regen.strong")
+                .withLocalizedName("Strong Regenerating Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8225), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.regen.long")
+                .withLocalizedName("Stretched Regenerating Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8257), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.regen.splash")
+                .withLocalizedName("Splash Regenerating Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16385), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.regen.strong.splash")
+                .withLocalizedName("Strong Splash Regenerating Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16417), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.regen.long.splash")
+                .withLocalizedName("Stretched Splash Regenerating Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16449), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.poison")
+                .withLocalizedName("Poisonous Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8196), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.poison.strong")
+                .withLocalizedName("Strong Poisonous Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8228), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.poison.long")
+                .withLocalizedName("Stretched Poisonous Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8260), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.poison.splash")
+                .withLocalizedName("Splash Poisonous Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16388), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.poison.strong.splash")
+                .withLocalizedName("Strong Splash Poisonous Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16420), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.poison.long.splash")
+                .withLocalizedName("Stretched Splash Poisonous Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16452), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.fireresistance")
+                .withLocalizedName("Fire Resistant Brew")
+                .withStateAndTemperature(LIQUID, 375)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8195), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.fireresistance.long")
+                .withLocalizedName("Stretched Fire Resistant Brew")
+                .withStateAndTemperature(LIQUID, 375)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8259), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.fireresistance.splash")
+                .withLocalizedName("Splash Fire Resistant Brew")
+                .withStateAndTemperature(LIQUID, 375)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16387), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.fireresistance.long.splash")
+                .withLocalizedName("Stretched Splash Fire Resistant Brew")
+                .withStateAndTemperature(LIQUID, 375)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16451), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.nightvision")
+                .withLocalizedName("Night Vision Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8198), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.nightvision.long")
+                .withLocalizedName("Stretched Night Vision Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8262), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.nightvision.splash")
+                .withLocalizedName("Splash Night Vision Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16390), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.nightvision.long.splash")
+                .withLocalizedName("Stretched Splash Night Vision Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16454), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.weakness")
+                .withLocalizedName("Weakening Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8200), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.weakness.long")
+                .withLocalizedName("Stretched Weakening Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8264), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.weakness.splash")
+                .withLocalizedName("Splash Weakening Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16392), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.weakness.long.splash")
+                .withLocalizedName("Stretched Splash Weakening Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16456), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.slowness")
+                .withLocalizedName("Lame Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8202), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.slowness.long")
+                .withLocalizedName("Stretched Lame Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8266), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.slowness.splash")
+                .withLocalizedName("Splash Lame Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16394), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.slowness.long.splash")
+                .withLocalizedName("Stretched Splash Lame Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16458), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.waterbreathing")
+                .withLocalizedName("Fishy Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8205), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.waterbreathing.long")
+                .withLocalizedName("Stretched Fishy Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8269), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.waterbreathing.splash")
+                .withLocalizedName("Splash Fishy Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16397), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.waterbreathing.long.splash")
+                .withLocalizedName("Stretched Splash Fishy Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16461), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.invisibility")
+                .withLocalizedName("Invisible Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8206), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.invisibility.long")
+                .withLocalizedName("Stretched Invisible Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 8270), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.invisibility.splash")
+                .withLocalizedName("Splash Invisible Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16398), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.invisibility.long.splash")
+                .withLocalizedName("Stretched Splash Invisible Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(new ItemStack(Items.potionitem, 1, 16462), ItemList.Bottle_Empty.get(1L));
 
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.purpledrink",
-                "Purple Drink",
-                null,
-                1,
-                275,
-                ItemList.Bottle_Purple_Drink.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.grapejuice",
-                "Grape Juice",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Grape_Juice.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.wine",
-                "Wine",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Wine.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.vinegar",
-                "Vinegar",
-                Materials.Vinegar,
-                1,
-                295,
-                ItemList.Bottle_Vinegar.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.potatojuice",
-                "Potato Juice",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Potato_Juice.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.vodka",
-                "Vodka",
-                null,
-                1,
-                275,
-                ItemList.Bottle_Vodka.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.leninade",
-                "Leninade",
-                null,
-                1,
-                275,
-                ItemList.Bottle_Leninade.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.mineralwater",
-                "Mineral Water",
-                null,
-                1,
-                275,
-                ItemList.Bottle_Mineral_Water.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.saltywater",
-                "Salty Water",
-                null,
-                1,
-                275,
-                ItemList.Bottle_Salty_Water.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.reedwater",
-                "Reed Water",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Reed_Water.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.rum",
-                "Rum",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Rum.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.piratebrew",
-                "Pirate Brew",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Pirate_Brew.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.hopsjuice",
-                "Hops Juice",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Hops_Juice.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.darkbeer",
-                "Dark Beer",
-                null,
-                1,
-                275,
-                ItemList.Bottle_Dark_Beer.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.dragonblood",
-                "Dragon Blood",
-                null,
-                1,
-                375,
-                ItemList.Bottle_Dragon_Blood.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.wheatyjuice",
-                "Wheaty Juice",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Wheaty_Juice.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.scotch",
-                "Scotch",
-                null,
-                1,
-                275,
-                ItemList.Bottle_Scotch.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.glenmckenner",
-                "Glen McKenner",
-                null,
-                1,
-                275,
-                ItemList.Bottle_Glen_McKenner.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.wheatyhopsjuice",
-                "Wheaty Hops Juice",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Wheaty_Hops_Juice.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.beer",
-                "Beer",
-                null,
-                1,
-                275,
-                ItemList.Bottle_Beer.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.chillysauce",
-                "Chilly Sauce",
-                null,
-                1,
-                375,
-                ItemList.Bottle_Chilly_Sauce.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.hotsauce",
-                "Hot Sauce",
-                null,
-                1,
-                380,
-                ItemList.Bottle_Hot_Sauce.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.diabolosauce",
-                "Diabolo Sauce",
-                null,
-                1,
-                385,
-                ItemList.Bottle_Diabolo_Sauce.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.diablosauce",
-                "Diablo Sauce",
-                null,
-                1,
-                390,
-                ItemList.Bottle_Diablo_Sauce.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.diablosauce.strong",
-                "Old Man Snitches glitched Diablo Sauce",
-                null,
-                1,
-                999,
-                ItemList.Bottle_Snitches_Glitch_Sauce.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.applejuice",
-                "Apple Juice",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Apple_Juice.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.cider",
-                "Cider",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Cider.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.goldenapplejuice",
-                "Golden Apple Juice",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Golden_Apple_Juice.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.goldencider",
-                "Golden Cider",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Golden_Cider.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.idunsapplejuice",
-                "Idun's Apple Juice",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Iduns_Apple_Juice.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.notchesbrew",
-                "Notches Brew",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Notches_Brew.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.lemonjuice",
-                "Lemon Juice",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Lemon_Juice.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.limoncello",
-                "Limoncello",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Limoncello.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.lemonade",
-                "Lemonade",
-                null,
-                1,
-                275,
-                ItemList.Bottle_Lemonade.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.alcopops",
-                "Alcopops",
-                null,
-                1,
-                275,
-                ItemList.Bottle_Alcopops.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.cavejohnsonsgrenadejuice",
-                "Cave Johnsons Grenade Juice",
-                null,
-                1,
-                295,
-                ItemList.Bottle_Cave_Johnsons_Grenade_Juice.get(1L, new Object[0]),
-                ItemList.Bottle_Empty.get(1L, new Object[0]),
-                250);
+        GT_FluidFactory.builder("potion.purpledrink")
+                .withLocalizedName("Purple Drink")
+                .withStateAndTemperature(LIQUID, 275)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Purple_Drink.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.grapejuice")
+                .withLocalizedName("Grape Juice")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Grape_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.wine")
+                .withLocalizedName("Wine")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Wine.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.vinegar")
+                .withLocalizedName("Vinegar")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .configureMaterials(Materials.Vinegar)
+                .registerPContainers(ItemList.Bottle_Vinegar.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.potatojuice")
+                .withLocalizedName("Potato Juice")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Potato_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.vodka")
+                .withLocalizedName("Vodka")
+                .withStateAndTemperature(LIQUID, 275)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Vodka.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.leninade")
+                .withLocalizedName("Leninade")
+                .withStateAndTemperature(LIQUID, 275)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Leninade.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.mineralwater")
+                .withLocalizedName("Mineral Water")
+                .withStateAndTemperature(LIQUID, 275)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Mineral_Water.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.saltywater")
+                .withLocalizedName("Salty Water")
+                .withStateAndTemperature(LIQUID, 275)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Salty_Water.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.reedwater")
+                .withLocalizedName("Reed Water")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Reed_Water.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.rum")
+                .withLocalizedName("Rum")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Rum.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.piratebrew")
+                .withLocalizedName("Pirate Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Pirate_Brew.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.hopsjuice")
+                .withLocalizedName("Hops Juice")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Hops_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.darkbeer")
+                .withLocalizedName("Dark Beer")
+                .withStateAndTemperature(LIQUID, 275)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Dark_Beer.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.dragonblood")
+                .withLocalizedName("Dragon Blood")
+                .withStateAndTemperature(LIQUID, 375)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Dragon_Blood.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.wheatyjuice")
+                .withLocalizedName("Wheaty Juice")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Wheaty_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.scotch")
+                .withLocalizedName("Scotch")
+                .withStateAndTemperature(LIQUID, 275)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Scotch.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.glenmckenner")
+                .withLocalizedName("Glen McKenner")
+                .withStateAndTemperature(LIQUID, 275)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Glen_McKenner.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.wheatyhopsjuice")
+                .withLocalizedName("Wheaty Hops Juice")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Wheaty_Hops_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.beer")
+                .withLocalizedName("Beer")
+                .withStateAndTemperature(LIQUID, 275)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Beer.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.chillysauce")
+                .withLocalizedName("Chilly Sauce")
+                .withStateAndTemperature(LIQUID, 375)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Chilly_Sauce.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.hotsauce")
+                .withLocalizedName("Hot Sauce")
+                .withStateAndTemperature(LIQUID, 380)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Hot_Sauce.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.diabolosauce")
+                .withLocalizedName("Diabolo Sauce")
+                .withStateAndTemperature(LIQUID, 385)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Diabolo_Sauce.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.diablosauce")
+                .withLocalizedName("Diablo Sauce")
+                .withStateAndTemperature(LIQUID, 390)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Diablo_Sauce.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.diablosauce.strong")
+                .withLocalizedName("Old Man Snitches glitched Diablo Sauce")
+                .withStateAndTemperature(LIQUID, 999)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Snitches_Glitch_Sauce.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.applejuice")
+                .withLocalizedName("Apple Juice")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Apple_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.cider")
+                .withLocalizedName("Cider")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Cider.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.goldenapplejuice")
+                .withLocalizedName("Golden Apple Juice")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Golden_Apple_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.goldencider")
+                .withLocalizedName("Golden Cider")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Golden_Cider.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.idunsapplejuice")
+                .withLocalizedName("Idun's Apple Juice")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Iduns_Apple_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.notchesbrew")
+                .withLocalizedName("Notches Brew")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Notches_Brew.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.lemonjuice")
+                .withLocalizedName("Lemon Juice")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Lemon_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.limoncello")
+                .withLocalizedName("Limoncello")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Limoncello.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.lemonade")
+                .withLocalizedName("Lemonade")
+                .withStateAndTemperature(LIQUID, 275)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Lemonade.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.alcopops")
+                .withLocalizedName("Alcopops")
+                .withStateAndTemperature(LIQUID, 275)
+                .buildAndRegister()
+                .registerPContainers(ItemList.Bottle_Alcopops.get(1L), ItemList.Bottle_Empty.get(1L));
+        GT_FluidFactory.builder("potion.cavejohnsonsgrenadejuice")
+                .withLocalizedName("Cave Johnsons Grenade Juice")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(
+                        ItemList.Bottle_Cave_Johnsons_Grenade_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
 
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.darkcoffee",
-                "Dark Coffee",
-                null,
-                1,
-                295,
-                ItemList.ThermosCan_Dark_Coffee.get(1L, new Object[0]),
-                ItemList.ThermosCan_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.darkcafeaulait",
-                "Dark Cafe au lait",
-                null,
-                1,
-                295,
-                ItemList.ThermosCan_Dark_Cafe_au_lait.get(1L, new Object[0]),
-                ItemList.ThermosCan_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.coffee",
-                "Coffee",
-                null,
-                1,
-                295,
-                ItemList.ThermosCan_Coffee.get(1L, new Object[0]),
-                ItemList.ThermosCan_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.cafeaulait",
-                "Cafe au lait",
-                null,
-                1,
-                295,
-                ItemList.ThermosCan_Cafe_au_lait.get(1L, new Object[0]),
-                ItemList.ThermosCan_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.laitaucafe",
-                "Lait au cafe",
-                null,
-                1,
-                295,
-                ItemList.ThermosCan_Lait_au_cafe.get(1L, new Object[0]),
-                ItemList.ThermosCan_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.darkchocolatemilk",
-                "Bitter Chocolate Milk",
-                null,
-                1,
-                295,
-                ItemList.ThermosCan_Dark_Chocolate_Milk.get(1L, new Object[0]),
-                ItemList.ThermosCan_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.chocolatemilk",
-                "Chocolate Milk",
-                null,
-                1,
-                295,
-                ItemList.ThermosCan_Chocolate_Milk.get(1L, new Object[0]),
-                ItemList.ThermosCan_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.tea",
-                "Tea",
-                null,
-                1,
-                295,
-                ItemList.ThermosCan_Tea.get(1L, new Object[0]),
-                ItemList.ThermosCan_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.sweettea",
-                "Sweet Tea",
-                null,
-                1,
-                295,
-                ItemList.ThermosCan_Sweet_Tea.get(1L, new Object[0]),
-                ItemList.ThermosCan_Empty.get(1L, new Object[0]),
-                250);
-        GT_Mod.gregtechproxy.addFluid(
-                "potion.icetea",
-                "Ice Tea",
-                null,
-                1,
-                255,
-                ItemList.ThermosCan_Ice_Tea.get(1L, new Object[0]),
-                ItemList.ThermosCan_Empty.get(1L, new Object[0]),
-                250);
+        GT_FluidFactory.builder("potion.darkcoffee")
+                .withLocalizedName("Dark Coffee")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.ThermosCan_Dark_Coffee.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GT_FluidFactory.builder("potion.darkcafeaulait")
+                .withLocalizedName("Dark Cafe au lait")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.ThermosCan_Dark_Cafe_au_lait.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GT_FluidFactory.builder("potion.coffee")
+                .withLocalizedName("Coffee")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.ThermosCan_Coffee.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GT_FluidFactory.builder("potion.cafeaulait")
+                .withLocalizedName("Cafe au lait")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.ThermosCan_Cafe_au_lait.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GT_FluidFactory.builder("potion.laitaucafe")
+                .withLocalizedName("Lait au cafe")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.ThermosCan_Lait_au_cafe.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GT_FluidFactory.builder("potion.darkchocolatemilk")
+                .withLocalizedName("Bitter Chocolate Milk")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(
+                        ItemList.ThermosCan_Dark_Chocolate_Milk.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GT_FluidFactory.builder("potion.chocolatemilk")
+                .withLocalizedName("Chocolate Milk")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.ThermosCan_Chocolate_Milk.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GT_FluidFactory.builder("potion.tea")
+                .withLocalizedName("Tea")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.ThermosCan_Tea.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GT_FluidFactory.builder("potion.sweettea")
+                .withLocalizedName("Sweet Tea")
+                .withStateAndTemperature(LIQUID, 295)
+                .buildAndRegister()
+                .registerPContainers(ItemList.ThermosCan_Sweet_Tea.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GT_FluidFactory.builder("potion.icetea")
+                .withLocalizedName("Ice Tea")
+                .withStateAndTemperature(LIQUID, 255)
+                .buildAndRegister()
+                .registerPContainers(ItemList.ThermosCan_Ice_Tea.get(1L), ItemList.ThermosCan_Empty.get(1L));
 
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.poison.strong", 750),
-                ItemList.IC2_Spray_WeedEx.get(1L, new Object[0]),
-                ItemList.Spray_Empty.get(1L, new Object[0])));
+                ItemList.IC2_Spray_WeedEx.get(1L),
+                ItemList.Spray_Empty.get(1L)));
 
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.poison", 125),
-                ItemList.Arrow_Head_Glass_Poison.get(1L, new Object[0]),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Head_Glass_Poison.get(1L),
+                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.poison.long", 125),
-                ItemList.Arrow_Head_Glass_Poison_Long.get(1L, new Object[0]),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Head_Glass_Poison_Long.get(1L),
+                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.poison.strong", 125),
-                ItemList.Arrow_Head_Glass_Poison_Strong.get(1L, new Object[0]),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Head_Glass_Poison_Strong.get(1L),
+                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.slowness", 125),
-                ItemList.Arrow_Head_Glass_Slowness.get(1L, new Object[0]),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Head_Glass_Slowness.get(1L),
+                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.slowness.long", 125),
-                ItemList.Arrow_Head_Glass_Slowness_Long.get(1L, new Object[0]),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Head_Glass_Slowness_Long.get(1L),
+                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.weakness", 125),
-                ItemList.Arrow_Head_Glass_Weakness.get(1L, new Object[0]),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Head_Glass_Weakness.get(1L),
+                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.weakness.long", 125),
-                ItemList.Arrow_Head_Glass_Weakness_Long.get(1L, new Object[0]),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Head_Glass_Weakness_Long.get(1L),
+                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("holywater", 125),
-                ItemList.Arrow_Head_Glass_Holy_Water.get(1L, new Object[0]),
-                ItemList.Arrow_Head_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Head_Glass_Holy_Water.get(1L),
+                ItemList.Arrow_Head_Glass_Emtpy.get(1L)));
 
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.poison", 125),
-                ItemList.Arrow_Wooden_Glass_Poison.get(1L, new Object[0]),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Wooden_Glass_Poison.get(1L),
+                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.poison.long", 125),
-                ItemList.Arrow_Wooden_Glass_Poison_Long.get(1L, new Object[0]),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Wooden_Glass_Poison_Long.get(1L),
+                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.poison.strong", 125),
-                ItemList.Arrow_Wooden_Glass_Poison_Strong.get(1L, new Object[0]),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Wooden_Glass_Poison_Strong.get(1L),
+                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.slowness", 125),
-                ItemList.Arrow_Wooden_Glass_Slowness.get(1L, new Object[0]),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Wooden_Glass_Slowness.get(1L),
+                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.slowness.long", 125),
-                ItemList.Arrow_Wooden_Glass_Slowness_Long.get(1L, new Object[0]),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Wooden_Glass_Slowness_Long.get(1L),
+                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.weakness", 125),
-                ItemList.Arrow_Wooden_Glass_Weakness.get(1L, new Object[0]),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Wooden_Glass_Weakness.get(1L),
+                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.weakness.long", 125),
-                ItemList.Arrow_Wooden_Glass_Weakness_Long.get(1L, new Object[0]),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Wooden_Glass_Weakness_Long.get(1L),
+                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("holywater", 125),
-                ItemList.Arrow_Wooden_Glass_Holy_Water.get(1L, new Object[0]),
-                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Wooden_Glass_Holy_Water.get(1L),
+                ItemList.Arrow_Wooden_Glass_Emtpy.get(1L)));
 
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.poison", 125),
-                ItemList.Arrow_Plastic_Glass_Poison.get(1L, new Object[0]),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Plastic_Glass_Poison.get(1L),
+                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.poison.long", 125),
-                ItemList.Arrow_Plastic_Glass_Poison_Long.get(1L, new Object[0]),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Plastic_Glass_Poison_Long.get(1L),
+                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.poison.strong", 125),
-                ItemList.Arrow_Plastic_Glass_Poison_Strong.get(1L, new Object[0]),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Plastic_Glass_Poison_Strong.get(1L),
+                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.slowness", 125),
-                ItemList.Arrow_Plastic_Glass_Slowness.get(1L, new Object[0]),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Plastic_Glass_Slowness.get(1L),
+                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.slowness.long", 125),
-                ItemList.Arrow_Plastic_Glass_Slowness_Long.get(1L, new Object[0]),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Plastic_Glass_Slowness_Long.get(1L),
+                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.weakness", 125),
-                ItemList.Arrow_Plastic_Glass_Weakness.get(1L, new Object[0]),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Plastic_Glass_Weakness.get(1L),
+                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("potion.weakness.long", 125),
-                ItemList.Arrow_Plastic_Glass_Weakness_Long.get(1L, new Object[0]),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Plastic_Glass_Weakness_Long.get(1L),
+                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(
                 FluidRegistry.getFluidStack("holywater", 125),
-                ItemList.Arrow_Plastic_Glass_Holy_Water.get(1L, new Object[0]),
-                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L, new Object[0])));
+                ItemList.Arrow_Plastic_Glass_Holy_Water.get(1L),
+                ItemList.Arrow_Plastic_Glass_Emtpy.get(1L)));
         if (!GT_Values.D1) {
             try {
                 Class.forName("codechicken.nei.api.API");
                 GT_Log.out.println("GT_Mod: Hiding certain Items from NEI.");
-                API.hideItem(ItemList.Display_Fluid.getWildcard(1L, new Object[0]));
+                API.hideItem(ItemList.Display_Fluid.getWildcard(1L));
             } catch (Throwable e) {
                 if (GT_Values.D1) {
                     e.printStackTrace(GT_Log.err);
@@ -2732,21 +2181,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_OreDictUnificator.set(
                 OrePrefixes.dust, Materials.Cocoa, GT_ModHandler.getModItem("harvestcraft", "cocoapowderItem", 1L, 0));
-        GT_OreDictUnificator.set(OrePrefixes.dust, Materials.Coffee, ItemList.IC2_CoffeePowder.get(1L, new Object[0]));
-
-        // TODO ADD LATER @Technus why it crash if enable?
-        // FluidContainerRegistry.registerFluidContainer(new
-        // FluidContainerRegistry.FluidContainerData(Materials.Naquadah.getMolten(1000L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naquadah, 1L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L)));
-        // FluidContainerRegistry.registerFluidContainer(new
-        // FluidContainerRegistry.FluidContainerData(Materials.NaquadahEnriched.getMolten(1000L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NaquadahEnriched, 1L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L)));
-        // FluidContainerRegistry.registerFluidContainer(new
-        // FluidContainerRegistry.FluidContainerData(Materials.Naquadria.getMolten(1000L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naquadria, 1L),
-        // GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L)));
+        GT_OreDictUnificator.set(OrePrefixes.dust, Materials.Coffee, ItemList.IC2_CoffeePowder.get(1L));
 
         GregTech_API.registerMachineBlock(
                 GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("reinforcedGlass", 0)), 0);

@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack;
  */
 public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machine {
 
-    String mName = "";
+    String mName;
     private final int textColor = this.getTextColorOrDefault("text", 0xFAFAFF),
             textColorTitle = this.getTextColorOrDefault("title", 0xFAFAFF);
 
@@ -45,7 +45,7 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
             String[] split = mName.split(" ");
 
             int total_line_length = 0;
-            String current_line = "";
+            StringBuilder current_line = new StringBuilder();
 
             int index = 0;
 
@@ -54,26 +54,25 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
                 total_line_length += str.length();
 
                 if (total_line_length > max_chars_per_line) {
-                    fontRendererObj.drawString(current_line, 10, line_counter, textColorTitle);
+                    fontRendererObj.drawString(current_line.toString(), 10, line_counter, textColorTitle);
                     line_counter += 8;
-                    current_line = "";
+                    current_line = new StringBuilder();
                     index = 0;
                     total_line_length = str.length();
                 }
 
                 if (index == 0) {
-                    current_line += str;
+                    current_line.append(str);
                 } else {
-                    current_line += " " + str;
+                    current_line.append(" ").append(str);
                 }
                 index++;
             }
-            fontRendererObj.drawString(current_line, 10, line_counter, textColorTitle);
-            line_counter += 8;
+            fontRendererObj.drawString(current_line.toString(), 10, line_counter, textColorTitle);
         } else {
             fontRendererObj.drawString(mName, 10, line_counter, textColorTitle);
-            line_counter += 8;
         }
+        line_counter += 8;
 
         if (mContainer
                 != null) { // (mWrench ? 0 : 1) | (mScrewdriver ? 0 : 2) | (mSoftHammer ? 0 : 4) | (mHardHammer ? 0 : 8)
@@ -127,12 +126,11 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
                     line_counter += 8;
                     fontRendererObj.drawString(
                             GT_Utility.trans("141", "if it doesn't start."), 10, line_counter, textColor);
-                    line_counter += 8;
                 } else {
                     fontRendererObj.drawString(
                             GT_Utility.trans("142", "Running perfectly."), 10, line_counter, textColor);
-                    line_counter += 8;
                 }
+                line_counter += 8;
                 if (mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DrillerBase) {
                     ItemStack tItem = mContainer.mTileEntity.getMetaTileEntity().getStackInSlot(1);
                     if (tItem == null

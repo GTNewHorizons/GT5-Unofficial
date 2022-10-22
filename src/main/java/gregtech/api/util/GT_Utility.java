@@ -44,6 +44,7 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.net.GT_Packet_Sound;
 import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.GT_ItemStack2;
 import gregtech.api.objects.ItemData;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
@@ -60,21 +61,8 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -2031,6 +2019,14 @@ public class GT_Utility {
         return null;
     }
 
+    public static FluidStack getFluidFromContainerOrFluidDisplay(ItemStack stack) {
+        FluidStack fluidStack = GT_Utility.getFluidForFilledItem(stack, true);
+        if (fluidStack == null) {
+            fluidStack = GT_Utility.getFluidFromDisplayStack(stack);
+        }
+        return fluidStack;
+    }
+
     public static synchronized boolean removeIC2BottleRecipe(
             ItemStack aContainer,
             ItemStack aInput,
@@ -2933,9 +2929,21 @@ public class GT_Utility {
         return isStackInList(new GT_ItemStack(aStack), aList);
     }
 
+    public static boolean isStackInList(ItemStack aStack, Set<GT_ItemStack2> aList) {
+        if (aStack == null) {
+            return false;
+        }
+        return isStackInList(new GT_ItemStack2(aStack), aList);
+    }
+
     public static boolean isStackInList(GT_ItemStack aStack, Collection<GT_ItemStack> aList) {
         return aStack != null
                 && (aList.contains(aStack) || aList.contains(new GT_ItemStack(aStack.mItem, aStack.mStackSize, W)));
+    }
+
+    public static boolean isStackInList(GT_ItemStack2 aStack, Set<GT_ItemStack2> aList) {
+        return aStack != null
+                && (aList.contains(aStack) || aList.contains(new GT_ItemStack2(aStack.mItem, aStack.mStackSize, W)));
     }
 
     /**
@@ -3467,6 +3475,10 @@ public class GT_Utility {
 
     public static String trans(String aKey, String aEnglish) {
         return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
+    }
+
+    public static String getTrans(String aKey) {
+        return GT_LanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
     }
 
     /**
@@ -4204,6 +4216,14 @@ public class GT_Utility {
         return val > hi ? hi : val < lo ? lo : val;
     }
 
+    public static int ceilDiv(int lhs, int rhs) {
+        return (lhs + rhs - 1) / rhs;
+    }
+
+    public static long ceilDiv(long lhs, long rhs) {
+        return (lhs + rhs - 1) / rhs;
+    }
+
     /**
      * Hash an item stack for the purpose of storing hash across launches
      */
@@ -4232,6 +4252,54 @@ public class GT_Utility {
     public static int getCasingTextureIndex(Block block, int meta) {
         if (block instanceof IHasIndexedTexture) return ((IHasIndexedTexture) block).getTextureIndex(meta);
         return Textures.BlockIcons.ERROR_TEXTURE_INDEX;
+    }
+
+    public static boolean isCellEmpty(ItemStack itemStack) {
+        if (itemStack == null) return false;
+        ItemStack tStack = ItemList.Cell_Empty.get(1);
+        tStack.stackSize = itemStack.stackSize;
+        return GT_Utility.areStacksEqual(itemStack, tStack);
+    }
+
+    public static FluidStack convertCellToFluid(ItemStack itemStack) {
+        if (itemStack == null) return null;
+        if (getFluidForFilledItem(itemStack, true) != null) {
+            FluidStack fluidStack = getFluidForFilledItem(itemStack, true);
+            if (fluidStack != null) fluidStack.amount = fluidStack.amount * itemStack.stackSize;
+            return fluidStack;
+        }
+        return null;
+    }
+
+    public static boolean checkIfSameIntegratedCircuit(ItemStack itemStack) {
+        if (itemStack == null) return false;
+        for (int i = 0; i < 25; i++) if (itemStack.isItemEqual(GT_Utility.getIntegratedCircuit(i))) return true;
+        return false;
+    }
+
+    public static byte convertRatioToRedstone(long used, long max, int threshold, boolean inverted) {
+        byte signal;
+        if (used <= 0) { // Empty
+            signal = 0;
+        } else if (used >= max) { // Full
+            signal = 15;
+        } else { // Range 1-14
+            signal = (byte) (1 + (14 * used) / max);
+        }
+
+        if (inverted) {
+            signal = (byte) (15 - signal);
+        }
+
+        if (threshold > 0) {
+            if (inverted && used >= threshold) {
+                return 0;
+            } else if (!inverted && used < threshold) {
+                return 0;
+            }
+        }
+
+        return signal;
     }
 
     @AutoValue

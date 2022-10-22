@@ -227,6 +227,11 @@ public class ItemComb extends Item {
                 30 * 100);
         addCentrifugeToItemStack(
                 CombType.CRYOTHEUM,
+                new ItemStack[] {ItemList.FR_RefractoryWax.get(1), Materials.Cryotheum.getDust(1)},
+                new int[] {50 * 100, 100 * 100},
+                Voltage.MV);
+        addCentrifugeToItemStack(
+                CombType.BLIZZ,
                 new ItemStack[] {ItemList.FR_RefractoryWax.get(1), Materials.Blizz.getDust(1)},
                 new int[] {50 * 100, 100 * 100},
                 Voltage.MV);
@@ -1177,10 +1182,10 @@ public class ItemComb extends Item {
         addProcessGT(CombType.URANIUM, new Materials[] {Materials.Uranium}, Voltage.EV);
         addProcessGT(CombType.PLUTONIUM, new Materials[] {Materials.Plutonium}, Voltage.EV);
         addProcessGT(CombType.NAQUADAH, new Materials[] {Materials.Naquadah}, Voltage.IV);
-        addProcessGT(CombType.NAQUADRIA, new Materials[] {Materials.Naquadria}, Voltage.LUV);
+        addProcessGT(CombType.NAQUADRIA, new Materials[] {Materials.Naquadria}, Voltage.LuV);
         addProcessGT(CombType.THORIUM, new Materials[] {Materials.Thorium}, Voltage.EV);
         addProcessGT(CombType.LUTETIUM, new Materials[] {Materials.Lutetium}, Voltage.IV);
-        addProcessGT(CombType.AMERICIUM, new Materials[] {Materials.Americium}, Voltage.LUV);
+        addProcessGT(CombType.AMERICIUM, new Materials[] {Materials.Americium}, Voltage.LuV);
         addProcessGT(CombType.NEUTRONIUM, new Materials[] {Materials.Neutronium}, Voltage.UHV);
         if (!GT_Mod.gregtechproxy.mNerfedCombs) {
             addCentrifugeToMaterial(
@@ -1222,7 +1227,7 @@ public class ItemComb extends Item {
                     new Materials[] {Materials.Naquadria, Materials.NaquadahEnriched, Materials.Naquadah},
                     new int[] {10 * 100, 10 * 100, 15 * 100},
                     new int[] {},
-                    Voltage.LUV,
+                    Voltage.LuV,
                     NI,
                     30 * 100);
             addCentrifugeToMaterial(
@@ -1246,7 +1251,7 @@ public class ItemComb extends Item {
                     new Materials[] {Materials.Americium, Materials.Lutetium},
                     new int[] {25 * 100, 45 * 100},
                     new int[] {},
-                    Voltage.LUV,
+                    Voltage.LuV,
                     NI,
                     30 * 100);
             addCentrifugeToMaterial(
@@ -1442,7 +1447,7 @@ public class ItemComb extends Item {
         addProcessGT(CombType.MYTRYL, new Materials[] {Materials.Mytryl}, Voltage.IV);
         addProcessGT(CombType.QUANTIUM, new Materials[] {Materials.Quantium}, Voltage.IV);
         addProcessGT(CombType.ORIHARUKON, new Materials[] {Materials.Oriharukon}, Voltage.IV);
-        addProcessGT(CombType.MYSTERIOUSCRYSTAL, new Materials[] {Materials.MysteriousCrystal}, Voltage.LUV);
+        addProcessGT(CombType.MYSTERIOUSCRYSTAL, new Materials[] {Materials.MysteriousCrystal}, Voltage.LuV);
         addCentrifugeToMaterial(
                 CombType.MYSTERIOUSCRYSTAL,
                 new Materials[] {Materials.MysteriousCrystal},
@@ -1451,11 +1456,11 @@ public class ItemComb extends Item {
                     (GT_Mod.gregtechproxy.mNerfedCombs ? 15 : 50) * 100
                 },
                 new int[] {},
-                Voltage.LUV,
+                Voltage.LuV,
                 512,
                 NI,
                 50 * 100);
-        addProcessGT(CombType.BLACKPLUTONIUM, new Materials[] {Materials.BlackPlutonium}, Voltage.LUV);
+        addProcessGT(CombType.BLACKPLUTONIUM, new Materials[] {Materials.BlackPlutonium}, Voltage.LuV);
         addProcessGT(CombType.TRINIUM, new Materials[] {Materials.Trinium}, Voltage.ZPM);
         if (!GT_Mod.gregtechproxy.mNerfedCombs) {
             addCentrifugeToMaterial(
@@ -1519,7 +1524,7 @@ public class ItemComb extends Item {
                     new Materials[] {Materials.BlackPlutonium, Materials.Plutonium},
                     new int[] {25 * 100, 50 * 100},
                     new int[] {},
-                    Voltage.LUV,
+                    Voltage.LuV,
                     NI,
                     30 * 100);
             addCentrifugeToMaterial(
@@ -1619,7 +1624,7 @@ public class ItemComb extends Item {
                     GT_ModHandler.getModItem(MOD_ID_DC, "item.PlutoIceDust", 1L, 0)
                 },
                 new int[] {50 * 100, 30 * 100, 30 * 100},
-                Voltage.LUV,
+                Voltage.LuV,
                 300);
         addCentrifugeToItemStack(
                 CombType.HAUMEA,
@@ -1627,7 +1632,7 @@ public class ItemComb extends Item {
                     ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.HaumeaStoneDust", 1L, 0)
                 },
                 new int[] {50 * 100, 30 * 100},
-                Voltage.LUV,
+                Voltage.LuV,
                 300);
         addCentrifugeToItemStack(
                 CombType.MAKEMAKE,
@@ -1635,7 +1640,7 @@ public class ItemComb extends Item {
                     ItemList.FR_Wax.get(1L), GT_ModHandler.getModItem(MOD_ID_DC, "item.MakeMakeStoneDust", 1L, 0)
                 },
                 new int[] {50 * 100, 30 * 100},
-                Voltage.LUV,
+                Voltage.LuV,
                 300);
         addCentrifugeToItemStack(
                 CombType.CENTAURI,
@@ -1685,30 +1690,12 @@ public class ItemComb extends Item {
         }
         // Infinity Line
         addCentrifugeToMaterial(
-                CombType.COSMICNEUTRONIUM,
-                new Materials[] {Materials.CosmicNeutronium, Materials.Neutronium},
-                new int[] {(int) (15 * 100), 1 * 100},
-                new int[] {},
-                Voltage.UHV,
-                1200,
-                NI,
-                50 * 100);
-        addCentrifugeToMaterial(
                 CombType.INFINITYCATALYST,
                 new Materials[] {Materials.InfinityCatalyst, Materials.Neutronium},
                 new int[] {(int) (25 * 100), 20 * 100},
                 new int[] {},
                 Voltage.ZPM,
                 100,
-                NI,
-                50 * 100);
-        addCentrifugeToMaterial(
-                CombType.INFINITY,
-                new Materials[] {Materials.Infinity, Materials.InfinityCatalyst},
-                new int[] {(int) (20 * 100), (int) (0.05 * 100)},
-                new int[] {},
-                Voltage.UV,
-                1000,
                 NI,
                 50 * 100);
 
@@ -1979,6 +1966,15 @@ public class ItemComb extends Item {
                 volt.getSimpleEnergy());
     }
 
+    public void registerOreDict() {
+        for (CombType comb : CombType.values()) {
+            ItemStack tComb = getStackForType(comb);
+            GT_OreDictUnificator.registerOre(OrePrefixes.beeComb.name(), tComb);
+            OrePrefixes.beeComb.add(tComb);
+            if (comb.voltage != null) GT_OreDictUnificator.registerOre("comb" + comb.voltage.name(), tComb);
+        }
+    }
+
     enum Voltage {
         ULV,
         LV,
@@ -1986,7 +1982,7 @@ public class ItemComb extends Item {
         HV,
         EV,
         IV,
-        LUV,
+        LuV,
         ZPM,
         UV,
         UHV,
@@ -2017,10 +2013,10 @@ public class ItemComb extends Item {
                 return Materials.HydrofluoricAcid.getFluid((this.compareTo(Voltage.ULV) > 0) ? 1000 : 500);
             } else if (this.compareTo(Voltage.HV) < 0) {
                 return GT_ModHandler.getDistilledWater(1000L);
-            } else if (this.compareTo(Voltage.LUV) < 0) {
+            } else if (this.compareTo(Voltage.LuV) < 0) {
                 return Materials.HydrofluoricAcid.getFluid((long) (Math.pow(2, this.compareTo(Voltage.HV)) * L));
             } else if (this.compareTo(Voltage.UHV) < 0) {
-                return FluidRegistry.getFluidStack("mutagen", (int) (Math.pow(2, this.compareTo(Voltage.LUV)) * L));
+                return FluidRegistry.getFluidStack("mutagen", (int) (Math.pow(2, this.compareTo(Voltage.LuV)) * L));
             } else {
                 return NF;
             }
@@ -2046,9 +2042,9 @@ public class ItemComb extends Item {
                     return Materials.PhosphoricAcid.getFluid(fluidAmount);
                 case 4:
                     /**EV**/
-                    return Materials.PhthalicAcid.getFluid(fluidAmount);
-                default:
                     return Materials.HydrofluoricAcid.getFluid(this.getFluidAmount());
+                default:
+                    return Materials.PhthalicAcid.getFluid(fluidAmount);
             }
         }
         /**@return additional required UU-Matter amount for Autoclave process related to the Tier**/
