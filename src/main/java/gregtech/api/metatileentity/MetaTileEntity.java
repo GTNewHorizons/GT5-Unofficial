@@ -482,6 +482,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
+    public boolean shouldDropItemAt(int index) {
+        return true;
+    }
+
+    @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
         return false;
     }
