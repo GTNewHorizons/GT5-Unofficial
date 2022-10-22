@@ -3,10 +3,12 @@ package common;
 import common.items.ErrorItem;
 import common.items.MetaItem_CraftingComponent;
 import common.items.MetaItem_ReactorComponent;
+import common.tileentities.GTMTE_TFFTHatch;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import gregtech.api.GregTech_API;
 import kekztech.GuiHandler;
 import kekztech.Items;
 import kekztech.KekzCore;
@@ -39,5 +41,7 @@ public class CommonProxy {
         Recipes.postInit();
         // Research
         Researches.postInit();
+
+        if (GregTech_API.mAE2) GTMTE_TFFTHatch.registerAEIntegration();
     }
 }

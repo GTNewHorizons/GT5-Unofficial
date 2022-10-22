@@ -70,7 +70,7 @@ public class Recipes {
             'C',
             OrePrefixes.circuit.get(Materials.Data)
         };
-        GT_ModHandler.addCraftingRecipe(TileEntities.fms.getStackForm(1), tfft_recipe);
+        GT_ModHandler.addCraftingRecipe(TileEntities.tfft.getStackForm(1), tfft_recipe);
 
         // Blocks
         final ItemStack[] tfftcasing = {
@@ -82,7 +82,7 @@ public class Recipes {
         GT_Values.RA.addAssemblerRecipe(
                 tfftcasing,
                 FluidRegistry.getFluidStack("molten.polytetrafluoroethylene", 144),
-                new ItemStack(Blocks.tfftCasing, 1),
+                new ItemStack(Blocks.tfftStorageField, 1),
                 200,
                 256);
         final ItemStack[] tfftstoragefield1 = {
@@ -95,7 +95,7 @@ public class Recipes {
         GT_Values.RA.addAssemblerRecipe(
                 tfftstoragefield1,
                 FluidRegistry.getFluidStack("molten.glass", 144),
-                new ItemStack(Blocks.tfftStorageField1, 1),
+                new ItemStack(Blocks.tfftStorageField, 1, 1),
                 200,
                 256);
         final ItemStack[] tfftstoragefield2 = {
@@ -108,7 +108,7 @@ public class Recipes {
         GT_Values.RA.addAssemblerRecipe(
                 tfftstoragefield2,
                 FluidRegistry.getFluidStack("molten.plastic", 576),
-                new ItemStack(Blocks.tfftStorageField2, 1),
+                new ItemStack(Blocks.tfftStorageField, 1, 2),
                 200,
                 480);
         final ItemStack[] tfftstoragefield3 = {
@@ -122,7 +122,7 @@ public class Recipes {
         GT_Values.RA.addAssemblerRecipe(
                 tfftstoragefield3,
                 FluidRegistry.getFluidStack("molten.epoxid", 576),
-                new ItemStack(Blocks.tfftStorageField3, 1),
+                new ItemStack(Blocks.tfftStorageField, 1, 3),
                 300,
                 1920);
         final ItemStack[] tfftstoragefield4 = {
@@ -136,7 +136,7 @@ public class Recipes {
         GT_Values.RA.addAssemblerRecipe(
                 tfftstoragefield4,
                 FluidRegistry.getFluidStack("molten.epoxid", 1152),
-                new ItemStack(Blocks.tfftStorageField4, 1),
+                new ItemStack(Blocks.tfftStorageField, 1, 4),
                 400,
                 4098);
         final ItemStack[] tfftstoragefield5 = {
@@ -150,11 +150,11 @@ public class Recipes {
         GT_Values.RA.addAssemblerRecipe(
                 tfftstoragefield5,
                 FluidRegistry.getFluidStack("molten.epoxid", 1152),
-                new ItemStack(Blocks.tfftStorageField5, 1),
+                new ItemStack(Blocks.tfftStorageField, 1, 5),
                 400,
                 6147);
         // Multi Hatch
-        final Object[] multi_hatch_HV = {
+        final Object[] multihatch = {
             "PRP",
             "UFU",
             "PRP",
@@ -167,39 +167,7 @@ public class Recipes {
             'F',
             ItemList.Field_Generator_LV.get(1L)
         };
-        GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.tfftMultiHatch), multi_hatch_HV);
-        final Object[] multi_hatch_IV = {
-            "PRP",
-            "UFU",
-            "PRP",
-            'P',
-            GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 1),
-            'R',
-            GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1),
-            'U',
-            ItemList.Electric_Pump_IV.get(1L),
-            'F',
-            ItemList.Field_Generator_HV.get(1L)
-        };
-        GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.tfftMultiHatch), multi_hatch_IV);
-        final Object[] multi_hatch_ZPM = {
-            "PRP",
-            "UFU",
-            "PRP",
-            'P',
-            GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NaquadahAlloy, 1),
-            'R',
-            GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.NaquadahAlloy, 1),
-            'U',
-            ItemList.Electric_Pump_ZPM.get(1L),
-            'F',
-            ItemList.Field_Generator_IV.get(1L)
-        };
-        GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.tfftMultiHatch), multi_hatch_ZPM);
-
-        // Conversion recipe from deprecated hatch to new one (old hatch is equal to new IV hatch)
-        GT_ModHandler.addShapelessCraftingRecipe(
-                TileEntities.mhIV.getStackForm(1), new ItemStack[] {new ItemStack(Blocks.tfftMultiHatch, 1)});
+        GT_ModHandler.addCraftingRecipe(TileEntities.tfftHatch.getStackForm(1), multihatch);
     }
 
     private static void registerRecipes_SOFC() {

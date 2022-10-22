@@ -17,6 +17,8 @@ public class Blocks {
     public static Block tfftStorageField5;
     public static Block tfftMultiHatch;
 
+    public static Block tfftStorageField;
+
     public static Block reactorChamberOFF;
     public static Block reactorChamberON;
     public static Block reactorControlRod;
@@ -69,6 +71,8 @@ public class Blocks {
         tfftStorageField4 = Block_TFFTStorageFieldBlockT4.registerBlock();
         tfftStorageField5 = Block_TFFTStorageFieldBlockT5.registerBlock();
         tfftMultiHatch = Block_TFFTMultiHatch.registerBlock();
+
+        tfftStorageField = Block_TFFTStorageField.registerBlock();
     }
 
     /*private static void registerBlocks_Nuclear() {
