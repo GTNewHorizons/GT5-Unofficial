@@ -216,6 +216,13 @@ public interface IMetaTileEntity
      */
     boolean isValidSlot(int aIndex);
 
+    /** Check if the item at the specified index should be dropped
+     *
+     * @param index Index that will be checked
+     * @return True if the item at the index should be dropped, else false
+     */
+    boolean shouldDropItemAt(int index);
+
     /**
      * @return if aIndex can be set to Zero stackSize, when being removed.
      */

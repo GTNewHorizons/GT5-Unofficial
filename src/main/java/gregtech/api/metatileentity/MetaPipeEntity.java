@@ -383,6 +383,11 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     @Override
+    public boolean shouldDropItemAt(int index) {
+        return true;
+    }
+
+    @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
         return false;
     }
