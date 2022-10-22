@@ -1429,8 +1429,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public boolean shouldDropInventory() {
-        return this.mMetaTileEntity != null ? this.mMetaTileEntity.shouldDropInventory() : true;
+    public boolean shouldDropItemAt(int index) {
+        return this.mMetaTileEntity != null ? this.mMetaTileEntity.shouldDropItemAt(index) : true;
     }
 
     public int getUpgradeCount() {

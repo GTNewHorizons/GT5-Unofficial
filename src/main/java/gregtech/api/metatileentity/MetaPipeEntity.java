@@ -383,7 +383,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     @Override
-    public boolean shouldDropInventory() {
+    public boolean shouldDropItemAt(int index) {
         return true;
     }
 
