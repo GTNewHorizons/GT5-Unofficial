@@ -1,11 +1,8 @@
 package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
@@ -41,6 +38,7 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
         this.side = coverSide;
         this.coverID = coverID;
     }
+
     public GT_Packet_RequestCoverData(byte coverSide, int coverID, ICoverable tile) {
         super(false);
         this.mX = tile.getXCoord();
@@ -69,13 +67,7 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         return new GT_Packet_RequestCoverData(
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
-
-                aData.readByte(),
-                aData.readInt()
-            );
+                aData.readInt(), aData.readShort(), aData.readInt(), aData.readByte(), aData.readInt());
     }
 
     @Override
@@ -88,7 +80,7 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
     @Override
     public void process(IBlockAccess aWorld) {
         if (mPlayer == null) // impossible, but who knows
-            return;
+        return;
         World world = DimensionManager.getWorld(mPlayer.dimension);
         if (world != null) {
             final TileEntity tile = world.getTileEntity(mX, mY, mZ);

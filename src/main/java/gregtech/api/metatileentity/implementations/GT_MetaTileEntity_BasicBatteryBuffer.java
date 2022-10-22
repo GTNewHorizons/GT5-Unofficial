@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GT_Values.V;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.*;
 import gregtech.api.interfaces.ITexture;
@@ -15,8 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import static gregtech.api.enums.GT_Values.V;
-
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
@@ -30,38 +30,54 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     private long mStored = 0;
     private long mMax = 0;
 
-    public GT_MetaTileEntity_BasicBatteryBuffer(int aID, String aName, String aNameRegional, int aTier, String aDescription, int aSlotCount) {
+    public GT_MetaTileEntity_BasicBatteryBuffer(
+            int aID, String aName, String aNameRegional, int aTier, String aDescription, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
-    public GT_MetaTileEntity_BasicBatteryBuffer(String aName, int aTier, String aDescription, ITexture[][][] aTextures, int aSlotCount) {
+    public GT_MetaTileEntity_BasicBatteryBuffer(
+            String aName, int aTier, String aDescription, ITexture[][][] aTextures, int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_BasicBatteryBuffer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
+    public GT_MetaTileEntity_BasicBatteryBuffer(
+            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-    	String[] desc = new String[mDescriptionArray.length + 1];
-    	System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-    	desc[mDescriptionArray.length] = mInventory.length + " Slots";
-    	return desc;
+        String[] desc = new String[mDescriptionArray.length + 1];
+        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
+        desc[mDescriptionArray.length] = mInventory.length + " Slots";
+        return desc;
     }
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[2][17][];
         for (byte i = -1; i < 16; i++) {
-            rTextures[0][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1]};
-            rTextures[1][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], mInventory.length==16 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] : mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier]};
+            rTextures[0][i + 1] = new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1]};
+            rTextures[1][i + 1] = new ITexture[] {
+                Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
+                mInventory.length == 16
+                        ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier]
+                        : mInventory.length > 4
+                                ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]
+                                : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier]
+            };
         }
         return rTextures;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         return mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
     }
 
@@ -247,14 +263,15 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         if (GT_ModHandler.isElectricItem(aStack) && aStack.getUnlocalizedName().startsWith("gt.metaitem.01.")) {
             String name = aStack.getUnlocalizedName();
-            if (name.equals("gt.metaitem.01.32510") ||
-                    name.equals("gt.metaitem.01.32511") ||
-                    name.equals("gt.metaitem.01.32520") ||
-                    name.equals("gt.metaitem.01.32521") ||
-                    name.equals("gt.metaitem.01.32530") ||
-                    name.equals("gt.metaitem.01.32531")) {
-            	if(ic2.api.item.ElectricItem.manager.getCharge(aStack)==0){
-                return true;}
+            if (name.equals("gt.metaitem.01.32510")
+                    || name.equals("gt.metaitem.01.32511")
+                    || name.equals("gt.metaitem.01.32520")
+                    || name.equals("gt.metaitem.01.32521")
+                    || name.equals("gt.metaitem.01.32530")
+                    || name.equals("gt.metaitem.01.32531")) {
+                if (ic2.api.item.ElectricItem.manager.getCharge(aStack) == 0) {
+                    return true;
+                }
             }
         }
         return false;
@@ -265,7 +282,7 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
         if (!GT_Utility.isStackValid(aStack)) {
             return false;
         }
-        if (mInventory[aIndex]==null && GT_ModHandler.isElectricItem(aStack, this.mTier)) {
+        if (mInventory[aIndex] == null && GT_ModHandler.isElectricItem(aStack, this.mTier)) {
             return true;
         }
         return false;
@@ -277,8 +294,8 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     public long[] getStoredEnergy() {
-    	boolean scaleOverflow =false;
-    	boolean storedOverflow = false;
+        boolean scaleOverflow = false;
+        boolean storedOverflow = false;
         long tScale = getBaseMetaTileEntity().getEUCapacity();
         long tStored = getBaseMetaTileEntity().getStoredEU();
         long tStep = 0;
@@ -289,10 +306,14 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
                     if (aStack.getItem() instanceof GT_MetaBase_Item) {
                         Long[] stats = ((GT_MetaBase_Item) aStack.getItem()).getElectricStats(aStack);
                         if (stats != null) {
-                        	if(stats[0]>Long.MAX_VALUE/2){scaleOverflow=true;}
+                            if (stats[0] > Long.MAX_VALUE / 2) {
+                                scaleOverflow = true;
+                            }
                             tScale = tScale + stats[0];
                             tStep = ((GT_MetaBase_Item) aStack.getItem()).getRealCharge(aStack);
-                            if(tStep > Long.MAX_VALUE/2){storedOverflow=true;}
+                            if (tStep > Long.MAX_VALUE / 2) {
+                                storedOverflow = true;
+                            }
                             tStored = tStored + tStep;
                         }
                     } else if (aStack.getItem() instanceof IElectricItem) {
@@ -301,11 +322,14 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
                     }
                 }
             }
-
         }
-        if(scaleOverflow){tScale=Long.MAX_VALUE;}
-        if(storedOverflow){tStored=Long.MAX_VALUE;}
-        return new long[]{tStored, tScale};
+        if (scaleOverflow) {
+            tScale = Long.MAX_VALUE;
+        }
+        if (storedOverflow) {
+            tStored = Long.MAX_VALUE;
+        }
+        return new long[] {tStored, tScale};
     }
 
     @Override
@@ -317,15 +341,16 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
             count = 0;
         }
 
-        return new String[]{
-                EnumChatFormatting.BLUE+getLocalName()+EnumChatFormatting.RESET,
-                "Stored Items:",
-                EnumChatFormatting.GREEN+GT_Utility.formatNumbers(mStored) +EnumChatFormatting.RESET+ " EU / "+
-                EnumChatFormatting.YELLOW+GT_Utility.formatNumbers(mMax) +EnumChatFormatting.RESET+ " EU",
-                "Average input:",
-                GT_Utility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput())+" EU/t",
-                "Average output:",
-                GT_Utility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput())+" EU/t"};
+        return new String[] {
+            EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET,
+            "Stored Items:",
+            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mStored) + EnumChatFormatting.RESET + " EU / "
+                    + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mMax) + EnumChatFormatting.RESET + " EU",
+            "Average input:",
+            GT_Utility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput()) + " EU/t",
+            "Average output:",
+            GT_Utility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput()) + " EU/t"
+        };
     }
 
     @Override

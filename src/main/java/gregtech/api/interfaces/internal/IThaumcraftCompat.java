@@ -2,14 +2,12 @@ package gregtech.api.interfaces.internal;
 
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
-import java.util.List;
-
 public interface IThaumcraftCompat {
-    int
-            RESEARCH_TYPE_NORMAL = 0,
+    int RESEARCH_TYPE_NORMAL = 0,
             RESEARCH_TYPE_SECONDARY = 1,
             RESEARCH_TYPE_FREE = 2,
             RESEARCH_TYPE_HIDDEN = 4,
@@ -21,8 +19,7 @@ public interface IThaumcraftCompat {
     /**
      * The Research Keys of GT
      */
-    String
-            IRON_TO_STEEL = "GT_IRON_TO_STEEL",
+    String IRON_TO_STEEL = "GT_IRON_TO_STEEL",
             FILL_WATER_BUCKET = "GT_FILL_WATER_BUCKET",
             WOOD_TO_CHARCOAL = "GT_WOOD_TO_CHARCOAL",
             TRANSZINC = "GT_TRANSZINC",
@@ -50,7 +47,26 @@ public interface IThaumcraftCompat {
 
     Object addCrucibleRecipe(String aResearch, Object aInput, ItemStack aOutput, List<TC_AspectStack> aAspects);
 
-    Object addInfusionRecipe(String aResearch, ItemStack aMainInput, ItemStack[] aSideInputs, ItemStack aOutput, int aInstability, List<TC_Aspects.TC_AspectStack> aAspects);
+    Object addInfusionRecipe(
+            String aResearch,
+            ItemStack aMainInput,
+            ItemStack[] aSideInputs,
+            ItemStack aOutput,
+            int aInstability,
+            List<TC_Aspects.TC_AspectStack> aAspects);
 
-    Object addResearch(String aResearch, String aName, String aText, String[] aParentResearches, String aCategory, ItemStack aIcon, int aComplexity, int aType, int aX, int aY, List<TC_AspectStack> aAspects, ItemStack[] aResearchTriggers, Object[] aPages);
+    Object addResearch(
+            String aResearch,
+            String aName,
+            String aText,
+            String[] aParentResearches,
+            String aCategory,
+            ItemStack aIcon,
+            int aComplexity,
+            int aType,
+            int aX,
+            int aY,
+            List<TC_AspectStack> aAspects,
+            ItemStack[] aResearchTriggers,
+            Object[] aPages);
 }

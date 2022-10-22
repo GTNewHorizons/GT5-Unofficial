@@ -1,22 +1,20 @@
 package gregtech.api.gui;
 
+import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import java.util.List;
-
-import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -25,12 +23,7 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Basi
  */
 public class GT_Container_BasicMachine extends GT_Container_BasicTank {
 
-    public boolean
-            mFluidTransfer = false,
-            mItemTransfer = false,
-            mStuttering = false;
-
-    private Runnable circuitSlotClickCallback;
+    public boolean mFluidTransfer = false, mItemTransfer = false, mStuttering = false;
 
     GT_Slot_Holo slotFluidTransferToggle;
     GT_Slot_Holo slotItemTransferToggle;
@@ -38,7 +31,6 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
     GT_Slot_Holo slotFluidInput;
     Slot slotBattery;
     Slot slotSpecial;
-    GT_Slot_Render slotCircuit;
 
     public GT_Container_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -54,9 +46,9 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         addSlotToContainer(slotItemTransferToggle = new GT_Slot_Holo(mTileEntity, 0, 26, 63, false, true, 1));
         slotItemTransferToggle.setEnabled(!machine.isSteampowered());
         addSlotToContainer(slotFluidOutput = new GT_Slot_Render(mTileEntity, 2, 107, 63));
-        slotFluidOutput.setEnabled(recipes != null ? recipes.hasFluidOutputs() : false);
-        addSlotToContainer(slotCircuit = new GT_Slot_Render(mTileEntity, machine.getCircuitSlot(), 153, 63));
-        slotCircuit.setEnabled(machine.allowSelectCircuit());
+        slotFluidOutput.setEnabled(recipes != null && recipes.hasFluidOutputs());
+        // add circuit slot here to have it in fixed position
+        addCircuitSlot();
 
         int tStartIndex = machine.getInputSlot();
 
@@ -201,9 +193,7 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         addSlotToContainer(slotBattery = new Slot(mTileEntity, 1, 80, 63));
         addSlotToContainer(slotSpecial = new Slot(mTileEntity, 3, 125, 63));
         addSlotToContainer(slotFluidInput = new GT_Slot_Render(mTileEntity, tStartIndex++, 53, 63));
-        slotFluidInput.setEnabled(recipes != null
-            ? (recipes.hasFluidInputs())
-            : (machine.getCapacity() != 0));
+        slotFluidInput.setEnabled(recipes != null ? (recipes.hasFluidInputs()) : (machine.getCapacity() != 0));
     }
 
     @Override
@@ -222,54 +212,25 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                     machine.mItemTransfer = !machine.mItemTransfer;
                 }
                 return null;
-            case 3:
-                if (machine.allowSelectCircuit() && aMouseclick < 2) {
-                    ItemStack newCircuit;
-                    if (aShifthold == 1) {
-                        if (aMouseclick == 0) {
-                            if (circuitSlotClickCallback != null)
-                                circuitSlotClickCallback.run();
-                            return null;
-                        } else {
-                            // clear
-                            newCircuit = null;
-                        }
-                    } else {
-                        ItemStack cursorStack = aPlayer.inventory.getItemStack();
-                        List<ItemStack> tCircuits = machine.getConfigurationCircuits();
-                        int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
-                        if (index < 0) {
-                            int curIndex = GT_Utility.findMatchingStackInList(tCircuits, machine.getStackInSlot(machine.getCircuitSlot())) + 1;
-                            if (aMouseclick == 0) {
-                                curIndex += 1;
-                            } else {
-                                curIndex -= 1;
-                            }
-                            curIndex = Math.floorMod(curIndex, tCircuits.size() + 1) - 1;
-                            newCircuit = curIndex < 0 ? null : tCircuits.get(curIndex);
-                        } else {
-                            // set to whatever it is
-                            newCircuit = tCircuits.get(index);
-                        }
-                    }
-                    mTileEntity.setInventorySlotContents(machine.getCircuitSlot(), newCircuit);
-                    return newCircuit;
-                }
-                return null;
             default:
-                if (aSlotNumber == OTHER_SLOT_COUNT + 1 + machine.mInputSlotCount + machine.mOutputItems.length && aMouseclick < 2) {
+                if (aSlotNumber == OTHER_SLOT_COUNT + 1 + machine.mInputSlotCount + machine.mOutputItems.length
+                        && aMouseclick < 2) {
+                    GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
                     if (mTileEntity.isClientSide()) {
                         // see parent class slotClick for an explanation on why doing this
-                        GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
-                        tTank.setFillableStack(GT_Utility.getFluidFromDisplayStack(tTank.getStackInSlot(2)));
+                        Slot slot = (Slot) inventorySlots.get(aSlotNumber);
+                        tTank.setFillableStack(GT_Utility.getFluidFromDisplayStack(slot.getStack()));
                     }
-                    GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
-                    BasicTankFluidAccess tFillableAccess = BasicTankFluidAccess.from(tTank, true);
+                    IFluidAccess tFillableAccess = constructFluidAccess(tTank, true);
                     GT_Recipe_Map recipes = machine.getRecipeList();
-                    //If the  machine has recipes but no fluid inputs, disallow filling this slot with fluids.
-                    ItemStack tToken = handleFluidSlotClick(tFillableAccess, aPlayer, aMouseclick == 0, true, (recipes == null || recipes.hasFluidInputs()));
-                    if (mTileEntity.isServerSide() && tToken != null)
-                        mTileEntity.markInventoryBeenModified();
+                    // If the  machine has recipes but no fluid inputs, disallow filling this slot with fluids.
+                    ItemStack tToken = handleFluidSlotClick(
+                            tFillableAccess,
+                            aPlayer,
+                            aMouseclick == 0,
+                            true,
+                            (recipes == null || recipes.hasFluidInputs()));
+                    if (mTileEntity.isServerSide() && tToken != null) mTileEntity.markInventoryBeenModified();
                     return tToken;
                 } else {
                     return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
@@ -338,9 +299,5 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
 
     public GT_MetaTileEntity_BasicMachine getMachine() {
         return (GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity();
-    }
-
-    public void setCircuitSlotClickCallback(Runnable circuitSlotClickCallback) {
-        this.circuitSlotClickCallback = circuitSlotClickCallback;
     }
 }

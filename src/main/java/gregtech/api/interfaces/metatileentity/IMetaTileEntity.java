@@ -9,6 +9,9 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -24,16 +27,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes, Transformers, but not the regular Blocks)
  * <p/>
  * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
  */
-public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IGearEnergyTileEntity, IMachineBlockUpdateable, IGregtechWailaProvider {
+public interface IMetaTileEntity
+        extends ISidedInventory,
+                IFluidTank,
+                IFluidHandler,
+                IGearEnergyTileEntity,
+                IMachineBlockUpdateable,
+                IGregtechWailaProvider {
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
      * <p/>
@@ -143,7 +148,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * When a Player rightclicks the Facing with a soldering iron.
      */
-    boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
+    boolean onSolderingToolRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
 
     /**
      * Called right before this Machine explodes
@@ -241,7 +247,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *
      * @return
      */
-    boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ);
+    boolean onRightclick(
+            IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ);
 
     /**
      * a Player leftclicks the Machine
@@ -317,7 +324,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * returns the DebugLog
      */
-    ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel, ArrayList<String> aList);
+    ArrayList<String> getSpecialDebugInfo(
+            IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel, ArrayList<String> aList);
 
     /**
      * get a small Description
@@ -338,12 +346,18 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @param aActive     if the Machine is currently active (use this instead of calling mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes this means if this Side is connected to something or not.
      * @param aRedstone   if the Machine is currently outputting a RedstoneSignal (use this instead of calling mBaseMetaTileEntity.mRedstone!!!)
      */
-    ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone);
+    ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone);
 
     /**
      * The Textures used for the Item rendering. Return null if you want the regular 3D Block Rendering.
      */
-    //public ITexture[] getItemTexture(ItemStack aStack);
+    // public ITexture[] getItemTexture(ItemStack aStack);
 
     /**
      * Register Icons here. This gets called when the Icons get initialized by the Base Block
@@ -389,7 +403,14 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     boolean allowGeneralRedstoneOutput();
 
-    void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider);
+    void addCollisionBoxesToList(
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            AxisAlignedBB inputAABB,
+            List<AxisAlignedBB> outputAABB,
+            Entity collider);
 
     AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ);
 
@@ -420,7 +441,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * just return in should recurse since we are already in meta tile...
      */
     @Override
-    default boolean isMachineBlockUpdateRecursive(){
+    default boolean isMachineBlockUpdateRecursive() {
         return true;
     }
 
@@ -433,5 +454,4 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     default void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
         /* do nothing */
     }
-
 }

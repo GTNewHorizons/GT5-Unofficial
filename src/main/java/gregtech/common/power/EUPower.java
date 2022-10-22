@@ -38,7 +38,7 @@ public class EUPower extends Power {
 
     @Override
     public String getVoltageString() {
-        String voltageDescription = GT_Utility.formatNumbers(originalVoltage) + " EU";
+        String voltageDescription = GT_Utility.formatNumbers(originalVoltage) + " EU/t";
         byte recipeTier = GT_Utility.getTier(originalVoltage);
         if (recipeTier >= 0 && recipeTier < 16) {
             voltageDescription += " (" + GT_Values.VN[recipeTier] + ")";

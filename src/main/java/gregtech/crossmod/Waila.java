@@ -8,7 +8,7 @@ import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 
 public class Waila {
-    public static void callbackRegister(IWailaRegistrar register){
+    public static void callbackRegister(IWailaRegistrar register) {
         final IWailaDataProvider multiBlockProvider = new GregtechWailaDataProvider();
 
         register.registerBodyProvider(multiBlockProvider, BaseMetaTileEntity.class);
@@ -24,9 +24,7 @@ public class Waila {
         register.registerTailProvider(multiBlockProvider, BaseMultiTileEntity.class);
     }
 
-    public static void init()  {
-        FMLInterModComms.sendMessage("Waila", "register", Waila.class.getName() + ".callbackRegister" );
+    public static void init() {
+        FMLInterModComms.sendMessage("Waila", "register", Waila.class.getName() + ".callbackRegister");
     }
-
-
 }

@@ -1,5 +1,7 @@
 package gregtech.api.multitileentity.interfaces;
 
+import static gregtech.api.enums.GT_Values.MOD_ID_APC;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -12,6 +14,9 @@ import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
 import gregtech.api.multitileentity.MultiTileEntityItemInternal;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -26,18 +31,22 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import static gregtech.api.enums.GT_Values.MOD_ID_APC;
-
 /*
  * Heavily inspired by GT6
  */
-public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, ITurnable, IHasInventory, IEnergyConnected, IBasicEnergyContainer, IFluidHandler, ITexturedTileEntity, IDebugableTileEntity {
+public interface IMultiTileEntity
+        extends IHasWorldObjectAndCoords,
+                ICoverable,
+                ITurnable,
+                IHasInventory,
+                IEnergyConnected,
+                IBasicEnergyContainer,
+                IFluidHandler,
+                ITexturedTileEntity,
+                IDebugableTileEntity {
     /** Those two IDs HAVE to be saved inside the NBT of the TileEntity itself. They get set by the Registry itself, when the TileEntity is placed. */
     short getMultiTileEntityID();
+
     short getMultiTileEntityRegistryID();
     /** Called by the Registry with the default NBT Parameters and the two IDs you have to save, when the TileEntity is created. aNBT may be null, take that into account if you decide to call the regular readFromNBT Function from here. */
     void initFromNBT(NBTTagCompound aNBT, short aMTEID, short aMTERegistry);
@@ -45,6 +54,7 @@ public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, 
     NBTTagCompound writeItemNBT(NBTTagCompound aNBT);
     /** Sets the Item Display Name. Use null to reset it. */
     void setCustomName(String aName);
+
     String getCustomName();
 
     /** return the internal Name of this TileEntity to be registered. */
@@ -60,19 +70,30 @@ public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, 
     @Override
     boolean isDead();
 
+    void loadTextureNBT(NBTTagCompound aNBT);
+
+    void copyTextures();
+
     void issueClientUpdate();
-    void sendClientData( EntityPlayerMP aPlayer);
+
+    void sendClientData(EntityPlayerMP aPlayer);
+
     boolean receiveClientEvent(int aEventID, int aValue);
 
     void setShouldRefresh(boolean aShouldRefresh);
 
     void addCollisionBoxesToList(AxisAlignedBB aAABB, List<AxisAlignedBB> aList, Entity aEntity);
+
     AxisAlignedBB getCollisionBoundingBoxFromPool();
+
     AxisAlignedBB getSelectedBoundingBoxFromPool();
+
     void setBlockBoundsBasedOnState(Block aBlock);
 
     void onBlockAdded();
+
     boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely);
+
     boolean privateAccess();
 
     /** @return the amount of Time this TileEntity has been loaded. */
@@ -101,8 +122,11 @@ public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, 
      *  Paintable Support
      */
     boolean unpaint();
+
     boolean isPainted();
+
     boolean paint(int aRGB);
+
     int getPaint();
 
     /**
@@ -110,19 +134,28 @@ public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, 
      * @return Whether the facing was changed
      */
     boolean setMainFacing(byte aSide);
+
     boolean isFacingValid(byte aFacing);
+
     void onFacingChange();
-    @Override default void setFrontFacing(byte aSide) { setMainFacing(aSide); }
 
-
+    @Override
+    default void setFrontFacing(byte aSide) {
+        setMainFacing(aSide);
+    }
 
     boolean shouldTriggerBlockUpdate();
+
     void onMachineBlockUpdate();
 
     boolean allowInteraction(Entity aEntity);
-    default void onLeftClick(EntityPlayer aPlayer) { /* do nothing */ }
+
+    default void onLeftClick(EntityPlayer aPlayer) {
+        /* do nothing */
+    }
 
     boolean onBlockActivated(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ);
+
     boolean onRightClick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ);
 
     ArrayList<ItemStack> getDrops(int aFortune, boolean aSilkTouch);
@@ -130,13 +163,16 @@ public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, 
     boolean isSideSolid(byte aSide);
 
     float getExplosionResistance(Entity aExploder, double aExplosionX, double aExplosionY, double aExplosionZ);
+
     float getExplosionResistance();
+
     void onExploded(Explosion aExplosion);
 
     boolean recolourBlock(byte aSide, byte aColor);
 
     /** Adds to the Creative Tab. return false to prevent it from being added. */
-    boolean getSubItems(MultiTileEntityBlockInternal aBlock, Item aItem, CreativeTabs aTab, List<ItemStack> aList, short aID);
+    boolean getSubItems(
+            MultiTileEntityBlockInternal aBlock, Item aItem, CreativeTabs aTab, List<ItemStack> aList, short aID);
 
     ItemStack getPickBlock(MovingObjectPosition aTarget);
 
@@ -144,9 +180,19 @@ public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, 
 
     boolean isSurfaceOpaque(byte aSide);
 
-    boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide, float aHitX, float aHitY, float aHitZ);
+    boolean onPlaced(
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            byte aSide,
+            float aHitX,
+            float aHitY,
+            float aHitZ);
 
-//    ItemStack getPickBlock(MovingObjectPosition aTarget);
+    //    ItemStack getPickBlock(MovingObjectPosition aTarget);
 
     /*
      * Various Sub Interfaces from GT6
@@ -173,7 +219,6 @@ public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, 
     interface IMTE_GetWeakChanges extends IMultiTileEntity {
         boolean getWeakChanges();
     }
-
 
     interface IMTE_GetComparatorInputOverride extends IMultiTileEntity {
         int getComparatorInputOverride(byte aSide);
@@ -205,14 +250,33 @@ public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, 
 
     interface IMTE_IgnoreEntityCollisionWhenPlacing extends IMultiTileEntity {
         /** Return true to ignore the Player standing in the way of placing this Block; useful for things like pipes/wires. */
-        boolean ignoreEntityCollisionWhenPlacing(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide, float aHitX, float aHitY, float aHitZ);
+        boolean ignoreEntityCollisionWhenPlacing(
+                ItemStack aStack,
+                EntityPlayer aPlayer,
+                World aWorld,
+                int aX,
+                int aY,
+                int aZ,
+                byte aSide,
+                float aHitX,
+                float aHitY,
+                float aHitZ);
     }
 
     interface IMTE_CanPlace extends IMultiTileEntity {
         /** Return false if this TileEntity cannot be placed at that Location. */
-        boolean canPlace(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide, float aHitX, float aHitY, float aHitZ);
+        boolean canPlace(
+                ItemStack aStack,
+                EntityPlayer aPlayer,
+                World aWorld,
+                int aX,
+                int aY,
+                int aZ,
+                byte aSide,
+                float aHitX,
+                float aHitY,
+                float aHitZ);
     }
-
 
     interface IMTE_GetMaxStackSize extends IMultiTileEntity {
         /** Gets the Max Stacksize of this Item. */
@@ -223,5 +287,4 @@ public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, 
         /** Adds ToolTips to the Item. */
         void addToolTips(List<String> aList, ItemStack aStack, boolean aF3_H);
     }
-
 }

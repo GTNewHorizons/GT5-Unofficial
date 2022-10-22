@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -11,9 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
-
-import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.ALL_SIDES;
 
 public abstract class CommonMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mSendClientData = false, mInventoryChanged = false;
@@ -30,6 +29,7 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
         }
         return false;
     }
+
     protected void saveMetaTileNBT(NBTTagCompound aNBT) {
         try {
             if (hasValidMetaTileEntity()) {
@@ -59,11 +59,12 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     }
 
     protected void loadMetaTileNBT(NBTTagCompound aNBT) {
+        final int nbtVersion = aNBT.getInteger("nbtVersion");
         if (mID != 0 && createNewMetatileEntity(mID)) {
             final NBTTagList tItemList = aNBT.getTagList("Inventory", 10);
             for (int i = 0; i < tItemList.tagCount(); i++) {
                 final NBTTagCompound tTag = tItemList.getCompoundTagAt(i);
-                final int tSlot = tTag.getInteger("IntSlot");
+                final int tSlot = migrateInventoryIndex(tTag.getInteger("IntSlot"), nbtVersion);
                 if (tSlot >= 0 && tSlot < getMetaTileEntity().getRealInventory().length) {
                     getMetaTileEntity().getRealInventory()[tSlot] = GT_Utility.loadItem(tTag);
                 }
@@ -76,6 +77,14 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
                 GT_Mod.logStackTrace(e);
             }
         }
+    }
+
+    /**
+     * Shifts the machine Inventory index according to the change in Input/Output Slots.
+     * Default implementation does not do anything to the slotIndex.
+     */
+    protected int migrateInventoryIndex(int slotIndex, int nbtVersion) {
+        return slotIndex;
     }
 
     @Override
@@ -158,5 +167,4 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
         final IMetaTileEntity meta = getMetaTileEntity();
         return meta != null && meta.shouldJoinIc2Enet();
     }
-
 }

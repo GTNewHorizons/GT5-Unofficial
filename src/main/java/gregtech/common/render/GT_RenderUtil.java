@@ -8,7 +8,16 @@ public class GT_RenderUtil {
         renderItemIcon(icon, 0.0D, 0.0D, size, size, z, nx, ny, nz);
     }
 
-    public static void renderItemIcon(IIcon icon, double xStart, double yStart, double xEnd, double yEnd, double z, float nx, float ny, float nz) {
+    public static void renderItemIcon(
+            IIcon icon,
+            double xStart,
+            double yStart,
+            double xEnd,
+            double yEnd,
+            double z,
+            float nx,
+            float ny,
+            float nz) {
         if (icon == null) {
             return;
         }
