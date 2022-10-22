@@ -215,13 +215,12 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
             default:
                 if (aSlotNumber == OTHER_SLOT_COUNT + 1 + machine.mInputSlotCount + machine.mOutputItems.length
                         && aMouseclick < 2) {
+                    GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
                     if (mTileEntity.isClientSide()) {
                         // see parent class slotClick for an explanation on why doing this
-                        GT_MetaTileEntity_BasicTank tTank =
-                                (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
-                        tTank.setFillableStack(GT_Utility.getFluidFromDisplayStack(tTank.getStackInSlot(2)));
+                        Slot slot = (Slot) inventorySlots.get(aSlotNumber);
+                        tTank.setFillableStack(GT_Utility.getFluidFromDisplayStack(slot.getStack()));
                     }
-                    GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
                     IFluidAccess tFillableAccess = constructFluidAccess(tTank, true);
                     GT_Recipe_Map recipes = machine.getRecipeList();
                     // If the  machine has recipes but no fluid inputs, disallow filling this slot with fluids.
