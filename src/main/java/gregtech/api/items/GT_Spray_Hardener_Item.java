@@ -1,5 +1,7 @@
 package gregtech.api.items;
 
+import static gregtech.api.enums.GT_Values.D1;
+
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GT_Log;
@@ -12,11 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import static gregtech.api.enums.GT_Values.D1;
-
 public class GT_Spray_Hardener_Item extends GT_Tool_Item {
     public GT_Spray_Hardener_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
-        super(aUnlocalized, aEnglish, "Construction Foam Hardener", aMaxDamage, aEntityDamage, true);/*
+        super(aUnlocalized, aEnglish, "Construction Foam Hardener", aMaxDamage, aEntityDamage, true); /*
         setCraftingSound(Sounds.IC2_TOOLS_PAINTER);
 		setBreakingSound(Sounds.IC2_TOOLS_PAINTER);
 		setEntityHitSound(Sounds.IC2_TOOLS_PAINTER);
@@ -24,14 +24,24 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int aSide,
+            float hitX,
+            float hitY,
+            float hitZ) {
         super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
         if (aWorld.isRemote) {
             return false;
         }
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if (aBlock == null) return false;
-//    	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
+        //    	byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         try {
@@ -49,8 +59,12 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
             if (D1) e.printStackTrace(GT_Log.err);
         }
 
-        ItemStack tStack1 = GT_ModHandler.getIC2Item("constructionFoam", 1), tStack2 = GT_ModHandler.getIC2Item("constructionFoamWall", 1);
-        if (tStack1 != null && tStack1.isItemEqual(new ItemStack(aBlock)) && tStack2 != null && tStack2.getItem() instanceof ItemBlock) {
+        ItemStack tStack1 = GT_ModHandler.getIC2Item("constructionFoam", 1),
+                tStack2 = GT_ModHandler.getIC2Item("constructionFoamWall", 1);
+        if (tStack1 != null
+                && tStack1.isItemEqual(new ItemStack(aBlock))
+                && tStack2 != null
+                && tStack2.getItem() instanceof ItemBlock) {
             if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                 GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                 aWorld.setBlock(aX, aY, aZ, GT_Utility.getBlockFromStack(tStack2), 7, 3);
@@ -58,10 +72,12 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
             return true;
         }
 
-        if (aTileEntity instanceof BaseMetaPipeEntity && (((BaseMetaPipeEntity) aTileEntity).mConnections & -64) == 64) {
+        if (aTileEntity instanceof BaseMetaPipeEntity
+                && (((BaseMetaPipeEntity) aTileEntity).mConnections & -64) == 64) {
             if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                 GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
-                ((BaseMetaPipeEntity) aTileEntity).mConnections = (byte) ((((BaseMetaPipeEntity) aTileEntity).mConnections & ~64) | -128);
+                ((BaseMetaPipeEntity) aTileEntity).mConnections =
+                        (byte) ((((BaseMetaPipeEntity) aTileEntity).mConnections & ~64) | -128);
             }
             return true;
         }

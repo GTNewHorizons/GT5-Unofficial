@@ -1,8 +1,7 @@
 package gregtech.api.gui.widgets;
 
-import java.awt.Rectangle;
-
 import gregtech.api.util.GT_TooltipDataCache.TooltipData;
+import java.awt.Rectangle;
 import net.minecraft.inventory.Slot;
 
 public class GT_GuiSlotTooltip extends GT_GuiTooltip {

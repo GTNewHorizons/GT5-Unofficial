@@ -50,4 +50,3 @@ public enum ParticleFX {
         return this.identifier;
     }
 }
-

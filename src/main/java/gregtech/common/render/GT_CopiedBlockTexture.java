@@ -57,9 +57,9 @@ public class GT_CopiedBlockTexture extends GT_TextureBase implements ITexture, I
     public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal());
-            new LightingHelper(aRenderer)
-                    .setupLightingYPos(aBlock, aX, aY, aZ)
-                    .setupColor(ForgeDirection.UP.ordinal(), 0xffffff);
+        new LightingHelper(aRenderer)
+                .setupLightingYPos(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.UP.ordinal(), 0xffffff);
         aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }

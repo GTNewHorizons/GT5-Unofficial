@@ -57,8 +57,7 @@ public final class MessageSetFlaskCapacity extends GT_Packet_New {
             ItemStack stack = ((EntityPlayer) w.getEntityByID(playerID)).getHeldItem();
             if ((stack != null) && (stack.stackSize > 0)) {
                 Item item = stack.getItem();
-                if ((item instanceof GT_VolumetricFlask))
-                    ((GT_VolumetricFlask) item).setCapacity(stack, capacity);
+                if ((item instanceof GT_VolumetricFlask)) ((GT_VolumetricFlask) item).setCapacity(stack, capacity);
             }
         }
     }

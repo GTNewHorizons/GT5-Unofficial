@@ -44,18 +44,17 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
      */
     @Override
     public double getDemandedEnergy() {
-        if(cableMeta != null) {
-            // We don't want everything to join the enet (treating the cable as a conductor) so we join it as a ink. We don't want to traverse all cables
-            // connected to this (like we would during distribution) to see if it actually needs any EU... so we just always say we want it all.  If there
-            // are more than two things attached, and one of them is a GT cable that doesn't have anywhere to send it's energy, the distribution will be a bit
+        if (cableMeta != null) {
+            // We don't want everything to join the enet (treating the cable as a conductor) so we join it as a ink. We
+            // don't want to traverse all cables
+            // connected to this (like we would during distribution) to see if it actually needs any EU... so we just
+            // always say we want it all.  If there
+            // are more than two things attached, and one of them is a GT cable that doesn't have anywhere to send it's
+            // energy, the distribution will be a bit
             // weird.  In that case only use one cable, or use a transformer.
             return (cableMeta.mVoltage * cableMeta.mAmperage);
-        }
-        else
-            return myMeta.getEUCapacity() - myMeta.getStoredEU();
+        } else return myMeta.getEUCapacity() - myMeta.getStoredEU();
     }
-
-
 
     /**
      * Determine the tier of this energy sink.
@@ -82,20 +81,26 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
     @Override
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
 
-        final long amps =(long)Math.max(amount / (cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage() * 1.0), 1.0);
-        final long euPerAmp = (long)(amount / (amps * 1.0));
+        final long amps = (long)
+                Math.max(amount / (cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage() * 1.0), 1.0);
+        final long euPerAmp = (long) (amount / (amps * 1.0));
 
         final IMetaTileEntity metaTile = myMeta.getMetaTileEntity();
         if (metaTile == null) return amount;
 
         final long usedAmps;
-        if(cableMeta != null) {
-            usedAmps = ((IMetaTileEntityCable) metaTile).transferElectricity((byte) directionFrom.ordinal(), Math.min(euPerAmp, cableMeta.mVoltage), amps, Sets.newHashSet((TileEntity) myMeta));
+        if (cableMeta != null) {
+            usedAmps = ((IMetaTileEntityCable) metaTile)
+                    .transferElectricity(
+                            (byte) directionFrom.ordinal(),
+                            Math.min(euPerAmp, cableMeta.mVoltage),
+                            amps,
+                            Sets.newHashSet((TileEntity) myMeta));
 
-        }
-        else
-            usedAmps = myMeta.injectEnergyUnits((byte) directionFrom.ordinal(), Math.min(euPerAmp, myMeta.getInputVoltage()), amps);
-        return amount - ( usedAmps * euPerAmp);
+        } else
+            usedAmps = myMeta.injectEnergyUnits(
+                    (byte) directionFrom.ordinal(), Math.min(euPerAmp, myMeta.getInputVoltage()), amps);
+        return amount - (usedAmps * euPerAmp);
 
         // transferElectricity for cables
     }
@@ -112,11 +117,9 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
     @Override
     public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction) {
         final IMetaTileEntity metaTile = myMeta.getMetaTileEntity();
-        if(metaTile instanceof IMetaTileEntityCable && (direction == ForgeDirection.UNKNOWN || ((IConnectable)metaTile).isConnectedAtSide(direction.ordinal())))
-            return true;
-        else
-            return myMeta.inputEnergyFrom((byte) direction.ordinal(), false);
-
+        if (metaTile instanceof IMetaTileEntityCable
+                && (direction == ForgeDirection.UNKNOWN
+                        || ((IConnectable) metaTile).isConnectedAtSide(direction.ordinal()))) return true;
+        else return myMeta.inputEnergyFrom((byte) direction.ordinal(), false);
     }
-
 }

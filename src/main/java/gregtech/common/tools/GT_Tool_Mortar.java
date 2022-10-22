@@ -103,11 +103,12 @@ public class GT_Tool_Mortar extends GT_Tool {
     }
 
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-    }
+    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {}
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was grounded by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(
+                EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " was grounded by "
+                        + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
     }
 }

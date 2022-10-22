@@ -1,6 +1,9 @@
 package gregtech.api.util;
 
+import static gregtech.api.enums.GT_Values.E;
+
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,8 +11,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-
-import static gregtech.api.enums.GT_Values.E;
 
 /**
  * For Covers with a special behavior. Has fixed storage format of 4 byte. Not very convenient...
@@ -19,7 +20,11 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
     public EntityPlayer lastPlayer = null;
 
     public GT_CoverBehavior() {
-        super(ISerializableObject.LegacyCoverData.class);
+        this(null);
+    }
+
+    public GT_CoverBehavior(ITexture coverTexture) {
+        super(ISerializableObject.LegacyCoverData.class, coverTexture);
     }
 
     private static int convert(ISerializableObject.LegacyCoverData data) {
@@ -39,151 +44,234 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected boolean isRedstoneSensitiveImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
         return isRedstoneSensitive(aSide, aCoverID, aCoverVariable.get(), aTileEntity, aTimer);
     }
 
     @Override
-    protected ISerializableObject.LegacyCoverData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        if (aCoverVariable == null)
-            aCoverVariable = new ISerializableObject.LegacyCoverData();
+    protected ISerializableObject.LegacyCoverData doCoverThingsImpl(
+            byte aSide,
+            byte aInputRedstone,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
+        if (aCoverVariable == null) aCoverVariable = new ISerializableObject.LegacyCoverData();
         aCoverVariable.set(doCoverThings(aSide, aInputRedstone, aCoverID, aCoverVariable.get(), aTileEntity, aTimer));
         return aCoverVariable;
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected boolean onCoverRightClickImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
         return onCoverRightclick(aSide, aCoverID, convert(aCoverVariable), aTileEntity, aPlayer, aX, aY, aZ);
     }
 
     @Override
-    protected ISerializableObject.LegacyCoverData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aCoverVariable == null)
-            aCoverVariable = new ISerializableObject.LegacyCoverData();
-        aCoverVariable.set(onCoverScrewdriverclick(aSide, aCoverID, convert(aCoverVariable), aTileEntity, aPlayer, aX, aY, aZ));
+    protected ISerializableObject.LegacyCoverData onCoverScrewdriverClickImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
+        if (aCoverVariable == null) aCoverVariable = new ISerializableObject.LegacyCoverData();
+        aCoverVariable.set(
+                onCoverScrewdriverclick(aSide, aCoverID, convert(aCoverVariable), aTileEntity, aPlayer, aX, aY, aZ));
         return aCoverVariable;
     }
 
     @Override
-    protected boolean onCoverShiftRightClickImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
+    protected boolean onCoverShiftRightClickImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer) {
         return onCoverShiftRightclick(aSide, aCoverID, convert(aCoverVariable), aTileEntity, aPlayer);
     }
 
     @Override
-    protected Object getClientGUIImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+    protected Object getClientGUIImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            World aWorld) {
         return getClientGUI(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected boolean onCoverRemovalImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, boolean aForced) {
+    protected boolean onCoverRemovalImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            ICoverable aTileEntity,
+            boolean aForced) {
         return onCoverRemoval(aSide, aCoverID, convert(aCoverVariable), aTileEntity, aForced);
     }
 
     @Override
-    protected String getDescriptionImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected String getDescriptionImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return getDescription(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected float getBlastProofLevelImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected float getBlastProofLevelImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return getBlastProofLevel(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected boolean letsRedstoneGoInImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsRedstoneGoInImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return letsRedstoneGoIn(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsRedstoneGoOutImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return letsRedstoneGoOut(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected boolean letsFibreGoInImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsFibreGoInImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return letsFibreGoIn(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected boolean letsFibreGoOutImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsFibreGoOutImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return letsFibreGoOut(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected boolean letsEnergyInImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsEnergyInImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return letsEnergyIn(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsEnergyOutImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return letsEnergyOut(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidInImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            Fluid aFluid,
+            ICoverable aTileEntity) {
         return letsFluidIn(aSide, aCoverID, convert(aCoverVariable), aFluid, aTileEntity);
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidOutImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            Fluid aFluid,
+            ICoverable aTileEntity) {
         return letsFluidOut(aSide, aCoverID, convert(aCoverVariable), aFluid, aTileEntity);
     }
 
     @Override
-    protected boolean letsItemsInImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsInImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            int aSlot,
+            ICoverable aTileEntity) {
         return letsItemsIn(aSide, aCoverID, convert(aCoverVariable), aSlot, aTileEntity);
     }
 
     @Override
-    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsOutImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            int aSlot,
+            ICoverable aTileEntity) {
         return letsItemsOut(aSide, aCoverID, convert(aCoverVariable), aSlot, aTileEntity);
     }
 
     @Override
-    protected boolean isGUIClickableImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean isGUIClickableImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return isGUIClickable(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return manipulatesSidedRedstoneOutput(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean alwaysLookConnectedImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return alwaysLookConnected(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected byte getRedstoneInputImpl(byte aSide, byte aInputRedstone, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected byte getRedstoneInputImpl(
+            byte aSide,
+            byte aInputRedstone,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            ICoverable aTileEntity) {
         return getRedstoneInput(aSide, aInputRedstone, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected int getTickRateImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected int getTickRateImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return getTickRate(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected byte getLensColorImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected byte getLensColorImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return getLensColor(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
-    protected ItemStack getDropImpl(byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    protected ItemStack getDropImpl(
+            byte aSide, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return getDrop(aSide, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     // endregion
 
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(
+            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return true;
     }
 
     /**
      * Called by updateEntity inside the covered TileEntity. aCoverVariable is the Value you returned last time.
      */
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(
+            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return aCoverVariable;
     }
 
@@ -192,7 +280,15 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
      * <p/>
      * return true, if something actually happens.
      */
-    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onCoverRightclick(
+            byte aSide,
+            int aCoverID,
+            int aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
         return false;
     }
 
@@ -201,17 +297,29 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
      * <p/>
      * return the new Value of the Cover Variable
      */
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public int onCoverScrewdriverclick(
+            byte aSide,
+            int aCoverID,
+            int aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
         return aCoverVariable;
     }
 
     /**
      * Called when someone shift-rightclicks this Cover with no tool. Doesn't call @onCoverRightclick in this Case.
      */
-    public boolean onCoverShiftRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
-        if(hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
+    public boolean onCoverShiftRightclick(
+            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
+        if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
-            GT_Values.NW.sendToPlayer(new GT_Packet_TileEntityCoverGUI(aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer), (EntityPlayerMP) aPlayer);
+            GT_Values.NW.sendToPlayer(
+                    new GT_Packet_TileEntityCoverGUI(
+                            aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
+                    (EntityPlayerMP) aPlayer);
             return true;
         }
         return false;
@@ -225,7 +333,8 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
      * Removes the Cover if this returns true, or if aForced is true.
      * Doesn't get called when the Machine Block is getting broken, only if you break the Cover away from the Machine.
      */
-    public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
+    public boolean onCoverRemoval(
+            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
         return true;
     }
 
@@ -327,7 +436,8 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
     /**
      * Needs to return true for Covers, which have a Redstone Output on their Facing.
      */
-    public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput(
+            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return false;
     }
 
@@ -343,7 +453,8 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
      * Returns the original Redstone per default.
      * The Cover should @letsRedstoneGoIn or the aInputRedstone Parameter is always 0.
      */
-    public byte getRedstoneInput(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public byte getRedstoneInput(
+            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return letsRedstoneGoIn(aSide, aCoverID, aCoverVariable, aTileEntity) ? aInputRedstone : 0;
     }
 

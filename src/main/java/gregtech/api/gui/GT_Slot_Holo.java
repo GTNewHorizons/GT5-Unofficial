@@ -10,12 +10,17 @@ import net.minecraft.item.ItemStack;
 public class GT_Slot_Holo extends Slot {
     public final int mSlotIndex;
     public boolean mEnabled = true;
-    public boolean
-            mCanInsertItem,
-            mCanStackItem;
+    public boolean mCanInsertItem, mCanStackItem;
     public int mMaxStacksize = 127;
 
-    public GT_Slot_Holo(IInventory inventory, int slotIndex, int xPos, int yPos, boolean aCanInsertItem, boolean aCanStackItem, int aMaxStacksize) {
+    public GT_Slot_Holo(
+            IInventory inventory,
+            int slotIndex,
+            int xPos,
+            int yPos,
+            boolean aCanInsertItem,
+            boolean aCanStackItem,
+            int aMaxStacksize) {
         super(inventory, slotIndex, xPos, yPos);
         mCanInsertItem = aCanInsertItem;
         mCanStackItem = aCanStackItem;
@@ -40,8 +45,7 @@ public class GT_Slot_Holo extends Slot {
 
     @Override
     public ItemStack decrStackSize(int amount) {
-        if (!mCanStackItem)
-            return null;
+        if (!mCanStackItem) return null;
         return super.decrStackSize(amount);
     }
 
@@ -71,8 +75,7 @@ public class GT_Slot_Holo extends Slot {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean func_111238_b()
-    {
+    public boolean func_111238_b() {
         return isEnabled();
     }
 }

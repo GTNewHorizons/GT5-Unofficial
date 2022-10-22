@@ -22,7 +22,7 @@ public class GT_Container_Regulator extends GT_ContainerMetaTile_Machine {
 
     @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-        this.mTargetSlots = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+        this.mTargetSlots = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
         addSlotToContainer(new Slot(this.mTileEntity, 0, 8, 6));
         addSlotToContainer(new Slot(this.mTileEntity, 1, 26, 6));
@@ -70,7 +70,8 @@ public class GT_Container_Regulator extends GT_ContainerMetaTile_Machine {
                 return null;
             }
             if (aSlotIndex == 28) {
-                ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).bOutput = (!((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).bOutput);
+                ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).bOutput =
+                        (!((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).bOutput);
                 if (((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).bOutput) {
                     GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("116", "Emit Energy to Outputside"));
                 } else {
@@ -98,7 +99,14 @@ public class GT_Container_Regulator extends GT_ContainerMetaTile_Machine {
                 return null;
             }
             if ((aSlotIndex < 28)) {
-                ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 19)] = Math.min(99, Math.max(0, ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 19)] + (aMouseclick == 0 ? -1 : 1) * (aShifthold == 0 ? 1 : 16)));
+                ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[(aSlotIndex - 19)] =
+                        Math.min(
+                                99,
+                                Math.max(
+                                        0,
+                                        ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity())
+                                                        .mTargetSlots[(aSlotIndex - 19)]
+                                                + (aMouseclick == 0 ? -1 : 1) * (aShifthold == 0 ? 1 : 16)));
                 return null;
             }
         }

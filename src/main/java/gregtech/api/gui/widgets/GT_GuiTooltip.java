@@ -1,15 +1,13 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.util.GT_TooltipDataCache.TooltipData;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-
 import org.lwjgl.input.Keyboard;
 
-import gregtech.api.util.GT_TooltipDataCache.TooltipData;
 public class GT_GuiTooltip {
 
     protected Rectangle bounds;
@@ -20,7 +18,7 @@ public class GT_GuiTooltip {
     /**
      * Used to create a tooltip that will appear over the specified bounds.
      * This will initially be a "static" tooltip that doesn't respect verbosity levels or respond to the shift key.
-     * 
+     *
      * @param bounds
      * @param text
      */
@@ -32,7 +30,7 @@ public class GT_GuiTooltip {
     /**
      * Used to create a tooltip that will appear over the specified bounds.
      * This will initially be a "dynamic" tooltip that respects verbosity levels and responds to the shift key.
-     * 
+     *
      * @param bounds
      * @param data
      */
@@ -43,10 +41,10 @@ public class GT_GuiTooltip {
     }
 
     private TooltipData sanitizeTooltipData(TooltipData data) {
-        if (data.text == null){
+        if (data.text == null) {
             data.text = Arrays.asList(new String[0]);
         }
-        if (data.shiftText == null){
+        if (data.shiftText == null) {
             data.shiftText = Arrays.asList(new String[0]);
         }
         return data;
@@ -65,12 +63,11 @@ public class GT_GuiTooltip {
     /**
      * Called once this tooltip has been determined to be enabled
      */
-    protected void updateText() {
-    }
+    protected void updateText() {}
 
     /**
      * Used to set a "static" tooltip that doesn't respect verbosity levels or respond to the shift key
-     * 
+     *
      * @param text
      */
     public void setToolTipText(String... text) {
@@ -80,17 +77,17 @@ public class GT_GuiTooltip {
 
     /**
      * Used to set a "dynamic" tooltip that respects verbosity levels and responds to the shift key
-     * 
+     *
      * @param data
      */
     public void setToolTipText(TooltipData data) {
         // Trust that the tooltips have already been formatted and colored, just make sure it has no nulls
         this.data = sanitizeTooltipData(data);
     }
-    
+
     /**
      * Apply tooltip colors in case the text doesn't contain them and return as tooltip data
-     * 
+     *
      * @param text
      * @return colored tooltip lines as list
      */
@@ -100,17 +97,14 @@ public class GT_GuiTooltip {
             list = new ArrayList<>(text.length);
             for (int i = 0; i < text.length; i++) {
                 if (text[i] == null) continue;
-                if (list.isEmpty())
-                    list.add("\u00a7f" + text[i]);
-                else
-                    list.add("\u00a77" + text[i]);
+                if (list.isEmpty()) list.add("\u00a7f" + text[i]);
+                else list.add("\u00a77" + text[i]);
             }
         } else {
             list = Collections.emptyList();
         }
-        return new TooltipData(list, list) ;
+        return new TooltipData(list, list);
     }
-
 
     public List<String> getToolTipText() {
         return this.displayedText;

@@ -28,6 +28,7 @@ public class GT_Container_4by4 extends GT_ContainerMetaTile_Machine {
         addSlotToContainer(new Slot(mTileEntity, 13, 71, 62));
         addSlotToContainer(new Slot(mTileEntity, 14, 89, 62));
         addSlotToContainer(new Slot(mTileEntity, 15, 107, 62));
+        super.addSlots(aInventoryPlayer);
     }
 
     @Override

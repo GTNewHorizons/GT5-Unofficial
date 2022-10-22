@@ -84,19 +84,19 @@ public class GT_Tool_Sword extends GT_Tool {
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "sword")
-                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock,
-                Material.leaves,
-                Material.gourd,
-                Material.vine,
-                Material.web,
-                Material.cloth,
-                Material.carpet,
-                Material.plants,
-                Material.cactus,
-                Material.cake,
-                Material.tnt,
-                Material.sponge
-        );
+                || GT_ToolHarvestHelper.isAppropriateMaterial(
+                        aBlock,
+                        Material.leaves,
+                        Material.gourd,
+                        Material.vine,
+                        Material.web,
+                        Material.cloth,
+                        Material.carpet,
+                        Material.plants,
+                        Material.cactus,
+                        Material.cake,
+                        Material.tnt,
+                        Material.sponge);
     }
 
     @Override
@@ -106,12 +106,18 @@ public class GT_Tool_Sword extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadSword.mTextureIndex] : Textures.ItemIcons.HANDLE_SWORD;
+        return !aIsToolHead
+                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack)
+                        .mIconSet
+                        .mTextures[gregtech.api.enums.OrePrefixes.toolHeadSword.mTextureIndex]
+                : Textures.ItemIcons.HANDLE_SWORD;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return !aIsToolHead
+                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
+                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override

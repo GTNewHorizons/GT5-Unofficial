@@ -25,13 +25,15 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
         super();
     }
 
-    public GT_Packet_WirelessRedstoneCover(int mX, short mY, int mZ, byte coverSide, int coverID, int dimID, int publicChannel, int checkBoxValue) {
+    public GT_Packet_WirelessRedstoneCover(
+            int mX, short mY, int mZ, byte coverSide, int coverID, int dimID, int publicChannel, int checkBoxValue) {
         super(mX, mY, mZ, coverSide, coverID, 0, dimID);
         mPublicChannel = publicChannel;
         mCheckBoxValue = checkBoxValue;
     }
 
-    public GT_Packet_WirelessRedstoneCover(byte coverSide, int coverID, ICoverable tile, int publicChannel, int checkBoxValue) {
+    public GT_Packet_WirelessRedstoneCover(
+            byte coverSide, int coverID, ICoverable tile, int publicChannel, int checkBoxValue) {
         super(coverSide, coverID, 0, tile);
         mPublicChannel = publicChannel;
         mCheckBoxValue = checkBoxValue;
@@ -70,12 +72,9 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
                 aData.readInt(),
                 aData.readShort(),
                 aData.readInt(),
-
                 aData.readByte(),
                 aData.readInt(),
-
                 aData.readInt(),
-
                 aData.readInt(),
                 aData.readInt());
     }
@@ -86,7 +85,8 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
         if (world != null && world.blockExists(mX, mY, mZ)) {
             TileEntity tile = world.getTileEntity(mX, mY, mZ);
             if (tile instanceof IGregTechTileEntity && !((IGregTechTileEntity) tile).isDead()) {
-                int tPrivateChannel = (mCheckBoxValue > 0) ? mPlayer.getUniqueID().hashCode() & PRIVATE_MASK : 0;
+                int tPrivateChannel =
+                        (mCheckBoxValue > 0) ? mPlayer.getUniqueID().hashCode() & PRIVATE_MASK : 0;
                 int tCoverData = tPrivateChannel | (mCheckBoxValue & CHECKBOX_MASK) | (mPublicChannel & PUBLIC_MASK);
                 ((IGregTechTileEntity) tile).receiveCoverData(side, coverID, tCoverData);
             }

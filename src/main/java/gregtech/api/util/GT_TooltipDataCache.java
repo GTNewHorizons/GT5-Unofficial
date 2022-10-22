@@ -1,11 +1,10 @@
 package gregtech.api.util;
 
+import gregtech.GT_Mod;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import gregtech.GT_Mod;
 import net.minecraft.util.StatCollector;
 
 public class GT_TooltipDataCache {
@@ -19,6 +18,7 @@ public class GT_TooltipDataCache {
             this.shiftText = shiftText;
         }
     }
+
     private final Map<String, TooltipData> fetchedTooltipData = new HashMap<>();
 
     /**
@@ -48,14 +48,16 @@ public class GT_TooltipDataCache {
         List<String> lines = getAllLines(key, args);
         int normalLines = lines.size();
         if (Math.max(GT_Mod.gregtechproxy.mTooltipVerbosity, GT_Mod.gregtechproxy.mTooltipShiftVerbosity) >= 3) {
-            lines.addAll(getAllLines(key + ".extended", args)); // Are extended lines enabled? If so add them to the lines
+            lines.addAll(
+                    getAllLines(key + ".extended", args)); // Are extended lines enabled? If so add them to the lines
         }
         if (lines.size() == 0) {
             lines.add(key); // Fallback in case no lines could be found at all
         }
         return new TooltipData(
-            lines.subList(0, getVerbosityIndex(GT_Mod.gregtechproxy.mTooltipVerbosity, normalLines, lines.size())),
-            lines.subList(0, getVerbosityIndex(GT_Mod.gregtechproxy.mTooltipShiftVerbosity, normalLines, lines.size())));
+                lines.subList(0, getVerbosityIndex(GT_Mod.gregtechproxy.mTooltipVerbosity, normalLines, lines.size())),
+                lines.subList(
+                        0, getVerbosityIndex(GT_Mod.gregtechproxy.mTooltipShiftVerbosity, normalLines, lines.size())));
     }
 
     /**
@@ -65,7 +67,7 @@ public class GT_TooltipDataCache {
      * @param args arguments for string formatting (prefer using positional arguments)
      * @return The lines for the key and all of it's subkeys
      */
-    private List<String> getAllLines(String key,  Object... args) {
+    private List<String> getAllLines(String key, Object... args) {
         List<String> lines = new ArrayList<String>();
         String keyToLookup = key;
         int i = 1; // First loop has no .number postfix

@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.generators;
 
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -10,17 +12,18 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenera
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
-
 public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerator {
-
 
     public int mEfficiency;
 
     public GT_MetaTileEntity_GasTurbine(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, new String[]{
-                "Requires flammable Gasses",
-                "Causes " + (int) (GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond * GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier[aTier]) + " Pollution per second"});
+        super(aID, aName, aNameRegional, aTier, new String[] {
+            "Requires flammable Gasses",
+            "Causes "
+                    + (int) (GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond
+                            * GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier[aTier])
+                    + " Pollution per second"
+        });
         onConfigLoad();
     }
 
@@ -55,9 +58,9 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
     }
 
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "GasTurbine.efficiency.tier." + this.mTier, (100 - this.mTier * 5));
+        this.mEfficiency = GregTech_API.sMachineFile.get(
+                ConfigCategories.machineconfig, "GasTurbine.efficiency.tier." + this.mTier, (100 - this.mTier * 5));
     }
-
 
     @Override
     public int getEfficiency() {
@@ -66,78 +69,139 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
 
     @Override
     public ITexture[] getFront(byte aColor) {
-        return new ITexture[]{super.getFront(aColor)[0], TextureFactory.of(
-                TextureFactory.of(GAS_TURBINE_FRONT),
-                TextureFactory.builder().addIcon(GAS_TURBINE_FRONT_GLOW).glow().build()),
-                OVERLAYS_ENERGY_OUT[this.mTier]};
+        return new ITexture[] {
+            super.getFront(aColor)[0],
+            TextureFactory.of(
+                    TextureFactory.of(GAS_TURBINE_FRONT),
+                    TextureFactory.builder()
+                            .addIcon(GAS_TURBINE_FRONT_GLOW)
+                            .glow()
+                            .build()),
+            OVERLAYS_ENERGY_OUT[this.mTier]
+        };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
-        return new ITexture[]{super.getBack(aColor)[0], TextureFactory.of(
-                TextureFactory.of(GAS_TURBINE_BACK),
-                TextureFactory.builder().addIcon(GAS_TURBINE_BACK_GLOW).glow().build())};
+        return new ITexture[] {
+            super.getBack(aColor)[0],
+            TextureFactory.of(
+                    TextureFactory.of(GAS_TURBINE_BACK),
+                    TextureFactory.builder()
+                            .addIcon(GAS_TURBINE_BACK_GLOW)
+                            .glow()
+                            .build())
+        };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
-        return new ITexture[]{super.getBottom(aColor)[0], TextureFactory.of(
-                TextureFactory.of(GAS_TURBINE_BOTTOM),
-                TextureFactory.builder().addIcon(GAS_TURBINE_BOTTOM_GLOW).glow().build())};
+        return new ITexture[] {
+            super.getBottom(aColor)[0],
+            TextureFactory.of(
+                    TextureFactory.of(GAS_TURBINE_BOTTOM),
+                    TextureFactory.builder()
+                            .addIcon(GAS_TURBINE_BOTTOM_GLOW)
+                            .glow()
+                            .build())
+        };
     }
 
     @Override
     public ITexture[] getTop(byte aColor) {
-        return new ITexture[]{super.getTop(aColor)[0], TextureFactory.of(
-                TextureFactory.of(GAS_TURBINE_TOP),
-                TextureFactory.builder().addIcon(GAS_TURBINE_TOP_GLOW).glow().build())};
+        return new ITexture[] {
+            super.getTop(aColor)[0],
+            TextureFactory.of(
+                    TextureFactory.of(GAS_TURBINE_TOP),
+                    TextureFactory.builder()
+                            .addIcon(GAS_TURBINE_TOP_GLOW)
+                            .glow()
+                            .build())
+        };
     }
 
     @Override
     public ITexture[] getSides(byte aColor) {
-        return new ITexture[]{super.getSides(aColor)[0], TextureFactory.of(
-                TextureFactory.of(GAS_TURBINE_SIDE),
-                TextureFactory.builder().addIcon(GAS_TURBINE_SIDE_GLOW).glow().build())};
+        return new ITexture[] {
+            super.getSides(aColor)[0],
+            TextureFactory.of(
+                    TextureFactory.of(GAS_TURBINE_SIDE),
+                    TextureFactory.builder()
+                            .addIcon(GAS_TURBINE_SIDE_GLOW)
+                            .glow()
+                            .build())
+        };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
-        return new ITexture[]{super.getFrontActive(aColor)[0], TextureFactory.of(
-                TextureFactory.of(GAS_TURBINE_FRONT_ACTIVE),
-                TextureFactory.builder().addIcon(GAS_TURBINE_FRONT_ACTIVE_GLOW).glow().build()),
-                OVERLAYS_ENERGY_OUT[this.mTier]};
+        return new ITexture[] {
+            super.getFrontActive(aColor)[0],
+            TextureFactory.of(
+                    TextureFactory.of(GAS_TURBINE_FRONT_ACTIVE),
+                    TextureFactory.builder()
+                            .addIcon(GAS_TURBINE_FRONT_ACTIVE_GLOW)
+                            .glow()
+                            .build()),
+            OVERLAYS_ENERGY_OUT[this.mTier]
+        };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
-        return new ITexture[]{super.getBackActive(aColor)[0], TextureFactory.of(
-                TextureFactory.of(GAS_TURBINE_BACK_ACTIVE),
-                TextureFactory.builder().addIcon(GAS_TURBINE_BACK_ACTIVE_GLOW).glow().build())};
+        return new ITexture[] {
+            super.getBackActive(aColor)[0],
+            TextureFactory.of(
+                    TextureFactory.of(GAS_TURBINE_BACK_ACTIVE),
+                    TextureFactory.builder()
+                            .addIcon(GAS_TURBINE_BACK_ACTIVE_GLOW)
+                            .glow()
+                            .build())
+        };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
-        return new ITexture[]{super.getBottomActive(aColor)[0], TextureFactory.of(
-                TextureFactory.of(GAS_TURBINE_BOTTOM_ACTIVE),
-                TextureFactory.builder().addIcon(GAS_TURBINE_BOTTOM_ACTIVE_GLOW).glow().build())};
+        return new ITexture[] {
+            super.getBottomActive(aColor)[0],
+            TextureFactory.of(
+                    TextureFactory.of(GAS_TURBINE_BOTTOM_ACTIVE),
+                    TextureFactory.builder()
+                            .addIcon(GAS_TURBINE_BOTTOM_ACTIVE_GLOW)
+                            .glow()
+                            .build())
+        };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
-        return new ITexture[]{super.getTopActive(aColor)[0], TextureFactory.of(
-                TextureFactory.of(GAS_TURBINE_TOP_ACTIVE),
-                TextureFactory.builder().addIcon(GAS_TURBINE_TOP_ACTIVE_GLOW).glow().build())};
+        return new ITexture[] {
+            super.getTopActive(aColor)[0],
+            TextureFactory.of(
+                    TextureFactory.of(GAS_TURBINE_TOP_ACTIVE),
+                    TextureFactory.builder()
+                            .addIcon(GAS_TURBINE_TOP_ACTIVE_GLOW)
+                            .glow()
+                            .build())
+        };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
-        return new ITexture[]{super.getSidesActive(aColor)[0], TextureFactory.of(
-                TextureFactory.of(GAS_TURBINE_SIDE_ACTIVE),
-                TextureFactory.builder().addIcon(GAS_TURBINE_SIDE_ACTIVE_GLOW).glow().build())};
+        return new ITexture[] {
+            super.getSidesActive(aColor)[0],
+            TextureFactory.of(
+                    TextureFactory.of(GAS_TURBINE_SIDE_ACTIVE),
+                    TextureFactory.builder()
+                            .addIcon(GAS_TURBINE_SIDE_ACTIVE_GLOW)
+                            .glow()
+                            .build())
+        };
     }
 
     @Override
     public int getPollution() {
-        return (int) (GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond * GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier[mTier]);
+        return (int) (GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond
+                * GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier[mTier]);
     }
 }

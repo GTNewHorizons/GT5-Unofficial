@@ -5,7 +5,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_LargeBoiler_Steel extends GT_MetaTileEntity_LargeBoiler {
     public GT_MetaTileEntity_LargeBoiler_Steel(int aID, String aName, String aNameRegional) {
@@ -24,8 +23,8 @@ public class GT_MetaTileEntity_LargeBoiler_Steel extends GT_MetaTileEntity_Large
     }
 
     @Override
-    public String getCasingMaterial(){
-    	return "Steel";
+    public String getCasingMaterial() {
+        return "Steel";
     }
 
     @Override
@@ -84,8 +83,12 @@ public class GT_MetaTileEntity_LargeBoiler_Steel extends GT_MetaTileEntity_Large
     }
 
     @Override
-    int runtimeBoost(int mTime) { return mTime; }
+    int runtimeBoost(int mTime) {
+        return mTime;
+    }
 
     @Override
-    boolean isSuperheated() { return false; }
+    boolean isSuperheated() {
+        return false;
+    }
 }

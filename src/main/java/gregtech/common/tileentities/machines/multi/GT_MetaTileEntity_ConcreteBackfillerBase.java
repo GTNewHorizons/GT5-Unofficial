@@ -1,15 +1,19 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_Values.VN;
+
+import com.google.common.collect.ImmutableList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import java.util.List;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-
-import static gregtech.api.enums.GT_Values.VN;
 
 public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTileEntity_DrillerBase {
 
@@ -25,32 +29,33 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
 
     protected GT_Multiblock_Tooltip_Builder createTooltip(String aStructureName) {
         String casings = getCasingBlockItem().get(0).getDisplayName();
-        
+
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-		tt.addMachineType("Concrete Backfiller")
-		.addInfo("Controller Block for the " + aStructureName)
-		.addInfo("Will fill in areas below it with light concrete. This goes through walls")
-		.addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
-		.addInfo("Will pull back the pipes after it finishes that layer")
-		.addInfo("Radius is " + getRadius() + " blocks")
-		.addSeparator()
-		.beginStructureBlock(3, 7, 3, false)
-		.addController("Front bottom")
-		.addStructureInfo(casings + " form the 3x1x3 Base")
-		.addOtherStructurePart(casings, " 1x3x1 pillar above the center of the base (2 minimum total)")
-		.addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-		.addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1)
-		.addMaintenanceHatch("Any base casing", 1)
-		.addInputBus("Mining Pipes, optional, any base casing", 1)
-		.addInputHatch("GT Concrete, any base casing", 1)
-		.addOutputBus("Mining Pipes, optional, any base casing", 1)
-		.toolTipFinisher("Gregtech");
-		return tt;
+        tt.addMachineType("Concrete Backfiller")
+                .addInfo("Controller Block for the " + aStructureName)
+                .addInfo("Will fill in areas below it with light concrete. This goes through walls")
+                .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
+                .addInfo("Will pull back the pipes after it finishes that layer")
+                .addInfo("Radius is " + getRadius() + " blocks")
+                .addSeparator()
+                .beginStructureBlock(3, 7, 3, false)
+                .addController("Front bottom")
+                .addOtherStructurePart(casings, "form the 3x1x3 Base")
+                .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
+                .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
+                .addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1)
+                .addMaintenanceHatch("Any base casing", 1)
+                .addInputBus("Mining Pipes, optional, any base casing", 1)
+                .addInputHatch("GT Concrete, any base casing", 1)
+                .addOutputBus("Mining Pipes, optional, any base casing", 1)
+                .toolTipFinisher("Gregtech");
+        return tt;
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "DrillingRig.png");
+        return new GT_GUIContainer_MultiMachine(
+                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "DrillingRig.png");
     }
 
     protected abstract int getRadius();
@@ -58,6 +63,11 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
     @Override
     protected boolean checkHatches() {
         return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty() && !mEnergyHatches.isEmpty();
+    }
+
+    @Override
+    protected List<IHatchElement<? super GT_MetaTileEntity_DrillerBase>> getAllowedHatches() {
+        return ImmutableList.of(InputHatch, InputBus, Maintenance, Energy);
     }
 
     @Override
@@ -71,18 +81,18 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
     }
 
     @Override
-    protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
-        if (isRefillableBlock(xPipe, yHead - 1, zPipe))
-            return tryRefillBlock(xPipe, yHead - 1, zPipe);
+    protected boolean workingUpward(
+            ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
+        if (isRefillableBlock(xPipe, yHead - 1, zPipe)) return tryRefillBlock(xPipe, yHead - 1, zPipe);
         int radius = getRadius();
         if (mLastXOff == 0 && mLastZOff == 0) {
-            mLastXOff = - radius;
-            mLastZOff = - radius;
+            mLastXOff = -radius;
+            mLastZOff = -radius;
         }
         if (yHead != yDrill) {
             for (int i = mLastXOff; i <= radius; i++) {
-                for (int j = (i == mLastXOff ? mLastZOff : - radius); j <= radius; j++) {
-                    if (isRefillableBlock(xPipe + i, yHead, zPipe + j)){
+                for (int j = (i == mLastXOff ? mLastZOff : -radius); j <= radius; j++) {
+                    if (isRefillableBlock(xPipe + i, yHead, zPipe + j)) {
                         mLastXOff = i;
                         mLastZOff = j;
                         return tryRefillBlock(xPipe + i, yHead, zPipe + j);
@@ -102,10 +112,12 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
         }
     }
 
-    private boolean isRefillableBlock(int aX, int aY, int aZ){
+    private boolean isRefillableBlock(int aX, int aY, int aZ) {
         IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
-        if (!aBaseTile.getBlock(aX, aY, aZ).isAir(aBaseTile.getWorld(), aX, aY, aZ) || aBaseTile.getBlock(aX, aY, aZ).getMaterial().isSolid()) return false;
-        if (!GT_Utility.setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTech_API.sBlockConcretes, 8, true)) return false;
+        if (!aBaseTile.getBlock(aX, aY, aZ).isAir(aBaseTile.getWorld(), aX, aY, aZ)
+                || aBaseTile.getBlock(aX, aY, aZ).getMaterial().isSolid()) return false;
+        if (!GT_Utility.setBlockByFakePlayer(
+                getFakePlayer(aBaseTile), aX, aY, aZ, GregTech_API.sBlockConcretes, 8, true)) return false;
         return true;
     }
 
@@ -116,11 +128,10 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
     }
 
     private boolean tryConsumeFluid() {
-        if (!depleteInput(Materials.Concrete.getMolten(144L))){
+        if (!depleteInput(Materials.Concrete.getMolten(144L))) {
             mMaxProgresstime = 0;
             return false;
         }
         return true;
     }
-
 }

@@ -27,7 +27,6 @@ public final class GT_FlaskRenderer implements IItemRenderer {
         return type != ItemRenderType.FIRST_PERSON_MAP;
     }
 
-
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
         return type == ItemRenderType.ENTITY;
@@ -85,7 +84,15 @@ public final class GT_FlaskRenderer implements IItemRenderer {
         if (type.equals(ItemRenderType.INVENTORY)) {
             DrawUtil.renderIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {
-            ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
+            ItemRenderer.renderItemIn2D(
+                    Tessellator.instance,
+                    icon.getMaxU(),
+                    icon.getMinV(),
+                    icon.getMinU(),
+                    icon.getMaxV(),
+                    icon.getIconWidth(),
+                    icon.getIconHeight(),
+                    0.0625F);
         }
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_BLEND);

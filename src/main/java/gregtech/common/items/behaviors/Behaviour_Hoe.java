@@ -6,6 +6,7 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -13,8 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
-
-import java.util.List;
 
 public class Behaviour_Hoe extends Behaviour_None {
     private final int mCosts;
@@ -25,7 +24,18 @@ public class Behaviour_Hoe extends Behaviour_None {
     }
 
     @Override
-    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(
+            GT_MetaBase_Item aItem,
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            World aWorld,
+            int aX,
+            int aY,
+            int aZ,
+            int aSide,
+            float hitX,
+            float hitY,
+            float hitZ) {
         if (!aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack)) {
             return false;
         }
@@ -40,7 +50,9 @@ public class Behaviour_Hoe extends Behaviour_None {
             return true;
         }
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        if ((aSide != 0) && (GT_Utility.isBlockAir(aWorld, aX, aY + 1, aZ)) && ((aBlock == Blocks.grass) || (aBlock == Blocks.dirt))) {
+        if ((aSide != 0)
+                && (GT_Utility.isBlockAir(aWorld, aX, aY + 1, aZ))
+                && ((aBlock == Blocks.grass) || (aBlock == Blocks.dirt))) {
             new WorldSpawnedEventBuilder.SoundEventBuilder()
                     .setVolume((Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F)
                     .setPitch(Blocks.farmland.stepSound.getPitch() * 0.8F)

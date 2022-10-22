@@ -15,7 +15,8 @@ public enum ConfigCategories {
         heatdamage,
         oreprocessingoutputmultiplier,
         blastfurnacerequirements,
-        blastinductionsmelter,;
+        blastinductionsmelter,
+        ;
     }
 
     public enum Recipes {
@@ -25,7 +26,7 @@ public enum ConfigCategories {
         disabledrecipes,
         recipereplacements,
         storageblockcrafting,
-        storageblockdecrafting, 
+        storageblockdecrafting,
         crops;
     }
 
@@ -61,6 +62,6 @@ public enum ConfigCategories {
         hammertripleplate,
         hammerquadrupleplate,
         hammerquintupleplate,
-		scoop;
+        scoop;
     }
 }
