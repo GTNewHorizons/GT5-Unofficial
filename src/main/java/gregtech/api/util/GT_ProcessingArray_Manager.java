@@ -1,7 +1,6 @@
 package gregtech.api.util;
 
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-
 import java.util.HashMap;
 
 public class GT_ProcessingArray_Manager {
@@ -27,5 +26,4 @@ public class GT_ProcessingArray_Manager {
     public static GT_Recipe_Map getRecipeMapForMeta(int aMeta) {
         return mRecipeCache.get(mMetaKeyMap.get(aMeta));
     }
-
 }

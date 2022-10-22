@@ -12,6 +12,8 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
+import java.util.Arrays;
+import javax.annotation.Nonnull;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,9 +25,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
 
 public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMeter.LiquidMeterData> {
 
@@ -44,12 +43,19 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected boolean isRedstoneSensitiveImpl(
+            byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    protected LiquidMeterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected LiquidMeterData doCoverThingsImpl(
+            byte aSide,
+            byte aInputRedstone,
+            int aCoverID,
+            LiquidMeterData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
         if ((aTileEntity instanceof IFluidHandler)) {
             FluidTankInfo[] tTanks = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN);
             long tMax = 0;
@@ -92,13 +98,21 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
 
             aTileEntity.setOutputRedstoneSignal(aSide, (byte) redstoneSignal);
         } else {
-            aTileEntity.setOutputRedstoneSignal(aSide, (byte)0);
+            aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);
         }
         return aCoverVariable;
     }
 
     @Override
-    protected LiquidMeterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected LiquidMeterData onCoverScrewdriverClickImpl(
+            byte aSide,
+            int aCoverID,
+            LiquidMeterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
         if (aCoverVariable.inverted) {
             aCoverVariable.inverted = false;
             GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("055", "Normal"));
@@ -110,37 +124,44 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     }
 
     @Override
-    protected boolean letsEnergyInImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsEnergyInImpl(
+            byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsEnergyOutImpl(
+            byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidInImpl(
+            byte aSide, int aCoverID, LiquidMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidOutImpl(
+            byte aSide, int aCoverID, LiquidMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsInImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsInImpl(
+            byte aSide, int aCoverID, LiquidMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsOutImpl(
+            byte aSide, int aCoverID, LiquidMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(
+            byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
@@ -151,14 +172,19 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     /**
      * GUI Stuff
      */
-
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUIImpl(byte aSide, int aCoverID, LiquidMeterData coverData, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+    public Object getClientGUIImpl(
+            byte aSide,
+            int aCoverID,
+            LiquidMeterData coverData,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            World aWorld) {
         return new GUI(aSide, aCoverID, coverData, aTileEntity);
     }
 
@@ -237,15 +263,22 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            invertedButton = new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
-            thresholdSlot = new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 1 + 2, spaceX * 4 + 5, 12);
+            invertedButton = new GT_GuiIconCheckButton(
+                    this,
+                    0,
+                    startX + spaceX * 0,
+                    startY + spaceY * 0,
+                    GT_GuiIcon.REDSTONE_ON,
+                    GT_GuiIcon.REDSTONE_OFF,
+                    INVERTED,
+                    NORMAL);
+            thresholdSlot =
+                    new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 1 + 2, spaceX * 4 + 5, 12);
 
             if (tile instanceof IFluidHandler) {
                 FluidTankInfo[] tanks = ((IFluidHandler) tile).getTankInfo(ForgeDirection.UNKNOWN);
                 maxCapacity =
-                        Arrays.stream(tanks)
-                                .mapToInt(tank -> tank.capacity)
-                                .sum();
+                        Arrays.stream(tanks).mapToInt(tank -> tank.capacity).sum();
             } else {
                 maxCapacity = -1;
             }
@@ -254,8 +287,17 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 1, 4 + startY + spaceY * 0, 0xFF555555);
-            this.getFontRenderer().drawString(GT_Utility.trans("222", "Fluid threshold"), startX + spaceX * 5 - 10, startY + spaceY * 1 + 4, 0xFF555555);
+            this.fontRendererObj.drawString(
+                    coverVariable.inverted ? INVERTED : NORMAL,
+                    startX + spaceX * 1,
+                    4 + startY + spaceY * 0,
+                    0xFF555555);
+            this.getFontRenderer()
+                    .drawString(
+                            GT_Utility.trans("222", "Fluid threshold"),
+                            startX + spaceX * 5 - 10,
+                            startY + spaceY * 1 + 4,
+                            0xFF555555);
         }
 
         @Override

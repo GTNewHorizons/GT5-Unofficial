@@ -5,7 +5,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import net.minecraft.item.ItemStack;
 
-public abstract class GT_MetaTileEntity_AbstractMultiFurnace<T extends GT_MetaTileEntity_AbstractMultiFurnace<T>> extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> {
+public abstract class GT_MetaTileEntity_AbstractMultiFurnace<T extends GT_MetaTileEntity_AbstractMultiFurnace<T>>
+        extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> {
 
     private HeatingCoilLevel mCoilLevel;
 
@@ -23,10 +24,10 @@ public abstract class GT_MetaTileEntity_AbstractMultiFurnace<T extends GT_MetaTi
     }
 
     protected boolean addBottomHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        return addMaintenanceToMachineList(aTileEntity, aBaseCasingIndex) ||
-                addInputToMachineList(aTileEntity, aBaseCasingIndex) ||
-                addOutputToMachineList(aTileEntity, aBaseCasingIndex) ||
-                addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+        return addMaintenanceToMachineList(aTileEntity, aBaseCasingIndex)
+                || addInputToMachineList(aTileEntity, aBaseCasingIndex)
+                || addOutputToMachineList(aTileEntity, aBaseCasingIndex)
+                || addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
     @Override

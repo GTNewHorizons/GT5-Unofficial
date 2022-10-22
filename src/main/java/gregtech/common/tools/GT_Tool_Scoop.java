@@ -2,7 +2,6 @@ package gregtech.common.tools;
 
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -87,8 +86,8 @@ public class GT_Tool_Scoop extends GT_Tool {
 
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return GT_ToolHarvestHelper.isAppropriateTool(aBlock , aMetaData ,"scoop")
-                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock ,sBeeHiveMaterial);
+        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "scoop")
+                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, sBeeHiveMaterial);
     }
 
     @Override
@@ -103,21 +102,24 @@ public class GT_Tool_Scoop extends GT_Tool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead
+                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
+                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        if(Loader.isModLoaded(GT_Values.MOD_ID_FR)){
+        if (Loader.isModLoaded(GT_Values.MOD_ID_FR)) {
             aItem.addItemBehavior(aID, new Behaviour_Scoop(200));
-        }else{
+        } else {
             aItem.addItemBehavior(aID, new Behaviour_None());
         }
-
     }
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " got scooped up by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE
+                + " got scooped up by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 }

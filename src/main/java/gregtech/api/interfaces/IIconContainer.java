@@ -24,13 +24,12 @@ public interface IIconContainer {
     @SideOnly(Side.CLIENT)
     default int getIconPasses() {
         return 1;
-    };
+    }
+    ;
 
     /**
      * @return the Default Texture File for this Icon.
      */
     @SideOnly(Side.CLIENT)
     ResourceLocation getTextureFile();
-
-
 }

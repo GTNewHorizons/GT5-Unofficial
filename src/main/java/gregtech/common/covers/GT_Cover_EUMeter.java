@@ -16,6 +16,9 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
+import java.util.function.Function;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,10 +26,6 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.function.Function;
 
 public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMeterData> {
 
@@ -45,7 +44,13 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     }
 
     @Override
-    protected EUMeterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected EUMeterData doCoverThingsImpl(
+            byte aSide,
+            byte aInputRedstone,
+            int aCoverID,
+            EUMeterData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
         final long stored = aCoverVariable.type.getTileEntityStoredEnergy(aTileEntity);
         final long capacity = aCoverVariable.type.getTileEntityEnergyCapacity(aTileEntity);
 
@@ -79,8 +84,17 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     }
 
     @Override
-    protected EUMeterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int num = (aCoverVariable.getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2) % (EnergyType.values().length * 2);
+    protected EUMeterData onCoverScrewdriverClickImpl(
+            byte aSide,
+            int aCoverID,
+            EUMeterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
+        int num = (aCoverVariable.getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
+                % (EnergyType.values().length * 2);
         switch (num) {
             case 0:
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("031", "Normal Universal Storage"));
@@ -113,19 +127,22 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("040", "Inverted Average Electric Output"));
                 break;
             case 10:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("041", "Normal Electricity Storage(Including Batteries)"));
+                GT_Utility.sendChatToPlayer(
+                        aPlayer, GT_Utility.trans("041", "Normal Electricity Storage(Including Batteries)"));
                 break;
             case 11:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
+                GT_Utility.sendChatToPlayer(
+                        aPlayer, GT_Utility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
                 break;
         }
         aCoverVariable.setNum(num);
         return aCoverVariable;
     }
 
-    //region Static Result Methods
+    // region Static Result Methods
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected boolean isRedstoneSensitiveImpl(
+            byte aSide, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
@@ -140,27 +157,32 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidInImpl(
+            byte aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidOutImpl(
+            byte aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsInImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsInImpl(
+            byte aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsOutImpl(
+            byte aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(
+            byte aSide, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
@@ -168,19 +190,25 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     protected int getTickRateImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity) {
         return 20;
     }
-    //endregion
+    // endregion
 
-    //region GUI Stuff
+    // region GUI Stuff
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUIImpl(byte aSide, int aCoverID, EUMeterData coverData, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+    public Object getClientGUIImpl(
+            byte aSide,
+            int aCoverID,
+            EUMeterData coverData,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            World aWorld) {
         return new GUI(aSide, aCoverID, coverData, aTileEntity);
     }
-    //endregion
+    // endregion
 
     public static class EUMeterData implements ISerializableObject {
         private EnergyType type;
@@ -189,7 +217,6 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
          * The special value {@code 0} means threshold check is disabled.
          */
         private long threshold;
-
 
         public EUMeterData() {
             type = EnergyType.UNIVERSAL_STORAGE;
@@ -263,66 +290,64 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
     private enum EnergyType {
         UNIVERSAL_STORAGE(
-            GT_Utility.trans("301", "Universal"),
-            GT_Utility.trans("256", "Universal Storage"),
-            ICoverable::getUniversalEnergyStored,
-            ICoverable::getUniversalEnergyCapacity
-        ),
+                GT_Utility.trans("301", "Universal"),
+                GT_Utility.trans("256", "Universal Storage"),
+                ICoverable::getUniversalEnergyStored,
+                ICoverable::getUniversalEnergyCapacity),
         ELECTRICITY_STORAGE(
-            GT_Utility.trans("302", "Int. EU"),
-            GT_Utility.trans("257", "Electricity Storage"),
-            ICoverable::getStoredEU,
-            ICoverable::getEUCapacity
-        ),
+                GT_Utility.trans("302", "Int. EU"),
+                GT_Utility.trans("257", "Electricity Storage"),
+                ICoverable::getStoredEU,
+                ICoverable::getEUCapacity),
         STEAM_STORAGE(
-            GT_Utility.trans("303", "Steam"),
-            GT_Utility.trans("258", "Steam Storage"),
-            ICoverable::getStoredSteam,
-            ICoverable::getSteamCapacity
-        ),
+                GT_Utility.trans("303", "Steam"),
+                GT_Utility.trans("258", "Steam Storage"),
+                ICoverable::getStoredSteam,
+                ICoverable::getSteamCapacity),
         AVERAGE_ELECTRIC_INPUT(
-            GT_Utility.trans("304", "Avg. Input"),
-            GT_Utility.trans("259", "Average Electric Input"),
-            ICoverable::getAverageElectricInput,
-            (te) -> te.getInputVoltage() * te.getInputAmperage()
-        ),
+                GT_Utility.trans("304", "Avg. Input"),
+                GT_Utility.trans("259", "Average Electric Input"),
+                ICoverable::getAverageElectricInput,
+                (te) -> te.getInputVoltage() * te.getInputAmperage()),
         AVERAGE_ELECTRIC_OUTPUT(
-            GT_Utility.trans("305", "Avg. Output"),
-            GT_Utility.trans("260", "Average Electric Output"),
-            ICoverable::getAverageElectricOutput,
-            (te) -> te.getOutputVoltage() * te.getOutputAmperage()
-        ),
+                GT_Utility.trans("305", "Avg. Output"),
+                GT_Utility.trans("260", "Average Electric Output"),
+                ICoverable::getAverageElectricOutput,
+                (te) -> te.getOutputVoltage() * te.getOutputAmperage()),
         ELECTRICITY_STORAGE_INCLUDING_BATTERIES(
-            GT_Utility.trans("306", "EU stored"),
-            GT_Utility.trans("261", "Electricity Storage(Including Batteries)"),
-            (te) -> {
-                if (te instanceof IGregTechTileEntity) {
-                    IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer) {
-                        GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mte;
-                        return buffer.getStoredEnergy()[0];
+                GT_Utility.trans("306", "EU stored"),
+                GT_Utility.trans("261", "Electricity Storage(Including Batteries)"),
+                (te) -> {
+                    if (te instanceof IGregTechTileEntity) {
+                        IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
+                        if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer) {
+                            GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mte;
+                            return buffer.getStoredEnergy()[0];
+                        }
                     }
-                }
-                return te.getStoredEU();
-            },
-            (te) -> {
-                if (te instanceof IGregTechTileEntity) {
-                    IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer) {
-                        GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mte;
-                        return buffer.getStoredEnergy()[1];
+                    return te.getStoredEU();
+                },
+                (te) -> {
+                    if (te instanceof IGregTechTileEntity) {
+                        IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
+                        if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer) {
+                            GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mte;
+                            return buffer.getStoredEnergy()[1];
+                        }
                     }
-                }
-                return te.getEUCapacity();
-            }
-        );
+                    return te.getEUCapacity();
+                });
 
         private final String title;
         private final String tooltip;
         private final Function<ICoverable, Long> getTileEntityStoredEnergyFunc;
         private final Function<ICoverable, Long> getTileEntityEnergyCapacityFunc;
 
-        EnergyType(String title, String tooltip, Function<ICoverable, Long> getTileEntityStoredEnergyFunc, Function<ICoverable, Long> getTileEntityEnergyCapacityFunc) {
+        EnergyType(
+                String title,
+                String tooltip,
+                Function<ICoverable, Long> getTileEntityStoredEnergyFunc,
+                Function<ICoverable, Long> getTileEntityEnergyCapacityFunc) {
             this.title = title;
             this.tooltip = tooltip;
             this.getTileEntityStoredEnergyFunc = getTileEntityStoredEnergyFunc;
@@ -380,7 +405,15 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
             this.coverVariable = aCoverVariable;
 
             typeButton = new GT_GuiIconButton(this, 0, startX, startY, GT_GuiIcon.CYCLIC);
-            invertedButton = new GT_GuiIconCheckButton(this, 2, startX, startY + spaceY, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
+            invertedButton = new GT_GuiIconCheckButton(
+                    this,
+                    2,
+                    startX,
+                    startY + spaceY,
+                    GT_GuiIcon.REDSTONE_ON,
+                    GT_GuiIcon.REDSTONE_OFF,
+                    INVERTED,
+                    NORMAL);
             thresholdSlot = new GT_GuiIntegerTextBox(this, 4, startX, startY + spaceY * 2 + 2, spaceX * 8, 12);
         }
 
@@ -388,10 +421,16 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             this.getFontRenderer().drawString(coverVariable.type.getTitle(), startX + spaceX, 4 + startY, 0xFF555555);
-            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX, 4 + startY + spaceY, 0xFF555555);
-            this.getFontRenderer().drawString(GT_Utility.trans("222.1", "Energy threshold"), startX, startY + spaceY * 3 + 4, 0xFF555555);
+            this.getFontRenderer()
+                    .drawString(
+                            coverVariable.inverted ? INVERTED : NORMAL,
+                            startX + spaceX,
+                            4 + startY + spaceY,
+                            0xFF555555);
+            this.getFontRenderer()
+                    .drawString(
+                            GT_Utility.trans("222.1", "Energy threshold"), startX, startY + spaceY * 3 + 4, 0xFF555555);
         }
-
 
         @Override
         protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
@@ -456,7 +495,6 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
             typeButton.setTooltipText(coverVariable.type.getTooltip());
             resetTextBox(thresholdSlot);
         }
-
 
         private long parseTextBox(GT_GuiIntegerTextBox box) {
             if (box == thresholdSlot) {

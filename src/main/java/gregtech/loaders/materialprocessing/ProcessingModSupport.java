@@ -1,11 +1,11 @@
 package gregtech.loaders.materialprocessing;
 
+import static gregtech.api.enums.GT_Values.MOD_ID_DC;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 
 public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHandler {
     public static boolean aTGregSupport = Loader.isModLoaded("TGregworks") || Loader.isModLoaded(MOD_ID_DC);
@@ -26,7 +26,7 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
 
     @Override
     public void onMaterialsInit() {
-        //Disable Materials if Parent Mod is not loaded
+        // Disable Materials if Parent Mod is not loaded
         if (!aTGregSupport) {
             Materials.Dysprosium.mHasParentMod = false;
             Materials.Erbium.mHasParentMod = false;
@@ -49,7 +49,7 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
             Materials.DarkIron.mHasParentMod = false;
             Materials.ElectrumFlux.mHasParentMod = false;
             Materials.Force.mHasParentMod = false;
-            //Materials.Nikolite.mHasParentMod = false;
+            // Materials.Nikolite.mHasParentMod = false;
             Materials.Sunnarium.mHasParentMod = false;
             Materials.BlueAlloy.mHasParentMod = false;
             Materials.Vinteum.mHasParentMod = false;
@@ -134,11 +134,11 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
         if (!aEnableRailcraftMats) {
             Materials.Firestone.mHasParentMod = false;
         }
-        if(!aEnableProjectRedMats){
+        if (!aEnableProjectRedMats) {
             Materials.Electrotine.mHasParentMod = false;
         }
 
-        //Enable Materials if correct mod is Loaded
+        // Enable Materials if correct mod is Loaded
         Materials.ChromiumDioxide.mHasParentMod = Loader.isModLoaded("computronics");
     }
 
@@ -157,6 +157,6 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
 
     @Override
     public void onComponentIteration(Materials aMaterial) {
-        //NOP
+        // NOP
     }
 }

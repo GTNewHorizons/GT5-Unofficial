@@ -13,5 +13,4 @@ public interface IIC2Enet {
      * Update the ic2 enet
      */
     void doEnetUpdate();
-
 }

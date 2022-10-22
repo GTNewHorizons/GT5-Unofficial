@@ -16,7 +16,7 @@ public class GT_Block_Casings6 extends GT_Block_Casings_Abstract {
         for (int i = 0; i < 16; i = (i + 1)) {
             Textures.BlockIcons.casingTexturePages[8][i + 112] = TextureFactory.of(this, i);
         }
-        
+
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Hermetic Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Hermetic Casing I");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Hermetic Casing II");
@@ -51,6 +51,7 @@ public class GT_Block_Casings6 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Tank_14.set(new ItemStack(this, 1, 14));
         ItemList.Casing_Tank_15.set(new ItemStack(this, 1, 15));
     }
+
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int aSide, int aMeta) {
@@ -98,6 +99,8 @@ public class GT_Block_Casings6 extends GT_Block_Casings_Abstract {
 
     @Override
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
+        return gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16
+                | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8
+                | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
     }
 }

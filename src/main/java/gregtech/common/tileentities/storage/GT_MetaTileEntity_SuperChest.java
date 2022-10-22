@@ -42,8 +42,7 @@ public class GT_MetaTileEntity_SuperChest extends GT_MetaTileEntity_DigitalChest
                     mInvData.appendTag(tNBT);
                 }
             }
-            if (mItemStack != null)
-                aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
+            if (mItemStack != null) aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
             aNBT.setTag("Inventory", mInvData);
             aNBT.setInteger("mItemCount", getItemCount());
             aNBT.setBoolean("mVoidOverflow", mVoidOverflow);

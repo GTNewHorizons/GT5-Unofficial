@@ -1,5 +1,9 @@
 package gregtech.common.tileentities.storage;
 
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
@@ -13,17 +17,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
-
 public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank {
     protected boolean mVoidOverflow = false;
     private boolean voidBreak;
 
-
     public GT_MetaTileEntity_DigitalTankBase(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 3, new String[]{
+        super(aID, aName, aNameRegional, aTier, 3, new String[] {
             "Stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + "L of fluid",
             "Use a screwdriver to enable",
             "voiding fluid on overflow",
@@ -59,7 +58,6 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         }
     }
 
-
     public GT_MetaTileEntity_DigitalTankBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
@@ -76,13 +74,11 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         if (!voidBreak) {
-            if (mFluid != null && mFluid.amount > 0)
-                aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+            if (mFluid != null && mFluid.amount > 0) aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
         }
         super.setItemNBT(aNBT);
         aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
     }
-
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -95,7 +91,6 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         super.loadNBTData(aNBT);
         mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
     }
-
 
     @Override
     public boolean isSimpleMachine() {
@@ -133,9 +128,15 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide != ForgeDirection.UP.ordinal()) return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1]};
-        return new ITexture[]{
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
+        if (aSide != ForgeDirection.UP.ordinal()) return new ITexture[] {MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        return new ITexture[] {
             MACHINE_CASINGS[mTier][aColorIndex + 1],
             TextureFactory.of(OVERLAY_QTANK),
             TextureFactory.builder().addIcon(OVERLAY_QTANK_GLOW).glow().build()
@@ -157,7 +158,10 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     @Override
     public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mVoidOverflow = !mVoidOverflow;
-        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal(mVoidOverflow ? "GT5U.machines.voidoveflow.enabled" : "GT5U.machines.voidoveflow.disabled"));
+        GT_Utility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal(
+                        mVoidOverflow ? "GT5U.machines.voidoveflow.enabled" : "GT5U.machines.voidoveflow.disabled"));
     }
 
     @Override
@@ -184,8 +188,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             if (isFluidChangingAllowed() && getFillableStack() != null && getFillableStack().amount <= 0)
                 setFillableStack(null);
 
-            if (mOpenerCount > 0)
-                updateFluidDisplayItem();
+            if (mOpenerCount > 0) updateFluidDisplayItem();
 
             if (doesEmptyContainers()) {
                 FluidStack tFluid = GT_Utility.getFluidForFilledItem(mInventory[getInputSlot()], true);
@@ -195,7 +198,10 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                             if ((tFluid.amount <= getRealCapacity()) || mVoidOverflow) {
                                 tFluid = tFluid.copy();
                                 tFluid.amount = Math.min(tFluid.amount, getRealCapacity());
-                                if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerForFilledItem(mInventory[getInputSlot()], true), 1)) {
+                                if (aBaseMetaTileEntity.addStackToSlot(
+                                        getOutputSlot(),
+                                        GT_Utility.getContainerForFilledItem(mInventory[getInputSlot()], true),
+                                        1)) {
                                     setFillableStack(tFluid);
                                     this.onEmptyingContainerWhenEmpty();
                                     aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
@@ -204,9 +210,14 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                         }
                     } else {
                         if (tFluid.isFluidEqual(getFillableStack())) {
-                            if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getRealCapacity()) || mVoidOverflow) {
-                                if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerForFilledItem(mInventory[getInputSlot()], true), 1)) {
-                                    getFillableStack().amount += Math.min(tFluid.amount, getRealCapacity() - getFillableStack().amount);
+                            if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getRealCapacity())
+                                    || mVoidOverflow) {
+                                if (aBaseMetaTileEntity.addStackToSlot(
+                                        getOutputSlot(),
+                                        GT_Utility.getContainerForFilledItem(mInventory[getInputSlot()], true),
+                                        1)) {
+                                    getFillableStack().amount +=
+                                            Math.min(tFluid.amount, getRealCapacity() - getFillableStack().amount);
                                     aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                                 }
                             }
@@ -216,7 +227,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             }
 
             if (doesFillContainers()) {
-                ItemStack tOutput = GT_Utility.fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
+                ItemStack tOutput =
+                        GT_Utility.fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
                 if (tOutput != null && aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tOutput, 1)) {
                     FluidStack tFluid = GT_Utility.getFluidForFilledItem(tOutput, true);
                     aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
@@ -229,8 +241,11 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid == null || aFluid.getFluid().getID() <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid))
-            return 0;
+        if (aFluid == null
+                || aFluid.getFluid().getID() <= 0
+                || aFluid.amount <= 0
+                || !canTankBeFilled()
+                || !isFluidInputAllowed(aFluid)) return 0;
         if (getFillableStack() != null && !getFillableStack().isFluidEqual(aFluid)) {
             return 0;
         }
@@ -275,7 +290,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         return mVoidOverflow ? Integer.MAX_VALUE : getRealCapacity();
     }
 
-    public int getRealCapacity(){
+    public int getRealCapacity() {
         return commonSizeCompute(mTier);
     }
 
@@ -291,6 +306,6 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
-        return new FluidTankInfo[]{getInfo()};
+        return new FluidTankInfo[] {getInfo()};
     }
 }

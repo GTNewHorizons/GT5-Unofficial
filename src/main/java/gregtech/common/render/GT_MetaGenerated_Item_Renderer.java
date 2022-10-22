@@ -1,11 +1,14 @@
 package gregtech.common.render;
 
+import static gregtech.api.enums.ItemList.*;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.ExtraIcons;
+import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -17,10 +20,6 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nullable;
-
-import static gregtech.api.enums.ItemList.*;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
     public GT_MetaGenerated_Item_Renderer() {
@@ -34,11 +33,15 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
         if ((GT_Utility.isStackInvalid(aStack)) || (aStack.getItemDamage() < 0)) {
             return false;
         }
-        return (aType == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) || (aType == IItemRenderer.ItemRenderType.INVENTORY) || (aType == IItemRenderer.ItemRenderType.EQUIPPED) || (aType == IItemRenderer.ItemRenderType.ENTITY);
+        return (aType == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON)
+                || (aType == IItemRenderer.ItemRenderType.INVENTORY)
+                || (aType == IItemRenderer.ItemRenderType.EQUIPPED)
+                || (aType == IItemRenderer.ItemRenderType.ENTITY);
     }
 
     @Override
-    public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType aType, ItemStack aStack, IItemRenderer.ItemRendererHelper aHelper) {
+    public boolean shouldUseRenderHelper(
+            IItemRenderer.ItemRenderType aType, ItemStack aStack, IItemRenderer.ItemRendererHelper aHelper) {
         if (GT_Utility.isStackInvalid(aStack)) {
             return false;
         }
@@ -55,7 +58,6 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
             return;
         }
         GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
-
 
         GL11.glEnable(GL11.GL_BLEND);
         if (type == IItemRenderer.ItemRenderType.ENTITY) {
@@ -95,7 +97,15 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
             if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                 GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             } else {
-                ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
+                ItemRenderer.renderItemIn2D(
+                        Tessellator.instance,
+                        tIcon.getMaxU(),
+                        tIcon.getMinV(),
+                        tIcon.getMinU(),
+                        tIcon.getMaxV(),
+                        tIcon.getIconWidth(),
+                        tIcon.getIconHeight(),
+                        0.0625F);
             }
             if (fluidIcon != null) {
                 int tColor = tFluid.getFluid().getColor(tFluid);
@@ -106,7 +116,15 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
                 if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                     GT_RenderUtil.renderItemIcon(fluidIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                 } else {
-                    ItemRenderer.renderItemIn2D(Tessellator.instance, fluidIcon.getMaxU(), fluidIcon.getMinV(), fluidIcon.getMinU(), fluidIcon.getMaxV(), fluidIcon.getIconWidth(), fluidIcon.getIconHeight(), 0.0625F);
+                    ItemRenderer.renderItemIn2D(
+                            Tessellator.instance,
+                            fluidIcon.getMaxU(),
+                            fluidIcon.getMinV(),
+                            fluidIcon.getMinU(),
+                            fluidIcon.getMaxV(),
+                            fluidIcon.getIconWidth(),
+                            fluidIcon.getIconHeight(),
+                            0.0625F);
                 }
                 GL11.glDepthFunc(GL11.GL_LEQUAL);
             }
@@ -117,7 +135,15 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
                 if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                     GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                 } else {
-                    ItemRenderer.renderItemIn2D(Tessellator.instance, tOverlay.getMaxU(), tOverlay.getMinV(), tOverlay.getMinU(), tOverlay.getMaxV(), tOverlay.getIconWidth(), tOverlay.getIconHeight(), 0.0625F);
+                    ItemRenderer.renderItemIn2D(
+                            Tessellator.instance,
+                            tOverlay.getMaxU(),
+                            tOverlay.getMinV(),
+                            tOverlay.getMinU(),
+                            tOverlay.getMaxV(),
+                            tOverlay.getIconWidth(),
+                            tOverlay.getIconHeight(),
+                            0.0625F);
                 }
             }
         } else {
@@ -135,7 +161,8 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
                         if (tCharge >= tStats[0]) {
                             tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][8];
                         } else {
-                            tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][(7 - (int) Math.max(0L, Math.min(5L, (tStats[0] - tCharge) * 6L / tStats[0])))];
+                            tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][
+                                    (7 - (int) Math.max(0L, Math.min(5L, (tStats[0] - tCharge) * 6L / tStats[0])))];
                         }
                     }
                 } else {
@@ -145,8 +172,7 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
                 tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][0];
             }
 
-            if (tIcon == null)
-                tIcon = Textures.ItemIcons.RENDERING_ERROR.getIcon();
+            if (tIcon == null) tIcon = Textures.ItemIcons.RENDERING_ERROR.getIcon();
 
             ItemList largeFluidCell = getLargeFluidCell(aStack);
             if (largeFluidCell != null) {
@@ -158,7 +184,15 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
             if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                 GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             } else {
-                ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(), tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(), 0.0625F);
+                ItemRenderer.renderItemIn2D(
+                        Tessellator.instance,
+                        tIcon.getMaxU(),
+                        tIcon.getMinV(),
+                        tIcon.getMinU(),
+                        tIcon.getMaxV(),
+                        tIcon.getIconWidth(),
+                        tIcon.getIconHeight(),
+                        0.0625F);
             }
         }
         GL11.glDisable(GL11.GL_BLEND);
@@ -179,7 +213,8 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
         return null;
     }
 
-    private static void renderLargeFluidCellExtraParts(IItemRenderer.ItemRenderType type, ItemList item, ItemStack stack) {
+    private static void renderLargeFluidCellExtraParts(
+            IItemRenderer.ItemRenderType type, ItemList item, ItemStack stack) {
 
         IIcon inner;
         if (item == Large_Fluid_Cell_Steel) inner = ExtraIcons.steelLargeCellInner;
@@ -197,7 +232,15 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
         if (type.equals(ItemRenderType.INVENTORY)) {
             GT_RenderUtil.renderItemIcon(inner, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
         } else {
-            ItemRenderer.renderItemIn2D(Tessellator.instance, inner.getMaxU(), inner.getMinV(), inner.getMinU(), inner.getMaxV(), inner.getIconWidth(), inner.getIconHeight(), 0.0625F);
+            ItemRenderer.renderItemIn2D(
+                    Tessellator.instance,
+                    inner.getMaxU(),
+                    inner.getMinV(),
+                    inner.getMinU(),
+                    inner.getMaxV(),
+                    inner.getIconWidth(),
+                    inner.getIconHeight(),
+                    0.0625F);
         }
 
         FluidStack fluidStack = GT_Utility.getFluidForFilledItem(stack, true);
@@ -213,7 +256,15 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
             if (type.equals(ItemRenderType.INVENTORY)) {
                 GT_RenderUtil.renderItemIcon(fluidIcon, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
             } else {
-                ItemRenderer.renderItemIn2D(Tessellator.instance, fluidIcon.getMaxU(), fluidIcon.getMinV(), fluidIcon.getMinU(), fluidIcon.getMaxV(), fluidIcon.getIconWidth(), fluidIcon.getIconHeight(), 0.0625F);
+                ItemRenderer.renderItemIn2D(
+                        Tessellator.instance,
+                        fluidIcon.getMaxU(),
+                        fluidIcon.getMinV(),
+                        fluidIcon.getMinU(),
+                        fluidIcon.getMaxV(),
+                        fluidIcon.getIconWidth(),
+                        fluidIcon.getIconHeight(),
+                        0.0625F);
             }
 
             GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);

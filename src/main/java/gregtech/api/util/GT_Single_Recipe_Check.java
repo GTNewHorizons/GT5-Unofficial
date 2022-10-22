@@ -3,13 +3,12 @@ package gregtech.api.util;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 /** Used by machines that are locked to a single recipe, for fast computation. */
 public class GT_Single_Recipe_Check {
@@ -31,8 +30,10 @@ public class GT_Single_Recipe_Check {
         this.itemCost = itemCost;
         this.fluidCost = fluidCost;
 
-        this.totalItemCost = itemCost.values().stream().mapToInt(Integer::intValue).sum();
-        this.totalFluidCost = fluidCost.values().stream().mapToInt(Integer::intValue).sum();
+        this.totalItemCost =
+                itemCost.values().stream().mapToInt(Integer::intValue).sum();
+        this.totalFluidCost =
+                fluidCost.values().stream().mapToInt(Integer::intValue).sum();
     }
 
     public GT_Recipe getRecipe() {
@@ -51,7 +52,8 @@ public class GT_Single_Recipe_Check {
             itemMap = new HashMap<>();
             for (ItemStack itemStack : multiBlockBase.getStoredInputs()) {
                 itemMap.merge(
-                        GT_Utility.ItemId.createNoCopy(itemStack), itemStack,
+                        GT_Utility.ItemId.createNoCopy(itemStack),
+                        itemStack,
                         (a, b) -> a.stackSize >= b.stackSize ? a : b);
             }
 
@@ -67,9 +69,7 @@ public class GT_Single_Recipe_Check {
         if (totalFluidCost > 0) {
             fluidMap = new HashMap<>();
             for (FluidStack fluidStack : multiBlockBase.getStoredFluids()) {
-                fluidMap.merge(
-                        fluidStack.getFluid(), fluidStack,
-                        (a, b) -> a.amount >= b.amount ? a : b);
+                fluidMap.merge(fluidStack.getFluid(), fluidStack, (a, b) -> a.amount >= b.amount ? a : b);
             }
 
             for (Map.Entry<Fluid, Integer> entry : fluidCost.entrySet()) {
@@ -173,8 +173,7 @@ public class GT_Single_Recipe_Check {
         return true;
     }
 
-    protected static Map<GT_Utility.ItemId, Integer> buildItemMap(
-            GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
+    protected static Map<GT_Utility.ItemId, Integer> buildItemMap(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
         Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
         for (ItemStack itemStack : multiBlockBase.getStoredInputs()) {
             itemMap.merge(GT_Utility.ItemId.create(itemStack), itemStack.stackSize, Integer::sum);
@@ -182,8 +181,7 @@ public class GT_Single_Recipe_Check {
         return itemMap;
     }
 
-    protected static Map<Fluid, Integer> buildFluidMap(
-            GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
+    protected static Map<Fluid, Integer> buildFluidMap(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
         Map<Fluid, Integer> fluidMap = new HashMap<>();
         for (FluidStack fluidStack : multiBlockBase.getStoredFluids()) {
             fluidMap.merge(fluidStack.getFluid(), fluidStack.amount, Integer::sum);
@@ -251,6 +249,4 @@ public class GT_Single_Recipe_Check {
                     multiBlockBase, recipe, itemCostBuilder.build(), fluidCostBuilder.build());
         }
     }
-
-
 }

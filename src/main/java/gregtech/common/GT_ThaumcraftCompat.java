@@ -6,6 +6,9 @@ import gregtech.api.enums.TC_Aspects;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -22,10 +25,6 @@ import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class GT_ThaumcraftCompat implements IThaumcraftCompat {
     public GT_ThaumcraftCompat() {
@@ -79,11 +78,36 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
         TC_Aspects.VITREUS.mAspect = Aspect.CRYSTAL;
         TC_Aspects.VOLATUS.mAspect = Aspect.FLIGHT;
 
-        TC_Aspects.STRONTIO.mAspect = new Aspect("strontio", 15647411, new Aspect[]{Aspect.MIND, Aspect.ENTROPY}, new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.STRONTIO.name() + ".png"), 1);
-        TC_Aspects.NEBRISUM.mAspect = new Aspect("nebrisum", 15658622, new Aspect[]{Aspect.MINE, Aspect.GREED}, new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.NEBRISUM.name() + ".png"), 1);
-        TC_Aspects.ELECTRUM.mAspect = new Aspect("electrum", 12644078, new Aspect[]{Aspect.ENERGY, Aspect.MECHANISM}, new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.ELECTRUM.name() + ".png"), 1);
-        TC_Aspects.MAGNETO.mAspect = new Aspect("magneto", 12632256, new Aspect[]{Aspect.METAL, Aspect.TRAVEL}, new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.MAGNETO.name() + ".png"), 1);
-        TC_Aspects.RADIO.mAspect = new Aspect("radio", 12648384, new Aspect[]{Aspect.LIGHT, Aspect.ENERGY}, new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.RADIO.name() + ".png"), 1);
+        TC_Aspects.STRONTIO.mAspect = new Aspect(
+                "strontio",
+                15647411,
+                new Aspect[] {Aspect.MIND, Aspect.ENTROPY},
+                new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.STRONTIO.name() + ".png"),
+                1);
+        TC_Aspects.NEBRISUM.mAspect = new Aspect(
+                "nebrisum",
+                15658622,
+                new Aspect[] {Aspect.MINE, Aspect.GREED},
+                new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.NEBRISUM.name() + ".png"),
+                1);
+        TC_Aspects.ELECTRUM.mAspect = new Aspect(
+                "electrum",
+                12644078,
+                new Aspect[] {Aspect.ENERGY, Aspect.MECHANISM},
+                new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.ELECTRUM.name() + ".png"),
+                1);
+        TC_Aspects.MAGNETO.mAspect = new Aspect(
+                "magneto",
+                12632256,
+                new Aspect[] {Aspect.METAL, Aspect.TRAVEL},
+                new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.MAGNETO.name() + ".png"),
+                1);
+        TC_Aspects.RADIO.mAspect = new Aspect(
+                "radio",
+                12648384,
+                new Aspect[] {Aspect.LIGHT, Aspect.ENERGY},
+                new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.RADIO.name() + ".png"),
+                1);
 
         GT_LanguageManager.addStringLocalization("tc.aspect.strontio", "Stupidness, Incompetence");
         GT_LanguageManager.addStringLocalization("tc.aspect.nebrisum", "Cheatyness, Raiding");
@@ -95,14 +119,29 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
     private static final AspectList getAspectList(List<TC_Aspects.TC_AspectStack> aAspects) {
         AspectList rAspects = new AspectList();
         TC_Aspects.TC_AspectStack tAspect;
-        for (Iterator i$ = aAspects.iterator(); i$.hasNext(); rAspects.add((Aspect) tAspect.mAspect.mAspect, (int) tAspect.mAmount)) {
+        for (Iterator i$ = aAspects.iterator();
+                i$.hasNext();
+                rAspects.add((Aspect) tAspect.mAspect.mAspect, (int) tAspect.mAmount)) {
             tAspect = (TC_Aspects.TC_AspectStack) i$.next();
         }
         return rAspects;
     }
 
     @Override
-    public Object addResearch(String aResearch, String aName, String aText, String[] aParentResearches, String aCategory, ItemStack aIcon, int aComplexity, int aType, int aX, int aY, List<TC_Aspects.TC_AspectStack> aAspects, ItemStack[] aResearchTriggers, Object[] aPages) {
+    public Object addResearch(
+            String aResearch,
+            String aName,
+            String aText,
+            String[] aParentResearches,
+            String aCategory,
+            ItemStack aIcon,
+            int aComplexity,
+            int aType,
+            int aX,
+            int aY,
+            List<TC_Aspects.TC_AspectStack> aAspects,
+            ItemStack[] aResearchTriggers,
+            Object[] aPages) {
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.researches, aResearch, true)) {
             return null;
         }
@@ -117,7 +156,8 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
                 aY += (aY > 0 ? 5 : -5);
             }
         }
-        ResearchItem rResearch = new ResearchItem(aResearch, aCategory, getAspectList(aAspects), aX, aY, aComplexity, aIcon);
+        ResearchItem rResearch =
+                new ResearchItem(aResearch, aCategory, getAspectList(aAspects), aX, aY, aComplexity, aIcon);
         ArrayList<ResearchPage> tPages = new ArrayList(aPages.length);
         GT_LanguageManager.addStringLocalization("tc.research_name." + aResearch, aName);
         GT_LanguageManager.addStringLocalization("tc.research_text." + aResearch, "[GT] " + aText);
@@ -178,41 +218,69 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
     }
 
     @Override
-    public Object addCrucibleRecipe(String aResearch, Object aInput, ItemStack aOutput, List<TC_Aspects.TC_AspectStack> aAspects) {
-        if ((GT_Utility.isStringInvalid(aResearch)) || (aInput == null) || (aOutput == null) || (aAspects == null) || (aAspects.isEmpty())) {
+    public Object addCrucibleRecipe(
+            String aResearch, Object aInput, ItemStack aOutput, List<TC_Aspects.TC_AspectStack> aAspects) {
+        if ((GT_Utility.isStringInvalid(aResearch))
+                || (aInput == null)
+                || (aOutput == null)
+                || (aAspects == null)
+                || (aAspects.isEmpty())) {
             return null;
         }
-        return ThaumcraftApi.addCrucibleRecipe(aResearch, GT_Utility.copyOrNull(aOutput), ((aInput instanceof ItemStack)) || ((aInput instanceof ArrayList)) ? aInput : aInput.toString(), getAspectList(aAspects));
+        return ThaumcraftApi.addCrucibleRecipe(
+                aResearch,
+                GT_Utility.copyOrNull(aOutput),
+                ((aInput instanceof ItemStack)) || ((aInput instanceof ArrayList)) ? aInput : aInput.toString(),
+                getAspectList(aAspects));
     }
 
     @Override
-    public Object addInfusionRecipe(String aResearch, ItemStack aMainInput, ItemStack[] aSideInputs, ItemStack aOutput, int aInstability, List<TC_Aspects.TC_AspectStack> aAspects) {
-        if ((GT_Utility.isStringInvalid(aResearch)) || (aMainInput == null) || (aSideInputs == null) || (aOutput == null) || (aAspects == null) || (aAspects.isEmpty())) {
+    public Object addInfusionRecipe(
+            String aResearch,
+            ItemStack aMainInput,
+            ItemStack[] aSideInputs,
+            ItemStack aOutput,
+            int aInstability,
+            List<TC_Aspects.TC_AspectStack> aAspects) {
+        if ((GT_Utility.isStringInvalid(aResearch))
+                || (aMainInput == null)
+                || (aSideInputs == null)
+                || (aOutput == null)
+                || (aAspects == null)
+                || (aAspects.isEmpty())) {
             return null;
         }
-        return ThaumcraftApi.addInfusionCraftingRecipe(aResearch, GT_Utility.copyOrNull(aOutput), aInstability, getAspectList(aAspects), aMainInput, aSideInputs);
+        return ThaumcraftApi.addInfusionCraftingRecipe(
+                aResearch,
+                GT_Utility.copyOrNull(aOutput),
+                aInstability,
+                getAspectList(aAspects),
+                aMainInput,
+                aSideInputs);
     }
-    
-	@Override
-    public boolean registerThaumcraftAspectsToItem(ItemStack aExampleStack, List<TC_Aspects.TC_AspectStack> aAspects, String aOreDict) {
-		if (aAspects.isEmpty()) return false;
-		ThaumcraftApi.registerObjectTag(aOreDict, (AspectList)getAspectList(aAspects));
-		return true;
-	}
 
-	@Override
-    public boolean registerThaumcraftAspectsToItem(ItemStack aStack, List<TC_Aspects.TC_AspectStack> aAspects, boolean aAdditive) {
-		if (aAspects.isEmpty()) return false;
-		if (aAdditive) {
-			ThaumcraftApi.registerComplexObjectTag(aStack, (AspectList)getAspectList(aAspects));
-			return true;
-		}
-		AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
-		if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
-			ThaumcraftApi.registerObjectTag(aStack, (AspectList)getAspectList(aAspects));
-		}
-		return true;
-	}
+    @Override
+    public boolean registerThaumcraftAspectsToItem(
+            ItemStack aExampleStack, List<TC_Aspects.TC_AspectStack> aAspects, String aOreDict) {
+        if (aAspects.isEmpty()) return false;
+        ThaumcraftApi.registerObjectTag(aOreDict, (AspectList) getAspectList(aAspects));
+        return true;
+    }
+
+    @Override
+    public boolean registerThaumcraftAspectsToItem(
+            ItemStack aStack, List<TC_Aspects.TC_AspectStack> aAspects, boolean aAdditive) {
+        if (aAspects.isEmpty()) return false;
+        if (aAdditive) {
+            ThaumcraftApi.registerComplexObjectTag(aStack, (AspectList) getAspectList(aAspects));
+            return true;
+        }
+        AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
+        if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
+            ThaumcraftApi.registerObjectTag(aStack, (AspectList) getAspectList(aAspects));
+        }
+        return true;
+    }
 
     @Override
     public boolean registerPortholeBlacklistedBlock(Block aBlock) {

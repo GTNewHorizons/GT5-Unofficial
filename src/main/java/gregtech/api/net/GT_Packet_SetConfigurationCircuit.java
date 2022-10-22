@@ -19,7 +19,6 @@ import net.minecraftforge.common.DimensionManager;
 /**
  * Client -> Server: Update machine configuration data
  */
-
 public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
     protected int mX;
     protected short mY;
@@ -80,7 +79,6 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
                 aData.readInt(),
                 aData.readShort(),
                 aData.readInt(),
-
                 ISerializableObject.readItemStackFromGreggyByteBuf(aData));
     }
 
@@ -97,6 +95,7 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
         machine.getConfigurationCircuits().stream()
                 .filter(stack -> GT_Utility.areStacksEqual(stack, circuit))
                 .findFirst()
-                .ifPresent(stack -> ((IGregTechTileEntity) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
+                .ifPresent(stack ->
+                        ((IGregTechTileEntity) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
     }
 }

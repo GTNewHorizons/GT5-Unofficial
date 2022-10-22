@@ -38,15 +38,18 @@ public class GT_Container_2by2_Fluid extends GT_ContainerMetaTile_Machine {
                  * I'd imagine this lag to become only more severe when playing MP over ethernet, which would have much more latency
                  * than a memory connection
                  */
-                GT_MetaTileEntity_Hatch_MultiInput tTank = (GT_MetaTileEntity_Hatch_MultiInput) mTileEntity.getMetaTileEntity();
+                GT_MetaTileEntity_Hatch_MultiInput tTank =
+                        (GT_MetaTileEntity_Hatch_MultiInput) mTileEntity.getMetaTileEntity();
                 tTank.setDrainableStack(GT_Utility.getFluidFromDisplayStack(tTank.getStackInSlot(2)));
             }
-            GT_MetaTileEntity_Hatch_MultiInput tTank = (GT_MetaTileEntity_Hatch_MultiInput) mTileEntity.getMetaTileEntity();
+            GT_MetaTileEntity_Hatch_MultiInput tTank =
+                    (GT_MetaTileEntity_Hatch_MultiInput) mTileEntity.getMetaTileEntity();
             MultiFluidAccess tDrainableAccess = MultiFluidAccess.from(tTank, aSlotIndex);
             ItemStack tStackHeld = aPlayer.inventory.getItemStack();
             FluidStack tFluidHeld = GT_Utility.getFluidForFilledItem(tStackHeld, true);
             if (tDrainableAccess.isMatch(tFluidHeld, aSlotIndex))
-                return handleFluidSlotClick(tDrainableAccess, aPlayer, aMouseclick == 0, true, !tTank.isDrainableStackSeparate());
+                return handleFluidSlotClick(
+                        tDrainableAccess, aPlayer, aMouseclick == 0, true, !tTank.isDrainableStackSeparate());
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }

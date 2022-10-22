@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public interface IGT_HatchAdder<T> {

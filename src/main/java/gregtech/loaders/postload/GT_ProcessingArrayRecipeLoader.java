@@ -20,19 +20,19 @@ public class GT_ProcessingArrayRecipeLoader {
         // Compressor
         registerMapBetweenRange(241, 245, GT_Recipe.GT_Recipe_Map.sCompressorRecipes);
 
-        //Extractor
+        // Extractor
         registerMapBetweenRange(271, 275, GT_Recipe.GT_Recipe_Map.sExtractorRecipes);
 
-        //Macerator
+        // Macerator
         registerMapBetweenRange(301, 305, GT_Recipe.GT_Recipe_Map.sMaceratorRecipes);
 
         // Microwave (New)
         registerMapBetweenRange(311, 315, GT_Recipe.GT_Recipe_Map.sMicrowaveRecipes);
 
-        //Recycler
+        // Recycler
         registerMapBetweenRange(331, 335, GT_Recipe.GT_Recipe_Map.sRecyclerRecipes);
 
-        //Thermal Centrifuge
+        // Thermal Centrifuge
         registerMapBetweenRange(381, 385, GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes);
 
         // Ore Washer
@@ -133,11 +133,10 @@ public class GT_ProcessingArrayRecipeLoader {
 
         // Forming Press
         registerMapBetweenRange(601, 605, GT_Recipe.GT_Recipe_Map.sPressRecipes);
-
     }
 
     private static final void registerMapBetweenRange(int aMin, int aMax, GT_Recipe_Map aMap) {
-        for (int i=aMin; i<=aMax;i++) {
+        for (int i = aMin; i <= aMax; i++) {
             GT_ProcessingArray_Manager.registerRecipeMapForMeta(i, aMap);
         }
     }

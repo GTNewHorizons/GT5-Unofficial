@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
@@ -9,25 +8,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
-
 public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
 
-	/**
-	 * Texture Index Information
-	 * Textures.BlockIcons.casingTexturePages[0][0-63] - Gregtech
-	 * Textures.BlockIcons.casingTexturePages[0][64-127] - GT++
-	 * Textures.BlockIcons.casingTexturePages[1][0-127] - Gregtech
-	 * Textures.BlockIcons.casingTexturePages[2][0-127] - Free
-	 * Textures.BlockIcons.casingTexturePages[3][0-127] - Free
-	 * Textures.BlockIcons.casingTexturePages[4][0-127] - Free
-	 * Textures.BlockIcons.casingTexturePages[5][0-127] - Free
-	 * Textures.BlockIcons.casingTexturePages[6][0-127] - Free
-	 * Textures.BlockIcons.casingTexturePages[7][0-127] - Free
-	 * Textures.BlockIcons.casingTexturePages[8][0-127] - TecTech
-	 */
-
-
+    /**
+     * Texture Index Information
+     * Textures.BlockIcons.casingTexturePages[0][0-63] - Gregtech
+     * Textures.BlockIcons.casingTexturePages[0][64-127] - GT++
+     * Textures.BlockIcons.casingTexturePages[1][0-127] - Gregtech
+     * Textures.BlockIcons.casingTexturePages[2][0-127] - Free
+     * Textures.BlockIcons.casingTexturePages[3][0-127] - Free
+     * Textures.BlockIcons.casingTexturePages[4][0-127] - Free
+     * Textures.BlockIcons.casingTexturePages[5][0-127] - Free
+     * Textures.BlockIcons.casingTexturePages[6][0-127] - Free
+     * Textures.BlockIcons.casingTexturePages[7][0-127] - Free
+     * Textures.BlockIcons.casingTexturePages[8][0-127] - TecTech
+     */
     public GT_Block_Casings1() {
         super(GT_Item_Casings1.class, "gt.blockcasings", GT_Material_Casings.INSTANCE);
         for (int i = 0; i < 16; i++) {
@@ -46,7 +41,8 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "UHV Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Bronze Plated Bricks");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Heat Proof Machine Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Dimensionally Transcendent Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".12.name", "Dimensionally Transcendent Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Dimensional Injection Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Dimensional Bridge");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Superconducting Coil Block");
@@ -98,6 +94,10 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
 
     @Override
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ) > 9 ? super.colorMultiplier(aWorld, aX, aY, aZ) : gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
+        return aWorld.getBlockMetadata(aX, aY, aZ) > 9
+                ? super.colorMultiplier(aWorld, aX, aY, aZ)
+                : gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16
+                        | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8
+                        | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
     }
 }

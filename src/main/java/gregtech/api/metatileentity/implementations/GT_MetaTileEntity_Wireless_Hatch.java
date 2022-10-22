@@ -1,29 +1,28 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.GT_Mod.gregtechproxy;
+import static gregtech.api.enums.GT_Values.*;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
+import java.math.BigInteger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.math.BigInteger;
-
-import static gregtech.GT_Mod.gregtechproxy;
-import static gregtech.api.enums.GT_Values.*;
-
 public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_Energy implements IGlobalWirelessEnergy {
 
-    private static final long ticks_between_energy_addition = 100L*20L;
+    private static final long ticks_between_energy_addition = 100L * 20L;
     private static final long number_of_energy_additions = 2L;
-    private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(2L * V[mTier] * ticks_between_energy_addition);
+    private final BigInteger eu_transferred_per_operation =
+            BigInteger.valueOf(2L * V[mTier] * ticks_between_energy_addition);
     private final long eu_transferred_per_operation_long = eu_transferred_per_operation.longValueExact();
     private String owner_uuid;
     private String owner_name;
-
 
     public GT_MetaTileEntity_Wireless_Hatch(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
@@ -37,21 +36,27 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
     public String[] getDescription() {
         String uuid = gregtechproxy.getThePlayer().getUniqueID().toString();
         return new String[] {
-//            "Receives " + EnumChatFormatting.RED + GT_Utility.formatNumbers(eu_transferred_per_operation.divide(BigInteger.valueOf(V[mTier]))) + EnumChatFormatting.GRAY + " A of " + TIER_COLORS[mTier] + VN[mTier] + EnumChatFormatting.GRAY + " through trans-dimensional space every " + EnumChatFormatting.RED + GT_Utility.formatNumbers(ticks_between_energy_addition) + EnumChatFormatting.GRAY + " ticks.",
+            //            "Receives " + EnumChatFormatting.RED +
+            // GT_Utility.formatNumbers(eu_transferred_per_operation.divide(BigInteger.valueOf(V[mTier]))) +
+            // EnumChatFormatting.GRAY + " A of " + TIER_COLORS[mTier] + VN[mTier] + EnumChatFormatting.GRAY + " through
+            // trans-dimensional space every " + EnumChatFormatting.RED +
+            // GT_Utility.formatNumbers(ticks_between_energy_addition) + EnumChatFormatting.GRAY + " ticks.",
             EnumChatFormatting.GRAY + "Does not connect to wires.",
-            EnumChatFormatting.GRAY + "There is currently " + EnumChatFormatting.RED + GT_Utility.formatNumbers(IGlobalWirelessEnergy.super.GetUserEU(uuid)) + EnumChatFormatting.GRAY + " EU in your network.",
+            EnumChatFormatting.GRAY + "There is currently " + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(IGlobalWirelessEnergy.super.GetUserEU(uuid)) + EnumChatFormatting.GRAY
+                    + " EU in your network.",
             AuthorColen
         };
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
+        return new ITexture[] {aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
+        return new ITexture[] {aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
     }
 
     @Override
@@ -99,7 +104,9 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
         return V[mTier] * number_of_energy_additions * ticks_between_energy_addition;
     }
 
-    public long getEUCapacity() { return 40000L; }
+    public long getEUCapacity() {
+        return 40000L;
+    }
 
     @Override
     public long maxAmperesIn() {
@@ -141,11 +148,12 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
 
                 IGlobalWirelessEnergy.super.StrongCheckOrAddUser(owner_uuid, owner_name);
 
-                if (IGlobalWirelessEnergy.super.addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation.negate()))
-                    setEUVar(eu_transferred_per_operation_long);
+                if (IGlobalWirelessEnergy.super.addEUToGlobalEnergyMap(
+                        owner_uuid, eu_transferred_per_operation.negate())) setEUVar(eu_transferred_per_operation_long);
             }
 
-            // This is set up in a way to be as optimised as possible. If a user has a relatively plentiful energy network
+            // This is set up in a way to be as optimised as possible. If a user has a relatively plentiful energy
+            // network
             // it should make no difference to them. Minimising the number of operations on BigInteger is essential.
 
             // Every ticks_between_energy_addition add eu_transferred_per_operation to internal EU storage from network.
@@ -156,7 +164,8 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
                 if (total_eu + eu_transferred_per_operation_long <= maxEUStore()) {
 
                     // Attempt to remove energy from the network and add it to the internal buffer of the machine.
-                    if (IGlobalWirelessEnergy.super.addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation.negate())) {
+                    if (IGlobalWirelessEnergy.super.addEUToGlobalEnergyMap(
+                            owner_uuid, eu_transferred_per_operation.negate())) {
                         setEUVar(total_eu + eu_transferred_per_operation_long);
                     }
                 }

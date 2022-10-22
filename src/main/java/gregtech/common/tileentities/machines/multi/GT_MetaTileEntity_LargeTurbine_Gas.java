@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -10,13 +12,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
-
-import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeTurbine {
 
@@ -29,11 +28,32 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{MACHINE_CASINGS[1][aColorIndex + 1],
-                aFacing == aSide ?
-                        (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_SS_ACTIVE5).extFacing().build() : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_SS5).extFacing().build() : TextureFactory.builder().addIcon(LARGETURBINE_SS_EMPTY5).extFacing().build())
-                        : casingTexturePages[0][58]};
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
+        return new ITexture[] {
+            MACHINE_CASINGS[1][aColorIndex + 1],
+            aFacing == aSide
+                    ? (aActive
+                            ? TextureFactory.builder()
+                                    .addIcon(LARGETURBINE_SS_ACTIVE5)
+                                    .extFacing()
+                                    .build()
+                            : hasTurbine()
+                                    ? TextureFactory.builder()
+                                            .addIcon(LARGETURBINE_SS5)
+                                            .extFacing()
+                                            .build()
+                                    : TextureFactory.builder()
+                                            .addIcon(LARGETURBINE_SS_EMPTY5)
+                                            .extFacing()
+                                            .build())
+                    : casingTexturePages[0][58]
+        };
     }
 
     @Override
@@ -90,12 +110,19 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier, float[] flowMultipliers) {
+    int fluidIntoPower(
+            ArrayList<FluidStack> aFluids,
+            int aOptFlow,
+            int aBaseEff,
+            int overflowMultiplier,
+            float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;
 
-            FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
+            FluidStack firstFuelType = new FluidStack(
+                    aFluids.get(0),
+                    0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
 
             if (aOptFlow < fuelValue) {
@@ -112,8 +139,10 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
             this.realOptFlow = actualOptimalFlow;
 
             // Allowed to use up to 450% optimal flow rate, depending on the value of overflowMultiplier.
-            // This value is chosen because the highest EU/t possible depends on the overflowMultiplier, and the formula used
-            // makes it so the flow rate for that max, per value of overflowMultiplier, is (percentage of optimal flow rate):
+            // This value is chosen because the highest EU/t possible depends on the overflowMultiplier, and the formula
+            // used
+            // makes it so the flow rate for that max, per value of overflowMultiplier, is (percentage of optimal flow
+            // rate):
             // - 150% if it is 1
             // - 300% if it is 2
             // - 450% if it is 3
@@ -148,14 +177,14 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
                 tEU = 8192;
             }
 
-            // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the turbine
+            // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
+            // turbine
             // Raising the maximum allowed flow rate to account for the efficiency changes beyond the optimal flow
             // When the max fuel consumption rate was increased, turbines could explode on world load
-            if (tEU > getMaximumOutput()){
+            if (tEU > getMaximumOutput()) {
                 tEU = GT_Utility.safeInt(getMaximumOutput());
             }
             return tEU;
-
         }
         return 0;
     }
@@ -163,19 +192,20 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     @Override
     float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier) {
         // overflowMultiplier changes how quickly the turbine loses efficiency after flow goes beyond the optimal value
-        // At the default value of 1, any flow will generate less EU/t than optimal flow, regardless of the amount of fuel used
+        // At the default value of 1, any flow will generate less EU/t than optimal flow, regardless of the amount of
+        // fuel used
         // The bigger this number is, the slower efficiency loss happens as flow moves beyond the optimal value
         // Gases are the second most efficient in this regard, with plasma being the most efficient
         float efficiency = 0;
 
         if (totalFlow > actualOptimalFlow) {
-            efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow)) / ((float) actualOptimalFlow * ((overflowMultiplier * 3) - 1));
-        }
-        else {
+            efficiency = 1.0f
+                    - Math.abs((totalFlow - actualOptimalFlow))
+                            / ((float) actualOptimalFlow * ((overflowMultiplier * 3) - 1));
+        } else {
             efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
         }
 
         return efficiency;
     }
-
 }

@@ -1,13 +1,13 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.util.GT_TooltipDataCache.TooltipData;
 import java.awt.Rectangle;
 
-import gregtech.api.util.GT_TooltipDataCache.TooltipData;
+public class GT_GuiSmartTooltip extends GT_GuiTooltip {
+    public interface TooltipVisibilityProvider {
+        boolean shouldShowTooltip();
+    }
 
-public class GT_GuiSmartTooltip extends GT_GuiTooltip{
-	public interface TooltipVisibilityProvider {
-		boolean shouldShowTooltip();
-	}
     private final TooltipVisibilityProvider visibilityProvider;
 
     public GT_GuiSmartTooltip(Rectangle bounds, TooltipVisibilityProvider visibilityProvider, TooltipData data) {
@@ -21,5 +21,4 @@ public class GT_GuiSmartTooltip extends GT_GuiTooltip{
         // If disabled by super, stay disabled.
         this.enabled = this.enabled && this.visibilityProvider.shouldShowTooltip();
     }
-    
 }

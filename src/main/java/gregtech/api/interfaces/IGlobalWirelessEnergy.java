@@ -1,8 +1,5 @@
 package gregtech.api.interfaces;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -13,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
 // If you are adding very late-game content feel free to tap into this interface.
 // The eventual goal is to bypass laser/dynamo stuff and have energy deposited directly from ultra-endgame
@@ -50,22 +49,22 @@ public interface IGlobalWirelessEnergy {
 
     default void SaveGlobalEnergyInfo(String world_name) {
         // Replace chars because of bug in forge that doesn't understand MC converts . to _ upon world creation.
-        world_name = world_name.replace('.','_');
+        world_name = world_name.replace('.', '_');
         CreateStorageIfNotExist(world_name);
         SaveGlobalEnergyMap(world_name);
         SaveGlobalEnergyName(world_name);
         SaveGlobalEnergyTeam(world_name);
-
     }
 
     default void SaveGlobalEnergyMap(String world_name) {
         try {
-            List<String> lines = GlobalEnergy.entrySet()
-                .stream()
-                .map(entry -> entry.getKey() + ":" + entry.getValue())
-                .collect(Collectors.toList());
+            List<String> lines = GlobalEnergy.entrySet().stream()
+                    .map(entry -> entry.getKey() + ":" + entry.getValue())
+                    .collect(Collectors.toList());
 
-            Path path = Paths.get("./saves/" + world_name + "/" + GlobalEnergyFolderName + "/" + GlobalEnergyMapFileName + ".txt").toAbsolutePath();
+            Path path = Paths.get("./saves/" + world_name + "/" + GlobalEnergyFolderName + "/" + GlobalEnergyMapFileName
+                            + ".txt")
+                    .toAbsolutePath();
             Files.write(path, lines);
 
         } catch (IOException e) {
@@ -75,12 +74,13 @@ public interface IGlobalWirelessEnergy {
 
     default void SaveGlobalEnergyName(String world_name) {
         try {
-            List<String> lines = GlobalEnergyName.entrySet()
-                .stream()
-                .map(entry -> entry.getKey() + ":" + entry.getValue())
-                .collect(Collectors.toList());
+            List<String> lines = GlobalEnergyName.entrySet().stream()
+                    .map(entry -> entry.getKey() + ":" + entry.getValue())
+                    .collect(Collectors.toList());
 
-            Path path = Paths.get("./saves/" + world_name + "/" + GlobalEnergyFolderName + "/" + GlobalEnergyNameFileName + ".txt").toAbsolutePath();
+            Path path = Paths.get("./saves/" + world_name + "/" + GlobalEnergyFolderName + "/"
+                            + GlobalEnergyNameFileName + ".txt")
+                    .toAbsolutePath();
             Files.write(path, lines);
 
         } catch (IOException e) {
@@ -90,12 +90,13 @@ public interface IGlobalWirelessEnergy {
 
     default void SaveGlobalEnergyTeam(String world_name) {
         try {
-            List<String> lines = GlobalEnergyTeam.entrySet()
-                .stream()
-                .map(entry -> entry.getKey() + ":" + entry.getValue())
-                .collect(Collectors.toList());
+            List<String> lines = GlobalEnergyTeam.entrySet().stream()
+                    .map(entry -> entry.getKey() + ":" + entry.getValue())
+                    .collect(Collectors.toList());
 
-            Path path = Paths.get("./saves/" + world_name + "/" + GlobalEnergyFolderName + "/" + GlobalEnergyTeamFileName + ".txt").toAbsolutePath();
+            Path path = Paths.get("./saves/" + world_name + "/" + GlobalEnergyFolderName + "/"
+                            + GlobalEnergyTeamFileName + ".txt")
+                    .toAbsolutePath();
             Files.write(path, lines);
 
         } catch (IOException e) {
@@ -107,7 +108,7 @@ public interface IGlobalWirelessEnergy {
 
     default void LoadGlobalEnergyInfo(World world) {
         // Replace chars because of bug in forge that doesn't understand MC converts . to _ upon world creation.
-        String world_name = world.getWorldInfo().getWorldName().replace('.','_');
+        String world_name = world.getWorldInfo().getWorldName().replace('.', '_');
         PrivateGlobalEnergy.WorldName = world_name;
         CreateStorageIfNotExist(world_name);
         LoadGlobalEnergyMap(world);
@@ -117,10 +118,12 @@ public interface IGlobalWirelessEnergy {
 
     default void LoadGlobalEnergyMap(World world) {
         try {
-            Path path = Paths.get("./saves/" + world.getWorldInfo().getWorldName() + "/" + GlobalEnergyFolderName + "/" + GlobalEnergyMapFileName + ".txt").toAbsolutePath();
+            Path path = Paths.get("./saves/" + world.getWorldInfo().getWorldName() + "/" + GlobalEnergyFolderName + "/"
+                            + GlobalEnergyMapFileName + ".txt")
+                    .toAbsolutePath();
 
             String[] data;
-            for(String line : Files.readAllLines(path)) {
+            for (String line : Files.readAllLines(path)) {
                 data = line.split(":");
 
                 String UUID = data[0];
@@ -135,11 +138,12 @@ public interface IGlobalWirelessEnergy {
 
     default void LoadGlobalEnergyName(World world) {
         try {
-            Path path = Paths.get("./saves/" + world.getWorldInfo().getWorldName() + "/"
-                + GlobalEnergyFolderName + "/" + GlobalEnergyNameFileName + ".txt").toAbsolutePath();
+            Path path = Paths.get("./saves/" + world.getWorldInfo().getWorldName() + "/" + GlobalEnergyFolderName + "/"
+                            + GlobalEnergyNameFileName + ".txt")
+                    .toAbsolutePath();
 
             String[] data;
-            for(String line : Files.readAllLines(path)) {
+            for (String line : Files.readAllLines(path)) {
                 data = line.split(":");
 
                 GlobalEnergyName.put(data[0], data[1]);
@@ -151,11 +155,12 @@ public interface IGlobalWirelessEnergy {
 
     default void LoadGlobalEnergyTeam(World world) {
         try {
-            Path path = Paths.get("./saves/" + world.getWorldInfo().getWorldName() + "/"
-                + GlobalEnergyFolderName + "/" + GlobalEnergyTeamFileName + ".txt").toAbsolutePath();
+            Path path = Paths.get("./saves/" + world.getWorldInfo().getWorldName() + "/" + GlobalEnergyFolderName + "/"
+                            + GlobalEnergyTeamFileName + ".txt")
+                    .toAbsolutePath();
 
             String[] data;
-            for(String line : Files.readAllLines(path)) {
+            for (String line : Files.readAllLines(path)) {
                 data = line.split(":");
 
                 GlobalEnergyName.put(data[0], data[1]);
@@ -168,7 +173,8 @@ public interface IGlobalWirelessEnergy {
     // ------------------
 
     default void CreateStorageIfNotExist(String world_name) {
-        Path folder_path = Paths.get("./saves/" + world_name + "/" + GlobalEnergyFolderName).toAbsolutePath();
+        Path folder_path = Paths.get("./saves/" + world_name + "/" + GlobalEnergyFolderName)
+                .toAbsolutePath();
 
         // Create folder for storing global energy network info.
         try {
@@ -188,7 +194,6 @@ public interface IGlobalWirelessEnergy {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     // Adds a user to the energy map if they do not already exist. Otherwise, do nothing. Will also check if the user
@@ -299,7 +304,6 @@ public interface IGlobalWirelessEnergy {
         GlobalEnergyName.clear();
         GlobalEnergyTeam.clear();
     }
-
 }
 
 class PrivateGlobalEnergy {

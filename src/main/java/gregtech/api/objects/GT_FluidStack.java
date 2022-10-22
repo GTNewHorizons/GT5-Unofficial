@@ -3,13 +3,12 @@ package gregtech.api.objects;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import net.minecraftforge.common.ForgeVersion;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 /**
  * Because Forge fucked this one up royally.
@@ -22,7 +21,9 @@ public class GT_FluidStack extends FluidStack {
     public GT_FluidStack(Fluid aFluid, int aAmount) {
         super(aFluid, aAmount);
         mFluid = aFluid;
-        if(!GregTech_API.mServerStarted){sAllFluidStacks.add(this);}
+        if (!GregTech_API.mServerStarted) {
+            sAllFluidStacks.add(this);
+        }
     }
 
     public GT_FluidStack(FluidStack aFluid) {
@@ -34,13 +35,16 @@ public class GT_FluidStack extends FluidStack {
             try {
                 while (lock) {
                     Thread.sleep(1);
-                }} catch (InterruptedException e) {}
+                }
+            } catch (InterruptedException e) {
+            }
             lock = true;
             for (GT_FluidStack tFluid : sAllFluidStacks) tFluid.fixFluidIDForFucksSake();
             try {
-                for (Map<Fluid, ?> tMap : GregTech_API.sFluidMappings)
-                    GT_Utility.reMap(tMap);
-            } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
+                for (Map<Fluid, ?> tMap : GregTech_API.sFluidMappings) GT_Utility.reMap(tMap);
+            } catch (Throwable e) {
+                e.printStackTrace(GT_Log.err);
+            }
             lock = false;
         }
     }
@@ -68,9 +72,10 @@ public class GT_FluidStack extends FluidStack {
         }
         return new GT_FluidStack(this);
     }
-    
+
     @Override
     public String toString() {
-    	return String.format("GT_FluidStack: %s x %s, ID:%s", this.amount, this.getFluid().getName(), this.getFluidID());
+        return String.format(
+                "GT_FluidStack: %s x %s, ID:%s", this.amount, this.getFluid().getName(), this.getFluidID());
     }
 }
