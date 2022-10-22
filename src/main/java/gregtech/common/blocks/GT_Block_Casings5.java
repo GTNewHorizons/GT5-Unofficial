@@ -1,27 +1,22 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.enums.HeatingCoilLevel.*;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHeatingCoil;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
+import java.util.function.Consumer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
-import java.util.function.Consumer;
-
-import static gregtech.api.enums.HeatingCoilLevel.*;
 
 public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHeatingCoil {
 
     public GT_Block_Casings5() {
-        super(GT_Item_Casings5.class, "gt.blockcasings5", GT_Material_Casings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            Textures.BlockIcons.casingTexturePages[1][i] = TextureFactory.of(this, i);
-        }
+        super(GT_Item_Casings5.class, "gt.blockcasings5", GT_Material_Casings.INSTANCE, 16);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Cupronickel Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Kanthal Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Nichrome Coil Block");
@@ -37,7 +32,6 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hypogen Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Eternal Coil Block");
 
-        
         ItemList.Casing_Coil_Cupronickel.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Coil_Kanthal.set(new ItemStack(this, 1, 1));
         ItemList.Casing_Coil_Nichrome.set(new ItemStack(this, 1, 2));
@@ -52,6 +46,11 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
         ItemList.Casing_Coil_Infinity.set(new ItemStack(this, 1, 11));
         ItemList.Casing_Coil_Hypogen.set(new ItemStack(this, 1, 12));
         ItemList.Casing_Coil_Eternal.set(new ItemStack(this, 1, 13));
+    }
+
+    @Override
+    public int getTextureIndex(int aMeta) {
+        return (1 << 7) | aMeta;
     }
 
     @Override
@@ -161,8 +160,6 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
                 return 0;
         }
     }
-    
-    
 
     @Override
     public HeatingCoilLevel getCoilHeat(int meta) {

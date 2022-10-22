@@ -21,14 +21,12 @@ public class GT_ToolHarvestHelper {
         return isArrayContains(aBlock.getMaterial(), tMats);
     }
 
-
     public static boolean isSpecialBlock(Block aBlock, Block... tBlocks) {
         if (aBlock == null || tBlocks == null) {
             return false;
         }
         return isArrayContains(aBlock, tBlocks);
     }
-
 
     public static <T> boolean isArrayContains(T obj, T[] list) {
 
@@ -56,6 +54,4 @@ public class GT_ToolHarvestHelper {
         }
         return false;
     }
-
-
 }

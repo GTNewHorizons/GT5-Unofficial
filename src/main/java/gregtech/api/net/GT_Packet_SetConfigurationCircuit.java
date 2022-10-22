@@ -2,9 +2,9 @@ package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.ByteBufUtils;
+import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
@@ -19,7 +19,6 @@ import net.minecraftforge.common.DimensionManager;
 /**
  * Client -> Server: Update machine configuration data
  */
-
 public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
     protected int mX;
     protected short mY;
@@ -80,7 +79,6 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
                 aData.readInt(),
                 aData.readShort(),
                 aData.readInt(),
-
                 ISerializableObject.readItemStackFromGreggyByteBuf(aData));
     }
 
@@ -91,12 +89,13 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
         TileEntity tile = world.getTileEntity(mX, mY, mZ);
         if (!(tile instanceof IGregTechTileEntity) || ((IGregTechTileEntity) tile).isDead()) return;
         IMetaTileEntity mte = ((IGregTechTileEntity) tile).getMetaTileEntity();
-        if (!(mte instanceof GT_MetaTileEntity_BasicMachine)) return;
-        GT_MetaTileEntity_BasicMachine machine = (GT_MetaTileEntity_BasicMachine) mte;
+        if (!(mte instanceof IConfigurationCircuitSupport)) return;
+        IConfigurationCircuitSupport machine = (IConfigurationCircuitSupport) mte;
         if (!machine.allowSelectCircuit()) return;
         machine.getConfigurationCircuits().stream()
                 .filter(stack -> GT_Utility.areStacksEqual(stack, circuit))
                 .findFirst()
-                .ifPresent(stack -> ((IGregTechTileEntity) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
+                .ifPresent(stack ->
+                        ((IGregTechTileEntity) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
     }
 }

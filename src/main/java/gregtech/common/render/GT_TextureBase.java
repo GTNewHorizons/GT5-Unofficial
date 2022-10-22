@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 
 public abstract class GT_TextureBase implements ITexture {
     protected boolean isDrawing = false;
-    
+
     @Override
     public void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
         if (aRenderer.useInventoryTint && (!isOldTexture() || !GT_UtilityClient.isDrawing(Tessellator.instance))) {

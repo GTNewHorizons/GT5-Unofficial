@@ -1,18 +1,17 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import java.util.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.*;
-
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredMachineBlock {
     private static final int OUTPUT_INDEX = 0;
@@ -24,22 +23,30 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     public int mMaxStackSize = 64;
     public static int MAX = 8;
-    public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bStockingMode = false, bSortStacks = false;
+    public boolean bOutput = false,
+            bRedstoneIfFull = false,
+            bInvert = false,
+            bStockingMode = false,
+            bSortStacks = false;
     public int mSuccess = 0, mTargetStackSize = 0;
 
-    public GT_MetaTileEntity_Buffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
+    public GT_MetaTileEntity_Buffer(
+            int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
-    public GT_MetaTileEntity_Buffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription) {
-                super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
+    public GT_MetaTileEntity_Buffer(
+            int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription) {
+        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
-    public GT_MetaTileEntity_Buffer(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Buffer(
+            String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Buffer(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Buffer(
+            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -61,18 +68,24 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 TextureFactory.of(ARROW_RIGHT),
                 TextureFactory.builder().addIcon(ARROW_RIGHT_GLOW).glow().build());
         for (int i = 0; i < rTextures[0].length; i++) {
-            rTextures[OUTPUT_INDEX][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], tOut};
-            rTextures[ARROW_RIGHT_INDEX][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], tRight, tIcon};
-            rTextures[ARROW_DOWN_INDEX][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], tDown, tIcon};
-            rTextures[ARROW_LEFT_INDEX][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], tLeft, tIcon};
-            rTextures[ARROW_UP_INDEX][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], tUp, tIcon};
-            rTextures[FRONT_INDEX][i] = new ITexture[]{MACHINE_CASINGS[mTier][i], tIcon};
+            rTextures[OUTPUT_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tOut};
+            rTextures[ARROW_RIGHT_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tRight, tIcon};
+            rTextures[ARROW_DOWN_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tDown, tIcon};
+            rTextures[ARROW_LEFT_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tLeft, tIcon};
+            rTextures[ARROW_UP_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tUp, tIcon};
+            rTextures[FRONT_INDEX][i] = new ITexture[] {MACHINE_CASINGS[mTier][i], tIcon};
         }
         return rTextures;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         int colorIndex = aColorIndex + 1;
         ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[aSide];
         ForgeDirection facing = ForgeDirection.VALID_DIRECTIONS[aFacing];
@@ -237,9 +250,9 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         if (aNBT.hasKey("bStockingMode")) { // Adding new key to existing NBT, need to protect if it is not there.
             bStockingMode = aNBT.getBoolean("bStockingMode");
         }
-	    if (aNBT.hasKey("bSortStacks")) {
-	        bSortStacks = aNBT.getBoolean("bSortStacks");
-	    }
+        if (aNBT.hasKey("bSortStacks")) {
+            bSortStacks = aNBT.getBoolean("bSortStacks");
+        }
         mTargetStackSize = aNBT.getInteger("mTargetStackSize");
     }
 
@@ -253,18 +266,22 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getBackFacing()) {
 
-            mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking()? -1 : 1)) % 65);
-            if(mTargetStackSize <0){mTargetStackSize = mMaxStackSize;}
+            mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking() ? -1 : 1)) % 65);
+            if (mTargetStackSize < 0) {
+                mTargetStackSize = mMaxStackSize;
+            }
             if (mTargetStackSize == 0) {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("098","Do not regulate Item Stack Size"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("098", "Do not regulate Item Stack Size"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("099","Regulate Item Stack Size to: ") + mTargetStackSize);
+                GT_Utility.sendChatToPlayer(
+                        aPlayer, GT_Utility.trans("099", "Regulate Item Stack Size to: ") + mTargetStackSize);
             }
         }
     }
 
     @Override
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aWrenchingSide = GT_Utility.getOppositeSide(aWrenchingSide);
         if (getBaseMetaTileEntity().isValidFacing(aWrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(aWrenchingSide);
@@ -282,20 +299,22 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                     break;
                 }
             }
-            if (bInvert)
-                hasEmptySlots = !hasEmptySlots;
+            if (bInvert) hasEmptySlots = !hasEmptySlots;
             for (byte b = 0; b < 6; b++)
                 aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, hasEmptySlots ? (byte) 0 : (byte) 15);
-        }
-        else {
-            for(byte b = 0;b<6;b++)
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte)0);
+        } else {
+            for (byte b = 0; b < 6; b++) aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte) 0);
         }
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide() && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || aTimer % 200 == 0 || mSuccess > 0)) {
+        if (aBaseMetaTileEntity.isAllowedToWork()
+                && aBaseMetaTileEntity.isServerSide()
+                && (aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+                        || aBaseMetaTileEntity.hasInventoryBeenModified()
+                        || aTimer % 200 == 0
+                        || mSuccess > 0)) {
             mSuccess--;
             updateSlots();
             moveItems(aBaseMetaTileEntity, aTimer);
@@ -305,8 +324,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-    	for(byte b = 0;b<6;b++)
-            aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,(byte)0);
+        for (byte b = 0; b < 6; b++) aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte) 0);
     }
 
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
@@ -314,15 +332,37 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer, int stacks) {
-            int tCost;
-            if (bStockingMode)
-                tCost = GT_Utility.moveMultipleItemStacks(aBaseMetaTileEntity, aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()), aBaseMetaTileEntity.getBackFacing(), aBaseMetaTileEntity.getFrontFacing(), null, false, mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize, mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize, (byte) 64, (byte) 1, stacks);
-            else
-                tCost = GT_Utility.moveMultipleItemStacks(aBaseMetaTileEntity, aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()), aBaseMetaTileEntity.getBackFacing(), aBaseMetaTileEntity.getFrontFacing(), null, false, (byte) 64, (byte) 1, mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize, mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize, stacks);
+        int tCost;
+        if (bStockingMode)
+            tCost = GT_Utility.moveMultipleItemStacks(
+                    aBaseMetaTileEntity,
+                    aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
+                    aBaseMetaTileEntity.getBackFacing(),
+                    aBaseMetaTileEntity.getFrontFacing(),
+                    null,
+                    false,
+                    mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
+                    mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
+                    (byte) 64,
+                    (byte) 1,
+                    stacks);
+        else
+            tCost = GT_Utility.moveMultipleItemStacks(
+                    aBaseMetaTileEntity,
+                    aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
+                    aBaseMetaTileEntity.getBackFacing(),
+                    aBaseMetaTileEntity.getFrontFacing(),
+                    null,
+                    false,
+                    (byte) 64,
+                    (byte) 1,
+                    mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
+                    mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
+                    stacks);
 
-            if (tCost > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
-                mSuccess = 50;
-            }
+        if (tCost > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+            mSuccess = 50;
+        }
     }
 
     @Override
@@ -336,15 +376,14 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean allowGeneralRedstoneOutput(){
-    	return true;
+    public boolean allowGeneralRedstoneOutput() {
+        return true;
     }
 
     public void updateSlots() {
         for (int i = 0; i < mInventory.length; i++)
             if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        if (bSortStacks)
-            fillStacksIntoFirstSlots();
+        if (bSortStacks) fillStacksIntoFirstSlots();
     }
 
     protected void fillStacksIntoFirstSlots() {
@@ -353,24 +392,20 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         List<GT_Utility.ItemId> order = new ArrayList<>(mInventory.length);
         List<Integer> validSlots = new ArrayList<>(mInventory.length);
         for (int i = 0; i < mInventory.length - 1; i++) {
-            if (!isValidSlot(i))
-                continue;
+            if (!isValidSlot(i)) continue;
             validSlots.add(i);
             ItemStack s = mInventory[i];
-            if(s == null)
-                continue;
+            if (s == null) continue;
             GT_Utility.ItemId sID = GT_Utility.ItemId.createNoCopy(s);
             slots.merge(sID, s.stackSize, Integer::sum);
-            if(!stacks.containsKey(sID))
-                stacks.put(sID, s);
+            if (!stacks.containsKey(sID)) stacks.put(sID, s);
             order.add(sID);
             mInventory[i] = null;
         }
         int slotindex = 0;
         for (GT_Utility.ItemId sID : order) {
             int toSet = slots.get(sID);
-            if (toSet == 0)
-                continue;
+            if (toSet == 0) continue;
             int slot = validSlots.get(slotindex);
             slotindex++;
             mInventory[slot] = stacks.get(sID).copy();
@@ -381,14 +416,17 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ)  {
+    public boolean onSolderingToolRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             // I was so proud of all this but I literally just copied code from OutputBus
             bSortStacks = !bSortStacks;
-            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("200", "Sort mode: " + (bSortStacks ? "Enabled" : "Disabled")));
+            GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("200", "Sort mode: ")
+                            + (bSortStacks ? GT_Utility.trans("088", "Enabled") : GT_Utility.trans("087", "Disabled")));
             return true;
         }
-        return super.onSolderingToolRightClick(aSide,aWrenchingSide,aPlayer,aX,aY,aZ);
+        return super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
     }
-
 }

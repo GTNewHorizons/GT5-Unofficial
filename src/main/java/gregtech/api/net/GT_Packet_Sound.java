@@ -5,10 +5,9 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
-import net.minecraft.world.IBlockAccess;
-
 import java.io.DataOutput;
 import java.io.IOException;
+import net.minecraft.world.IBlockAccess;
 
 public class GT_Packet_Sound extends GT_Packet_New {
     private int mX, mZ;
@@ -48,7 +47,13 @@ public class GT_Packet_Sound extends GT_Packet_New {
 
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
-        return new GT_Packet_Sound(aData.readUTF(), aData.readFloat(), aData.readFloat(), aData.readInt(), aData.readShort(), aData.readInt());
+        return new GT_Packet_Sound(
+                aData.readUTF(),
+                aData.readFloat(),
+                aData.readFloat(),
+                aData.readInt(),
+                aData.readShort(),
+                aData.readInt());
     }
 
     @Override

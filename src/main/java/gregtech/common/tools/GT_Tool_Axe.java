@@ -5,6 +5,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,8 +16,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
-
-import java.util.List;
 
 public class GT_Tool_Axe extends GT_Tool {
     @Override
@@ -91,17 +90,31 @@ public class GT_Tool_Axe extends GT_Tool {
 
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-     return GT_ToolHarvestHelper.isAppropriateTool(aBlock,aMetaData ,"axe")
-             || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock ,Material.wood);
+        return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "axe")
+                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.wood);
     }
 
     @Override
-    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+    public int convertBlockDrops(
+            List<ItemStack> aDrops,
+            ItemStack aStack,
+            EntityPlayer aPlayer,
+            Block aBlock,
+            int aX,
+            int aY,
+            int aZ,
+            byte aMetaData,
+            int aFortune,
+            boolean aSilkTouch,
+            BlockEvent.HarvestDropsEvent aEvent) {
         int rAmount = 0;
-        if ((GregTech_API.sTimber) && (!aPlayer.isSneaking()) && (OrePrefixes.log.contains(new ItemStack(aBlock, 1, aMetaData)))) {
+        if ((GregTech_API.sTimber)
+                && (!aPlayer.isSneaking())
+                && (OrePrefixes.log.contains(new ItemStack(aBlock, 1, aMetaData)))) {
             int tY = aY + 1;
             for (int tH = aPlayer.worldObj.getHeight(); tY < tH; tY++) {
-                if ((aPlayer.worldObj.getBlock(aX, tY, aZ) != aBlock) || (!aPlayer.worldObj.func_147480_a(aX, tY, aZ, true))) {
+                if ((aPlayer.worldObj.getBlock(aX, tY, aZ) != aBlock)
+                        || (!aPlayer.worldObj.func_147480_a(aX, tY, aZ, true))) {
                     break;
                 }
                 rAmount++;
@@ -111,19 +124,29 @@ public class GT_Tool_Axe extends GT_Tool {
     }
 
     @Override
-    public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ)
-    {
-      if (aBlock.isWood(aPlayer.worldObj, aX, aY, aZ) && OrePrefixes.log.contains(new ItemStack(aBlock, 1, aMetaData))){
-        float rAmount = 1.0F;float tIncrement = 1.0F;
-        if ((GregTech_API.sTimber) && !aPlayer.isSneaking()){
-          int tY = aY + 1;
-          for (int tH = aPlayer.worldObj.getHeight(); (tY < tH) && (aPlayer.worldObj.getBlock(aX, tY, aZ) == aBlock); tY++){
-            tIncrement += 0.1F;rAmount += tIncrement;
-          }
+    public float getMiningSpeed(
+            Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
+        if (aBlock.isWood(aPlayer.worldObj, aX, aY, aZ)
+                && OrePrefixes.log.contains(new ItemStack(aBlock, 1, aMetaData))) {
+            float rAmount = 1.0F;
+            float tIncrement = 1.0F;
+            if ((GregTech_API.sTimber) && !aPlayer.isSneaking()) {
+                int tY = aY + 1;
+                for (int tH = aPlayer.worldObj.getHeight();
+                        (tY < tH) && (aPlayer.worldObj.getBlock(aX, tY, aZ) == aBlock);
+                        tY++) {
+                    tIncrement += 0.1F;
+                    rAmount += tIncrement;
+                }
+            }
+            return 2.0F * aDefault / rAmount;
         }
-        return 2.0F * aDefault / rAmount;
-      }
-      return (aBlock.getMaterial() == Material.leaves) || (aBlock.getMaterial() == Material.vine) || (aBlock.getMaterial() == Material.plants) || (aBlock.getMaterial() == Material.gourd) ? aDefault / 4.0F : aDefault;
+        return (aBlock.getMaterial() == Material.leaves)
+                        || (aBlock.getMaterial() == Material.vine)
+                        || (aBlock.getMaterial() == Material.plants)
+                        || (aBlock.getMaterial() == Material.gourd)
+                ? aDefault / 4.0F
+                : aDefault;
     }
 
     @Override
@@ -133,20 +156,29 @@ public class GT_Tool_Axe extends GT_Tool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadAxe.mTextureIndex] : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
+        return aIsToolHead
+                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack)
+                        .mIconSet
+                        .mTextures[OrePrefixes.toolHeadAxe.mTextureIndex]
+                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack)
+                        .mIconSet
+                        .mTextures[OrePrefixes.stick.mTextureIndex];
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead
+                ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
+                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
-    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-    }
+    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {}
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " has been chopped by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE
+                + " has been chopped by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 }

@@ -1,6 +1,7 @@
 package gregtech.crossmod;
 
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
+import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
@@ -10,8 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class GregtechWailaDataProvider implements IWailaDataProvider {
     @Override
     public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
@@ -19,28 +18,40 @@ public class GregtechWailaDataProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaHead(
+            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         return currenttip;
     }
+
     @Override
-    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaBody(
+            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         final TileEntity tile = accessor.getTileEntity();
-        if(tile instanceof IGregtechWailaProvider) {
-            ((IGregtechWailaProvider)tile).getWailaBody(itemStack, currenttip, accessor, config);
+        if (tile instanceof IGregtechWailaProvider) {
+            ((IGregtechWailaProvider) tile).getWailaBody(itemStack, currenttip, accessor, config);
         }
 
         return currenttip;
     }
+
     @Override
-    public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaTail(
+            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         final TileEntity tile = accessor.getTileEntity();
         return currenttip;
     }
 
     @Override
-    public NBTTagCompound getNBTData(final EntityPlayerMP player, final TileEntity tile, final NBTTagCompound tag, final World world, int x, int y, int z) {
-        if(tile instanceof IGregtechWailaProvider) {
-            ((IGregtechWailaProvider)tile).getWailaNBTData(player, tile, tag, world, x, y, z);
+    public NBTTagCompound getNBTData(
+            final EntityPlayerMP player,
+            final TileEntity tile,
+            final NBTTagCompound tag,
+            final World world,
+            int x,
+            int y,
+            int z) {
+        if (tile instanceof IGregtechWailaProvider) {
+            ((IGregtechWailaProvider) tile).getWailaNBTData(player, tile, tag, world, x, y, z);
         }
 
         return tag;

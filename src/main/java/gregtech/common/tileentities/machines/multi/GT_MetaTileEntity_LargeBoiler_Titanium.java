@@ -4,9 +4,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map_LargeBoilerFakeFuels;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_LargeBoiler {
     public GT_MetaTileEntity_LargeBoiler_Titanium(int aID, String aName, String aNameRegional) {
@@ -25,14 +23,14 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
     }
 
     @Override
-    public String getCasingMaterial(){
-    	return "Titanium";
+    public String getCasingMaterial() {
+        return "Titanium";
     }
 
-	@Override
-	public String getCasingBlockType() {
-		return "Machine Casings";
-	}
+    @Override
+    public String getCasingBlockType() {
+        return "Machine Casings";
+    }
 
     @Override
     public Block getCasingBlock() {
@@ -90,5 +88,7 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
     }
 
     @Override
-    boolean isSuperheated() { return true; }
+    boolean isSuperheated() {
+        return true;
+    }
 }

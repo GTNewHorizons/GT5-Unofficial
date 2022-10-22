@@ -28,7 +28,9 @@ public class GT_Log {
         public LogBuffer() {
             super(new OutputStream() {
                 @Override
-                public void write(int arg0) {/*Do nothing*/}
+                public void write(int arg0) {
+                    /*Do nothing*/
+                }
             });
         }
 

@@ -1,7 +1,6 @@
 package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
@@ -9,6 +8,7 @@ import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -19,6 +19,7 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import io.netty.buffer.ByteBuf;
+import javax.annotation.Nonnull;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -29,8 +30,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
-import javax.annotation.Nonnull;
-
 public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.ItemMeterData> {
 
     // Legacy data format
@@ -38,20 +37,25 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     private static final int CONVERTED_BIT = 0x80000000;
     private static final int INVERT_BIT = 0x40000000;
 
+    /**
+     * @deprecated use {@link #GT_Cover_ItemMeter(ITexture coverTexture)} instead
+     */
+    @Deprecated
     public GT_Cover_ItemMeter() {
-        super(ItemMeterData.class);
+        this(null);
+    }
+
+    public GT_Cover_ItemMeter(ITexture coverTexture) {
+        super(ItemMeterData.class, coverTexture);
     }
 
     @Override
     public ItemMeterData createDataObject(int aLegacyData) {
-        //Convert from ver. 5.09.33.50
+        // Convert from ver. 5.09.33.50
         if ((CONVERTED_BIT & aLegacyData) == 0)
-            if (aLegacyData == 0)
-                aLegacyData = CONVERTED_BIT;
-            else if (aLegacyData == 1)
-                aLegacyData = CONVERTED_BIT | INVERT_BIT;
-            else if (aLegacyData > 1)
-                aLegacyData = CONVERTED_BIT | Math.min((aLegacyData - 2), SLOT_MASK);
+            if (aLegacyData == 0) aLegacyData = CONVERTED_BIT;
+            else if (aLegacyData == 1) aLegacyData = CONVERTED_BIT | INVERT_BIT;
+            else if (aLegacyData > 1) aLegacyData = CONVERTED_BIT | Math.min((aLegacyData - 2), SLOT_MASK);
 
         boolean invert = (aLegacyData & INVERT_BIT) == INVERT_BIT;
         int slot = (aLegacyData & SLOT_MASK) - 1;
@@ -65,89 +69,81 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    protected boolean isRedstoneSensitiveImpl(
+            byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
-    @Override
-    protected ItemMeterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        long tMax = 0;
-        long tUsed = 0;
-        IMetaTileEntity mte = ((IGregTechTileEntity) aTileEntity).getMetaTileEntity();
+    public static byte computeSignalBasedOnItems(
+            ICoverable tileEntity, boolean inverted, int threshold, int slot, int side) {
+        long max = 0;
+        long used = 0;
+        IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
         if (mte instanceof GT_MetaTileEntity_DigitalChestBase) {
             GT_MetaTileEntity_DigitalChestBase dc = (GT_MetaTileEntity_DigitalChestBase) mte;
-            tMax = dc.getMaxItemCount(); // currently it is limited by int, but there is not much reason for that
-            ItemStack[] inv = dc.getStoredItemData();
-            if (inv != null && inv.length > 1 && inv[1] != null)
-                tUsed = inv[1].stackSize;
+            max = dc.getMaxItemCount();
+            used = dc.getProgresstime();
         } else if (GregTech_API.mAE2 && mte instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
             if (((GT_MetaTileEntity_Hatch_OutputBus_ME) mte).isLastOutputFailed()) {
-                tMax = 64;
-                tUsed = 64;
+                max = 64;
+                used = 64;
             }
         } else {
-            int[] tSlots = aCoverVariable.slot >= 0 ?
-                    new int[]{aCoverVariable.slot} :
-                    aTileEntity.getAccessibleSlotsFromSide(aSide);
+            int[] slots = slot >= 0 ? new int[] {slot} : tileEntity.getAccessibleSlotsFromSide(side);
 
-            for (int i : tSlots) {
-                if (i >= 0 && i < aTileEntity.getSizeInventory()) {
-                    tMax += 64;
-                    ItemStack tStack = aTileEntity.getStackInSlot(i);
-                    if (tStack != null)
-                        tUsed += (tStack.stackSize << 6) / tStack.getMaxStackSize();
+            for (int i : slots) {
+                if (i >= 0 && i < tileEntity.getSizeInventory()) {
+                    max += 64;
+                    ItemStack stack = tileEntity.getStackInSlot(i);
+                    if (stack != null) used += ((long) stack.stackSize << 6) / stack.getMaxStackSize();
                 }
             }
         }
 
-        long redstoneSignal;
-        if (tUsed == 0L) {
-            // nothing
-            redstoneSignal = 0;
-        } else if (tUsed >= tMax) {
-            // full
-            redstoneSignal = 15;
-        } else {
-            // 1-14 range
-            redstoneSignal = 1 + (14 * tUsed) / tMax;
-        }
+        return GT_Utility.convertRatioToRedstone(used, max, threshold, inverted);
+    }
 
-        if (aCoverVariable.inverted) {
-            redstoneSignal = 15 - redstoneSignal;
-        }
+    @Override
+    protected ItemMeterData doCoverThingsImpl(
+            byte aSide,
+            byte aInputRedstone,
+            int aCoverID,
+            ItemMeterData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
+        byte signal = computeSignalBasedOnItems(
+                aTileEntity, aCoverVariable.inverted, aCoverVariable.threshold, aCoverVariable.slot, aSide);
+        aTileEntity.setOutputRedstoneSignal(aSide, signal);
 
-        if (aCoverVariable.threshold > 0) {
-            if (aCoverVariable.inverted && tUsed >= aCoverVariable.threshold) {
-                redstoneSignal = 0;
-            } else if (!aCoverVariable.inverted && tUsed < aCoverVariable.threshold) {
-                redstoneSignal = 0;
-            }
-        }
-
-        aTileEntity.setOutputRedstoneSignal(aSide, (byte) redstoneSignal);
         return aCoverVariable;
     }
 
     @Override
-    protected ItemMeterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected ItemMeterData onCoverScrewdriverClickImpl(
+            byte aSide,
+            int aCoverID,
+            ItemMeterData aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
         if (aPlayer.isSneaking()) {
             if (aCoverVariable.inverted) {
                 aCoverVariable.inverted = false;
-				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("055", "Normal"));
-            }
-            else {
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("055", "Normal"));
+            } else {
                 aCoverVariable.inverted = true;
-				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("054", "Inverted"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("054", "Inverted"));
             }
         } else {
             aCoverVariable.slot++;
-            if (aCoverVariable.slot > aTileEntity.getSizeInventory())
-                aCoverVariable.slot = -1;
+            if (aCoverVariable.slot > aTileEntity.getSizeInventory()) aCoverVariable.slot = -1;
 
             if (aCoverVariable.slot == -1)
-				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("053", "Slot: ") + GT_Utility.trans("ALL", "All"));
-            else
-				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("053", "Slot: ") + aCoverVariable.slot);
+                GT_Utility.sendChatToPlayer(
+                        aPlayer, GT_Utility.trans("053", "Slot: ") + GT_Utility.trans("ALL", "All"));
+            else GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("053", "Slot: ") + aCoverVariable.slot);
         }
 
         return aCoverVariable;
@@ -159,32 +155,38 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsEnergyOutImpl(
+            byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidInImpl(
+            byte aSide, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    protected boolean letsFluidOutImpl(
+            byte aSide, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsInImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsInImpl(
+            byte aSide, int aCoverID, ItemMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    protected boolean letsItemsOutImpl(
+            byte aSide, int aCoverID, ItemMeterData aCoverVariable, int aSlot, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(
+            byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
@@ -196,14 +198,19 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     /**
      * GUI Stuff
      */
-
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    protected Object getClientGUIImpl(byte aSide, int aCoverID, ItemMeterData coverData, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+    protected Object getClientGUIImpl(
+            byte aSide,
+            int aCoverID,
+            ItemMeterData coverData,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            World aWorld) {
         return new GUI(aSide, aCoverID, coverData, aTileEntity);
     }
 
@@ -284,29 +291,35 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         private static final int spaceY = 18;
 
         private final String ALL = GT_Utility.trans("ALL", "All");
-		private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
-		private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
+        private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
+        private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
-		public GUI(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
+        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
+
+        public GUI(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            invertedButton = new GT_GuiIconCheckButton(this, 0, startX, startY, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
+            invertedButton = new GT_GuiIconCheckButton(
+                    this, 0, startX, startY, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
 
             intSlot = new GT_GuiIntegerTextBox(this, 1, startX, startY + spaceY + 2, spaceX * 2 + 5, 12);
             intSlot.setMaxStringLength(6);
 
-            //only shows if opened gui of block sadly, should've used container.
-            intSlotIcon = new GT_GuiFakeItemButton(this, startX + spaceX * 8 - 4, startY + spaceY, GT_GuiIcon.SLOT_GRAY);
+            // only shows if opened gui of block sadly, should've used container.
+            intSlotIcon =
+                    new GT_GuiFakeItemButton(this, startX + spaceX * 8 - 4, startY + spaceY, GT_GuiIcon.SLOT_GRAY);
             intSlotIcon.setMimicSlot(true);
 
-            if (tile instanceof TileEntity && !super.tile.isDead() && tile instanceof IGregTechTileEntity
-                && !(((IGregTechTileEntity) tile).getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase))
-                maxSlot = Math.min(tile.getSizeInventory() - 1, SLOT_MASK-1);
-            else
-                maxSlot = -1;
+            if (tile instanceof TileEntity
+                    && !super.tile.isDead()
+                    && tile instanceof IGregTechTileEntity
+                    && !(((IGregTechTileEntity) tile).getMetaTileEntity()
+                            instanceof GT_MetaTileEntity_DigitalChestBase))
+                maxSlot = Math.min(tile.getSizeInventory() - 1, SLOT_MASK - 1);
+            else maxSlot = -1;
 
             intSlot.setEnabled(maxSlot >= 0);
 
@@ -317,16 +330,26 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 3, 4 + startY, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("254", "Detect slot#"), startX + spaceX * 3, 4 + startY + spaceY, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, 0xFF555555);
+            this.getFontRenderer()
+                    .drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 3, 4 + startY, textColor);
+            this.getFontRenderer()
+                    .drawString(
+                            GT_Utility.trans("254", "Detect slot#"),
+                            startX + spaceX * 3,
+                            4 + startY + spaceY,
+                            textColor);
+            this.getFontRenderer()
+                    .drawString(
+                            GT_Utility.trans("221", "Item threshold"),
+                            startX + spaceX * 3,
+                            startY + spaceY * 2 + 4,
+                            textColor);
         }
 
         @Override
         protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
             update();
-            if (intSlot.isEnabled())
-                intSlot.setFocused(true);
+            if (intSlot.isEnabled()) intSlot.setFocused(true);
         }
 
         @Override
@@ -343,15 +366,12 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                 step = (isShiftKeyDown() ? 50 : isCtrlKeyDown() ? 5 : 1) * (delta > 0 ? step : -step);
                 int val = parseTextBox(intSlot);
 
-                if (val < 0)
-                    val = -1;
+                if (val < 0) val = -1;
 
                 val = val + step;
 
-                if (val < 0)
-                    val = -1;
-                else if (val > maxSlot)
-                    val = maxSlot;
+                if (val < 0) val = -1;
+                else if (val > maxSlot) val = maxSlot;
 
                 intSlot.setText(val < 0 ? ALL : Integer.toString(val));
             } else if (thresholdSlot.isFocused()) {
@@ -415,14 +435,11 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         private int parseTextBox(GT_GuiIntegerTextBox box) {
             if (box == intSlot) {
                 String text = box.getText();
-                if (text == null)
-                    return -1;
+                if (text == null) return -1;
                 text = text.trim();
-                if (text.startsWith(ALL))
-                    text = text.substring(ALL.length());
+                if (text.startsWith(ALL)) text = text.substring(ALL.length());
 
-                if (text.isEmpty())
-                    return -1;
+                if (text.isEmpty()) return -1;
 
                 int val;
                 try {
@@ -431,10 +448,8 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                     return -1;
                 }
 
-                if (val < 0)
-                    return -1;
-                else if (maxSlot < val)
-                    return maxSlot;
+                if (val < 0) return -1;
+                else if (maxSlot < val) return maxSlot;
                 return val;
             } else if (box == thresholdSlot) {
                 String text = box.getText();

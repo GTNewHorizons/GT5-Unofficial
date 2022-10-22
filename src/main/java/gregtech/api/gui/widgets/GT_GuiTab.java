@@ -1,16 +1,14 @@
 package gregtech.api.gui.widgets;
 
-import java.awt.Rectangle;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_ITabRenderer;
 import gregtech.api.interfaces.IGuiIcon;
+import java.awt.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 /**
  * A tab to be attached to a tab line
@@ -18,10 +16,7 @@ import net.minecraft.item.ItemStack;
 public class GT_GuiTab {
     private static final int SLOT_SIZE = 18;
 
-    public boolean 
-        visible = true,
-        mousedOver,
-        enabled = true;
+    public boolean visible = true, mousedOver, enabled = true;
 
     private Rectangle bounds;
     private GT_GuiTabIconSet tabBackground;
@@ -33,7 +28,7 @@ public class GT_GuiTab {
 
     /**
      * A tab to be attached to a tab line
-     * 
+     *
      * @param gui IGregTechTileEntity the tab line this tab belongs to is attached to
      * @param id both the ID and position in the tab line of this tab
      * @param bounds bounds of this tab
@@ -43,8 +38,15 @@ public class GT_GuiTab {
      * @param tooltipText tooltip of this tab
      * @param flipHorizontally whether to draw this tab on the right side of the IGregTechTileEntity
      */
-    public GT_GuiTab( GT_ITabRenderer gui, int id, Rectangle bounds, GT_GuiTabIconSet tabBackground, ItemStack item,
-    IGuiIcon overlay, String[] tooltipText, boolean flipHorizontally) {
+    public GT_GuiTab(
+            GT_ITabRenderer gui,
+            int id,
+            Rectangle bounds,
+            GT_GuiTabIconSet tabBackground,
+            ItemStack item,
+            IGuiIcon overlay,
+            String[] tooltipText,
+            boolean flipHorizontally) {
         this.gui = gui;
         this.bounds = bounds;
         this.item = item;
@@ -56,13 +58,13 @@ public class GT_GuiTab {
         this.flipHorizontally = flipHorizontally;
     }
 
-    public GT_GuiTab( GT_ITabRenderer gui, int id, Rectangle bounds, GT_GuiTabIconSet tabBackground) {
+    public GT_GuiTab(GT_ITabRenderer gui, int id, Rectangle bounds, GT_GuiTabIconSet tabBackground) {
         this(gui, id, bounds, tabBackground, null, null, null, false);
     }
 
     /**
      * Set this tab's tooltip text
-     * 
+     *
      * @param text
      * @return This tab for chaining
      */
@@ -70,8 +72,7 @@ public class GT_GuiTab {
         if (tooltip == null) {
             tooltip = new GT_GuiTooltip(bounds, text);
             gui.addToolTip(tooltip);
-        }
-        else {
+        } else {
             tooltip.setToolTipText(text);
         }
         return this;
@@ -86,21 +87,28 @@ public class GT_GuiTab {
 
     /**
      * Draw the background texture for this tab
-     * 
+     *
      * @param mouseX
      * @param mouseY
      * @param parTicks
      */
     public void drawBackground(int mouseX, int mouseY, float parTicks) {
         if (this.visible) {
-            GT_GuiIcon.render(getBackgroundTexture(), bounds.x, bounds.y, bounds.width, bounds.height, 1, true,
-                this.flipHorizontally);
+            GT_GuiIcon.render(
+                    getBackgroundTexture(),
+                    bounds.x,
+                    bounds.y,
+                    bounds.width,
+                    bounds.height,
+                    1,
+                    true,
+                    this.flipHorizontally);
         }
     }
 
     /**
      * Draw overlay textures and items atop the background texture
-     * 
+     *
      * @param mouseX
      * @param mouseY
      * @param parTicks
@@ -119,19 +127,22 @@ public class GT_GuiTab {
             }
             if (item != null) {
                 GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-                
+
                 if (item.getItem() instanceof ItemBlock) {
                     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
                     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
                 }
                 int margin = (bounds.height - SLOT_SIZE);
-                gui.getItemRenderer().renderItemAndEffectIntoGUI(gui.getFontRenderer(),
-                    Minecraft.getMinecraft().getTextureManager(), item,
-                    bounds.x + (this.flipHorizontally ? 0 : margin),  bounds.y + margin);
-    
-                if (item.getItem() instanceof ItemBlock)
-                    GL11.glPopAttrib();
-                
+                gui.getItemRenderer()
+                        .renderItemAndEffectIntoGUI(
+                                gui.getFontRenderer(),
+                                Minecraft.getMinecraft().getTextureManager(),
+                                item,
+                                bounds.x + (this.flipHorizontally ? 0 : margin),
+                                bounds.y + margin);
+
+                if (item.getItem() instanceof ItemBlock) GL11.glPopAttrib();
+
                 GL11.glPopAttrib();
             }
         }
@@ -141,8 +152,7 @@ public class GT_GuiTab {
      * @return the texture this tab should currently use as it's background
      */
     protected IGuiIcon getBackgroundTexture() {
-        if (!enabled)
-            return tabBackground.disabled;
+        if (!enabled) return tabBackground.disabled;
 
         return mousedOver ? tabBackground.highlight : tabBackground.normal;
     }
@@ -156,11 +166,11 @@ public class GT_GuiTab {
 
     /**
      * Reposition this tab on the screen
-     * 
+     *
      * @param xPos
      * @param yPos
      */
     public void setPosition(int xPos, int yPos) {
-        this.bounds = new Rectangle( xPos, yPos, bounds.width, bounds.height);
+        this.bounds = new Rectangle(xPos, yPos, bounds.width, bounds.height);
     }
 }

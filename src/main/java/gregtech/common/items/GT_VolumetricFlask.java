@@ -1,12 +1,19 @@
-
 package gregtech.common.items;
+
+import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
+import static gregtech.api.util.GT_Utility.formatNumbers;
+import static ic2.core.util.LiquidUtil.drainContainerStack;
+import static ic2.core.util.LiquidUtil.fillContainerStack;
+import static ic2.core.util.LiquidUtil.placeFluid;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.util.GT_Utility;
 import ic2.core.util.LiquidUtil;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -30,17 +37,10 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import java.util.List;
-
-import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
-import static ic2.core.util.LiquidUtil.drainContainerStack;
-import static ic2.core.util.LiquidUtil.fillContainerStack;
-import static ic2.core.util.LiquidUtil.placeFluid;
-
-
 public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem, INetworkUpdatableItem {
     private final int maxCapacity;
     private final String unlocalFlaskName;
+
     @SideOnly(Side.CLIENT)
     public IIcon iconWindow;
 
@@ -60,12 +60,21 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xOffset, float yOffset, float zOffset) {
+    public boolean onItemUse(
+            ItemStack stack,
+            EntityPlayer player,
+            World world,
+            int x,
+            int y,
+            int z,
+            int side,
+            float xOffset,
+            float yOffset,
+            float zOffset) {
         if (player instanceof FakePlayer) {
             return false;
         }
-        if (world.isRemote)
-            return false;
+        if (world.isRemote) return false;
         if (interactWithTank(stack, player, world, x, y, z, side)) {
             return true;
         }
@@ -85,9 +94,10 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
             }
             ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[mop.sideHit];
             FluidStack fluidStack = drainContainerStack(stack, player, 1000, true);
-            if (placeFluid(fluidStack, world, x, y, z) || (player.canPlayerEdit(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, mop.sideHit, stack) && placeFluid(fluidStack, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))) {
-                if (!player.capabilities.isCreativeMode)
-                    drainContainerStack(stack, player, 1000, false);
+            if (placeFluid(fluidStack, world, x, y, z)
+                    || (player.canPlayerEdit(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, mop.sideHit, stack)
+                            && placeFluid(fluidStack, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))) {
+                if (!player.capabilities.isCreativeMode) drainContainerStack(stack, player, 1000, false);
                 return true;
             }
         }
@@ -116,8 +126,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         int capacity = 1000;
         if (stack.hasTagCompound()) {
             NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt.hasKey("Capacity", 3))
-                capacity = nbt.getInteger("Capacity");
+            if (nbt.hasKey("Capacity", 3)) capacity = nbt.getInteger("Capacity");
         }
         return Math.min(getMaxCapacity(), capacity);
     }
@@ -126,7 +135,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aIconRegister) {
         super.registerIcons(aIconRegister);
-        iconWindow = aIconRegister.registerIcon(RES_PATH_ITEM + "gt."+unlocalFlaskName+".window");
+        iconWindow = aIconRegister.registerIcon(RES_PATH_ITEM + "gt." + unlocalFlaskName + ".window");
     }
 
     public void setCapacity(ItemStack stack, int capacity) {
@@ -142,8 +151,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     public FluidStack getFluid(ItemStack stack) {
         if (stack.hasTagCompound()) {
             NBTTagCompound nbt = stack.getTagCompound();
-            if (nbt.hasKey("Fluid", 10))
-                return FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("Fluid"));
+            if (nbt.hasKey("Fluid", 10)) return FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("Fluid"));
         }
         return null;
     }
@@ -152,8 +160,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         boolean removeFluid = (fluidStack == null) || (fluidStack.amount <= 0);
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt == null) {
-            if (removeFluid)
-                return;
+            if (removeFluid) return;
             stack.setTagCompound(nbt = new NBTTagCompound());
         }
         if (removeFluid) {
@@ -168,8 +175,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
 
     @Override
     public int fill(ItemStack stack, FluidStack resource, boolean doFill) {
-        if (stack.stackSize != 1)
-            return 0;
+        if (stack.stackSize != 1) return 0;
         if ((resource == null) || (resource.amount <= 0)) {
             return 0;
         }
@@ -189,11 +195,9 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
 
     @Override
     public FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
-        if (stack.stackSize != 1)
-            return null;
+        if (stack.stackSize != 1) return null;
         FluidStack fluidStack = getFluid(stack);
-        if (fluidStack == null)
-            return null;
+        if (fluidStack == null) return null;
         maxDrain = Math.min(fluidStack.amount, maxDrain);
         if (doDrain) {
             fluidStack.amount -= maxDrain;
@@ -208,9 +212,9 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         super.addInformation(stack, player, info, b);
         FluidStack fs = getFluid(stack);
         if (fs != null) {
-            info.add(String.format("< %s, %d mB >", FluidRegistry.getFluidName(fs), fs.amount));
+            info.add(String.format("< %s, %s mB >", GT_Utility.getFluidName(fs, true), formatNumbers(fs.amount)));
         } else {
-            info.add(String.format("< Empty, %d mB >", getCapacity(stack)));
+            info.add(String.format("< Empty, %s mB >", formatNumbers(getCapacity(stack))));
         }
         info.add("Rightclick on air to set volume (only while empty)");
     }
@@ -301,8 +305,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     public boolean receive(ItemStack stack, EntityPlayerMP player, NBTTagCompound tag) {
         if (stack != null && stack.stackSize > 0) {
             Item item = stack.getItem();
-            if (item == this)
-                setCapacity(stack, tag.getInteger("cap"));
+            if (item == this) setCapacity(stack, tag.getInteger("cap"));
             return true;
         }
         return false;

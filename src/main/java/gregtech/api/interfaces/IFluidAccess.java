@@ -19,4 +19,8 @@ public interface IFluidAccess {
             get().amount = Math.min(get().amount + amount, getRealCapacity());
         }
     }
+
+    default void verifyFluidStack() {
+        if (get() != null && get().amount <= 0) set(null);
+    }
 }

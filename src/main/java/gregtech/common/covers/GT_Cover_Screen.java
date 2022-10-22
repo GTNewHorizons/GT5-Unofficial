@@ -1,13 +1,28 @@
 package gregtech.common.covers;
 
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehavior;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_Screen extends GT_CoverBehavior {
+
+    /**
+     * @deprecated use {@link #GT_Cover_Screen(ITexture coverTexture)} instead
+     */
+    @Deprecated
+    public GT_Cover_Screen() {
+        this(null);
+    }
+
+    public GT_Cover_Screen(ITexture coverTexture) {
+        super(coverTexture);
+    }
+
     @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(
+            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
@@ -62,22 +77,33 @@ public class GT_Cover_Screen extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput(
+            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return false;
     }
 
     @Override
-    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onCoverRightclick(
+            byte aSide,
+            int aCoverID,
+            int aCoverVariable,
+            ICoverable aTileEntity,
+            EntityPlayer aPlayer,
+            float aX,
+            float aY,
+            float aZ) {
         return false;
     }
 
     @Override
-    public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
+    public boolean onCoverRemoval(
+            byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
         return true;
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(
+            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return 0;
     }
 }

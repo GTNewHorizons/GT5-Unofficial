@@ -1,5 +1,6 @@
 package gregtech.common;
 
+import java.io.File;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -16,67 +17,69 @@ import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
 
-import java.io.File;
-
 public class GT_DummyWorld extends World {
     public GT_IteratorRandom mRandom = new GT_IteratorRandom();
     public ItemStack mLastSetBlock = null;
 
-    public GT_DummyWorld(ISaveHandler saveHandler, String name, WorldProvider worldProvider, WorldSettings worldSettings, Profiler profiler) {
+    public GT_DummyWorld(
+            ISaveHandler saveHandler,
+            String name,
+            WorldProvider worldProvider,
+            WorldSettings worldSettings,
+            Profiler profiler) {
         super(saveHandler, name, worldSettings, worldProvider, profiler);
         this.rand = this.mRandom;
     }
 
     public GT_DummyWorld() {
-        this(new ISaveHandler() {
-                 @Override
-                 public void saveWorldInfoWithPlayer(WorldInfo worldInfo, NBTTagCompound nbtTagCompound) {
-                 }
+        this(
+                new ISaveHandler() {
+                    @Override
+                    public void saveWorldInfoWithPlayer(WorldInfo worldInfo, NBTTagCompound nbtTagCompound) {}
 
-                 @Override
-                 public void saveWorldInfo(WorldInfo worldInfo) {
-                 }
+                    @Override
+                    public void saveWorldInfo(WorldInfo worldInfo) {}
 
-                 @Override
-                 public WorldInfo loadWorldInfo() {
-                     return null;
-                 }
+                    @Override
+                    public WorldInfo loadWorldInfo() {
+                        return null;
+                    }
 
-                 @Override
-                 public IPlayerFileData getSaveHandler() {
-                     return null;
-                 }
+                    @Override
+                    public IPlayerFileData getSaveHandler() {
+                        return null;
+                    }
 
-                 @Override
-                 public File getMapFileFromName(String mapName) {
-                     return null;
-                 }
+                    @Override
+                    public File getMapFileFromName(String mapName) {
+                        return null;
+                    }
 
-                 @Override
-                 public IChunkLoader getChunkLoader(WorldProvider worldProvider) {
-                     return null;
-                 }
+                    @Override
+                    public IChunkLoader getChunkLoader(WorldProvider worldProvider) {
+                        return null;
+                    }
 
-                 @Override
-                 public void flush() {
-                 }
+                    @Override
+                    public void flush() {}
 
-                 @Override
-                 public void checkSessionLock() {
-                 }
+                    @Override
+                    public void checkSessionLock() {}
 
-                 @Override
-                 public String getWorldDirectoryName() {
-                     return null;
-                 }
+                    @Override
+                    public String getWorldDirectoryName() {
+                        return null;
+                    }
 
-                 @Override
-                 public File getWorldDirectory() {
-                     return null;
-                 }
-             }, "DUMMY_DIMENSION", null,
-
-                new WorldSettings(new WorldInfo(new NBTTagCompound())), new Profiler());
+                    @Override
+                    public File getWorldDirectory() {
+                        return null;
+                    }
+                },
+                "DUMMY_DIMENSION",
+                null,
+                new WorldSettings(new WorldInfo(new NBTTagCompound())),
+                new Profiler());
     }
 
     @Override

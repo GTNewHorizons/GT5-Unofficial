@@ -1,19 +1,18 @@
 package gregtech.api.enums;
 
+import static gregtech.api.enums.GT_Values.NI;
+import static gregtech.api.enums.GT_Values.W;
+
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import java.util.Locale;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-
-import java.util.Locale;
-
-import static gregtech.api.enums.GT_Values.NI;
-import static gregtech.api.enums.GT_Values.W;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -379,7 +378,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Biowarecomputer,
     Circuit_Biowaresupercomputer,
 
-    Rotor_LV,//these aren't actually used
+    Rotor_LV, // these aren't actually used
     Rotor_MV,
     Rotor_HV,
     Rotor_EV,
@@ -398,7 +397,6 @@ public enum ItemList implements IItemContainer {
     Electric_Motor_UIV,
     Electric_Motor_UMV,
     Electric_Motor_UXV,
-    Electric_Motor_OpV,
     Electric_Motor_MAX,
 
     Electric_Pump_LV,
@@ -414,7 +412,6 @@ public enum ItemList implements IItemContainer {
     Electric_Pump_UIV,
     Electric_Pump_UMV,
     Electric_Pump_UXV,
-    Electric_Pump_OpV,
     Electric_Pump_MAX,
 
     Tesseract,
@@ -448,7 +445,6 @@ public enum ItemList implements IItemContainer {
     Conveyor_Module_UIV,
     Conveyor_Module_UMV,
     Conveyor_Module_UXV,
-    Conveyor_Module_OpV,
     Conveyor_Module_MAX,
 
     Electric_Piston_LV,
@@ -464,7 +460,6 @@ public enum ItemList implements IItemContainer {
     Electric_Piston_UIV,
     Electric_Piston_UMV,
     Electric_Piston_UXV,
-    Electric_Piston_OpV,
     Electric_Piston_MAX,
 
     Robot_Arm_LV,
@@ -480,7 +475,6 @@ public enum ItemList implements IItemContainer {
     Robot_Arm_UIV,
     Robot_Arm_UMV,
     Robot_Arm_UXV,
-    Robot_Arm_OpV,
     Robot_Arm_MAX,
 
     Emitter_LV,
@@ -496,7 +490,6 @@ public enum ItemList implements IItemContainer {
     Emitter_UIV,
     Emitter_UMV,
     Emitter_UXV,
-    Emitter_OpV,
     Emitter_MAX,
 
     Sensor_LV,
@@ -512,7 +505,6 @@ public enum ItemList implements IItemContainer {
     Sensor_UIV,
     Sensor_UMV,
     Sensor_UXV,
-    Sensor_OpV,
     Sensor_MAX,
 
     Field_Generator_LV,
@@ -528,7 +520,6 @@ public enum ItemList implements IItemContainer {
     Field_Generator_UIV,
     Field_Generator_UMV,
     Field_Generator_UXV,
-    Field_Generator_OpV,
     Field_Generator_MAX,
 
     Battery_Hull_LV,
@@ -559,6 +550,7 @@ public enum ItemList implements IItemContainer {
     Upgrade_Muffler,
     Upgrade_SteamEngine,
     Upgrade_Lock,
+    Cover_FluidLimiter,
     Cover_Controller,
     Cover_ActivityDetector,
     Cover_FluidDetector,
@@ -751,7 +743,7 @@ public enum ItemList implements IItemContainer {
     Generator_Naquadah_Mark_III,
     Generator_Naquadah_Mark_IV,
     Generator_Naquadah_Mark_V,
-    //Generator_Naquadah_Mark_VI,
+    // Generator_Naquadah_Mark_VI,
     Machine_Bronze_Boiler,
     Machine_Bronze_Boiler_Solar,
     Machine_HP_Solar,
@@ -1439,6 +1431,7 @@ public enum ItemList implements IItemContainer {
     Machine_HV_Miner,
 
     Machine_IndustrialApiary,
+    IndustrialApiary_Upgrade_Frame,
     IndustrialApiary_Upgrade_Acceleration_1,
     IndustrialApiary_Upgrade_Acceleration_2,
     IndustrialApiary_Upgrade_Acceleration_3,
@@ -1448,6 +1441,27 @@ public enum ItemList implements IItemContainer {
     IndustrialApiary_Upgrade_Acceleration_7,
     IndustrialApiary_Upgrade_Acceleration_8,
     IndustrialApiary_Upgrade_Acceleration_8_Upgraded,
+    IndustrialApiary_Upgrade_PRODUCTION,
+    IndustrialApiary_Upgrade_PLAINS,
+    IndustrialApiary_Upgrade_LIGHT,
+    IndustrialApiary_Upgrade_FLOWERING,
+    IndustrialApiary_Upgrade_WINTER,
+    IndustrialApiary_Upgrade_DRYER,
+    IndustrialApiary_Upgrade_AUTOMATION,
+    IndustrialApiary_Upgrade_HUMIDIFIER,
+    IndustrialApiary_Upgrade_HELL,
+    IndustrialApiary_Upgrade_POLLEN,
+    IndustrialApiary_Upgrade_DESERT,
+    IndustrialApiary_Upgrade_COOLER,
+    IndustrialApiary_Upgrade_LIFESPAN,
+    IndustrialApiary_Upgrade_SEAL,
+    IndustrialApiary_Upgrade_STABILIZER,
+    IndustrialApiary_Upgrade_JUNGLE,
+    IndustrialApiary_Upgrade_TERRITORY,
+    IndustrialApiary_Upgrade_OCEAN,
+    IndustrialApiary_Upgrade_SKY,
+    IndustrialApiary_Upgrade_HEATER,
+    IndustrialApiary_Upgrade_SIEVE,
 
     Neutron_Reflector,
 
@@ -1535,8 +1549,18 @@ public enum ItemList implements IItemContainer {
     Long_Distance_Pipeline_Item_Pipe,
 
     Hatch_Output_Bus_ME,
+    Hatch_Output_ME,
 
     NULL,
+    Cover_AdvancedRedstoneTransmitterExternal,
+    Cover_AdvancedRedstoneTransmitterInternal,
+    Cover_AdvancedRedstoneReceiverExternal,
+    Cover_AdvancedRedstoneReceiverInternal,
+
+    Cover_WirelessFluidDetector,
+    Cover_WirelessItemDetector,
+    Cover_WirelessNeedsMaintainance,
+
     Cover_RedstoneTransmitterExternal,
     Cover_RedstoneTransmitterInternal,
     Cover_RedstoneReceiverExternal,
@@ -1638,6 +1662,8 @@ public enum ItemList implements IItemContainer {
     OilDrill1,
     OilDrill2,
     OilDrill3,
+
+    OilDrill4,
     OilDrillInfinite,
     ConcreteBackfiller1,
     ConcreteBackfiller2,
@@ -1905,170 +1931,160 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_InductorASMD,
     Circuit_Parts_InductorXSMD,
 
-    VOLUMETRIC_FLASK;
+    VOLUMETRIC_FLASK,
 
+    Hatch_Input_Bus_ME,
+    Hatch_CraftingInput_Bus_ME,
+    AdvDebugStructureWriter;
     public static final ItemList[]
-            DYE_ONLY_ITEMS = {
-            Color_00,
-            Color_01,
-            Color_02,
-            Color_03,
-            Color_04,
-            Color_05,
-            Color_06,
-            Color_07,
-            Color_08,
-            Color_09,
-            Color_10,
-            Color_11,
-            Color_12,
-            Color_13,
-            Color_14,
-            Color_15
-    },
-            SPRAY_CAN_DYES = {
-                    Spray_Color_00,
-                    Spray_Color_01,
-                    Spray_Color_02,
-                    Spray_Color_03,
-                    Spray_Color_04,
-                    Spray_Color_05,
-                    Spray_Color_06,
-                    Spray_Color_07,
-                    Spray_Color_08,
-                    Spray_Color_09,
-                    Spray_Color_10,
-                    Spray_Color_11,
-                    Spray_Color_12,
-                    Spray_Color_13,
-                    Spray_Color_14,
-                    Spray_Color_15
-            },
-            SPRAY_CAN_DYES_USED = {
-                    Spray_Color_Used_00,
-                    Spray_Color_Used_01,
-                    Spray_Color_Used_02,
-                    Spray_Color_Used_03,
-                    Spray_Color_Used_04,
-                    Spray_Color_Used_05,
-                    Spray_Color_Used_06,
-                    Spray_Color_Used_07,
-                    Spray_Color_Used_08,
-                    Spray_Color_Used_09,
-                    Spray_Color_Used_10,
-                    Spray_Color_Used_11,
-                    Spray_Color_Used_12,
-                    Spray_Color_Used_13,
-                    Spray_Color_Used_14,
-                    Spray_Color_Used_15
-            },
-            TRANSFORMERS = {
-                    Transformer_LV_ULV,
-                    Transformer_MV_LV,
-                    Transformer_HV_MV,
-                    Transformer_EV_HV,
-                    Transformer_IV_EV,
-                    Transformer_LuV_IV,
-                    Transformer_ZPM_LuV,
-                    Transformer_UV_ZPM,
-                    Transformer_MAX_UV
-            },
-            MACHINE_HULLS = {
-                    Hull_ULV,
-                    Hull_LV,
-                    Hull_MV,
-                    Hull_HV,
-                    Hull_EV,
-                    Hull_IV,
-                    Hull_LuV,
-                    Hull_ZPM,
-                    Hull_UV,
-                    Hull_MAX
-            },
-            HATCHES_DYNAMO = {
-                    Hatch_Dynamo_ULV,
-                    Hatch_Dynamo_LV,
-                    Hatch_Dynamo_MV,
-                    Hatch_Dynamo_HV,
-                    Hatch_Dynamo_EV,
-                    Hatch_Dynamo_IV,
-                    Hatch_Dynamo_LuV,
-                    Hatch_Dynamo_ZPM,
-                    Hatch_Dynamo_UV,
-                    Hatch_Dynamo_MAX
-            },
-            HATCHES_ENERGY = {
-                    Hatch_Energy_ULV,
-                    Hatch_Energy_LV,
-                    Hatch_Energy_MV,
-                    Hatch_Energy_HV,
-                    Hatch_Energy_EV,
-                    Hatch_Energy_IV,
-                    Hatch_Energy_LuV,
-                    Hatch_Energy_ZPM,
-                    Hatch_Energy_UV,
-                    Hatch_Energy_MAX
-            },
-            HATCHES_INPUT = {
-                    Hatch_Input_ULV,
-                    Hatch_Input_LV,
-                    Hatch_Input_MV,
-                    Hatch_Input_HV,
-                    Hatch_Input_EV,
-                    Hatch_Input_IV,
-                    Hatch_Input_LuV,
-                    Hatch_Input_ZPM,
-                    Hatch_Input_UV,
-                    Hatch_Input_MAX
-            },
-            HATCHES_INPUT_BUS = {
-                    Hatch_Input_Bus_ULV,
-                    Hatch_Input_Bus_LV,
-                    Hatch_Input_Bus_MV,
-                    Hatch_Input_Bus_HV,
-                    Hatch_Input_Bus_EV,
-                    Hatch_Input_Bus_IV,
-                    Hatch_Input_Bus_LuV,
-                    Hatch_Input_Bus_ZPM,
-                    Hatch_Input_Bus_UV,
-                    Hatch_Input_Bus_MAX
-            },
-            HATCHES_OUTPUT = {
-                    Hatch_Output_ULV,
-                    Hatch_Output_LV,
-                    Hatch_Output_MV,
-                    Hatch_Output_HV,
-                    Hatch_Output_EV,
-                    Hatch_Output_IV,
-                    Hatch_Output_LuV,
-                    Hatch_Output_ZPM,
-                    Hatch_Output_UV,
-                    Hatch_Output_MAX
-            },
-            HATCHES_OUTPUT_BUS = {
-                    Hatch_Output_Bus_ULV,
-                    Hatch_Output_Bus_LV,
-                    Hatch_Output_Bus_MV,
-                    Hatch_Output_Bus_HV,
-                    Hatch_Output_Bus_EV,
-                    Hatch_Output_Bus_IV,
-                    Hatch_Output_Bus_LuV,
-                    Hatch_Output_Bus_ZPM,
-                    Hatch_Output_Bus_UV,
-                    Hatch_Output_Bus_MAX
-            },
-            HATCHES_MUFFLER = {
-                    Hatch_Muffler_LV,
-                    Hatch_Muffler_LV,
-                    Hatch_Muffler_MV,
-                    Hatch_Muffler_HV,
-                    Hatch_Muffler_EV,
-                    Hatch_Muffler_IV,
-                    Hatch_Muffler_LuV,
-                    Hatch_Muffler_ZPM,
-                    Hatch_Muffler_UV,
-                    Hatch_Muffler_MAX
-            };
+            DYE_ONLY_ITEMS =
+                    {
+                        Color_00, Color_01, Color_02, Color_03, Color_04, Color_05, Color_06, Color_07, Color_08,
+                        Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15
+                    },
+            SPRAY_CAN_DYES =
+                    {
+                        Spray_Color_00,
+                        Spray_Color_01,
+                        Spray_Color_02,
+                        Spray_Color_03,
+                        Spray_Color_04,
+                        Spray_Color_05,
+                        Spray_Color_06,
+                        Spray_Color_07,
+                        Spray_Color_08,
+                        Spray_Color_09,
+                        Spray_Color_10,
+                        Spray_Color_11,
+                        Spray_Color_12,
+                        Spray_Color_13,
+                        Spray_Color_14,
+                        Spray_Color_15
+                    },
+            SPRAY_CAN_DYES_USED =
+                    {
+                        Spray_Color_Used_00,
+                        Spray_Color_Used_01,
+                        Spray_Color_Used_02,
+                        Spray_Color_Used_03,
+                        Spray_Color_Used_04,
+                        Spray_Color_Used_05,
+                        Spray_Color_Used_06,
+                        Spray_Color_Used_07,
+                        Spray_Color_Used_08,
+                        Spray_Color_Used_09,
+                        Spray_Color_Used_10,
+                        Spray_Color_Used_11,
+                        Spray_Color_Used_12,
+                        Spray_Color_Used_13,
+                        Spray_Color_Used_14,
+                        Spray_Color_Used_15
+                    },
+            TRANSFORMERS =
+                    {
+                        Transformer_LV_ULV,
+                        Transformer_MV_LV,
+                        Transformer_HV_MV,
+                        Transformer_EV_HV,
+                        Transformer_IV_EV,
+                        Transformer_LuV_IV,
+                        Transformer_ZPM_LuV,
+                        Transformer_UV_ZPM,
+                        Transformer_MAX_UV
+                    },
+            MACHINE_HULLS =
+                    {Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_MAX},
+            HATCHES_DYNAMO =
+                    {
+                        Hatch_Dynamo_ULV,
+                        Hatch_Dynamo_LV,
+                        Hatch_Dynamo_MV,
+                        Hatch_Dynamo_HV,
+                        Hatch_Dynamo_EV,
+                        Hatch_Dynamo_IV,
+                        Hatch_Dynamo_LuV,
+                        Hatch_Dynamo_ZPM,
+                        Hatch_Dynamo_UV,
+                        Hatch_Dynamo_MAX
+                    },
+            HATCHES_ENERGY =
+                    {
+                        Hatch_Energy_ULV,
+                        Hatch_Energy_LV,
+                        Hatch_Energy_MV,
+                        Hatch_Energy_HV,
+                        Hatch_Energy_EV,
+                        Hatch_Energy_IV,
+                        Hatch_Energy_LuV,
+                        Hatch_Energy_ZPM,
+                        Hatch_Energy_UV,
+                        Hatch_Energy_MAX
+                    },
+            HATCHES_INPUT =
+                    {
+                        Hatch_Input_ULV,
+                        Hatch_Input_LV,
+                        Hatch_Input_MV,
+                        Hatch_Input_HV,
+                        Hatch_Input_EV,
+                        Hatch_Input_IV,
+                        Hatch_Input_LuV,
+                        Hatch_Input_ZPM,
+                        Hatch_Input_UV,
+                        Hatch_Input_MAX
+                    },
+            HATCHES_INPUT_BUS =
+                    {
+                        Hatch_Input_Bus_ULV,
+                        Hatch_Input_Bus_LV,
+                        Hatch_Input_Bus_MV,
+                        Hatch_Input_Bus_HV,
+                        Hatch_Input_Bus_EV,
+                        Hatch_Input_Bus_IV,
+                        Hatch_Input_Bus_LuV,
+                        Hatch_Input_Bus_ZPM,
+                        Hatch_Input_Bus_UV,
+                        Hatch_Input_Bus_MAX
+                    },
+            HATCHES_OUTPUT =
+                    {
+                        Hatch_Output_ULV,
+                        Hatch_Output_LV,
+                        Hatch_Output_MV,
+                        Hatch_Output_HV,
+                        Hatch_Output_EV,
+                        Hatch_Output_IV,
+                        Hatch_Output_LuV,
+                        Hatch_Output_ZPM,
+                        Hatch_Output_UV,
+                        Hatch_Output_MAX
+                    },
+            HATCHES_OUTPUT_BUS =
+                    {
+                        Hatch_Output_Bus_ULV,
+                        Hatch_Output_Bus_LV,
+                        Hatch_Output_Bus_MV,
+                        Hatch_Output_Bus_HV,
+                        Hatch_Output_Bus_EV,
+                        Hatch_Output_Bus_IV,
+                        Hatch_Output_Bus_LuV,
+                        Hatch_Output_Bus_ZPM,
+                        Hatch_Output_Bus_UV,
+                        Hatch_Output_Bus_MAX
+                    },
+            HATCHES_MUFFLER =
+                    {
+                        Hatch_Muffler_LV,
+                        Hatch_Muffler_LV,
+                        Hatch_Muffler_MV,
+                        Hatch_Muffler_HV,
+                        Hatch_Muffler_EV,
+                        Hatch_Muffler_IV,
+                        Hatch_Muffler_LuV,
+                        Hatch_Muffler_ZPM,
+                        Hatch_Muffler_UV,
+                        Hatch_Muffler_MAX
+                    };
     public static Fluid sOilExtraHeavy,
             sEpichlorhydrin,
             sDrillingFluid,
@@ -2087,8 +2103,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public IItemContainer set(Item aItem) {
         mHasNotBeenSet = false;
-        if (aItem == null)
-            return this;
+        if (aItem == null) return this;
         ItemStack aStack = new ItemStack(aItem, 1, 0);
         mStack = GT_Utility.copyAmount(1, aStack);
         return this;
@@ -2105,8 +2120,7 @@ public enum ItemList implements IItemContainer {
     public Item getItem() {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack))
-            return null;
+        if (GT_Utility.isStackInvalid(mStack)) return null;
         return mStack.getItem();
     }
 
@@ -2129,8 +2143,7 @@ public enum ItemList implements IItemContainer {
 
     @Override
     public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT) {
-        if (GT_Utility.isStackInvalid(aStack))
-            return false;
+        if (GT_Utility.isStackInvalid(aStack)) return false;
         return GT_Utility.areUnificationsEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
     }
 
@@ -2138,8 +2151,7 @@ public enum ItemList implements IItemContainer {
     public ItemStack get(long aAmount, Object... aReplacements) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack))
-            return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
         return GT_Utility.copyAmount(aAmount, GT_OreDictUnificator.get(mStack));
     }
 
@@ -2147,8 +2159,7 @@ public enum ItemList implements IItemContainer {
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack))
-            return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
         return GT_Utility.copyAmountAndMetaData(aAmount, W, GT_OreDictUnificator.get(mStack));
     }
 
@@ -2156,8 +2167,7 @@ public enum ItemList implements IItemContainer {
     public ItemStack getUndamaged(long aAmount, Object... aReplacements) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack))
-            return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
         return GT_Utility.copyAmountAndMetaData(aAmount, 0, GT_OreDictUnificator.get(mStack));
     }
 
@@ -2165,23 +2175,23 @@ public enum ItemList implements IItemContainer {
     public ItemStack getAlmostBroken(long aAmount, Object... aReplacements) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack))
-            return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
         return GT_Utility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GT_OreDictUnificator.get(mStack));
     }
 
     @Override
     public ItemStack getWithName(long aAmount, String aDisplayName, Object... aReplacements) {
         ItemStack rStack = get(1, aReplacements);
-        if (GT_Utility.isStackInvalid(rStack))
-            return NI;
+        if (GT_Utility.isStackInvalid(rStack)) return NI;
 
         // CamelCase alphanumeric words from aDisplayName
         StringBuilder tCamelCasedDisplayNameBuilder = new StringBuilder();
         final String[] tDisplayNameWords = aDisplayName.split("\\W");
-        for (String tWord : tDisplayNameWords){
-            if (tWord.length() > 0) tCamelCasedDisplayNameBuilder.append(tWord.substring(0, 1).toUpperCase(Locale.US));
-            if (tWord.length() > 1) tCamelCasedDisplayNameBuilder.append(tWord.substring(1).toLowerCase(Locale.US));
+        for (String tWord : tDisplayNameWords) {
+            if (tWord.length() > 0)
+                tCamelCasedDisplayNameBuilder.append(tWord.substring(0, 1).toUpperCase(Locale.US));
+            if (tWord.length() > 1)
+                tCamelCasedDisplayNameBuilder.append(tWord.substring(1).toLowerCase(Locale.US));
         }
         if (tCamelCasedDisplayNameBuilder.length() == 0) {
             // CamelCased DisplayName is empty, so use hash of aDisplayName
@@ -2198,8 +2208,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public ItemStack getWithCharge(long aAmount, int aEnergy, Object... aReplacements) {
         ItemStack rStack = get(1, aReplacements);
-        if (GT_Utility.isStackInvalid(rStack))
-            return null;
+        if (GT_Utility.isStackInvalid(rStack)) return null;
         GT_ModHandler.chargeElectricItem(rStack, aEnergy, Integer.MAX_VALUE, true, false);
         return GT_Utility.copyAmount(aAmount, rStack);
     }
@@ -2208,8 +2217,7 @@ public enum ItemList implements IItemContainer {
     public ItemStack getWithDamage(long aAmount, long aMetaValue, Object... aReplacements) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        if (GT_Utility.isStackInvalid(mStack))
-            return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
         return GT_Utility.copyAmountAndMetaData(aAmount, aMetaValue, GT_OreDictUnificator.get(mStack));
     }
 
@@ -2217,8 +2225,7 @@ public enum ItemList implements IItemContainer {
     public IItemContainer registerOre(Object... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames)
-            GT_OreDictUnificator.registerOre(tOreName, get(1));
+        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, get(1));
         return this;
     }
 
@@ -2226,8 +2233,7 @@ public enum ItemList implements IItemContainer {
     public IItemContainer registerWildcardAsOre(Object... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames)
-            GT_OreDictUnificator.registerOre(tOreName, getWildcard(1));
+        for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, getWildcard(1));
         return this;
     }
 

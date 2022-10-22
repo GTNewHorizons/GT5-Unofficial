@@ -15,16 +15,20 @@ public class GT_GC_Compat {
     public static long insertEnergyInto(TileEntity tTileEntity, long aVoltage, ForgeDirection tDirection) {
         // GC Compat
         if (GregTech_API.mGalacticraft && tTileEntity instanceof IEnergyHandlerGC) {
-            if (!(tTileEntity instanceof IConnector) || ((IConnector)tTileEntity).canConnect(tDirection, NetworkType.POWER)) {
+            if (!(tTileEntity instanceof IConnector)
+                    || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER)) {
                 EnergySource eSource = new EnergySourceAdjacent(tDirection);
 
-                float tSizeToReceive = aVoltage * EnergyConfigHandler.IC2_RATIO, tStored = ((IEnergyHandlerGC)tTileEntity).getEnergyStoredGC(eSource);
-                if (tSizeToReceive >= tStored || tSizeToReceive <= ((IEnergyHandlerGC)tTileEntity).getMaxEnergyStoredGC(eSource) - tStored) {
-                    float tReceived = ((IEnergyHandlerGC)tTileEntity).receiveEnergyGC(eSource, tSizeToReceive, false);
+                float tSizeToReceive = aVoltage * EnergyConfigHandler.IC2_RATIO,
+                        tStored = ((IEnergyHandlerGC) tTileEntity).getEnergyStoredGC(eSource);
+                if (tSizeToReceive >= tStored
+                        || tSizeToReceive <= ((IEnergyHandlerGC) tTileEntity).getMaxEnergyStoredGC(eSource) - tStored) {
+                    float tReceived = ((IEnergyHandlerGC) tTileEntity).receiveEnergyGC(eSource, tSizeToReceive, false);
                     if (tReceived > 0) {
                         tSizeToReceive -= tReceived;
                         while (tSizeToReceive > 0) {
-                            tReceived = ((IEnergyHandlerGC)tTileEntity).receiveEnergyGC(eSource, tSizeToReceive, false);
+                            tReceived =
+                                    ((IEnergyHandlerGC) tTileEntity).receiveEnergyGC(eSource, tSizeToReceive, false);
                             if (tReceived < 1) break;
                             tSizeToReceive -= tReceived;
                         }
@@ -37,11 +41,12 @@ public class GT_GC_Compat {
         return 2;
     }
 
-    public static boolean canConnect(TileEntity tTileEntity,ForgeDirection tDirection){
+    public static boolean canConnect(TileEntity tTileEntity, ForgeDirection tDirection) {
         // GC Compat
-        if (GregTech_API.mGalacticraft && tTileEntity instanceof IEnergyHandlerGC && (!(tTileEntity instanceof IConnector) || ((IConnector)tTileEntity).canConnect(tDirection, NetworkType.POWER)))
-            return true;
+        if (GregTech_API.mGalacticraft
+                && tTileEntity instanceof IEnergyHandlerGC
+                && (!(tTileEntity instanceof IConnector)
+                        || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER))) return true;
         return false;
     }
-
 }

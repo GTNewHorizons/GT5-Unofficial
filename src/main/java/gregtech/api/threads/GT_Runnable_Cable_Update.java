@@ -30,8 +30,8 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
 
                 GT_Proxy.TICK_LOCK.lock();
                 try {
-                    //we dont want to go over cables that are in unloaded chunks
-                    //keeping the lock just to make sure no CME happens
+                    // we dont want to go over cables that are in unloaded chunks
+                    // keeping the lock just to make sure no CME happens
                     if (world.blockExists(aCoords.posX, aCoords.posY, aCoords.posZ)) {
                         tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
                     } else {
@@ -47,23 +47,27 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
 
                 // Now see if we should add the nearby blocks to the queue:
                 // only add blocks the cable is connected to
-                if (tTileEntity instanceof BaseMetaPipeEntity &&
-                        ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)
-                {
+                if (tTileEntity instanceof BaseMetaPipeEntity
+                        && ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
                     ChunkCoordinates tCoords;
-                    for (byte i = 0;i<6;i++) {
-                        if (((GT_MetaPipeEntity_Cable) ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity()).isConnectedAtSide(i)) {
+                    for (byte i = 0; i < 6; i++) {
+                        if (((GT_MetaPipeEntity_Cable) ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity())
+                                .isConnectedAtSide(i)) {
                             ForgeDirection offset = ForgeDirection.getOrientation(i);
-                            if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX + offset.offsetX,
-                                    aCoords.posY + offset.offsetY, aCoords.posZ + offset.offsetZ)))
-                                tQueue.add(tCoords);
+                            if (visited.add(
+                                    tCoords = new ChunkCoordinates(
+                                            aCoords.posX + offset.offsetX,
+                                            aCoords.posY + offset.offsetY,
+                                            aCoords.posZ + offset.offsetZ))) tQueue.add(tCoords);
                         }
                     }
                 }
             }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
-                    "Well this update was broken... " + mCoords + ", mWorld={" + world.getProviderName() + " @dimId " + world.provider.dimensionId + "}", e);
+                    "Well this update was broken... " + mCoords + ", mWorld={" + world.getProviderName() + " @dimId "
+                            + world.provider.dimensionId + "}",
+                    e);
         }
     }
 }
