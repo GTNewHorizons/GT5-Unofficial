@@ -13,6 +13,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.loaders.postload.chains.GT_BauxiteRefineChain;
 import ic2.api.recipe.ILiquidHeatExchangerManager;
 import ic2.api.recipe.Recipes;
 import java.util.Arrays;
@@ -3395,7 +3396,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pentlandite, 1),
                 GT_Utility.getIntegratedCircuit(1),
-                Materials.NitricAcid.getFluid(1000L),
+                Materials.SulfuricAcid.getFluid(1000L),
                 new FluidStack(ItemList.sNickelSulfate, 2000),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.PlatinumGroupSludge, 1),
                 50,
@@ -3403,7 +3404,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 1),
                 GT_Utility.getIntegratedCircuit(1),
-                Materials.NitricAcid.getFluid(1000L),
+                Materials.SulfuricAcid.getFluid(1000L),
                 new FluidStack(ItemList.sBlueVitriol, 2000),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.PlatinumGroupSludge, 1),
                 50,
@@ -3413,7 +3414,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     GT_Utility.getIntegratedCircuit(9),
                     GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pentlandite, 9)
                 },
-                new FluidStack[] {Materials.NitricAcid.getFluid(9000L)},
+                new FluidStack[] {Materials.SulfuricAcid.getFluid(9000L)},
                 new FluidStack[] {new FluidStack(ItemList.sNickelSulfate, 18000)},
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PlatinumGroupSludge, 1)},
                 25,
@@ -3423,7 +3424,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     GT_Utility.getIntegratedCircuit(9),
                     GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 9)
                 },
-                new FluidStack[] {Materials.NitricAcid.getFluid(9000L)},
+                new FluidStack[] {Materials.SulfuricAcid.getFluid(9000L)},
                 new FluidStack[] {new FluidStack(ItemList.sBlueVitriol, 18000)},
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PlatinumGroupSludge, 1)},
                 25,
@@ -8405,6 +8406,49 @@ public class GT_MachineRecipeLoader implements Runnable {
             }
             API.hideItem(new ItemStack(GT_MetaGenerated_Item_03.INSTANCE, 1, g));
         }
+
+        GT_Values.RA.addCentrifugeRecipe(
+                GT_Values.NI,
+                GT_Values.NI,
+                MaterialsOreAlum.SluiceJuice.getFluid(1000),
+                Materials.Water.getFluid(500),
+                Materials.Stone.getDust(1),
+                Materials.Iron.getDust(1),
+                Materials.Copper.getDust(1),
+                Materials.Tin.getDust(1),
+                Materials.Nickel.getDust(1),
+                Materials.Antimony.getDust(1),
+                new int[] {10000, 4000, 2000, 2000, 2000, 2000},
+                40,
+                120);
+        GT_Values.RA.addElectromagneticSeparatorRecipe(
+                MaterialsOreAlum.SluiceSand.getDust(1),
+                Materials.Iron.getDust(1),
+                Materials.Neodymium.getDust(1),
+                Materials.Chrome.getDust(1),
+                new int[] {4000, 2000, 2000},
+                200,
+                240);
+        GT_Values.RA.addMixerRecipe(
+                MaterialsOreAlum.SluiceSand.getDust(1),
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                Materials.Water.getFluid(500),
+                MaterialsOreAlum.SluiceJuice.getFluid(1000),
+                GT_Values.NI,
+                100,
+                16);
+        GT_Values.RA.addDistilleryRecipe(
+                1,
+                MaterialsOreAlum.SluiceJuice.getFluid(1000),
+                Materials.Water.getFluid(500),
+                MaterialsOreAlum.SluiceSand.getDust(1),
+                100,
+                16,
+                false);
+
+        GT_BauxiteRefineChain.run();
     }
 
     public void run2() {
