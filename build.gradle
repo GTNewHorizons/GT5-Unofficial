@@ -1,4 +1,4 @@
-//version: 1665425597
+//version: 1666118075
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -693,6 +693,9 @@ if (modrinthProjectId.size() != 0 && System.getenv("MODRINTH_TOKEN") != null) {
             addModrinthDep(qual[0], qual[1], parts[1])
         }
     }
+    if (usesMixins.toBoolean()) {
+        addModrinthDep("required", "version", "gtnhmixins")
+    }
     tasks.modrinth.dependsOn(build)
     tasks.publish.dependsOn(tasks.modrinth)
 }
@@ -733,6 +736,9 @@ if (curseForgeProjectId.size() != 0 && System.getenv("CURSEFORGE_TOKEN") != null
             String[] parts = dep.split(":")
             addCurseForgeRelation(parts[0], parts[1])
         }
+    }
+    if (usesMixins.toBoolean()) {
+        addCurseForgeRelation("requiredDependency", "gtnhmixins")
     }
     tasks.curseforge.dependsOn(build)
     tasks.publish.dependsOn(tasks.curseforge)
