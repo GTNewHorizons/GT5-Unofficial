@@ -9782,7 +9782,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(
                 ItemList.Casing_Coil_TungstenSteel.get(1L),
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 8),
+                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TPV, 8),
                     GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Nichrome, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 5)
                 },
@@ -9793,7 +9793,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.Casing_Coil_HSSG.get(1L),
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.HSSG, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TPV, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 6)
                 },
                 null,
@@ -9893,7 +9893,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addPulveriserRecipe(
                 ItemList.Casing_Coil_TungstenSteel.get(1L),
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TPV, 8),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nichrome, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 5)
                 },
@@ -9904,7 +9904,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.Casing_Coil_HSSG.get(1L),
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSG, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TPV, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 6)
                 },
                 null,
