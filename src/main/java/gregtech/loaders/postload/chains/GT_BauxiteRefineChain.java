@@ -39,7 +39,7 @@ public class GT_BauxiteRefineChain {
                 GT_ModHandler.getSteam(2000),
                 MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(32000),
                 160,
-                1800);
+                400);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {
@@ -111,6 +111,180 @@ public class GT_BauxiteRefineChain {
                 GT_Values.NI,
                 new int[] {8000, 1000, 2000, 5000, 6000},
                 40,
+                120);
+
+        OrePrefixes[] washable = new OrePrefixes[] {
+            OrePrefixes.crushed, OrePrefixes.crushedPurified, OrePrefixes.dustImpure, OrePrefixes.dustPure
+        };
+
+        for (OrePrefixes ore : washable) {
+            GT_Values.RA.addMixerRecipe(
+                    GT_OreDictUnificator.get(ore, Materials.Sapphire, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
+                    GT_Utility.getIntegratedCircuit(1),
+                    null,
+                    Materials.HydrochloricAcid.getFluid(1000),
+                    MaterialsOreAlum.SapphireJuice.getFluid(1000),
+                    null,
+                    40,
+                    100);
+
+            GT_Values.RA.addMixerRecipe(
+                    GT_OreDictUnificator.get(ore, Materials.GreenSapphire, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
+                    GT_Utility.getIntegratedCircuit(1),
+                    null,
+                    Materials.HydrochloricAcid.getFluid(1000),
+                    MaterialsOreAlum.GreenSapphireJuice.getFluid(1000),
+                    null,
+                    40,
+                    100);
+
+            GT_Values.RA.addMixerRecipe(
+                    GT_OreDictUnificator.get(ore, Materials.Ruby, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
+                    GT_Utility.getIntegratedCircuit(1),
+                    null,
+                    Materials.HydrochloricAcid.getFluid(1000),
+                    MaterialsOreAlum.RubyJuice.getFluid(1000),
+                    null,
+                    40,
+                    100);
+        }
+
+        GT_Values.RA.addCentrifugeRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                null,
+                MaterialsOreAlum.SapphireJuice.getFluid(1000),
+                Materials.HydrochloricAcid.getFluid(1000),
+                Materials.Aluminiumhydroxide.getDust(3),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Magnesium, 1),
+                null,
+                null,
+                new int[] {10000, 2000, 2000, 2000},
+                45,
+                100);
+
+        GT_Values.RA.addCentrifugeRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                null,
+                MaterialsOreAlum.GreenSapphireJuice.getFluid(1000),
+                Materials.HydrochloricAcid.getFluid(1000),
+                Materials.Aluminiumhydroxide.getDust(3),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Manganese, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Beryllium, 1),
+                null,
+                new int[] {10000, 2000, 2000, 2000, 2000},
+                45,
+                100);
+
+        GT_Values.RA.addCentrifugeRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                null,
+                MaterialsOreAlum.RubyJuice.getFluid(1000),
+                Materials.HydrochloricAcid.getFluid(1000),
+                Materials.Aluminiumhydroxide.getDust(3),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Magnesium, 1),
+                null,
+                new int[] {10000, 10000, 2000, 2000, 2000},
+                45,
+                100);
+
+        GT_Values.RA.addCentrifugeRecipe(
+                Materials.Pyrope.getDust(1),
+                null,
+                Materials.NitricAcid.getFluid(10),
+                MaterialsOreAlum.SluiceJuice.getFluid(10),
+                Materials.Aluminiumoxide.getDust(1),
+                Materials.Magnesia.getDust(1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
+                new int[] {5000, 4000, 2000, 2000, 2000, 2000},
+                45,
+                120);
+
+        GT_Values.RA.addCentrifugeRecipe(
+                Materials.Almandine.getDust(1),
+                null,
+                Materials.NitricAcid.getFluid(10),
+                MaterialsOreAlum.SluiceJuice.getFluid(10),
+                Materials.Aluminiumoxide.getDust(1),
+                Materials.Iron.getDust(1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Chrome, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
+                new int[] {5000, 4000, 2000, 2000, 2000, 2000},
+                45,
+                120);
+
+        GT_Values.RA.addCentrifugeRecipe(
+                Materials.Spessartine.getDust(1),
+                null,
+                Materials.NitricAcid.getFluid(10),
+                MaterialsOreAlum.SluiceJuice.getFluid(10),
+                Materials.Aluminiumoxide.getDust(1),
+                Materials.Pyrolusite.getDust(1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tantalum, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Magnesium, 1),
+                new int[] {5000, 4000, 2000, 2000, 2000, 2000},
+                45,
+                120);
+
+        GT_Values.RA.addCentrifugeRecipe(
+                Materials.Andradite.getDust(1),
+                null,
+                Materials.NitricAcid.getFluid(10),
+                MaterialsOreAlum.SluiceJuice.getFluid(10),
+                Materials.Quicklime.getDust(1),
+                Materials.Iron.getDust(1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Rutile, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Aluminiumoxide, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
+                new int[] {5000, 4000, 2000, 2000, 2000, 2000},
+                45,
+                120);
+
+        GT_Values.RA.addCentrifugeRecipe(
+                Materials.Uvarovite.getDust(1),
+                null,
+                Materials.NitricAcid.getFluid(10),
+                MaterialsOreAlum.SluiceJuice.getFluid(10),
+                Materials.Quicklime.getDust(1),
+                Materials.Chrome.getDust(1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Aluminiumoxide, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Manganese, 1),
+                new int[] {5000, 1000, 2000, 2000, 2000, 2000},
+                45,
+                120);
+
+        GT_Values.RA.addCentrifugeRecipe(
+                Materials.Grossular.getDust(1),
+                null,
+                Materials.NitricAcid.getFluid(10),
+                MaterialsOreAlum.SluiceJuice.getFluid(10),
+                Materials.Quicklime.getDust(1),
+                Materials.Aluminiumoxide.getDust(1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
+                new int[] {5000, 4000, 2000, 2000, 2000, 2000},
+                45,
                 120);
     }
 }
