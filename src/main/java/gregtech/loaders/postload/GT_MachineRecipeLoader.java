@@ -629,7 +629,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_Values.NF,
                 GT_OreDictUnificator.getDust(Materials.TPV, 7L * OrePrefixes.dust.mMaterialAmount),
                 (int) (175L * OrePrefixes.dust.mMaterialAmount / 3628800L),
-            1920);
+                1920);
         GT_Values.RA.addMixerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 5L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1L),
