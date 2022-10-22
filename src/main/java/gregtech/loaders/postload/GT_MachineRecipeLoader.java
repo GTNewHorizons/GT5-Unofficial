@@ -3458,6 +3458,20 @@ public class GT_MachineRecipeLoader implements Runnable {
                 null,
                 900,
                 30);
+        GT_Values.RA.addElectrolyzerRecipe(
+                ItemList.Cell_Empty.get(1),
+                null,
+                new FluidStack(ItemList.sGreenVitriol, 2000),
+                Materials.SulfuricAcid.getFluid(1000),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1),
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                null,
+                900,
+                30);
         GT_Values.RA.addCentrifugeRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PlatinumGroupSludge, 9),
                 null,
