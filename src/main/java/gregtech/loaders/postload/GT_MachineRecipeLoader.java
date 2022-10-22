@@ -618,17 +618,17 @@ public class GT_MachineRecipeLoader implements Runnable {
                 (int) (200L * OrePrefixes.dust.mMaterialAmount / 3628800L),
                 500);
         GT_Values.RA.addMixerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 3L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 3L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 1L),
-            GT_Values.NI,
-            GT_Values.NI,
-            GT_Utility.getIntegratedCircuit(1),
-            GT_Values.NF,
-            GT_Values.NF,
-            GT_OreDictUnificator.getDust(Materials.TPV, 7L * OrePrefixes.dust.mMaterialAmount),
-            (int) (700L * OrePrefixes.dust.mMaterialAmount / 3628800L),
-            500);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 3L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 3L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 1L),
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Utility.getIntegratedCircuit(1),
+                GT_Values.NF,
+                GT_Values.NF,
+                GT_OreDictUnificator.getDust(Materials.TPV, 7L * OrePrefixes.dust.mMaterialAmount),
+                (int) (700L * OrePrefixes.dust.mMaterialAmount / 3628800L),
+                500);
         GT_Values.RA.addMixerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 5L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1L),
