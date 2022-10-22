@@ -46,16 +46,16 @@ import net.minecraftforge.fluids.FluidTankInfo;
 public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_TFFT> {
 
     public enum Field {
-        T1(1_000_000L, 2), // LV
-        T2(4_000_000L, 3), // MV
+        T1(1_000_000L, 1), // LV
+        T2(4_000_000L, 2), // MV
         T3(16_000_000L, 5), // HV
-        T4(64_000_000L, 13), // EV
-        T5(256_000_000L, 89), // IV
+        T4(64_000_000L, 14), // EV
+        T5(256_000_000L, 42), // IV
 
-        T6(2_048_000_000L, 233), // LuV
-        T7(131_072_000_000L, 1597), // UV
-        T8(8_388_608_000_000L, 28657), // UEV
-        T9(536_870_912_000_000L, 514229), // UIV
+        T6(2_048_000_000L, 132), // LuV
+        T7(131_072_000_000L, 429), // UV
+        T8(8_388_608_000_000L, 1430), // UEV
+        T9(536_870_912_000_000L, 4862), // UIV
 
         T10(1_099_511_627_776_000_000L, 0); // UXV
 
