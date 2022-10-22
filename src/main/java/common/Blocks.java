@@ -9,14 +9,6 @@ public class Blocks {
     public static Block yszUnit;
     public static Block gdcUnit;
 
-    public static Block tfftCasing;
-    public static Block tfftStorageField1;
-    public static Block tfftStorageField2;
-    public static Block tfftStorageField3;
-    public static Block tfftStorageField4;
-    public static Block tfftStorageField5;
-    public static Block tfftMultiHatch;
-
     public static Block tfftStorageField;
 
     public static Block reactorChamberOFF;
@@ -64,14 +56,6 @@ public class Blocks {
     }
 
     private static void registerBlocks_TFFT() {
-        tfftCasing = Block_TFFTCasing.registerBlock();
-        tfftStorageField1 = Block_TFFTStorageFieldBlockT1.registerBlock();
-        tfftStorageField2 = Block_TFFTStorageFieldBlockT2.registerBlock();
-        tfftStorageField3 = Block_TFFTStorageFieldBlockT3.registerBlock();
-        tfftStorageField4 = Block_TFFTStorageFieldBlockT4.registerBlock();
-        tfftStorageField5 = Block_TFFTStorageFieldBlockT5.registerBlock();
-        tfftMultiHatch = Block_TFFTMultiHatch.registerBlock();
-
         tfftStorageField = Block_TFFTStorageField.registerBlock();
     }
 
