@@ -2174,6 +2174,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 BlueSteel,
                 DamascusSteel,
                 TungstenSteel,
+                TPV,
                 AstralSilver,
                 Mithril,
                 BlueAlloy,
