@@ -616,8 +616,20 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_Values.NF,
                 GT_Values.NF,
                 GT_OreDictUnificator.getDust(Materials.TungstenSteel, 2L * OrePrefixes.dust.mMaterialAmount),
-                (int) (200L * OrePrefixes.dust.mMaterialAmount / 3628800L),
-                500);
+                (int) (50L * OrePrefixes.dust.mMaterialAmount / 3628800L),
+                1920);
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 3L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 3L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 1L),
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Utility.getIntegratedCircuit(1),
+                GT_Values.NF,
+                GT_Values.NF,
+                GT_OreDictUnificator.getDust(Materials.TPV, 7L * OrePrefixes.dust.mMaterialAmount),
+                (int) (175L * OrePrefixes.dust.mMaterialAmount / 3628800L),
+                1920);
         GT_Values.RA.addMixerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 5L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1L),
@@ -9796,7 +9808,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(
                 ItemList.Casing_Coil_TungstenSteel.get(1L),
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 8),
+                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TPV, 8),
                     GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Nichrome, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 5)
                 },
@@ -9807,7 +9819,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.Casing_Coil_HSSG.get(1L),
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.HSSG, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TPV, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 6)
                 },
                 null,
@@ -9907,7 +9919,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addPulveriserRecipe(
                 ItemList.Casing_Coil_TungstenSteel.get(1L),
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TPV, 8),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nichrome, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 5)
                 },
@@ -9918,7 +9930,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.Casing_Coil_HSSG.get(1L),
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSG, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TPV, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 6)
                 },
                 null,
