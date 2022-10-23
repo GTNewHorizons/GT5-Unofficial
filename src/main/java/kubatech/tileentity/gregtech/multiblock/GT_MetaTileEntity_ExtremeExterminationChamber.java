@@ -182,7 +182,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
-    private EntityPlayer EECPlayer = null;
+    private EECFakePlayer EECPlayer = null;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -528,6 +528,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             //noinspection ConstantConditions
             if (weaponCache.isValid && lootingHolder.isItemStackDamageable()) {
                 if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
+                EECPlayer.currentWeapon = lootingHolder;
                 Item lootingHolderItem = lootingHolder.getItem();
                 for (int i = 0; i < times + 1; i++) {
                     if (!lootingHolderItem.hitEntity(lootingHolder, recipe.entity, EECPlayer)) break;
@@ -537,6 +538,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                         break;
                     }
                 }
+                EECPlayer.currentWeapon = null;
             }
         }
         if (this.mEUt > 0) this.mEUt = -this.mEUt;
@@ -637,6 +639,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     private static class EECFakePlayer extends FakePlayer {
         GT_MetaTileEntity_ExtremeExterminationChamber mte;
+        ItemStack currentWeapon;
 
         public EECFakePlayer(GT_MetaTileEntity_ExtremeExterminationChamber mte) {
             super(
@@ -657,5 +660,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
         @Override
         public void destroyCurrentEquippedItem() {}
+
+        @Override
+        public ItemStack getCurrentEquippedItem() {
+            return currentWeapon;
+        }
     }
 }
