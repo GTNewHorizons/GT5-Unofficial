@@ -899,7 +899,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsKevlar.init();
     }
 
-    //
+    static {
+        MaterialsOreAlum.init();
+    }
+
     /**
      * Superconductor re-routed for mod compatibility. Circuits are re-routed into SuperconductorUHV as well.
      * <p>Internal name is now Superconductor while translated name is SuperconductorUHV.</p>

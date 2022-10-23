@@ -466,7 +466,7 @@ public enum OrePrefixes {
             false,
             B[1],
             M * 5,
-            12,
+            64,
             16), // A quintuple Ingot.
     ingotQuadruple(
             "4x Ingots",
@@ -484,7 +484,7 @@ public enum OrePrefixes {
             false,
             B[1],
             M * 4,
-            16,
+            64,
             15), // A quadruple Ingot.
     @Deprecated
     ingotQuad(
@@ -503,7 +503,7 @@ public enum OrePrefixes {
             false,
             B[1],
             -1,
-            16,
+            64,
             15),
     ingotTriple(
             "3x Ingots",
@@ -521,7 +521,7 @@ public enum OrePrefixes {
             false,
             B[1],
             M * 3,
-            21,
+            64,
             14), // A triple Ingot.
     ingotDouble(
             "2x Ingots",
@@ -539,7 +539,7 @@ public enum OrePrefixes {
             false,
             B[1],
             M * 2,
-            32,
+            64,
             13), // A double Ingot. Introduced by TerraFirmaCraft
     ingotHot(
             "Hot Ingots",
@@ -614,7 +614,7 @@ public enum OrePrefixes {
             false,
             B[2],
             M * 2,
-            32,
+            64,
             61), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
     gemExquisite(
             "Exquisite Gemstones",
@@ -632,7 +632,7 @@ public enum OrePrefixes {
             false,
             B[2],
             M * 4,
-            16,
+            64,
             62), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
     gem(
             "Gemstones",
@@ -834,7 +834,7 @@ public enum OrePrefixes {
             false,
             B[1],
             M * 9,
-            8,
+            64,
             22), // 9 Plates combined in one Item.
     plateQuintuple(
             "5x Plates",
@@ -852,7 +852,7 @@ public enum OrePrefixes {
             false,
             B[1],
             M * 5,
-            12,
+            64,
             21),
     plateQuadruple(
             "4x Plates",
@@ -870,7 +870,7 @@ public enum OrePrefixes {
             false,
             B[1],
             M * 4,
-            16,
+            64,
             20),
     @Deprecated
     plateQuad(
@@ -889,7 +889,7 @@ public enum OrePrefixes {
             false,
             B[1],
             -1,
-            16,
+            64,
             20),
     plateTriple(
             "3x Plates",
@@ -907,7 +907,7 @@ public enum OrePrefixes {
             false,
             B[1],
             M * 3,
-            21,
+            64,
             19),
     plateDouble(
             "2x Plates",
@@ -925,7 +925,7 @@ public enum OrePrefixes {
             false,
             B[1],
             M * 2,
-            32,
+            64,
             18),
     plate(
             "Plates",
@@ -1117,7 +1117,7 @@ public enum OrePrefixes {
             false,
             B[7],
             M * 4 + M / 4,
-            16,
+            64,
             53), // consisting out of 4 Plates, 1 Ring and 1 Screw.
     gearGtSmall(
             "Small Gears",
@@ -1300,7 +1300,7 @@ public enum OrePrefixes {
             false,
             B[4] | B[8],
             M * 1,
-            16,
+            64,
             -1), // A vanilla Iron Bucket filled with the Material.
     bucketClay(
             "Clay Buckets",
@@ -1318,7 +1318,7 @@ public enum OrePrefixes {
             false,
             B[4] | B[8],
             M * 1,
-            16,
+            64,
             -1), // An Iguana Tweaks Clay Bucket filled with the Material.
     bottle(
             "Bottles",
@@ -1336,7 +1336,7 @@ public enum OrePrefixes {
             false,
             B[4] | B[8],
             -1,
-            16,
+            64,
             -1), // Glass Bottle containing a Fluid.
     capsule(
             "Capsules",
@@ -1354,7 +1354,7 @@ public enum OrePrefixes {
             false,
             B[4] | B[8],
             M * 1,
-            16,
+            64,
             -1),
     crystal(
             "Crystals",
@@ -1499,7 +1499,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 2,
-            16,
+            64,
             32), // consisting out of 2 Ingots.
     toolHeadPickaxe(
             "Pickaxe Heads",
@@ -1517,7 +1517,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 3,
-            16,
+            64,
             33), // consisting out of 3 Ingots.
     toolHeadShovel(
             "Shovel Heads",
@@ -1535,7 +1535,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 1,
-            16,
+            64,
             34), // consisting out of 1 Ingots.
     toolHeadUniversalSpade(
             "Universal Spade Heads",
@@ -1553,7 +1553,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 1,
-            16,
+            64,
             43), // consisting out of 1 Ingots.
     toolHeadAxe(
             "Axe Heads",
@@ -1571,7 +1571,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 3,
-            16,
+            64,
             35), // consisting out of 3 Ingots.
     toolHeadHoe(
             "Hoe Heads",
@@ -1589,7 +1589,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 2,
-            16,
+            64,
             36), // consisting out of 2 Ingots.
     toolHeadSense(
             "Sense Blades",
@@ -1607,7 +1607,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 3,
-            16,
+            64,
             44), // consisting out of 3 Ingots.
     toolHeadFile(
             "File Heads",
@@ -1625,7 +1625,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 2,
-            16,
+            64,
             38), // consisting out of 2 Ingots.
     toolHeadHammer(
             "Hammer Heads",
@@ -1643,7 +1643,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 6,
-            16,
+            64,
             37), // consisting out of 6 Ingots.
     toolHeadPlow(
             "Plow Heads",
@@ -1661,7 +1661,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 4,
-            16,
+            64,
             45), // consisting out of 4 Ingots.
     toolHeadSaw(
             "Saw Blades",
@@ -1679,7 +1679,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 2,
-            16,
+            64,
             39), // consisting out of 2 Ingots.
     toolHeadBuzzSaw(
             "Buzzsaw Blades",
@@ -1697,7 +1697,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 4,
-            16,
+            64,
             48), // consisting out of 4 Ingots.
     toolHeadScrewdriver(
             "Screwdriver Tips",
@@ -1715,7 +1715,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 1,
-            16,
+            64,
             47), // consisting out of 1 Ingots.
     toolHeadDrill(
             "Drill Tips",
@@ -1733,7 +1733,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 4,
-            16,
+            64,
             40), // consisting out of 4 Ingots.
     toolHeadChainsaw(
             "Chainsaw Tips",
@@ -1751,7 +1751,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 2,
-            16,
+            64,
             41), // consisting out of 2 Ingots.
     toolHeadWrench(
             "Wrench Tips",
@@ -1769,7 +1769,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 4,
-            16,
+            64,
             42), // consisting out of 4 Ingots.
     turbineBlade(
             "Turbine Blades",
@@ -3019,7 +3019,7 @@ public enum OrePrefixes {
             false,
             B[6],
             M * 6,
-            16,
+            64,
             127), // Reverse Head consisting out of 6 Ingots.
     handleMallet(
             "Mallet Handle",
