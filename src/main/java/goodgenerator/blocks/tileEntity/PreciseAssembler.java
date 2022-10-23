@@ -409,7 +409,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Precise Assembler/Assembler")
                 .addInfo("Controller block for the Precise Assembler")
-                .addInfo("The error is no more than 0.03mm.")
+                .addInfo("The error is no more than 7nm.")
                 .addInfo("Can assemble precise component in Precise Mode.")
                 .addInfo("Can work like a normal assembler in Normal Mode.")
                 .addInfo("Use screwdriver to change mode.")
