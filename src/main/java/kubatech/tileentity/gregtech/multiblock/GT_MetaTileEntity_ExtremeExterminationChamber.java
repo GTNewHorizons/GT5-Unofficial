@@ -38,6 +38,7 @@ import com.google.common.collect.Multimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -55,10 +56,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.helpers.GTHelper;
@@ -88,7 +87,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderHell;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -181,6 +182,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
+    private EntityPlayer EECPlayer = null;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -491,31 +493,31 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
             GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.size() == 0 ? null : this.mInputBusses.get(0);
             if (inputbus != null && !isValidMetaTileEntity(inputbus)) inputbus = null;
-            ItemStack lootingholder = inputbus == null ? null : inputbus.getStackInSlot(0);
+            ItemStack lootingHolder = inputbus == null ? null : inputbus.getStackInSlot(0);
             weaponCheck:
             {
                 //noinspection EqualsBetweenInconvertibleTypes
-                if (weaponCache.isValid && weaponCache.id.equals(lootingholder)) break weaponCheck;
-                if (lootingholder == null || !Enchantment.looting.canApply(lootingholder)) {
+                if (weaponCache.isValid && weaponCache.id.equals(lootingHolder)) break weaponCheck;
+                if (lootingHolder == null || !Enchantment.looting.canApply(lootingHolder)) {
                     weaponCache.isValid = false;
                     break weaponCheck;
                 }
                 try {
                     //noinspection unchecked
                     weaponCache.attackdamage = ((Multimap<String, AttributeModifier>)
-                                    lootingholder.getAttributeModifiers())
+                                    lootingHolder.getAttributeModifiers())
                             .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName()).stream()
                                     .mapToDouble(attr -> attr.getAmount()
                                             + (double) EnchantmentHelper.func_152377_a(
-                                                    lootingholder, EnumCreatureAttribute.UNDEFINED))
+                                                    lootingHolder, EnumCreatureAttribute.UNDEFINED))
                                     .sum();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
                 weaponCache.isValid = true;
                 weaponCache.looting =
-                        EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingholder);
-                weaponCache.id = ItemID.create_NoCopy(lootingholder, true, true);
+                        EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingHolder);
+                weaponCache.id = ItemID.create_NoCopy(lootingHolder, true, true);
             }
             if (weaponCache.isValid) attackDamage += weaponCache.attackdamage;
 
@@ -524,13 +526,17 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             this.mOutputFluids = new FluidStack[] {FluidRegistry.getFluidStack("xpjuice", 120)};
             int times = GTHelper.calculateOverclockedNessMulti(this, this.mEUt, this.mMaxProgresstime, true);
             //noinspection ConstantConditions
-            if (weaponCache.isValid && lootingholder.isItemStackDamageable()) {
-                for (int i = 0; i < times + 1; i++)
-                    if (lootingholder.attemptDamageItem(1, rand)) {
+            if (weaponCache.isValid && lootingHolder.isItemStackDamageable()) {
+                if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
+                Item lootingHolderItem = lootingHolder.getItem();
+                for (int i = 0; i < times + 1; i++) {
+                    if (!lootingHolderItem.hitEntity(lootingHolder, recipe.entity, EECPlayer)) break;
+                    if (lootingHolder.stackSize == 0) {
                         //noinspection ConstantConditions
                         inputbus.setInventorySlotContents(0, null);
                         break;
                     }
+                }
             }
         }
         if (this.mEUt > 0) this.mEUt = -this.mEUt;
@@ -627,5 +633,29 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    private static class EECFakePlayer extends FakePlayer {
+        GT_MetaTileEntity_ExtremeExterminationChamber mte;
+
+        public EECFakePlayer(GT_MetaTileEntity_ExtremeExterminationChamber mte) {
+            super(
+                    (WorldServer) mte.getBaseMetaTileEntity().getWorld(),
+                    new GameProfile(
+                            UUID.nameUUIDFromBytes("[EEC Fake Player]".getBytes(StandardCharsets.UTF_8)),
+                            "[EEC Fake Player]"));
+            this.mte = mte;
+        }
+
+        @Override
+        public void renderBrokenItemStack(ItemStack p_70669_1_) {}
+
+        @Override
+        public Random getRNG() {
+            return mte.rand;
+        }
+
+        @Override
+        public void destroyCurrentEquippedItem() {}
     }
 }
