@@ -8,8 +8,9 @@ import static java.lang.Math.min;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.*;
+import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import common.Blocks;
 import gregtech.api.enums.Textures;
 import gregtech.api.fluid.FluidTankGT;
@@ -30,7 +31,6 @@ import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +43,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_TFFT> {
+public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_TFFT> implements ISurvivalConstructable {
 
     public enum Field {
         T1(1_000_000L, 1), // LV
@@ -55,7 +55,7 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
         T6(2_048_000_000L, 132), // LuV
         T7(131_072_000_000L, 429), // UV
         T8(8_388_608_000_000L, 1430), // UEV
-        T9(536_870_912_000_000L, 4862), // UIV
+        T9(536_870_912_000_000L, 4862), // UMV
 
         T10(1_099_511_627_776_000_000L, 0); // UXV
 
@@ -80,9 +80,16 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
     private enum TFFTMultiHatch implements IHatchElement<GTMTE_TFFT> {
         INSTANCE;
 
+        private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
+
+        @SafeVarargs
+        TFFTMultiHatch(Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Arrays.asList(mteClasses);
+        }
+
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return Collections.singletonList(GTMTE_TFFT.class);
+            return mteClasses;
         }
 
         @Override
@@ -117,6 +124,9 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
     private static final String STRUCTURE_PIECE_TOP = "top";
     private static final String STRUCTURE_PIECE_MID = "mid";
     private static final String STRUCTURE_PIECE_BOTTOM = "bottom";
+
+    // height channel for height.
+    // field channel for field
     private static final IStructureDefinition<GTMTE_TFFT> STRUCTURE_DEFINITION =
             IStructureDefinition.<GTMTE_TFFT>builder()
                     .addShape(
@@ -190,6 +200,41 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
                         public boolean placeBlock(GTMTE_TFFT t, World world, int x, int y, int z, ItemStack trigger) {
                             world.setBlock(x, y, z, TFFT_FIELD, getHint(trigger), 3);
                             return true;
+                        }
+
+                        @Override
+                        public PlaceResult survivalPlaceBlock(
+                                GTMTE_TFFT t,
+                                World world,
+                                int x,
+                                int y,
+                                int z,
+                                ItemStack trigger,
+                                AutoPlaceEnvironment env) {
+                            if (check(t, world, x, y, z)) return PlaceResult.SKIP;
+                            int fieldTier = getHint(trigger);
+                            ItemStack result = env.getSource()
+                                    .takeOne(
+                                            s -> s != null
+                                                    && s.stackSize >= 0
+                                                    && s.getItem() == TFFT_FIELD_ITEM
+                                                    && s.getItemDamage() != CASING_META
+                                                    && s.getItemDamage() <= fieldTier,
+                                            true);
+                            if (result == null) return PlaceResult.REJECT;
+
+                            return StructureUtility.survivalPlaceBlock(
+                                    result,
+                                    ItemStackPredicate.NBTMode.EXACT,
+                                    null,
+                                    true,
+                                    world,
+                                    x,
+                                    y,
+                                    z,
+                                    env.getSource(),
+                                    env.getActor(),
+                                    env.getChatter());
                         }
                     }))
                     .build();
@@ -291,6 +336,8 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
                 .addOtherStructurePart(
                         "Multi I/O Hatches", "Instead of any casing or glass, has to touch storage field block")
                 .addStructureInfo("Use MIOH with conduits or fluid storage busses to see all fluids at once.")
+                .addSubChannelUsage("field", "Maximum Field Tier")
+                .addSubChannelUsage("height", "Height of structure")
                 .toolTipFinisher("KekzTech");
         return tt;
     }
@@ -303,19 +350,18 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
         buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer);
     }
 
-    //    @Override
-    //    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-    //        if (mMachine) return -1;
-    //        int build = survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
-    //        if (build >= 0) return build;
-    //        int layer = min(stackSize.stackSize + DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT + 1);
-    //        for (int i = -1; i >= 1 - layer; i--) {
-    //            survivialBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
-    //            if (build >= 0) return build;
-    //        }
-    //        return survivialBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer, elementBudget, env, false,
-    // true);
-    //    }
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        int build = survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        if (build >= 0) return build;
+        int layer = min(stackSize.stackSize + DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT + 1);
+        for (int i = -1; i >= 1 - layer; i--) {
+            build = survivialBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
+            if (build >= 0) return build;
+        }
+        return survivialBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer, elementBudget, env, false, true);
+    }
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -549,7 +595,6 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
             if (aMetaTileEntity instanceof GTMTE_TFFTHatch) {
                 if (this.tfftHatch != null) return false;
                 this.tfftHatch = (GTMTE_TFFTHatch) aMetaTileEntity;
-                this.tfftHatch.updateTexture(aBaseCasingIndex);
                 return true;
             }
         }
