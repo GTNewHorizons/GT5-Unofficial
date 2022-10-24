@@ -225,7 +225,7 @@ public class BookHandler {
                     "Valid Coils:" + "\n" + "\n" + "1 - Cupronickel"
                             + "\n" + "2 - Kanthal"
                             + "\n" + "3 - Nichrome"
-                            + "\n" + "4 - Tungstensteel"
+                            + "\n" + "4 - TPV-Alloy"
                             + "\n" + "5 - HSS-G"
                             + "\n" + "6 - HSS-S"
                             + "\n" + "7 - Naquadah"
