@@ -9,6 +9,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
@@ -206,14 +207,6 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
 
     // GUI stuff
 
-    private static final int startX = 10;
-    private static final int startY = 25;
-    private static final int spaceX = 18;
-    private static final int spaceY = 18;
-    private static final String ALL_TEXT = "All";
-
-    private int maxSlot;
-
     @Override
     public boolean hasCoverGUI() {
         return true;
@@ -225,109 +218,131 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
-        final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
-
-        maxSlot = getMaxSlot();
-
-        builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
-                        .addFollower(
-                                CoverDataFollower_ToggleButtonWidget.ofRedstone(),
-                                coverData -> coverData.inverted,
-                                (coverData, state) -> {
-                                    coverData.inverted = state;
-                                    return coverData;
-                                },
-                                widget -> widget.addTooltip(0, NORMAL)
-                                        .addTooltip(1, INVERTED)
-                                        .setPos(0, 0))
-                        .addFollower(
-                                new CoverDataFollower_TextFieldWidget<>(),
-                                coverData -> getSlotTextFieldContent(coverData.slot),
-                                (coverData, state) -> {
-                                    coverData.slot = getIntFromText(state);
-                                    return coverData;
-                                },
-                                widget -> widget.setOnScrollText()
-                                        .setValidator(val -> {
-                                            final int valSlot = getIntFromText(val);
-                                            if (valSlot > -1) {
-                                                return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
-                                            } else {
-                                                return ALL_TEXT;
-                                            }
-                                        })
-                                        .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
-                                        .setFocusOnGuiOpen(true)
-                                        .setPos(0, spaceY + 2)
-                                        .setSize(spaceX * 2 + 5, 12))
-                        .addFollower(
-                                new CoverDataFollower_TextFieldWidget<>(),
-                                coverData -> String.valueOf(coverData.threshold),
-                                (coverData, state) -> {
-                                    coverData.threshold = (int) MathExpression.parseMathExpression(state);
-                                    return coverData;
-                                },
-                                widget -> widget.setOnScrollNumbers(1, 10, 64)
-                                        .setNumbers(0, getUpperBound())
-                                        .setPos(0, spaceY * 2 + 2)
-                                        .setSize(spaceX * 2 + 5, 12))
-                        .setPos(startX, startY))
-                .widget(new ItemWatcherSlotWidget()
-                        .setGetter(this::getTargetItem)
-                        .setPos(startX + spaceX * 8 - 4, startY + spaceY))
-                .widget(TextWidget.dynamicString(
-                                () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, 4 + startY))
-                .widget(new TextWidget(GT_Utility.trans("254", "Detect slot#"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, 4 + startY + spaceY))
-                .widget(new TextWidget(GT_Utility.trans("221", "Item threshold"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, startY + spaceY * 2 + 4));
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new ItemMeterUIFactory(buildContext).createWindow();
     }
 
-    private int getMaxSlot() {
-        final ICoverable tile = getUIContext().getTile();
-        if (tile instanceof TileEntity
-                && !tile.isDead()
-                && tile instanceof IGregTechTileEntity
-                && !(((IGregTechTileEntity) tile).getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase))
-            return Math.min(tile.getSizeInventory() - 1, SLOT_MASK - 1);
-        else return -1;
-    }
+    private class ItemMeterUIFactory extends UIFactory {
 
-    private int getIntFromText(String text) {
-        try {
-            return (int) MathExpression.parseMathExpression(text, -1);
-        } catch (Exception e) {
-            return -1;
+        private static final int startX = 10;
+        private static final int startY = 25;
+        private static final int spaceX = 18;
+        private static final int spaceY = 18;
+        private static final String ALL_TEXT = "All";
+
+        private int maxSlot;
+
+        public ItemMeterUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
-    }
 
-    private String getSlotTextFieldContent(int val) {
-        return val < 0 ? ALL_TEXT : String.valueOf(val);
-    }
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
+            final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
-    private int getUpperBound() {
-        return maxSlot > 0 ? maxSlot * 64 : 999_999;
-    }
+            maxSlot = getMaxSlot();
 
-    private ItemStack getTargetItem() {
-        ItemMeterData coverVariable = getCoverData();
-        if (coverVariable == null || coverVariable.slot < 0) {
-            return null;
+            builder.widget(new CoverDataControllerWidget<>(
+                                    this::getCoverData, this::setCoverData, GT_Cover_ItemMeter.this)
+                            .addFollower(
+                                    CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                                    coverData -> coverData.inverted,
+                                    (coverData, state) -> {
+                                        coverData.inverted = state;
+                                        return coverData;
+                                    },
+                                    widget -> widget.addTooltip(0, NORMAL)
+                                            .addTooltip(1, INVERTED)
+                                            .setPos(0, 0))
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> getSlotTextFieldContent(coverData.slot),
+                                    (coverData, state) -> {
+                                        coverData.slot = getIntFromText(state);
+                                        return coverData;
+                                    },
+                                    widget -> widget.setOnScrollText()
+                                            .setValidator(val -> {
+                                                final int valSlot = getIntFromText(val);
+                                                if (valSlot > -1) {
+                                                    return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
+                                                } else {
+                                                    return ALL_TEXT;
+                                                }
+                                            })
+                                            .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                                            .setFocusOnGuiOpen(true)
+                                            .setPos(0, spaceY + 2)
+                                            .setSize(spaceX * 2 + 5, 12))
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> String.valueOf(coverData.threshold),
+                                    (coverData, state) -> {
+                                        coverData.threshold = (int) MathExpression.parseMathExpression(state);
+                                        return coverData;
+                                    },
+                                    widget -> widget.setOnScrollNumbers(1, 10, 64)
+                                            .setNumbers(0, getUpperBound())
+                                            .setPos(0, spaceY * 2 + 2)
+                                            .setSize(spaceX * 2 + 5, 12))
+                            .setPos(startX, startY))
+                    .widget(new ItemWatcherSlotWidget()
+                            .setGetter(this::getTargetItem)
+                            .setPos(startX + spaceX * 8 - 4, startY + spaceY))
+                    .widget(TextWidget.dynamicString(
+                                    () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
+                            .setSynced(false)
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 3, 4 + startY))
+                    .widget(new TextWidget(GT_Utility.trans("254", "Detect slot#"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 3, 4 + startY + spaceY))
+                    .widget(new TextWidget(GT_Utility.trans("221", "Item threshold"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 3, startY + spaceY * 2 + 4));
         }
-        ICoverable tile = getUIContext().getTile();
-        if (tile instanceof TileEntity && !tile.isDead()) {
-            if (tile.getSizeInventory() >= coverVariable.slot) {
-                return tile.getStackInSlot(coverVariable.slot);
+
+        private int getMaxSlot() {
+            final ICoverable tile = getUIBuildContext().getTile();
+            if (tile instanceof TileEntity
+                    && !tile.isDead()
+                    && tile instanceof IGregTechTileEntity
+                    && !(((IGregTechTileEntity) tile).getMetaTileEntity()
+                            instanceof GT_MetaTileEntity_DigitalChestBase))
+                return Math.min(tile.getSizeInventory() - 1, SLOT_MASK - 1);
+            else return -1;
+        }
+
+        private int getIntFromText(String text) {
+            try {
+                return (int) MathExpression.parseMathExpression(text, -1);
+            } catch (Exception e) {
+                return -1;
             }
         }
-        return null;
+
+        private String getSlotTextFieldContent(int val) {
+            return val < 0 ? ALL_TEXT : String.valueOf(val);
+        }
+
+        private int getUpperBound() {
+            return maxSlot > 0 ? maxSlot * 64 : 999_999;
+        }
+
+        private ItemStack getTargetItem() {
+            ItemMeterData coverVariable = getCoverData();
+            if (coverVariable == null || coverVariable.slot < 0) {
+                return null;
+            }
+            ICoverable tile = getUIBuildContext().getTile();
+            if (tile instanceof TileEntity && !tile.isDead()) {
+                if (tile.getSizeInventory() >= coverVariable.slot) {
+                    return tile.getStackInSlot(coverVariable.slot);
+                }
+            }
+            return null;
+        }
     }
 
     @Override

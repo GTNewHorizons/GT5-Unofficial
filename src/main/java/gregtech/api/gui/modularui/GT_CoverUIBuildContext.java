@@ -10,12 +10,14 @@ public class GT_CoverUIBuildContext extends UIBuildContext {
     private final int coverID;
     private final byte side;
     private final ICoverable tile;
+    private boolean anotherWindow;
 
-    public GT_CoverUIBuildContext(EntityPlayer player, int coverID, byte side, ICoverable tile) {
+    public GT_CoverUIBuildContext(EntityPlayer player, int coverID, byte side, ICoverable tile, boolean anotherWindow) {
         super(player);
         this.coverID = coverID;
         this.side = side;
         this.tile = tile;
+        this.anotherWindow = anotherWindow;
     }
 
     public int getCoverID() {
@@ -31,5 +33,12 @@ public class GT_CoverUIBuildContext extends UIBuildContext {
      */
     public ICoverable getTile() {
         return tile;
+    }
+
+    /**
+     * If cover GUI is shown in opened on top of another window.
+     */
+    public boolean isAnotherWindow() {
+        return anotherWindow;
     }
 }

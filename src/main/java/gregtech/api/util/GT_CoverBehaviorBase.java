@@ -5,7 +5,6 @@ import static gregtech.api.enums.GT_Values.E;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
@@ -420,9 +419,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     // region UI stuff
 
-    private GT_CoverUIBuildContext uiContextClient;
-    private GT_CoverUIBuildContext uiContextServer;
-
     protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
     protected GT_GUIColorOverride colorOverride;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
@@ -434,125 +430,120 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return false;
     }
 
-    /**
-     * Creates UI with ModularUI system. Start building UI with {@link ModularWindow#builder}
-     * and call {@link ModularWindow.Builder#build} to build.
-     * @param anotherWindow If this window is opened on top of another window
-     */
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext, boolean anotherWindow) {
-        // client and server have different tile and player,
-        // so using the same field results in wrong behavior on SP
-        if (NetworkUtils.isClient()) {
-            this.uiContextClient = buildContext;
-        } else {
-            this.uiContextServer = buildContext;
-        }
-        ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
-        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
-        builder.setGuiTint(GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA()));
-        if (doesBindPlayerInventory() && !anotherWindow) {
-            builder.bindPlayerInventory(buildContext.getPlayer());
-        }
-        addTitleToUI(builder);
-        addUIWidgets(builder);
-        if (anotherWindow) {
-            builder.widget(ButtonWidget.closeWindowButton(true).setPos(getGUIWidth() - 15, 3));
-        }
-        return builder.build();
-    }
-
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
-        return createWindow(buildContext, false);
+        return new UIFactory(buildContext).createWindow();
     }
 
     /**
-     * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
+     * Creates {@link ModularWindow} for this cover.
+     * This is separated from base class, as attaching the same covers in different sides of the same tile
+     * needs different UI with different context.
      */
-    protected void addUIWidgets(ModularWindow.Builder builder) {}
+    protected class UIFactory {
 
-    public GT_CoverUIBuildContext getUIContext() {
-        if (NetworkUtils.isClient()) {
-            return uiContextClient;
-        } else {
-            return uiContextServer;
+        private final GT_CoverUIBuildContext uiBuildContext;
+
+        public UIFactory(GT_CoverUIBuildContext buildContext) {
+            this.uiBuildContext = buildContext;
         }
-    }
 
-    /**
-     * Expected to be called by ModularUI widgets.
-     * Can return null when cover data is invalid e.g. tile is broken or cover is removed
-     */
-    @Nullable
-    protected T getCoverData() {
-        if (isCoverValid()) {
-            return forceCast(getUIContext()
-                    .getTile()
-                    .getComplexCoverDataAtSide(getUIContext().getCoverSide()));
-        } else {
-            return null;
+        public ModularWindow createWindow() {
+            ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
+            builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
+            builder.setGuiTint(GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA()));
+            if (doesBindPlayerInventory() && !getUIBuildContext().isAnotherWindow()) {
+                builder.bindPlayerInventory(getUIBuildContext().getPlayer());
+            }
+            addTitleToUI(builder);
+            addUIWidgets(builder);
+            if (getUIBuildContext().isAnotherWindow()) {
+                builder.widget(ButtonWidget.closeWindowButton(true).setPos(getGUIWidth() - 15, 3));
+            }
+            return builder.build();
         }
-    }
 
-    /**
-     * Expected to be called by ModularUI widgets.
-     */
-    protected boolean setCoverData(T data) {
-        if (isCoverValid()) {
-            getUIContext()
-                    .getTile()
-                    .receiveCoverData(
-                            getUIContext().getCoverSide(),
-                            getUIContext().getCoverID(),
-                            data,
-                            getUIContext().getPlayer() instanceof EntityPlayerMP
-                                    ? (EntityPlayerMP) getUIContext().getPlayer()
-                                    : null);
-            return true;
-        } else {
+        /**
+         * Override this to add widgets for your UI.
+         */
+        protected void addUIWidgets(ModularWindow.Builder builder) {}
+
+        public GT_CoverUIBuildContext getUIBuildContext() {
+            return uiBuildContext;
+        }
+
+        /**
+         * Can return null when cover data is invalid e.g. tile is broken or cover is removed
+         */
+        @Nullable
+        public T getCoverData() {
+            if (isCoverValid()) {
+                return forceCast(getUIBuildContext()
+                        .getTile()
+                        .getComplexCoverDataAtSide(getUIBuildContext().getCoverSide()));
+            } else {
+                return null;
+            }
+        }
+
+        public boolean setCoverData(T data) {
+            if (isCoverValid()) {
+                getUIBuildContext()
+                        .getTile()
+                        .receiveCoverData(
+                                getUIBuildContext().getCoverSide(),
+                                getUIBuildContext().getCoverID(),
+                                data,
+                                getUIBuildContext().getPlayer() instanceof EntityPlayerMP
+                                        ? (EntityPlayerMP) getUIBuildContext().getPlayer()
+                                        : null);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public boolean isCoverValid() {
+            return !getUIBuildContext().getTile().isDead()
+                    && getUIBuildContext()
+                                    .getTile()
+                                    .getCoverBehaviorAtSideNew(
+                                            getUIBuildContext().getCoverSide())
+                            != GregTech_API.sNoBehavior;
+        }
+
+        protected void addTitleToUI(ModularWindow.Builder builder) {
+            ItemStack coverItem = GT_Utility.intToStack(getUIBuildContext().getCoverID());
+            if (coverItem != null) {
+                builder.widget(new ItemDrawable(coverItem)
+                                .asWidget()
+                                .setPos(5, 5)
+                                .setSize(16, 16))
+                        .widget(new TextWidget(coverItem.getDisplayName())
+                                .setDefaultColor(COLOR_TITLE.get())
+                                .setPos(25, 9));
+            }
+        }
+
+        protected int getGUIWidth() {
+            return 176;
+        }
+
+        protected int getGUIHeight() {
+            return 107;
+        }
+
+        protected boolean doesBindPlayerInventory() {
             return false;
         }
-    }
 
-    /**
-     * Expected to be called by ModularUI widgets.
-     */
-    protected boolean isCoverValid() {
-        return !getUIContext().getTile().isDead()
-                && getUIContext()
-                                .getTile()
-                                .getCoverBehaviorAtSideNew(getUIContext().getCoverSide())
-                        != GregTech_API.sNoBehavior;
-    }
-
-    protected void addTitleToUI(ModularWindow.Builder builder) {
-        ItemStack coverItem = GT_Utility.intToStack(getUIContext().getCoverID());
-        if (coverItem != null) {
-            builder.widget(new ItemDrawable(coverItem).asWidget().setPos(5, 5).setSize(16, 16))
-                    .widget(new TextWidget(coverItem.getDisplayName())
-                            .setDefaultColor(COLOR_TITLE.get())
-                            .setPos(25, 9));
+        protected int getTextColorOrDefault(String textType, int defaultColor) {
+            return colorOverride.getTextColorOrDefault(textType, defaultColor);
         }
-    }
 
-    protected int getGUIWidth() {
-        return 176;
+        protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x222222);
+        protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
+        protected Supplier<Integer> COLOR_TEXT_WARN = () -> getTextColorOrDefault("text_warn", 0xff0000);
     }
-
-    protected int getGUIHeight() {
-        return 107;
-    }
-
-    protected boolean doesBindPlayerInventory() {
-        return false;
-    }
-
-    protected int getTextColorOrDefault(String textType, int defaultColor) {
-        return colorOverride.getTextColorOrDefault(textType, defaultColor);
-    }
-
-    protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x222222);
-    protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
-    protected Supplier<Integer> COLOR_TEXT_WARN = () -> getTextColorOrDefault("text_warn", 0xff0000);
 
     // endregion
 

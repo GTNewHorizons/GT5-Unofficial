@@ -8,6 +8,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUICover;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.ITexture;
@@ -318,88 +319,105 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         return true;
     }
 
-    private static final int startX = 10;
-    private static final int startY = 25;
-    private static final int spaceX = 18;
-    private static final int spaceY = 18;
-
-    @SuppressWarnings("PointlessArithmeticExpression")
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                                this::getCoverData, this::setCoverData, this, this::isEnabled, (id, coverData) -> {
-                                    coverData.mFlags = getNewCoverVariable(id, coverData);
-                                    return coverData;
-                                })
-                        .addToggleButton(
-                                0,
-                                CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 0))
-                        .addToggleButton(
-                                1,
-                                CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 1))
-                        .addToggleButton(
-                                2,
-                                CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                        .addToggleButton(
-                                3,
-                                CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 3))
-                        .setPos(startX, startY))
-                .widget(new ItemDrawable(() -> getCoverData() != null ? getCoverData().mStack : null)
-                        .asWidget()
-                        .setPos(5, 5)
-                        .setSize(16, 16))
-                .widget(TextWidget.dynamicString(() ->
-                                getCoverData() != null ? getCoverData().mStack.getDisplayName() : "")
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TITLE.get())
-                        .setPos(25, 9))
-                .widget(new TextWidget(GT_Utility.trans("128", "Redstone"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
-                .widget(new TextWidget(GT_Utility.trans("129", "Energy"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
-                .widget(new TextWidget(GT_Utility.trans("130", "Fluids"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
-                .widget(new TextWidget(GT_Utility.trans("131", "Items"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new FacadeBaseUIFactory(buildContext).createWindow();
     }
 
-    @Override
-    protected void addTitleToUI(ModularWindow.Builder builder) {}
+    private class FacadeBaseUIFactory extends UIFactory {
 
-    private int getNewCoverVariable(int id, FacadeData coverVariable) {
-        switch (id) {
-            case 0:
-                return coverVariable.mFlags ^ 0x1;
-            case 1:
-                return coverVariable.mFlags ^ 0x2;
-            case 2:
-                return coverVariable.mFlags ^ 0x4;
-            case 3:
-                return coverVariable.mFlags ^ 0x8;
-        }
-        return coverVariable.mFlags;
-    }
+        private static final int startX = 10;
+        private static final int startY = 25;
+        private static final int spaceX = 18;
+        private static final int spaceY = 18;
 
-    private boolean isEnabled(int id, FacadeData coverVariable) {
-        switch (id) {
-            case 0:
-                return (coverVariable.mFlags & 0x1) > 0;
-            case 1:
-                return (coverVariable.mFlags & 0x2) > 0;
-            case 2:
-                return (coverVariable.mFlags & 0x4) > 0;
-            case 3:
-                return (coverVariable.mFlags & 0x8) > 0;
+        public FacadeBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
-        return false;
+
+        @SuppressWarnings("PointlessArithmeticExpression")
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                                    this::getCoverData,
+                                    this::setCoverData,
+                                    GT_Cover_FacadeBase.this,
+                                    this::isEnabled,
+                                    (id, coverData) -> {
+                                        coverData.mFlags = getNewCoverVariable(id, coverData);
+                                        return coverData;
+                                    })
+                            .addToggleButton(
+                                    0,
+                                    CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
+                                    widget -> widget.setPos(spaceX * 0, spaceY * 0))
+                            .addToggleButton(
+                                    1,
+                                    CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
+                                    widget -> widget.setPos(spaceX * 0, spaceY * 1))
+                            .addToggleButton(
+                                    2,
+                                    CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
+                                    widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                            .addToggleButton(
+                                    3,
+                                    CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
+                                    widget -> widget.setPos(spaceX * 0, spaceY * 3))
+                            .setPos(startX, startY))
+                    .widget(new ItemDrawable(() -> getCoverData() != null ? getCoverData().mStack : null)
+                            .asWidget()
+                            .setPos(5, 5)
+                            .setSize(16, 16))
+                    .widget(TextWidget.dynamicString(() -> getCoverData() != null
+                                    ? getCoverData().mStack.getDisplayName()
+                                    : "")
+                            .setSynced(false)
+                            .setDefaultColor(COLOR_TITLE.get())
+                            .setPos(25, 9))
+                    .widget(new TextWidget(GT_Utility.trans("128", "Redstone"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
+                    .widget(new TextWidget(GT_Utility.trans("129", "Energy"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
+                    .widget(new TextWidget(GT_Utility.trans("130", "Fluids"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
+                    .widget(new TextWidget(GT_Utility.trans("131", "Items"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
+        }
+
+        @Override
+        protected void addTitleToUI(ModularWindow.Builder builder) {}
+
+        private int getNewCoverVariable(int id, FacadeData coverVariable) {
+            switch (id) {
+                case 0:
+                    return coverVariable.mFlags ^ 0x1;
+                case 1:
+                    return coverVariable.mFlags ^ 0x2;
+                case 2:
+                    return coverVariable.mFlags ^ 0x4;
+                case 3:
+                    return coverVariable.mFlags ^ 0x8;
+            }
+            return coverVariable.mFlags;
+        }
+
+        private boolean isEnabled(int id, FacadeData coverVariable) {
+            switch (id) {
+                case 0:
+                    return (coverVariable.mFlags & 0x1) > 0;
+                case 1:
+                    return (coverVariable.mFlags & 0x2) > 0;
+                case 2:
+                    return (coverVariable.mFlags & 0x4) > 0;
+                case 3:
+                    return (coverVariable.mFlags & 0x8) > 0;
+            }
+            return false;
+        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -185,28 +186,41 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         return true;
     }
 
-    private static final int startX = 10;
-    private static final int startY = 25;
-    private static final int spaceX = 18;
-    private static final int spaceY = 18;
-
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
-                        .addFollower(
-                                new CoverDataFollower_TextFieldWidget<>(),
-                                coverData -> String.valueOf(Math.round(coverData.threshold * 100)),
-                                (coverData, val) -> {
-                                    coverData.threshold = (float) (MathExpression.parseMathExpression(val) / 100);
-                                    return coverData;
-                                },
-                                widget -> widget.setNumbers(0, 100)
-                                        .setFocusOnGuiOpen(true)
-                                        .setPos(startX, startY + spaceY * 2 - 24)
-                                        .setSize(spaceX * 4 - 3, 12)))
-                .widget(new TextWidget("Percent threshold")
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX, startY + spaceY * 2 - 35));
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new FluidLimiterUIFactory(buildContext).createWindow();
+    }
+
+    private class FluidLimiterUIFactory extends UIFactory {
+
+        private static final int startX = 10;
+        private static final int startY = 25;
+        private static final int spaceX = 18;
+        private static final int spaceY = 18;
+
+        public FluidLimiterUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
+        }
+
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            builder.widget(new CoverDataControllerWidget<>(
+                                    this::getCoverData, this::setCoverData, GT_Cover_FluidLimiter.this)
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> String.valueOf(Math.round(coverData.threshold * 100)),
+                                    (coverData, val) -> {
+                                        coverData.threshold = (float) (MathExpression.parseMathExpression(val) / 100);
+                                        return coverData;
+                                    },
+                                    widget -> widget.setNumbers(0, 100)
+                                            .setFocusOnGuiOpen(true)
+                                            .setPos(startX, startY + spaceY * 2 - 24)
+                                            .setSize(spaceX * 4 - 3, 12)))
+                    .widget(new TextWidget("Percent threshold")
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX, startY + spaceY * 2 - 35));
+        }
     }
 
     @Override

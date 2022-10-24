@@ -7,6 +7,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
@@ -144,111 +145,124 @@ public class GT_Cover_WirelessItemDetector
 
     // GUI stuff
 
-    private static final String ALL_TEXT = "All";
-
-    private int maxSlot;
-    private final ItemStackHandler targetSlotHandler = new ItemStackHandler(1);
-
     @Override
-    protected int getFrequencyRow() {
-        return 0;
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new WirelessItemDetectorUIFactory(buildContext).createWindow();
     }
 
-    @Override
-    protected int getButtonRow() {
-        return 1;
-    }
+    private class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
 
-    @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
-        maxSlot = getMaxSlot();
-        super.addUIWidgets(builder);
-        builder.widget(new ItemWatcherSlotWidget()
-                        .setGetter(this::getTargetItem)
-                        .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
-                .widget(new TextWidget(GT_Utility.trans("221", "Item threshold"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
-                .widget(new TextWidget(GT_Utility.trans("254.0", "Detect Slot"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3));
-    }
+        private static final String ALL_TEXT = "All";
 
-    @Override
-    protected void addUIForDataController(CoverDataControllerWidget<ItemTransmitterData> controller) {
-        super.addUIForDataController(controller);
-        controller
-                .addFollower(
-                        new CoverDataFollower_TextFieldWidget<>(),
-                        coverData -> String.valueOf(coverData.threshold),
-                        (coverData, state) -> {
-                            coverData.threshold = (int) MathExpression.parseMathExpression(state);
-                            return coverData;
-                        },
-                        widget -> widget.setOnScrollNumbers(1, 10, 64)
-                                .setNumbers(() -> 0, this::getMaxItemCount)
-                                .setPos(1, 2 + spaceY * 2)
-                                .setSize(spaceX * 5 - 4, 12))
-                .addFollower(
-                        new CoverDataFollower_TextFieldWidget<>(),
-                        coverData -> getSlotTextFieldContent(coverData.slot),
-                        (coverData, state) -> {
-                            coverData.slot = getIntFromText(state);
-                            return coverData;
-                        },
-                        widget -> widget.setOnScrollText()
-                                .setValidator(val -> {
-                                    final int valSlot = getIntFromText(val);
-                                    if (valSlot > -1) {
-                                        return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
-                                    } else {
-                                        return ALL_TEXT;
-                                    }
-                                })
-                                .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
-                                .setPos(1, 2 + spaceY * 3)
-                                .setSize(spaceX * 4 - 8, 12));
-    }
+        private int maxSlot;
+        private final ItemStackHandler targetSlotHandler = new ItemStackHandler(1);
 
-    private int getMaxSlot() {
-        final ICoverable tile = getUIContext().getTile();
-        if (tile instanceof TileEntity
-                && !tile.isDead()
-                && tile instanceof IGregTechTileEntity
-                && !(((IGregTechTileEntity) tile).getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase)) {
-            return tile.getSizeInventory() - 1;
-        } else {
-            return -1;
+        public WirelessItemDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
-    }
 
-    private int getMaxItemCount() {
-        return maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
-    }
-
-    private int getIntFromText(String text) {
-        try {
-            return (int) MathExpression.parseMathExpression(text, -1);
-        } catch (Exception e) {
-            return -1;
+        @Override
+        protected int getFrequencyRow() {
+            return 0;
         }
-    }
 
-    private String getSlotTextFieldContent(int val) {
-        return val < 0 ? ALL_TEXT : String.valueOf(val);
-    }
+        @Override
+        protected int getButtonRow() {
+            return 1;
+        }
 
-    private ItemStack getTargetItem() {
-        final ICoverable tile = getUIContext().getTile();
-        final ItemTransmitterData coverVariable = getCoverData();
-        if (coverVariable != null
-                && coverVariable.slot >= 0
-                && tile instanceof TileEntity
-                && !tile.isDead()
-                && tile.getSizeInventory() >= coverVariable.slot) {
-            return tile.getStackInSlot(coverVariable.slot);
-        } else {
-            return null;
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            maxSlot = getMaxSlot();
+            super.addUIWidgets(builder);
+            builder.widget(new ItemWatcherSlotWidget()
+                            .setGetter(this::getTargetItem)
+                            .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
+                    .widget(new TextWidget(GT_Utility.trans("221", "Item threshold"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
+                    .widget(new TextWidget(GT_Utility.trans("254.0", "Detect Slot"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3));
+        }
+
+        @Override
+        protected void addUIForDataController(CoverDataControllerWidget<ItemTransmitterData> controller) {
+            super.addUIForDataController(controller);
+            controller
+                    .addFollower(
+                            new CoverDataFollower_TextFieldWidget<>(),
+                            coverData -> String.valueOf(coverData.threshold),
+                            (coverData, state) -> {
+                                coverData.threshold = (int) MathExpression.parseMathExpression(state);
+                                return coverData;
+                            },
+                            widget -> widget.setOnScrollNumbers(1, 10, 64)
+                                    .setNumbers(() -> 0, this::getMaxItemCount)
+                                    .setPos(1, 2 + spaceY * 2)
+                                    .setSize(spaceX * 5 - 4, 12))
+                    .addFollower(
+                            new CoverDataFollower_TextFieldWidget<>(),
+                            coverData -> getSlotTextFieldContent(coverData.slot),
+                            (coverData, state) -> {
+                                coverData.slot = getIntFromText(state);
+                                return coverData;
+                            },
+                            widget -> widget.setOnScrollText()
+                                    .setValidator(val -> {
+                                        final int valSlot = getIntFromText(val);
+                                        if (valSlot > -1) {
+                                            return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
+                                        } else {
+                                            return ALL_TEXT;
+                                        }
+                                    })
+                                    .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                                    .setPos(1, 2 + spaceY * 3)
+                                    .setSize(spaceX * 4 - 8, 12));
+        }
+
+        private int getMaxSlot() {
+            final ICoverable tile = getUIBuildContext().getTile();
+            if (tile instanceof TileEntity
+                    && !tile.isDead()
+                    && tile instanceof IGregTechTileEntity
+                    && !(((IGregTechTileEntity) tile).getMetaTileEntity()
+                            instanceof GT_MetaTileEntity_DigitalChestBase)) {
+                return tile.getSizeInventory() - 1;
+            } else {
+                return -1;
+            }
+        }
+
+        private int getMaxItemCount() {
+            return maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
+        }
+
+        private int getIntFromText(String text) {
+            try {
+                return (int) MathExpression.parseMathExpression(text, -1);
+            } catch (Exception e) {
+                return -1;
+            }
+        }
+
+        private String getSlotTextFieldContent(int val) {
+            return val < 0 ? ALL_TEXT : String.valueOf(val);
+        }
+
+        private ItemStack getTargetItem() {
+            final ICoverable tile = getUIBuildContext().getTile();
+            final ItemTransmitterData coverVariable = getCoverData();
+            if (coverVariable != null
+                    && coverVariable.slot >= 0
+                    && tile instanceof TileEntity
+                    && !tile.isDead()
+                    && tile.getSizeInventory() >= coverVariable.slot) {
+                return tile.getStackInSlot(coverVariable.slot);
+            } else {
+                return null;
+            }
         }
     }
 

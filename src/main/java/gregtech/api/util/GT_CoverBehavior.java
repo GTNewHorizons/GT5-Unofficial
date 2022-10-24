@@ -106,10 +106,6 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         return onCoverShiftRightclick(aSide, aCoverID, convert(aCoverVariable), aTileEntity, aPlayer);
     }
 
-    /**
-     * @deprecated Use {@link #createWindow}
-     */
-    @Deprecated
     @Override
     protected Object getClientGUIImpl(
             byte aSide,

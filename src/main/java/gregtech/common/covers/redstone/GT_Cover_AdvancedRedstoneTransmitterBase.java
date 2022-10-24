@@ -3,6 +3,7 @@ package gregtech.common.covers.redstone;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.ITexture;
@@ -133,51 +134,63 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
     // GUI stuff
 
     @Override
-    protected int getFrequencyRow() {
-        return 0;
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new AdvancedRedstoneTransmitterBaseUIFactory(buildContext).createWindow();
     }
 
-    @Override
-    protected int getButtonRow() {
-        return 1;
-    }
+    protected class AdvancedRedstoneTransmitterBaseUIFactory extends AdvancedWirelessRedstoneBaseUIFactory {
 
-    @Override
-    protected boolean isShiftPrivateLeft() {
-        return true;
-    }
+        public AdvancedRedstoneTransmitterBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
+        }
 
-    @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
-        super.addUIWidgets(builder);
-        builder.widget(TextWidget.dynamicString(() -> {
-                    T coverData = getCoverData();
-                    if (coverData != null) {
-                        return getCoverData().invert
-                                ? GT_Utility.trans("INVERTED", "Inverted")
-                                : GT_Utility.trans("NORMAL", "Normal");
-                    } else {
-                        return "";
-                    }
-                })
-                .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
-    }
+        @Override
+        protected int getFrequencyRow() {
+            return 0;
+        }
 
-    @Override
-    protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
-        super.addUIForDataController(controller);
-        controller.addFollower(
-                CoverDataFollower_ToggleButtonWidget.ofRedstone(),
-                coverData -> coverData.invert,
-                (coverData, state) -> {
-                    coverData.invert = state;
-                    return coverData;
-                },
-                widget -> widget.addTooltip(0, GT_Utility.trans("NORMAL", "Normal"))
-                        .addTooltip(1, GT_Utility.trans("INVERTED", "Inverted"))
-                        .setPos(spaceX * 9, spaceY * getButtonRow()));
+        @Override
+        protected int getButtonRow() {
+            return 1;
+        }
+
+        @Override
+        protected boolean isShiftPrivateLeft() {
+            return true;
+        }
+
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            super.addUIWidgets(builder);
+            builder.widget(TextWidget.dynamicString(() -> {
+                        T coverData = getCoverData();
+                        if (coverData != null) {
+                            return getCoverData().invert
+                                    ? GT_Utility.trans("INVERTED", "Inverted")
+                                    : GT_Utility.trans("NORMAL", "Normal");
+                        } else {
+                            return "";
+                        }
+                    })
+                    .setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
+        }
+
+        @Override
+        protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
+            super.addUIForDataController(controller);
+            controller.addFollower(
+                    CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                    coverData -> coverData.invert,
+                    (coverData, state) -> {
+                        coverData.invert = state;
+                        return coverData;
+                    },
+                    widget -> widget.addTooltip(0, GT_Utility.trans("NORMAL", "Normal"))
+                            .addTooltip(1, GT_Utility.trans("INVERTED", "Inverted"))
+                            .setPos(spaceX * 9, spaceY * getButtonRow()));
+        }
     }
 
     @Override

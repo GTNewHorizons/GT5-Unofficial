@@ -1490,8 +1490,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     private ModularWindow createCoverWindow(EntityPlayer player, byte side) {
         GT_CoverBehaviorBase<?> coverBehavior = getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
         GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(
-                player, getBaseMetaTileEntity().getCoverIDAtSide(side), side, getBaseMetaTileEntity());
-        return coverBehavior.createWindow(buildContext, true);
+                player, getBaseMetaTileEntity().getCoverIDAtSide(side), side, getBaseMetaTileEntity(), true);
+        return coverBehavior.createWindow(buildContext);
     }
 
     protected int getTextColorOrDefault(String textType, int defaultColor) {

@@ -4,6 +4,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.ITexture;
@@ -167,39 +168,54 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
         return true;
     }
 
-    private static final int startX = 10;
-    private static final int startY = 25;
-    private static final int spaceX = 18;
-    private static final int spaceY = 18;
-
-    @SuppressWarnings("PointlessArithmeticExpression")
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                                this::getCoverData,
-                                this::setCoverData,
-                                this,
-                                (index, coverData) -> index == convert(coverData),
-                                (index, coverData) -> new ISerializableObject.LegacyCoverData(index))
-                        .addToggleButton(0, CoverDataFollower_ToggleButtonWidget.ofCheck(), widget -> widget.addTooltip(
-                                        GT_Utility.trans("068.1", "Emit if any Player is close"))
-                                .setPos(spaceX * 0, spaceY * 0))
-                        .addToggleButton(1, CoverDataFollower_ToggleButtonWidget.ofCheck(), widget -> widget.addTooltip(
-                                        GT_Utility.trans("069.1", "Emit if other Player is close"))
-                                .setPos(spaceX * 0, spaceY * 1))
-                        .addToggleButton(2, CoverDataFollower_ToggleButtonWidget.ofCheck(), widget -> widget.addTooltip(
-                                        GT_Utility.trans("070", "Emit if you are close"))
-                                .setPos(spaceX * 0, spaceY * 2))
-                        .setPos(startX, startY))
-                .widget(new TextWidget(GT_Utility.trans("319", "Any player"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
-                .widget(new TextWidget(GT_Utility.trans("320", "Other players"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
-                .widget(new TextWidget(GT_Utility.trans("321", "Only owner"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 2));
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new PlayerDetectorUIFactory(buildContext).createWindow();
+    }
+
+    private class PlayerDetectorUIFactory extends UIFactory {
+
+        private static final int startX = 10;
+        private static final int startY = 25;
+        private static final int spaceX = 18;
+        private static final int spaceY = 18;
+
+        public PlayerDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
+        }
+
+        @SuppressWarnings("PointlessArithmeticExpression")
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                                    this::getCoverData,
+                                    this::setCoverData,
+                                    GT_Cover_PlayerDetector.this,
+                                    (index, coverData) -> index == convert(coverData),
+                                    (index, coverData) -> new ISerializableObject.LegacyCoverData(index))
+                            .addToggleButton(
+                                    0, CoverDataFollower_ToggleButtonWidget.ofCheck(), widget -> widget.addTooltip(
+                                                    GT_Utility.trans("068.1", "Emit if any Player is close"))
+                                            .setPos(spaceX * 0, spaceY * 0))
+                            .addToggleButton(
+                                    1, CoverDataFollower_ToggleButtonWidget.ofCheck(), widget -> widget.addTooltip(
+                                                    GT_Utility.trans("069.1", "Emit if other Player is close"))
+                                            .setPos(spaceX * 0, spaceY * 1))
+                            .addToggleButton(
+                                    2, CoverDataFollower_ToggleButtonWidget.ofCheck(), widget -> widget.addTooltip(
+                                                    GT_Utility.trans("070", "Emit if you are close"))
+                                            .setPos(spaceX * 0, spaceY * 2))
+                            .setPos(startX, startY))
+                    .widget(new TextWidget(GT_Utility.trans("319", "Any player"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
+                    .widget(new TextWidget(GT_Utility.trans("320", "Other players"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
+                    .widget(new TextWidget(GT_Utility.trans("321", "Only owner"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 1, 4 + startY + spaceY * 2));
+        }
     }
 
     @Override

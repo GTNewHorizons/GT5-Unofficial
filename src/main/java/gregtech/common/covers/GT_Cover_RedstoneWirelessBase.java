@@ -6,6 +6,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
@@ -195,51 +196,64 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     }
 
     @Override
-    protected int getGUIWidth() {
-        return 250;
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new RedstoneWirelessBaseUIFactory(buildContext).createWindow();
     }
 
-    private static final int startX = 10;
-    private static final int startY = 25;
-    private static final int spaceX = 18;
-    private static final int spaceY = 18;
+    private class RedstoneWirelessBaseUIFactory extends UIFactory {
 
-    @SuppressWarnings("PointlessArithmeticExpression")
-    @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
-        builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, this)
-                        .addFollower(
-                                new CoverDataFollower_TextFieldWidget<>(),
-                                coverData -> String.valueOf(getFlagFrequency(convert(coverData))),
-                                (coverData, text) -> new ISerializableObject.LegacyCoverData(
-                                        (int) MathExpression.parseMathExpression(text)
-                                                | getFlagCheckbox(convert(coverData))),
-                                widget -> widget.setOnScrollNumbers()
-                                        .setNumbers(0, MAX_CHANNEL)
-                                        .setFocusOnGuiOpen(true)
-                                        .setPos(spaceX * 0, spaceY * 0 + 2)
-                                        .setSize(spaceX * 4 - 3, 12))
-                        .addFollower(
-                                CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                coverData -> getFlagCheckbox(convert(coverData)) > 0,
-                                (coverData, state) -> new ISerializableObject.LegacyCoverData(
-                                        getFlagFrequency(convert(coverData)) | (state ? CHECKBOX_MASK : 0)),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                        .setPos(startX, startY))
-                .widget(new TextWidget(GT_Utility.trans("246", "Frequency"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
-                .widget(new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
-    }
+        private static final int startX = 10;
+        private static final int startY = 25;
+        private static final int spaceX = 18;
+        private static final int spaceY = 18;
 
-    private int getFlagFrequency(int coverVariable) {
-        return coverVariable & PUBLIC_MASK;
-    }
+        public RedstoneWirelessBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
+        }
 
-    private int getFlagCheckbox(int coverVariable) {
-        return coverVariable & CHECKBOX_MASK;
+        @Override
+        protected int getGUIWidth() {
+            return 250;
+        }
+
+        @SuppressWarnings("PointlessArithmeticExpression")
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            builder.widget(new CoverDataControllerWidget<>(
+                                    this::getCoverData, this::setCoverData, GT_Cover_RedstoneWirelessBase.this)
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> String.valueOf(getFlagFrequency(convert(coverData))),
+                                    (coverData, text) -> new ISerializableObject.LegacyCoverData(
+                                            (int) MathExpression.parseMathExpression(text)
+                                                    | getFlagCheckbox(convert(coverData))),
+                                    widget -> widget.setOnScrollNumbers()
+                                            .setNumbers(0, MAX_CHANNEL)
+                                            .setFocusOnGuiOpen(true)
+                                            .setPos(spaceX * 0, spaceY * 0 + 2)
+                                            .setSize(spaceX * 4 - 3, 12))
+                            .addFollower(
+                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                    coverData -> getFlagCheckbox(convert(coverData)) > 0,
+                                    (coverData, state) -> new ISerializableObject.LegacyCoverData(
+                                            getFlagFrequency(convert(coverData)) | (state ? CHECKBOX_MASK : 0)),
+                                    widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                            .setPos(startX, startY))
+                    .widget(new TextWidget(GT_Utility.trans("246", "Frequency"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
+                    .widget(new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
+        }
+
+        private int getFlagFrequency(int coverVariable) {
+            return coverVariable & PUBLIC_MASK;
+        }
+
+        private int getFlagCheckbox(int coverVariable) {
+            return coverVariable & CHECKBOX_MASK;
+        }
     }
 
     @Override

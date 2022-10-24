@@ -3,6 +3,7 @@ package gregtech.common.covers.redstone;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
@@ -201,44 +202,57 @@ public class GT_Cover_WirelessMaintenanceDetector
     };
 
     @Override
-    protected int getGUIHeight() {
-        return 143;
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new WirelessMaintenanceDetectorUIFactory(buildContext).createWindow();
     }
 
-    @Override
-    protected int getFrequencyRow() {
-        return 0;
-    }
+    private class WirelessMaintenanceDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
 
-    @Override
-    protected int getButtonRow() {
-        return 1;
-    }
-
-    @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
-        super.addUIWidgets(builder);
-        for (int i = 0; i < 8; i++) {
-            builder.widget(new TextWidget(extraTexts[i])
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
+        public WirelessMaintenanceDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
-    }
 
-    @Override
-    protected void addUIForDataController(CoverDataControllerWidget<MaintenanceTransmitterData> controller) {
-        super.addUIForDataController(controller);
-        for (int i = 0; i < 8; i++) {
-            final int index = i;
-            controller.addFollower(
-                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.mode == MaintenanceMode.values()[index],
-                    (coverData, state) -> {
-                        coverData.mode = MaintenanceMode.values()[index];
-                        return coverData;
-                    },
-                    widget -> widget.setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
-                            .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
+        @Override
+        protected int getGUIHeight() {
+            return 143;
+        }
+
+        @Override
+        protected int getFrequencyRow() {
+            return 0;
+        }
+
+        @Override
+        protected int getButtonRow() {
+            return 1;
+        }
+
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            super.addUIWidgets(builder);
+            for (int i = 0; i < 8; i++) {
+                builder.widget(new TextWidget(extraTexts[i])
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
+            }
+        }
+
+        @Override
+        protected void addUIForDataController(CoverDataControllerWidget<MaintenanceTransmitterData> controller) {
+            super.addUIForDataController(controller);
+            for (int i = 0; i < 8; i++) {
+                final int index = i;
+                controller.addFollower(
+                        CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                        coverData -> coverData.mode == MaintenanceMode.values()[index],
+                        (coverData, state) -> {
+                            coverData.mode = MaintenanceMode.values()[index];
+                            return coverData;
+                        },
+                        widget -> widget.setToggleTexture(
+                                        GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
+                                .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
+            }
         }
     }
 

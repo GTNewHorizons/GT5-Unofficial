@@ -158,7 +158,7 @@ public class GT_UIInfos {
             int coverID,
             byte side,
             ICoverable tile) {
-        GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(player, coverID, side, tile);
+        GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(player, coverID, side, tile, false);
         ModularWindow window = windowCreator.apply(buildContext);
         return new ModularUIContainer(new ModularUIContext(buildContext, onWidgetUpdate), window);
     }
