@@ -174,4 +174,7 @@ BW.infoData.BioVat.production=Production
 BW.NEI.display.radhatch.0=Sievert: %s Sv
 BW.NEI.display.radhatch.1=Mass: %s kg
 BW.NEI.display.radhatch.2=Time: %s s
+
+misc.BatchModeTextOn=Batch recipes
+misc.BatchModeTextOff=Don't batch recipes
 #Liquids

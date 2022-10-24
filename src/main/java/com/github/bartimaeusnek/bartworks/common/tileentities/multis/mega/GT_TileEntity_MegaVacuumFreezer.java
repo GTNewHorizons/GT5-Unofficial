@@ -51,9 +51,12 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 @Optional.Interface(
@@ -404,6 +407,35 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
                 aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "VacuumFreezer.png");
     }
 
+    private boolean mUseMultiparallelMode = false;
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("mUseMultiparallelMode", mUseMultiparallelMode);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.mUseMultiparallelMode = aNBT.getBoolean("mUseMultiparallelMode");
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aPlayer.isSneaking()) {
+            mUseMultiparallelMode = !mUseMultiparallelMode;
+            if (mUseMultiparallelMode) {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
         ItemStack[] tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
@@ -420,14 +452,23 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
                 this.getBaseMetaTileEntity(), false, V[tTier], tInputFluids, tInputs);
         boolean found_Recipe = false;
         int processed = 0;
+        float tBatchMultiplier = 1.0f;
 
         if (tRecipe != null) {
             found_Recipe = true;
             long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / tRecipe.mEUt);
+
+            if (mUseMultiparallelMode && tMaxPara == ConfigHandler.megaMachinesMax) {
+                tMaxPara *= 128;
+            }
+
             int tCurrentPara = handleParallelRecipe(tRecipe, tInputFluids, tInputs, (int) tMaxPara);
+            tBatchMultiplier =
+                    mUseMultiparallelMode ? (float) Math.max(tCurrentPara / ConfigHandler.megaMachinesMax, 1.0f) : 1.0f;
+
             this.updateSlots();
             if (tCurrentPara <= 0) return false;
-            processed = tCurrentPara;
+            processed = Math.min(tCurrentPara, ConfigHandler.megaMachinesMax);
             Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(tRecipe, tCurrentPara);
             outputFluids = Outputs.getKey();
             outputItems = Outputs.getValue();
@@ -436,13 +477,19 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
+
             long actualEUT = (long) (tRecipe.mEUt) * processed;
-            calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, nominalV);
+            calculateOverclockedNessMulti(actualEUT, tRecipe.mDuration, nominalV);
             // In case recipe is too OP for that machine
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.lEUt == Integer.MAX_VALUE - 1) return false;
             if (this.lEUt > 0) {
                 this.lEUt = (-this.lEUt);
             }
+
+            if (mUseMultiparallelMode) {
+                this.mMaxProgresstime = (int) Math.ceil(this.mMaxProgresstime * tBatchMultiplier);
+            }
+
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             this.mOutputItems = new ItemStack[outputItems.size()];
             this.mOutputItems = outputItems.toArray(this.mOutputItems);
