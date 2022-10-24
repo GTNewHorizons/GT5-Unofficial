@@ -1381,6 +1381,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                                 public IDrawable[] getBackground() {
                                     List<IDrawable> backgrounds = new ArrayList<>();
                                     final GT_GuiTabIconSet tabIconSet = getTabIconSet();
+                                    if (getBaseMetaTileEntity() == null) return new IDrawable[] {};
+
                                     if (getBaseMetaTileEntity()
                                             .getCoverBehaviorAtSideNew(side)
                                             .hasCoverGUI()) {
@@ -1401,10 +1403,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                                 }
                             }.setOnClick(((clickData, widget) -> onTabClicked(clickData, widget, side)))
                                     .dynamicTooltip(() -> getTooltip(side))
-                                    .setEnabled(
-                                            widget -> getBaseMetaTileEntity().getCoverItemAtSide(side) != null)
+                                    .setEnabled(widget -> {
+                                        if (getBaseMetaTileEntity() == null) return false;
+                                        return getBaseMetaTileEntity().getCoverItemAtSide(side) != null;
+                                    })
                                     .setSize(COVER_TAB_WIDTH, COVER_TAB_HEIGHT))
-                    .addChild(new ItemDrawable(() -> getBaseMetaTileEntity().getCoverItemAtSide(side))
+                    .addChild(new ItemDrawable(() -> {
+                                if (getBaseMetaTileEntity() == null) return null;
+                                return getBaseMetaTileEntity().getCoverItemAtSide(side);
+                            })
                             .asWidget()
                             .setPos(
                                     (COVER_TAB_WIDTH - ICON_SIZE) / 2 + (flipHorizontally ? -1 : 1),
@@ -1443,6 +1450,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             "GT5U.interface.coverTabs.west",
             "GT5U.interface.coverTabs.east"
         };
+        if (getBaseMetaTileEntity() == null) return Collections.emptyList();
         final ItemStack coverItem = getBaseMetaTileEntity().getCoverItemAtSide(side);
         if (coverItem == null) return Collections.emptyList();
         boolean coverHasGUI =
@@ -1466,7 +1474,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     private void onTabClicked(Widget.ClickData clickData, Widget widget, byte side) {
-        if (getBaseMetaTileEntity().isClientSide()) return;
+        if (getBaseMetaTileEntity() == null || getBaseMetaTileEntity().isClientSide()) return;
 
         final GT_CoverBehaviorBase<?> coverBehavior = getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
         if (coverBehavior.useModularUI()) {
@@ -1488,6 +1496,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     private ModularWindow createCoverWindow(EntityPlayer player, byte side) {
+        if (getBaseMetaTileEntity() == null) return null;
         GT_CoverBehaviorBase<?> coverBehavior = getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
         GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(
                 player, getBaseMetaTileEntity().getCoverIDAtSide(side), side, getBaseMetaTileEntity(), true);
