@@ -496,4 +496,12 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     protected IDrawable getSlotBackground() {
         return GT_UITextures.SLOT_ITEM_STEAM.get(getVariant());
     }
+
+    @Override
+    protected GT_GuiTabIconSet getTabIconSet() {
+        return new GT_GuiTabIconSet(
+                GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getVariant()),
+                GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getVariant()),
+                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getVariant()));
+    }
 }

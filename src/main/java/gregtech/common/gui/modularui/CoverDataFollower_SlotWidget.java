@@ -6,6 +6,7 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
+import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import net.minecraft.item.ItemStack;
@@ -48,14 +49,16 @@ public class CoverDataFollower_SlotWidget<T extends ISerializableObject> extends
     @Override
     public void detectAndSendChanges(boolean init) {}
 
-    // Don't send data directly to server.
-    // Instead, parent controller widget will handle sync and update.
+    // Slot sync is handled differently from other DataFollowers,
+    // so we need to also sync slot content directly to server.
 
     @Override
     public ClickResult onClick(int buttonId, boolean doubleClick) {
         if (interactionDisabled) return ClickResult.REJECT;
         if (isPhantom()) {
-            phantomClick(ClickData.create(buttonId, doubleClick));
+            ClickData clickData = ClickData.create(buttonId, doubleClick);
+            syncToServer(2, clickData::writeToPacket);
+            phantomClick(clickData);
             dataSetter.accept(getMcSlot().getStack());
             return ClickResult.ACCEPT;
         }
@@ -69,7 +72,9 @@ public class CoverDataFollower_SlotWidget<T extends ISerializableObject> extends
             if (Interactable.hasShiftDown()) {
                 direction *= 8;
             }
-            phantomScroll(direction);
+            final int finalDirection = direction;
+            syncToServer(3, buffer -> buffer.writeVarIntToBuffer(finalDirection));
+            phantomScroll(finalDirection);
             dataSetter.accept(getMcSlot().getStack());
             return true;
         }
@@ -80,7 +85,16 @@ public class CoverDataFollower_SlotWidget<T extends ISerializableObject> extends
     public boolean handleDragAndDrop(ItemStack draggedStack, int button) {
         if (interactionDisabled) return false;
         if (!isPhantom()) return false;
-        phantomClick(ClickData.create(button, false), draggedStack);
+        ClickData clickData = ClickData.create(button, false);
+        syncToServer(5, buffer -> {
+            try {
+                clickData.writeToPacket(buffer);
+                buffer.writeItemStackToBuffer(draggedStack);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        phantomClick(clickData, draggedStack);
         dataSetter.accept(getMcSlot().getStack());
         draggedStack.stackSize = 0;
         return true;

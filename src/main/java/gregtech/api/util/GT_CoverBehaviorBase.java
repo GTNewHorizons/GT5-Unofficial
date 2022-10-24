@@ -6,6 +6,7 @@ import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
@@ -436,8 +437,9 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     /**
      * Creates UI with ModularUI system. Start building UI with {@link ModularWindow#builder}
      * and call {@link ModularWindow.Builder#build} to build.
+     * @param anotherWindow If this window is opened on top of another window
      */
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext, boolean anotherWindow) {
         // client and server have different tile and player,
         // so using the same field results in wrong behavior on SP
         if (NetworkUtils.isClient()) {
@@ -448,12 +450,19 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
         builder.setGuiTint(GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA()));
-        if (doesBindPlayerInventory()) {
+        if (doesBindPlayerInventory() && !anotherWindow) {
             builder.bindPlayerInventory(buildContext.getPlayer());
         }
         addTitleToUI(builder);
         addUIWidgets(builder);
+        if (anotherWindow) {
+            builder.widget(ButtonWidget.closeWindowButton(true).setPos(getGUIWidth() - 15, 3));
+        }
         return builder.build();
+    }
+
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return createWindow(buildContext, false);
     }
 
     /**

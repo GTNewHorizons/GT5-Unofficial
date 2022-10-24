@@ -8,12 +8,18 @@ import appeng.api.util.AECableType;
 import appeng.me.helpers.AENetworkProxy;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.Column;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.common.Optional;
@@ -21,18 +27,23 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -42,12 +53,14 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -59,6 +72,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -1199,7 +1214,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     // === ModularUI or old GUI ===
 
     /**
-     * Wrapper for ModularUI
+     * Inventory wrapper for ModularUI
      */
     protected final ItemStackHandler inventoryHandler;
 
@@ -1230,6 +1245,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             builder.bindPlayerInventory(buildContext.getPlayer(), 7, getSlotBackground());
         }
         addUIWidgets(builder);
+        addCoverTabs(builder, buildContext);
         addTitleToUI(builder);
         addGregTechLogo(builder);
         return builder.build();
@@ -1327,6 +1343,155 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     protected IDrawable getSlotBackground() {
         return ModularUITextures.ITEM_SLOT;
+    }
+
+    protected GT_GuiTabIconSet getTabIconSet() {
+        return new GT_GuiTabIconSet(
+                GT_UITextures.TAB_COVER_NORMAL, GT_UITextures.TAB_COVER_HIGHLIGHT, GT_UITextures.TAB_COVER_DISABLED);
+    }
+
+    private static final int COVER_WINDOW_ID_START = 1;
+
+    private void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        final int COVER_TAB_LEFT = -16,
+                COVER_TAB_TOP = 1,
+                COVER_TAB_HEIGHT = 20,
+                COVER_TAB_WIDTH = 18,
+                COVER_TAB_SPACING = 2,
+                ICON_SIZE = 16;
+        final boolean flipHorizontally = GT_Mod.gregtechproxy.mCoverTabsFlipped;
+
+        Column columnWidget = new Column();
+        builder.widget(columnWidget);
+        int xPos = flipHorizontally ? (getGUIWidth() - COVER_TAB_LEFT - COVER_TAB_WIDTH) : COVER_TAB_LEFT;
+        if (GT_Mod.gregtechproxy.mCoverTabsVisible) {
+            columnWidget.setPos(xPos, COVER_TAB_TOP);
+        } else {
+            columnWidget.setEnabled(false);
+        }
+        columnWidget.setAlignment(MainAxisAlignment.SPACE_BETWEEN).setSpace(COVER_TAB_SPACING);
+
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            final byte side = (byte) direction.ordinal();
+            buildContext.addSyncedWindow(side + COVER_WINDOW_ID_START, player -> createCoverWindow(player, side));
+            columnWidget.addChild(new MultiChildWidget()
+                    .addChild(
+                            new ButtonWidget() {
+                                @Override
+                                public IDrawable[] getBackground() {
+                                    List<IDrawable> backgrounds = new ArrayList<>();
+                                    final GT_GuiTabIconSet tabIconSet = getTabIconSet();
+                                    if (getBaseMetaTileEntity()
+                                            .getCoverBehaviorAtSideNew(side)
+                                            .hasCoverGUI()) {
+                                        if (isHovering()) {
+                                            backgrounds.add(
+                                                    flipHorizontally
+                                                            ? tabIconSet.highlightFlipped
+                                                            : tabIconSet.highlight);
+                                        } else {
+                                            backgrounds.add(
+                                                    flipHorizontally ? tabIconSet.normalFlipped : tabIconSet.normal);
+                                        }
+                                    } else {
+                                        backgrounds.add(
+                                                flipHorizontally ? tabIconSet.disabledFlipped : tabIconSet.disabled);
+                                    }
+                                    return backgrounds.toArray(new IDrawable[] {});
+                                }
+                            }.setOnClick(((clickData, widget) -> onTabClicked(clickData, widget, side)))
+                                    .dynamicTooltip(() -> getTooltip(side))
+                                    .setEnabled(
+                                            widget -> getBaseMetaTileEntity().getCoverItemAtSide(side) != null)
+                                    .setSize(COVER_TAB_WIDTH, COVER_TAB_HEIGHT))
+                    .addChild(new ItemDrawable(() -> getBaseMetaTileEntity().getCoverItemAtSide(side))
+                            .asWidget()
+                            .setPos(
+                                    (COVER_TAB_WIDTH - ICON_SIZE) / 2 + (flipHorizontally ? -1 : 1),
+                                    (COVER_TAB_HEIGHT - ICON_SIZE) / 2)));
+        }
+    }
+
+    /**
+     * Defines a set of textures a tab line can use to render its tab backgrounds
+     */
+    protected static class GT_GuiTabIconSet {
+        protected UITexture normal;
+        protected UITexture highlight;
+        protected UITexture disabled;
+        protected UITexture normalFlipped;
+        protected UITexture highlightFlipped;
+        protected UITexture disabledFlipped;
+
+        public GT_GuiTabIconSet(UITexture normalIcon, UITexture highlightIcon, UITexture disabledIcon) {
+            this.normal = normalIcon;
+            this.highlight = highlightIcon;
+            this.disabled = disabledIcon;
+            this.normalFlipped = normalIcon.getFlipped(true, false);
+            this.highlightFlipped = highlightIcon.getFlipped(true, false);
+            this.disabledFlipped = disabledIcon.getFlipped(true, false);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private List<String> getTooltip(byte side) {
+        final String[] SIDE_TOOLTIPS = new String[] {
+            "GT5U.interface.coverTabs.down",
+            "GT5U.interface.coverTabs.up",
+            "GT5U.interface.coverTabs.north",
+            "GT5U.interface.coverTabs.south",
+            "GT5U.interface.coverTabs.west",
+            "GT5U.interface.coverTabs.east"
+        };
+        final ItemStack coverItem = getBaseMetaTileEntity().getCoverItemAtSide(side);
+        if (coverItem == null) return Collections.emptyList();
+        boolean coverHasGUI =
+                getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side).hasCoverGUI();
+
+        //noinspection unchecked
+        List<String> tooltip = coverItem.getTooltip(Minecraft.getMinecraft().thePlayer, true);
+        for (int i = 0; i < tooltip.size(); i++) {
+            if (i == 0) {
+                tooltip.set(
+                        0,
+                        (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
+                                + StatCollector.translateToLocal(SIDE_TOOLTIPS[side])
+                                + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
+                                + tooltip.get(0));
+            } else {
+                tooltip.set(i, EnumChatFormatting.GRAY + tooltip.get(i));
+            }
+        }
+        return tooltip;
+    }
+
+    private void onTabClicked(Widget.ClickData clickData, Widget widget, byte side) {
+        if (getBaseMetaTileEntity().isClientSide()) return;
+
+        final GT_CoverBehaviorBase<?> coverBehavior = getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
+        if (coverBehavior.useModularUI()) {
+            widget.getContext().openSyncedWindow(side + COVER_WINDOW_ID_START);
+        } else {
+            GT_Packet_TileEntityCoverGUI packet = new GT_Packet_TileEntityCoverGUI(
+                    getBaseMetaTileEntity().getXCoord(),
+                    getBaseMetaTileEntity().getYCoord(),
+                    getBaseMetaTileEntity().getZCoord(),
+                    side,
+                    getBaseMetaTileEntity().getCoverIDAtSide(side),
+                    getBaseMetaTileEntity().getComplexCoverDataAtSide(side),
+                    getBaseMetaTileEntity().getWorld().provider.dimensionId,
+                    widget.getContext().getPlayer().getEntityId(),
+                    0);
+            GT_Values.NW.sendToPlayer(
+                    packet, (EntityPlayerMP) widget.getContext().getPlayer());
+        }
+    }
+
+    private ModularWindow createCoverWindow(EntityPlayer player, byte side) {
+        GT_CoverBehaviorBase<?> coverBehavior = getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
+        GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(
+                player, getBaseMetaTileEntity().getCoverIDAtSide(side), side, getBaseMetaTileEntity());
+        return coverBehavior.createWindow(buildContext, true);
     }
 
     protected int getTextColorOrDefault(String textType, int defaultColor) {

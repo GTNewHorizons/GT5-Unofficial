@@ -2,6 +2,7 @@ package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.GT_Proxy;
 import io.netty.buffer.ByteBuf;
@@ -103,7 +104,11 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
                     parentGuiId);
             GT_Values.NW.sendToPlayer(packet, player);
         } else if (guiId == 0) {
-            gtTile.openGUI(player);
+            if (gtTile.getMetaTileEntity() != null && gtTile.getMetaTileEntity().useModularUI()) {
+                GT_UIInfos.openGTTileEntityUI(gtTile, player);
+            } else {
+                gtTile.openGUI(player);
+            }
         }
     }
 }

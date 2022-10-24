@@ -207,4 +207,12 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
     protected IDrawable getSlotBackground() {
         return GT_UITextures.SLOT_ITEM_STEAM.get(SteamTexture.Variant.STEEL);
     }
+
+    @Override
+    protected GT_GuiTabIconSet getTabIconSet() {
+        return new GT_GuiTabIconSet(
+                GT_UITextures.TAB_COVER_STEAM_NORMAL.get(SteamTexture.Variant.STEEL),
+                GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(SteamTexture.Variant.STEEL),
+                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamTexture.Variant.STEEL));
+    }
 }

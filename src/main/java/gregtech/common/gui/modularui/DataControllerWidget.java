@@ -61,7 +61,7 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
         T actualValue = dataGetter.get();
         if (actualValue == null) {
             // data is in invalid state e.g. tile is broken, cover is removed
-            getWindow().closeWindow();
+            getWindow().tryClose();
             return;
         }
         if (init || !actualValue.equals(getLastData())) {
