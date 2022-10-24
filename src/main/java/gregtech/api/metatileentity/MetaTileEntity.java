@@ -1238,6 +1238,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public ModularWindow createWindow(UIBuildContext buildContext) {
+        buildContext.setValidator(() ->
+                getBaseMetaTileEntity() != null && !getBaseMetaTileEntity().isDead());
         ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
         builder.setBackground(getBackground());
         builder.setGuiTint(getColorization());
