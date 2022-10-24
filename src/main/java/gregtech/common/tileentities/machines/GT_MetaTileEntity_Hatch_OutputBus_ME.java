@@ -213,7 +213,9 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 items.appendTag(tag);
             }
             aNBT.setTag("cachedItems", items);
-            getProxy().writeToNBT(aNBT);
+            AENetworkProxy proxy = getProxy();
+            if (proxy != null) // can actually happen on Thermos
+                proxy.writeToNBT(aNBT);
         }
     }
 
