@@ -780,7 +780,7 @@ public class RecipeLoader {
                 null,
                 WerkstoffMaterialPool.SodiumFluorosilicate.getFluidOrGas(320),
                 WerkstoffMaterialPool.ConditionedBastnasiteMud.getFluidOrGas(1320),
-                null,
+                Materials.Empty.getCells(1),
                 800,
                 120);
 
@@ -895,7 +895,7 @@ public class RecipeLoader {
                 null,
                 Materials.Acetone.getFluid(1000),
                 WerkstoffMaterialPool.SaturatedBastnasiteRarerEarthOxides.getFluidOrGas(1000),
-                null,
+                Materials.Empty.getCells(1),
                 700,
                 480);
 
@@ -1103,7 +1103,7 @@ public class RecipeLoader {
         // Toluene Diisocyanate
         GT_Values.RA.addChemicalRecipe(
                 WerkstoffMaterialPool.Diaminotoluene.get(OrePrefixes.cell, 1),
-                null,
+                Materials.Empty.getCells(3),
                 BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(2000),
                 WerkstoffMaterialPool.TolueneDiisocyanate.getFluidOrGas(1000),
                 Materials.HydrochloricAcid.getCells(4),
