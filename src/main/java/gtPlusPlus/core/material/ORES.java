@@ -305,7 +305,7 @@ public final class ORES {
             -1,
             -1, // Radiation
             new MaterialStack[] {
-                new MaterialStack(ELEMENT.getInstance().CADMIUM, 2), new MaterialStack(ELEMENT.getInstance().SULFUR, 2),
+                new MaterialStack(ELEMENT.getInstance().CADMIUM, 1), new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
             });
 
     public static final Material HIBONITE = new Material(

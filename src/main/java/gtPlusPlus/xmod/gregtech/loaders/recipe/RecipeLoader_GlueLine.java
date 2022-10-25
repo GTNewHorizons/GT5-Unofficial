@@ -263,7 +263,7 @@ public class RecipeLoader_GlueLine {
                 null,
                 MISC_MATERIALS.TRICHLOROACETIC_ACID.getFluidStack(1000),
                 MISC_MATERIALS.CHLOROACETIC_MIXTURE.getFluidStack(2000),
-                null,
+                CI.emptyCells(1),
                 100,
                 100);
 

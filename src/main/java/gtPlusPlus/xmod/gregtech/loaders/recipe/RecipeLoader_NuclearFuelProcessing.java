@@ -248,8 +248,7 @@ public class RecipeLoader_NuclearFuelProcessing {
         CORE.RA.addBlastRecipe(
                 new ItemStack[] {FLUORIDES.URANIUM_HEXAFLUORIDE.getCell(1), NUCLIDE.LiFBeF2.getCell(1)},
                 new FluidStack[] {ELEMENT.getInstance().HYDROGEN.getFluidStack(2000)},
-                new ItemStack[] {ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2), CI.emptyCells(1)
-                },
+                new ItemStack[] {ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2)},
                 new FluidStack[] {NUCLIDE.LiFBeF2UF4.getFluidStack(3000)},
                 300 * 10,
                 MaterialUtils.getVoltageForTier(5),
