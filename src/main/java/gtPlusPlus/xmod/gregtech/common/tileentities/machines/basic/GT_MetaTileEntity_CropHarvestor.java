@@ -266,6 +266,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
             ItemStack invStack = mInventory[i];
             if (invStack == null || GT_Utility.isStackInvalid(invStack) || invStack.stackSize == 0) {
                 Iterator<Entry<ItemStack, Integer>> iter = aAllDrops.entrySet().iterator();
+                if (!iter.hasNext()) return;
                 Entry<ItemStack, Integer> e = iter.next();
                 int toAdd = e.getValue();
                 int toAddThisSlot = Math.min(toAdd, e.getKey().getMaxStackSize());
