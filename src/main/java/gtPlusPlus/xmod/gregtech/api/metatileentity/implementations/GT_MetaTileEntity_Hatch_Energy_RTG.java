@@ -13,8 +13,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -26,18 +24,14 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
 
     public GT_MetaTileEntity_Hatch_Energy_RTG(
             int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount) {
-        super(aID, aName, aNameRegional, aTier);
-        setInventoryContent(aInvSlotCount);
-    }
-
-    public GT_MetaTileEntity_Hatch_Energy_RTG(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
+        super(aID, aName, aNameRegional, aTier, aInvSlotCount, new String[] {
+            "Energy Injector for Multiblocks", "Accepts up to 2 Amps"
+        });
     }
 
     public GT_MetaTileEntity_Hatch_Energy_RTG(
-            String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aInvSlotCount) {
-        super(aName, aTier, aDescription, aTextures);
-        setInventoryContent(aInvSlotCount);
+            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
@@ -117,7 +111,7 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Energy_RTG(mName, mTier, mDescriptionArray, mTextures, 9);
+        return new GT_MetaTileEntity_Hatch_Energy_RTG(mName, mTier, 9, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -284,17 +278,5 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
             }
         }
         return null;
-    }
-
-    private void setInventoryContent(int aInvSlotCount) {
-        try {
-            Field fieldInventory = MetaTileEntity.class.getDeclaredField("mInventory");
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(fieldInventory, fieldInventory.getModifiers() & ~Modifier.PRIVATE & ~Modifier.FINAL);
-            fieldInventory.set(this, new ItemStack[aInvSlotCount]);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
