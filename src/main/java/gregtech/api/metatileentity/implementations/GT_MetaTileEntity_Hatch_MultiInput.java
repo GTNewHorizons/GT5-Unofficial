@@ -108,7 +108,7 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
 
     public int getFirstEmptySlot() {
         for (int i = 0; i < mStoredFluid.length; i++) {
-            if (mStoredFluid[i] == null || mStoredFluid[i].amount <= 0) return i;
+            if (mStoredFluid[i] == null) return i;
         }
         return -1;
     }
