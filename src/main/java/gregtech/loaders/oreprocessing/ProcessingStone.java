@@ -167,6 +167,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
             case "Basalt":
                 GT_Values.RA.addCutterRecipe(
                         GT_Utility.copyAmount(1L, aStack),
+                        GT_Utility.getIntegratedCircuit(3),
                         GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L),
                         null,
                         200,
