@@ -4,6 +4,7 @@ import static goodgenerator.util.DescTextLocalization.addText;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GT_Utility;
 import ic2.api.item.IBoxable;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
@@ -111,7 +112,7 @@ public class FuelRod extends RadioactiveItem implements IReactorComponent, IBoxa
                 }
             }
             if (this.getCustomDamage(stack) >= this.getMaxCustomDamage(stack) - 1) {
-                reactor.setItemAt(x, y, result);
+                reactor.setItemAt(x, y, GT_Utility.copyAmount(1, result));
             } else if (heatRun) {
                 this.applyCustomDamage(stack, 1, null);
             }
