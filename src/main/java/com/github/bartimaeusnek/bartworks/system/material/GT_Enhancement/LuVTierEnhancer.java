@@ -38,6 +38,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -58,6 +59,15 @@ public class LuVTierEnhancer implements Runnable {
 
     static {
         addToBlackListForOsmiridiumReplacement(ItemList.Casing_MiningOsmiridium.get(1));
+        addToBlackListForOsmiridiumReplacement(GT_OreDictUnificator.get(OrePrefixes.turbine, Materials.Osmiridium, 1));
+        addToBlackListForOsmiridiumReplacement(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                170, 1, Materials.Osmiridium, Materials.Osmiridium, null));
+        addToBlackListForOsmiridiumReplacement(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                172, 1, Materials.Osmiridium, Materials.Osmiridium, null));
+        addToBlackListForOsmiridiumReplacement(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                174, 1, Materials.Osmiridium, Materials.Osmiridium, null));
+        addToBlackListForOsmiridiumReplacement(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                176, 1, Materials.Osmiridium, Materials.Osmiridium, null));
     }
 
     public void run() {
@@ -97,6 +107,9 @@ public class LuVTierEnhancer implements Runnable {
         AfterLuVTierEnhacement.run();
     }
 
+    /**
+     * @param stack Output item to disable Ruridit replacement in recipes
+     */
     public static void addToBlackListForOsmiridiumReplacement(ItemStack stack) {
         blackListForOsmiridium.add(stack);
     }
