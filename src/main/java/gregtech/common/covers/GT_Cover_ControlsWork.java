@@ -49,12 +49,14 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
                     if (!mPlayerNotified) {
                         mPlayerNotified = true;
                         GT_Utility.sendChatToPlayer(
-                            lastPlayer,
-                            aTileEntity.getInventoryName() + "at "
-                                    + String.format(
-                                            "(%d,%d,%d)",
-                                            aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord())
-                                    + " shut down.");
+                                lastPlayer,
+                                aTileEntity.getInventoryName() + "at "
+                                        + String.format(
+                                                "(%d,%d,%d)",
+                                                aTileEntity.getXCoord(),
+                                                aTileEntity.getYCoord(),
+                                                aTileEntity.getZCoord())
+                                        + " shut down.");
                     }
                     return 2;
                 } else {
