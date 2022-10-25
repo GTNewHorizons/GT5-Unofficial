@@ -22,6 +22,17 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
         });
     }
 
+    public GT_MetaTileEntity_Hatch_Energy(
+            int aID,
+            String aName,
+            String aNameRegional,
+            int aTier,
+            int aInvSlotCount,
+            String[] aDescription,
+            ITexture... aTextures) {
+        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
     public GT_MetaTileEntity_Hatch_Energy(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
@@ -32,7 +43,7 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_Hatch_Energy(
             String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
+        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
