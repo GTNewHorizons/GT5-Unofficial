@@ -42,7 +42,8 @@ public class GT_Cover_ActivityMonitor extends GT_CoverBehavior {
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public int doCoverThings(
+            byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if (aTileEntity instanceof IMachineProgress) {
             aCoverVariable += 1 << aliveOffset;
             IMachineProgress machine = (IMachineProgress) aTileEntity;
@@ -93,7 +94,6 @@ public class GT_Cover_ActivityMonitor extends GT_CoverBehavior {
             this.tileEntity = aTileEntity;
 
             new GT_GuiIconButton(this, 0, startX, startY + spaceY * 3, GT_GuiIcon.CROSS);
-
         }
 
         private int getCurrentCoverVariable() {
@@ -106,9 +106,7 @@ public class GT_Cover_ActivityMonitor extends GT_CoverBehavior {
         }
 
         @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-
-        }
+        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {}
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
@@ -124,45 +122,39 @@ public class GT_Cover_ActivityMonitor extends GT_CoverBehavior {
             int ticksActive = getTicksActive(getCurrentCoverVariable());
             double uptimePercentage = ticksActive / (double) ticksAlive * 100.0;
             this.fontRendererObj.drawString(
-                String.format("Active/Alive: %d/%d (%.2f %%)", ticksActive, ticksAlive, uptimePercentage),
-                3 + startX,
-                4 + startY,
-                textColor
-            );
+                    String.format("Active/Alive: %d/%d (%.2f %%)", ticksActive, ticksAlive, uptimePercentage),
+                    3 + startX,
+                    4 + startY,
+                    textColor);
         }
 
         private void renderRecipesCompleted() {
             this.fontRendererObj.drawString(
-                String.format("Recipes Completed: %d", getRecipeCount(getCurrentCoverVariable())),
-                3 + startX,
-                4 + startY + spaceY,
-                textColor
-            );
+                    String.format("Recipes Completed: %d", getRecipeCount(getCurrentCoverVariable())),
+                    3 + startX,
+                    4 + startY + spaceY,
+                    textColor);
         }
 
         private void renderRecipesPerMinute() {
             this.fontRendererObj.drawString(
-                String.format("Recipes per Minute: %.2f", getRecipeCount(getCurrentCoverVariable()) / (double)getTicksAlive(getCurrentCoverVariable()) * 1200),
-                3 + startX,
-                4 + startY + spaceY * 2,
-                textColor
-            );
+                    String.format(
+                            "Recipes per Minute: %.2f",
+                            getRecipeCount(getCurrentCoverVariable())
+                                    / (double) getTicksAlive(getCurrentCoverVariable())
+                                    * 1200),
+                    3 + startX,
+                    4 + startY + spaceY * 2,
+                    textColor);
         }
 
         private void renderButtonText() {
-            this.fontRendererObj.drawString(
-                "Reset",
-                3 + startX + spaceX * 1,
-                4 + startY + spaceY * 3,
-                textColor
-            );
+            this.fontRendererObj.drawString("Reset", 3 + startX + spaceX * 1, 4 + startY + spaceY * 3, textColor);
         }
 
         @Override
         public void buttonClicked(GuiButton button) {
             GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, 0, tile));
         }
-
     }
-
 }
