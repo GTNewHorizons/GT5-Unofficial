@@ -1280,7 +1280,9 @@ public class Textures {
         OVERLAY_ME_FLUID_HATCH,
         OVERLAY_ME_FLUID_HATCH_ACTIVE,
 
-        STRUCTURE_MARK;
+        STRUCTURE_MARK,
+
+        OVERLAY_ACTIVITY_MONITOR;
 
         /**
          * Icon for Fresh CFoam

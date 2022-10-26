@@ -4227,6 +4227,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "Displays the fluid stored in the Tank",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
+
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     ItemList.Sensor_EV.get(1L),
@@ -4730,6 +4731,15 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 ItemList.Cover_NeedsMaintainance.get(1L),
                 600,
                 24);
+
+        ItemList.Cover_ActivityMonitor.set(addItem(
+            tLastID = 749,
+            "Activity Monitor Cover",
+            "Keeps track of the performance of a machine"));
+        GregTech_API.registerCover(
+            ItemList.Cover_ActivityMonitor.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ACTIVITY_MONITOR)),
+            new GT_Cover_ActivityMonitor(TextureFactory.of(OVERLAY_ACTIVITY_MONITOR)));
 
         GT_ModHandler.addCraftingRecipe(ItemList.ItemFilter_Export.get(1L), new Object[] {
             "SPS",

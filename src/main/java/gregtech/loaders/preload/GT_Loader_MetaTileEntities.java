@@ -8,6 +8,7 @@ import gregtech.api.enums.*;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
 import gregtech.api.util.*;
+import gregtech.common.covers.GT_Cover_ActivityMonitor;
 import gregtech.common.tileentities.automation.*;
 import gregtech.common.tileentities.boilers.*;
 import gregtech.common.tileentities.debug.*;

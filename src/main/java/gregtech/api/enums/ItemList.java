@@ -1935,7 +1935,9 @@ public enum ItemList implements IItemContainer {
 
     Hatch_Input_Bus_ME,
     Hatch_CraftingInput_Bus_ME,
-    AdvDebugStructureWriter;
+    AdvDebugStructureWriter,
+
+    Cover_ActivityMonitor;
     public static final ItemList[]
             DYE_ONLY_ITEMS =
                     {
