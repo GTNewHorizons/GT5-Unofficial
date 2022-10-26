@@ -213,7 +213,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 items.appendTag(tag);
             }
             aNBT.setTag("cachedItems", items);
-            gridProxy.writeToNBT(aNBT);
+            getProxy().writeToNBT(aNBT);
         }
     }
 

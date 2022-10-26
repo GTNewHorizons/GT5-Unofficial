@@ -42,6 +42,7 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
         if (aSlotIndex == 2 && aMouseclick < 2) {
+            GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
             if (mTileEntity.isClientSide()) {
                 /*
                  * While a logical client don't really need to process fluid cells upon click (it could have just wait
@@ -50,10 +51,9 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
                  * I'd imagine this lag to become only more severe when playing MP over ethernet, which would have much more latency
                  * than a memory connection
                  */
-                GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
-                tTank.setDrainableStack(GT_Utility.getFluidFromDisplayStack(tTank.getStackInSlot(2)));
+                Slot slot = (Slot) inventorySlots.get(aSlotIndex);
+                tTank.setDrainableStack(GT_Utility.getFluidFromDisplayStack(slot.getStack()));
             }
-            GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
             IFluidAccess tDrainableAccess = constructFluidAccess(tTank, false);
             return handleFluidSlotClick(
                     tDrainableAccess, aPlayer, aMouseclick == 0, true, !tTank.isDrainableStackSeparate());

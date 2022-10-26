@@ -6,6 +6,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Multi
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -30,20 +31,15 @@ public class GT_Container_2by2_Fluid extends GT_ContainerMetaTile_Machine {
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
         if (aSlotIndex < 4 && aSlotIndex >= 0 && aMouseclick < 2) {
-            if (mTileEntity.isClientSide()) {
-                /*
-                 * While a logical client don't really need to process fluid cells upon click (it could have just wait
-                 * for server side to send the result), doing so would result in every fluid interaction having a
-                 * noticeable delay between clicking and changes happening even on single player.
-                 * I'd imagine this lag to become only more severe when playing MP over ethernet, which would have much more latency
-                 * than a memory connection
-                 */
-                GT_MetaTileEntity_Hatch_MultiInput tTank =
-                        (GT_MetaTileEntity_Hatch_MultiInput) mTileEntity.getMetaTileEntity();
-                tTank.setDrainableStack(GT_Utility.getFluidFromDisplayStack(tTank.getStackInSlot(2)));
-            }
             GT_MetaTileEntity_Hatch_MultiInput tTank =
                     (GT_MetaTileEntity_Hatch_MultiInput) mTileEntity.getMetaTileEntity();
+            if (mTileEntity.isClientSide()) {
+                /*
+                 * See comment in gregtech.api.gui.GT_Container_BasicTank.slotClick on why this is necessary
+                 */
+                Slot slot = (Slot) inventorySlots.get(aSlotIndex);
+                tTank.setFluid(GT_Utility.getFluidFromDisplayStack(slot.getStack()), aSlotIndex);
+            }
             MultiFluidAccess tDrainableAccess = MultiFluidAccess.from(tTank, aSlotIndex);
             ItemStack tStackHeld = aPlayer.inventory.getItemStack();
             FluidStack tFluidHeld = GT_Utility.getFluidForFilledItem(tStackHeld, true);

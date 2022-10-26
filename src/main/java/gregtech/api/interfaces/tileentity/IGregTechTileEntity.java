@@ -138,6 +138,13 @@ public interface IGregTechTileEntity
 
     ArrayList<ItemStack> getDrops();
 
+    /** Check if the item at the specific index should be dropped or not
+     *
+     * @param index Index that will be checked
+     * @return True if it should drop, else false
+     */
+    boolean shouldDropItemAt(int index);
+
     /**
      * 255 = 100%
      */
