@@ -106,7 +106,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
                                             GT_HatchElement.InputBus,
                                             GT_HatchElement.OutputHatch,
                                             HatchElement.EnergyMulti.or(GT_HatchElement.Energy))
-                                    .casingIndex(50)
+                                    .casingIndex(179)
                                     .dot(1)
                                     .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
                     .addElement('C', ofBlock(Loaders.FRF_Casings, 0))
