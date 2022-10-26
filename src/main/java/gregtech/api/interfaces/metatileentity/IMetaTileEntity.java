@@ -4,6 +4,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,6 +12,7 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_Util;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -423,6 +425,17 @@ public interface IMetaTileEntity
     void onColorChangeServer(byte aColor);
 
     void onColorChangeClient(byte aColor);
+
+    /**
+     * @return Actual color shown on GUI
+     */
+    default int getGUIColorization() {
+        if (getBaseMetaTileEntity() != null) {
+            return getBaseMetaTileEntity().getGUIColorization();
+        } else {
+            return GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
+        }
+    }
 
     int getLightOpacity();
 

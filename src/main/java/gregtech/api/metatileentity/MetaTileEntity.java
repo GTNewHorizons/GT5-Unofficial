@@ -1242,7 +1242,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                 getBaseMetaTileEntity() != null && !getBaseMetaTileEntity().isDead());
         ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
         builder.setBackground(getBackground());
-        builder.setGuiTint(getColorization());
+        builder.setGuiTint(getGUIColorization());
         if (doesBindPlayerInventory()) {
             builder.bindPlayerInventory(buildContext.getPlayer(), 7, getSlotBackground());
         }
@@ -1513,10 +1513,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     protected Supplier<Integer> COLOR_TEXT_WHITE = () -> getTextColorOrDefault("text_white", 0xfafaff);
     protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x404040);
 
-    /**
-     * @return The color used to render this machine's GUI
-     */
-    private int getColorization() {
+    @Override
+    public int getGUIColorization() {
         Dyes dye = Dyes.dyeWhite;
         if (this.colorOverride.sLoaded()) {
             if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {

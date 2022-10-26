@@ -8,7 +8,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
@@ -450,7 +449,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         public ModularWindow createWindow() {
             ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
             builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
-            builder.setGuiTint(GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA()));
+            builder.setGuiTint(getUIBuildContext().getGuiColorization());
             if (doesBindPlayerInventory() && !getUIBuildContext().isAnotherWindow()) {
                 builder.bindPlayerInventory(getUIBuildContext().getPlayer());
             }

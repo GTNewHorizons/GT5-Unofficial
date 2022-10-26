@@ -10,14 +10,36 @@ public class GT_CoverUIBuildContext extends UIBuildContext {
     private final int coverID;
     private final byte side;
     private final ICoverable tile;
-    private boolean anotherWindow;
+    private final boolean anotherWindow;
+    private final int guiColorization;
 
-    public GT_CoverUIBuildContext(EntityPlayer player, int coverID, byte side, ICoverable tile, boolean anotherWindow) {
+    /**
+     * @param player Player opened this UI
+     * @param coverID See {@link ICoverable#getCoverIDAtSide}
+     * @param side Side this cover is attached to
+     * @param tile Tile this cover is attached to
+     * @param anotherWindow If cover GUI is shown in opened on top of another window
+     * @param guiColorization The color used to render machine's GUI
+     */
+    public GT_CoverUIBuildContext(
+            EntityPlayer player, int coverID, byte side, ICoverable tile, boolean anotherWindow, int guiColorization) {
         super(player);
         this.coverID = coverID;
         this.side = side;
         this.tile = tile;
         this.anotherWindow = anotherWindow;
+        this.guiColorization = guiColorization;
+    }
+
+    /**
+     * @param player Player opened this UI
+     * @param coverID See {@link ICoverable#getCoverIDAtSide}
+     * @param side Side this cover is attached to
+     * @param tile Tile this cover is attached to
+     * @param anotherWindow If cover GUI is shown in opened on top of another window
+     */
+    public GT_CoverUIBuildContext(EntityPlayer player, int coverID, byte side, ICoverable tile, boolean anotherWindow) {
+        this(player, coverID, side, tile, anotherWindow, tile.getGUIColorization());
     }
 
     public int getCoverID() {
@@ -40,5 +62,9 @@ public class GT_CoverUIBuildContext extends UIBuildContext {
      */
     public boolean isAnotherWindow() {
         return anotherWindow;
+    }
+
+    public int getGuiColorization() {
+        return guiColorization;
     }
 }
