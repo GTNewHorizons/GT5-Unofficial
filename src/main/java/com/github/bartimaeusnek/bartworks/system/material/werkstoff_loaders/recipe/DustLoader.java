@@ -61,12 +61,13 @@ public class DustLoader implements IWerkstoffRunnable {
                 for (Pair<ISubTagContainer, Integer> container :
                         werkstoff.getContents().getValue().toArray(new Pair[0])) {
                     if (container.getKey() instanceof Materials) {
-                        if (((Materials) container.getKey()).getGas(0) != null
-                                || ((Materials) container.getKey()).getFluid(0) != null
-                                || ((Materials) container.getKey()).mIconSet == TextureSet.SET_FLUID) {
-                            FluidStack tmpFl = ((Materials) container.getKey()).getGas(1000 * container.getValue());
+                        if ((((Materials) container.getKey()).getGas(0) != null
+                                        || ((Materials) container.getKey()).getFluid(0) != null
+                                        || ((Materials) container.getKey()).mIconSet == TextureSet.SET_FLUID)
+                                && ((Materials) container.getKey()).getDust(0) == null) {
+                            FluidStack tmpFl = ((Materials) container.getKey()).getGas(1000L * container.getValue());
                             if (tmpFl == null || tmpFl.getFluid() == null) {
-                                tmpFl = ((Materials) container.getKey()).getFluid(1000 * container.getValue());
+                                tmpFl = ((Materials) container.getKey()).getFluid(1000L * container.getValue());
                             }
                             flOutputs.add(tmpFl);
                             if (flOutputs.size() > 1) {
@@ -90,9 +91,9 @@ public class DustLoader implements IWerkstoffRunnable {
                                         && (((Materials) container.getKey()).getMolten(0) != null
                                                 || ((Materials) container.getKey()).getSolid(0) != null)) {
                                     FluidStack tmpFl =
-                                            ((Materials) container.getKey()).getMolten(1000 * container.getValue());
+                                            ((Materials) container.getKey()).getMolten(1000L * container.getValue());
                                     if (tmpFl == null || tmpFl.getFluid() == null) {
-                                        tmpFl = ((Materials) container.getKey()).getSolid(1000 * container.getValue());
+                                        tmpFl = ((Materials) container.getKey()).getSolid(1000L * container.getValue());
                                     }
                                     flOutputs.add(tmpFl);
                                     if (flOutputs.size() > 1) {
