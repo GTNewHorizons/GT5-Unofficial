@@ -3292,4 +3292,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public ItemStack getPlates(int amount) {
         return GT_OreDictUnificator.get(OrePrefixes.plate, this, amount);
     }
+
+    public ItemStack getNanite(int amount) {
+        return GT_OreDictUnificator.get(OrePrefixes.nanite, this, amount);
+    }
 }

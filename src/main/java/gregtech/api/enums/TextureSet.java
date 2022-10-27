@@ -187,7 +187,7 @@ public class TextureSet {
         "/toolHeadScrewdriver",
         "/toolHeadBuzzSaw",
         "/toolHeadSoldering",
-        aTextVoidDir,
+        "/dust",
         "/wireFine",
         "/gearGtSmall",
         "/rotor",
