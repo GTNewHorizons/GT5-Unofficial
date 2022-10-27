@@ -2203,6 +2203,22 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map_LargeBoilerFakeFuels sLargeBoilerFakeFuels =
                 new GT_Recipe_Map_LargeBoilerFakeFuels();
 
+        public static final GT_Recipe_Map sNanoForge = new GT_Recipe_Map(
+            new HashSet<>(10), 
+            "gt.recipe.nanoforge", 
+            "Nano Forge", 
+            null, 
+            RES_PATH_GUI + "basicmachines/LCR/NEI", 
+            3,
+            2, 
+            1, 
+            1, 
+            1, 
+            "", 
+            0, "", 
+            true, 
+            true);
+
         /**
          * HashMap of Recipes based on their Items
          */
