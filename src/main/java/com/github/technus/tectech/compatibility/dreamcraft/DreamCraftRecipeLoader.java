@@ -103,6 +103,14 @@ public class DreamCraftRecipeLoader {
                 200,
                 30720);
 
+        // Data Casing
+        addAssemblerRecipeWithCleanroom(
+                new ItemStack[] {CustomItemList.DATApipe.get(1), ItemList.Casing_LuV.get(1)},
+                null,
+                CustomItemList.DATApipeBlock.get(1),
+                20,
+                30720);
+
         // Tunnel
         addAssemblerRecipeWithCleanroom(
                 new ItemStack[] {
@@ -118,6 +126,14 @@ public class DreamCraftRecipeLoader {
                 400,
                 500000);
 
+        // Tunnel Casing
+        addAssemblerRecipeWithCleanroom(
+                new ItemStack[] {CustomItemList.EMpipe.get(1), ItemList.Casing_LuV.get(1)},
+                null,
+                CustomItemList.EMpipeBlock.get(1),
+                20,
+                30720);
+
         // Laser
         addAssemblerRecipeWithCleanroom(
                 new ItemStack[] {
@@ -129,6 +145,14 @@ public class DreamCraftRecipeLoader {
                 CustomItemList.LASERpipe.get(1),
                 100,
                 500000);
+
+        // Laser Casing
+        addAssemblerRecipeWithCleanroom(
+                new ItemStack[] {CustomItemList.LASERpipe.get(1), ItemList.Casing_LuV.get(1)},
+                null,
+                CustomItemList.LASERpipeBlock.get(1),
+                20,
+                30720);
 
         // endregion
 
