@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,11 +10,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 
-public class GT_MetaTileEntity_NanoForge 
-extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_NanoForge> 
-implements ISurvivalConstructable{
+public class GT_MetaTileEntity_NanoForge extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_NanoForge>
+        implements ISurvivalConstructable {
 
-    public GT_MetaTileEntity_NanoForge(int aID, String aName, String aNameRegional){
+    public GT_MetaTileEntity_NanoForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
@@ -30,7 +28,7 @@ implements ISurvivalConstructable{
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -40,8 +38,13 @@ implements ISurvivalConstructable{
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -92,5 +95,4 @@ implements ISurvivalConstructable{
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
-    
 }
