@@ -3172,24 +3172,7 @@ public enum OrePrefixes {
             64,
             -1),
     beeComb("Bee Combs", "", "", true, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1),
-    nanite(
-            "Nanites",
-            "",
-            " Nanites",
-            true,
-            true,
-            false,
-            false,
-            false,
-            false,
-            false,
-            true,
-            false,
-            false,
-            0,
-            -1,
-            64,
-            50);
+    nanite("Nanites", "", " Nanites", true, true, false, false, false, false, false, true, false, false, 0, -1, 64, 50);
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
             cell,
