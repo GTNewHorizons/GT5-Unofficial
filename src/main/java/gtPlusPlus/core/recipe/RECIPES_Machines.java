@@ -2046,30 +2046,30 @@ public class RECIPES_Machines {
             aSemiFluidInputs[0] = new ItemStack[] {
                 CI.getNumberedBioCircuit(14),
                 CI.getTieredMachineHull(1, 1),
-                CI.getElectricPiston(1, GTNH ? 4 : 2),
-                CI.getTieredComponent(OrePrefixes.circuit, 1, GTNH ? 4 : 2),
-                CI.getPlate(1, GTNH ? 8 : 4),
-                CI.getGear(1, GTNH ? 4 : 2)
+                CI.getElectricPiston(1, 2),
+                CI.getTieredComponent(OrePrefixes.circuit, 1, 2),
+                CI.getPlate(1, 4),
+                CI.getGear(1, 2)
             };
             aSemiFluidInputs[1] = new ItemStack[] {
                 CI.getNumberedCircuit(14),
                 CI.getTieredMachineHull(2, 1),
-                CI.getElectricPiston(2, GTNH ? 4 : 2),
-                CI.getTieredComponent(OrePrefixes.circuit, 2, GTNH ? 4 : 2),
-                CI.getPlate(2, GTNH ? 8 : 4),
-                CI.getGear(2, GTNH ? 4 : 2)
+                CI.getElectricPiston(2, 2),
+                CI.getTieredComponent(OrePrefixes.circuit, 2, 2),
+                CI.getPlate(2, 4),
+                CI.getGear(2, 2)
             };
             aSemiFluidInputs[2] = new ItemStack[] {
                 CI.getNumberedAdvancedCircuit(14),
                 CI.getTieredMachineHull(3, 1),
-                CI.getElectricPiston(3, GTNH ? 4 : 2),
-                CI.getTieredComponent(OrePrefixes.circuit, 3, GTNH ? 4 : 2),
-                CI.getPlate(3, GTNH ? 8 : 4),
-                CI.getGear(3, GTNH ? 4 : 2)
+                CI.getElectricPiston(3, 2),
+                CI.getTieredComponent(OrePrefixes.circuit, 3, 2),
+                CI.getPlate(3, 4),
+                CI.getGear(3, 2)
             };
             FluidStack[] aSemiFluidFluidInputs = new FluidStack[] {
-                ALLOY.BRONZE.getFluidStack(144 * 8),
-                ALLOY.STEEL.getFluidStack(144 * 8),
+                ELEMENT.getInstance().TIN.getFluidStack(144 * 4),
+                ALLOY.STEEL.getFluidStack(144 * 6),
                 ELEMENT.getInstance().ALUMINIUM.getFluidStack(144 * 8),
             };
 

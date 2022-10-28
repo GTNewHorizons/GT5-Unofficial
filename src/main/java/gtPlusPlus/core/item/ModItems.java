@@ -633,7 +633,7 @@ public final class ModItems {
             MaterialGenerator.generate(ALLOY.MARAGING350);
             MaterialGenerator.generate(ALLOY.AQUATIC_STEEL);
 
-            MaterialGenerator.generate(ALLOY.NITINOL_60, true, false);
+            MaterialGenerator.generate(ALLOY.NITINOL_60, true);
 
             // Composite Alloys
             MaterialGenerator.generate(ALLOY.STELLITE);
