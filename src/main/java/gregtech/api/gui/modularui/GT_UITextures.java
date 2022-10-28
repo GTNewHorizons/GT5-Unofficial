@@ -197,11 +197,6 @@ public class GT_UITextures {
 
     public static final UITexture BUTTON_STANDARD = UITexture.fullImage(MODID, "gui/button/standard");
     public static final UITexture BUTTON_STANDARD_TOGGLE = UITexture.fullImage(MODID, "gui/button/standard_toggle");
-    public static final UITexture BUTTON_LOCK = UITexture.fullImage(MODID, "gui/button/lock");
-    public static final UITexture BUTTON_INPUT_FROM_OUTPUT_SIDE =
-            UITexture.fullImage(MODID, "gui/button/input_from_output_side");
-    public static final UITexture BUTTON_VOID_EXCESS = UITexture.fullImage(MODID, "gui/button/void_excess");
-    public static final UITexture BUTTON_VOID_ALL = UITexture.fullImage(MODID, "gui/button/void_all");
     public static final UITexture BUTTON_COVER_NORMAL = UITexture.fullImage(MODID, "gui/button/cover_normal");
     public static final UITexture BUTTON_COVER_NORMAL_HOVERED =
             UITexture.fullImage(MODID, "gui/button/cover_normal_hovered");
@@ -261,6 +256,12 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_GATE_OR = UITexture.fullImage(MODID, "gui/overlay_button/gate_or");
     public static final UITexture OVERLAY_BUTTON_GATE_NOR = UITexture.fullImage(MODID, "gui/overlay_button/gate_nor");
     public static final UITexture OVERLAY_BUTTON_ANALOG = UITexture.fullImage(MODID, "gui/overlay_button/analog");
+    public static final UITexture OVERLAY_BUTTON_LOCK = UITexture.fullImage(MODID, "gui/overlay_button/lock");
+    public static final UITexture OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE =
+            UITexture.fullImage(MODID, "gui/overlay_button/input_from_output_side");
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS =
+            UITexture.fullImage(MODID, "gui/overlay_button/void_excess");
+    public static final UITexture OVERLAY_BUTTON_VOID_ALL = UITexture.fullImage(MODID, "gui/overlay_button/void_all");
 
     /**
      * Can adjust size as needed.
@@ -349,4 +350,5 @@ public class GT_UITextures {
             SteamTexture.fullImage(MODID, "gui/picture/blast_furnace_structure_%s");
     public static final UITexture PICTURE_SQUARE_LIGHT_GRAY =
             UITexture.fullImage(MODID, "gui/picture/square_light_gray");
+    public static final UITexture PICTURE_GAUGE = UITexture.fullImage(MODID, "gui/picture/gauge");
 }
