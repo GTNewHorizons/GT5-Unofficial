@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class EnderWorldSavedData extends WorldSavedData {
     private static EnderWorldSavedData INSTANCE;
-    private static boolean initiated = false;
 
     private static final String DATA_NAME = MODID + "_EnderWorldSavedData";
     private static final String ENDER_LIQUID_TAG_LINK = DATA_NAME + "_EnderLiquidTagLink";
