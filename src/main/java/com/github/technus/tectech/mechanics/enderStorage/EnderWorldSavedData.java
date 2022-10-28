@@ -129,13 +129,6 @@ public class EnderWorldSavedData extends WorldSavedData {
         getEnderLiquidTankLink().put(tank, tag);
     }
 
-    public static void initiate() {
-        if (!initiated) {
-            initiated = true;
-            MinecraftForge.EVENT_BUS.register(new EnderWorldSavedData());
-        }
-    }
-
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
         INSTANCE = null;
