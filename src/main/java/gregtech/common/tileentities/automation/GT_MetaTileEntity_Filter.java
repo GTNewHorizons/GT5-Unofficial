@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_FILTER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_FILTER_GLOW;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
@@ -100,7 +101,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer {
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         addEmitEnergyButton(builder);
         addEmitRedstoneButton(builder);
         addInvertRedstoneButton(builder);

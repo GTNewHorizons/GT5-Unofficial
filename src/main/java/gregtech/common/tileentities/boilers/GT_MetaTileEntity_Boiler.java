@@ -5,6 +5,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -427,7 +428,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new SlotWidget(inventoryHandler, 0)
                         .setPos(43, 25)
                         .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_IN_STEAM.get(getVariant())))

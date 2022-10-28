@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER_GLOW;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -110,7 +111,7 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         addEmitEnergyButton(builder);
         addEmitRedstoneButton(builder);
         addInvertRedstoneButton(builder);

@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -132,7 +133,7 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mTier) {
             case 4:
                 add2by2Slots(builder, getSlotBackground(), GT_UITextures.OVERLAY_SLOT_CIRCUIT);

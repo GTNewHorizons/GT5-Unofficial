@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GT_Values.V;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -333,7 +334,7 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mInventory.length) {
             case 4:
                 add2by2Slots(builder);

@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR_GLOW;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
@@ -162,7 +163,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         addEmitEnergyButton(builder);
         addChargerSlot(builder, 43, 62);
         builder.widget(new DrawableWidget()

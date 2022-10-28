@@ -1251,7 +1251,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         if (doesBindPlayerInventory()) {
             builder.bindPlayerInventory(buildContext.getPlayer(), 7, getSlotBackground());
         }
-        addUIWidgets(builder);
+        addUIWidgets(builder, buildContext);
         addCoverTabs(builder, buildContext);
         addTitleToUI(builder);
         addGregTechLogo(builder);
@@ -1261,7 +1261,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     /**
      * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
      */
-    protected void addUIWidgets(ModularWindow.Builder builder) {}
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {}
 
     protected void addTitleToUI(ModularWindow.Builder builder, String title) {
         builder.widget(new TextWidget(new Text(title))

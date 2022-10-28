@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.basic;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -115,7 +116,7 @@ public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder) {
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         add1by1Slot(builder);
     }
 }
