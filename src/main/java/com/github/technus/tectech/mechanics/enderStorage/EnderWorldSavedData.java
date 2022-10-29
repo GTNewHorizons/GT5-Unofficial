@@ -129,6 +129,8 @@ public class EnderWorldSavedData extends WorldSavedData {
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
-        INSTANCE = null;
+        if (event.world.provider.dimensionId == 0) {
+            INSTANCE = null;
+        }
     }
 }
