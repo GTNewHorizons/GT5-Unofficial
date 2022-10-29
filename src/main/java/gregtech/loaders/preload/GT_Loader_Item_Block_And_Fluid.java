@@ -469,7 +469,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
-        GregTech_API.sSolenoidCoilCasings = new GT_Cyclotron_Coils();
 
         // meta ID order, DO NOT CHANGE ORDER
 
@@ -2172,5 +2171,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GregTech_API.registerMachineBlock(
                 GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("reinforcedGlass", 0)), 0);
+
+        GregTech_API.sSolenoidCoilCasings = new GT_Cyclotron_Coils();
+
     }
 }
