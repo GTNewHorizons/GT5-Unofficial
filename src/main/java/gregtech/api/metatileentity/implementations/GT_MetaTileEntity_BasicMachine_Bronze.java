@@ -452,6 +452,8 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
         return new GT_GuiTabIconSet(
                 GT_UITextures.TAB_COVER_STEAM_NORMAL.get(SteamTexture.Variant.BRONZE),
                 GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(SteamTexture.Variant.BRONZE),
-                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamTexture.Variant.BRONZE));
+                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamTexture.Variant.BRONZE),
+                GT_UITextures.TAB_TITLE_STEAM.getAdaptable(SteamTexture.Variant.BRONZE),
+                GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(SteamTexture.Variant.BRONZE));
     }
 }

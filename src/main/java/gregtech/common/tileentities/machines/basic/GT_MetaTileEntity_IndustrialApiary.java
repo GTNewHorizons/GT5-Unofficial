@@ -1246,11 +1246,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         addSpecialSlot(builder, UNUSED_SLOT_TOOLTIP);
     }
 
-    @Override
-    protected void addTitleToUI(ModularWindow.Builder builder) {
-        addTitleToUI(builder, "Ind. Apiary");
-    }
-
     private int getAcceleration() {
         return 1 << mSpeed;
     }

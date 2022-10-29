@@ -439,9 +439,6 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         return true;
     }
 
-    @Override
-    protected void addTitleToUI(ModularWindow.Builder builder) {}
-
     protected void addEmitEnergyButton(ModularWindow.Builder builder) {
         builder.widget(new ButtonWidget()
                 .setOnClick(((clickData, widget) -> {

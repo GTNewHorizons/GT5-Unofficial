@@ -408,9 +408,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    protected void addTitleToUI(ModularWindow.Builder builder) {}
-
-    @Override
     protected void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
                 .setDrawable(getGregTechLogo())

@@ -7,15 +7,17 @@ import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AECableType;
 import appeng.me.helpers.AENetworkProxy;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.Column;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -61,6 +63,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -1216,7 +1219,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         return false;
     }
 
-    // === ModularUI or old GUI ===
+    // === GUI stuff ===
 
     /**
      * Inventory wrapper for ModularUI
@@ -1252,8 +1255,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             builder.bindPlayerInventory(buildContext.getPlayer(), 7, getSlotBackground());
         }
         addUIWidgets(builder, buildContext);
-        addCoverTabs(builder, buildContext);
         addTitleToUI(builder);
+        addCoverTabs(builder, buildContext);
         addGregTechLogo(builder);
         return builder.build();
     }
@@ -1263,14 +1266,107 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      */
     protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {}
 
-    protected void addTitleToUI(ModularWindow.Builder builder, String title) {
-        builder.widget(new TextWidget(new Text(title))
-                .setDefaultColor(COLOR_TITLE.get())
-                .setPos(8, 4));
-    }
-
     protected void addTitleToUI(ModularWindow.Builder builder) {
         addTitleToUI(builder, getLocalName());
+    }
+
+    protected void addTitleToUI(ModularWindow.Builder builder, String title) {
+        if (GT_Mod.gregtechproxy.mTitleTabStyle == 2) {
+            addTitleItemIconStyle(builder, title);
+        } else {
+            addTitleTextStyle(builder, title);
+        }
+    }
+
+    protected void addTitleTextStyle(ModularWindow.Builder builder, String title) {
+        final int TAB_PADDING = 3;
+        final int TITLE_PADDING = 2;
+        int titleWidth = 0, titleHeight = 0;
+        if (NetworkUtils.isClient()) {
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            //noinspection unchecked
+            List<String> titleLines =
+                    fontRenderer.listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
+            titleWidth = titleLines.size() > 1
+                    ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
+                    : fontRenderer.getStringWidth(title);
+            //noinspection PointlessArithmeticExpression
+            titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1) * 1;
+        }
+
+        DrawableWidget tab = new DrawableWidget();
+        TextWidget text = new TextWidget(title)
+                .setDefaultColor(getTitleColor())
+                .setTextAlignment(Alignment.CenterLeft)
+                .setMaxWidth(titleWidth);
+        if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
+            tab.setDrawable(getTabIconSet().titleNormal)
+                    .setPos(0, -(titleHeight + TAB_PADDING) + 1)
+                    .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
+            text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
+        } else {
+            tab.setDrawable(getTabIconSet().titleDark)
+                    .setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
+                    .setSize(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1);
+            text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight);
+        }
+        builder.widget(tab).widget(text);
+    }
+
+    protected void addTitleItemIconStyle(ModularWindow.Builder builder, String title) {
+        builder.widget(new MultiChildWidget()
+                .addChild(new DrawableWidget()
+                        .setDrawable(getTabIconSet().titleNormal)
+                        .setPos(0, 0)
+                        .setSize(24, 24))
+                .addChild(new ItemDrawable(getStackForm(1)).asWidget().setPos(4, 4))
+                .addTooltip(title)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(0, -24 + 3));
+    }
+
+    protected GT_GuiTabIconSet getTabIconSet() {
+        return new GT_GuiTabIconSet(
+                GT_UITextures.TAB_COVER_NORMAL,
+                GT_UITextures.TAB_COVER_HIGHLIGHT,
+                GT_UITextures.TAB_COVER_DISABLED,
+                GT_UITextures.TAB_TITLE,
+                GT_UITextures.TAB_TITLE_DARK);
+    }
+
+    protected int getTitleColor() {
+        return COLOR_TITLE.get();
+    }
+
+    protected void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(152, 63));
+    }
+
+    protected IDrawable getGregTechLogo() {
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT;
+    }
+
+    protected UITexture getBackground() {
+        return GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT;
+    }
+
+    protected int getGUIWidth() {
+        return 176;
+    }
+
+    protected int getGUIHeight() {
+        return 166;
+    }
+
+    protected boolean doesBindPlayerInventory() {
+        return true;
+    }
+
+    protected IDrawable getSlotBackground() {
+        return ModularUITextures.ITEM_SLOT;
     }
 
     protected void add1by1Slot(ModularWindow.Builder builder, IDrawable... background) {
@@ -1321,47 +1417,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                 .setPos(52, 7));
     }
 
-    protected void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(152, 63));
-    }
-
-    protected IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT;
-    }
-
-    protected UITexture getBackground() {
-        return GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT;
-    }
-
-    protected int getGUIWidth() {
-        return 176;
-    }
-
-    protected int getGUIHeight() {
-        return 166;
-    }
-
-    protected boolean doesBindPlayerInventory() {
-        return true;
-    }
-
-    protected IDrawable getSlotBackground() {
-        return ModularUITextures.ITEM_SLOT;
-    }
-
-    protected GT_GuiTabIconSet getTabIconSet() {
-        return new GT_GuiTabIconSet(
-                GT_UITextures.TAB_COVER_NORMAL, GT_UITextures.TAB_COVER_HIGHLIGHT, GT_UITextures.TAB_COVER_DISABLED);
-    }
-
     private static final int COVER_WINDOW_ID_START = 1;
 
     private void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int COVER_TAB_LEFT = -16,
-                COVER_TAB_TOP = 1,
+                //                COVER_TAB_TOP = 1,
+                COVER_TAB_TOP = 27,
                 COVER_TAB_HEIGHT = 20,
                 COVER_TAB_WIDTH = 18,
                 COVER_TAB_SPACING = 2,
@@ -1396,15 +1457,19 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                                         if (isHovering()) {
                                             backgrounds.add(
                                                     flipHorizontally
-                                                            ? tabIconSet.highlightFlipped
-                                                            : tabIconSet.highlight);
+                                                            ? tabIconSet.coverHighlightFlipped
+                                                            : tabIconSet.coverHighlight);
                                         } else {
                                             backgrounds.add(
-                                                    flipHorizontally ? tabIconSet.normalFlipped : tabIconSet.normal);
+                                                    flipHorizontally
+                                                            ? tabIconSet.coverNormalFlipped
+                                                            : tabIconSet.coverNormal);
                                         }
                                     } else {
                                         backgrounds.add(
-                                                flipHorizontally ? tabIconSet.disabledFlipped : tabIconSet.disabled);
+                                                flipHorizontally
+                                                        ? tabIconSet.coverDisabledFlipped
+                                                        : tabIconSet.coverDisabled);
                                     }
                                     return backgrounds.toArray(new IDrawable[] {});
                                 }
@@ -1430,20 +1495,29 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      * Defines a set of textures a tab line can use to render its tab backgrounds
      */
     protected static class GT_GuiTabIconSet {
-        protected UITexture normal;
-        protected UITexture highlight;
-        protected UITexture disabled;
-        protected UITexture normalFlipped;
-        protected UITexture highlightFlipped;
-        protected UITexture disabledFlipped;
+        protected final UITexture coverNormal;
+        protected final UITexture coverHighlight;
+        protected final UITexture coverDisabled;
+        protected final UITexture coverNormalFlipped;
+        protected final UITexture coverHighlightFlipped;
+        protected final UITexture coverDisabledFlipped;
+        protected final AdaptableUITexture titleNormal;
+        protected final AdaptableUITexture titleDark;
 
-        public GT_GuiTabIconSet(UITexture normalIcon, UITexture highlightIcon, UITexture disabledIcon) {
-            this.normal = normalIcon;
-            this.highlight = highlightIcon;
-            this.disabled = disabledIcon;
-            this.normalFlipped = normalIcon.getFlipped(true, false);
-            this.highlightFlipped = highlightIcon.getFlipped(true, false);
-            this.disabledFlipped = disabledIcon.getFlipped(true, false);
+        public GT_GuiTabIconSet(
+                UITexture coverNormal,
+                UITexture coverHighlight,
+                UITexture coverDisabled,
+                AdaptableUITexture titleNormal,
+                AdaptableUITexture titleDark) {
+            this.coverNormal = coverNormal;
+            this.coverHighlight = coverHighlight;
+            this.coverDisabled = coverDisabled;
+            this.coverNormalFlipped = coverNormal.getFlipped(true, false);
+            this.coverHighlightFlipped = coverHighlight.getFlipped(true, false);
+            this.coverDisabledFlipped = coverDisabled.getFlipped(true, false);
+            this.titleNormal = titleNormal;
+            this.titleDark = titleDark;
         }
     }
 
@@ -1515,6 +1589,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);
+    protected Supplier<Integer> COLOR_TITLE_WHITE = () -> getTextColorOrDefault("title_white", 0xfafaff);
     protected Supplier<Integer> COLOR_TEXT_WHITE = () -> getTextColorOrDefault("text_white", 0xfafaff);
     protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x404040);
 

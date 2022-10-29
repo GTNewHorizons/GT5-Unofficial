@@ -564,6 +564,13 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         return new GT_GuiTabIconSet(
                 GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getVariant()),
                 GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getVariant()),
-                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getVariant()));
+                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getVariant()),
+                GT_UITextures.TAB_TITLE_STEAM.getAdaptable(getVariant()),
+                GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(getVariant()));
+    }
+
+    @Override
+    protected int getTitleColor() {
+        return getVariant() == SteamTexture.Variant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
     }
 }

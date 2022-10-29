@@ -5,7 +5,7 @@ import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import java.util.Locale;
 
 /**
- * Wrapper around {@link UITexture}s used to
+ * Wrapper for {@link UITexture}s used to
  * ease in choosing between Bronze, Steel and Primitive textures.
  */
 public class SteamTexture {
@@ -46,6 +46,19 @@ public class SteamTexture {
                 return steelTexture;
             case PRIMITIVE:
                 return primitiveTexture;
+            default:
+                return null;
+        }
+    }
+
+    public AdaptableUITexture getAdaptable(Variant variant) {
+        switch (variant) {
+            case BRONZE:
+                return (AdaptableUITexture) bronzeTexture;
+            case STEEL:
+                return (AdaptableUITexture) steelTexture;
+            case PRIMITIVE:
+                return (AdaptableUITexture) primitiveTexture;
             default:
                 return null;
         }

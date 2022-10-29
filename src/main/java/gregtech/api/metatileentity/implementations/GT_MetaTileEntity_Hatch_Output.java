@@ -503,8 +503,8 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
                         .setTextAlignment(Alignment.CenterLeft)
                         .setMaxWidth(65)
                         .setPos(101, 30))
-                // #updateFluidDisplayItem invalidates locked fluid slot if lockedFluidName == null or mMode is
-                // incorrect
+                // #updateFluidDisplayItem invalidates locked fluid slot
+                // if lockedFluidName == null or mMode is incorrect
                 .widget(new FakeSyncWidget.StringSyncer(() -> lockedFluidName, val -> lockedFluidName = val))
                 .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
     }

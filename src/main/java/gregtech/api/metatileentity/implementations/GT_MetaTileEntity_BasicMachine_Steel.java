@@ -213,6 +213,13 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
         return new GT_GuiTabIconSet(
                 GT_UITextures.TAB_COVER_STEAM_NORMAL.get(SteamTexture.Variant.STEEL),
                 GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(SteamTexture.Variant.STEEL),
-                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamTexture.Variant.STEEL));
+                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamTexture.Variant.STEEL),
+                GT_UITextures.TAB_TITLE_STEAM.getAdaptable(SteamTexture.Variant.STEEL),
+                GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(SteamTexture.Variant.STEEL));
+    }
+
+    @Override
+    protected int getTitleColor() {
+        return COLOR_TITLE_WHITE.get();
     }
 }

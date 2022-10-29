@@ -194,6 +194,13 @@ public class GT_UITextures {
             SteamTexture.fullImage(MODID, "gui/tab/cover_%s_highlight");
     public static final SteamTexture TAB_COVER_STEAM_DISABLED =
             SteamTexture.fullImage(MODID, "gui/tab/cover_%s_disabled");
+    public static final AdaptableUITexture TAB_TITLE = AdaptableUITexture.of(MODID, "gui/tab/title", 28, 28, 4);
+    public static final AdaptableUITexture TAB_TITLE_DARK =
+            AdaptableUITexture.of(MODID, "gui/tab/title_dark", 28, 28, 4);
+    public static final SteamTexture TAB_TITLE_STEAM =
+            SteamTexture.adaptableTexture(MODID, "gui/tab/title_%s", 28, 28, 4);
+    public static final SteamTexture TAB_TITLE_DARK_STEAM =
+            SteamTexture.adaptableTexture(MODID, "gui/tab/title_dark_%s", 28, 28, 4);
 
     public static final UITexture BUTTON_STANDARD = UITexture.fullImage(MODID, "gui/button/standard");
     public static final UITexture BUTTON_STANDARD_TOGGLE = UITexture.fullImage(MODID, "gui/button/standard_toggle");

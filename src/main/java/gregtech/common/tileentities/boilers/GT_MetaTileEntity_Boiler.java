@@ -479,11 +479,6 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    protected void addTitleToUI(ModularWindow.Builder builder) {
-        addTitleToUI(builder, "Boiler");
-    }
-
-    @Override
     protected IDrawable getGregTechLogo() {
         return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getVariant());
     }
@@ -503,6 +498,13 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         return new GT_GuiTabIconSet(
                 GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getVariant()),
                 GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getVariant()),
-                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getVariant()));
+                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getVariant()),
+                GT_UITextures.TAB_TITLE_STEAM.getAdaptable(getVariant()),
+                GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(getVariant()));
+    }
+
+    @Override
+    protected int getTitleColor() {
+        return getVariant() == SteamTexture.Variant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
     }
 }

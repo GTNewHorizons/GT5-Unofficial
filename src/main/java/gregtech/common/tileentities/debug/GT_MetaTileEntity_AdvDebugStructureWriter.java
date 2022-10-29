@@ -310,9 +310,6 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    protected void addTitleToUI(ModularWindow.Builder builder) {}
-
-    @Override
     protected void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
                 .setDrawable(getGregTechLogo())
