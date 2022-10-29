@@ -53,13 +53,18 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
             } else {
                 if (machine.wasShutdown()) {
                     machine.disableWorking();
-                    GT_Utility.sendChatToPlayer(
-                            lastPlayer,
-                            aTileEntity.getInventoryName() + "at "
-                                    + String.format(
-                                            "(%d,%d,%d)",
-                                            aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord())
-                                    + " shut down.");
+                    if (!mPlayerNotified) {
+                        mPlayerNotified = true;
+                        GT_Utility.sendChatToPlayer(
+                                lastPlayer,
+                                aTileEntity.getInventoryName() + "at "
+                                        + String.format(
+                                                "(%d,%d,%d)",
+                                                aTileEntity.getXCoord(),
+                                                aTileEntity.getYCoord(),
+                                                aTileEntity.getZCoord())
+                                        + " shut down.");
+                    }
                     return 2;
                 } else {
                     return 3 + doCoverThings(aSide, aInputRedstone, aCoverID, aCoverVariable - 3, aTileEntity, aTimer);
