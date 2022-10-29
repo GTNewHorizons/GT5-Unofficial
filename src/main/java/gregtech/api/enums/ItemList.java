@@ -1935,7 +1935,20 @@ public enum ItemList implements IItemContainer {
 
     Hatch_Input_Bus_ME,
     Hatch_CraftingInput_Bus_ME,
-    AdvDebugStructureWriter;
+    AdvDebugStructureWriter,
+
+    Superconducting_Magnet_Solenoid_MV,
+    Superconducting_Magnet_Solenoid_HV,
+    Superconducting_Magnet_Solenoid_EV,
+    Superconducting_Magnet_Solenoid_IV,
+    Superconducting_Magnet_Solenoid_LuV,
+    Superconducting_Magnet_Solenoid_ZPM,
+    Superconducting_Magnet_Solenoid_UV,
+    Superconducting_Magnet_Solenoid_UHV,
+    Superconducting_Magnet_Solenoid_UEV,
+    Superconducting_Magnet_Solenoid_UIV,
+    Superconducting_Magnet_Solenoid_UMV;
+
     public static final ItemList[]
             DYE_ONLY_ITEMS =
                     {
