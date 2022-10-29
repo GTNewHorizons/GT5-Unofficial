@@ -12,9 +12,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_collider.GT_MetaTileEntity_EM_collider;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.*;
 import com.github.technus.tectech.thing.metaTileEntity.single.*;
 import cpw.mods.fml.common.Loader;
 import net.minecraft.init.Blocks;
@@ -899,6 +897,15 @@ public class MachineLoader implements Runnable {
         LASERpipe.set(
                 new GT_MetaTileEntity_Pipe_Energy(15465, "pipe.energystream", "Laser Vacuum Pipe").getStackForm(1L));
         DATApipe.set(new GT_MetaTileEntity_Pipe_Data(15470, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
+        EMpipeBlock.set(
+                new GT_MetaTileEntity_PipeBlock_EM(15471, "pipe.elementalmatter.block", "Quantum \"Tunnel\" Casing")
+                        .getStackForm(1L));
+        LASERpipeBlock.set(
+                new GT_MetaTileEntity_PipeBlock_Energy(15472, "pipe.energystream.block", "Laser Vacuum Pipe Casing")
+                        .getStackForm(1L));
+        DATApipeBlock.set(
+                new GT_MetaTileEntity_PipeBlock_Data(15473, "pipe.datastream.block", "Optical Fiber Cable Casing")
+                        .getStackForm(1L));
 
         // ===================================================================================================
         // Single Blocks
