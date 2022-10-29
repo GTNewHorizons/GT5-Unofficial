@@ -320,7 +320,8 @@ public class GregTech_API {
             sBlockCasings4,
             sBlockCasings5,
             sBlockCasings6,
-            sBlockCasings8;
+            sBlockCasings8,
+            sSolenoidCoilCasings;
     public static Block sBlockLongDistancePipes;
     /**
      * Getting assigned by the Config
