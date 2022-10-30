@@ -361,7 +361,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                                         }
                                         return coverData;
                                     },
-                                    widget -> widget.setBackground(GT_UITextures.SLOT_GRAY)
+                                    widget -> widget.setBackground(GT_UITextures.SLOT_DARK_GRAY)
                                             .setPos(0, spaceY * 3 + 2))
                             .setPos(startX, startY))
                     .widget(new TextWidget(GT_Utility.trans("238", "Filter Direction"))

@@ -18,7 +18,7 @@ public class GT_CoverUIBuildContext extends UIBuildContext {
      * @param coverID See {@link ICoverable#getCoverIDAtSide}
      * @param side Side this cover is attached to
      * @param tile Tile this cover is attached to
-     * @param anotherWindow If cover GUI is shown in opened on top of another window
+     * @param anotherWindow If cover UI is shown on top of another window
      * @param guiColorization The color used to render machine's GUI
      */
     public GT_CoverUIBuildContext(

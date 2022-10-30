@@ -14,15 +14,11 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.client.render.AppEngRenderItem;
 import appeng.core.AELog;
-import appeng.integration.IntegrationRegistry;
-import appeng.integration.IntegrationType;
-import appeng.integration.abstraction.INEI;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
@@ -40,7 +36,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -352,7 +347,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                         .startFromSlot(16)
                         .endAtSlot(31)
                         .phantom(true)
-                        .background(GT_UITextures.SLOT_GRAY)
+                        .background(GT_UITextures.SLOT_DARK_GRAY)
                         .widgetCreator(slot -> new SlotWidget(slot) {
 
                             private final AppEngRenderItem aeRenderItem = new AppEngRenderItem();
@@ -361,15 +356,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                             protected void drawSlot(Slot slotIn) {
                                 final RenderItem pIR = this.setItemRender(this.aeRenderItem);
                                 try {
-                                    getContext().getScreen().setZ(0f);
-                                    ModularGui.getItemRenderer().zLevel = 0f;
-                                    GlStateManager.pushMatrix();
-                                    // revert SlotGroup and SlotWidget offset
-                                    GlStateManager.translate(-97 - getPos().x, -9 - getPos().y, 0);
                                     this.aeRenderItem.setAeStack(Platform.getAEStackInSlot(slotIn));
-                                    this.safeDrawSlot(slotIn);
-                                    // and restore
-                                    GlStateManager.popMatrix();
+                                    super.drawSlot(slotIn, false);
                                 } catch (final Exception err) {
                                     AELog.warn("[AppEng] AE prevented crash while drawing slot: " + err);
                                 }
@@ -378,25 +366,9 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
                             @Optional.Method(modid = "appliedenergistics2")
                             private RenderItem setItemRender(final RenderItem item) {
-                                if (IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.NEI)) {
-                                    return ((INEI) IntegrationRegistry.INSTANCE.getInstance(IntegrationType.NEI))
-                                            .setItemRender(item);
-                                } else {
-                                    final RenderItem ri = ModularGui.getItemRenderer();
-                                    ModularGui.setItemRenderer(item);
-                                    return ri;
-                                }
-                            }
-
-                            @Optional.Method(modid = "appliedenergistics2")
-                            private void safeDrawSlot(final Slot s) {
-                                try {
-                                    //noinspection JavaReflectionMemberAccess
-                                    GuiContainer.class
-                                            .getDeclaredMethod("func_146977_a_original", Slot.class)
-                                            .invoke(getContext().getScreen(), s);
-                                } catch (final Exception ignored) {
-                                }
+                                final RenderItem ri = ModularGui.getItemRenderer();
+                                ModularGui.setItemRenderer(item);
+                                return ri;
                             }
                         }.disableInteraction())
                         .build()

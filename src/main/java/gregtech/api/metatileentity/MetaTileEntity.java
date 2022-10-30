@@ -14,15 +14,18 @@ import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.Column;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
@@ -42,6 +45,7 @@ import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
@@ -53,11 +57,14 @@ import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
+import gregtech.common.gui.modularui.SelectItemUIFactory;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -1257,7 +1264,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         addUIWidgets(builder, buildContext);
         addTitleToUI(builder);
         addCoverTabs(builder, buildContext);
-        addGregTechLogo(builder);
+        if (this instanceof IConfigurationCircuitSupport
+                && ((IConfigurationCircuitSupport) this).allowSelectCircuit()) {
+            addConfigurationCircuitSlot(builder);
+        } else {
+            addGregTechLogo(builder);
+        }
         return builder.build();
     }
 
@@ -1421,8 +1433,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     private void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int COVER_TAB_LEFT = -16,
-                //                COVER_TAB_TOP = 1,
-                COVER_TAB_TOP = 27,
+                COVER_TAB_TOP = 1,
                 COVER_TAB_HEIGHT = 20,
                 COVER_TAB_WIDTH = 18,
                 COVER_TAB_SPACING = 2,
@@ -1474,7 +1485,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                                     return backgrounds.toArray(new IDrawable[] {});
                                 }
                             }.setOnClick(((clickData, widget) -> onTabClicked(clickData, widget, side)))
-                                    .dynamicTooltip(() -> getTooltip(side))
+                                    .dynamicTooltip(() -> getCoverTabTooltip(side))
                                     .setEnabled(widget -> {
                                         if (getBaseMetaTileEntity() == null) return false;
                                         return getBaseMetaTileEntity().getCoverItemAtSide(side) != null;
@@ -1522,7 +1533,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @SideOnly(Side.CLIENT)
-    private List<String> getTooltip(byte side) {
+    private List<String> getCoverTabTooltip(byte side) {
         final String[] SIDE_TOOLTIPS = new String[] {
             "GT5U.interface.coverTabs.down",
             "GT5U.interface.coverTabs.up",
@@ -1582,6 +1593,103 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(
                 player, getBaseMetaTileEntity().getCoverIDAtSide(side), side, getBaseMetaTileEntity(), true);
         return coverBehavior.createWindow(buildContext);
+    }
+
+    private void addConfigurationCircuitSlot(ModularWindow.Builder builder) {
+        IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) this;
+        AtomicBoolean dialogOpened = new AtomicBoolean(false);
+        builder.widget(
+                new SlotWidget(new BaseSlot(inventoryHandler, ccs.getCircuitSlot(), true)) {
+                    @Override
+                    protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+                        ItemStack newCircuit;
+                        if (clickData.shift) {
+                            if (clickData.mouseButton == 0) {
+                                if (NetworkUtils.isClient() && !dialogOpened.get()) {
+                                    openSelectCircuitDialog(getContext(), dialogOpened);
+                                }
+                                return;
+                            } else {
+                                newCircuit = null;
+                            }
+                        } else {
+                            List<ItemStack> tCircuits = ccs.getConfigurationCircuits();
+                            int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
+                            if (index < 0) {
+                                int curIndex = GT_Utility.findMatchingStackInList(
+                                                tCircuits, getStackInSlot(ccs.getCircuitSlot()))
+                                        + 1;
+                                if (clickData.mouseButton == 0) {
+                                    curIndex += 1;
+                                } else {
+                                    curIndex -= 1;
+                                }
+                                curIndex = Math.floorMod(curIndex, tCircuits.size() + 1) - 1;
+                                newCircuit = curIndex < 0 ? null : tCircuits.get(curIndex);
+                            } else {
+                                // set to whatever it is
+                                newCircuit = tCircuits.get(index);
+                            }
+                        }
+                        getBaseMetaTileEntity().setInventorySlotContents(ccs.getCircuitSlot(), newCircuit);
+                    }
+
+                    @Override
+                    protected void phantomScroll(int direction) {
+                        phantomClick(new ClickData(direction > 0 ? 1 : 0, false, false, false));
+                    }
+
+                    @Override
+                    public List<String> getExtraTooltip() {
+                        return Arrays.asList(
+                                EnumChatFormatting.DARK_GRAY
+                                        + EnumChatFormatting.getTextWithoutFormattingCodes(
+                                                StatCollector.translateToLocal(
+                                                        "GT5U.machines.select_circuit.tooltip.1")),
+                                EnumChatFormatting.DARK_GRAY
+                                        + EnumChatFormatting.getTextWithoutFormattingCodes(
+                                                StatCollector.translateToLocal(
+                                                        "GT5U.machines.select_circuit.tooltip.2")),
+                                EnumChatFormatting.DARK_GRAY
+                                        + EnumChatFormatting.getTextWithoutFormattingCodes(
+                                                StatCollector.translateToLocal(
+                                                        "GT5U.machines.select_circuit.tooltip.3")));
+                    }
+                }.setOverwriteItemStackTooltip(list -> {
+                            list.removeIf(line ->
+                                    line.contains(StatCollector.translateToLocal("gt.integrated_circuit.tooltip.0"))
+                                            || line.contains(
+                                                    StatCollector.translateToLocal("gt.integrated_circuit.tooltip.1")));
+                            return list;
+                        })
+                        .disableShiftInsert()
+                        .setHandlePhantomActionClient(true)
+                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+                        .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.select_circuit.tooltip"))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                        .setPos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1));
+    }
+
+    private void openSelectCircuitDialog(ModularUIContext uiContext, AtomicBoolean dialogOpened) {
+        IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) this;
+        List<ItemStack> circuits = ccs.getConfigurationCircuits();
+        uiContext.openClientWindow(player -> new SelectItemUIFactory(
+                        StatCollector.translateToLocal("GT5U.machines.select_circuit"),
+                        getStackForm(0),
+                        this::onCircuitSelected,
+                        circuits,
+                        GT_Utility.findMatchingStackInList(circuits, getStackInSlot(ccs.getCircuitSlot())))
+                .setAnotherWindow(true, dialogOpened)
+                .setGuiTint(getGUIColorization())
+                .createWindow(new UIBuildContext(player)));
+    }
+
+    private void onCircuitSelected(ItemStack selected) {
+        GT_Values.NW.sendToServer(new GT_Packet_SetConfigurationCircuit(getBaseMetaTileEntity(), selected));
+        // we will not do any validation on client side
+        // it doesn't get to actually decide what inventory contains anyway
+        IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) this;
+        getBaseMetaTileEntity().setInventorySlotContents(ccs.getCircuitSlot(), selected);
     }
 
     protected int getTextColorOrDefault(String textType, int defaultColor) {

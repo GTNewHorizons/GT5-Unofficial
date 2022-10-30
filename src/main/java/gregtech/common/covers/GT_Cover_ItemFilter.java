@@ -259,7 +259,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
                                         coverData.mFilter = setStackSize1(stack);
                                         return coverData;
                                     },
-                                    widget -> widget.setBackground(GT_UITextures.SLOT_GRAY)
+                                    widget -> widget.setBackground(GT_UITextures.SLOT_DARK_GRAY)
                                             .setPos(spaceX * 0, spaceY * 2))
                             .setPos(startX, startY))
                     .widget(new TextWidget(GT_Utility.trans("317", "Filter: "))

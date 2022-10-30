@@ -28,7 +28,8 @@ public class GT_UITextures {
             AdaptableUITexture.of(MODID, "gui/background/text_field", 142, 28, 1);
 
     public static final SteamTexture SLOT_ITEM_STEAM = SteamTexture.fullImage(MODID, "gui/slot/item_%s");
-    public static final AdaptableUITexture SLOT_GRAY = AdaptableUITexture.of(MODID, "gui/slot/gray", 18, 18, 1);
+    public static final AdaptableUITexture SLOT_DARK_GRAY =
+            AdaptableUITexture.of(MODID, "gui/slot/dark_gray", 18, 18, 1);
     public static final AdaptableUITexture SLOT_MAINTENANCE =
             AdaptableUITexture.of(MODID, "gui/slot/maintenance", 20, 20, 1);
     public static final AdaptableUITexture SLOT_UPLIFTED = AdaptableUITexture.of(MODID, "gui/slot/uplifted", 18, 18, 1);
