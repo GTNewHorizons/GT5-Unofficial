@@ -769,6 +769,9 @@ achievement.gt.blockmachines.wireless.transmitter.tier.13.desc=Pickup this item 
 achievement.gt.blockmachines.wireless.transmitter.tier.14=MAX Wireless Dynamo
 achievement.gt.blockmachines.wireless.transmitter.tier.14.desc=Pickup this item to see the recipe in NEI
 
+achievement.gt.blockmachines.multimachine.oreprocessor=Integrated Ore Factory
+achievement.gt.blockmachines.multimachine.oreprocessor.desc=Processing all those ores.
+
 achievement.gt.blockmachines.multimachine.em.infuser=Energy Infuser
 achievement.gt.blockmachines.multimachine.em.infuser.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.hatch.holder.tier.09=Object Holder
