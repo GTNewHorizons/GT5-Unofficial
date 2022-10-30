@@ -1948,7 +1948,6 @@ public enum ItemList implements IItemContainer {
     Superconducting_Magnet_Solenoid_UEV,
     Superconducting_Magnet_Solenoid_UIV,
     Superconducting_Magnet_Solenoid_UMV;
-
     public static final ItemList[]
             DYE_ONLY_ITEMS =
                     {

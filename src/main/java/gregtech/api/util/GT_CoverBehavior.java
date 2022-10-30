@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.Fluid;
 public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializableObject.LegacyCoverData> {
 
     public EntityPlayer lastPlayer = null;
+    public boolean mPlayerNotified = false;
 
     public GT_CoverBehavior() {
         this(null);
@@ -316,6 +317,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
             byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
+            mPlayerNotified = false;
             GT_Values.NW.sendToPlayer(
                     new GT_Packet_TileEntityCoverGUI(
                             aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
