@@ -274,14 +274,15 @@ public class GT_Values {
                 // Machines
                 ACTIVE = "gt.active", // Boolean
                 FLUID_OUT = "gt.fluidout", // Output Fluid
-                INV_OUT = "gt.invout", // ItemStack
                 PARALLEL = "gt.parallel", // Number
                 TANK_CAPACITY = "gt.tankcap", // Number
                 TANK_IN = "gt.tank.in.", // FluidStack
                 TANK_OUT = "gt.tank.out.", // FluidStack
                 TEXTURE = "gt.texture", // String
-                INV_SIZE = "gt.invsize", // Number
-                INV_LIST = "gt.invlist", // NBT List
+                INV_INPUT_SIZE = "gt.invsize.in", // Number
+                INV_OUTPUT_SIZE = "gt.invsize.out", // Number
+                INV_INPUT_LIST = "gt.invlist.in", // NBT List
+                INV_OUTPUT_LIST = "gt.invlist.out", // NBT List
 
                 // MultiBlock
                 STRUCTURE_OK = "gt.structure.ok",
