@@ -1278,4 +1278,14 @@ public interface IGT_RecipeAdder {
             int[] aChances,
             int aDuration,
             int aEUt);
+
+    boolean addNanoForgeRecipe(
+            ItemStack[] aInputs,
+            FluidStack[] aFluidInputs,
+            ItemStack[] aOutputs,
+            FluidStack[] aFluidOutputs,
+            int[] aChances,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue);
 }

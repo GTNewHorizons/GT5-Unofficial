@@ -14,6 +14,7 @@ import gregtech.api.util.*;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
 import gregtech.loaders.postload.chains.GT_BauxiteRefineChain;
+import gregtech.loaders.postload.chains.GT_NaniteChain;
 import ic2.api.recipe.ILiquidHeatExchangerManager;
 import ic2.api.recipe.Recipes;
 import java.util.Arrays;
@@ -12455,6 +12456,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     300,
                     18);
         }
+        GT_NaniteChain.run();
     }
 
     public void run3() {

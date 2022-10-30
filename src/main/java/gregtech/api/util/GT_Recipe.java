@@ -2214,7 +2214,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 1,
                 1,
                 1,
-                "",
+                "Tier: ",
                 0,
                 "",
                 true,

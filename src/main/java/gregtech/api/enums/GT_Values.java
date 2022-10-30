@@ -494,4 +494,8 @@ public class GT_Values {
             + EnumChatFormatting.BOLD + "a" + EnumChatFormatting.DARK_GREEN + EnumChatFormatting.BOLD + "6"
             + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "0" + EnumChatFormatting.AQUA
             + EnumChatFormatting.BOLD + "0" + EnumChatFormatting.DARK_AQUA + EnumChatFormatting.BOLD + "0";
+
+    public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BOLD
+            + (EnumChatFormatting.DARK_PURPLE + "Bl" + EnumChatFormatting.DARK_AQUA + "ue" + EnumChatFormatting.BLUE
+                    + "We" + EnumChatFormatting.AQUA + "abo");
 }
