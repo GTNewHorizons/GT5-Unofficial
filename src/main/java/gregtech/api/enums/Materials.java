@@ -34,9 +34,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     private static final Map<String, Materials> MATERIALS_MAP = new LinkedHashMap<>();
-    
+
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
-    
+
     public static volatile int VERSION = 509;
     /**
      * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old materials enum
@@ -3295,8 +3295,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public ItemStack getPlates(int amount) {
         return GT_OreDictUnificator.get(OrePrefixes.plate, this, amount);
     }
-    
+
     public static Materials getGtMaterialFromFluid(Fluid fluid) {
-    	return FLUID_MAP.get(fluid);
+        return FLUID_MAP.get(fluid);
     }
 }
