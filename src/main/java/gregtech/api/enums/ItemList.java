@@ -1673,6 +1673,7 @@ public enum ItemList implements IItemContainer {
     OreDrill4,
     PyrolyseOven,
     OilCracker,
+    NanoForge,
     Crop_Drop_UUMBerry,
     Crop_Drop_UUABerry,
     Empty_Board_Basic,
@@ -1935,7 +1936,8 @@ public enum ItemList implements IItemContainer {
 
     Hatch_Input_Bus_ME,
     Hatch_CraftingInput_Bus_ME,
-    AdvDebugStructureWriter;
+    AdvDebugStructureWriter,
+    RadiantNaquadahAlloyCasing;
     public static final ItemList[]
             DYE_ONLY_ITEMS =
                     {
