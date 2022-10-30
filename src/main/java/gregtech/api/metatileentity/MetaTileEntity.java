@@ -57,7 +57,7 @@ import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
-import gregtech.common.gui.modularui.SelectItemUIFactory;
+import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1484,7 +1484,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                                     }
                                     return backgrounds.toArray(new IDrawable[] {});
                                 }
-                            }.setOnClick(((clickData, widget) -> onTabClicked(clickData, widget, side)))
+                            }.setOnClick((clickData, widget) -> onTabClicked(clickData, widget, side))
                                     .dynamicTooltip(() -> getCoverTabTooltip(side))
                                     .setEnabled(widget -> {
                                         if (getBaseMetaTileEntity() == null) return false;

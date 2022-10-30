@@ -241,11 +241,11 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
                         .setSize(90, 112)
                         .setPos(43, 4))
                 .widget(new ButtonWidget()
-                        .setOnClick(((clickData, widget) -> {
+                        .setOnClick((clickData, widget) -> {
                             if (getBaseMetaTileEntity().isServerSide()) {
                                 printStructure(widget.getContext().getPlayer());
                             }
-                        }))
+                        })
                         .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_PRINT)
                         .setSize(18, 18)
                         .setPos(11, 128)

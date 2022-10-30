@@ -441,7 +441,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     protected void addEmitEnergyButton(ModularWindow.Builder builder) {
         builder.widget(new ButtonWidget()
-                .setOnClick(((clickData, widget) -> {
+                .setOnClick((clickData, widget) -> {
                     bOutput = !bOutput;
                     if (bOutput) {
                         GT_Utility.sendChatToPlayer(
@@ -450,7 +450,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                         GT_Utility.sendChatToPlayer(
                                 widget.getContext().getPlayer(), GT_Utility.trans("117", "Don't emit Energy"));
                     }
-                }))
+                })
                 .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
                 .setPos(7, 62)
                 .setSize(18, 18));
@@ -458,7 +458,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     protected void addEmitRedstoneButton(ModularWindow.Builder builder) {
         builder.widget(new ButtonWidget()
-                .setOnClick(((clickData, widget) -> {
+                .setOnClick((clickData, widget) -> {
                     bRedstoneIfFull = !bRedstoneIfFull;
                     if (bRedstoneIfFull) {
                         GT_Utility.sendChatToPlayer(
@@ -468,7 +468,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                         GT_Utility.sendChatToPlayer(
                                 widget.getContext().getPlayer(), GT_Utility.trans("119", "Don't emit Redstone"));
                     }
-                }))
+                })
                 .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE)
                 .setPos(25, 62)
                 .setSize(18, 18));
@@ -476,7 +476,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     protected void addInvertRedstoneButton(ModularWindow.Builder builder) {
         builder.widget(new ButtonWidget()
-                .setOnClick(((clickData, widget) -> {
+                .setOnClick((clickData, widget) -> {
                     bInvert = !bInvert;
                     if (bInvert) {
                         GT_Utility.sendChatToPlayer(
@@ -485,7 +485,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                         GT_Utility.sendChatToPlayer(
                                 widget.getContext().getPlayer(), GT_Utility.trans("121", "Don't invert Redstone"));
                     }
-                }))
+                })
                 .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
                 .setPos(43, 62)
                 .setSize(18, 18));
@@ -493,7 +493,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     protected void addStockingModeButton(ModularWindow.Builder builder) {
         builder.widget(new ButtonWidget()
-                .setOnClick(((clickData, widget) -> {
+                .setOnClick((clickData, widget) -> {
                     bStockingMode = !bStockingMode;
                     if (bStockingMode) {
                         GT_Utility.sendChatToPlayer(
@@ -508,7 +508,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                                         "218",
                                         "Transfer size mode. Add exactly this many items in destination input slots as long as there is room."));
                     }
-                }))
+                })
                 .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE)
                 .setPos(61, 62)
                 .setSize(18, 18));

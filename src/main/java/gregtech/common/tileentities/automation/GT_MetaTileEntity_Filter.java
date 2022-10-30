@@ -106,7 +106,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer {
         addEmitRedstoneButton(builder);
         addInvertRedstoneButton(builder);
         builder.widget(new ButtonWidget()
-                        .setOnClick(((clickData, widget) -> {
+                        .setOnClick((clickData, widget) -> {
                             bInvertFilter = !bInvertFilter;
                             if (bInvertFilter) {
                                 GT_Utility.sendChatToPlayer(
@@ -116,12 +116,12 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer {
                                         widget.getContext().getPlayer(),
                                         GT_Utility.trans("125", "Don't invert Filter"));
                             }
-                        }))
+                        })
                         .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_FILTER)
                         .setPos(61, 62)
                         .setSize(18, 18))
                 .widget(new ButtonWidget()
-                        .setOnClick(((clickData, widget) -> {
+                        .setOnClick((clickData, widget) -> {
                             bIgnoreNBT = !bIgnoreNBT;
                             if (bIgnoreNBT) {
                                 GT_Utility.sendChatToPlayer(
@@ -130,7 +130,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer {
                                 GT_Utility.sendChatToPlayer(
                                         widget.getContext().getPlayer(), GT_Utility.trans("127", "NBT has to match"));
                             }
-                        }))
+                        })
                         .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NBT)
                         .setPos(79, 62)
                         .setSize(18, 18))
