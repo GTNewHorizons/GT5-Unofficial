@@ -71,8 +71,8 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
         return 1;
     }
 
-    public int getLockedInventory() {
-        return -1;
+    public String getLockedInventory() {
+        return null;
     }
 
     public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
@@ -441,7 +441,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
 
     @Override
     public boolean decreaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooLittleEnergy) {
-        if (!modeSelected(ENERGY_IN)) return false;
+        if (!modeSelected(ENERGY_OUT)) return false;
         final IMultiBlockController controller = getTarget(true);
         return controller != null
                 && hasMode(ENERGY_OUT)
@@ -536,14 +536,14 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
 
     @Override
     public boolean addStackToSlot(int aIndex, ItemStack aStack) {
-        if (!modeSelected(ITEM_IN)) return false;
+        if (!modeSelected(ITEM_IN, ITEM_OUT)) return false;
         final IMultiBlockController controller = getTarget(true);
         return (controller != null && controller.addStackToSlot(this, aIndex, aStack));
     }
 
     @Override
     public boolean addStackToSlot(int aIndex, ItemStack aStack, int aAmount) {
-        if (!modeSelected(ITEM_IN)) return false;
+        if (!modeSelected(ITEM_IN, ITEM_OUT)) return false;
         final IMultiBlockController controller = getTarget(true);
         return (controller != null && controller.addStackToSlot(this, aIndex, aStack, aAmount));
     }
@@ -558,7 +558,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
 
     @Override
     public boolean canInsertItem(int aSlot, ItemStack aStack, int aSide) {
-        if (!modeSelected(ITEM_IN)
+        if (!modeSelected(ITEM_IN, ITEM_OUT)
                 || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsItemsIn((byte) aSide, aSlot))))
             return false;
         final IMultiBlockController controller = getTarget(true);
@@ -567,7 +567,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
 
     @Override
     public boolean canExtractItem(int aSlot, ItemStack aStack, int aSide) {
-        if (!modeSelected(ITEM_OUT)
+        if (!modeSelected(ITEM_IN, ITEM_OUT)
                 || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsItemsOut((byte) aSide, aSlot))))
             return false;
         final IMultiBlockController controller = getTarget(true);
@@ -590,7 +590,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
 
     @Override
     public ItemStack decrStackSize(int aSlot, int aDecrement) {
-        if (!modeSelected(ITEM_OUT)) return null;
+        if (!modeSelected(ITEM_IN, ITEM_OUT)) return null;
         final IMultiBlockController controller = getTarget(true);
         return controller != null ? controller.decrStackSize(this, aSlot, aDecrement) : null;
     }
