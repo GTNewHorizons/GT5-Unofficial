@@ -18,7 +18,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.FluidDisplaySlotWidget;
+import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;

@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui;
+package gregtech.common.gui.modularui.widget;
 
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;

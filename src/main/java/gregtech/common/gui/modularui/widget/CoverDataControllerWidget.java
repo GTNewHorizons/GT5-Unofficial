@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui;
+package gregtech.common.gui.modularui.widget;
 
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;

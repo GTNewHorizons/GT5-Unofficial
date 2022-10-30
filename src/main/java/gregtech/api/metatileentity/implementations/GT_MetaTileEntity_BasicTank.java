@@ -15,7 +15,7 @@ import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.FluidDisplaySlotWidget;
+import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

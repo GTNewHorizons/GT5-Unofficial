@@ -20,7 +20,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.FluidDisplaySlotWidget;
+import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import java.lang.ref.WeakReference;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

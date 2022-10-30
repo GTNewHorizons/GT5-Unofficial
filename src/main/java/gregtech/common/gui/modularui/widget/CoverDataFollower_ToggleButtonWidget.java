@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui;
+package gregtech.common.gui.modularui.widget;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import gregtech.api.gui.modularui.GT_UITextures;

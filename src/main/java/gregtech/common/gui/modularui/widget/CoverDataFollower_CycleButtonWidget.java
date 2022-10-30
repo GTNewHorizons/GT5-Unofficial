@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui;
+package gregtech.common.gui.modularui.widget;
 
 import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;

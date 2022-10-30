@@ -4,7 +4,7 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.DataControllerWidget;
+import gregtech.common.gui.modularui.widget.DataControllerWidget;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
