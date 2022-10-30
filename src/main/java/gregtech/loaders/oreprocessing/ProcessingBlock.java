@@ -15,7 +15,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(
             OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if (aMaterial != Materials.Clay) {
+        if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt) {
             GT_Values.RA.addCutterRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     aMaterial == MaterialsBotania.Livingrock

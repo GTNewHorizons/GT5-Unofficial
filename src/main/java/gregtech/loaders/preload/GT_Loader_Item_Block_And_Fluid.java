@@ -2173,6 +2173,5 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("reinforcedGlass", 0)), 0);
 
         GregTech_API.sSolenoidCoilCasings = new GT_Cyclotron_Coils();
-
     }
 }

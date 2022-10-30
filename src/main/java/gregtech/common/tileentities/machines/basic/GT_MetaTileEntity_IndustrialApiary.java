@@ -400,6 +400,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         return getBaseMetaTileEntity().isUniversalEnergyStored(V[mSpeed] * 8L);
     }
 
+    @Override
+    public long maxAmperesIn() {
+        return 4L;
+    }
+
     private void doEffect() {
         IBeeGenome genome = usedQueenBee.getGenome();
         IAlleleBeeEffect effect = genome.getEffect();

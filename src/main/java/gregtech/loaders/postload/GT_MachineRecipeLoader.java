@@ -616,8 +616,20 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_Values.NF,
                 GT_Values.NF,
                 GT_OreDictUnificator.getDust(Materials.TungstenSteel, 2L * OrePrefixes.dust.mMaterialAmount),
-                (int) (200L * OrePrefixes.dust.mMaterialAmount / 3628800L),
-                500);
+                (int) (50L * OrePrefixes.dust.mMaterialAmount / 3628800L),
+                1920);
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 3L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 3L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 1L),
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Utility.getIntegratedCircuit(1),
+                GT_Values.NF,
+                GT_Values.NF,
+                GT_OreDictUnificator.getDust(Materials.TPV, 7L * OrePrefixes.dust.mMaterialAmount),
+                (int) (175L * OrePrefixes.dust.mMaterialAmount / 3628800L),
+                1920);
         GT_Values.RA.addMixerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 5L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1L),
@@ -9796,7 +9808,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(
                 ItemList.Casing_Coil_TungstenSteel.get(1L),
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 8),
+                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TPV, 8),
                     GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Nichrome, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 5)
                 },
@@ -9807,7 +9819,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.Casing_Coil_HSSG.get(1L),
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.HSSG, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TPV, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 6)
                 },
                 null,
@@ -9907,7 +9919,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addPulveriserRecipe(
                 ItemList.Casing_Coil_TungstenSteel.get(1L),
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TPV, 8),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nichrome, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 5)
                 },
@@ -9918,7 +9930,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.Casing_Coil_HSSG.get(1L),
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSG, 8),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TPV, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 6)
                 },
                 null,
@@ -11330,6 +11342,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     MaterialsKevlar.Acetaldehyde.getGas(1000),
                     Materials.CarbonMonoxide.getGas(1000),
                     GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 21L),
+                    Materials.Empty.getCells(4),
                     600,
                     480);
             // 2CH2O + C2H2 =SiO2,CuO,Bi2O3= C4H6O2
@@ -11385,6 +11398,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("formaldehyde"), 4000),
                     Materials.CarbonMonoxide.getGas(1000),
                     GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 21L),
+                    Materials.Empty.getCells(1),
                     600,
                     480);
             // CaC2 + 2H2O = Ca(OH)2 + C2H2
@@ -11860,7 +11874,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_Values.NF,
                 GT_Values.NF,
                 GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.SulfurDichloride, 8L),
-                ItemList.Cell_Empty.get(16),
+                ItemList.Cell_Empty.get(8),
                 800,
                 30);
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
@@ -14917,7 +14931,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.CarbonDioxide.getGas(1000),
                 Materials.Methanol.getFluid(1000),
                 Materials.Water.getCells(1),
-                Materials.Empty.getCells(3),
+                Materials.Empty.getCells(5),
                 120,
                 96);
         GT_Values.RA.addChemicalRecipe(
@@ -15689,6 +15703,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.Cumene.getFluid(1000),
                 Materials.Acetone.getFluid(1000),
                 Materials.Phenol.getCells(1),
+                Materials.Empty.getCells(1),
                 160);
         GT_Values.RA.addChemicalRecipe(
                 Materials.Cumene.getCells(1),
@@ -15703,6 +15718,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.Cumene.getFluid(1000),
                 Materials.Phenol.getFluid(1000),
                 Materials.Acetone.getCells(1),
+                Materials.Empty.getCells(1),
                 160);
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {GT_Utility.getIntegratedCircuit(24)},
@@ -19349,6 +19365,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.Benzene.getFluid(1000),
                 Materials.Hydrogen.getGas(4000),
                 Materials.Dimethylbenzene.getCells(1),
+                Materials.Empty.getCells(1),
                 4000,
                 120);
         GT_Values.RA.addChemicalRecipe(
@@ -19383,7 +19400,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.Dimethylbenzene.getFluid(1000),
                 Materials.Water.getFluid(2000),
                 Materials.PhthalicAcid.getCells(1),
-                ItemList.Cell_Empty.get(1L),
+                ItemList.Cell_Empty.get(5L),
                 100,
                 1920);
 
@@ -19401,7 +19418,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.Dimethylbenzene.getFluid(9000),
                 Materials.Water.getFluid(18000),
                 Materials.PhthalicAcid.getCells(9),
-                ItemList.Cell_Empty.get(9L),
+                ItemList.Cell_Empty.get(45L),
                 900,
                 1920);
 

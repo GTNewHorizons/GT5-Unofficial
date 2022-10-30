@@ -252,7 +252,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         }
         if (this.mMaintenanceHatches.size() != 1
                 || this.mEnergyHatches.size() != 1
-                || mDoorCount > 2
+                || mDoorCount > 4
                 || mHullCount > 10) {
             return false;
         }

@@ -12960,6 +12960,15 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 gregtech.api.enums.GT_Values.V[8],
                 true,
                 false);
+        makeWires(
+                Materials.TPV,
+                1840,
+                bEC ? 2L : 14L,
+                bEC ? 4L : 28L,
+                1L,
+                gregtech.api.enums.GT_Values.V[4],
+                true,
+                false);
 
         // Superconductor base.
         makeWires(
