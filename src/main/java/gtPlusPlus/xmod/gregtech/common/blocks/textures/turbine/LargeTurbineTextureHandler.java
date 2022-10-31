@@ -72,8 +72,8 @@ import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE6;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE7;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE8;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE9;
+import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.*;
 
-import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
@@ -87,109 +87,133 @@ public class LargeTurbineTextureHandler {
     /**
      * LP Turbines
      */
-    public static BlockIcons[] OVERLAY_LP_TURBINE = new BlockIcons[] {
-        LARGETURBINE_ST1,
-        LARGETURBINE_ST2,
-        LARGETURBINE_ST3,
-        LARGETURBINE_ST4,
-        LARGETURBINE_ST5,
-        LARGETURBINE_ST6,
-        LARGETURBINE_ST7,
-        LARGETURBINE_ST8,
-        LARGETURBINE_ST9,
+    public static IIcon[] OVERLAY_LP_TURBINE = new IIcon[] {
+        LARGETURBINE_ST1.getIcon(),
+        LARGETURBINE_ST2.getIcon(),
+        LARGETURBINE_ST3.getIcon(),
+        LARGETURBINE_ST4.getIcon(),
+        LARGETURBINE_ST5.getIcon(),
+        LARGETURBINE_ST6.getIcon(),
+        LARGETURBINE_ST7.getIcon(),
+        LARGETURBINE_ST8.getIcon(),
+        LARGETURBINE_ST9.getIcon(),
     };
 
-    public static BlockIcons[] OVERLAY_LP_TURBINE_ACTIVE = new BlockIcons[] {
-        LARGETURBINE_ST_ACTIVE1,
-        LARGETURBINE_ST_ACTIVE2,
-        LARGETURBINE_ST_ACTIVE3,
-        LARGETURBINE_ST_ACTIVE4,
-        LARGETURBINE_ST_ACTIVE5,
-        LARGETURBINE_ST_ACTIVE6,
-        LARGETURBINE_ST_ACTIVE7,
-        LARGETURBINE_ST_ACTIVE8,
-        LARGETURBINE_ST_ACTIVE9,
+    public static IIcon[] OVERLAY_LP_TURBINE_ACTIVE = new IIcon[] {
+        LARGETURBINE_ST_ACTIVE1.getIcon(),
+        LARGETURBINE_ST_ACTIVE2.getIcon(),
+        LARGETURBINE_ST_ACTIVE3.getIcon(),
+        LARGETURBINE_ST_ACTIVE4.getIcon(),
+        LARGETURBINE_ST_ACTIVE5.getIcon(),
+        LARGETURBINE_ST_ACTIVE6.getIcon(),
+        LARGETURBINE_ST_ACTIVE7.getIcon(),
+        LARGETURBINE_ST_ACTIVE8.getIcon(),
+        LARGETURBINE_ST_ACTIVE9.getIcon(),
     };
 
     /**
      * HP Turbines
      */
-    public static BlockIcons[] OVERLAY_HP_TURBINE = new BlockIcons[] {
-        LARGETURBINE_TI1,
-        LARGETURBINE_TI2,
-        LARGETURBINE_TI3,
-        LARGETURBINE_TI4,
-        LARGETURBINE_TI5,
-        LARGETURBINE_TI6,
-        LARGETURBINE_TI7,
-        LARGETURBINE_TI8,
-        LARGETURBINE_TI9,
+    public static IIcon[] OVERLAY_HP_TURBINE = new IIcon[] {
+        LARGETURBINE_TI1.getIcon(),
+        LARGETURBINE_TI2.getIcon(),
+        LARGETURBINE_TI3.getIcon(),
+        LARGETURBINE_TI4.getIcon(),
+        LARGETURBINE_TI5.getIcon(),
+        LARGETURBINE_TI6.getIcon(),
+        LARGETURBINE_TI7.getIcon(),
+        LARGETURBINE_TI8.getIcon(),
+        LARGETURBINE_TI9.getIcon(),
     };
 
-    public static BlockIcons[] OVERLAY_HP_TURBINE_ACTIVE = new BlockIcons[] {
-        LARGETURBINE_TI_ACTIVE1,
-        LARGETURBINE_TI_ACTIVE2,
-        LARGETURBINE_TI_ACTIVE3,
-        LARGETURBINE_TI_ACTIVE4,
-        LARGETURBINE_TI_ACTIVE5,
-        LARGETURBINE_TI_ACTIVE6,
-        LARGETURBINE_TI_ACTIVE7,
-        LARGETURBINE_TI_ACTIVE8,
-        LARGETURBINE_TI_ACTIVE9,
+    public static IIcon[] OVERLAY_HP_TURBINE_ACTIVE = new IIcon[] {
+        LARGETURBINE_TI_ACTIVE1.getIcon(),
+        LARGETURBINE_TI_ACTIVE2.getIcon(),
+        LARGETURBINE_TI_ACTIVE3.getIcon(),
+        LARGETURBINE_TI_ACTIVE4.getIcon(),
+        LARGETURBINE_TI_ACTIVE5.getIcon(),
+        LARGETURBINE_TI_ACTIVE6.getIcon(),
+        LARGETURBINE_TI_ACTIVE7.getIcon(),
+        LARGETURBINE_TI_ACTIVE8.getIcon(),
+        LARGETURBINE_TI_ACTIVE9.getIcon(),
     };
 
     /**
      * Gas Turbines
      */
-    public static BlockIcons[] OVERLAY_GAS_TURBINE = new BlockIcons[] {
-        LARGETURBINE_SS1,
-        LARGETURBINE_SS2,
-        LARGETURBINE_SS3,
-        LARGETURBINE_SS4,
-        LARGETURBINE_SS5,
-        LARGETURBINE_SS6,
-        LARGETURBINE_SS7,
-        LARGETURBINE_SS8,
-        LARGETURBINE_SS9,
+    public static IIcon[] OVERLAY_GAS_TURBINE = new IIcon[] {
+        LARGETURBINE_SS1.getIcon(),
+        LARGETURBINE_SS2.getIcon(),
+        LARGETURBINE_SS3.getIcon(),
+        LARGETURBINE_SS4.getIcon(),
+        LARGETURBINE_SS5.getIcon(),
+        LARGETURBINE_SS6.getIcon(),
+        LARGETURBINE_SS7.getIcon(),
+        LARGETURBINE_SS8.getIcon(),
+        LARGETURBINE_SS9.getIcon(),
     };
 
-    public static BlockIcons[] OVERLAY_GAS_TURBINE_ACTIVE = new BlockIcons[] {
-        LARGETURBINE_SS_ACTIVE1,
-        LARGETURBINE_SS_ACTIVE2,
-        LARGETURBINE_SS_ACTIVE3,
-        LARGETURBINE_SS_ACTIVE4,
-        LARGETURBINE_SS_ACTIVE5,
-        LARGETURBINE_SS_ACTIVE6,
-        LARGETURBINE_SS_ACTIVE7,
-        LARGETURBINE_SS_ACTIVE8,
-        LARGETURBINE_SS_ACTIVE9,
+    public static IIcon[] OVERLAY_GAS_TURBINE_ACTIVE = new IIcon[] {
+        LARGETURBINE_SS_ACTIVE1.getIcon(),
+        LARGETURBINE_SS_ACTIVE2.getIcon(),
+        LARGETURBINE_SS_ACTIVE3.getIcon(),
+        LARGETURBINE_SS_ACTIVE4.getIcon(),
+        LARGETURBINE_SS_ACTIVE5.getIcon(),
+        LARGETURBINE_SS_ACTIVE6.getIcon(),
+        LARGETURBINE_SS_ACTIVE7.getIcon(),
+        LARGETURBINE_SS_ACTIVE8.getIcon(),
+        LARGETURBINE_SS_ACTIVE9.getIcon(),
     };
 
     /**
      * Plasma Turbines
      */
-    public static BlockIcons[] OVERLAY_PLASMA_TURBINE = new BlockIcons[] {
-        LARGETURBINE_TU1,
-        LARGETURBINE_TU2,
-        LARGETURBINE_TU3,
-        LARGETURBINE_TU4,
-        LARGETURBINE_TU5,
-        LARGETURBINE_TU6,
-        LARGETURBINE_TU7,
-        LARGETURBINE_TU8,
-        LARGETURBINE_TU9,
+    public static IIcon[] OVERLAY_PLASMA_TURBINE = new IIcon[] {
+        LARGETURBINE_TU1.getIcon(),
+        LARGETURBINE_TU2.getIcon(),
+        LARGETURBINE_TU3.getIcon(),
+        LARGETURBINE_TU4.getIcon(),
+        LARGETURBINE_TU5.getIcon(),
+        LARGETURBINE_TU6.getIcon(),
+        LARGETURBINE_TU7.getIcon(),
+        LARGETURBINE_TU8.getIcon(),
+        LARGETURBINE_TU9.getIcon(),
     };
 
-    public static BlockIcons[] OVERLAY_PLASMA_TURBINE_ACTIVE = new BlockIcons[] {
-        LARGETURBINE_TU_ACTIVE1,
-        LARGETURBINE_TU_ACTIVE2,
-        LARGETURBINE_TU_ACTIVE3,
-        LARGETURBINE_TU_ACTIVE4,
-        LARGETURBINE_TU_ACTIVE5,
-        LARGETURBINE_TU_ACTIVE6,
-        LARGETURBINE_TU_ACTIVE7,
-        LARGETURBINE_TU_ACTIVE8,
-        LARGETURBINE_TU_ACTIVE9,
+    public static IIcon[] OVERLAY_PLASMA_TURBINE_ACTIVE = new IIcon[] {
+        LARGETURBINE_TU_ACTIVE1.getIcon(),
+        LARGETURBINE_TU_ACTIVE2.getIcon(),
+        LARGETURBINE_TU_ACTIVE3.getIcon(),
+        LARGETURBINE_TU_ACTIVE4.getIcon(),
+        LARGETURBINE_TU_ACTIVE5.getIcon(),
+        LARGETURBINE_TU_ACTIVE6.getIcon(),
+        LARGETURBINE_TU_ACTIVE7.getIcon(),
+        LARGETURBINE_TU_ACTIVE8.getIcon(),
+        LARGETURBINE_TU_ACTIVE9.getIcon(),
+    };
+
+    public static IIcon[] OVERLAY_SC_TURBINE = new IIcon[] {
+        OVERLAY_SC_TURBINE1.getIcon(),
+        OVERLAY_SC_TURBINE2.getIcon(),
+        OVERLAY_SC_TURBINE3.getIcon(),
+        OVERLAY_SC_TURBINE4.getIcon(),
+        OVERLAY_SC_TURBINE5.getIcon(),
+        OVERLAY_SC_TURBINE6.getIcon(),
+        OVERLAY_SC_TURBINE7.getIcon(),
+        OVERLAY_SC_TURBINE8.getIcon(),
+        OVERLAY_SC_TURBINE9.getIcon(),
+    };
+
+    public static IIcon[] OVERLAY_SC_TURBINE_ACTIVE = new IIcon[] {
+        OVERLAY_SC_TURBINE1_ACTIVE.getIcon(),
+        OVERLAY_SC_TURBINE2_ACTIVE.getIcon(),
+        OVERLAY_SC_TURBINE3_ACTIVE.getIcon(),
+        OVERLAY_SC_TURBINE4_ACTIVE.getIcon(),
+        OVERLAY_SC_TURBINE5_ACTIVE.getIcon(),
+        OVERLAY_SC_TURBINE6_ACTIVE.getIcon(),
+        OVERLAY_SC_TURBINE7_ACTIVE.getIcon(),
+        OVERLAY_SC_TURBINE8_ACTIVE.getIcon(),
+        OVERLAY_SC_TURBINE9_ACTIVE.getIcon(),
     };
 
     public static IIcon handleCasingsGT(
@@ -207,10 +231,10 @@ public class LargeTurbineTextureHandler {
         // 3 Gas
         // 4 Plasma
 
-        BlockIcons[] mGetCurrentTextureSet = null;
-        BlockIcons[] mGetCurrentTextureSet_ACTIVE = null;
+        IIcon[] mGetCurrentTextureSet = null;
+        IIcon[] mGetCurrentTextureSet_ACTIVE = null;
 
-        if (tMeta <= 0 || tMeta >= 5) {
+        if ((tMeta <= 0 || tMeta >= 5) && tMeta != 15) {
             return GregtechMetaSpecialMultiCasings.getStaticIcon((byte) aSide, (byte) tMeta);
         } else {
             if (tMeta == 1) {
@@ -225,6 +249,9 @@ public class LargeTurbineTextureHandler {
             } else if (tMeta == 4) {
                 mGetCurrentTextureSet = OVERLAY_PLASMA_TURBINE;
                 mGetCurrentTextureSet_ACTIVE = OVERLAY_PLASMA_TURBINE_ACTIVE;
+            } else {
+                mGetCurrentTextureSet = OVERLAY_SC_TURBINE;
+                mGetCurrentTextureSet_ACTIVE = OVERLAY_SC_TURBINE_ACTIVE;
             }
             if (mGetCurrentTextureSet == null || mGetCurrentTextureSet_ACTIVE == null) {
                 return GregtechMetaSpecialMultiCasings.getStaticIcon((byte) aSide, (byte) tMeta);
@@ -239,9 +266,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[0].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[0];
                     }
-                    return mGetCurrentTextureSet[0].getIcon();
+                    return mGetCurrentTextureSet[0];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord, zCoord)))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -249,9 +276,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[3].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[3];
                     }
-                    return mGetCurrentTextureSet[3].getIcon();
+                    return mGetCurrentTextureSet[3];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord + 1, zCoord)))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -259,9 +286,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[6].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[6];
                     }
-                    return mGetCurrentTextureSet[6].getIcon();
+                    return mGetCurrentTextureSet[6];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord)))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -269,9 +296,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[1].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[1];
                     }
-                    return mGetCurrentTextureSet[1].getIcon();
+                    return mGetCurrentTextureSet[1];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord)))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -279,9 +306,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[7].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[7];
                     }
-                    return mGetCurrentTextureSet[7].getIcon();
+                    return mGetCurrentTextureSet[7];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord + 1, zCoord)))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -289,9 +316,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[8].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[8];
                     }
-                    return mGetCurrentTextureSet[8].getIcon();
+                    return mGetCurrentTextureSet[8];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord, zCoord)))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -299,9 +326,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[5].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[5];
                     }
-                    return mGetCurrentTextureSet[5].getIcon();
+                    return mGetCurrentTextureSet[5];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord - 1, zCoord)))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -309,9 +336,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[2].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[2];
                     }
-                    return mGetCurrentTextureSet[2].getIcon();
+                    return mGetCurrentTextureSet[2];
                 }
             } else if ((aSide == 4) || (aSide == 5)) {
                 TileEntity tTileEntity;
@@ -322,9 +349,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[0].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[0];
                     }
-                    return mGetCurrentTextureSet[0].getIcon();
+                    return mGetCurrentTextureSet[0];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord, zCoord + (aSide == 4 ? 1 : -1))))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -332,9 +359,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[3].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[3];
                     }
-                    return mGetCurrentTextureSet[3].getIcon();
+                    return mGetCurrentTextureSet[3];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord + (aSide == 4 ? 1 : -1))))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -342,9 +369,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[6].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[6];
                     }
-                    return mGetCurrentTextureSet[6].getIcon();
+                    return mGetCurrentTextureSet[6];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord)))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -352,9 +379,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[1].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[1];
                     }
-                    return mGetCurrentTextureSet[1].getIcon();
+                    return mGetCurrentTextureSet[1];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord)))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -362,9 +389,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[7].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[7];
                     }
-                    return mGetCurrentTextureSet[7].getIcon();
+                    return mGetCurrentTextureSet[7];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord + (aSide == 5 ? 1 : -1))))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -372,9 +399,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[8].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[8];
                     }
-                    return mGetCurrentTextureSet[8].getIcon();
+                    return mGetCurrentTextureSet[8];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord, zCoord + (aSide == 5 ? 1 : -1))))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -382,9 +409,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[5].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[5];
                     }
-                    return mGetCurrentTextureSet[5].getIcon();
+                    return mGetCurrentTextureSet[5];
                 }
                 if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord + (aSide == 5 ? 1 : -1))))
                         && ((tTileEntity instanceof IGregTechTileEntity))
@@ -392,9 +419,9 @@ public class LargeTurbineTextureHandler {
                         && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()))
                         && ((tMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine))) {
                     if (isUsingAnimatedTexture(tTileEntity)) {
-                        return mGetCurrentTextureSet_ACTIVE[2].getIcon();
+                        return mGetCurrentTextureSet_ACTIVE[2];
                     }
-                    return mGetCurrentTextureSet[2].getIcon();
+                    return mGetCurrentTextureSet[2];
                 }
             }
         }

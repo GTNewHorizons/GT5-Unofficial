@@ -140,7 +140,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
                                 {"ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc"},
                             }))
                             .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
-                            .addElement('s', lazy(t -> ofBlock(t.getCasingBlock(), t.getTurbineShaftMeta())))
+                            .addElement('s', lazy(t -> ofBlock(t.getShaftBlock(), t.getTurbineShaftMeta())))
                             .addElement('t', lazy(t -> buildHatchAdder(GregtechMetaTileEntity_LargerTurbineBase.class)
                                     .adder(GregtechMetaTileEntity_LargerTurbineBase::addTurbineHatch)
                                     .hatchClass(GT_MetaTileEntity_Hatch_Turbine.class)
@@ -267,7 +267,11 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
                 aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeTurbine.png");
     }
 
-    public final Block getCasingBlock() {
+    public Block getCasingBlock() {
+        return ModBlocks.blockSpecialMultiCasings;
+    }
+
+    public final Block getShaftBlock() {
         return ModBlocks.blockSpecialMultiCasings;
     }
 
@@ -282,7 +286,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
         return 0;
     }
 
-    public abstract byte getCasingTextureIndex();
+    public abstract int getCasingTextureIndex();
 
     public abstract int getFuelValue(FluidStack aLiquid);
 

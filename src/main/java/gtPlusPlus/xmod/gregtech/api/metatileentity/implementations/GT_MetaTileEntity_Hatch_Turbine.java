@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -20,7 +23,6 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.CONTAINER_1by1_Turbine;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.GUI_1by1_Turbine;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -276,8 +278,8 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
     private ITexture getFrontFacingTurbineTexture() {
         if (!mHasController) {
             return this.getBaseMetaTileEntity().isActive()
-                    ? TextureFactory.of(LargeTurbineTextureHandler.OVERLAY_LP_TURBINE_ACTIVE[4])
-                    : TextureFactory.of(LargeTurbineTextureHandler.OVERLAY_LP_TURBINE[4]);
+                    ? TextureFactory.of(LARGETURBINE_ST_ACTIVE5)
+                    : TextureFactory.of(LARGETURBINE_ST5);
         } else {
             if (usingAnimations()) {
                 if (isControllerActive()) {
