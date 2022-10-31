@@ -3335,18 +3335,9 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             int aEUt,
             int aSpecialValue) {
         if (aInputs == null || aOutputs == null || aSpecialValue == 0) return false;
-        
+
         GT_Recipe.GT_Recipe_Map.sNanoForge.addRecipe(new GT_Recipe(
-                false,
-                aInputs,
-                aOutputs,
-                null,
-                aChances,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue));
+                false, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
         return true;
     }
 

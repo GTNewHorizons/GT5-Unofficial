@@ -274,11 +274,11 @@ public class GT_MetaTileEntity_NanoForge extends GT_MetaTileEntity_EnhancedMulti
                     tRecipe.mEUt, tRecipe.mDuration, 1, tTotalEU, tRecipe.mSpecialValue < mSpecialTier);
 
             if (this.mLongEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
-            
+
             mOutputItems = new ItemStack[tRecipe.mOutputs.length];
             ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
-            for (int i = tItemInputs.length-1; i >= 0; i--) {
-                if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)){
+            for (int i = tItemInputs.length - 1; i >= 0; i--) {
+                if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)) {
                     tOutputs.add(tRecipe.mOutputs[i]);
                 }
             }

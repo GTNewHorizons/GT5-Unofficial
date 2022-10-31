@@ -9744,10 +9744,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                 100,
                 120000);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[]{
-                        Materials.NaquadahAlloy.getPlates(8),
-                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1)
-                }, null, ItemList.RadiantNaquadahAlloyCasing.get(1), 10, 400000);
+                new ItemStack[] {
+                    Materials.NaquadahAlloy.getPlates(8),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1)
+                },
+                null,
+                ItemList.RadiantNaquadahAlloyCasing.get(1),
+                10,
+                400000);
 
         GT_ModHandler.removeRecipe(new ItemStack(Items.lava_bucket), ItemList.Cell_Empty.get(1L));
         GT_ModHandler.removeRecipe(new ItemStack(Items.water_bucket), ItemList.Cell_Empty.get(1L));
