@@ -9,7 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.chunkloading.GTPP_ChunkManager;
@@ -125,80 +125,80 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Material_MaragingSteel),
-            TextureFactory.of(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
         };
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Material_MaragingSteel),
-            TextureFactory.of(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
         };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Material_MaragingSteel),
-            TextureFactory.of(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
         };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Material_MaragingSteel),
-            TextureFactory.of(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
         };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Material_MaragingSteel),
-            TextureFactory.of(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier])
         };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Material_MaragingSteel),
-            TextureFactory.of(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
         };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Material_MaragingSteel),
-            TextureFactory.of(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
         };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Material_MaragingSteel),
-            TextureFactory.of(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
         };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Material_MaragingSteel),
-            TextureFactory.of(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
         };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_Material_MaragingSteel),
-            TextureFactory.of(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
+            new GT_RenderedTexture(TexturesGtBlock.Casing_Material_MaragingSteel),
+            new GT_RenderedTexture(TexturesGtBlock.TIERED_MACHINE_HULLS[mTier + 1])
         };
     }
 

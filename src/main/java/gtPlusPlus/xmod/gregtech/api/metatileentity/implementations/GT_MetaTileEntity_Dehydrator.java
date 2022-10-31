@@ -9,6 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
@@ -151,56 +152,56 @@ public class GT_MetaTileEntity_Dehydrator extends GT_MetaTileEntity_BasicMachine
     @Override
     public ITexture[] getFrontFacingInactive(final byte aColor) {
         return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], TextureFactory.of(sDehydratorOverlays[0])
+            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[0])
         };
     }
 
     @Override
     public ITexture[] getBottomFacingInactive(final byte aColor) {
         return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], TextureFactory.of(sDehydratorOverlays[2])
+            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[2])
         };
     }
 
     @Override
     public ITexture[] getTopFacingInactive(final byte aColor) {
         return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], TextureFactory.of(sDehydratorOverlays[3])
+            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[3])
         };
     }
 
     @Override
     public ITexture[] getSideFacingInactive(final byte aColor) {
         return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], TextureFactory.of(sDehydratorOverlays[4])
+            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[4])
         };
     }
 
     @Override
     public ITexture[] getFrontFacingActive(final byte aColor) {
         return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], TextureFactory.of(sDehydratorOverlays[5])
+            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[5])
         };
     }
 
     @Override
     public ITexture[] getBottomFacingActive(final byte aColor) {
         return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], TextureFactory.of(sDehydratorOverlays[7])
+            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[7])
         };
     }
 
     @Override
     public ITexture[] getTopFacingActive(final byte aColor) {
         return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], TextureFactory.of(sDehydratorOverlays[8])
+            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[8])
         };
     }
 
     @Override
     public ITexture[] getSideFacingActive(final byte aColor) {
         return new ITexture[] {
-            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], TextureFactory.of(sDehydratorOverlays[9])
+            Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(sDehydratorOverlays[9])
         };
     }
 

@@ -4,7 +4,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SafeBlock;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_SafeBlock;
@@ -49,7 +49,7 @@ public class GregtechMetaSafeBlock extends GregtechMetaSafeBlockBase {
 
     @Override
     public ITexture getOverlayIcon() {
-        return TextureFactory.of(Textures.BlockIcons.VOID);
+        return new GT_RenderedTexture(Textures.BlockIcons.VOID);
     }
 
     @Override

@@ -6,7 +6,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -46,8 +46,8 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
         final ITexture[][][] rTextures = new ITexture[6][17][];
         final ITexture tIcon = this.getOverlayIcon(),
-                tOut = TextureFactory.of(Textures.BlockIcons.OVERLAY_QCHEST),
-                tUp = TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_VENT);
+                tOut = new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_QCHEST),
+                tUp = new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT);
         for (byte i = -1; i < 16; i++) {
             rTextures[0][i + 1] =
                     new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tUp, tIcon}; // Back

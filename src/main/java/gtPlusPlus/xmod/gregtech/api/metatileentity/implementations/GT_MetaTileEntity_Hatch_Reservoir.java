@@ -4,7 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -117,10 +117,10 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
     public void generateParticles(World aWorld, String name) {}
 
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(TexturesGtBlock.Overlay_Water)};
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Water)};
     }
 
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(TexturesGtBlock.Overlay_Water)};
+        return new ITexture[] {aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Water)};
     }
 }

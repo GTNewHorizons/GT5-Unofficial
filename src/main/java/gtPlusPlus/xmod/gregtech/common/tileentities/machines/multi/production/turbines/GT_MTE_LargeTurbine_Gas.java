@@ -5,7 +5,7 @@ import static gtPlusPlus.core.lib.CORE.RANDOM;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -161,11 +161,11 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
 
     @Override
     protected ITexture getTextureFrontFace() {
-        return TextureFactory.of(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS5);
+        return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS5);
     }
 
     @Override
     protected ITexture getTextureFrontFaceActive() {
-        return TextureFactory.of(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE5);
+        return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE5);
     }
 }

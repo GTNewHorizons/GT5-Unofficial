@@ -8,7 +8,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
@@ -55,7 +55,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
     }
 
     public ITexture getOverlayIcon() {
-        return TextureFactory.of(Textures.BlockIcons.BOILER_FRONT);
+        return new GT_RenderedTexture(Textures.BlockIcons.BOILER_FRONT);
     }
 
     @Override
@@ -76,13 +76,13 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
         return rTextures;
     }
 
-    protected ITexture getCasingTexture() {
+    protected GT_RenderedTexture getCasingTexture() {
         if (this.tier == 1) {
-            return TextureFactory.of(Textures.BlockIcons.MACHINE_LV_SIDE);
+            return new GT_RenderedTexture(Textures.BlockIcons.MACHINE_LV_SIDE);
         } else if (this.tier == 2) {
-            return TextureFactory.of(Textures.BlockIcons.MACHINE_MV_SIDE);
+            return new GT_RenderedTexture(Textures.BlockIcons.MACHINE_MV_SIDE);
         } else {
-            return TextureFactory.of(Textures.BlockIcons.MACHINE_HV_SIDE);
+            return new GT_RenderedTexture(Textures.BlockIcons.MACHINE_HV_SIDE);
         }
         // return new
         // GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);

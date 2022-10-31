@@ -14,7 +14,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -70,7 +70,7 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[12][17][];
-        ITexture aTex = TextureFactory.of(TexturesGtBlock.Casing_Material_ZirconiumCarbide);
+        GT_RenderedTexture aTex = new GT_RenderedTexture(TexturesGtBlock.Casing_Material_ZirconiumCarbide);
         for (byte i = -1; i < 16; i++) {
             rTextures[0][i + 1] = new ITexture[] {aTex, Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier]};
             rTextures[1][i + 1] = new ITexture[] {aTex, Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier]};

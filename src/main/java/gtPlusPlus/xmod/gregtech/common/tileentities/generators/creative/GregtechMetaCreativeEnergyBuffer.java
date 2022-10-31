@@ -7,7 +7,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -80,9 +80,9 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
         final ITexture[][][] rTextures = new ITexture[2][17][];
         k = j ? g : h;
         for (byte i = -1; i < 16; i++) {
-            rTextures[0][i + 1] = new ITexture[] {TextureFactory.of(k)};
+            rTextures[0][i + 1] = new ITexture[] {new GT_RenderedTexture(k)};
             rTextures[1][i + 1] = new ITexture[] {
-                TextureFactory.of(k),
+                new GT_RenderedTexture(k),
                 this.mInventory.length > 4
                         ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mVoltageTier]
                         : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mVoltageTier]

@@ -8,7 +8,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
@@ -88,17 +88,17 @@ public class GregtechMetaTileEntityDoubleFuelGeneratorBase extends GregtechRocke
         return rValue;
     }
 
-    private ITexture getCasingTexture() {
+    private GT_RenderedTexture getCasingTexture() {
         if (this.mTier <= 4) {
-            return TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top);
+            return new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
         } else if (this.mTier == 5) {
 
-            return TextureFactory.of(TexturesGtBlock.Casing_Machine_Advanced);
+            return new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Advanced);
         } else {
 
-            return TextureFactory.of(TexturesGtBlock.Casing_Machine_Ultra);
+            return new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Ultra);
         }
-        // return  TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top);
+        // return  new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
     }
 
     @Override
@@ -113,20 +113,24 @@ public class GregtechMetaTileEntityDoubleFuelGeneratorBase extends GregtechRocke
     @Override
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] {
-            super.getBack(aColor)[0], this.getCasingTexture(), TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent)
+            super.getBack(aColor)[0],
+            this.getCasingTexture(),
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent)
         };
     }
 
     @Override
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] {
-            super.getBottom(aColor)[0], TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom)
+            super.getBottom(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)
         };
     }
 
     @Override
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {super.getTop(aColor)[0], TextureFactory.of(TexturesGtBlock.Casing_Machine_Redstone_Off)};
+        return new ITexture[] {
+            super.getTop(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Redstone_Off)
+        };
     }
 
     @Override
@@ -134,7 +138,7 @@ public class GregtechMetaTileEntityDoubleFuelGeneratorBase extends GregtechRocke
         return new ITexture[] {
             super.getSides(aColor)[0],
             this.getCasingTexture(),
-            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal)
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal)
         };
     }
 
@@ -152,21 +156,21 @@ public class GregtechMetaTileEntityDoubleFuelGeneratorBase extends GregtechRocke
         return new ITexture[] {
             super.getBackActive(aColor)[0],
             this.getCasingTexture(),
-            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent_Fast)
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent_Fast)
         };
     }
 
     @Override
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] {
-            super.getBottomActive(aColor)[0], TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom)
+            super.getBottomActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)
         };
     }
 
     @Override
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] {
-            super.getTopActive(aColor)[0], TextureFactory.of(TexturesGtBlock.Casing_Machine_Redstone_On)
+            super.getTopActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Redstone_On)
         };
     }
 
@@ -175,7 +179,7 @@ public class GregtechMetaTileEntityDoubleFuelGeneratorBase extends GregtechRocke
         return new ITexture[] {
             super.getSidesActive(aColor)[0],
             this.getCasingTexture(),
-            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active)
+            new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active)
         };
     }
 

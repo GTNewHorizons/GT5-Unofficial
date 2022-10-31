@@ -11,6 +11,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -197,7 +198,7 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 
     public ITexture[] getSideFacingActive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1
                             ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE
                             : Textures.BlockIcons.MACHINE_BRONZE_SIDE)
@@ -206,7 +207,7 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 
     public ITexture[] getSideFacingInactive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1
                             ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE
                             : Textures.BlockIcons.MACHINE_BRONZE_SIDE)
@@ -215,7 +216,7 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 
     public ITexture[] getFrontFacingActive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1
                             ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE
                             : Textures.BlockIcons.MACHINE_BRONZE_SIDE)
@@ -224,7 +225,7 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 
     public ITexture[] getFrontFacingInactive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1
                             ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE
                             : Textures.BlockIcons.MACHINE_BRONZE_SIDE)
@@ -233,21 +234,21 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 
     public ITexture[] getTopFacingActive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP)
         };
     }
 
     public ITexture[] getTopFacingInactive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP)
         };
     }
 
     public ITexture[] getBottomFacingActive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1
                             ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM
                             : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM)
@@ -256,7 +257,7 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 
     public ITexture[] getBottomFacingInactive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1
                             ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM
                             : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM)
@@ -265,57 +266,57 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 
     public ITexture[] getBottomFacingPipeActive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1
                             ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM
                             : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM),
-            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)
         };
     }
 
     public ITexture[] getBottomFacingPipeInactive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1
                             ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM
                             : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM),
-            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)
         };
     }
 
     public ITexture[] getTopFacingPipeActive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP),
-            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)
         };
     }
 
     public ITexture[] getTopFacingPipeInactive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP),
-            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)
         };
     }
 
     public ITexture[] getSideFacingPipeActive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1
                             ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE
                             : Textures.BlockIcons.MACHINE_BRONZE_SIDE),
-            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)
         };
     }
 
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
         return new ITexture[] {
-            TextureFactory.of(
+            new GT_RenderedTexture(
                     mTier == 1
                             ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE
                             : Textures.BlockIcons.MACHINE_BRONZE_SIDE),
-            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)
+            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)
         };
     }
 }

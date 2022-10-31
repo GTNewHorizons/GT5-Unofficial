@@ -6,7 +6,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,11 +59,11 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
         return aSide == 1
                 ? new ITexture[] {
                     Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                    TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE)
+                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE)
                 }
                 : new ITexture[] {
                     Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                    TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER)
+                    new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER)
                 };
     }
 

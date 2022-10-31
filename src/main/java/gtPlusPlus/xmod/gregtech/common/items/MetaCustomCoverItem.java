@@ -4,7 +4,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_MultiTexture;
+import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
@@ -64,7 +65,7 @@ public class MetaCustomCoverItem extends Item {
             }
             GregTech_API.registerCover(
                     thisStack,
-                    TextureFactory.of(new ITexture[] {TextureFactory.of(mTextures[i])}),
+                    new GT_MultiTexture(new ITexture[] {new GT_RenderedTexture(mTextures[i])}),
                     new GTPP_Cover_ToggleVisual());
         }
     }

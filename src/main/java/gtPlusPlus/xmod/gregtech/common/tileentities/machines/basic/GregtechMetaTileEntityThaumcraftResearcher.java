@@ -3,7 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -74,11 +74,13 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {getSides(aColor)[0], TextureFactory.of(TexturesGtBlock.Casing_Machine_Metal_Grate_A)};
+        return new ITexture[] {getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Metal_Grate_A)
+        };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {getSides(aColor)[0], TextureFactory.of(TexturesGtBlock.Casing_Machine_Metal_Grate_B)};
+        return new ITexture[] {getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Metal_Grate_B)
+        };
     }
 
     public ITexture[] getBottom(final byte aColor) {
@@ -86,12 +88,13 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {getSides(aColor)[0], TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Blue)
+        return new ITexture[] {
+            getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Blue)
         };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {TextureFactory.of(TexturesGtBlock.Casing_Material_RedSteel)};
+        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)};
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
@@ -108,7 +111,7 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] {
-            getSides(aColor)[0], TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
+            getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
         };
     }
 

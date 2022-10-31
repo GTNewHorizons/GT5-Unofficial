@@ -8,7 +8,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SolarGenerator;
@@ -142,52 +142,58 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
     }
 
     ITexture SolarArray[] = {
-        TextureFactory.of(Textures.BlockIcons.SOLARPANEL_8V),
-        TextureFactory.of(Textures.BlockIcons.SOLARPANEL_LV),
-        TextureFactory.of(Textures.BlockIcons.SOLARPANEL_MV),
-        TextureFactory.of(Textures.BlockIcons.SOLARPANEL_HV),
-        TextureFactory.of(Textures.BlockIcons.SOLARPANEL_EV),
-        TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV),
-        TextureFactory.of(Textures.BlockIcons.SOLARPANEL_LuV),
-        TextureFactory.of(Textures.BlockIcons.SOLARPANEL_ZPM),
-        TextureFactory.of(Textures.BlockIcons.SOLARPANEL_UV),
-        TextureFactory.of(Textures.BlockIcons.SOLARPANEL)
+        new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_8V),
+        new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LV),
+        new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_MV),
+        new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_HV),
+        new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_EV),
+        new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV),
+        new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV),
+        new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_ZPM),
+        new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_UV),
+        new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL)
     };
 
     @Override
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] {
             super.getFront(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT),
+            new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT),
             Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]
         };
     }
 
     @Override
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {super.getBack(aColor)[0], TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_MAGIC)};
+        return new ITexture[] {
+            super.getBack(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC)
+        };
     }
 
     @Override
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {super.getBottom(aColor)[0], TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_MAGIC)};
+        return new ITexture[] {
+            super.getBottom(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC)
+        };
     }
 
     @Override
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {super.getTop(aColor)[0], TextureFactory.of(Textures.BlockIcons.SOLARPANEL)};
+        return new ITexture[] {super.getTop(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL)};
     }
 
     @Override
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {super.getSides(aColor)[0], TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_MAGIC)};
+        return new ITexture[] {
+            super.getSides(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC)
+        };
     }
 
     @Override
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] {
             super.getFrontActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT_ACTIVE),
+            new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT_ACTIVE),
             Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]
         };
     }
@@ -195,26 +201,26 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
     @Override
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] {
-            super.getBackActive(aColor)[0], TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE)
+            super.getBackActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE)
         };
     }
 
     @Override
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] {
-            super.getBottomActive(aColor)[0], TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE)
+            super.getBottomActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE)
         };
     }
 
     @Override
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {super.getTopActive(aColor)[0], TextureFactory.of(Textures.BlockIcons.SOLARPANEL)};
+        return new ITexture[] {super.getTopActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL)};
     }
 
     @Override
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] {
-            super.getSidesActive(aColor)[0], TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE)
+            super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE)
         };
     }
 }

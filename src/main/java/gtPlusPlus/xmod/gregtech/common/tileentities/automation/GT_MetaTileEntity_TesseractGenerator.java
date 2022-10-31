@@ -9,7 +9,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
@@ -683,12 +683,12 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
             final boolean aRedstone) {
         return aSide == aFacing
                 ? new ITexture[] {
-                    TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
-                    TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_Frequency)
+                    new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+                    new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency)
                 }
                 : new ITexture[] {
-                    TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
-                    TextureFactory.of(Textures.BlockIcons.VOID)
+                    new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+                    new GT_RenderedTexture(Textures.BlockIcons.VOID)
                 };
     }
 

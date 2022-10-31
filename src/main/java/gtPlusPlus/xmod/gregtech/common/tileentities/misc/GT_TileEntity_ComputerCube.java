@@ -11,9 +11,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.ItemData;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.*;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
@@ -897,11 +895,11 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_3)};
+        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_3)};
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] {TextureFactory.of(TexturesGtBlock.Casing_Computer_Cube)};
+        return new ITexture[] {new GT_RenderedTexture(TexturesGtBlock.Casing_Computer_Cube)};
     }
 
     protected static final int DID_NOT_FIND_RECIPE = 0,

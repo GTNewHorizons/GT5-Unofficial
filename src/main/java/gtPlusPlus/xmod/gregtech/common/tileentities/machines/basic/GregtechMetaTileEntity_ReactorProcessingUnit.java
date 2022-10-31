@@ -4,7 +4,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
@@ -27,14 +27,14 @@ public class GregtechMetaTileEntity_ReactorProcessingUnit extends GT_MetaTileEnt
                 "Dehydrator.png",
                 "",
                 new ITexture[] {
-                    TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE_ACTIVE),
-                    TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE),
-                    TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT_ACTIVE),
-                    TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT),
-                    TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
-                    TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP),
-                    TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
-                    TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP)
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE_ACTIVE),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT_ACTIVE),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE),
+                    new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_TOP)
                 });
     }
 

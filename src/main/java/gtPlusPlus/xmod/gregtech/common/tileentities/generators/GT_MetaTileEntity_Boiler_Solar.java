@@ -5,7 +5,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
 import gtPlusPlus.core.lib.CORE;
@@ -39,25 +39,25 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         final ITexture[][][] rTextures = new ITexture[4][17][];
         for (byte i = -1; i < 16; i = (byte) (i + 1)) {
             final ITexture[] tmp0 = {
-                TextureFactory.of(
+                new GT_RenderedTexture(
                         Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM, Dyes.getModulation(i, Dyes._NULL.mRGBa))
             };
             rTextures[0][(i + 1)] = tmp0;
             final ITexture[] tmp1 = {
-                TextureFactory.of(
+                new GT_RenderedTexture(
                         Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP, Dyes.getModulation(i, Dyes._NULL.mRGBa)),
-                TextureFactory.of(Textures.BlockIcons.BOILER_SOLAR)
+                new GT_RenderedTexture(Textures.BlockIcons.BOILER_SOLAR)
             };
             rTextures[1][(i + 1)] = tmp1;
             final ITexture[] tmp2 = {
-                TextureFactory.of(
+                new GT_RenderedTexture(
                         Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa))
             };
             rTextures[2][(i + 1)] = tmp2;
             final ITexture[] tmp3 = {
-                TextureFactory.of(
+                new GT_RenderedTexture(
                         Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa)),
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE)
+                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE)
             };
             rTextures[3][(i + 1)] = tmp3;
         }

@@ -5,7 +5,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SuperChest;
@@ -206,12 +206,12 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
         return aBaseMetaTileEntity.getFrontFacing() == 0 && aSide == 4
                 ? new ITexture[] {
                     BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                    TextureFactory.of(BlockIcons.OVERLAY_QCHEST)
+                    new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST)
                 }
                 : (aSide == aBaseMetaTileEntity.getFrontFacing()
                         ? new ITexture[] {
                             BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                            TextureFactory.of(BlockIcons.OVERLAY_QCHEST)
+                            new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST)
                         }
                         : new ITexture[] {BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1]});
     }

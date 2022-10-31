@@ -10,6 +10,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.data.*;
@@ -64,9 +65,9 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex())};
     }
 
-    protected abstract ITexture getFrontOverlay();
+    protected abstract GT_RenderedTexture getFrontOverlay();
 
-    protected abstract ITexture getFrontOverlayActive();
+    protected abstract GT_RenderedTexture getFrontOverlayActive();
 
     private int getCasingTextureIndex() {
         return 10;

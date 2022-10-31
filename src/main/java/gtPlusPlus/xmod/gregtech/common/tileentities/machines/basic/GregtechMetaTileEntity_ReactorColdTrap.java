@@ -4,7 +4,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
@@ -16,14 +16,14 @@ public class GregtechMetaTileEntity_ReactorColdTrap extends GT_MetaTileEntity_Ba
 
     public GregtechMetaTileEntity_ReactorColdTrap(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, "Just like the Arctic", 2, 9, "Dehydrator.png", "", new ITexture[] {
-            TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_SIDE_ACTIVE),
-            TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_SIDE),
-            TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_FRONT_ACTIVE),
-            TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_FRONT),
-            TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_TOP_ACTIVE),
-            TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_TOP),
-            TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_TOP_ACTIVE),
-            TextureFactory.of(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_TOP)
+            new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_SIDE_ACTIVE),
+            new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_SIDE),
+            new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_FRONT_ACTIVE),
+            new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_FRONT),
+            new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_TOP_ACTIVE),
+            new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_TOP),
+            new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_TOP_ACTIVE),
+            new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_TOP)
         });
     }
 

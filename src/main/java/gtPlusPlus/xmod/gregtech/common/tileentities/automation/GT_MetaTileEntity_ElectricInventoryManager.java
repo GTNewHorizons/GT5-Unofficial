@@ -7,7 +7,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.automation.GT_Container_ElectricInventoryManager;
@@ -520,84 +520,84 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Red)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red)
         };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Green)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Green)
         };
     }
 
     public ITexture[] getNegativeZ(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Blue)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Blue)
         };
     }
 
     public ITexture[] getPositiveZ(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Cyan)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Cyan)
         };
     }
 
     public ITexture[] getNegativeX(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Purple)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Purple)
         };
     }
 
     public ITexture[] getPositiveX(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Yellow)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Yellow)
         };
     }
 
     public ITexture[] getBottomRedstone(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Red_Redstone)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red_Redstone)
         };
     }
 
     public ITexture[] getTopRedstone(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Green_Redstone)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Green_Redstone)
         };
     }
 
     public ITexture[] getNegativeZRedstone(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Blue_Redstone)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Blue_Redstone)
         };
     }
 
     public ITexture[] getPositiveZRedstone(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Cyan_Redstone)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Cyan_Redstone)
         };
     }
 
     public ITexture[] getNegativeXRedstone(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Purple_Redstone)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Purple_Redstone)
         };
     }
 
     public ITexture[] getPositiveXRedstone(final byte aColor) {
         return new ITexture[] {
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
-            TextureFactory.of(TexturesGtBlock.Casing_InventoryManagaer_Yellow_Redstone)
+            new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Yellow_Redstone)
         };
     }
 }

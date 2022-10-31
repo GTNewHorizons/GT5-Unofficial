@@ -2,10 +2,10 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -18,7 +18,7 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
             if (i == 2 || i == 4 || i == 5 || i == 6 || i == 7 || i == 8 || i == 12 || i == 13 || i == 14 || i == 15) {
                 continue;
             }
-            TAE.registerTexture(3, i, TextureFactory.of(this, i));
+            TAE.registerTexture(3, i, new GTPP_CopiedBlockTexture(this, 6, i));
         }
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Naquadah Reactor Base"); // 48
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reactor Piping");

@@ -6,7 +6,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -73,8 +73,8 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
         return this.mTier == 6 ? 0 : this.mTier == 7 ? 1 : 2;
     }
 
-    private ITexture getCasingTexture() {
-        return TextureFactory.of(TexturesGtBlock.Casing_Machine_Advanced);
+    private GT_RenderedTexture getCasingTexture() {
+        return new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Advanced);
     }
 
     @Override
@@ -382,46 +382,47 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] {this.getCasingTexture(), TextureFactory.of(TexturesGtBlock.Overlay_MatterFab)};
+        return new ITexture[] {this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab)};
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] {this.getCasingTexture(), TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        return new ITexture[] {this.getCasingTexture(), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] {TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS)};
+        return new ITexture[] {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS)};
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] {TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS)};
+        return new ITexture[] {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS)};
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] {
-            this.getCasingTexture(), TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
+            this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)
         };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
-        return new ITexture[] {this.getCasingTexture(), TextureFactory.of(TexturesGtBlock.Overlay_MatterFab_Active)};
+        return new ITexture[] {this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active)
+        };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
-        return new ITexture[] {this.getCasingTexture(), TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        return new ITexture[] {this.getCasingTexture(), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] {TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW)};
+        return new ITexture[] {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW)};
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] {TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW)};
+        return new ITexture[] {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW)};
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] {
-            this.getCasingTexture(), TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Blue)
+            this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Blue)
         };
     }
 
