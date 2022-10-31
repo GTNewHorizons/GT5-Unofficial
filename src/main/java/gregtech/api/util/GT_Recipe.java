@@ -2208,7 +2208,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 "gt.recipe.nanoforge",
                 "Nano Forge",
                 null,
-                RES_PATH_GUI + "basicmachines/LCR/NEI",
+                RES_PATH_GUI + "basicmachines/LCRNEI",
                 3,
                 2,
                 1,

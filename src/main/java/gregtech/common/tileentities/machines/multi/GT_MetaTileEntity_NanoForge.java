@@ -458,14 +458,9 @@ public class GT_MetaTileEntity_NanoForge extends GT_MetaTileEntity_EnhancedMulti
 
     @Override
     public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking()) {
-            // Lock to single recipe
-            super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-        } else {
-            mSeparate = !mSeparate;
-            GT_Utility.sendChatToPlayer(
-                    aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparate);
-        }
+        mSeparate = !mSeparate;
+        GT_Utility.sendChatToPlayer(
+                aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparate);
     }
 
     protected void nanoForgeOverclockCalculation(

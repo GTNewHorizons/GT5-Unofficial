@@ -12460,7 +12460,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                     300,
                     18);
         }
-        GT_NaniteChain.run();
     }
 
     public void run3() {
@@ -13296,6 +13295,8 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.NanoForge.get(1),
                 2400 * 20,
                 100000);
+
+        GT_NaniteChain.run();
 
         if (GregTech_API.sThaumcraftCompat != null) {
             String tKey = "GT_WOOD_TO_CHARCOAL";

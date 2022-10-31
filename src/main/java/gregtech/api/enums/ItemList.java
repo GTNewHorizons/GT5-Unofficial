@@ -1937,7 +1937,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_Bus_ME,
     Hatch_CraftingInput_Bus_ME,
     AdvDebugStructureWriter,
-    
+
     Superconducting_Magnet_Solenoid_MV,
     Superconducting_Magnet_Solenoid_HV,
     Superconducting_Magnet_Solenoid_EV,
