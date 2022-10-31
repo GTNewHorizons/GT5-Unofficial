@@ -35,7 +35,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RECIPES_Machines {
@@ -798,32 +797,6 @@ public class RECIPES_Machines {
                 GregtechItemList.Large_Plasma_Turbine.get(1),
                 20 * 60,
                 MaterialUtils.getVoltageForTier(7));
-        if (LoadedMods.GoodGenerator) {
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] {
-                        CI.getNumberedAdvancedCircuit(18),
-                        GT_ModHandler.getModItem("GoodGenerator", "supercriticalFluidTurbineCasing", 1),
-                        GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedplate", 4, 10101),
-                        GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedscrew", 8, 10101)
-                    },
-                    FluidRegistry.getFluidStack("molten.adamantium alloy", 144 * 2),
-                    GregtechItemList.Casing_Turbine_SC.get(1),
-                    20 * 5,
-                    MaterialUtils.getVoltageForTier(6));
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] {
-                        CI.getNumberedAdvancedCircuit(18),
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 32016),
-                        GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedplate", 8, 10104),
-                        GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedscrew", 16, 10104),
-                        GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedgearGt", 4, 10104),
-                        CI.getCircuit(7, 8)
-                    },
-                    FluidRegistry.getFluidStack("molten.hikarium", 144 * 8),
-                    GregtechItemList.Large_SCSteam_Turbine.get(1),
-                    20 * 60,
-                    MaterialUtils.getVoltageForTier(7));
-        }
     }
 
     private static void multiSolarTower() {

@@ -37,7 +37,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
     }
 
     @Override
-    public int getCasingTextureIndex() {
+    public byte getCasingTextureIndex() {
         return 60;
     }
 
