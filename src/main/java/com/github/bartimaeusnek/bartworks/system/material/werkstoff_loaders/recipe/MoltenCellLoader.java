@@ -131,6 +131,86 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                     werkstoff.getStats().getMass() > 128 ? 64 : 30);
         }
 
+        if (werkstoff.getGenerationFeatures().hasMetalCraftingSolidifierRecipes()) {
+
+            if (!werkstoff.hasItemType(plate)) return;
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Rod_Long.get(0),
+                    werkstoff.getMolten(144),
+                    werkstoff.get(stickLong),
+                    (int) Math.max(werkstoff.getStats().getMass(), 1L),
+                    werkstoff.getStats().getMass() > 128 ? 64 : 30);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Rod.get(0),
+                    werkstoff.getMolten(72),
+                    werkstoff.get(stick),
+                    (int) Math.max(werkstoff.getStats().getMass() / 2, 1L),
+                    werkstoff.getStats().getMass() > 128 ? 64 : 30);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Plate.get(0),
+                    werkstoff.getMolten(144),
+                    werkstoff.get(plate),
+                    (int) Math.max(werkstoff.getStats().getMass(), 1L),
+                    werkstoff.getStats().getMass() > 128 ? 64 : 30);
+        }
+
+        if (werkstoff.getGenerationFeatures().hasMetaSolidifierRecipes()) {
+            if (!werkstoff.hasItemType(screw)) return;
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Screw.get(0),
+                    werkstoff.getMolten(18),
+                    werkstoff.get(screw),
+                    (int) Math.max(werkstoff.getStats().getMass() / 8, 1L),
+                    werkstoff.getStats().getMass() > 128 ? 64 : 30);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Gear.get(0),
+                    werkstoff.getMolten(576),
+                    werkstoff.get(gearGt),
+                    (int) Math.max(werkstoff.getStats().getMass() / 4, 1L),
+                    werkstoff.getStats().getMass() > 128 ? 64 : 30);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Gear_Small.get(0),
+                    werkstoff.getMolten(144),
+                    werkstoff.get(gearGtSmall),
+                    (int) Math.max(werkstoff.getStats().getMass(), 1L),
+                    werkstoff.getStats().getMass() > 128 ? 64 : 30);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Bolt.get(0),
+                    werkstoff.getMolten(18),
+                    werkstoff.get(bolt),
+                    (int) Math.max(werkstoff.getStats().getMass() / 8, 1L),
+                    werkstoff.getStats().getMass() > 128 ? 64 : 30);
+
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Ring.get(0),
+                    werkstoff.getMolten(36),
+                    werkstoff.get(ring),
+                    (int) Math.max(werkstoff.getStats().getMass() / 4, 1L),
+                    werkstoff.getStats().getMass() > 128 ? 64 : 30);
+
+            // No Spring Molds
+
+            if (WerkstoffLoader.rotorMold == null) return;
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Rotor.get(0),
+                    werkstoff.getMolten(612),
+                    werkstoff.get(rotor),
+                    (int) Math.max(werkstoff.getStats().getMass() * 4.25, 1L),
+                    werkstoff.getStats().getMass() > 128 ? 64 : 30);
+        }
+
+        if (werkstoff.getGenerationFeatures().hasMultipleMetalSolidifierRecipes()) {
+            if (!werkstoff.hasItemType(plateDouble)) return;
+            // No multiple plate molds
+        }
+
         // Tank "Recipe"
         final FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(
                 new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144),
