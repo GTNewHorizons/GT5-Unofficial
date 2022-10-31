@@ -19,6 +19,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_VIA_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
@@ -205,6 +206,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Crop Farm")
                 .addInfo("Controller block for the Extreme Industrial Greenhouse")
+                .addInfo(AuthorKuba)
                 .addInfo("Grow your crops like a chad !")
                 .addInfo("Use screwdriver to enable/change/disable setup mode")
                 .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
@@ -563,14 +565,12 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
     public boolean addCrop(ItemStack input) {
         if (!isIC2Mode)
             for (GreenHouseSlot g : mStorage)
-                if (GT_Utility.areStacksEqual(g.input, input)) {
+                if (g.input.stackSize < 64 && GT_Utility.areStacksEqual(g.input, input)) {
                     g.addAll(this.getBaseMetaTileEntity().getWorld(), input);
                     if (input.stackSize == 0) return true;
                 }
-        GreenHouseSlot h = new GreenHouseSlot(this, input.copy(), true, isIC2Mode);
+        GreenHouseSlot h = new GreenHouseSlot(this, input, true, isIC2Mode);
         if (h.isValid) {
-            if (isIC2Mode) input.stackSize--;
-            else input.stackSize = 0;
             mStorage.add(h);
             return true;
         }
@@ -724,7 +724,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
                 if (i == Items.reeds) b = Blocks.reeds;
                 else {
                     b = Block.getBlockFromItem(i);
-                    if (!(b == Blocks.cactus)) return;
+                    if (b != Blocks.cactus) return;
                 }
                 needsreplanting = false;
             }
@@ -746,7 +746,9 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
 
             crop = b;
             isIC2Crop = false;
-            if (addDrops(world, input.stackSize, autocraft) == 0 && !drops.isEmpty()) {
+            int toUse = Math.min(64, input.stackSize);
+            if (addDrops(world, toUse, autocraft) == 0 && !drops.isEmpty()) {
+                input.stackSize -= toUse;
                 this.isValid = true;
             }
         }
@@ -840,8 +842,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
 
                 int dur = cc.growthDuration(te);
                 int rate = te.calcGrowthRate();
-                if (rate == 0) // should not be possible with those stats
-                return;
+                if (rate == 0) return; // should not be possible with those stats
                 growthticks = dur / rate;
                 if (growthticks < 1) growthticks = 1;
 

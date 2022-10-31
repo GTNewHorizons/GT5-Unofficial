@@ -19,6 +19,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_VIA_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
@@ -285,6 +286,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Breeder Reactor")
                 .addInfo("Controller block for the High Temperature Gas-cooled Reactor (HTGR)")
+                .addInfo(AuthorKuba)
                 .addInfo("You can clear internal buffer by changing the mode with a screwdriver")
                 .addInfo("Needs a constant supply of coolant while running")
                 .addInfo("Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
