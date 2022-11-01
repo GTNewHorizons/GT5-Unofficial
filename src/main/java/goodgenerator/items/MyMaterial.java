@@ -65,8 +65,8 @@ public class MyMaterial implements Runnable {
             new Werkstoff.GenerationFeatures().disable().addMixerRecipes().onlyDust(),
             OffsetID + 4,
             TextureSet.SET_DULL,
-            new Pair<>(Thorium, 8),
-            new Pair<>(WerkstoffLoader.Thorium232, 4),
+            new Pair<>(Thorium, 11),
+            new Pair<>(WerkstoffLoader.Thorium232, 1),
             new Pair<>(Uranium235, 1),
             new Pair<>(Carbon, 3));
 
@@ -93,7 +93,7 @@ public class MyMaterial implements Runnable {
     public static final Werkstoff thoriumBasedLiquidFuelDepleted = new Werkstoff(
             new short[] {0x7d, 0x6c, 0x8a},
             "Thorium Based Liquid Fuel (Depleted)",
-            subscriptNumbers("Lu?Pr?B?In?"),
+            subscriptNumbers("Th?Pr?B?In?"),
             new Werkstoff.Stats().setToxic(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),

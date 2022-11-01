@@ -144,17 +144,17 @@ public class RecipeLoader {
                 },
                 null,
                 ItemRefer.Wrapped_Thorium_Ingot.get(1),
-                1000,
+                300,
                 480);
 
         GT_Values.RA.addImplosionRecipe(
                 ItemRefer.Wrapped_Thorium_Ingot.get(1),
                 4,
                 ItemRefer.High_Density_Thorium_Nugget.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.TungstenSteel, 3));
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.TungstenSteel, 8));
 
         GT_Values.RA.addCompressorRecipe(
-                ItemRefer.High_Density_Thorium_Nugget.get(9), ItemRefer.High_Density_Thorium.get(1), 400, 120);
+                ItemRefer.High_Density_Thorium_Nugget.get(9), ItemRefer.High_Density_Thorium.get(1), 200, 120);
 
         GT_Values.RA.addMixerRecipe(
                 ItemRefer.High_Density_Thorium.get(1),
@@ -172,7 +172,7 @@ public class RecipeLoader {
                 GT_Utility.getIntegratedCircuit(1),
                 null,
                 null,
-                Materials.Helium.getPlasma(750L),
+                Materials.Helium.getPlasma(250L),
                 null,
                 MyMaterial.thoriumBasedLiquidFuelExcited.get(OrePrefixes.cell, 1),
                 120,
@@ -292,13 +292,14 @@ public class RecipeLoader {
                 100,
                 30);
 
+        // ZnCl2 + 3Ca + ThF4 = ZnTh + CaCl2 + 2CaF2
         GT_Values.RA.addBlastRecipe(
-                MyMaterial.zincChloride.get(OrePrefixes.dust, 1),
+                MyMaterial.zincChloride.get(OrePrefixes.dust, 3),
                 Materials.Calcium.getDust(3),
                 MyMaterial.thorium232Tetrafluoride.getFluidOrGas(1000),
-                WerkstoffLoader.CalciumChloride.getFluidOrGas(1000),
+                WerkstoffLoader.CalciumChloride.getFluidOrGas(3000),
                 MyMaterial.zincThoriumAlloy.get(OrePrefixes.ingot, 1),
-                WerkstoffLoader.Fluorspar.get(OrePrefixes.dust, 8),
+                WerkstoffLoader.Fluorspar.get(OrePrefixes.dust, 6),
                 300,
                 120,
                 3000);
@@ -307,7 +308,7 @@ public class RecipeLoader {
                 MyMaterial.zincThoriumAlloy.get(OrePrefixes.ingot, 1),
                 GT_Utility.getIntegratedCircuit(11),
                 Materials.Argon.getGas(250),
-                Materials.Zinc.getMolten(48),
+                Materials.Zinc.getMolten(144),
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
                 null,
                 150,
@@ -1487,13 +1488,13 @@ public class RecipeLoader {
                 null,
                 MyMaterial.thoriumBasedLiquidFuelDepleted.getFluidOrGas(1000),
                 null,
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 64),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 48),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 32),
+                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64),
+                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 16),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 64),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 32),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 2),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 4),
-                new int[] {9000, 7000, 1500, 10000, 3000, 5000},
+                new int[] {10000, 8000, 1000, 8000, 3000, 5000},
                 1500,
                 1040);
 
