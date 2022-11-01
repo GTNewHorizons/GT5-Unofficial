@@ -43,7 +43,7 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
     }
 
     @Override
-    public byte getCasingTextureIndex() {
+    public int getCasingTextureIndex() {
         return 16;
     }
 
