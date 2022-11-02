@@ -2,15 +2,20 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
 
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.GT_Container_2by2_Fluid;
-import gregtech.api.gui.GT_GUIContainer_2by2_Fluid;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.InventoryPlayer;
+import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -60,6 +65,11 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
                 }
             }
         }
+    }
+
+    @Override
+    public boolean displaysStackSize() {
+        return true;
     }
 
     public FluidStack[] getStoredFluid() {
@@ -249,16 +259,6 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     }
 
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_2by2_Fluid(aPlayerInventory, aBaseMetaTileEntity, "Quadruple Input Hatch");
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_2by2_Fluid(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && mStoredFluid != null) {
             for (int i = 0; i < getMaxType(); i++) {
@@ -283,6 +283,85 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
             } else {
                 mInventory[i] = GT_Utility.getFluidDisplayStack(getFluid(i), true, !displaysStackSize());
             }
+        }
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        final int SLOT_NUMBER = 4;
+        FluidDisplaySlotWidget[] slotWidgets = new FluidDisplaySlotWidget[SLOT_NUMBER];
+        Pos2d[] positions = new Pos2d[] {
+            new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43), new Pos2d(88, 43),
+        };
+
+        for (int i = 0; i < SLOT_NUMBER; i++) {
+            final int slotId = i;
+            FluidDisplaySlotWidget slotWidget = new FluidDisplaySlotWidget(inventoryHandler, slotId);
+            slotWidgets[slotId] = slotWidget;
+            slotWidget
+                    .setFluidAccessConstructor(() -> constructFluidAccess(slotId))
+                    .setIHasFluidDisplay(this)
+                    .setCanDrain(true)
+                    .setCanFill(!isDrainableStackSeparate())
+                    .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
+                    .setBeforeRealClick((clickData, widget) -> {
+                        if (NetworkUtils.isClient()) {
+                            // propagate display item content to actual fluid stored in this tank
+                            for (int j = 0; j < SLOT_NUMBER; j++) {
+                                setFluid(
+                                        GT_Utility.getFluidFromDisplayStack(
+                                                slotWidgets[j].getMcSlot().getStack()),
+                                        j);
+                            }
+                        }
+                        ItemStack tStackHeld =
+                                widget.getContext().getPlayer().inventory.getItemStack();
+                        FluidStack tFluidHeld = GT_Utility.getFluidForFilledItem(tStackHeld, true);
+                        return constructFluidAccess(slotId).isMatch(tFluidHeld, slotId);
+                    })
+                    .setBackground(GT_UITextures.SLOT_DARK_GRAY)
+                    .setPos(positions[slotId]);
+            builder.widget(slotWidget);
+        }
+    }
+
+    protected MultiFluidAccess constructFluidAccess(int aSlot) {
+        return new MultiFluidAccess(this, aSlot);
+    }
+
+    protected static class MultiFluidAccess implements IFluidAccess {
+        private final GT_MetaTileEntity_Hatch_MultiInput mTank;
+        private final int mSlot;
+
+        public MultiFluidAccess(GT_MetaTileEntity_Hatch_MultiInput aTank, int aSlot) {
+            this.mTank = aTank;
+            this.mSlot = aSlot;
+        }
+
+        public boolean isMatch(FluidStack stack, int slot) {
+            if (!mTank.hasFluid(stack)) return true;
+            if (stack == null) return true;
+            return stack.equals(mTank.getFluid(slot));
+        }
+
+        @Override
+        public void set(FluidStack stack) {
+            mTank.setFluid(stack, mSlot);
+        }
+
+        @Override
+        public FluidStack get() {
+            return mTank.getFluid(mSlot);
+        }
+
+        @Override
+        public int getCapacity() {
+            return mTank.getCapacity();
         }
     }
 }

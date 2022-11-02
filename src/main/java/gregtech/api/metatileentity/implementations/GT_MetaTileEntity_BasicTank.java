@@ -99,6 +99,9 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
 
     public abstract boolean displaysItemStack();
 
+    /**
+     * @return If fluid amount is shown on FluidDisplayItem
+     */
     public abstract boolean displaysStackSize();
 
     public int getInputSlot() {
