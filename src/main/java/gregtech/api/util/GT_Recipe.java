@@ -1521,7 +1521,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         E,
                         true,
                         true)
-                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
                 .setSlotOverlay(true, false, GT_UITextures.OVERLAY_SLOT_HEATER_1)
                 .setSlotOverlay(true, true, GT_UITextures.OVERLAY_SLOT_HEATER_2)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT);
@@ -1541,7 +1540,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         E,
                         true,
                         true)
-                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
                 .setSlotOverlay(true, false, GT_UITextures.OVERLAY_SLOT_BEAKER_1)
                 .setSlotOverlay(true, true, GT_UITextures.OVERLAY_SLOT_BEAKER_2)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT);
@@ -1870,8 +1868,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         E,
                         true,
                         true)
-                .setSlotOverlay(false, false, true, GT_UITextures.OVERLAY_SLOT_BENDER)
-                .setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_BENDER)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_BENDING, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sAlloySmelterRecipes = new GT_Recipe_Map(
                         new HashSet<>(12000),
@@ -2097,7 +2094,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         E,
                         true,
                         true)
-                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
                 .setSlotOverlay(true, false, GT_UITextures.OVERLAY_SLOT_UUA)
                 .setSlotOverlay(true, true, GT_UITextures.OVERLAY_SLOT_UUM)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
