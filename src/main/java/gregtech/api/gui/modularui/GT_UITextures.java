@@ -26,6 +26,8 @@ public class GT_UITextures {
             AdaptableUITexture.of(MODID, "gui/background/FusionComputer", 176, 166, 4);
     public static final AdaptableUITexture BACKGROUND_TEXT_FIELD =
             AdaptableUITexture.of(MODID, "gui/background/text_field", 142, 28, 1);
+    public static final AdaptableUITexture BACKGROUND_TEXT_FIELD_LIGHT_GRAY =
+            AdaptableUITexture.of(MODID, "gui/background/text_field_light_gray", 61, 12, 1);
 
     public static final SteamTexture SLOT_ITEM_STEAM = SteamTexture.fullImage(MODID, "gui/slot/item_%s");
     public static final AdaptableUITexture SLOT_DARK_GRAY =
