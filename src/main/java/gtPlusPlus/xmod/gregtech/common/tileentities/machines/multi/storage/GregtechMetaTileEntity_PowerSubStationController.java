@@ -638,8 +638,9 @@ public class GregtechMetaTileEntity_PowerSubStationController
     private long computeEnergyTax() {
         float mTax = mAverageEuUsage * (ENERGY_TAX / 100f);
 
-        // Increase tax up to 2x if machine is not fully repaired
-        mTax = mTax * (1f + (10000f - mEfficiency) / 10000f);
+        // Increase tax up to 2x if machine is not fully repaired (does not actually work at the moment, mEfficiency is
+        // always 0)
+        // mTax = mTax * (1f + (10000f - mEfficiency) / 10000f);
 
         return MathUtils.roundToClosestLong(mTax);
     }
