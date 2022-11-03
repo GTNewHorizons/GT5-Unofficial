@@ -5,11 +5,18 @@ import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
-import gregtech.api.gui.GT_Container_MultiMachine;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -19,13 +26,14 @@ import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import java.util.ArrayList;
 import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -240,20 +248,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiblockDisplay.png");
     }
 
     @Override
@@ -1287,5 +1283,116 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 
     public List<GT_MetaTileEntity_Hatch> getExoticEnergyHatches() {
         return mExoticEnergyHatches;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 4)
+                .setSize(143, 75));
+        SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
+        builder.widget(inventorySlot.setPos(151, 4));
+
+        DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
+        drawTexts(screenElements, inventorySlot);
+        builder.widget(screenElements);
+    }
+
+    @Override
+    protected void addGregTechLogo(ModularWindow.Builder builder) {}
+
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        screenElements.setSynced(false).setSpace(0).setPos(10, 7);
+
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("132", "Pipe is loose."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mWrench))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("133", "Screws are loose."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mScrewdriver))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("134", "Something is stuck."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mSoftHammer))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("135", "Platings are dented."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mHardHammer))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("136", "Circuitry burned out."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mSolderingTool))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("137", "That doesn't belong there."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mCrowbar))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mMachine))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
+
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("139", "Hit with Soft Mallet"))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                                && !getBaseMetaTileEntity().isActive()))
+                .widget(new FakeSyncWidget.IntegerSyncer(
+                        () -> getBaseMetaTileEntity().getErrorDisplayID(),
+                        val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+                .widget(new FakeSyncWidget.BooleanSyncer(
+                        () -> getBaseMetaTileEntity().isActive(),
+                        val -> getBaseMetaTileEntity().setActive(val)));
+        screenElements.widget(new TextWidget(GT_Utility.trans("140", "to (re-)start the Machine"))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                        && !getBaseMetaTileEntity().isActive()));
+        screenElements.widget(new TextWidget(GT_Utility.trans("141", "if it doesn't start."))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                        && !getBaseMetaTileEntity().isActive()));
+        screenElements.widget(new TextWidget(GT_Utility.trans("142", "Running perfectly."))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                        && getBaseMetaTileEntity().isActive()));
+
+        screenElements.widget(new TextWidget(GT_Utility.trans("143", "Missing Mining Pipe"))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> {
+                    if (getBaseMetaTileEntity().getErrorDisplayID() == 0
+                            && this instanceof GT_MetaTileEntity_DrillerBase) {
+                        ItemStack tItem = inventorySlot.getMcSlot().getStack();
+                        return tItem == null
+                                || !GT_Utility.areStacksEqual(tItem, GT_ModHandler.getIC2Item("miningPipe", 1L));
+                    }
+                    return false;
+                }));
+        screenElements.widget(new TextWidget(GT_Utility.trans("144", "Missing Turbine Rotor"))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> {
+                    if (getBaseMetaTileEntity().getErrorDisplayID() == 0
+                            && this instanceof GT_MetaTileEntity_LargeTurbine) {
+                        ItemStack tItem = inventorySlot.getMcSlot().getStack();
+                        return tItem == null
+                                || !(tItem.getItem() == GT_MetaGenerated_Tool_01.INSTANCE
+                                        && tItem.getItemDamage() >= 170
+                                        && tItem.getItemDamage() <= 177);
+                    }
+                    return false;
+                }));
     }
 }

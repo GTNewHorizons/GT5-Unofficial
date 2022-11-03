@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
  * <p/>
  * As the NEI-RecipeTransferRect Handler can't handle one GUI-Class for all GUIs I needed to produce some dummy-classes which extend this class
  */
+@Deprecated
 public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machine {
 
     String mName;

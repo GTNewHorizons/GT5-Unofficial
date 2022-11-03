@@ -16,14 +16,12 @@ public class GT_UITextures {
             AdaptableUITexture.of(MODID, "gui/background/singleblock_default", 176, 166, 4);
     public static final SteamTexture BACKGROUND_STEAM =
             SteamTexture.adaptableTexture(MODID, "gui/background/%s", 176, 166, 4);
-    public static final UITexture BACKGROUND_MULTIBLOCK_DEFAULT =
-            AdaptableUITexture.of(MODID, "gui/background/multiblock_default", 176, 166, 4);
     public static final UITexture BACKGROUND_MULTIBLOCK_NEI_DEFAULT =
             AdaptableUITexture.of(MODID, "gui/background/multiblock_nei_default", 176, 166, 4);
     public static final UITexture BACKGROUND_PLASMA_FORGE_NEI =
             AdaptableUITexture.of(MODID, "gui/background/PlasmaForge_nei", 176, 166, 4);
     public static final UITexture BACKGROUND_FUSION_COMPUTER =
-            AdaptableUITexture.of(MODID, "gui/background/FusionComputer", 176, 166, 4);
+            AdaptableUITexture.of(MODID, "gui/background/fusion_computer", 176, 166, 4);
     public static final AdaptableUITexture BACKGROUND_TEXT_FIELD =
             AdaptableUITexture.of(MODID, "gui/background/text_field", 142, 28, 1);
     public static final AdaptableUITexture BACKGROUND_TEXT_FIELD_LIGHT_GRAY =
@@ -272,6 +270,7 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS =
             UITexture.fullImage(MODID, "gui/overlay_button/void_excess");
     public static final UITexture OVERLAY_BUTTON_VOID_ALL = UITexture.fullImage(MODID, "gui/overlay_button/void_all");
+    public static final UITexture OVERLAY_BUTTON_NEI = UITexture.fullImage(MODID, "gui/overlay_button/nei");
 
     /**
      * Can adjust size as needed.
