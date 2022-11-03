@@ -53,7 +53,7 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
     }
 
     @Override
-    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+    public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         aList.add(transItem("019", "Bath with neutron in a hot reactor"));
         int rDmg = aStack.getItemDamage() * 4 / getMaxDamage();
         EnumChatFormatting color2;

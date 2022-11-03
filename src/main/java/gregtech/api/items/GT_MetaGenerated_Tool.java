@@ -423,7 +423,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
     }
 
     @Override
-    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+    public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         long tMaxDamage = getToolMaxDamage(aStack);
         Materials tMaterial = getPrimaryMaterial(aStack);
         IToolStats tStats = getToolStats(aStack);

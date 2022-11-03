@@ -30,7 +30,7 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
     }
 
     @Override
-    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+    public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         if (aStack != null) {
             NBTTagCompound tNBT = aStack.getTagCompound();
