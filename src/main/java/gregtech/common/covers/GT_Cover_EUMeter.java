@@ -4,20 +4,13 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconButton;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
-import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
@@ -29,12 +22,10 @@ import io.netty.buffer.ByteBuf;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMeterData> {
@@ -296,16 +287,6 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         }
     }
 
-    @Override
-    public Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            EUMeterData coverData,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new GUI(aSide, aCoverID, coverData, aTileEntity);
-    }
     // endregion
 
     public static class EUMeterData implements ISerializableObject {
@@ -477,140 +458,6 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
                 ordinal = 0;
             }
             return values()[ordinal];
-        }
-    }
-
-    private class GUI extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private final GT_GuiIconButton typeButton;
-        private final GT_GuiIconCheckButton invertedButton;
-        private final GT_GuiIntegerTextBox thresholdSlot;
-        private final EUMeterData coverVariable;
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
-        private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
-
-        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
-
-        public GUI(byte aSide, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            typeButton = new GT_GuiIconButton(this, 0, startX, startY, GT_GuiIcon.CYCLIC);
-            invertedButton = new GT_GuiIconCheckButton(
-                    this,
-                    2,
-                    startX,
-                    startY + spaceY,
-                    GT_GuiIcon.REDSTONE_ON,
-                    GT_GuiIcon.REDSTONE_OFF,
-                    INVERTED,
-                    NORMAL);
-            thresholdSlot = new GT_GuiIntegerTextBox(this, 4, startX, startY + spaceY * 2 + 2, spaceX * 8, 12);
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(coverVariable.type.getTitle(), startX + spaceX, 4 + startY, textColor);
-            this.getFontRenderer()
-                    .drawString(
-                            coverVariable.inverted ? INVERTED : NORMAL,
-                            startX + spaceX,
-                            4 + startY + spaceY,
-                            textColor);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("222.1", "Energy threshold"), startX, startY + spaceY * 3 + 4, textColor);
-        }
-
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            update();
-            thresholdSlot.setFocused(true);
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (btn == typeButton) {
-                coverVariable.type = coverVariable.type.getNext();
-            }
-            if (btn == invertedButton) {
-                coverVariable.inverted = !coverVariable.inverted;
-            }
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-            update();
-        }
-
-        @Override
-        public void onMouseWheel(int x, int y, int delta) {
-            if (thresholdSlot.isFocused()) {
-                long val = parseTextBox(thresholdSlot);
-
-                long step = 1000;
-                if (isShiftKeyDown()) {
-                    step *= 100;
-                }
-                if (isCtrlKeyDown()) {
-                    step /= 10;
-                }
-
-                try {
-                    val = Math.addExact(val, delta * step);
-                } catch (ArithmeticException e) {
-                    val = Long.MAX_VALUE;
-                }
-                val = Math.max(0, val);
-                thresholdSlot.setText(Long.toString(val));
-            }
-        }
-
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            if (box == thresholdSlot) {
-                coverVariable.threshold = parseTextBox(thresholdSlot);
-            }
-
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-            update();
-        }
-
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            if (box == thresholdSlot) {
-                thresholdSlot.setText(Long.toString(coverVariable.threshold));
-            }
-        }
-
-        private void update() {
-            invertedButton.setChecked(coverVariable.inverted);
-            typeButton.setTooltipText(coverVariable.type.getTooltip());
-            resetTextBox(thresholdSlot);
-        }
-
-        private long parseTextBox(GT_GuiIntegerTextBox box) {
-            if (box == thresholdSlot) {
-                String text = box.getText();
-                if (text == null) {
-                    return 0;
-                }
-                long val;
-                try {
-                    val = Long.parseLong(text.trim());
-                } catch (NumberFormatException e) {
-                    return 0;
-                }
-                return Math.max(0, val);
-            }
-            throw new UnsupportedOperationException("Unknown text box: " + box);
         }
     }
 }

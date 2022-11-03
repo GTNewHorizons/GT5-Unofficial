@@ -5,10 +5,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -17,12 +14,9 @@ import io.netty.buffer.ByteBuf;
 import java.util.Arrays;
 import java.util.UUID;
 import javax.annotation.Nonnull;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public abstract class GT_Cover_AdvancedRedstoneReceiverBase
         extends GT_Cover_AdvancedWirelessRedstoneBase<GT_Cover_AdvancedRedstoneReceiverBase.ReceiverData> {
@@ -138,17 +132,6 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
         }
     }
 
-    @Override
-    public Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            ReceiverData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new ReceiverGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
-    }
-
     public enum GateMode {
         AND,
         NAND,
@@ -209,86 +192,6 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
             mode = GateMode.values()[aBuf.readByte()];
 
             return this;
-        }
-    }
-
-    private static class ReceiverGUI extends WirelessGUI<ReceiverData> {
-
-        private static final int gateModeButtonIdStart = 1;
-
-        public ReceiverGUI(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
-            super(aSide, aCoverID, aCoverVariable, aTileEntity);
-
-            new GT_GuiIconButton(
-                            this,
-                            gateModeButtonIdStart + 0,
-                            startX + spaceX * 0,
-                            startY + spaceY * 2,
-                            GT_GuiIcon.AND_GATE)
-                    .setTooltipText(GT_Utility.trans("331", "AND Gate"));
-            new GT_GuiIconButton(
-                            this,
-                            gateModeButtonIdStart + 1,
-                            startX + spaceX * 1,
-                            startY + spaceY * 2,
-                            GT_GuiIcon.NAND_GATE)
-                    .setTooltipText(GT_Utility.trans("332", "NAND Gate"));
-            new GT_GuiIconButton(
-                            this,
-                            gateModeButtonIdStart + 2,
-                            startX + spaceX * 2,
-                            startY + spaceY * 2,
-                            GT_GuiIcon.OR_GATE)
-                    .setTooltipText(GT_Utility.trans("333", "OR Gate"));
-            new GT_GuiIconButton(
-                            this,
-                            gateModeButtonIdStart + 3,
-                            startX + spaceX * 3,
-                            startY + spaceY * 2,
-                            GT_GuiIcon.NOR_GATE)
-                    .setTooltipText(GT_Utility.trans("334", "NOR Gate"));
-            new GT_GuiIconButton(
-                            this,
-                            gateModeButtonIdStart + 4,
-                            startX + spaceX * 4,
-                            startY + spaceY * 2,
-                            GT_GuiIcon.ANALOG_MODE)
-                    .setTooltipText(
-                            "ANALOG Mode", "Only use this mode with ONE transmitter in total,", "no logic involved");
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("335", "Gate Mode"),
-                            startX + spaceX * 5,
-                            4 + startY + spaceY * 2,
-                            textColor);
-        }
-
-        @Override
-        protected void update() {
-            super.update();
-            updateButtons();
-        }
-
-        private void updateButtons() {
-            GuiButton button;
-            for (int i = gateModeButtonIdStart; i < gateModeButtonIdStart + 5; ++i) {
-                button = (GuiButton) this.buttonList.get(i);
-                button.enabled = (button.id - gateModeButtonIdStart) != coverVariable.mode.ordinal();
-            }
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (btn.id >= gateModeButtonIdStart && btn.enabled) {
-                coverVariable.mode = GateMode.values()[btn.id - gateModeButtonIdStart];
-            }
-
-            super.buttonClicked(btn);
         }
     }
 }

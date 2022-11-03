@@ -6,16 +6,10 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
@@ -24,13 +18,11 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_SlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 import javax.annotation.Nonnull;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -423,150 +415,6 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         private ItemStack getFluidDisplayItem(FluidFilterData coverData) {
             Fluid fluid = FluidRegistry.getFluid(coverData.mFluidID);
             return GT_Utility.getFluidDisplayStack(fluid);
-        }
-    }
-
-    @Override
-    protected Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            FluidFilterData coverData,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new GT_FluidFilterGUICover(aSide, aCoverID, coverData, aTileEntity);
-    }
-
-    private class GT_FluidFilterGUICover extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private final FluidFilterData coverVariable;
-        private final GT_GuiFakeItemButton fluidFilterButton;
-        protected String fluidFilterName;
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555),
-                textColorTitle = this.getTextColorOrDefault("title", 0xFF222222);
-
-        public GT_FluidFilterGUICover(
-                byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            GT_GuiIconButton b;
-            b = new GT_GuiIconButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.IMPORT)
-                    .setTooltipText(GT_Utility.trans("232", "Filter Input"));
-            b = new GT_GuiIconButton(this, 1, startX + spaceX * 1, startY + spaceY * 0, GT_GuiIcon.EXPORT)
-                    .setTooltipText(GT_Utility.trans("233", "Filter Output"));
-            b = new GT_GuiIconButton(this, 2, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.BLOCK_INPUT)
-                    .setTooltipText(GT_Utility.trans("234", "Block Output"));
-            b = new GT_GuiIconButton(this, 3, startX + spaceX * 1, startY + spaceY * 2, GT_GuiIcon.ALLOW_INPUT)
-                    .setTooltipText(GT_Utility.trans("235", "Allow Output"));
-            b = new GT_GuiIconButton(this, 4, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.WHITELIST)
-                    .setTooltipText(GT_Utility.trans("236", "Whitelist Fluid"));
-            b = new GT_GuiIconButton(this, 5, startX + spaceX * 1, startY + spaceY * 1, GT_GuiIcon.BLACKLIST)
-                    .setTooltipText(GT_Utility.trans("237", "Blacklist Fluid"));
-
-            fluidFilterButton =
-                    new GT_GuiFakeItemButton(this, startX, startY + spaceY * 3 + 2, GT_GuiIcon.SLOT_DARKGRAY);
-            fluidFilterButton.setMimicSlot(true);
-        }
-
-        private int getNewFilterMode(int id) {
-            switch (id) {
-                case 0:
-                    return (coverVariable.mFilterMode & 0x3);
-                case 1:
-                    return (coverVariable.mFilterMode | 0x4);
-                case 2:
-                    return (coverVariable.mFilterMode & 0x5);
-                case 3:
-                    return (coverVariable.mFilterMode | 0x2);
-                case 4:
-                    return (coverVariable.mFilterMode & 0x6);
-                case 5:
-                    return (coverVariable.mFilterMode | 0x1);
-            }
-            return coverVariable.mFilterMode;
-        }
-
-        private boolean getClickable(int id) {
-            switch (id) {
-                case 0:
-                case 1:
-                    return (coverVariable.mFilterMode >> 2 & 0x1) != (id & 0x1);
-                case 2:
-                case 3:
-                    return (coverVariable.mFilterMode >> 1 & 0x1) != (id & 0x1);
-                case 4:
-                case 5:
-                    return (coverVariable.mFilterMode & 0x1) != (id & 0x1);
-            }
-            return false;
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(
-                    GT_Utility.trans("238", "Filter Direction"),
-                    startX + spaceX * 2,
-                    3 + startY + spaceY * 0,
-                    textColor);
-            this.fontRendererObj.drawString(
-                    GT_Utility.trans("239", "Filter Type"), startX + spaceX * 2, 3 + startY + spaceY * 1, textColor);
-            this.fontRendererObj.drawString(
-                    GT_Utility.trans("240", "Block Flow"), startX + spaceX * 2, 3 + startY + spaceY * 2, textColor);
-            this.fontRendererObj.drawSplitString(
-                    fluidFilterName, startX + spaceX + 3, 4 + startY + spaceY * 3, gui_width - 40, textColorTitle);
-        }
-
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            updateButtons();
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (getClickable(btn.id)) {
-                coverVariable.mFilterMode = (byte) getNewFilterMode(btn.id);
-                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-            }
-            updateButtons();
-        }
-
-        private void updateButtons() {
-            GT_GuiIconButton b;
-            for (Object o : buttonList) {
-                if (o instanceof GT_GuiIconButton) {
-                    b = (GT_GuiIconButton) o;
-                    b.enabled = getClickable(b.id);
-                    if (getClickable(1)) { // filtering input
-                        if (b.id == 2) b.setTooltipText(GT_Utility.trans("311", "Block Output"));
-                        else if (b.id == 3) b.setTooltipText(GT_Utility.trans("312", "Allow Output"));
-                    } else {
-                        if (b.id == 2) b.setTooltipText(GT_Utility.trans("313", "Block Input"));
-                        else if (b.id == 3) b.setTooltipText(GT_Utility.trans("314", "Allow Input"));
-                    }
-                }
-            }
-            Fluid f = FluidRegistry.getFluid(coverVariable.mFluidID);
-            if (f != null) {
-                ItemStack item = GT_Utility.getFluidDisplayStack(f);
-                if (item != null) {
-                    fluidFilterButton.setItem(item);
-                    fluidFilterName = item.getDisplayName();
-                    return;
-                }
-            }
-            fluidFilterButton.setItem(null);
-            fluidFilterName = GT_Utility.trans("315", "Filter Empty");
         }
     }
 

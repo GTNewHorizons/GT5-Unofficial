@@ -5,8 +5,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -20,14 +18,10 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
 import javax.annotation.Nonnull;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
 public class GT_Cover_WirelessMaintenanceDetector
         extends GT_Cover_AdvancedRedstoneTransmitterBase<
@@ -253,77 +247,6 @@ public class GT_Cover_WirelessMaintenanceDetector
                                         GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
                                 .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
             }
-        }
-    }
-
-    @Override
-    public Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            MaintenanceTransmitterData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new MaintenanceTransmitterGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    private class MaintenanceTransmitterGUI extends TransmitterGUI<MaintenanceTransmitterData> {
-
-        private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverBig.png";
-        private static final int maintenanceButtonIdStart = 2;
-
-        public MaintenanceTransmitterGUI(
-                byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
-            super(aSide, aCoverID, aCoverVariable, aTileEntity);
-            this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
-            this.gui_height = 143;
-
-            for (int i = 0; i < 8; ++i) {
-                new GT_GuiIconCheckButton(
-                        this,
-                        maintenanceButtonIdStart + i,
-                        startX + spaceX * (i % 2 == 0 ? 0 : 6),
-                        startY + spaceY * (2 + i / 2),
-                        GT_GuiIcon.CHECKMARK,
-                        null);
-            }
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            for (int i = 0; i < 8; ++i) {
-                this.getFontRenderer()
-                        .drawString(
-                                extraTexts[i],
-                                startX + spaceX * (i % 2 == 0 ? 1 : 7),
-                                4 + startY + spaceY * (2 + i / 2),
-                                textColor);
-            }
-        }
-
-        @Override
-        protected void update() {
-            super.update();
-            updateButtons();
-        }
-
-        private void updateButtons() {
-            GT_GuiIconCheckButton button;
-            for (int i = maintenanceButtonIdStart; i < maintenanceButtonIdStart + 8; ++i) {
-                button = (GT_GuiIconCheckButton) this.buttonList.get(i);
-                button.enabled = (button.id - maintenanceButtonIdStart) != coverVariable.mode.ordinal();
-                button.setChecked(!button.enabled);
-            }
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (btn.id >= maintenanceButtonIdStart && btn.enabled) {
-                coverVariable.mode = MaintenanceMode.values()[btn.id - maintenanceButtonIdStart];
-            }
-
-            super.buttonClicked(btn);
         }
     }
 }

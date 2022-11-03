@@ -20,6 +20,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+@Deprecated
 public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRenderer, IGuiScreen {
 
     protected GT_GuiTooltipManager ttManager = new GT_GuiTooltipManager();

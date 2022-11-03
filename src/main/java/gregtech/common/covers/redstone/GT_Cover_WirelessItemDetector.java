@@ -8,9 +8,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -22,16 +19,13 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
 import gregtech.common.gui.modularui.widget.ItemWatcherSlotWidget;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import io.netty.buffer.ByteBuf;
-import java.util.Collections;
 import java.util.UUID;
 import javax.annotation.Nonnull;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class GT_Cover_WirelessItemDetector
         extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessItemDetector.ItemTransmitterData> {
@@ -263,128 +257,6 @@ public class GT_Cover_WirelessItemDetector
             } else {
                 return null;
             }
-        }
-    }
-
-    @Override
-    public Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            ItemTransmitterData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new ItemTransmitterGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    private class ItemTransmitterGUI extends TransmitterGUI<ItemTransmitterData> {
-        private final GT_GuiIntegerTextBox thresholdBox;
-        private final GT_GuiIntegerTextBox slotBox;
-
-        private final GT_GuiFakeItemButton fakeItemSlot;
-
-        private final int maxSlot;
-
-        public ItemTransmitterGUI(
-                byte aSide, int aCoverID, ItemTransmitterData aCoverVariable, ICoverable aTileEntity) {
-            super(aSide, aCoverID, aCoverVariable, aTileEntity, 0, 1);
-
-            if (tile instanceof TileEntity
-                    && !super.tile.isDead()
-                    && tile instanceof IGregTechTileEntity
-                    && !(((IGregTechTileEntity) tile).getMetaTileEntity()
-                            instanceof GT_MetaTileEntity_DigitalChestBase)) {
-                maxSlot = tile.getSizeInventory() - 1;
-            } else {
-                maxSlot = -1;
-            }
-
-            thresholdBox = new GT_GuiShortTextBox(
-                    this, 1, 1 + startX, 2 + startY + spaceY * 2, spaceX * 5 - 4, 12, 0, getMaxCount());
-            slotBox = new GT_GuiShortTextBox(
-                    this,
-                    2,
-                    1 + startX,
-                    2 + startY + spaceY * 3,
-                    spaceX * 4 - 8,
-                    12,
-                    -1,
-                    maxSlot,
-                    Collections.singletonMap("-1", "All"));
-            fakeItemSlot =
-                    new GT_GuiFakeItemButton(this, startX + spaceX * 4 - 1, startY + spaceY * 3, GT_GuiIcon.SLOT_GRAY);
-
-            slotBox.setEnabled(maxSlot >= 0);
-            fakeItemSlot.setMimicSlot(true);
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("221", "Item threshold"),
-                            startX + spaceX * 5,
-                            4 + startY + spaceY * 2,
-                            textColor);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("254.0", "Detect Slot"),
-                            startX + spaceX * 5,
-                            4 + startY + spaceY * 3,
-                            textColor);
-        }
-
-        @Override
-        public void onMouseWheel(int x, int y, int delta) {
-            super.onMouseWheel(x, y, delta);
-            if (thresholdBox.isFocused()) {
-                genericMouseWheel(thresholdBox, delta, 0, getMaxCount(), 1, 10, 64);
-            } else if (slotBox.isFocused()) {
-                genericMouseWheel(slotBox, delta, -1, maxSlot, 1, 5, 50);
-            }
-        }
-
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            if (box == thresholdBox) {
-                coverVariable.threshold = parseTextBox(thresholdBox, 0, getMaxCount());
-            } else if (box == slotBox) {
-                coverVariable.slot = parseTextBox(slotBox, -1, maxSlot);
-            }
-
-            super.applyTextBox(box);
-        }
-
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            super.resetTextBox(box);
-            if (box == thresholdBox) {
-                thresholdBox.setText(Integer.toString(coverVariable.threshold));
-            } else if (box == slotBox) {
-                slotBox.setText(Integer.toString(coverVariable.slot));
-            }
-        }
-
-        @Override
-        protected void update() {
-            super.update();
-            resetTextBox(thresholdBox);
-            resetTextBox(slotBox);
-
-            if (coverVariable.slot >= 0
-                    && tile instanceof TileEntity
-                    && !tile.isDead()
-                    && tile.getSizeInventory() >= coverVariable.slot) {
-                ItemStack itemStack = tile.getStackInSlot(coverVariable.slot);
-                fakeItemSlot.setItem(itemStack);
-            } else {
-                fakeItemSlot.setItem(null);
-            }
-        }
-
-        private int getMaxCount() {
-            return maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
         }
     }
 }

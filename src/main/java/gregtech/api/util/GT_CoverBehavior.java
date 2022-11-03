@@ -107,6 +107,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         return onCoverShiftRightclick(aSide, aCoverID, convert(aCoverVariable), aTileEntity, aPlayer);
     }
 
+    @Deprecated
     @Override
     protected Object getClientGUIImpl(
             byte aSide,
@@ -332,6 +333,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         return false;
     }
 
+    @Deprecated
     public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
         return null;
     }

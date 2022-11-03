@@ -4,8 +4,6 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_Utility;
@@ -16,12 +14,10 @@ import io.netty.buffer.ByteBuf;
 import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Nonnull;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
                 T extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData>
@@ -190,69 +186,6 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
                     widget -> widget.addTooltip(0, GT_Utility.trans("NORMAL", "Normal"))
                             .addTooltip(1, GT_Utility.trans("INVERTED", "Inverted"))
                             .setPos(spaceX * 9, spaceY * getButtonRow()));
-        }
-    }
-
-    @Override
-    public Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            TransmitterData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new TransmitterGUI<>(aSide, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    protected class TransmitterGUI<X extends TransmitterData> extends WirelessGUI<X> {
-
-        private final GT_GuiIconCheckButton invertButton;
-
-        private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
-        private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
-
-        public TransmitterGUI(
-                byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity, int frequencyRow, int buttonRow) {
-            super(aSide, aCoverID, aCoverVariable, aTileEntity, frequencyRow, buttonRow, true);
-            invertButton = new GT_GuiIconCheckButton(
-                    this,
-                    1,
-                    startX + spaceX * 9,
-                    startY + spaceY * buttonRow,
-                    GT_GuiIcon.REDSTONE_ON,
-                    GT_GuiIcon.REDSTONE_OFF,
-                    INVERTED,
-                    NORMAL);
-        }
-
-        public TransmitterGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
-            this(aSide, aCoverID, aCoverVariable, aTileEntity, 0, 1);
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer()
-                    .drawString(
-                            coverVariable.invert ? INVERTED : NORMAL,
-                            startX + spaceX * 10,
-                            4 + startY + spaceY * buttonRow,
-                            textColor);
-        }
-
-        @Override
-        protected void update() {
-            super.update();
-            invertButton.setChecked(coverVariable.invert);
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (btn == invertButton) {
-                coverVariable.invert = !coverVariable.invert;
-            }
-
-            super.buttonClicked(btn);
         }
     }
 }
