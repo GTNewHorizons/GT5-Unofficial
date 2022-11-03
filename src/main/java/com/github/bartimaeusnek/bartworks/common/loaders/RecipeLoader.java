@@ -637,7 +637,7 @@ public class RecipeLoader {
                 ItemList.Machine_LV_ChemicalReactor.get(1L),
             });
 
-            for (int i = 0; i < GT_Values.VN.length - 1; i++) {
+            for (int i = 0; i < 9; i++) {
                 try {
                     Materials cable = cables[i];
                     ItemStack hull = hulls[i] instanceof Materials
