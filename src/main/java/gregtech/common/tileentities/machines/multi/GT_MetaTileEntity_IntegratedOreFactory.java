@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                             'W',
                             buildHatchAdder(GT_MetaTileEntity_IntegratedOreFactory.class)
                                     .atLeast(InputHatch, Muffler)
-                                    .casingIndex(CASING_INDEX1)
+                                    .casingIndex(CASING_INDEX2)
                                     .dot(3)
                                     .buildAndChain(GregTech_API.sBlockCasings4, 1))
                     .addElement(
