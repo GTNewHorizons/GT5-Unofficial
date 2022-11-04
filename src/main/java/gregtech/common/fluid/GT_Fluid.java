@@ -163,6 +163,7 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
                     material.mFluid = registeredFluid;
                     break;
             }
+            Materials.FLUID_MAP.put(registeredFluid, material);
         }
         return this;
     }
