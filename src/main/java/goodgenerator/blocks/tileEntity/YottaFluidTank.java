@@ -30,10 +30,12 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -62,6 +64,8 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     protected final String YOTTANK_BOTTOM = mName + "buttom";
     protected final String YOTTANK_MID = mName + "mid";
     protected final String YOTTANK_TOP = mName + "top";
+
+    protected boolean voidExcessEnabled = false;
 
     public YottaFluidTank(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
@@ -102,6 +106,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         mStorage = new BigInteger(tAmount, 10);
         mStorageCurrent = new BigInteger(tAmountCurrent, 10);
         mFluidName = aNBT.getString("mFluidName");
+        voidExcessEnabled = aNBT.getBoolean("voidExcessEnabled");
         super.loadNBTData(aNBT);
     }
 
@@ -110,6 +115,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         aNBT.setString("mStorage", mStorage.toString(10));
         aNBT.setString("mStorageCurrent", mStorageCurrent.toString(10));
         aNBT.setString("mFluidName", mFluidName);
+        aNBT.setBoolean("voidExcessEnabled", voidExcessEnabled);
         super.saveNBTData(aNBT);
     }
 
@@ -118,6 +124,10 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         this.mEUt = 0;
         this.mMaxProgresstime = 20;
         return true;
+    }
+
+    public boolean getIsVoidExcessEnabled() {
+        return voidExcessEnabled;
     }
 
     public boolean reduceFluid(long amount) {
@@ -357,7 +367,11 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     } else {
                         BigInteger delta = mStorage.subtract(mStorageCurrent);
                         mStorageCurrent = mStorageCurrent.add(delta);
-                        tFluid.amount -= delta.intValue();
+                        if (voidExcessEnabled) {
+                            tFluid.amount = 0;
+                        } else {
+                            tFluid.amount -= delta.intValue();
+                        }
                     }
                 }
             }
@@ -404,6 +418,18 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             structureBuild_EM(YOTTANK_MID, 2, height, 0, stackSize, hintsOnly);
             height--;
         }
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+            voidExcessEnabled ^= true;
+            aPlayer.addChatMessage(new ChatComponentTranslation(
+                    voidExcessEnabled ? "yottank.chat.voidExcessEnabled" : "yottank.chat.voidExcessDisabled"));
+            return true;
+        }
+        return false;
     }
 
     @Override

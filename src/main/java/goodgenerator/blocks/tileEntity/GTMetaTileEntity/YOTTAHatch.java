@@ -281,7 +281,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch
             } else {
                 int added = host.mStorage.subtract(host.mStorageCurrent).intValue();
                 if (doFill) host.addFluid(added);
-                return added;
+                return host.getIsVoidExcessEnabled() ? resource.amount : added;
             }
         }
         return 0;
