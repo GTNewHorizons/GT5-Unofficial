@@ -36,8 +36,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable {
@@ -136,6 +138,14 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             mStorageCurrent = mStorageCurrent.add(tmp);
             return true;
         }
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+        int fluidSize = mStorageCurrent.compareTo(new BigInteger(Integer.MAX_VALUE + "")) > 0
+                ? Integer.MAX_VALUE
+                : mStorageCurrent.intValue();
+        return new FluidTankInfo[] {new FluidTankInfo(FluidRegistry.getFluidStack(mFluidName, fluidSize), fluidSize)};
     }
 
     @Override
