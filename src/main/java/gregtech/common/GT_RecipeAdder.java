@@ -102,9 +102,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             int aDuration) {
         return addCentrifugeRecipe(
                 aInput1,
-                aInput2 < 0
-                        ? null
-                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
+                aInput2 < 0 ? null : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
                 null,
                 null,
                 aOutput1,
@@ -132,9 +130,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             int aEUt) {
         return addCentrifugeRecipe(
                 aInput1,
-                aInput2 < 0
-                        ? null
-                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
+                aInput2 < 0 ? null : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
                 null,
                 null,
                 aOutput1,
@@ -293,9 +289,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             int aEUt) {
         return addElectrolyzerRecipe(
                 aInput1,
-                aInput2 < 0
-                        ? null
-                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
+                aInput2 < 0 ? null : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
                 null,
                 null,
                 aOutput1,
