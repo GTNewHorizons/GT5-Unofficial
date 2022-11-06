@@ -103,8 +103,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return addCentrifugeRecipe(
                 aInput1,
                 aInput2 < 0
-                        ? ItemList.IC2_Fuel_Can_Empty.get(-aInput2, new Object[0])
-                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null,
+                        ? null
+                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
                 null,
                 null,
                 aOutput1,
@@ -133,8 +133,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return addCentrifugeRecipe(
                 aInput1,
                 aInput2 < 0
-                        ? ItemList.IC2_Fuel_Can_Empty.get(-aInput2, new Object[0])
-                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null,
+                        ? null
+                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
                 null,
                 null,
                 aOutput1,
@@ -294,8 +294,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return addElectrolyzerRecipe(
                 aInput1,
                 aInput2 < 0
-                        ? ItemList.IC2_Fuel_Can_Empty.get(-aInput2, new Object[0])
-                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null,
+                        ? null
+                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
                 null,
                 null,
                 aOutput1,
