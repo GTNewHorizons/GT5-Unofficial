@@ -179,10 +179,9 @@ public class RECIPES_Machines {
     public static ItemStack HV_MACHINE_Sifter;
     public static ItemStack IV_MACHINE_ThermalCentrifuge;
     public static ItemStack IV_MACHINE_OreWasher;
-    public static ItemStack EV_MACHINE_AlloySmelter;
+    public static ItemStack IV_MACHINE_AlloySmelter;
     public static ItemStack IV_MACHINE_Mixer;
     public static ItemStack IV_MACHINE_ChemicalBath;
-
     // Cables
     public static String cableGt02Electrum = "cableGt02Electrum";
 
@@ -1232,7 +1231,6 @@ public class RECIPES_Machines {
                 EV_MACHINE_MassFabricator = ItemList.Machine_EV_Massfab.get(1);
                 EV_MACHINE_Centrifuge = ItemList.Machine_EV_Centrifuge.get(1);
                 EV_MACHINE_Cutter = ItemList.Machine_EV_Cutter.get(1);
-                EV_MACHINE_AlloySmelter = ItemList.Machine_EV_AlloySmelter.get(1);
             }
             // Balanced opposites
             else {
@@ -1243,7 +1241,6 @@ public class RECIPES_Machines {
                         : ItemList.Machine_IV_Massfab.get(1);
                 EV_MACHINE_Centrifuge = ItemList.Machine_IV_Centrifuge.get(1);
                 EV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
-                EV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);
             }
         }
         if (CORE.ConfigSwitches.enableMultiblock_IndustrialCokeOven) {
@@ -2152,27 +2149,37 @@ public class RECIPES_Machines {
                 // Blast Smelter
                 RecipeUtils.addShapedGregtechRecipe(
                         "plateZirconiumCarbide",
-                        CI.circuitTier4,
+                        CI.circuitTier5,
                         "plateZirconiumCarbide",
-                        cableTier4,
-                        EV_MACHINE_AlloySmelter,
-                        cableTier4,
+                        cableTier6,
+                        IV_MACHINE_AlloySmelter,
+                        cableTier6,
                         "plateZirconiumCarbide",
-                        CI.circuitTier3,
+                        CI.circuitTier5,
                         "plateZirconiumCarbide",
                         RECIPE_IndustrialBlastSmelterController);
                 // Blast Smelter Frame Casing
                 RecipeUtils.addShapedGregtechRecipe(
                         "plateZirconiumCarbide",
-                        CI.component_Rod[5],
+                        CI.craftingToolHammer_Hard,
                         "plateZirconiumCarbide",
-                        CI.component_Rod[5],
-                        "frameGtTumbaga",
-                        CI.component_Rod[5],
                         "plateZirconiumCarbide",
-                        CI.component_Rod[5],
+                        "frameGtZirconiumCarbide",
+                        "plateZirconiumCarbide",
+                        "plateZirconiumCarbide",
+                        CI.craftingToolWrench,
                         "plateZirconiumCarbide",
                         RECIPE_IndustrialBlastSmelterFrame);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            ALLOY.ZIRCONIUM_CARBIDE.getPlate(6),
+                            ALLOY.ZIRCONIUM_CARBIDE.getFrameBox(1),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        RECIPE_IndustrialBlastSmelterFrame,
+                        50,
+                        16);
                 // Blast Smelter Coil
                 RecipeUtils.addShapedGregtechRecipe(
                         "plateStaballoy",
@@ -2185,6 +2192,17 @@ public class RECIPES_Machines {
                         "plateStaballoy",
                         "plateStaballoy",
                         RECIPE_IndustrialBlastSmelterCoil);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            ALLOY.STABALLOY.getPlate(6),
+                            ALLOY.STABALLOY.getFrameBox(2),
+                            CI.gearboxCasing_Tier_3,
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        RECIPE_IndustrialBlastSmelterCoil,
+                        50,
+                        16);
             }
 
             if (CORE.ConfigSwitches.enableMultiblock_MatterFabricator) {
