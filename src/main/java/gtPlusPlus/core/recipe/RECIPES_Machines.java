@@ -3228,6 +3228,35 @@ public class RECIPES_Machines {
                         GregtechItemList.Gregtech_Computer_Cube.get(1),
                         plate,
                         GregtechItemList.Machine_Adv_BlastFurnace.get(1));
+                // Hatch_Input_Pyrotheum
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            ItemList.Hatch_Input_IV.get(1),
+                            GregtechItemList.Casing_Adv_BlastFurnace.get(1),
+                            ALLOY.MARAGING250.getPlate(4),
+                            ALLOY.MARAGING300.getGear(1),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        GregtechItemList.Hatch_Input_Pyrotheum.get(1L),
+                        50,
+                        16);
+                // Casing_Adv_BlastFurnace
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            ALLOY.HASTELLOY_X.getFrameBox(1),
+                            ALLOY.HASTELLOY_N.getPlateDouble(4),
+                            ALLOY.HASTELLOY_W.getGear(1),
+                            ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1),
+                            ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1),
+                            ItemUtils.simpleMetaStack("IC2:reactorVentDiamond:1:1", 1, 1),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        GregtechItemList.Casing_Adv_BlastFurnace.get(1L),
+                        50,
+                        16);
 
                 // Advanced Implosion Compressor
                 plate = ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 1);

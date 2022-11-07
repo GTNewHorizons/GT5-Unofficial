@@ -205,7 +205,7 @@ public class RECIPES_General {
         // Small Gear Extruder Shape
         if (!CORE.GTNH) {
             GT_ModHandler.addCraftingRecipe(
-                    GregtechItemList.Shape_Extruder_SmallGear.get(1L, new Object[0]),
+                    GregtechItemList.Shape_Extruder_SmallGear.get(1L),
                     GT_ModHandler.RecipeBits.BUFFERED
                             | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                             | GT_ModHandler.RecipeBits.REVERSIBLE,
@@ -619,19 +619,19 @@ public class RECIPES_General {
                 CI.component_Plate[5],
                 ItemList.Hatch_Input_IV.get(1),
                 CI.component_Plate[5],
-                GregtechItemList.Hatch_Input_Cryotheum.get(1L, new Object[0]));
+                GregtechItemList.Hatch_Input_Cryotheum.get(1L));
 
         RecipeUtils.addShapedGregtechRecipe(
-                CI.component_Plate[5],
+                CI.component_Plate[6],
                 ALLOY.MARAGING300.getGear(1),
-                CI.component_Plate[5],
-                CI.getTieredCircuitOreDictName(4),
+                CI.component_Plate[6],
+                CI.getTieredCircuitOreDictName(5),
                 GregtechItemList.Casing_Adv_BlastFurnace.get(1),
-                CI.getTieredCircuitOreDictName(4),
+                CI.getTieredCircuitOreDictName(5),
                 CI.component_Plate[6],
                 ItemList.Hatch_Input_IV.get(1),
                 CI.component_Plate[6],
-                GregtechItemList.Hatch_Input_Pyrotheum.get(1L, new Object[0]));
+                GregtechItemList.Hatch_Input_Pyrotheum.get(1L));
 
         RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[8],
