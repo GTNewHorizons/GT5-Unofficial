@@ -282,8 +282,9 @@ public class GT_ModHandler {
         return FluidRegistry.getFluidStack("milk", (int) aAmount);
     }
 
+    @Deprecated
     public static ItemStack getEmptyFuelCan(long aAmount) {
-        return ItemList.IC2_Fuel_Can_Empty.get(aAmount);
+        return null;
     }
 
     public static ItemStack getEmptyCell(long aAmount) {
@@ -320,25 +321,18 @@ public class GT_ModHandler {
     /**
      * @param aValue Fuel value in EU
      */
+    @Deprecated
     public static ItemStack getFuelCan(int aValue) {
-        if (aValue < 5) return ItemList.IC2_Fuel_Can_Empty.get(1);
-        ItemStack rFuelCanStack = ItemList.IC2_Fuel_Can_Filled.get(1);
-        if (rFuelCanStack == null) return null;
-        NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setInteger("value", aValue / 5);
-        rFuelCanStack.setTagCompound(tNBT);
-        return rFuelCanStack;
+        return null;
     }
 
     /**
      * @param aFuelCan the Item you want to check
      * @return the exact Value in EU the Fuel Can is worth if its even a Fuel Can.
      */
+    @Deprecated
     public static int getFuelCanValue(ItemStack aFuelCan) {
-        if (GT_Utility.isStackInvalid(aFuelCan) || !ItemList.IC2_Fuel_Can_Filled.isStackEqual(aFuelCan, false, true))
-            return 0;
-        NBTTagCompound tNBT = aFuelCan.getTagCompound();
-        return tNBT == null ? 0 : tNBT.getInteger("value") * 5;
+        return 0;
     }
 
     /**
