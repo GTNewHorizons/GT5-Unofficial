@@ -1641,15 +1641,15 @@ public class RECIPES_Machines {
                 if (LoadedMods.Railcraft) {
                     // Industrial Coke Oven
                     RecipeUtils.addShapedGregtechRecipe(
-                            plateCobalt,
+                            CI.component_Plate[7],
                             CI.circuitTier4,
-                            plateCobalt,
-                            CI.machineCasing_HV,
+                            CI.component_Plate[7],
+                            CI.machineCasing_EV,
                             INPUT_RCCokeOvenBlock,
-                            CI.machineCasing_HV,
-                            plateCobalt,
-                            CI.circuitTier5,
-                            plateCobalt,
+                            CI.machineCasing_EV,
+                            CI.component_Plate[7],
+                            CI.circuitTier4,
+                            CI.component_Plate[7],
                             RECIPE_IndustrialCokeOvenController);
                 }
                 if (LoadedMods.ImmersiveEngineering) {
@@ -1658,11 +1658,11 @@ public class RECIPES_Machines {
                             CI.component_Plate[8],
                             CI.circuitTier4,
                             CI.component_Plate[8],
-                            CI.machineCasing_HV,
+                            CI.machineCasing_EV,
                             INPUT_IECokeOvenBlock,
-                            CI.machineCasing_HV,
+                            CI.machineCasing_EV,
                             CI.component_Plate[8],
-                            CI.circuitTier3,
+                            CI.circuitTier4,
                             CI.component_Plate[8],
                             RECIPE_IndustrialCokeOvenController);
                 }
@@ -1678,6 +1678,17 @@ public class RECIPES_Machines {
                         CI.component_Rod[7],
                         CI.component_Plate[7],
                         RECIPE_IndustrialCokeOvenFrame);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            ALLOY.TANTALLOY_61.getPlate(4),
+                            ALLOY.TANTALLOY_61.getRod(4),
+                            ALLOY.TANTALLOY_61.getFrameBox(1),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        RECIPE_IndustrialCokeOvenFrame,
+                        50,
+                        16);
                 // Coke Oven Coil 1
                 RecipeUtils.addShapedGregtechRecipe(
                         plateBronze,
