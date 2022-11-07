@@ -179,9 +179,10 @@ public class RECIPES_Machines {
     public static ItemStack EV_MACHINE_Extruder;
     public static ItemStack HV_MACHINE_Sifter;
     public static ItemStack IV_MACHINE_ThermalCentrifuge;
-    public static ItemStack EV_MACHINE_OreWasher;
+    public static ItemStack IV_MACHINE_OreWasher;
     public static ItemStack EV_MACHINE_AlloySmelter;
     public static ItemStack EV_MACHINE_Mixer;
+    public static ItemStack IV_MACHINE_ChemicalBath;
 
     // Cables
     public static String cableGt02Electrum = "cableGt02Electrum";
@@ -1235,7 +1236,6 @@ public class RECIPES_Machines {
                 EV_MACHINE_Centrifuge = ItemList.Machine_EV_Centrifuge.get(1);
                 EV_MACHINE_Cutter = ItemList.Machine_EV_Cutter.get(1);
                 EV_MACHINE_Extruder = ItemList.Machine_EV_Extruder.get(1);
-                EV_MACHINE_OreWasher = ItemList.Machine_EV_OreWasher.get(1);
                 EV_MACHINE_AlloySmelter = ItemList.Machine_EV_AlloySmelter.get(1);
                 EV_MACHINE_Mixer = ItemList.Machine_EV_Mixer.get(1);
             }
@@ -1251,7 +1251,6 @@ public class RECIPES_Machines {
                 EV_MACHINE_Centrifuge = ItemList.Machine_IV_Centrifuge.get(1);
                 EV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
                 EV_MACHINE_Extruder = ItemList.Machine_IV_Extruder.get(1);
-                EV_MACHINE_OreWasher = ItemList.Machine_IV_OreWasher.get(1);
                 EV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);
                 EV_MACHINE_Mixer = ItemList.Machine_IV_Mixer.get(1);
             }
@@ -3065,16 +3064,27 @@ public class RECIPES_Machines {
                         CI.craftingToolWrench,
                         "plateGrisium",
                         GregtechItemList.Casing_WashPlant.get(Casing_Amount));
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            ALLOY.LEAGRISIUM.getPlate(4),
+                            ALLOY.TALONITE.getPlate(2),
+                            ALLOY.LEAGRISIUM.getFrameBox(1),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        GregtechItemList.Casing_WashPlant.get(1L),
+                        50,
+                        16);
 
                 RecipeUtils.addShapedRecipe(
                         "plateGrisium",
-                        CI.electricPump_MV,
+                        IV_MACHINE_OreWasher,
                         "plateGrisium",
                         "plateTalonite",
-                        EV_MACHINE_OreWasher,
+                        "circuitElite",
                         "plateTalonite",
                         "plateGrisium",
-                        "circuitData",
+                        IV_MACHINE_ChemicalBath,
                         "plateGrisium",
                         GregtechItemList.Industrial_WashPlant.get(1));
             }
