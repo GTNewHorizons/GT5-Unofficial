@@ -73,7 +73,7 @@ public class GT_MetaTileEntity_BronzeBlastFurnace extends GT_MetaTileEntity_Prim
     }
 
     @Override
-    protected SteamTexture.Variant getVariant() {
+    public SteamTexture.Variant getSteamVariant() {
         return SteamTexture.Variant.BRONZE;
     }
 

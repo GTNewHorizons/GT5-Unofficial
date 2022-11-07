@@ -423,11 +423,6 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    protected IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamTexture.Variant.BRONZE);
-    }
-
-    @Override
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
         return new ITexture[] {
             TextureFactory.of(
@@ -438,6 +433,11 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
+    public SteamTexture.Variant getSteamVariant() {
+        return SteamTexture.Variant.BRONZE;
+    }
+
+    @Override
     protected UITexture getBackground() {
         return GT_UITextures.BACKGROUND_STEAM.get(SteamTexture.Variant.BRONZE);
     }
@@ -445,6 +445,11 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     @Override
     protected IDrawable getSlotBackground() {
         return GT_UITextures.SLOT_ITEM_STEAM.get(SteamTexture.Variant.BRONZE);
+    }
+
+    @Override
+    protected IDrawable getGregTechLogo() {
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamTexture.Variant.BRONZE);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.IItemWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
@@ -21,7 +22,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.modularui.IItemUIFactory;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
 import ic2.core.util.LiquidUtil;
@@ -49,7 +49,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem, IItemUIFactory {
+public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem, IItemWithModularUI {
     private final int maxCapacity;
     private final String unlocalFlaskName;
 

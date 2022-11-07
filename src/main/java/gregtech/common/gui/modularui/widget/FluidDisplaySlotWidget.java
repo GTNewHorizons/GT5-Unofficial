@@ -1,7 +1,6 @@
 package gregtech.common.gui.modularui.widget;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GT_Mod;
@@ -32,6 +31,11 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     private Action actionDragAndDrop = Action.NONE;
     private BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeRealClick;
     private BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeDragAndDrop;
+    private Runnable updateFluidDisplayItem = () -> {
+        if (iHasFluidDisplay != null) {
+            iHasFluidDisplay.updateFluidDisplayItem();
+        }
+    };
 
     public FluidDisplaySlotWidget(BaseSlot slot) {
         super(slot);
@@ -148,7 +152,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
             lockFluid(getContext().getPlayer().inventory.getItemStack());
         }
 
-        updateFluidDisplayItem();
+        updateFluidDisplayItem.run();
         return ret;
     }
 
@@ -308,7 +312,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         if (actionDragAndDrop == Action.LOCK) {
             lockFluid(draggedStack);
         }
-        updateFluidDisplayItem();
+        updateFluidDisplayItem.run();
     }
 
     protected void lockFluid(ItemStack cursorStack) {
@@ -322,7 +326,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
             mteToLock.setLockedFluidName(null);
             GT_Utility.sendChatToPlayer(getContext().getPlayer(), GT_Utility.trans("300.1", "Fluid Lock Cleared."));
 
-            if (!NetworkUtils.isClient()) {
+            if (!isClient()) {
                 mteToLock.onFluidLockPacketReceived(null);
             }
         } else {
@@ -341,7 +345,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
                             GT_Utility.trans("151.4", "Successfully locked Fluid to %s"),
                             new FluidStack(tFluid, 1).getLocalizedName()));
 
-            if (!NetworkUtils.isClient()) {
+            if (!isClient()) {
                 mteToLock.onFluidLockPacketReceived(tFluid.getName());
             }
         }
@@ -427,6 +431,15 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     public FluidDisplaySlotWidget setBeforeClick(BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeClick) {
         setBeforeRealClick(beforeClick);
         setBeforeDragAndDrop(beforeClick);
+        return this;
+    }
+
+    /**
+     * By default, this widget runs {@link IHasFluidDisplayItem#updateFluidDisplayItem} after click.
+     * You can specify custom update action with this method.
+     */
+    public FluidDisplaySlotWidget setUpdateFluidDisplayItem(Runnable updateFluidDisplayItem) {
+        this.updateFluidDisplayItem = updateFluidDisplayItem;
         return this;
     }
 

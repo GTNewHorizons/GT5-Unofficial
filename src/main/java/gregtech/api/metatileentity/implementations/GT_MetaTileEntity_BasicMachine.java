@@ -7,10 +7,17 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -20,6 +27,7 @@ import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -27,12 +35,14 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,6 +58,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -378,6 +389,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return OTHER_SLOT_COUNT + mInputSlotCount;
     }
 
+    public int getSpecialSlotIndex() {
+        return 3;
+    }
+
     @Override
     public int getStackDisplaySlot() {
         return 2;
@@ -517,6 +532,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return new GT_Container_BasicMachine(aPlayerInventory, aBaseMetaTileEntity);
     }
 
+    @Deprecated
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_BasicMachine(
@@ -702,7 +718,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                                 || aBaseMetaTileEntity.hasWorkJustBeenEnabled())
                         && hasEnoughEnergyToCheckRecipe()) {
                     if (checkRecipe() == FOUND_AND_SUCCESSFULLY_USED_RECIPE) {
-                        if (mInventory[3] != null && mInventory[3].stackSize <= 0) mInventory[3] = null;
+                        if (getSpecialSlot() != null && getSpecialSlot().stackSize <= 0)
+                            mInventory[getSpecialSlotIndex()] = null;
                         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
                             if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
                         for (int i = 0; i < mOutputItems.length; i++) {
@@ -751,7 +768,15 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public void updateFluidDisplayItem() {
+        updateFluidOutputDisplayItem();
+        updateFluidInputDisplayItem();
+    }
+
+    public void updateFluidOutputDisplayItem() {
         super.updateFluidDisplayItem();
+    }
+
+    public void updateFluidInputDisplayItem() {
         if (displaysInputFluid()) {
             int tDisplayStackSlot = OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
             if (getFillableStack() == null) {
@@ -788,7 +813,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected ItemStack getSpecialSlot() {
-        return mInventory[3];
+        return mInventory[getSpecialSlotIndex()];
     }
 
     protected ItemStack getOutputAt(int aIndex) {
@@ -1248,6 +1273,13 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return mPower;
     }
 
+    // GUI stuff
+
+    @Override
+    public boolean useModularUI() {
+        return getRecipeList() != null && getRecipeList().useModularUI;
+    }
+
     @Override
     public int getCircuitSlotX() {
         return 153;
@@ -1259,61 +1291,253 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
-    protected void addChargerSlot(ModularWindow.Builder builder, int x, int y) {
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        if (!isSteampowered()) {
+            builder.widget(createFluidAutoOutputButton());
+            builder.widget(createItemAutoOutputButton());
+        }
+
+        addIOSlots(builder);
+
+        builder.widget(createChargerSlot(79, 62));
+        if (getRecipeList() != null) {
+            builder.widget(setNEITransferRect(
+                    createProgressBar(
+                            isSteampowered()
+                                    ? getRecipeList().progressBarTextureSteam.get(getSteamVariant())
+                                    : getRecipeList().progressBarTexture,
+                            getRecipeList().getProgressBarImageSize(),
+                            getRecipeList().progressBarDirection,
+                            getRecipeList().progressBarPos,
+                            getRecipeList().progressBarSize),
+                    getRecipeList().mNEIName));
+            addProgressBarSpecialTextures(builder);
+        }
+        builder.widget(createErrorStatusArea(
+                builder,
+                isSteampowered() ? GT_UITextures.PICTURE_STALLED_STEAM : GT_UITextures.PICTURE_STALLED_ELECTRICITY));
+    }
+
+    /**
+     * Adds item I/O, special item, and fluid I/O slots.
+     */
+    protected void addIOSlots(ModularWindow.Builder builder) {
+        boolean hasFluidInput = getRecipeList() != null ? (getRecipeList().hasFluidInputs()) : (getCapacity() != 0);
+        boolean hasFluidOutput = getRecipeList() != null && getRecipeList().hasFluidOutputs();
+        UIHelper.forEachSlots(
+                (i, backgrounds, pos) -> builder.widget(createItemInputSlot(i, backgrounds, pos)),
+                (i, backgrounds, pos) -> builder.widget(createItemOutputSlot(i, backgrounds, pos)),
+                (i, backgrounds, pos) -> {
+                    if (i == 0) {
+                        builder.widget(createSpecialSlot(backgrounds, pos));
+                    }
+                },
+                (i, backgrounds, pos) -> {
+                    if (i == 0 && hasFluidInput) {
+                        builder.widget(createFluidInputSlot(backgrounds, pos));
+                    }
+                },
+                (i, backgrounds, pos) -> {
+                    if (i == 0 && hasFluidOutput) {
+                        builder.widget(createFluidOutputSlot(backgrounds, pos));
+                    }
+                },
+                getSlotBackground(),
+                getFluidSlotBackground(),
+                getRecipeList(),
+                mInputSlotCount,
+                mOutputItems.length,
+                getSteamVariant(),
+                Pos2d.ZERO);
+    }
+
+    /**
+     * Override this as needed instead of calling.
+     */
+    protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
+        return (SlotWidget) new SlotWidget(inventoryHandler, getInputSlot() + index)
+                .setAccess(true, true)
+                .setBackground(backgrounds)
+                .setPos(pos);
+    }
+
+    /**
+     * Override this as needed instead of calling.
+     */
+    protected SlotWidget createItemOutputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
+        return (SlotWidget) new SlotWidget(inventoryHandler, getOutputSlot() + index)
+                .setAccess(true, false)
+                .setBackground(backgrounds)
+                .setPos(pos);
+    }
+
+    /**
+     * Override this as needed instead of calling.
+     */
+    protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos) {
+        return (SlotWidget) new SlotWidget(inventoryHandler, getSpecialSlotIndex())
+                .setAccess(true, true)
+                .disableShiftInsert()
+                .setGTTooltip(() -> mTooltipCache.getData(
+                        getRecipeList() != null && getRecipeList().usesSpecialSlot()
+                                ? SPECIAL_SLOT_TOOLTIP
+                                : UNUSED_SLOT_TOOLTIP))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setBackground(backgrounds)
+                .setPos(pos);
+    }
+
+    protected FluidDisplaySlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
+        return (FluidDisplaySlotWidget)
+                new FluidDisplaySlotWidget(inventoryHandler, OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length)
+                        .setFluidAccessConstructor(() -> constructFluidAccess(true))
+                        .setIHasFluidDisplay(this)
+                        .setCanDrain(true)
+                        .setCanFill(true)
+                        .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
+                        .setBeforeRealClick((clickData, widget) -> {
+                            if (NetworkUtils.isClient()) {
+                                // propagate display item content to actual fluid stored in this tank
+                                setFillableStack(GT_Utility.getFluidFromDisplayStack(
+                                        widget.getMcSlot().getStack()));
+                            }
+                            return true;
+                        })
+                        .setUpdateFluidDisplayItem(this::updateFluidInputDisplayItem)
+                        .setGTTooltip(() -> mTooltipCache.getData(FLUID_INPUT_TOOLTIP, getCapacity()))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                        .setBackground(backgrounds)
+                        .setPos(pos);
+    }
+
+    protected FluidDisplaySlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
+        return (FluidDisplaySlotWidget) createDrainableFluidSlot()
+                .setUpdateFluidDisplayItem(this::updateFluidOutputDisplayItem)
+                .setGTTooltip(() -> mTooltipCache.getData(FLUID_OUTPUT_TOOLTIP, getCapacity()))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setBackground(backgrounds)
+                .setPos(pos);
+    }
+
+    @Override
+    protected SlotWidget createChargerSlot(int x, int y) {
         if (isSteampowered()) {
-            addChargerSlot(builder, x, y, UNUSED_SLOT_TOOLTIP, new String[0]);
+            return (SlotWidget)
+                    createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, new String[0]).setBackground(getSlotBackground());
         } else {
-            super.addChargerSlot(builder, x, y);
+            return super.createChargerSlot(x, y);
         }
     }
 
-    protected void addItemAutoOutputButton(ModularWindow.Builder builder, int x, int y) {
-        builder.widget(new CycleButtonWidget()
+    protected CycleButtonWidget createItemAutoOutputButton() {
+        return (CycleButtonWidget) new CycleButtonWidget()
                 .setToggle(() -> mItemTransfer, val -> mItemTransfer = val)
                 .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                 .setGTTooltip(() -> mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(x, y)
-                .setSize(18, 18));
+                .setPos(25, 62)
+                .setSize(18, 18);
     }
 
-    protected void addFluidAutoOutputButton(ModularWindow.Builder builder) {
-        builder.widget(new CycleButtonWidget()
+    protected CycleButtonWidget createFluidAutoOutputButton() {
+        return (CycleButtonWidget) new CycleButtonWidget()
                 .setToggle(() -> mFluidTransfer, val -> mFluidTransfer = val)
                 .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                 .setGTTooltip(() -> mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(7, 62)
-                .setSize(18, 18));
+                .setSize(18, 18);
     }
 
-    protected void addSpecialSlot(ModularWindow.Builder builder, String tooltipKey, IDrawable... background) {
-        if (background.length == 0) {
-            background = new IDrawable[] {getSlotBackground()};
+    protected ProgressBar createProgressBar(
+            UITexture texture, int imageSize, ProgressBar.Direction direction, Pos2d pos, Size size) {
+        ProgressBar ret = new ProgressBar();
+        ret.setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
+                .setTexture(texture, imageSize)
+                .setDirection(direction)
+                .setPos(pos)
+                .setSize(size);
+        return ret;
+    }
+
+    protected Widget setNEITransferRect(Widget widget, String transferRectID) {
+        if (getRecipeList() != null) {
+            Power powerInfo = getPower();
+            String transferRectTooltip;
+            if (isSteampowered()) {
+                transferRectTooltip =
+                        StatCollector.translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, powerInfo.getTierString());
+            } else {
+                transferRectTooltip = StatCollector.translateToLocalFormatted(
+                        NEI_TRANSFER_VOLTAGE_TOOLTIP, powerInfo.getTierString());
+            }
+            widget.setNEITransferRect(transferRectID, new Object[] {powerInfo}, transferRectTooltip);
         }
-        builder.widget(new SlotWidget(inventoryHandler, 3)
-                .disableShiftInsert()
-                .setGTTooltip(() -> mTooltipCache.getData(tooltipKey))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setBackground(background)
-                .setPos(124, 62));
+        return widget;
     }
 
-    protected Widget getErrorStatusArea(
-            int x,
-            int y,
-            IDrawable picture,
-            Supplier<List<String>> tooltipGetter,
-            Supplier<List<String>> tooltipShiftGetter) {
-        return new DrawableWidget()
+    protected void addProgressBarSpecialTextures(ModularWindow.Builder builder) {
+        if (isSteampowered()) {
+            for (Pair<SteamTexture, Pair<Size, Pos2d>> specialTexture : getRecipeList().specialTexturesSteam) {
+                builder.widget(new DrawableWidget()
+                        .setDrawable(specialTexture.getLeft().get(getSteamVariant()))
+                        .setSize(specialTexture.getRight().getLeft())
+                        .setPos(specialTexture.getRight().getRight()));
+            }
+        } else {
+            for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : getRecipeList().specialTextures) {
+                builder.widget(new DrawableWidget()
+                        .setDrawable(specialTexture.getLeft())
+                        .setSize(specialTexture.getRight().getLeft())
+                        .setPos(specialTexture.getRight().getRight()));
+            }
+        }
+    }
+
+    protected DrawableWidget createErrorStatusArea(ModularWindow.Builder builder, IDrawable picture) {
+        return (DrawableWidget) new DrawableWidget()
                 .setDrawable(picture)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setEnabled(widget -> !widget.getTooltip().isEmpty())
-                .dynamicTooltip(tooltipGetter)
-                .dynamicTooltipShift(tooltipShiftGetter)
-                .setPos(x, y)
-                .setSize(18, 18);
+                .dynamicTooltip(this::getErrorDescriptions)
+                .dynamicTooltipShift(this::getErrorDescriptionsShift)
+                .setPos(79, 44)
+                .setSize(18, 18)
+                .attachSyncer(
+                        new FakeSyncWidget.BooleanSyncer(() -> mStuttering, val -> mStuttering = val),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
+                .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(
+                                () -> getBaseMetaTileEntity().getErrorDisplayID(),
+                                val -> getBaseMetaTileEntity().setErrorDisplayID(val)),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange());
+    }
+
+    protected List<String> getErrorDescriptions() {
+        GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
+        return tooltip != null ? tooltip.text : Collections.emptyList();
+    }
+
+    protected List<String> getErrorDescriptionsShift() {
+        GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
+        return tooltip != null ? tooltip.shiftText : Collections.emptyList();
+    }
+
+    protected GT_TooltipDataCache.TooltipData getErrorTooltip() {
+        if (isSteampowered()) {
+            if ((getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0) {
+                return mTooltipCache.getData(STALLED_VENT_TOOLTIP);
+            }
+        }
+        if (mStuttering) {
+            return mTooltipCache.getData(
+                    STALLED_STUTTERING_TOOLTIP,
+                    StatCollector.translateToLocal(POWER_SOURCE_KEY + (isSteampowered() ? "steam" : "power")));
+        }
+        return null;
     }
 }

@@ -308,7 +308,7 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    protected SteamTexture.Variant getVariant() {
+    public SteamTexture.Variant getSteamVariant() {
         return SteamTexture.Variant.BRONZE;
     }
 }

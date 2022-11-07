@@ -360,20 +360,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
                 .widget(new SlotWidget(inventoryHandler, getOutputSlot())
                         .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_OUT)
                         .setPos(79, 52))
-                .widget(new FluidDisplaySlotWidget(inventoryHandler, getStackDisplaySlot())
-                        .setFluidAccessConstructor(() -> constructFluidAccess(false))
-                        .setIHasFluidDisplay(this)
-                        .setCanDrain(true)
-                        .setCanFill(!isDrainableStackSeparate())
-                        .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
-                        .setBeforeRealClick((clickData, widget) -> {
-                            if (NetworkUtils.isClient()) {
-                                // propagate display item content to actual fluid stored in this tank
-                                setDrainableStack(GT_Utility.getFluidFromDisplayStack(
-                                        widget.getMcSlot().getStack()));
-                            }
-                            return true;
-                        })
+                .widget(createDrainableFluidSlot()
                         .setBackground(GT_UITextures.TRANSPARENT)
                         .setPos(58, 41))
                 .widget(new TextWidget("Liquid Amount")
@@ -383,6 +370,23 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
                                 () -> GT_Utility.parseNumberToString(mFluid != null ? mFluid.amount : 0))
                         .setDefaultColor(COLOR_TEXT_WHITE.get())
                         .setPos(10, 30));
+    }
+
+    protected FluidDisplaySlotWidget createDrainableFluidSlot() {
+        return new FluidDisplaySlotWidget(inventoryHandler, getStackDisplaySlot())
+                .setFluidAccessConstructor(() -> constructFluidAccess(false))
+                .setIHasFluidDisplay(this)
+                .setCanDrain(true)
+                .setCanFill(!isDrainableStackSeparate())
+                .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
+                .setBeforeRealClick((clickData, widget) -> {
+                    if (NetworkUtils.isClient()) {
+                        // propagate display item content to actual fluid stored in this tank
+                        setDrainableStack(GT_Utility.getFluidFromDisplayStack(
+                                widget.getMcSlot().getStack()));
+                    }
+                    return true;
+                });
     }
 
     protected IFluidAccess constructFluidAccess(boolean aIsFillableStack) {

@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
     }
 
     @Override
-    protected SteamTexture.Variant getVariant() {
+    public SteamTexture.Variant getSteamVariant() {
         return SteamTexture.Variant.PRIMITIVE;
     }
 

@@ -194,8 +194,8 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
     }
 
     @Override
-    protected IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamTexture.Variant.STEEL);
+    public SteamTexture.Variant getSteamVariant() {
+        return SteamTexture.Variant.STEEL;
     }
 
     @Override
@@ -206,6 +206,11 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
     @Override
     protected IDrawable getSlotBackground() {
         return GT_UITextures.SLOT_ITEM_STEAM.get(SteamTexture.Variant.STEEL);
+    }
+
+    @Override
+    protected IDrawable getGregTechLogo() {
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamTexture.Variant.STEEL);
     }
 
     @Override

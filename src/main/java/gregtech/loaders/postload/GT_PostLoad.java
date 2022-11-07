@@ -352,7 +352,10 @@ public class GT_PostLoad {
                 0);
         GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(
                 false,
-                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L)},
+                new ItemStack[] {
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                    GT_Utility.getIntegratedCircuit(1)
+                },
                 new ItemStack[] {new ItemStack(Blocks.obsidian, 1)},
                 null,
                 null,

@@ -3,16 +3,11 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.*;
 
 import codechicken.nei.PositionedStack;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import gnu.trove.map.TByteObjectMap;
@@ -21,6 +16,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_FluidStack;
@@ -34,8 +30,7 @@ import ic2.core.Ic2Items;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import javax.annotation.Nullable;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -1057,7 +1052,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true,
                         true)
                 .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_COMPRESSOR)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_COMPRESS, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_COMPRESS, ProgressBar.Direction.RIGHT)
+                .setSlotOverlaySteam(false, GT_UITextures.OVERLAY_SLOT_COMPRESSOR_STEAM)
+                .setProgressBarSteam(GT_UITextures.PROGRESSBAR_COMPRESS_STEAM);
         public static final GT_Recipe_Map sExtractorRecipes = new GT_Recipe_Map(
                         new HashSet<>(250),
                         "gt.recipe.extractor",
@@ -1075,7 +1072,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true,
                         true)
                 .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CENTRIFUGE)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_EXTRACT, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_EXTRACT, ProgressBar.Direction.RIGHT)
+                .setSlotOverlaySteam(false, GT_UITextures.OVERLAY_SLOT_CENTRIFUGE_STEAM)
+                .setProgressBarSteam(GT_UITextures.PROGRESSBAR_EXTRACT_STEAM);
         public static final GT_Recipe_Map sRecyclerRecipes = new GT_Recipe_Map_Recycler(
                         new HashSet<>(0),
                         "ic.recipe.recycler",
@@ -1111,7 +1110,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true,
                         false)
                 .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_FURNACE)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                .setSlotOverlaySteam(false, GT_UITextures.OVERLAY_SLOT_FURNACE_STEAM)
+                .setProgressBarSteam(GT_UITextures.PROGRESSBAR_ARROW_STEAM);
         public static final GT_Recipe_Map sMicrowaveRecipes = new GT_Recipe_Map_Microwave(
                         new HashSet<>(0),
                         "gt.recipe.microwave",
@@ -1133,23 +1134,37 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /** Set {@code aSpecialValue = -100} to bypass the disassembler tier check and default recipe duration. */
         public static final GT_Recipe_Map sDisassemblerRecipes = new GT_Recipe_Map(
-                        new HashSet<>(250),
-                        "gt.recipe.disassembler",
-                        "Disassembler",
-                        null,
-                        RES_PATH_GUI + "basicmachines/Disassembler",
-                        1,
-                        9,
-                        1,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        false)
-                // todo
-                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_WRENCH)
+                new HashSet<>(250),
+                "gt.recipe.disassembler",
+                "Disassembler",
+                null,
+                RES_PATH_GUI + "basicmachines/Disassembler",
+                1,
+                9,
+                1,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                false) {
+            @Override
+            public IDrawable getOverlayForSlot(boolean isFluid, boolean isOutput, int index, boolean isSpecial) {
+                if (isOutput) {
+                    switch (index) {
+                        case 0:
+                        case 2:
+                        case 6:
+                        case 8:
+                            return GT_UITextures.OVERLAY_SLOT_CIRCUIT;
+                        case 4:
+                            return GT_UITextures.OVERLAY_SLOT_WRENCH;
+                    }
+                }
+                return super.getOverlayForSlot(isFluid, isOutput, index, isSpecial);
+            }
+        }.setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_WRENCH)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
 
         public static final GT_Recipe_Map sScannerFakeRecipes = new GT_Recipe_Map(
@@ -1177,7 +1192,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         "Rock Breaker",
                         null,
                         RES_PATH_GUI + "basicmachines/RockBreaker",
-                        1,
+                        2,
                         1,
                         0,
                         0,
@@ -1315,7 +1330,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         E,
                         true,
                         true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN);
         public static final GT_Recipe_Map sPressRecipes = new GT_Recipe_Map_FormingPress(
                         new HashSet<>(300),
                         "gt.recipe.press",
@@ -1391,8 +1406,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         E,
                         true,
                         true)
-                .setSlotOverlay(false, false, true, GT_UITextures.OVERLAY_SLOT_DUST)
-                .setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_CIRCUIT)
+                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_DUST)
                 .setSlotOverlay(false, true, true, GT_UITextures.OVERLAY_SLOT_GEM)
                 .setSlotOverlay(false, true, false, GT_UITextures.OVERLAY_SLOT_DUST)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
@@ -1450,7 +1464,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true)
                 .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CRUSHED_ORE)
                 .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_DUST)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_MACERATE, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_MACERATE, ProgressBar.Direction.RIGHT)
+                .setSlotOverlaySteam(false, GT_UITextures.OVERLAY_SLOT_CRUSHED_ORE_STEAM)
+                .setSlotOverlaySteam(true, GT_UITextures.OVERLAY_SLOT_DUST_STEAM)
+                .setProgressBarSteam(GT_UITextures.PROGRESSBAR_MACERATE_STEAM);
         public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(
                         new HashSet<>(2550),
                         "gt.recipe.chemicalbath",
@@ -1849,8 +1866,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         E,
                         true,
                         true)
-                .setSlotOverlay(false, false, true, GT_UITextures.OVERLAY_SLOT_WIREMILL)
-                .setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_CIRCUIT)
+                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_WIREMILL)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_WIREMILL, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sBenderRecipes = new GT_Recipe_Map(
                         new HashSet<>(5000),
@@ -1887,7 +1903,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true,
                         true)
                 .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_FURNACE)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                .setSlotOverlaySteam(false, GT_UITextures.OVERLAY_SLOT_FURNACE_STEAM)
+                .setProgressBarSteam(GT_UITextures.PROGRESSBAR_ARROW_STEAM);
         public static final GT_Recipe_Map sAssemblerRecipes = new GT_Recipe_Map_Assembler(
                         new HashSet<>(8200),
                         "gt.recipe.assembler",
@@ -1997,8 +2015,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         E,
                         true,
                         true)
-                .setSlotOverlay(false, false, true, GT_UITextures.OVERLAY_SLOT_BOX)
-                .setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_CIRCUIT)
+                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_BOX)
                 .setSlotOverlay(false, true, true, GT_UITextures.OVERLAY_SLOT_CUTTER_SLICED)
                 .setSlotOverlay(false, true, false, GT_UITextures.OVERLAY_SLOT_DUST)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_CUT, ProgressBar.Direction.RIGHT);
@@ -2058,7 +2075,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true)
                 .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_HAMMER)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
-                .addSpecialTexture(20, 6, 78, 42, GT_UITextures.PROGRESSBAR_HAMMER_BASE);
+                .addSpecialTexture(20, 6, 78, 42, GT_UITextures.PROGRESSBAR_HAMMER_BASE)
+                .setSlotOverlaySteam(false, GT_UITextures.OVERLAY_SLOT_HAMMER_STEAM)
+                .setProgressBarSteam(GT_UITextures.PROGRESSBAR_HAMMER_STEAM)
+                .addSpecialTextureSteam(20, 6, 78, 42, GT_UITextures.PROGRESSBAR_HAMMER_BASE_STEAM);
         public static final GT_Recipe_Map sAmplifiers = new GT_Recipe_Map(
                         new HashSet<>(2),
                         "gt.recipe.uuamplifier",
@@ -2435,19 +2455,50 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         private final TByteObjectMap<IDrawable> slotOverlays = new TByteObjectHashMap<>();
 
         /**
+         * Overlays used for GUI on steam machine.
+         * 1 = If it's fluid slot.
+         * 2 = If it's output slot.
+         * 4 = If it's first slot in the same section, e.g. first slot in the item output slots
+         * 8 = If it's special item slot.
+         */
+        private final TByteObjectMap<SteamTexture> slotOverlaysSteam = new TByteObjectHashMap<>();
+
+        /**
          * Progressbar used for BasicMachine GUI and/or NEI.
-         * Size should be (20, 36), consisting of two parts;
+         * Unless specified, size should be (20, 36), consisting of two parts;
          * First is (20, 18) size of "empty" image at the top,
          * Second is (20, 18) size of "filled" image at the bottom.
          */
         public UITexture progressBarTexture;
 
+        /**
+         * Progressbar used for steam machine GUI and/or NEI.
+         * Unless specified, size should be (20, 36), consisting of two parts;
+         * First is (20, 18) size of "empty" image at the top,
+         * Second is (20, 18) size of "filled" image at the bottom.
+         */
+        public SteamTexture progressBarTextureSteam;
+
         public ProgressBar.Direction progressBarDirection;
 
+        public Size progressBarSize = new Size(20, 18);
+
+        public Pos2d progressBarPos = new Pos2d(78, 24);
+
         /**
-         * Other textures shown in GUI.
+         * Image size in direction of progress. Used for non-smooth rendering.
+         */
+        private int progressBarImageSize;
+
+        /**
+         * Additional textures shown on GUI.
          */
         public final List<Pair<IDrawable, Pair<Size, Pos2d>>> specialTextures = new ArrayList<>();
+
+        /**
+         * Additional textures shown on steam machine GUI.
+         */
+        public final List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam = new ArrayList<>();
 
         public Pos2d neiBackgroundOffset = new Pos2d(2, 3);
 
@@ -2573,6 +2624,24 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     .setSlotOverlay(isFluid, isOutput, false, slotOverlay);
         }
 
+        public GT_Recipe_Map setSlotOverlaySteam(
+                boolean isFluid, boolean isOutput, boolean isFirst, boolean isSpecial, SteamTexture slotOverlay) {
+            useModularUI(true);
+            this.slotOverlaysSteam.put(
+                    (byte) ((isFluid ? 1 : 0) + (isOutput ? 2 : 0) + (isFirst ? 4 : 0) + (isSpecial ? 8 : 0)),
+                    slotOverlay);
+            return this;
+        }
+
+        public GT_Recipe_Map setSlotOverlaySteam(boolean isOutput, boolean isFirst, SteamTexture slotOverlay) {
+            return setSlotOverlaySteam(false, isOutput, isFirst, false, slotOverlay);
+        }
+
+        public GT_Recipe_Map setSlotOverlaySteam(boolean isOutput, SteamTexture slotOverlay) {
+            return setSlotOverlaySteam(false, isOutput, true, false, slotOverlay)
+                    .setSlotOverlaySteam(false, isOutput, false, false, slotOverlay);
+        }
+
         public GT_Recipe_Map setProgressBar(UITexture progressBarTexture, ProgressBar.Direction progressBarDirection) {
             useModularUI(true);
             this.progressBarTexture = progressBarTexture;
@@ -2580,9 +2649,36 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return this;
         }
 
+        public GT_Recipe_Map setProgressBarSteam(SteamTexture progressBarTexture) {
+            this.progressBarTextureSteam = progressBarTexture;
+            return this;
+        }
+
+        public GT_Recipe_Map setProgressBarSize(int x, int y) {
+            this.progressBarSize = new Size(x, y);
+            return this;
+        }
+
+        public GT_Recipe_Map setProgressBarPos(int x, int y) {
+            this.progressBarPos = new Pos2d(x, y);
+            return this;
+        }
+
+        public GT_Recipe_Map setProgressBarImageSize(int progressBarImageSize) {
+            this.progressBarImageSize = progressBarImageSize;
+            return this;
+        }
+
         public GT_Recipe_Map addSpecialTexture(int width, int height, int x, int y, IDrawable texture) {
             useModularUI(true);
             specialTextures.add(
+                    new ImmutablePair<>(texture, new ImmutablePair<>(new Size(width, height), new Pos2d(x, y))));
+            return this;
+        }
+
+        public GT_Recipe_Map addSpecialTextureSteam(int width, int height, int x, int y, SteamTexture texture) {
+            useModularUI(true);
+            specialTexturesSteam.add(
                     new ImmutablePair<>(texture, new ImmutablePair<>(new Size(width, height), new Pos2d(x, y))));
             return this;
         }
@@ -3049,93 +3145,48 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return Math.max(maxFluidOutputCount, hasFluidOutputs() ? 1 : 0);
         }
 
-        /**
-         * BiConsumer: (index of slot, position provided) -> do place
-         */
-        public void placeSlots(
-                int xOffset,
-                int yOffset,
-                BiConsumer<Integer, Pos2d> placeInputItems,
-                BiConsumer<Integer, Pos2d> placeOutputItems,
-                Consumer<Pos2d> placeSpecialItem,
-                BiConsumer<Integer, Pos2d> placeInputFluids,
-                BiConsumer<Integer, Pos2d> placeOutputFluids) {
-            final List<Pos2d> itemInputPositions = getItemInputPositions(xOffset, yOffset);
-            for (int i = 0; i < itemInputPositions.size(); i++) {
-                placeInputItems.accept(i, itemInputPositions.get(i));
-            }
-
-            final List<Pos2d> itemOutputPositions = getItemOutputPositions(xOffset, yOffset);
-            for (int i = 0; i < itemOutputPositions.size(); i++) {
-                placeOutputItems.accept(i, itemOutputPositions.get(i));
-            }
-
-            placeSpecialItem.accept(getSpecialItemPosition(xOffset, yOffset));
-
-            final List<Pos2d> fluidInputPositions = getFluidInputPositions(xOffset, yOffset);
-            for (int i = 0; i < fluidInputPositions.size(); i++) {
-                placeInputFluids.accept(i, fluidInputPositions.get(i));
-            }
-
-            final List<Pos2d> fluidOutputPositions = getFluidOutputPositions(xOffset, yOffset);
-            for (int i = 0; i < fluidOutputPositions.size(); i++) {
-                placeOutputFluids.accept(i, fluidOutputPositions.get(i));
-            }
-        }
-
-        /**
-         * Add slots to machine container.
-         */
-        public void addSlot(
-                ModularWindow.Builder builder,
-                int x,
-                int y,
-                int slotIndex,
-                IItemHandlerModifiable itemHandler,
-                boolean isFluid,
-                boolean isOutputs,
-                boolean isSpecial) {
-            if (builder == null) return;
-            if (!isFluid) {
-                builder.widget(new SlotWidget(new BaseSlot(itemHandler, slotIndex).setAccess(true, isOutputs))
-                        .setPos(x, y)
-                        .setBackground(getOverlaysForSlot(
-                                false, isOutputs, slotIndex == itemHandler.getSlots() - 1, isSpecial)));
-            } else {
-                //                builder.widget(new FluidSlotWidget(fluidTanks.get(slotIndex))
-                //                    .setAlwaysShowFull(true)
-                //                    .setInteraction(true, !isOutputs)
-                //                    .setPos(x, y)
-                //                    .setBackground(getOverlaysForSlot(true, isOutputs, slotIndex == fluidTanks.size()
-                // - 1)));
-            }
-        }
-
-        /**
-         * Add slots to NEI without actual items.
-         */
-        public void addFakeSlot(
-                ModularWindow.Builder builder,
-                int x,
-                int y,
-                boolean isFluid,
-                boolean isOutputs,
-                boolean isFirst,
-                boolean isSpecial) {
-            if (builder == null) return;
-            builder.widget(new SlotWidget(BaseSlot.empty())
-                    .setPos(x, y)
-                    .setSize(18, 18)
-                    .setBackground(getOverlaysForSlot(isFluid, isOutputs, isFirst, isSpecial)));
-        }
-
-        private IDrawable[] getOverlaysForSlot(boolean isFluid, boolean isOutput, boolean isFirst, boolean isSpecial) {
-            IDrawable base = isFluid ? ModularUITextures.FLUID_SLOT : ModularUITextures.ITEM_SLOT;
-            byte overlayKey = (byte) ((isFluid ? 1 : 0) + (isOutput ? 2 : 0) + (isFirst ? 4 : 0) + (isSpecial ? 8 : 0));
+        @Nullable
+        public IDrawable getOverlayForSlot(boolean isFluid, boolean isOutput, int index, boolean isSpecial) {
+            byte overlayKey =
+                    (byte) ((isFluid ? 1 : 0) + (isOutput ? 2 : 0) + (index == 0 ? 4 : 0) + (isSpecial ? 8 : 0));
             if (slotOverlays.containsKey(overlayKey)) {
-                return new IDrawable[] {base, slotOverlays.get(overlayKey)};
+                return slotOverlays.get(overlayKey);
             }
-            return new IDrawable[] {base};
+            return null;
+        }
+
+        @Nullable
+        public SteamTexture getOverlayForSlotSteam(boolean isFluid, boolean isOutput, int index, boolean isSpecial) {
+            byte overlayKey =
+                    (byte) ((isFluid ? 1 : 0) + (isOutput ? 2 : 0) + (index == 0 ? 4 : 0) + (isSpecial ? 8 : 0));
+            if (slotOverlaysSteam.containsKey(overlayKey)) {
+                return slotOverlaysSteam.get(overlayKey);
+            }
+            return null;
+        }
+
+        @Nullable
+        public SteamTexture getOverlayForSlotSteam(boolean isOutput, boolean isFirst) {
+            byte overlayKey = (byte) ((isOutput ? 2 : 0) + (isFirst ? 4 : 0));
+            if (slotOverlaysSteam.containsKey(overlayKey)) {
+                return slotOverlaysSteam.get(overlayKey);
+            }
+            return null;
+        }
+
+        public int getProgressBarImageSize() {
+            if (progressBarImageSize != 0) {
+                return progressBarImageSize;
+            }
+            switch (progressBarDirection) {
+                case UP:
+                case DOWN:
+                    return progressBarSize.height;
+                case CIRCULAR_CW:
+                    return Math.max(progressBarSize.width, progressBarSize.height);
+                default:
+                    return progressBarSize.width;
+            }
         }
 
         /**
@@ -3155,107 +3206,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public void addRecipe(Object o, FluidStack[] fluidInputArray, FluidStack[] fluidOutputArray) {}
-
-        /**
-         * @return Display positions for this recipemap, including border (18x18 size)
-         */
-        public List<Pos2d> getItemInputPositions(int xOffset, int yOffset) {
-            switch (mUsualInputCount) {
-                case 0:
-                    // Basic machines usually have at least 1 item slot even if no item is involved in the recipemap
-                case 1:
-                    return getItemGridPositions(1, 52, 24, 1, 1, xOffset, yOffset);
-                case 2:
-                    return getItemGridPositions(mUsualInputCount, 34, 24, 2, 1, xOffset, yOffset);
-                case 3:
-                    return getItemGridPositions(mUsualInputCount, 16, 24, 3, 1, xOffset, yOffset);
-                case 4:
-                case 5:
-                    return getItemGridPositions(mUsualInputCount, 16, 24, 3, 2, xOffset, yOffset);
-                case 6:
-                    return getItemGridPositions(mUsualInputCount, 16, 15, 3, 2, xOffset, yOffset);
-                default:
-                    return getItemGridPositions(mUsualInputCount, 16, 6, 3, 3, xOffset, yOffset);
-            }
-        }
-
-        /**
-         * @return Display positions for this recipemap, including border (18x18 size)
-         */
-        public List<Pos2d> getItemOutputPositions(int xOffset, int yOffset) {
-            switch (mUsualOutputCount) {
-                case 0:
-                    // Basic machines usually have at least 1 item slot even if no item is involved in the recipemap
-                case 1:
-                    return getItemGridPositions(1, 106, 24, 1, 1, xOffset, yOffset);
-                case 2:
-                    return getItemGridPositions(mUsualOutputCount, 106, 24, 2, 1, xOffset, yOffset);
-                case 3:
-                    return getItemGridPositions(mUsualOutputCount, 106, 24, 3, 1, xOffset, yOffset);
-                case 4:
-                    return getItemGridPositions(mUsualOutputCount, 106, 15, 2, 2, xOffset, yOffset);
-                case 5:
-                case 6:
-                    return getItemGridPositions(mUsualOutputCount, 106, 15, 3, 2, xOffset, yOffset);
-                default:
-                    return getItemGridPositions(mUsualOutputCount, 106, 4, 3, 3, xOffset, yOffset);
-            }
-        }
-
-        /**
-         * @return Display position for this recipemap, including border (18x18 size)
-         */
-        public Pos2d getSpecialItemPosition(int xOffset, int yOffset) {
-            return new Pos2d(124 + xOffset, 62 + yOffset);
-        }
-
-        /**
-         * @return Display positions for this recipemap, including border (18x18 size)
-         */
-        public List<Pos2d> getFluidInputPositions(int xOffset, int yOffset) {
-            List<Pos2d> results = new ArrayList<>();
-            results.add(new Pos2d(52 + xOffset, 62 + yOffset));
-            results.add(new Pos2d(34 + xOffset, 62 + yOffset));
-            return results;
-        }
-
-        /**
-         * @return Display positions for this recipemap, including border (18x18 size)
-         */
-        public List<Pos2d> getFluidOutputPositions(int xOffset, int yOffset) {
-            List<Pos2d> results = new ArrayList<>();
-            results.add(new Pos2d(106 + xOffset, 62 + yOffset));
-            results.add(new Pos2d(124 + xOffset, 62 + yOffset));
-            return results;
-        }
-
-        public Pos2d getProgressBarPosition(int xOffset, int yOffset) {
-            return new Pos2d(78 + xOffset, 24 + yOffset);
-        }
-
-        private List<Pos2d> getItemGridPositions(
-                int itemCount, int xOrigin, int yOrigin, int xDirMaxCount, int yDirMaxCount, int xOffset, int yOffset) {
-            // 18 pixels to get to a new grid for placing an item tile since they are 16x16 and have 1 pixel buffers
-            // around them.
-            int distanceGrid = 18;
-            int xMax = xOrigin + xDirMaxCount * distanceGrid;
-
-            List<Pos2d> results = new ArrayList<>();
-            // Temp variables to keep track of current coordinates to place item at.
-            int xCoord = xOrigin;
-            int yCoord = yOrigin;
-
-            for (int i = 0; i < itemCount; i++) {
-                results.add(new Pos2d(xCoord + xOffset, yCoord + yOffset));
-                xCoord += distanceGrid;
-                if (xCoord == xMax) {
-                    xCoord = xOrigin;
-                    yCoord += distanceGrid;
-                }
-            }
-
-            return results;
-        }
     }
 
     // -----------------------------------------------------------------------------------------------------------------

@@ -3,6 +3,7 @@ package gregtech.common.covers;
 import static gregtech.api.enums.GT_Values.E;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -353,7 +354,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                                         }
                                         return coverData;
                                     },
-                                    widget -> widget.setBackground(GT_UITextures.SLOT_DARK_GRAY)
+                                    widget -> widget.setBackground(ModularUITextures.FLUID_SLOT)
                                             .setPos(0, spaceY * 3 + 2))
                             .setPos(startX, startY))
                     .widget(new TextWidget(GT_Utility.trans("238", "Filter Direction"))

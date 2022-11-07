@@ -2,7 +2,6 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.GT;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -116,7 +115,7 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
      */
     public abstract ITexture[][][] getTextureSet(ITexture[] aTextures);
 
-    protected void addChargerSlot(ModularWindow.Builder builder, int x, int y) {
+    protected SlotWidget createChargerSlot(int x, int y) {
         String batterySlotTooltipKey;
         Object[] batterySlotTooltipArgs;
         String pTier1 = powerTierName(mTier);
@@ -127,17 +126,16 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
             batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP;
             batterySlotTooltipArgs = new String[] {pTier1, powerTierName((byte) (mTier + 1))};
         }
-        addChargerSlot(builder, x, y, batterySlotTooltipKey, batterySlotTooltipArgs);
+        return createChargerSlot(x, y, batterySlotTooltipKey, batterySlotTooltipArgs);
     }
 
-    protected void addChargerSlot(
-            ModularWindow.Builder builder, int x, int y, String tooltipKey, Object[] tooltipArgs) {
-        builder.widget(new SlotWidget(inventoryHandler, rechargerSlotStartIndex())
+    protected SlotWidget createChargerSlot(int x, int y, String tooltipKey, Object[] tooltipArgs) {
+        return (SlotWidget) new SlotWidget(inventoryHandler, rechargerSlotStartIndex())
                 .disableShiftInsert()
                 .setGTTooltip(() -> mTooltipCache.getData(tooltipKey, tooltipArgs))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_CHARGER)
-                .setPos(x, y));
+                .setPos(x, y);
     }
 
     /**

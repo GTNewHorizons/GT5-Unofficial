@@ -40,6 +40,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -437,6 +438,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      */
     public boolean isSteampowered() {
         return false;
+    }
+
+    /**
+     * @return what type of texture does this machine use for GUI,
+     * i.e. Bronze, Steel, or Primitive
+     */
+    public SteamTexture.Variant getSteamVariant() {
+        return SteamTexture.Variant.NONE;
     }
 
     /**
@@ -1247,7 +1256,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             STALLED_VENT_TOOLTIP = "GT5U.machines.stalled_vent.tooltip",
             FLUID_TRANSFER_TOOLTIP = "GT5U.machines.fluid_transfer.tooltip",
             ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip",
-            POWER_SOURCE_KEY = "GT5U.machines.powersource.";
+            POWER_SOURCE_KEY = "GT5U.machines.powersource.",
+            NEI_TRANSFER_STEAM_TOOLTIP = "GT5U.machines.nei_transfer.steam.tooltip",
+            NEI_TRANSFER_VOLTAGE_TOOLTIP = "GT5U.machines.nei_transfer.voltage.tooltip";
 
     protected static final int TOOLTIP_DELAY = 5;
 
@@ -1381,6 +1392,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         return ModularUITextures.ITEM_SLOT;
     }
 
+    protected IDrawable getFluidSlotBackground() {
+        return ModularUITextures.FLUID_SLOT;
+    }
+
     protected void add1by1Slot(ModularWindow.Builder builder, IDrawable... background) {
         if (background.length == 0) {
             background = new IDrawable[] {getSlotBackground()};
@@ -1444,7 +1459,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         builder.widget(columnWidget);
         int xPos = flipHorizontally ? (getGUIWidth() - COVER_TAB_LEFT - COVER_TAB_WIDTH) : COVER_TAB_LEFT;
         if (GT_Mod.gregtechproxy.mCoverTabsVisible) {
-            columnWidget.setPos(xPos, COVER_TAB_TOP);
+            columnWidget.setPos(xPos, COVER_TAB_TOP).setEnabled(widget -> ((Column) widget)
+                    .getChildren().stream().anyMatch(Widget::isEnabled));
         } else {
             columnWidget.setEnabled(false);
         }
@@ -1486,10 +1502,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                                 }
                             }.setOnClick((clickData, widget) -> onTabClicked(clickData, widget, side))
                                     .dynamicTooltip(() -> getCoverTabTooltip(side))
-                                    .setEnabled(widget -> {
-                                        if (getBaseMetaTileEntity() == null) return false;
-                                        return getBaseMetaTileEntity().getCoverItemAtSide(side) != null;
-                                    })
                                     .setSize(COVER_TAB_WIDTH, COVER_TAB_HEIGHT))
                     .addChild(new ItemDrawable(() -> {
                                 if (getBaseMetaTileEntity() == null) return null;
@@ -1498,7 +1510,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                             .asWidget()
                             .setPos(
                                     (COVER_TAB_WIDTH - ICON_SIZE) / 2 + (flipHorizontally ? -1 : 1),
-                                    (COVER_TAB_HEIGHT - ICON_SIZE) / 2)));
+                                    (COVER_TAB_HEIGHT - ICON_SIZE) / 2))
+                    .setEnabled(widget -> {
+                        if (getBaseMetaTileEntity() == null) return false;
+                        return getBaseMetaTileEntity().getCoverItemAtSide(side) != null;
+                    }));
         }
     }
 

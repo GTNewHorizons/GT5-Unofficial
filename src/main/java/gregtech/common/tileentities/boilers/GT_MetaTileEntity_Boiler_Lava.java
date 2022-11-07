@@ -133,7 +133,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    protected SteamTexture.Variant getVariant() {
+    public SteamTexture.Variant getSteamVariant() {
         return SteamTexture.Variant.STEEL;
     }
 

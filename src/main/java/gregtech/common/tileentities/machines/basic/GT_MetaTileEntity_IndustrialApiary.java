@@ -6,7 +6,9 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 import com.google.common.collect.ImmutableSet;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -14,6 +16,7 @@ import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
@@ -848,20 +851,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         return ImmutableSet.copyOf(mErrorStates);
     }
 
-    private List<String> getErrorDescriptions() {
-        if (!mErrorStates.isEmpty()) {
-            return mErrorStates.stream()
-                    .map(state ->
-                            EnumChatFormatting.RED + StatCollector.translateToLocal("for." + state.getDescription()))
-                    .collect(Collectors.toList());
-        } else if (mStuttering) {
-            return mTooltipCache.getData(STALLED_STUTTERING_TOOLTIP, StatCollector.translateToLocal(POWER_SOURCE_POWER))
-                    .text;
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     private String flowerType = "";
     private ChunkCoordinates flowercoords = null;
     private Block flowerBlock;
@@ -1100,19 +1089,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new ProgressBar()
-                        .setProgress(() -> (float) getProgresstime() / Math.max(maxProgresstime(), 1))
-                        .setTexture(GT_UITextures.PROGRESSBAR_ARROW, 20)
-                        .setPos(70, 3)
-                        .setSize(20, 18))
-                .widget(new ButtonWidget()
-                        .setOnClick((clickData, widget) -> cancelProcess())
-                        .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS)
-                        .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                        .setPos(7, 26)
-                        .setSize(18, 18))
-                .widget(new SlotWidget(new ApiarySlot(inventoryHandler, queen))
+        builder.widget(new SlotWidget(new ApiarySlot(inventoryHandler, queen))
                         .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_BEE_QUEEN)
                         .setPos(36, 21))
                 .widget(new SlotWidget(new ApiarySlot(inventoryHandler, drone))
@@ -1125,13 +1102,22 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                         .applyForWidget(widget -> widget.setGTTooltip(() -> mTooltipCache.getData(UPGRADE_TOOLTIP))
                                 .setTooltipShowUpDelay(TOOLTIP_DELAY))
                         .build()
-                        .setPos(61, 23))
-                .widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
-                        .startFromSlot(11)
-                        .endAtSlot(19)
-                        .canInsert(false)
-                        .build()
-                        .setPos(106, 5))
+                        .setPos(61, 23));
+
+        super.addUIWidgets(builder, buildContext);
+
+        builder.widget(new ProgressBar()
+                        .setProgress(() -> (float) getProgresstime() / Math.max(maxProgresstime(), 1))
+                        .setTexture(GT_UITextures.PROGRESSBAR_ARROW, 20)
+                        .setPos(70, 3)
+                        .setSize(20, 18))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> cancelProcess())
+                        .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS)
+                        .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                        .setPos(7, 26)
+                        .setSize(18, 18))
                 .widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.PICTURE_INFORMATION)
                         .setGTTooltip(() -> {
@@ -1214,29 +1200,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                         .setBackground(GT_UITextures.PICTURE_SQUARE_LIGHT_GRAY)
                         .setPos(25, 62)
                         .setSize(18, 18))
-                .widget(getErrorStatusArea(
-                                // Don't show shift tooltip of "Progress was lost"
-                                // as this machine does not lose progress
-                                100,
-                                62,
-                                GT_UITextures.PICTURE_STALLED_ELECTRICITY,
-                                this::getErrorDescriptions,
-                                this::getErrorDescriptions)
-                        .attachSyncer(
-                                new FakeSyncWidget.BooleanSyncer(() -> mStuttering, val -> mStuttering = val),
-                                builder,
-                                (widget, val) -> widget.notifyTooltipChange())
-                        .attachSyncer(
-                                new FakeSyncWidget.ListSyncer<>(
-                                        () -> Arrays.asList(mErrorStates.toArray(new IErrorState[0])),
-                                        val -> {
-                                            mErrorStates.clear();
-                                            mErrorStates.addAll(new HashSet<>(val));
-                                        },
-                                        (buffer, val) -> buffer.writeShort(val.getID()),
-                                        buffer -> ForestryAPI.errorStateRegistry.getErrorState(buffer.readShort())),
-                                builder,
-                                (widget, val) -> widget.notifyTooltipChange()))
                 .widget(new TextWidget("x")
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(30, 63))
@@ -1245,10 +1208,67 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                         .setSynced(false)
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(26, 72));
+    }
 
-        addItemAutoOutputButton(builder, 7, 62);
-        addChargerSlot(builder, 79, 62);
-        addSpecialSlot(builder, UNUSED_SLOT_TOOLTIP);
+    @Override
+    protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
+        // we have custom input slots
+        return null;
+    }
+
+    @Override
+    protected CycleButtonWidget createItemAutoOutputButton() {
+        return (CycleButtonWidget) super.createItemAutoOutputButton().setPos(7, 62);
+    }
+
+    @Override
+    protected CycleButtonWidget createFluidAutoOutputButton() {
+        return null;
+    }
+
+    @Override
+    protected SlotWidget createChargerSlot(int x, int y, String tooltipKey, Object[] tooltipArgs) {
+        return (SlotWidget)
+                super.createChargerSlot(x, y, tooltipKey, tooltipArgs).setPos(79, 62);
+    }
+
+    @Override
+    protected DrawableWidget createErrorStatusArea(ModularWindow.Builder builder, IDrawable picture) {
+        return (DrawableWidget) super.createErrorStatusArea(builder, picture)
+                .setPos(100, 62)
+                .attachSyncer(
+                        new FakeSyncWidget.ListSyncer<>(
+                                () -> Arrays.asList(mErrorStates.toArray(new IErrorState[0])),
+                                val -> {
+                                    mErrorStates.clear();
+                                    mErrorStates.addAll(new HashSet<>(val));
+                                },
+                                (buffer, val) -> buffer.writeShort(val.getID()),
+                                buffer -> ForestryAPI.errorStateRegistry.getErrorState(buffer.readShort())),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange());
+    }
+
+    @Override
+    protected List<String> getErrorDescriptions() {
+        if (!mErrorStates.isEmpty()) {
+            return mErrorStates.stream()
+                    .map(state ->
+                            EnumChatFormatting.RED + StatCollector.translateToLocal("for." + state.getDescription()))
+                    .collect(Collectors.toList());
+        } else if (mStuttering) {
+            return mTooltipCache.getData(STALLED_STUTTERING_TOOLTIP, StatCollector.translateToLocal(POWER_SOURCE_POWER))
+                    .text;
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    protected List<String> getErrorDescriptionsShift() {
+        // Don't show shift tooltip of "Progress was lost"
+        // as this machine does not lose progress
+        return getErrorDescriptions();
     }
 
     private int getAcceleration() {

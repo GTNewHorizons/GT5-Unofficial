@@ -3,7 +3,13 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugBlockMiner;
 
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -423,5 +429,21 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
 
     public GT_DrillingLogicDelegate getPipe() {
         return pipe;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        builder.widget(createProgressBar(
+                GT_UITextures.PROGRESSBAR_CANNER,
+                20,
+                ProgressBar.Direction.RIGHT,
+                new Pos2d(78, 24),
+                new Size(20, 18)));
     }
 }

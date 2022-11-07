@@ -25,12 +25,14 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.ItemData;
@@ -40,6 +42,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
+import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.power.EUPower;
 import gregtech.common.power.Power;
 import gregtech.common.power.UnspecifiedEUPower;
@@ -97,8 +100,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     protected static final int PROGRESSBAR_CYCLE_TICKS = 200;
 
     private final ModularWindow modularWindow;
-    protected static final int UI_OFFSET_X = -5, UI_OFFSET_Y = -11;
-    protected static final Pos2d UI_OFFSET = new Pos2d(UI_OFFSET_X, UI_OFFSET_Y);
+    protected static final Pos2d WINDOW_OFFSET = new Pos2d(-5, -11);
 
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
@@ -608,42 +610,66 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
     }
 
+    protected int getDescriptionYOffset() {
+        return 77;
+    }
+
     private ModularWindow buildUI() {
         ModularWindow.Builder builder =
                 ModularWindow.builder(mRecipeMap.neiBackgroundSize).setBackground(ModularUITextures.VANILLA_BACKGROUND);
-        mRecipeMap.placeSlots(
-                UI_OFFSET_X,
-                UI_OFFSET_Y,
-                (i, pos) -> mRecipeMap.addFakeSlot(builder, pos.x, pos.y, false, false, i == 0, false),
-                (i, pos) -> mRecipeMap.addFakeSlot(builder, pos.x, pos.y, false, true, i == 0, false),
-                pos -> {
+        UIHelper.forEachSlots(
+                (i, backgrounds, pos) -> builder.widget(SlotWidget.empty()
+                        .setBackground(backgrounds)
+                        .setPos(pos)
+                        .setSize(18, 18)),
+                (i, backgrounds, pos) -> builder.widget(SlotWidget.empty()
+                        .setBackground(backgrounds)
+                        .setPos(pos)
+                        .setSize(18, 18)),
+                (i, backgrounds, pos) -> {
                     if (mRecipeMap.usesSpecialSlot())
-                        mRecipeMap.addFakeSlot(builder, pos.x, pos.y, false, false, true, true);
+                        builder.widget(SlotWidget.empty()
+                                .setBackground(backgrounds)
+                                .setPos(pos)
+                                .setSize(18, 18));
                 },
-                (i, pos) -> {
+                (i, backgrounds, pos) -> {
                     if (mRecipeMap.getMaxFluidInputCount() > i)
-                        mRecipeMap.addFakeSlot(builder, pos.x, pos.y, true, false, i == 0, false);
+                        builder.widget(SlotWidget.empty()
+                                .setBackground(backgrounds)
+                                .setPos(pos)
+                                .setSize(18, 18));
                 },
-                (i, pos) -> {
+                (i, backgrounds, pos) -> {
                     if (mRecipeMap.getMaxFluidOutputCount() > i)
-                        mRecipeMap.addFakeSlot(builder, pos.x, pos.y, true, true, i == 0, false);
-                });
+                        builder.widget(SlotWidget.empty()
+                                .setBackground(backgrounds)
+                                .setPos(pos)
+                                .setSize(18, 18));
+                },
+                ModularUITextures.ITEM_SLOT,
+                ModularUITextures.FLUID_SLOT,
+                mRecipeMap,
+                mRecipeMap.mUsualInputCount,
+                mRecipeMap.mUsualOutputCount,
+                SteamTexture.Variant.NONE,
+                WINDOW_OFFSET);
         builder.widget(new ProgressBar()
                         .setTexture(mRecipeMap.progressBarTexture, 20)
                         .setDirection(mRecipeMap.progressBarDirection)
                         .setProgress(() -> ((float) drawTicks % PROGRESSBAR_CYCLE_TICKS) / PROGRESSBAR_CYCLE_TICKS)
                         .setSynced(false, false)
                         .setSize(20, 18)
-                        .setPos(GT_NEI_DefaultHandler.this.mRecipeMap.getProgressBarPosition(UI_OFFSET_X, UI_OFFSET_Y)))
+                        .setPos(mRecipeMap.progressBarPos.add(WINDOW_OFFSET)))
                 .widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
                         .setSize(17, 17)
-                        .setPos(152 + UI_OFFSET_X, 63 + UI_OFFSET_Y));
+                        .setPos(152 + WINDOW_OFFSET.x, 63 + WINDOW_OFFSET.y));
         for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : mRecipeMap.specialTextures) {
             builder.widget(new DrawableWidget()
                     .setDrawable(specialTexture.getLeft())
                     .setSize(specialTexture.getRight().getLeft())
-                    .setPos(specialTexture.getRight().getRight().add(UI_OFFSET)));
+                    .setPos(specialTexture.getRight().getRight().add(WINDOW_OFFSET)));
         }
 
         ModularWindow window = builder.build();
@@ -655,7 +681,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         for (IDrawable background : window.getBackground()) {
             GlStateManager.pushMatrix();
             GlStateManager.translate(
-                    UI_OFFSET_X + mRecipeMap.neiBackgroundOffset.x, UI_OFFSET_Y + mRecipeMap.neiBackgroundOffset.y, 0);
+                    WINDOW_OFFSET.x + mRecipeMap.neiBackgroundOffset.x,
+                    WINDOW_OFFSET.y + mRecipeMap.neiBackgroundOffset.y,
+                    0);
             GlStateManager.color(1f, 1f, 1f, 1f);
             background.draw(Pos2d.ZERO, window.getSize(), 0);
             GlStateManager.popMatrix();
@@ -671,10 +699,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             widget.draw(0);
             GlStateManager.popMatrix();
         }
-    }
-
-    protected int getDescriptionYOffset() {
-        return 77;
     }
 
     public static class GT_RectHandler implements IContainerInputHandler, IContainerTooltipHandler {
@@ -880,16 +904,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             mOutputs = new ArrayList<>();
             mInputs = new ArrayList<>();
 
-            // item position is off by 1 from slot position, including border
-            GT_NEI_DefaultHandler.this.mRecipeMap.placeSlots(
-                    UI_OFFSET_X + 1,
-                    UI_OFFSET_Y + 1,
-                    (i, pos) -> {
+            UIHelper.forEachSlots(
+                    (i, backgrounds, pos) -> {
                         if (aRecipe.mInputs.length > i && aRecipe.mInputs[i] != null) {
                             mInputs.add(new FixedPositionedStack(aRecipe.mInputs[i], pos.x, pos.y, true));
                         }
                     },
-                    (i, pos) -> {
+                    (i, backgrounds, pos) -> {
                         if (aRecipe.mOutputs.length > i && aRecipe.mOutputs[i] != null) {
                             mOutputs.add(new FixedPositionedStack(
                                     aRecipe.mOutputs[i],
@@ -899,12 +920,12 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                     GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
                         }
                     },
-                    pos -> {
+                    (i, backgrounds, pos) -> {
                         if (aRecipe.mSpecialItems != null) {
                             mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, pos.x, pos.y));
                         }
                     },
-                    (i, pos) -> {
+                    (i, backgrounds, pos) -> {
                         if (aRecipe.mFluidInputs.length > i
                                 && aRecipe.mFluidInputs[i] != null
                                 && aRecipe.mFluidInputs[i].getFluid() != null) {
@@ -912,14 +933,22 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                                     GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[i], true), pos.x, pos.y));
                         }
                     },
-                    (i, pos) -> {
+                    (i, backgrounds, pos) -> {
                         if (aRecipe.mFluidOutputs.length > i
                                 && aRecipe.mFluidOutputs[i] != null
                                 && aRecipe.mFluidOutputs[i].getFluid() != null) {
                             mOutputs.add(new FixedPositionedStack(
                                     GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[i], true), pos.x, pos.y));
                         }
-                    });
+                    },
+                    null,
+                    null,
+                    GT_NEI_DefaultHandler.this.mRecipeMap,
+                    GT_NEI_DefaultHandler.this.mRecipeMap.mUsualInputCount,
+                    GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount,
+                    SteamTexture.Variant.NONE,
+                    // item position is off by 1 from slot position, including border
+                    WINDOW_OFFSET.add(1, 1));
         }
 
         @Override

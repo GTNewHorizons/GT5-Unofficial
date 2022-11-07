@@ -165,7 +165,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         addEmitEnergyButton(builder);
-        addChargerSlot(builder, 43, 62);
+        builder.widget(createChargerSlot(43, 62));
         builder.widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(84, true))
                         .setPos(65, 60)

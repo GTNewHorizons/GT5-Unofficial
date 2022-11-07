@@ -1,5 +1,6 @@
 package gregtech.api.gui.modularui;
 
+import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -21,7 +22,6 @@ import java.util.Map;
 import java.util.function.Function;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -32,7 +32,7 @@ public class GT_UIInfos {
      * Unlike {@link com.gtnewhorizons.modularui.api.UIInfos#TILE_MODULAR_UI}, this accepts
      * custom constructors for UI.
      * <br> Do NOT run {@link UIBuilder#build} on-the-fly, otherwise MP client won't register UIs.
-     * Instead, store to <code>static final</code> field, just like {@link #GTTileEntityDefaultUI}.
+     * Instead, store to static field, just like {@link #GTTileEntityDefaultUI}.
      * Such mistake can be easily overlooked by testing only SP.
      */
     public static final Function<ContainerConstructor, UIInfo<?, ?>> GTTileEntityUIFactory =
@@ -99,30 +99,6 @@ public class GT_UIInfos {
         }
     }
 
-    private static final UIInfo<?, ?> playerHeldItemUI = UIBuilder.of()
-            .container((player, world, x, y, z) -> {
-                ItemStack heldItem = player.getHeldItem();
-                if (heldItem.getItem() instanceof IItemUIFactory) {
-                    UIBuildContext buildContext = new UIBuildContext(player);
-                    ModularWindow window = ((IItemUIFactory) heldItem.getItem()).createWindow(buildContext, heldItem);
-                    return new ModularUIContainer(
-                            new ModularUIContext(buildContext, () -> player.inventoryContainer.detectAndSendChanges()),
-                            window);
-                }
-                return null;
-            })
-            .gui((player, world, x, y, z) -> {
-                ItemStack heldItem = player.getHeldItem();
-                if (heldItem.getItem() instanceof IItemUIFactory) {
-                    UIBuildContext buildContext = new UIBuildContext(player);
-                    ModularWindow window = ((IItemUIFactory) heldItem.getItem()).createWindow(buildContext, heldItem);
-                    return new ModularGui(new ModularUIContainer(
-                            new ModularUIContext(buildContext, () -> player.inventory.markDirty()), window));
-                }
-                return null;
-            })
-            .build();
-
     /**
      * Opens TileEntity UI, created by {@link gregtech.api.metatileentity.MetaTileEntity#createWindow}.
      */
@@ -159,9 +135,12 @@ public class GT_UIInfos {
                         tileEntity.getZCoord());
     }
 
+    /**
+     * Opens UI for player's item, created by {@link com.gtnewhorizons.modularui.api.screen.IItemWithModularUI#createWindow}.
+     */
     public static void openPlayerHeldItemUI(EntityPlayer player) {
         if (NetworkUtils.isClient()) return;
-        playerHeldItemUI.open(player);
+        UIInfos.PLAYER_HELD_ITEM_UI.open(player);
     }
 
     private static ModularUIContainer createTileEntityContainer(

@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_Boiler_Steel extends GT_MetaTileEntity_Boiler_Bro
     }
 
     @Override
-    protected SteamTexture.Variant getVariant() {
+    public SteamTexture.Variant getSteamVariant() {
         return SteamTexture.Variant.STEEL;
     }
 }

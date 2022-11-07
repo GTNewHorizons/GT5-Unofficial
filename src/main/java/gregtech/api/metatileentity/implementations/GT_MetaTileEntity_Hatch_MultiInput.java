@@ -2,12 +2,12 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -278,11 +278,15 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     @Override
     public void updateFluidDisplayItem() {
         for (int i = 0; i < 4; i++) {
-            if (getFluid(i) == null || getFluid(i).amount <= 0) {
-                if (ItemList.Display_Fluid.isStackEqual(mInventory[i], true, true)) mInventory[i] = null;
-            } else {
-                mInventory[i] = GT_Utility.getFluidDisplayStack(getFluid(i), true, !displaysStackSize());
-            }
+            updateFluidDisplayItem(i);
+        }
+    }
+
+    public void updateFluidDisplayItem(int index) {
+        if (getFluid(index) == null || getFluid(index).amount <= 0) {
+            if (ItemList.Display_Fluid.isStackEqual(mInventory[index], true, true)) mInventory[index] = null;
+        } else {
+            mInventory[index] = GT_Utility.getFluidDisplayStack(getFluid(index), true, !displaysStackSize());
         }
     }
 
@@ -294,16 +298,13 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int SLOT_NUMBER = 4;
-        FluidDisplaySlotWidget[] slotWidgets = new FluidDisplaySlotWidget[SLOT_NUMBER];
         Pos2d[] positions = new Pos2d[] {
             new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43), new Pos2d(88, 43),
         };
 
         for (int i = 0; i < SLOT_NUMBER; i++) {
             final int slotId = i;
-            FluidDisplaySlotWidget slotWidget = new FluidDisplaySlotWidget(inventoryHandler, slotId);
-            slotWidgets[slotId] = slotWidget;
-            slotWidget
+            builder.widget(new FluidDisplaySlotWidget(inventoryHandler, slotId)
                     .setFluidAccessConstructor(() -> constructFluidAccess(slotId))
                     .setIHasFluidDisplay(this)
                     .setCanDrain(true)
@@ -312,21 +313,19 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
                     .setBeforeRealClick((clickData, widget) -> {
                         if (NetworkUtils.isClient()) {
                             // propagate display item content to actual fluid stored in this tank
-                            for (int j = 0; j < SLOT_NUMBER; j++) {
-                                setFluid(
-                                        GT_Utility.getFluidFromDisplayStack(
-                                                slotWidgets[j].getMcSlot().getStack()),
-                                        j);
-                            }
+                            setFluid(
+                                    GT_Utility.getFluidFromDisplayStack(
+                                            widget.getMcSlot().getStack()),
+                                    slotId);
                         }
                         ItemStack tStackHeld =
                                 widget.getContext().getPlayer().inventory.getItemStack();
                         FluidStack tFluidHeld = GT_Utility.getFluidForFilledItem(tStackHeld, true);
                         return constructFluidAccess(slotId).isMatch(tFluidHeld, slotId);
                     })
-                    .setBackground(GT_UITextures.SLOT_DARK_GRAY)
-                    .setPos(positions[slotId]);
-            builder.widget(slotWidget);
+                    .setUpdateFluidDisplayItem(() -> updateFluidDisplayItem(slotId))
+                    .setBackground(ModularUITextures.FLUID_SLOT)
+                    .setPos(positions[slotId]));
         }
     }
 

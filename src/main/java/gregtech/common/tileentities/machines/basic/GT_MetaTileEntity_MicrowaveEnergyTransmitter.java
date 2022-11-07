@@ -440,8 +440,8 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                                 () -> "Dim Valid: " + (GT_Utility.isRealDimension(mTargetD) ? "Yes" : "No"))
                         .setDefaultColor(COLOR_TEXT_WHITE.get())
                         .setEnabled(widget -> hasDimensionalTeleportCapability())
-                        .setPos(46, 40)
-                        .attachSyncer(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val), builder));
+                        .setPos(46, 40))
+                .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val));
 
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);

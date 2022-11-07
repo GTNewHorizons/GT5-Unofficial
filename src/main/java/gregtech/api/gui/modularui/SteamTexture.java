@@ -71,7 +71,8 @@ public class SteamTexture {
     public enum Variant {
         BRONZE,
         STEEL,
-        PRIMITIVE;
+        PRIMITIVE,
+        NONE;
 
         @Override
         public String toString() {
