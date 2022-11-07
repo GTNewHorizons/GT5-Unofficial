@@ -3281,8 +3281,8 @@ public class RECIPES_Machines {
                 plate = ALLOY.TUNGSTEN_CARBIDE.getPlateDouble(1);
                 gear = ALLOY.TRINIUM_TITANIUM.getRing(1);
                 frame = ALLOY.TUNGSTEN_CARBIDE.getFrameBox(1);
-                cell1 = CI.conveyorModule_EV;
-                cell2 = CI.electricMotor_IV;
+                cell1 = CI.conveyorModule_LuV;
+                cell2 = CI.electricMotor_LuV;
                 ItemStack casingAmazon = GregtechItemList.Casing_AmazonWarehouse.get(1);
                 ItemStack aTieredUnboxinator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK
                         ? ItemUtils.getValueOfItemList(
@@ -3300,6 +3300,20 @@ public class RECIPES_Machines {
                         gear,
                         plate,
                         GregtechItemList.Casing_AmazonWarehouse.get(Casing_Amount));
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            ALLOY.TUNGSTEN_CARBIDE.getFrameBox(1),
+                            ALLOY.TUNGSTEN_CARBIDE.getPlateDouble(4),
+                            ALLOY.TRINIUM_TITANIUM.getRing(1),
+                            ItemList.Electric_Motor_LuV.get(1),
+                            ItemList.Conveyor_Module_LuV.get(1),
+                            ItemUtils.getItemStackOfAmountFromOreDict("cableGt12VanadiumGallium", 1),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        GregtechItemList.Casing_AmazonWarehouse.get(1L),
+                        50,
+                        16);
                 RecipeUtils.addShapedRecipe(
                         casingAmazon,
                         CI.getTieredCircuit(7),
