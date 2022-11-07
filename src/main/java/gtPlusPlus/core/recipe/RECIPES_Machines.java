@@ -3215,16 +3215,26 @@ public class RECIPES_Machines {
                         CI.craftingToolWrench,
                         plate,
                         GregtechItemList.Casing_FishPond.get(Casing_Amount));
-
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            ALLOY.AQUATIC_STEEL.getPlate(4),
+                            ALLOY.EGLIN_STEEL.getPlate(2),
+                            ALLOY.EGLIN_STEEL.getFrameBox(1),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        GregtechItemList.Casing_FishPond.get(1L),
+                        50,
+                        16);
                 RecipeUtils.addShapedRecipe(
                         plate,
-                        CI.getTieredCircuit(3),
+                        CI.getTieredCircuit(5),
                         plate,
                         "wireFineElectrum",
                         ItemUtils.getSimpleStack(ModBlocks.blockFishTrap),
                         "wireFineElectrum",
                         plate,
-                        CI.getTieredCircuit(2),
+                        CI.getTieredCircuit(5),
                         plate,
                         GregtechItemList.Industrial_FishingPond.get(1));
             }
