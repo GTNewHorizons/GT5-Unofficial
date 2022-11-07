@@ -169,12 +169,11 @@ public class RECIPES_Machines {
 
     // EV/IV MACHINES
     public static ItemStack IV_MACHINE_Electrolyzer;
-    public static ItemStack EV_MACHINE_Centrifuge;
-    public static ItemStack EV_MACHINE_BendingMachine;
+    public static ItemStack IV_MACHINE_Centrifuge;
+    public static ItemStack IV_MACHINE_BendingMachine;
     public static ItemStack IV_MACHINE_Wiremill;
     public static ItemStack IV_MACHINE_Macerator;
-    public static ItemStack EV_MACHINE_Cutter;
-    public static ItemStack EV_MACHINE_MassFabricator;
+    public static ItemStack IV_MACHINE_Cutter;
     public static ItemStack IV_MACHINE_Extruder;
     public static ItemStack HV_MACHINE_Sifter;
     public static ItemStack IV_MACHINE_ThermalCentrifuge;
@@ -1225,23 +1224,20 @@ public class RECIPES_Machines {
             // Lava Boiler
             boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
 
-            // IV MACHINES
-            if (!GTNH) {
-                EV_MACHINE_BendingMachine = ItemList.Machine_EV_Bender.get(1);
-                EV_MACHINE_MassFabricator = ItemList.Machine_EV_Massfab.get(1);
-                EV_MACHINE_Centrifuge = ItemList.Machine_EV_Centrifuge.get(1);
-                EV_MACHINE_Cutter = ItemList.Machine_EV_Cutter.get(1);
-            }
-            // Balanced opposites
-            else {
-                EV_MACHINE_BendingMachine = ItemList.Machine_IV_Bender.get(1);
-                EV_MACHINE_MassFabricator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK
-                        ? ItemUtils.getValueOfItemList("Machine_LuV_Massfab", ItemList.Machine_IV_Massfab)
-                                .get(1)
-                        : ItemList.Machine_IV_Massfab.get(1);
-                EV_MACHINE_Centrifuge = ItemList.Machine_IV_Centrifuge.get(1);
-                EV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
-            }
+            // IV/EV/HV MACHINES
+            IV_MACHINE_Electrolyzer = ItemList.Machine_IV_Electrolyzer.get(1);
+            IV_MACHINE_Centrifuge = ItemList.Machine_IV_Centrifuge.get(1);
+            IV_MACHINE_BendingMachine = ItemList.Machine_IV_Bender.get(1);
+            IV_MACHINE_Wiremill = ItemList.Machine_IV_Wiremill.get(1);
+            IV_MACHINE_Macerator = ItemList.Machine_IV_Macerator.get(1);
+            IV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
+            IV_MACHINE_Extruder = ItemList.Machine_IV_Extruder.get(1);
+            HV_MACHINE_Sifter = ItemList.Machine_HV_Sifter.get(1);
+            IV_MACHINE_ThermalCentrifuge = ItemList.Machine_IV_ThermalCentrifuge.get(1);
+            IV_MACHINE_OreWasher = ItemList.Machine_IV_OreWasher.get(1);
+            IV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);
+            IV_MACHINE_Mixer = ItemList.Machine_IV_Mixer.get(1);
+            IV_MACHINE_ChemicalBath = ItemList.Machine_IV_ChemicalBath.get(1);
         }
         if (CORE.ConfigSwitches.enableMultiblock_IndustrialCokeOven) {
             if (LoadedMods.Railcraft) {
@@ -1592,7 +1588,7 @@ public class RECIPES_Machines {
                         pipeHugeStainlessSteel,
                         CI.circuitTier5,
                         CI.component_Plate[6],
-                        EV_MACHINE_Centrifuge,
+                        IV_MACHINE_Centrifuge,
                         CI.component_Plate[6],
                         CI.component_Plate[8],
                         CI.machineCasing_IV,
@@ -1610,6 +1606,17 @@ public class RECIPES_Machines {
                         "stickTumbaga",
                         CI.component_Plate[6],
                         RECIPE_IndustrialCentrifugeCasing);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            ALLOY.MARAGING250.getPlate(4),
+                            ALLOY.INCONEL_792.getPlate(2),
+                            ALLOY.TUMBAGA.getRod(3),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        RECIPE_IndustrialCentrifugeCasing,
+                        50,
+                        16);
             }
 
             if (CORE.ConfigSwitches.enableMultiblock_IndustrialCokeOven) {
@@ -1756,14 +1763,26 @@ public class RECIPES_Machines {
                         "stickLongTumbaga",
                         "plateTitanium",
                         RECIPE_IndustrialMaterialPressFrame);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4),
+                            ALLOY.TANTALLOY_60.getRod(2),
+                            ALLOY.TUMBAGA.getLongRod(2),
+                            ALLOY.TUMBAGA.getFrameBox(1),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        RECIPE_IndustrialMaterialPressFrame,
+                        50,
+                        16);
                 // Industrial Material Press
                 RecipeUtils.addShapedGregtechRecipe(
                         "plateTitanium",
                         CI.circuitTier5,
                         "plateTitanium",
-                        CI.machineCasing_EV,
-                        EV_MACHINE_BendingMachine,
-                        CI.machineCasing_EV,
+                        CI.machineCasing_IV,
+                        IV_MACHINE_BendingMachine,
+                        CI.machineCasing_IV,
                         "plateTitanium",
                         CI.circuitTier5,
                         "plateTitanium",
@@ -2214,13 +2233,13 @@ public class RECIPES_Machines {
                 // Matter Fabricator CPU
                 RecipeUtils.addShapedGregtechRecipe(
                         CI.getDoublePlate(8, 1),
-                        CI.circuitTier5,
+                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Superconductor), 1L),
                         CI.getPlate(8, 1),
-                        cableTier8,
-                        CI.machineCasing_LuV,
-                        cableTier8,
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 1L),
+                        CI.machineCasing_UV,
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 1L),
                         CI.getPlate(8, 1),
-                        CI.circuitTier5,
+                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Superconductor), 1L),
                         CI.getPlate(8, 1),
                         RECIPE_IndustrialMatterFabController);
                 // Matter Fabricator Frame Casing
@@ -2235,6 +2254,17 @@ public class RECIPES_Machines {
                         CI.component_Rod[8],
                         "plateNiobiumCarbide",
                         RECIPE_IndustrialMatterFabFrame);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            ALLOY.NIOBIUM_CARBIDE.getPlate(4),
+                            ALLOY.INCONEL_792.getRod(4),
+                            ALLOY.INCONEL_690.getFrameBox(1),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        RECIPE_IndustrialMatterFabFrame,
+                        50,
+                        16);
                 // Matter Fabricator Coil
                 RecipeUtils.addShapedGregtechRecipe(
                         CI.getPlate(6, 1),
@@ -2247,6 +2277,18 @@ public class RECIPES_Machines {
                         CI.getPlate(7, 1),
                         CI.getPlate(6, 1),
                         RECIPE_IndustrialMatterFabCoil);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            CI.machineCasing_UV,
+                            ALLOY.ZERON_100.getPlate(4),
+                            ALLOY.PIKYONIUM.getPlate(2),
+                            ALLOY.STELLITE.getFrameBox(2),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        RECIPE_IndustrialMatterFabCoil,
+                        50,
+                        16);
             }
 
             if (CORE.ConfigSwitches.enableMultiblock_IndustrialSifter) {
@@ -3176,13 +3218,24 @@ public class RECIPES_Machines {
                         CI.craftingToolWrench,
                         plate,
                         GregtechItemList.Casing_CuttingFactoryFrame.get(Casing_Amount));
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            ALLOY.MARAGING300.getPlate(4),
+                            ALLOY.STELLITE.getPlate(2),
+                            ALLOY.TALONITE.getFrameBox(1),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        GregtechItemList.Casing_CuttingFactoryFrame.get(1L),
+                        50,
+                        16);
 
                 RecipeUtils.addShapedRecipe(
                         plate,
-                        CI.getTieredCircuit(3),
+                        CI.getTieredCircuit(4),
                         plate,
                         "wireFinePlatinum",
-                        EV_MACHINE_Cutter,
+                        IV_MACHINE_Cutter,
                         "wireFinePlatinum",
                         plate,
                         CI.getTieredCircuit(4),
