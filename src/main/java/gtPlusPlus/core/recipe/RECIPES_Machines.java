@@ -178,7 +178,7 @@ public class RECIPES_Machines {
     public static ItemStack EV_MACHINE_MassFabricator;
     public static ItemStack EV_MACHINE_Extruder;
     public static ItemStack EV_MACHINE_Sifter;
-    public static ItemStack EV_MACHINE_ThermalCentrifuge;
+    public static ItemStack IV_MACHINE_ThermalCentrifuge;
     public static ItemStack EV_MACHINE_OreWasher;
     public static ItemStack EV_MACHINE_AlloySmelter;
     public static ItemStack EV_MACHINE_Mixer;
@@ -1236,7 +1236,6 @@ public class RECIPES_Machines {
                 EV_MACHINE_Cutter = ItemList.Machine_EV_Cutter.get(1);
                 EV_MACHINE_Extruder = ItemList.Machine_EV_Extruder.get(1);
                 EV_MACHINE_Sifter = ItemList.Machine_HV_Sifter.get(1);
-                EV_MACHINE_ThermalCentrifuge = ItemList.Machine_EV_ThermalCentrifuge.get(1);
                 EV_MACHINE_OreWasher = ItemList.Machine_EV_OreWasher.get(1);
                 EV_MACHINE_AlloySmelter = ItemList.Machine_EV_AlloySmelter.get(1);
                 EV_MACHINE_Mixer = ItemList.Machine_EV_Mixer.get(1);
@@ -1254,7 +1253,6 @@ public class RECIPES_Machines {
                 EV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
                 EV_MACHINE_Extruder = ItemList.Machine_IV_Extruder.get(1);
                 EV_MACHINE_Sifter = ItemList.Machine_HV_Sifter.get(1);
-                EV_MACHINE_ThermalCentrifuge = ItemList.Machine_IV_ThermalCentrifuge.get(1);
                 EV_MACHINE_OreWasher = ItemList.Machine_IV_OreWasher.get(1);
                 EV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);
                 EV_MACHINE_Mixer = ItemList.Machine_IV_Mixer.get(1);
@@ -3013,13 +3011,23 @@ public class RECIPES_Machines {
                         CI.craftingToolWrench,
                         "plateRedSteel",
                         GregtechItemList.Casing_ThermalCentrifuge.get(Casing_Amount));
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] {
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 6),
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1),
+                            GT_Utility.getIntegratedCircuit(1),
+                        },
+                        GT_Values.NF,
+                        GregtechItemList.Casing_ThermalCentrifuge.get(1L),
+                        50,
+                        16);
 
                 RecipeUtils.addShapedRecipe(
                         "plateRedSteel",
-                        "circuitData",
+                        "circuitElite",
                         "plateRedSteel",
                         "stickTalonite",
-                        EV_MACHINE_ThermalCentrifuge,
+                        IV_MACHINE_ThermalCentrifuge,
                         "stickTalonite",
                         "plateRedSteel",
                         "gearGtTalonite",
