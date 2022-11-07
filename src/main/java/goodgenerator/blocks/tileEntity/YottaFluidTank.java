@@ -172,12 +172,18 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         if (cnt > 15 || cnt < 1) return false;
         if (!structureCheck_EM(YOTTANK_TOP, 2, cnt + 2, 0)) return false;
         // maxCell+1 = Tier of highest Cell. glassMeta is the glass voltage tier
-        if (mMaintenanceHatches.size() == 1 && maxCell + 3 <= glassMeta) {
+        if (maxCell + 3 <= glassMeta) {
             if (mStorage.compareTo(mStorageCurrent) < 0) mStorageCurrent = mStorage;
             if (FluidRegistry.getFluidStack(mFluidName, 1) == null) {
                 mStorageCurrent = BigInteger.ZERO;
                 mFluidName = "";
             }
+            mWrench = true;
+            mScrewdriver = true;
+            mSolderingTool = true;
+            mSoftHammer = true;
+            mHardHammer = true;
+            mCrowbar = true;
             return true;
         }
         return false;
