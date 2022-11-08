@@ -3,11 +3,16 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.*;
 
 import codechicken.nei.PositionedStack;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import gnu.trove.map.TByteObjectMap;
@@ -24,12 +29,14 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
-import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
 import ic2.core.Ic2Items;
+import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -734,7 +741,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     /**
-     * Use {@link GT_Recipe_Map#getInputPositionedStacks(GT_Recipe)} instead
+     * Use {@link GT_Recipe_Map#getItemInputPositions} or {@link GT_Recipe_Map#getSpecialItemPosition} or {@link GT_Recipe_Map#getFluidInputPositions} instead
      */
     @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
@@ -743,7 +750,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     /**
-     * Use {@link GT_Recipe_Map#getOutputPositionedStacks(GT_Recipe)} instead
+     * Use {@link GT_Recipe_Map#getItemOutputPositions} or {@link GT_Recipe_Map#getFluidOutputPositions} instead
      */
     @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
@@ -1206,21 +1213,22 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_CRUSHED_ORE)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_MACERATE, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sByProductList = new GT_Recipe_Map(
-                new HashSet<>(1000),
-                "gt.recipe.byproductlist",
-                "Ore Byproduct List",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                6,
-                1,
-                0,
-                1,
-                E,
-                1,
-                E,
-                true,
-                true);
+                        new HashSet<>(1000),
+                        "gt.recipe.byproductlist",
+                        "Ore Byproduct List",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        6,
+                        1,
+                        0,
+                        1,
+                        E,
+                        1,
+                        E,
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sReplicatorFakeRecipes = new ReplicatorFakeMap(
                         new HashSet<>(100),
                         "gt.recipe.replicator",
@@ -1244,22 +1252,24 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         // public static final GT_Recipe_Map sAssemblylineFakeRecipes = new GT_Recipe_Map(new HashSet<>(30),
         // "gt.recipe.scanner", "Scanner", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 1, 0, 1, E, 1, E, true,
         // true);
-        public static final GT_Recipe_Map sAssemblylineVisualRecipes = new GT_Recipe_Map(
-                new HashSet<>(110),
-                "gt.recipe.fakeAssemblylineProcess",
-                "Assemblyline Process",
-                null,
-                RES_PATH_GUI + "FakeAssemblyline",
-                1,
-                1,
-                1,
-                0,
-                1,
-                E,
-                1,
-                E,
-                true,
-                false);
+        public static final GT_Recipe_Map sAssemblylineVisualRecipes = new GT_Recipe_Map_AssemblyLineFake(
+                        new HashSet<>(110),
+                        "gt.recipe.fakeAssemblylineProcess",
+                        "Assemblyline Process",
+                        null,
+                        RES_PATH_GUI + "FakeAssemblyline",
+                        16,
+                        1,
+                        1,
+                        0,
+                        1,
+                        E,
+                        1,
+                        E,
+                        true,
+                        false)
+                .setSlotOverlay(false, false, true, true, GT_UITextures.OVERLAY_SLOT_DATA_ORB)
+                .setUsualFluidInputCount(4);
         public static final GT_Recipe_Map sPlasmaArcFurnaceRecipes = new GT_Recipe_Map(
                         new HashSet<>(20000),
                         "gt.recipe.plasmaarcfurnace",
@@ -1369,8 +1379,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true)
                 .setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_LENS)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .setMaxFluidInputCount(2)
-                .setMaxFluidOutputCount(2);
+                .setUsualFluidInputCount(2)
+                .setUsualFluidOutputCount(2);
         public static final GT_Recipe_Map sMixerRecipes = new GT_Recipe_Map(
                         new HashSet<>(900),
                         "gt.recipe.mixer",
@@ -1651,37 +1661,44 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_BOXED)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sFusionRecipes = new GT_Recipe_Map(
-                new HashSet<>(50),
-                "gt.recipe.fusionreactor",
-                "Fusion Reactor",
-                null,
-                RES_PATH_GUI + "basicmachines/FusionReactor",
-                0,
-                0,
-                0,
-                2,
-                1,
-                "Start: ",
-                1,
-                " EU",
-                true,
-                true);
+                        new HashSet<>(50),
+                        "gt.recipe.fusionreactor",
+                        "Fusion Reactor",
+                        null,
+                        RES_PATH_GUI + "basicmachines/FusionReactor",
+                        0,
+                        0,
+                        0,
+                        2,
+                        1,
+                        "Start: ",
+                        1,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                .setUsualFluidInputCount(2);
         public static final GT_Recipe_Map sComplexFusionRecipes = new GT_Recipe_Map_ComplexFusion(
-                new HashSet<>(50),
-                "gt.recipe.complexfusionreactor",
-                "Complex Fusion Reactor",
-                null,
-                RES_PATH_GUI + "basicmachines/ComplexFusionReactor",
-                3,
-                0,
-                0,
-                2,
-                1,
-                "Start: ",
-                1,
-                " EU",
-                true,
-                true);
+                        new HashSet<>(50),
+                        "gt.recipe.complexfusionreactor",
+                        "Complex Fusion Reactor",
+                        null,
+                        RES_PATH_GUI + "basicmachines/ComplexFusionReactor",
+                        3,
+                        0,
+                        0,
+                        2,
+                        1,
+                        "Start: ",
+                        1,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                .setUsualFluidInputCount(16)
+                .setUsualFluidOutputCount(16)
+                .setNEITransferRect(new Rectangle(79, 34, 18, 18))
+                .setNEIGregTechLogoPos(80, 61);
         public static final GT_Recipe_Map sCentrifugeRecipes = new GT_Recipe_Map(
                         new HashSet<>(1200),
                         "gt.recipe.centrifuge",
@@ -1740,69 +1757,75 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sPlasmaForgeRecipes = new GT_Recipe_Map_PlasmaForge(
-                new HashSet<>(20),
-                "gt.recipe.plasmaforge",
-                "DTPF",
-                null,
-                RES_PATH_GUI + "basicmachines/PlasmaForge",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Heat Capacity: ",
-                1,
-                " K",
-                false,
-                true);
+                        new HashSet<>(20),
+                        "gt.recipe.plasmaforge",
+                        "DTPF",
+                        null,
+                        RES_PATH_GUI + "basicmachines/PlasmaForge",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        "Heat Capacity: ",
+                        1,
+                        " K",
+                        false,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sPrimitiveBlastRecipes = new GT_Recipe_Map(
-                new HashSet<>(200),
-                "gt.recipe.primitiveblastfurnace",
-                "Primitive Blast Furnace",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                3,
-                3,
-                1,
-                0,
-                1,
-                E,
-                1,
-                E,
-                false,
-                true);
+                        new HashSet<>(200),
+                        "gt.recipe.primitiveblastfurnace",
+                        "Primitive Blast Furnace",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        3,
+                        3,
+                        1,
+                        0,
+                        1,
+                        E,
+                        1,
+                        E,
+                        false,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sImplosionRecipes = new GT_Recipe_Map(
-                new HashSet<>(900),
-                "gt.recipe.implosioncompressor",
-                "Implosion Compressor",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                2,
-                2,
-                2,
-                0,
-                1,
-                E,
-                1,
-                E,
-                true,
-                true);
+                        new HashSet<>(900),
+                        "gt.recipe.implosioncompressor",
+                        "Implosion Compressor",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        2,
+                        2,
+                        2,
+                        0,
+                        1,
+                        E,
+                        1,
+                        E,
+                        true,
+                        true)
+                .setSlotOverlay(false, false, true, GT_UITextures.OVERLAY_SLOT_IMPLOSION)
+                .setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_EXPLOSIVE)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_COMPRESS, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sVacuumRecipes = new GT_Recipe_Map(
-                new HashSet<>(305),
-                "gt.recipe.vacuumfreezer",
-                "Vacuum Freezer",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                E,
-                1,
-                E,
-                false,
-                true);
+                        new HashSet<>(305),
+                        "gt.recipe.vacuumfreezer",
+                        "Vacuum Freezer",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        E,
+                        1,
+                        E,
+                        false,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sChemicalRecipes = new GT_Recipe_Map(
                         new HashSet<>(1170),
                         "gt.recipe.chemicalreactor",
@@ -1825,9 +1848,17 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_VIAL_1)
                 .setSlotOverlay(true, true, GT_UITextures.OVERLAY_SLOT_VIAL_2)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT);
-        public static final GT_Recipe_Map sMultiblockChemicalRecipes = new GT_Recipe_Map_LargeChemicalReactor();
-        public static final GT_Recipe_Map sDistillationRecipes = new GT_Recipe_Map_DistillationTower();
-        public static final GT_Recipe_Map_OilCracker sCrackingRecipes = new GT_Recipe_Map_OilCracker();
+        public static final GT_Recipe_Map sMultiblockChemicalRecipes = new GT_Recipe_Map_LargeChemicalReactor()
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT)
+                .setUsualFluidInputCount(6)
+                .setUsualFluidOutputCount(6);
+        public static final GT_Recipe_Map sDistillationRecipes = new GT_Recipe_Map_DistillationTower()
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT)
+                .setUsualFluidOutputCount(11);
+        public static final GT_Recipe_Map_OilCracker sCrackingRecipes =
+                (GT_Recipe_Map_OilCracker) new GT_Recipe_Map_OilCracker()
+                        .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT)
+                        .setUsualFluidInputCount(2);
         /**
          * Use sCrackingRecipes instead
          */
@@ -1835,21 +1866,22 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sCrakingRecipes = sCrackingRecipes;
 
         public static final GT_Recipe_Map sPyrolyseRecipes = new GT_Recipe_Map(
-                new HashSet<>(150),
-                "gt.recipe.pyro",
-                "Pyrolyse Oven",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                2,
-                1,
-                1,
-                0,
-                1,
-                E,
-                1,
-                E,
-                true,
-                true);
+                        new HashSet<>(150),
+                        "gt.recipe.pyro",
+                        "Pyrolyse Oven",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        2,
+                        1,
+                        1,
+                        0,
+                        1,
+                        E,
+                        1,
+                        E,
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sWiremillRecipes = new GT_Recipe_Map(
                         new HashSet<>(450),
                         "gt.recipe.wiremill",
@@ -1963,21 +1995,22 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_CANISTER)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_CANNER, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sCNCRecipes = new GT_Recipe_Map(
-                new HashSet<>(100),
-                "gt.recipe.cncmachine",
-                "CNC Machine",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                2,
-                1,
-                2,
-                1,
-                1,
-                E,
-                1,
-                E,
-                true,
-                true);
+                        new HashSet<>(100),
+                        "gt.recipe.cncmachine",
+                        "CNC Machine",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        2,
+                        1,
+                        2,
+                        1,
+                        1,
+                        E,
+                        1,
+                        E,
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sLatheRecipes = new GT_Recipe_Map(
                         new HashSet<>(1150),
                         "gt.recipe.lathe",
@@ -2117,54 +2150,57 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setSlotOverlay(true, false, GT_UITextures.OVERLAY_SLOT_UUA)
                 .setSlotOverlay(true, true, GT_UITextures.OVERLAY_SLOT_UUM)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
-        public static final GT_Recipe_Map_Fuel sDieselFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(20),
-                "gt.recipe.dieselgeneratorfuel",
-                "Combustion Generator Fuels",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
-        public static final GT_Recipe_Map_Fuel sExtremeDieselFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(20),
-                "gt.recipe.extremedieselgeneratorfuel",
-                "Extreme Diesel Engine Fuel",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
-        public static final GT_Recipe_Map_Fuel sTurbineFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(25),
-                "gt.recipe.gasturbinefuel",
-                "Gas Turbine Fuel",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
+        public static final GT_Recipe_Map_Fuel sDieselFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                        new HashSet<>(20),
+                        "gt.recipe.dieselgeneratorfuel",
+                        "Combustion Generator Fuels",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        "Fuel Value: ",
+                        1000,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        public static final GT_Recipe_Map_Fuel sExtremeDieselFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                        new HashSet<>(20),
+                        "gt.recipe.extremedieselgeneratorfuel",
+                        "Extreme Diesel Engine Fuel",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        "Fuel Value: ",
+                        1000,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        public static final GT_Recipe_Map_Fuel sTurbineFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                        new HashSet<>(25),
+                        "gt.recipe.gasturbinefuel",
+                        "Gas Turbine Fuel",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        "Fuel Value: ",
+                        1000,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map_Fuel sHotFuels = new GT_Recipe_Map_Fuel(
                 new HashSet<>(10),
                 "gt.recipe.thermalgeneratorfuel",
@@ -2181,150 +2217,161 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 " EU",
                 true,
                 false);
-        public static final GT_Recipe_Map_Fuel sDenseLiquidFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(15),
-                "gt.recipe.semifluidboilerfuels",
-                "Semifluid Boiler Fuels",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
-        public static final GT_Recipe_Map_Fuel sPlasmaFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(100),
-                "gt.recipe.plasmageneratorfuels",
-                "Plasma Generator Fuels",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
-        public static final GT_Recipe_Map_Fuel sMagicFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(100),
-                "gt.recipe.magicfuels",
-                "Magic Energy Absorber Fuels",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
-        public static final GT_Recipe_Map_Fuel sSmallNaquadahReactorFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(1),
-                "gt.recipe.smallnaquadahreactor",
-                "Naquadah Reactor MkI",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
-        public static final GT_Recipe_Map_Fuel sLargeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(1),
-                "gt.recipe.largenaquadahreactor",
-                "Naquadah Reactor MkII",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
-        public static final GT_Recipe_Map_Fuel sHugeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(1),
-                "gt.recipe.fluidnaquadahreactor",
-                "Naquadah Reactor MkIII",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
-        public static final GT_Recipe_Map_Fuel sExtremeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(1),
-                "gt.recipe.hugenaquadahreactor",
-                "Naquadah Reactor MkIV",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
-        public static final GT_Recipe_Map_Fuel sUltraHugeNaquadahReactorFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(1),
-                "gt.recipe.extrahugenaquadahreactor",
-                "Naquadah Reactor MkV",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
-        public static final GT_Recipe_Map_Fuel sFluidNaquadahReactorFuels = new GT_Recipe_Map_Fuel(
-                new HashSet<>(1),
-                "gt.recipe.fluidfuelnaquadahreactor",
-                "Fluid Naquadah Reactor",
-                null,
-                RES_PATH_GUI + "basicmachines/Default",
-                1,
-                1,
-                0,
-                0,
-                1,
-                "Fuel Value: ",
-                1000,
-                " EU",
-                true,
-                true);
+        public static final GT_Recipe_Map_Fuel sDenseLiquidFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                        new HashSet<>(15),
+                        "gt.recipe.semifluidboilerfuels",
+                        "Semifluid Boiler Fuels",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        "Fuel Value: ",
+                        1000,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        public static final GT_Recipe_Map_Fuel sPlasmaFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                        new HashSet<>(100),
+                        "gt.recipe.plasmageneratorfuels",
+                        "Plasma Generator Fuels",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        "Fuel Value: ",
+                        1000,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        public static final GT_Recipe_Map_Fuel sMagicFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                        new HashSet<>(100),
+                        "gt.recipe.magicfuels",
+                        "Magic Energy Absorber Fuels",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        "Fuel Value: ",
+                        1000,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        public static final GT_Recipe_Map_Fuel sSmallNaquadahReactorFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                        new HashSet<>(1),
+                        "gt.recipe.smallnaquadahreactor",
+                        "Naquadah Reactor MkI",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        "Fuel Value: ",
+                        1000,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        public static final GT_Recipe_Map_Fuel sLargeNaquadahReactorFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                        new HashSet<>(1),
+                        "gt.recipe.largenaquadahreactor",
+                        "Naquadah Reactor MkII",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        "Fuel Value: ",
+                        1000,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        public static final GT_Recipe_Map_Fuel sHugeNaquadahReactorFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                        new HashSet<>(1),
+                        "gt.recipe.fluidnaquadahreactor",
+                        "Naquadah Reactor MkIII",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        "Fuel Value: ",
+                        1000,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        public static final GT_Recipe_Map_Fuel sExtremeNaquadahReactorFuels =
+                (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                                new HashSet<>(1),
+                                "gt.recipe.hugenaquadahreactor",
+                                "Naquadah Reactor MkIV",
+                                null,
+                                RES_PATH_GUI + "basicmachines/Default",
+                                1,
+                                1,
+                                0,
+                                0,
+                                1,
+                                "Fuel Value: ",
+                                1000,
+                                " EU",
+                                true,
+                                true)
+                        .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        public static final GT_Recipe_Map_Fuel sUltraHugeNaquadahReactorFuels =
+                (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                                new HashSet<>(1),
+                                "gt.recipe.extrahugenaquadahreactor",
+                                "Naquadah Reactor MkV",
+                                null,
+                                RES_PATH_GUI + "basicmachines/Default",
+                                1,
+                                1,
+                                0,
+                                0,
+                                1,
+                                "Fuel Value: ",
+                                1000,
+                                " EU",
+                                true,
+                                true)
+                        .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        public static final GT_Recipe_Map_Fuel sFluidNaquadahReactorFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
+                        new HashSet<>(1),
+                        "gt.recipe.fluidfuelnaquadahreactor",
+                        "Fluid Naquadah Reactor",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Default",
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        "Fuel Value: ",
+                        1000,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sMultiblockElectrolyzerRecipes = new GT_Recipe_Map(
                 new HashSet<>(300),
                 "gt.recipe.largeelectrolyzer",
@@ -2374,7 +2421,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 true,
                 false);
         public static final GT_Recipe_Map_LargeBoilerFakeFuels sLargeBoilerFakeFuels =
-                new GT_Recipe_Map_LargeBoilerFakeFuels();
+                (GT_Recipe_Map_LargeBoilerFakeFuels) new GT_Recipe_Map_LargeBoilerFakeFuels()
+                        .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
 
         /**
          * HashMap of Recipes based on their Items
@@ -2432,13 +2480,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * How many fluid inputs does this recipemap has at most. Currently used only for NEI slot placements
          * and does not actually restrict number of fluids used in the recipe.
          */
-        private int maxFluidInputCount;
+        private int usualFluidInputCount;
 
         /**
          * How many fluid outputs does this recipemap has at most. Currently used only for NEI slot placements
          * and does not actually restrict number of fluids used in the recipe.
          */
-        private int maxFluidOutputCount;
+        private int usualFluidOutputCount;
 
         /**
          * Whether to use ModularUI for slot placements.
@@ -2485,6 +2533,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public Pos2d progressBarPos = new Pos2d(78, 24);
 
+        public Rectangle neiTransferRect = new Rectangle(
+                progressBarPos.x - (16 / 2), progressBarPos.y, progressBarSize.width + 16, progressBarSize.height);
+
         /**
          * Image size in direction of progress. Used for non-smooth rendering.
          */
@@ -2499,6 +2550,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * Additional textures shown on steam machine GUI.
          */
         public final List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam = new ArrayList<>();
+
+        public Pos2d neiGregTechLogoPos = new Pos2d(152, 63);
 
         public Pos2d neiBackgroundOffset = new Pos2d(2, 3);
 
@@ -2669,6 +2722,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return this;
         }
 
+        public GT_Recipe_Map setNEITransferRect(Rectangle neiTransferRect) {
+            this.neiTransferRect = neiTransferRect;
+            return this;
+        }
+
         public GT_Recipe_Map addSpecialTexture(int width, int height, int x, int y, IDrawable texture) {
             useModularUI(true);
             specialTextures.add(
@@ -2683,13 +2741,18 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return this;
         }
 
-        public GT_Recipe_Map setMaxFluidInputCount(int maxFluidInputCount) {
-            this.maxFluidInputCount = maxFluidInputCount;
+        public GT_Recipe_Map setUsualFluidInputCount(int usualFluidInputCount) {
+            this.usualFluidInputCount = usualFluidInputCount;
             return this;
         }
 
-        public GT_Recipe_Map setMaxFluidOutputCount(int maxFluidOutputCount) {
-            this.maxFluidOutputCount = maxFluidOutputCount;
+        public GT_Recipe_Map setUsualFluidOutputCount(int usualFluidOutputCount) {
+            this.usualFluidOutputCount = usualFluidOutputCount;
+            return this;
+        }
+
+        public GT_Recipe_Map setNEIGregTechLogoPos(int x, int y) {
+            this.neiGregTechLogoPos = new Pos2d(x, y);
             return this;
         }
 
@@ -3137,12 +3200,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return mUsesSpecialSlot;
         }
 
-        public int getMaxFluidInputCount() {
-            return Math.max(maxFluidInputCount, hasFluidInputs() ? 1 : 0);
+        public int getUsualFluidInputCount() {
+            return Math.max(usualFluidInputCount, hasFluidInputs() ? 1 : 0);
         }
 
-        public int getMaxFluidOutputCount() {
-            return Math.max(maxFluidOutputCount, hasFluidOutputs() ? 1 : 0);
+        public int getUsualFluidOutputCount() {
+            return Math.max(usualFluidOutputCount, hasFluidOutputs() ? 1 : 0);
         }
 
         @Nullable
@@ -3190,17 +3253,128 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         /**
-         * Overriding this method and getOutputPositionedStacks allows custom NEI stack placement
-         * @return A list of input stacks
+         * Adds slot backgrounds, progressBar, etc.
          */
+        public ModularWindow.Builder createNEITemplate(
+                IItemHandlerModifiable itemInputsInventory,
+                IItemHandlerModifiable itemOutputsInventory,
+                IItemHandlerModifiable specialSlotInventory,
+                IItemHandlerModifiable fluidInputsInventory,
+                IItemHandlerModifiable fluidOutputsInventory,
+                Supplier<Float> progressSupplier,
+                Pos2d windowOffset) {
+            ModularWindow.Builder builder =
+                    ModularWindow.builder(neiBackgroundSize).setBackground(ModularUITextures.VANILLA_BACKGROUND);
+
+            UIHelper.forEachSlots(
+                    (i, backgrounds, pos) -> builder.widget(SlotWidget.phantom(itemInputsInventory, i)
+                            .setBackground(backgrounds)
+                            .setPos(pos)
+                            .setSize(18, 18)),
+                    (i, backgrounds, pos) -> builder.widget(SlotWidget.phantom(itemOutputsInventory, i)
+                            .setBackground(backgrounds)
+                            .setPos(pos)
+                            .setSize(18, 18)),
+                    (i, backgrounds, pos) -> {
+                        if (usesSpecialSlot())
+                            builder.widget(SlotWidget.phantom(specialSlotInventory, 0)
+                                    .setBackground(backgrounds)
+                                    .setPos(pos)
+                                    .setSize(18, 18));
+                    },
+                    (i, backgrounds, pos) -> builder.widget(SlotWidget.phantom(fluidInputsInventory, i)
+                            .setBackground(backgrounds)
+                            .setPos(pos)
+                            .setSize(18, 18)),
+                    (i, backgrounds, pos) -> builder.widget(SlotWidget.phantom(fluidOutputsInventory, i)
+                            .setBackground(backgrounds)
+                            .setPos(pos)
+                            .setSize(18, 18)),
+                    ModularUITextures.ITEM_SLOT,
+                    ModularUITextures.FLUID_SLOT,
+                    this,
+                    mUsualInputCount,
+                    mUsualOutputCount,
+                    getUsualFluidInputCount(),
+                    getUsualFluidOutputCount(),
+                    SteamTexture.Variant.NONE,
+                    windowOffset);
+
+            addProgressBarUI(builder, progressSupplier, windowOffset);
+
+            builder.widget(new DrawableWidget()
+                    .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
+                    .setSize(17, 17)
+                    .setPos(neiGregTechLogoPos.add(windowOffset)));
+
+            for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : specialTextures) {
+                builder.widget(new DrawableWidget()
+                        .setDrawable(specialTexture.getLeft())
+                        .setSize(specialTexture.getRight().getLeft())
+                        .setPos(specialTexture.getRight().getRight().add(windowOffset)));
+            }
+
+            return builder;
+        }
+
+        protected void addProgressBarUI(
+                ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+            builder.widget(new ProgressBar()
+                    .setTexture(progressBarTexture, 20)
+                    .setDirection(progressBarDirection)
+                    .setProgress(progressSupplier)
+                    .setSynced(false, false)
+                    .setPos(progressBarPos.add(windowOffset))
+                    .setSize(progressBarSize));
+        }
+
+        /**
+         * Overriding this method allows custom NEI stack placement
+         */
+        public List<Pos2d> getItemInputPositions(int itemInputCount) {
+            return UIHelper.getItemInputPositions(itemInputCount);
+        }
+
+        /**
+         * Overriding this method allows custom NEI stack placement
+         */
+        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
+            return UIHelper.getItemOutputPositions(itemOutputCount);
+        }
+
+        /**
+         * Overriding this method allows custom NEI stack placement
+         */
+        public Pos2d getSpecialItemPosition() {
+            return UIHelper.getSpecialItemPosition();
+        }
+
+        /**
+         * Overriding this method allows custom NEI stack placement
+         */
+        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+            return UIHelper.getFluidInputPositions(fluidInputCount);
+        }
+
+        /**
+         * Overriding this method allows custom NEI stack placement
+         */
+        public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
+            return UIHelper.getFluidOutputPositions(fluidOutputCount);
+        }
+
+        /**
+         * Use {@link #getItemInputPositions} or {@link #getSpecialItemPosition} or {@link #getFluidInputPositions} instead
+         */
+        @Deprecated
         public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
             return null;
         }
 
         /**
-         * Overriding this method and getInputPositionedStacks allows custom NEI stack placement
-         * @return A list of output stacks
+         * Use {@link #getItemOutputPositions} or {@link #getFluidOutputPositions} instead
          */
+        @Deprecated
         public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
             return null;
         }
@@ -3211,6 +3385,106 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     // -----------------------------------------------------------------------------------------------------------------
     // Here are a few Classes I use for Special Cases in some Machines without having to write a separate Machine Class.
     // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Place 6 slots for each input/output, item/fluid, a.k.a. LCR style
+     */
+    public abstract static class GT_Recipe_Map_MultiFluid_6_Slots extends GT_Recipe_Map {
+
+        public GT_Recipe_Map_MultiFluid_6_Slots(
+                Collection<GT_Recipe> aRecipeList,
+                String aUnlocalizedName,
+                String aLocalName,
+                String aNEIName,
+                String aNEIGUIPath,
+                int aUsualInputCount,
+                int aUsualOutputCount,
+                int aMinimalInputItems,
+                int aMinimalInputFluids,
+                int aAmperage,
+                String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier,
+                String aNEISpecialValuePost,
+                boolean aShowVoltageAmperageInNEI,
+                boolean aNEIAllowed,
+                boolean aNEIUnificateOutput) {
+            super(
+                    aRecipeList,
+                    aUnlocalizedName,
+                    aLocalName,
+                    aNEIName,
+                    aNEIGUIPath,
+                    6,
+                    6,
+                    aMinimalInputItems,
+                    aMinimalInputFluids,
+                    aAmperage,
+                    aNEISpecialValuePre,
+                    aNEISpecialValueMultiplier,
+                    aNEISpecialValuePost,
+                    aShowVoltageAmperageInNEI,
+                    aNEIAllowed,
+                    aNEIUnificateOutput);
+            setUsualFluidInputCount(6);
+            setUsualFluidOutputCount(6);
+            setNEIGregTechLogoPos(80, 62);
+        }
+
+        public GT_Recipe_Map_MultiFluid_6_Slots(
+                Collection<GT_Recipe> aRecipeList,
+                String aUnlocalizedName,
+                String aLocalName,
+                String aNEIName,
+                String aNEIGUIPath,
+                int aUsualInputCount,
+                int aUsualOutputCount,
+                int aMinimalInputItems,
+                int aMinimalInputFluids,
+                int aAmperage,
+                String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier,
+                String aNEISpecialValuePost,
+                boolean aShowVoltageAmperageInNEI,
+                boolean aNEIAllowed) {
+            this(
+                    aRecipeList,
+                    aUnlocalizedName,
+                    aLocalName,
+                    aNEIName,
+                    aNEIGUIPath,
+                    aUsualInputCount,
+                    aUsualOutputCount,
+                    aMinimalInputItems,
+                    aMinimalInputFluids,
+                    aAmperage,
+                    aNEISpecialValuePre,
+                    aNEISpecialValueMultiplier,
+                    aNEISpecialValuePost,
+                    aShowVoltageAmperageInNEI,
+                    aNEIAllowed,
+                    true);
+        }
+
+        @Override
+        public List<Pos2d> getItemInputPositions(int itemInputCount) {
+            return UIHelper.getItemGridPositions(itemInputCount, 16, 8, 3, 3);
+        }
+
+        @Override
+        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
+            return UIHelper.getItemGridPositions(itemOutputCount, 106, 8, 3, 3);
+        }
+
+        @Override
+        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+            return UIHelper.getItemGridPositions(fluidInputCount, 16, 44, 3, 3);
+        }
+
+        @Override
+        public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
+            return UIHelper.getItemGridPositions(fluidOutputCount, 106, 44, 3, 3);
+        }
+    }
 
     /**
      * Abstract Class for general Recipe Handling of non GT Recipes
@@ -5017,10 +5291,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
     }
 
-    public static class GT_Recipe_Map_LargeChemicalReactor extends GT_Recipe_Map {
+    public static class GT_Recipe_Map_LargeChemicalReactor extends GT_Recipe_Map_MultiFluid_6_Slots {
         private static final int TOTAL_INPUT_COUNT = 6;
         private static final int OUTPUT_COUNT = 6;
-        private static final int FLUID_OUTPUT_COUNT = 6;
 
         public GT_Recipe_Map_LargeChemicalReactor() {
             super(
@@ -5029,7 +5302,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     "Large Chemical Reactor",
                     null,
                     RES_PATH_GUI + "basicmachines/LCRNEI",
-                    2,
+                    TOTAL_INPUT_COUNT,
                     OUTPUT_COUNT,
                     0,
                     0,
@@ -5145,83 +5418,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aEUt,
                     aSpecialValue);
         }
-
-        @Override
-        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
-            int itemLimit = Math.min(recipe.mInputs.length, TOTAL_INPUT_COUNT);
-            int fluidLimit = Math.min(recipe.mFluidInputs.length, TOTAL_INPUT_COUNT - itemLimit);
-            int inputlimit = itemLimit + fluidLimit;
-            int j = 0;
-
-            ArrayList<PositionedStack> inputStacks = new ArrayList<>(inputlimit);
-
-            for (int i = 0; i < itemLimit; i++, j++) {
-                if (recipe.mInputs == null || (recipe.mInputs[i] == null && (i == 0 && itemLimit == 1))) {
-                    if (recipe.mOutputs != null && recipe.mOutputs.length > 0 && recipe.mOutputs[0] != null)
-                        GT_Log.out.println("recipe " + recipe + " Output 0:" + recipe.mOutputs[0].getDisplayName()
-                                + " has errored!");
-                    else GT_Log.out.println("recipe " + recipe + " has errored!");
-
-                    new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
-                }
-
-                if ((recipe.mInputs != null && recipe.mInputs[i] != null) || !GT_Values.allow_broken_recipemap)
-                    inputStacks.add(
-                            new FixedPositionedStack(recipe.mInputs[i].copy(), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
-                else
-                    inputStacks.add(new FixedPositionedStack(
-                            new ItemStack(Items.command_block_minecart), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
-            }
-
-            for (int i = 0; i < fluidLimit; i++, j++) {
-                if (recipe.mFluidInputs == null || recipe.mFluidInputs[i] == null) {
-                    if (recipe.mOutputs != null && recipe.mOutputs.length > 0 && recipe.mOutputs[0] != null)
-                        GT_Log.out.println("recipe " + recipe + " Output 0:" + recipe.mOutputs[0].getDisplayName()
-                                + " has errored!");
-                    else GT_Log.out.println("recipe " + recipe + " has errored!");
-
-                    new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
-                }
-
-                if ((recipe.mFluidInputs != null && recipe.mFluidInputs[i] != null)
-                        || !GT_Values.allow_broken_recipemap)
-                    inputStacks.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(recipe.mFluidInputs[i], true),
-                            48 - j % 3 * 18,
-                            (j >= 3 ? 5 : 23)));
-            }
-
-            return inputStacks;
-        }
-
-        @Override
-        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
-            int itemLimit = Math.min(recipe.mOutputs.length, OUTPUT_COUNT);
-            int fluidLimit = Math.min(recipe.mFluidOutputs.length, FLUID_OUTPUT_COUNT);
-            ArrayList<PositionedStack> outputStacks = new ArrayList<>(itemLimit + fluidLimit);
-
-            int j = 0;
-
-            for (int i = 0; i < itemLimit; i++, j++) {
-                outputStacks.add(
-                        new FixedPositionedStack(recipe.mOutputs[i].copy(), 102 + j % 3 * 18, (j >= 3 ? 5 : 23)));
-            }
-
-            for (int i = 0; i < fluidLimit; i++, j++) {
-                outputStacks.add(new FixedPositionedStack(
-                        GT_Utility.getFluidDisplayStack(recipe.mFluidOutputs[i], true),
-                        102 + j % 3 * 18,
-                        (j >= 3 ? 5 : 23)));
-            }
-
-            return outputStacks;
-        }
     }
 
     public static class GT_Recipe_Map_DistillationTower extends GT_Recipe_Map {
-        private static final int TOTAL_INPUT_COUNT = 6;
-        private static final int FLUID_OUTPUT_COUNT = 11;
-        private static final int ROW_SIZE = 3;
 
         public GT_Recipe_Map_DistillationTower() {
             super(
@@ -5231,7 +5430,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     null,
                     RES_PATH_GUI + "basicmachines/DistillationTower",
                     2,
-                    4,
+                    1,
                     0,
                     0,
                     1,
@@ -5240,70 +5439,36 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     E,
                     true,
                     true);
+            setNEIGregTechLogoPos(80, 62);
         }
 
         @Override
-        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
-            int itemLimit = Math.min(recipe.mInputs.length, TOTAL_INPUT_COUNT);
-            int fluidLimit = Math.min(recipe.mFluidInputs.length, TOTAL_INPUT_COUNT - itemLimit);
-            int inputlimit = itemLimit + fluidLimit;
-            int j = 0;
-
-            ArrayList<PositionedStack> inputStacks = new ArrayList<>(inputlimit);
-
-            for (int i = 0; i < itemLimit; i++, j++) {
-                if (recipe.mInputs == null || (recipe.mInputs[i] == null && (i == 0 && itemLimit == 1))) {
-                    if (recipe.mOutputs != null && recipe.mOutputs.length > 0 && recipe.mOutputs[0] != null)
-                        GT_Log.out.println("recipe " + recipe + " Output 0:" + recipe.mOutputs[0].getDisplayName()
-                                + " has errored!");
-                    else GT_Log.out.println("recipe " + recipe + " has errored!");
-                    new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
+        public IDrawable getOverlayForSlot(boolean isFluid, boolean isOutput, int index, boolean isSpecial) {
+            if (isOutput) {
+                if (isFluid) {
+                    return GT_UITextures.OVERLAY_SLOTS_NUMBER[index + 1];
+                } else {
+                    return GT_UITextures.OVERLAY_SLOTS_NUMBER[0];
                 }
-
-                if ((recipe.mInputs != null && recipe.mInputs[i] != null) || !GT_Values.allow_broken_recipemap)
-                    inputStacks.add(
-                            new FixedPositionedStack(recipe.mInputs[i].copy(), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
-                else
-                    inputStacks.add(new FixedPositionedStack(
-                            new ItemStack(Items.command_block_minecart), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
             }
-
-            for (int i = 0; i < fluidLimit; i++, j++) {
-                if (recipe.mFluidInputs == null || recipe.mFluidInputs[i] == null) {
-                    if (recipe.mOutputs != null && recipe.mOutputs.length > 0 && recipe.mOutputs[0] != null)
-                        GT_Log.out.println("recipe " + recipe + " Output 0:" + recipe.mOutputs[0].getDisplayName()
-                                + " has errored!");
-                    else GT_Log.out.println("recipe " + recipe + " has errored!");
-                    new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
-                }
-
-                if ((recipe.mFluidInputs != null && recipe.mFluidInputs[i] != null)
-                        || !GT_Values.allow_broken_recipemap)
-                    inputStacks.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(recipe.mFluidInputs[i], true),
-                            48 - j % 3 * 18,
-                            (j >= 3 ? 5 : 23)));
-            }
-
-            return inputStacks;
+            return super.getOverlayForSlot(isFluid, false, index, isSpecial);
         }
 
         @Override
-        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
-            int fluidLimit = Math.min(recipe.mFluidOutputs.length, FLUID_OUTPUT_COUNT);
-            ArrayList<PositionedStack> outputStacks = new ArrayList<>(1 + fluidLimit);
+        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
+            assert itemOutputCount == 1;
+            return Collections.singletonList(new Pos2d(106, 62));
+        }
 
-            if (recipe.mOutputs.length > 0 && recipe.mOutputs[0] != null) {
-                outputStacks.add(new FixedPositionedStack(recipe.getOutput(0), 102, 52));
+        @Override
+        public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
+            assert fluidOutputCount == 11;
+            List<Pos2d> results = new ArrayList<>();
+            for (int i = 0; i < fluidOutputCount + 1; i++) {
+                if (i == 0) continue;
+                results.add(new Pos2d(106 + (i % 3) * 18, 62 - (i / 3) * 18));
             }
-
-            for (int i = 0; i < fluidLimit; i++) {
-                int x = 102 + ((i + 1) % ROW_SIZE) * 18;
-                int y = 52 - ((i + 1) / ROW_SIZE) * 18;
-                outputStacks.add(
-                        new FixedPositionedStack(GT_Utility.getFluidDisplayStack(recipe.mFluidOutputs[i], true), x, y));
-            }
-            return outputStacks;
+            return results;
         }
     }
 
@@ -5462,7 +5627,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
     }
 
-    public static class GT_Recipe_Map_PlasmaForge extends GT_Recipe_Map {
+    public static class GT_Recipe_Map_PlasmaForge extends GT_Recipe_Map_MultiFluid_6_Slots {
 
         public GT_Recipe_Map_PlasmaForge(
                 Collection<GT_Recipe> aRecipeList,
@@ -5497,52 +5662,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed,
                     true);
-        }
-
-        @Override
-        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
-            ArrayList<PositionedStack> inputStacks = new ArrayList<>();
-            int i = 0;
-            if (recipe.mInputs != null) {
-                for (int j = 0; j < recipe.mInputs.length; j++, i++) {
-                    if (recipe.mInputs[j] == NI) continue;
-                    inputStacks.add(
-                            new FixedPositionedStack(recipe.mInputs[j].copy(), 12 + 18 * (i % 3), 5 + 18 * (i / 3)));
-                }
-            }
-            if (recipe.mFluidInputs != null) {
-                for (int j = 0; j < recipe.mFluidInputs.length; j++, i++) {
-                    if (recipe.mFluidInputs[j] == NF) continue;
-                    inputStacks.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(recipe.mFluidInputs[j], true),
-                            12 + 18 * (i % 3),
-                            5 + 18 * (i / 3)));
-                }
-            }
-            return inputStacks;
-        }
-
-        @Override
-        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
-            ArrayList<PositionedStack> outputStacks = new ArrayList<>();
-            int i = 0;
-            if (recipe.mOutputs != null) {
-                for (int j = 0; j < recipe.mOutputs.length; j++, i++) {
-                    if (recipe.mOutputs[j] == NI) continue;
-                    outputStacks.add(
-                            new FixedPositionedStack(recipe.mOutputs[j].copy(), 102 + 18 * (i % 3), 5 + 18 * (i / 3)));
-                }
-            }
-            if (recipe.mFluidOutputs != null) {
-                for (int j = 0; j < recipe.mFluidOutputs.length; j++, i++) {
-                    if (recipe.mFluidOutputs[j] == NF) continue;
-                    outputStacks.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(recipe.mFluidOutputs[j], true),
-                            102 + 18 * (i % 3),
-                            5 + 18 * (i / 3)));
-                }
-            }
-            return outputStacks;
         }
     }
 
@@ -5609,35 +5728,120 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         @Override
-        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
-            ArrayList<PositionedStack> inputStacks = new ArrayList<>();
-            int i = 0;
-            if (recipe.mFluidInputs != null) {
-                for (int j = 0; j < recipe.mFluidInputs.length; j++, i++) {
-                    if (recipe.mFluidInputs[j] == NF) continue;
-                    inputStacks.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(recipe.mFluidInputs[j], true),
-                            3 + 18 * (i % 4),
-                            -1 + 18 * (i / 4)));
-                }
+        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+            assert fluidInputCount == 16;
+            List<Pos2d> results = new ArrayList<>();
+            for (int i = 0; i < 16; i++) {
+                results.add(new Pos2d(7 + (i % 4) * 18, 9 + (i / 4) * 18));
             }
-            return inputStacks;
+            return results;
         }
 
         @Override
-        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
-            ArrayList<PositionedStack> outputStacks = new ArrayList<>();
-            int i = 0;
-            if (recipe.mFluidOutputs != null) {
-                for (int j = 0; j < recipe.mFluidOutputs.length; j++, i++) {
-                    if (recipe.mFluidOutputs[j] == NF) continue;
-                    outputStacks.add(new FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(recipe.mFluidOutputs[j], true),
-                            93 + 18 * (i % 4),
-                            -1 + 18 * (i / 4)));
-                }
+        public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
+            assert fluidOutputCount == 16;
+            List<Pos2d> results = new ArrayList<>();
+            for (int i = 0; i < 16; i++) {
+                results.add(new Pos2d(97 + (i % 4) * 18, 9 + (i / 4) * 18));
             }
-            return outputStacks;
+            return results;
+        }
+    }
+
+    public static class GT_Recipe_Map_AssemblyLineFake extends GT_Recipe_Map {
+
+        public GT_Recipe_Map_AssemblyLineFake(
+                Collection<GT_Recipe> aRecipeList,
+                String aUnlocalizedName,
+                String aLocalName,
+                String aNEIName,
+                String aNEIGUIPath,
+                int aUsualInputCount,
+                int aUsualOutputCount,
+                int aMinimalInputItems,
+                int aMinimalInputFluids,
+                int aAmperage,
+                String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier,
+                String aNEISpecialValuePost,
+                boolean aShowVoltageAmperageInNEI,
+                boolean aNEIAllowed) {
+            super(
+                    aRecipeList,
+                    aUnlocalizedName,
+                    aLocalName,
+                    aNEIName,
+                    aNEIGUIPath,
+                    aUsualInputCount,
+                    aUsualOutputCount,
+                    aMinimalInputItems,
+                    aMinimalInputFluids,
+                    aAmperage,
+                    aNEISpecialValuePre,
+                    aNEISpecialValueMultiplier,
+                    aNEISpecialValuePost,
+                    aShowVoltageAmperageInNEI,
+                    aNEIAllowed);
+        }
+
+        @Override
+        public List<Pos2d> getItemInputPositions(int itemInputCount) {
+            assert itemInputCount == 16;
+            List<Pos2d> results = new ArrayList<>();
+            for (int i = 0; i < 16; i++) {
+                results.add(new Pos2d(16 + (i % 4) * 18, 8 + (i / 4) * 18));
+            }
+            return results;
+        }
+
+        @Override
+        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
+            assert itemOutputCount == 1;
+            return Collections.singletonList(new Pos2d(142, 8));
+        }
+
+        @Override
+        public Pos2d getSpecialItemPosition() {
+            return new Pos2d(142, 44);
+        }
+
+        @Override
+        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+            assert fluidInputCount == 4;
+            List<Pos2d> results = new ArrayList<>();
+            for (int i = 0; i < 4; i++) {
+                results.add(new Pos2d(106, 8 + i * 18));
+            }
+            return results;
+        }
+
+        @Override
+        protected void addProgressBarUI(
+                ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+            int bar1Width = 17;
+            int bar2Width = 18;
+            builder.widget(new ProgressBar()
+                    .setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
+                    .setDirection(ProgressBar.Direction.RIGHT)
+                    .setProgress(() -> progressSupplier.get() * ((float) (bar1Width + bar2Width) / bar1Width))
+                    .setSynced(false, false)
+                    .setPos(new Pos2d(88, 8).add(windowOffset))
+                    .setSize(bar1Width, 72));
+            builder.widget(new ProgressBar()
+                    .setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
+                    .setDirection(ProgressBar.Direction.RIGHT)
+                    .setProgress(() -> (progressSupplier.get() - ((float) bar1Width / (bar1Width + bar2Width)))
+                            * ((float) (bar1Width + bar2Width) / bar2Width))
+                    .setSynced(false, false)
+                    .setPos(new Pos2d(124, 8).add(windowOffset))
+                    .setSize(bar2Width, 72));
+            builder.widget(new ProgressBar()
+                    .setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_3, 18)
+                    .setDirection(ProgressBar.Direction.UP)
+                    .setProgress(progressSupplier)
+                    .setSynced(false, false)
+                    .setPos(new Pos2d(146, 26).add(windowOffset))
+                    .setSize(10, 18));
         }
     }
 }

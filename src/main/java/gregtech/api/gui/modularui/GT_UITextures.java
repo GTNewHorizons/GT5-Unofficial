@@ -116,7 +116,7 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_VIAL_2 = UITexture.fullImage(MODID, "gui/overlay_slot/vial_2");
     public static final UITexture OVERLAY_SLOT_WIREMILL = UITexture.fullImage(MODID, "gui/overlay_slot/wiremill");
     public static final UITexture OVERLAY_SLOT_WRENCH = UITexture.fullImage(MODID, "gui/overlay_slot/wrench");
-    public static final UITexture[] OVERLAY_SLOTS_NUMBER = IntStream.range(0, 11)
+    public static final UITexture[] OVERLAY_SLOTS_NUMBER = IntStream.range(0, 12)
             .mapToObj(i -> UITexture.fullImage(MODID, "gui/overlay_slot/number_" + i))
             .collect(Collectors.toList())
             .toArray(new UITexture[] {});
@@ -129,9 +129,12 @@ public class GT_UITextures {
     public static final UITexture PROGRESSBAR_ARROW_MULTIPLE =
             UITexture.fullImage(MODID, "gui/progressbar/arrow_multiple");
     public static final UITexture PROGRESSBAR_ASSEMBLE = UITexture.fullImage(MODID, "gui/progressbar/assemble");
-    public static final UITexture PROGRESSBAR_ASSEMBLYLINE = UITexture.fullImage(MODID, "gui/progressbar/assemblyline");
-    public static final UITexture PROGRESSBAR_ASSEMBLYLINE_ARROW =
-            UITexture.fullImage(MODID, "gui/progressbar/assemblyline_arrow");
+    public static final UITexture PROGRESSBAR_ASSEMBLY_LINE_1 =
+            UITexture.fullImage(MODID, "gui/progressbar/assemblyline_1");
+    public static final UITexture PROGRESSBAR_ASSEMBLY_LINE_2 =
+            UITexture.fullImage(MODID, "gui/progressbar/assemblyline_2");
+    public static final UITexture PROGRESSBAR_ASSEMBLY_LINE_3 =
+            UITexture.fullImage(MODID, "gui/progressbar/assemblyline_3");
     public static final UITexture PROGRESSBAR_BATH = UITexture.fullImage(MODID, "gui/progressbar/bath");
     public static final UITexture PROGRESSBAR_BENDING = UITexture.fullImage(MODID, "gui/progressbar/bending");
     public static final SteamTexture PROGRESSBAR_BOILER_EMPTY_STEAM =

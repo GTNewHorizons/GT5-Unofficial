@@ -4,7 +4,6 @@ import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -608,7 +607,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     // GUI stuff
 
     @Override
-    protected Widget setNEITransferRect(Widget widget, String transferRectID) {
-        return widget;
+    public boolean hasNEITransferRect() {
+        return false;
     }
 }

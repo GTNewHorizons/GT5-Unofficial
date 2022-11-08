@@ -1327,26 +1327,16 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         UIHelper.forEachSlots(
                 (i, backgrounds, pos) -> builder.widget(createItemInputSlot(i, backgrounds, pos)),
                 (i, backgrounds, pos) -> builder.widget(createItemOutputSlot(i, backgrounds, pos)),
-                (i, backgrounds, pos) -> {
-                    if (i == 0) {
-                        builder.widget(createSpecialSlot(backgrounds, pos));
-                    }
-                },
-                (i, backgrounds, pos) -> {
-                    if (i == 0 && hasFluidInput) {
-                        builder.widget(createFluidInputSlot(backgrounds, pos));
-                    }
-                },
-                (i, backgrounds, pos) -> {
-                    if (i == 0 && hasFluidOutput) {
-                        builder.widget(createFluidOutputSlot(backgrounds, pos));
-                    }
-                },
+                (i, backgrounds, pos) -> builder.widget(createSpecialSlot(backgrounds, pos)),
+                (i, backgrounds, pos) -> builder.widget(createFluidInputSlot(backgrounds, pos)),
+                (i, backgrounds, pos) -> builder.widget(createFluidOutputSlot(backgrounds, pos)),
                 getSlotBackground(),
                 getFluidSlotBackground(),
                 getRecipeList(),
                 mInputSlotCount,
                 mOutputItems.length,
+                hasFluidInput ? 1 : 0,
+                hasFluidOutput ? 1 : 0,
                 getSteamVariant(),
                 Pos2d.ZERO);
     }
@@ -1462,8 +1452,12 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return ret;
     }
 
+    public boolean hasNEITransferRect() {
+        return getRecipeList() != null;
+    }
+
     protected Widget setNEITransferRect(Widget widget, String transferRectID) {
-        if (getRecipeList() != null) {
+        if (hasNEITransferRect()) {
             Power powerInfo = getPower();
             String transferRectTooltip;
             if (isSteampowered()) {

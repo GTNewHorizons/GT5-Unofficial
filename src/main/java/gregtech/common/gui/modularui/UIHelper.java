@@ -7,6 +7,7 @@ import gregtech.api.util.GT_Recipe;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 public class UIHelper {
@@ -25,9 +26,14 @@ public class UIHelper {
             @Nullable GT_Recipe.GT_Recipe_Map recipeMap,
             int itemInputCount,
             int itemOutputCount,
+            int fluidInputCount,
+            int fluidOutputCount,
             SteamTexture.Variant steamVariant,
             Pos2d offset) {
-        final List<Pos2d> itemInputPositions = UIHelper.getItemInputPositions(itemInputCount, offset);
+        List<Pos2d> itemInputPositions = recipeMap != null
+                ? recipeMap.getItemInputPositions(itemInputCount)
+                : UIHelper.getItemInputPositions(itemInputCount);
+        itemInputPositions = itemInputPositions.stream().map(p -> p.add(offset)).collect(Collectors.toList());
         for (int i = 0; i < itemInputPositions.size(); i++) {
             forEachItemInputSlot.accept(
                     i,
@@ -35,7 +41,11 @@ public class UIHelper {
                     itemInputPositions.get(i));
         }
 
-        final List<Pos2d> itemOutputPositions = UIHelper.getItemOutputPositions(itemOutputCount, offset);
+        List<Pos2d> itemOutputPositions = recipeMap != null
+                ? recipeMap.getItemOutputPositions(itemOutputCount)
+                : UIHelper.getItemOutputPositions(itemOutputCount);
+        itemOutputPositions =
+                itemOutputPositions.stream().map(p -> p.add(offset)).collect(Collectors.toList());
         for (int i = 0; i < itemOutputPositions.size(); i++) {
             forEachItemOutputSlot.accept(
                     i,
@@ -46,9 +56,14 @@ public class UIHelper {
         forEachSpecialSlot.accept(
                 0,
                 getBackgroundsForSlot(itemSlotBackground, recipeMap, false, false, 0, true, steamVariant),
-                UIHelper.getSpecialItemPosition(offset));
+                (recipeMap != null ? recipeMap.getSpecialItemPosition() : UIHelper.getSpecialItemPosition())
+                        .add(offset));
 
-        final List<Pos2d> fluidInputPositions = UIHelper.getFluidInputPositions(offset);
+        List<Pos2d> fluidInputPositions = recipeMap != null
+                ? recipeMap.getFluidInputPositions(fluidInputCount)
+                : UIHelper.getFluidInputPositions(fluidInputCount);
+        fluidInputPositions =
+                fluidInputPositions.stream().map(p -> p.add(offset)).collect(Collectors.toList());
         for (int i = 0; i < fluidInputPositions.size(); i++) {
             forEachFluidInputSlot.accept(
                     i,
@@ -56,7 +71,11 @@ public class UIHelper {
                     fluidInputPositions.get(i));
         }
 
-        final List<Pos2d> fluidOutputPositions = UIHelper.getFluidOutputPositions(offset);
+        List<Pos2d> fluidOutputPositions = recipeMap != null
+                ? recipeMap.getFluidOutputPositions(fluidOutputCount)
+                : UIHelper.getFluidOutputPositions(fluidOutputCount);
+        fluidOutputPositions =
+                fluidOutputPositions.stream().map(p -> p.add(offset)).collect(Collectors.toList());
         for (int i = 0; i < fluidOutputPositions.size(); i++) {
             forEachFluidOutputSlot.accept(
                     i,
@@ -66,80 +85,86 @@ public class UIHelper {
     }
 
     /**
-     * @return Display positions for basic machine, including border (18x18 size)
+     * @return Display positions for GUI, including border (18x18 size)
      */
-    public static List<Pos2d> getItemInputPositions(int inputCount, Pos2d offset) {
-        switch (inputCount) {
+    public static List<Pos2d> getItemInputPositions(int itemInputCount) {
+        switch (itemInputCount) {
             case 0:
                 return Collections.emptyList();
             case 1:
-                return getItemGridPositions(inputCount, 52, 24, 1, 1, offset.x, offset.y);
+                return getItemGridPositions(itemInputCount, 52, 24, 1, 1);
             case 2:
-                return getItemGridPositions(inputCount, 34, 24, 2, 1, offset.x, offset.y);
+                return getItemGridPositions(itemInputCount, 34, 24, 2, 1);
             case 3:
-                return getItemGridPositions(inputCount, 16, 24, 3, 1, offset.x, offset.y);
+                return getItemGridPositions(itemInputCount, 16, 24, 3, 1);
             case 4:
             case 5:
-                return getItemGridPositions(inputCount, 16, 24, 3, 2, offset.x, offset.y);
+                return getItemGridPositions(itemInputCount, 16, 24, 3, 2);
             case 6:
-                return getItemGridPositions(inputCount, 16, 15, 3, 2, offset.x, offset.y);
+                return getItemGridPositions(itemInputCount, 16, 15, 3, 2);
             default:
-                return getItemGridPositions(inputCount, 16, 6, 3, 3, offset.x, offset.y);
+                return getItemGridPositions(itemInputCount, 16, 6, 3, 3);
         }
     }
 
     /**
-     * @return Display positions for basic machine, including border (18x18 size)
+     * @return Display positions for GUI, including border (18x18 size)
      */
-    public static List<Pos2d> getItemOutputPositions(int outputCount, Pos2d offset) {
-        switch (outputCount) {
+    public static List<Pos2d> getItemOutputPositions(int itemOutputCount) {
+        switch (itemOutputCount) {
             case 0:
                 return Collections.emptyList();
             case 1:
-                return getItemGridPositions(outputCount, 106, 24, 1, 1, offset.x, offset.y);
+                return getItemGridPositions(itemOutputCount, 106, 24, 1, 1);
             case 2:
-                return getItemGridPositions(outputCount, 106, 24, 2, 1, offset.x, offset.y);
+                return getItemGridPositions(itemOutputCount, 106, 24, 2, 1);
             case 3:
-                return getItemGridPositions(outputCount, 106, 24, 3, 1, offset.x, offset.y);
+                return getItemGridPositions(itemOutputCount, 106, 24, 3, 1);
             case 4:
-                return getItemGridPositions(outputCount, 106, 15, 2, 2, offset.x, offset.y);
+                return getItemGridPositions(itemOutputCount, 106, 15, 2, 2);
             case 5:
             case 6:
-                return getItemGridPositions(outputCount, 106, 15, 3, 2, offset.x, offset.y);
+                return getItemGridPositions(itemOutputCount, 106, 15, 3, 2);
             default:
-                return getItemGridPositions(outputCount, 106, 6, 3, 3, offset.x, offset.y);
+                return getItemGridPositions(itemOutputCount, 106, 6, 3, 3);
         }
     }
 
     /**
-     * @return Display position for basic machine, including border (18x18 size)
+     * @return Display position for GUI, including border (18x18 size)
      */
-    public static Pos2d getSpecialItemPosition(Pos2d offset) {
-        return new Pos2d(124, 62).add(offset);
+    public static Pos2d getSpecialItemPosition() {
+        return new Pos2d(124, 62);
     }
 
     /**
-     * @return Display positions for basic machine, including border (18x18 size)
+     * @return Display positions for GUI, including border (18x18 size)
      */
-    public static List<Pos2d> getFluidInputPositions(Pos2d offset) {
+    public static List<Pos2d> getFluidInputPositions(int fluidInputCount) {
         List<Pos2d> results = new ArrayList<>();
-        results.add(new Pos2d(52, 62).add(offset));
-        results.add(new Pos2d(34, 62).add(offset));
+        int x = 52;
+        for (int i = 0; i < fluidInputCount; i++) {
+            results.add(new Pos2d(x, 62));
+            x -= 18;
+        }
         return results;
     }
 
     /**
-     * @return Display positions for basic machine, including border (18x18 size)
+     * @return Display positions for GUI, including border (18x18 size)
      */
-    public static List<Pos2d> getFluidOutputPositions(Pos2d offset) {
+    public static List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
         List<Pos2d> results = new ArrayList<>();
-        results.add(new Pos2d(106, 62).add(offset));
-        results.add(new Pos2d(124, 62).add(offset));
+        int x = 106;
+        for (int i = 0; i < fluidOutputCount; i++) {
+            results.add(new Pos2d(x, 62));
+            x += 18;
+        }
         return results;
     }
 
-    private static List<Pos2d> getItemGridPositions(
-            int itemCount, int xOrigin, int yOrigin, int xDirMaxCount, int yDirMaxCount, int xOffset, int yOffset) {
+    public static List<Pos2d> getItemGridPositions(
+            int itemCount, int xOrigin, int yOrigin, int xDirMaxCount, int yDirMaxCount) {
         // 18 pixels to get to a new grid for placing an item tile since they are 16x16 and have 1 pixel buffers
         // around them.
         int distanceGrid = 18;
@@ -151,7 +176,7 @@ public class UIHelper {
         int yCoord = yOrigin;
 
         for (int i = 0; i < itemCount; i++) {
-            results.add(new Pos2d(xCoord + xOffset, yCoord + yOffset));
+            results.add(new Pos2d(xCoord, yCoord));
             xCoord += distanceGrid;
             if (xCoord == xMax) {
                 xCoord = xOrigin;

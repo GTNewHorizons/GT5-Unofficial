@@ -142,11 +142,13 @@ public abstract class BaseTileEntity extends TileEntity
     }
 
     @Override
+    @Deprecated
     public final boolean openGUI(EntityPlayer aPlayer) {
         return openGUI(aPlayer, 0);
     }
 
     @Override
+    @Deprecated
     public final boolean openGUI(EntityPlayer aPlayer, int aID) {
         if (aPlayer == null) return false;
         aPlayer.openGui(GT, aID, worldObj, xCoord, yCoord, zCoord);
