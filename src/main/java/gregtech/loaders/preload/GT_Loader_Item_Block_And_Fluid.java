@@ -29,21 +29,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings1;
-import gregtech.common.blocks.GT_Block_Casings2;
-import gregtech.common.blocks.GT_Block_Casings3;
-import gregtech.common.blocks.GT_Block_Casings4;
-import gregtech.common.blocks.GT_Block_Casings5;
-import gregtech.common.blocks.GT_Block_Casings6;
-import gregtech.common.blocks.GT_Block_Casings8;
-import gregtech.common.blocks.GT_Block_Concretes;
-import gregtech.common.blocks.GT_Block_Granites;
-import gregtech.common.blocks.GT_Block_Machines;
-import gregtech.common.blocks.GT_Block_Metal;
-import gregtech.common.blocks.GT_Block_Ores;
-import gregtech.common.blocks.GT_Block_Reinforced;
-import gregtech.common.blocks.GT_Block_Stones;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.*;
 import gregtech.common.items.GT_DepletetCell_Item;
 import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
@@ -2185,5 +2171,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GregTech_API.registerMachineBlock(
                 GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("reinforcedGlass", 0)), 0);
+
+        GregTech_API.sSolenoidCoilCasings = new GT_Cyclotron_Coils();
     }
 }

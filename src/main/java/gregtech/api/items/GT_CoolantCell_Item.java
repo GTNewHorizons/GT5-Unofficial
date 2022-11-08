@@ -48,7 +48,7 @@ public class GT_CoolantCell_Item extends GT_Generic_Item {
     }
 
     @Override
-    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+    public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         int rHeat = getHeatOfStack(aStack) * 10 / this.heatStorage;
         EnumChatFormatting color;

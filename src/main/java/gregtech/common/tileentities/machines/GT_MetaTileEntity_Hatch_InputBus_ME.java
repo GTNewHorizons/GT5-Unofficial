@@ -195,6 +195,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
+    public boolean setStackToZeroInsteadOfNull(int aIndex) {
+        return true;
+    }
+
+    @Override
     public ItemStack getStackInSlot(int aIndex) {
         if (!processingRecipe) return super.getStackInSlot(aIndex);
         if (aIndex < 0 || aIndex > mInventory.length) return null;

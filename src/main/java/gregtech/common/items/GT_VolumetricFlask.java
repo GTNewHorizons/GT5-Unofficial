@@ -219,9 +219,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean b) {
-        super.addInformation(stack, player, info, b);
+    protected void addAdditionalToolTips(List<String> info, ItemStack stack, EntityPlayer aPlayer) {
         FluidStack fs = getFluid(stack);
         if (fs != null) {
             info.add(String.format("< %s, %s mB >", GT_Utility.getFluidName(fs, true), formatNumbers(fs.amount)));

@@ -36,7 +36,7 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
     }
 
     @Override
-    protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         if (FluidRegistry.getFluid(aStack.getItemDamage()) != null) {
             String tChemicalFormula =
                     getChemicalFormula(new FluidStack(FluidRegistry.getFluid(aStack.getItemDamage()), 1));
