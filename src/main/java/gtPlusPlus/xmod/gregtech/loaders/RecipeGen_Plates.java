@@ -37,6 +37,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
         final ItemStack ingotStackOne = material.getIngot(1);
         final ItemStack ingotStackTwo = material.getIngot(2);
+        final ItemStack ingotStackThree = material.getIngot(3);
         final ItemStack shape_Mold = ItemList.Shape_Mold_Plate.get(0);
         final ItemStack plate_Single = material.getPlate(1);
         final ItemStack plate_SingleTwo = material.getPlate(2);
@@ -49,7 +50,10 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         // Forge Hammer
         if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Single))
             if (addForgeHammerRecipe(
-                    ingotStackTwo, plate_Single, (int) Math.max(material.getMass(), 1L), material.vVoltageMultiplier)) {
+                    ingotStackThree,
+                    plate_SingleTwo,
+                    (int) Math.max(material.getMass(), 1L),
+                    material.vVoltageMultiplier)) {
                 Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Failed");

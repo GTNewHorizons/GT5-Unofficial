@@ -6,12 +6,10 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import java.util.HashSet;
 import java.util.Set;
-import net.minecraft.item.ItemStack;
 
 public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
@@ -105,17 +103,11 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
                 && ItemUtils.checkForInvalidItems(material.getRing(1))
                 && ItemUtils.checkForInvalidItems(material.getRod(1))) {
             if (CORE.GTNH) {
-                if (RecipeUtils.addShapedRecipe(
-                        "craftingToolHardHammer",
-                        null,
-                        null,
-                        "craftingToolFile",
-                        material.getRod(1),
-                        null,
-                        null,
-                        null,
-                        null,
-                        material.getRing(1))) {
+                if (GT_ModHandler.addCraftingRecipe(
+                        material.getRing(1),
+                        gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                                | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
+                        new Object[] {"h ", "fR", 'R', material.getRod(1)})) {
                     Logger.WARNING("GT:NH Ring Recipe: " + material.getLocalizedName() + " - Success");
                 } else {
                     Logger.WARNING("GT:NH Ring Recipe: " + material.getLocalizedName() + " - Failed");
@@ -143,67 +135,26 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
         if (!material.isRadioactive
                 && ItemUtils.checkForInvalidItems(material.getFrameBox(1))
                 && ItemUtils.checkForInvalidItems(material.getRod(1))) {
-            final ItemStack stackStick = material.getRod(1);
-            if (RecipeUtils.addShapedRecipe(
-                    stackStick,
-                    stackStick,
-                    stackStick,
-                    stackStick,
-                    "craftingToolWrench",
-                    stackStick,
-                    stackStick,
-                    stackStick,
-                    stackStick,
-                    material.getFrameBox(2))) {
+            if (GT_ModHandler.addCraftingRecipe(
+                    material.getFrameBox(2),
+                    gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                            | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] {"RRR", "RwR", "RRR", 'R', material.getRod(1)})) {
                 Logger.WARNING("Framebox Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Framebox Recipe: " + material.getLocalizedName() + " - Failed");
             }
         }
 
-        /*final int tVoltageMultiplier = material.getMeltingPointK() >= 1600 ? 60 : 15;
-
-
-        //Add a shapeless recipe for each dust this way - Compat mode.
-        ItemStack[] inputStacks = material.getMaterialComposites();
-        ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
-
-        if (inputStacks.length > 0 && tVoltageMultiplier == 15){
-        	Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
-        	long[] inputStackSize = material.vSmallestRatio;
-        	if (inputStackSize != null){
-        		for (short x=0;x<inputStacks.length;x++){
-        			if (inputStacks[x] != null && inputStackSize[x] != 0)
-        			inputStacks[x].stackSize = (int) inputStackSize[x];
-        		}
-        		Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
-        		if (RecipeUtils.buildShapelessRecipe(
-        				outputStacks,
-        				inputStacks
-        				)){
-        			Utils.LOG_WARNING("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Success");
-        		}
-        		else {
-        			Utils.LOG_WARNING("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Failed");
-        		}
-        	}
-        }	*/
-
         // Shaped Recipe - Bolts
         if (!material.isRadioactive
                 && ItemUtils.checkForInvalidItems(material.getBolt(1))
                 && ItemUtils.checkForInvalidItems(material.getRod(1))) {
-            if (RecipeUtils.addShapedRecipe(
-                    "craftingToolSaw",
-                    null,
-                    null,
-                    null,
-                    material.getRod(1),
-                    null,
-                    null,
-                    null,
-                    null,
-                    material.getBolt(2))) {
+            if (GT_ModHandler.addCraftingRecipe(
+                    material.getBolt(2),
+                    gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                            | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] {"s ", " R", 'R', material.getRod(1)})) {
                 Logger.WARNING("Bolt Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Bolt Recipe: " + material.getLocalizedName() + " - Failed");
@@ -214,17 +165,11 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
         if (!material.isRadioactive
                 && ItemUtils.checkForInvalidItems(material.getFoil(1))
                 && ItemUtils.checkForInvalidItems(material.getFineWire(1))) {
-            if (RecipeUtils.addShapedRecipe(
-                    material.getFoil(1),
-                    CI.craftingToolWireCutter,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    material.getFineWire(1))) {
+            if (GT_ModHandler.addCraftingRecipe(
+                    material.getFineWire(1),
+                    gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                            | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] {"Fx", 'F', material.getFoil(1)})) {
                 Logger.WARNING("Fine Wire Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Fine Wire Recipe: " + material.getLocalizedName() + " - Failed");
@@ -234,17 +179,11 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
         // Shaped Recipe - Foil
         if (ItemUtils.checkForInvalidItems(material.getFoil(1))
                 && ItemUtils.checkForInvalidItems(material.getPlate(1))) {
-            if (RecipeUtils.addShapedRecipe(
-                    CI.craftingToolHammer_Hard,
-                    material.getPlate(1),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    material.getFoil(2))) {
+            if (GT_ModHandler.addCraftingRecipe(
+                    material.getFoil(2),
+                    gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                            | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] {"hP", 'P', material.getPlate(1)})) {
                 Logger.WARNING("Foil Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Foil Recipe: " + material.getLocalizedName() + " - Failed");
@@ -253,17 +192,11 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
         // Shaped Recipe - Ingot to Rod
         if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getIngot(1)))
-            if (RecipeUtils.addShapedRecipe(
-                    "craftingToolFile",
-                    null,
-                    null,
-                    null,
-                    material.getIngot(1),
-                    null,
-                    null,
-                    null,
-                    null,
-                    material.getRod(1))) {
+            if (GT_ModHandler.addCraftingRecipe(
+                    material.getRod(1),
+                    gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                            | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] {"f ", " I", 'I', material.getIngot(1)})) {
                 Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Failed");
@@ -272,17 +205,11 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
         // Shaped Recipe - Long Rod to two smalls
         if (ItemUtils.checkForInvalidItems(material.getRod(1))
                 && ItemUtils.checkForInvalidItems(material.getLongRod(1)))
-            if (RecipeUtils.addShapedRecipe(
-                    "craftingToolSaw",
-                    null,
-                    null,
-                    material.getLongRod(1),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    material.getRod(2))) {
+            if (GT_ModHandler.addCraftingRecipe(
+                    material.getRod(2),
+                    gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                            | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] {"s", "L", 'L', material.getLongRod(1)})) {
                 Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Rod Recipe: " + material.getLocalizedName() + " - Failed");
@@ -291,17 +218,11 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
         // Two small to long rod
         if (ItemUtils.checkForInvalidItems(material.getLongRod(1))
                 && ItemUtils.checkForInvalidItems(material.getRod(1)))
-            if (RecipeUtils.addShapedRecipe(
-                    material.getRod(1),
-                    "craftingToolHardHammer",
-                    material.getRod(1),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    material.getLongRod(1))) {
+            if (GT_ModHandler.addCraftingRecipe(
+                    material.getLongRod(1),
+                    gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                            | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] {"RhR", 'R', material.getRod(1)})) {
                 Logger.WARNING("Long Rod Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Long Rod Recipe: " + material.getLocalizedName() + " - Failed");
@@ -314,17 +235,21 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
                 && !material.isRadioactive
                 && ItemUtils.checkForInvalidItems(material.getPlate(1))
                 && ItemUtils.checkForInvalidItems(material.getScrew(1))) {
-            if (RecipeUtils.addShapedRecipe(
-                    material.getPlate(1),
-                    "craftingToolHardHammer",
-                    material.getPlate(1),
-                    material.getScrew(1),
-                    material.getRing(1),
-                    "craftingToolFile",
-                    material.getPlate(1),
-                    "craftingToolScrewdriver",
-                    material.getPlate(1),
-                    material.getRotor(1))) {
+            if (GT_ModHandler.addCraftingRecipe(
+                    material.getRotor(1),
+                    gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                            | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] {
+                        "PhP",
+                        "SRf",
+                        "PdP",
+                        'P',
+                        material.getPlate(1),
+                        'S',
+                        material.getScrew(1),
+                        'R',
+                        material.getRing(1),
+                    })) {
                 Logger.WARNING("Rotor Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Rotor Recipe: " + material.getLocalizedName() + " - Failed");
@@ -336,17 +261,13 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
                 && ItemUtils.checkForInvalidItems(material.getGear(1))
                 && ItemUtils.checkForInvalidItems(material.getPlate(1))
                 && ItemUtils.checkForInvalidItems(material.getRod(1))) {
-            if (RecipeUtils.addShapedRecipe(
-                    material.getRod(1),
-                    material.getPlate(1),
-                    material.getRod(1),
-                    material.getPlate(1),
-                    "craftingToolWrench",
-                    material.getPlate(1),
-                    material.getRod(1),
-                    material.getPlate(1),
-                    material.getRod(1),
-                    material.getGear(1))) {
+            if (GT_ModHandler.addCraftingRecipe(
+                    material.getGear(1),
+                    gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                            | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] {
+                        "RPR", "PwP", "RPR", 'P', material.getPlate(1), 'R', material.getRod(1),
+                    })) {
                 Logger.WARNING("Gear Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Gear Recipe: " + material.getLocalizedName() + " - Failed");
@@ -357,17 +278,13 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
         if (!material.isRadioactive
                 && ItemUtils.checkForInvalidItems(material.getScrew(1))
                 && ItemUtils.checkForInvalidItems(material.getBolt(1))) {
-            if (RecipeUtils.addShapedRecipe(
-                    "craftingToolFile",
-                    material.getBolt(1),
-                    null,
-                    material.getBolt(1),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    material.getScrew(1))) {
+            if (GT_ModHandler.addCraftingRecipe(
+                    material.getScrew(1),
+                    gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                            | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] {
+                        "fB", "B ", 'B', material.getBolt(1),
+                    })) {
                 Logger.WARNING("Screw Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Screw Recipe: " + material.getLocalizedName() + " - Failed");
