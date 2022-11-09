@@ -1673,6 +1673,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             GT_Log.err.println(
                     "Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
+            e.printStackTrace();
         }
 
         return false;

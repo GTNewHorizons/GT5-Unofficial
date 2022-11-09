@@ -21,11 +21,14 @@ import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -41,6 +44,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -313,6 +317,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        SlotWidget[] aeSlotWidgets = new SlotWidget[16];
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
                         .startFromSlot(0)
                         .endAtSlot(15)
@@ -331,10 +336,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                                 }
                                 if (getBaseMetaTileEntity().isServerSide()) {
                                     ItemStack newInfo = updateInformationSlot(aSlotIndex, cursorStack);
-                                    ((Slot) getContext()
-                                                    .getContainer()
-                                                    .inventorySlots
-                                                    .get(getMcSlot().slotNumber + 16))
+                                    aeSlotWidgets[getMcSlot().getSlotIndex()]
+                                            .getMcSlot()
                                             .putStack(newInfo);
                                 }
                             }
@@ -353,29 +356,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                         .endAtSlot(31)
                         .phantom(true)
                         .background(GT_UITextures.SLOT_DARK_GRAY)
-                        .widgetCreator(slot -> new SlotWidget(slot) {
-
-                            private final AppEngRenderItem aeRenderItem = new AppEngRenderItem();
-
-                            @Override
-                            protected void drawSlot(Slot slotIn) {
-                                final RenderItem pIR = this.setItemRender(this.aeRenderItem);
-                                try {
-                                    this.aeRenderItem.setAeStack(Platform.getAEStackInSlot(slotIn));
-                                    super.drawSlot(slotIn, false);
-                                } catch (final Exception err) {
-                                    AELog.warn("[AppEng] AE prevented crash while drawing slot: " + err);
-                                }
-                                this.setItemRender(pIR);
-                            }
-
-                            @Optional.Method(modid = "appliedenergistics2")
-                            private RenderItem setItemRender(final RenderItem item) {
-                                final RenderItem ri = ModularGui.getItemRenderer();
-                                ModularGui.setItemRenderer(item);
-                                return ri;
-                            }
-                        }.disableInteraction())
+                        .widgetCreator(slot ->
+                                aeSlotWidgets[slot.getSlotIndex() - 16] = new AESlotWidget(slot).disableInteraction())
                         .build()
                         .setPos(97, 9))
                 .widget(new DrawableWidget()
@@ -390,5 +372,52 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 .setDrawable(getGregTechLogo())
                 .setSize(17, 17)
                 .setPos(80, 63));
+    }
+
+    private static class AESlotWidget extends SlotWidget {
+
+        public AESlotWidget(BaseSlot slot) {
+            super(slot);
+        }
+
+        @Override
+        public void detectAndSendChanges(boolean init) {
+            super.detectAndSendChanges(init);
+            if (getMcSlot().getHasStack()) {
+                syncToClient(
+                        99, buffer -> buffer.writeVarIntToBuffer(getMcSlot().getStack().stackSize));
+            }
+        }
+
+        @Override
+        public void readOnClient(int id, PacketBuffer buf) {
+            super.readOnClient(id, buf);
+            if (id == 99) {
+                if (getMcSlot().getHasStack()) {
+                    getMcSlot().getStack().stackSize = buf.readVarIntFromBuffer();
+                }
+            }
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        protected void drawSlot(Slot slotIn) {
+            final AppEngRenderItem aeRenderItem = new AppEngRenderItem();
+            final RenderItem pIR = this.setItemRender(aeRenderItem);
+            try {
+                aeRenderItem.setAeStack(Platform.getAEStackInSlot(slotIn));
+                super.drawSlot(slotIn, false);
+            } catch (final Exception err) {
+                AELog.warn("[AppEng] AE prevented crash while drawing slot: " + err);
+            }
+            this.setItemRender(pIR);
+        }
+
+        @SideOnly(Side.CLIENT)
+        private RenderItem setItemRender(final RenderItem item) {
+            final RenderItem ri = ModularGui.getItemRenderer();
+            ModularGui.setItemRenderer(item);
+            return ri;
+        }
     }
 }
