@@ -3301,11 +3301,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     windowOffset);
 
             addProgressBarUI(builder, progressSupplier, windowOffset);
-
-            builder.widget(new DrawableWidget()
-                    .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
-                    .setSize(17, 17)
-                    .setPos(neiGregTechLogoPos.add(windowOffset)));
+            addGregTechLogoUI(builder, windowOffset);
 
             for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : specialTextures) {
                 builder.widget(new DrawableWidget()
@@ -3326,6 +3322,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     .setSynced(false, false)
                     .setPos(progressBarPos.add(windowOffset))
                     .setSize(progressBarSize));
+        }
+
+        protected void addGregTechLogoUI(ModularWindow.Builder builder, Pos2d windowOffset) {
+            builder.widget(new DrawableWidget()
+                    .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
+                    .setSize(17, 17)
+                    .setPos(neiGregTechLogoPos.add(windowOffset)));
         }
 
         /**
@@ -3387,7 +3390,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * Place 6 slots for each input/output, item/fluid, a.k.a. LCR style
+     * Place 6 slots for each input/output, item/fluid
      */
     public abstract static class GT_Recipe_Map_MultiFluid_6_Slots extends GT_Recipe_Map {
 
@@ -3483,6 +3486,107 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
             return UIHelper.getItemGridPositions(fluidOutputCount, 106, 44, 3, 3);
+        }
+    }
+
+    /**
+     * Place 9 slots for each input/output, item/fluid
+     */
+    public abstract static class GT_Recipe_Map_MultiFluid_9_Slots extends GT_Recipe_Map {
+
+        public GT_Recipe_Map_MultiFluid_9_Slots(
+                Collection<GT_Recipe> aRecipeList,
+                String aUnlocalizedName,
+                String aLocalName,
+                String aNEIName,
+                String aNEIGUIPath,
+                int aUsualInputCount,
+                int aUsualOutputCount,
+                int aMinimalInputItems,
+                int aMinimalInputFluids,
+                int aAmperage,
+                String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier,
+                String aNEISpecialValuePost,
+                boolean aShowVoltageAmperageInNEI,
+                boolean aNEIAllowed,
+                boolean aNEIUnificateOutput) {
+            super(
+                    aRecipeList,
+                    aUnlocalizedName,
+                    aLocalName,
+                    aNEIName,
+                    aNEIGUIPath,
+                    9,
+                    9,
+                    aMinimalInputItems,
+                    aMinimalInputFluids,
+                    aAmperage,
+                    aNEISpecialValuePre,
+                    aNEISpecialValueMultiplier,
+                    aNEISpecialValuePost,
+                    aShowVoltageAmperageInNEI,
+                    aNEIAllowed,
+                    aNEIUnificateOutput);
+            setUsualFluidInputCount(9);
+            setUsualFluidOutputCount(9);
+            setNEIBackgroundSize(172, 116);
+            setNEIGregTechLogoPos(80, 98);
+        }
+
+        public GT_Recipe_Map_MultiFluid_9_Slots(
+                Collection<GT_Recipe> aRecipeList,
+                String aUnlocalizedName,
+                String aLocalName,
+                String aNEIName,
+                String aNEIGUIPath,
+                int aUsualInputCount,
+                int aUsualOutputCount,
+                int aMinimalInputItems,
+                int aMinimalInputFluids,
+                int aAmperage,
+                String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier,
+                String aNEISpecialValuePost,
+                boolean aShowVoltageAmperageInNEI,
+                boolean aNEIAllowed) {
+            this(
+                    aRecipeList,
+                    aUnlocalizedName,
+                    aLocalName,
+                    aNEIName,
+                    aNEIGUIPath,
+                    aUsualInputCount,
+                    aUsualOutputCount,
+                    aMinimalInputItems,
+                    aMinimalInputFluids,
+                    aAmperage,
+                    aNEISpecialValuePre,
+                    aNEISpecialValueMultiplier,
+                    aNEISpecialValuePost,
+                    aShowVoltageAmperageInNEI,
+                    aNEIAllowed,
+                    true);
+        }
+
+        @Override
+        public List<Pos2d> getItemInputPositions(int itemInputCount) {
+            return UIHelper.getItemGridPositions(itemInputCount, 16, 8, 3, 3);
+        }
+
+        @Override
+        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
+            return UIHelper.getItemGridPositions(itemOutputCount, 106, 8, 3, 3);
+        }
+
+        @Override
+        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+            return UIHelper.getItemGridPositions(fluidInputCount, 16, 62, 3, 3);
+        }
+
+        @Override
+        public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
+            return UIHelper.getItemGridPositions(fluidOutputCount, 106, 62, 3, 3);
         }
     }
 
@@ -5627,7 +5731,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
     }
 
-    public static class GT_Recipe_Map_PlasmaForge extends GT_Recipe_Map_MultiFluid_6_Slots {
+    public static class GT_Recipe_Map_PlasmaForge extends GT_Recipe_Map_MultiFluid_9_Slots {
 
         public GT_Recipe_Map_PlasmaForge(
                 Collection<GT_Recipe> aRecipeList,

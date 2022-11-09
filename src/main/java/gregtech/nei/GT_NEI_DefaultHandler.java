@@ -630,7 +630,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     protected int getDescriptionYOffset() {
-        return 77;
+        return mRecipeMap.neiBackgroundSize.height + mRecipeMap.neiBackgroundOffset.y + WINDOW_OFFSET.y + 3;
     }
 
     protected void drawUI(ModularWindow window) {
