@@ -7,13 +7,14 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class BW_CropVisualizer extends EntityFX {
     int meta;
-    Field tessellatorHasBrightnessField = null;
+    static Field tessellatorHasBrightnessField = null;
 
     public BW_CropVisualizer(World world, int x, int y, int z, int meta, int age) {
         super(world, (double) x, ((double) y - 0.0625d), (double) z);
@@ -46,7 +47,10 @@ public class BW_CropVisualizer extends EntityFX {
         double f13 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double) p_70539_2_ - interpPosZ;
         try {
             if (tessellatorHasBrightnessField == null) {
-                tessellatorHasBrightnessField = Tessellator.class.getDeclaredField("hasBrightness");
+                tessellatorHasBrightnessField = Tessellator.class.getDeclaredField(
+                        (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")
+                                ? "hasBrightness"
+                                : "field_78414_p");
                 tessellatorHasBrightnessField.setAccessible(true);
             }
             tessellatorHasBrightnessField.set(tessellator, false);
