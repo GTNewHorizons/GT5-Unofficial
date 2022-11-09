@@ -59,7 +59,6 @@ public class LuVTierEnhancer implements Runnable {
 
     static {
         addToBlackListForOsmiridiumReplacement(ItemList.Casing_MiningOsmiridium.get(1));
-        addToBlackListForOsmiridiumReplacement(GT_OreDictUnificator.get(OrePrefixes.turbine, Materials.Osmiridium, 1));
         addToBlackListForOsmiridiumReplacement(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                 170, 1, Materials.Osmiridium, Materials.Osmiridium, null));
         addToBlackListForOsmiridiumReplacement(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
@@ -305,7 +304,7 @@ public class LuVTierEnhancer implements Runnable {
     }
 
     private static boolean isOutputBlackListed(ItemStack output) {
-        if (blackListForOsmiridium.stream().anyMatch(s -> s.isItemEqual(output))) return true;
+        if (blackListForOsmiridium.stream().anyMatch(s -> GT_Utility.areStacksEqual(s, output))) return true;
         return false;
     }
 
