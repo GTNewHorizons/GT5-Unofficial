@@ -994,6 +994,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
     }
 
+    @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static class GT_Recipe_Map {
         /**
          * Contains all Recipe Maps
@@ -1971,8 +1972,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         1,
                         E,
                         true,
-                        true,
-                        !Loader.isModLoaded("neicustomdiagram"))
+                        true)
+                .setNEIUnificateOutput(!Loader.isModLoaded("neicustomdiagram"))
                 .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CIRCUIT)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_CIRCUIT_ASSEMBLER, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sCannerRecipes = new GT_Recipe_Map(
@@ -2458,7 +2459,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 mMinimalInputItems,
                 mMinimalInputFluids,
                 mAmperage;
-        public final boolean mNEIAllowed, mShowVoltageAmperageInNEI, mNEIUnificateOutput;
+        public final boolean mNEIAllowed, mShowVoltageAmperageInNEI;
+
+        /**
+         * Whether to show oredict equivalent outputs when NEI is queried to show recipe
+         */
+        public boolean mNEIUnificateOutput = true;
 
         /**
          * Unique identifier for this recipe map. Generated from aUnlocalizedName and a few other parameters.
@@ -2570,7 +2576,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @param aNEISpecialValueMultiplier the Value the Special Value is getting Multiplied with before displaying
          * @param aNEISpecialValuePost       the String after the Special Value. Usually for a Unit or something.
          * @param aNEIAllowed                if NEI is allowed to display this Recipe Handler in general.
-         * @param aNEIUnificateOutput        if NEI generate oredict equivalents
          */
         public GT_Recipe_Map(
                 Collection<GT_Recipe> aRecipeList,
@@ -2587,12 +2592,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 int aNEISpecialValueMultiplier,
                 String aNEISpecialValuePost,
                 boolean aShowVoltageAmperageInNEI,
-                boolean aNEIAllowed,
-                boolean aNEIUnificateOutput) {
+                boolean aNEIAllowed) {
             sMappings.add(this);
             mNEIAllowed = aNEIAllowed;
             mShowVoltageAmperageInNEI = aShowVoltageAmperageInNEI;
-            mNEIUnificateOutput = aNEIUnificateOutput;
             mRecipeList = aRecipeList;
             mNEIName = aNEIName == null ? aUnlocalizedName : aNEIName;
             mNEIGUIPath = aNEIGUIPath.endsWith(".png") ? aNEIGUIPath : aNEIGUIPath + ".png";
@@ -2619,6 +2622,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 throw new IllegalArgumentException("Duplicate recipe map registered: " + mUniqueIdentifier);
         }
 
+        @Deprecated
         public GT_Recipe_Map(
                 Collection<GT_Recipe> aRecipeList,
                 String aUnlocalizedName,
@@ -2634,7 +2638,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 int aNEISpecialValueMultiplier,
                 String aNEISpecialValuePost,
                 boolean aShowVoltageAmperageInNEI,
-                boolean aNEIAllowed) {
+                boolean aNEIAllowed,
+                boolean aNEIUnificateOutput) {
             this(
                     aRecipeList,
                     aUnlocalizedName,
@@ -2650,8 +2655,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEISpecialValueMultiplier,
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
-                    aNEIAllowed,
-                    true);
+                    aNEIAllowed);
+            setNEIUnificateOutput(aNEIUnificateOutput);
+        }
+
+        public GT_Recipe_Map setNEIUnificateOutput(boolean mNEIUnificateOutput) {
+            this.mNEIUnificateOutput = mNEIUnificateOutput;
+            return this;
         }
 
         public GT_Recipe_Map useModularUI(boolean use) {
@@ -3409,8 +3419,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 int aNEISpecialValueMultiplier,
                 String aNEISpecialValuePost,
                 boolean aShowVoltageAmperageInNEI,
-                boolean aNEIAllowed,
-                boolean aNEIUnificateOutput) {
+                boolean aNEIAllowed) {
             super(
                     aRecipeList,
                     aUnlocalizedName,
@@ -3426,46 +3435,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEISpecialValueMultiplier,
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
-                    aNEIAllowed,
-                    aNEIUnificateOutput);
+                    aNEIAllowed);
             setUsualFluidInputCount(6);
             setUsualFluidOutputCount(6);
             setNEIGregTechLogoPos(80, 62);
-        }
-
-        public GT_Recipe_Map_MultiFluid_6_Slots(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
-                boolean aNEIAllowed) {
-            this(
-                    aRecipeList,
-                    aUnlocalizedName,
-                    aLocalName,
-                    aNEIName,
-                    aNEIGUIPath,
-                    aUsualInputCount,
-                    aUsualOutputCount,
-                    aMinimalInputItems,
-                    aMinimalInputFluids,
-                    aAmperage,
-                    aNEISpecialValuePre,
-                    aNEISpecialValueMultiplier,
-                    aNEISpecialValuePost,
-                    aShowVoltageAmperageInNEI,
-                    aNEIAllowed,
-                    true);
         }
 
         @Override
@@ -3509,8 +3482,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 int aNEISpecialValueMultiplier,
                 String aNEISpecialValuePost,
                 boolean aShowVoltageAmperageInNEI,
-                boolean aNEIAllowed,
-                boolean aNEIUnificateOutput) {
+                boolean aNEIAllowed) {
             super(
                     aRecipeList,
                     aUnlocalizedName,
@@ -3526,47 +3498,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEISpecialValueMultiplier,
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
-                    aNEIAllowed,
-                    aNEIUnificateOutput);
+                    aNEIAllowed);
             setUsualFluidInputCount(9);
             setUsualFluidOutputCount(9);
             setNEIBackgroundSize(172, 116);
             setNEIGregTechLogoPos(80, 98);
-        }
-
-        public GT_Recipe_Map_MultiFluid_9_Slots(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
-                boolean aNEIAllowed) {
-            this(
-                    aRecipeList,
-                    aUnlocalizedName,
-                    aLocalName,
-                    aNEIName,
-                    aNEIGUIPath,
-                    aUsualInputCount,
-                    aUsualOutputCount,
-                    aMinimalInputItems,
-                    aMinimalInputFluids,
-                    aAmperage,
-                    aNEISpecialValuePre,
-                    aNEISpecialValueMultiplier,
-                    aNEISpecialValuePost,
-                    aShowVoltageAmperageInNEI,
-                    aNEIAllowed,
-                    true);
         }
 
         @Override
@@ -4841,8 +4777,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 int aNEISpecialValueMultiplier,
                 String aNEISpecialValuePost,
                 boolean aShowVoltageAmperageInNEI,
-                boolean aNEIAllowed,
-                boolean aNEIUnificateOutput) {
+                boolean aNEIAllowed) {
             super(
                     aRecipeList,
                     aUnlocalizedName,
@@ -4858,43 +4793,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEISpecialValueMultiplier,
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
-                    aNEIAllowed,
-                    aNEIUnificateOutput);
-        }
-
-        public GT_Recipe_Map_Assembler(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
-                boolean aNEIAllowed) {
-            this(
-                    aRecipeList,
-                    aUnlocalizedName,
-                    aLocalName,
-                    aNEIName,
-                    aNEIGUIPath,
-                    aUsualInputCount,
-                    aUsualOutputCount,
-                    aMinimalInputItems,
-                    aMinimalInputFluids,
-                    aAmperage,
-                    aNEISpecialValuePre,
-                    aNEISpecialValueMultiplier,
-                    aNEISpecialValuePost,
-                    aShowVoltageAmperageInNEI,
-                    aNEIAllowed,
-                    true);
+                    aNEIAllowed);
         }
 
         @Override
@@ -5764,8 +5663,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEISpecialValueMultiplier,
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
-                    aNEIAllowed,
-                    true);
+                    aNEIAllowed);
         }
     }
 
@@ -5802,8 +5700,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEISpecialValueMultiplier,
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
-                    aNEIAllowed,
-                    true);
+                    aNEIAllowed);
         }
 
         @Override

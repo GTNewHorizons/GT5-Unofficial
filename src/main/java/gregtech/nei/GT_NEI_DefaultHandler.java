@@ -904,7 +904,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 return;
             }
 
-            // Default GT NEI handler for drawing fluids/items on screen.
             mOutputs = new ArrayList<>();
             mInputs = new ArrayList<>();
 
