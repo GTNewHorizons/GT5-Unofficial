@@ -28,7 +28,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -468,13 +468,13 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     private void addChangeNumberButtons(
             ModularWindow.Builder builder,
             IDrawable overlay,
-            Function<Integer, Integer> setter,
+            Consumer<Integer> setter,
             int addNumberShift,
             int addNumber,
             int xPos,
             int yPos) {
         builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> setter.apply(clickData.shift ? addNumberShift : addNumber))
+                .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? addNumberShift : addNumber))
                 .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
                 .setSize(18, 18)
                 .setPos(xPos, yPos));

@@ -27,7 +27,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
@@ -633,38 +633,38 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
                         .setPos(46, 40))
                 .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val));
 
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
-        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64, 151);
+        addAddNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
+        addAddNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
+        addAddNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
+        addAddNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64, 151);
 
-        addChangeNumberButtons(
+        addAddNumberButton(
                 builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> mTargetD = mTargetD + val, -16, -8, 7, 58);
-        addChangeNumberButtons(
+        addAddNumberButton(
                 builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> mTargetD = mTargetD + val, -4, -1, 25, 58);
-        addChangeNumberButtons(
+        addAddNumberButton(
                 builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> mTargetD = mTargetD + val, 4, 1, 133, 58);
-        addChangeNumberButtons(
+        addAddNumberButton(
                 builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> mTargetD = mTargetD + val, 16, 8, 151, 58);
     }
 
-    private void addChangeNumberButtons(
+    private void addAddNumberButtons(
             ModularWindow.Builder builder, IDrawable overlay, int addNumberShift, int addNumber, int xPos) {
-        addChangeNumberButtons(builder, overlay, val -> mTargetX = mTargetX + val, addNumberShift, addNumber, xPos, 4);
-        addChangeNumberButtons(builder, overlay, val -> mTargetY = mTargetY + val, addNumberShift, addNumber, xPos, 22);
-        addChangeNumberButtons(builder, overlay, val -> mTargetZ = mTargetZ + val, addNumberShift, addNumber, xPos, 40);
+        addAddNumberButton(builder, overlay, val -> mTargetX = mTargetX + val, addNumberShift, addNumber, xPos, 4);
+        addAddNumberButton(builder, overlay, val -> mTargetY = mTargetY + val, addNumberShift, addNumber, xPos, 22);
+        addAddNumberButton(builder, overlay, val -> mTargetZ = mTargetZ + val, addNumberShift, addNumber, xPos, 40);
     }
 
-    private void addChangeNumberButtons(
+    private void addAddNumberButton(
             ModularWindow.Builder builder,
             IDrawable overlay,
-            Function<Integer, Integer> setter,
+            Consumer<Integer> setter,
             int addNumberShift,
             int addNumber,
             int xPos,
             int yPos) {
         builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> setter.apply(clickData.shift ? addNumberShift : addNumber))
+                .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? addNumberShift : addNumber))
                 .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
                 .setSize(18, 18)
                 .setPos(xPos, yPos));
