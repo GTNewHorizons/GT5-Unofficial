@@ -7,9 +7,9 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -244,8 +244,8 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public SteamTexture.Variant getSteamVariant() {
-        return SteamTexture.Variant.BRONZE;
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.BRONZE;
     }
 
     @Override

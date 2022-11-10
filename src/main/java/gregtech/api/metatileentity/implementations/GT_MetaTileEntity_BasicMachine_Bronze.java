@@ -10,8 +10,8 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -433,32 +433,32 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public SteamTexture.Variant getSteamVariant() {
-        return SteamTexture.Variant.BRONZE;
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.BRONZE;
     }
 
     @Override
     protected UITexture getBackground() {
-        return GT_UITextures.BACKGROUND_STEAM.get(SteamTexture.Variant.BRONZE);
+        return GT_UITextures.BACKGROUND_STEAM.get(SteamVariant.BRONZE);
     }
 
     @Override
     protected IDrawable getSlotBackground() {
-        return GT_UITextures.SLOT_ITEM_STEAM.get(SteamTexture.Variant.BRONZE);
+        return GT_UITextures.SLOT_ITEM_STEAM.get(SteamVariant.BRONZE);
     }
 
     @Override
     protected IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamTexture.Variant.BRONZE);
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamVariant.BRONZE);
     }
 
     @Override
     protected GT_GuiTabIconSet getTabIconSet() {
         return new GT_GuiTabIconSet(
-                GT_UITextures.TAB_COVER_STEAM_NORMAL.get(SteamTexture.Variant.BRONZE),
-                GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(SteamTexture.Variant.BRONZE),
-                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamTexture.Variant.BRONZE),
-                GT_UITextures.TAB_TITLE_STEAM.getAdaptable(SteamTexture.Variant.BRONZE),
-                GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(SteamTexture.Variant.BRONZE));
+                GT_UITextures.TAB_COVER_STEAM_NORMAL.get(SteamVariant.BRONZE),
+                GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(SteamVariant.BRONZE),
+                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamVariant.BRONZE),
+                GT_UITextures.TAB_TITLE_STEAM.getAdaptable(SteamVariant.BRONZE),
+                GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(SteamVariant.BRONZE));
     }
 }

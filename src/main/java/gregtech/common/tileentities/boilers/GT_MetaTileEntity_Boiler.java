@@ -15,9 +15,9 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
@@ -410,8 +410,8 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
 
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
-    public SteamTexture.Variant getSteamVariant() {
-        return SteamTexture.Variant.BRONZE;
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.BRONZE;
     }
 
     protected IDrawable[] getFuelSlotBackground() {
@@ -506,6 +506,6 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
 
     @Override
     protected int getTitleColor() {
-        return getSteamVariant() == SteamTexture.Variant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
+        return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
     }
 }

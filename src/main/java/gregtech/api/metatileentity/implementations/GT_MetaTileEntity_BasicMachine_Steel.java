@@ -11,8 +11,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.power.Power;
@@ -194,33 +194,33 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
     }
 
     @Override
-    public SteamTexture.Variant getSteamVariant() {
-        return SteamTexture.Variant.STEEL;
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.STEEL;
     }
 
     @Override
     protected UITexture getBackground() {
-        return GT_UITextures.BACKGROUND_STEAM.get(SteamTexture.Variant.STEEL);
+        return GT_UITextures.BACKGROUND_STEAM.get(SteamVariant.STEEL);
     }
 
     @Override
     protected IDrawable getSlotBackground() {
-        return GT_UITextures.SLOT_ITEM_STEAM.get(SteamTexture.Variant.STEEL);
+        return GT_UITextures.SLOT_ITEM_STEAM.get(SteamVariant.STEEL);
     }
 
     @Override
     protected IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamTexture.Variant.STEEL);
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamVariant.STEEL);
     }
 
     @Override
     protected GT_GuiTabIconSet getTabIconSet() {
         return new GT_GuiTabIconSet(
-                GT_UITextures.TAB_COVER_STEAM_NORMAL.get(SteamTexture.Variant.STEEL),
-                GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(SteamTexture.Variant.STEEL),
-                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamTexture.Variant.STEEL),
-                GT_UITextures.TAB_TITLE_STEAM.getAdaptable(SteamTexture.Variant.STEEL),
-                GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(SteamTexture.Variant.STEEL));
+                GT_UITextures.TAB_COVER_STEAM_NORMAL.get(SteamVariant.STEEL),
+                GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(SteamVariant.STEEL),
+                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamVariant.STEEL),
+                GT_UITextures.TAB_TITLE_STEAM.getAdaptable(SteamVariant.STEEL),
+                GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(SteamVariant.STEEL));
     }
 
     @Override

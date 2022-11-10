@@ -20,6 +20,7 @@ import gnu.trove.map.hash.TByteObjectHashMap;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -3307,7 +3308,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     mUsualOutputCount,
                     getUsualFluidInputCount(),
                     getUsualFluidOutputCount(),
-                    SteamTexture.Variant.NONE,
+                    SteamVariant.NONE,
                     windowOffset);
 
             addProgressBarUI(builder, progressSupplier, windowOffset);

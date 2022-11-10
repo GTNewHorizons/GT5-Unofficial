@@ -2,9 +2,9 @@ package gregtech.common.tileentities.machines.multi;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -112,8 +112,8 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
     }
 
     @Override
-    public SteamTexture.Variant getSteamVariant() {
-        return SteamTexture.Variant.PRIMITIVE;
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.PRIMITIVE;
     }
 
     @Override

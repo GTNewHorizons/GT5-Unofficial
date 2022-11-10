@@ -2,7 +2,7 @@ package gregtech.api.gui.modularui;
 
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import java.util.Locale;
+import gregtech.api.enums.SteamVariant;
 
 /**
  * Wrapper for {@link UITexture}s used to
@@ -22,23 +22,27 @@ public class SteamTexture {
 
     public static SteamTexture fullImage(String mod, String location) {
         return new SteamTexture(
-                UITexture.fullImage(mod, String.format(location, Variant.BRONZE)),
-                UITexture.fullImage(mod, String.format(location, Variant.STEEL)),
-                UITexture.fullImage(mod, String.format(location, Variant.PRIMITIVE)));
+                UITexture.fullImage(mod, String.format(location, SteamVariant.BRONZE)),
+                UITexture.fullImage(mod, String.format(location, SteamVariant.STEEL)),
+                UITexture.fullImage(mod, String.format(location, SteamVariant.PRIMITIVE)));
     }
 
     public static SteamTexture adaptableTexture(
             String mod, String location, int imageWidth, int imageHeight, int borderWidthPixel) {
         return new SteamTexture(
                 AdaptableUITexture.of(
-                        mod, String.format(location, Variant.BRONZE), imageWidth, imageHeight, borderWidthPixel),
+                        mod, String.format(location, SteamVariant.BRONZE), imageWidth, imageHeight, borderWidthPixel),
                 AdaptableUITexture.of(
-                        mod, String.format(location, Variant.STEEL), imageWidth, imageHeight, borderWidthPixel),
+                        mod, String.format(location, SteamVariant.STEEL), imageWidth, imageHeight, borderWidthPixel),
                 AdaptableUITexture.of(
-                        mod, String.format(location, Variant.PRIMITIVE), imageWidth, imageHeight, borderWidthPixel));
+                        mod,
+                        String.format(location, SteamVariant.PRIMITIVE),
+                        imageWidth,
+                        imageHeight,
+                        borderWidthPixel));
     }
 
-    public UITexture get(Variant variant) {
+    public UITexture get(SteamVariant variant) {
         switch (variant) {
             case BRONZE:
                 return bronzeTexture;
@@ -51,7 +55,7 @@ public class SteamTexture {
         }
     }
 
-    public AdaptableUITexture getAdaptable(Variant variant) {
+    public AdaptableUITexture getAdaptable(SteamVariant variant) {
         switch (variant) {
             case BRONZE:
                 return (AdaptableUITexture) bronzeTexture;
@@ -66,17 +70,5 @@ public class SteamTexture {
 
     public UITexture get(boolean isHighPressure) {
         return isHighPressure ? steelTexture : bronzeTexture;
-    }
-
-    public enum Variant {
-        BRONZE,
-        STEEL,
-        PRIMITIVE,
-        NONE;
-
-        @Override
-        public String toString() {
-            return super.toString().toLowerCase(Locale.ENGLISH);
-        }
     }
 }

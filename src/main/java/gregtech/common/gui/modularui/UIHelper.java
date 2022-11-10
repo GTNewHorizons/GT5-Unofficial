@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.util.GT_Recipe;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class UIHelper {
             int itemOutputCount,
             int fluidInputCount,
             int fluidOutputCount,
-            SteamTexture.Variant steamVariant,
+            SteamVariant steamVariant,
             Pos2d offset) {
         List<Pos2d> itemInputPositions = recipeMap != null
                 ? recipeMap.getItemInputPositions(itemInputCount)
@@ -194,10 +195,10 @@ public class UIHelper {
             boolean isOutput,
             int index,
             boolean isSpecial,
-            SteamTexture.Variant steamVariant) {
+            SteamVariant steamVariant) {
         if (recipeMap != null) {
             IDrawable overlay;
-            if (steamVariant != SteamTexture.Variant.NONE) {
+            if (steamVariant != SteamVariant.NONE) {
                 SteamTexture steamTexture = recipeMap.getOverlayForSlotSteam(isFluid, isOutput, index, isSpecial);
                 if (steamTexture != null) {
                     overlay = steamTexture.get(steamVariant);

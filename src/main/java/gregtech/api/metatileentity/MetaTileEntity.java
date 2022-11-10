@@ -37,10 +37,10 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -444,8 +444,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      * @return what type of texture does this machine use for GUI,
      * i.e. Bronze, Steel, or Primitive
      */
-    public SteamTexture.Variant getSteamVariant() {
-        return SteamTexture.Variant.NONE;
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.NONE;
     }
 
     /**

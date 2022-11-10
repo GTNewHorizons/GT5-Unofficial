@@ -3,8 +3,8 @@ package gregtech.common.tileentities.boilers;
 import static gregtech.api.enums.ConfigCategories.machineconfig;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -63,8 +63,8 @@ public class GT_MetaTileEntity_Boiler_Solar_Steel extends GT_MetaTileEntity_Boil
     }
 
     @Override
-    public SteamTexture.Variant getSteamVariant() {
-        return SteamTexture.Variant.STEEL;
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.STEEL;
     }
 
     @Override
