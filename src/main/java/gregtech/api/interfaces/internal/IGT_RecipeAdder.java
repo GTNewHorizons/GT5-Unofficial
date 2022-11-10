@@ -1304,4 +1304,23 @@ public interface IGT_RecipeAdder {
             int aDuration,
             int aEUt,
             int aSpecialValue);
+
+    /**
+     * Add a Board Manufacturer Recipe. The Board Manufacturer's main use is to make the circuit boards
+     * needed to make circuits.
+     *
+     * @param aInputs = must not be null
+     * @param aFluidInputs = must not be null
+     * @param aOutputs = must not be null
+     * @param aDuration
+     * @param aEUt
+     * @param aSpecialValue = defines the tier of the board manufacturer required.
+     */
+    boolean addPCBFactoryRecipe(
+            ItemStack[] aInputs,
+            FluidStack[] aFluidInputs,
+            ItemStack[] aOutputs,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue);
 }

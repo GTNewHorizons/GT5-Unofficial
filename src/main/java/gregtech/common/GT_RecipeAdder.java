@@ -3341,6 +3341,17 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Override
+    public boolean addPCBFactoryRecipe(
+            ItemStack[] aInputs,
+            FluidStack[] aFluidInputs,
+            ItemStack[] aOutputs,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue) {
+        return false;
+    }
+
     private boolean areItemsAndFluidsBothNull(ItemStack[] items, FluidStack[] fluids) {
         boolean itemsNull = true;
         if (items != null) {
