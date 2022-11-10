@@ -3420,7 +3420,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0xFFFFFF),
             new Color(0xFFFFFF),
             beeSpecies -> {
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.INFINITYCATALYST), 0.03f);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.INFINITYCATALYST), 0.015f);
                 beeSpecies.setHumidity(DAMP);
                 beeSpecies.setTemperature(HELLISH);
                 beeSpecies.setNocturnal();
@@ -3445,7 +3445,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0xFFFFFF),
             new Color(0xFFFFFF),
             beeSpecies -> {
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.INFINITY), 0.03f);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.INFINITY), 0.015f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setNocturnal();
@@ -3645,38 +3645,38 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0x60602F),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.INFUSEDAER), 0.30f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
+                beeSpecies.setHumidity(DAMP);
                 beeSpecies.setHasEffect();
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
             dis -> {
                 IBeeMutationCustom tMutation =
                         dis.registerMutation(getSpecies(MAGICBEES, "Supernatural"), getSpecies(MAGICBEES, "Windy"), 15);
-                tMutation.restrictTemperature(ICY);
+                tMutation.restrictTemperature(HOT);
                 if (Loader.isModLoaded("Thaumcraft"))
                     tMutation.requireResource(GameRegistry.findBlock("Thaumcraft", "blockCrystal"), 0);
             }),
     FIRE(
             GT_BranchDefinition.INFUSEDSHARD,
-            "Air",
+            "Fire",
             false,
             new Color(0xED3801),
             new Color(0x3B0E00),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.INFUSEDIGNIS), 0.30f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
+                beeSpecies.setHumidity(ARID);
                 beeSpecies.setHasEffect();
             },
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
             dis -> {
                 IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(MAGICBEES, "Supernatural"), AIR, 15);
-                tMutation.restrictTemperature(ICY);
+                tMutation.restrictTemperature(HELLISH);
                 if (Loader.isModLoaded("Thaumcraft"))
-                    tMutation.requireResource(GameRegistry.findBlock("Thaumcraft", "blockCrystal"), 0);
+                    tMutation.requireResource(GameRegistry.findBlock("Thaumcraft", "blockCrystal"), 1);
             }),
     WATER(
             GT_BranchDefinition.INFUSEDSHARD,
-            "Air",
+            "Water",
             false,
             new Color(0x0090FF),
             new Color(0x002542),
@@ -3690,11 +3690,11 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 IBeeMutationCustom tMutation = dis.registerMutation(FIRE, AIR, 15);
                 tMutation.restrictTemperature(ICY);
                 if (Loader.isModLoaded("Thaumcraft"))
-                    tMutation.requireResource(GameRegistry.findBlock("Thaumcraft", "blockCrystal"), 0);
+                    tMutation.requireResource(GameRegistry.findBlock("Thaumcraft", "blockCrystal"), 2);
             }),
     EARTH(
             GT_BranchDefinition.INFUSEDSHARD,
-            "Air",
+            "Earth",
             false,
             new Color(0x008600),
             new Color(0x003300),
@@ -3706,13 +3706,13 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
             dis -> {
                 IBeeMutationCustom tMutation = dis.registerMutation(WATER, FIRE, 15);
-                tMutation.restrictTemperature(ICY);
+                tMutation.restrictTemperature(WARM);
                 if (Loader.isModLoaded("Thaumcraft"))
-                    tMutation.requireResource(GameRegistry.findBlock("Thaumcraft", "blockCrystal"), 0);
+                    tMutation.requireResource(GameRegistry.findBlock("Thaumcraft", "blockCrystal"), 3);
             }),
     ORDER(
             GT_BranchDefinition.INFUSEDSHARD,
-            "Air",
+            "Order",
             false,
             new Color(0x8A97B0),
             new Color(0x5C5F62),
@@ -3726,11 +3726,11 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 IBeeMutationCustom tMutation = dis.registerMutation(EARTH, FIRE, 15);
                 tMutation.restrictTemperature(ICY);
                 if (Loader.isModLoaded("Thaumcraft"))
-                    tMutation.requireResource(GameRegistry.findBlock("Thaumcraft", "blockCrystal"), 0);
+                    tMutation.requireResource(GameRegistry.findBlock("Thaumcraft", "blockCrystal"), 4);
             }),
     CHAOS(
             GT_BranchDefinition.INFUSEDSHARD,
-            "Air",
+            "Chaos",
             false,
             new Color(0x2E2E41),
             new Color(0x232129),
@@ -3744,7 +3744,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 IBeeMutationCustom tMutation = dis.registerMutation(ORDER, FIRE, 15);
                 tMutation.restrictTemperature(ICY);
                 if (Loader.isModLoaded("Thaumcraft"))
-                    tMutation.requireResource(GameRegistry.findBlock("Thaumcraft", "blockCrystal"), 0);
+                    tMutation.requireResource(GameRegistry.findBlock("Thaumcraft", "blockCrystal"), 5);
             }),
     NETHERSHARD(
             GT_BranchDefinition.INFUSEDSHARD,
@@ -3804,7 +3804,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0x05AD18),
             new Color(0xE7DAC3),
             beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem("berriespp", "BppPotions", 1L, 8), 0.02f);
+                beeSpecies.addProduct(GT_ModHandler.getModItem("berriespp", "BppPotions", 1L, 8), 0.01f);
                 beeSpecies.setHumidity(EnumHumidity.NORMAL);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
