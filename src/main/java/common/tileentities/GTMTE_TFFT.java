@@ -103,6 +103,64 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
         }
     }
 
+    private enum TFFTStorageFieldElement implements IStructureElement<GTMTE_TFFT> {
+        INSTANCE;
+
+        @Override
+        public boolean check(GTMTE_TFFT t, World world, int x, int y, int z) {
+            Block worldBlock = world.getBlock(x, y, z);
+            int meta = worldBlock.getDamageValue(world, x, y, z);
+            if (TFFT_FIELD != worldBlock || meta == 0) return false;
+            t.FIELDS[meta - 1]++;
+            return true;
+        }
+
+        private int getHint(ItemStack stack) {
+            return Math.min(Field.VALUES.length, ChannelDataAccessor.getChannelData(stack, "field"));
+        }
+
+        @Override
+        public boolean spawnHint(GTMTE_TFFT t, World world, int x, int y, int z, ItemStack trigger) {
+            StructureLibAPI.hintParticle(world, x, y, z, TFFT_FIELD, getHint(trigger));
+            return true;
+        }
+
+        @Override
+        public boolean placeBlock(GTMTE_TFFT t, World world, int x, int y, int z, ItemStack trigger) {
+            world.setBlock(x, y, z, TFFT_FIELD, getHint(trigger), 3);
+            return true;
+        }
+
+        @Override
+        public PlaceResult survivalPlaceBlock(
+                GTMTE_TFFT t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            if (check(t, world, x, y, z)) return PlaceResult.SKIP;
+            int fieldTier = getHint(trigger);
+            ItemStack result = env.getSource()
+                    .takeOne(
+                            s -> s != null
+                                    && s.stackSize >= 0
+                                    && s.getItem() == TFFT_FIELD_ITEM
+                                    && s.getItemDamage() != CASING_META
+                                    && s.getItemDamage() <= fieldTier,
+                            true);
+            if (result == null) return PlaceResult.REJECT;
+
+            return StructureUtility.survivalPlaceBlock(
+                    result,
+                    ItemStackPredicate.NBTMode.EXACT,
+                    null,
+                    true,
+                    world,
+                    x,
+                    y,
+                    z,
+                    env.getSource(),
+                    env.getActor(),
+                    env.getChatter());
+        }
+    }
+
     private static final IIconContainer TEXTURE_TFFT = new Textures.BlockIcons.CustomIcon("iconsets/TFFT");
     private static final IIconContainer TEXTURE_TFFT_ACTIVE =
             new Textures.BlockIcons.CustomIcon("iconsets/TFFT_ACTIVE");
@@ -125,7 +183,7 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
     private static final String STRUCTURE_PIECE_MID = "mid";
     private static final String STRUCTURE_PIECE_BOTTOM = "bottom";
 
-    // height channel for height.
+    // height channel for height
     // field channel for field
     private static final IStructureDefinition<GTMTE_TFFT> STRUCTURE_DEFINITION =
             IStructureDefinition.<GTMTE_TFFT>builder()
@@ -176,67 +234,7 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
                                     ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
                                     ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false),
                                     BorosilicateGlass.ofBoroGlassAnyTier()))
-                    .addElement('f', ofChain(new IStructureElement<GTMTE_TFFT>() {
-                        @Override
-                        public boolean check(GTMTE_TFFT t, World world, int x, int y, int z) {
-                            Block worldBlock = world.getBlock(x, y, z);
-                            int meta = worldBlock.getDamageValue(world, x, y, z);
-                            if (TFFT_FIELD != worldBlock || meta == 0) return false;
-                            t.FIELDS[meta - 1]++;
-                            return true;
-                        }
-
-                        private int getHint(ItemStack stack) {
-                            return Math.min(Field.VALUES.length, ChannelDataAccessor.getChannelData(stack, "field"));
-                        }
-
-                        @Override
-                        public boolean spawnHint(GTMTE_TFFT t, World world, int x, int y, int z, ItemStack trigger) {
-                            StructureLibAPI.hintParticle(world, x, y, z, TFFT_FIELD, getHint(trigger));
-                            return true;
-                        }
-
-                        @Override
-                        public boolean placeBlock(GTMTE_TFFT t, World world, int x, int y, int z, ItemStack trigger) {
-                            world.setBlock(x, y, z, TFFT_FIELD, getHint(trigger), 3);
-                            return true;
-                        }
-
-                        @Override
-                        public PlaceResult survivalPlaceBlock(
-                                GTMTE_TFFT t,
-                                World world,
-                                int x,
-                                int y,
-                                int z,
-                                ItemStack trigger,
-                                AutoPlaceEnvironment env) {
-                            if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-                            int fieldTier = getHint(trigger);
-                            ItemStack result = env.getSource()
-                                    .takeOne(
-                                            s -> s != null
-                                                    && s.stackSize >= 0
-                                                    && s.getItem() == TFFT_FIELD_ITEM
-                                                    && s.getItemDamage() != CASING_META
-                                                    && s.getItemDamage() <= fieldTier,
-                                            true);
-                            if (result == null) return PlaceResult.REJECT;
-
-                            return StructureUtility.survivalPlaceBlock(
-                                    result,
-                                    ItemStackPredicate.NBTMode.EXACT,
-                                    null,
-                                    true,
-                                    world,
-                                    x,
-                                    y,
-                                    z,
-                                    env.getSource(),
-                                    env.getActor(),
-                                    env.getChatter());
-                        }
-                    }))
+                    .addElement('f', ofChain(TFFTStorageFieldElement.INSTANCE))
                     .build();
 
     public final FluidTankGT[] STORE = new FluidTankGT[MAX_DISTINCT_FLUIDS];
@@ -595,6 +593,7 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
             if (aMetaTileEntity instanceof GTMTE_TFFTHatch) {
                 if (this.tfftHatch != null) return false;
                 this.tfftHatch = (GTMTE_TFFTHatch) aMetaTileEntity;
+                this.tfftHatch.updateTexture(aBaseCasingIndex);
                 return true;
             }
         }
