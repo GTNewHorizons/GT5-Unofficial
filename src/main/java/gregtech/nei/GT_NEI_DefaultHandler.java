@@ -27,6 +27,7 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
@@ -37,6 +38,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
+import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.power.EUPower;
 import gregtech.common.power.Power;
 import gregtech.common.power.UnspecifiedEUPower;
@@ -955,6 +957,56 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                         }
                     }
                 }
+
+                // items and fluids that exceed usual count
+                UIHelper.forEachSlots(
+                        (i, backgrounds, pos) -> {
+                            if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.mUsualInputCount
+                                    && aRecipe.mInputs[i] != null) {
+                                mInputs.add(new FixedPositionedStack(aRecipe.mInputs[i], pos.x + 1, pos.y + 1, true));
+                            }
+                        },
+                        (i, backgrounds, pos) -> {
+                            if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount
+                                    && aRecipe.mOutputs[i] != null) {
+                                mOutputs.add(new FixedPositionedStack(
+                                        aRecipe.mOutputs[i],
+                                        pos.x + 1,
+                                        pos.y + 1,
+                                        aRecipe.getOutputChance(i),
+                                        GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
+                            }
+                        },
+                        (i, backgrounds, pos) -> {},
+                        (i, backgrounds, pos) -> {
+                            if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.getUsualFluidInputCount()
+                                    && aRecipe.mFluidInputs[i] != null
+                                    && aRecipe.mFluidInputs[i].getFluid() != null) {
+                                mInputs.add(new FixedPositionedStack(
+                                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[i], true),
+                                        pos.x + 1,
+                                        pos.y + 1));
+                            }
+                        },
+                        (i, backgrounds, pos) -> {
+                            if (i >= GT_NEI_DefaultHandler.this.mRecipeMap.getUsualFluidOutputCount()
+                                    && aRecipe.mFluidOutputs[i] != null
+                                    && aRecipe.mFluidOutputs[i].getFluid() != null) {
+                                mOutputs.add(new FixedPositionedStack(
+                                        GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[i], true),
+                                        pos.x + 1,
+                                        pos.y + 1));
+                            }
+                        },
+                        null,
+                        null,
+                        GT_NEI_DefaultHandler.this.mRecipeMap,
+                        aRecipe.mInputs.length,
+                        aRecipe.mOutputs.length,
+                        aRecipe.mFluidInputs.length,
+                        aRecipe.mFluidOutputs.length,
+                        SteamVariant.NONE,
+                        WINDOW_OFFSET);
             } else {
                 // todo remove after all the migrations are done
                 // Default GT NEI handler for drawing fluids/items on screen.
