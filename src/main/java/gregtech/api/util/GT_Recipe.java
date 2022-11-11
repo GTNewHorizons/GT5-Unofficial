@@ -5460,13 +5460,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            assert itemOutputCount == 1;
             return Collections.singletonList(new Pos2d(106, 62));
         }
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            assert fluidOutputCount == 11;
             List<Pos2d> results = new ArrayList<>();
             for (int i = 0; i < fluidOutputCount + 1; i++) {
                 if (i == 0) continue;
@@ -5731,9 +5729,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            assert fluidInputCount == 16;
             List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < fluidInputCount; i++) {
                 results.add(new Pos2d(7 + (i % 4) * 18, 9 + (i / 4) * 18));
             }
             return results;
@@ -5741,9 +5738,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            assert fluidOutputCount == 16;
             List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < fluidOutputCount; i++) {
                 results.add(new Pos2d(97 + (i % 4) * 18, 9 + (i / 4) * 18));
             }
             return results;
@@ -5788,9 +5784,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            assert itemInputCount == 16;
             List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < itemInputCount; i++) {
                 results.add(new Pos2d(16 + (i % 4) * 18, 8 + (i / 4) * 18));
             }
             return results;
@@ -5798,7 +5793,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            assert itemOutputCount == 1;
             return Collections.singletonList(new Pos2d(142, 8));
         }
 
@@ -5809,9 +5803,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            assert fluidInputCount == 4;
             List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < fluidInputCount; i++) {
                 results.add(new Pos2d(106, 8 + i * 18));
             }
             return results;
