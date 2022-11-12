@@ -234,9 +234,9 @@ try {
 }
 catch (Exception ignored) {
     out.style(Style.Failure).text(
-        'This mod must be version controlled by Git AND the repository must provide at least one tag,\n' +
-            'or the VERSION override must be set! ').style(Style.SuccessHeader).text('(Do NOT download from GitHub using the ZIP option, instead\n' +
-        'clone the repository, see ').style(Style.Info).text('https://gtnh.miraheze.org/wiki/Development').style(Style.SuccessHeader).println(' for details.)'
+            'This mod must be version controlled by Git AND the repository must provide at least one tag,\n' +
+                    'or the VERSION override must be set! ').style(Style.SuccessHeader).text('(Do NOT download from GitHub using the ZIP option, instead\n' +
+            'clone the repository, see ').style(Style.Info).text('https://gtnh.miraheze.org/wiki/Development').style(Style.SuccessHeader).println(' for details.)'
     )
     versionOverride = 'NO-GIT-TAG-SET'
     identifiedVersion = versionOverride
@@ -262,13 +262,13 @@ def jvmArguments = []
 
 if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
     arguments += [
-        "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
+            "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
     ]
     if (usesMixinDebug.toBoolean()) {
         jvmArguments += [
-            "-Dmixin.debug.countInjections=true",
-            "-Dmixin.debug.verbose=true",
-            "-Dmixin.debug.export=true"
+                "-Dmixin.debug.countInjections=true",
+                "-Dmixin.debug.verbose=true",
+                "-Dmixin.debug.export=true"
         ]
     }
 }
@@ -395,8 +395,8 @@ shadowJar {
 
     minimize()  // This will only allow shading for actually used classes
     configurations = [
-        project.configurations.shadowImplementation,
-        project.configurations.shadowCompile
+            project.configurations.shadowImplementation,
+            project.configurations.shadowCompile
     ]
     dependsOn(relocateShadowJar)
 }
@@ -428,12 +428,12 @@ afterEvaluate {
     if (usesMixins.toBoolean()) {
         tasks.compileJava {
             options.compilerArgs += [
-                "-AreobfSrgFile=${tasks.reobf.srg}",
-                "-AoutSrgFile=${mixinSrg}",
-                "-AoutRefMapFile=${refMap}",
-                // Elan: from what I understand they are just some linter configs so you get some warning on how to properly code
-                "-XDenableSunApiLintControl",
-                "-XDignore.symbol.file"
+                    "-AreobfSrgFile=${tasks.reobf.srg}",
+                    "-AoutSrgFile=${mixinSrg}",
+                    "-AoutRefMapFile=${refMap}",
+                    // Elan: from what I understand they are just some linter configs so you get some warning on how to properly code
+                    "-XDenableSunApiLintControl",
+                    "-XDignore.symbol.file"
             ]
         }
     }
@@ -442,8 +442,8 @@ afterEvaluate {
 runClient {
     if (developmentEnvironmentUserName) {
         arguments += [
-            "--username",
-            developmentEnvironmentUserName
+                "--username",
+                developmentEnvironmentUserName
         ]
     }
 
@@ -458,9 +458,9 @@ runServer {
 
 tasks.withType(JavaExec).configureEach {
     javaLauncher.set(
-        javaToolchains.launcherFor {
-            languageVersion = projectJavaVersion
-        }
+            javaToolchains.launcherFor {
+                languageVersion = projectJavaVersion
+            }
     )
 }
 
@@ -476,9 +476,9 @@ processResources {
 
         // replace modVersion and minecraftVersion
         expand "minecraftVersion": project.minecraft.version,
-            "modVersion": modVersion,
-            "modId": modId,
-            "modName": modName
+                "modVersion": modVersion,
+                "modId": modId,
+                "modName": modName
     }
 
     if (usesMixins.toBoolean()) {
@@ -508,9 +508,9 @@ def getManifestAttributes() {
 
     if (usesMixins.toBoolean()) {
         manifestAttributes += [
-            "TweakClass"    : "org.spongepowered.asm.launch.MixinTweaker",
-            "MixinConfigs"  : "mixins." + modId + ".json",
-            "ForceLoadAsMod": !containsMixinsAndOrCoreModOnly.toBoolean()
+                "TweakClass"    : "org.spongepowered.asm.launch.MixinTweaker",
+                "MixinConfigs"  : "mixins." + modId + ".json",
+                "ForceLoadAsMod": !containsMixinsAndOrCoreModOnly.toBoolean()
         ]
     }
     return manifestAttributes
@@ -538,8 +538,8 @@ task shadowDevJar(type: ShadowJar) {
 
     minimize()  // This will only allow shading for actually used classes
     configurations = [
-        project.configurations.shadowImplementation,
-        project.configurations.shadowCompile
+            project.configurations.shadowImplementation,
+            project.configurations.shadowCompile
     ]
 }
 
@@ -633,8 +633,8 @@ publishing {
             pom.withXml {
                 def badArtifacts = [:].withDefault { [] as Set<String> }
                 for (configuration in [
-                    projectConfigs.minecraft,
-                    projectConfigs.minecraftDeps
+                        projectConfigs.minecraft,
+                        projectConfigs.minecraftDeps
                 ]) {
                     for (dependency in configuration.allDependencies) {
                         badArtifacts[dependency.group == null ? "" : dependency.group] += dependency.name
