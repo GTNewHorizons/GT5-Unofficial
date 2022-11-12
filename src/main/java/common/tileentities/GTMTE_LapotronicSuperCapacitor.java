@@ -646,7 +646,9 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Output energy to TT hatches
         for (GT_MetaTileEntity_Hatch_DynamoMulti eDynamo : mDynamoHatchesTT) {
-            if (eDynamo == null || eDynamo.getBaseMetaTileEntity() == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()) {
+            if (eDynamo == null
+                    || eDynamo.getBaseMetaTileEntity() == null
+                    || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()) {
                 continue;
             }
             final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
