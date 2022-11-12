@@ -42,7 +42,7 @@ import org.apache.logging.log4j.Logger;
         version = Tags.VERSION,
         name = Tags.MODNAME,
         acceptedMinecraftVersions = "[1.7.10]",
-        dependencies = "required-after:gregtech; " + "required-after:spongemixins@[1.4.0,); " + "after:EnderIO; "
+        dependencies = "required-after:gregtech; " + "required-after:gtnhmixins@[2.0.1,); " + "after:EnderIO; "
                 + "after:AWWayofTime; " + "after:ExtraUtilities; " + "after: InfernalMobs; " + "after: Thaumcraft; "
                 + "after: MineTweaker3; " + "after: miscutils; " + "after: harvestcraft; " + "after: Forestry; ")
 public class kubatech {

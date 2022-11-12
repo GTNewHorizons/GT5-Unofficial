@@ -3,6 +3,7 @@ package kubatech.mixin;
 import static java.nio.file.Files.walk;
 import static kubatech.mixin.TargetedMod.VANILLA;
 
+import com.gtnewhorizon.gtnhmixins.MinecraftURLClassPath;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,10 +18,9 @@ import kubatech.Tags;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.spongepowered.asm.lib.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
-import ru.timeconqueror.spongemixins.MinecraftURLClassPath;
+import org.spongepowered.libraries.org.objectweb.asm.tree.ClassNode;
 
 @SuppressWarnings("unused")
 public class MixinPlugin implements IMixinConfigPlugin {
