@@ -21,6 +21,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -37,7 +38,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.FakePlayer;
 
-public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
     private static ItemStack[] sAutoMaintenanceInputs;
     public boolean mWrench = false,
             mScrewdriver = false,
@@ -302,8 +303,8 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     private void applyToolbox(ItemStack aStack, EntityPlayer aPlayer) {
-        ItemToolbox aToolbox = (ItemToolbox) aStack.getItem();
-        IHasGui aToolboxGUI = aToolbox.getInventory(aPlayer, aStack);
+        final ItemToolbox aToolbox = (ItemToolbox) aStack.getItem();
+        final IHasGui aToolboxGUI = aToolbox.getInventory(aPlayer, aStack);
         for (int i = 0; i < aToolboxGUI.getSizeInventory(); i++) {
             if (aToolboxGUI.getStackInSlot(i) != null) {
                 onToolClick(aToolboxGUI.getStackInSlot(i), aPlayer, aToolboxGUI);
@@ -339,9 +340,9 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (mAuto) {
-            add2by2Slots(builder);
+            getBaseMetaTileEntity().add2by2Slots(builder);
         } else {
             builder.widget(new DrawableWidget()
                             .setDrawable(GT_UITextures.SLOT_MAINTENANCE)

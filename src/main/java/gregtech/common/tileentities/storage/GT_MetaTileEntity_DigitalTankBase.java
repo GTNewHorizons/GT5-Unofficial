@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.storage;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -14,6 +15,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
@@ -36,7 +38,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank implements IFluidLockable {
+public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank
+        implements IFluidLockable, IAddUIWidgets {
     public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected String lockedFluidName = null;
     private boolean voidBreak;
@@ -481,16 +484,16 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
                         .setPos(7, 16)
                         .setSize(71, 45))
                 .widget(new SlotWidget(inventoryHandler, getInputSlot())
-                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_IN)
+                        .setBackground(getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_IN)
                         .setPos(79, 16))
                 .widget(new SlotWidget(inventoryHandler, getOutputSlot())
-                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_OUT)
+                        .setBackground(getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_OUT)
                         .setPos(79, 43))
                 .widget(new FluidDisplaySlotWidget(inventoryHandler, getStackDisplaySlot())
                         .setFluidAccessConstructor(() -> constructFluidAccess(false))

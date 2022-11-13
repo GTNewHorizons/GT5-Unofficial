@@ -13,6 +13,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
@@ -22,7 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
+public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
     public int[] mTargetSlots = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     private boolean charge = false, decharge = false;
 
@@ -163,7 +164,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         addEmitEnergyButton(builder);
         builder.widget(createChargerSlot(43, 62));
         builder.widget(new DrawableWidget()

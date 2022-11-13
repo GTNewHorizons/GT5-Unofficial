@@ -4,6 +4,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddInventorySlots;
+import gregtech.api.interfaces.modularui.IGetBackground;
+import gregtech.api.interfaces.modularui.IGetFluidSlotBackground;
+import gregtech.api.interfaces.modularui.IGetGregtechLogo;
+import gregtech.api.interfaces.modularui.IGetSlotBackground;
 import gregtech.common.blocks.GT_Block_Machines;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +39,12 @@ public interface IGregTechTileEntity
                 IDigitalChest,
                 IDescribable,
                 IMachineBlockUpdateable,
-                IGregtechWailaProvider {
+                IGregtechWailaProvider,
+                IGetBackground,
+                IGetSlotBackground,
+                IGetFluidSlotBackground,
+                IAddInventorySlots,
+                IGetGregtechLogo {
     /**
      * gets the Error displayed on the GUI
      */

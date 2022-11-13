@@ -10,6 +10,7 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -21,7 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_Input {
+public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_Input implements IAddUIWidgets {
 
     public FluidStack[] mStoredFluid;
     public int mCapacityPer;
@@ -292,9 +293,9 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int SLOT_NUMBER = 4;
-        Pos2d[] positions = new Pos2d[] {
+        final Pos2d[] positions = new Pos2d[] {
             new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43), new Pos2d(88, 43),
         };
 

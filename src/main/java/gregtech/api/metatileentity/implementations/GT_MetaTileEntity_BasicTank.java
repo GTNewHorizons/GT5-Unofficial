@@ -13,6 +13,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
@@ -29,7 +30,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
  * This is the main construct for my generic Tanks. Filling and emptying behavior have to be implemented manually
  */
 public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_TieredMachineBlock
-        implements IHasFluidDisplayItem {
+        implements IHasFluidDisplayItem, IAddUIWidgets {
 
     public FluidStack mFluid;
     protected int mOpenerCount;
@@ -345,7 +346,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
                         .setPos(7, 16)
@@ -355,10 +356,10 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
                         .setPos(79, 34)
                         .setSize(18, 18))
                 .widget(new SlotWidget(inventoryHandler, getInputSlot())
-                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_IN)
+                        .setBackground(getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_IN)
                         .setPos(79, 16))
                 .widget(new SlotWidget(inventoryHandler, getOutputSlot())
-                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_OUT)
+                        .setBackground(getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_OUT)
                         .setPos(79, 52))
                 .widget(createDrainableFluidSlot()
                         .setBackground(GT_UITextures.TRANSPARENT)

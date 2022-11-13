@@ -26,7 +26,13 @@ import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.modularui.IGetGregtechLogo;
+import gregtech.api.interfaces.modularui.IGetSlotBackground;
+import gregtech.api.interfaces.modularui.IGetTabIconSet;
+import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Recipe;
@@ -42,7 +48,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEntity
-        implements IAlignment, ISurvivalConstructable {
+        implements IAlignment,
+                ISurvivalConstructable,
+                IGetTabIconSet,
+                IGetGregtechLogo,
+                IGetSlotBackground,
+                IAddUIWidgets,
+                IGetTitleColor {
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>>
             STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>>() {
@@ -508,7 +520,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new SlotWidget(inventoryHandler, 0)
                         .setBackground(
                                 getSlotBackground(), GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
@@ -549,23 +561,23 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    protected IDrawable getGregTechLogo() {
+    public IDrawable getGregTechLogo() {
         return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getSteamVariant());
     }
 
     @Override
-    protected UITexture getBackground() {
+    public UITexture getBackground() {
         return GT_UITextures.BACKGROUND_STEAM.get(getSteamVariant());
     }
 
     @Override
-    protected IDrawable getSlotBackground() {
+    public IDrawable getSlotBackground() {
         return GT_UITextures.SLOT_ITEM_STEAM.get(getSteamVariant());
     }
 
     @Override
-    protected GT_GuiTabIconSet getTabIconSet() {
-        return new GT_GuiTabIconSet(
+    public BaseTileEntity.GT_GuiTabIconSet getTabIconSet() {
+        return new BaseTileEntity.GT_GuiTabIconSet(
                 GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getSteamVariant()),
                 GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getSteamVariant()),
                 GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getSteamVariant()),
@@ -574,7 +586,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    protected int getTitleColor() {
+    public int getTitleColor() {
         return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
     }
 }

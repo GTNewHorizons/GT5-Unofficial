@@ -1,11 +1,15 @@
 package gregtech.api.interfaces.metatileentity;
 
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IGetBackground;
 import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
@@ -42,6 +46,7 @@ public interface IMetaTileEntity
                 IFluidHandler,
                 IGearEnergyTileEntity,
                 IMachineBlockUpdateable,
+                IGetBackground,
                 IGregtechWailaProvider {
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
@@ -498,5 +503,37 @@ public interface IMetaTileEntity
     @SideOnly(Side.CLIENT)
     default void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
         /* do nothing */
+    }
+
+    default int getGUIWidth() {
+        return 176;
+    }
+
+    default int getGUIHeight() {
+        return 166;
+    }
+
+    /*
+     * ModularUI Support
+     */
+    default ItemStackHandler getInventoryHandler() {
+        return null;
+    }
+
+    default String getLocalName() {
+        return "Unknown";
+    }
+
+    default boolean doesBindPlayerInventory() {
+        return true;
+    }
+
+    @Override
+    default UITexture getBackground() {
+        return GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT;
+    }
+
+    default int getTextColorOrDefault(String textType, int defaultColor) {
+        return defaultColor;
     }
 }

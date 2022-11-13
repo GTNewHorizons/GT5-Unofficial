@@ -5,6 +5,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -14,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine {
+public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine implements IAddUIWidgets {
 
     public GT_MetaTileEntity_CuringOven(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -116,7 +117,7 @@ public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        add1by1Slot(builder);
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        getBaseMetaTileEntity().add1by1Slot(builder);
     }
 }

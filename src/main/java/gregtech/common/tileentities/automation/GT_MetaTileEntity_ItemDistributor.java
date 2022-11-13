@@ -10,6 +10,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
@@ -19,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer {
+public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
     private byte[] itemsPerSide = new byte[6];
     private byte currentSide = 0, currentSideItemCount = 0;
 
@@ -180,7 +181,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         addEmitEnergyButton(builder);
         addEmitRedstoneButton(builder);
         addInvertRedstoneButton(builder);

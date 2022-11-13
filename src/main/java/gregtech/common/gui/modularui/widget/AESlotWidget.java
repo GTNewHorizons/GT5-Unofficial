@@ -10,30 +10,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.inventory.Slot;
-import net.minecraft.network.PacketBuffer;
 
 public class AESlotWidget extends SlotWidget {
 
     public AESlotWidget(BaseSlot slot) {
         super(slot);
-    }
-
-    @Override
-    public void detectAndSendChanges(boolean init) {
-        super.detectAndSendChanges(init);
-        if (getMcSlot().getHasStack()) {
-            syncToClient(99, buffer -> buffer.writeVarIntToBuffer(getMcSlot().getStack().stackSize));
-        }
-    }
-
-    @Override
-    public void readOnClient(int id, PacketBuffer buf) {
-        super.readOnClient(id, buf);
-        if (id == 99) {
-            if (getMcSlot().getHasStack()) {
-                getMcSlot().getStack().stackSize = buf.readVarIntFromBuffer();
-            }
-        }
     }
 
     @Override

@@ -16,6 +16,7 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEItemStack;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -25,8 +26,11 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.modularui.IGetGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
@@ -40,7 +44,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus
-        implements IConfigurationCircuitSupport {
+        implements IConfigurationCircuitSupport, IAddGregtechLogo, IGetGregtechLogo, IAddUIWidgets {
     private static final int SLOT_COUNT = 16;
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
@@ -245,10 +249,12 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         }
     }
 
+    @Override
     public void startRecipeProcessing() {
         processingRecipe = true;
     }
 
+    @Override
     public void endRecipeProcessing() {
         if (GregTech_API.mAE2) {
             for (int i = 0; i < SLOT_COUNT; ++i) {
@@ -307,18 +313,18 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        SlotWidget[] aeSlotWidgets = new SlotWidget[16];
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        final SlotWidget[] aeSlotWidgets = new SlotWidget[16];
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
                         .startFromSlot(0)
                         .endAtSlot(15)
                         .phantom(true)
-                        .background(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_ARROW_ME)
+                        .background(getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_ARROW_ME)
                         .widgetCreator(slot -> new SlotWidget(slot) {
                             @Override
                             protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
                                 if (clickData.mouseButton != 0) return;
-                                int aSlotIndex = getMcSlot().getSlotIndex();
+                                final int aSlotIndex = getMcSlot().getSlotIndex();
                                 if (cursorStack == null) {
                                     getMcSlot().putStack(null);
                                 } else {
@@ -326,7 +332,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                                     getMcSlot().putStack(GT_Utility.copyAmount(1L, cursorStack));
                                 }
                                 if (getBaseMetaTileEntity().isServerSide()) {
-                                    ItemStack newInfo = updateInformationSlot(aSlotIndex, cursorStack);
+                                    final ItemStack newInfo = updateInformationSlot(aSlotIndex, cursorStack);
                                     aeSlotWidgets[getMcSlot().getSlotIndex()]
                                             .getMcSlot()
                                             .putStack(newInfo);
@@ -358,10 +364,15 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    protected void addGregTechLogo(ModularWindow.Builder builder) {
+    public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
-                .setDrawable(getGregTechLogo())
+                .setDrawable(getBaseMetaTileEntity().getGregTechLogo())
                 .setSize(17, 17)
                 .setPos(80, 63));
+    }
+
+    @Override
+    public IDrawable getGregTechLogo() {
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT;
     }
 }
