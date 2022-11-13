@@ -23,6 +23,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.modularui.IGetGregtechLogo;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -40,7 +41,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEntity_BasicTank
-        implements IAddGregtechLogo, IAddUIWidgets {
+        implements IAddGregtechLogo, IGetGregtechLogo, IAddUIWidgets {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int mMaxLoss = 50;
@@ -487,5 +488,10 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                 .setDrawable(getBaseMetaTileEntity().getGregTechLogo())
                 .setSize(17, 17)
                 .setPos(113, 56));
+    }
+
+    @Override
+    public IDrawable getGregTechLogo() {
+        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY;
     }
 }

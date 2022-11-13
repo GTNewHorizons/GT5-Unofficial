@@ -3,7 +3,6 @@ package gregtech.api.net;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasInventory;
 import gregtech.api.metatileentity.BaseTileEntity;
@@ -96,16 +95,8 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
         final TileEntity tile = world.getTileEntity(mX, mY, mZ);
         if (!(tile instanceof BaseTileEntity) || ((BaseTileEntity) tile).isDead()) return;
 
-        final IConfigurationCircuitSupport machine;
-        if (tile instanceof IGregTechTileEntity) {
-            final IMetaTileEntity mte = ((IGregTechTileEntity) tile).getMetaTileEntity();
-            if (!(mte instanceof IConfigurationCircuitSupport)) return;
-            machine = (IConfigurationCircuitSupport) mte;
-        } else if (tile instanceof IConfigurationCircuitSupport) {
-            machine = (IConfigurationCircuitSupport) tile;
-        } else {
-            return;
-        }
+        final IConfigurationCircuitSupport machine = ((BaseTileEntity) tile).getConfigurationCircuitSupport();
+        if (machine == null) return;
         if (!machine.allowSelectCircuit()) return;
         machine.getConfigurationCircuits().stream()
                 .filter(stack -> GT_Utility.areStacksEqual(stack, circuit))

@@ -29,7 +29,7 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddInventorySlots;
 import gregtech.api.interfaces.modularui.IGetBackground;
@@ -992,8 +992,8 @@ public abstract class BaseTileEntity extends TileEntity
     }
 
     protected void openSelectCircuitDialog(ModularUIContext uiContext, AtomicBoolean dialogOpened) {
-        if (!(this instanceof IConfigurationCircuitSupport)) return;
-        final IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) this;
+        final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
+        if (ccs == null) return;
 
         if (!(this instanceof IInventory)) return;
         final IInventory inv = (IInventory) this;
@@ -1011,8 +1011,8 @@ public abstract class BaseTileEntity extends TileEntity
     }
 
     protected void onCircuitSelected(ItemStack selected) {
-        if (!(this instanceof IConfigurationCircuitSupport)) return;
-        final IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) this;
+        final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
+        if (ccs == null) return;
 
         if (!(this instanceof IInventory)) return;
         final IInventory inv = (IInventory) this;

@@ -26,10 +26,11 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.modularui.IGetGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
@@ -43,7 +44,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus
-        implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets {
+        implements IConfigurationCircuitSupport, IAddGregtechLogo, IGetGregtechLogo, IAddUIWidgets {
     private static final int SLOT_COUNT = 16;
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
@@ -365,12 +366,13 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
-                .setDrawable(getGregTechLogo())
+                .setDrawable(getBaseMetaTileEntity().getGregTechLogo())
                 .setSize(17, 17)
                 .setPos(80, 63));
     }
 
-    protected IDrawable getGregTechLogo() {
+    @Override
+    public IDrawable getGregTechLogo() {
         return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT;
     }
 }

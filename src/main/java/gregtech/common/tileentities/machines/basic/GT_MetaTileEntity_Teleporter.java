@@ -23,6 +23,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.modularui.IGetGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
@@ -60,7 +61,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
-        implements IAddGregtechLogo, IAddUIWidgets {
+        implements IAddGregtechLogo, IGetGregtechLogo, IAddUIWidgets {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int sPassiveEnergyDrain = 2048;
@@ -674,12 +675,13 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
-                .setDrawable(getGregTechLogo())
+                .setDrawable(getBaseMetaTileEntity().getGregTechLogo())
                 .setSize(17, 17)
                 .setPos(113, 56));
     }
 
-    protected IDrawable getGregTechLogo() {
+    @Override
+    public IDrawable getGregTechLogo() {
         return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY;
     }
 }
