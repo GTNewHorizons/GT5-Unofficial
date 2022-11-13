@@ -15,6 +15,7 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IGetGregtechLogo;
 import gregtech.api.interfaces.modularui.IGetSlotBackground;
+import gregtech.api.interfaces.modularui.IGetTabIconSet;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -303,5 +304,13 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
             return getMetaTileEntity().getTextColorOrDefault(textType, defaultColor);
         }
         return defaultColor;
+    }
+
+    @Override
+    public BaseTileEntity.GT_GuiTabIconSet getTabIconSet() {
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IGetTabIconSet) {
+            return ((IGetTabIconSet) getMetaTileEntity()).getTabIconSet();
+        }
+        return super.getTabIconSet();
     }
 }
