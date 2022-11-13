@@ -251,6 +251,11 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
     }
 
     @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
     public long getTimer() {
         return 0;
     }
@@ -1372,5 +1377,10 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
     public boolean coverLetsItemsOut(byte aSide, int aSlot) {
         return getCoverBehaviorAtSideNew(aSide)
                 .letsItemsOut(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), aSlot, this);
+    }
+
+    @Override
+    public ItemStack getStackForm(long aAmount) {
+        return new ItemStack(Item.getItemById(getMultiTileEntityRegistryID()), (int) aAmount, getMultiTileEntityID());
     }
 }

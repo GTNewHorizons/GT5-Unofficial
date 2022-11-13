@@ -19,7 +19,13 @@ import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.modularui.IGetGregtechLogo;
+import gregtech.api.interfaces.modularui.IGetSlotBackground;
+import gregtech.api.interfaces.modularui.IGetTabIconSet;
+import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
@@ -35,7 +41,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank {
+public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank
+        implements IGetTabIconSet, IGetGregtechLogo, IGetSlotBackground, IGetTitleColor, IAddUIWidgets {
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
     public int mProcessingEnergy = 0;
@@ -410,6 +417,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
 
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
+    @Override
     public SteamVariant getSteamVariant() {
         return SteamVariant.BRONZE;
     }
@@ -428,7 +436,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new SlotWidget(inventoryHandler, 0)
                         .setPos(43, 25)
                         .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_IN_STEAM.get(getSteamVariant())))
@@ -480,23 +488,23 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    protected IDrawable getGregTechLogo() {
+    public IDrawable getGregTechLogo() {
         return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getSteamVariant());
     }
 
     @Override
-    protected UITexture getBackground() {
+    public UITexture getBackground() {
         return GT_UITextures.BACKGROUND_STEAM.get(getSteamVariant());
     }
 
     @Override
-    protected IDrawable getSlotBackground() {
+    public IDrawable getSlotBackground() {
         return GT_UITextures.SLOT_ITEM_STEAM.get(getSteamVariant());
     }
 
     @Override
-    protected GT_GuiTabIconSet getTabIconSet() {
-        return new GT_GuiTabIconSet(
+    public BaseTileEntity.GT_GuiTabIconSet getTabIconSet() {
+        return new BaseTileEntity.GT_GuiTabIconSet(
                 GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getSteamVariant()),
                 GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getSteamVariant()),
                 GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getSteamVariant()),
@@ -505,7 +513,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    protected int getTitleColor() {
+    public int getTitleColor() {
         return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
     }
 }

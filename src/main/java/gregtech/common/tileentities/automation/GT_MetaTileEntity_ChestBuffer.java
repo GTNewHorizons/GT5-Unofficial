@@ -9,11 +9,12 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
 
-public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
+public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
 
     private static final int[] tickRate = {400, 200, 100, 20, 4, 1, 1, 1, 1, 1, 1, 1, 1};
     private static final int[] maxStacks = {1, 1, 1, 1, 1, 1, 2, 4, 8, 16, 32, 64, 128};
@@ -111,7 +112,7 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         addEmitEnergyButton(builder);
         addEmitRedstoneButton(builder);
         addInvertRedstoneButton(builder);

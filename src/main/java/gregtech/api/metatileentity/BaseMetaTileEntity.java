@@ -17,8 +17,6 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructableProvider;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GT_Mod;
@@ -2361,14 +2359,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             indexShift += newOutputSize - oldOutputSize;
         }
         return slotIndex + indexShift;
-    }
-
-    @Override
-    public ModularWindow createWindow(UIBuildContext uiBuildContext) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity().useModularUI()) {
-            return getMetaTileEntity().createWindow(uiBuildContext);
-        }
-        return null;
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -15,7 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
     private int timeout = 4;
 
     public GT_MetaTileEntity_Hatch_DataAccess(int aID, String aName, String aNameRegional, int aTier) {
@@ -133,13 +134,21 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mTier) {
             case 4:
-                add2by2Slots(builder, getSlotBackground(), GT_UITextures.OVERLAY_SLOT_CIRCUIT);
+                getBaseMetaTileEntity()
+                        .add2by2Slots(
+                                builder,
+                                getBaseMetaTileEntity().getSlotBackground(),
+                                GT_UITextures.OVERLAY_SLOT_CIRCUIT);
                 break;
             default:
-                add4by4Slots(builder, getSlotBackground(), GT_UITextures.OVERLAY_SLOT_CIRCUIT);
+                getBaseMetaTileEntity()
+                        .add4by4Slots(
+                                builder,
+                                getBaseMetaTileEntity().getSlotBackground(),
+                                GT_UITextures.OVERLAY_SLOT_CIRCUIT);
                 break;
         }
     }

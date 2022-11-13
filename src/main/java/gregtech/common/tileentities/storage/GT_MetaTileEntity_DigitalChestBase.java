@@ -15,6 +15,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.AE2DigitalChestHandler;
@@ -37,7 +38,7 @@ import net.minecraftforge.common.util.Constants;
 
 @Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = "appliedenergistics2", striprefs = true)
 public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock
-        implements appeng.api.storage.IMEMonitor<appeng.api.storage.data.IAEItemStack> {
+        implements appeng.api.storage.IMEMonitor<appeng.api.storage.data.IAEItemStack>, IAddUIWidgets {
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
     public boolean voidBreak;
@@ -544,16 +545,16 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
                         .setPos(7, 16)
                         .setSize(71, 45))
                 .widget(new SlotWidget(inventoryHandler, 0)
-                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_IN)
+                        .setBackground(getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_IN)
                         .setPos(79, 16))
                 .widget(new SlotWidget(inventoryHandler, 1)
-                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_OUT)
+                        .setBackground(getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_OUT)
                         .setPos(79, 52))
                 .widget(SlotWidget.phantom(inventoryHandler, 2)
                         .disableInteraction()

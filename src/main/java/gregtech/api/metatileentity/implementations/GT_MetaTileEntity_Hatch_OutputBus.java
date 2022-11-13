@@ -9,6 +9,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.GT_Mod;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -18,7 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
     public GT_MetaTileEntity_Hatch_OutputBus(int aID, String aName, String aNameRegional, int aTier) {
         this(aID, aName, aNameRegional, aTier, getSlots(aTier));
     }
@@ -157,7 +158,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && (aTick & 0x7) == 0) {
-            IInventory tTileEntity = aBaseMetaTileEntity.getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
+            final IInventory tTileEntity =
+                    aBaseMetaTileEntity.getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
             if (tTileEntity != null) {
                 moveMultipleItemStacks(
                         aBaseMetaTileEntity,
@@ -187,19 +189,19 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mTier) {
             case 0:
-                add1by1Slot(builder);
+                getBaseMetaTileEntity().add1by1Slot(builder);
                 break;
             case 1:
-                add2by2Slots(builder);
+                getBaseMetaTileEntity().add2by2Slots(builder);
                 break;
             case 2:
-                add3by3Slots(builder);
+                getBaseMetaTileEntity().add3by3Slots(builder);
                 break;
             default:
-                add4by4Slots(builder);
+                getBaseMetaTileEntity().add4by4Slots(builder);
                 break;
         }
     }
