@@ -1956,7 +1956,8 @@ public enum ItemList implements IItemContainer {
     PCBFactory,
     PCBCasingTier1,
     PCBCasingTier2,
-    PCBCasingTier3;
+    PCBCasingTier3,
+    InfinityCooledCasing;
     public static final ItemList[]
             DYE_ONLY_ITEMS =
                     {

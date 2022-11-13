@@ -18,7 +18,7 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
 
     // WATCH OUT FOR TEXTURE ID's
     public GT_Block_Casings8() {
-        super(GT_Item_Casings8.class, "gt.blockcasings8", GT_Material_Casings.INSTANCE, 15);
+        super(GT_Item_Casings8.class, "gt.blockcasings8", GT_Material_Casings.INSTANCE, 16);
         /*
          * DO NOT USE INDEX 15 !
          * USED HERE: https://github.com/GTNewHorizons/Electro-Magic-Tools/pull/17
@@ -41,6 +41,7 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "PCB Tier 1");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "PCB Tier 2");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "PCB Tier 3");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Infinity Cooled Casing");
 
         ItemList.Casing_Chemically_Inert.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Pipe_Polytetrafluoroethylene.set(new ItemStack(this, 1, 1));
@@ -56,6 +57,7 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         ItemList.PCBCasingTier1.set(new ItemStack(this, 1, 11));
         ItemList.PCBCasingTier2.set(new ItemStack(this, 1, 12));
         ItemList.PCBCasingTier3.set(new ItemStack(this, 1, 13));
+        ItemList.InfinityCooledCasing.set(new ItemStack(this, 1, 14));
     }
 
     @Override
@@ -96,6 +98,8 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
                 return Textures.BlockIcons.MACHINE_CASING_PCB_TIER_2.getIcon();
             case 13:
                 return Textures.BlockIcons.MACHINE_CASING_PCB_TIER_3.getIcon();
+            case 14:
+                return Textures.BlockIcons.INFINITY_COOLED_CASING.getIcon();
         }
         return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
     }

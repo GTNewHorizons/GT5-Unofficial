@@ -1307,7 +1307,8 @@ public class Textures {
         ZPM_SIDE_CYCLOTRON_SOLENOID,
         MACHINE_CASING_PCB_TIER_1,
         MACHINE_CASING_PCB_TIER_2,
-        MACHINE_CASING_PCB_TIER_3;
+        MACHINE_CASING_PCB_TIER_3,
+        INFINITY_COOLED_CASING;
 
         /**
          * Icon for Fresh CFoam
