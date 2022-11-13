@@ -2215,7 +2215,24 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 1,
                 1,
                 "Tier: ",
-                0,
+                1,
+                "",
+                true,
+                true);
+
+        public static final GT_Recipe_Map sPCBFactory = new GT_Recipe_Map(
+                new HashSet<>(10),
+                "gt.recipe.pcbfactory",
+                "PCB Factory",
+                null,
+                RES_PATH_GUI + "basicmachines/LCRNEI",
+                3,
+                2,
+                1,
+                1,
+                1,
+                "Tier: ",
+                1,
                 "",
                 true,
                 true);

@@ -11,6 +11,9 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
@@ -22,9 +25,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.blocks.GT_Block_Casings8;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_PCBFactory>
         implements ISurvivalConstructable {
@@ -32,6 +40,15 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
     private static final String tier2 = "tier2";
     private static final String tier3 = "tier3";
     private static final String bioUpgrade = "bioUpgrade";
+    private long mLongEUt = 0;
+    private boolean mSeparate = false;
+    private float mRoughnessMultiplier = 1;
+    private float mSpeedMultiplier = 1;
+    private byte mTier = 1;
+    private byte mSetTier = 1;
+    private boolean mBioUpgrade = true, mBioRotate = true;
+    private byte mBioXOffset = -10, mBioZOffset = 5;
+    private int[] bitMap = {0x01, 0x02, 0x03, 0x04};
     private static final IStructureDefinition<GT_MetaTileEntity_PCBFactory> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_PCBFactory>builder()
                     .addShape(tier1, transpose(new String[][] {
@@ -81,6 +98,17 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
                         {" II~II ","IIJJJII","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IJJJJJI","IIJJJII"," IIIII "}
                         //spotless:on
                     }))
+                    .addShape(bioUpgrade, transpose(new String[][] {
+                        // spotless:off
+                        {"            ","            ","   LLLLLL   ","            ","            "},
+                        {"            ","            ","  L      L  ","            ","            "},
+                        {"E   E  E   E"," LLL    LLL "," LLL    LLL "," LLL    LLL ","E   E  E   E"},
+                        {"EAAAE  EAAAE","A   A  A   A","A   A  A   A","A   A  A   A","EAAAE  EAAAE"},
+                        {"EAAAE  EAAAE","A   A  A   A","A   A  A   A","A   A  A   A","EAAAE  EAAAE"},
+                        {"EAAAE  EAAAE","A   A  A   A","A   A  A   A","A   A  A   A","EAAAE  EAAAE"},
+                        {"ELLLE  ELLLE","LLLLL  LLLLL","LLLLL  LLLLL","LLLLL  LLLLL","ELLLE  ELLLE"}
+                        //spotless:on
+                    }))
                     .addElement('E', ofFrame(Materials.DamascusSteel))
                     .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 11))
                     .addElement('D', ofBlock(GregTech_API.sBlockReinforced, 2))
@@ -112,17 +140,40 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
                                     .dot(1)
                                     .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13))
                                     .buildAndChain(GregTech_API.sBlockCasings8, 13))
+                    .addElement('L', ofBlock(GregTech_API.sBlockCasings4, 1))
                     .build();
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        if (this.mTier < 3) {
+        if (mSetTier < 3) {
             buildPiece(tier1, stackSize, hintsOnly, 3, 5, 0);
-            if (this.mTier == 2) {
+            if (mSetTier == 2) {
                 buildPiece(tier2, stackSize, hintsOnly, 7, 6, -1);
             }
         } else {
             buildPiece(tier3, stackSize, hintsOnly, 3, 21, 0);
+        }
+
+        if (mBioUpgrade) {
+            if (mBioRotate) {
+                final IGregTechTileEntity tTile = getBaseMetaTileEntity();
+                getStructureDefinition()
+                        .buildOrHints(
+                                this,
+                                stackSize,
+                                bioUpgrade,
+                                tTile.getWorld(),
+                                transformFacing(getExtendedFacing()),
+                                tTile.getXCoord(),
+                                tTile.getYCoord(),
+                                tTile.getZCoord(),
+                                mBioRotate ? mBioZOffset : mBioXOffset,
+                                6,
+                                mBioRotate ? mBioXOffset : mBioZOffset,
+                                hintsOnly);
+            } else {
+                buildPiece(bioUpgrade, stackSize, hintsOnly, mBioXOffset, 6, mBioZOffset);
+            }
         }
     }
 
@@ -151,7 +202,9 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
             if (aActive)
                 return new ITexture[] {
                     BlockIcons.getCasingTextureForId(
-                            ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)),
+                            mTier < 3
+                                    ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
+                                    : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)),
                     TextureFactory.builder()
                             .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
                             .extFacing()
@@ -163,7 +216,10 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
                             .build()
                 };
             return new ITexture[] {
-                BlockIcons.getCasingTextureForId(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)),
+                BlockIcons.getCasingTextureForId(
+                        mTier < 3
+                                ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
+                                : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)),
                 TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
                         .extFacing()
@@ -191,22 +247,64 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
         return false;
     }
 
-    private float mRoughnessMultiplier = 1;
-    private float mSpeedMultiplier = 1;
-    private int mTier = 1;
-    private boolean mBioUpgrade = false;
-    private byte mBioXOffset, mBioZOffset;
-
     @Override
     public boolean checkRecipe(ItemStack aStack) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    private boolean processRecipe(ItemStack aStack, ItemStack[] aInputs, FluidStack[] aFluidInputs) {
+
+        return false;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe_Map.sPCBFactory;
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(tier1, 3, 5, 0)) {
-            return false;
+        if (mSetTier < 3) {
+            if (!checkPiece(tier1, 3, 5, 0)) {
+                return false;
+            }
+
+            if (mSetTier == 2 && checkPiece(tier2, 7, 6, -1)) {
+                mTier = 2;
+            } else {
+                mTier = 1;
+            }
+        } else {
+            if (!checkPiece(tier3, 3, 21, 9)) {
+                return false;
+            }
+            mTier = 3;
+        }
+
+        if (mBioUpgrade) {
+            if (mBioRotate) {
+                final IGregTechTileEntity tTile = getBaseMetaTileEntity();
+                if (!getStructureDefinition()
+                        .check(
+                                this,
+                                bioUpgrade,
+                                tTile.getWorld(),
+                                transformFacing(getExtendedFacing()),
+                                tTile.getXCoord(),
+                                tTile.getYCoord(),
+                                tTile.getZCoord(),
+                                mBioRotate ? mBioZOffset : mBioXOffset,
+                                6,
+                                mBioRotate ? mBioXOffset : mBioZOffset,
+                                !mMachine)) {
+                    return false;
+                }
+            } else {
+                if (!checkPiece(bioUpgrade, mBioXOffset, 6, mBioZOffset)) {
+                    return false;
+                }
+            }
         }
 
         if (mRoughnessMultiplier <= 0.5 || mSpeedMultiplier <= 0 || mTier <= 0 || mTier >= 4) {
@@ -216,6 +314,7 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
         if (mMaintenanceHatches.size() != 1 || mOutputBusses.size() != 1) {
             return false;
         }
+
         return true;
     }
 
@@ -230,9 +329,67 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
         return 0;
     }
 
+    private ExtendedFacing transformFacing(ExtendedFacing facing) {
+        ForgeDirection curDirection = facing.getDirection();
+        Rotation curRotation = facing.getRotation();
+        Flip curFlip = facing.getFlip();
+        ForgeDirection newDirection = curDirection;
+        Rotation newRotation = curRotation;
+        Flip newFlip = curFlip;
+
+        if (curDirection == ForgeDirection.UP || curDirection == ForgeDirection.DOWN) {
+            switch (curRotation) {
+                case CLOCKWISE:
+                case COUNTER_CLOCKWISE:
+                    newFlip = curFlip == Flip.NONE ? Flip.HORIZONTAL : Flip.NONE;
+                    newDirection = curDirection == ForgeDirection.UP ? ForgeDirection.NORTH : ForgeDirection.SOUTH;
+                    break;
+                case NORMAL:
+                    newRotation = curDirection == ForgeDirection.UP ? Rotation.CLOCKWISE : Rotation.COUNTER_CLOCKWISE;
+                    newDirection = curDirection == ForgeDirection.UP ? ForgeDirection.EAST : ForgeDirection.WEST;
+                    newFlip = Flip.NONE;
+                    break;
+                case UPSIDE_DOWN:
+                    newRotation = curDirection == ForgeDirection.UP ? Rotation.COUNTER_CLOCKWISE : Rotation.CLOCKWISE;
+                    newDirection = curDirection == ForgeDirection.UP ? ForgeDirection.EAST : ForgeDirection.WEST;
+                    newFlip = Flip.NONE;
+                    break;
+            }
+        } else if (curRotation == Rotation.CLOCKWISE || curRotation == Rotation.COUNTER_CLOCKWISE) {
+            newFlip = curRotation == Rotation.CLOCKWISE
+                    ? curFlip == Flip.NONE ? Flip.NONE : Flip.HORIZONTAL
+                    : curFlip != Flip.NONE ? Flip.NONE : Flip.HORIZONTAL;
+            newDirection = curRotation == Rotation.CLOCKWISE ? ForgeDirection.UP : ForgeDirection.DOWN;
+        } else {
+            switch (curDirection) {
+                case EAST:
+                    newDirection = ForgeDirection.SOUTH;
+                    break;
+                case NORTH:
+                    newDirection = ForgeDirection.EAST;
+                    break;
+                case WEST:
+                    newDirection = ForgeDirection.NORTH;
+                    break;
+                case SOUTH:
+                    newDirection = ForgeDirection.WEST;
+                    break;
+                default:
+                    newDirection = curDirection;
+            }
+        }
+
+        if (curRotation == Rotation.UPSIDE_DOWN) {
+            if (curDirection != ForgeDirection.UP && curDirection != ForgeDirection.DOWN) {
+                newFlip = curFlip == Flip.NONE ? Flip.HORIZONTAL : Flip.NONE;
+            }
+        }
+
+        return ExtendedFacing.of(newDirection, newRotation, newFlip);
+    }
+
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -241,20 +398,11 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("PCB Factory")
                 .addInfo("Controller block for the PCB Factory")
-                .addInfo(EnumChatFormatting.BOLD + (EnumChatFormatting.GOLD + "!!IMPORTANT!!"))
-                .addInfo("Choose the tier of the multi before you use the schematic")
-                .addInfo("Each tier the multi gains a new building next to it")
-                .addInfo("Putting a nanite in the controller allows the user to choose the tier")
-                .addInfo("Requires a Carbon Nanite to use tier 1")
-                .addInfo("Requires a Neutronium Nanite to use tier 2")
-                .addInfo("Requires a Transcendent Metal Nanite to use tier 3")
-                .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
-                .addInfo("it gains perfect overclock")
-                .addInfo("The amount of nanites inside determine the max parallel")
+                .addInfo(EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD + "!IMPORTANT!"
+                        + " Check out the configurations menu before building")
                 .addInfo(AuthorBlueWeabo)
                 .addSeparator()
                 .beginStructureBlock(30, 38, 13, false)
-                .addStructureInfo("Make sure to choose the tier before using the schematic")
                 .addStructureInfo("PCB Factory Structure is too complex! See schematic for details.")
                 .addStructureInfo("Stellar Alloy Frames")
                 .addEnergyHatch("Any Energy Hatch, Determines Power Tier", 1)
@@ -264,5 +412,21 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
                 .addInputHatch("Required 0", 1)
                 .toolTipFinisher("GregTech");
         return tt;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("mSeparate", mSeparate);
+        aNBT.setLong("mLongEUt", mLongEUt);
+        aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        mSeparate = aNBT.getBoolean("mSeparate");
+        mLongEUt = aNBT.getLong("mLongEUt");
+        mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
     }
 }
