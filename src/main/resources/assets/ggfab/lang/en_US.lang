@@ -1,0 +1,4 @@
+ggfab.waila.advassline.slice=Slice %s: %s s/%s s
+ggfab.waila.advassline.slice.small=Slice %s: %s ticks remaining
+ggfab.waila.advassline.slice.idle=Slice %s: Idle
+ggfab.waila.advassline.slice.stuck=Slice %s: §4STUCK
