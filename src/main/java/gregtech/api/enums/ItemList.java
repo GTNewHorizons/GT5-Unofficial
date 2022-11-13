@@ -738,6 +738,8 @@ public enum ItemList implements IItemContainer {
     Generator_Gas_Turbine_LV,
     Generator_Gas_Turbine_MV,
     Generator_Gas_Turbine_HV,
+    Generator_Gas_Turbine_EV,
+    Generator_Gas_Turbine_IV,
     Generator_Steam_Turbine_LV,
     Generator_Steam_Turbine_MV,
     Generator_Steam_Turbine_HV,
