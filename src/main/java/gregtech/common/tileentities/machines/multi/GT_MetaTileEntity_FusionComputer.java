@@ -32,6 +32,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
@@ -50,7 +51,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GT_MetaTileEntity_FusionComputer
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
-        implements ISurvivalConstructable {
+        implements ISurvivalConstructable, IAddUIWidgets {
     public static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>> STRUCTURE_DEFINITION =
             new ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>>() {
@@ -553,25 +554,25 @@ public abstract class GT_MetaTileEntity_FusionComputer
     }
 
     @Override
-    protected boolean doesBindPlayerInventory() {
+    public boolean doesBindPlayerInventory() {
         return false;
     }
 
     @Override
-    protected void addGregTechLogo(ModularWindow.Builder builder) {
+    public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
-                .setDrawable(getGregTechLogo())
+                .setDrawable(getBaseMetaTileEntity().getGregTechLogo())
                 .setSize(17, 17)
                 .setPos(155, 145));
     }
 
     @Override
-    protected UITexture getBackground() {
+    public UITexture getBackground() {
         return GT_UITextures.BACKGROUND_FUSION_COMPUTER;
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
                         .setDefaultColor(COLOR_TEXT_WHITE.get())
                         .setEnabled(widget -> !mMachine)

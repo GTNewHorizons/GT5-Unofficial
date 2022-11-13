@@ -14,6 +14,12 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IGetBackground;
+import gregtech.api.interfaces.modularui.IGetGregtechLogo;
+import gregtech.api.interfaces.modularui.IGetSlotBackground;
+import gregtech.api.interfaces.modularui.IGetTabIconSet;
+import gregtech.api.interfaces.modularui.IGetTitleColor;
+import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.power.Power;
 import gregtech.common.power.SteamPower;
@@ -24,7 +30,8 @@ import gregtech.common.power.SteamPower;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEntity_BasicMachine_Bronze {
+public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEntity_BasicMachine_Bronze
+        implements IGetBackground, IGetGregtechLogo, IGetSlotBackground, IGetTabIconSet, IGetTitleColor {
     public GT_MetaTileEntity_BasicMachine_Steel(
             int aID,
             String aName,
@@ -199,23 +206,23 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
     }
 
     @Override
-    protected UITexture getBackground() {
+    public UITexture getBackground() {
         return GT_UITextures.BACKGROUND_STEAM.get(SteamVariant.STEEL);
     }
 
     @Override
-    protected IDrawable getSlotBackground() {
+    public IDrawable getSlotBackground() {
         return GT_UITextures.SLOT_ITEM_STEAM.get(SteamVariant.STEEL);
     }
 
     @Override
-    protected IDrawable getGregTechLogo() {
+    public IDrawable getGregTechLogo() {
         return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamVariant.STEEL);
     }
 
     @Override
-    protected GT_GuiTabIconSet getTabIconSet() {
-        return new GT_GuiTabIconSet(
+    public BaseTileEntity.GT_GuiTabIconSet getTabIconSet() {
+        return new BaseTileEntity.GT_GuiTabIconSet(
                 GT_UITextures.TAB_COVER_STEAM_NORMAL.get(SteamVariant.STEEL),
                 GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(SteamVariant.STEEL),
                 GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamVariant.STEEL),
@@ -224,7 +231,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
     }
 
     @Override
-    protected int getTitleColor() {
+    public int getTitleColor() {
         return COLOR_TITLE_WHITE.get();
     }
 }

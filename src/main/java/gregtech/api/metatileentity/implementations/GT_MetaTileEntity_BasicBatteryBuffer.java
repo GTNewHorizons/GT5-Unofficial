@@ -8,6 +8,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
@@ -24,7 +25,8 @@ import net.minecraft.util.EnumChatFormatting;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_TieredMachineBlock
+        implements IAddUIWidgets {
     public boolean mCharge = false, mDecharge = false;
     public int mBatteryCount = 0, mChargeableCount = 0;
     private long count = 0;
@@ -334,19 +336,19 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mInventory.length) {
             case 4:
-                add2by2Slots(builder);
+                getBaseMetaTileEntity().add2by2Slots(builder);
                 break;
             case 9:
-                add3by3Slots(builder);
+                getBaseMetaTileEntity().add3by3Slots(builder);
                 break;
             case 16:
-                add4by4Slots(builder);
+                getBaseMetaTileEntity().add4by4Slots(builder);
                 break;
             default:
-                add1by1Slot(builder);
+                getBaseMetaTileEntity().add1by1Slot(builder);
                 break;
         }
     }

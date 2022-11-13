@@ -21,6 +21,8 @@ import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
@@ -57,7 +59,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
+public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
+        implements IAddGregtechLogo, IAddUIWidgets {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int sPassiveEnergyDrain = 2048;
@@ -609,7 +612,7 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
                         .setSize(90, 72)
@@ -669,14 +672,13 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
     }
 
     @Override
-    protected void addGregTechLogo(ModularWindow.Builder builder) {
+    public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
                 .setDrawable(getGregTechLogo())
                 .setSize(17, 17)
                 .setPos(113, 56));
     }
 
-    @Override
     protected IDrawable getGregTechLogo() {
         return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY;
     }

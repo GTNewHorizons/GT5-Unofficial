@@ -18,6 +18,8 @@ import gregtech.api.enums.ConfigCategories;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -43,7 +45,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
-public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
+public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
+        implements IAddGregtechLogo, IAddUIWidgets {
 
     public static boolean disableMaintenance;
     public boolean mMachine = false,
@@ -1259,7 +1262,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         tag.setInteger("maxProgress", mMaxProgresstime);
         tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
 
-        IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
+        final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             tag.setBoolean("isActive", tileEntity.isActive());
         }
@@ -1267,7 +1270,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 
     protected void setMufflers(boolean state) {
         for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
-            IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
+            final IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
             if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
                 iGTTileEntity.setActive(state);
             }
@@ -1291,21 +1294,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new DrawableWidget()
                 .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
                 .setPos(7, 4)
                 .setSize(143, 75));
-        SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
+        final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
         builder.widget(inventorySlot.setPos(151, 4));
 
-        DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
+        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
         builder.widget(screenElements);
     }
 
     @Override
-    protected void addGregTechLogo(ModularWindow.Builder builder) {}
+    public void addGregTechLogo(ModularWindow.Builder builder) {}
 
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false).setSpace(0).setPos(10, 7);
@@ -1375,7 +1378,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                 .setEnabled(widget -> {
                     if (getBaseMetaTileEntity().getErrorDisplayID() == 0
                             && this instanceof GT_MetaTileEntity_DrillerBase) {
-                        ItemStack tItem = inventorySlot.getMcSlot().getStack();
+                        final ItemStack tItem = inventorySlot.getMcSlot().getStack();
                         return tItem == null
                                 || !GT_Utility.areStacksEqual(tItem, GT_ModHandler.getIC2Item("miningPipe", 1L));
                     }
@@ -1386,7 +1389,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                 .setEnabled(widget -> {
                     if (getBaseMetaTileEntity().getErrorDisplayID() == 0
                             && this instanceof GT_MetaTileEntity_LargeTurbine) {
-                        ItemStack tItem = inventorySlot.getMcSlot().getStack();
+                        final ItemStack tItem = inventorySlot.getMcSlot().getStack();
                         return tItem == null
                                 || !(tItem.getItem() == GT_MetaGenerated_Tool_01.INSTANCE
                                         && tItem.getItemDamage() >= 170

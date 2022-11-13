@@ -2,9 +2,20 @@ package gregtech.api.metatileentity;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.modularui.IGetGregtechLogo;
+import gregtech.api.interfaces.modularui.IGetSlotBackground;
+import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
@@ -166,5 +177,131 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     public boolean shouldJoinIc2Enet() {
         final IMetaTileEntity meta = getMetaTileEntity();
         return meta != null && meta.shouldJoinIc2Enet();
+    }
+
+    /*
+     * Modular UI Support
+     */
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IAddUIWidgets) {
+            ((IAddUIWidgets) getMetaTileEntity()).addUIWidgets(builder, buildContext);
+            return;
+        }
+        super.addUIWidgets(builder, buildContext);
+    }
+
+    @Override
+    public IConfigurationCircuitSupport getConfigurationCircuitSupport() {
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
+            return (IConfigurationCircuitSupport) getMetaTileEntity();
+        }
+        return null;
+    }
+
+    @Override
+    public ItemStackHandler getInventoryHandler() {
+        if (hasValidMetaTileEntity()) {
+            return getMetaTileEntity().getInventoryHandler();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return hasValidMetaTileEntity() && getMetaTileEntity().useModularUI();
+    }
+
+    @Override
+    public String getLocalName() {
+        if (hasValidMetaTileEntity()) return getMetaTileEntity().getLocalName();
+        return super.getLocalName();
+    }
+
+    @Override
+    protected int getGUIWidth() {
+        if (hasValidMetaTileEntity()) return getMetaTileEntity().getGUIWidth();
+
+        return super.getGUIWidth();
+    }
+
+    @Override
+    protected int getGUIHeight() {
+        if (hasValidMetaTileEntity()) return getMetaTileEntity().getGUIHeight();
+
+        return super.getGUIHeight();
+    }
+
+    @Override
+    protected boolean doesBindPlayerInventory() {
+        if (hasValidMetaTileEntity()) return getMetaTileEntity().doesBindPlayerInventory();
+
+        return super.doesBindPlayerInventory();
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IAddGregtechLogo) {
+            ((IAddGregtechLogo) getMetaTileEntity()).addGregTechLogo(builder);
+            return;
+        }
+        super.addGregTechLogo(builder);
+    }
+
+    @Override
+    public IDrawable getGregTechLogo() {
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IGetGregtechLogo) {
+            return ((IGetGregtechLogo) getMetaTileEntity()).getGregTechLogo();
+        }
+        return super.getGregTechLogo();
+    }
+
+    @Override
+    public UITexture getBackground() {
+        if (hasValidMetaTileEntity()) {
+            return getMetaTileEntity().getBackground();
+        }
+        return super.getBackground();
+    }
+
+    @Override
+    public IDrawable getSlotBackground() {
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IGetSlotBackground) {
+            ((IGetSlotBackground) getMetaTileEntity()).getSlotBackground();
+        }
+        return super.getSlotBackground();
+    }
+
+    @Override
+    public ItemStack getStackForm(long aAmount) {
+        if (hasValidMetaTileEntity()) {
+            return getMetaTileEntity().getStackForm(aAmount);
+        }
+        return super.getStackForm(aAmount);
+    }
+
+    @Override
+    public int getTitleColor() {
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IGetTitleColor) {
+            return ((IGetTitleColor) getMetaTileEntity()).getTitleColor();
+        }
+        return super.getTitleColor();
+    }
+
+    @Override
+    public int getGUIColorization() {
+        if (hasValidMetaTileEntity()) {
+            return getMetaTileEntity().getGUIColorization();
+        }
+        return super.getGUIColorization();
+    }
+
+    @Override
+    protected int getTextColorOrDefault(String textType, int defaultColor) {
+        if (hasValidMetaTileEntity()) {
+            return getMetaTileEntity().getTextColorOrDefault(textType, defaultColor);
+        }
+        return defaultColor;
     }
 }

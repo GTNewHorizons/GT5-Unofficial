@@ -13,7 +13,12 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IGetBackground;
+import gregtech.api.interfaces.modularui.IGetGregtechLogo;
+import gregtech.api.interfaces.modularui.IGetSlotBackground;
+import gregtech.api.interfaces.modularui.IGetTabIconSet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
@@ -34,7 +39,8 @@ import net.minecraftforge.common.util.ForgeDirection;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine {
+public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine
+        implements IGetGregtechLogo, IGetSlotBackground, IGetBackground, IGetTabIconSet {
     private static final int NEEDS_STEAM_VENTING = 64;
     public boolean mNeedsSteamVenting = false;
 
@@ -438,23 +444,23 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    protected UITexture getBackground() {
+    public UITexture getBackground() {
         return GT_UITextures.BACKGROUND_STEAM.get(SteamVariant.BRONZE);
     }
 
     @Override
-    protected IDrawable getSlotBackground() {
+    public IDrawable getSlotBackground() {
         return GT_UITextures.SLOT_ITEM_STEAM.get(SteamVariant.BRONZE);
     }
 
     @Override
-    protected IDrawable getGregTechLogo() {
+    public IDrawable getGregTechLogo() {
         return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamVariant.BRONZE);
     }
 
     @Override
-    protected GT_GuiTabIconSet getTabIconSet() {
-        return new GT_GuiTabIconSet(
+    public BaseTileEntity.GT_GuiTabIconSet getTabIconSet() {
+        return new BaseTileEntity.GT_GuiTabIconSet(
                 GT_UITextures.TAB_COVER_STEAM_NORMAL.get(SteamVariant.BRONZE),
                 GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(SteamVariant.BRONZE),
                 GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamVariant.BRONZE),

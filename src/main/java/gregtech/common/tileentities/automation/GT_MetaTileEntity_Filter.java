@@ -11,6 +11,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
@@ -18,7 +19,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer {
+public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
     public boolean bIgnoreNBT = false;
     public boolean bInvertFilter = false;
 
@@ -101,7 +102,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer {
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         addEmitEnergyButton(builder);
         addEmitRedstoneButton(builder);
         addInvertRedstoneButton(builder);

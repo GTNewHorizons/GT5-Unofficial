@@ -4,6 +4,18 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.metatileentity.BaseTileEntity.FLUID_INPUT_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.FLUID_OUTPUT_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.FLUID_TRANSFER_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.ITEM_TRANSFER_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.NEI_TRANSFER_STEAM_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.NEI_TRANSFER_VOLTAGE_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.POWER_SOURCE_KEY;
+import static gregtech.api.metatileentity.BaseTileEntity.SPECIAL_SLOT_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.STALLED_VENT_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -30,6 +42,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
@@ -67,7 +80,7 @@ import org.apache.commons.lang3.tuple.Pair;
  * Extend this class to make a simple Machine
  */
 public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank
-        implements IConfigurationCircuitSupport {
+        implements IConfigurationCircuitSupport, IAddUIWidgets {
 
     /**
      * return values for checkRecipe()
@@ -1291,7 +1304,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (!isSteampowered()) {
             builder.widget(createFluidAutoOutputButton());
             builder.widget(createItemAutoOutputButton());
@@ -1322,16 +1335,18 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      * Adds item I/O, special item, and fluid I/O slots.
      */
     protected void addIOSlots(ModularWindow.Builder builder) {
-        boolean hasFluidInput = getRecipeList() != null ? (getRecipeList().hasFluidInputs()) : (getCapacity() != 0);
-        boolean hasFluidOutput = getRecipeList() != null && getRecipeList().hasFluidOutputs();
+        final boolean hasFluidInput =
+                getRecipeList() != null ? (getRecipeList().hasFluidInputs()) : (getCapacity() != 0);
+        final boolean hasFluidOutput =
+                getRecipeList() != null && getRecipeList().hasFluidOutputs();
         UIHelper.forEachSlots(
                 (i, backgrounds, pos) -> builder.widget(createItemInputSlot(i, backgrounds, pos)),
                 (i, backgrounds, pos) -> builder.widget(createItemOutputSlot(i, backgrounds, pos)),
                 (i, backgrounds, pos) -> builder.widget(createSpecialSlot(backgrounds, pos)),
                 (i, backgrounds, pos) -> builder.widget(createFluidInputSlot(backgrounds, pos)),
                 (i, backgrounds, pos) -> builder.widget(createFluidOutputSlot(backgrounds, pos)),
-                getSlotBackground(),
-                getFluidSlotBackground(),
+                getBaseMetaTileEntity().getSlotBackground(),
+                getBaseMetaTileEntity().getFluidSlotBackground(),
                 getRecipeList(),
                 mInputSlotCount,
                 mOutputItems.length,
@@ -1412,8 +1427,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     @Override
     protected SlotWidget createChargerSlot(int x, int y) {
         if (isSteampowered()) {
-            return (SlotWidget)
-                    createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, new String[0]).setBackground(getSlotBackground());
+            return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, new String[0])
+                    .setBackground(getBaseMetaTileEntity().getSlotBackground());
         } else {
             return super.createChargerSlot(x, y);
         }
@@ -1443,7 +1458,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     protected ProgressBar createProgressBar(
             UITexture texture, int imageSize, ProgressBar.Direction direction, Pos2d pos, Size size) {
-        ProgressBar ret = new ProgressBar();
+        final ProgressBar ret = new ProgressBar();
         ret.setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
                 .setTexture(texture, imageSize)
                 .setDirection(direction)
@@ -1458,8 +1473,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     protected Widget setNEITransferRect(Widget widget, String transferRectID) {
         if (hasNEITransferRect()) {
-            Power powerInfo = getPower();
-            String transferRectTooltip;
+            final Power powerInfo = getPower();
+            final String transferRectTooltip;
             if (isSteampowered()) {
                 transferRectTooltip =
                         StatCollector.translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, powerInfo.getTierString());
@@ -1512,12 +1527,12 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected List<String> getErrorDescriptions() {
-        GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
+        final GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
         return tooltip != null ? tooltip.text : Collections.emptyList();
     }
 
     protected List<String> getErrorDescriptionsShift() {
-        GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
+        final GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
         return tooltip != null ? tooltip.shiftText : Collections.emptyList();
     }
 

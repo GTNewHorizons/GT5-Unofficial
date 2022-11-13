@@ -8,6 +8,7 @@ import gregtech.GT_Mod;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -24,7 +25,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
-public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch implements IConfigurationCircuitSupport {
+public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
+        implements IConfigurationCircuitSupport, IAddUIWidgets {
     public GT_Recipe_Map mRecipeMap = null;
     public boolean disableSort;
     public boolean disableFilter = true;
@@ -264,19 +266,19 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch im
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mTier) {
             case 0:
-                add1by1Slot(builder);
+                getBaseMetaTileEntity().add1by1Slot(builder);
                 break;
             case 1:
-                add2by2Slots(builder);
+                getBaseMetaTileEntity().add2by2Slots(builder);
                 break;
             case 2:
-                add3by3Slots(builder);
+                getBaseMetaTileEntity().add3by3Slots(builder);
                 break;
             default:
-                add4by4Slots(builder);
+                getBaseMetaTileEntity().add4by4Slots(builder);
                 break;
         }
     }

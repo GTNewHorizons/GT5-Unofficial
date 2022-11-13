@@ -3,6 +3,8 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 import com.google.common.collect.ImmutableSet;
@@ -40,6 +42,7 @@ import gregtech.GT_Mod;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
@@ -69,7 +72,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicMachine
-        implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener {
+        implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener, IAddUIWidgets {
 
     public static final int beeCycleLength = 550;
     public static final int baseEUtUsage = 37;
@@ -1088,12 +1091,14 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     }
 
     @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new SlotWidget(new ApiarySlot(inventoryHandler, queen))
-                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_BEE_QUEEN)
+                        .setBackground(
+                                getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_BEE_QUEEN)
                         .setPos(36, 21))
                 .widget(new SlotWidget(new ApiarySlot(inventoryHandler, drone))
-                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_BEE_DRONE)
+                        .setBackground(
+                                getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_BEE_DRONE)
                         .setPos(36, 41))
                 .widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
                         .startFromSlot(7)
