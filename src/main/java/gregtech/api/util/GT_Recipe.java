@@ -1758,7 +1758,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         false,
                         true)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
-        public static final GT_Recipe_Map sPlasmaForgeRecipes = new GT_Recipe_Map_PlasmaForge(
+        public static final GT_Recipe_Map sPlasmaForgeRecipes = new GT_Recipe_Map_9_Items_9_Fluids(
                         new HashSet<>(20),
                         "gt.recipe.plasmaforge",
                         "DTPF",
@@ -2524,7 +2524,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * First is (20, 18) size of "empty" image at the top,
          * Second is (20, 18) size of "filled" image at the bottom.
          */
-        public UITexture progressBarTexture;
+        public UITexture progressBarTexture = GT_UITextures.PROGRESSBAR_ARROW;
 
         /**
          * Progressbar used for steam machine GUI and/or NEI.
@@ -2534,7 +2534,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          */
         public SteamTexture progressBarTextureSteam;
 
-        public ProgressBar.Direction progressBarDirection;
+        public ProgressBar.Direction progressBarDirection = ProgressBar.Direction.RIGHT;
 
         public Size progressBarSize = new Size(20, 18);
 
@@ -2711,6 +2711,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             this.progressBarTexture = progressBarTexture;
             this.progressBarDirection = progressBarDirection;
             return this;
+        }
+
+        public GT_Recipe_Map setProgressBar(UITexture progressBarTexture) {
+            return setProgressBar(progressBarTexture, ProgressBar.Direction.RIGHT);
         }
 
         public GT_Recipe_Map setProgressBarSteam(SteamTexture progressBarTexture) {
@@ -3403,9 +3407,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     /**
      * Place 6 slots for each input/output, item/fluid
      */
-    public abstract static class GT_Recipe_Map_MultiFluid_6_Slots extends GT_Recipe_Map {
+    public static class GT_Recipe_Map_6_Items_6_Fluids extends GT_Recipe_Map {
 
-        public GT_Recipe_Map_MultiFluid_6_Slots(
+        public GT_Recipe_Map_6_Items_6_Fluids(
                 Collection<GT_Recipe> aRecipeList,
                 String aUnlocalizedName,
                 String aLocalName,
@@ -3463,12 +3467,73 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
     }
 
+    @SuppressWarnings("unused")
+    public static class GT_Recipe_Map_9_Items_3_Fluids extends GT_Recipe_Map {
+
+        public GT_Recipe_Map_9_Items_3_Fluids(
+                Collection<GT_Recipe> aRecipeList,
+                String aUnlocalizedName,
+                String aLocalName,
+                String aNEIName,
+                String aNEIGUIPath,
+                int aUsualInputCount,
+                int aUsualOutputCount,
+                int aMinimalInputItems,
+                int aMinimalInputFluids,
+                int aAmperage,
+                String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier,
+                String aNEISpecialValuePost,
+                boolean aShowVoltageAmperageInNEI,
+                boolean aNEIAllowed) {
+            super(
+                    aRecipeList,
+                    aUnlocalizedName,
+                    aLocalName,
+                    aNEIName,
+                    aNEIGUIPath,
+                    9,
+                    9,
+                    aMinimalInputItems,
+                    aMinimalInputFluids,
+                    aAmperage,
+                    aNEISpecialValuePre,
+                    aNEISpecialValueMultiplier,
+                    aNEISpecialValuePost,
+                    aShowVoltageAmperageInNEI,
+                    aNEIAllowed);
+            setUsualFluidInputCount(3);
+            setUsualFluidOutputCount(3);
+            setNEIGregTechLogoPos(80, 62);
+        }
+
+        @Override
+        public List<Pos2d> getItemInputPositions(int itemInputCount) {
+            return UIHelper.getItemGridPositions(itemInputCount, 16, 8, 3, 3);
+        }
+
+        @Override
+        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
+            return UIHelper.getItemGridPositions(itemOutputCount, 106, 8, 3, 3);
+        }
+
+        @Override
+        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+            return UIHelper.getItemGridPositions(fluidInputCount, 16, 62, 3, 3);
+        }
+
+        @Override
+        public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
+            return UIHelper.getItemGridPositions(fluidOutputCount, 106, 62, 3, 3);
+        }
+    }
+
     /**
      * Place 9 slots for each input/output, item/fluid
      */
-    public abstract static class GT_Recipe_Map_MultiFluid_9_Slots extends GT_Recipe_Map {
+    public static class GT_Recipe_Map_9_Items_9_Fluids extends GT_Recipe_Map {
 
-        public GT_Recipe_Map_MultiFluid_9_Slots(
+        public GT_Recipe_Map_9_Items_9_Fluids(
                 Collection<GT_Recipe> aRecipeList,
                 String aUnlocalizedName,
                 String aLocalName,
@@ -3502,7 +3567,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEIAllowed);
             setUsualFluidInputCount(9);
             setUsualFluidOutputCount(9);
-            setNEIBackgroundSize(172, 116);
+            setNEIBackgroundSize(172, 118);
             setNEIGregTechLogoPos(80, 98);
         }
 
@@ -5295,7 +5360,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
     }
 
-    public static class GT_Recipe_Map_LargeChemicalReactor extends GT_Recipe_Map_MultiFluid_6_Slots {
+    public static class GT_Recipe_Map_LargeChemicalReactor extends GT_Recipe_Map_6_Items_6_Fluids {
         private static final int TOTAL_INPUT_COUNT = 6;
         private static final int OUTPUT_COUNT = 6;
 
@@ -5466,8 +5531,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
             List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < fluidOutputCount + 1; i++) {
-                if (i == 0) continue;
+            for (int i = 1; i < fluidOutputCount + 1; i++) {
                 results.add(new Pos2d(106 + (i % 3) * 18, 62 - (i / 3) * 18));
             }
             return results;
@@ -5626,43 +5690,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                             ai.get(),
                             aEUt,
                             aSpecialValue));
-        }
-    }
-
-    public static class GT_Recipe_Map_PlasmaForge extends GT_Recipe_Map_MultiFluid_9_Slots {
-
-        public GT_Recipe_Map_PlasmaForge(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
-                boolean aNEIAllowed) {
-            super(
-                    aRecipeList,
-                    aUnlocalizedName,
-                    aLocalName,
-                    aNEIName,
-                    aNEIGUIPath,
-                    aUsualInputCount,
-                    aUsualOutputCount,
-                    aMinimalInputItems,
-                    aMinimalInputFluids,
-                    aAmperage,
-                    aNEISpecialValuePre,
-                    aNEISpecialValueMultiplier,
-                    aNEISpecialValuePost,
-                    aShowVoltageAmperageInNEI,
-                    aNEIAllowed);
         }
     }
 
