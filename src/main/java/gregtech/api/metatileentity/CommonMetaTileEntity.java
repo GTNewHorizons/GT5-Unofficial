@@ -268,7 +268,7 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     @Override
     public IDrawable getSlotBackground() {
         if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IGetSlotBackground) {
-            ((IGetSlotBackground) getMetaTileEntity()).getSlotBackground();
+            return ((IGetSlotBackground) getMetaTileEntity()).getSlotBackground();
         }
         return super.getSlotBackground();
     }
