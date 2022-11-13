@@ -1,6 +1,5 @@
 package gtPlusPlus;
 
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableAnimatedTurbines;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
 
 import cpw.mods.fml.common.Mod;
@@ -13,10 +12,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.util.*;
+import gregtech.api.util.FishPondFakeRecipe;
+import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.chunkloading.GTPP_ChunkManager;
 import gtPlusPlus.core.commands.CommandDebugChunks;
@@ -24,7 +24,9 @@ import gtPlusPlus.core.commands.CommandEnableDebugWhileRunning;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
-import gtPlusPlus.core.handler.*;
+import gtPlusPlus.core.handler.BookHandler;
+import gtPlusPlus.core.handler.MobMentality;
+import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
@@ -38,7 +40,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.core.util.minecraft.HazmatUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.nei.NEI_IMC_Sender;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
@@ -56,7 +57,6 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraft.util.IIcon;
 
 @MCVersion(value = "1.7.10")
 @Mod(
@@ -277,25 +277,6 @@ public class GTplusplus implements ActionListener {
     @Mod.EventHandler
     public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
         GTPP_Recipe.reInit();
-    }
-
-    public static void tryPatchTurbineTextures() {
-        if (enableAnimatedTurbines) {
-            BlockIcons h = Textures.BlockIcons.GAS_TURBINE_SIDE_ACTIVE;
-            BlockIcons h2 = Textures.BlockIcons.STEAM_TURBINE_SIDE_ACTIVE;
-            try {
-                Logger.INFO("Trying to patch GT textures to make Turbines animated.");
-                IIcon aIcon = TexturesGtBlock.Overlay_Machine_Turbine_Active.getIcon();
-                if (ReflectionUtils.setField(h, "mIcon", aIcon)) {
-                    Logger.INFO("Patched Gas Turbine Icon.");
-                }
-                if (ReflectionUtils.setField(h2, "mIcon", aIcon)) {
-                    Logger.INFO("Patched Steam Turbine Icon.");
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     protected void generateGregtechRecipeMaps() {

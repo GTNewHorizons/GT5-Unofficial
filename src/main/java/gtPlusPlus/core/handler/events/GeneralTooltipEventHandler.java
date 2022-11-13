@@ -3,7 +3,6 @@ package gtPlusPlus.core.handler.events;
 import advsolar.common.AdvancedSolarPanel;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.enums.ItemList;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.core.block.ModBlocks;
@@ -11,7 +10,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -95,45 +93,6 @@ public class GeneralTooltipEventHandler {
 
         if (LoadedMods.AdvancedSolarPanel) {
             molecularTransformer(event);
-        }
-
-        if (CORE.ConfigSwitches.enableAnimatedTurbines) {
-            boolean shift = false;
-            try {
-
-                if (KeyboardUtils.isShiftKeyDown()) {
-                    shift = true;
-                    mTurbine = "Animated Turbines can be disabled in the GT++ config";
-                } else {
-                    mTurbine = EnumChatFormatting.ITALIC + "<Hold Shift>" + EnumChatFormatting.RESET;
-                }
-                for (int t = 0; t < 6; t++) {
-                    if (mGregtechTurbines[t] != null) {
-                        if (ItemStack.areItemStacksEqual(event.itemStack, mGregtechTurbines[t])) {
-                            event.toolTip.add(mTurbine);
-                            if (shift) {
-                                if (mExtra == null) {
-                                    mExtra = CORE.GT_Tooltip;
-                                }
-                                event.toolTip.add(mExtra);
-                            }
-                        }
-                    } else {
-                        mGregtechTurbines[t] = (t == 0
-                                ? ItemList.Generator_Steam_Turbine_LV.get(1)
-                                : (t == 1
-                                        ? ItemList.Generator_Steam_Turbine_MV.get(1)
-                                        : (t == 2
-                                                ? ItemList.Generator_Steam_Turbine_HV.get(1)
-                                                : (t == 3
-                                                        ? ItemList.Generator_Gas_Turbine_LV.get(1)
-                                                        : (t == 4
-                                                                ? ItemList.Generator_Gas_Turbine_MV.get(1)
-                                                                : (ItemList.Generator_Gas_Turbine_HV.get(1)))))));
-                    }
-                }
-            } catch (Throwable t) {
-            }
         }
     }
 

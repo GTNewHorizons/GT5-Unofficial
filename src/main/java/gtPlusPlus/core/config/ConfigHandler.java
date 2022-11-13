@@ -97,11 +97,6 @@ public class ConfigHandler {
                 "gregtech",
                 false,
                 "Adds GT6 recipes for Sulfuric Acid. Should remove all pre-existing recipes.");
-        enableAnimatedTurbines = config.getBoolean(
-                "enableAnimatedTurbines",
-                "gregtech",
-                true,
-                "Gives GT Gas/Steam turbines animated textures while running.");
         turbineCutoffBase = config.getInt(
                 "turbineCutoffBase",
                 "gregtech",

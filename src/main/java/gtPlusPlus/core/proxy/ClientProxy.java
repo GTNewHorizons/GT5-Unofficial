@@ -239,7 +239,6 @@ public class ClientProxy extends CommonProxy implements Runnable {
 
     @Override
     public void onLoadComplete(FMLLoadCompleteEvent event) {
-        GTplusplus.tryPatchTurbineTextures();
         if (CORE.ConfigSwitches.hideUniversalCells) {
             hideUniversalCells();
         }
