@@ -40,6 +40,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
@@ -822,23 +823,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
             if (isValidMetaTileEntity(tHatch)) {
-                if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-                    if (((GT_MetaTileEntity_Hatch_MultiInput) tHatch).hasFluid(aLiquid)) {
-                        FluidStack tLiquid = tHatch.drain(aLiquid.amount, false);
-                        if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
-                            tLiquid = tHatch.drain(aLiquid.amount, true);
-                            return tLiquid != null && tLiquid.amount >= aLiquid.amount;
-                        }
-                    }
-                } else {
-                    FluidStack tLiquid = tHatch.getFluid();
-                    if (tLiquid != null && tLiquid.isFluidEqual(aLiquid)) {
-                        tLiquid = tHatch.drain(aLiquid.amount, false);
-                        if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
-                            tLiquid = tHatch.drain(aLiquid.amount, true);
-                            return tLiquid != null && tLiquid.amount >= aLiquid.amount;
-                        }
-                    }
+                FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
+                if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
+                    tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
+                    return tLiquid != null && tLiquid.amount >= aLiquid.amount;
                 }
             }
         }
