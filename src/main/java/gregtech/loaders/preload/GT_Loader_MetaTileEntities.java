@@ -11235,11 +11235,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 new GT_MetaTileEntity_GasTurbine(1117, "basicgenerator.gasturbine.tier.03", "Turbo Gas Turbine", 3)
                         .getStackForm(1L));
         ItemList.Generator_Gas_Turbine_EV.set(
-            new GT_MetaTileEntity_GasTurbine(1118, "basicgenerator.gasturbine.tier.04", "Turbo Gas Turbine II", 3)
-                .getStackForm(1L));
+                new GT_MetaTileEntity_GasTurbine(1118, "basicgenerator.gasturbine.tier.04", "Turbo Gas Turbine II", 3)
+                        .getStackForm(1L));
         ItemList.Generator_Gas_Turbine_IV.set(
-            new GT_MetaTileEntity_GasTurbine(1119, "basicgenerator.gasturbine.tier.05", "Turbo Gas Turbine III", 3)
-                .getStackForm(1L));
+                new GT_MetaTileEntity_GasTurbine(1119, "basicgenerator.gasturbine.tier.05", "Turbo Gas Turbine III", 3)
+                        .getStackForm(1L));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Generator_Gas_Turbine_LV.get(1L), bitsd, new Object[] {
             "CRC",
