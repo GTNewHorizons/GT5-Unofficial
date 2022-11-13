@@ -566,7 +566,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public int mPollutionBaseDieselGeneratorPerSecond = 200;
     public double[] mPollutionDieselGeneratorReleasedByTier = new double[] {0.1, 1.0, 0.9, 0.8};
     public int mPollutionBaseGasTurbinePerSecond = 200;
-    public double[] mPollutionGasTurbineReleasedByTier = new double[] {0.1, 1.0, 0.9, 0.8};
+    public double[] mPollutionGasTurbineReleasedByTier = new double[] {0.1, 1.0, 0.9, 0.8, 0.7, 0.6};
     public final GT_UO_DimensionList mUndergroundOil = new GT_UO_DimensionList();
     public int mTicksUntilNextCraftSound = 0;
     public double mMagneticraftBonusOutputPercent = 0d;
