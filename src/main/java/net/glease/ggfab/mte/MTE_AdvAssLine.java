@@ -1,10 +1,15 @@
 package net.glease.ggfab.mte;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
@@ -27,12 +32,17 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static net.glease.ggfab.BlockIcons.*;
 
 /*
@@ -41,9 +51,74 @@ Dev note:
 2.
  */
 public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
+    private static final String STRUCTURE_PIECE_FIRST = "first";
+    private static final String STRUCTURE_PIECE_LATER = "later";
+    private static final String STRUCTURE_PIECE_LAST = "last";
     public static final String TAG_KEY_CURRENT_STICK = "mCurrentStick";
     public static final String TAG_KEY_PROGRESS_TIMES = "mProgressTimeArray";
-    public static final String TAG_KEY_PROGRESS_ITEMS = "mProgressItemArray";
+    private static final IStructureDefinition<GT_MetaTileEntity_AssemblyLine> STRUCTURE_DEFINITION =
+            StructureDefinition.<GT_MetaTileEntity_AssemblyLine>builder()
+                    .addShape(STRUCTURE_PIECE_FIRST, transpose(new String[][] {
+                            {" ", "e", " "},
+                            {"~", "l", "G"},
+                            {"g", "m", "g"},
+                            {"b", "i", "b"},
+                    }))
+                    .addShape(STRUCTURE_PIECE_LATER, transpose(new String[][] {
+                            {" ", "e", " "},
+                            {"d", "l", "d"},
+                            {"g", "m", "g"},
+                            {"b", "I", "b"},
+                    }))
+                    .addShape(STRUCTURE_PIECE_LAST, transpose(new String[][] {
+                            {" ", "e", " "},
+                            {"d", "l", "d"},
+                            {"g", "m", "g"},
+                            {"o", "i", "b"},
+                    }))
+                    .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
+                    .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
+                    .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
+                    .addElement(
+                            'g',
+                            ofChain(
+                                    ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
+                                    ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
+                                    // warded glass
+                                    ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
+                    .addElement(
+                            'e',
+                            ofChain(
+                                    Energy.or(ExoticEnergy).newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
+                                    ofBlock(GregTech_API.sBlockCasings2, 0)))
+                    .addElement(
+                            'd',
+                            buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
+                                    .atLeast(DataHatchElement.DataAccess)
+                                    .dot(2)
+                                    .casingIndex(42)
+                                    .allowOnly(ForgeDirection.NORTH)
+                                    .buildAndChain(GregTech_API.sBlockCasings3, 10))
+                    .addElement(
+                            'b',
+                            buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
+                                    .atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
+                                    .casingIndex(16)
+                                    .dot(3)
+                                    .allowOnly(ForgeDirection.DOWN)
+                                    .buildAndChain(
+                                            ofBlock(GregTech_API.sBlockCasings2, 0),
+                                            ofHatchAdder(
+                                                    GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
+                    .addElement(
+                            'I',
+                            ofChain(
+                                    // all blocks nearby use solid steel casing, so let's use the texture of that
+                                    InputBus.newAny(16, 5, ForgeDirection.DOWN),
+                                    ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
+                    .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
+                    .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN))
+                    .build();
     private ItemStack currentStick;
     private GT_Recipe.GT_Recipe_AssemblyLine currentRecipe;
     private final Slice[] slices = IntStream.range(0, 16).mapToObj(Slice::new).toArray(Slice[]::new);
@@ -203,6 +278,11 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
             }
         }
         setCurrentRecipe(loadedStack, recipe);
+    }
+
+    @Override
+    public IStructureDefinition<GT_MetaTileEntity_AssemblyLine> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -565,6 +645,25 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
                     "id=" + id +
                     ", progress=" + progress +
                     '}';
+        }
+    }
+
+    private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_AssemblyLine> {
+        DataAccess;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(GT_MetaTileEntity_Hatch_DataAccess.class);
+        }
+
+        @Override
+        public IGT_HatchAdder<GT_MetaTileEntity_AssemblyLine> adder() {
+            return GT_MetaTileEntity_AssemblyLine::addDataAccessToMachineList;
+        }
+
+        @Override
+        public long count(GT_MetaTileEntity_AssemblyLine t) {
+            return t.mDataAccessHatches.size();
         }
     }
 }
