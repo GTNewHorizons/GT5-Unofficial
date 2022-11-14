@@ -27,6 +27,7 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
@@ -36,8 +37,8 @@ import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
@@ -56,7 +57,6 @@ import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -183,7 +183,7 @@ public class GT_TileEntity_CircuitAssemblyLine
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 20) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(212), 10, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(IC2_MACHINES_MAGNETIZER_LOOP, 10, 1.0F, aX, aY, aZ);
         }
     }
 
@@ -425,17 +425,15 @@ public class GT_TileEntity_CircuitAssemblyLine
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int built;
-        built = survivialBuildPiece(
-                STRUCTURE_PIECE_FIRST, stackSize, 0, 0, 0, elementBudget, source, actor, false, true);
+        built = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int tLength = Math.min(stackSize.stackSize + 1, 7);
 
         for (int i = 1; i < tLength; ++i) {
-            built = survivialBuildPiece(
-                    STRUCTURE_PIECE_NEXT, stackSize, -i, 0, 0, elementBudget, source, actor, false, true);
+            built = survivialBuildPiece(STRUCTURE_PIECE_NEXT, stackSize, -i, 0, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
         return -1;

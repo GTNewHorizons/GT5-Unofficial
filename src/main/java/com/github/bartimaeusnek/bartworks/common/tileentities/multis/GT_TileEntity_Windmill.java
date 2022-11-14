@@ -29,14 +29,13 @@ import static gregtech.api.enums.GT_Values.V;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.BW_GUIContainer_Windmill;
 import com.github.bartimaeusnek.bartworks.common.items.BW_Stonage_Rotors;
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
 import com.github.bartimaeusnek.bartworks.server.container.BW_Container_Windmill;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.*;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -60,7 +59,6 @@ import java.util.List;
 import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -69,6 +67,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_Windmill>
         implements ISurvivalConstructable {
@@ -115,10 +114,71 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
                                     onElementPass(t -> t.mHardenedClay++, ofBlock(Blocks.hardened_clay, 0)),
                                     ofTileAdder(
                                             GT_TileEntity_Windmill::addDispenserToOutputSet, Blocks.hardened_clay, 0),
-                                    onElementPass(t -> t.mDoor++, ofBlock(Blocks.wooden_door, 0))))
+                                    onElementPass(
+                                            t -> t.mDoor++, new IStructureElementNoPlacement<GT_TileEntity_Windmill>() {
+                                                private final IStructureElement<GT_TileEntity_Windmill> delegate =
+                                                        ofBlock(Blocks.wooden_door, 0);
+
+                                                @Override
+                                                public boolean check(
+                                                        GT_TileEntity_Windmill gt_tileEntity_windmill,
+                                                        World world,
+                                                        int x,
+                                                        int y,
+                                                        int z) {
+                                                    return delegate.check(gt_tileEntity_windmill, world, x, y, z);
+                                                }
+
+                                                @Override
+                                                public boolean spawnHint(
+                                                        GT_TileEntity_Windmill gt_tileEntity_windmill,
+                                                        World world,
+                                                        int x,
+                                                        int y,
+                                                        int z,
+                                                        ItemStack trigger) {
+                                                    return delegate.spawnHint(
+                                                            gt_tileEntity_windmill, world, x, y, z, trigger);
+                                                }
+                                            })))
                     .addElement('b', ofBlock(Blocks.brick_block, 0))
-                    .addElement(
-                            's', ofTileAdder(GT_TileEntity_Windmill::setRotorBlock, StructureLibAPI.getBlockHint(), 0))
+                    .addElement('s', new IStructureElement<GT_TileEntity_Windmill>() {
+                        @Override
+                        public boolean check(GT_TileEntity_Windmill t, World world, int x, int y, int z) {
+                            TileEntity tileEntity = world.getTileEntity(x, y, z);
+                            return t.setRotorBlock(tileEntity);
+                        }
+
+                        @Override
+                        public boolean spawnHint(
+                                GT_TileEntity_Windmill t, World world, int x, int y, int z, ItemStack trigger) {
+                            StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 0);
+                            return true;
+                        }
+
+                        @Override
+                        public boolean placeBlock(
+                                GT_TileEntity_Windmill gt_tileEntity_windmill,
+                                World world,
+                                int x,
+                                int y,
+                                int z,
+                                ItemStack trigger) {
+                            return false;
+                        }
+
+                        @Override
+                        public BlocksToPlace getBlocksToPlace(
+                                GT_TileEntity_Windmill gt_tileEntity_windmill,
+                                World world,
+                                int x,
+                                int y,
+                                int z,
+                                ItemStack trigger,
+                                AutoPlaceEnvironment env) {
+                            return BlocksToPlace.create(new ItemStack(ItemRegistry.ROTORBLOCK));
+                        }
+                    })
                     .build();
 
     @Override
@@ -487,10 +547,9 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
-                STRUCTURE_PIECE_MAIN, stackSize, 3, 11, 0, elementBudget, source, actor, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 11, 0, elementBudget, env, false, true);
     }
 
     public float OutputMultiplier(BW_RotorBlock rotorBlock) {
