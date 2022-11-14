@@ -532,7 +532,7 @@ public class PlatinumSludgeOverHaul {
                 300);
         GT_Values.RA.addChemicalRecipe(
                 IridiumChloride.get(dust),
-                Materials.Calcium.getDust(3),
+                Materials.Calcium.getDust(1),
                 null,
                 CalciumChloride.getFluidOrGas(3000),
                 PGSDResidue2.get(dust),
