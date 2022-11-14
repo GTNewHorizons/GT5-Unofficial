@@ -1758,14 +1758,14 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         false,
                         true)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
-        public static final GT_Recipe_Map sPlasmaForgeRecipes = new GT_Recipe_Map_9_Items_9_Fluids(
+        public static final GT_Recipe_Map sPlasmaForgeRecipes = new GT_Recipe_Map_LargeNEI(
                         new HashSet<>(20),
                         "gt.recipe.plasmaforge",
                         "DTPF",
                         null,
                         RES_PATH_GUI + "basicmachines/PlasmaForge",
-                        1,
-                        1,
+                        9,
+                        9,
                         0,
                         0,
                         1,
@@ -1774,7 +1774,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         " K",
                         false,
                         true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                .setUsualFluidInputCount(9)
+                .setUsualFluidOutputCount(9);
         public static final GT_Recipe_Map sPrimitiveBlastRecipes = new GT_Recipe_Map(
                         new HashSet<>(200),
                         "gt.recipe.primitiveblastfurnace",
@@ -2723,21 +2725,25 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe_Map setProgressBarSize(int x, int y) {
+            useModularUI(true);
             this.progressBarSize = new Size(x, y);
             return this;
         }
 
         public GT_Recipe_Map setProgressBarPos(int x, int y) {
+            useModularUI(true);
             this.progressBarPos = new Pos2d(x, y);
             return this;
         }
 
         public GT_Recipe_Map setProgressBarImageSize(int progressBarImageSize) {
+            useModularUI(true);
             this.progressBarImageSize = progressBarImageSize;
             return this;
         }
 
         public GT_Recipe_Map setNEITransferRect(Rectangle neiTransferRect) {
+            useModularUI(true);
             this.neiTransferRect = neiTransferRect;
             return this;
         }
@@ -2757,26 +2763,31 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe_Map setUsualFluidInputCount(int usualFluidInputCount) {
+            useModularUI(true);
             this.usualFluidInputCount = usualFluidInputCount;
             return this;
         }
 
         public GT_Recipe_Map setUsualFluidOutputCount(int usualFluidOutputCount) {
+            useModularUI(true);
             this.usualFluidOutputCount = usualFluidOutputCount;
             return this;
         }
 
         public GT_Recipe_Map setNEIGregTechLogoPos(int x, int y) {
+            useModularUI(true);
             this.neiGregTechLogoPos = new Pos2d(x, y);
             return this;
         }
 
         public GT_Recipe_Map setNEIBackgroundOffset(int x, int y) {
+            useModularUI(true);
             this.neiBackgroundOffset = new Pos2d(x, y);
             return this;
         }
 
         public GT_Recipe_Map setNEIBackgroundSize(int width, int height) {
+            useModularUI(true);
             this.neiBackgroundSize = new Size(width, height);
             return this;
         }
@@ -3405,11 +3416,15 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * Place 6 slots for each input/output, item/fluid
+     * Nicely display NEI with many items and fluids.
+     * Remember to call {@link GT_Recipe_Map#setUsualFluidInputCount} and {@link GT_Recipe_Map#setUsualFluidOutputCount}.
      */
-    public static class GT_Recipe_Map_6_Items_6_Fluids extends GT_Recipe_Map {
+    public static class GT_Recipe_Map_LargeNEI extends GT_Recipe_Map {
 
-        public GT_Recipe_Map_6_Items_6_Fluids(
+        private static final int xDirMaxCount = 3;
+        private static final int yOrigin = 8;
+
+        public GT_Recipe_Map_LargeNEI(
                 Collection<GT_Recipe> aRecipeList,
                 String aUnlocalizedName,
                 String aLocalName,
@@ -3431,8 +3446,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aLocalName,
                     aNEIName,
                     aNEIGUIPath,
-                    6,
-                    6,
+                    aUsualInputCount,
+                    aUsualOutputCount,
                     aMinimalInputItems,
                     aMinimalInputFluids,
                     aAmperage,
@@ -3441,99 +3456,68 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
-            setUsualFluidInputCount(6);
-            setUsualFluidOutputCount(6);
+            useModularUI(true);
             setNEIGregTechLogoPos(80, 62);
         }
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            return UIHelper.getItemGridPositions(itemInputCount, 16, 8, 3, 3);
+            return UIHelper.getItemGridPositions(itemInputCount, 16, yOrigin, xDirMaxCount, 3);
         }
 
         @Override
         public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return UIHelper.getItemGridPositions(itemOutputCount, 106, 8, 3, 3);
+            return UIHelper.getItemGridPositions(itemOutputCount, 106, yOrigin, xDirMaxCount, 3);
         }
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            return UIHelper.getItemGridPositions(fluidInputCount, 16, 44, 3, 3);
+            return UIHelper.getItemGridPositions(
+                    fluidInputCount, 16, yOrigin + getItemRowCount() * 18, xDirMaxCount, 3);
         }
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            return UIHelper.getItemGridPositions(fluidOutputCount, 106, 44, 3, 3);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public static class GT_Recipe_Map_9_Items_3_Fluids extends GT_Recipe_Map {
-
-        public GT_Recipe_Map_9_Items_3_Fluids(
-                Collection<GT_Recipe> aRecipeList,
-                String aUnlocalizedName,
-                String aLocalName,
-                String aNEIName,
-                String aNEIGUIPath,
-                int aUsualInputCount,
-                int aUsualOutputCount,
-                int aMinimalInputItems,
-                int aMinimalInputFluids,
-                int aAmperage,
-                String aNEISpecialValuePre,
-                int aNEISpecialValueMultiplier,
-                String aNEISpecialValuePost,
-                boolean aShowVoltageAmperageInNEI,
-                boolean aNEIAllowed) {
-            super(
-                    aRecipeList,
-                    aUnlocalizedName,
-                    aLocalName,
-                    aNEIName,
-                    aNEIGUIPath,
-                    9,
-                    9,
-                    aMinimalInputItems,
-                    aMinimalInputFluids,
-                    aAmperage,
-                    aNEISpecialValuePre,
-                    aNEISpecialValueMultiplier,
-                    aNEISpecialValuePost,
-                    aShowVoltageAmperageInNEI,
-                    aNEIAllowed);
-            setUsualFluidInputCount(3);
-            setUsualFluidOutputCount(3);
-            setNEIGregTechLogoPos(80, 62);
+            return UIHelper.getItemGridPositions(
+                    fluidOutputCount, 106, yOrigin + getItemRowCount() * 18, xDirMaxCount, 3);
         }
 
         @Override
-        public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            return UIHelper.getItemGridPositions(itemInputCount, 16, 8, 3, 3);
+        public ModularWindow.Builder createNEITemplate(
+                IItemHandlerModifiable itemInputsInventory,
+                IItemHandlerModifiable itemOutputsInventory,
+                IItemHandlerModifiable specialSlotInventory,
+                IItemHandlerModifiable fluidInputsInventory,
+                IItemHandlerModifiable fluidOutputsInventory,
+                Supplier<Float> progressSupplier,
+                Pos2d windowOffset) {
+            // Delay setter so that calls to #setUsualFluidInputCount and #setUsualFluidOutputCount are considered
+            setNEIBackgroundSize(172, 82 + (Math.max(getItemRowCount() + getFluidRowCount() - 4, 0)) * 18);
+            return super.createNEITemplate(
+                    itemInputsInventory,
+                    itemOutputsInventory,
+                    specialSlotInventory,
+                    fluidInputsInventory,
+                    fluidOutputsInventory,
+                    progressSupplier,
+                    windowOffset);
         }
 
-        @Override
-        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return UIHelper.getItemGridPositions(itemOutputCount, 106, 8, 3, 3);
+        private int getItemRowCount() {
+            return (Math.max(mUsualInputCount, mUsualOutputCount) - 1) / xDirMaxCount + 1;
         }
 
-        @Override
-        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            return UIHelper.getItemGridPositions(fluidInputCount, 16, 62, 3, 3);
-        }
-
-        @Override
-        public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            return UIHelper.getItemGridPositions(fluidOutputCount, 106, 62, 3, 3);
+        private int getFluidRowCount() {
+            return (Math.max(getUsualFluidInputCount(), getUsualFluidOutputCount()) - 1) / xDirMaxCount + 1;
         }
     }
 
     /**
-     * Place 9 slots for each input/output, item/fluid
+     * Display fluids where normally items are placed on NEI.
      */
-    public static class GT_Recipe_Map_9_Items_9_Fluids extends GT_Recipe_Map {
+    public static class GT_Recipe_Map_FluidOnly extends GT_Recipe_Map {
 
-        public GT_Recipe_Map_9_Items_9_Fluids(
+        public GT_Recipe_Map_FluidOnly(
                 Collection<GT_Recipe> aRecipeList,
                 String aUnlocalizedName,
                 String aLocalName,
@@ -3555,8 +3539,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aLocalName,
                     aNEIName,
                     aNEIGUIPath,
-                    9,
-                    9,
+                    aUsualInputCount,
+                    aUsualOutputCount,
                     aMinimalInputItems,
                     aMinimalInputFluids,
                     aAmperage,
@@ -3565,30 +3549,17 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
-            setUsualFluidInputCount(9);
-            setUsualFluidOutputCount(9);
-            setNEIBackgroundSize(172, 118);
-            setNEIGregTechLogoPos(80, 98);
-        }
-
-        @Override
-        public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            return UIHelper.getItemGridPositions(itemInputCount, 16, 8, 3, 3);
-        }
-
-        @Override
-        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return UIHelper.getItemGridPositions(itemOutputCount, 106, 8, 3, 3);
+            useModularUI(true);
         }
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            return UIHelper.getItemGridPositions(fluidInputCount, 16, 62, 3, 3);
+            return UIHelper.getItemInputPositions(fluidInputCount);
         }
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            return UIHelper.getItemGridPositions(fluidOutputCount, 106, 62, 3, 3);
+            return UIHelper.getItemOutputPositions(fluidOutputCount);
         }
     }
 
@@ -5360,7 +5331,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
     }
 
-    public static class GT_Recipe_Map_LargeChemicalReactor extends GT_Recipe_Map_6_Items_6_Fluids {
+    public static class GT_Recipe_Map_LargeChemicalReactor extends GT_Recipe_Map_LargeNEI {
         private static final int TOTAL_INPUT_COUNT = 6;
         private static final int OUTPUT_COUNT = 6;
 
