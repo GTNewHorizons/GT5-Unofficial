@@ -525,6 +525,10 @@ public enum ItemList implements IItemContainer {
     Field_Generator_UXV,
     Field_Generator_MAX,
 
+    StableAdhesive,
+    SuperconductorComposite,
+    NaquadriaSupersolid,
+
     Battery_Hull_LV,
     Battery_Hull_MV,
     Battery_Hull_HV,
