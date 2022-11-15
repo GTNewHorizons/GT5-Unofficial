@@ -48,8 +48,7 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
     private boolean mSeparate = false;
     private float mRoughnessMultiplier = 1;
     private float mSpeedMultiplier = 1;
-    private byte mTier = 1;
-    private byte mSetTier = 1;
+    private byte mTier = 1, mSetTier = 1, mUpgradesInstalled = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
     private byte[] mBioOffsets = new byte[2], mOCTier1Offsets = new byte[2], mOCTier2Offsets = new byte[2];
     private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
@@ -176,26 +175,23 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
                     .addElement('L', ofBlock(GregTech_API.sBlockCasings4, 1))
                     .addElement(
                             'M',
+                            // spotless:off
                             ofChain(
-                                    InputHatch.withAdder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
-                                            .withCount(t -> isValidMetaTileEntity(t.mCoolantInputHatch) ? 1 : 0)
-                                            .newAny(
-                                                    ((GT_Block_Casings8) GregTech_API.sBlockCasings8)
-                                                            .getTextureIndex(10),
-                                                    2),
-                                    ofBlock(GregTech_API.sBlockCasings8, 10)))
+                                ofChain(InputHatch.withAdder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
+                                        .withCount(t -> isValidMetaTileEntity(t.mCoolantInputHatch) ? 1 : 0)
+                                        .newAny(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(10),2),
+                                    ofBlock(GregTech_API.sBlockCasings8, 12))))
+                            //spotless:on
                     .addElement('N', ofBlock(GregTech_API.sBlockCasings2, 15))
                     .addElement('O', ofBlock(GregTech_API.sBlockCasings8, 4))
                     .addElement(
                             'S',
-                            ofChain(
-                                    InputHatch.withAdder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
-                                            .withCount(t -> isValidMetaTileEntity(t.mCoolantInputHatch) ? 1 : 0)
-                                            .newAny(
-                                                    ((GT_Block_Casings8) GregTech_API.sBlockCasings8)
-                                                            .getTextureIndex(12),
-                                                    2),
+                            // spotless:off
+                                ofChain(InputHatch.withAdder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
+                                        .withCount(t -> isValidMetaTileEntity(t.mCoolantInputHatch) ? 1 : 0)
+                                        .newAny(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(12),2),
                                     ofBlock(GregTech_API.sBlockCasings8, 12)))
+                                //spotless:on
                     .addElement('R', ofFrame(Materials.Americium))
                     .addElement('Q', ofBlock(GregTech_API.sBlockCasings8, 14))
                     .addElement('P', ofBlock(GregTech_API.sBlockCasings1, 15))
@@ -367,18 +363,21 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
                     return false;
                 }
             }
+            mUpgradesInstalled++;
         }
 
         if (mOCTier1 && !mOCTier2) {
             if (!checkPiece(ocTier1Upgrade, mOCTier1Offsets[0], 10, mOCTier1Offsets[1])) {
                 return false;
             }
+            mUpgradesInstalled++;
         }
 
         if (mOCTier2 && !mOCTier1) {
             if (!checkPiece(ocTier2Upgrade, mOCTier2Offsets[0], 0, mOCTier2Offsets[1])) {
                 return false;
             }
+            mUpgradesInstalled++;
         }
 
         if (mRoughnessMultiplier <= 0.5 || mSpeedMultiplier <= 0 || mTier <= 0 || mTier >= 4) {
