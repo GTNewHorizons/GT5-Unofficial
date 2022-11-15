@@ -277,7 +277,7 @@ public class NaquadahReworkRecipeLoader {
         // Ga(OH)3 + 3Na = Ga + 3NaOH
         GT_Values.RA.addChemicalRecipe(
                 galliumHydroxide.get(OrePrefixes.dust, 7),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 3),
                 null,
                 null,
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gallium, 1),
