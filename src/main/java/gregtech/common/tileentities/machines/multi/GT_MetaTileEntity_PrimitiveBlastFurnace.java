@@ -13,7 +13,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.relauncher.Side;
@@ -548,11 +547,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                         .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
                         .setNEITransferRect(getRecipeMap().mNEIName)
                         .setPos(58, 24)
-                        .setSize(20, 18))
-                .widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_BLAST_FURNACE_STRUCTURE_STEAM.get(getSteamVariant()))
-                        .setPos(11, 12)
-                        .setSize(17, 50));
+                        .setSize(20, 18));
     }
 
     @Override

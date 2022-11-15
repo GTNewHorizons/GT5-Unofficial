@@ -337,8 +337,6 @@ public class GT_UITextures {
     public static final UITexture PICTURE_SLOTS_HOLO_3BY3 = UITexture.fullImage(MODID, "gui/picture/slots_holo_3by3");
     public static final UITexture PICTURE_ARROW_DOUBLE = UITexture.fullImage(MODID, "gui/picture/arrow_double");
     public static final UITexture PICTURE_SUPER_BUFFER = UITexture.fullImage(MODID, "gui/picture/super_buffer");
-    public static final SteamTexture PICTURE_BLAST_FURNACE_STRUCTURE_STEAM =
-            SteamTexture.fullImage(MODID, "gui/picture/blast_furnace_structure_%s");
     public static final UITexture PICTURE_SQUARE_LIGHT_GRAY =
             UITexture.fullImage(MODID, "gui/picture/square_light_gray");
     public static final UITexture PICTURE_GAUGE = UITexture.fullImage(MODID, "gui/picture/gauge");
