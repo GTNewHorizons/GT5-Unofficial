@@ -7,11 +7,8 @@ import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.SIDE_DOWN;
 import static gregtech.api.enums.GT_Values.SIDE_UP;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
@@ -29,14 +26,11 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddInventorySlots;
-import gregtech.api.interfaces.modularui.IGetBackground;
-import gregtech.api.interfaces.modularui.IGetFluidSlotBackground;
-import gregtech.api.interfaces.modularui.IGetGregtechLogo;
-import gregtech.api.interfaces.modularui.IGetSlotBackground;
-import gregtech.api.interfaces.modularui.IGetTabIconSet;
+import gregtech.api.interfaces.modularui.IGetGUITextureSet;
 import gregtech.api.interfaces.tileentity.IGTEnet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -86,11 +80,7 @@ public abstract class BaseTileEntity extends TileEntity
                 IGTEnet,
                 ITileWithModularUI,
                 IAddGregtechLogo,
-                IGetGregtechLogo,
-                IGetSlotBackground,
-                IGetFluidSlotBackground,
-                IGetBackground,
-                IGetTabIconSet,
+                IGetGUITextureSet,
                 IAddInventorySlots {
     protected boolean mInventoryChanged = false;
 
@@ -605,10 +595,11 @@ public abstract class BaseTileEntity extends TileEntity
 
         buildContext.setValidator(getValidator());
         final ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
-        builder.setBackground(getBackground());
+        builder.setBackground(getGUITextureSet().getMainBackground());
         builder.setGuiTint(getGUIColorization());
         if (doesBindPlayerInventory()) {
-            builder.bindPlayerInventory(buildContext.getPlayer(), 7, getSlotBackground());
+            builder.bindPlayerInventory(
+                    buildContext.getPlayer(), 7, getGUITextureSet().getItemSlot());
         }
         addUIWidgets(builder, buildContext);
         addTitleToUI(builder);
@@ -726,12 +717,12 @@ public abstract class BaseTileEntity extends TileEntity
                 .setTextAlignment(Alignment.CenterLeft)
                 .setMaxWidth(titleWidth);
         if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
-            tab.setDrawable(getTabIconSet().titleNormal)
+            tab.setDrawable(getGUITextureSet().getTitleTabNormal())
                     .setPos(0, -(titleHeight + TAB_PADDING) + 1)
                     .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
             text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
         } else {
-            tab.setDrawable(getTabIconSet().titleDark)
+            tab.setDrawable(getGUITextureSet().getTitleTabDark())
                     .setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
                     .setSize(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1);
             text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight);
@@ -742,7 +733,7 @@ public abstract class BaseTileEntity extends TileEntity
     protected void addTitleItemIconStyle(ModularWindow.Builder builder, String title) {
         builder.widget(new MultiChildWidget()
                 .addChild(new DrawableWidget()
-                        .setDrawable(getTabIconSet().titleNormal)
+                        .setDrawable(getGUITextureSet().getTitleTabNormal())
                         .setPos(0, 0)
                         .setSize(24, 24))
                 .addChild(new ItemDrawable(getStackForm(1)).asWidget().setPos(4, 4))
@@ -752,13 +743,8 @@ public abstract class BaseTileEntity extends TileEntity
     }
 
     @Override
-    public BaseTileEntity.GT_GuiTabIconSet getTabIconSet() {
-        return new BaseTileEntity.GT_GuiTabIconSet(
-                GT_UITextures.TAB_COVER_NORMAL,
-                GT_UITextures.TAB_COVER_HIGHLIGHT,
-                GT_UITextures.TAB_COVER_DISABLED,
-                GT_UITextures.TAB_TITLE,
-                GT_UITextures.TAB_TITLE_DARK);
+    public GUITextureSet getGUITextureSet() {
+        return GUITextureSet.DEFAULT;
     }
 
     protected int getTitleColor() {
@@ -768,19 +754,9 @@ public abstract class BaseTileEntity extends TileEntity
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
-                .setDrawable(getGregTechLogo())
+                .setDrawable(getGUITextureSet().getGregTechLogo())
                 .setSize(17, 17)
                 .setPos(152, 63));
-    }
-
-    @Override
-    public IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT;
-    }
-
-    @Override
-    public UITexture getBackground() {
-        return GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT;
     }
 
     protected int getGUIWidth() {
@@ -796,22 +772,12 @@ public abstract class BaseTileEntity extends TileEntity
     }
 
     @Override
-    public IDrawable getSlotBackground() {
-        return ModularUITextures.ITEM_SLOT;
-    }
-
-    @Override
-    public IDrawable getFluidSlotBackground() {
-        return ModularUITextures.FLUID_SLOT;
-    }
-
-    @Override
     public void add1by1Slot(ModularWindow.Builder builder, IDrawable... background) {
         final ItemStackHandler inventoryHandler = getInventoryHandler();
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
-            background = new IDrawable[] {getSlotBackground()};
+            background = new IDrawable[] {getGUITextureSet().getItemSlot()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 1)
                 .startFromSlot(0)
@@ -827,7 +793,7 @@ public abstract class BaseTileEntity extends TileEntity
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
-            background = new IDrawable[] {getSlotBackground()};
+            background = new IDrawable[] {getGUITextureSet().getItemSlot()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
                 .startFromSlot(0)
@@ -843,7 +809,7 @@ public abstract class BaseTileEntity extends TileEntity
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
-            background = new IDrawable[] {getSlotBackground()};
+            background = new IDrawable[] {getGUITextureSet().getItemSlot()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
                 .startFromSlot(0)
@@ -859,7 +825,7 @@ public abstract class BaseTileEntity extends TileEntity
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
-            background = new IDrawable[] {getSlotBackground()};
+            background = new IDrawable[] {getGUITextureSet().getItemSlot()};
         }
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
                 .startFromSlot(0)
@@ -871,36 +837,6 @@ public abstract class BaseTileEntity extends TileEntity
 
     public void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
         /* Do nothing */
-    }
-
-    /**
-     * Defines a set of textures a tab line can use to render its tab backgrounds
-     */
-    public static class GT_GuiTabIconSet {
-        protected final UITexture coverNormal;
-        protected final UITexture coverHighlight;
-        protected final UITexture coverDisabled;
-        protected final UITexture coverNormalFlipped;
-        protected final UITexture coverHighlightFlipped;
-        protected final UITexture coverDisabledFlipped;
-        protected final AdaptableUITexture titleNormal;
-        protected final AdaptableUITexture titleDark;
-
-        public GT_GuiTabIconSet(
-                UITexture coverNormal,
-                UITexture coverHighlight,
-                UITexture coverDisabled,
-                AdaptableUITexture titleNormal,
-                AdaptableUITexture titleDark) {
-            this.coverNormal = coverNormal;
-            this.coverHighlight = coverHighlight;
-            this.coverDisabled = coverDisabled;
-            this.coverNormalFlipped = coverNormal.getFlipped(true, false);
-            this.coverHighlightFlipped = coverHighlight.getFlipped(true, false);
-            this.coverDisabledFlipped = coverDisabled.getFlipped(true, false);
-            this.titleNormal = titleNormal;
-            this.titleDark = titleDark;
-        }
     }
 
     public IConfigurationCircuitSupport getConfigurationCircuitSupport() {
@@ -985,7 +921,7 @@ public abstract class BaseTileEntity extends TileEntity
                         })
                         .disableShiftInsert()
                         .setHandlePhantomActionClient(true)
-                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
                         .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.select_circuit.tooltip"))
                         .setTooltipShowUpDelay(TOOLTIP_DELAY)
                         .setPos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1));

@@ -137,7 +137,7 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
                 .disableShiftInsert()
                 .setGTTooltip(() -> mTooltipCache.getData(tooltipKey, tooltipArgs))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setBackground(getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_CHARGER)
+                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER)
                 .setPos(x, y);
     }
 

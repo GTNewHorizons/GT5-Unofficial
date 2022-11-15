@@ -1345,8 +1345,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 (i, backgrounds, pos) -> builder.widget(createSpecialSlot(backgrounds, pos)),
                 (i, backgrounds, pos) -> builder.widget(createFluidInputSlot(backgrounds, pos)),
                 (i, backgrounds, pos) -> builder.widget(createFluidOutputSlot(backgrounds, pos)),
-                getBaseMetaTileEntity().getSlotBackground(),
-                getBaseMetaTileEntity().getFluidSlotBackground(),
+                getGUITextureSet().getItemSlot(),
+                getGUITextureSet().getFluidSlot(),
                 getRecipeList(),
                 mInputSlotCount,
                 mOutputItems.length,
@@ -1428,7 +1428,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     protected SlotWidget createChargerSlot(int x, int y) {
         if (isSteampowered()) {
             return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, new String[0])
-                    .setBackground(getBaseMetaTileEntity().getSlotBackground());
+                    .setBackground(getGUITextureSet().getItemSlot());
         } else {
             return super.createChargerSlot(x, y);
         }

@@ -17,7 +17,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -30,6 +29,7 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -561,14 +561,14 @@ public abstract class GT_MetaTileEntity_FusionComputer
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
-                .setDrawable(getBaseMetaTileEntity().getGregTechLogo())
+                .setDrawable(getGUITextureSet().getGregTechLogo())
                 .setSize(17, 17)
                 .setPos(155, 145));
     }
 
     @Override
-    public UITexture getBackground() {
-        return GT_UITextures.BACKGROUND_FUSION_COMPUTER;
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet().setMainBackground(GT_UITextures.BACKGROUND_FUSION_COMPUTER);
     }
 
     @Override

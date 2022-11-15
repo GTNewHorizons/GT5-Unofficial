@@ -2,20 +2,16 @@ package gregtech.api.metatileentity;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.interfaces.modularui.IGetGregtechLogo;
-import gregtech.api.interfaces.modularui.IGetSlotBackground;
-import gregtech.api.interfaces.modularui.IGetTabIconSet;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -251,30 +247,6 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     }
 
     @Override
-    public IDrawable getGregTechLogo() {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IGetGregtechLogo) {
-            return ((IGetGregtechLogo) getMetaTileEntity()).getGregTechLogo();
-        }
-        return super.getGregTechLogo();
-    }
-
-    @Override
-    public UITexture getBackground() {
-        if (hasValidMetaTileEntity()) {
-            return getMetaTileEntity().getBackground();
-        }
-        return super.getBackground();
-    }
-
-    @Override
-    public IDrawable getSlotBackground() {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IGetSlotBackground) {
-            return ((IGetSlotBackground) getMetaTileEntity()).getSlotBackground();
-        }
-        return super.getSlotBackground();
-    }
-
-    @Override
     public ItemStack getStackForm(long aAmount) {
         if (hasValidMetaTileEntity()) {
             return getMetaTileEntity().getStackForm(aAmount);
@@ -307,10 +279,10 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     }
 
     @Override
-    public BaseTileEntity.GT_GuiTabIconSet getTabIconSet() {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IGetTabIconSet) {
-            return ((IGetTabIconSet) getMetaTileEntity()).getTabIconSet();
+    public GUITextureSet getGUITextureSet() {
+        if (hasValidMetaTileEntity()) {
+            return getMetaTileEntity().getGUITextureSet();
         }
-        return super.getTabIconSet();
+        return super.getGUITextureSet();
     }
 }

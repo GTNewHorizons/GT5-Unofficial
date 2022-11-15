@@ -4,21 +4,15 @@ import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IGetBackground;
-import gregtech.api.interfaces.modularui.IGetGregtechLogo;
-import gregtech.api.interfaces.modularui.IGetSlotBackground;
-import gregtech.api.interfaces.modularui.IGetTabIconSet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
@@ -39,8 +33,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine
-        implements IGetGregtechLogo, IGetSlotBackground, IGetBackground, IGetTabIconSet {
+public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine {
     private static final int NEEDS_STEAM_VENTING = 64;
     public boolean mNeedsSteamVenting = false;
 
@@ -444,27 +437,17 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public UITexture getBackground() {
-        return GT_UITextures.BACKGROUND_STEAM.get(SteamVariant.BRONZE);
-    }
-
-    @Override
-    public IDrawable getSlotBackground() {
-        return GT_UITextures.SLOT_ITEM_STEAM.get(SteamVariant.BRONZE);
-    }
-
-    @Override
-    public IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(SteamVariant.BRONZE);
-    }
-
-    @Override
-    public BaseTileEntity.GT_GuiTabIconSet getTabIconSet() {
-        return new BaseTileEntity.GT_GuiTabIconSet(
-                GT_UITextures.TAB_COVER_STEAM_NORMAL.get(SteamVariant.BRONZE),
-                GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(SteamVariant.BRONZE),
-                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(SteamVariant.BRONZE),
-                GT_UITextures.TAB_TITLE_STEAM.getAdaptable(SteamVariant.BRONZE),
-                GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(SteamVariant.BRONZE));
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet()
+                .setMainBackground(GT_UITextures.BACKGROUND_STEAM.get(getSteamVariant()))
+                .setItemSlot(GT_UITextures.SLOT_ITEM_STEAM.get(getSteamVariant()))
+                .setCoverTab(
+                        GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getSteamVariant()),
+                        GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getSteamVariant()),
+                        GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getSteamVariant()))
+                .setTitleTab(
+                        GT_UITextures.TAB_TITLE_STEAM.getAdaptable(getSteamVariant()),
+                        GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(getSteamVariant()))
+                .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getSteamVariant()));
     }
 }

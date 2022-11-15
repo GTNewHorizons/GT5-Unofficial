@@ -11,8 +11,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -26,13 +24,10 @@ import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.interfaces.modularui.IGetGregtechLogo;
-import gregtech.api.interfaces.modularui.IGetSlotBackground;
-import gregtech.api.interfaces.modularui.IGetTabIconSet;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Recipe;
@@ -48,13 +43,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEntity
-        implements IAlignment,
-                ISurvivalConstructable,
-                IGetTabIconSet,
-                IGetGregtechLogo,
-                IGetSlotBackground,
-                IAddUIWidgets,
-                IGetTitleColor {
+        implements IAlignment, ISurvivalConstructable, IAddUIWidgets, IGetTitleColor {
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>>
             STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>>() {
@@ -523,30 +512,36 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new SlotWidget(inventoryHandler, 0)
                         .setBackground(
-                                getSlotBackground(), GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
+                                getGUITextureSet().getItemSlot(),
+                                GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
                         .setPos(33, 15))
                 .widget(new SlotWidget(inventoryHandler, 1)
                         .setBackground(
-                                getSlotBackground(), GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
+                                getGUITextureSet().getItemSlot(),
+                                GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
                         .setPos(33, 33))
                 .widget(new SlotWidget(inventoryHandler, 2)
                         .setBackground(
-                                getSlotBackground(), GT_UITextures.OVERLAY_SLOT_FURNACE_STEAM.get(getSteamVariant()))
+                                getGUITextureSet().getItemSlot(),
+                                GT_UITextures.OVERLAY_SLOT_FURNACE_STEAM.get(getSteamVariant()))
                         .setPos(33, 51))
                 .widget(new SlotWidget(inventoryHandler, 3)
                         .setAccess(true, false)
                         .setBackground(
-                                getSlotBackground(), GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
+                                getGUITextureSet().getItemSlot(),
+                                GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
                         .setPos(85, 24))
                 .widget(new SlotWidget(inventoryHandler, 4)
                         .setAccess(true, false)
                         .setBackground(
-                                getSlotBackground(), GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
+                                getGUITextureSet().getItemSlot(),
+                                GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
                         .setPos(103, 24))
                 .widget(new SlotWidget(inventoryHandler, 5)
                         .setAccess(true, false)
                         .setBackground(
-                                getSlotBackground(), GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
+                                getGUITextureSet().getItemSlot(),
+                                GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
                         .setPos(121, 24))
                 .widget(new ProgressBar()
                         .setTexture(GT_UITextures.PROGRESSBAR_ARROW_2_STEAM.get(getSteamVariant()), 20)
@@ -561,28 +556,18 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getSteamVariant());
-    }
-
-    @Override
-    public UITexture getBackground() {
-        return GT_UITextures.BACKGROUND_STEAM.get(getSteamVariant());
-    }
-
-    @Override
-    public IDrawable getSlotBackground() {
-        return GT_UITextures.SLOT_ITEM_STEAM.get(getSteamVariant());
-    }
-
-    @Override
-    public BaseTileEntity.GT_GuiTabIconSet getTabIconSet() {
-        return new BaseTileEntity.GT_GuiTabIconSet(
-                GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getSteamVariant()),
-                GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getSteamVariant()),
-                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getSteamVariant()),
-                GT_UITextures.TAB_TITLE_STEAM.getAdaptable(getSteamVariant()),
-                GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(getSteamVariant()));
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet()
+                .setMainBackground(GT_UITextures.BACKGROUND_STEAM.get(getSteamVariant()))
+                .setItemSlot(GT_UITextures.SLOT_ITEM_STEAM.get(getSteamVariant()))
+                .setCoverTab(
+                        GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getSteamVariant()),
+                        GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getSteamVariant()),
+                        GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getSteamVariant()))
+                .setTitleTab(
+                        GT_UITextures.TAB_TITLE_STEAM.getAdaptable(getSteamVariant()),
+                        GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(getSteamVariant()))
+                .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getSteamVariant()));
     }
 
     @Override
