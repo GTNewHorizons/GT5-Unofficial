@@ -12,16 +12,12 @@ public class GT_UITextures {
 
     public static final UITexture TRANSPARENT = UITexture.fullImage(MODID, "gui/picture/transparent");
 
-    public static final UITexture BACKGROUND_SINGLEBLOCK_DEFAULT =
+    public static final AdaptableUITexture BACKGROUND_SINGLEBLOCK_DEFAULT =
             AdaptableUITexture.of(MODID, "gui/background/singleblock_default", 176, 166, 4);
     public static final SteamTexture BACKGROUND_STEAM =
             SteamTexture.adaptableTexture(MODID, "gui/background/%s", 176, 166, 4);
-    public static final UITexture BACKGROUND_MULTIBLOCK_NEI_DEFAULT =
-            AdaptableUITexture.of(MODID, "gui/background/multiblock_nei_default", 176, 166, 4);
-    public static final UITexture BACKGROUND_PLASMA_FORGE_NEI =
-            AdaptableUITexture.of(MODID, "gui/background/PlasmaForge_nei", 176, 166, 4);
     public static final UITexture BACKGROUND_FUSION_COMPUTER =
-            AdaptableUITexture.of(MODID, "gui/background/fusion_computer", 176, 166, 4);
+            UITexture.fullImage(MODID, "gui/background/fusion_computer");
     public static final AdaptableUITexture BACKGROUND_TEXT_FIELD =
             AdaptableUITexture.of(MODID, "gui/background/text_field", 142, 28, 1);
     public static final AdaptableUITexture BACKGROUND_TEXT_FIELD_LIGHT_GRAY =
@@ -188,6 +184,10 @@ public class GT_UITextures {
             SteamTexture.adaptableTexture(MODID, "gui/tab/title_%s", 28, 28, 4);
     public static final SteamTexture TAB_TITLE_DARK_STEAM =
             SteamTexture.adaptableTexture(MODID, "gui/tab/title_dark_%s", 28, 28, 4);
+    public static final AdaptableUITexture TAB_TITLE_ANGULAR =
+            AdaptableUITexture.of(MODID, "gui/tab/title_angular", 28, 28, 4);
+    public static final SteamTexture TAB_TITLE_ANGULAR_STEAM =
+            SteamTexture.adaptableTexture(MODID, "gui/tab/title_angular_%s", 28, 28, 4);
 
     public static final UITexture BUTTON_STANDARD = UITexture.fullImage(MODID, "gui/button/standard");
     public static final UITexture BUTTON_STANDARD_TOGGLE = UITexture.fullImage(MODID, "gui/button/standard_toggle");
@@ -341,8 +341,6 @@ public class GT_UITextures {
     public static final UITexture PICTURE_SLOTS_HOLO_3BY3 = UITexture.fullImage(MODID, "gui/picture/slots_holo_3by3");
     public static final UITexture PICTURE_ARROW_DOUBLE = UITexture.fullImage(MODID, "gui/picture/arrow_double");
     public static final UITexture PICTURE_SUPER_BUFFER = UITexture.fullImage(MODID, "gui/picture/super_buffer");
-    public static final SteamTexture PICTURE_BLAST_FURNACE_STRUCTURE_STEAM =
-            SteamTexture.fullImage(MODID, "gui/picture/blast_furnace_structure_%s");
     public static final UITexture PICTURE_SQUARE_LIGHT_GRAY =
             UITexture.fullImage(MODID, "gui/picture/square_light_gray");
     public static final UITexture PICTURE_GAUGE = UITexture.fullImage(MODID, "gui/picture/gauge");

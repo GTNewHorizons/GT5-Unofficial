@@ -18,14 +18,11 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.interfaces.modularui.IGetGregtechLogo;
-import gregtech.api.interfaces.modularui.IGetSlotBackground;
-import gregtech.api.interfaces.modularui.IGetTabIconSet;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
@@ -42,7 +39,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank
-        implements IGetTabIconSet, IGetGregtechLogo, IGetSlotBackground, IGetTitleColor, IAddUIWidgets {
+        implements IGetTitleColor, IAddUIWidgets {
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
     public int mProcessingEnergy = 0;
@@ -423,11 +420,15 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     protected IDrawable[] getFuelSlotBackground() {
-        return new IDrawable[] {getSlotBackground(), GT_UITextures.OVERLAY_SLOT_COAL_STEAM.get(getSteamVariant())};
+        return new IDrawable[] {
+            getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_COAL_STEAM.get(getSteamVariant())
+        };
     }
 
     protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] {getSlotBackground(), GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant())};
+        return new IDrawable[] {
+            getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant())
+        };
     }
 
     @Override
@@ -439,37 +440,27 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new SlotWidget(inventoryHandler, 0)
                         .setPos(43, 25)
-                        .setBackground(getSlotBackground(), GT_UITextures.OVERLAY_SLOT_IN_STEAM.get(getSteamVariant())))
+                        .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
                 .widget(new SlotWidget(inventoryHandler, 1)
                         .setPos(43, 61)
-                        .setBackground(
-                                getSlotBackground(), GT_UITextures.OVERLAY_SLOT_OUT_STEAM.get(getSteamVariant())))
+                        .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
                 .widget(new SlotWidget(inventoryHandler, 2).setPos(115, 61).setBackground(getFuelSlotBackground()))
                 .widget(new SlotWidget(inventoryHandler, 3).setPos(115, 25).setBackground(getAshSlotBackground()))
                 .widget(new ProgressBar()
                         .setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
-                        .setTexture(
-                                GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant()),
-                                GT_UITextures.PROGRESSBAR_BOILER_STEAM,
-                                10)
+                        .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
                         .setDirection(ProgressBar.Direction.UP)
                         .setPos(70, 25)
                         .setSize(10, 54))
                 .widget(new ProgressBar()
                         .setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
-                        .setTexture(
-                                GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant()),
-                                GT_UITextures.PROGRESSBAR_BOILER_WATER,
-                                10)
+                        .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
                         .setDirection(ProgressBar.Direction.UP)
                         .setPos(83, 25)
                         .setSize(10, 54))
                 .widget(new ProgressBar()
                         .setProgress(() -> (float) mTemperature / maxProgresstime())
-                        .setTexture(
-                                GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant()),
-                                GT_UITextures.PROGRESSBAR_BOILER_HEAT,
-                                10)
+                        .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
                         .setDirection(ProgressBar.Direction.UP)
                         .setPos(96, 25)
                         .setSize(10, 54))
@@ -477,43 +468,56 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
                         // cap minimum so that one can easily see there's fuel remaining
                         .setProgress(
                                 () -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0)
-                        .setTexture(GT_UITextures.PROGRESSBAR_FUEL_STEAM.get(getSteamVariant()), 14)
+                        .setTexture(getProgressbarFuel(), 14)
                         .setDirection(ProgressBar.Direction.UP)
                         .setPos(116, 45)
                         .setSize(14, 14))
                 .widget(new DrawableWidget()
-                        .setDrawable(GT_UITextures.OVERLAY_SLOT_CANISTER_STEAM.get(getSteamVariant()))
+                        .setDrawable(getOverlaySlotCanister())
                         .setPos(43, 43)
                         .setSize(18, 18));
     }
 
     @Override
-    public IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getSteamVariant());
-    }
-
-    @Override
-    public UITexture getBackground() {
-        return GT_UITextures.BACKGROUND_STEAM.get(getSteamVariant());
-    }
-
-    @Override
-    public IDrawable getSlotBackground() {
-        return GT_UITextures.SLOT_ITEM_STEAM.get(getSteamVariant());
-    }
-
-    @Override
-    public BaseTileEntity.GT_GuiTabIconSet getTabIconSet() {
-        return new BaseTileEntity.GT_GuiTabIconSet(
-                GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getSteamVariant()),
-                GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getSteamVariant()),
-                GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getSteamVariant()),
-                GT_UITextures.TAB_TITLE_STEAM.getAdaptable(getSteamVariant()),
-                GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(getSteamVariant()));
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet()
+                .setMainBackground(GT_UITextures.BACKGROUND_STEAM.get(getSteamVariant()))
+                .setItemSlot(GT_UITextures.SLOT_ITEM_STEAM.get(getSteamVariant()))
+                .setCoverTab(
+                        GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getSteamVariant()),
+                        GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getSteamVariant()),
+                        GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getSteamVariant()))
+                .setTitleTab(
+                        GT_UITextures.TAB_TITLE_STEAM.getAdaptable(getSteamVariant()),
+                        GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(getSteamVariant()),
+                        GT_UITextures.TAB_TITLE_ANGULAR_STEAM.getAdaptable(getSteamVariant()))
+                .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getSteamVariant()));
     }
 
     @Override
     public int getTitleColor() {
         return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
+    }
+
+    // for GT++
+
+    protected IDrawable getOverlaySlotIn() {
+        return GT_UITextures.OVERLAY_SLOT_IN_STEAM.get(getSteamVariant());
+    }
+
+    protected IDrawable getOverlaySlotOut() {
+        return GT_UITextures.OVERLAY_SLOT_OUT_STEAM.get(getSteamVariant());
+    }
+
+    protected IDrawable getOverlaySlotCanister() {
+        return GT_UITextures.OVERLAY_SLOT_CANISTER_STEAM.get(getSteamVariant());
+    }
+
+    protected UITexture getProgressbarEmpty() {
+        return GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant());
+    }
+
+    protected UITexture getProgressbarFuel() {
+        return GT_UITextures.PROGRESSBAR_FUEL_STEAM.get(getSteamVariant());
     }
 }

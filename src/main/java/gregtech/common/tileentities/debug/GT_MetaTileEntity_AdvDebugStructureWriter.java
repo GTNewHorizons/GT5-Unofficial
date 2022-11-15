@@ -20,10 +20,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.interfaces.modularui.IGetGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
@@ -41,7 +41,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity_TieredMachineBlock
-        implements IAddGregtechLogo, IGetGregtechLogo, IAddUIWidgets {
+        implements IAddGregtechLogo, IAddUIWidgets {
     private static final HashMap<GT_MetaTileEntity_AdvDebugStructureWriter, BoundHighlighter> bondingBoxes =
             new HashMap<>(1);
     private final BoundHighlighter boundingBox = new BoundHighlighter();
@@ -314,16 +314,16 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(113, 96));
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet().setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY);
     }
 
     @Override
-    public IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY;
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(113, 96));
     }
 
     @Override

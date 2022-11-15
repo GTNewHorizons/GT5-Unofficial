@@ -1093,12 +1093,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new SlotWidget(new ApiarySlot(inventoryHandler, queen))
-                        .setBackground(
-                                getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_BEE_QUEEN)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_BEE_QUEEN)
                         .setPos(36, 21))
                 .widget(new SlotWidget(new ApiarySlot(inventoryHandler, drone))
-                        .setBackground(
-                                getBaseMetaTileEntity().getSlotBackground(), GT_UITextures.OVERLAY_SLOT_BEE_DRONE)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_BEE_DRONE)
                         .setPos(36, 41))
                 .widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
                         .startFromSlot(7)

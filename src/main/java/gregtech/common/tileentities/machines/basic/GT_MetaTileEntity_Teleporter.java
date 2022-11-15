@@ -19,11 +19,11 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.interfaces.modularui.IGetGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
@@ -61,7 +61,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
-        implements IAddGregtechLogo, IGetGregtechLogo, IAddUIWidgets {
+        implements IAddGregtechLogo, IAddUIWidgets {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int sPassiveEnergyDrain = 2048;
@@ -673,15 +673,15 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(getBaseMetaTileEntity().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(113, 56));
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet().setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY);
     }
 
     @Override
-    public IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY;
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(113, 56));
     }
 }

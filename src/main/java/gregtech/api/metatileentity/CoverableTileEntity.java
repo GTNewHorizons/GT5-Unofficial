@@ -22,6 +22,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
@@ -586,25 +587,25 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                                 @Override
                                 public IDrawable[] getBackground() {
                                     final List<IDrawable> backgrounds = new ArrayList<>();
-                                    final GT_GuiTabIconSet tabIconSet = getTabIconSet();
+                                    final GUITextureSet tabIconSet = getGUITextureSet();
 
                                     if (getCoverBehaviorAtSideNew(side).hasCoverGUI()) {
                                         if (isHovering()) {
                                             backgrounds.add(
                                                     flipHorizontally
-                                                            ? tabIconSet.coverHighlightFlipped
-                                                            : tabIconSet.coverHighlight);
+                                                            ? tabIconSet.getCoverTabHighlightFlipped()
+                                                            : tabIconSet.getCoverTabHighlight());
                                         } else {
                                             backgrounds.add(
                                                     flipHorizontally
-                                                            ? tabIconSet.coverNormalFlipped
-                                                            : tabIconSet.coverNormal);
+                                                            ? tabIconSet.getCoverTabNormalFlipped()
+                                                            : tabIconSet.getCoverTabNormal());
                                         }
                                     } else {
                                         backgrounds.add(
                                                 flipHorizontally
-                                                        ? tabIconSet.coverDisabledFlipped
-                                                        : tabIconSet.coverDisabled);
+                                                        ? tabIconSet.getCoverTabDisabledFlipped()
+                                                        : tabIconSet.getCoverTabDisabled());
                                     }
                                     return backgrounds.toArray(new IDrawable[] {});
                                 }
