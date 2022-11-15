@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.api.enums.Dyes.getDyeFromIndex;
 import static gregtech.api.enums.GT_Values.V;
 
 import appeng.api.networking.energy.IEnergyGrid;
@@ -1244,14 +1243,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         Dyes dye = Dyes.dyeWhite;
         if (this.colorOverride.sLoaded()) {
             if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
-                dye = getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
                 return this.colorOverride.getGuiTintOrDefault(dye.mName, GT_Util.getRGBInt(dye.getRGBA()));
             }
         } else if (GregTech_API.sColoredGUI) {
             if (GregTech_API.sMachineMetalGUI) {
                 dye = Dyes.MACHINE_METAL;
             } else if (getBaseMetaTileEntity() != null) {
-                dye = getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
             }
         }
         return GT_Util.getRGBInt(dye.getRGBA());
