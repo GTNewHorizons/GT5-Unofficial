@@ -21,6 +21,7 @@ public class GUITextureSet {
     private UITexture coverTabDisabledFlipped;
     private AdaptableUITexture titleTabNormal;
     private AdaptableUITexture titleTabDark;
+    private AdaptableUITexture titleTabAngular;
     private UITexture gregtechLogo;
 
     public static final GUITextureSet DEFAULT = new GUITextureSet()
@@ -29,7 +30,7 @@ public class GUITextureSet {
             .setFluidSlot(ModularUITextures.FLUID_SLOT)
             .setCoverTab(
                     GT_UITextures.TAB_COVER_NORMAL, GT_UITextures.TAB_COVER_HIGHLIGHT, GT_UITextures.TAB_COVER_DISABLED)
-            .setTitleTab(GT_UITextures.TAB_TITLE, GT_UITextures.TAB_TITLE_DARK)
+            .setTitleTab(GT_UITextures.TAB_TITLE, GT_UITextures.TAB_TITLE_DARK, GT_UITextures.TAB_TITLE_ANGULAR)
             .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
 
     public GUITextureSet() {}
@@ -61,9 +62,11 @@ public class GUITextureSet {
         return this;
     }
 
-    public GUITextureSet setTitleTab(AdaptableUITexture titleNormal, AdaptableUITexture titleDark) {
+    public GUITextureSet setTitleTab(
+            AdaptableUITexture titleNormal, AdaptableUITexture titleDark, AdaptableUITexture titleTabAngular) {
         this.titleTabNormal = titleNormal;
         this.titleTabDark = titleDark;
+        this.titleTabAngular = titleTabAngular;
         return this;
     }
 
@@ -118,6 +121,10 @@ public class GUITextureSet {
 
     public AdaptableUITexture getTitleTabDark() {
         return titleTabDark != null ? titleTabDark : DEFAULT.titleTabDark;
+    }
+
+    public AdaptableUITexture getTitleTabAngular() {
+        return titleTabAngular != null ? titleTabAngular : DEFAULT.titleTabAngular;
     }
 
     public UITexture getGregTechLogo() {

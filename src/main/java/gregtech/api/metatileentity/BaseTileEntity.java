@@ -717,7 +717,7 @@ public abstract class BaseTileEntity extends TileEntity
                 .setTextAlignment(Alignment.CenterLeft)
                 .setMaxWidth(titleWidth);
         if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
-            tab.setDrawable(getGUITextureSet().getTitleTabNormal())
+            tab.setDrawable(getGUITextureSet().getTitleTabAngular())
                     .setPos(0, -(titleHeight + TAB_PADDING) + 1)
                     .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
             text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
