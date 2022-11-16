@@ -3902,7 +3902,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.SuperconductorComposite.set(addItem(
                 428,
                 "Superconductor Rare-Earth Composite",
-                "Zero resistance to electrical flow, regardless of temperature",
+                "Zero resistance to electrical and quantum flow, regardless of temperature",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 50L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 25L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 15L),
