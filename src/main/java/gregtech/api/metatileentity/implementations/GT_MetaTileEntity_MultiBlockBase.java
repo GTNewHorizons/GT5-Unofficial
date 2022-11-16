@@ -829,7 +829,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             if (isValidMetaTileEntity(tHatch)) {
                 FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
                 if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
-                    tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
+                    tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, true);
                     return tLiquid != null && tLiquid.amount >= aLiquid.amount;
                 }
             }
