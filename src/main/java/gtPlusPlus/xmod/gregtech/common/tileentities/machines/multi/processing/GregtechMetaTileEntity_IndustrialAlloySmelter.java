@@ -42,7 +42,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter
     private HeatingCoilLevel mHeatingCapacity;
     private int mLevel = 0;
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialAlloySmelter> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialAlloySmelter> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialAlloySmelter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

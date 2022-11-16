@@ -43,7 +43,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     protected int mFuelRemaining = 0;
 
     private int mCasing;
-    private IStructureDefinition<GregtechMTE_NuclearReactor> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMTE_NuclearReactor> STRUCTURE_DEFINITION = null;
 
     public GregtechMTE_NuclearReactor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

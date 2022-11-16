@@ -34,7 +34,7 @@ public class GregtechMetaTileEntity_IndustrialMixer
     public static String mCasingName = "Multi-Use Casing";
     public static String mCasingName2 = "Titanium Turbine Casing";
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialMixer> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialMixer> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialMixer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

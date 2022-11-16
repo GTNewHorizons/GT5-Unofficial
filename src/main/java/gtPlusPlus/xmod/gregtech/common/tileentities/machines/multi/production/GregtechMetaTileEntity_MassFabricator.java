@@ -64,7 +64,7 @@ public class GregtechMetaTileEntity_MassFabricator
     private static ItemStack mScrap[] = new ItemStack[2];
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_MassFabricator> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_MassFabricator> STRUCTURE_DEFINITION = null;
 
     public int getAmplifierUsed() {
         return this.mAmplifierUsed;

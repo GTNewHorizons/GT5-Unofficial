@@ -35,7 +35,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialChisel> implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialChisel> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialChisel> STRUCTURE_DEFINITION = null;
     private ItemStack mInputCache;
     private ItemStack mOutputCache;
     private GTPP_Recipe mCachedRecipe;

@@ -60,7 +60,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     private int checkPipe;
     private int maxTierOfHatch;
     private int mCasing;
-    private IStructureDefinition<GregtechMTE_ChemicalPlant> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMTE_ChemicalPlant> STRUCTURE_DEFINITION = null;
 
     private final ArrayList<GT_MetaTileEntity_Hatch_Catalysts> mCatalystBuses =
             new ArrayList<GT_MetaTileEntity_Hatch_Catalysts>();

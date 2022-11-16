@@ -52,7 +52,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine
     private static final int[][] MODE_MAP = new int[][] {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}};
     public static final String[] aToolTipNames = new String[9];
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialMultiMachine> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialMultiMachine> STRUCTURE_DEFINITION = null;
 
     static {
         for (int id = 0; id < 9; id++) {

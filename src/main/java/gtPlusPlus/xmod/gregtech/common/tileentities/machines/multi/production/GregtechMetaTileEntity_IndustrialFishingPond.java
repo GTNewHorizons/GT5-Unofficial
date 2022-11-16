@@ -47,7 +47,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond
     private boolean isUsingControllerCircuit = false;
     private static final Item circuit = CI.getNumberedCircuit(0).getItem();
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialFishingPond> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialFishingPond> STRUCTURE_DEFINITION = null;
     private static final Class<?> cofhWater;
 
     static {

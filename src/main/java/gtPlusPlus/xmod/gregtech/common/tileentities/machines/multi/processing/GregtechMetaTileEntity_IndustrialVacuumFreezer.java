@@ -38,7 +38,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer
     public static String mHatchName = "Cryotheum Hatch";
     public static FluidStack mFuelStack;
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialVacuumFreezer> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialVacuumFreezer> STRUCTURE_DEFINITION = null;
 
     private final ArrayList<GT_MetaTileEntity_Hatch_CustomFluidBase> mCryotheumHatches = new ArrayList<>();
 

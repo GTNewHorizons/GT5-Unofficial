@@ -36,7 +36,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     private boolean mFormingMode = false;
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialPlatePress(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

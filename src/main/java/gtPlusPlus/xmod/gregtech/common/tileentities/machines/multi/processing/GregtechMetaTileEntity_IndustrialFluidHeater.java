@@ -29,7 +29,7 @@ public class GregtechMetaTileEntity_IndustrialFluidHeater
         implements ISurvivalConstructable {
 
     private int mCasing1;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialFluidHeater> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialFluidHeater> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialFluidHeater(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

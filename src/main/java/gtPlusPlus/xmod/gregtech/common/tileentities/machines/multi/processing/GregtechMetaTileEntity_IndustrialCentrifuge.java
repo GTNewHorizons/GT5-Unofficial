@@ -37,7 +37,7 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge
     private static final CustomIcon frontFaceActive = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
     private static final CustomIcon frontFace = new CustomIcon("iconsets/LARGECENTRIFUGE5");
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialCentrifuge> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialCentrifuge> STRUCTURE_DEFINITION = null;
     // public static double recipesComplete = 0;
 
     public GregtechMetaTileEntity_IndustrialCentrifuge(final int aID, final String aName, final String aNameRegional) {

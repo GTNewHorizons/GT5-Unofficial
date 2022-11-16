@@ -31,7 +31,7 @@ public class GregtechMetaTileEntityGeneratorArray
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntityGeneratorArray> implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntityGeneratorArray> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntityGeneratorArray> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntityGeneratorArray(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

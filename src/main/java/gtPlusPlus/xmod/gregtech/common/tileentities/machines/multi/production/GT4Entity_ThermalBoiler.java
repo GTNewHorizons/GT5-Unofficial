@@ -36,7 +36,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
         implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GT4Entity_ThermalBoiler> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GT4Entity_ThermalBoiler> STRUCTURE_DEFINITION = null;
     private int mSuperEfficencyIncrease = 0;
 
     public void onRightclick(EntityPlayer aPlayer) {

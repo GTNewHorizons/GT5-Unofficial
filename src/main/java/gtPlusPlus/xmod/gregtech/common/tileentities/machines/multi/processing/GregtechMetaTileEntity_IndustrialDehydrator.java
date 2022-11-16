@@ -45,7 +45,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     private HeatingCoilLevel mHeatingCapacity;
     private boolean mDehydratorMode = false;
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialDehydrator> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialDehydrator> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialDehydrator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

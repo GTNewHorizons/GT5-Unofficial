@@ -31,7 +31,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
         implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_Refinery> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_Refinery> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_Refinery(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

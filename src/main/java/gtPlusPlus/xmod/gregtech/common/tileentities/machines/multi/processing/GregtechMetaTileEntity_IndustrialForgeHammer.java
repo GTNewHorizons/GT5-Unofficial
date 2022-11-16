@@ -40,7 +40,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer
 
     private int mCasing;
     private int mAnvil;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialForgeHammer> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialForgeHammer> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialForgeHammer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

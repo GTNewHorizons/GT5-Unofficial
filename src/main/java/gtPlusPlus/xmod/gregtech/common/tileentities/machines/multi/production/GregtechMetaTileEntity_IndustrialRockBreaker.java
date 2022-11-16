@@ -43,7 +43,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
         implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialRockBreaker> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialRockBreaker> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialRockBreaker(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

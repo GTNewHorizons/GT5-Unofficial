@@ -37,7 +37,7 @@ public class GregtechMetaTileEntity_IndustrialWireMill
         implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> STRUCTURE_DEFINITION = null;
     private boolean isBussesSeparate;
 
     public GregtechMetaTileEntity_IndustrialWireMill(final int aID, final String aName, final String aNameRegional) {

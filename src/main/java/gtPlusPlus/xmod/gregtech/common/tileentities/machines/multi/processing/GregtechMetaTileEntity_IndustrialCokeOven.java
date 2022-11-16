@@ -34,7 +34,7 @@ public class GregtechMetaTileEntity_IndustrialCokeOven
     private int mCasing;
     private int mCasing1;
     private int mCasing2;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialCokeOven> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialCokeOven> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialCokeOven(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

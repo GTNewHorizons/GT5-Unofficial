@@ -42,7 +42,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator
         implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_LargeSemifluidGenerator> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_LargeSemifluidGenerator> STRUCTURE_DEFINITION = null;
 
     protected int fuelConsumption = 0;
     protected int fuelValue = 0;

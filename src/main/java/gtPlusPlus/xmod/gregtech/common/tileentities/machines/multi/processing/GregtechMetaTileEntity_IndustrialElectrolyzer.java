@@ -28,7 +28,7 @@ public class GregtechMetaTileEntity_IndustrialElectrolyzer
         implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialElectrolyzer> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialElectrolyzer> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialElectrolyzer(
             final int aID, final String aName, final String aNameRegional) {

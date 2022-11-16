@@ -33,7 +33,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator
 
     private int mCasing;
     private int mPerLayer;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialMacerator> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialMacerator> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialMacerator(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

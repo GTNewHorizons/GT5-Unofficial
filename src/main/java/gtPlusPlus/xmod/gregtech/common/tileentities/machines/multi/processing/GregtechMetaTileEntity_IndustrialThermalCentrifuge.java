@@ -31,7 +31,7 @@ public class GregtechMetaTileEntity_IndustrialThermalCentrifuge
         implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialThermalCentrifuge> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialThermalCentrifuge> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialThermalCentrifuge(
             final int aID, final String aName, final String aNameRegional) {

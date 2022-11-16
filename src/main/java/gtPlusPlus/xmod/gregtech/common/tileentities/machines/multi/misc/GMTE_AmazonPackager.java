@@ -41,7 +41,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     private byte mTier;
     private int mCasing;
 
-    private IStructureDefinition<GMTE_AmazonPackager> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GMTE_AmazonPackager> STRUCTURE_DEFINITION = null;
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {

@@ -44,7 +44,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
     private byte mTier = 1;
     protected GT_Recipe mLastRecipeToBuffer;
     private int mCasing;
-    private IStructureDefinition<GT4Entity_AutoCrafter> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GT4Entity_AutoCrafter> STRUCTURE_DEFINITION = null;
 
     /** The crafting matrix inventory (3x3). */
     public CraftingHelper mInventoryCrafter;

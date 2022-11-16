@@ -34,7 +34,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine
 
     private boolean mCuttingMode = true;
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialCuttingMachine(
             final int aID, final String aName, final String aNameRegional) {

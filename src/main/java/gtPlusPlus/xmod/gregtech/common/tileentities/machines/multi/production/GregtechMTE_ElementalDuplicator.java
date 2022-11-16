@@ -96,7 +96,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private IStructureDefinition<GregtechMTE_ElementalDuplicator> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMTE_ElementalDuplicator> STRUCTURE_DEFINITION = null;
 
     @Override
     public IStructureDefinition<GregtechMTE_ElementalDuplicator> getStructureDefinition() {

@@ -21,7 +21,7 @@ public class GregtechMetaTileEntity_Adv_Implosion
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_Implosion> {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_Adv_Implosion> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_Adv_Implosion> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_Adv_Implosion(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

@@ -54,7 +54,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     private static final int TICKS_PER_OPERATION = 100;
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
 
     private SAWTOOL mToolType;
     private ItemStack mSapling;

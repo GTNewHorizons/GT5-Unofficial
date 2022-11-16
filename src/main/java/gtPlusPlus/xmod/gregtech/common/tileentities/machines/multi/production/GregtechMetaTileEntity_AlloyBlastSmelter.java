@@ -45,7 +45,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
     private boolean isBussesSeparate = false;
     private static Item circuit;
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_AlloyBlastSmelter> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_AlloyBlastSmelter> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_AlloyBlastSmelter(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

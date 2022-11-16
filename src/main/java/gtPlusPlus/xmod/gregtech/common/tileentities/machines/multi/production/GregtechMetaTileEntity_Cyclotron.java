@@ -37,7 +37,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
         implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_Cyclotron> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_Cyclotron> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_Cyclotron(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);

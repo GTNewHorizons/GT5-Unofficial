@@ -44,7 +44,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
     public static String mHotFuelName = "Blazing Pyrotheum";
     public static String mCasingName = "Volcanus Casing";
     public static String mHatchName = "Pyrotheum Hatch";
-    private IStructureDefinition<GregtechMetaTileEntity_Adv_EBF> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_Adv_EBF> STRUCTURE_DEFINITION = null;
     private int mCasing;
     private final ArrayList<GT_MetaTileEntity_Hatch_CustomFluidBase> mPyrotheumHatches = new ArrayList<>();
 

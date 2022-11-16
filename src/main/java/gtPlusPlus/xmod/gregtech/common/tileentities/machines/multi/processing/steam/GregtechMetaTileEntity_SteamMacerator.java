@@ -25,7 +25,7 @@ public class GregtechMetaTileEntity_SteamMacerator
         extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamMacerator> implements ISurvivalConstructable {
 
     private String mCasingName = "Bronze Plated Bricks";
-    private IStructureDefinition<GregtechMetaTileEntity_SteamMacerator> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_SteamMacerator> STRUCTURE_DEFINITION = null;
     private int mCasing;
 
     public GregtechMetaTileEntity_SteamMacerator(String aName) {

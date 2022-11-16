@@ -49,7 +49,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 
     private int mLevel = -1;
     private int mCasing;
-    private IStructureDefinition<GregtechMTE_AlgaePondBase> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMTE_AlgaePondBase> STRUCTURE_DEFINITION = null;
     private int checkMeta;
     private int minTierOfHatch;
     private static final Class<?> cofhWater;

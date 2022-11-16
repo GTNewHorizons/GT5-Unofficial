@@ -61,7 +61,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine
     private static FluidStack sAirFluidStack = null;
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_LargeRocketEngine> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_LargeRocketEngine> STRUCTURE_DEFINITION = null;
 
     private static final int CASING_ID = TAE.getIndexFromPage(3, 11);
 

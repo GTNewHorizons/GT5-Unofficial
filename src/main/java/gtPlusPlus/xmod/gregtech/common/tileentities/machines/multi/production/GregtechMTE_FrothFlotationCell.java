@@ -38,7 +38,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
         implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMTE_FrothFlotationCell> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMTE_FrothFlotationCell> STRUCTURE_DEFINITION = null;
 
     public GregtechMTE_FrothFlotationCell(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

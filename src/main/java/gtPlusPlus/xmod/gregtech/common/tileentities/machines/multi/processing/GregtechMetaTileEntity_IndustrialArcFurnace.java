@@ -39,7 +39,7 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
     private boolean mPlasmaMode = false;
     private int mSize = 0;
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialArcFurnace> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialArcFurnace> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialArcFurnace(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

@@ -29,7 +29,7 @@ public class GregtechMetaTileEntity_IndustrialSifter
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialSifter> implements ISurvivalConstructable {
 
     private int mCasing;
-    private IStructureDefinition<GregtechMetaTileEntity_IndustrialSifter> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_IndustrialSifter> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialSifter(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
