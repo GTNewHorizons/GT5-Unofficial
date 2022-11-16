@@ -540,6 +540,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return true;
     }
 
+    @Deprecated
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_Container_BasicMachine(aPlayerInventory, aBaseMetaTileEntity);
