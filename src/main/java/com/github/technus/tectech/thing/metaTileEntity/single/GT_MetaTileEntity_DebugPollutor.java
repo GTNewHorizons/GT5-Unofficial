@@ -19,6 +19,8 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
@@ -34,7 +36,8 @@ import net.minecraft.util.EnumChatFormatting;
 /**
  * Created by Tec on 23.03.2017.
  */
-public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMachineBlock
+        implements IAddUIWidgets, IAddGregtechLogo {
     private static GT_RenderedTexture POLLUTOR;
     public int pollution = 0;
     public float anomaly = 0;
@@ -171,20 +174,15 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    protected void addGregTechLogo(ModularWindow.Builder builder) {
+    public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(new DrawableWidget()
-                .setDrawable(getGregTechLogo())
+                .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
                 .setSize(17, 17)
                 .setPos(113, 56));
     }
 
     @Override
-    protected IDrawable getGregTechLogo() {
-        return GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY;
-    }
-
-    @Override
-    protected void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
                         .setSize(90, 72)
