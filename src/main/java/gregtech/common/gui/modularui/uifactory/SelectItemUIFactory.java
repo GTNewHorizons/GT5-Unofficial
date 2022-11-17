@@ -142,10 +142,10 @@ public class SelectItemUIFactory {
                             } else if (buttonId == 1) {
                                 setSelected(UNSELECTED);
                             } else {
-                                return ClickResult.IGNORE;
+                                return ClickResult.REJECT;
                             }
                             selectedCallback.accept(getCandidate(getSelected()));
-                            return ClickResult.ACCEPT;
+                            return ClickResult.SUCCESS;
                         }
 
                         @Override
