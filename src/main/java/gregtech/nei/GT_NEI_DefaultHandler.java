@@ -100,7 +100,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     protected final ItemStackHandler specialSlotInventory;
     protected final ItemStackHandler fluidInputsInventory;
     protected final ItemStackHandler fluidOutputsInventory;
-    protected static final Pos2d WINDOW_OFFSET = new Pos2d(-5, -11);
+    protected static final Pos2d WINDOW_OFFSET = new Pos2d(-sOffsetX, -sOffsetY);
 
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
@@ -915,9 +915,12 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                         SlotWidget widget = (SlotWidget) child;
                         if (widget.getMcSlot().getItemHandler() == itemInputsInventory) {
                             int i = widget.getMcSlot().getSlotIndex();
-                            if (aRecipe.mInputs.length > i && aRecipe.mInputs[i] != null) {
+                            Object input = aRecipe instanceof GT_Recipe.GT_Recipe_WithAlt
+                                    ? ((GT_Recipe.GT_Recipe_WithAlt) aRecipe).getAltRepresentativeInput(i)
+                                    : aRecipe.getRepresentativeInput(i);
+                            if (input != null) {
                                 mInputs.add(new FixedPositionedStack(
-                                        aRecipe.mInputs[i], widget.getPos().x + 1, widget.getPos().y + 1, true));
+                                        input, widget.getPos().x + 1, widget.getPos().y + 1, true));
                             }
                         } else if (widget.getMcSlot().getItemHandler() == itemOutputsInventory) {
                             int i = widget.getMcSlot().getSlotIndex();

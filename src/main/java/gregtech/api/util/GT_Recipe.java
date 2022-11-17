@@ -1269,7 +1269,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         1,
                         E,
                         true,
-                        false)
+                        true)
                 .setSlotOverlay(false, false, true, true, GT_UITextures.OVERLAY_SLOT_DATA_ORB)
                 .setUsualFluidInputCount(4);
         public static final GT_Recipe_Map sPlasmaArcFurnaceRecipes = new GT_Recipe_Map(
@@ -5779,6 +5779,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
+            setNEITransferRect(new Rectangle(146, 26, 10, 18));
         }
 
         @Override
