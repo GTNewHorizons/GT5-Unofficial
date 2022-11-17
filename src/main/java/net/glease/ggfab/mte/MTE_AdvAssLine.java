@@ -24,16 +24,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -141,6 +140,22 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
     }
 
     @Override
+    public void initDefaultModes(NBTTagCompound aNBT) {
+        super.initDefaultModes(aNBT);
+        if (getBaseMetaTileEntity().isServerSide()) {
+            UUID ownerUuid = getBaseMetaTileEntity().getOwnerUuid();
+            @SuppressWarnings("unchecked") List<EntityPlayerMP> l = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+            for (EntityPlayerMP p : l) {
+                if (p.getUniqueID().equals(ownerUuid)) {
+                    for (int i = 0; i < 7; i++) {
+                        p.addChatMessage(new ChatComponentTranslation("ggfab.info.advassline." + i));
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (stuck) {
@@ -192,6 +207,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
         tt.addMachineType("Assembling Line")
                 .addInfo("Controller block for the Advanced Assembling Line")
                 .addInfo("Built exactly the same as standard Assembling Line")
+                .addInfo("Place in world to get more info. It will be a lengthy read.")
                 .addInfo("Assembling Line with item pipelining")
                 .addInfo("All fluids are however consumed at start")
                 .addInfo("Use voltage of worst energy hatch for overclocking")
