@@ -943,6 +943,7 @@ public abstract class BaseTileEntity extends TileEntity
                         GT_Utility.findMatchingStackInList(circuits, inv.getStackInSlot(ccs.getCircuitSlot())))
                 .setAnotherWindow(true, dialogOpened)
                 .setGuiTint(getGUIColorization())
+                .setCurrentGetter(() -> inv.getStackInSlot(ccs.getCircuitSlot()))
                 .createWindow(new UIBuildContext(player)));
     }
 

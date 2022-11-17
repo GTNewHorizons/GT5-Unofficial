@@ -44,6 +44,7 @@ public class SelectItemUIFactory {
     private AtomicBoolean dialogOpened;
     private int guiTint = GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
     private final ItemStackHandler currentDisplayItemHandler = new ItemStackHandler();
+    private Supplier<ItemStack> currentGetter;
 
     private final GT_GUIColorOverride colorOverride = new GT_GUIColorOverride("SelectItemUIFactory");
 
@@ -95,6 +96,7 @@ public class SelectItemUIFactory {
 
     /**
      * @param anotherWindow If UI is shown on top of another window
+     * @param dialogOpened Flag to store whether this UI is opened and hence it should block duplicated creation of this UI
      */
     public SelectItemUIFactory setAnotherWindow(boolean anotherWindow, AtomicBoolean dialogOpened) {
         this.anotherWindow = anotherWindow;
@@ -104,6 +106,14 @@ public class SelectItemUIFactory {
 
     public SelectItemUIFactory setGuiTint(int guiTint) {
         this.guiTint = guiTint;
+        return this;
+    }
+
+    /**
+     * @param currentGetter Getter for "current" item displayed that may change from external reasons
+     */
+    public SelectItemUIFactory setCurrentGetter(Supplier<ItemStack> currentGetter) {
+        this.currentGetter = currentGetter;
         return this;
     }
 
@@ -118,15 +128,25 @@ public class SelectItemUIFactory {
         }
         builder.widget(new TextWidget(header).setDefaultColor(COLOR_TITLE.get()).setPos(25, 9));
 
-        builder.widget(SlotWidget.phantom(currentDisplayItemHandler, 0)
-                        .disableInteraction()
-                        .setBackground(GT_UITextures.SLOT_DARK_GRAY)
-                        .setPos(
-                                9
-                                        + getFontRenderer()
-                                                .getStringWidth(
-                                                        StatCollector.translateToLocal("GT5U.gui.select.current")),
-                                24))
+        builder.widget(
+                        new SlotWidget(BaseSlot.phantom(currentDisplayItemHandler, 0)) {
+                            @Override
+                            public void draw(float partialTicks) {
+                                if (currentGetter != null) {
+                                    ItemStack current = currentGetter.get();
+                                    currentDisplayItemHandler.setStackInSlot(0, current);
+                                    selected = GT_Utility.findMatchingStackInList(stacks, current);
+                                }
+                                super.draw(partialTicks);
+                            }
+                        }.disableInteraction()
+                                .setBackground(GT_UITextures.SLOT_DARK_GRAY)
+                                .setPos(
+                                        9
+                                                + getFontRenderer()
+                                                        .getStringWidth(StatCollector.translateToLocal(
+                                                                "GT5U.gui.select.current")),
+                                        24))
                 .widget(new TextWidget(StatCollector.translateToLocal("GT5U.gui.select.current"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(8, 25 + (18 - getFontRenderer().FONT_HEIGHT) / 2));
