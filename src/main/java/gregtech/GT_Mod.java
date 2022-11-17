@@ -3,10 +3,13 @@ package gregtech;
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 
-import appeng.api.AEApi;
-import com.google.common.base.Stopwatch;
+import 
+    appeng.api.AEApi;
+import 
+    com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
+import 
+    cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -114,21 +117,27 @@ import org.apache.logging.log4j.Logger;
                 + " after:BuildCraft|Transport;"
                 + " after:BuildCraft|Silicon;"
                 + " after:BuildCraft|Factory;"
-                + " after:BuildCraft|Energy;"
-                + " after:BuildCraft|Core;"
-                + " after:BuildCraft|Builders;"
-                + " after:GalacticraftCore;"
-                + " after:GalacticraftMars;"
-                + " after:GalacticraftPlanets;"
-                + " after:ThermalExpansion|Transport;"
-                + " after:ThermalExpansion|Energy;"
-                + " after:ThermalExpansion|Factory;"
-                + " after:RedPowerCore;"
+      + " after:BuildCraft|Energy;"
+      + " after:BuildCraft|Core;"
+      + " after:BuildCraft|Builders;"
+      + " after:GalacticraftCore;"
+      + " after:GalacticraftMars;"
+      + " after:GalacticraftPlanets;"
+      + " after:ThermalExpansion|Transport;"
+      + " after:ThermalExpansion|Energy;"
+      + " after:ThermalExpansion|Factory;"
+      + " after:RedPowerCore;"
                 + " after:RedPowerBase;"
                 + " after:RedPowerMachine;"
                 + " after:RedPowerCompat;"
                 + " after:RedPowerWiring;"
                 + " after:RedPowerLogic;"
+    
+    
+    
+    
+    
+    
                 + " after:RedPowerLighting;"
                 + " after:RedPowerWorld;"
                 + " after:RedPowerControl;"
