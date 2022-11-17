@@ -13,12 +13,16 @@ public class GT_GUIColorOverride {
 
     public GT_GUIColorOverride(String guiTexturePath) {
         try {
+            // this is dumb, but CombTypeTest causes cascading class load
+            // and leads to instantiation of GT_CoverBehaviorBase
+            if (Minecraft.getMinecraft() == null) return;
             IResource ir =
                     Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(guiTexturePath));
             if (ir.hasMetadata()) {
                 cmSection = (ColorsMetadataSection) ir.getMetadata("colors");
             }
-        } catch (IOException ignore) {
+        } catch (IOException | NoClassDefFoundError ignore) {
+            // this is also dumb, but FMLCommonHandler#getEffectiveSide doesn't work during test
         }
     }
 

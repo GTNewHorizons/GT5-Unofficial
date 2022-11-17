@@ -605,4 +605,16 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                 && aStack.getTagCompound() != null
                 && aStack.getTagCompound().getCompoundTag("GT.CraftingComponents") != null;
     }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes;
+    }
+
+    // GUI stuff
+
+    @Override
+    public boolean hasNEITransferRect() {
+        return false;
+    }
 }

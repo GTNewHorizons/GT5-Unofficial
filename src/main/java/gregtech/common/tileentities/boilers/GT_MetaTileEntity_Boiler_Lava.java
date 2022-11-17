@@ -12,15 +12,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.gui.GT_Container_Boiler;
-import gregtech.common.gui.GT_GUIContainer_Boiler;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
@@ -86,16 +84,6 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_Boiler(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Boiler(aPlayerInventory, aBaseMetaTileEntity, "SteelBoiler.png");
-    }
-
-    @Override
     public int getCapacity() {
         return 32000;
     }
@@ -142,6 +130,11 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
             aBaseMetaTileEntity.decrStackSize(2, 1);
             // Clay lava buckets break, so you don't get it back.
         }
+    }
+
+    @Override
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.STEEL;
     }
 
     @Override

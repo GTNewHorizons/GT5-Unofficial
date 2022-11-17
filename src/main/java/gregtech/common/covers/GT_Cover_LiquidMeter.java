@@ -1,28 +1,27 @@
 package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
 import io.netty.buffer.ByteBuf;
 import java.util.Arrays;
 import javax.annotation.Nonnull;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -164,23 +163,85 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     protected int getTickRateImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
         return 5;
     }
-    /**
-     * GUI Stuff
-     */
+
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            LiquidMeterData coverData,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new GUI(aSide, aCoverID, coverData, aTileEntity);
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new LiquidMeterUIFactory(buildContext).createWindow();
+    }
+
+    private class LiquidMeterUIFactory extends UIFactory {
+
+        private static final int startX = 10;
+        private static final int startY = 25;
+        private static final int spaceX = 18;
+        private static final int spaceY = 18;
+
+        public LiquidMeterUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
+        }
+
+        @SuppressWarnings("PointlessArithmeticExpression")
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
+            final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
+            final int maxCapacity;
+
+            if (getUIBuildContext().getTile() instanceof IFluidHandler) {
+                FluidTankInfo[] tanks =
+                        ((IFluidHandler) getUIBuildContext().getTile()).getTankInfo(ForgeDirection.UNKNOWN);
+                maxCapacity =
+                        Arrays.stream(tanks).mapToInt(tank -> tank.capacity).sum();
+            } else {
+                maxCapacity = -1;
+            }
+
+            builder.widget(new CoverDataControllerWidget<>(
+                                    this::getCoverData, this::setCoverData, GT_Cover_LiquidMeter.this)
+                            .addFollower(
+                                    CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                                    coverData -> coverData.inverted,
+                                    (coverData, state) -> {
+                                        coverData.inverted = state;
+                                        return coverData;
+                                    },
+                                    widget -> widget.addTooltip(0, NORMAL)
+                                            .addTooltip(1, INVERTED)
+                                            .setPos(spaceX * 0, spaceY * 0))
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> String.valueOf(coverData.threshold),
+                                    (coverData, state) -> {
+                                        coverData.threshold = (int) MathExpression.parseMathExpression(state);
+                                        return coverData;
+                                    },
+                                    widget -> widget.setOnScrollNumbers(1000, 100, 100000)
+                                            .setNumbers(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
+                                            .setFocusOnGuiOpen(true)
+                                            .setPos(spaceX * 0, spaceY * 1 + 2)
+                                            .setSize(spaceX * 4 + 5, 12))
+                            .setPos(startX, startY))
+                    .widget(TextWidget.dynamicString(
+                                    () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
+                            .setSynced(false)
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
+                    .widget(new TextWidget(GT_Utility.trans("222", "Fluid threshold"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 5 - 10, startY + spaceY * 1 + 4));
+        }
     }
 
     public static class LiquidMeterData implements ISerializableObject {
@@ -232,145 +293,6 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
             inverted = aBuf.readBoolean();
             threshold = aBuf.readInt();
             return this;
-        }
-    }
-
-    private class GUI extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private final GT_GuiIconCheckButton invertedButton;
-        private final GT_GuiIntegerTextBox thresholdSlot;
-        private final LiquidMeterData coverVariable;
-
-        private final int maxCapacity;
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
-        private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
-
-        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
-
-        public GUI(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            invertedButton = new GT_GuiIconCheckButton(
-                    this,
-                    0,
-                    startX + spaceX * 0,
-                    startY + spaceY * 0,
-                    GT_GuiIcon.REDSTONE_ON,
-                    GT_GuiIcon.REDSTONE_OFF,
-                    INVERTED,
-                    NORMAL);
-            thresholdSlot =
-                    new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 1 + 2, spaceX * 4 + 5, 12);
-
-            if (tile instanceof IFluidHandler) {
-                FluidTankInfo[] tanks = ((IFluidHandler) tile).getTankInfo(ForgeDirection.UNKNOWN);
-                maxCapacity =
-                        Arrays.stream(tanks).mapToInt(tank -> tank.capacity).sum();
-            } else {
-                maxCapacity = -1;
-            }
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(
-                    coverVariable.inverted ? INVERTED : NORMAL,
-                    startX + spaceX * 1,
-                    4 + startY + spaceY * 0,
-                    textColor);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("222", "Fluid threshold"),
-                            startX + spaceX * 5 - 10,
-                            startY + spaceY * 1 + 4,
-                            textColor);
-        }
-
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            update();
-            thresholdSlot.setFocused(true);
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            coverVariable.inverted = !coverVariable.inverted;
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-            update();
-        }
-
-        @Override
-        public void onMouseWheel(int x, int y, int delta) {
-            if (thresholdSlot.isFocused()) {
-                int val = parseTextBox(thresholdSlot);
-
-                int step = 1000;
-                if (isShiftKeyDown()) {
-                    step *= 100;
-                }
-                if (isCtrlKeyDown()) {
-                    step /= 10;
-                }
-
-                val += step * Integer.signum(delta);
-                int upperBound = maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE;
-                val = GT_Utility.clamp(val, 0, upperBound);
-                thresholdSlot.setText(Integer.toString(val));
-            }
-        }
-
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            if (box == thresholdSlot) {
-                coverVariable.threshold = parseTextBox(thresholdSlot);
-            }
-
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-            update();
-        }
-
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            if (box == thresholdSlot) {
-                thresholdSlot.setText(Integer.toString(coverVariable.threshold));
-            }
-        }
-
-        private void update() {
-            invertedButton.setChecked(coverVariable.inverted);
-            resetTextBox(thresholdSlot);
-        }
-
-        private int parseTextBox(GT_GuiIntegerTextBox box) {
-            if (box == thresholdSlot) {
-                String text = box.getText();
-                if (text == null) {
-                    return 0;
-                }
-
-                int val;
-                try {
-                    val = Integer.parseInt(text.trim());
-                } catch (NumberFormatException e) {
-                    return 0;
-                }
-
-                int upperBound = maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE;
-                return GT_Utility.clamp(val, 0, upperBound);
-            }
-
-            throw new UnsupportedOperationException("Unknown text box: " + box);
         }
     }
 }

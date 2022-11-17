@@ -1,14 +1,20 @@
 package gregtech.api.interfaces.metatileentity;
 
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IGetGUITextureSet;
 import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_Util;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +44,8 @@ public interface IMetaTileEntity
                 IFluidHandler,
                 IGearEnergyTileEntity,
                 IMachineBlockUpdateable,
-                IGregtechWailaProvider {
+                IGregtechWailaProvider,
+                IGetGUITextureSet {
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
      * <p/>
@@ -193,13 +200,36 @@ public interface IMetaTileEntity
 
     /**
      * @return the Server Side Container
+     * @deprecated Use {@link #createWindow}
      */
-    Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity);
+    @Deprecated
+    default Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * @return the Client Side GUI Container
+     * @deprecated Use {@link #createWindow}
      */
-    Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity);
+    @Deprecated
+    default Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * For back compatibility, you need to override this if this MetaTileEntity uses ModularUI.
+     */
+    default boolean useModularUI() {
+        return false;
+    }
+
+    /**
+     * Creates UI with ModularUI system. Start building UI with {@link ModularWindow#builder}
+     * and call {@link ModularWindow.Builder#build} to build.
+     */
+    default ModularWindow createWindow(UIBuildContext buildContext) {
+        return null;
+    }
 
     /**
      * From new ISidedInventory
@@ -406,6 +436,17 @@ public interface IMetaTileEntity
 
     void onColorChangeClient(byte aColor);
 
+    /**
+     * @return Actual color shown on GUI
+     */
+    default int getGUIColorization() {
+        if (getBaseMetaTileEntity() != null) {
+            return getBaseMetaTileEntity().getGUIColorization();
+        } else {
+            return GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
+        }
+    }
+
     int getLightOpacity();
 
     boolean allowGeneralRedstoneOutput();
@@ -460,5 +501,32 @@ public interface IMetaTileEntity
     @SideOnly(Side.CLIENT)
     default void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
         /* do nothing */
+    }
+
+    default int getGUIWidth() {
+        return 176;
+    }
+
+    default int getGUIHeight() {
+        return 166;
+    }
+
+    /*
+     * ModularUI Support
+     */
+    default ItemStackHandler getInventoryHandler() {
+        return null;
+    }
+
+    default String getLocalName() {
+        return "Unknown";
+    }
+
+    default boolean doesBindPlayerInventory() {
+        return true;
+    }
+
+    default int getTextColorOrDefault(String textType, int defaultColor) {
+        return defaultColor;
     }
 }

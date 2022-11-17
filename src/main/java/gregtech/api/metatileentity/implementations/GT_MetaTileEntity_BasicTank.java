@@ -1,12 +1,22 @@
 package gregtech.api.metatileentity.implementations;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.GT_Container_BasicTank;
 import gregtech.api.gui.GT_GUIContainer_BasicTank;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +30,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
  * This is the main construct for my generic Tanks. Filling and emptying behavior have to be implemented manually
  */
 public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_TieredMachineBlock
-        implements IHasFluidDisplayItem {
+        implements IHasFluidDisplayItem, IAddUIWidgets {
 
     public FluidStack mFluid;
     protected int mOpenerCount;
@@ -90,6 +100,9 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
 
     public abstract boolean displaysItemStack();
 
+    /**
+     * @return If fluid amount is shown on FluidDisplayItem
+     */
     public abstract boolean displaysStackSize();
 
     public int getInputSlot() {
@@ -141,11 +154,13 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
         return getDrainableStack();
     }
 
+    @Deprecated
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_Container_BasicTank(aPlayerInventory, aBaseMetaTileEntity);
     }
 
+    @Deprecated
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_BasicTank(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
@@ -328,5 +343,80 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
 
     protected void onEmptyingContainerWhenEmpty() {
         // Do nothing
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setPos(7, 16)
+                        .setSize(71, 45))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_GAUGE)
+                        .setPos(79, 34)
+                        .setSize(18, 18))
+                .widget(new SlotWidget(inventoryHandler, getInputSlot())
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+                        .setPos(79, 16))
+                .widget(new SlotWidget(inventoryHandler, getOutputSlot())
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+                        .setPos(79, 52))
+                .widget(createDrainableFluidSlot()
+                        .setBackground(GT_UITextures.TRANSPARENT)
+                        .setPos(58, 41))
+                .widget(new TextWidget("Liquid Amount")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(10, 20))
+                .widget(TextWidget.dynamicString(
+                                () -> GT_Utility.parseNumberToString(mFluid != null ? mFluid.amount : 0))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(10, 30));
+    }
+
+    protected FluidDisplaySlotWidget createDrainableFluidSlot() {
+        return new FluidDisplaySlotWidget(inventoryHandler, getStackDisplaySlot())
+                .setFluidAccessConstructor(() -> constructFluidAccess(false))
+                .setIHasFluidDisplay(this)
+                .setCanDrain(true)
+                .setCanFill(!isDrainableStackSeparate())
+                .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
+                .setBeforeRealClick((clickData, widget) -> {
+                    if (NetworkUtils.isClient()) {
+                        // propagate display item content to actual fluid stored in this tank
+                        setDrainableStack(GT_Utility.getFluidFromDisplayStack(
+                                widget.getMcSlot().getStack()));
+                    }
+                    return true;
+                });
+    }
+
+    protected IFluidAccess constructFluidAccess(boolean aIsFillableStack) {
+        return new BasicTankFluidAccess(this, aIsFillableStack);
+    }
+
+    protected static class BasicTankFluidAccess implements IFluidAccess {
+        protected final GT_MetaTileEntity_BasicTank mTank;
+        protected final boolean mIsFillableStack;
+
+        public BasicTankFluidAccess(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {
+            this.mTank = aTank;
+            this.mIsFillableStack = aIsFillableStack;
+        }
+
+        @Override
+        public void set(FluidStack stack) {
+            if (mIsFillableStack) mTank.setFillableStack(stack);
+            else mTank.setDrainableStack(stack);
+        }
+
+        @Override
+        public FluidStack get() {
+            return mIsFillableStack ? mTank.getFillableStack() : mTank.getDrainableStack();
+        }
+
+        @Override
+        public int getCapacity() {
+            return mTank.getCapacity();
+        }
     }
 }

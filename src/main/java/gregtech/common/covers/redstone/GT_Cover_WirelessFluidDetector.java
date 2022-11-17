@@ -1,20 +1,23 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.GT_Cover_LiquidMeter;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
 import javax.annotation.Nonnull;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public class GT_Cover_WirelessFluidDetector
         extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessFluidDetector.FluidTransmitterData> {
@@ -114,72 +117,51 @@ public class GT_Cover_WirelessFluidDetector
         }
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
     @Override
-    public Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            FluidTransmitterData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new FluidTransmitterGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new WirelessFluidDetectorUIFactory(buildContext).createWindow();
     }
 
-    private class FluidTransmitterGUI extends TransmitterGUI<FluidTransmitterData> {
-        private final GT_GuiIntegerTextBox thresholdBox;
+    private class WirelessFluidDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
 
-        public FluidTransmitterGUI(
-                byte aSide, int aCoverID, FluidTransmitterData aCoverVariable, ICoverable aTileEntity) {
-            super(aSide, aCoverID, aCoverVariable, aTileEntity, 1, 2);
-
-            thresholdBox = new GT_GuiShortTextBox(this, 1, 1 + startX, 2 + startY, spaceX * 5 - 4, 12);
+        public WirelessFluidDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
 
         @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer()
-                    .drawString(GT_Utility.trans("222", "Fluid threshold"), startX + spaceX * 5, 4 + startY, textColor);
+        protected int getFrequencyRow() {
+            return 1;
         }
 
         @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            update();
-            thresholdBox.setFocused(true);
+        protected int getButtonRow() {
+            return 2;
         }
 
         @Override
-        public void onMouseWheel(int x, int y, int delta) {
-            super.onMouseWheel(x, y, delta);
-            if (thresholdBox.isFocused()) {
-                genericMouseWheel(thresholdBox, delta, 0, Integer.MAX_VALUE);
-            }
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            super.addUIWidgets(builder);
+            builder.widget(new TextWidget(GT_Utility.trans("222", "Fluid threshold"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 5, 4 + startY));
         }
 
         @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            if (box == thresholdBox) {
-                coverVariable.threshold = parseTextBox(thresholdBox);
-            }
-
-            super.applyTextBox(box);
-        }
-
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            super.resetTextBox(box);
-            if (box == thresholdBox) {
-                thresholdBox.setText(Integer.toString(coverVariable.threshold));
-            }
-        }
-
-        @Override
-        protected void update() {
-            super.update();
-            resetTextBox(thresholdBox);
+        protected void addUIForDataController(CoverDataControllerWidget<FluidTransmitterData> controller) {
+            super.addUIForDataController(controller);
+            controller.addFollower(
+                    new CoverDataFollower_TextFieldWidget<>(),
+                    coverData -> String.valueOf(coverData.threshold),
+                    (coverData, state) -> {
+                        coverData.threshold = (int) MathExpression.parseMathExpression(state);
+                        return coverData;
+                    },
+                    widget -> widget.setOnScrollNumbers()
+                            .setNumbers(0, Integer.MAX_VALUE)
+                            .setPos(1, 2)
+                            .setSize(spaceX * 5 - 4, 12));
         }
     }
 }

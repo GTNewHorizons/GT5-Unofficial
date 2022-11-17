@@ -100,6 +100,7 @@ import org.apache.logging.log4j.Logger;
         guiFactory = "gregtech.client.GT_GuiFactory",
         dependencies = " required-after:IC2;" + " required-after:structurelib;"
                 + " required-after:gtnhlib;"
+                + " required-after:modularui;"
                 + " after:dreamcraft;"
                 + " after:Forestry;"
                 + " after:PFAAGeologica;"

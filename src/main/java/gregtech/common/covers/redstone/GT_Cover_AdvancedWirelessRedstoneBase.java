@@ -1,32 +1,27 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
-import gregtech.api.interfaces.IGuiScreen;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
 public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
@@ -219,225 +214,85 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<
         }
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
-    protected abstract static class WirelessGUI<X extends WirelessData> extends GT_GUICover {
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
 
-        protected final byte side;
-        protected final int coverID;
-        protected final GT_GuiIntegerTextBox frequencyBox;
-        protected final GT_GuiIconCheckButton privateButton;
-        protected final X coverVariable;
+    protected abstract class AdvancedWirelessRedstoneBaseUIFactory extends UIFactory {
 
         protected static final int startX = 10;
         protected static final int startY = 25;
         protected static final int spaceX = 18;
         protected static final int spaceY = 18;
 
-        protected final int frequencyRow;
-        protected final int buttonRow;
-        private final int privateExtraColumn;
-
-        protected final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
-
-        private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverLong.png";
-
-        public WirelessGUI(
-                byte aSide,
-                int aCoverID,
-                X aCoverVariable,
-                ICoverable aTileEntity,
-                int frequencyRow,
-                int buttonRow,
-                boolean shiftPrivateLeft) {
-            super(aTileEntity, 250, 107, GT_Utility.intToStack(aCoverID));
-            this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-            this.frequencyRow = frequencyRow;
-            this.buttonRow = buttonRow;
-            this.privateExtraColumn = shiftPrivateLeft ? 1 : 5;
-
-            frequencyBox =
-                    new GT_GuiShortTextBox(this, 0, 1 + startX, 2 + startY + spaceY * frequencyRow, spaceX * 5 - 4, 12);
-            privateButton =
-                    new GT_GuiIconCheckButton(this, 0, startX, startY + spaceY * buttonRow, GT_GuiIcon.CHECKMARK, null);
-        }
-
-        public WirelessGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
-            this(aSide, aCoverID, aCoverVariable, aTileEntity, 0, 1, false);
+        public AdvancedWirelessRedstoneBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
 
         @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("246", "Frequency"),
-                            startX + spaceX * 5,
-                            4 + startY + spaceY * frequencyRow,
-                            textColor);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("602", "Use Private Frequency"),
-                            startX + spaceX * privateExtraColumn,
-                            4 + startY + spaceY * buttonRow,
-                            textColor);
+        protected int getGUIWidth() {
+            return 250;
         }
 
         @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            update();
-            frequencyBox.setFocused(true);
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            final int privateExtraColumn = isShiftPrivateLeft() ? 1 : 5;
+
+            CoverDataControllerWidget<T> dataController = new CoverDataControllerWidget<>(
+                    this::getCoverData, this::setCoverData, GT_Cover_AdvancedWirelessRedstoneBase.this);
+            dataController.setPos(startX, startY);
+            addUIForDataController(dataController);
+
+            builder.widget(dataController)
+                    .widget(new TextWidget(GT_Utility.trans("246", "Frequency"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
+                    .widget(new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
         }
 
-        protected void genericMouseWheel(
-                GT_GuiIntegerTextBox box,
-                int delta,
-                int minValue,
-                int maxValue,
-                int baseStep,
-                int ctrlStep,
-                int shiftStep) {
-            long step = Math.max(1, Math.abs(delta / 120));
-            step = (isShiftKeyDown() ? shiftStep : isCtrlKeyDown() ? ctrlStep : baseStep) * (delta > 0 ? step : -step);
-
-            long value = parseTextBox(box, minValue, maxValue) + step;
-            if (value > maxValue) value = maxValue;
-            else if (value < minValue) value = minValue;
-
-            box.setText(Long.toString(value));
+        protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
+            controller
+                    .addFollower(
+                            new CoverDataFollower_TextFieldWidget<>(),
+                            coverData -> String.valueOf(coverData.frequency),
+                            (coverData, state) -> {
+                                coverData.frequency = (int) MathExpression.parseMathExpression(state);
+                                return coverData;
+                            },
+                            widget -> widget.setOnScrollNumbers()
+                                    .setNumbers(0, Integer.MAX_VALUE)
+                                    .setFocusOnGuiOpen(true)
+                                    .setPos(1, 2 + spaceY * getFrequencyRow())
+                                    .setSize(spaceX * 5 - 4, 12))
+                    .addFollower(
+                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                            coverData -> coverData.uuid != null,
+                            (coverData, state) -> {
+                                if (state) {
+                                    coverData.uuid =
+                                            getUIBuildContext().getPlayer().getUniqueID();
+                                } else {
+                                    coverData.uuid = null;
+                                }
+                                return coverData;
+                            },
+                            widget -> widget.setPos(0, spaceY * getButtonRow()));
         }
 
-        protected void genericMouseWheel(GT_GuiIntegerTextBox box, int delta, int minValue, int maxValue) {
-            genericMouseWheel(box, delta, minValue, maxValue, 1, 50, 1000);
-        }
+        protected abstract int getFrequencyRow();
 
-        @Override
-        public void onMouseWheel(int x, int y, int delta) {
-            if (frequencyBox.isFocused()) {
-                genericMouseWheel(frequencyBox, delta, 0, Integer.MAX_VALUE);
-            }
-        }
+        protected abstract int getButtonRow();
 
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            if (box == frequencyBox) {
-                coverVariable.frequency = parseTextBox(frequencyBox);
-            }
-
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-            update();
-        }
-
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            if (box == frequencyBox) {
-                frequencyBox.setText(Integer.toString(coverVariable.frequency));
-            }
-        }
-
-        protected void update() {
-            privateButton.setChecked(coverVariable.uuid != null);
-            resetTextBox(frequencyBox);
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (btn == privateButton) {
-                coverVariable.uuid = coverVariable.uuid == null
-                        ? Minecraft.getMinecraft().thePlayer.getUniqueID()
-                        : null;
-            }
-
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-            update();
-        }
-
-        protected int parseTextBox(GT_GuiIntegerTextBox box, int min, int max) {
-            String text = box.getText();
-            if (text == null) {
-                return 0;
-            }
-
-            long value;
-            try {
-                value = Long.parseLong(text.trim());
-            } catch (NumberFormatException e) {
-                return 0;
-            }
-
-            if (value >= max) return max;
-            else if (value < min) return min;
-            return (int) value;
-        }
-
-        protected int parseTextBox(GT_GuiIntegerTextBox box) {
-            return parseTextBox(box, 0, Integer.MAX_VALUE);
-        }
-
-        protected class GT_GuiShortTextBox extends GT_GuiIntegerTextBox {
-
-            private final int min;
-            private final int max;
-            private final Map<String, String> translation;
-            private final Map<String, String> inverseTranslation;
-
-            public GT_GuiShortTextBox(
-                    IGuiScreen gui,
-                    int id,
-                    int x,
-                    int y,
-                    int width,
-                    int height,
-                    int min,
-                    int max,
-                    Map<String, String> translate) {
-                super(gui, id, x, y, width, height);
-                this.min = min;
-                this.max = max;
-                this.translation = translate;
-                this.inverseTranslation =
-                        translate.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
-            }
-
-            public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height, int min, int max) {
-                this(gui, id, x, y, width, height, min, max, new HashMap<>());
-            }
-
-            public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height) {
-                this(gui, id, x, y, width, height, 0, Integer.MAX_VALUE);
-            }
-
-            @Override
-            public boolean textboxKeyTyped(char c, int key) {
-                if (!super.textboxKeyTyped(c, key)) return false;
-
-                String text = getText().trim();
-                if (text.length() > 0) {
-                    setText(String.valueOf(parseTextBox(this, min, max)));
-                }
-
-                return true;
-            }
-
-            @Override
-            public String getText() {
-                String text = super.getText();
-                return inverseTranslation.getOrDefault(text, text);
-            }
-
-            @Override
-            public void setText(String text) {
-                super.setText(translation.getOrDefault(text, text));
-            }
-        }
+        protected abstract boolean isShiftPrivateLeft();
     }
 }

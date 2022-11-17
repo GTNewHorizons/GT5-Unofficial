@@ -2,9 +2,10 @@ package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasInventory;
+import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
@@ -32,6 +33,10 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
     }
 
     public GT_Packet_SetConfigurationCircuit(IGregTechTileEntity tile, ItemStack circuit) {
+        this(tile.getXCoord(), tile.getYCoord(), tile.getZCoord(), circuit);
+    }
+
+    public GT_Packet_SetConfigurationCircuit(BaseTileEntity tile, ItemStack circuit) {
         this(tile.getXCoord(), tile.getYCoord(), tile.getZCoord(), circuit);
     }
 
@@ -84,18 +89,18 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        World world = DimensionManager.getWorld(dimId);
+        final World world = DimensionManager.getWorld(dimId);
         if (world == null) return;
-        TileEntity tile = world.getTileEntity(mX, mY, mZ);
-        if (!(tile instanceof IGregTechTileEntity) || ((IGregTechTileEntity) tile).isDead()) return;
-        IMetaTileEntity mte = ((IGregTechTileEntity) tile).getMetaTileEntity();
-        if (!(mte instanceof IConfigurationCircuitSupport)) return;
-        IConfigurationCircuitSupport machine = (IConfigurationCircuitSupport) mte;
+
+        final TileEntity tile = world.getTileEntity(mX, mY, mZ);
+        if (!(tile instanceof BaseTileEntity) || ((BaseTileEntity) tile).isDead()) return;
+
+        final IConfigurationCircuitSupport machine = ((BaseTileEntity) tile).getConfigurationCircuitSupport();
+        if (machine == null) return;
         if (!machine.allowSelectCircuit()) return;
         machine.getConfigurationCircuits().stream()
                 .filter(stack -> GT_Utility.areStacksEqual(stack, circuit))
                 .findFirst()
-                .ifPresent(stack ->
-                        ((IGregTechTileEntity) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
+                .ifPresent(stack -> ((IHasInventory) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
     }
 }

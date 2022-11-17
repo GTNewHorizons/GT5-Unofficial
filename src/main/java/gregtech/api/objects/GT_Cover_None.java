@@ -7,7 +7,6 @@ import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.ISerializableObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_None extends GT_CoverBehavior {
@@ -158,17 +157,6 @@ public class GT_Cover_None extends GT_CoverBehavior {
             ICoverable aTileEntity,
             EntityPlayer aPlayer) {
         return false;
-    }
-
-    @Override
-    protected Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            ISerializableObject.LegacyCoverData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return null;
     }
 
     @Override

@@ -8,6 +8,9 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SteamVariant;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -426,5 +429,26 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
                     Dyes.getModulation(aColor, Dyes._NULL.mRGBa)),
             TextureFactory.of(OVERLAY_PIPE_OUT)
         };
+    }
+
+    @Override
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.BRONZE;
+    }
+
+    @Override
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet()
+                .setMainBackground(GT_UITextures.BACKGROUND_STEAM.get(getSteamVariant()))
+                .setItemSlot(GT_UITextures.SLOT_ITEM_STEAM.get(getSteamVariant()))
+                .setCoverTab(
+                        GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getSteamVariant()),
+                        GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getSteamVariant()),
+                        GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getSteamVariant()))
+                .setTitleTab(
+                        GT_UITextures.TAB_TITLE_STEAM.getAdaptable(getSteamVariant()),
+                        GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(getSteamVariant()),
+                        GT_UITextures.TAB_TITLE_ANGULAR_STEAM.getAdaptable(getSteamVariant()))
+                .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getSteamVariant()));
     }
 }

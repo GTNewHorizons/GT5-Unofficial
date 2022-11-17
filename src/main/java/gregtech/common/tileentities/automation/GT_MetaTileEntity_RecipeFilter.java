@@ -3,6 +3,7 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_RECIPEFILTER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_RECIPEFILTER_GLOW;
 
+import com.gtnewhorizons.modularui.api.drawable.Text;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,8 +12,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilt
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.blocks.GT_Item_Machines;
-import gregtech.common.gui.GT_GUIContainer_RecipeFilter;
-import net.minecraft.entity.player.InventoryPlayer;
+import java.util.Collections;
+import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -38,11 +39,6 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     }
 
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_RecipeFilter(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
     public void clickTypeIcon(boolean aRightClick, ItemStack aHandStack) {
         if (!aRightClick) {
             IMetaTileEntity mte = GT_Item_Machines.getMetaTileEntity(aHandStack);
@@ -55,9 +51,9 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
                     return;
                 }
             }
+            mInventory[SPECIAL_SLOT_INDEX] = null;
+            mRecipeMap = null;
         }
-        mInventory[SPECIAL_SLOT_INDEX] = null;
-        mRecipeMap = null;
     }
 
     @Override
@@ -91,5 +87,10 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     @Override
     protected boolean isStackAllowed(ItemStack aStack) {
         return mRecipeMap != null && mRecipeMap.containsInput(aStack);
+    }
+
+    @Override
+    protected List<Text> getEmptySlotTooltip() {
+        return Collections.singletonList(Text.localised("GT5U.recipe_filter.representation_slot.tooltip"));
     }
 }

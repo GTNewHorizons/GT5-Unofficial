@@ -6,14 +6,19 @@ import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AECableType;
 import appeng.me.helpers.AENetworkProxy;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
+import gregtech.api.enums.SteamVariant;
+import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -23,12 +28,15 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_TooltipDataCache;
+import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Supplier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
@@ -71,6 +79,19 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      */
     public final ItemStack[] mInventory;
 
+    /**
+     * Inventory wrapper for ModularUI
+     */
+    public final ItemStackHandler inventoryHandler;
+
+    protected GT_GUIColorOverride colorOverride;
+    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+
+    @Override
+    public ItemStackHandler getInventoryHandler() {
+        return inventoryHandler;
+    }
+
     public boolean doTickProfilingInThisTick = true;
 
     private MetaTileEntity mCallBackTile;
@@ -107,6 +128,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         getBaseMetaTileEntity().setMetaTileID((short) aID);
         GT_LanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
         mInventory = new ItemStack[aInvSlotCount];
+        inventoryHandler = new ItemStackHandler(mInventory);
     }
 
     /**
@@ -115,6 +137,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public MetaTileEntity(String aName, int aInvSlotCount) {
         mInventory = new ItemStack[aInvSlotCount];
         mName = aName;
+        inventoryHandler = new ItemStackHandler(mInventory);
+        colorOverride = new GT_GUIColorOverride(
+                getGUITextureSet().getMainBackground().location.getResourcePath());
     }
 
     /**
@@ -151,6 +176,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                 getBaseMetaTileEntity().getMetaTileID());
     }
 
+    @Override
     public String getLocalName() {
         return GT_LanguageManager.getTranslation("gt.blockmachines." + mName + ".name");
     }
@@ -393,6 +419,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      */
     public boolean isSteampowered() {
         return false;
+    }
+
+    /**
+     * @return what type of texture does this machine use for GUI,
+     * i.e. Bronze, Steel, or Primitive
+     */
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.NONE;
     }
 
     /**
@@ -991,11 +1025,19 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         //
     }
 
+    /**
+     * @deprecated Use {@link #createWindow}
+     */
+    @Deprecated
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return null;
     }
 
+    /**
+     * @deprecated Use {@link #createWindow}
+     */
+    @Deprecated
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return null;
@@ -1048,64 +1090,32 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        float tStrength = aExplosionPower < V[0]
-                ? 1.0F
-                : aExplosionPower < V[1]
-                        ? 2.0F
-                        : aExplosionPower < V[2]
-                                ? 3.0F
-                                : aExplosionPower < V[3]
-                                        ? 4.0F
-                                        : aExplosionPower < V[4]
-                                                ? 5.0F
-                                                : aExplosionPower < V[4] * 2
-                                                        ? 6.0F
-                                                        : aExplosionPower < V[5]
-                                                                ? 7.0F
-                                                                : aExplosionPower < V[6]
-                                                                        ? 8.0F
-                                                                        : aExplosionPower < V[7]
-                                                                                ? 9.0F
-                                                                                : aExplosionPower < V[8]
-                                                                                        ? 10.0F
-                                                                                        : aExplosionPower < V[8] * 2
-                                                                                                ? 11.0F
-                                                                                                : aExplosionPower < V[9]
-                                                                                                        ? 12.0F
-                                                                                                        : aExplosionPower
-                                                                                                                        < V[
-                                                                                                                                10]
-                                                                                                                ? 13.0F
-                                                                                                                : aExplosionPower
-                                                                                                                                < V[
-                                                                                                                                        11]
-                                                                                                                        ? 14.0F
-                                                                                                                        : aExplosionPower
-                                                                                                                                        < V[
-                                                                                                                                                12]
-                                                                                                                                ? 15.0F
-                                                                                                                                : aExplosionPower
-                                                                                                                                                < V[
-                                                                                                                                                                12]
-                                                                                                                                                        * 2
-                                                                                                                                        ? 16.0F
-                                                                                                                                        : aExplosionPower
-                                                                                                                                                        < V[
-                                                                                                                                                                13]
-                                                                                                                                                ? 17.0F
-                                                                                                                                                : aExplosionPower
-                                                                                                                                                                < V[
-                                                                                                                                                                        14]
-                                                                                                                                                        ? 18.0F
-                                                                                                                                                        : aExplosionPower
-                                                                                                                                                                        < V[
-                                                                                                                                                                                15]
-                                                                                                                                                                ? 19.0F
-                                                                                                                                                                : 20.0F;
-        int tX = getBaseMetaTileEntity().getXCoord(),
-                tY = getBaseMetaTileEntity().getYCoord(),
-                tZ = getBaseMetaTileEntity().getZCoord();
-        World tWorld = getBaseMetaTileEntity().getWorld();
+        // spotless:off
+        float tStrength =
+            aExplosionPower < V[0] ? 1.0F :
+            aExplosionPower < V[1] ? 2.0F :
+            aExplosionPower < V[2] ? 3.0F :
+            aExplosionPower < V[3] ? 4.0F :
+            aExplosionPower < V[4] ? 5.0F :
+            aExplosionPower < V[4] * 2 ? 6.0F :
+            aExplosionPower < V[5] ? 7.0F :
+            aExplosionPower < V[6] ? 8.0F :
+            aExplosionPower < V[7] ? 9.0F :
+            aExplosionPower < V[8] ? 10.0F :
+            aExplosionPower < V[8] * 2 ? 11.0F :
+            aExplosionPower < V[9] ? 12.0F :
+            aExplosionPower < V[10] ? 13.0F :
+            aExplosionPower < V[11] ? 14.0F :
+            aExplosionPower < V[12] ? 15.0F :
+            aExplosionPower < V[12] * 2 ? 16.0F :
+            aExplosionPower < V[13] ? 17.0F :
+            aExplosionPower < V[14] ? 18.0F :
+            aExplosionPower < V[15] ? 19.0F : 20.0F;
+        // spotless:on
+        final int tX = getBaseMetaTileEntity().getXCoord();
+        final int tY = getBaseMetaTileEntity().getYCoord();
+        final int tZ = getBaseMetaTileEntity().getZCoord();
+        final World tWorld = getBaseMetaTileEntity().getWorld();
         GT_Utility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
         if (GregTech_API.sMachineExplosions)
@@ -1174,6 +1184,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         return false;
     }
 
+    // === AE2 compat ===
+
     @Optional.Method(modid = "appliedenergistics2")
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return AECableType.NONE;
@@ -1186,6 +1198,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
+
+    // === Waila compat ===
 
     @Override
     public void getWailaBody(
@@ -1218,4 +1232,38 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         }
         return "";
     }
+
+    @Override
+    public GUITextureSet getGUITextureSet() {
+        return GUITextureSet.DEFAULT;
+    }
+
+    @Override
+    public int getGUIColorization() {
+        Dyes dye = Dyes.dyeWhite;
+        if (this.colorOverride.sLoaded()) {
+            if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
+                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+                return this.colorOverride.getGuiTintOrDefault(dye.mName, GT_Util.getRGBInt(dye.getRGBA()));
+            }
+        } else if (GregTech_API.sColoredGUI) {
+            if (GregTech_API.sMachineMetalGUI) {
+                dye = Dyes.MACHINE_METAL;
+            } else if (getBaseMetaTileEntity() != null) {
+                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+            }
+        }
+        return GT_Util.getRGBInt(dye.getRGBA());
+    }
+
+    @Override
+    public int getTextColorOrDefault(String textType, int defaultColor) {
+        return colorOverride.getTextColorOrDefault(textType, defaultColor);
+    }
+
+    protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);
+    protected Supplier<Integer> COLOR_TITLE_WHITE = () -> getTextColorOrDefault("title_white", 0xfafaff);
+    protected Supplier<Integer> COLOR_TEXT_WHITE = () -> getTextColorOrDefault("text_white", 0xfafaff);
+    protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x404040);
+    protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
 }

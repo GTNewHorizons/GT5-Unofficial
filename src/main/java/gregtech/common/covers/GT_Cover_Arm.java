@@ -1,19 +1,22 @@
 package gregtech.common.covers;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconButton;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import net.minecraft.client.gui.GuiButton;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
@@ -27,6 +30,10 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     protected static final int SLOT_ID_MASK = 0x3FFF;
     protected static final int SLOT_ID_MIN = 0;
     protected static final int CONVERTED_BIT = 0x80000000;
+
+    // This used to be translatable, but now that cover GUI is synced with server, having conflicting texts
+    // among players doesn't make sense.
+    private static final String ANY_TEXT = "Any";
 
     /**
      * @deprecated use {@link #GT_Cover_Arm(int aTickRate, ITexture coverTexture)} instead
@@ -264,223 +271,182 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
         return this.mTickRate;
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
-        return new GT_Cover_Arm.GUI(aSide, aCoverID, coverData, aTileEntity);
+    public boolean useModularUI() {
+        return true;
     }
 
-    private class GUI extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private GT_GuiIntegerTextBox intSlot, adjSlot;
-        private GT_GuiFakeItemButton intSlotIcon, adjSlotIcon;
-        private int coverVariable;
+    @Override
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new ArmUIFactory(buildContext).createWindow();
+    }
+
+    private class ArmUIFactory extends UIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private final String ANY_TEXT = GT_Utility.trans("ANY", "Any");
+        private int maxSlot;
 
-        private boolean export;
-        private int internalSlotID, adjacentSlotID;
-        private final int maxIntSlot, maxAdjSlot;
+        protected ArmUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
+        }
 
-        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
+        @SuppressWarnings("PointlessArithmeticExpression")
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            maxSlot = getMaxSlot();
+            builder.widget(new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_Arm.this)
+                            .addFollower(
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    coverData -> getFlagExport(convert(coverData)) > 0,
+                                    (coverData, state) -> {
+                                        if (state) {
+                                            return new ISerializableObject.LegacyCoverData(
+                                                    convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
+                                        } else {
+                                            return new ISerializableObject.LegacyCoverData(
+                                                    convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
+                                        }
+                                    },
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                            .addTooltip(GT_Utility.trans("006", "Export"))
+                                            .setPos(spaceX * 0, spaceY * 0))
+                            .addFollower(
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    coverData -> getFlagExport(convert(coverData)) == 0,
+                                    (coverData, state) -> {
+                                        if (state) {
+                                            return new ISerializableObject.LegacyCoverData(
+                                                    convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
+                                        } else {
+                                            return new ISerializableObject.LegacyCoverData(
+                                                    convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
+                                        }
+                                    },
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                            .addTooltip(GT_Utility.trans("007", "Import"))
+                                            .setPos(spaceX * 1, spaceY * 0))
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> getTextFieldContent(getFlagInternalSlot(convert(coverData)) - 1),
+                                    (coverData, state) -> {
+                                        final int coverVariable = convert(coverData);
+                                        return new ISerializableObject.LegacyCoverData(getFlagExport(coverVariable)
+                                                | ((getIntFromText(state) + 1) & SLOT_ID_MASK)
+                                                | (getFlagAdjacentSlot(coverVariable) << 14)
+                                                | CONVERTED_BIT);
+                                    },
+                                    widget -> widget.setOnScrollText()
+                                            .setValidator(val -> {
+                                                final int valSlot = getIntFromText(val);
+                                                if (valSlot > -1) {
+                                                    return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
+                                                } else {
+                                                    return ANY_TEXT;
+                                                }
+                                            })
+                                            .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                                            .setFocusOnGuiOpen(true)
+                                            .setPos(spaceX * 0, spaceY * 1 + 2)
+                                            .setSize(spaceX * 2 + 5, 12))
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> getTextFieldContent(getFlagAdjacentSlot(convert(coverData)) - 1),
+                                    (coverData, state) -> {
+                                        final int coverVariable = convert(coverData);
+                                        return new ISerializableObject.LegacyCoverData(getFlagExport(coverVariable)
+                                                | getFlagInternalSlot(coverVariable)
+                                                | (((getIntFromText(state) + 1) & SLOT_ID_MASK) << 14)
+                                                | CONVERTED_BIT);
+                                    },
+                                    widget -> widget.setValidator(val -> {
+                                                final int valSlot = getIntFromText(val);
+                                                final int adjacentMaxSlot;
+                                                final ICoverable tile =
+                                                        getUIBuildContext().getTile();
+                                                if (tile instanceof TileEntity && !tile.isDead()) {
+                                                    TileEntity adj = tile.getTileEntityAtSide(
+                                                            getUIBuildContext().getCoverSide());
+                                                    if (adj instanceof IInventory)
+                                                        adjacentMaxSlot = ((IInventory) adj).getSizeInventory() - 1;
+                                                    else adjacentMaxSlot = -1;
+                                                } else {
+                                                    adjacentMaxSlot = -1;
+                                                }
+                                                if (valSlot > -1) {
+                                                    return TextFieldWidget.format.format(
+                                                            Math.min(valSlot, adjacentMaxSlot));
+                                                } else {
+                                                    return ANY_TEXT;
+                                                }
+                                            })
+                                            .setOnScroll((text, direction) -> {
+                                                final int val = getIntFromText(text);
+                                                int step = (GuiScreen.isShiftKeyDown()
+                                                                ? 50
+                                                                : GuiScreen.isCtrlKeyDown() ? 5 : 1)
+                                                        * direction;
+                                                return TextFieldWidget.format.format(val + step);
+                                            })
+                                            .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                                            .setPos(spaceX * 0, spaceY * 2 + 2)
+                                            .setSize(spaceX * 2 + 5, 12))
+                            .setPos(startX, startY))
+                    .widget(TextWidget.dynamicString(() -> (convert(getCoverData()) & EXPORT_MASK) > 0
+                                    ? GT_Utility.trans("006", "Export")
+                                    : GT_Utility.trans("007", "Import"))
+                            .setSynced(false)
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
+                    .widget(new TextWidget(GT_Utility.trans("254.1", "Internal slot#"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 3, 4 + startY + spaceY * 1))
+                    .widget(new TextWidget(GT_Utility.trans("255", "Adjacent slot#"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2));
+        }
 
-        public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            export = (coverVariable & EXPORT_MASK) > 0;
-            internalSlotID = (coverVariable & SLOT_ID_MASK);
-            adjacentSlotID = (coverVariable >> 14) & SLOT_ID_MASK;
-
-            new GT_GuiIconButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.EXPORT)
-                    .setTooltipText(GT_Utility.trans("006", "Export"));
-            new GT_GuiIconButton(this, 1, startX + spaceX * 1, startY + spaceY * 0, GT_GuiIcon.IMPORT)
-                    .setTooltipText(GT_Utility.trans("007", "Import"));
-
-            intSlot =
-                    new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 1 + 2, spaceX * 2 + 5, 12);
-            setBoxText(intSlot, internalSlotID - 1);
-            intSlot.setMaxStringLength(6);
-
-            adjSlot =
-                    new GT_GuiIntegerTextBox(this, 3, startX + spaceX * 0, startY + spaceY * 2 + 2, spaceX * 2 + 5, 12);
-            setBoxText(adjSlot, adjacentSlotID - 1);
-            adjSlot.setMaxStringLength(6);
-
-            // intSlotIcon = new GT_GuiFakeItemButton(this, startX + spaceX * 8-4, startY + spaceY * 1,
-            // GT_GuiIcon.SLOT_GRAY);
-            // adjSlotIcon = new GT_GuiFakeItemButton(this, startX + spaceX * 8-4, startY + spaceY * 2,
-            // GT_GuiIcon.SLOT_GRAY);
-
-            if (super.tile instanceof TileEntity && !super.tile.isDead()) {
-                maxIntSlot = tile.getSizeInventory() - 1;
-
-                TileEntity adj = super.tile.getTileEntityAtSide(side);
-                if (adj instanceof IInventory) maxAdjSlot = ((IInventory) adj).getSizeInventory() - 1;
-                else maxAdjSlot = -1;
+        private int getMaxSlot() {
+            final ICoverable tile = getUIBuildContext().getTile();
+            if (tile instanceof TileEntity && !tile.isDead()) {
+                return tile.getSizeInventory() - 1;
             } else {
-                maxIntSlot = -1;
-                maxAdjSlot = -1;
-            }
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            if (export)
-                this.getFontRenderer()
-                        .drawString(
-                                GT_Utility.trans("006", "Export"),
-                                startX + spaceX * 3,
-                                4 + startY + spaceY * 0,
-                                textColor);
-            else
-                this.getFontRenderer()
-                        .drawString(
-                                GT_Utility.trans("007", "Import"),
-                                startX + spaceX * 3,
-                                4 + startY + spaceY * 0,
-                                textColor);
-
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("254.1", "Internal slot#"),
-                            startX + spaceX * 3,
-                            4 + startY + spaceY * 1,
-                            textColor);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("255", "Adjacent slot#"),
-                            startX + spaceX * 3,
-                            4 + startY + spaceY * 2,
-                            textColor);
-        }
-
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            intSlot.setFocused(true);
-            updateButtons();
-
-            // updateInventorySlots();
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (buttonClickable(btn.id)) {
-                export = btn.id == 0;
-                coverVariable = getNewCoverVariable();
-                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
-            }
-            updateButtons();
-        }
-
-        private void updateButtons() {
-            GuiButton b;
-            for (Object o : buttonList) {
-                b = (GuiButton) o;
-                b.enabled = buttonClickable(b.id);
-            }
-        }
-
-        @Override
-        public void onMouseWheel(int x, int y, int delta) {
-            for (GT_GuiIntegerTextBox box : textBoxes) {
-                if (box.isFocused()) {
-                    int step = Math.max(1, Math.abs(delta / 120));
-                    step = (isShiftKeyDown() ? 50 : isCtrlKeyDown() ? 5 : 1) * (delta > 0 ? step : -step);
-                    int maxSlot = box.id == 3 ? maxAdjSlot : maxIntSlot;
-                    int val = parseTextBox(box, maxSlot);
-                    if (val < 0) val = -1;
-                    val = val + step;
-
-                    if (maxSlot < val)
-                        if (maxSlot < 0) val = -1;
-                        else val = maxSlot;
-                    else if (val < SLOT_ID_MIN) val = -1;
-
-                    setBoxText(box, val);
-                    return;
-                }
-            }
-        }
-
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            int val = -1;
-
-            if (box.id == 2) {
-                val = parseTextBox(box, maxIntSlot);
-                internalSlotID = val + 1;
-            } else if (box.id == 3) {
-                val = parseTextBox(box, maxAdjSlot);
-                adjacentSlotID = val + 1;
-            }
-
-            setBoxText(box, val);
-            coverVariable = getNewCoverVariable();
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
-            // updateInventorySlots();
-        }
-
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            int val = 0;
-            if (box.id == 2) val = internalSlotID - 1;
-            else if (box.id == 3) val = adjacentSlotID - 1;
-            setBoxText(box, val);
-        }
-
-        private void setBoxText(GT_GuiIntegerTextBox box, int val) {
-            box.setText(val < 0 ? ANY_TEXT : String.valueOf(val));
-        }
-
-        private int parseTextBox(GT_GuiIntegerTextBox box, int maxSlot) {
-            String text = box.getText();
-            if (text == null) return -1;
-            text = text.trim();
-            if (text.startsWith(ANY_TEXT)) text = text.substring(ANY_TEXT.length());
-
-            if (text.isEmpty()) return -1;
-
-            int val;
-            try {
-                val = Integer.parseInt(text);
-            } catch (NumberFormatException e) {
                 return -1;
             }
-
-            if (maxSlot < val)
-                if (maxSlot < 0) return -1;
-                else return maxSlot;
-            else if (val < SLOT_ID_MIN) return SLOT_ID_MIN;
-            return val;
         }
 
-        private int getNewCoverVariable() {
-            return (export ? EXPORT_MASK : 0)
-                    | ((adjacentSlotID & SLOT_ID_MASK) << 14)
-                    | (internalSlotID & SLOT_ID_MASK)
-                    | CONVERTED_BIT;
+        private String getTextFieldContent(int val) {
+            return val < 0 ? ANY_TEXT : String.valueOf(val);
         }
 
-        private boolean buttonClickable(int id) {
-            if (id == 0) return !export;
-            return export;
+        private int getIntFromText(String text) {
+            try {
+                return (int) MathExpression.parseMathExpression(text, -1);
+            } catch (Exception e) {
+                return -1;
+            }
+        }
+
+        private int getFlagExport(int coverVariable) {
+            return coverVariable & EXPORT_MASK;
+        }
+
+        private int getFlagInternalSlot(int coverVariable) {
+            return coverVariable & SLOT_ID_MASK;
+        }
+
+        private int getFlagAdjacentSlot(int coverVariable) {
+            return (coverVariable >> 14) & SLOT_ID_MASK;
         }
     }
 }
