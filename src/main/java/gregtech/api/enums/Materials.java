@@ -3299,4 +3299,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials getGtMaterialFromFluid(Fluid fluid) {
         return FLUID_MAP.get(fluid);
     }
+
+    public ItemStack getNanite(int amount) {
+        return GT_OreDictUnificator.get(OrePrefixes.nanite, this, amount);
+    }
 }

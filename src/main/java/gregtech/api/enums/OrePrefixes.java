@@ -3171,7 +3171,8 @@ public enum OrePrefixes {
             -1,
             64,
             -1),
-    beeComb("Bee Combs", "", "", true, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1);
+    beeComb("Bee Combs", "", "", true, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1),
+    nanite("Nanites", "", " Nanites", true, true, true, false, false, false, false, false, false, false, 0, -1, 64, 50);
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
             cell,
@@ -3326,6 +3327,12 @@ public enum OrePrefixes {
 
         stickLong.mGeneratedItems.add(Materials.Blaze);
 
+        nanite.mGeneratedItems.add(Materials.Carbon);
+        nanite.mGeneratedItems.add(Materials.Gold);
+        nanite.mGeneratedItems.add(Materials.Iron);
+        nanite.mGeneratedItems.add(Materials.Silver);
+        nanite.mGeneratedItems.add(Materials.TranscendentMetal);
+        nanite.mGeneratedItems.add(Materials.Neutronium);
         // -----
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
@@ -3547,7 +3554,8 @@ public enum OrePrefixes {
             OrePrefixes.crateGtIngot,
             OrePrefixes.crateGtGem,
             OrePrefixes.crateGtPlate,
-            OrePrefixes.itemCasing));
+            OrePrefixes.itemCasing,
+            OrePrefixes.nanite));
     /**
      * Yes this Value can be changed to add Bits for the MetaGenerated-Item-Check.
      */

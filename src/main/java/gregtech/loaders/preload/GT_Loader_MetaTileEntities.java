@@ -27,8 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
-//    356
-//    357
 //    358
 //    359
 //    366
@@ -12720,6 +12718,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'B',
             ItemList.Hull_HV
         });
+
+        ItemList.PCBFactory.set(
+                new GT_MetaTileEntity_PCBFactory(356, "multimachine.pcbfactory", "PCB Factory").getStackForm(1));
+        ItemList.NanoForge.set(
+                new GT_MetaTileEntity_NanoForge(357, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
     }
 
     private static void run4() {
