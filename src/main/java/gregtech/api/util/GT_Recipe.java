@@ -3418,6 +3418,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     /**
      * Nicely display NEI with many items and fluids.
      * Remember to call {@link GT_Recipe_Map#setUsualFluidInputCount} and {@link GT_Recipe_Map#setUsualFluidOutputCount}.
+     * If row count >= 6, it doesn't fit in 2 recipes per page, so change it via IMC.
      */
     public static class GT_Recipe_Map_LargeNEI extends GT_Recipe_Map {
 
