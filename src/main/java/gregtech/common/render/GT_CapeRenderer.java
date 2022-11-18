@@ -22,7 +22,10 @@ public class GT_CapeRenderer extends RenderPlayer {
         new ResourceLocation("gregtech:textures/GregoriusCape.png"),
         new ResourceLocation("gregtech:textures/DonorCape.png"),
         new ResourceLocation("gregtech:textures/DevCape.png"),
-        new ResourceLocation("gregtech:textures/TecCape.png")
+        new ResourceLocation("gregtech:textures/Steam.png"),
+        new ResourceLocation("gregtech:textures/Titanium.png"),
+        new ResourceLocation("gregtech:textures/Neutronium.png"),
+        new ResourceLocation("gregtech:textures/Stargate.png")
     };
     private final Collection<String> mCapeList;
 
@@ -64,8 +67,17 @@ public class GT_CapeRenderer extends RenderPlayer {
             if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":capedev")) {
                 tResource = this.mCapes[5];
             }
-            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":capetec")) {
+            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":cape_steam")) {
                 tResource = this.mCapes[6];
+            }
+            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":cape_titanium")) {
+                tResource = this.mCapes[7];
+            }
+            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":cape_neutronium")) {
+                tResource = this.mCapes[8];
+            }
+            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":cape_stargate")) {
+                tResource = this.mCapes[9];
             }
 
             if ((tResource != null) && (!aPlayer.getHideCape())) {

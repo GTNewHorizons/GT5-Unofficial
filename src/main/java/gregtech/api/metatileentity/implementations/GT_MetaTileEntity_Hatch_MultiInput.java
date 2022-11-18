@@ -226,28 +226,24 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack aFluid, boolean doDrain) {
-        if (getFluid() != null && aFluid != null && getFluid().isFluidEqual(aFluid)) {
-            if (hasFluid(aFluid)) {
-                FluidStack tStored = mStoredFluid[getFluidSlot(aFluid)];
-                if (tStored.amount <= 0 && isFluidChangingAllowed()) {
-                    setFluid(null, getFluidSlot(tStored));
-                    getBaseMetaTileEntity().markDirty();
-                    return null;
-                }
-                FluidStack tRemove = tStored.copy();
-                tRemove.amount = Math.min(aFluid.amount, tRemove.amount);
-                if (doDrain) {
-                    tStored.amount -= tRemove.amount;
-                    getBaseMetaTileEntity().markDirty();
-                }
-                if (tStored.amount <= 0 && isFluidChangingAllowed()) {
-                    setFluid(null, getFluidSlot(tStored));
-                    getBaseMetaTileEntity().markDirty();
-                }
-                return tRemove;
-            }
+        if (aFluid == null || !hasFluid(aFluid)) return null;
+        FluidStack tStored = mStoredFluid[getFluidSlot(aFluid)];
+        if (tStored.amount <= 0 && isFluidChangingAllowed()) {
+            setFluid(null, getFluidSlot(tStored));
+            getBaseMetaTileEntity().markDirty();
+            return null;
         }
-        return null;
+        FluidStack tRemove = tStored.copy();
+        tRemove.amount = Math.min(aFluid.amount, tRemove.amount);
+        if (doDrain) {
+            tStored.amount -= tRemove.amount;
+            getBaseMetaTileEntity().markDirty();
+        }
+        if (tStored.amount <= 0 && isFluidChangingAllowed()) {
+            setFluid(null, getFluidSlot(tStored));
+            getBaseMetaTileEntity().markDirty();
+        }
+        return tRemove;
     }
 
     @Override

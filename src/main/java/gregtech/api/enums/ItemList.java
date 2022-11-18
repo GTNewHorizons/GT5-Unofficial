@@ -525,6 +525,10 @@ public enum ItemList implements IItemContainer {
     Field_Generator_UXV,
     Field_Generator_MAX,
 
+    StableAdhesive,
+    SuperconductorComposite,
+    NaquadriaSupersolid,
+
     Battery_Hull_LV,
     Battery_Hull_MV,
     Battery_Hull_HV,
@@ -738,6 +742,8 @@ public enum ItemList implements IItemContainer {
     Generator_Gas_Turbine_LV,
     Generator_Gas_Turbine_MV,
     Generator_Gas_Turbine_HV,
+    Generator_Gas_Turbine_EV,
+    Generator_Gas_Turbine_IV,
     Generator_Steam_Turbine_LV,
     Generator_Steam_Turbine_MV,
     Generator_Steam_Turbine_HV,
