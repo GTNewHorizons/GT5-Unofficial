@@ -160,13 +160,13 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch impl
                         })
                         .setPos(79, 38))
                 .widget(new DrawableWidget()
-                        .setDrawable(TecTechUITextures.BUTTON_STANDARD_16x16)
+                        .setDrawable(TecTechUITextures.BUTTON_STANDARD_LIGHT_16x16)
                         .setPos(152, 24)
                         .setSize(16, 16))
                 .widget(new DrawableWidget()
                         .setDrawable(() -> getBaseMetaTileEntity().isActive()
                                 ? TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON
-                                : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF)
+                                : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED)
                         .setPos(152, 24)
                         .setSize(16, 16))
                 .widget(new FakeSyncWidget.BooleanSyncer(

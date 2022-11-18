@@ -13,7 +13,11 @@ public class TecTechUITextures {
             AdaptableUITexture.of(MODID, "gui/background/screen_blue", 90, 72, 2);
 
     public static final UITexture BUTTON_STANDARD_16x16 = UITexture.fullImage(MODID, "gui/button/standard_16x16");
+    public static final UITexture BUTTON_STANDARD_LIGHT_16x16 =
+            UITexture.fullImage(MODID, "gui/button/standard_light_16x16");
 
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_DISABLED =
+            UITexture.fullImage(MODID, "gui/overlay_button/power_switch_disabled");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF =
             UITexture.fullImage(MODID, "gui/overlay_button/power_switch_off");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_ON =
@@ -23,9 +27,22 @@ public class TecTechUITextures {
     public static final UITexture[] OVERLAY_BUTTON_UNCERTAINTY = IntStream.range(0, 16)
             .mapToObj(i -> UITexture.fullImage(MODID, "gui/overlay_button/uncertainty/" + i))
             .collect(Collectors.toList())
-            .toArray(new UITexture[] {});
+            .toArray(new UITexture[0]);
+    public static final UITexture OVERLAY_BUTTON_SAFE_VOID_DISABLED =
+            UITexture.fullImage(MODID, "gui/overlay_button/safe_void_disabled");
+    public static final UITexture OVERLAY_BUTTON_SAFE_VOID_OFF =
+            UITexture.fullImage(MODID, "gui/overlay_button/safe_void_off");
+    public static final UITexture OVERLAY_BUTTON_SAFE_VOID_ON =
+            UITexture.fullImage(MODID, "gui/overlay_button/safe_void_on");
+    public static final UITexture OVERLAY_BUTTON_POWER_PASS_DISABLED =
+            UITexture.fullImage(MODID, "gui/overlay_button/power_pass_disabled");
+    public static final UITexture OVERLAY_BUTTON_POWER_PASS_OFF =
+            UITexture.fullImage(MODID, "gui/overlay_button/power_pass_off");
+    public static final UITexture OVERLAY_BUTTON_POWER_PASS_ON =
+            UITexture.fullImage(MODID, "gui/overlay_button/power_pass_on");
 
     public static final UITexture OVERLAY_SLOT_RACK = UITexture.fullImage(MODID, "gui/overlay_slot/rack");
+    public static final UITexture OVERLAY_SLOT_MESH = UITexture.fullImage(MODID, "gui/overlay_slot/mesh");
 
     public static final UITexture PICTURE_TECTECH_LOGO = UITexture.fullImage(MODID, "gui/picture/tectech_logo");
     public static final UITexture PICTURE_TECTECH_LOGO_DARK =
@@ -41,9 +58,34 @@ public class TecTechUITextures {
     public static final UITexture[] PICTURE_UNCERTAINTY_VALID = IntStream.range(0, 9)
             .mapToObj(i -> UITexture.fullImage(MODID, "gui/picture/uncertainty/valid_" + i))
             .collect(Collectors.toList())
-            .toArray(new UITexture[] {});
+            .toArray(new UITexture[0]);
     public static final UITexture[] PICTURE_UNCERTAINTY_INVALID = IntStream.range(0, 9)
             .mapToObj(i -> UITexture.fullImage(MODID, "gui/picture/uncertainty/invalid_" + i))
             .collect(Collectors.toList())
-            .toArray(new UITexture[] {});
+            .toArray(new UITexture[0]);
+    public static final UITexture PICTURE_HEAT_SINK_SMALL = UITexture.fullImage(MODID, "gui/picture/heat_sink_small");
+    public static final UITexture PICTURE_PARAMETER_BLANK = UITexture.fullImage(MODID, "gui/picture/parameter_blank");
+    public static final UITexture[] PICTURE_PARAMETER_BLUE = IntStream.range(0, 20)
+            .mapToObj(i -> UITexture.partly(MODID, "gui/picture/parameter_blue", 158, 4, i * 8, 0, i * 8 + 6, 4))
+            .collect(Collectors.toList())
+            .toArray(new UITexture[0]);
+    public static final UITexture[] PICTURE_PARAMETER_CYAN = IntStream.range(0, 20)
+            .mapToObj(i -> UITexture.partly(MODID, "gui/picture/parameter_cyan", 158, 4, i * 8, 0, i * 8 + 6, 4))
+            .collect(Collectors.toList())
+            .toArray(new UITexture[0]);
+    public static final UITexture[] PICTURE_PARAMETER_GREEN = IntStream.range(0, 20)
+            .mapToObj(i -> UITexture.partly(MODID, "gui/picture/parameter_green", 158, 4, i * 8, 0, i * 8 + 6, 4))
+            .collect(Collectors.toList())
+            .toArray(new UITexture[0]);
+    public static final UITexture[] PICTURE_PARAMETER_ORANGE = IntStream.range(0, 20)
+            .mapToObj(i -> UITexture.partly(MODID, "gui/picture/parameter_orange", 158, 4, i * 8, 0, i * 8 + 6, 4))
+            .collect(Collectors.toList())
+            .toArray(new UITexture[0]);
+    public static final UITexture[] PICTURE_PARAMETER_RED = IntStream.range(0, 20)
+            .mapToObj(i -> UITexture.partly(MODID, "gui/picture/parameter_red", 158, 4, i * 8, 0, i * 8 + 6, 4))
+            .collect(Collectors.toList())
+            .toArray(new UITexture[0]);
+    public static final UITexture PICTURE_PARAMETER_GRAY = UITexture.fullImage(MODID, "gui/picture/parameter_gray");
+    public static final UITexture PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE =
+            UITexture.fullImage(MODID, "gui/picture/uncertainty/monitor_multimachine");
 }

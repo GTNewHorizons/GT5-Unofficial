@@ -15,6 +15,7 @@ import org.lwjgl.opengl.GL12;
 /**
  * Created by Tec on 21.02.2017.
  */
+@Deprecated
 public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Machine {
     protected final String mName;
     protected static byte counter = 0;
