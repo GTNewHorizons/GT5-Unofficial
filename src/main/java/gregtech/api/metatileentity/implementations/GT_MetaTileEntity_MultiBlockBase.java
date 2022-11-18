@@ -1336,6 +1336,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                         .setDefaultColor(COLOR_TEXT_WHITE.get())
                         .setEnabled(widget -> !mMachine))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
+        screenElements.widget(new TextWidget("Too Uncertain.")
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> (getBaseMetaTileEntity().getErrorDisplayID() & 128) != 0));
+        screenElements.widget(new TextWidget("Invalid Parameters.")
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> (getBaseMetaTileEntity().getErrorDisplayID() & 256) != 0));
 
         screenElements
                 .widget(new TextWidget(GT_Utility.trans("139", "Hit with Soft Mallet"))

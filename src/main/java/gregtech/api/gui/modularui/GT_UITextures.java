@@ -115,7 +115,7 @@ public class GT_UITextures {
     public static final UITexture[] OVERLAY_SLOTS_NUMBER = IntStream.range(0, 12)
             .mapToObj(i -> UITexture.fullImage(MODID, "gui/overlay_slot/number_" + i))
             .collect(Collectors.toList())
-            .toArray(new UITexture[] {});
+            .toArray(new UITexture[0]);
 
     public static final UITexture PROGRESSBAR_ARROW = UITexture.fullImage(MODID, "gui/progressbar/arrow");
     public static final SteamTexture PROGRESSBAR_ARROW_STEAM =
