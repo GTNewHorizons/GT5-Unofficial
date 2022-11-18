@@ -12,6 +12,7 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -187,6 +188,15 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
             return;
         }
         super.addUIWidgets(builder, buildContext);
+    }
+
+    @Override
+    public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IBindPlayerInventoryUI) {
+            ((IBindPlayerInventoryUI) getMetaTileEntity()).bindPlayerInventoryUI(builder, buildContext);
+            return;
+        }
+        super.bindPlayerInventoryUI(builder, buildContext);
     }
 
     @Override

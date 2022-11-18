@@ -598,8 +598,7 @@ public abstract class BaseTileEntity extends TileEntity
         builder.setBackground(getGUITextureSet().getMainBackground());
         builder.setGuiTint(getGUIColorization());
         if (doesBindPlayerInventory()) {
-            builder.bindPlayerInventory(
-                    buildContext.getPlayer(), 7, getGUITextureSet().getItemSlot());
+            bindPlayerInventoryUI(builder, buildContext);
         }
         addUIWidgets(builder, buildContext);
         addTitleToUI(builder);
@@ -678,6 +677,11 @@ public abstract class BaseTileEntity extends TileEntity
      * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
      */
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {}
+
+    public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.bindPlayerInventory(
+                buildContext.getPlayer(), 7, getGUITextureSet().getItemSlot());
+    }
 
     public String getLocalName() {
         return "Unknown";
