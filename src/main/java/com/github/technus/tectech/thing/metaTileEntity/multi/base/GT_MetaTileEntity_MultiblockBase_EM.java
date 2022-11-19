@@ -3228,12 +3228,18 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         .setSize(6, 4));
         if (input) {
             builder.widget(new FakeSyncWidget.ByteSyncer(
-                    () -> parametrization.eParamsInStatus[parameterIndex].getOrdinalByte(),
-                    val -> parametrization.eParamsInStatus[parameterIndex] = LedStatus.getStatus(val)));
+                            () -> parametrization.eParamsInStatus[parameterIndex].getOrdinalByte(),
+                            val -> parametrization.eParamsInStatus[parameterIndex] = LedStatus.getStatus(val)))
+                    .widget(new FakeSyncWidget.DoubleSyncer(
+                            () -> parametrization.iParamsIn[parameterIndex],
+                            val -> parametrization.iParamsIn[parameterIndex] = val));
         } else {
             builder.widget(new FakeSyncWidget.ByteSyncer(
-                    () -> parametrization.eParamsOutStatus[parameterIndex].getOrdinalByte(),
-                    val -> parametrization.eParamsOutStatus[parameterIndex] = LedStatus.getStatus(val)));
+                            () -> parametrization.eParamsOutStatus[parameterIndex].getOrdinalByte(),
+                            val -> parametrization.eParamsOutStatus[parameterIndex] = LedStatus.getStatus(val)))
+                    .widget(new FakeSyncWidget.DoubleSyncer(
+                            () -> parametrization.iParamsOut[parameterIndex],
+                            val -> parametrization.iParamsOut[parameterIndex] = val));
         }
     }
 
