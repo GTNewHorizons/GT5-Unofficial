@@ -18,12 +18,4 @@ dependencies {
     compileOnly('curse.maven:cofh-lib-220333:2388748') {transitive=false}
     compileOnly('curse.maven:computercraft-67504:2269339') {transitive=false}
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev') {transitive=false}
-
-    // // for local
-    // compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.41.123-pre:dev') {transitive=false}
-    // compile("com.github.GTNewHorizons:ModularUI:SNAPSHOT:dev")
-    // compile("com.github.GTNewHorizons:waila:1.5.21:dev")
-    // compile("com.github.GTNewHorizons:Chisel:2.10.15-GTNH:dev") {
-    //     transitive = false
-    // }
 }
