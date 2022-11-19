@@ -11,6 +11,8 @@ public class TecTechUITextures {
 
     public static final AdaptableUITexture BACKGROUND_SCREEN_BLUE =
             AdaptableUITexture.of(MODID, "gui/background/screen_blue", 90, 72, 2);
+    public static final UITexture BACKGROUND_SCREEN_BLUE_PARAMETRIZER_TXT =
+            UITexture.fullImage(MODID, "gui/background/screen_blue_parametrizer_txt");
 
     public static final UITexture BUTTON_STANDARD_16x16 = UITexture.fullImage(MODID, "gui/button/standard_16x16");
     public static final UITexture BUTTON_STANDARD_LIGHT_16x16 =
@@ -40,6 +42,22 @@ public class TecTechUITextures {
             UITexture.fullImage(MODID, "gui/overlay_button/power_pass_off");
     public static final UITexture OVERLAY_BUTTON_POWER_PASS_ON =
             UITexture.fullImage(MODID, "gui/overlay_button/power_pass_on");
+    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_ID =
+            UITexture.fullImage(MODID, "gui/overlay_button/parametrizer_id");
+    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_0 =
+            UITexture.fullImage(MODID, "gui/overlay_button/parametrizer_0");
+    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_1 =
+            UITexture.fullImage(MODID, "gui/overlay_button/parametrizer_1");
+    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_X =
+            UITexture.fullImage(MODID, "gui/overlay_button/parametrizer_x");
+    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_S =
+            UITexture.fullImage(MODID, "gui/overlay_button/parametrizer_s");
+    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_T =
+            UITexture.fullImage(MODID, "gui/overlay_button/parametrizer_t");
+    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_C =
+            UITexture.fullImage(MODID, "gui/overlay_button/parametrizer_c");
+    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_IF =
+            UITexture.fullImage(MODID, "gui/overlay_button/parametrizer_if");
 
     public static final UITexture OVERLAY_SLOT_RACK = UITexture.fullImage(MODID, "gui/overlay_slot/rack");
     public static final UITexture OVERLAY_SLOT_MESH = UITexture.fullImage(MODID, "gui/overlay_slot/mesh");
