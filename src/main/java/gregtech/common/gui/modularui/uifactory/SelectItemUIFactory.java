@@ -162,7 +162,7 @@ public class SelectItemUIFactory {
                             } else if (buttonId == 1) {
                                 setSelected(UNSELECTED);
                             } else {
-                                return ClickResult.REJECT;
+                                return ClickResult.ACCEPT;
                             }
                             selectedCallback.accept(getCandidate(getSelected()));
                             return ClickResult.SUCCESS;
