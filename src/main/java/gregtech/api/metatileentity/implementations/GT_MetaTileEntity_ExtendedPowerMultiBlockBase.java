@@ -6,8 +6,9 @@ import net.minecraft.nbt.NBTTagCompound;
 /**
  * Multiblock base class that allows machine to use power over int.
  */
-public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_ExtendedPowerMultiBlockBase> {
+public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
+                T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>>
+        extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> {
 
     public long lEUt;
 
