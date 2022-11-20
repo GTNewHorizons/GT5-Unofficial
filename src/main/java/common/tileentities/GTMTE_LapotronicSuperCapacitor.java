@@ -525,6 +525,9 @@ public class GTMTE_LapotronicSuperCapacitor
         mMaxEUIn = 0;
         mMaxEUOut = 0;
 
+        glassTier = -1;
+        casingAmount = 0;
+
         if (!checkPiece(STRUCTURE_PIECE_BASE, 2, 1, 0)) return false;
 
         topState = TopState.NotTop; // need at least one layer of capacitor to form, obviously
