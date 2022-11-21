@@ -1394,32 +1394,33 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected FluidDisplaySlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return (FluidDisplaySlotWidget)
-                new FluidDisplaySlotWidget(inventoryHandler, OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length)
-                        .setFluidAccessConstructor(() -> constructFluidAccess(true))
-                        .setIHasFluidDisplay(this)
-                        .setCanDrain(true)
-                        .setCanFill(true)
-                        .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
-                        .setBeforeRealClick((clickData, widget) -> {
-                            if (NetworkUtils.isClient()) {
-                                // propagate display item content to actual fluid stored in this tank
-                                setFillableStack(GT_Utility.getFluidFromDisplayStack(
-                                        widget.getMcSlot().getStack()));
-                            }
-                            return true;
-                        })
-                        .setUpdateFluidDisplayItem(this::updateFluidInputDisplayItem)
-                        .setGTTooltip(() -> mTooltipCache.getData(FLUID_INPUT_TOOLTIP, getCapacity()))
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                        .setBackground(backgrounds)
-                        .setPos(pos);
+        return (FluidDisplaySlotWidget) new FluidDisplaySlotWidget(
+                        inventoryHandler, OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length)
+                .setFluidAccessConstructor(() -> constructFluidAccess(true))
+                .setIHasFluidDisplay(this)
+                .setCanDrain(true)
+                .setCanFill(true)
+                .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
+                .setBeforeRealClick((clickData, widget) -> {
+                    if (NetworkUtils.isClient()) {
+                        // propagate display item content to actual fluid stored in this tank
+                        setFillableStack(GT_Utility.getFluidFromDisplayStack(
+                                widget.getMcSlot().getStack()));
+                    }
+                    return true;
+                })
+                .setUpdateFluidDisplayItem(this::updateFluidInputDisplayItem)
+                .setGTTooltip(() -> mTooltipCache.getData(FLUID_INPUT_TOOLTIP, GT_Utility.formatNumbers(getCapacity())))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setBackground(backgrounds)
+                .setPos(pos);
     }
 
     protected FluidDisplaySlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
         return (FluidDisplaySlotWidget) createDrainableFluidSlot()
                 .setUpdateFluidDisplayItem(this::updateFluidOutputDisplayItem)
-                .setGTTooltip(() -> mTooltipCache.getData(FLUID_OUTPUT_TOOLTIP, getCapacity()))
+                .setGTTooltip(
+                        () -> mTooltipCache.getData(FLUID_OUTPUT_TOOLTIP, GT_Utility.formatNumbers(getCapacity())))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setBackground(backgrounds)
                 .setPos(pos);

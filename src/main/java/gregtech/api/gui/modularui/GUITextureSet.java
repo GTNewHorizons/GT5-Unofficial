@@ -3,6 +3,8 @@ package gregtech.api.gui.modularui;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import gregtech.api.enums.SteamVariant;
+import java.util.function.Function;
 
 /**
  * Set of textures that is commonly used for GUI but can vary depending on "style" of machines,
@@ -32,6 +34,19 @@ public class GUITextureSet {
                     GT_UITextures.TAB_COVER_NORMAL, GT_UITextures.TAB_COVER_HIGHLIGHT, GT_UITextures.TAB_COVER_DISABLED)
             .setTitleTab(GT_UITextures.TAB_TITLE, GT_UITextures.TAB_TITLE_DARK, GT_UITextures.TAB_TITLE_ANGULAR)
             .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
+
+    public static final Function<SteamVariant, GUITextureSet> STEAM = steamVariant -> new GUITextureSet()
+            .setMainBackground(GT_UITextures.BACKGROUND_STEAM.get(steamVariant))
+            .setItemSlot(GT_UITextures.SLOT_ITEM_STEAM.get(steamVariant))
+            .setCoverTab(
+                    GT_UITextures.TAB_COVER_STEAM_NORMAL.get(steamVariant),
+                    GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(steamVariant),
+                    GT_UITextures.TAB_COVER_STEAM_DISABLED.get(steamVariant))
+            .setTitleTab(
+                    GT_UITextures.TAB_TITLE_STEAM.getAdaptable(steamVariant),
+                    GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(steamVariant),
+                    GT_UITextures.TAB_TITLE_ANGULAR_STEAM.getAdaptable(steamVariant))
+            .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(steamVariant));
 
     public GUITextureSet() {}
 
