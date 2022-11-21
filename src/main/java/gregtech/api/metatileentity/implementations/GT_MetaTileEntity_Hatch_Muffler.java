@@ -38,12 +38,28 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
         super(aID, aName, aNameRegional, aTier, 0, "");
     }
 
+    public GT_MetaTileEntity_Hatch_Muffler(
+            int aID,
+            String aName,
+            String aNameRegional,
+            int aTier,
+            int aInvSlotCount,
+            String[] aDescription,
+            ITexture... aTextures) {
+        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
     public GT_MetaTileEntity_Hatch_Muffler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         this(aName, aTier, new String[] {aDescription}, aTextures);
     }
 
     public GT_MetaTileEntity_Hatch_Muffler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
+        this(aName, aTier, 0, aDescription, aTextures);
+    }
+
+    public GT_MetaTileEntity_Hatch_Muffler(
+            String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
         setInValidFacings(ForgeDirection.DOWN);
     }
 
