@@ -12,6 +12,7 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -150,6 +151,10 @@ public class GT_UIInfos {
             ContainerConstructor containerCreator) {
         UIBuildContext buildContext = new UIBuildContext(player);
         ModularWindow window = windowCreator.apply(buildContext);
+        if (window == null) {
+            GT_Mod.GT_FML_LOGGER.warn("TileEntity created null ModularWindow");
+            return null;
+        }
         return containerCreator.of(new ModularUIContext(buildContext, onWidgetUpdate), window);
     }
 
@@ -158,7 +163,12 @@ public class GT_UIInfos {
             EntityPlayer player,
             Function<UIBuildContext, ModularWindow> windowCreator,
             ContainerConstructor containerConstructor) {
-        return new ModularGui(createTileEntityContainer(player, windowCreator, null, containerConstructor));
+        ModularUIContainer container = createTileEntityContainer(player, windowCreator, null, containerConstructor);
+        if (container == null) {
+            GT_Mod.GT_FML_LOGGER.warn("TileEntity created null ModularWindow");
+            return null;
+        }
+        return new ModularGui(container);
     }
 
     private static ModularUIContainer createCoverContainer(
@@ -170,6 +180,10 @@ public class GT_UIInfos {
             ICoverable tile) {
         GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(player, coverID, side, tile, false);
         ModularWindow window = windowCreator.apply(buildContext);
+        if (window == null) {
+            GT_Mod.GT_FML_LOGGER.warn("Cover created null ModularWindow");
+            return null;
+        }
         return new ModularUIContainer(new ModularUIContext(buildContext, onWidgetUpdate), window);
     }
 
@@ -180,7 +194,12 @@ public class GT_UIInfos {
             int coverID,
             byte side,
             ICoverable tile) {
-        return new ModularGui(createCoverContainer(player, windowCreator, null, coverID, side, tile));
+        ModularUIContainer container = createCoverContainer(player, windowCreator, null, coverID, side, tile);
+        if (container == null) {
+            GT_Mod.GT_FML_LOGGER.warn("Cover created null ModularWindow");
+            return null;
+        }
+        return new ModularGui(container);
     }
 
     @FunctionalInterface
