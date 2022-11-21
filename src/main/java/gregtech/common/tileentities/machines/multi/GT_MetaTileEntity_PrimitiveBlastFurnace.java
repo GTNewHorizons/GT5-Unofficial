@@ -552,18 +552,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public GUITextureSet getGUITextureSet() {
-        return new GUITextureSet()
-                .setMainBackground(GT_UITextures.BACKGROUND_STEAM.get(getSteamVariant()))
-                .setItemSlot(GT_UITextures.SLOT_ITEM_STEAM.get(getSteamVariant()))
-                .setCoverTab(
-                        GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getSteamVariant()),
-                        GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getSteamVariant()),
-                        GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getSteamVariant()))
-                .setTitleTab(
-                        GT_UITextures.TAB_TITLE_STEAM.getAdaptable(getSteamVariant()),
-                        GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(getSteamVariant()),
-                        GT_UITextures.TAB_TITLE_ANGULAR_STEAM.getAdaptable(getSteamVariant()))
-                .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getSteamVariant()));
+        return GUITextureSet.STEAM.apply(getSteamVariant());
     }
 
     @Override
