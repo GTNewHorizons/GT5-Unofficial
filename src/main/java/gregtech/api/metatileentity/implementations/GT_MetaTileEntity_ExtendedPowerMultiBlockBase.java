@@ -1,5 +1,8 @@
 package gregtech.api.metatileentity.implementations;
 
+import gregtech.api.util.GT_ExoticEnergyInputHelper;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -85,5 +88,17 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
     @Override
     protected long getActualEnergyUsage() {
         return (-this.lEUt * 10000) / Math.max(1000, mEfficiency);
+    }
+
+    public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
+        List<GT_MetaTileEntity_Hatch> tHatches = new ArrayList<>();
+        tHatches.addAll(mExoticEnergyHatches);
+        tHatches.addAll(mEnergyHatches);
+        return tHatches;
+    }
+
+    @Override
+    public boolean drainEnergyInput(long aEU) {
+        return GT_ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
     }
 }
