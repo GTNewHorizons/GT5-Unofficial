@@ -493,6 +493,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                         .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
                         .setPos(79, 16))
                 .widget(new SlotWidget(inventoryHandler, getOutputSlot())
+                        .setAccess(true, false)
                         .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
                         .setPos(79, 43))
                 .widget(new FluidDisplaySlotWidget(inventoryHandler, getStackDisplaySlot())
