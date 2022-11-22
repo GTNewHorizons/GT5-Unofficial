@@ -35,7 +35,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
 
     @Override
     protected void calculateOverclockedNessMultiInternal(
-            int aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
+            long aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
         // 5% space for cable loss
         long zMaxInputVoltage = maxInputVoltage / 100L * 95L;
         long zTime = aDuration;

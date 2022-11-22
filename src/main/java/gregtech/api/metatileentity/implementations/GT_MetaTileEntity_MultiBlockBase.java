@@ -721,7 +721,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
      * @param perfectOC         - If the Multiblock OCs perfectly, i.e. the large Chemical Reactor
      */
     protected void calculateOverclockedNessMultiInternal(
-            int aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
+            long aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
         byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
         if (mTier == 0) {
             // Long time calculation
@@ -731,7 +731,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                 mEUt = Integer.MAX_VALUE - 1;
                 mMaxProgresstime = Integer.MAX_VALUE - 1;
             } else {
-                mEUt = aEUt >> 2;
+                mEUt = GT_Utility.safeInt(aEUt >> 2);
                 mMaxProgresstime = (int) xMaxProgresstime;
             }
         } else {
@@ -768,11 +768,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         }
     }
 
+    @Deprecated
     protected void calculateOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
         calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, false);
     }
 
+    protected void calculateOverclockedNessMulti(long aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
+        calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, false);
+    }
+
+    @Deprecated
     protected void calculatePerfectOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
+        calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, true);
+    }
+
+    protected void calculatePerfectOverclockedNessMulti(long aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
         calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, true);
     }
 
