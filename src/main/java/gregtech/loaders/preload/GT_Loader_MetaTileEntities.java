@@ -11224,14 +11224,20 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         });
 
         ItemList.Generator_Gas_Turbine_LV.set(
-                new GT_MetaTileEntity_GasTurbine(1115, "basicgenerator.gasturbine.tier.01", "Basic Gas Turbine", 1)
+                new GT_MetaTileEntity_GasTurbine(1115, "basicgenerator.gasturbine.tier.01", "Basic Gas Turbine", 1, 95)
                         .getStackForm(1L));
-        ItemList.Generator_Gas_Turbine_MV.set(
-                new GT_MetaTileEntity_GasTurbine(1116, "basicgenerator.gasturbine.tier.02", "Advanced Gas Turbine", 2)
-                        .getStackForm(1L));
+        ItemList.Generator_Gas_Turbine_MV.set(new GT_MetaTileEntity_GasTurbine(
+                        1116, "basicgenerator.gasturbine.tier.02", "Advanced Gas Turbine", 2, 90)
+                .getStackForm(1L));
         ItemList.Generator_Gas_Turbine_HV.set(
-                new GT_MetaTileEntity_GasTurbine(1117, "basicgenerator.gasturbine.tier.03", "Turbo Gas Turbine", 3)
+                new GT_MetaTileEntity_GasTurbine(1117, "basicgenerator.gasturbine.tier.03", "Turbo Gas Turbine", 3, 85)
                         .getStackForm(1L));
+        ItemList.Generator_Gas_Turbine_EV.set(new GT_MetaTileEntity_GasTurbine(
+                        1118, "basicgenerator.gasturbine.tier.04", "Turbo Gas Turbine II", 4, 60)
+                .getStackForm(1L));
+        ItemList.Generator_Gas_Turbine_IV.set(new GT_MetaTileEntity_GasTurbine(
+                        1119, "basicgenerator.gasturbine.tier.05", "Turbo Gas Turbine III", 5, 50)
+                .getStackForm(1L));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Generator_Gas_Turbine_LV.get(1L), bitsd, new Object[] {
             "CRC",
@@ -11277,6 +11283,36 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             OrePrefixes.circuit.get(Materials.Advanced),
             'W',
             OrePrefixes.cableGt01.get(Materials.Gold)
+        });
+        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Gas_Turbine_EV.get(1L), bitsd, new Object[] {
+            "CRC",
+            "RMR",
+            aTextMotorWire,
+            'M',
+            ItemList.Hull_EV,
+            'E',
+            ItemList.Electric_Motor_EV,
+            'R',
+            OrePrefixes.rotor.get(Materials.Titanium),
+            'C',
+            OrePrefixes.circuit.get(Materials.Data),
+            'W',
+            OrePrefixes.cableGt01.get(Materials.Aluminium)
+        });
+        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Gas_Turbine_IV.get(1L), bitsd, new Object[] {
+            "CRC",
+            "RMR",
+            aTextMotorWire,
+            'M',
+            ItemList.Hull_IV,
+            'E',
+            ItemList.Electric_Motor_IV,
+            'R',
+            OrePrefixes.rotor.get(Materials.TungstenSteel),
+            'C',
+            OrePrefixes.circuit.get(Materials.Elite),
+            'W',
+            OrePrefixes.cableGt01.get(Materials.Tungsten)
         });
 
         ItemList.Generator_Steam_Turbine_LV.set(new GT_MetaTileEntity_SteamTurbine(

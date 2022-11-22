@@ -268,6 +268,7 @@ public class GT_OreDictUnificator {
         else if (obj instanceof List) aStacks = (ItemStack[]) ((List) obj).toArray(new ItemStack[0]);
         List<ItemStack> rList = new ArrayList<>();
         for (ItemStack aStack : aStacks) {
+            if (aStack == null) continue;
             rList.add(aStack);
             List<ItemStack> tList = sUnificationTable.get(new GT_ItemStack2(aStack));
             if (tList != null) {

@@ -32,6 +32,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
@@ -720,7 +721,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
      * @param perfectOC         - If the Multiblock OCs perfectly, i.e. the large Chemical Reactor
      */
     protected void calculateOverclockedNessMultiInternal(
-            int aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
+            long aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
         byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
         if (mTier == 0) {
             // Long time calculation
@@ -730,7 +731,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                 mEUt = Integer.MAX_VALUE - 1;
                 mMaxProgresstime = Integer.MAX_VALUE - 1;
             } else {
-                mEUt = aEUt >> 2;
+                mEUt = GT_Utility.safeInt(aEUt >> 2);
                 mMaxProgresstime = (int) xMaxProgresstime;
             }
         } else {
@@ -767,11 +768,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         }
     }
 
+    @Deprecated
     protected void calculateOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
         calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, false);
     }
 
+    protected void calculateOverclockedNessMulti(long aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
+        calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, false);
+    }
+
+    @Deprecated
     protected void calculatePerfectOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
+        calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, true);
+    }
+
+    protected void calculatePerfectOverclockedNessMulti(long aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
         calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, true);
     }
 
@@ -826,23 +837,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
             if (isValidMetaTileEntity(tHatch)) {
-                if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-                    if (((GT_MetaTileEntity_Hatch_MultiInput) tHatch).hasFluid(aLiquid)) {
-                        FluidStack tLiquid = tHatch.drain(aLiquid.amount, false);
-                        if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
-                            tLiquid = tHatch.drain(aLiquid.amount, true);
-                            return tLiquid != null && tLiquid.amount >= aLiquid.amount;
-                        }
-                    }
-                } else {
-                    FluidStack tLiquid = tHatch.getFluid();
-                    if (tLiquid != null && tLiquid.isFluidEqual(aLiquid)) {
-                        tLiquid = tHatch.drain(aLiquid.amount, false);
-                        if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
-                            tLiquid = tHatch.drain(aLiquid.amount, true);
-                            return tLiquid != null && tLiquid.amount >= aLiquid.amount;
-                        }
-                    }
+                FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
+                if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
+                    tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, true);
+                    return tLiquid != null && tLiquid.amount >= aLiquid.amount;
                 }
             }
         }

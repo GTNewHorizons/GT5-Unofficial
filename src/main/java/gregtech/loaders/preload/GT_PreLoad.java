@@ -766,24 +766,37 @@ public class GT_PreLoad {
                         "PollutionBaseDieselGenerator",
                         GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond)
                 .getInt(GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond);
-        GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier = tMainConfig
+        double[] mPollutionDieselGeneratorReleasedByTier = tMainConfig
                 .get(
                         "Pollution",
                         "PollutionReleasedByTierDieselGenerator",
                         GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier)
                 .getDoubleList();
+        if (mPollutionDieselGeneratorReleasedByTier.length
+                == GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier.length) {
+            GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier = mPollutionDieselGeneratorReleasedByTier;
+        } else {
+            GT_FML_LOGGER.error(
+                    "The Length of the Diesel Turbine Pollution Array Config must be the same as the Default");
+        }
         GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = tMainConfig
                 .get(
                         "Pollution",
                         "PollutionBaseGasTurbineGenerator",
                         GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond)
                 .getInt(GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond);
-        GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier = tMainConfig
+        double[] mPollutionGasTurbineReleasedByTier = tMainConfig
                 .get(
                         "Pollution",
                         "PollutionReleasedByTierGasTurbineGenerator",
                         GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier)
                 .getDoubleList();
+        if (mPollutionGasTurbineReleasedByTier.length
+                == GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier.length) {
+            GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier = mPollutionGasTurbineReleasedByTier;
+        } else {
+            GT_FML_LOGGER.error("The Length of the Gas Turbine Pollution Array Config must be the same as the Default");
+        }
 
         GT_Mod.gregtechproxy.mUndergroundOil.getConfig(tMainConfig, "undergroundfluid");
         GT_Mod.gregtechproxy.mEnableCleanroom =

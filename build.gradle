@@ -1,8 +1,8 @@
-//version: 1666118075
+//version: 1668274302
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
- Please check https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/build.gradle for updates.
+ Please check https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/master/build.gradle for updates.
  */
 
 
@@ -341,7 +341,7 @@ dependencies {
         annotationProcessor('org.spongepowered:mixin:0.8.5-GTNH:processor')
     }
     if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
-        compile('com.gtnewhorizon:gtnhmixins:2.0.1')
+        compile('com.gtnewhorizon:gtnhmixins:2.0.2')
     }
 }
 

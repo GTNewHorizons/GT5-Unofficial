@@ -15241,7 +15241,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     Materials.CarbonDioxide.getGas(390),
                     Materials.Ethylene.getGas(120),
                     Materials.Methane.getGas(130),
-                    Materials.CarbonMonoxide.getGas(2340),
+                    Materials.CarbonMonoxide.getGas(240),
                     Materials.Hydrogen.getGas(120)
                 },
                 GT_Values.NI,

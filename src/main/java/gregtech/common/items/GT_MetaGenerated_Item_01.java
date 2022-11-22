@@ -3891,6 +3891,32 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
 
+        ItemList.StableAdhesive.set(addItem(
+                427,
+                "Hyper-Stable Self-Healing Adhesive",
+                "Complete and selective adhesion, even when torn or damaged",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 30L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 20L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.LIMUS, 10L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VINCULUM, 5L)));
+        ItemList.SuperconductorComposite.set(addItem(
+                428,
+                "Superconductor Rare-Earth Composite",
+                "Zero resistance to electrical and quantum flow, regardless of temperature",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 50L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 25L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 15L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 10L)));
+        ItemList.NaquadriaSupersolid.set(addItem(
+                429,
+                "Black Body Naquadria Supersolid",
+                "Flows like a fluid and reflects nothing, perfect absorption and transfer",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 100L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 60L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 40L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.RADIO, 20L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 10L)));
+
         // Circuits ULV - LuV.
         ItemList.Circuit_Primitive.set(addItem(
                 tLastID = 700,
