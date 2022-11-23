@@ -33,6 +33,7 @@ public class NEI_GT_Config implements IConfigureNEI {
         mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sThermalFuels.mUnlocalizedName);
         mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sSolarTowerRecipes.mUnlocalizedName);
         mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sTreeSimFakeRecipes.mUnlocalizedName);
+        mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockChemicalDehydratorRecipes.mUnlocalizedName);
 
         // Standard GT Recipe Maps
         Logger.INFO("NEI Registration: " + GTPP_Recipe_Map_Internal.sMappingsEx.size() + " sMappingEx");
@@ -75,6 +76,9 @@ public class NEI_GT_Config implements IConfigureNEI {
         Logger.INFO(
                 "NEI Registration: Registering NEI handler for " + GTPP_Recipe_Map.sMultiblockMixerRecipes_GT.mNEIName);
         new GT_NEI_MultiNoCell(GTPP_Recipe_Map.sMultiblockMixerRecipes_GT);
+        Logger.INFO("NEI Registration: Registering NEI handler for "
+                + GTPP_Recipe_Map.sMultiblockChemicalDehydratorRecipes.mNEIName);
+        new GT_NEI_MultiNoCell(GTPP_Recipe_Map.sMultiblockChemicalDehydratorRecipes);
         Logger.INFO(
                 "NEI Registration: Registering NEI handler for " + GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.mNEIName);
         new GT_NEI_MultiNoCell(GTPP_Recipe_Map.sAlloyBlastSmelterRecipes);

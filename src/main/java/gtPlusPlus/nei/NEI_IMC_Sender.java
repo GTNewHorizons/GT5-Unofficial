@@ -7,10 +7,10 @@ import net.minecraft.nbt.NBTTagCompound;
 public class NEI_IMC_Sender {
     public static void IMCSender() {
         // NEI jar is using some outdated handler names
-        sendHandler("gtpp.recipe.alloyblastsmelter", "gregtech:gt.blockmachines:810", 1);
+        sendHandler("gtpp.recipe.alloyblastsmelter", "gregtech:gt.blockmachines:810");
         sendHandler("gtpp.recipe.rocketenginefuel", "gregtech:gt.blockmachines:793");
         sendHandler("gtpp.recipe.cyclotron", "gregtech:gt.blockmachines:828");
-        sendHandler("gtpp.recipe.chemicaldehydrator", "gregtech:gt.blockmachines:911", 1);
+        sendHandler("gtpp.recipe.chemicaldehydrator", "gregtech:gt.blockmachines:911");
         sendHandler("gtpp.recipe.slowfusionreactor", "gregtech:gt.blockmachines:31015");
         sendHandler("gtpp.recipe.RTGgenerators", "gregtech:gt.blockmachines:869");
         sendHandler("gtpp.recipe.cokeoven", "gregtech:gt.blockmachines:791");
@@ -18,6 +18,8 @@ public class NEI_IMC_Sender {
         sendHandler("gtpp.recipe.fishpond", "gregtech:gt.blockmachines:829", 1);
         sendHandler("gtpp.recipe.multimixer", "gregtech:gt.blockmachines:811");
         sendHandler("gtpp.recipe.advanced.mixer", "gregtech:gt.blockmachines:811");
+        sendHandler("gtpp.recipe.multidehydrator", "gregtech:gt.blockmachines:995");
+        sendCatalyst("gtpp.recipe.multidehydrator", "gregtech:gt.blockmachines:995");
         sendHandler("gtpp.recipe.cryogenicfreezer", "gregtech:gt.blockmachines:910");
         sendHandler("gtpp.recipe.matterfab2", "gregtech:gt.blockmachines:799");
         sendHandler("gtpp.recipe.multicentrifuge", "gregtech:gt.blockmachines:790", 1);

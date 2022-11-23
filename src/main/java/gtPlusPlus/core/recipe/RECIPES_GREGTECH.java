@@ -921,14 +921,16 @@ public class RECIPES_GREGTECH {
         CORE.RA.addBlastSmelterRecipe(
                 new ItemStack[] {
                     ItemUtils.getGregtechCircuit(5),
-                    ELEMENT.getInstance().MERCURY.getCell(1),
                     ELEMENT.getInstance().BARIUM.getDust(2),
                     ELEMENT.getInstance().CALCIUM.getDust(2),
                     ELEMENT.getInstance().COPPER.getDust(3),
                 },
-                ELEMENT.getInstance().OXYGEN.getFluidStack(8000),
+                new FluidStack[] {
+                    ELEMENT.getInstance().OXYGEN.getFluidStack(8000),
+                    ELEMENT.getInstance().MERCURY.getFluidStack(1000),
+                },
                 ALLOY.HG1223.getFluidStack(16 * 144),
-                new ItemStack[] {CI.emptyCells(1)},
+                null,
                 new int[] {10000}, // Output Chance
                 20 * 120,
                 30720);
@@ -1078,7 +1080,7 @@ public class RECIPES_GREGTECH {
                     MISC_MATERIALS.STRONTIUM_OXIDE.getDust(8),
                     ELEMENT.getInstance().ALUMINIUM.getDust(8),
                 },
-                null,
+                (FluidStack) null,
                 ELEMENT.getInstance().OXYGEN.getFluidStack(8000),
                 new ItemStack[] {
                     ELEMENT.getInstance().ALUMINIUM.getIngot(8),

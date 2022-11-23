@@ -138,6 +138,20 @@ public interface IGregtech_RecipeAdder {
             ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance, int aDuration, int aEUt);
 
     /**
+     * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs, More than 1 Fluids)
+     *
+     * @param aInput   = ItemStack[] (not null, and respects StackSize)
+     * @param aFluidInput   = FluidStack[] (can be null, and respects StackSize)
+     * @param aFluidOutput   = Output of the Molten Metal (not null, and respects StackSize)
+     * @param aChances 	= Output Chance (can be == 0)
+     * @param aDuration 	= Duration (must be >= 0)
+     * @param aEUt			= EU per tick needed for heating up (must be >= 0)
+     * @return true if the Recipe got added, otherwise false.
+     */
+    public boolean addBlastSmelterRecipe(
+            ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput, int aChance, int aDuration, int aEUt);
+
+    /**
      * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs)
      *
      * @param aInput   = ItemStack[] (not null, and respects StackSize)
@@ -179,6 +193,47 @@ public interface IGregtech_RecipeAdder {
             boolean aOptimizeRecipe);
 
     /**
+     * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs, More than 1 fluids)
+     *
+     * @param aInput   = ItemStack[] (not null, and respects StackSize)
+     * @param aFluidInput   = FluidStack[] (can be null, and respects StackSize)
+     * @param aFluidOutput   = Output of the Molten Metal (not null, and respects StackSize)
+     * @param aOutputStack  = Item Output (Can be null)
+     * @param aChances 	= Output Chance (can be == 0)
+     * @param aDuration 	= Duration (must be >= 0)
+     * @param aEUt			= EU per tick needed for heating up (must be >= 0)
+     * @return true if the Recipe got added, otherwise false.
+     */
+    public boolean addBlastSmelterRecipe(
+            ItemStack[] aInput,
+            FluidStack[] aInputFluid,
+            FluidStack aOutput,
+            ItemStack[] aOutputStack,
+            int[] aChance,
+            int aDuration,
+            int aEUt);
+
+    public boolean addBlastSmelterRecipe(
+            ItemStack[] aInput,
+            FluidStack[] aInputFluid,
+            FluidStack aOutput,
+            int aChance,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue);
+
+    public boolean addBlastSmelterRecipe(
+            ItemStack[] aInput,
+            FluidStack[] aInputFluid,
+            FluidStack aOutput,
+            ItemStack[] aOutputStack,
+            int[] aChance,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue,
+            boolean aOptimizeRecipe);
+
+    /**
      * Adds a Recipe for the LFTRr. (up to 9 Inputs)
      *
      * @param aInput   = ItemStack[] (not null, and respects StackSize)
@@ -194,6 +249,29 @@ public interface IGregtech_RecipeAdder {
     public boolean addBlastSmelterRecipe(
             ItemStack[] aInput,
             FluidStack aInputFluid,
+            FluidStack aOutput,
+            ItemStack[] aOutputStack,
+            int[] aChance,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue);
+
+    /**
+     * Adds a Recipe for the LFTRr. (up to 9 Inputs, More than 1 fluids)
+     *
+     * @param aInput   = ItemStack[] (not null, and respects StackSize)
+     * @param aFluidInput   = FluidStack[] (can be null, and respects StackSize)
+     * @param aFluidOutput   = Output of the Molten Salts (not null, and respects StackSize)
+     * @param aOutputStack  = Item Output (Can be null)
+     * @param aChances 	= Output Chance (can be == 0)
+     * @param aDuration 	= Duration (must be >= 0)
+     * @param aEUt			= EU per tick needed for heating up (must be >= 0)
+     * @param aSpecialValue			= Power produced in EU/t per dynamo
+     * @return true if the Recipe got added, otherwise false.
+     */
+    public boolean addBlastSmelterRecipe(
+            ItemStack[] aInput,
+            FluidStack[] aInputFluid,
             FluidStack aOutput,
             ItemStack[] aOutputStack,
             int[] aChance,

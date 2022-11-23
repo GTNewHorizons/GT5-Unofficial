@@ -487,7 +487,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     public boolean addBlastSmelterRecipe(
             final ItemStack[] aInput, FluidStack aOutput, final int aChance, int aDuration, final int aEUt) {
         return addBlastSmelterRecipe(
-                aInput, null, aOutput, new ItemStack[] {}, new int[] {aChance}, aDuration, aEUt, 3700);
+                aInput, (FluidStack) null, aOutput, new ItemStack[] {}, new int[] {aChance}, aDuration, aEUt, 3700);
     }
 
     @Override
@@ -505,7 +505,31 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     @Override
     public boolean addBlastSmelterRecipe(
             final ItemStack[] aInput,
+            FluidStack[] aInputFluid,
+            FluidStack aOutput,
+            final int aChance,
+            int aDuration,
+            final int aEUt) {
+        return addBlastSmelterRecipe(
+                aInput, aInputFluid, aOutput, new ItemStack[] {}, new int[] {aChance}, aDuration, aEUt, 3700);
+    }
+
+    @Override
+    public boolean addBlastSmelterRecipe(
+            final ItemStack[] aInput,
             FluidStack aInputFluid,
+            FluidStack aOutput,
+            ItemStack[] aOutputStack,
+            final int aChance[],
+            int aDuration,
+            final int aEUt) {
+        return addBlastSmelterRecipe(aInput, aInputFluid, aOutput, aOutputStack, aChance, aDuration, aEUt, 3700);
+    }
+
+    @Override
+    public boolean addBlastSmelterRecipe(
+            final ItemStack[] aInput,
+            FluidStack[] aInputFluid,
             FluidStack aOutput,
             ItemStack[] aOutputStack,
             final int aChance[],
@@ -530,6 +554,19 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     @Override
     public boolean addBlastSmelterRecipe(
             ItemStack[] aInput,
+            FluidStack[] aInputFluid,
+            FluidStack aOutput,
+            int aChance,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue) {
+        return addBlastSmelterRecipe(
+                aInput, aInputFluid, aOutput, new ItemStack[] {}, new int[] {aChance}, aDuration, aEUt, aSpecialValue);
+    }
+
+    @Override
+    public boolean addBlastSmelterRecipe(
+            ItemStack[] aInput,
             FluidStack aInputFluid,
             FluidStack aOutput,
             ItemStack[] aOutputStack,
@@ -541,9 +578,46 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                 aInput, aInputFluid, aOutput, aOutputStack, aChance, aDuration, aEUt, aSpecialValue, true);
     }
 
+    @Override
+    public boolean addBlastSmelterRecipe(
+            ItemStack[] aInput,
+            FluidStack[] aInputFluid,
+            FluidStack aOutput,
+            ItemStack[] aOutputStack,
+            int[] aChance,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue) {
+        return addBlastSmelterRecipe(
+                aInput, aInputFluid, aOutput, aOutputStack, aChance, aDuration, aEUt, aSpecialValue, true);
+    }
+
+    @Override
     public boolean addBlastSmelterRecipe(
             ItemStack[] aInput,
             FluidStack aInputFluid,
+            FluidStack aOutput,
+            ItemStack[] aOutputStack,
+            int[] aChance,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue,
+            boolean aOptimizeRecipe) {
+        return addBlastSmelterRecipe(
+                aInput,
+                new FluidStack[] {aInputFluid},
+                aOutput,
+                aOutputStack,
+                aChance,
+                aDuration,
+                aEUt,
+                aSpecialValue,
+                aOptimizeRecipe);
+    }
+
+    public boolean addBlastSmelterRecipe(
+            ItemStack[] aInput,
+            FluidStack[] aInputFluid,
             FluidStack aOutput,
             ItemStack[] aOutputStack,
             int[] aChance,
@@ -589,7 +663,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                 aOutputStack,
                 null,
                 aChance,
-                new FluidStack[] {aInputFluid},
+                aInputFluid,
                 new FluidStack[] {aOutput},
                 Math.max(1, aDuration),
                 Math.max(1, aEUt),
@@ -951,6 +1025,35 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         GTPP_Recipe aRecipe = new GTPP_Recipe(
                 false, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial);
         GTPP_Recipe.GTPP_Recipe_Map.sMultiblockMixerRecipes_GT.addRecipe(aRecipe);
+        return true;
+    }
+
+    public boolean addMultiblockChemicalDehydratorRecipe(
+            ItemStack[] aInputs,
+            FluidStack[] aFluidInputs,
+            FluidStack[] aFluidOutputs,
+            ItemStack[] aOutputs,
+            int[] aChances,
+            int aDuration,
+            int aEUtick,
+            int aSpecial) {
+        if (areItemsAndFluidsBothNull(aInputs, aFluidInputs)
+                || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)
+                || aEUtick <= 0) {
+            return false;
+        }
+        if (!ItemUtils.checkForInvalidItems(aInputs, aOutputs)) {
+            Logger.INFO("[Recipe] Error generating Large Chemical Dehydrator recipe.");
+            Logger.INFO("Inputs: " + ItemUtils.getArrayStackNames(aInputs));
+            Logger.INFO("Fluid Inputs: " + ItemUtils.getArrayStackNames(aFluidInputs));
+            Logger.INFO("Outputs: " + ItemUtils.getArrayStackNames(aOutputs));
+            Logger.INFO("Fluid Outputs: " + ItemUtils.getArrayStackNames(aFluidOutputs));
+            return false;
+        }
+
+        GTPP_Recipe aRecipe = new GTPP_Recipe(
+                false, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial);
+        GTPP_Recipe.GTPP_Recipe_Map.sMultiblockChemicalDehydratorRecipes.addRecipe(aRecipe);
         return true;
     }
 

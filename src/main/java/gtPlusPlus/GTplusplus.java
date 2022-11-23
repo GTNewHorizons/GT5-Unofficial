@@ -282,7 +282,7 @@ public class GTplusplus implements ActionListener {
     protected void generateGregtechRecipeMaps() {
 
         int[] mValidCount = new int[] {0, 0, 0};
-        int[] mInvalidCount = new int[] {0, 0, 0, 0};
+        int[] mInvalidCount = new int[] {0, 0, 0, 0, 0};
         int[] mOriginalCount = new int[] {0, 0, 0};
 
         RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
@@ -301,6 +301,9 @@ public class GTplusplus implements ActionListener {
                 GT_Recipe.GT_Recipe_Map.sVacuumRecipes, GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT);
         mInvalidCount[3] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
                 GT_Recipe.GT_Recipe_Map.sMixerRecipes, GTPP_Recipe.GTPP_Recipe_Map.sMultiblockMixerRecipes_GT);
+        mInvalidCount[4] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+                GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes,
+                GTPP_Recipe.GTPP_Recipe_Map.sMultiblockChemicalDehydratorRecipes);
         /*
 
         //Large Centrifuge generation

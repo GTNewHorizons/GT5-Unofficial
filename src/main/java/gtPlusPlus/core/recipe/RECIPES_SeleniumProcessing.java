@@ -11,6 +11,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class RECIPES_SeleniumProcessing {
 
@@ -46,13 +47,13 @@ public class RECIPES_SeleniumProcessing {
         CORE.RA.addBlastSmelterRecipe(
                 new ItemStack[] {
                     ItemUtils.getGregtechCircuit(14),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 8),
                     ELEMENT.getInstance().CARBON.getDust(16),
                 },
-                MISC_MATERIALS.SELENIOUS_ACID.getFluidStack(750),
+                new FluidStack[] {
+                    MISC_MATERIALS.SELENIOUS_ACID.getFluidStack(750), Materials.SulfuricAcid.getFluid(8000),
+                },
                 ELEMENT.getInstance().SELENIUM.getFluidStack(144 * 1),
                 new ItemStack[] {
-                    CI.emptyCells(8),
                     ELEMENT.getInstance().SELENIUM.getIngot(1),
                     ELEMENT.getInstance().SELENIUM.getIngot(1),
                 },
