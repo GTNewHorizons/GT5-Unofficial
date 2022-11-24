@@ -12,7 +12,6 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -152,7 +151,6 @@ public class GT_UIInfos {
         UIBuildContext buildContext = new UIBuildContext(player);
         ModularWindow window = windowCreator.apply(buildContext);
         if (window == null) {
-            GT_Mod.GT_FML_LOGGER.warn("TileEntity created null ModularWindow");
             return null;
         }
         return containerCreator.of(new ModularUIContext(buildContext, onWidgetUpdate), window);
@@ -165,7 +163,6 @@ public class GT_UIInfos {
             ContainerConstructor containerConstructor) {
         ModularUIContainer container = createTileEntityContainer(player, windowCreator, null, containerConstructor);
         if (container == null) {
-            GT_Mod.GT_FML_LOGGER.warn("TileEntity created null ModularWindow");
             return null;
         }
         return new ModularGui(container);
@@ -181,7 +178,6 @@ public class GT_UIInfos {
         GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(player, coverID, side, tile, false);
         ModularWindow window = windowCreator.apply(buildContext);
         if (window == null) {
-            GT_Mod.GT_FML_LOGGER.warn("Cover created null ModularWindow");
             return null;
         }
         return new ModularUIContainer(new ModularUIContext(buildContext, onWidgetUpdate), window);
@@ -196,7 +192,6 @@ public class GT_UIInfos {
             ICoverable tile) {
         ModularUIContainer container = createCoverContainer(player, windowCreator, null, coverID, side, tile);
         if (container == null) {
-            GT_Mod.GT_FML_LOGGER.warn("Cover created null ModularWindow");
             return null;
         }
         return new ModularGui(container);
