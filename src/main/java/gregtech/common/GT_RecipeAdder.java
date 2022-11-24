@@ -3352,7 +3352,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             return false;
         }
 
-        GT_Recipe.GT_Recipe_Map.sPCBFactory.addRecipe(new GT_Recipe(aInputs, aOutputs, aOutputs, null, aFluidInputs, aFluidInputs, aDuration, aEUt, aSpecialValue));
+        GT_Recipe.GT_Recipe_Map.sPCBFactory.addRecipe(new GT_Recipe(
+                aInputs, aOutputs, aOutputs, null, aFluidInputs, aFluidInputs, aDuration, aEUt, aSpecialValue));
 
         return true;
     }
