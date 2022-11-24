@@ -525,20 +525,18 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
                 "Max slots: " + EnumChatFormatting.GREEN + this.mMaxSlots + EnumChatFormatting.RESET,
                 "Used slots: " + ((mStorage.size() > mMaxSlots) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
                         + this.mStorage.size() + EnumChatFormatting.RESET));
-        for (int i = 0; i < mStorage.size(); i++) {
-            if (!mStorage.get(i).isValid) continue;
-            StringBuilder a = new StringBuilder(
-                    "Slot " + i + ": " + EnumChatFormatting.GREEN + "x" + this.mStorage.get(i).input.stackSize + " "
-                            + this.mStorage.get(i).input.getDisplayName());
+        HashMap<String, Integer> storageList = new HashMap<>();
+        for (GreenHouseSlot greenHouseSlot : mStorage) {
+            if (!greenHouseSlot.isValid) continue;
+            StringBuilder a = new StringBuilder(EnumChatFormatting.GREEN + "x" + greenHouseSlot.input.stackSize + " "
+                    + greenHouseSlot.input.getDisplayName());
             if (this.isIC2Mode) {
-                a.append(" | Humidity: " + (this.mStorage.get(i).noHumidity ? 0 : 12) + " : ");
-                for (Map.Entry<String, Double> entry :
-                        mStorage.get(i).dropprogress.entrySet())
-                    a.append((int) (entry.getValue() * 100d)).append("% ");
+                a.append(" | Humidity: ").append(greenHouseSlot.noHumidity ? 0 : 12);
             }
             a.append(EnumChatFormatting.RESET);
-            info.add(a.toString());
+            storageList.merge(a.toString(), 1, Integer::sum);
         }
+        storageList.forEach((k, v) -> info.add("x" + v + " " + k));
         if (mStorage.size() > mMaxSlots)
             info.add(EnumChatFormatting.DARK_RED + "There are too many crops inside to run !"
                     + EnumChatFormatting.RESET);
