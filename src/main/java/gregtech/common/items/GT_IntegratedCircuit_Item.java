@@ -3,7 +3,7 @@ package gregtech.common.items;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import com.gtnewhorizons.modularui.api.UIInfos;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -11,7 +11,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.GT_GUIDialogSelectItem;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.net.GT_Packet_UpdateItem;
@@ -21,6 +20,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -270,20 +270,19 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
             }
             configuratorStack = player.inventory.mainInventory[configurator.getKey()];
         }
-        openSelectorGui(configuratorStack, stack.getItemDamage());
+        openSelectorGui(configuratorStack, stack.getItemDamage(), player);
         return stack;
     }
 
-    private void openSelectorGui(ItemStack configurator, int meta) {
-        FMLCommonHandler.instance()
-                .showGuiScreen(new GT_GUIDialogSelectItem(
+    private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
+        UIInfos.openClientUI(player, buildContext -> new SelectItemUIFactory(
                         StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
                         configurator,
-                        null,
                         GT_IntegratedCircuit_Item::onConfigured,
                         ALL_VARIANTS,
                         meta,
-                        true));
+                        true)
+                .createWindow(buildContext));
     }
 
     private static void onConfigured(ItemStack stack) {

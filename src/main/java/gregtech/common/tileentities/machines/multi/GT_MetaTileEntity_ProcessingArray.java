@@ -19,7 +19,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,7 +39,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -141,12 +139,6 @@ public class GT_MetaTileEntity_ProcessingArray
             };
         }
         return new ITexture[] {Textures.BlockIcons.casingTexturePages[0][48]};
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "ProcessingArray.png");
     }
 
     // TODO: Expand so it also does the non recipe map recipes

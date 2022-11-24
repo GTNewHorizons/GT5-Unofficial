@@ -31,7 +31,6 @@ public class NEI_GT_Config implements IConfigureNEI {
             Comparator.comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
 
     public static boolean sIsAdded = true;
-    public static GT_NEI_AssLineHandler ALH;
 
     private static void addHandler(TemplateRecipeHandler handler) {
         FMLInterModComms.sendRuntimeMessage(
@@ -48,9 +47,6 @@ public class NEI_GT_Config implements IConfigureNEI {
         sIsAdded = false;
         if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             List<RecipeMapHandler> handlers = new ArrayList<>();
-
-            ALH = new GT_NEI_AssLineHandler(GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes);
-            handlers.add(ALH);
 
             for (GT_Recipe.GT_Recipe_Map tMap : GT_Recipe.GT_Recipe_Map.sMappings) {
                 if (tMap.mNEIAllowed) {

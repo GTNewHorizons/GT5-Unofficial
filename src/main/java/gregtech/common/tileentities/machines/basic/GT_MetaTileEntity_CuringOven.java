@@ -1,21 +1,21 @@
 package gregtech.common.tileentities.machines.basic;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Container_1by1;
-import gregtech.api.gui.GT_GUIContainer_1by1;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.render.TextureFactory;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine {
+public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine implements IAddUIWidgets {
 
     public GT_MetaTileEntity_CuringOven(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -76,16 +76,6 @@ public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             for (ItemStack tStack : mInventory)
@@ -119,5 +109,15 @@ public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine
                     }
                 }
         }
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        getBaseMetaTileEntity().add1by1Slot(builder);
     }
 }

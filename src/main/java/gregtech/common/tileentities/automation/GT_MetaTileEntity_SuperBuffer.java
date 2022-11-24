@@ -3,18 +3,18 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_SUPERBUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_SUPERBUFFER_GLOW;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_Container_SuperBuffer;
-import gregtech.common.gui.GT_GUIContainer_SuperBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer {
@@ -85,12 +85,10 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_SuperBuffer(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_SuperBuffer(aPlayerInventory, aBaseMetaTileEntity);
+    protected void addMainUI(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_SUPER_BUFFER)
+                .setPos(61, 4)
+                .setSize(54, 54));
     }
 }

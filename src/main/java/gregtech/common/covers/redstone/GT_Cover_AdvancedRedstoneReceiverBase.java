@@ -1,21 +1,22 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconButton;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
+import java.util.Arrays;
 import java.util.UUID;
 import javax.annotation.Nonnull;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public abstract class GT_Cover_AdvancedRedstoneReceiverBase
         extends GT_Cover_AdvancedWirelessRedstoneBase<GT_Cover_AdvancedRedstoneReceiverBase.ReceiverData> {
@@ -34,18 +35,101 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
         return createDataObject();
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
     @Override
-    public Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            ReceiverData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new ReceiverGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new AdvancedRedstoneReceiverBaseUIFactory(buildContext).createWindow();
+    }
+
+    private class AdvancedRedstoneReceiverBaseUIFactory extends AdvancedWirelessRedstoneBaseUIFactory {
+
+        public AdvancedRedstoneReceiverBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
+        }
+
+        @Override
+        protected int getFrequencyRow() {
+            return 0;
+        }
+
+        @Override
+        protected int getButtonRow() {
+            return 1;
+        }
+
+        @Override
+        protected boolean isShiftPrivateLeft() {
+            return false;
+        }
+
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            super.addUIWidgets(builder);
+            builder.widget(new TextWidget(GT_Utility.trans("335", "Gate Mode"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
+        }
+
+        @SuppressWarnings("PointlessArithmeticExpression")
+        @Override
+        protected void addUIForDataController(CoverDataControllerWidget<ReceiverData> controller) {
+            super.addUIForDataController(controller);
+            controller
+                    .addFollower(
+                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                            coverData -> coverData.mode == GateMode.AND,
+                            (coverData, state) -> {
+                                coverData.mode = GateMode.AND;
+                                return coverData;
+                            },
+                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_AND)
+                                    .addTooltip(GT_Utility.trans("331", "AND Gate"))
+                                    .setPos(spaceX * 0, spaceY * 2))
+                    .addFollower(
+                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                            coverData -> coverData.mode == GateMode.NAND,
+                            (coverData, state) -> {
+                                coverData.mode = GateMode.NAND;
+                                return coverData;
+                            },
+                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_NAND)
+                                    .addTooltip(GT_Utility.trans("332", "NAND Gate"))
+                                    .setPos(spaceX * 1, spaceY * 2))
+                    .addFollower(
+                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                            coverData -> coverData.mode == GateMode.OR,
+                            (coverData, state) -> {
+                                coverData.mode = GateMode.OR;
+                                return coverData;
+                            },
+                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_OR)
+                                    .addTooltip(GT_Utility.trans("333", "OR Gate"))
+                                    .setPos(spaceX * 2, spaceY * 2))
+                    .addFollower(
+                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                            coverData -> coverData.mode == GateMode.NOR,
+                            (coverData, state) -> {
+                                coverData.mode = GateMode.NOR;
+                                return coverData;
+                            },
+                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_NOR)
+                                    .addTooltip(GT_Utility.trans("334", "NOR Gate"))
+                                    .setPos(spaceX * 3, spaceY * 2))
+                    .addFollower(
+                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                            coverData -> coverData.mode == GateMode.SINGLE_SOURCE,
+                            (coverData, state) -> {
+                                coverData.mode = GateMode.SINGLE_SOURCE;
+                                return coverData;
+                            },
+                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ANALOG)
+                                    .addTooltips(Arrays.asList(
+                                            "ANALOG Mode",
+                                            "Only use this mode with ONE transmitter in total,",
+                                            "no logic involved"))
+                                    .setPos(spaceX * 4, spaceY * 2));
+        }
     }
 
     public enum GateMode {
@@ -108,86 +192,6 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
             mode = GateMode.values()[aBuf.readByte()];
 
             return this;
-        }
-    }
-
-    private static class ReceiverGUI extends WirelessGUI<ReceiverData> {
-
-        private static final int gateModeButtonIdStart = 1;
-
-        public ReceiverGUI(byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
-            super(aSide, aCoverID, aCoverVariable, aTileEntity);
-
-            new GT_GuiIconButton(
-                            this,
-                            gateModeButtonIdStart + 0,
-                            startX + spaceX * 0,
-                            startY + spaceY * 2,
-                            GT_GuiIcon.AND_GATE)
-                    .setTooltipText(GT_Utility.trans("331", "AND Gate"));
-            new GT_GuiIconButton(
-                            this,
-                            gateModeButtonIdStart + 1,
-                            startX + spaceX * 1,
-                            startY + spaceY * 2,
-                            GT_GuiIcon.NAND_GATE)
-                    .setTooltipText(GT_Utility.trans("332", "NAND Gate"));
-            new GT_GuiIconButton(
-                            this,
-                            gateModeButtonIdStart + 2,
-                            startX + spaceX * 2,
-                            startY + spaceY * 2,
-                            GT_GuiIcon.OR_GATE)
-                    .setTooltipText(GT_Utility.trans("333", "OR Gate"));
-            new GT_GuiIconButton(
-                            this,
-                            gateModeButtonIdStart + 3,
-                            startX + spaceX * 3,
-                            startY + spaceY * 2,
-                            GT_GuiIcon.NOR_GATE)
-                    .setTooltipText(GT_Utility.trans("334", "NOR Gate"));
-            new GT_GuiIconButton(
-                            this,
-                            gateModeButtonIdStart + 4,
-                            startX + spaceX * 4,
-                            startY + spaceY * 2,
-                            GT_GuiIcon.ANALOG_MODE)
-                    .setTooltipText(
-                            "ANALOG Mode", "Only use this mode with ONE transmitter in total,", "no logic involved");
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("335", "Gate Mode"),
-                            startX + spaceX * 5,
-                            4 + startY + spaceY * 2,
-                            textColor);
-        }
-
-        @Override
-        protected void update() {
-            super.update();
-            updateButtons();
-        }
-
-        private void updateButtons() {
-            GuiButton button;
-            for (int i = gateModeButtonIdStart; i < gateModeButtonIdStart + 5; ++i) {
-                button = (GuiButton) this.buttonList.get(i);
-                button.enabled = (button.id - gateModeButtonIdStart) != coverVariable.mode.ordinal();
-            }
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (btn.id >= gateModeButtonIdStart && btn.enabled) {
-                coverVariable.mode = GateMode.values()[btn.id - gateModeButtonIdStart];
-            }
-
-            super.buttonClicked(btn);
         }
     }
 }

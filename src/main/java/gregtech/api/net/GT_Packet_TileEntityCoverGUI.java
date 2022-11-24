@@ -188,35 +188,23 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
                 IGregTechTileEntity gtTile = ((IGregTechTileEntity) tile);
                 gtTile.setCoverDataAtSide(side, coverData); // Set it client side to read later.
 
-                GuiScreen gui = (GuiScreen) getCoverGUI(side, thePlayer, thePlayer.worldObj, gtTile);
-                // If it's one of this mod's covers, tell it to exit to the GUI with the specified ID (-1 is ignored)
-                if (gui instanceof GT_GUICover) {
-                    ((GT_GUICover) gui).setParentGuiId(parentGuiId);
+                GT_CoverBehaviorBase<?> cover = gtTile.getCoverBehaviorAtSideNew(side);
+                if (cover.hasCoverGUI()) {
+                    GuiScreen gui = (GuiScreen) cover.getClientGUI(
+                            side,
+                            gtTile.getCoverIDAtSide(side),
+                            gtTile.getComplexCoverDataAtSide(side),
+                            gtTile,
+                            thePlayer,
+                            thePlayer.worldObj);
+                    // If it's one of this mod's covers, tell it to exit to the GUI with the specified ID (-1 is
+                    // ignored)
+                    if (gui instanceof GT_GUICover) {
+                        ((GT_GUICover) gui).setParentGuiId(parentGuiId);
+                    }
+                    Minecraft.getMinecraft().displayGuiScreen(gui);
                 }
-                Minecraft.getMinecraft().displayGuiScreen(gui);
             }
         }
-    }
-
-    /**
-     * Gets the specified cover's GUI object, if one exists
-     * @param aSide Block side (0 through 5)
-     * @param aPlayer Current player
-     * @param aWorld Current world
-     * @param aGtTile IGregTechTileEntity instance
-     * @return The specified cover's GUI, if one exists
-     */
-    private Object getCoverGUI(byte aSide, EntityPlayer aPlayer, World aWorld, IGregTechTileEntity aGtTile) {
-        GT_CoverBehaviorBase<?> cover = aGtTile.getCoverBehaviorAtSideNew(aSide);
-        if (cover.hasCoverGUI()) {
-            return cover.getClientGUI(
-                    aSide,
-                    aGtTile.getCoverIDAtSide(aSide),
-                    aGtTile.getComplexCoverDataAtSide(aSide),
-                    aGtTile,
-                    aPlayer,
-                    aWorld);
-        }
-        return null;
     }
 }

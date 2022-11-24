@@ -20,7 +20,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -38,7 +37,6 @@ import gregtech.api.util.IGT_HatchAdder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -192,12 +190,6 @@ public class GT_MetaTileEntity_AssemblyLine
             };
         }
         return new ITexture[] {Textures.BlockIcons.casingTexturePages[0][16]};
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "AssemblyLine.png");
     }
 
     @Override

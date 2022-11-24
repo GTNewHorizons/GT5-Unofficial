@@ -168,8 +168,6 @@ GT5U.machines.stalled_vent.tooltip=§4Stalled: Cannot vent steam!
 GT5U.machines.stalled_vent.tooltip.1=§7Right-click with a wrench to
 GT5U.machines.stalled_vent.tooltip.2=§7point this machine's steam
 GT5U.machines.stalled_vent.tooltip.3=§7vent towards an empty space.
-GT5U.machines.stalled_vent.tooltip.extended=§7Progress was lost, but not
-GT5U.machines.stalled_vent.tooltip.extended.1=§7the recipe's output.
 GT5U.machines.oreprocessor=§eRunning Mode: %s §cTime: %s s
 GT5U.machines.oreprocessor.void=§eVoid Stone Dust: %s
 GT5U.machines.industrialapiary.cancel.tooltip=§cCancel process
@@ -203,8 +201,12 @@ GT5U.machines.advdebugstructurewriter.gui.size=Structure Size
 GT5U.machines.advdebugstructurewriter.gui.print.tooltip=Print Structure
 GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip=Show Bounding Box
 GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip=Transpose
+GT5U.machines.nei_transfer.steam.tooltip=%s steam recipes
+GT5U.machines.nei_transfer.voltage.tooltip=Recipes available in %s
 
 GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
+GT5U.type_filter.representation_slot.tooltip.0=left click to forward
+GT5U.type_filter.representation_slot.tooltip.1=right click to back
 
 GT5U.gui.select.current=Current:
 
@@ -263,6 +265,8 @@ GT5U.config.interface.TooltipShiftVerbosity=Tooltip verbosity (LSHIFT Down)
 GT5U.config.interface.TooltipShiftVerbosity.tooltip=How verbose should GregTech interface tooltips be when LSHIFT is held down?\n0: No tooltips\n1: One line tooltips only\n2: Normal tooltips\n3+: Extended tooltips [DEFAULT]
 GT5U.config.interface.CircuitsOrder=Circuits Order (See details)
 GT5U.config.interface.CircuitsOrder.tooltip=What is the order of the circuits when they are selected?\nFill in the Unique Identifier of the circuits.\nFor example: gregtech:gt.integrated_circuit
+GT5U.config.interface.TitleTabStyle=Title Tab Style (See details)
+GT5U.config.interface.TitleTabStyle.tooltip=Which style to use for title tab on machine GUI?\n0: text tab split-dark [DEFAULT]\n1: text tab unified\n2: item icon tab
 GT5U.config.preference=Client Preference
 GT5U.config.preference.mInputBusInitialFilter=Input Bus Initial Input Filter Status
 GT5U.config.preference.mInputBusInitialFilter.tooltip=Whether Input busses enable the input filter upon placed\nDoes not affect busses placed by others\nDoes not affect existing busses
@@ -286,7 +290,7 @@ GT5U.config.nei.OriginalVoltage=Show original voltage when overclocked
 GT5U.config.waila=Waila
 GT5U.config.waila.WailaTransformerVoltageTier=Show voltage tier of transformer
 
-// Cover tabs
+# Cover tabs
 GT5U.interface.coverTabs.down=Bottom
 GT5U.interface.coverTabs.up=Top
 GT5U.interface.coverTabs.north=North
@@ -1031,7 +1035,7 @@ fluid.Ammonium Dinitramide=Ammonium Dinitramide
 fluid.LMP-103S=LMP-103S
 fluid.Nitromethane=Nitromethane
 fluid.O-Xylene=O-Xylene
-//GT_MetaGenerated_Item_98 cells
+# GT_MetaGenerated_Item_98 cells
 fluid.UnknownNutrientAgar=Unknown Nutrient Agar
 fluid.SeaweedBroth=Seaweed Broth
 fluid.EnzymesSollution=Enzyme Solution
@@ -1039,7 +1043,7 @@ fluid.escherichiakolifluid=eColi Bacteria Fluid
 fluid.Penicillin=Penicillin
 fluid.FluorecentdDNA=Fluorescent DNA
 fluid.Polymerase=Polymerase
-//No cell, most from bart bio
+# No cell, most from bart bio
 fluid.Monomethylhydrazine=Monomethylhydrazine
 fluid.binnibacteriafluid=binnibacteriafluid
 fluid.barnadafisarboriatorisfluid=barnadafisarboriatorisfluid
@@ -1048,12 +1052,12 @@ fluid.sludge=sludge
 fluid.Formaldehyde=Formaldehyde
 fluid.tcetieisfucusserratusfluid=tcetieisfucusserratusfluid
 fluid.MeatExtract=MeatExtract
-//No recipe
+# No recipe
 fluid.CompressedOxygen=CompressedOxygen
 fluid.CompressedNitrogen=CompressedNitrogen
 fluid.redplasma=redplasma
 fluid.tile.fluidBlockSludge=fluidBlockSludge
-//No Textrue
+# No Texture
 fluid.guano=guano
 fluid.poo=poo
 fluid.sewerage=sewerage

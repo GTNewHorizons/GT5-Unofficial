@@ -1,21 +1,19 @@
 package gregtech.common.covers;
 
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
-import gregtech.api.interfaces.IGuiScreen;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_WirelessRedstoneCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import net.minecraft.client.gui.GuiButton;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
 public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
@@ -175,174 +173,77 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
-    /**
-     * GUI Stuff
-     */
+
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
-        return new GUI(aSide, aCoverID, coverData, aTileEntity);
+    public boolean useModularUI() {
+        return true;
     }
 
-    private class GUI extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private GT_GuiIntegerTextBox fBox;
-        private int coverVariable;
+    @Override
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new RedstoneWirelessBaseUIFactory(buildContext).createWindow();
+    }
+
+    private class RedstoneWirelessBaseUIFactory extends UIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverLong.png";
-
-        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
-
-        public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 250, 107, GT_Utility.intToStack(aCoverID));
-            this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            fBox = new GT_GuiShortTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 0 + 2, spaceX * 4 - 3, 12);
-            fBox.setText(String.valueOf(coverVariable & PUBLIC_MASK));
-            fBox.setMaxStringLength(12);
-
-            GuiButton b;
-            b = new GT_GuiIconCheckButton(
-                    this, 0, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.CHECKMARK, null);
+        public RedstoneWirelessBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
 
         @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("246", "Frequency"),
-                            startX + spaceX * 4,
-                            4 + startY + spaceY * 0,
-                            textColor);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("602", "Use Private Frequency"),
-                            startX + spaceX * 1,
-                            startY + spaceY * 2 + 4,
-                            textColor);
+        protected int getGUIWidth() {
+            return 250;
         }
 
+        @SuppressWarnings("PointlessArithmeticExpression")
         @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            fBox.setFocused(true);
-            ((GT_GuiIconCheckButton) buttonList.get(0)).setChecked((coverVariable & CHECKBOX_MASK) > 0);
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            builder.widget(new CoverDataControllerWidget<>(
+                                    this::getCoverData, this::setCoverData, GT_Cover_RedstoneWirelessBase.this)
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> String.valueOf(getFlagFrequency(convert(coverData))),
+                                    (coverData, text) -> new ISerializableObject.LegacyCoverData(
+                                            (int) MathExpression.parseMathExpression(text)
+                                                    | getFlagCheckbox(convert(coverData))),
+                                    widget -> widget.setOnScrollNumbers()
+                                            .setNumbers(0, MAX_CHANNEL)
+                                            .setFocusOnGuiOpen(true)
+                                            .setPos(spaceX * 0, spaceY * 0 + 2)
+                                            .setSize(spaceX * 4 - 3, 12))
+                            .addFollower(
+                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                    coverData -> getFlagCheckbox(convert(coverData)) > 0,
+                                    (coverData, state) -> new ISerializableObject.LegacyCoverData(
+                                            getFlagFrequency(convert(coverData)) | (state ? CHECKBOX_MASK : 0)),
+                                    widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                            .setPos(startX, startY))
+                    .widget(new TextWidget(GT_Utility.trans("246", "Frequency"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
+                    .widget(new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
         }
 
-        @Override
-        public void onMouseWheel(int x, int y, int delta) {
-            for (GT_GuiIntegerTextBox box : textBoxes) {
-                if (box.isFocused()) {
-                    int step = Math.max(1, Math.abs(delta / 120));
-                    step = (isShiftKeyDown() ? 1000 : isCtrlKeyDown() ? 50 : 1) * (delta > 0 ? step : -step);
-                    long tCoverVariable;
-                    try {
-                        tCoverVariable = Long.parseLong(box.getText());
-                    } catch (NumberFormatException e) {
-                        return;
-                    }
-                    tCoverVariable = tCoverVariable + step;
-                    if (tCoverVariable > MAX_CHANNEL) tCoverVariable = MAX_CHANNEL;
-                    else if (tCoverVariable < 0) tCoverVariable = 0;
-
-                    box.setText(String.valueOf(tCoverVariable));
-                    return;
-                }
-            }
+        private int getFlagFrequency(int coverVariable) {
+            return coverVariable & PUBLIC_MASK;
         }
 
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            int tPublicChannel;
-            String s = box.getText().trim();
-            try {
-                tPublicChannel = Integer.parseInt(s);
-            } catch (NumberFormatException e) {
-                resetTextBox(box);
-                return;
-            }
-
-            if (tPublicChannel > MAX_CHANNEL) tPublicChannel = MAX_CHANNEL;
-            else if (tPublicChannel < 0) tPublicChannel = 0;
-
-            int tCheckBoxValue = ((GT_GuiIconCheckButton) this.buttonList.get(0)).isChecked() ? CHECKBOX_MASK : 0;
-
-            coverVariable = tCheckBoxValue | tPublicChannel;
-
-            fBox.setText(Integer.toString(tPublicChannel));
-            GT_Values.NW.sendToServer(
-                    new GT_Packet_WirelessRedstoneCover(side, coverID, tile, tPublicChannel, tCheckBoxValue));
-        }
-
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            box.setText(String.valueOf(coverVariable & PUBLIC_MASK));
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-
-            final GT_GuiIconCheckButton tBtn = (GT_GuiIconCheckButton) btn;
-
-            tBtn.setChecked(!tBtn.isChecked());
-
-            int tPublicChannel = 0;
-            String tText = fBox.getText().trim();
-
-            if (tText.length() > 0) {
-                tPublicChannel = Integer.parseInt(tText);
-            }
-
-            int tCheckBoxValue = tBtn.isChecked() ? CHECKBOX_MASK : 0;
-
-            coverVariable = tCheckBoxValue | tPublicChannel;
-
-            GT_Values.NW.sendToServer(
-                    new GT_Packet_WirelessRedstoneCover(side, coverID, tile, tPublicChannel, tCheckBoxValue));
-        }
-
-        private class GT_GuiShortTextBox extends GT_GuiIntegerTextBox {
-
-            public GT_GuiShortTextBox(IGuiScreen gui, int id, int x, int y, int width, int height) {
-                super(gui, id, x, y, width, height);
-            }
-
-            @Override
-            public boolean textboxKeyTyped(char c, int key) {
-                int tValue = 0;
-
-                if (!super.textboxKeyTyped(c, key)) return false;
-
-                int cursorPos = this.getCursorPosition();
-
-                String tText = getText().trim();
-                if (tText.length() > 0) {
-                    try {
-                        tValue = Integer.parseInt(tText);
-                    } catch (NumberFormatException ignored) {
-                    }
-
-                    if (tValue > MAX_CHANNEL) setText(String.valueOf(MAX_CHANNEL));
-                    else setText(String.valueOf(tValue));
-
-                    setCursorPosition(cursorPos);
-                }
-
-                return true;
-            }
+        private int getFlagCheckbox(int coverVariable) {
+            return coverVariable & CHECKBOX_MASK;
         }
     }
 }
