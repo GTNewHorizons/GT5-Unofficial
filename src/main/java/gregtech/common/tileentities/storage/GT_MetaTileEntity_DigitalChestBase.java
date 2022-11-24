@@ -554,6 +554,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
                         .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
                         .setPos(79, 16))
                 .widget(new SlotWidget(inventoryHandler, 1)
+                        .setAccess(true, false)
                         .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
                         .setPos(79, 52))
                 .widget(SlotWidget.phantom(inventoryHandler, 2)
