@@ -234,10 +234,10 @@ try {
 }
 catch (Exception ignored) {
     out.style(Style.Failure).text(
-        'This mod must be version controlled by Git AND the repository must provide at least one tag,\n' +
+            'This mod must be version controlled by Git AND the repository must provide at least one tag,\n' +
             'or the VERSION override must be set! ').style(Style.SuccessHeader).text('(Do NOT download from GitHub using the ZIP option, instead\n' +
-        'clone the repository, see ').style(Style.Info).text('https://gtnh.miraheze.org/wiki/Development').style(Style.SuccessHeader).println(' for details.)'
-    )
+            'clone the repository, see ').style(Style.Info).text('https://gtnh.miraheze.org/wiki/Development').style(Style.SuccessHeader).println(' for details.)'
+            )
     versionOverride = 'NO-GIT-TAG-SET'
     identifiedVersion = versionOverride
 }
@@ -458,10 +458,10 @@ runServer {
 
 tasks.withType(JavaExec).configureEach {
     javaLauncher.set(
-        javaToolchains.launcherFor {
-            languageVersion = projectJavaVersion
-        }
-    )
+            javaToolchains.launcherFor {
+                languageVersion = projectJavaVersion
+            }
+            )
 }
 
 processResources {
@@ -476,9 +476,9 @@ processResources {
 
         // replace modVersion and minecraftVersion
         expand "minecraftVersion": project.minecraft.version,
-            "modVersion": modVersion,
-            "modId": modId,
-            "modName": modName
+        "modVersion": modVersion,
+        "modId": modId,
+        "modName": modName
     }
 
     if (usesMixins.toBoolean()) {
@@ -633,9 +633,9 @@ publishing {
             pom.withXml {
                 def badArtifacts = [:].withDefault { [] as Set<String> }
                 for (configuration in [
-                    projectConfigs.minecraft,
-                    projectConfigs.minecraftDeps
-                ]) {
+                            projectConfigs.minecraft,
+                            projectConfigs.minecraftDeps
+                        ]) {
                     for (dependency in configuration.allDependencies) {
                         badArtifacts[dependency.group == null ? "" : dependency.group] += dependency.name
                     }
@@ -746,7 +746,12 @@ if (curseForgeProjectId.size() != 0 && System.getenv("CURSEFORGE_TOKEN") != null
 
 def addModrinthDep(scope, type, name) {
     com.modrinth.minotaur.dependencies.Dependency dep;
-    if (!(scope in ["required", "optional", "incompatible", "embedded"])) {
+    if (!(scope in [
+                "required",
+                "optional",
+                "incompatible",
+                "embedded"
+            ])) {
         throw new Exception("Invalid modrinth dependency scope: " + scope)
     }
     switch (type) {
@@ -763,7 +768,13 @@ def addModrinthDep(scope, type, name) {
 }
 
 def addCurseForgeRelation(type, name) {
-    if (!(type in ["requiredDependency", "embeddedLibrary", "optionalDependency", "tool", "incompatible"])) {
+    if (!(type in [
+                "requiredDependency",
+                "embeddedLibrary",
+                "optionalDependency",
+                "tool",
+                "incompatible"
+            ])) {
         throw new Exception("Invalid CurseForge relation type: " + type)
     }
     CurseArtifact artifact = project.curseforge.curseProjects[0].mainArtifact
@@ -776,7 +787,7 @@ task updateBuildScript {
     doLast {
         if (performBuildScriptUpdate(projectDir.toString())) return
 
-        print("Build script already up-to-date!")
+            print("Build script already up-to-date!")
     }
 }
 
@@ -894,210 +905,210 @@ task deobfParams {
         }
 
         out.style(Style.Success).println("Modified ${replaceParams(file("$projectDir/src/main/java"), params)} files!")
-        out.style(Style.Failure).println("Don't forget to verify that the code still works as before!\n It could be broken due to duplicate variables existing now\n or parameters taking priority over other variables.")
-    }
+    out.style(Style.Failure).println("Don't forget to verify that the code still works as before!\n It could be broken due to duplicate variables existing now\n or parameters taking priority over other variables.")
+}
 }
 
 static int replaceParams(File file, Map<String, String> params) {
-    int fileCount = 0
+int fileCount = 0
 
-    if (file.isDirectory()) {
-        for (File f : file.listFiles()) {
-            fileCount += replaceParams(f, params)
-        }
-        return fileCount
+if (file.isDirectory()) {
+    for (File f : file.listFiles()) {
+        fileCount += replaceParams(f, params)
     }
-    println("Visiting ${file.getName()} ...")
-    try {
-        String content = new String(Files.readAllBytes(file.toPath()))
-        int hash = content.hashCode()
-        params.forEach { key, value ->
-            content = content.replaceAll(key, value)
-        }
-        if (hash != content.hashCode()) {
-            Files.write(file.toPath(), content.getBytes("UTF-8"))
-            return 1
-        }
-    } catch (Exception e) {
-        e.printStackTrace()
+    return fileCount
+}
+println("Visiting ${file.getName()} ...")
+try {
+    String content = new String(Files.readAllBytes(file.toPath()))
+    int hash = content.hashCode()
+    params.forEach { key, value ->
+        content = content.replaceAll(key, value)
     }
-    return 0
+    if (hash != content.hashCode()) {
+        Files.write(file.toPath(), content.getBytes("UTF-8"))
+        return 1
+    }
+} catch (Exception e) {
+    e.printStackTrace()
+}
+return 0
 }
 
 // Credit: bitsnaps (https://gist.github.com/bitsnaps/00947f2dce66f4bbdabc67d7e7b33681)
 static unzip(String zipFileName, String outputDir) {
-    byte[] buffer = new byte[16384]
-    ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFileName))
-    ZipEntry zipEntry = zis.getNextEntry()
-    while (zipEntry != null) {
-        File newFile = new File(outputDir + File.separator, zipEntry.name)
-        if (zipEntry.isDirectory()) {
-            if (!newFile.isDirectory() && !newFile.mkdirs()) {
-                throw new IOException("Failed to create directory $newFile")
-            }
-        } else {
-            // fix for Windows-created archives
-            File parent = newFile.parentFile
-            if (!parent.isDirectory() && !parent.mkdirs()) {
-                throw new IOException("Failed to create directory $parent")
-            }
-            // write file content
-            FileOutputStream fos = new FileOutputStream(newFile)
-            int len = 0
-            while ((len = zis.read(buffer)) > 0) {
-                fos.write(buffer, 0, len)
-            }
-            fos.close()
+byte[] buffer = new byte[16384]
+ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFileName))
+ZipEntry zipEntry = zis.getNextEntry()
+while (zipEntry != null) {
+    File newFile = new File(outputDir + File.separator, zipEntry.name)
+    if (zipEntry.isDirectory()) {
+        if (!newFile.isDirectory() && !newFile.mkdirs()) {
+            throw new IOException("Failed to create directory $newFile")
         }
-        zipEntry = zis.getNextEntry()
+    } else {
+        // fix for Windows-created archives
+        File parent = newFile.parentFile
+        if (!parent.isDirectory() && !parent.mkdirs()) {
+            throw new IOException("Failed to create directory $parent")
+        }
+        // write file content
+        FileOutputStream fos = new FileOutputStream(newFile)
+        int len = 0
+        while ((len = zis.read(buffer)) > 0) {
+            fos.write(buffer, 0, len)
+        }
+        fos.close()
     }
-    zis.closeEntry()
-    zis.close()
+    zipEntry = zis.getNextEntry()
+}
+zis.closeEntry()
+zis.close()
 }
 
 configure(deobfParams) {
-    group = 'forgegradle'
-    description = 'Rename all obfuscated parameter names inherited from Minecraft classes'
+group = 'forgegradle'
+description = 'Rename all obfuscated parameter names inherited from Minecraft classes'
 }
 
 // Dependency Deobfuscation
 
 def deobf(String sourceURL) {
-    try {
-        URL url = new URL(sourceURL)
-        String fileName = url.getFile()
+try {
+    URL url = new URL(sourceURL)
+    String fileName = url.getFile()
 
-        //get rid of directories:
-        int lastSlash = fileName.lastIndexOf("/")
-        if (lastSlash > 0) {
-            fileName = fileName.substring(lastSlash + 1)
-        }
-        //get rid of extension:
-        if (fileName.endsWith(".jar") || fileName.endsWith(".litemod")) {
-            fileName = fileName.substring(0, fileName.lastIndexOf("."))
-        }
-
-        String hostName = url.getHost()
-        if (hostName.startsWith("www.")) {
-            hostName = hostName.substring(4)
-        }
-        List parts = Arrays.asList(hostName.split("\\."))
-        Collections.reverse(parts)
-        hostName = String.join(".", parts)
-
-        return deobf(sourceURL, "$hostName/$fileName")
-    } catch (Exception e) {
-        return deobf(sourceURL, "deobf/${sourceURL.hashCode()}")
+    //get rid of directories:
+    int lastSlash = fileName.lastIndexOf("/")
+    if (lastSlash > 0) {
+        fileName = fileName.substring(lastSlash + 1)
     }
+    //get rid of extension:
+    if (fileName.endsWith(".jar") || fileName.endsWith(".litemod")) {
+        fileName = fileName.substring(0, fileName.lastIndexOf("."))
+    }
+
+    String hostName = url.getHost()
+    if (hostName.startsWith("www.")) {
+        hostName = hostName.substring(4)
+    }
+    List parts = Arrays.asList(hostName.split("\\."))
+    Collections.reverse(parts)
+    hostName = String.join(".", parts)
+
+    return deobf(sourceURL, "$hostName/$fileName")
+} catch (Exception e) {
+    return deobf(sourceURL, "deobf/${sourceURL.hashCode()}")
+}
 }
 
 // The method above is to be preferred. Use this method if the filename is not at the end of the URL.
 def deobf(String sourceURL, String rawFileName) {
-    String bon2Version = "2.5.1"
-    String fileName = URLDecoder.decode(rawFileName, "UTF-8")
-    String cacheDir = "$project.gradle.gradleUserHomeDir/caches"
-    String bon2Dir = "$cacheDir/forge_gradle/deobf"
-    String bon2File = "$bon2Dir/BON2-${bon2Version}.jar"
-    String obfFile = "$cacheDir/modules-2/files-2.1/${fileName}.jar"
-    String deobfFile = "$cacheDir/modules-2/files-2.1/${fileName}-deobf.jar"
+String bon2Version = "2.5.1"
+String fileName = URLDecoder.decode(rawFileName, "UTF-8")
+String cacheDir = "$project.gradle.gradleUserHomeDir/caches"
+String bon2Dir = "$cacheDir/forge_gradle/deobf"
+String bon2File = "$bon2Dir/BON2-${bon2Version}.jar"
+String obfFile = "$cacheDir/modules-2/files-2.1/${fileName}.jar"
+String deobfFile = "$cacheDir/modules-2/files-2.1/${fileName}-deobf.jar"
 
-    if (file(deobfFile).exists()) {
-        return files(deobfFile)
-    }
-
-    String mappingsVer
-    String remoteMappings = project.hasProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
-    if (remoteMappings) {
-        String id = "${forgeVersion.split("\\.")[3]}-$minecraftVersion"
-        String mappingsZIP = "$cacheDir/forge_gradle/maven_downloader/de/oceanlabs/mcp/mcp_snapshot_nodoc/$id/mcp_snapshot_nodoc-${id}.zip"
-
-        zipMappings(mappingsZIP, remoteMappings, bon2Dir)
-
-        mappingsVer = "snapshot_$id"
-    } else {
-        mappingsVer = "${channel}_$mappingsVersion"
-    }
-
-    download.run {
-        src "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/com/github/parker8283/BON2/$bon2Version-CUSTOM/BON2-$bon2Version-CUSTOM-all.jar"
-        dest bon2File
-        quiet true
-        overwrite false
-    }
-
-    download.run {
-        src sourceURL
-        dest obfFile
-        quiet true
-        overwrite false
-    }
-
-    exec {
-        commandLine 'java', '-jar', bon2File, '--inputJar', obfFile, '--outputJar', deobfFile, '--mcVer', minecraftVersion, '--mappingsVer', mappingsVer, '--notch'
-        workingDir bon2Dir
-        standardOutput = new FileOutputStream("${deobfFile}.log")
-    }
-
+if (file(deobfFile).exists()) {
     return files(deobfFile)
 }
 
+String mappingsVer
+String remoteMappings = project.hasProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
+if (remoteMappings) {
+    String id = "${forgeVersion.split("\\.")[3]}-$minecraftVersion"
+    String mappingsZIP = "$cacheDir/forge_gradle/maven_downloader/de/oceanlabs/mcp/mcp_snapshot_nodoc/$id/mcp_snapshot_nodoc-${id}.zip"
+
+    zipMappings(mappingsZIP, remoteMappings, bon2Dir)
+
+    mappingsVer = "snapshot_$id"
+} else {
+    mappingsVer = "${channel}_$mappingsVersion"
+}
+
+download.run {
+    src "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/com/github/parker8283/BON2/$bon2Version-CUSTOM/BON2-$bon2Version-CUSTOM-all.jar"
+    dest bon2File
+    quiet true
+    overwrite false
+}
+
+download.run {
+    src sourceURL
+    dest obfFile
+    quiet true
+    overwrite false
+}
+
+exec {
+    commandLine 'java', '-jar', bon2File, '--inputJar', obfFile, '--outputJar', deobfFile, '--mcVer', minecraftVersion, '--mappingsVer', mappingsVer, '--notch'
+    workingDir bon2Dir
+    standardOutput = new FileOutputStream("${deobfFile}.log")
+}
+
+return files(deobfFile)
+}
+
 def zipMappings(String zipPath, String url, String bon2Dir) {
-    File zipFile = new File(zipPath)
-    if (zipFile.exists()) {
-        return
-    }
+File zipFile = new File(zipPath)
+if (zipFile.exists()) {
+    return
+}
 
-    String fieldsCache = "$bon2Dir/data/fields.csv"
-    String methodsCache = "$bon2Dir/data/methods.csv"
+String fieldsCache = "$bon2Dir/data/fields.csv"
+String methodsCache = "$bon2Dir/data/methods.csv"
 
-    download.run {
-        src "${url}fields.csv"
-        dest fieldsCache
-        quiet true
-    }
-    download.run {
-        src "${url}methods.csv"
-        dest methodsCache
-        quiet true
-    }
+download.run {
+    src "${url}fields.csv"
+    dest fieldsCache
+    quiet true
+}
+download.run {
+    src "${url}methods.csv"
+    dest methodsCache
+    quiet true
+}
 
-    zipFile.getParentFile().mkdirs()
-    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))
+zipFile.getParentFile().mkdirs()
+ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))
 
-    zos.putNextEntry(new ZipEntry("fields.csv"))
-    Files.copy(Paths.get(fieldsCache), zos)
-    zos.closeEntry()
+zos.putNextEntry(new ZipEntry("fields.csv"))
+Files.copy(Paths.get(fieldsCache), zos)
+zos.closeEntry()
 
-    zos.putNextEntry(new ZipEntry("methods.csv"))
-    Files.copy(Paths.get(methodsCache), zos)
-    zos.closeEntry()
+zos.putNextEntry(new ZipEntry("methods.csv"))
+Files.copy(Paths.get(methodsCache), zos)
+zos.closeEntry()
 
-    zos.close()
+zos.close()
 }
 
 // Helper methods
 
 def checkPropertyExists(String propertyName) {
-    if (!project.hasProperty(propertyName)) {
-        throw new GradleException("This project requires a property \"" + propertyName + "\"! Please add it your \"gradle.properties\". You can find all properties and their description here: https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/gradle.properties")
-    }
+if (!project.hasProperty(propertyName)) {
+    throw new GradleException("This project requires a property \"" + propertyName + "\"! Please add it your \"gradle.properties\". You can find all properties and their description here: https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/gradle.properties")
+}
 }
 
 def propertyDefaultIfUnset(String propertyName, defaultValue) {
-    if (!project.hasProperty(propertyName) || project.property(propertyName) == "") {
-        project.ext.setProperty(propertyName, defaultValue)
-    }
+if (!project.hasProperty(propertyName) || project.property(propertyName) == "") {
+    project.ext.setProperty(propertyName, defaultValue)
+}
 }
 
 def getFile(String relativePath) {
-    return new File(projectDir, relativePath)
+return new File(projectDir, relativePath)
 }
 
 def getSecondaryArtifacts() {
-    // Because noPublishedSources from the beginning of the script is somehow not visible here...
-    boolean noPublishedSources = project.hasProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
-    def secondaryArtifacts = [devJar]
-    if (!noPublishedSources) secondaryArtifacts += [sourcesJar]
-    if (apiPackage) secondaryArtifacts += [apiJar]
-    return secondaryArtifacts
+// Because noPublishedSources from the beginning of the script is somehow not visible here...
+boolean noPublishedSources = project.hasProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
+def secondaryArtifacts = [devJar]
+if (!noPublishedSources) secondaryArtifacts += [sourcesJar]
+if (apiPackage) secondaryArtifacts += [apiJar]
+return secondaryArtifacts
 }
