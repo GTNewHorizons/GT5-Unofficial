@@ -15,6 +15,7 @@ import gregtech.common.GT_DummyWorld;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
 import gregtech.loaders.postload.chains.GT_BauxiteRefineChain;
 import gregtech.loaders.postload.chains.GT_NaniteChain;
+import gregtech.loaders.postload.chains.GT_PCBFactoryRecipes;
 import ic2.api.recipe.ILiquidHeatExchangerManager;
 import ic2.api.recipe.Recipes;
 import java.util.Arrays;
@@ -1346,6 +1347,17 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.Block_SSFUEL.get(1),
                 100,
                 250);
+        GT_Values.RA.addMixerRecipe(
+                new ItemStack[] {
+                    Materials.EnrichedNaquadria.getDust(8),
+                    Materials.Holmium.getDust(2),
+                    GT_Utility.getIntegratedCircuit(4)
+                },
+                null,
+                new ItemStack[] {Materials.EnrichedHolmium.getDust(10)},
+                null,
+                30 * 20,
+                120000);
 
         GT_Values.RA.addExtruderRecipe(
                 ItemList.FR_Wax.get(1L), ItemList.Shape_Extruder_Cell.get(0L), ItemList.FR_WaxCapsule.get(1L), 64, 16);
@@ -13297,6 +13309,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 100000);
 
         GT_NaniteChain.run();
+        GT_PCBFactoryRecipes.load();
 
         if (GregTech_API.sThaumcraftCompat != null) {
             String tKey = "GT_WOOD_TO_CHARCOAL";
