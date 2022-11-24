@@ -2,24 +2,25 @@ package com.github.technus.tectech.thing.cover;
 
 import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderFluidContainer;
 import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderLinkTag;
-import static gregtech.GT_Mod.gregtechproxy;
 
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.enderStorage.EnderLinkCoverMessage;
 import com.github.technus.tectech.mechanics.enderStorage.EnderLinkTag;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconButton;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
-import gregtech.api.interfaces.IGuiScreen;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import java.util.UUID;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -38,7 +39,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
         if (inputTag != null) {
             tag = inputTag;
             // Hacky Way to update the gui
-            GUI_INSTANCE.resetColorField();
+            GUI_INSTANCE.resetTextField();
         }
     }
 
@@ -117,131 +118,118 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     }
 
     // region GUI
+
+    private static EnderFluidLinkUIFactory GUI_INSTANCE;
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
-        // Only open gui if we're placed on a fluid tank
-        Object gui = null;
-        if (aTileEntity instanceof IFluidHandler) {
-            gui = new TM_EnderFluidLinkCover(aSide, aCoverID, coverData, aTileEntity);
-        }
-        return gui;
+    public boolean useModularUI() {
+        return true;
     }
 
-    private static TM_EnderFluidLinkCover GUI_INSTANCE;
+    @Override
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        // Only open gui if we're placed on a fluid tank
+        if (buildContext.getTile() instanceof IFluidHandler) {
+            return new EnderFluidLinkUIFactory(buildContext).createWindow();
+        }
+        return null;
+    }
 
-    private class TM_EnderFluidLinkCover extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private int coverVariable;
-        private GT_GuiTextBox colorField;
+    private class EnderFluidLinkUIFactory extends UIFactory {
 
         private static final int START_X = 10;
         private static final int START_Y = 25;
         private static final int SPACE_X = 18;
         private static final int SPACE_Y = 18;
+        private static final int PUBLIC_BUTTON_ID = 0;
+        private static final int PRIVATE_BUTTON_ID = 1;
+        private static final int IMPORT_BUTTON_ID = 2;
+        private static final int EXPORT_BUTTON_ID = 3;
 
-        private static final int SIZE_X = 176;
-        private static final int SIZE_Y = 107;
+        private TextFieldWidget frequencyField;
 
-        private static final int BOX_SIZE_X = 34;
-        private static final int BOX_SIZE_Y = 34;
-
-        private static final int TEXT_FIELD_SIZE_X = SPACE_X * 5 - 8;
-        private static final int TEXT_FIELD_SIZE_Y = 12;
-        private static final int TEXT_STRING_LENGTH = 9;
-
-        private static final int FONT_COLOR = 0xFF555555;
-        private static final int BOX_BORDER_COLOR = 0xFF000000;
-
-        private static final int COLOR_FIELD_ID = 0;
-        private static final int PUBLIC_BUTTON_ID = 1;
-        private static final int PRIVATE_BUTTON_ID = 2;
-        private static final int IMPORT_BUTTON_ID = 3;
-        private static final int EXPORT_BUTTON_ID = 4;
-
-        private GT_GuiIconButton newButtonWithSpacing(int id, int x, int y, GT_GuiIcon icon) {
-            return new GT_GuiIconButton(this, id, START_X + SPACE_X * x, START_Y + SPACE_Y * y, icon);
+        public EnderFluidLinkUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
 
-        private GT_GuiTextBox newTextField(int id, int x, int y) {
-            GT_GuiTextBox field = new GT_GuiTextBox(
-                    this, id, START_X + SPACE_X * x, START_Y + SPACE_Y * y, TEXT_FIELD_SIZE_X, TEXT_FIELD_SIZE_Y);
-            field.setMaxStringLength(TEXT_STRING_LENGTH);
-            return field;
-        }
-
-        private int drawNewString(String text, int x, int y) {
-            int align = 4;
-            return fontRendererObj.drawString(text, START_X + SPACE_X * x, align + START_Y + SPACE_Y * y, FONT_COLOR);
-        }
-
-        public TM_EnderFluidLinkCover(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, SIZE_X, SIZE_Y, GT_Utility.intToStack(aCoverID));
-            side = aSide;
-            coverID = aCoverID;
-            coverVariable = aCoverVariable;
-            NetworkDispatcher.INSTANCE.sendToServer(
-                    new EnderLinkCoverMessage.EnderLinkCoverQuery(tag, (IFluidHandler) tile));
-            // Color Value Field
-            colorField = newTextField(COLOR_FIELD_ID, 0, 0);
+        @SuppressWarnings("PointlessArithmeticExpression")
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            NetworkDispatcher.INSTANCE.sendToServer(new EnderLinkCoverMessage.EnderLinkCoverQuery(
+                    tag, (IFluidHandler) getUIBuildContext().getTile()));
             GUI_INSTANCE = this;
-            resetColorField();
-            // Public/Private Buttons
-            newButtonWithSpacing(PUBLIC_BUTTON_ID, 0, 2, GT_GuiIcon.WHITELIST).setTooltipText(trans("326", "Public"));
-            newButtonWithSpacing(PRIVATE_BUTTON_ID, 1, 2, GT_GuiIcon.BLACKLIST).setTooltipText(trans("327", "Private"));
-            // Import/Export Buttons
-            newButtonWithSpacing(IMPORT_BUTTON_ID, 0, 3, GT_GuiIcon.IMPORT).setTooltipText(trans("007", "Import"));
-            newButtonWithSpacing(EXPORT_BUTTON_ID, 1, 3, GT_GuiIcon.EXPORT).setTooltipText(trans("006", "Export"));
+            frequencyField = new TextFieldWidget() {
+                @Override
+                public void onRemoveFocus() {
+                    super.onRemoveFocus();
+                    try {
+                        String string = getText();
+                        tag = new EnderLinkTag(string, tag.getUUID());
+                        NetworkDispatcher.INSTANCE.sendToServer(new EnderLinkCoverMessage.EnderLinkCoverUpdate(
+                                tag, (IFluidHandler) getUIBuildContext().getTile()));
+                    } catch (NumberFormatException ignored) {
+                    }
+                    resetTextField();
+                }
+            };
+
+            builder.widget(frequencyField
+                            .setTextColor(Color.WHITE.dark(1))
+                            .setTextAlignment(Alignment.CenterLeft)
+                            .setFocusOnGuiOpen(true)
+                            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                            .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 0)
+                            .setSize(SPACE_X * 5 - 8, 12))
+                    .widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                                    this::getCoverData,
+                                    this::setCoverData,
+                                    GT_Cover_TM_EnderFluidLink.this,
+                                    (id, coverData) -> !getClickable(id, convert(coverData)),
+                                    (id, coverData) -> new ISerializableObject.LegacyCoverData(
+                                            getNewCoverVariable(id, convert(coverData))))
+                            .addToggleButton(
+                                    PUBLIC_BUTTON_ID,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_WHITELIST)
+                                            .addTooltip(GT_Utility.trans("326", "Public"))
+                                            .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
+                            .addToggleButton(
+                                    PRIVATE_BUTTON_ID,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
+                                            .addTooltip(GT_Utility.trans("327", "Private"))
+                                            .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 2))
+                            .addToggleButton(
+                                    IMPORT_BUTTON_ID,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                            .addTooltip(GT_Utility.trans("007", "Import"))
+                                            .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
+                            .addToggleButton(
+                                    EXPORT_BUTTON_ID,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                            .addTooltip(GT_Utility.trans("006", "Export"))
+                                            .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
+                    .widget(new TextWidget(GT_Utility.trans("328", "Channel"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
+                    .widget(new TextWidget(GT_Utility.trans("329", "Public/Private"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 2))
+                    .widget(new TextWidget(GT_Utility.trans("229", "Import/Export"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
+
+            resetTextField();
         }
 
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            drawNewString(trans("328", "Channel"), 5, 0);
-            drawNewString(trans("329", "Public/Private"), 2, 2);
-            drawNewString(trans("229", "Import/Export"), 2, 3);
-        }
-
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            updateButtons();
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (getClickable(btn.id)) {
-                coverVariable = getNewCoverVariable(btn.id);
-                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
-            }
-            updateButtons();
-        }
-
-        private void updateButtons() {
-            GuiButton b;
-            for (Object o : buttonList) {
-                b = (GuiButton) o;
-                b.enabled = getClickable(b.id);
-            }
-        }
-
-        private void switchPrivatePublic(int coverVar) {
-            UUID ownerUUID = tag.getUUID();
-            if (testBit(coverVar, PUBLIC_PRIVATE_MASK)) {
-                ownerUUID = gregtechproxy.getThePlayer().getUniqueID();
-            } else {
-                ownerUUID = null;
-            }
-            EnderLinkTag newTag = new EnderLinkTag(tag.getFrequency(), ownerUUID);
-            NetworkDispatcher.INSTANCE.sendToServer(
-                    new EnderLinkCoverMessage.EnderLinkCoverUpdate(newTag, (IFluidHandler) tile));
-        }
-
-        private int getNewCoverVariable(int id) {
+        private int getNewCoverVariable(int id, int coverVariable) {
             int tempCoverVariable = coverVariable;
             switch (id) {
                 case PUBLIC_BUTTON_ID:
@@ -256,7 +244,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
             return tempCoverVariable;
         }
 
-        private boolean getClickable(int id) {
+        private boolean getClickable(int id, int coverVariable) {
             boolean canBeClicked = false;
             switch (id) {
                 case PUBLIC_BUTTON_ID:
@@ -274,36 +262,20 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
             return canBeClicked;
         }
 
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            try {
-                String string = box.getText();
-                tag = new EnderLinkTag(string, tag.getUUID());
-                NetworkDispatcher.INSTANCE.sendToServer(
-                        new EnderLinkCoverMessage.EnderLinkCoverUpdate(tag, (IFluidHandler) tile));
-            } catch (NumberFormatException ignored) {
-            }
-            resetColorField();
+        private void resetTextField() {
+            frequencyField.setText(tag.getFrequency());
         }
 
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            box.setText(tag.getFrequency());
-        }
-
-        public void resetColorField() {
-            resetTextBox(colorField);
-        }
-
-        private class GT_GuiTextBox extends GT_GuiIntegerTextBox {
-            public GT_GuiTextBox(IGuiScreen gui, int id, int x, int y, int width, int height) {
-                super(gui, id, x, y, width, height);
+        private void switchPrivatePublic(int coverVar) {
+            UUID ownerUUID;
+            if (testBit(coverVar, PUBLIC_PRIVATE_MASK)) {
+                ownerUUID = getUIBuildContext().getPlayer().getUniqueID();
+            } else {
+                ownerUUID = null;
             }
-
-            @Override
-            public boolean validChar(char c, int key) {
-                return true;
-            }
+            EnderLinkTag newTag = new EnderLinkTag(tag.getFrequency(), ownerUUID);
+            NetworkDispatcher.INSTANCE.sendToServer(new EnderLinkCoverMessage.EnderLinkCoverUpdate(
+                    newTag, (IFluidHandler) getUIBuildContext().getTile()));
         }
     }
 }
