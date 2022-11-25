@@ -3,9 +3,16 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugBlockMiner;
 
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.render.TextureFactory;
@@ -28,7 +35,8 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
 
 @SuppressWarnings("ObjectEquality")
-public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine implements GT_IDrillingLogicDelegateOwner {
+public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
+        implements GT_IDrillingLogicDelegateOwner, IAddUIWidgets {
     static final int[] RADIUS = {8, 8, 16, 24, 32}; // Miner radius per tier
     static final int[] SPEED = {160, 160, 80, 40, 20}; // Miner cycle time per tier
     static final int[] ENERGY = {8, 8, 32, 128, 512}; // Miner energy consumption per tier
@@ -423,5 +431,21 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
 
     public GT_DrillingLogicDelegate getPipe() {
         return pipe;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        builder.widget(createProgressBar(
+                GT_UITextures.PROGRESSBAR_CANNER,
+                20,
+                ProgressBar.Direction.RIGHT,
+                new Pos2d(78, 24),
+                new Size(20, 18)));
     }
 }

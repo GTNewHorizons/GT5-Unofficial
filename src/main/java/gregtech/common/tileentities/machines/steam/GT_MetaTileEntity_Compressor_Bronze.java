@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.steam;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -11,7 +10,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_MetaTileEntity_Compressor_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
     public GT_MetaTileEntity_Compressor_Bronze(int aID, String aName, String aNameRegional) {
@@ -24,16 +22,6 @@ public class GT_MetaTileEntity_Compressor_Bronze extends GT_MetaTileEntity_Basic
 
     public GT_MetaTileEntity_Compressor_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aDescription, aTextures, 1, 1, false);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                getLocalName(),
-                "BronzeCompressor.png",
-                GT_Recipe.GT_Recipe_Map.sCompressorRecipes.mUnlocalizedName);
     }
 
     @Override

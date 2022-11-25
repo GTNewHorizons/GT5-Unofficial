@@ -4,30 +4,30 @@ import static gregtech.api.util.GT_Utility.intToStack;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_SlotWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.Fluid;
 
@@ -194,23 +194,80 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         return 1;
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    protected Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            ItemFilterData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new GT_Cover_ItemFilter.GUI(aSide, aCoverID, aCoverVariable, aTileEntity);
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new ItemFilterUIFactory(buildContext).createWindow();
+    }
+
+    private class ItemFilterUIFactory extends UIFactory {
+
+        private static final int startX = 10;
+        private static final int startY = 25;
+        private static final int spaceX = 18;
+        private static final int spaceY = 18;
+
+        public ItemFilterUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
+        }
+
+        @SuppressWarnings("PointlessArithmeticExpression")
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            ItemStackHandler filterInvHandler = new ItemStackHandler(1);
+            if (getCoverData() != null) {
+                filterInvHandler.setStackInSlot(0, setStackSize1(getCoverData().mFilter));
+            }
+            builder.widget(new CoverDataControllerWidget<>(
+                                    this::getCoverData, this::setCoverData, GT_Cover_ItemFilter.this)
+                            .addFollower(
+                                    new CoverDataFollower_ToggleButtonWidget<>(),
+                                    coverData -> coverData.mWhitelist,
+                                    (coverData, state) -> {
+                                        coverData.mWhitelist = state;
+                                        return coverData;
+                                    },
+                                    widget -> widget.setToggleTexture(
+                                                    GT_UITextures.OVERLAY_BUTTON_WHITELIST,
+                                                    GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
+                                            .addTooltip(0, GT_Utility.trans("124.1", "Blacklist Mode"))
+                                            .addTooltip(1, GT_Utility.trans("125.1", "Whitelist Mode"))
+                                            .setPos(spaceX * 0, spaceY * 0))
+                            .addFollower(
+                                    new CoverDataFollower_SlotWidget<>(filterInvHandler, 0, true),
+                                    coverData -> setStackSize1(coverData.mFilter),
+                                    (coverData, stack) -> {
+                                        coverData.mFilter = setStackSize1(stack);
+                                        return coverData;
+                                    },
+                                    widget -> widget.setBackground(GT_UITextures.SLOT_DARK_GRAY)
+                                            .setPos(spaceX * 0, spaceY * 2))
+                            .setPos(startX, startY))
+                    .widget(new TextWidget(GT_Utility.trans("317", "Filter: "))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 0, 3 + startY + spaceY * 1))
+                    .widget(new TextWidget(GT_Utility.trans("318", "Check Mode"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0));
+        }
+
+        private ItemStack setStackSize1(ItemStack stack) {
+            if (stack != null) {
+                stack.stackSize = 1;
+            }
+            return stack;
+        }
     }
 
     public static class ItemFilterData implements ISerializableObject {
@@ -260,70 +317,6 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
             mWhitelist = aBuf.readBoolean();
             mFilter = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
             return this;
-        }
-    }
-
-    private class GUI extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private final GT_GuiIconCheckButton btnMode;
-        private final ItemFilterData coverVariable;
-        private final GT_GuiFakeItemButton itemFilterButtons;
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
-
-        public GUI(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            btnMode = new GT_GuiIconCheckButton(
-                    this,
-                    0,
-                    startX + spaceX * 0,
-                    startY + spaceY * 0,
-                    GT_GuiIcon.WHITELIST,
-                    GT_GuiIcon.BLACKLIST,
-                    GT_Utility.trans("125.1", "Whitelist Mode"),
-                    GT_Utility.trans("124.1", "Blacklist Mode"));
-
-            itemFilterButtons =
-                    new GT_GuiFakeItemButton(this, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.SLOT_GRAY);
-            itemFilterButtons.setMimicSlot(true);
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(
-                    GT_Utility.trans("317", "Filter: "), startX + spaceX * 0, 3 + startY + spaceY * 1, textColor);
-            this.fontRendererObj.drawString(
-                    GT_Utility.trans("318", "Check Mode"), startX + spaceX * 2, 3 + startY + spaceY * 0, textColor);
-        }
-
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            updateButtons();
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (btn == btnMode) {
-                coverVariable.mWhitelist = !coverVariable.mWhitelist;
-                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-            }
-            updateButtons();
-        }
-
-        private void updateButtons() {
-            btnMode.setChecked(coverVariable.mWhitelist);
-            itemFilterButtons.setItem(coverVariable.mFilter);
         }
     }
 }

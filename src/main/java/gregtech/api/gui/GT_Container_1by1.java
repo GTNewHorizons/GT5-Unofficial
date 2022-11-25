@@ -4,6 +4,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
+@Deprecated
 public class GT_Container_1by1 extends GT_ContainerMetaTile_Machine {
 
     public GT_Container_1by1(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {

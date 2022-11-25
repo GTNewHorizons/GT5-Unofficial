@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ISecondaryDescribable;
@@ -108,6 +109,11 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
     @Override
     public String getName() {
         return "Bricked Blast Furnace";
+    }
+
+    @Override
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.PRIMITIVE;
     }
 
     @Override

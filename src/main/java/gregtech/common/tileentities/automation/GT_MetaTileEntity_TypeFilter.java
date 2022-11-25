@@ -13,8 +13,12 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilter {
     public int mRotationIndex = 0;
@@ -54,6 +58,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
                         .build());
     }
 
+    @Override
     public void clickTypeIcon(boolean aRightClick, ItemStack aHandStack) {
         if (getBaseMetaTileEntity().isServerSide()) {
             ItemData data = GT_OreDictUnificator.getAssociation(aHandStack);
@@ -142,5 +147,14 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
             }
         }
         return tAllowPrefix;
+    }
+
+    @Override
+    protected List<String> getItemExtraTooltip() {
+        return Arrays.asList(
+                EnumChatFormatting.DARK_GRAY
+                        + StatCollector.translateToLocal("GT5U.type_filter.representation_slot.tooltip.0"),
+                EnumChatFormatting.DARK_GRAY
+                        + StatCollector.translateToLocal("GT5U.type_filter.representation_slot.tooltip.1"));
     }
 }

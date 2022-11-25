@@ -1,8 +1,10 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -11,17 +13,15 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.GT_Cover_NeedMaintainance;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
 import javax.annotation.Nonnull;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
 public class GT_Cover_WirelessMaintenanceDetector
         extends GT_Cover_AdvancedRedstoneTransmitterBase<
@@ -188,82 +188,65 @@ public class GT_Cover_WirelessMaintenanceDetector
         }
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
     private static final String[] extraTexts = new String[] {
         "No Issues", ">= 1 Issue", ">= 2 Issues", ">= 3 Issues",
         ">= 4 Issues", ">= 5 Issues", "Rotor < 80%", "Rotor < 100%"
     };
 
     @Override
-    public Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            MaintenanceTransmitterData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new MaintenanceTransmitterGUI(aSide, aCoverID, aCoverVariable, aTileEntity);
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new WirelessMaintenanceDetectorUIFactory(buildContext).createWindow();
     }
 
-    private class MaintenanceTransmitterGUI extends TransmitterGUI<MaintenanceTransmitterData> {
+    private class WirelessMaintenanceDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
 
-        private static final String guiTexturePath = "gregtech:textures/gui/GuiCoverBig.png";
-        private static final int maintenanceButtonIdStart = 2;
+        public WirelessMaintenanceDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
+        }
 
-        public MaintenanceTransmitterGUI(
-                byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
-            super(aSide, aCoverID, aCoverVariable, aTileEntity);
-            this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
-            this.gui_height = 143;
+        @Override
+        protected int getGUIHeight() {
+            return 143;
+        }
 
-            for (int i = 0; i < 8; ++i) {
-                new GT_GuiIconCheckButton(
-                        this,
-                        maintenanceButtonIdStart + i,
-                        startX + spaceX * (i % 2 == 0 ? 0 : 6),
-                        startY + spaceY * (2 + i / 2),
-                        GT_GuiIcon.CHECKMARK,
-                        null);
+        @Override
+        protected int getFrequencyRow() {
+            return 0;
+        }
+
+        @Override
+        protected int getButtonRow() {
+            return 1;
+        }
+
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            super.addUIWidgets(builder);
+            for (int i = 0; i < 8; i++) {
+                builder.widget(new TextWidget(extraTexts[i])
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
             }
         }
 
         @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            for (int i = 0; i < 8; ++i) {
-                this.getFontRenderer()
-                        .drawString(
-                                extraTexts[i],
-                                startX + spaceX * (i % 2 == 0 ? 1 : 7),
-                                4 + startY + spaceY * (2 + i / 2),
-                                textColor);
+        protected void addUIForDataController(CoverDataControllerWidget<MaintenanceTransmitterData> controller) {
+            super.addUIForDataController(controller);
+            for (int i = 0; i < 8; i++) {
+                final int index = i;
+                controller.addFollower(
+                        CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                        coverData -> coverData.mode == MaintenanceMode.values()[index],
+                        (coverData, state) -> {
+                            coverData.mode = MaintenanceMode.values()[index];
+                            return coverData;
+                        },
+                        widget -> widget.setToggleTexture(
+                                        GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
+                                .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
             }
-        }
-
-        @Override
-        protected void update() {
-            super.update();
-            updateButtons();
-        }
-
-        private void updateButtons() {
-            GT_GuiIconCheckButton button;
-            for (int i = maintenanceButtonIdStart; i < maintenanceButtonIdStart + 8; ++i) {
-                button = (GT_GuiIconCheckButton) this.buttonList.get(i);
-                button.enabled = (button.id - maintenanceButtonIdStart) != coverVariable.mode.ordinal();
-                button.setChecked(!button.enabled);
-            }
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (btn.id >= maintenanceButtonIdStart && btn.enabled) {
-                coverVariable.mode = MaintenanceMode.values()[btn.id - maintenanceButtonIdStart];
-            }
-
-            super.buttonClicked(btn);
         }
     }
 }

@@ -70,8 +70,6 @@ import gregtech.api.util.GT_Shapeless_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.entities.GT_Entity_Arrow;
-import gregtech.common.gui.GT_ContainerVolumetricFlask;
-import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
@@ -644,6 +642,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
      * How verbose should tooltips be when LSHIFT is held? 0: disabled, 1: one-line, 2: normal, 3+: extended
      */
     public int mTooltipShiftVerbosity = 3;
+
+    /**
+     * Which style to use for title tab on machine GUI? 0: text tab split-dark, 1: text tab unified, 2: item icon tab
+     */
+    public int mTitleTabStyle = 0;
 
     /**
      * Whether to show seconds or ticks on NEI
@@ -2241,10 +2244,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     @Override
     public Object getServerGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
         if (aID >= 1000) {
-            int ID = aID - 1000;
-            if (ID == 10) {
-                return new GT_ContainerVolumetricFlask(aPlayer.inventory);
-            }
             return null;
         }
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
@@ -2253,7 +2252,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 return null;
             }
             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-            if (tMetaTileEntity != null) {
+            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
                 return tMetaTileEntity.getServerGUI(aID, aPlayer.inventory, (IGregTechTileEntity) tTileEntity);
             }
         }
@@ -2263,10 +2262,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     @Override
     public Object getClientGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
         if (aID >= 1000) {
-            int ID = aID - 1000;
-            if (ID == 10) {
-                return new GT_GUIContainerVolumetricFlask(new GT_ContainerVolumetricFlask(aPlayer.inventory));
-            }
             return null;
         }
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
@@ -2277,7 +2272,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 byte side = (byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
                 GT_CoverBehaviorBase<?> cover = tile.getCoverBehaviorAtSideNew(side);
 
-                if (cover.hasCoverGUI()) {
+                if (cover.hasCoverGUI() && !cover.useModularUI()) {
                     return cover.getClientGUI(
                             side,
                             tile.getCoverIDAtSide(side),
@@ -2289,7 +2284,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 return null;
             }
             IMetaTileEntity tMetaTileEntity = tile.getMetaTileEntity();
-            if (tMetaTileEntity != null) {
+            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
                 return tMetaTileEntity.getClientGUI(aID, aPlayer.inventory, tile);
             }
         }

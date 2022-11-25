@@ -3,22 +3,24 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_ITEMDISTRIBUTOR;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_ITEMDISTRIBUTOR_GLOW;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_Container_ItemDistributor;
-import gregtech.common.gui.GT_GUIContainer_ItemDistributor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer {
+public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
     private byte[] itemsPerSide = new byte[6];
     private byte currentSide = 0, currentSideItemCount = 0;
 
@@ -53,11 +55,6 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     }
 
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_ItemDistributor(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
                 TextureFactory.of(AUTOMATION_ITEMDISTRIBUTOR),
@@ -65,11 +62,6 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
                         .addIcon(AUTOMATION_ITEMDISTRIBUTOR_GLOW)
                         .glow()
                         .build());
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_ItemDistributor(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -186,5 +178,17 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
         aNBT.setByteArray("mItemsPerSide", itemsPerSide);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        addEmitEnergyButton(builder);
+        addEmitRedstoneButton(builder);
+        addInvertRedstoneButton(builder);
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(87, true))
+                .setPos(62, 60)
+                .setSize(87, 22));
+        addInventorySlots(builder);
     }
 }

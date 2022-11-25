@@ -6,7 +6,6 @@ import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
@@ -123,8 +122,6 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         public void set(FluidStack stack) {
             if (mIsFillableStack) mTank.setFillableStack(stack);
             else mTank.setDrainableStack(stack);
-            if (mTank instanceof GT_MetaTileEntity_DigitalTankBase)
-                ((GT_MetaTileEntity_DigitalTankBase) mTank).onEmptyingContainerWhenEmpty();
         }
 
         @Override

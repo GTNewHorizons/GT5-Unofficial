@@ -3,16 +3,18 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER_GLOW;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.GT_Container_ChestBuffer;
-import gregtech.common.gui.GT_GUIContainer_ChestBuffer;
-import net.minecraft.entity.player.InventoryPlayer;
 
-public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
+public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
 
     private static final int[] tickRate = {400, 200, 100, 20, 4, 1, 1, 1, 1, 1, 1, 1, 1};
     private static final int[] maxStacks = {1, 1, 1, 1, 1, 1, 2, 4, 8, 16, 32, 64, 128};
@@ -83,16 +85,6 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
         }
     }
 
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_ChestBuffer(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_ChestBuffer(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
     protected static String getTickRateDesc(int tier) {
         int tickRate = getTickRate(tier);
         String timeStr = "";
@@ -117,5 +109,22 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
     protected static int getMaxStacks(int tier) {
         // Included higher tiers on the off chance they actually work without blowing things up lmao
         return tier > 9 ? MAX : Math.min(maxStacks[tier], MAX);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        addEmitEnergyButton(builder);
+        addEmitRedstoneButton(builder);
+        addInvertRedstoneButton(builder);
+        addStockingModeButton(builder);
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(69, true))
+                .setPos(80, 60)
+                .setSize(69, 22));
+        addMainUI(builder);
+    }
+
+    protected void addMainUI(ModularWindow.Builder builder) {
+        addInventorySlots(builder);
     }
 }

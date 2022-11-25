@@ -17,12 +17,22 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Container_MultiMachine;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
@@ -31,10 +41,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import java.util.ArrayList;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -43,7 +51,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GT_MetaTileEntity_FusionComputer
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
-        implements ISurvivalConstructable {
+        implements ISurvivalConstructable, IAddUIWidgets {
     public static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>> STRUCTURE_DEFINITION =
             new ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>>() {
@@ -158,21 +166,6 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
     @Override
     public abstract long maxEUStore();
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_FusionReactor(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                getLocalName(),
-                "FusionComputer.png",
-                GT_Recipe.GT_Recipe_Map.sFusionRecipes.mNEIName);
-    }
 
     @Override
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
@@ -558,5 +551,85 @@ public abstract class GT_MetaTileEntity_FusionComputer
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 1, 12, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean doesBindPlayerInventory() {
+        return false;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(155, 145));
+    }
+
+    @Override
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet().setMainBackground(GT_UITextures.BACKGROUND_FUSION_COMPUTER);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mMachine)
+                        .setPos(10, 8))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val))
+                .widget(new TextWidget("Hit with Soft Mallet to (re-)start the Machine if it doesn't start.")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setTextAlignment(Alignment.Center)
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                                && !getBaseMetaTileEntity().isActive())
+                        .setPos(-getGUIWidth() / 2, 170)
+                        .setSize(getGUIWidth() * 2, 9))
+                .widget(new FakeSyncWidget.IntegerSyncer(
+                        () -> getBaseMetaTileEntity().getErrorDisplayID(),
+                        val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+                .widget(new FakeSyncWidget.BooleanSyncer(
+                        () -> getBaseMetaTileEntity().isActive(),
+                        val -> getBaseMetaTileEntity().setActive(val)))
+                .widget(new TextWidget("Running perfectly.")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setTextAlignment(Alignment.Center)
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                                && getBaseMetaTileEntity().isActive())
+                        .setPos(0, 170)
+                        .setSize(getGUIWidth(), 9))
+                .widget(new FakeSyncWidget.IntegerSyncer(
+                        () -> getBaseMetaTileEntity().getErrorDisplayID(),
+                        val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+                .widget(new ProgressBar()
+                        .setProgress(() -> (float) getBaseMetaTileEntity().getStoredEU()
+                                / getBaseMetaTileEntity().getEUCapacity())
+                        .setDirection(ProgressBar.Direction.RIGHT)
+                        .setTexture(GT_UITextures.PROGRESSBAR_STORED_EU, 147)
+                        .setPos(5, 156)
+                        .setSize(147, 5))
+                .widget(TextWidget.dynamicString(() -> {
+                            long energy = getBaseMetaTileEntity().getStoredEU();
+                            if (energy > 160_000_000L && energy < 160_010_000L) {
+                                energy = 160_000_000L;
+                            }
+                            if (energy > 320_000_000L && energy < 320_010_000L) {
+                                energy = 320_000_000L;
+                            }
+                            if (energy > 640_000_000L && energy < 640_010_000L) {
+                                energy = 640_000_000L;
+                            }
+                            if (energy > 5_120_000_000L && energy < 5_120_080_000L) {
+                                energy = 5_120_000_000L;
+                            }
+                            return GT_Utility.formatNumbers(energy) + " EU";
+                        })
+                        .setDefaultColor(COLOR_TEXT_RED.get())
+                        .setPos(50, 155))
+                .widget(new ButtonWidget()
+                        .setNEITransferRect(GT_Recipe.GT_Recipe_Map.sFusionRecipes.mNEIName)
+                        .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NEI)
+                        .setPos(154, 4)
+                        .setSize(18, 18));
     }
 }

@@ -1,22 +1,23 @@
 package gregtech.common.covers.redstone;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Nonnull;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
                 T extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData>
@@ -126,69 +127,65 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<
         }
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
     @Override
-    public Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            TransmitterData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new TransmitterGUI<>(aSide, aCoverID, aCoverVariable, aTileEntity);
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new AdvancedRedstoneTransmitterBaseUIFactory(buildContext).createWindow();
     }
 
-    protected class TransmitterGUI<X extends TransmitterData> extends WirelessGUI<X> {
+    protected class AdvancedRedstoneTransmitterBaseUIFactory extends AdvancedWirelessRedstoneBaseUIFactory {
 
-        private final GT_GuiIconCheckButton invertButton;
-
-        private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
-        private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
-
-        public TransmitterGUI(
-                byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity, int frequencyRow, int buttonRow) {
-            super(aSide, aCoverID, aCoverVariable, aTileEntity, frequencyRow, buttonRow, true);
-            invertButton = new GT_GuiIconCheckButton(
-                    this,
-                    1,
-                    startX + spaceX * 9,
-                    startY + spaceY * buttonRow,
-                    GT_GuiIcon.REDSTONE_ON,
-                    GT_GuiIcon.REDSTONE_OFF,
-                    INVERTED,
-                    NORMAL);
-        }
-
-        public TransmitterGUI(byte aSide, int aCoverID, X aCoverVariable, ICoverable aTileEntity) {
-            this(aSide, aCoverID, aCoverVariable, aTileEntity, 0, 1);
+        public AdvancedRedstoneTransmitterBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
 
         @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer()
-                    .drawString(
-                            coverVariable.invert ? INVERTED : NORMAL,
-                            startX + spaceX * 10,
-                            4 + startY + spaceY * buttonRow,
-                            textColor);
+        protected int getFrequencyRow() {
+            return 0;
         }
 
         @Override
-        protected void update() {
-            super.update();
-            invertButton.setChecked(coverVariable.invert);
+        protected int getButtonRow() {
+            return 1;
         }
 
         @Override
-        public void buttonClicked(GuiButton btn) {
-            if (btn == invertButton) {
-                coverVariable.invert = !coverVariable.invert;
-            }
+        protected boolean isShiftPrivateLeft() {
+            return true;
+        }
 
-            super.buttonClicked(btn);
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            super.addUIWidgets(builder);
+            builder.widget(TextWidget.dynamicString(() -> {
+                        T coverData = getCoverData();
+                        if (coverData != null) {
+                            return getCoverData().invert
+                                    ? GT_Utility.trans("INVERTED", "Inverted")
+                                    : GT_Utility.trans("NORMAL", "Normal");
+                        } else {
+                            return "";
+                        }
+                    })
+                    .setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
+        }
+
+        @Override
+        protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
+            super.addUIForDataController(controller);
+            controller.addFollower(
+                    CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                    coverData -> coverData.invert,
+                    (coverData, state) -> {
+                        coverData.invert = state;
+                        return coverData;
+                    },
+                    widget -> widget.addTooltip(0, GT_Utility.trans("NORMAL", "Normal"))
+                            .addTooltip(1, GT_Utility.trans("INVERTED", "Inverted"))
+                            .setPos(spaceX * 9, spaceY * getButtonRow()));
         }
     }
 }
