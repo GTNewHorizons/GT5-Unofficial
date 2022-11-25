@@ -4,16 +4,19 @@ import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import goodgenerator.common.CommonProxy;
 import goodgenerator.crossmod.thaumcraft.Research;
 import goodgenerator.items.MyMaterial;
-import goodgenerator.loader.*;
+import goodgenerator.loader.Loaders;
+import goodgenerator.loader.NaquadahReworkRecipeLoader;
 import goodgenerator.network.MessageOpenNeutronSensorGUI;
-import goodgenerator.network.MessageResetTileTexture;
 import goodgenerator.network.MessageSetNeutronSensorData;
 import goodgenerator.tabs.MyTabs;
 import net.minecraft.creativetab.CreativeTabs;
@@ -46,8 +49,6 @@ public final class GoodGenerator {
                 MessageSetNeutronSensorData.ServerHandler.class, MessageSetNeutronSensorData.class, 0, Side.SERVER);
         CHANNEL.registerMessage(
                 MessageOpenNeutronSensorGUI.ClientHandler.class, MessageOpenNeutronSensorGUI.class, 1, Side.CLIENT);
-        CHANNEL.registerMessage(
-                MessageResetTileTexture.ClientHandler.class, MessageResetTileTexture.class, 2, Side.CLIENT);
     }
 
     @Mod.Instance(GoodGenerator.MOD_ID)
