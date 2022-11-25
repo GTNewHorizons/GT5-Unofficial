@@ -15,20 +15,23 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_PCBFactoryManager;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.blocks.GT_Block_Casings8;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +39,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_PCBFactory>
+public class GT_MetaTileEntity_PCBFactory
+        extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PCBFactory>
         implements ISurvivalConstructable {
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
@@ -44,7 +48,6 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
     private static final String bioUpgrade = "bioUpgrade";
     private static final String ocTier1Upgrade = "ocTier1Upgrade";
     private static final String ocTier2Upgrade = "ocTier2Upgrade";
-    private long mLongEUt = 0;
     private boolean mSeparate = false;
     private float mRoughnessMultiplier = 1;
     private float mSpeedMultiplier = 1;
@@ -52,7 +55,11 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
     private byte[] mBioOffsets = new byte[2], mOCTier1Offsets = new byte[2], mOCTier2Offsets = new byte[2];
     private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
-    private int[] bitMap = {0x01, 0x02, 0x03, 0x04};
+    private boolean mUseIronIII = true;
+    private static final int mBioBitMap = 0b1000;
+    private static final int mTier3BitMap = 0b100;
+    private static final int mTier2BitMap = 0b10;
+    private static final int mTier1BitMap = 0b1;
     private static final IStructureDefinition<GT_MetaTileEntity_PCBFactory> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_PCBFactory>builder()
                     .addShape(tier1, transpose(new String[][] {
@@ -157,7 +164,7 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
                     .addElement(
                             'P',
                             buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
-                                    .atLeast(InputHatch, OutputBus, InputBus, Maintenance, ExoticEnergy, Energy)
+                                    .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                                     .dot(1)
                                     .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11))
                                     .buildAndChain(GregTech_API.sBlockCasings8, 11))
@@ -221,9 +228,9 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
                                 tTile.getXCoord(),
                                 tTile.getYCoord(),
                                 tTile.getZCoord(),
-                                mBioRotate ? mBioOffsets[1] : mBioOffsets[0],
+                                mBioOffsets[1],
                                 6,
-                                mBioRotate ? mBioOffsets[0] : mBioOffsets[1],
+                                mBioOffsets[0],
                                 hintsOnly);
             } else {
                 buildPiece(bioUpgrade, stackSize, hintsOnly, mBioOffsets[0], 6, mBioOffsets[1]);
@@ -233,6 +240,59 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
         if (mOCTier1 && !mOCTier2) {
             buildPiece(ocTier1Upgrade, stackSize, hintsOnly, mOCTier1Offsets[0], 10, mOCTier1Offsets[1]);
         }
+    }
+
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        int built = 0;
+        if (mSetTier < 3) {
+            built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
+            if (mSetTier == 2) {
+                built += survivialBuildPiece(tier2, stackSize, 7, 6, -1, elementBudget, env, false, true);
+            }
+        } else {
+            built += survivialBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
+        }
+
+        if (mBioUpgrade) {
+            if (mBioRotate) {
+                final IGregTechTileEntity tTile = getBaseMetaTileEntity();
+                getStructureDefinition()
+                        .survivalBuild(
+                                this,
+                                stackSize,
+                                bioUpgrade,
+                                tTile.getWorld(),
+                                transformFacing(getExtendedFacing()),
+                                tTile.getXCoord(),
+                                tTile.getYCoord(),
+                                tTile.getZCoord(),
+                                mBioOffsets[1],
+                                6,
+                                mBioOffsets[0],
+                                elementBudget,
+                                env,
+                                false);
+            } else {
+                built += survivialBuildPiece(
+                        bioUpgrade, stackSize, mBioOffsets[0], 6, mBioOffsets[2], elementBudget, env, false, true);
+            }
+        }
+
+        if (mOCTier1 && !mOCTier2) {
+            built += survivialBuildPiece(
+                    ocTier1Upgrade,
+                    stackSize,
+                    mOCTier1Offsets[0],
+                    10,
+                    mOCTier1Offsets[1],
+                    elementBudget,
+                    env,
+                    false,
+                    true);
+        }
+
+        return built;
     }
 
     public GT_MetaTileEntity_PCBFactory(int aID, String aName, String aNameRegional) {
@@ -300,28 +360,6 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    private boolean processRecipe(ItemStack aStack, ItemStack[] aInputs, FluidStack[] aFluidInputs) {
-
-        return false;
-    }
-
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe_Map.sPCBFactory;
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (mSetTier < 3) {
             if (!checkPiece(tier1, 3, 5, 0)) {
@@ -352,9 +390,9 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
                                 tTile.getXCoord(),
                                 tTile.getYCoord(),
                                 tTile.getZCoord(),
-                                mBioRotate ? mBioOffsets[1] : mBioOffsets[0],
+                                mBioOffsets[1],
                                 6,
-                                mBioRotate ? mBioOffsets[0] : mBioOffsets[1],
+                                mBioOffsets[0],
                                 !mMachine)) {
                     return false;
                 }
@@ -388,6 +426,46 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
             return false;
         }
 
+        return true;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sPCBFactory;
+    }
+
+    @Override
+    public boolean checkRecipe(ItemStack aStack) {
+        GT_Recipe.GT_Recipe_Map aMap = getRecipeMap();
+        FluidStack[] tFluidInputs = getCompactedFluids();
+        ItemStack[] tItemInputs = getCompactedInputs();
+        return processRecipe(aStack, tItemInputs, tFluidInputs, aMap);
+    }
+
+    private boolean processRecipe(
+            ItemStack aStack, ItemStack[] aInputs, FluidStack[] aFluidInputs, GT_Recipe.GT_Recipe_Map aMap) {
+        mOutputItems = null;
+        mOutputFluids = null;
+        if (aInputs == null || aFluidInputs == null) {
+            return false;
+        }
+
+        final int mPlasticTier = findPlasticTier(aInputs);
+        if (mPlasticTier <= 0) {
+            return false;
+        }
+
+        long voltage = getMaxInputVoltage();
+
+        GT_Recipe tRecipe = aMap.findRecipe(getBaseMetaTileEntity(), true, true, voltage, aFluidInputs, aInputs);
+
+        if (tRecipe.mSpecialValue <= mPlasticTier) {
+            return false;
+        }
+
+        long EUt = GT_Values.V[mPlasticTier] - mPlasticTier - 2 < 0 ? 2 : GT_Values.V[mPlasticTier - 2];
+        ItemStack aPlastic =
+                GT_PCBFactoryManager.getPlasticMaterialFromTier(mPlasticTier).getPlates(1);
         return true;
     }
 
@@ -504,7 +582,6 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
-        aNBT.setLong("mLongEUt", mLongEUt);
         aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
         aNBT.setByteArray("mBioOffsets", mBioOffsets);
         aNBT.setBoolean("mOCTier1Upgrade", mOCTier1);
@@ -517,12 +594,30 @@ public class GT_MetaTileEntity_PCBFactory extends GT_MetaTileEntity_EnhancedMult
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
-        mLongEUt = aNBT.getLong("mLongEUt");
         mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
         mBioOffsets = aNBT.getByteArray("mBioOffsets");
         mOCTier1 = aNBT.getBoolean("mOCTier1Upgrade");
         mOCTier1Offsets = aNBT.getByteArray("mOCTier1Offsets");
         mOCTier2 = aNBT.getBoolean("mOCTier2Upgrade");
         mOCTier2Offsets = aNBT.getByteArray("mOCTier2Offsets");
+    }
+
+    @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        // not needed here
+        return false;
+    }
+
+    private int findPlasticTier(ItemStack[] aItems) {
+        int maxTier = 0;
+        for (ItemStack aItem : aItems) {
+            Materials aMaterial = GT_OreDictUnificator.getAssociation(aItem).mMaterial.mMaterial;
+            int curTier = GT_PCBFactoryManager.getPlasticTier(aMaterial);
+            if (curTier > maxTier) {
+                maxTier = curTier;
+            }
+        }
+
+        return maxTier;
     }
 }

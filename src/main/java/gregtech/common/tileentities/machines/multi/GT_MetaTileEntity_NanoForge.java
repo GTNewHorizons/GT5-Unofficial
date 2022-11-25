@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorBlueWeabo;
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -23,8 +22,7 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
@@ -34,7 +32,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings8;
 import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,7 +39,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_NanoForge extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_NanoForge>
+public class GT_MetaTileEntity_NanoForge
+        extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_NanoForge>
         implements ISurvivalConstructable {
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_TIER2 = "tier2";
@@ -143,14 +141,13 @@ public class GT_MetaTileEntity_NanoForge extends GT_MetaTileEntity_EnhancedMulti
                     .addElement(
                             'B',
                             buildHatchAdder(GT_MetaTileEntity_NanoForge.class)
-                                    .atLeast(InputHatch, OutputBus, InputBus, Maintenance, ExoticEnergy, Energy)
+                                    .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                                     .dot(1)
                                     .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(10))
                                     .buildAndChain(GregTech_API.sBlockCasings8, 10))
                     .build();
     private byte mSpecialTier = 0;
     private boolean mSeparate = false;
-    private long mLongEUt = 0;
 
     public GT_MetaTileEntity_NanoForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -270,10 +267,10 @@ public class GT_MetaTileEntity_NanoForge extends GT_MetaTileEntity_EnhancedMulti
         if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            nanoForgeOverclockCalculation(
+            calculateOverclockedNessMultiInternal(
                     tRecipe.mEUt, tRecipe.mDuration, 1, tTotalEU, tRecipe.mSpecialValue < mSpecialTier);
 
-            if (this.mLongEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
+            if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
 
             mOutputItems = new ItemStack[tRecipe.mOutputs.length];
             ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
@@ -357,30 +354,6 @@ public class GT_MetaTileEntity_NanoForge extends GT_MetaTileEntity_EnhancedMulti
         return false;
     }
 
-    public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
-        List<GT_MetaTileEntity_Hatch> tHatches = new ArrayList<>();
-        tHatches.addAll(mExoticEnergyHatches);
-        tHatches.addAll(mEnergyHatches);
-        return tHatches;
-    }
-
-    @Override
-    public boolean drainEnergyInput(long aEU) {
-        return GT_ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
-    }
-
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (mLongEUt < 0) {
-            if (!drainEnergyInput(-mLongEUt)) {
-                mLongEUt = 0;
-                criticalStopMachine();
-                return false;
-            }
-        }
-        return true;
-    }
-
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
@@ -399,14 +372,12 @@ public class GT_MetaTileEntity_NanoForge extends GT_MetaTileEntity_EnhancedMulti
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
-        aNBT.setLong("mLongEUt", mLongEUt);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
-        mLongEUt = aNBT.getLong("mLongEUt");
     }
 
     /** Get possible alignments of this controller
@@ -461,53 +432,5 @@ public class GT_MetaTileEntity_NanoForge extends GT_MetaTileEntity_EnhancedMulti
         mSeparate = !mSeparate;
         GT_Utility.sendChatToPlayer(
                 aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparate);
-    }
-
-    protected void nanoForgeOverclockCalculation(
-            long aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
-        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-        if (mTier == 0) {
-            // Long time calculation
-            long xMaxProgresstime = ((long) aDuration) << 1;
-            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-                // make impossible if too long
-                mLongEUt = Long.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mLongEUt = aEUt >> 2;
-                mMaxProgresstime = (int) xMaxProgresstime;
-            }
-        } else {
-            // Long EUt calculation
-            long xEUt = aEUt;
-            // Isnt too low EUt check?
-            long tempEUt = Math.max(xEUt, V[1]);
-
-            mMaxProgresstime = aDuration;
-
-            final int ocTimeShift = perfectOC ? 2 : 1;
-
-            while (tempEUt <= V[mTier - 1] * mAmperage) {
-                tempEUt <<= 2; // this actually controls overclocking
-                // xEUt *= 4;//this is effect of everclocking
-                int oldTime = mMaxProgresstime;
-                mMaxProgresstime >>= ocTimeShift; // this is effect of overclocking
-                if (mMaxProgresstime < 1) {
-                    if (oldTime == 1) break;
-                    xEUt *= oldTime * (perfectOC ? 1 : 2);
-                    break;
-                } else {
-                    xEUt <<= 2;
-                }
-            }
-            if (xEUt > Long.MAX_VALUE - 1) {
-                mLongEUt = Long.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mLongEUt = xEUt;
-                if (mLongEUt == 0) mLongEUt = 1;
-                if (mMaxProgresstime == 0) mMaxProgresstime = 1; // set time to 1 tick
-            }
-        }
     }
 }

@@ -2429,38 +2429,42 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
 
         public static final GT_Recipe_Map sNanoForge = new GT_Recipe_Map(
-                new HashSet<>(10),
-                "gt.recipe.nanoforge",
-                "Nano Forge",
-                null,
-                RES_PATH_GUI + "basicmachines/LCRNEI",
-                3,
-                2,
-                1,
-                1,
-                1,
-                "Tier: ",
-                1,
-                "",
-                true,
-                true);
+                        new HashSet<>(10),
+                        "gt.recipe.nanoforge",
+                        "Nano Forge",
+                        null,
+                        RES_PATH_GUI + "basicmachines/LCRNEI",
+                        4,
+                        3,
+                        3,
+                        1,
+                        1,
+                        "Tier: ",
+                        1,
+                        "",
+                        true,
+                        true)
+                .useModularUI(true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
 
         public static final GT_Recipe_Map sPCBFactory = new GT_Recipe_Map(
-                new HashSet<>(10),
-                "gt.recipe.pcbfactory",
-                "PCB Factory",
-                null,
-                RES_PATH_GUI + "basicmachines/LCRNEI",
-                3,
-                2,
-                1,
-                1,
-                1,
-                "Tier: ",
-                1,
-                "",
-                true,
-                true);
+                        new HashSet<>(10),
+                        "gt.recipe.pcbfactory",
+                        "PCB Factory",
+                        null,
+                        RES_PATH_GUI + "basicmachines/LCRNEI",
+                        6,
+                        1,
+                        4,
+                        0,
+                        1,
+                        E,
+                        0,
+                        E,
+                        true,
+                        true)
+                .useModularUI(true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
 
         /**
          * HashMap of Recipes based on their Items

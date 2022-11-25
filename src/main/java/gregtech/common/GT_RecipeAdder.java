@@ -3343,7 +3343,19 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             int aDuration,
             int aEUt,
             int aSpecialValue) {
-        return false;
+
+        if (aInputs == null || aFluidInputs == null || aOutputs == null) {
+            return false;
+        }
+
+        if (aSpecialValue <= 0 || aEUt < 0 || aDuration < 0) {
+            return false;
+        }
+
+        GT_Recipe.GT_Recipe_Map.sPCBFactory.addRecipe(new GT_Recipe(
+                aInputs, aOutputs, aOutputs, null, aFluidInputs, aFluidInputs, aDuration, aEUt, aSpecialValue));
+
+        return true;
     }
 
     private boolean areItemsAndFluidsBothNull(ItemStack[] items, FluidStack[] fluids) {

@@ -19,6 +19,7 @@ import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_Lon
 import gregtech.common.tileentities.machines.multi.*;
 import gregtech.common.tileentities.machines.steam.*;
 import gregtech.common.tileentities.storage.*;
+import gregtech.loaders.postload.GT_PCBFactoryMaterialLoader;
 import gregtech.loaders.postload.GT_ProcessingArrayRecipeLoader;
 import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
@@ -11643,6 +11644,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         });
 
         GT_ProcessingArrayRecipeLoader.registerDefaultGregtechMaps();
+        GT_PCBFactoryMaterialLoader.load();
 
         ItemList.Distillation_Tower.set(
                 new GT_MetaTileEntity_DistillationTower(1126, "multimachine.distillationtower", "Distillation Tower")
