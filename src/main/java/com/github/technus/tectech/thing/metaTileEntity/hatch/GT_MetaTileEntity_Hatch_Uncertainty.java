@@ -2,25 +2,36 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+import static org.lwjgl.opengl.GL11.*;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Uncertainty;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Uncertainty;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_UncertaintyAdv;
+import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
+import com.gtnewhorizons.modularui.api.GlStateManager;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -30,7 +41,8 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
+        implements IAddGregtechLogo, IAddUIWidgets {
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     public short[] matrix =
@@ -56,19 +68,6 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         super.registerIcons(aBlockIconRegister);
         ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/UC");
         ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/UC_ACTIVE");
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_Uncertainty(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mTier > 7) {
-            return new GT_GUIContainer_UncertaintyAdv(aPlayerInventory, aBaseMetaTileEntity);
-        }
-        return new GT_GUIContainer_Uncertainty(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -188,7 +187,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         } catch (Exception e) {
             clientLocale = "en_US";
         }
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -333,4 +332,140 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     //        GT_Utility.sendChatToPlayer(aPlayer, "Equation mode: "+mode);
     //    }
     // }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
+                .setSize(18, 18)
+                .setPos(112, 55));
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        final boolean isAdvanced = mTier > 7;
+
+        builder.widget(new DrawableWidget()
+                        .setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                        .setPos(43, 4)
+                        .setSize(90, 72))
+                .widget(new DrawableWidget()
+                        .setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR)
+                        .setPos(46, 27)
+                        .setSize(46, 46));
+
+        int[] xPositions = new int[] {7, 25, 133, 151};
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                final int index = i * 4 + j;
+                builder.widget(new ButtonWidget()
+                                .setOnClick((clickData, widget) -> {
+                                    TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                                    if (selection == -1) {
+                                        selection = (byte) index;
+                                    } else {
+                                        short temp = matrix[selection];
+                                        matrix[selection] = matrix[index];
+                                        matrix[index] = temp;
+                                        selection = -1;
+                                    }
+                                    compute();
+                                })
+                                .setPlayClickSound(false)
+                                .setBackground(
+                                        GT_UITextures.BUTTON_STANDARD,
+                                        TecTechUITextures.OVERLAY_BUTTON_UNCERTAINTY[index])
+                                .setPos(xPositions[i], 4 + j * 18)
+                                .setSize(18, 18))
+                        .widget(new FakeSyncWidget.ShortSyncer(() -> matrix[index], val -> matrix[index] = val));
+            }
+        }
+        builder.widget(new FakeSyncWidget.ByteSyncer(() -> selection, val -> selection = val))
+                .widget(new FakeSyncWidget.ByteSyncer(() -> mode, val -> mode = val))
+                .widget(new FakeSyncWidget.ByteSyncer(() -> status, val -> status = val));
+
+        builder.widget(TextWidget.dynamicString(() -> "Status: " + (status == 0 ? "OK" : "NG"))
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(46, 7));
+
+        for (int i = 0; i < 9; i++) {
+            final int index = i;
+            builder.widget(new DrawableWidget()
+                    .setDrawable(() -> {
+                        UITexture valid = TecTechUITextures.PICTURE_UNCERTAINTY_VALID[index];
+                        UITexture invalid = TecTechUITextures.PICTURE_UNCERTAINTY_INVALID[index];
+                        switch (mode) {
+                            case 1: // ooo oxo ooo
+                                if (index == 4) return status == 0 ? valid : invalid;
+                                break;
+                            case 2: // ooo xox ooo
+                                if (index == 3) return (status & 1) == 0 ? valid : invalid;
+                                if (index == 5) return (status & 2) == 0 ? valid : invalid;
+                                break;
+                            case 3: // oxo xox oxo
+                                if (index == 1) return (status & 1) == 0 ? valid : invalid;
+                                if (index == 3) return (status & 2) == 0 ? valid : invalid;
+                                if (index == 5) return (status & 4) == 0 ? valid : invalid;
+                                if (index == 7) return (status & 8) == 0 ? valid : invalid;
+                                break;
+                            case 4: // xox ooo xox
+                                if (index == 0) return (status & 1) == 0 ? valid : invalid;
+                                if (index == 2) return (status & 2) == 0 ? valid : invalid;
+                                if (index == 6) return (status & 4) == 0 ? valid : invalid;
+                                if (index == 8) return (status & 8) == 0 ? valid : invalid;
+                                break;
+                            case 5: // xox oxo xox
+                                if (index == 0) return (status & 1) == 0 ? valid : invalid;
+                                if (index == 2) return (status & 2) == 0 ? valid : invalid;
+                                if (index == 4) return (status & 4) == 0 ? valid : invalid;
+                                if (index == 6) return (status & 8) == 0 ? valid : invalid;
+                                if (index == 8) return (status & 16) == 0 ? valid : invalid;
+                                break;
+                        }
+                        return null;
+                    })
+                    .setPos(55 + (index % 3) * 12, 36 + (index / 3) * 12)
+                    .setSize(4, 4));
+        }
+
+        for (int i = 0; i < 16; i++) {
+            final int index = i;
+            builder.widget(
+                            new DrawableWidget() {
+                                @Override
+                                public void draw(float partialTicks) {
+                                    if (isAdvanced) {
+                                        glEnable(GL_BLEND);
+                                        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                                        glColor4f(1f, 1f, 1f, (float) matrix[index] / 1000f);
+
+                                        // super.draw but without disabling blend
+                                        GlStateManager.pushMatrix();
+                                        getDrawable().draw(Pos2d.ZERO, getSize(), partialTicks);
+                                        GlStateManager.popMatrix();
+
+                                        glDisable(GL_BLEND);
+                                        glColor4f(1f, 1f, 1f, 1f);
+                                    } else {
+                                        if (TecTech.RANDOM.nextInt(1000) < matrix[index]) {
+                                            super.draw(partialTicks);
+                                        }
+                                    }
+                                }
+                            }.setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_INDICATOR)
+                                    .setPos(47 + (i / 4) * 12, 28 + (i % 4) * 12)
+                                    .setSize(8, 8))
+                    .widget(new DrawableWidget()
+                            .setDrawable(
+                                    () -> selection == index ? TecTechUITextures.PICTURE_UNCERTAINTY_SELECTED : null)
+                            .setPos(46 + (i / 4) * 12, 27 + (i % 4) * 12)
+                            .setSize(10, 10));
+        }
+    }
 }

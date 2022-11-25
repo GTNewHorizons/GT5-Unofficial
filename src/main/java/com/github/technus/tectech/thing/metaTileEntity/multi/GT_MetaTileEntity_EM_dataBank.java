@@ -14,8 +14,6 @@ import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.mechanics.dataTransport.InventoryDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputDataItems;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputDataItems;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
@@ -38,7 +36,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -176,23 +173,6 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, true);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                getLocalName(),
-                "EMDisplay.png",
-                true,
-                false,
-                true); // todo texture
-    }
-
-    @Override
     public ITexture[] getTexture(
             IGregTechTileEntity aBaseMetaTileEntity,
             byte aSide,
@@ -300,5 +280,20 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
         public IGT_HatchAdder<? super GT_MetaTileEntity_EM_dataBank> adder() {
             return GT_MetaTileEntity_EM_dataBank::addDataBankHatchToMachineList;
         }
+    }
+
+    @Override
+    public boolean isPowerPassButtonEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isSafeVoidButtonEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isAllowedToWorkButtonEnabled() {
+        return true;
     }
 }

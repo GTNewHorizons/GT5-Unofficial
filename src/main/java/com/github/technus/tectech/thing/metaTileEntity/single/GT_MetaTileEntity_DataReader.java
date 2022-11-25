@@ -1,43 +1,26 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
 import static com.github.technus.tectech.util.CommonValues.V;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DataReader;
-import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DataReader;
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
 import java.util.*;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 
 /**
  * Created by Tec on 23.03.2017.
  */
 public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine {
-    private static final HashMap<TT_Utility.ItemStack_NoNBT, ArrayList<IDataRender>> RENDER_REGISTRY = new HashMap<>();
     public static GT_RenderedTexture READER_ONLINE, READER_OFFLINE;
 
     public GT_MetaTileEntity_DataReader(int aID, String aName, String aNameRegional, int aTier) {
@@ -96,21 +79,12 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        return false;
+    }
+
+    @Override
     public int checkRecipe() {
-        if (getOutputAt(0) != null) {
-            return DID_NOT_FIND_RECIPE;
-        }
-        ItemStack input = getInputAt(0);
-        for (IDataRender render : getRenders(new TT_Utility.ItemStack_NoNBT(input))) {
-            if (render.canRender(input, mTier)) {
-                mOutputItems[0] = input.copy();
-                input.stackSize -= 1;
-                calculateOverclockedNess(render.getReadingEUt(), render.getReadingTime());
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                    return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-                return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
-            }
-        }
         return DID_NOT_FIND_RECIPE;
     }
 
@@ -118,23 +92,6 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         aBaseMetaTileEntity.setActive(getOutputAt(0) != null || mMaxProgresstime > 0);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_DataReader(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_DataReader(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                getLocalName(),
-                mGUIName,
-                GT_Utility.isStringValid(mNEIName)
-                        ? mNEIName
-                        : getRecipeList() != null ? getRecipeList().mUnlocalizedName : "");
     }
 
     @Override
@@ -149,14 +106,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            CommonValues.TEC_MARK_GENERAL,
-            translateToLocal("gt.blockmachines.machine.tt.datareader.desc.0"), // Reads Data Sticks and Orbs
-            EnumChatFormatting.BLUE
-                    + translateToLocal("gt.blockmachines.machine.tt.datareader.desc.1"), // Power it up and
-            EnumChatFormatting.BLUE
-                    + translateToLocal("gt.blockmachines.machine.tt.datareader.desc.2") // Put the data storage in
-        };
+        return new String[] {EnumChatFormatting.DARK_RED + "Deprecated"};
     }
 
     @Override
@@ -192,176 +142,5 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     @Override
     public long getMinimumStoredEU() {
         return maxEUInput() * 4L;
-    }
-
-    public static void addDataRender(TT_Utility.ItemStack_NoNBT stack, IDataRender render) {
-        ArrayList<IDataRender> renders = RENDER_REGISTRY.computeIfAbsent(stack, k -> new ArrayList<>());
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-            render.loadResources();
-        }
-        renders.add(render);
-    }
-
-    public static List<IDataRender> getRenders(TT_Utility.ItemStack_NoNBT stack) {
-        ArrayList<IDataRender> iDataRenders = RENDER_REGISTRY.get(stack);
-        return iDataRenders == null ? Collections.emptyList() : iDataRenders;
-    }
-
-    public interface IDataRender {
-        @SideOnly(Side.CLIENT)
-        void loadResources();
-
-        @SideOnly(Side.CLIENT)
-        void initRender(ItemStack itemStack);
-
-        @SideOnly(Side.CLIENT)
-        void renderTooltips(ItemStack itemStack, int mouseX, int mouseY, GT_GUIContainer_DataReader gui);
-
-        @SideOnly(Side.CLIENT)
-        void renderForeground(
-                ItemStack itemStack, int mouseX, int mouseY, GT_GUIContainer_DataReader gui, FontRenderer font);
-
-        @SideOnly(Side.CLIENT)
-        void renderBackgroundOverlay(
-                ItemStack itemStack, int mouseX, int mouseY, int X, int Y, GT_GUIContainer_DataReader gui);
-
-        boolean canRender(ItemStack itemStack, byte tier);
-
-        int getReadingEUt();
-
-        int getReadingTime();
-    }
-
-    public static void run() {
-        addDataRender(new TT_Utility.ItemStack_NoNBT(ItemList.Tool_DataStick.get(1)), new IDataRender() {
-            @SideOnly(Side.CLIENT)
-            private ResourceLocation bg;
-
-            @SideOnly(Side.CLIENT)
-            private HashMap<GT_Slot_Holo, ItemStack> slots;
-
-            private HashMap<GT_Slot_Holo, ItemStack[]> slots2;
-
-            @Override
-            @SideOnly(Side.CLIENT)
-            public void loadResources() {
-                bg = new ResourceLocation(MODID + ":textures/gui/assLineRender.png");
-            }
-
-            @Override
-            public void initRender(ItemStack itemStack) {
-                slots = new HashMap<>();
-                slots2 = new HashMap<>();
-
-                slots.put(
-                        new GT_Slot_Holo(null, 0, 143, 55, false, false, 1),
-                        ItemList.Tool_DataStick.getWithName(1, "Research data"));
-                ItemStack output = ItemStack.loadItemStackFromNBT(itemStack.stackTagCompound.getCompoundTag("output"));
-                if (output != null) {
-                    slots.put(new GT_Slot_Holo(null, 0, 143, 19, false, false, 64), output);
-                }
-
-                for (int i = 0; i < 16; i++) {
-                    ArrayList<ItemStack> array = new ArrayList<>();
-                    ItemStack input = ItemStack.loadItemStackFromNBT(
-                            itemStack.stackTagCompound.getCompoundTag(Integer.toString(i)));
-                    if (input != null) {
-                        array.add(input);
-                    }
-                    for (int k = 0; k < itemStack.stackTagCompound.getInteger("a" + i); k++) {
-                        input = ItemStack.loadItemStackFromNBT(
-                                itemStack.stackTagCompound.getCompoundTag("a" + i + ":" + k));
-                        if (input != null) {
-                            array.add(input);
-                        }
-                    }
-                    if (array.size() > 0) {
-                        slots2.put(
-                                new GT_Slot_Holo(null, 0, 17 + (i & 0x3) * 18, 19 + (i >> 2) * 18, false, false, 64),
-                                array.toArray(nullItem));
-                    }
-                }
-                for (int i = 0; i < 4; i++) {
-                    FluidStack fs =
-                            FluidStack.loadFluidStackFromNBT(itemStack.stackTagCompound.getCompoundTag("f" + i));
-                    if (fs != null) {
-                        slots.put(
-                                new GT_Slot_Holo(null, 0, 107, 19 + i * 18, false, false, 1),
-                                GT_Utility.getFluidDisplayStack(fs, true));
-                    }
-                }
-            }
-
-            @Override
-            public void renderTooltips(ItemStack itemStack, int mouseX, int mouseY, GT_GUIContainer_DataReader gui) {
-                for (Map.Entry<GT_Slot_Holo, ItemStack> entry : slots.entrySet()) {
-                    gui.renderTooltipSimple(mouseX, mouseY, entry.getKey(), entry.getValue());
-                }
-                int time = (int) (System.currentTimeMillis() / 2000);
-                for (Map.Entry<GT_Slot_Holo, ItemStack[]> entry : slots2.entrySet()) {
-                    gui.renderTooltipSimple(
-                            mouseX, mouseY, entry.getKey(), entry.getValue()[time % entry.getValue().length]);
-                }
-            }
-
-            @Override
-            @SideOnly(Side.CLIENT)
-            public void renderForeground(
-                    ItemStack itemStack, int mouseX, int mouseY, GT_GUIContainer_DataReader gui, FontRenderer font) {
-                int time = itemStack.stackTagCompound.getInteger("time");
-                int EUt = itemStack.stackTagCompound.getInteger("eu");
-                font.drawString(translateToLocal("tt.keyphrase.Ass_line_recipe"), 7, 8, 0x80a0ff);
-                font.drawString(
-                        GT_Utility.trans("152", "Total: ") + GT_Utility.formatNumbers((long) time * EUt) + " EU",
-                        7,
-                        93,
-                        0x80a0ff);
-                font.drawString(
-                        GT_Utility.trans("153", "Usage: ") + GT_Utility.formatNumbers(EUt) + " EU/t", 7, 103, 0x80a0ff);
-                font.drawString(
-                        GT_Utility.trans("154", "Voltage: ") + GT_Utility.formatNumbers(EUt) + " EU", 7, 113, 0x80a0ff);
-                font.drawString(GT_Utility.trans("155", "Amperage: ") + 1, 7, 123, 0x80a0ff);
-                font.drawString(
-                        GT_Utility.trans("158", "Time: ")
-                                + GT_Utility.formatNumbers(0.05d * time)
-                                + GT_Utility.trans("161", " secs"),
-                        7,
-                        133,
-                        0x80a0ff);
-
-                for (Map.Entry<GT_Slot_Holo, ItemStack> entry : slots.entrySet()) {
-                    gui.renderItemSimple(entry.getKey(), entry.getValue());
-                }
-                time = (int) (System.currentTimeMillis() / 2000);
-                for (Map.Entry<GT_Slot_Holo, ItemStack[]> entry : slots2.entrySet()) {
-                    gui.renderItemSimple(entry.getKey(), entry.getValue()[time % entry.getValue().length]);
-                }
-            }
-
-            @Override
-            @SideOnly(Side.CLIENT)
-            public void renderBackgroundOverlay(
-                    ItemStack itemStack, int mouseX, int mouseY, int X, int Y, GT_GUIContainer_DataReader gui) {
-                // 176/83
-                gui.mc.getTextureManager().bindTexture(bg);
-                gui.drawTexturedModalRect(X, Y, 0, 0, 176, 151);
-            }
-
-            @Override
-            public boolean canRender(ItemStack itemStack, byte tier) {
-                NBTTagCompound nbtTagCompound = itemStack.stackTagCompound;
-                return nbtTagCompound != null && nbtTagCompound.hasKey("output");
-            }
-
-            @Override
-            public int getReadingEUt() {
-                return (int) V[4];
-            }
-
-            @Override
-            public int getReadingTime() {
-                return 128;
-            }
-        });
     }
 }

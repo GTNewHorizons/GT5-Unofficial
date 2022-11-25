@@ -19,6 +19,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -284,7 +285,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             } catch (Exception e) {
                 clientLocale = "en_US";
             }
-            aBaseMetaTileEntity.openGUI(aPlayer);
+            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         }
         return true;
     }
