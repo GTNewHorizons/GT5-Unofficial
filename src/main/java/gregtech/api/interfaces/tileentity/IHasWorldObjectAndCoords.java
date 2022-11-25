@@ -167,12 +167,16 @@ public interface IHasWorldObjectAndCoords {
      * @deprecated Use ModularUI
      */
     @Deprecated
-    boolean openGUI(EntityPlayer aPlayer, int aID);
+    default boolean openGUI(EntityPlayer aPlayer, int aID) {
+        return false;
+    }
 
     /**
      * Opens the GUI with the ID = 0 of this TileEntity
      * @deprecated Use ModularUI
      */
     @Deprecated
-    boolean openGUI(EntityPlayer aPlayer);
+    default boolean openGUI(EntityPlayer aPlayer) {
+        return false;
+    }
 }
