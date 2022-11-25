@@ -18,7 +18,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -27,12 +26,15 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_PCBFactoryManager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.blocks.GT_Block_Casings8;
+import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -55,7 +57,6 @@ public class GT_MetaTileEntity_PCBFactory
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
     private byte[] mBioOffsets = new byte[2], mOCTier1Offsets = new byte[2], mOCTier2Offsets = new byte[2];
     private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
-    private boolean mUseIronIII = true;
     private static final int mBioBitMap = 0b1000;
     private static final int mTier3BitMap = 0b100;
     private static final int mTier2BitMap = 0b10;
@@ -438,8 +439,22 @@ public class GT_MetaTileEntity_PCBFactory
     public boolean checkRecipe(ItemStack aStack) {
         GT_Recipe.GT_Recipe_Map aMap = getRecipeMap();
         FluidStack[] tFluidInputs = getCompactedFluids();
-        ItemStack[] tItemInputs = getCompactedInputs();
-        return processRecipe(aStack, tItemInputs, tFluidInputs, aMap);
+        if (mSeparate) {
+            ArrayList<ItemStack> tInputList = new ArrayList<ItemStack>();
+            for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+                for (int i = tBus.getSizeInventory() - 1; i >= 0; i--) {
+                    if (tBus.getStackInSlot(i) != null) tInputList.add(tBus.getStackInSlot(i));
+                }
+                ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
+                if (processRecipe(aStack, tInputs, tFluidInputs, aMap)) return true;
+                else tInputList.clear();
+            }
+        } else {
+            ItemStack[] tItemInputs = getCompactedInputs();
+            return processRecipe(aStack, tItemInputs, tFluidInputs, aMap);
+        }
+
+        return false;
     }
 
     private boolean processRecipe(
@@ -450,22 +465,14 @@ public class GT_MetaTileEntity_PCBFactory
             return false;
         }
 
-        final int mPlasticTier = findPlasticTier(aInputs);
-        if (mPlasticTier <= 0) {
-            return false;
-        }
-
-        long voltage = getMaxInputVoltage();
+        long voltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
 
         GT_Recipe tRecipe = aMap.findRecipe(getBaseMetaTileEntity(), true, true, voltage, aFluidInputs, aInputs);
 
-        if (tRecipe.mSpecialValue <= mPlasticTier) {
+        if (tRecipe == null) {
             return false;
         }
 
-        long EUt = GT_Values.V[mPlasticTier] - mPlasticTier - 2 < 0 ? 2 : GT_Values.V[mPlasticTier - 2];
-        ItemStack aPlastic =
-                GT_PCBFactoryManager.getPlasticMaterialFromTier(mPlasticTier).getPlates(1);
         return true;
     }
 
