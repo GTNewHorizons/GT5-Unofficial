@@ -195,16 +195,6 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "IndustrialExtruder";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return mPlasmaMode
                 ? GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes

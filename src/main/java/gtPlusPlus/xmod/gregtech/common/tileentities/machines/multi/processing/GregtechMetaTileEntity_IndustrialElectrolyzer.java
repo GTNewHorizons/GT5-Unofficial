@@ -128,16 +128,6 @@ public class GregtechMetaTileEntity_IndustrialElectrolyzer
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "IndustrialElectrolyzer";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT;
     }

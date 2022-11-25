@@ -1,8 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -10,15 +17,13 @@ import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SteamCondenser;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_SteamCondenser;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaBoilerBase;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class GregtechMetaCondensor extends GregtechMetaBoilerBase {
+public class GregtechMetaCondensor extends GregtechMetaBoilerBase implements IAddGregtechLogo {
 
     public GregtechMetaCondensor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional, "A Steam condenser - [IC2->Steam]", new ITexture[0]);
@@ -74,18 +79,6 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase {
     @Override
     public int maxProgresstime() {
         return 1000;
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_SteamCondenser(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_SteamCondenser(aPlayerInventory, aBaseMetaTileEntity, "SteelBoiler.png");
     }
 
     @Override
@@ -176,5 +169,61 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase {
             return tFilledAmount;
         }
         return super.fill(aFluid, doFill);
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {}
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new SlotWidget(inventoryHandler, 0)
+                        .setPos(43, 25)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN))
+                .widget(new SlotWidget(inventoryHandler, 1)
+                        .setPos(43, 61)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT))
+                .widget(new SlotWidget(inventoryHandler, 2)
+                        .setPos(115, 61)
+                        .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_COAL))
+                .widget(new SlotWidget(inventoryHandler, 3)
+                        .setPos(115, 25)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DUST))
+                .widget(new ProgressBar()
+                        .setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
+                        .setTexture(
+                                GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY, GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
+                        .setDirection(ProgressBar.Direction.UP)
+                        .setPos(70, 25)
+                        .setSize(10, 54))
+                .widget(new ProgressBar()
+                        .setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
+                        .setTexture(
+                                GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY, GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
+                        .setDirection(ProgressBar.Direction.UP)
+                        .setPos(83, 25)
+                        .setSize(10, 54))
+                .widget(new ProgressBar()
+                        .setProgress(() -> (float) mTemperature / maxProgresstime())
+                        .setTexture(GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY, GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
+                        .setDirection(ProgressBar.Direction.UP)
+                        .setPos(96, 25)
+                        .setSize(10, 54))
+                .widget(new ProgressBar()
+                        // cap minimum so that one can easily see there's fuel remaining
+                        .setProgress(
+                                () -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0)
+                        .setTexture(GTPP_UITextures.PROGRESSBAR_FUEL, 14)
+                        .setDirection(ProgressBar.Direction.UP)
+                        .setPos(116, 45)
+                        .setSize(14, 14))
+                .widget(new DrawableWidget()
+                        .setDrawable(GTPP_UITextures.OVERLAY_SLOT_CANISTER_DARK)
+                        .setPos(43, 43)
+                        .setSize(18, 18));
     }
 }

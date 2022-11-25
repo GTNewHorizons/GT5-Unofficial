@@ -129,21 +129,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public boolean requiresVanillaGtGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "VacuumFreezer";
-    }
-
-    @Override
     public boolean isCorrectMachinePart(final ItemStack aStack) {
         // is correct part && either not powered tool or have enough power
         if (TreeFarmHelper.isValidForGUI(aStack)

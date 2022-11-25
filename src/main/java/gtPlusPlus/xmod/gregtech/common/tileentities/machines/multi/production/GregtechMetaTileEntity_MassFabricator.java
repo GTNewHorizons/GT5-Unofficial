@@ -11,6 +11,9 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
@@ -24,14 +27,11 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MatterFab;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -131,27 +131,6 @@ public class GregtechMetaTileEntity_MassFabricator
     @Override
     protected int getCasingTextureId() {
         return TAE.GTPP_INDEX(9);
-    }
-
-    @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "MatterFabricator";
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_MatterFab(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MatterFabricator.png");
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_MatterFab(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -680,5 +659,32 @@ public class GregtechMetaTileEntity_MassFabricator
         mAmplifierUsed = aNBT.getInteger("mAmplifierUsed");
         mMode = aNBT.getInteger("mMode");
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        screenElements
+                .widget(TextWidget.dynamicString(() -> "Scrap Made: " + mScrapProduced)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                                && getBaseMetaTileEntity().isActive()))
+                .widget(TextWidget.dynamicString(() -> "Scrap Used: " + mScrapUsed)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                                && getBaseMetaTileEntity().isActive()))
+                .widget(TextWidget.dynamicString(() -> "UUA Made: " + mAmplifierProduced)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                                && getBaseMetaTileEntity().isActive()))
+                .widget(TextWidget.dynamicString(() -> "UUA Used: " + mAmplifierUsed)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                                && getBaseMetaTileEntity().isActive()))
+                .widget(TextWidget.dynamicString(() -> "UUM Made: " + mMatterProduced)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                                && getBaseMetaTileEntity().isActive()));
     }
 }

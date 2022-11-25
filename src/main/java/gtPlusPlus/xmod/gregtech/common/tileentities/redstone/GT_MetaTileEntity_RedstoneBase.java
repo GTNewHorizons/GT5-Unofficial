@@ -6,7 +6,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachi
 import gregtech.api.objects.GT_ItemStack;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -80,22 +79,6 @@ public abstract class GT_MetaTileEntity_RedstoneBase extends GT_MetaTileEntity_T
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
         return false;
-    }
-
-    @Override
-    public Object getServerGUI(
-            int aID,
-            InventoryPlayer aPlayerInventory,
-            gregtech.api.interfaces.tileentity.IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    @Override
-    public Object getClientGUI(
-            int aID,
-            InventoryPlayer aPlayerInventory,
-            gregtech.api.interfaces.tileentity.IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
     }
 
     @Override

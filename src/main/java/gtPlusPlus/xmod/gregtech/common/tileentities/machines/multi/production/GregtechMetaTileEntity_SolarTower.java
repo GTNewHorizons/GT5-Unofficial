@@ -540,16 +540,6 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return null;
     }
@@ -837,5 +827,10 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
         return new String[] {
             "Internal Heat Level: " + this.mHeatLevel, "Connected Solar Reflectors: " + this.mSolarHeaters.size()
         };
+    }
+
+    @Override
+    public boolean doesBindPlayerInventory() {
+        return false;
     }
 }

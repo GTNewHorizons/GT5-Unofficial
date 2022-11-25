@@ -417,16 +417,6 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
-    @Override
     public String getMachineType() {
         return "Grinding Machine";
     }

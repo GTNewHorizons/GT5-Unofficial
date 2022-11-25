@@ -149,16 +149,6 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "IndustrialWashPlant";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return mMode == 0
                 ? GT_Recipe.GT_Recipe_Map.sOreWasherRecipes

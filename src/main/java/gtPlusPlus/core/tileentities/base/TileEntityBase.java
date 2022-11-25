@@ -554,19 +554,6 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         return this.zCoord + ForgeDirection.getOrientation(aSide).offsetZ * aMultiplier;
     }
 
-    public final boolean openGUI(EntityPlayer aPlayer) {
-        return this.openGUI(aPlayer, 0);
-    }
-
-    public final boolean openGUI(EntityPlayer aPlayer, int aID) {
-        if (aPlayer == null) {
-            return false;
-        } else {
-            aPlayer.openGui(GT_Values.GT, aID, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            return true;
-        }
-    }
-
     public final int getRandomNumber(int aRange) {
         return this.worldObj.rand.nextInt(aRange);
     }

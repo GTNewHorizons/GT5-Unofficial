@@ -223,11 +223,6 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return null;
     }
@@ -339,11 +334,6 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
     @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
     }
 
     @Override

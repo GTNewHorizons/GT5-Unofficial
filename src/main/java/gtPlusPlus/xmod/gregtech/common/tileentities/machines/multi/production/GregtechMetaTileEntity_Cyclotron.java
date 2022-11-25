@@ -28,7 +28,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -59,29 +58,6 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
     @Override
     public long maxEUStore() {
         return 1800000000L;
-    }
-
-    @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return super.getServerGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
-        // return new CONTAINER_Cyclotron(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return super.getClientGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
-        // return new GUI_Cyclotron(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-        // Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.mNEIName);
     }
 
     @Override
@@ -439,5 +415,10 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean doesBindPlayerInventory() {
+        return false;
     }
 }

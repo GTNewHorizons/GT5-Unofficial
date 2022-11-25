@@ -153,21 +153,6 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
         return TAE.GTPP_INDEX(16);
     }
 
-    @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public boolean requiresVanillaGtGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "ElectricBlastFurnace";
-    }
-
     private static final GT_Recipe_Map sFakeRecipeMap = new GT_Recipe_Map(
             new HashSet<>(0),
             "gt.recipe.fakerockbreaker",
@@ -518,7 +503,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker
     @Override
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> aInputs = super.getStoredInputs();
-        if (this.hasSlotInGUI() && this.getGUIItemStack() != null) {
+        if (this.getGUIItemStack() != null) {
             aInputs.add(this.getGUIItemStack());
         }
         return aInputs;

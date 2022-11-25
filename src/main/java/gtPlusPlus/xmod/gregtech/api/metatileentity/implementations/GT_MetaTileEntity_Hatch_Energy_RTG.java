@@ -2,8 +2,9 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
 
-import gregtech.api.gui.GT_Container_3by3;
-import gregtech.api.gui.GT_GUIContainer_3by3;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -15,7 +16,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.HashMap;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -126,19 +126,8 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_3by3(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_3by3(aPlayerInventory, aBaseMetaTileEntity, "RTG Power Unit");
     }
 
     private static class Dat {
@@ -278,5 +267,15 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        getBaseMetaTileEntity().add3by3Slots(builder);
     }
 }

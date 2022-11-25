@@ -21,7 +21,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBu
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -163,18 +162,6 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
     @Override
     public boolean isAccessAllowed(final EntityPlayer aPlayer) {
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
     }
 
     @Override

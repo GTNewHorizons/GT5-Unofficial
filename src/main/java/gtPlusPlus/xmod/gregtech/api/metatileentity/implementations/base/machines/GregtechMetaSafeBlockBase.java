@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machine
 import static gregtech.api.enums.GT_Values.V;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
@@ -244,7 +245,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
                 Logger.WARNING("Accessing is: " + PlayerCache.lookupPlayerByUUID(tempUUID));
                 if (this.ownerUUID.equals(tempUUID)) {
                     Logger.WARNING("Owner's UUID: " + this.ownerUUID);
-                    aBaseMetaTileEntity.openGUI(aPlayer);
+                    GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
                     // Utils.LOG_WARNING("GUI should now be open for you sir.");
                 } else {
                     PlayerUtils.messagePlayer(aPlayer, "Access Denied, This does not belong to you.");

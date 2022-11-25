@@ -100,11 +100,6 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GTPP_Recipe.GTPP_Recipe_Map.sFlotationCellRecipes;
     }
@@ -184,11 +179,6 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
     @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
     }
 
     @Override

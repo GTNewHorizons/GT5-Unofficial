@@ -12,7 +12,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -38,7 +37,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -262,22 +260,12 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
         return getMaxEfficiency(aStack) > 0;
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeTurbine.png");
-    }
-
     public Block getCasingBlock() {
         return ModBlocks.blockSpecialMultiCasings;
     }
 
     public final Block getShaftBlock() {
         return ModBlocks.blockSpecialMultiCasings;
-    }
-
-    @Override
-    public final boolean hasSlotInGUI() {
-        return true;
     }
 
     public abstract int getCasingMeta();

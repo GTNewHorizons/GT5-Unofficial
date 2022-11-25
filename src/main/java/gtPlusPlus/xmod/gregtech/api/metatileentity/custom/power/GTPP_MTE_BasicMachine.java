@@ -5,8 +5,7 @@ import static gregtech.api.enums.GT_Values.V;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Container_BasicMachine;
-import gregtech.api.gui.GT_GUIContainer_BasicMachine;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
@@ -19,7 +18,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.random.XSTR;
 import java.util.Arrays;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -446,26 +444,8 @@ public abstract class GTPP_MTE_BasicMachine extends GTPP_MTE_BasicTank {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_BasicMachine(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                getLocalName(),
-                mGUIName,
-                GT_Utility.isStringValid(mNEIName)
-                        ? mNEIName
-                        : getRecipeList() != null ? getRecipeList().mUnlocalizedName : "");
     }
 
     @Override

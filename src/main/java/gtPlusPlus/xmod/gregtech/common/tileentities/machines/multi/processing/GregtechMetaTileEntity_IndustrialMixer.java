@@ -142,16 +142,6 @@ public class GregtechMetaTileEntity_IndustrialMixer
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "IndustrialMixer";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map.sMultiblockMixerRecipes_GT;
     }

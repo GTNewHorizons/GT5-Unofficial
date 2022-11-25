@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.b
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -25,7 +24,6 @@ import gtPlusPlus.core.util.minecraft.OreDictUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -81,12 +79,6 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
     @Override
     protected int getCasingTextureId() {
         return this.casingTextureIndex;
-    }
-
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "OreDrillingPlant.png");
     }
 
     public int getAmountOfOutputs() {
@@ -610,16 +602,6 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
         for (int i = 0; i < aAmount; i++) {
             aMap.add(aMaterial.getOre(1));
         }
-    }
-
-    @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
     }
 
     @Override

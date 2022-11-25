@@ -34,7 +34,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
@@ -192,12 +191,6 @@ public class GregtechMetaTileEntity_LargeRocketEngine
     @Override
     public boolean isCorrectMachinePart(final ItemStack aStack) {
         return this.getMaxEfficiency(aStack) > 0;
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return super.getClientGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
     }
 
     public static void setAir() {
@@ -580,16 +573,6 @@ public class GregtechMetaTileEntity_LargeRocketEngine
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
-    @Override
     public String getMachineType() {
         return "Rocket Engine";
     }
@@ -602,5 +585,10 @@ public class GregtechMetaTileEntity_LargeRocketEngine
     @Override
     public int getEuDiscountForParallelism() {
         return 0;
+    }
+
+    @Override
+    public boolean doesBindPlayerInventory() {
+        return false;
     }
 }

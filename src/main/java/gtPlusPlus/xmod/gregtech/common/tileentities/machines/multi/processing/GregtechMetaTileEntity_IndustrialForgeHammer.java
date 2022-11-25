@@ -168,16 +168,6 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "MaterialPress";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sHammerRecipes;
     }

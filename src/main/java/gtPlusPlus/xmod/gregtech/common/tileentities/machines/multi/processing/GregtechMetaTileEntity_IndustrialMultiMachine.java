@@ -174,16 +174,6 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "Generic3By3";
-    }
-
-    @Override
     public boolean checkRecipe(final ItemStack aStack) {
         ArrayList<FluidStack> tFluids = getStoredFluids();
         // Logger.MACHINE_INFO("1");

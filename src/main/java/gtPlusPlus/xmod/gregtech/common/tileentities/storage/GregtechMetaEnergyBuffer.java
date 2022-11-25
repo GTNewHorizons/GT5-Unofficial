@@ -3,8 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 import static gregtech.api.enums.GT_Values.V;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Container_1by1;
-import gregtech.api.gui.GT_GUIContainer_1by1;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -17,7 +15,6 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -357,7 +354,6 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
         Logger.WARNING("Right Click on MTE by Player");
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
-            // aBaseMetaTileEntity.openGUI(aPlayer);
         }
 
         Logger.WARNING("MTE is Client-side");
@@ -391,18 +387,6 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     GuiHandler block = new GuiHandler();
     Utils.LOG_WARNING("Guihandler.toString(): "+block.toString());
     block.getClientGuiElement(1, playerIn, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);*/
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
-    }
 
     @Override
     public boolean allowPullStack(

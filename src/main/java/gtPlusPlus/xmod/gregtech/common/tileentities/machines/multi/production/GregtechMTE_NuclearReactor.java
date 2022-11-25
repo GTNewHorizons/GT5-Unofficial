@@ -171,16 +171,6 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
         return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12))};
     }
 
-    @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "MatterFabricator";
-    }
-
     public final boolean addNuclearReactorEdgeList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;

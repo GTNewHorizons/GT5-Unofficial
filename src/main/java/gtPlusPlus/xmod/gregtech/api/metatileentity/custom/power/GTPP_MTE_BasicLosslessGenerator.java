@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe;
@@ -80,12 +81,8 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         Logger.WARNING("Right Clicked");
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        } else {
-            aBaseMetaTileEntity.openGUI(aPlayer);
-            return true;
-        }
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        return true;
     }
 
     public ITexture[] getFront(byte aColor) {
@@ -329,5 +326,10 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 
     public int getTankPressure() {
         return -100;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
     }
 }

@@ -75,16 +75,6 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
         return "Weaponized Lighting Rod";
     }
 
-    @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
     /*@Override
     public String[] getTooltip() {
     	String casings = getCasingBlockItem().get(0).getDisplayName();
@@ -512,5 +502,10 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
     public IStructureDefinition getStructureDefinition() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public boolean doesBindPlayerInventory() {
+        return false;
     }
 }

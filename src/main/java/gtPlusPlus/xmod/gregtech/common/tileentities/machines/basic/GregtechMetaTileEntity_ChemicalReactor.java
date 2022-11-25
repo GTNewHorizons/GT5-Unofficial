@@ -10,11 +10,8 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.slots.SlotChemicalPlantInput;
-import gtPlusPlus.xmod.gregtech.api.gui.fluidreactor.Container_FluidReactor;
-import gtPlusPlus.xmod.gregtech.api.gui.fluidreactor.GUI_FluidReactor;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.List;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -80,29 +77,6 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
             t.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        try {
-            Container_FluidReactor y = new Container_FluidReactor(aPlayerInventory, aBaseMetaTileEntity);
-            return y;
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_FluidReactor(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                this.getLocalName(),
-                this.mGUIName,
-                GT_Utility.isStringValid(this.mNEIName)
-                        ? this.mNEIName
-                        : (this.getRecipeList() != null ? this.getRecipeList().mUnlocalizedName : ""));
     }
 
     @Override

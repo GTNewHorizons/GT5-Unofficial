@@ -1,7 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import gregtech.api.enums.*;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -12,7 +20,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.basic.*;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.api.crops.*;
 import ic2.core.item.DamageHandler;
@@ -24,8 +32,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank {
-
-    protected String mLocalName;
 
     private static final int SLOT_WEEDEX_1 = 1;
     private static final int SLOT_WEEDEX_2 = 2;
@@ -43,25 +49,11 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
                 aTier,
                 21,
                 aDescription);
-        this.mLocalName = "Crop Manager (" + GT_Values.VN[aTier] + ")";
     }
 
     public GT_MetaTileEntity_CropHarvestor(
             final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, 21, aDescription, aTextures);
-        this.mLocalName = "Crop Manager (" + GT_Values.VN[aTier] + ")";
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_CropHarvestor(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_CropHarvestor(aPlayerInventory, aBaseMetaTileEntity, this.mLocalName);
     }
 
     @Override
@@ -131,10 +123,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -682,5 +671,56 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.mModeAlternative = aNBT.getBoolean("mModeAlternative");
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new CycleButtonWidget()
+                .setToggle(() -> mModeAlternative, val -> mModeAlternative = val)
+                .setTexture(GTPP_UITextures.OVERLAY_BUTTON_HARVESTER_MODE)
+                .addTooltip(0, "Enable Hydration/Fertilizing/Weed-EX")
+                .addTooltip(1, "Disable Hydration/Fertilizing/Weed-EX")
+                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setPos(47, 63)
+                .setSize(18, 18));
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
+                        .startFromSlot(SLOT_WEEDEX_1)
+                        .endAtSlot(SLOT_WEEDEX_2)
+                        .applyForWidget(widget -> widget.setFilter(stack -> stack != null
+                                        && stack.getItem().getUnlocalizedName().equals("ic2.itemWeedEx"))
+                                .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_WEED_EX))
+                        .build()
+                        .setPos(7, 13))
+                .widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
+                        .startFromSlot(SLOT_FERT_1)
+                        .endAtSlot(SLOT_FERT_4)
+                        .applyForWidget(widget -> widget.setFilter(stack -> stack != null
+                                        && stack.getItem().getUnlocalizedName().equals("ic2.itemFertilizer"))
+                                .setBackground(
+                                        getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_FERTILIZER))
+                        .build()
+                        .setPos(7, 31))
+                .widget(SlotGroup.ofItemHandler(inventoryHandler, 6)
+                        .startFromSlot(SLOT_OUTPUT_START)
+                        .endAtSlot(SLOT_OUTPUT_START + 6 * 3)
+                        .canInsert(false)
+                        .build()
+                        .setPos(61, 7));
+        builder.widget(new ProgressBar()
+                        .setTexture(
+                                GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY, GT_UITextures.PROGRESSBAR_BOILER_WATER, 54)
+                        .setDirection(ProgressBar.Direction.UP)
+                        .setProgress(() -> (float) getFluidAmount() / getCapacity())
+                        .setSynced(false, false)
+                        .dynamicTooltip(() ->
+                                Collections.singletonList("Water: " + getFluidAmount() + "L / " + getCapacity() + "L"))
+                        .setPos(47, 7)
+                        .setSize(10, 54))
+                .widget(new FakeSyncWidget.FluidStackSyncer(this::getDrainableStack, this::setDrainableStack));
     }
 }

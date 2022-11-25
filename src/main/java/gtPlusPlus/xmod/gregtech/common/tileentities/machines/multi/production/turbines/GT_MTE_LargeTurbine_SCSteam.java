@@ -94,11 +94,6 @@ public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTu
     }
 
     @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
-    @Override
     public String getMachineType() {
         return "Large Supercritical Steam Turbine";
     }

@@ -24,11 +24,6 @@ extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
-	public String getCustomGUIResourceName() {
-		return null;
-	}
-
-	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity)
 	{
 		return new GregtechMTE_FastNeutronReactor(this.mName);
@@ -207,11 +202,6 @@ extends GregtechMeta_MultiBlockBase
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
-	}
-
-	@Override
-	public boolean hasSlotInGUI() {
-		return false;
 	}
 
 }

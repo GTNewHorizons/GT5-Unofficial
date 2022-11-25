@@ -313,21 +313,6 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         return CASING_TEXTURE_ID;
     }
 
-    @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public boolean requiresVanillaGtGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GTPP_Recipe_Map.sElementalDuplicatorRecipes;
     }
@@ -764,6 +749,11 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
             }
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean doesBindPlayerInventory() {
         return false;
     }
 }

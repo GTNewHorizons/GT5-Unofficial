@@ -650,7 +650,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
             }
         }
 
-        ArrayUtils.removeNulls(aInput);
+        aInput = ArrayUtils.removeNulls(aInput);
         if (aInput.length <= 1) {
             return false;
         }

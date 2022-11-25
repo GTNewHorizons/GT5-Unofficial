@@ -13,9 +13,21 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.*;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.forge.PlayerMainInvWrapper;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -36,13 +48,11 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.preloader.asm.AsmConfig;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_PowerSubStation;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_PowerSubStation;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -141,35 +151,10 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
-    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         // if (mBatteryCapacity <= 0) return false;
-        if (!aBaseMetaTileEntity.isClientSide()) {
-            aBaseMetaTileEntity.openGUI(aPlayer);
-        }
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_PowerSubStation(
-                aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "Ergon Energy - Sub Station");
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_PowerSubStation(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     private void checkMachineProblem(String msg, int xOff, int yOff, int zOff) {
@@ -837,5 +822,98 @@ public class GregtechMetaTileEntity_PowerSubStationController
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now inputting power into the controller.");
         }
+    }
+
+    @Override
+    public boolean doesBindPlayerInventory() {
+        return false;
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return 196;
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return 191;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(175, 166));
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setPos(4, 4)
+                        .setSize(149, 149))
+                .widget(new SlotWidget(inventoryHandler, 0).setPos(154, 4))
+                .widget(new SlotWidget(inventoryHandler, 1)
+                        .setAccess(true, false)
+                        .setPos(154, 22))
+                .widget(SlotGroup.ofItemHandler(new PlayerMainInvWrapper(buildContext.getPlayer().inventory), 9)
+                        .endAtSlot(8)
+                        .build()
+                        .setPos(7, 166))
+                .widget(TextWidget.dynamicString(() -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                                ? getBaseMetaTileEntity().isActive() ? "Running perfectly" : "Turn on with Mallet"
+                                : "")
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(10, 8))
+                .widget(new FakeSyncWidget.BooleanSyncer(
+                        () -> getBaseMetaTileEntity().isActive(),
+                        val -> getBaseMetaTileEntity().setActive(val)))
+                .widget(new FakeSyncWidget.IntegerSyncer(
+                        () -> getBaseMetaTileEntity().getErrorDisplayID(),
+                        val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+                .widget(new TextWidget("In")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(178, 10))
+                .widget(new TextWidget("Out")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(176, 28))
+                .widget(TextWidget.dynamicString(
+                                () -> "Avg In: " + GT_Utility.formatNumbers(getAverageEuAdded()) + " EU")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(10, 20))
+                .widget(TextWidget.dynamicString(
+                                () -> "Avg Out: " + GT_Utility.formatNumbers(getAverageEuConsumed()) + " EU")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(10, 30))
+                .widget(new DrawableWidget()
+                        .setDrawable(GTPP_UITextures.PICTURE_ENERGY_FRAME)
+                        .setPos(4, 155)
+                        .setSize(149, 7))
+                .widget(new ProgressBar()
+                        .setProgress(this::getProgress)
+                        .setTexture(GTPP_UITextures.PROGRESSBAR_PSS_ENERGY, 147)
+                        .setDirection(ProgressBar.Direction.RIGHT)
+                        .setPos(5, 156)
+                        .setSize(147, 5))
+                .widget(new TextWidget("Stored:")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(10, 132))
+                .widget(TextWidget.dynamicText(() -> {
+                            int colorScale = (int) (getProgress() * 100 * 2.55);
+                            return new Text(GT_Utility.formatNumbers(
+                                                    getBaseMetaTileEntity().getStoredEU()) + " EU")
+                                    .color(Utils.rgbtoHexValue((255 - colorScale), colorScale, 0));
+                        })
+                        .setPos(10, 142))
+                .widget(TextWidget.dynamicString(() -> GT_Utility.formatNumbers(getProgress()) + "%")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(70, 155));
+    }
+
+    private float getProgress() {
+        return (float) getBaseMetaTileEntity().getStoredEU()
+                / getBaseMetaTileEntity().getEUCapacity();
     }
 }

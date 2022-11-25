@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generat
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
@@ -114,7 +115,7 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
                 this.fill(Materials.Water.getFluid(1000 * aPlayer.getCurrentEquippedItem().stackSize), true);
                 aPlayer.getCurrentEquippedItem().func_150996_a(Items.bucket);
             } else {
-                aBaseMetaTileEntity.openGUI(aPlayer);
+                GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             }
         }
         return true;

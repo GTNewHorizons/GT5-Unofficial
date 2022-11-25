@@ -18,7 +18,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
 import java.util.Random;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -682,18 +681,6 @@ public class GregtechMetaTileEntity_PocketFusion extends GT_MetaTileEntity_Delux
             IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
         // TODO Auto-generated method stub
         return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        // TODO Auto-generated method stub
-        return super.getServerGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        // TODO Auto-generated method stub
-        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
     }
 
     @Override

@@ -1,6 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
@@ -10,15 +17,13 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.CONTAINER_HatchNbtConsumable;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.GUI_HatchNbtConsumable;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import java.lang.reflect.Constructor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
-public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileEntity_Hatch {
+public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileEntity_Hatch
+        implements IAddGregtechLogo {
 
     public GT_Recipe_Map mRecipeMap = null;
     private final int mInputslotCount;
@@ -110,25 +115,8 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 
     @Override
     public final boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public final Object getServerGUI(
-            int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_HatchNbtConsumable(aPlayerInventory, aBaseMetaTileEntity, mInputslotCount);
-    }
-
-    @Override
-    public final Object getClientGUI(
-            int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        CONTAINER_HatchNbtConsumable aContainer =
-                new CONTAINER_HatchNbtConsumable(aPlayerInventory, aBaseMetaTileEntity, mInputslotCount);
-        return new GUI_HatchNbtConsumable(aContainer, getNameGUI());
     }
 
     public abstract String getNameGUI();
@@ -316,5 +304,86 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        switch (mTotalSlotCount) {
+            case 8:
+            case 18:
+                builder.widget(new DrawableWidget()
+                        .setDrawable(getGUITextureSet().getGregTechLogo())
+                        .setSize(17, 17)
+                        .setPos(152, 63));
+                break;
+            case 32:
+                builder.widget(new DrawableWidget()
+                        .setDrawable(getGUITextureSet().getGregTechLogo())
+                        .setSize(17, 17)
+                        .setPos(79, 35));
+                break;
+        }
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        switch (mTotalSlotCount) {
+            case 8:
+                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
+                        .startFromSlot(0)
+                        .endAtSlot(3)
+                        .build()
+                        .setPos(25, 25));
+                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
+                        .startFromSlot(4)
+                        .endAtSlot(7)
+                        .canInsert(false)
+                        .build()
+                        .setPos(115, 25));
+                builder.widget(new TextWidget("Stock")
+                                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(25, 16))
+                        .widget(new TextWidget("Active")
+                                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(115, 16));
+                break;
+            case 18:
+                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
+                        .startFromSlot(0)
+                        .endAtSlot(8)
+                        .build()
+                        .setPos(25, 19));
+                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
+                        .startFromSlot(9)
+                        .endAtSlot(17)
+                        .canInsert(false)
+                        .build()
+                        .setPos(97, 19));
+                builder.widget(new TextWidget("Stock")
+                                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(25, 14))
+                        .widget(new TextWidget("Active")
+                                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                .setPos(15, 14));
+                break;
+            case 32:
+                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
+                        .startFromSlot(0)
+                        .endAtSlot(15)
+                        .build()
+                        .setPos(7, 7));
+                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
+                        .startFromSlot(16)
+                        .endAtSlot(31)
+                        .canInsert(false)
+                        .build()
+                        .setPos(96, 7));
+                break;
+        }
     }
 }

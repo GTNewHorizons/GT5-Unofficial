@@ -1,17 +1,23 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SafeBlock;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_SafeBlock;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines.GregtechMetaSafeBlockBase;
-import net.minecraft.entity.player.InventoryPlayer;
 
-public class GregtechMetaSafeBlock extends GregtechMetaSafeBlockBase {
+public class GregtechMetaSafeBlock extends GregtechMetaSafeBlockBase implements IAddUIWidgets {
 
     public GregtechMetaSafeBlock(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(aID, aName, aNameRegional, aTier, 28, "Protecting your items from sticky fingers.");
@@ -58,14 +64,25 @@ public class GregtechMetaSafeBlock extends GregtechMetaSafeBlockBase {
     }
 
     @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_SafeBlock(aPlayerInventory, aBaseMetaTileEntity);
+    public boolean useModularUI() {
+        return true;
     }
 
     @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_SafeBlock(aPlayerInventory, aBaseMetaTileEntity);
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 9)
+                        .endAtSlot(26)
+                        .build()
+                        .setPos(7, 4))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> bUnbreakable = !bUnbreakable)
+                        .setBackground(GT_UITextures.BUTTON_STANDARD, GTPP_UITextures.OVERLAY_BUTTON_LOCK)
+                        .setPos(43, 62)
+                        .setSize(18, 18))
+                .widget(new TextWidget("Safe Status").setPos(76, 61))
+                .widget(TextWidget.dynamicString(() -> bUnbreakable ? "Locked" : "Unlocked")
+                        .setSynced(false)
+                        .setPos(82, 73))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> bUnbreakable, val -> bUnbreakable = val));
     }
 }

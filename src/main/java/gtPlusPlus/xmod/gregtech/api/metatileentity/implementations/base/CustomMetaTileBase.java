@@ -39,7 +39,9 @@ public abstract class CustomMetaTileBase extends MetaTileEntity {
     @Override
     public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
         super.setBaseMetaTileEntity(aBaseMetaTileEntity);
-        if (mBaseCustomMetaTileEntity != null && aBaseMetaTileEntity == null) {
+        if (mBaseCustomMetaTileEntity != null
+                && aBaseMetaTileEntity == null
+                && mBaseCustomMetaTileEntity.getMetaTileEntity() != null) {
             mBaseCustomMetaTileEntity.getMetaTileEntity().inValidate();
             mBaseCustomMetaTileEntity.setMetaTileEntity(null);
         }

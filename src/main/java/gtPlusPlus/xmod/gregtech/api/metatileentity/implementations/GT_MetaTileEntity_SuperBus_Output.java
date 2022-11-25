@@ -10,7 +10,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,14 +41,6 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_SuperBus_Output(
                 this.mName, this.mTier, ArrayExt.of(this.mDescription), this.mTextures);
-    }
-
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
     }
 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
@@ -104,12 +95,6 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
             "Item Output for Multiblocks", "This bus has no GUI", "" + getSlots(this.mTier) + " Slots", CORE.GT_Tooltip
         };
         return aDesc;
-    }
-
-    @Override
-    public boolean onRightclick(
-            IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
     }
 
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {

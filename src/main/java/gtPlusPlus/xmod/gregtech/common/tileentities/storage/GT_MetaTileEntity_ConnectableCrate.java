@@ -1,9 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
@@ -13,17 +21,14 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.data.ArrayUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SuperChest;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_SuperChest;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_TieredMachineBlock implements IAddUIWidgets {
 
     /*sides.put(getUp());
     sides.put(getDown());
@@ -373,20 +378,8 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
     }
 
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        } else {
-            aBaseMetaTileEntity.openGUI(aPlayer);
-            return true;
-        }
-    }
-
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_SuperChest(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_SuperChest(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        return true;
     }
 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
@@ -565,5 +558,35 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
     public void onMachineBlockUpdate() {
         // TODO Auto-generated method stub
         super.onMachineBlockUpdate();
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setPos(7, 16)
+                        .setSize(71, 45))
+                .widget(new SlotWidget(inventoryHandler, 0)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+                        .setPos(79, 16))
+                .widget(new SlotWidget(inventoryHandler, 1)
+                        .setAccess(true, false)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+                        .setPos(79, 52))
+                .widget(SlotWidget.phantom(inventoryHandler, 2)
+                        .disableInteraction()
+                        .setBackground(GT_UITextures.TRANSPARENT)
+                        .setPos(59, 42))
+                .widget(new TextWidget("Item Amount")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(10, 20))
+                .widget(TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mItemCount))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(10, 30));
     }
 }

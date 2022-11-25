@@ -1,6 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.gui.*;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -14,7 +17,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
@@ -86,19 +88,8 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, "Control Core Module");
     }
 
     @Override
@@ -158,5 +149,15 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
             mControllerLocation = new BlockPos(aTileEntity);
             return true;
         }
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        getBaseMetaTileEntity().add1by1Slot(builder);
     }
 }

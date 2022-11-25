@@ -1,11 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.GT_Container_4by4;
-import gregtech.api.gui.GT_GUIContainer_4by4;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
@@ -14,12 +16,11 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.GTPP_MTE_TieredM
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock {
+public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock implements IAddUIWidgets {
 
     public boolean mCharge = false;
     public boolean mDecharge = false;
@@ -190,20 +191,8 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
     public void loadNBTData(NBTTagCompound aNBT) {}
 
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        } else {
-            aBaseMetaTileEntity.openGUI(aPlayer);
-            return true;
-        }
-    }
-
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_4by4(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        return true;
     }
 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -298,5 +287,15 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
 
     public boolean doesExplode() {
         return true;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        getBaseMetaTileEntity().add4by4Slots(builder);
     }
 }

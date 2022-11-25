@@ -635,14 +635,4 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
         AC_Helper_Utils.removeCrafter(this);
         super.doExplosion(aExplosionPower);
     }
-
-    @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "Generic3By3";
-    }
 }

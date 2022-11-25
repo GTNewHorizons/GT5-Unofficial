@@ -1,6 +1,7 @@
 dependencies {
-    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.41.119:dev')
+    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.41.145:dev')
     compile("com.github.GTNewHorizons:StructureLib:1.2.0-beta.2:dev")
+    compile("com.github.GTNewHorizons:ModularUI:1.0.16:dev") {transitive=false}
     compile("com.github.GTNewHorizons:NotEnoughItems:2.3.7-GTNH:dev")
     compile('com.github.GTNewHorizons:CodeChickenCore:1.1.6:dev')
     compile('com.github.GTNewHorizons:CodeChickenLib:1.1.5.5:dev')
@@ -17,12 +18,10 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:EnderCore:0.2.10:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:SC2:2.0.1:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.0.42:dev') {transitive = false}
-    compileOnly("com.github.GTNewHorizons:bartworks:0.5.67:dev") {transitive = false}
+    compile("com.github.GTNewHorizons:bartworks:0.5.67:dev") {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
     compileOnly('com.github.GTNewHorizons:BuildCraft:7.1.27:dev') {transitive=false}
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Chisel:2.10.15-GTNH:dev') {transitive=false}
     compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.7-GTNH:dev") {transitive = false}
-
-    runtime("com.github.GTNewHorizons:bartworks:0.5.67:dev")
 }

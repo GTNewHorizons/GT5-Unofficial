@@ -202,16 +202,6 @@ else {
    }
 
    @Override
-   public boolean hasSlotInGUI() {
-   	return false;
-   }
-
-   @Override
-   public String getCustomGUIResourceName() {
-   	return null;
-   }
-
-   @Override
    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
    	return null;
    }

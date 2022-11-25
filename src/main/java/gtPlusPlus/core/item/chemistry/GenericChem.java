@@ -5,7 +5,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
-import gtPlusPlus.core.item.circuit.ItemAdvancedChip;
+import gtPlusPlus.core.item.circuit.GTPP_IntegratedCircuit_Item;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -126,7 +126,7 @@ public class GenericChem extends ItemPackage {
         MaterialGenerator.generate(TEFLON, false);
 
         mGenericChemItem1 = new ItemGenericChemBase();
-        mAdvancedCircuit = new ItemAdvancedChip();
+        mAdvancedCircuit = new GTPP_IntegratedCircuit_Item("T3RecipeSelector", "science/general/AdvancedCircuit");
         GregtechItemList.Circuit_T3RecipeSelector.set(mAdvancedCircuit);
 
         registerItemStacks();

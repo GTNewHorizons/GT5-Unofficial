@@ -1,5 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -7,10 +14,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SuperChest;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_SuperChest;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -73,19 +77,9 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
                     + (itemAmount.equalsIgnoreCase("bad") ? "nothing." : itemName + " x" + itemAmount + ".");
             PlayerUtils.messagePlayer(aPlayer, itemMessage);
         } else {
-            aBaseMetaTileEntity.openGUI(aPlayer);
+            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         }
         return true;
-    }
-
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_SuperChest(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_SuperChest(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
     }
 
     @Override
@@ -260,5 +254,27 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
             }
         }
         return super.canInsertItem(aIndex, aStack, aSide);
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setPos(7, 16)
+                        .setSize(71, 45))
+                .widget(new SlotWidget(inventoryHandler, 0)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+                        .setPos(79, 16))
+                .widget(new TextWidget("Item Amount")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(10, 20))
+                .widget(TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mItemCount))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(10, 30));
     }
 }

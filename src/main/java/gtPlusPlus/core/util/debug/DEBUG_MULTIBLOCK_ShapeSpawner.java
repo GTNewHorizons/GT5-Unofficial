@@ -7,8 +7,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.GT_Container_MultiMachine;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -22,7 +21,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -183,24 +181,8 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MultiblockDisplay.png");
     }
 
     @Override
@@ -981,5 +963,10 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
     public boolean allowPutStack(
             final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
     }
 }

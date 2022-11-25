@@ -140,11 +140,6 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
     }
 
     @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
-    @Override
     public String getMachineType() {
         return "Large Gas Turbine";
     }

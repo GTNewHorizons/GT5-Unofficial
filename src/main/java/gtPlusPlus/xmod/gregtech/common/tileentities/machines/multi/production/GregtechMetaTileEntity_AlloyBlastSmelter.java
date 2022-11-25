@@ -164,21 +164,6 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public boolean requiresVanillaGtGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "ElectricBlastFurnace";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes;
     }

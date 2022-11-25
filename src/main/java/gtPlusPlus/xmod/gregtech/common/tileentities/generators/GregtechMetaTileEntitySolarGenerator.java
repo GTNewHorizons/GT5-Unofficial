@@ -2,19 +2,22 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SolarGenerator;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_SolarGenerator;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaSolarGenerator;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGenerator {
 
@@ -43,18 +46,6 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
     @Override
     public boolean isOutputFacing(final byte aSide) {
         return aSide == this.getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_SolarGenerator(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_SolarGenerator(aPlayerInventory, aBaseMetaTileEntity, "SolarBoiler.png");
     }
 
     @Override
@@ -222,5 +213,68 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
         return new ITexture[] {
             super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_MAGIC_ACTIVE)
         };
+    }
+
+    @Override
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.BRONZE;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new ProgressBar()
+                        .setProgress(() -> (float) mProcessingEnergy / 1000)
+                        .setTexture(
+                                GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant()),
+                                GT_UITextures.PROGRESSBAR_BOILER_STEAM,
+                                10)
+                        .setDirection(ProgressBar.Direction.UP)
+                        .setPos(70, 25)
+                        .setSize(10, 54))
+                .widget(new ProgressBar()
+                        .setProgress(() -> (float) getBaseMetaTileEntity().getStoredEU())
+                        .setTexture(
+                                GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant()),
+                                GT_UITextures.PROGRESSBAR_BOILER_WATER,
+                                10)
+                        .setDirection(ProgressBar.Direction.UP)
+                        .setPos(83, 25)
+                        .setSize(10, 54))
+                .widget(new ProgressBar()
+                        .setProgress(() -> (float) mSolarCharge / maxProgresstime())
+                        .setTexture(
+                                GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant()),
+                                GT_UITextures.PROGRESSBAR_BOILER_HEAT,
+                                10)
+                        .setDirection(ProgressBar.Direction.UP)
+                        .setPos(96, 25)
+                        .setSize(10, 54))
+                .widget(new ProgressBar()
+                        .setProgress(() -> (float) mProcessingEnergy / 1000)
+                        .setTexture(GT_UITextures.PROGRESSBAR_FUEL_STEAM.get(getSteamVariant()), 14)
+                        .setDirection(ProgressBar.Direction.UP)
+                        .setPos(116, 45)
+                        .setSize(14, 14));
+    }
+
+    @Override
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet()
+                .setMainBackground(GT_UITextures.BACKGROUND_STEAM.get(getSteamVariant()))
+                .setItemSlot(GT_UITextures.SLOT_ITEM_STEAM.get(getSteamVariant()))
+                .setCoverTab(
+                        GT_UITextures.TAB_COVER_STEAM_NORMAL.get(getSteamVariant()),
+                        GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(getSteamVariant()),
+                        GT_UITextures.TAB_COVER_STEAM_DISABLED.get(getSteamVariant()))
+                .setTitleTab(
+                        GT_UITextures.TAB_TITLE_STEAM.getAdaptable(getSteamVariant()),
+                        GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(getSteamVariant()),
+                        GT_UITextures.TAB_TITLE_ANGULAR_STEAM.getAdaptable(getSteamVariant()))
+                .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(getSteamVariant()));
     }
 }

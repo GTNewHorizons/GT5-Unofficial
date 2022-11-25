@@ -70,11 +70,8 @@ public class FishPondFakeRecipe {
                 new FluidStack[] {null},
                 100, // 1 Tick
                 0, // No Eu produced
-                circuit // Magic Number
-                );
-        if (x != null) {
-            Logger.INFO("Fishing [" + circuit + "]: " + ItemUtils.getArrayStackNames(outputItems));
-            GTPP_Recipe.GTPP_Recipe_Map.sFishPondRecipes.addRecipe(x);
-        }
+                0);
+        Logger.INFO("Fishing [" + circuit + "]: " + ItemUtils.getArrayStackNames(outputItems));
+        GTPP_Recipe.GTPP_Recipe_Map.sFishPondRecipes.addRecipe(x, false, false, false);
     }
 }

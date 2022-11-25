@@ -6,6 +6,7 @@ import gtPlusPlus.api.helpers.MaterialHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
+import gtPlusPlus.core.item.circuit.GTPP_IntegratedCircuit_Item;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ELEMENT;
@@ -17,7 +18,6 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
-import gtPlusPlus.plugin.agrichem.item.algae.ItemBioChip;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -152,7 +152,7 @@ public class AgriculturalChem extends ItemPackage {
 
         mAlgae = new ItemAlgaeBase();
         mAgrichemItem1 = new ItemAgrichemBase();
-        mBioCircuit = new ItemBioChip();
+        mBioCircuit = new GTPP_IntegratedCircuit_Item("BioRecipeSelector", "bioscience/BioCircuit");
         GregtechItemList.Circuit_BioRecipeSelector.set(mBioCircuit);
 
         mAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 0, 1);

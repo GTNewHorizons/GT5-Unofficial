@@ -9,9 +9,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_AdvancedBoiler;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_AdvancedBoiler;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -78,18 +75,6 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     @Override
     public int maxProgresstime() {
         return 500;
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_AdvancedBoiler(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_AdvancedBoiler(aPlayerInventory, aBaseMetaTileEntity, "SolarBoiler.png");
     }
 
     @Override

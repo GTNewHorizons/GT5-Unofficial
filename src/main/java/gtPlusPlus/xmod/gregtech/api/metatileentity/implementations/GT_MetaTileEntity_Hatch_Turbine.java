@@ -3,8 +3,12 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST5;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -20,12 +24,9 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.CONTAINER_1by1_Turbine;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.GUI_1by1_Turbine;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -132,22 +133,8 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        } else {
-            aBaseMetaTileEntity.openGUI(aPlayer);
-        }
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_1by1_Turbine(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_1by1_Turbine(aPlayerInventory, aBaseMetaTileEntity, "Turbine Rotor Hatch");
     }
 
     @Override
@@ -416,5 +403,18 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new SlotWidget(inventoryHandler, 0)
+                .setFilter(GregtechMetaTileEntity_LargerTurbineBase::isValidTurbine)
+                .setAccess(false, true)
+                .setPos(79, 34));
     }
 }

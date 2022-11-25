@@ -133,16 +133,6 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "IndustrialCuttingMachine";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return mCuttingMode ? GT_Recipe.GT_Recipe_Map.sCutterRecipes : GT_Recipe.GT_Recipe_Map.sSlicerRecipes;
     }

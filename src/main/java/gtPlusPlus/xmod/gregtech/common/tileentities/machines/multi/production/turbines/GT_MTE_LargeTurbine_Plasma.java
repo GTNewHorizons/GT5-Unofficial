@@ -247,11 +247,6 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
     }
 
     @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
-    @Override
     public String getMachineType() {
         return "Large Plasma Turbine";
     }

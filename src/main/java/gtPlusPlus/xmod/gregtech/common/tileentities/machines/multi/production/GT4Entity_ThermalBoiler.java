@@ -25,7 +25,6 @@ import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -38,10 +37,6 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     private int mCasing;
     private static IStructureDefinition<GT4Entity_ThermalBoiler> STRUCTURE_DEFINITION = null;
     private int mSuperEfficencyIncrease = 0;
-
-    public void onRightclick(EntityPlayer aPlayer) {
-        getBaseMetaTileEntity().openGUI(aPlayer, 158);
-    }
 
     public GT4Entity_ThermalBoiler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -358,15 +353,5 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
-    }
-
-    @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "Generic3By3";
     }
 }

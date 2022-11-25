@@ -1,9 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import com.gtnewhorizons.modularui.api.UIInfos;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUIDialogSelectItem;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -11,13 +11,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -46,16 +45,6 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    @Override
     public String[] getDescription() {
         return new String[] {
             "Item Input for Multiblocks",
@@ -68,20 +57,21 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide() && aPlayer.getCurrentEquippedItem() == null) openCircuitSelector();
+        if (aBaseMetaTileEntity.isClientSide() && aPlayer.getCurrentEquippedItem() == null) {
+            openCircuitSelector(aPlayer);
+        }
     }
 
     @SideOnly(Side.CLIENT)
-    private void openCircuitSelector() {
+    private void openCircuitSelector(EntityPlayer player) {
         List<ItemStack> circuits = getConfigurationCircuits();
-        Minecraft.getMinecraft()
-                .displayGuiScreen(new GT_GUIDialogSelectItem(
+        UIInfos.openClientUI(player, buildContext -> new SelectItemUIFactory(
                         StatCollector.translateToLocal("GT5U.machines.select_circuit"),
                         getStackForm(0),
-                        null,
                         this::onCircuitSelected,
                         circuits,
-                        GT_Utility.findMatchingStackInList(circuits, getStackInSlot(getCircuitSlot()))));
+                        GT_Utility.findMatchingStackInList(circuits, getStackInSlot(getCircuitSlot())))
+                .createWindow(buildContext));
     }
 
     @SideOnly(Side.CLIENT)

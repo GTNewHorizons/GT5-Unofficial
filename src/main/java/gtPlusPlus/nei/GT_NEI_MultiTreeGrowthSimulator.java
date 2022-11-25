@@ -8,7 +8,7 @@ import gtPlusPlus.core.item.ModItems;
 import java.util.List;
 import net.minecraft.item.ItemStack;
 
-public class GT_NEI_MultiTreeGrowthSimulator extends GT_NEI_MultiNoCell {
+public class GT_NEI_MultiTreeGrowthSimulator extends GTPP_NEI_DefaultHandler {
 
     public GT_NEI_MultiTreeGrowthSimulator() {
         super(GTPP_Recipe_Map.sTreeSimFakeRecipes);
@@ -22,9 +22,12 @@ public class GT_NEI_MultiTreeGrowthSimulator extends GT_NEI_MultiNoCell {
     @Override
     public void drawExtras(final int aRecipeIndex) {
         if (ModItems.fluidFertBasic != null) {
-            drawText(5, 90, "Chance of Sapling output if", -16777216);
-            drawText(5, 100, "" + ModItems.fluidFertBasic.getLocalizedName() + " is provided.", -16777216);
-            drawText(5, 110, "This is optional.", -16777216);
+            int y = getDescriptionYOffset();
+            drawText(5, y, "Chance of Sapling output if", -16777216);
+            y += 10;
+            drawText(5, y, "" + ModItems.fluidFertBasic.getLocalizedName() + " is provided.", -16777216);
+            y += 10;
+            drawText(5, y, "This is optional.", -16777216);
         }
     }
 

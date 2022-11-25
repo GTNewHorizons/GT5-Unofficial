@@ -187,21 +187,6 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
         return 44;
     }
 
-    @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public boolean requiresVanillaGtGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GTPP_Recipe_Map.sMolecularTransformerRecipes;
     }

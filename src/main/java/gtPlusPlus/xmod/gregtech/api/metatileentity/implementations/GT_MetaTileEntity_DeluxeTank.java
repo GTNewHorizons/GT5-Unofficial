@@ -6,9 +6,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_DeluxeTank;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_DeluxeTank;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -162,18 +159,6 @@ public abstract class GT_MetaTileEntity_DeluxeTank extends GT_MetaTileEntity_Bas
     @Override
     public FluidStack getDisplayedFluid() {
         return this.getDrainableStack();
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_DeluxeTank(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_DeluxeTank(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
     }
 
     @Override

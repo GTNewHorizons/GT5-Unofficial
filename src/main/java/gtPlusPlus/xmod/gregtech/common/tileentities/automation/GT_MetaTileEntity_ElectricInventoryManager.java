@@ -1,8 +1,21 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
@@ -10,17 +23,17 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.gui.automation.GT_Container_ElectricInventoryManager;
-import gtPlusPlus.xmod.gregtech.api.gui.automation.GT_GUIContainer_ElectricInventoryManager;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
-public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntity_TieredMachineBlock
+        implements IAddGregtechLogo, IAddUIWidgets {
 
     public int[] mSlotRange = new int[4];
     public boolean mWorkedLastTick = false;
@@ -40,18 +53,6 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
     public GT_MetaTileEntity_ElectricInventoryManager(
             final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, 16, aDescription, aTextures);
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_ElectricInventoryManager(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_ElectricInventoryManager(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -146,10 +147,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -599,5 +597,168 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
             new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Yellow_Redstone)
         };
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(154, 59));
+    }
+
+    // Internal copy of values stored in this tile. Client will use these to render stuff.
+    private final int[] mTargetDirections = new int[12];
+    private final int[] mRangeDirections = new int[4];
+    private final boolean[] mTargetInOut = new boolean[12];
+    private final boolean[] mTargetEnergy = new boolean[4];
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        for (int i = 0; i < 3; i++) {
+            builder.widget(new SlotWidget(inventoryHandler, i)
+                    .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_CHEST)
+                    .setPos(154, 4 + i * 18));
+        }
+
+        int[] slotXPositions = new int[] {4, 60, 79, 135};
+        for (int i = 0; i < 12; i++) {
+            final int index = i;
+            builder.widget(
+                    new SlotWidget(new BaseSlot(inventoryHandler, i + 3, true)) {
+                        @Override
+                        protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+                            super.phantomClick(clickData, cursorStack);
+                            if (clickData.mouseButton != 0
+                                    && cursorStack != null
+                                    && getMcSlot().getHasStack()) {
+                                getMcSlot().getStack().setItemDamage(OreDictionary.WILDCARD_VALUE);
+                            }
+                        }
+                    }.setControlsAmount(true)
+                            .disableShiftInsert()
+                            .setBackground(() -> {
+                                if (index % 3 == 0) {
+                                    return new IDrawable[] {
+                                        GTPP_UITextures.SLOT_INVENTORY_MANAGER[mRangeDirections[index / 3]],
+                                        GTPP_UITextures.OVERLAY_SLOT_INVENTORY_MANAGER_COLOR[
+                                                mRangeDirections[index / 3]]
+                                    };
+                                } else if (index % 3 == 1) {
+                                    return new IDrawable[] {
+                                        GTPP_UITextures.SLOT_INVENTORY_MANAGER[mRangeDirections[index / 3]],
+                                        GTPP_UITextures.OVERLAY_SLOT_INVENTORY_MANAGER_ARROW[
+                                                mRangeDirections[index / 3]]
+                                    };
+                                } else {
+                                    return new IDrawable[] {
+                                        GTPP_UITextures.SLOT_INVENTORY_MANAGER[mRangeDirections[index / 3]]
+                                    };
+                                }
+                            })
+                            .setPos(slotXPositions[i / 3], 4 + (i % 3) * 18));
+        }
+        for (int i = 0; i < 4; i++) {
+            final int index = i;
+            builder.widget(new ButtonWidget()
+                    .setOnClick((clickData, widget) -> switchRangeEnergy(index))
+                    .setBackground(() -> new IDrawable[] {
+                        mTargetEnergy[index] ? ModularUITextures.ITEM_SLOT : GT_UITextures.BUTTON_STANDARD,
+                        GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY
+                    })
+                    .setPos(slotXPositions[i], 59)
+                    .setSize(18, 18));
+        }
+
+        int[] buttonXPositions = new int[] {23, 41, 98, 116};
+        for (int i = 0; i < 12; i++) {
+            final int index = i;
+            builder.widget(new ButtonWidget()
+                    .setOnClick((clickData, widget) -> {
+                        if (index % 3 == 0) {
+                            if (clickData.mouseButton != 0) {
+                                switchSlot1InOut(index / 3);
+                            } else {
+                                iterateSlot1Direction(index / 3);
+                            }
+                        } else if (index % 3 == 1) {
+                            if (clickData.mouseButton != 0) {
+                                switchSlot2InOut(index / 3);
+                            } else {
+                                iterateSlot2Direction(index / 3);
+                            }
+                        } else {
+                            if (clickData.mouseButton != 0) {
+                                switchSlot3InOut(index / 3);
+                            } else {
+                                iterateSlot3Direction(index / 3);
+                            }
+                        }
+                    })
+                    .setBackground(() -> new IDrawable[] {
+                        GT_UITextures.BUTTON_STANDARD,
+                        GTPP_UITextures.OVERLAY_BUTTON_DIRECTION[mTargetDirections[index]],
+                        mTargetInOut[index]
+                                ? GTPP_UITextures.OVERLAY_BUTTON_TIP_RED
+                                : GTPP_UITextures.OVERLAY_BUTTON_TIP_GREEN
+                    })
+                    .setPos(buttonXPositions[i / 3], 4 + (i % 3) * 18)
+                    .setSize(18, 18));
+        }
+        for (int i = 0; i < 4; i++) {
+            final int index = i;
+            builder.widget(new ButtonWidget()
+                    .setOnClick((clickData, widget) -> iterateRangeDirection(index))
+                    .setBackground(() -> new IDrawable[] {
+                        GT_UITextures.BUTTON_STANDARD,
+                        GTPP_UITextures.OVERLAY_BUTTON_DIRECTION_GRAY[mRangeDirections[index]]
+                    })
+                    .setPos(buttonXPositions[i], 59)
+                    .setSize(18, 18));
+        }
+
+        for (int i = 0; i < mTargetDirections.length; i++) {
+            final int index = i;
+            builder.widget(new FakeSyncWidget.ByteSyncer(
+                    () -> {
+                        if (index % 3 == 0) {
+                            return getSlot1Direction(index / 3);
+                        } else if (index % 3 == 1) {
+                            return getSlot2Direction(index / 3);
+                        } else {
+                            return getSlot3Direction(index / 3);
+                        }
+                    },
+                    val -> mTargetDirections[index] = val));
+        }
+        for (int i = 0; i < mRangeDirections.length; i++) {
+            final int index = i;
+            builder.widget(new FakeSyncWidget.ByteSyncer(
+                    () -> getRangeDirection(index), val -> mRangeDirections[index] = val));
+        }
+        for (int i = 0; i < mTargetInOut.length; i++) {
+            final int index = i;
+            builder.widget(new FakeSyncWidget.BooleanSyncer(
+                    () -> {
+                        if (index % 3 == 0) {
+                            return getSlot1InOut(index / 3);
+                        } else if (index % 3 == 1) {
+                            return getSlot2InOut(index / 3);
+                        } else {
+                            return getSlot3InOut(index / 3);
+                        }
+                    },
+                    val -> mTargetInOut[index] = val));
+        }
+        for (int i = 0; i < mTargetEnergy.length; i++) {
+            final int index = i;
+            builder.widget(
+                    new FakeSyncWidget.BooleanSyncer(() -> getRangeEnergy(index), val -> mTargetEnergy[index] = val));
+        }
     }
 }

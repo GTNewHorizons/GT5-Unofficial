@@ -10,7 +10,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -28,7 +27,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -157,12 +155,6 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     @Override
     protected int getCasingTextureId() {
         return getCasingIndex();
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "DistillationTower.png");
     }
 
     @Override
@@ -416,21 +408,6 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
         mHeight = tTotalHeight - 1;
         return survivialBuildPiece(
                 STRUCTURE_PIECE_TOP_HINT, stackSize, 1, tTotalHeight - 1, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
-    @Override
-    public boolean requiresVanillaGtGUI() {
-        return true;
     }
 
     @Override

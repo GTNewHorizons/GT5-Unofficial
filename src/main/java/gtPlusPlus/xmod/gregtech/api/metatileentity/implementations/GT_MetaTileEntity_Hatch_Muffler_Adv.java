@@ -1,7 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
@@ -11,18 +17,15 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_Hatch_Muffler_Advanced;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_Hatch_Muffler_Advanced;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch_Muffler {
+public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch_Muffler implements IAddGregtechLogo {
 
     protected int SLOT_FILTER = 0;
 
@@ -44,19 +47,12 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     private int mPollutionSmogLimit = 500000;
 
     public GT_MetaTileEntity_Hatch_Muffler_Adv(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
-        ReflectionUtils.setField(this, "mInventory", new ItemStack[1]);
-    }
-
-    public GT_MetaTileEntity_Hatch_Muffler_Adv(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-        ReflectionUtils.setField(this, "mInventory", new ItemStack[1]);
+        super(aID, aName, aNameRegional, aTier, 1, new String[] {""});
     }
 
     public GT_MetaTileEntity_Hatch_Muffler_Adv(
             String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription[0], aTextures);
-        ReflectionUtils.setField(this, "mInventory", new ItemStack[1]);
+        super(aName, aTier, 1, aDescription, aTextures);
     }
 
     public String[] getDescription() {
@@ -98,18 +94,8 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_Hatch_Muffler_Advanced(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_Hatch_Muffler_Advanced(
-                aPlayerInventory, aBaseMetaTileEntity, "Advanced Muffler", "machine_Charger.png");
     }
 
     private boolean airCheck() {
@@ -333,5 +319,32 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
                     (double) ySpd,
                     (double) zSpd);
         }
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {}
+
+    @Override
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet()
+                .setMainBackground(GTPP_UITextures.BACKGROUND_YELLOW)
+                .setItemSlot(GTPP_UITextures.SLOT_ITEM_YELLOW)
+                .setTitleTab(
+                        GTPP_UITextures.TAB_TITLE_YELLOW,
+                        GTPP_UITextures.TAB_TITLE_DARK_YELLOW,
+                        GTPP_UITextures.TAB_TITLE_ANGULAR_YELLOW);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new SlotWidget(inventoryHandler, 0)
+                .setFilter(stack -> stack.getItem() instanceof ItemAirFilter)
+                .setBackground(getGUITextureSet().getItemSlot())
+                .setPos(79, 34));
     }
 }

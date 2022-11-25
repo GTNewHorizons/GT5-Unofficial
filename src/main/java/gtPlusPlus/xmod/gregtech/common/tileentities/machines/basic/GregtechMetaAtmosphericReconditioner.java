@@ -2,9 +2,15 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -19,15 +25,16 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.basic.CONTAINER_PollutionCleaner;
-import gtPlusPlus.xmod.gregtech.api.gui.basic.GUI_PollutionCleaner;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import java.util.Collections;
+import java.util.HashMap;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -45,6 +52,14 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
     protected static boolean mPollutionEnabled = true;
 
     protected boolean mSaveRotor = false;
+
+    private static final HashMap<Byte, ItemStack> mConveyorMap = new HashMap<>();
+
+    static {
+        for (byte i = 0; i < 9; i++) {
+            mConveyorMap.put(i, CI.getConveyor(i, 1));
+        }
+    }
 
     public GregtechMetaAtmosphericReconditioner(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -713,18 +728,6 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
     }
 
     @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_PollutionCleaner(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_PollutionCleaner(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), this.mGUIName);
-    }
-
-    @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
         if (aIndex == SLOT_FILTER) {
             if (aStack.getItem() instanceof ItemAirFilter) {
@@ -892,5 +895,41 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
                                 .getSpeedMultiplier()
                         * GT_MetaGenerated_Tool.getPrimaryMaterial(aStackRotor).mToolSpeed
                         * 50);
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new SlotWidget(inventoryHandler, SLOT_ROTOR)
+                        .setFilter(stack -> {
+                            if (stack.getItem() instanceof ItemBasicScrubberTurbine) {
+                                return true;
+                            }
+                            return stack.getItem() instanceof GT_MetaGenerated_Tool
+                                    && stack.getItemDamage() >= 170
+                                    && stack.getItemDamage() <= 179;
+                        })
+                        .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_TURBINE)
+                        .setPos(52, 24))
+                .widget(new SlotWidget(inventoryHandler, SLOT_FILTER)
+                        .setFilter(stack -> stack.getItem() instanceof ItemAirFilter)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_RECYCLE)
+                        .setPos(106, 24))
+                .widget(new SlotWidget(inventoryHandler, 7)
+                        .setFilter(stack -> GT_Utility.areStacksEqual(stack, mConveyorMap.get(mTier), true))
+                        .setPos(124, 62));
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_INFORMATION)
+                .dynamicTooltip(() -> Collections.singletonList("Reduction: " + mPollutionReduction + "/s"))
+                .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(() -> mPollutionReduction, val -> mPollutionReduction = val),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange())
+                .setPos(163, 5)
+                .setSize(7, 18));
     }
 }

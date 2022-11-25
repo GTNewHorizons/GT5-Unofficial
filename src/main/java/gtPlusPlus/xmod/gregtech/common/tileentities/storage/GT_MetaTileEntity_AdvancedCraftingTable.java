@@ -1,7 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Interactable;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
@@ -9,20 +21,24 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.interfaces.IItemBlueprint;
 import gtPlusPlus.core.item.general.ItemBlueprint;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.workbench.GT_Container_AdvancedWorkbench;
-import gtPlusPlus.xmod.gregtech.api.gui.workbench.GT_GUIContainer_AdvancedWorkbench;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
+import gtPlusPlus.xmod.gregtech.api.gui.widget.ElectricSlotWidget;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.PacketBuffer;
 
-public class GT_MetaTileEntity_AdvancedCraftingTable extends GT_MetaTileEntity_BasicTank {
+public class GT_MetaTileEntity_AdvancedCraftingTable extends GT_MetaTileEntity_BasicTank implements IAddGregtechLogo {
 
     public boolean mFlushMode = false;
 
@@ -37,18 +53,6 @@ public class GT_MetaTileEntity_AdvancedCraftingTable extends GT_MetaTileEntity_B
     public GT_MetaTileEntity_AdvancedCraftingTable(
             final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, 35, aDescription, aTextures);
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_AdvancedWorkbench(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_AdvancedWorkbench(aPlayerInventory, aBaseMetaTileEntity, mLocalName);
     }
 
     @Override
@@ -133,10 +137,7 @@ public class GT_MetaTileEntity_AdvancedCraftingTable extends GT_MetaTileEntity_B
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -566,5 +567,175 @@ public class GT_MetaTileEntity_AdvancedCraftingTable extends GT_MetaTileEntity_B
                     ? new GT_RenderedTexture(TexturesGtBlock.Casing_Adv_Workbench_Side)
                     : new GT_RenderedTexture(TexturesGtBlock.Casing_Workbench_Side)
         };
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {}
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
+                .endAtSlot(15)
+                .background(getGUITextureSet().getItemSlot())
+                .build()
+                .setPos(7, 7));
+        for (int i = 0; i < 5; i++) {
+            builder.widget(createElectricSlot(i + 16).setPos(81 + i * 18, 7));
+        }
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
+                .startFromSlot(21)
+                .endAtSlot(29)
+                .background(getGUITextureSet().getItemSlot())
+                .applyForWidget(SlotWidget::disableShiftInsert)
+                .build()
+                .setPos(81, 27));
+        builder.widget(new SlotWidget(inventoryHandler, 33)
+                        .disableShiftInsert()
+                        .addTooltipShift("Extraction Slot")
+                        .addTooltipShift("Things can always be pulled from here")
+                        .setBackground(getGUITextureSet().getItemSlot(), getArrowOverlay())
+                        .setPos(153, 27))
+                .widget(new SlotWidget(inventoryHandler, 34)
+                        .disableShiftInsert()
+                        .addTooltipShift("Free Parking")
+                        .setBackground(getGUITextureSet().getItemSlot(), getParkOverlay())
+                        .setPos(153, 63));
+
+        builder.widget(
+                new SlotWidget(inventoryHandler, 30) {
+                    @Override
+                    public ClickResult onClick(int buttonId, boolean doubleClick) {
+                        if (buttonId == 0 && Interactable.hasShiftDown()) {
+                            syncToServer(99, NetworkUtils.EMPTY_PACKET);
+                            return ClickResult.SUCCESS;
+                        }
+                        return super.onClick(buttonId, doubleClick);
+                    }
+
+                    @Override
+                    public void readOnServer(int id, PacketBuffer buf) throws IOException {
+                        if (id == 99) {
+                            setBluePrint(null);
+                        } else {
+                            super.readOnServer(id, buf);
+                        }
+                    }
+                }.setFilter(stack -> stack.getItem() instanceof IItemBlueprint)
+                        .disableShiftInsert()
+                        .addTooltipShift("Blueprint Slot")
+                        .addTooltipShift("Shift+Lmb Sets to crafting output")
+                        .setBackground(getGUITextureSet().getItemSlot(), getBlueprintOverlay())
+                        .setPos(135, 27));
+
+        builder.widget(
+                new SlotWidget(BaseSlot.phantom(inventoryHandler, 31)) {
+                    @Override
+                    protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+                        EntityPlayer aPlayer = getContext().getPlayer();
+                        ItemStack tStack = getMcSlot().getStack();
+                        if (tStack == null) return;
+                        if (tStack.stackSize <= 0
+                                && !GT_Utility.areStacksEqual(tStack, aPlayer.inventory.getItemStack())) {
+                            return;
+                        }
+                        ItemStack tStack2, tCraftedStack = getCraftingOutput();
+                        if (tCraftedStack != null) {
+                            if (clickData.shift) {
+                                for (byte i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
+                                    for (byte j = 0;
+                                            j < tCraftedStack.getMaxStackSize() / tCraftedStack.stackSize
+                                                    && canDoCraftingOutput();
+                                            j++) {
+                                        if (!GT_Utility.areStacksEqual(tStack2 = getCraftingOutput(), tCraftedStack)
+                                                || tStack.stackSize != tStack2.stackSize) return;
+                                        aPlayer.inventory.mainInventory[i] =
+                                                consumeMaterials(aPlayer, aPlayer.inventory.mainInventory[i]);
+                                    }
+                                }
+                            } else {
+                                if (clickData.mouseButton == 0) {
+                                    if (canDoCraftingOutput())
+                                        aPlayer.inventory.setItemStack(
+                                                consumeMaterials(aPlayer, aPlayer.inventory.getItemStack()));
+                                } else {
+                                    for (int i = 0;
+                                            i < tCraftedStack.getMaxStackSize() / tCraftedStack.stackSize
+                                                    && canDoCraftingOutput();
+                                            i++) {
+                                        if (!GT_Utility.areStacksEqual(tStack2 = getCraftingOutput(), tCraftedStack)
+                                                || tStack.stackSize != tStack2.stackSize) return;
+                                        aPlayer.inventory.setItemStack(
+                                                consumeMaterials(aPlayer, aPlayer.inventory.getItemStack()));
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public boolean handleDragAndDrop(ItemStack draggedStack, int button) {
+                        return false;
+                    }
+
+                    @Override
+                    public List<String> getExtraTooltip() {
+                        return Collections.emptyList();
+                    }
+                }.setAccess(false, false)
+                        .setHandlePhantomActionClient(true)
+                        .addTooltipShift("Output Slot")
+                        .setBackground(getGUITextureSet().getItemSlot(), getCraftOutputOverlay())
+                        .setPos(135, 63));
+
+        builder.widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> sortIntoTheInputSlots())
+                        .addTooltipShift("Flush")
+                        .addTooltipShift("Empty crafting grid back to storage")
+                        .setBackground(getButtonIcon(), getFlushOverlay())
+                        .setPos(135, 45)
+                        .setSize(18, 18))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> mFlushMode = true)
+                        .addTooltipShift("Automation")
+                        .addTooltipShift("Allows output while")
+                        .addTooltipShift("crafting grid is full")
+                        .setBackground(getButtonIcon(), GTPP_UITextures.OVERLAY_BUTTON_AUTOMATION)
+                        .setPos(153, 45)
+                        .setSize(18, 18));
+    }
+
+    protected SlotWidget createElectricSlot(int index) {
+        return (SlotWidget) new ElectricSlotWidget(inventoryHandler, index)
+                .setShiftClickPriority(-1)
+                .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_ELECTRIC_TOOL);
+    }
+
+    protected IDrawable getArrowOverlay() {
+        return GTPP_UITextures.OVERLAY_SLOT_ARROW;
+    }
+
+    protected IDrawable getParkOverlay() {
+        return GTPP_UITextures.OVERLAY_SLOT_PARK;
+    }
+
+    protected IDrawable getBlueprintOverlay() {
+        return GT_UITextures.OVERLAY_SLOT_PAGE_PRINTED;
+    }
+
+    protected IDrawable getCraftOutputOverlay() {
+        return GTPP_UITextures.OVERLAY_SLOT_CRAFT_OUTPUT;
+    }
+
+    protected IDrawable getButtonIcon() {
+        return GT_UITextures.BUTTON_STANDARD;
+    }
+
+    protected IDrawable getFlushOverlay() {
+        return GTPP_UITextures.OVERLAY_BUTTON_FLUSH;
     }
 }

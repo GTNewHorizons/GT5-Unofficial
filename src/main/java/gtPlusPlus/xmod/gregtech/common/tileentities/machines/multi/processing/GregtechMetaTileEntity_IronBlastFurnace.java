@@ -1,10 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -13,18 +20,16 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_IronBlastFurnace;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_IronBlastFurnace;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity {
+public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity implements IAddUIWidgets {
     private static final ITexture[] FACING_SIDE = {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top)};
     private static final ITexture[] FACING_FRONT = {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Redstone_Off)
     };
@@ -189,23 +194,8 @@ public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity {
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_IronBlastFurnace(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_IronBlastFurnace(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     private boolean checkMachine() {
@@ -533,5 +523,33 @@ public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity {
     @Override
     public byte getTileEntityBaseType() {
         return 0;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new SlotWidget(inventoryHandler, 0)
+                        .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_INGOT)
+                        .setPos(33, 15))
+                .widget(new SlotWidget(inventoryHandler, 1)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_FURNACE)
+                        .setPos(33, 33))
+                .widget(new SlotWidget(inventoryHandler, 2)
+                        .setAccess(true, false)
+                        .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_INGOT)
+                        .setPos(85, 24))
+                .widget(new SlotWidget(inventoryHandler, 3)
+                        .setAccess(true, false)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DUST)
+                        .setPos(103, 24))
+                .widget(new ProgressBar()
+                        .setTexture(GTPP_UITextures.PROGRESSBAR_ARROW_2, 20)
+                        .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
+                        .setPos(58, 24)
+                        .setSize(20, 18));
     }
 }

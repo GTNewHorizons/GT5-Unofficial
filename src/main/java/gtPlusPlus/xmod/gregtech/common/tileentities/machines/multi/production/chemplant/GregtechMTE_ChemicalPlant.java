@@ -449,11 +449,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         if (GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlant_GT.mRecipeList.size() == 0) {
             generateRecipes();
@@ -562,11 +557,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
     }
 
     // Same speed bonus as pyro oven
@@ -1022,7 +1012,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
     @Override
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> tItems = super.getStoredInputs();
-        if (this.hasSlotInGUI() && this.getGUIItemStack() != null) {
+        if (this.getGUIItemStack() != null) {
             tItems.add(this.getGUIItemStack());
         }
         for (GT_MetaTileEntity_Hatch_Catalysts tHatch : mCatalystBuses) {

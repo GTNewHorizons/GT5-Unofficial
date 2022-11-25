@@ -1,13 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.covers;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
 import gtPlusPlus.core.util.minecraft.LangUtils;
+import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -156,118 +162,72 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
     }
 
     // GUI
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
-        return new GTPP_Cover_Overflow.GUI(aSide, aCoverID, coverData, aTileEntity);
+    public boolean useModularUI() {
+        return true;
     }
 
-    private class GUI extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private GT_GuiIntegerTextBox tBox;
-        private int coverVariable;
+    @Override
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new OverflowUIFactory(buildContext).createWindow();
+    }
+
+    private class OverflowUIFactory extends UIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private boolean warn = false;
-
-        public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            tBox = new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 0 + 8, spaceX * 4 - 3, 12);
-            tBox.setText(String.valueOf(this.coverVariable));
-            tBox.setMaxStringLength(10);
+        public OverflowUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
 
+        @SuppressWarnings("PointlessArithmeticExpression")
         @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            tBox.setFocused(true);
-        }
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            AtomicBoolean warn = new AtomicBoolean(false);
 
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer()
-                    .drawString(trans("323", "L"), startX + spaceX * 4, 4 + startY + spaceY * 0 + 8, 0xFF555555);
-            if (warn)
-                this.getFontRenderer()
-                        .drawString(
-                                trans("325", "Max") + ": " + coverVariable + "/" + mMaxTransferRate + " "
-                                        + trans("323", "L"),
-                                startX + spaceX * 0,
-                                4 + startY + spaceY * 1 + 6,
-                                0xffff0000);
-            else
-                this.getFontRenderer()
-                        .drawString(
-                                trans("324", "Now") + ": " + coverVariable + "/" + mMaxTransferRate + " "
-                                        + trans("323", "L"),
-                                startX + spaceX * 0,
-                                4 + startY + spaceY * 1 + 6,
-                                0xFF555555);
-        }
-
-        @Override
-        public void onMouseWheel(int x, int y, int delta) {
-            for (GT_GuiIntegerTextBox box : textBoxes) {
-                if (box.isFocused()) {
-                    int step = Math.max(1, Math.abs(delta / 120));
-                    step = (isShiftKeyDown() ? 50 : isCtrlKeyDown() ? 5 : 1) * (delta > 0 ? step : -step);
-                    long i;
-                    try {
-                        i = Long.parseLong(box.getText());
-                    } catch (NumberFormatException e) {
-                        return;
-                    }
-                    if (i > (Long.MAX_VALUE - 1000)) break;
-
-                    i = i + step;
-                    if (i <= 0) i = 0;
-                    box.setText(String.valueOf(i));
-                    break;
-                }
-            }
-        }
-
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            long i;
-            String s = box.getText().trim();
-            try {
-                i = Long.parseLong(s);
-            } catch (NumberFormatException e) {
-                resetTextBox(box);
-                return;
-            }
-
-            warn = false;
-            if (box.id == 2) {
-                if (i > (long) mMaxTransferRate) {
-                    i = mMaxTransferRate;
-                    warn = true;
-                } else if (i < 0) {
-                    i = 0;
-                }
-                coverVariable = (int) i;
-            }
-            box.setText(String.valueOf(i));
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
-        }
-
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            if (box.id == 2) box.setText(String.valueOf(coverVariable));
+            builder.widget(new CoverDataControllerWidget<>(
+                                    this::getCoverData, this::setCoverData, GTPP_Cover_Overflow.this)
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> String.valueOf(convert(coverData)),
+                                    (coverData, state) -> new ISerializableObject.LegacyCoverData(
+                                            (int) MathExpression.parseMathExpression(state)),
+                                    widget -> widget.setOnScrollNumbersLong(1, 5, 50)
+                                            .setNumbersLong(val -> {
+                                                warn.set(false);
+                                                if (val > mMaxTransferRate) {
+                                                    val = (long) mMaxTransferRate;
+                                                    warn.set(true);
+                                                } else if (val < 0) {
+                                                    val = 0L;
+                                                }
+                                                return val;
+                                            })
+                                            .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                                            .setFocusOnGuiOpen(true)
+                                            .setPos(startX + spaceX * 0, startY + spaceY * 0 + 8)
+                                            .setSize(spaceX * 4 - 3, 12)))
+                    .widget(new TextWidget(GT_Utility.trans("323", "L"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0 + 8))
+                    .widget(TextWidget.dynamicText(() -> new Text((warn.get()
+                                                    ? GT_Utility.trans("325", "Max")
+                                                    : GT_Utility.trans("324", "Now"))
+                                            + ": " + convert(getCoverData())
+                                            + "/" + mMaxTransferRate + " "
+                                            + GT_Utility.trans("323", "L"))
+                                    .color(warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get()))
+                            .setSynced(false)
+                            .setPos(startX + spaceX * 0, 4 + startY + spaceY * 1 + 6));
         }
     }
 }

@@ -4,9 +4,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.xmod.gregtech.api.gui.power.CONTAINER_BasicTank;
-import gtPlusPlus.xmod.gregtech.api.gui.power.GUI_BasicTank;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -127,16 +124,6 @@ public abstract class GTPP_MTE_BasicTank extends GTPP_MTE_TieredMachineBlock {
 
     public FluidStack getDisplayedFluid() {
         return getDrainableStack();
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_BasicTank(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BasicTank(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
     }
 
     @Override

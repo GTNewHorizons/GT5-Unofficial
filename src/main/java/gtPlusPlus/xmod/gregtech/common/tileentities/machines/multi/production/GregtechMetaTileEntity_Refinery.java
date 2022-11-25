@@ -88,16 +88,6 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "MatterFabricator";
-    }
-
-    @Override
     public GT_Recipe_Map getRecipeMap() {
         return GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing;
     }

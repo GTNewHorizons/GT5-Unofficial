@@ -74,16 +74,6 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
-    }
-
-    @Override
     public int getEuDiscountForParallelism() {
         return 0;
     }

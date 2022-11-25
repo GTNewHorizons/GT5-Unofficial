@@ -8,7 +8,6 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_TieredChest;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_TieredChest {
@@ -60,16 +59,6 @@ public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_Tier
                         + this.mItemCount);
         return true;
         // return super.onRightclick(aBaseMetaTileEntity, aPlayer);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
     }
 
     @Override

@@ -2,6 +2,9 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -10,10 +13,9 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.*;
+import gtPlusPlus.xmod.gregtech.api.gui.widget.ElectricSlotWidget;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hatch {
@@ -101,33 +103,8 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        switch (mTier) {
-            case 2:
-                return new CONTAINER_Electric_2by2(aPlayerInventory, aBaseMetaTileEntity);
-            case 4:
-                return new CONTAINER_Electric_4by4(aPlayerInventory, aBaseMetaTileEntity);
-            default:
-                return new CONTAINER_Electric_4by4(aPlayerInventory, aBaseMetaTileEntity);
-        }
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        switch (mTier) {
-            case 2:
-                return new GUI_Electric_2by2(aPlayerInventory, aBaseMetaTileEntity, "Discharging Bus");
-            case 4:
-                return new GUI_Electric_4by4(aPlayerInventory, aBaseMetaTileEntity, "Discharging Bus");
-            default:
-                return new GUI_Electric_4by4(aPlayerInventory, aBaseMetaTileEntity, "Discharging Bus");
-        }
     }
 
     @Override
@@ -219,5 +196,24 @@ public class GT_MetaTileEntity_Hatch_OutputBattery extends GT_MetaTileEntity_Hat
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        if (mTier == 2) {
+            for (int i = 0; i < 4; i++) {
+                builder.widget(
+                        new ElectricSlotWidget(inventoryHandler, i).setPos(70 + (i % 2) * 18, 25 + (i / 2) * 18));
+            }
+        } else {
+            for (int i = 0; i < 16; i++) {
+                builder.widget(new ElectricSlotWidget(inventoryHandler, i).setPos(52 + (i % 4) * 18, 7 + (i / 4) * 18));
+            }
+        }
     }
 }

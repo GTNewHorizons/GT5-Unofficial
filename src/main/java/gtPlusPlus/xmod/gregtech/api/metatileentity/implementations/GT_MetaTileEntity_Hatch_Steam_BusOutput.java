@@ -3,10 +3,11 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Container_2by2;
-import gregtech.api.gui.GT_GUIContainer_2by2;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -15,7 +16,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_Hatch_Steam_BusOutput extends GT_MetaTileEntity_Hatch {
@@ -79,19 +79,8 @@ public class GT_MetaTileEntity_Hatch_Steam_BusOutput extends GT_MetaTileEntity_H
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, "Steam Output Bus");
     }
 
     @Override
@@ -248,5 +237,15 @@ public class GT_MetaTileEntity_Hatch_Steam_BusOutput extends GT_MetaTileEntity_H
                             : Textures.BlockIcons.MACHINE_BRONZE_SIDE),
             new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)
         };
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        getBaseMetaTileEntity().add2by2Slots(builder);
     }
 }

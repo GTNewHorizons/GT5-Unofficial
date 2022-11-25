@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.util.GTPP_Recipe;
-import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map_Internal;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -66,8 +65,7 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
         return null;
     }
 
-    public static synchronized int generateRecipesNotUsingCells(
-            GT_Recipe_Map aInputs, GTPP_Recipe_Map_Internal aOutputs) {
+    public static synchronized int generateRecipesNotUsingCells(GT_Recipe_Map aInputs, GT_Recipe_Map aOutputs) {
         init();
         int aRecipesHandled = 0;
         int aInvalidRecipesToConvert = 0;
@@ -158,7 +156,7 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
                 }
 
                 // Add Recipe to map
-                GT_Recipe aNewRecipe = new GTPP_Recipe.GTPP_Recipe_Map_MultiNoCell.GTPP_Recipe_MultiNoCell(
+                GT_Recipe aNewRecipe = new GTPP_Recipe(
                         false,
                         aNewItemInputs,
                         aNewItemOutputs,

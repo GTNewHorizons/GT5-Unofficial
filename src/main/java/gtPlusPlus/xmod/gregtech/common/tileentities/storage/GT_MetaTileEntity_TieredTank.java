@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -145,11 +146,7 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            // setVars();
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -172,5 +169,10 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
                 Logger.WARNING("Set mFluid to NBT.");
             }
         }
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
     }
 }

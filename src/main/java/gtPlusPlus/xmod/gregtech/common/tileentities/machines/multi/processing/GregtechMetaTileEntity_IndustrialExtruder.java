@@ -137,16 +137,6 @@ public class GregtechMetaTileEntity_IndustrialExtruder
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "IndustrialExtruder";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
     }

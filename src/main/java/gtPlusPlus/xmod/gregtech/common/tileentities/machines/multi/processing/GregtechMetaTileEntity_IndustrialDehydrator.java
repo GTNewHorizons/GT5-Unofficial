@@ -169,11 +169,6 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
     public String getMachineType() {
         return "Vacuum Furnace / Dehydrator";
     }
@@ -186,16 +181,6 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     @Override
     public int getEuDiscountForParallelism() {
         return 50;
-    }
-
-    @Override
-    public boolean requiresVanillaGtGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "ElectricBlastFurnace";
     }
 
     public boolean checkRecipe(ItemStack aStack) {

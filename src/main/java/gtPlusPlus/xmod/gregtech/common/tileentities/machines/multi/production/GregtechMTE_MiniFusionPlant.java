@@ -84,16 +84,6 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean hasSlotInGUI() {
-		return false;
-	}
-
-	@Override
-	public String getCustomGUIResourceName() {
-		return null;
-	}
-
-	@Override
 	public String getMachineType() {
 		return "Fusion Reactor";
 	}

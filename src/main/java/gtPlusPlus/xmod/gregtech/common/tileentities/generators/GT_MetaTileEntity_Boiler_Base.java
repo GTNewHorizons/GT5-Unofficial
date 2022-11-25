@@ -1,9 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -13,9 +17,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_AdvancedBoiler;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_AdvancedBoiler;
-import net.minecraft.entity.player.InventoryPlayer;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -253,16 +255,6 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_AdvancedBoiler(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_AdvancedBoiler(aPlayerInventory, aBaseMetaTileEntity, "AdvancedBoiler.png");
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Boiler_Base(this.mName, tier, this.mDescription, this.mTextures);
     }
@@ -305,5 +297,50 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
             return true;
         }
         return super.allowCoverOnSide(aSide, aCover);
+    }
+
+    @Override
+    public GUITextureSet getGUITextureSet() {
+        return GUITextureSet.DEFAULT;
+    }
+
+    @Override
+    protected IDrawable[] getFuelSlotBackground() {
+        return new IDrawable[] {getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_COAL};
+    }
+
+    @Override
+    protected IDrawable[] getAshSlotBackground() {
+        return new IDrawable[] {getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_DUST};
+    }
+
+    @Override
+    public int getTitleColor() {
+        return COLOR_TITLE.get();
+    }
+
+    @Override
+    protected IDrawable getOverlaySlotIn() {
+        return GT_UITextures.OVERLAY_SLOT_IN;
+    }
+
+    @Override
+    protected IDrawable getOverlaySlotOut() {
+        return GT_UITextures.OVERLAY_SLOT_OUT;
+    }
+
+    @Override
+    protected IDrawable getOverlaySlotCanister() {
+        return GTPP_UITextures.OVERLAY_SLOT_CANISTER_DARK;
+    }
+
+    @Override
+    protected UITexture getProgressbarEmpty() {
+        return GTPP_UITextures.PROGRESSBAR_BOILER_EMPTY;
+    }
+
+    @Override
+    protected UITexture getProgressbarFuel() {
+        return GTPP_UITextures.PROGRESSBAR_FUEL;
     }
 }

@@ -143,16 +143,6 @@ public class GregtechMetaTileEntity_IndustrialFluidHeater
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "IndustrialThermalCentrifuge";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sFluidHeaterRecipes;
     }

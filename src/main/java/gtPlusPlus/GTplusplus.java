@@ -207,7 +207,6 @@ public class GTplusplus implements ActionListener {
 
         ItemGiantEgg.postInit(ModItems.itemBigEgg);
         BlockEventHandler.init();
-        GTPP_Recipe.reInit();
 
         Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         Logger.INFO("| Recipes succesfully Loaded: "
@@ -269,14 +268,6 @@ public class GTplusplus implements ActionListener {
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         proxy.onLoadComplete(event);
         generateGregtechRecipeMaps();
-        // Check our maps are untouched
-        GTPP_Recipe.checkRecipeModifications();
-        Logger.INFO("Passed verification checks.");
-    }
-
-    @Mod.EventHandler
-    public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
-        GTPP_Recipe.reInit();
     }
 
     protected void generateGregtechRecipeMaps() {

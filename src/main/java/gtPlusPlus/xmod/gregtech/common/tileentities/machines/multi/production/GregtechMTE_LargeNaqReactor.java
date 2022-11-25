@@ -82,11 +82,6 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 		: new ITexture[]{BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(3, 0))};
 	}
 
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-				"AssemblyLine.png");
-	}
-
 	public GT_Recipe_Map getRecipeMap() {
 		return null;
 	}
@@ -457,16 +452,6 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
 		return false;
-	}
-
-	@Override
-	public boolean hasSlotInGUI() {
-		return true;
-	}
-
-	@Override
-	public String getCustomGUIResourceName() {
-		return null;
 	}
 
 	@Override

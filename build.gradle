@@ -1,4 +1,4 @@
-//version: 1667597057
+//version: 1668274302
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -341,7 +341,7 @@ dependencies {
         annotationProcessor('org.spongepowered:mixin:0.8.5-GTNH:processor')
     }
     if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
-        compile('com.gtnewhorizon:gtnhmixins:2.0.1')
+        compile('com.gtnewhorizon:gtnhmixins:2.0.2')
     }
 }
 

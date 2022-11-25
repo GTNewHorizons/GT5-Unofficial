@@ -140,16 +140,6 @@ public class GregtechMetaTileEntity_IndustrialWireMill
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "IndustrialWireFactory";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
     }

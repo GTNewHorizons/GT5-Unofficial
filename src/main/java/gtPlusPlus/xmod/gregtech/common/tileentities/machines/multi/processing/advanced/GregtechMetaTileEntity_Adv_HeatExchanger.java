@@ -8,7 +8,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -22,7 +21,6 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -167,12 +165,6 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
     @Override
     protected int getCasingTextureId() {
         return CASING_INDEX;
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeHeatExchanger.png");
     }
 
     @Override
@@ -377,16 +369,6 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 5, 0);
-    }
-
-    @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return null;
     }
 
     @Override

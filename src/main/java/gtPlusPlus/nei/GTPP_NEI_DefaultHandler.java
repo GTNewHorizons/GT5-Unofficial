@@ -11,6 +11,9 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.*;
 import net.minecraft.item.ItemStack;
 
+/**
+ * Handles milling/catalyst tooltip
+ */
 public class GTPP_NEI_DefaultHandler extends GT_NEI_DefaultHandler {
 
     public GTPP_NEI_DefaultHandler(final GT_Recipe_Map tMap) {

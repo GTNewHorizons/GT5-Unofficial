@@ -212,21 +212,6 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
         return CASING_TEXTURE_ID;
     }
 
-    @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public boolean requiresVanillaGtGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "ElectricBlastFurnace";
-    }
-
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sBlastRecipes;
     }

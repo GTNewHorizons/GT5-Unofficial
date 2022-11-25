@@ -168,16 +168,6 @@ public class GregtechMetaTileEntity_IndustrialCokeOven
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "CokeOven";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GTPP_Recipe.GTPP_Recipe_Map.sCokeOvenRecipes;
     }

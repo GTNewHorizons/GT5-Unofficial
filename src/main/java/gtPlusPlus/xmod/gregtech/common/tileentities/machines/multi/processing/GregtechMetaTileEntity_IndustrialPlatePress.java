@@ -139,16 +139,6 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "MaterialPress";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return mFormingMode ? GT_Recipe.GT_Recipe_Map.sPressRecipes : GT_Recipe.GT_Recipe_Map.sBenderRecipes;
     }

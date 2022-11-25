@@ -1,10 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
@@ -14,21 +23,22 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.gui.automation.GT_Container_ElectricAutoWorkbench;
-import gtPlusPlus.xmod.gregtech.api.gui.automation.GT_GUIContainer_ElectricAutoWorkbench;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_BasicTank {
+public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_BasicTank implements IAddGregtechLogo {
 
     public int mMode = 0, mCurrentSlot = 0, mThroughPut = 0, mTicksUntilNextUpdate = 20;
     public boolean mLastCraftSuccessful = false;
     protected String mLocalName;
+
+    private static final int MAX_MODES = 10;
+    private static final int MAX_THROUGHPUT = 4;
 
     public GT_MetaTileEntity_ElectricAutoWorkbench(final int aID, final int aTier, final String aDescription) {
         super(
@@ -44,18 +54,6 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
     public GT_MetaTileEntity_ElectricAutoWorkbench(
             final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, 30, aDescription, aTextures);
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_ElectricAutoWorkbench(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_ElectricAutoWorkbench(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -140,10 +138,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -202,25 +197,8 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
                 && aSide != getBaseMetaTileEntity().getBackFacing();
     }
 
-    private static final int MAX_MODES = 10;
-
-    public void switchModeForward() {
-        mMode = (mMode + 1) % MAX_MODES;
-        switchMode();
-    }
-
-    public void switchModeBackward() {
-        mMode--;
-        if (mMode < 0) mMode = MAX_MODES - 1;
-        switchMode();
-    }
-
     private void switchMode() {
         mInventory[28] = null;
-    }
-
-    public void switchThrough() {
-        mThroughPut = (mThroughPut + 1) % 4;
     }
 
     @Override
@@ -864,5 +842,87 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
             Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1],
             new GT_RenderedTexture(TexturesGtBlock.Casing_Adv_Workbench_Crafting_Overlay)
         };
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(118, 22));
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
+                        .endAtSlot(8)
+                        .build()
+                        .setPos(7, 4))
+                .widget(SlotGroup.ofItemHandler(inventoryHandler, 9)
+                        .startFromSlot(9)
+                        .endAtSlot(17)
+                        .canInsert(false)
+                        .background(GT_UITextures.SLOT_DARK_GRAY)
+                        .applyForWidget(SlotWidget::disableShiftInsert)
+                        .build()
+                        .setPos(7, 59))
+                .widget(new SlotWidget(inventoryHandler, 18)
+                        .setAccess(true, false)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+                        .setPos(151, 40))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
+                        .setPos(62, 4)
+                        .setSize(54, 54))
+                .widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
+                        .startFromSlot(19)
+                        .endAtSlot(27)
+                        .phantom(true)
+                        .background(GT_UITextures.TRANSPARENT)
+                        .build()
+                        .setPos(62, 4))
+                .widget(SlotWidget.phantom(inventoryHandler, 28)
+                        .disableInteraction()
+                        .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_ARROW_4)
+                        .setPos(151, 4));
+        builder.widget(new CycleButtonWidget()
+                .setGetter(() -> mThroughPut)
+                .setSetter(val -> mThroughPut = val)
+                .setLength(MAX_THROUGHPUT)
+                .setTextureGetter(i -> GTPP_UITextures.OVERLAY_BUTTON_THROUGHPUT[i])
+                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setPos(120, 4)
+                .setSize(18, 18));
+        String[] mModeText = new String[] {
+            "Normal Crafting Table", "???", "1x1", "2x2", "3x3", "Unifier", "Dust", "???", "Hammer?", "Circle"
+        };
+        CycleButtonWidget modeButton = new CycleButtonWidget()
+                .setGetter(() -> mMode)
+                .setSetter(val -> {
+                    mMode = val;
+                    switchMode();
+                })
+                .setLength(MAX_MODES)
+                .setTextureGetter(i -> GTPP_UITextures.OVERLAY_BUTTON_MODE[i]);
+        for (int i = 0; i < MAX_MODES; i++) {
+            modeButton.addTooltip(i, "Mode: " + mModeText[i]);
+        }
+        builder.widget(modeButton
+                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setPos(120, 40)
+                .setSize(18, 18));
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GTPP_UITextures.PICTURE_WORKBENCH_CIRCLE)
+                        .setPos(136, 23)
+                        .setSize(16, 16))
+                .widget(new DrawableWidget()
+                        .setDrawable(GTPP_UITextures.PICTURE_ARROW_WHITE_DOWN)
+                        .setPos(155, 23)
+                        .setSize(10, 16));
     }
 }

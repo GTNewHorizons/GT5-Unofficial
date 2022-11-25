@@ -88,21 +88,6 @@ public class GregtechMetaTileEntityGeneratorArray
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "ProcessingArray";
-    }
-
-    @Override
-    public boolean requiresVanillaGtGUI() {
-        return true;
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         this.mMode = getModeFromInventorySlot(this.getGUIItemStack());
         if (this.mMode == MODE_NONE) {

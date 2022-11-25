@@ -7,12 +7,18 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_Container_MultiMachine;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -30,6 +36,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
@@ -46,12 +53,12 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.asm.AsmConfig;
-import gtPlusPlus.xmod.gregtech.api.gui.*;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
@@ -60,7 +67,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -159,56 +165,8 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
         return (tStackSize + tMaxStackSize - 1) / tMaxStackSize;
     }
 
-    public abstract boolean hasSlotInGUI();
-
     public long getTotalRuntimeInTicks() {
         return this.mTotalRunTime;
-    }
-
-    @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        if (hasSlotInGUI()) {
-            return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
-        } else {
-            String aCustomGUI = getCustomGUIResourceName();
-            if (aCustomGUI == null) {
-                return new CONTAINER_MultiMachine_NoPlayerInventory(aPlayerInventory, aBaseMetaTileEntity);
-            } else {
-                return new CONTAINER_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
-            }
-        }
-    }
-
-    public abstract String getCustomGUIResourceName();
-
-    public boolean requiresVanillaGtGUI() {
-        return false;
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        String aCustomGUI = getCustomGUIResourceName();
-        aCustomGUI =
-                aCustomGUI != null ? aCustomGUI : hasSlotInGUI() ? "MultiblockDisplay" : "MultiblockDisplay_Generic";
-        aCustomGUI = aCustomGUI + ".png";
-        if (hasSlotInGUI()) {
-            if (!requiresVanillaGtGUI()) {
-                return new GUI_Multi_Basic_Slotted(
-                        aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), aCustomGUI);
-            } else {
-                return new GT_GUIContainer_MultiMachine(
-                        aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), aCustomGUI);
-            }
-        } else {
-            if (getCustomGUIResourceName() == null && !hasSlotInGUI()) {
-                return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), aCustomGUI);
-            } else {
-                return new GUI_MultiMachine_Default(
-                        aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), aCustomGUI);
-            }
-        }
     }
 
     public abstract String getMachineType();
@@ -220,7 +178,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
     public String[] getExtraInfoData() {
         return new String[0];
     }
-    ;
 
     @Override
     public final String[] getInfoData() {
@@ -2754,6 +2711,289 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 
     protected int getCasingTextureId() {
         return 0;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        if (doesBindPlayerInventory()) {
+            super.addUIWidgets(builder, buildContext);
+        } else {
+            addNoPlayerInventoryUI(builder, buildContext);
+        }
+    }
+
+    private static final Materials GOOD = Materials.Uranium;
+    private static final Materials BAD = Materials.Plutonium;
+    private static final ConcurrentHashMap<String, ItemStack> mToolStacks = new ConcurrentHashMap<>();
+
+    protected void addNoPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(3, 4)
+                .setSize(152, 159));
+        for (int i = 0; i < 9; i++) {
+            builder.widget(new DrawableWidget()
+                    .setDrawable(GT_UITextures.BUTTON_STANDARD)
+                    .setPos(155, 3 + i * 18)
+                    .setSize(18, 18));
+        }
+
+        DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
+        drawTextsNoPlayerInventory(screenElements);
+        builder.widget(screenElements);
+
+        setupToolDisplay();
+
+        builder.widget(new ItemDrawable(() -> mToolStacks.get(mWrench + "WRENCH"))
+                        .asWidget()
+                        .setPos(156, 58))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
+        builder.widget(new ItemDrawable(() -> mToolStacks.get(mCrowbar + "CROWBAR"))
+                        .asWidget()
+                        .setPos(156, 76))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
+        builder.widget(new ItemDrawable(() -> mToolStacks.get(mHardHammer + "HARDHAMMER"))
+                        .asWidget()
+                        .setPos(156, 94))
+                .widget(new TextWidget("H")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(167, 103))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
+        builder.widget(new ItemDrawable(() -> mToolStacks.get(mSoftHammer + "SOFTHAMMER"))
+                        .asWidget()
+                        .setPos(156, 112))
+                .widget(new TextWidget("M")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(167, 121))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+        builder.widget(new ItemDrawable(() -> mToolStacks.get(mScrewdriver + "SCREWDRIVER"))
+                        .asWidget()
+                        .setPos(156, 130))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
+        builder.widget(new ItemDrawable(() -> mToolStacks.get(mSolderingTool + "SOLDERING_IRON_LV"))
+                        .asWidget()
+                        .setPos(156, 148))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
+        builder.widget(new ItemDrawable(
+                                () -> mToolStacks.get(getBaseMetaTileEntity().isActive() + "GLASS"))
+                        .asWidget()
+                        .setPos(156, 22))
+                .widget(TextWidget.dynamicString(() -> getBaseMetaTileEntity().isActive() ? "On" : "Off")
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(157, 31))
+                .widget(new FakeSyncWidget.BooleanSyncer(
+                        () -> getBaseMetaTileEntity().isActive(),
+                        val -> getBaseMetaTileEntity().setActive(val)));
+    }
+
+    protected void drawTextsNoPlayerInventory(DynamicPositionedColumn screenElements) {
+        screenElements.setSynced(false).setSpace(0).setPos(6, 7);
+
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mMachine))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val))
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("GTPP.machines.input") + " "
+                                + StatCollector.translateToLocal("GTPP.machines.tier") + ": " + EnumChatFormatting.GREEN
+                                + GT_Values.VOLTAGE_NAMES[(int) getInputTier()])
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine && getInputTier() > 0))
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("GTPP.machines.output") + " "
+                                + StatCollector.translateToLocal("GTPP.machines.tier") + ": " + EnumChatFormatting.GREEN
+                                + GT_Values.VOLTAGE_NAMES[(int) getOutputTier()])
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine && getOutputTier() > 0))
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("GTPP.multiblock.progress") + ": "
+                                + EnumChatFormatting.GREEN
+                                + getBaseMetaTileEntity().getProgress() / 20
+                                + EnumChatFormatting.RESET + " s / " + EnumChatFormatting.YELLOW
+                                + getBaseMetaTileEntity().getMaxProgress() / 20
+                                + EnumChatFormatting.RESET + " s")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(new TextWidget(StatCollector.translateToLocal("GTPP.multiblock.energy") + ":")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal(
+                                "" + EnumChatFormatting.GREEN + getStoredEnergyInAllEnergyHatches()
+                                        + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW
+                                        + getMaxEnergyStorageOfAllEnergyHatches()
+                                        + EnumChatFormatting.RESET + " EU"))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(new TextWidget(StatCollector.translateToLocal("GTPP.multiblock.usage") + ":")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine && getLastRecipeEU() > 0 && getLastRecipeDuration() > 0))
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("" + EnumChatFormatting.RED
+                                + -getLastRecipeEU() + EnumChatFormatting.RESET + " EU/t/parallel"))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine && getLastRecipeEU() > 0 && getLastRecipeDuration() > 0))
+                .widget(TextWidget.dynamicString(
+                                () -> StatCollector.translateToLocal("GTPP.multiblock.generation") + ":")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine && getLastRecipeEU() < 0 && getLastRecipeDuration() > 0))
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("" + EnumChatFormatting.GREEN
+                                + getLastRecipeEU() + EnumChatFormatting.RESET + " EU/t/parallel"))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine && getLastRecipeEU() < 0 && getLastRecipeDuration() > 0))
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("GTPP.multiblock.duration") + ": "
+                                + EnumChatFormatting.RED + getLastRecipeDuration() + EnumChatFormatting.RESET
+                                + " ticks")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine && getLastRecipeEU() != 0 && getLastRecipeDuration() > 0))
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("GTPP.multiblock.specialvalue")
+                                + ": " + EnumChatFormatting.RED + getLastRecipeEU() + EnumChatFormatting.RESET + "")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine
+                                && getLastRecipeEU() != 0
+                                && getLastRecipeDuration() > 0
+                                && (mLastRecipe != null ? mLastRecipe.mSpecialValue : 0) > 0))
+                .widget(new TextWidget(StatCollector.translateToLocal("GTPP.multiblock.mei") + ":")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(TextWidget.dynamicString(() ->
+                                StatCollector.translateToLocal("" + EnumChatFormatting.YELLOW + getMaxInputVoltage()
+                                        + EnumChatFormatting.RESET + " EU/t(*2A) "
+                                        + StatCollector.translateToLocal("GTPP.machines.tier")
+                                        + ": " + EnumChatFormatting.YELLOW
+                                        + GT_Values.VN[GT_Utility.getTier(getMaxInputVoltage())]
+                                        + EnumChatFormatting.RESET))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("GTPP.multiblock.efficiency")
+                                + ": " + EnumChatFormatting.YELLOW + (mEfficiency / 100.0F) + EnumChatFormatting.RESET
+                                + " %")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("GTPP.multiblock.pollution")
+                                + ": " + EnumChatFormatting.RED + (getPollutionPerTick(null) * 20)
+                                + EnumChatFormatting.RESET + "/sec")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(TextWidget.dynamicString(
+                                () -> StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced") + ": "
+                                        + EnumChatFormatting.GREEN + getPollutionReductionForAllMufflers()
+                                        + EnumChatFormatting.RESET + " %")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(new TextWidget("Total Time Since Built: ")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(TextWidget.dynamicString(() -> "" + EnumChatFormatting.DARK_GREEN + getRuntimeWeeksDisplay()
+                                + EnumChatFormatting.RESET + " Weeks,")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(TextWidget.dynamicString(() -> "" + EnumChatFormatting.DARK_GREEN + getRuntimeDaysDisplay()
+                                + EnumChatFormatting.RESET + " Days,")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(TextWidget.dynamicString(() -> "" + EnumChatFormatting.DARK_GREEN + getRuntimeHoursDisplay()
+                                + EnumChatFormatting.RESET + " Hours,")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(TextWidget.dynamicString(() -> "" + EnumChatFormatting.DARK_GREEN + getRuntimeMinutesDisplay()
+                                + EnumChatFormatting.RESET + " Minutes,")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine))
+                .widget(TextWidget.dynamicString(() -> "" + EnumChatFormatting.DARK_GREEN + getRuntimeSecondsDisplay()
+                                + EnumChatFormatting.RESET + " Seconds")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine));
+    }
+
+    protected int getLastRecipeEU() {
+        return mLastRecipe != null ? mLastRecipe.mEUt : 0;
+    }
+
+    protected int getLastRecipeDuration() {
+        return mLastRecipe != null ? mLastRecipe.mDuration : 0;
+    }
+
+    protected long getRuntimeSeconds() {
+        return getTotalRuntimeInTicks() / 20;
+    }
+
+    protected long getRuntimeWeeksDisplay() {
+        return TimeUnit.SECONDS.toDays(getRuntimeSeconds()) / 7;
+    }
+
+    protected long getRuntimeDaysDisplay() {
+        return TimeUnit.SECONDS.toDays(getRuntimeSeconds()) - 7 * getRuntimeWeeksDisplay();
+    }
+
+    protected long getRuntimeHoursDisplay() {
+        return TimeUnit.SECONDS.toHours(getRuntimeSeconds())
+                - TimeUnit.DAYS.toHours(getRuntimeDaysDisplay())
+                - TimeUnit.DAYS.toHours(7 * getRuntimeWeeksDisplay());
+    }
+
+    protected long getRuntimeMinutesDisplay() {
+        return TimeUnit.SECONDS.toMinutes(getRuntimeSeconds()) - (TimeUnit.SECONDS.toHours(getRuntimeSeconds()) * 60);
+    }
+
+    protected long getRuntimeSecondsDisplay() {
+        return TimeUnit.SECONDS.toSeconds(getRuntimeSeconds()) - (TimeUnit.SECONDS.toMinutes(getRuntimeSeconds()) * 60);
+    }
+
+    protected void setupToolDisplay() {
+        if (!mToolStacks.isEmpty()) return;
+
+        mToolStacks.put(
+                true + "WRENCH",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.WRENCH, 1, GOOD, Materials.Tungsten, null));
+        mToolStacks.put(
+                true + "CROWBAR",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.CROWBAR, 1, GOOD, Materials.Tungsten, null));
+        mToolStacks.put(
+                true + "HARDHAMMER",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.HARDHAMMER, 1, GOOD, Materials.Tungsten, null));
+        mToolStacks.put(
+                true + "SOFTHAMMER",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.SOFTHAMMER, 1, GOOD, Materials.Tungsten, null));
+        mToolStacks.put(
+                true + "SCREWDRIVER",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.SCREWDRIVER, 1, GOOD, Materials.Tungsten, null));
+        mToolStacks.put(
+                true + "SOLDERING_IRON_LV",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.SOLDERING_IRON_LV, 1, GOOD, Materials.Tungsten, null));
+
+        mToolStacks.put(
+                false + "WRENCH",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.WRENCH, 1, BAD, Materials.Tungsten, null));
+        mToolStacks.put(
+                false + "CROWBAR",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.CROWBAR, 1, BAD, Materials.Tungsten, null));
+        mToolStacks.put(
+                false + "HARDHAMMER",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.HARDHAMMER, 1, BAD, Materials.Tungsten, null));
+        mToolStacks.put(
+                false + "SOFTHAMMER",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.SOFTHAMMER, 1, BAD, Materials.Tungsten, null));
+        mToolStacks.put(
+                false + "SCREWDRIVER",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.SCREWDRIVER, 1, BAD, Materials.Tungsten, null));
+        mToolStacks.put(
+                false + "SOLDERING_IRON_LV",
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        GT_MetaGenerated_Tool_01.SOLDERING_IRON_LV, 1, BAD, Materials.Tungsten, null));
+
+        ItemStack aGlassPane1 = ItemUtils.getItemStackOfAmountFromOreDict("paneGlassRed", 1);
+        ItemStack aGlassPane2 = ItemUtils.getItemStackOfAmountFromOreDict("paneGlassLime", 1);
+        mToolStacks.put("falseGLASS", aGlassPane1);
+        mToolStacks.put("trueGLASS", aGlassPane2);
     }
 
     public enum GTPPHatchElement implements IHatchElement<GregtechMeta_MultiBlockBase<?>> {

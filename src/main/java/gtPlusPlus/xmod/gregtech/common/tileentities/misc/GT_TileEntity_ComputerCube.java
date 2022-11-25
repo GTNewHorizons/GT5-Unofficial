@@ -4,10 +4,24 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
 
 import Ic2ExpReactorPlanner.SimulationData;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
@@ -17,24 +31,27 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_Container_ComputerCube;
-import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_GUIContainer_ComputerCube;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
+import gtPlusPlus.xmod.gregtech.api.gui.widget.DataStickSlotWidget;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Description;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Simulator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
+public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank implements IAddGregtechLogo {
 
     public static int MODE_MAIN = 0;
     public static int MODE_REACTOR_PLANNER = 1;
@@ -92,20 +109,6 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
     }
 
     @Override
-    public Object getServerGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        Logger.INFO("CC-Sever ID: " + aID);
-        return new GT_Container_ComputerCube(aPlayerInventory, aBaseMetaTileEntity, mMode);
-    }
-
-    @Override
-    public Object getClientGUI(
-            final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-        Logger.INFO("CC-Client ID: " + aID);
-        return new GT_GUIContainer_ComputerCube(aPlayerInventory, aBaseMetaTileEntity, mMode);
-    }
-
-    @Override
     public String[] getDescription() {
         return new String[] {
             this.mDescription,
@@ -119,10 +122,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer, mMode);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -1088,5 +1088,477 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 
     private ItemStack getSpecialSlot() {
         return this.mInventory[54];
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {}
+
+    @Override
+    public int getGUIWidth() {
+        return mMode == 5 ? 226 : 176;
+    }
+
+    @Override
+    public boolean doesBindPlayerInventory() {
+        return mMode != 1 && mMode != 5;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        switch (mMode) {
+            case 0:
+                addPage0(builder);
+                break;
+            case 1:
+                addPage1(builder);
+                break;
+            case 2:
+                addPage2(builder);
+                break;
+            case 3:
+                addPage3(builder);
+                break;
+            case 4:
+                addPage4(builder);
+                break;
+            case 5:
+                addPage5(builder);
+                break;
+            case 6:
+                addPage6(builder);
+                break;
+        }
+
+        builder.widget(new ButtonWidget()
+                .setOnClick((clickData, widget) -> {
+                    if (clickData.mouseButton == 0) {
+                        switchModeForward();
+                    } else if (clickData.mouseButton == 1) {
+                        switchModeBackward();
+                    }
+                    if (!widget.isClient()) {
+                        GT_UIInfos.openGTTileEntityUI(
+                                getBaseMetaTileEntity(), widget.getContext().getPlayer());
+                    }
+                })
+                .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_COMPUTER_MODE)
+                .setPos(156 + (mMode == 5 ? 50 : 0), 4)
+                .setSize(16, 16));
+    }
+
+    private void addPage0(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GTPP_UITextures.PICTURE_COMPUTER_TOP)
+                        .setPos(32, 4)
+                        .setSize(112, 76))
+                .widget(new ProgressBar()
+                        .setProgress(() -> (float) getBaseMetaTileEntity().getStoredEU()
+                                / getBaseMetaTileEntity().getEUCapacity())
+                        .setTexture(GTPP_UITextures.PROGRESSBAR_COMPUTER_ENERGY, 96)
+                        .setDirection(ProgressBar.Direction.RIGHT)
+                        .setPos(44, 8)
+                        .setSize(96, 5))
+                .widget(new TextWidget("Solaris 1.7.10")
+                        .setDefaultColor(Utils.rgbtoHexValue(100, 190, 255))
+                        .setPos(56, 70));
+    }
+
+    private void addPage1(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setPos(4, 103)
+                        .setSize(150, 59))
+                .widget(new DrawableWidget()
+                        .setDrawable(ModularUITextures.ITEM_SLOT)
+                        .setPos(4, 4)
+                        .setSize(146, 98))
+                .widget(new DrawableWidget()
+                        .setDrawable(GTPP_UITextures.PICTURE_V202)
+                        .setPos(155, 103)
+                        .setSize(17, 5))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> saveNuclearReactor())
+                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_SAVE)
+                        .setPos(156, 54)
+                        .setSize(16, 16))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> loadNuclearReactor())
+                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_LOAD)
+                        .setPos(156, 70)
+                        .setSize(16, 16))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> switchNuclearReactor())
+                        .setBackground(
+                                GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_NUCLEAR_SWITCH)
+                        .setPos(156, 86)
+                        .setSize(16, 16));
+        SlotWidget displaySlot = new NuclearSlotWidget(inventoryHandler, 54, null);
+        for (int i = 0; i < 9 * 6; i++) {
+            builder.widget(new NuclearSlotWidget(inventoryHandler, i, displaySlot.getMcSlot())
+                    .setBackground(GT_UITextures.TRANSPARENT)
+                    .setPos(5 + (i % 9) * 16, 5 + (i / 9) * 16));
+        }
+        builder.widget(displaySlot
+                .setBackground(getGUITextureSet().getItemSlot(), GTPP_UITextures.OVERLAY_SLOT_ARROW_4)
+                .setPos(152, 27));
+        builder.widget(new TextWidget("Reactorstats:")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 108))
+                .widget(TextWidget.dynamicString(() -> GT_Utility.formatNumbers(mEU) + "EU at " + mEUOut + "EU/t")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 120))
+                .widget(TextWidget.dynamicString(() -> "HEM: " + (mHEM / 10000.0F))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 128))
+                .widget(TextWidget.dynamicString(() ->
+                                GT_Utility.formatNumbers(mHeat) + "/" + GT_Utility.formatNumbers(mMaxHeat) + "Heat")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 136))
+                .widget(TextWidget.dynamicString(() -> "Explosionpower: " + (mExplosionStrength / 100.0F))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 144))
+                .widget(TextWidget.dynamicString(() -> "Runtime: " + ((mProgress > 0) ? (mProgress / 20) : 0) + "secs")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 152));
+    }
+
+    private void addPage2(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(48, 4)
+                .setSize(81, 67));
+        builder.widget(new DataStickSlotWidget(inventoryHandler, 54).setPos(7, 27))
+                .widget(new SlotWidget(inventoryHandler, 55)
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_MICROSCOPE)
+                        .setPos(25, 27))
+                .widget(new SlotWidget(inventoryHandler, 56)
+                        .setAccess(true, false)
+                        .setPos(133, 27))
+                .widget(new SlotWidget(inventoryHandler, 57)
+                        .setAccess(true, false)
+                        .setPos(151, 27));
+        builder.widget(new TextWidget("Scanner")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mProgress == 0)
+                        .setPos(51, 7))
+                .widget(new TextWidget("Can be used to")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mProgress == 0)
+                        .setPos(51, 24))
+                .widget(new TextWidget("scan things")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mProgress == 0)
+                        .setPos(51, 32))
+                .widget(new TextWidget("Currently")
+                        .setDefaultColor(Utils.rgbtoHexValue(200, 20, 20))
+                        .setEnabled(widget -> mProgress == 0)
+                        .setPos(51, 48))
+                .widget(new TextWidget("Disabled")
+                        .setDefaultColor(Utils.rgbtoHexValue(200, 20, 20))
+                        .setEnabled(widget -> mProgress == 0)
+                        .setPos(51, 56))
+                .widget(new TextWidget("Progress:")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mProgress != 0)
+                        .setPos(51, 24))
+                .widget(TextWidget.dynamicString(() -> MathUtils.findPercentage(
+                                        mProgress, getBaseMetaTileEntity().getMaxProgress())
+                                + " %")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mProgress != 0)
+                        .setPos(51, 32))
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgress, val -> mProgress = val));
+    }
+
+    private void addPage3(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setPos(4, 4)
+                        .setSize(86, 41))
+                .widget(new DrawableWidget()
+                        .setDrawable(GTPP_UITextures.PICTURE_ARROWS_SEPARATE)
+                        .setPos(110, 23)
+                        .setSize(40, 40))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> switchCentrifugePageBackward())
+                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
+                        .setPos(88, 65)
+                        .setSize(16, 16))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> switchCentrifugePageForward())
+                        .setBackground(
+                                GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
+                        .setPos(104, 65)
+                        .setSize(16, 16))
+                .widget(SlotWidget.phantom(inventoryHandler, 59)
+                        .disableInteraction()
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CENTRIFUGE)
+                        .setPos(121, 34))
+                .widget(SlotWidget.phantom(inventoryHandler, 60)
+                        .disableInteraction()
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CANISTER)
+                        .setPos(91, 4))
+                .widget(SlotWidget.phantom(inventoryHandler, 61)
+                        .disableInteraction()
+                        .setPos(121, 4))
+                .widget(SlotWidget.phantom(inventoryHandler, 62)
+                        .disableInteraction()
+                        .setPos(151, 34))
+                .widget(SlotWidget.phantom(inventoryHandler, 63)
+                        .disableInteraction()
+                        .setPos(121, 64))
+                .widget(SlotWidget.phantom(inventoryHandler, 64)
+                        .disableInteraction()
+                        .setPos(91, 34))
+                .widget(new TextWidget("Centrifuge")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 7))
+                .widget(TextWidget.dynamicString(() ->
+                                "Recipe: " + (mMaxHeat + 1) + "/" + GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size())
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 23))
+                .widget(TextWidget.dynamicString(() -> "EU: " + GT_Utility.formatNumbers(mEU))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 31));
+    }
+
+    private void addPage4(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setPos(4, 4)
+                        .setSize(116, 61))
+                .widget(new DrawableWidget()
+                        .setDrawable(GTPP_UITextures.PICTURE_ARROWS_FUSION)
+                        .setPos(121, 23)
+                        .setSize(29, 40))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> switchFusionPageBackward())
+                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
+                        .setPos(88, 65)
+                        .setSize(16, 16))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> switchFusionPageForward())
+                        .setBackground(
+                                GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
+                        .setPos(104, 65)
+                        .setSize(16, 16))
+                .widget(SlotWidget.phantom(inventoryHandler, 59)
+                        .disableInteraction()
+                        .setPos(121, 4))
+                .widget(SlotWidget.phantom(inventoryHandler, 60)
+                        .disableInteraction()
+                        .setPos(121, 64))
+                .widget(SlotWidget.phantom(inventoryHandler, 61)
+                        .disableInteraction()
+                        .setPos(151, 34))
+                .widget(new TextWidget("Fusionreactor")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 7))
+                .widget(TextWidget.dynamicString(() -> "Recipe: " + (mMaxHeat + 1) + "/"
+                                + GT_TileEntity_ComputerCube.sFusionReactorRecipes.size())
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 15))
+                .widget(TextWidget.dynamicString(() -> "Start: " + GT_Utility.formatNumbers(mEU) + "EU")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 23))
+                .widget(TextWidget.dynamicString(() -> "EU/t: " + GT_Utility.formatNumbers(mEUOut))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 31))
+                .widget(TextWidget.dynamicString(() -> GT_Utility.formatNumbers(mHeat) + " Ticks")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 39))
+                .widget(TextWidget.dynamicString(() -> GT_TileEntity_ComputerCube.sFusionReactorRecipes
+                                .get(mMaxHeat)
+                                .mFluidOutputs[0]
+                                .getLocalizedName())
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 55))
+                .widget(TextWidget.dynamicString(() -> mEUOut < 0
+                                ? "IN: " + GT_Utility.formatNumbers(-mEUOut * mHeat) + "EU"
+                                : "OUT: " + GT_Utility.formatNumbers(mEUOut * mHeat) + "EU")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 47));
+    }
+
+    private void addPage5(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setPos(4, 4)
+                        .setSize(200, 141))
+                .widget(new DrawableWidget()
+                        .setDrawable(() -> mExplosionStrength != 0 ? GTPP_UITextures.PICTURE_COMPUTER_GRID : null)
+                        .setPos(152, 6)
+                        .setSize(50, 50))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> switchDescriptionPageBackward())
+                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
+                        .setPos(190, 146)
+                        .setSize(16, 16))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> switchDescriptionPageForward())
+                        .setBackground(
+                                GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
+                        .setPos(206, 146)
+                        .setSize(16, 16));
+        for (int i = 0; i < 5; i++) {
+            builder.widget(SlotWidget.phantom(inventoryHandler, i + 59)
+                    .disableInteraction()
+                    .setPos(205, 37 + i * 18));
+        }
+        for (int i = 0; i < 9; i++) {
+            builder.widget(SlotWidget.phantom(inventoryHandler, i + 64)
+                    .disableInteraction()
+                    .setBackground(GT_UITextures.TRANSPARENT)
+                    .setPos(152 + (i % 3) * 16, 6 + (i / 3) * 16));
+        }
+        int descriptionMaxLines = GT_Computercube_Description.sDescriptions.stream()
+                .sorted((d1, d2) -> d2.mDescription.length - d1.mDescription.length)
+                .collect(Collectors.toList())
+                .get(0)
+                .mDescription
+                .length;
+        for (int i = 0; i < descriptionMaxLines; i++) {
+            final int index = i;
+            builder.widget(TextWidget.dynamicString(() -> {
+                        if (mMaxHeat >= 0 && mMaxHeat < GT_Computercube_Description.sDescriptions.size()) {
+                            String[] descriptions =
+                                    GT_Computercube_Description.sDescriptions.get(mMaxHeat).mDescription;
+                            if (index < descriptions.length) {
+                                return descriptions[index];
+                            }
+                        }
+                        return "";
+                    })
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(7, 7 + index * 8));
+        }
+    }
+
+    private void addPage6(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setPos(4, 4)
+                        .setSize(86, 41))
+                .widget(new DrawableWidget()
+                        .setDrawable(GTPP_UITextures.PICTURE_ARROWS_SEPARATE)
+                        .setPos(110, 23)
+                        .setSize(40, 40))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> switchElectrolyzerPageBackward())
+                        .setBackground(GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_LEFT)
+                        .setPos(88, 65)
+                        .setSize(16, 16))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> switchElectrolyzerPageForward())
+                        .setBackground(
+                                GTPP_UITextures.BUTTON_STANDARD_16x16, GTPP_UITextures.OVERLAY_BUTTON_ARROW_RIGHT)
+                        .setPos(104, 65)
+                        .setSize(16, 16))
+                .widget(SlotWidget.phantom(inventoryHandler, 59)
+                        .disableInteraction()
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER)
+                        .setPos(121, 34))
+                .widget(SlotWidget.phantom(inventoryHandler, 60)
+                        .disableInteraction()
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CANISTER)
+                        .setPos(91, 4))
+                .widget(SlotWidget.phantom(inventoryHandler, 61)
+                        .disableInteraction()
+                        .setPos(121, 4))
+                .widget(SlotWidget.phantom(inventoryHandler, 62)
+                        .disableInteraction()
+                        .setPos(151, 34))
+                .widget(SlotWidget.phantom(inventoryHandler, 63)
+                        .disableInteraction()
+                        .setPos(121, 64))
+                .widget(SlotWidget.phantom(inventoryHandler, 64)
+                        .disableInteraction()
+                        .setPos(91, 34))
+                .widget(new TextWidget("Electrolyzer")
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 7))
+                .widget(TextWidget.dynamicString(() -> "Recipe: " + (mMaxHeat + 1) + "/"
+                                + GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size())
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 23))
+                .widget(TextWidget.dynamicString(() -> "EU: " + GT_Utility.formatNumbers(mEU))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(7, 31));
+    }
+
+    private class NuclearSlotWidget extends SlotWidget {
+
+        private final Slot displaySlot;
+
+        public NuclearSlotWidget(IItemHandlerModifiable handler, int index, Slot displaySlot) {
+            super(BaseSlot.phantom(handler, index));
+            if (displaySlot != null) {
+                this.displaySlot = displaySlot;
+            } else {
+                this.displaySlot = getMcSlot();
+            }
+        }
+
+        @Override
+        protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+            final int aSlotIndex = getMcSlot().getSlotIndex() + 4;
+            final Slot tSlot = getMcSlot();
+            final ItemStack tStack = tSlot.getStack();
+            if (clickData.shift) {
+                tSlot.putStack(null);
+                getSimulator().slotClick(aSlotIndex, null);
+                return;
+            }
+            if (clickData.mouseButton == 1) {
+                tSlot.putStack(null);
+            }
+            if (clickData.mouseButton == 0) {
+                if (tStack == null) {
+                    if (displaySlot.getStack() != null && aSlotIndex != 58) {
+                        tSlot.putStack(displaySlot.getStack().copy());
+                        getSimulator()
+                                .slotClick(
+                                        aSlotIndex,
+                                        new GT_ItemStack(displaySlot.getStack().copy()));
+                    } else {
+                        tSlot.putStack(new ItemStack(GT_TileEntity_ComputerCube.sReactorList.get(0).mItem, 1));
+                        getSimulator().slotClick(aSlotIndex, GT_TileEntity_ComputerCube.sReactorList.get(0));
+                    }
+                    return;
+                }
+                for (int i = 1; i < GT_TileEntity_ComputerCube.sReactorList.size(); i++) {
+                    if (GT_TileEntity_ComputerCube.sReactorList.get(i - 1).mItem == tStack.getItem()) {
+                        tSlot.putStack(new ItemStack(GT_TileEntity_ComputerCube.sReactorList.get(i).mItem, 1, 0));
+                        getSimulator().slotClick(aSlotIndex, GT_TileEntity_ComputerCube.sReactorList.get(i));
+                        /*if (tSlot.getStack() != null && tSlot.getStack().getItem() == GT_ModHandler.getIC2Item("reactorIsotopeCell", 1).getItem()) {
+                        	tSlot.getStack().setItemDamage(tSlot.getStack().getMaxDamage() - 1);
+                        }*/
+                        return;
+                    }
+                }
+                tSlot.putStack(null);
+                getSimulator().slotClick(aSlotIndex, null);
+                return;
+            }
+            if (tStack == null) return;
+            if (tStack.stackSize < tStack.getMaxStackSize()) {
+                tStack.stackSize++;
+                return;
+            }
+            tStack.stackSize = 1;
+        }
+
+        @Override
+        protected void handleDragAndDropServer(ClickData clickData, ItemStack draggedStack) {}
+
+        @Override
+        public List<String> getExtraTooltip() {
+            return Collections.emptyList();
+        }
     }
 }

@@ -187,16 +187,6 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return false;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "MacerationStack";
-    }
-
-    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
     }

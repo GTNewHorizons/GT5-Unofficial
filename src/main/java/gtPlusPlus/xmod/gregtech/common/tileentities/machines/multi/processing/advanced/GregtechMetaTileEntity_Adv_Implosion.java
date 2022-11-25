@@ -126,21 +126,6 @@ public class GregtechMetaTileEntity_Adv_Implosion
         return 48;
     }
 
-    @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "ImplosionCompressor";
-    }
-
-    @Override
-    public boolean requiresVanillaGtGUI() {
-        return true;
-    }
-
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
     }

@@ -62,16 +62,6 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     }
 
     @Override
-    public boolean hasSlotInGUI() {
-        return true;
-    }
-
-    @Override
-    public String getCustomGUIResourceName() {
-        return "Generic3By3";
-    }
-
-    @Override
     public IStructureDefinition<GMTE_AmazonPackager> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GMTE_AmazonPackager>builder()
