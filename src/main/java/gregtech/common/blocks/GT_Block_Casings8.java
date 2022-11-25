@@ -38,9 +38,12 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Magical Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "HSS-S Turbine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Radiant Naqudah Alloy Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "PCB Tier 1");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "PCB Tier 2");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "PCB Tier 3");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".11.name", "Basic Photolithographic Framework Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".12.name", "Reinforced Photolithographic Framework Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".13.name", "Radiation Proof Photolithographic Framework Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Infinity Cooled Casing");
 
         ItemList.Casing_Chemically_Inert.set(new ItemStack(this, 1, 0));
@@ -54,9 +57,9 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Magical.set(new ItemStack(this, 1, 8));
         ItemList.Casing_TurbineGasAdvanced.set(new ItemStack(this, 1, 9));
         ItemList.RadiantNaquadahAlloyCasing.set(new ItemStack(this, 1, 10));
-        ItemList.PCBCasingTier1.set(new ItemStack(this, 1, 11));
-        ItemList.PCBCasingTier2.set(new ItemStack(this, 1, 12));
-        ItemList.PCBCasingTier3.set(new ItemStack(this, 1, 13));
+        ItemList.BasicPhotolithographicFrameworkCasing.set(new ItemStack(this, 1, 11));
+        ItemList.ReinforcedPhotolithographicFrameworkCasing.set(new ItemStack(this, 1, 12));
+        ItemList.RadiationProofPhotolithographicFrameworkCasing.set(new ItemStack(this, 1, 13));
         ItemList.InfinityCooledCasing.set(new ItemStack(this, 1, 14));
     }
 
