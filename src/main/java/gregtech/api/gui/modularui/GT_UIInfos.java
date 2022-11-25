@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.net.GT_Packet_SendCoverData;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import java.util.HashMap;
@@ -100,16 +100,16 @@ public class GT_UIInfos {
     }
 
     /**
-     * Opens TileEntity UI, created by {@link gregtech.api.metatileentity.MetaTileEntity#createWindow}.
+     * Opens TileEntity UI, created by {@link ITileWithModularUI#createWindow}.
      */
-    public static void openGTTileEntityUI(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return;
+    public static void openGTTileEntityUI(IHasWorldObjectAndCoords aTileEntity, EntityPlayer aPlayer) {
+        if (aTileEntity.isClientSide()) return;
         GTTileEntityDefaultUI.open(
                 aPlayer,
-                aBaseMetaTileEntity.getWorld(),
-                aBaseMetaTileEntity.getXCoord(),
-                aBaseMetaTileEntity.getYCoord(),
-                aBaseMetaTileEntity.getZCoord());
+                aTileEntity.getWorld(),
+                aTileEntity.getXCoord(),
+                aTileEntity.getYCoord(),
+                aTileEntity.getZCoord());
     }
 
     /**

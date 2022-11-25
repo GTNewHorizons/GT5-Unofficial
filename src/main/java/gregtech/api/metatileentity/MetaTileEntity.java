@@ -1026,7 +1026,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     /**
-     * @deprecated Use {@link #createWindow}
+     * @deprecated Use ModularUI
      */
     @Deprecated
     @Override
@@ -1035,7 +1035,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     /**
-     * @deprecated Use {@link #createWindow}
+     * @deprecated Use ModularUI
      */
     @Deprecated
     @Override

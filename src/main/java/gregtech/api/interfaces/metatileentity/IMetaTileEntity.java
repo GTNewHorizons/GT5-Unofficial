@@ -1,8 +1,6 @@
 package gregtech.api.interfaces.metatileentity;
 
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -200,7 +198,7 @@ public interface IMetaTileEntity
 
     /**
      * @return the Server Side Container
-     * @deprecated Use {@link #createWindow}
+     * @deprecated Use ModularUI
      */
     @Deprecated
     default Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -209,7 +207,7 @@ public interface IMetaTileEntity
 
     /**
      * @return the Client Side GUI Container
-     * @deprecated Use {@link #createWindow}
+     * @deprecated Use ModularUI
      */
     @Deprecated
     default Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -221,14 +219,6 @@ public interface IMetaTileEntity
      */
     default boolean useModularUI() {
         return false;
-    }
-
-    /**
-     * Creates UI with ModularUI system. Start building UI with {@link ModularWindow#builder}
-     * and call {@link ModularWindow.Builder#build} to build.
-     */
-    default ModularWindow createWindow(UIBuildContext buildContext) {
-        return null;
     }
 
     /**
