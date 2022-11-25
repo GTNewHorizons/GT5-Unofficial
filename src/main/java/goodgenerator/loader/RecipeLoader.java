@@ -1494,7 +1494,7 @@ public class RecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 32),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 2),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 4),
-                new int[] {10000, 8000, 1000, 8000, 3000, 5000},
+                new int[] {10000, 8000, 10000, 8000, 3000, 5000},
                 1500,
                 1040);
 
