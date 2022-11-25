@@ -1,27 +1,30 @@
 package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconButton;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -253,23 +256,171 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
         return aCoverVariable.tickRate;
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            FluidRegulatorData coverData,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new GT_Cover_FluidRegulator.GUI(aSide, aCoverID, coverData, aTileEntity);
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new FluidRegulatorUIFactory(buildContext).createWindow();
+    }
+
+    private class FluidRegulatorUIFactory extends UIFactory {
+
+        private static final int startX = 10;
+        private static final int startY = 25;
+        private static final int spaceX = 18;
+        private static final int spaceY = 18;
+
+        public FluidRegulatorUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
+        }
+
+        @SuppressWarnings("PointlessArithmeticExpression")
+        @Override
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            AtomicBoolean warn = new AtomicBoolean(false);
+
+            builder.widget(new CoverDataControllerWidget<>(
+                                    this::getCoverData, this::setCoverData, GT_Cover_FluidRegulator.this)
+                            .addFollower(
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    coverData -> coverData.speed >= 0,
+                                    (coverData, state) -> {
+                                        coverData.speed = Math.abs(coverData.speed);
+                                        return coverData;
+                                    },
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                            .addTooltip(GT_Utility.trans("006", "Export"))
+                                            .setPos(spaceX * 0, spaceY * 0))
+                            .addFollower(
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    coverData -> coverData.speed <= 0,
+                                    (coverData, state) -> {
+                                        coverData.speed = -Math.abs(coverData.speed);
+                                        return coverData;
+                                    },
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                            .addTooltip(GT_Utility.trans("007", "Import"))
+                                            .setPos(spaceX * 1, spaceY * 0))
+                            .addFollower(
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    coverData -> coverData.condition == Conditional.Always,
+                                    (coverData, state) -> {
+                                        coverData.condition = Conditional.Always;
+                                        return coverData;
+                                    },
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                                            .addTooltip(GT_Utility.trans("224", "Always On"))
+                                            .setPos(spaceX * 0, spaceY * 1))
+                            .addFollower(
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    coverData -> coverData.condition == Conditional.Conditional,
+                                    (coverData, state) -> {
+                                        coverData.condition = Conditional.Conditional;
+                                        return coverData;
+                                    },
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
+                                            .addTooltip(GT_Utility.trans("225", "Active with Redstone Signal"))
+                                            .setPos(spaceX * 1, spaceY * 1))
+                            .addFollower(
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    coverData -> coverData.condition == Conditional.Inverted,
+                                    (coverData, state) -> {
+                                        coverData.condition = Conditional.Inverted;
+                                        return coverData;
+                                    },
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                                            .addTooltip(GT_Utility.trans("226", "Inactive with Redstone Signal"))
+                                            .setPos(spaceX * 2, spaceY * 1))
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> String.valueOf(coverData.speed),
+                                    (coverData, state) -> {
+                                        coverData.speed = (int) MathExpression.parseMathExpression(state);
+                                        return coverData;
+                                    },
+                                    widget -> widget.setOnScrollNumbersLong(1, 5, 50)
+                                            .setNumbersLong(val -> {
+                                                final int tickRate =
+                                                        getCoverData() != null ? getCoverData().tickRate : 0;
+                                                final long maxFlow = (long) mTransferRate
+                                                        * GT_Utility.clamp(tickRate, TICK_RATE_MIN, TICK_RATE_MAX);
+                                                warn.set(false);
+                                                if (val > maxFlow) {
+                                                    val = maxFlow;
+                                                    warn.set(true);
+                                                } else if (val < -maxFlow) {
+                                                    val = -maxFlow;
+                                                    warn.set(true);
+                                                }
+                                                return val;
+                                            })
+                                            .setPattern(BaseTextFieldWidget.WHOLE_NUMS)
+                                            .setFocusOnGuiOpen(true)
+                                            .setPos(spaceX * 0, spaceY * 2 + 2)
+                                            .setSize(spaceX * 4 - 3, 12))
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> String.valueOf(coverData.tickRate),
+                                    (coverData, state) -> {
+                                        coverData.tickRate = (int) MathExpression.parseMathExpression(state);
+                                        return coverData;
+                                    },
+                                    widget -> widget.setOnScrollNumbersLong(1, 5, 50)
+                                            .setNumbersLong(val -> {
+                                                final int speed = getCoverData() != null ? getCoverData().speed : 0;
+                                                warn.set(false);
+                                                if (val > TICK_RATE_MAX) {
+                                                    val = (long) TICK_RATE_MAX;
+                                                    warn.set(true);
+                                                } else if (Math.abs(speed) > mTransferRate * val) {
+                                                    val = (long) Math.min(
+                                                            TICK_RATE_MAX,
+                                                            (Math.abs(speed) + mTransferRate - 1) / mTransferRate);
+                                                    warn.set(true);
+                                                } else if (val < TICK_RATE_MIN) {
+                                                    val = 1L;
+                                                }
+                                                return val;
+                                            })
+                                            .setPattern(BaseTextFieldWidget.WHOLE_NUMS)
+                                            .setPos(spaceX * 5, spaceY * 2 + 2)
+                                            .setSize(spaceX * 2 - 3, 12))
+                            .setPos(startX, startY))
+                    .widget(new TextWidget(GT_Utility.trans("229", "Import/Export"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
+                    .widget(new TextWidget(GT_Utility.trans("230", "Conditional"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 4, 4 + startY + spaceY * 1))
+                    .widget(new TextWidget(GT_Utility.trans("208", " L"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 4, 4 + startY + spaceY * 2))
+                    .widget(new TextWidget(GT_Utility.trans("209", " ticks"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 7, 4 + startY + spaceY * 2))
+                    .widget(TextWidget.dynamicText(() -> {
+                                FluidRegulatorData coverVariable = getCoverData();
+                                if (coverVariable == null) return new Text("");
+                                return new Text(String.format(
+                                                GT_Utility.trans("210", "Average: %.2f L/sec"),
+                                                coverVariable.tickRate == 0
+                                                        ? 0
+                                                        : coverVariable.speed * 20d / coverVariable.tickRate))
+                                        .color(warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get());
+                            })
+                            .setSynced(false)
+                            .setPos(startX + spaceX * 0, 4 + startY + spaceY * 3));
+        }
     }
 
     public enum Conditional {
@@ -395,216 +546,6 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 
         public void setCondition(Conditional condition) {
             this.condition = condition;
-        }
-    }
-
-    private class GUI extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private GT_GuiIntegerTextBox tBox, lBox;
-        private FluidRegulatorData coverVariable;
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        private boolean warn = false;
-
-        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555),
-                textColorValue = this.getTextColorOrDefault("value", 0xFFFF0000);
-
-        public GUI(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            new GT_GuiIconButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.EXPORT)
-                    .setTooltipText(GT_Utility.trans("006", "Export"));
-            new GT_GuiIconButton(this, 1, startX + spaceX * 1, startY + spaceY * 0, GT_GuiIcon.IMPORT)
-                    .setTooltipText(GT_Utility.trans("007", "Import"));
-            new GT_GuiIconButton(this, 2, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.CHECKMARK)
-                    .setTooltipText(GT_Utility.trans("224", "Always On"));
-            new GT_GuiIconButton(this, 3, startX + spaceX * 1, startY + spaceY * 1, GT_GuiIcon.REDSTONE_ON)
-                    .setTooltipText(GT_Utility.trans("225", "Active with Redstone Signal"));
-            new GT_GuiIconButton(this, 4, startX + spaceX * 2, startY + spaceY * 1, GT_GuiIcon.REDSTONE_OFF)
-                    .setTooltipText(GT_Utility.trans("226", "Inactive with Redstone Signal"));
-
-            tBox = new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 2 + 2, spaceX * 4 - 3, 12) {
-                @Override
-                public boolean validChar(char c, int key) {
-                    return super.validChar(c, key) || c == '-';
-                }
-            };
-            tBox.setText(String.valueOf(this.coverVariable.speed));
-            tBox.setMaxStringLength(10);
-
-            lBox = new GT_GuiIntegerTextBox(this, 3, startX + spaceX * 5, startY + spaceY * 2 + 2, spaceX * 2 - 3, 12) {
-                @Override
-                public boolean validChar(char c, int key) {
-                    return super.validChar(c, key) || c == '-';
-                }
-            };
-            lBox.setText(String.valueOf(this.coverVariable.tickRate));
-            lBox.setMaxStringLength(4);
-        }
-
-        @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("229", "Import/Export"),
-                            startX + spaceX * 4,
-                            4 + startY + spaceY * 0,
-                            textColor);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("230", "Conditional"),
-                            startX + spaceX * 4,
-                            4 + startY + spaceY * 1,
-                            textColor);
-            this.getFontRenderer()
-                    .drawString(GT_Utility.trans("208", " L"), startX + spaceX * 4, 4 + startY + spaceY * 2, textColor);
-            this.getFontRenderer()
-                    .drawString(
-                            GT_Utility.trans("209", " ticks"), startX + spaceX * 7, 4 + startY + spaceY * 2, textColor);
-            this.getFontRenderer()
-                    .drawString(
-                            String.format(
-                                    GT_Utility.trans("210", "Average: %.2f L/sec"),
-                                    coverVariable.tickRate == 0
-                                            ? 0
-                                            : coverVariable.speed * 20d / coverVariable.tickRate),
-                            startX + spaceX * 0,
-                            4 + startY + spaceY * 3,
-                            warn ? textColorValue : textColor);
-        }
-
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            updateButtons();
-            tBox.setFocused(true);
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (!btn.enabled) return;
-            switch (btn.id) {
-                case 0:
-                case 1:
-                    coverVariable.speed *= -1;
-                    for (GT_GuiIntegerTextBox box : textBoxes) {
-                        if (box.id == 2) {
-                            box.setText(String.valueOf(coverVariable.speed));
-                        }
-                    }
-                    break;
-                case 2:
-                case 3:
-                case 4:
-                    coverVariable.condition = Conditional.VALUES[btn.id - 2];
-                    break;
-                default:
-                    // not right, but we carry on
-                    return;
-            }
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-            updateButtons();
-        }
-
-        @Override
-        public void onMouseWheel(int x, int y, int delta) {
-            for (GT_GuiIntegerTextBox box : textBoxes) {
-                if (box.isFocused()) {
-                    int step = Math.max(1, Math.abs(delta / 120));
-                    step = (isShiftKeyDown() ? 50 : isCtrlKeyDown() ? 5 : 1) * (delta > 0 ? step : -step);
-                    long i;
-                    try {
-                        i = Long.parseLong(box.getText());
-                    } catch (NumberFormatException e) {
-                        return;
-                    }
-                    if (i > (Long.MAX_VALUE - 1000)) break;
-
-                    i = i + step;
-                    if (i <= 0) i = 0;
-                    box.setText(String.valueOf(i));
-                    break;
-                }
-            }
-        }
-
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            long i;
-            String s = box.getText().trim();
-            try {
-                i = Long.parseLong(s);
-            } catch (NumberFormatException e) {
-                resetTextBox(box);
-                return;
-            }
-
-            warn = false;
-            if (box.id == 2) {
-                long maxFlow =
-                        (long) mTransferRate * GT_Utility.clamp(coverVariable.tickRate, TICK_RATE_MIN, TICK_RATE_MAX);
-                if (i > maxFlow) {
-                    i = maxFlow;
-                    warn = true;
-                } else if (i < -maxFlow) {
-                    i = -maxFlow;
-                    warn = true;
-                }
-                if (!warn && coverVariable.speed == i) return;
-                coverVariable.speed = (int) i;
-            } else if (box.id == 3) {
-                if (i > TICK_RATE_MAX) {
-                    i = TICK_RATE_MAX;
-                    warn = true;
-                } else if (Math.abs(coverVariable.speed) > mTransferRate * i) {
-                    i = Math.min(TICK_RATE_MAX, (Math.abs(coverVariable.speed) + mTransferRate - 1) / mTransferRate);
-                    warn = true;
-                } else if (i < TICK_RATE_MIN) {
-                    i = 1;
-                }
-                if (!warn && coverVariable.tickRate == i) return;
-                coverVariable.tickRate = (int) i;
-            }
-            box.setText(String.valueOf(i));
-            updateButtons();
-
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-        }
-
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            if (box.id == 2) box.setText(String.valueOf(coverVariable.speed));
-            else if (box.id == 3) box.setText(String.valueOf(coverVariable.tickRate));
-        }
-
-        private void updateButtons() {
-            GuiButton b;
-            for (Object o : buttonList) {
-                b = (GuiButton) o;
-                b.enabled = getClickable(b.id);
-            }
-        }
-
-        private boolean getClickable(int id) {
-            switch (id) {
-                case 0:
-                    return coverVariable.speed < 0;
-                case 1:
-                    return coverVariable.speed > 0;
-                case 2:
-                case 3:
-                case 4:
-                    return coverVariable.condition != Conditional.VALUES[id - 2];
-            }
-            return false;
         }
     }
 }

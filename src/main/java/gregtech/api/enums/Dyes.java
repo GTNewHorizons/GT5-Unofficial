@@ -125,4 +125,8 @@ public enum Dyes implements IColorModulationContainer {
     public short[] getRGBA() {
         return mRGBa;
     }
+
+    public static Dyes getDyeFromIndex(short index) {
+        return index != -1 ? Dyes.get(index) : Dyes.MACHINE_METAL;
+    }
 }

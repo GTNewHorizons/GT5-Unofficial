@@ -9,17 +9,28 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_SIDES;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_SIDES_GLOW;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_Container_Teleporter;
-import gregtech.common.gui.GT_GUIContainer_Teleporter;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
@@ -36,7 +47,6 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityFishHook;
@@ -50,7 +60,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
+public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
+        implements IAddGregtechLogo, IAddUIWidgets {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int sPassiveEnergyDrain = 2048;
@@ -164,18 +175,8 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         // this.hasEgg = checkForEgg();
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_Teleporter(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Teleporter(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -604,5 +605,83 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return null;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setSize(90, 72)
+                        .setPos(43, 4))
+                .widget(TextWidget.dynamicString(() -> "X: " + GT_Utility.parseNumberToString(mTargetX))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(46, 8))
+                .widget(TextWidget.dynamicString(() -> "Y: " + GT_Utility.parseNumberToString(mTargetY))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(46, 16))
+                .widget(TextWidget.dynamicString(() -> "Z: " + GT_Utility.parseNumberToString(mTargetZ))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(46, 24))
+                .widget(TextWidget.dynamicString(() -> "Dim: " + GT_Utility.parseNumberToString(mTargetD))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(46, 32))
+                .widget(TextWidget.dynamicString(
+                                () -> "Dim Valid: " + (GT_Utility.isRealDimension(mTargetD) ? "Yes" : "No"))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> hasDimensionalTeleportCapability())
+                        .setPos(46, 40))
+                .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val));
+
+        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
+        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
+        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
+        addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64, 151);
+
+        addChangeNumberButton(
+                builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> mTargetD += val, -16, -8, 7, 58);
+        addChangeNumberButton(
+                builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> mTargetD += val, -4, -1, 25, 58);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> mTargetD += val, 4, 1, 133, 58);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> mTargetD += val, 16, 8, 151, 58);
+    }
+
+    private void addChangeNumberButtons(
+            ModularWindow.Builder builder, IDrawable overlay, int addNumberShift, int addNumber, int xPos) {
+        addChangeNumberButton(builder, overlay, val -> mTargetX += val, addNumberShift, addNumber, xPos, 4);
+        addChangeNumberButton(builder, overlay, val -> mTargetY += val, addNumberShift, addNumber, xPos, 22);
+        addChangeNumberButton(builder, overlay, val -> mTargetZ += val, addNumberShift, addNumber, xPos, 40);
+    }
+
+    private void addChangeNumberButton(
+            ModularWindow.Builder builder,
+            IDrawable overlay,
+            Consumer<Integer> setter,
+            int addNumberShift,
+            int addNumber,
+            int xPos,
+            int yPos) {
+        builder.widget(new ButtonWidget()
+                .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? addNumberShift : addNumber))
+                .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
+                .setSize(18, 18)
+                .setPos(xPos, yPos));
+    }
+
+    @Override
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet().setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY);
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(113, 56));
     }
 }

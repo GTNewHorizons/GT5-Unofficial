@@ -3,15 +3,14 @@ package gregtech.common.tileentities.machines.steam;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Bronze;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_Furnace_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
@@ -33,14 +32,13 @@ public class GT_MetaTileEntity_Furnace_Bronze extends GT_MetaTileEntity_BasicMac
     }
 
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "BronzeFurnace.png", "smelting");
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_Furnace_Bronze(this.mName, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Furnace_Bronze(this.mName, this.mDescriptionArray, this.mTextures);
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return GT_Recipe.GT_Recipe_Map.sFurnaceRecipes;
     }
 
     @Override

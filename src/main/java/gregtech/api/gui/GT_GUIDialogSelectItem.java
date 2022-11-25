@@ -12,6 +12,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+@Deprecated
 public class GT_GUIDialogSelectItem extends GT_GUIScreen {
     public static final int UNSELECTED = -1;
     private static final int cols = 9;

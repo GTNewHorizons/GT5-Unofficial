@@ -5,6 +5,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_GtTileEntityGuiRequest;
 import net.minecraft.item.ItemStack;
 
+@Deprecated
 public abstract class GT_GUICover extends GT_GUIScreen {
 
     public final ICoverable tile;

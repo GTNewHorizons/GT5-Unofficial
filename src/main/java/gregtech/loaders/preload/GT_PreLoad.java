@@ -760,24 +760,37 @@ public class GT_PreLoad {
                         "PollutionBaseDieselGenerator",
                         GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond)
                 .getInt(GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond);
-        GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier = tMainConfig
+        double[] mPollutionDieselGeneratorReleasedByTier = tMainConfig
                 .get(
                         "Pollution",
                         "PollutionReleasedByTierDieselGenerator",
                         GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier)
                 .getDoubleList();
+        if (mPollutionDieselGeneratorReleasedByTier.length
+                == GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier.length) {
+            GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier = mPollutionDieselGeneratorReleasedByTier;
+        } else {
+            GT_FML_LOGGER.error(
+                    "The Length of the Diesel Turbine Pollution Array Config must be the same as the Default");
+        }
         GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = tMainConfig
                 .get(
                         "Pollution",
                         "PollutionBaseGasTurbineGenerator",
                         GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond)
                 .getInt(GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond);
-        GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier = tMainConfig
+        double[] mPollutionGasTurbineReleasedByTier = tMainConfig
                 .get(
                         "Pollution",
                         "PollutionReleasedByTierGasTurbineGenerator",
                         GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier)
                 .getDoubleList();
+        if (mPollutionGasTurbineReleasedByTier.length
+                == GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier.length) {
+            GT_Mod.gregtechproxy.mPollutionGasTurbineReleasedByTier = mPollutionGasTurbineReleasedByTier;
+        } else {
+            GT_FML_LOGGER.error("The Length of the Gas Turbine Pollution Array Config must be the same as the Default");
+        }
 
         GT_Mod.gregtechproxy.mUndergroundOil.getConfig(tMainConfig, "undergroundfluid");
         GT_Mod.gregtechproxy.mEnableCleanroom =
@@ -942,17 +955,21 @@ public class GT_PreLoad {
                 GregTech_API.sClientDataFile.get("render", "RenderDirtParticles", true);
         GT_Mod.gregtechproxy.mRenderPollutionFog =
                 GregTech_API.sClientDataFile.get("render", "RenderPollutionFog", true);
+
         GT_Mod.gregtechproxy.mCoverTabsVisible =
                 GregTech_API.sClientDataFile.get("interface", "DisplayCoverTabs", true);
         GT_Mod.gregtechproxy.mCoverTabsFlipped = GregTech_API.sClientDataFile.get("interface", "FlipCoverTabs", false);
         GT_Mod.gregtechproxy.mTooltipVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipVerbosity", 2);
         GT_Mod.gregtechproxy.mTooltipShiftVerbosity =
                 GregTech_API.sClientDataFile.get("interface", "TooltipShiftVerbosity", 3);
+        GT_Mod.gregtechproxy.mTitleTabStyle = GregTech_API.sClientDataFile.get("interface", "TitleTabStyle", 0);
+
         GT_Mod.gregtechproxy.mNEIRecipeSecondMode = GregTech_API.sClientDataFile.get("nei", "RecipeSecondMode", true);
         GT_Mod.gregtechproxy.mNEIRecipeOwner = GregTech_API.sClientDataFile.get("nei", "RecipeOwner", false);
         GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace =
                 GregTech_API.sClientDataFile.get("nei", "RecipeOwnerStackTrace", false);
         GT_Mod.gregtechproxy.mNEIOriginalVoltage = GregTech_API.sClientDataFile.get("nei", "OriginalVoltage", false);
+
         GT_Mod.gregtechproxy.mWailaTransformerVoltageTier =
                 GregTech_API.sClientDataFile.get("waila", "WailaTransformerVoltageTier", true);
 

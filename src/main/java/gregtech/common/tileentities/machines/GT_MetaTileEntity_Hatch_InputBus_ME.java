@@ -16,26 +16,33 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEItemStack;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.GT_Container_InputBus_ME;
-import gregtech.common.gui.GT_GUIContainer_InputBus_ME;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.gui.modularui.widget.AESlotWidget;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus
-        implements IConfigurationCircuitSupport {
+        implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets {
     private static final int SLOT_COUNT = 16;
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
@@ -69,16 +76,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] {aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH)};
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_InputBus_ME(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_InputBus_ME(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -195,6 +192,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
+    public boolean setStackToZeroInsteadOfNull(int aIndex) {
+        return true;
+    }
+
+    @Override
     public ItemStack getStackInSlot(int aIndex) {
         if (!processingRecipe) return super.getStackInSlot(aIndex);
         if (aIndex < 0 || aIndex > mInventory.length) return null;
@@ -245,10 +247,12 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         }
     }
 
+    @Override
     public void startRecipeProcessing() {
         processingRecipe = true;
     }
 
+    @Override
     public void endRecipeProcessing() {
         if (GregTech_API.mAE2) {
             for (int i = 0; i < SLOT_COUNT; ++i) {
@@ -304,5 +308,64 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public boolean isValidSlot(int aIndex) {
         return false;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        final SlotWidget[] aeSlotWidgets = new SlotWidget[16];
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
+                        .startFromSlot(0)
+                        .endAtSlot(15)
+                        .phantom(true)
+                        .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_ARROW_ME)
+                        .widgetCreator(slot -> new SlotWidget(slot) {
+                            @Override
+                            protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+                                if (clickData.mouseButton != 0) return;
+                                final int aSlotIndex = getMcSlot().getSlotIndex();
+                                if (cursorStack == null) {
+                                    getMcSlot().putStack(null);
+                                } else {
+                                    if (containsSuchStack(cursorStack)) return;
+                                    getMcSlot().putStack(GT_Utility.copyAmount(1L, cursorStack));
+                                }
+                                if (getBaseMetaTileEntity().isServerSide()) {
+                                    final ItemStack newInfo = updateInformationSlot(aSlotIndex, cursorStack);
+                                    aeSlotWidgets[getMcSlot().getSlotIndex()]
+                                            .getMcSlot()
+                                            .putStack(newInfo);
+                                }
+                            }
+
+                            private boolean containsSuchStack(ItemStack tStack) {
+                                for (int i = 0; i < 16; ++i) {
+                                    if (GT_Utility.areStacksEqual(mInventory[i], tStack, false)) return true;
+                                }
+                                return false;
+                            }
+                        })
+                        .build()
+                        .setPos(7, 9))
+                .widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
+                        .startFromSlot(16)
+                        .endAtSlot(31)
+                        .phantom(true)
+                        .background(GT_UITextures.SLOT_DARK_GRAY)
+                        .widgetCreator(slot ->
+                                aeSlotWidgets[slot.getSlotIndex() - 16] = new AESlotWidget(slot).disableInteraction())
+                        .build()
+                        .setPos(97, 9))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
+                        .setPos(82, 40)
+                        .setSize(12, 12));
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(80, 63));
     }
 }

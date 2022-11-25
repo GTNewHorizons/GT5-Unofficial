@@ -1428,6 +1428,11 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         return new ArrayList<>(Collections.singletonList(rStack));
     }
 
+    @Override
+    public boolean shouldDropItemAt(int index) {
+        return this.mMetaTileEntity != null ? this.mMetaTileEntity.shouldDropItemAt(index) : true;
+    }
+
     public int getUpgradeCount() {
         return (mMuffler ? 1 : 0) + (mLockUpgrade ? 1 : 0) + (mSteamConverter ? 1 : 0) + mOtherUpgrades;
     }
@@ -1666,6 +1671,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             GT_Log.err.println(
                     "Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GT_Log.err);
+            e.printStackTrace();
         }
 
         return false;

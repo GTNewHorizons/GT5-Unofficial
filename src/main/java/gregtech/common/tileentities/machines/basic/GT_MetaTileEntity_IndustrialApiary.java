@@ -3,9 +3,28 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 import com.google.common.collect.ImmutableSet;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.builder.UIInfo;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,7 +38,11 @@ import forestry.apiculture.genetics.Bee;
 import forestry.apiculture.genetics.alleles.AlleleEffectThrottled;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
+import gregtech.GT_Mod;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
@@ -28,27 +51,28 @@ import gregtech.api.util.GT_ApiaryModifier;
 import gregtech.api.util.GT_ApiaryUpgrade;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
-import gregtech.common.gui.GT_Container_IndustrialApiary;
-import gregtech.common.gui.GT_GUIContainer_IndustrialApiary;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicMachine
-        implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener {
+        implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener, IAddUIWidgets {
 
     public static final int beeCycleLength = 550;
     public static final int baseEUtUsage = 37;
@@ -149,13 +173,29 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_IndustrialApiary(aPlayerInventory, aBaseMetaTileEntity);
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) return true;
+        if (!GT_Mod.gregtechproxy.mForceFreeFace) {
+            openGUI(aBaseMetaTileEntity, aPlayer);
+            return true;
+        }
+        for (byte i = 0; i < 6; i++) {
+            if (aBaseMetaTileEntity.getAirAtSide(i)) {
+                openGUI(aBaseMetaTileEntity, aPlayer);
+                return true;
+            }
+        }
+        GT_Utility.sendChatToPlayer(aPlayer, "No free Side!");
+        return true;
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_IndustrialApiary(aPlayerInventory, aBaseMetaTileEntity);
+    private void openGUI(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        IndustrialApiaryUI.open(
+                aPlayer,
+                aBaseMetaTileEntity.getWorld(),
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord());
     }
 
     @Override
@@ -398,6 +438,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     @Override
     protected boolean hasEnoughEnergyToCheckRecipe() {
         return getBaseMetaTileEntity().isUniversalEnergyStored(V[mSpeed] * 8L);
+    }
+
+    @Override
+    public long maxAmperesIn() {
+        return 4L;
     }
 
     private void doEffect() {
@@ -1031,4 +1076,305 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         @Override
         public void writeToNBT(NBTTagCompound nbtTagCompound) {}
     };
+
+    private static final String POWER_SOURCE_POWER = "GT5U.machines.powersource.power",
+            CANCEL_PROCESS_TOOLTIP = "GT5U.machines.industrialapiary.cancel.tooltip",
+            SPEED_TOOLTIP = "GT5U.machines.industrialapiary.speed.tooltip",
+            SPEED_LOCKED_TOOLTIP = "GT5U.machines.industrialapiary.speedlocked.tooltip",
+            INFO_TOOLTIP = "GT5U.machines.industrialapiary.info.tooltip",
+            INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip",
+            UPGRADE_TOOLTIP = "GT5U.machines.industrialapiary.upgradeslot.tooltip";
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new SlotWidget(new ApiarySlot(inventoryHandler, queen))
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_BEE_QUEEN)
+                        .setPos(36, 21))
+                .widget(new SlotWidget(new ApiarySlot(inventoryHandler, drone))
+                        .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_BEE_DRONE)
+                        .setPos(36, 41))
+                .widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
+                        .startFromSlot(7)
+                        .endAtSlot(10)
+                        .slotCreator(i -> new ApiarySlot(inventoryHandler, i))
+                        .applyForWidget(widget -> widget.setGTTooltip(() -> mTooltipCache.getData(UPGRADE_TOOLTIP))
+                                .setTooltipShowUpDelay(TOOLTIP_DELAY))
+                        .build()
+                        .setPos(61, 23));
+
+        super.addUIWidgets(builder, buildContext);
+
+        builder.widget(new ProgressBar()
+                        .setProgress(() -> (float) getProgresstime() / Math.max(maxProgresstime(), 1))
+                        .setTexture(GT_UITextures.PROGRESSBAR_ARROW, 20)
+                        .setPos(70, 3)
+                        .setSize(20, 18))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> cancelProcess())
+                        .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS)
+                        .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                        .setPos(7, 26)
+                        .setSize(18, 18))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_INFORMATION)
+                        .setGTTooltip(() -> {
+                            String energyreq = GT_Utility.formatNumbers(
+                                    (int) ((float) GT_MetaTileEntity_IndustrialApiary.baseEUtUsage
+                                                    * getEnergyModifier()
+                                                    * getAcceleration())
+                                            + getAdditionalEnergyUsage());
+                            String Temp = StatCollector.translateToLocal(
+                                    getTemperature().getName());
+                            String Hum =
+                                    StatCollector.translateToLocal(getHumidity().getName());
+                            if (getUsedQueen() != null
+                                    && BeeManager.beeRoot.isMember(getUsedQueen(), EnumBeeType.QUEEN.ordinal())) {
+                                IBee bee = BeeManager.beeRoot.getMember(getUsedQueen());
+                                if (bee.isAnalyzed()) {
+                                    IBeeGenome genome = bee.getGenome();
+                                    IBeeModifier mod = BeeManager.beeRoot
+                                            .getBeekeepingMode(getWorld())
+                                            .getBeeModifier();
+                                    float tmod = getTerritoryModifier(null, 1f) * mod.getTerritoryModifier(null, 1f);
+                                    int[] t = Arrays.stream(genome.getTerritory())
+                                            .map(i -> (int) ((float) i * tmod))
+                                            .toArray();
+                                    return mTooltipCache.getUncachedTooltipData(
+                                            INFO_WITH_BEE_TOOLTIP,
+                                            energyreq,
+                                            Temp,
+                                            Hum,
+                                            genome.getSpeed(),
+                                            getProductionModifier(null, 1f) * mod.getProductionModifier(null, 1f),
+                                            Math.round(getFloweringModifier(null, 1f)
+                                                    * genome.getFlowering()
+                                                    * mod.getFloweringModifier(null, 1f)),
+                                            Math.round(getLifespanModifier(null, null, 1f)
+                                                    * genome.getLifespan()
+                                                    * mod.getLifespanModifier(null, null, 1f)),
+                                            t[0],
+                                            t[1],
+                                            t[2]);
+                                }
+                            }
+                            return mTooltipCache.getUncachedTooltipData(INFO_TOOLTIP, energyreq, Temp, Hum);
+                        })
+                        .attachSyncer(
+                                new FakeSyncWidget.ItemStackSyncer(() -> usedQueen, val -> usedQueen = val),
+                                builder,
+                                (widget, val) -> widget.notifyTooltipChange())
+                        .setPos(163, 5)
+                        .setSize(7, 18))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> {
+                            if (clickData.mouseButton == 0) {
+                                if (mLockedSpeed) return;
+                                if (!clickData.shift) {
+                                    mSpeed++;
+                                    if (mSpeed > getMaxSpeed()) mSpeed = 0;
+                                } else {
+                                    mSpeed--;
+                                    if (mSpeed < 0) mSpeed = getMaxSpeed();
+                                }
+                            } else if (clickData.mouseButton == 1) {
+                                mLockedSpeed = !mLockedSpeed;
+                                if (mLockedSpeed) mSpeed = getMaxSpeed();
+                            }
+                        })
+                        .setGTTooltip(() -> mTooltipCache.getUncachedTooltipData(
+                                mLockedSpeed ? SPEED_LOCKED_TOOLTIP : SPEED_TOOLTIP,
+                                getAcceleration(),
+                                GT_Utility.formatNumbers(getAdditionalEnergyUsage())))
+                        .attachSyncer(
+                                new FakeSyncWidget.IntegerSyncer(() -> mSpeed, val -> mSpeed = val),
+                                builder,
+                                (widget, val) -> widget.notifyTooltipChange())
+                        .attachSyncer(
+                                new FakeSyncWidget.BooleanSyncer(() -> mLockedSpeed, val -> mLockedSpeed = val),
+                                builder,
+                                (widget, val) -> widget.notifyTooltipChange())
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                        .setBackground(GT_UITextures.PICTURE_SQUARE_LIGHT_GRAY)
+                        .setPos(25, 62)
+                        .setSize(18, 18))
+                .widget(new TextWidget("x")
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(30, 63))
+                .widget(TextWidget.dynamicString(() -> String.valueOf(1 << mSpeed))
+                        // mSpeed is already synced
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(26, 72));
+    }
+
+    @Override
+    protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
+        // we have custom input slots
+        return null;
+    }
+
+    @Override
+    protected CycleButtonWidget createItemAutoOutputButton() {
+        return (CycleButtonWidget) super.createItemAutoOutputButton().setPos(7, 62);
+    }
+
+    @Override
+    protected CycleButtonWidget createFluidAutoOutputButton() {
+        return null;
+    }
+
+    @Override
+    protected SlotWidget createChargerSlot(int x, int y, String tooltipKey, Object[] tooltipArgs) {
+        return (SlotWidget)
+                super.createChargerSlot(x, y, tooltipKey, tooltipArgs).setPos(79, 62);
+    }
+
+    @Override
+    protected DrawableWidget createErrorStatusArea(ModularWindow.Builder builder, IDrawable picture) {
+        return (DrawableWidget) super.createErrorStatusArea(builder, picture)
+                .setPos(100, 62)
+                .attachSyncer(
+                        new FakeSyncWidget.ListSyncer<>(
+                                () -> Arrays.asList(mErrorStates.toArray(new IErrorState[0])),
+                                val -> {
+                                    mErrorStates.clear();
+                                    mErrorStates.addAll(new HashSet<>(val));
+                                },
+                                (buffer, val) -> buffer.writeShort(val.getID()),
+                                buffer -> ForestryAPI.errorStateRegistry.getErrorState(buffer.readShort())),
+                        builder,
+                        (widget, val) -> widget.notifyTooltipChange());
+    }
+
+    @Override
+    protected List<String> getErrorDescriptions() {
+        if (!mErrorStates.isEmpty()) {
+            return mErrorStates.stream()
+                    .map(state ->
+                            EnumChatFormatting.RED + StatCollector.translateToLocal("for." + state.getDescription()))
+                    .collect(Collectors.toList());
+        } else if (mStuttering) {
+            return mTooltipCache.getData(STALLED_STUTTERING_TOOLTIP, StatCollector.translateToLocal(POWER_SOURCE_POWER))
+                    .text;
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    protected List<String> getErrorDescriptionsShift() {
+        // Don't show shift tooltip of "Progress was lost"
+        // as this machine does not lose progress
+        return getErrorDescriptions();
+    }
+
+    private int getAcceleration() {
+        return 1 << mSpeed;
+    }
+
+    private int getAdditionalEnergyUsage() {
+        int accelerated = getAcceleration();
+        int energyusage = 0;
+        if (accelerated == 2) energyusage = 32;
+        else if (accelerated > 2) energyusage = 32 * accelerated << (mSpeed - 2);
+        return energyusage;
+    }
+
+    private class ApiarySlot extends BaseSlot {
+
+        public ApiarySlot(IItemHandlerModifiable inventory, int index) {
+            super(inventory, index);
+        }
+
+        @Override
+        public boolean isItemValidPhantom(ItemStack stack) {
+            return super.isItemValidPhantom(stack) && getBaseMetaTileEntity().isItemValidForSlot(getSlotIndex(), stack);
+        }
+
+        @Override
+        public void onSlotChanged() {
+            super.onSlotChanged();
+            onInventoryUpdate(getSlotIndex());
+        }
+    }
+
+    private static final UIInfo<?, ?> IndustrialApiaryUI =
+            GT_UIInfos.GTTileEntityUIFactory.apply(GT_ModularUIContainer_IndustrialApiary::new);
+
+    private static class GT_ModularUIContainer_IndustrialApiary extends ModularUIContainer {
+
+        public GT_ModularUIContainer_IndustrialApiary(ModularUIContext context, ModularWindow mainWindow) {
+            super(context, mainWindow);
+        }
+
+        private final int playerInventorySlot = 36;
+
+        @Override
+        public ItemStack slotClick(int aSlotNumber, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+            if (!(aSlotNumber >= playerInventorySlot + 2 && aSlotNumber < playerInventorySlot + 2 + 4))
+                return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
+            if (aShifthold == 5) return null;
+            if (aShifthold != 0) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
+            if (aMouseclick > 1) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
+            ItemStack s = aPlayer.inventory.getItemStack();
+            if (s == null) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
+            Slot slot = getSlot(aSlotNumber);
+            ItemStack slotStack = slot.getStack();
+            if (slotStack != null && !GT_Utility.areStacksEqual(slotStack, s)) return null; // super would replace item
+            if (slotStack == null && !slot.isItemValid(s))
+                return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
+            if (!GT_ApiaryUpgrade.isUpgrade(s)) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
+            int max = GT_ApiaryUpgrade.getUpgrade(s).getMaxNumber();
+            if (slotStack != null) max = Math.max(0, max - slotStack.stackSize);
+            max = Math.min(max, s.stackSize);
+            if (max == 0) return null;
+            if (aMouseclick == 1) max = 1;
+            if (max == s.stackSize) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
+            ItemStack newStack = s.splitStack(s.stackSize - max);
+            ItemStack result = super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
+            aPlayer.inventory.setItemStack(newStack);
+            return result;
+        }
+
+        @Override
+        public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
+            Slot s = getSlot(aSlotIndex);
+            if (s == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            if (aSlotIndex >= playerInventorySlot) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            ItemStack aStack = s.getStack();
+            if (aStack == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            if (!GT_ApiaryUpgrade.isUpgrade(aStack)) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            for (int i = playerInventorySlot + 2; i < playerInventorySlot + 2 + 4; i++) {
+                Slot iSlot = getSlot(i);
+                ItemStack iStack = iSlot.getStack();
+                if (iStack == null) {
+                    if (!iSlot.isItemValid(aStack)) continue;
+                } else {
+                    if (!GT_Utility.areStacksEqual(aStack, iStack)) continue;
+                }
+                int max = GT_ApiaryUpgrade.getUpgrade(aStack).getMaxNumber();
+                if (iStack == null) {
+                    max = Math.min(max, aStack.stackSize);
+                    ItemStack newstack = aStack.splitStack(max);
+                    iSlot.putStack(newstack);
+                } else {
+                    max = Math.max(0, max - iStack.stackSize);
+                    max = Math.min(max, aStack.stackSize);
+                    iStack.stackSize += max;
+                    aStack.stackSize -= max;
+                    iSlot.onSlotChanged();
+                }
+                if (aStack.stackSize == 0) s.putStack(null);
+                else s.onSlotChanged();
+                break;
+            }
+            return null;
+        }
+    }
 }

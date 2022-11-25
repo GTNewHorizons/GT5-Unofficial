@@ -13,7 +13,6 @@ import com.gtnewhorizon.structurelib.structure.*;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -30,7 +29,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
@@ -147,12 +145,6 @@ public class GT_MetaTileEntity_LargeChemicalReactor
             };
         }
         return new ITexture[] {casingTexturePages[1][48]};
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeChemicalReactor.png");
     }
 
     @Override

@@ -386,10 +386,9 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                 }
             }
 
-            // Unification
             output[i] = handleUnification(output[i]);
-            // Wildcard
             output[i] = handleWildcard(output[i]);
+            output[i] = handleContainerItem(output[i]);
         }
     }
 
@@ -406,9 +405,17 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     private static ItemStack handleWildcard(ItemStack stack) {
-        if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE
+        if (stack != null
+                && stack.getItemDamage() == OreDictionary.WILDCARD_VALUE
                 && !stack.getItem().isDamageable()) {
             stack.setItemDamage(0);
+        }
+        return stack;
+    }
+
+    private static ItemStack handleContainerItem(ItemStack stack) {
+        if (stack != null && stack.getItem().hasContainerItem(stack)) {
+            return null;
         }
         return stack;
     }
@@ -597,5 +604,17 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
                 && aStack.getTagCompound() != null
                 && aStack.getTagCompound().getCompoundTag("GT.CraftingComponents") != null;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes;
+    }
+
+    // GUI stuff
+
+    @Override
+    public boolean hasNEITransferRect() {
+        return false;
     }
 }

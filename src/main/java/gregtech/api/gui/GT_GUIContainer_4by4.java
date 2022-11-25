@@ -5,6 +5,7 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
+@Deprecated
 public class GT_GUIContainer_4by4 extends GT_GUIContainerMetaTile_Machine {
 
     private final String mName;

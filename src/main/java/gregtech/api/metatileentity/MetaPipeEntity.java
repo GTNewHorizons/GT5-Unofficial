@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
@@ -379,6 +380,11 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public boolean isValidSlot(int aIndex) {
+        return true;
+    }
+
+    @Override
+    public boolean shouldDropItemAt(int index) {
         return true;
     }
 
@@ -1042,4 +1048,17 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     public void reloadLocks() {}
+
+    @Override
+    public int getGUIColorization() {
+        Dyes dye = Dyes.dyeWhite;
+        if (GregTech_API.sColoredGUI) {
+            if (GregTech_API.sMachineMetalGUI) {
+                dye = Dyes.MACHINE_METAL;
+            } else if (getBaseMetaTileEntity() != null) {
+                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+            }
+        }
+        return GT_Util.getRGBInt(dye.getRGBA());
+    }
 }

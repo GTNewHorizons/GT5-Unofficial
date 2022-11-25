@@ -1,19 +1,19 @@
 package gregtech.common.covers;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.client.gui.GuiButton;
+import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -192,122 +192,130 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
     public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 60;
     }
-    /**
-     * GUI Stuff
-     */
+
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
-        return new GUI(aSide, aCoverID, coverData, aTileEntity);
+    public boolean useModularUI() {
+        return true;
     }
 
-    private class GUI extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private int coverVariable;
+    @Override
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new NeedMaintainanceUIFactory(buildContext).createWindow();
+    }
 
-        private final String[] tooltiptext = {
-            GT_Utility.trans("056", "Emit if 1 Maintenance Needed"),
-            GT_Utility.trans("058", "Emit if 2 Maintenance Needed"),
-            GT_Utility.trans("060", "Emit if 3 Maintenance Needed"),
-            GT_Utility.trans("062", "Emit if 4 Maintenance Needed"),
-            GT_Utility.trans("064", "Emit if 5 Maintenance Needed"),
-            GT_Utility.trans("066", "Emit if rotor needs maintenance low accuracy mod"),
-            GT_Utility.trans("068", "Emit if rotor needs maintenance high accuracy mod"),
-        };
-
-        private final String[] buttontext = {
-            GT_Utility.trans("247", "1 Issue"),
-            GT_Utility.trans("248", "2 Issues"),
-            GT_Utility.trans("249", "3 Issues"),
-            GT_Utility.trans("250", "4 Issues"),
-            GT_Utility.trans("251", "5 Issues"),
-            GT_Utility.trans("252", "Rotor < 80%"),
-            GT_Utility.trans("253", "Rotor < 100%"),
-            GT_Utility.trans("INVERTED", "Inverted"),
-            GT_Utility.trans("NORMAL", "Normal"),
-        };
+    private class NeedMaintainanceUIFactory extends UIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
-
-        public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            GuiButton b;
-            b = new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(tooltiptext[0]);
-            b = new GT_GuiIconCheckButton(this, 1, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(tooltiptext[1]);
-            b = new GT_GuiIconCheckButton(this, 2, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(tooltiptext[2]);
-            b = new GT_GuiIconCheckButton(this, 3, startX + spaceX * 0, startY + spaceY * 3, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(tooltiptext[3]);
-            b = new GT_GuiIconCheckButton(
-                            this, 4, startX + spaceX * 4 + 4, startY + spaceY * 0, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(tooltiptext[4]);
-            b = new GT_GuiIconCheckButton(
-                            this, 5, startX + spaceX * 4 + 4, startY + spaceY * 1, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(tooltiptext[5]);
-            b = new GT_GuiIconCheckButton(
-                            this, 6, startX + spaceX * 4 + 4, startY + spaceY * 2, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(tooltiptext[6]);
-            b = new GT_GuiIconCheckButton(
-                    this,
-                    7,
-                    startX + spaceX * 4 + 4,
-                    startY + spaceY * 3,
-                    GT_GuiIcon.REDSTONE_ON,
-                    GT_GuiIcon.REDSTONE_OFF);
+        public NeedMaintainanceUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
 
+        @SuppressWarnings("PointlessArithmeticExpression")
         @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            final String[] tooltipText = {
+                GT_Utility.trans("056", "Emit if 1 Maintenance Needed"),
+                GT_Utility.trans("058", "Emit if 2 Maintenance Needed"),
+                GT_Utility.trans("060", "Emit if 3 Maintenance Needed"),
+                GT_Utility.trans("062", "Emit if 4 Maintenance Needed"),
+                GT_Utility.trans("064", "Emit if 5 Maintenance Needed"),
+                GT_Utility.trans("066", "Emit if rotor needs maintenance low accuracy mod"),
+                GT_Utility.trans("068", "Emit if rotor needs maintenance high accuracy mod"),
+            };
 
-            this.fontRendererObj.drawString(buttontext[0], startX + spaceX * 1, 4 + startY + spaceY * 0, textColor);
-            this.fontRendererObj.drawString(buttontext[1], startX + spaceX * 1, 4 + startY + spaceY * 1, textColor);
-            this.fontRendererObj.drawString(buttontext[2], startX + spaceX * 1, 4 + startY + spaceY * 2, textColor);
-            this.fontRendererObj.drawString(buttontext[3], startX + spaceX * 1, 4 + startY + spaceY * 3, textColor);
-            this.fontRendererObj.drawString(buttontext[4], startX + spaceX * 5 + 4, 4 + startY + spaceY * 0, textColor);
-            this.fontRendererObj.drawString(buttontext[5], startX + spaceX * 5 + 4, 4 + startY + spaceY * 1, textColor);
-            this.fontRendererObj.drawString(buttontext[6], startX + spaceX * 5 + 4, 4 + startY + spaceY * 2, textColor);
-            //                                          inverted        normal
-            String s2 = ((coverVariable & 0x1) > 0) ? buttontext[7] : buttontext[8];
-            this.fontRendererObj.drawString(s2, startX + spaceX * 5 + 4, 4 + startY + spaceY * 3, textColor);
+            final String[] buttonText = {
+                GT_Utility.trans("247", "1 Issue"),
+                GT_Utility.trans("248", "2 Issues"),
+                GT_Utility.trans("249", "3 Issues"),
+                GT_Utility.trans("250", "4 Issues"),
+                GT_Utility.trans("251", "5 Issues"),
+                GT_Utility.trans("252", "Rotor < 80%"),
+                GT_Utility.trans("253", "Rotor < 100%"),
+                GT_Utility.trans("INVERTED", "Inverted"),
+                GT_Utility.trans("NORMAL", "Normal"),
+            };
+
+            builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                                    this::getCoverData,
+                                    this::setCoverData,
+                                    GT_Cover_NeedMaintainance.this,
+                                    (index, coverData) -> isEnabled(index, convert(coverData)),
+                                    (index, coverData) -> new ISerializableObject.LegacyCoverData(
+                                            getNewCoverVariable(index, convert(coverData))))
+                            .addToggleButton(
+                                    0,
+                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                    widget -> widget.addTooltip(tooltipText[0]).setPos(spaceX * 0, spaceY * 0))
+                            .addToggleButton(
+                                    1,
+                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                    widget -> widget.addTooltip(tooltipText[1]).setPos(spaceX * 0, spaceY * 1))
+                            .addToggleButton(
+                                    2,
+                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                    widget -> widget.addTooltip(tooltipText[2]).setPos(spaceX * 0, spaceY * 2))
+                            .addToggleButton(
+                                    3,
+                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                    widget -> widget.addTooltip(tooltipText[3]).setPos(spaceX * 0, spaceY * 3))
+                            .addToggleButton(
+                                    4,
+                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                    widget -> widget.addTooltip(tooltipText[4]).setPos(spaceX * 4 + 4, spaceY * 0))
+                            .addToggleButton(
+                                    5,
+                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                    widget -> widget.addTooltip(tooltipText[5]).setPos(spaceX * 4 + 4, spaceY * 1))
+                            .addToggleButton(
+                                    6,
+                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                    widget -> widget.addTooltip(tooltipText[6]).setPos(spaceX * 4 + 4, spaceY * 2))
+                            .addToggleButton(
+                                    7,
+                                    CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                                    widget -> widget.setPos(spaceX * 4 + 4, spaceY * 3))
+                            .setPos(startX, startY))
+                    .widget(new TextWidget(buttonText[0])
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
+                    .widget(new TextWidget(buttonText[1])
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
+                    .widget(new TextWidget(buttonText[2])
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 1, 4 + startY + spaceY * 2))
+                    .widget(new TextWidget(buttonText[3])
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 1, 4 + startY + spaceY * 3))
+                    .widget(new TextWidget(buttonText[4])
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 0))
+                    .widget(new TextWidget(buttonText[5])
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 1))
+                    .widget(new TextWidget(buttonText[6])
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 2))
+                    .widget(TextWidget.dynamicString(
+                                    () -> isEnabled(7, convert(getCoverData())) ? buttonText[7] : buttonText[8])
+                            .setSynced(false)
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 3));
         }
 
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            updateButtons();
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (btn.id == 7 || !isEnabled(btn.id)) {
-                coverVariable = getNewCoverVariable(btn.id, ((GT_GuiIconCheckButton) btn).isChecked());
-                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
-            }
-            updateButtons();
-        }
-
-        private void updateButtons() {
-            for (Object o : buttonList)
-                ((GT_GuiIconCheckButton) o).setChecked(isEnabled(((GT_GuiIconCheckButton) o).id));
-        }
-
-        private int getNewCoverVariable(int id, boolean checked) {
+        private int getNewCoverVariable(int id, int coverVariable) {
+            final boolean checked = (coverVariable & 0x1) > 0;
             if (id == 7) {
                 if (checked) return coverVariable & ~0x1;
                 else return coverVariable | 0x1;
@@ -315,7 +323,7 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
             return (coverVariable & 0x1) | (id << 1);
         }
 
-        private boolean isEnabled(int id) {
+        private boolean isEnabled(int id, int coverVariable) {
             if (id == 7) return (coverVariable & 0x1) > 0;
             return (coverVariable >>> 1) == id;
         }

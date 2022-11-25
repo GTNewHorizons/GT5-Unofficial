@@ -1,15 +1,17 @@
 package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
 import io.netty.buffer.ByteBuf;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -168,82 +169,52 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         }
     }
 
-    /*
-    GUI
-     */
-
-    @Override
-    protected Object getClientGUIImpl(
-            byte aSide,
-            int aCoverID,
-            FluidLimiterData aCoverVariable,
-            ICoverable aTileEntity,
-            EntityPlayer aPlayer,
-            World aWorld) {
-        return new GUI(aSide, aCoverID, aCoverVariable, aTileEntity);
-    }
+    // GUI stuff
 
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
-    private static class GUI extends GT_GUICover {
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new FluidLimiterUIFactory(buildContext).createWindow();
+    }
+
+    private class FluidLimiterUIFactory extends UIFactory {
+
         private static final int startX = 10;
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
-        private final byte side;
-        private final int coverID;
-        private final FluidLimiterData coverVariable;
-        private final GT_GuiIntegerTextBox thresholdBox;
 
-        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
-
-        public GUI(byte aSide, int aCoverID, FluidLimiterData aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            thresholdBox = new GT_GuiIntegerTextBox(this, 2, startX, startY + spaceY * 2 - 24, spaceX * 4 - 3, 12) {
-                @Override
-                public boolean validChar(char c, int key) {
-                    return super.validChar(c, key) || c == '-';
-                }
-            };
+        public FluidLimiterUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
 
         @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString("Percent threshold", startX, startY + spaceY * 2 - 35, textColor);
-        }
-
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            thresholdBox.setFocused(true);
-            String text;
-            text = this.coverVariable != null ? String.valueOf(Math.round(this.coverVariable.threshold * 100)) : "";
-            thresholdBox.setText(text);
-        }
-
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            int percent;
-            try {
-                percent = Integer.parseInt(box.getText().trim());
-            } catch (NumberFormatException ignored) {
-                resetTextBox(thresholdBox);
-                return;
-            }
-
-            if (percent > 100 || percent <= 0) return;
-            this.coverVariable.threshold = percent / 100F;
-
-            box.setText(String.valueOf(percent));
-
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            builder.widget(new CoverDataControllerWidget<>(
+                                    this::getCoverData, this::setCoverData, GT_Cover_FluidLimiter.this)
+                            .addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> String.valueOf(Math.round(coverData.threshold * 100)),
+                                    (coverData, val) -> {
+                                        coverData.threshold = (float) (MathExpression.parseMathExpression(val) / 100);
+                                        return coverData;
+                                    },
+                                    widget -> widget.setNumbers(0, 100)
+                                            .setFocusOnGuiOpen(true)
+                                            .setPos(startX, startY + spaceY * 2 - 24)
+                                            .setSize(spaceX * 4 - 3, 12)))
+                    .widget(new TextWidget("Percent threshold")
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX, startY + spaceY * 2 - 35));
         }
     }
 }

@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.E;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
@@ -18,6 +19,7 @@ import net.minecraftforge.fluids.Fluid;
 public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializableObject.LegacyCoverData> {
 
     public EntityPlayer lastPlayer = null;
+    public boolean mPlayerNotified = false;
 
     public GT_CoverBehavior() {
         this(null);
@@ -27,7 +29,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         super(ISerializableObject.LegacyCoverData.class, coverTexture);
     }
 
-    private static int convert(ISerializableObject.LegacyCoverData data) {
+    protected static int convert(ISerializableObject.LegacyCoverData data) {
         return data == null ? 0 : data.get();
     }
 
@@ -105,6 +107,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         return onCoverShiftRightclick(aSide, aCoverID, convert(aCoverVariable), aTileEntity, aPlayer);
     }
 
+    @Deprecated
     @Override
     protected Object getClientGUIImpl(
             byte aSide,
@@ -316,15 +319,21 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
             byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
-            GT_Values.NW.sendToPlayer(
-                    new GT_Packet_TileEntityCoverGUI(
-                            aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
-                    (EntityPlayerMP) aPlayer);
+            mPlayerNotified = false;
+            if (useModularUI()) {
+                GT_UIInfos.openCoverUI(aTileEntity, aPlayer, aSide);
+            } else {
+                GT_Values.NW.sendToPlayer(
+                        new GT_Packet_TileEntityCoverGUI(
+                                aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
+                        (EntityPlayerMP) aPlayer);
+            }
             return true;
         }
         return false;
     }
 
+    @Deprecated
     public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
         return null;
     }

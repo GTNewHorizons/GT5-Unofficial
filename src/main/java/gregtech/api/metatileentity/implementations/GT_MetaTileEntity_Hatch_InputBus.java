@@ -2,10 +2,13 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.GT_Mod;
-import gregtech.api.gui.*;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -18,12 +21,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
-public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch implements IConfigurationCircuitSupport {
+public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
+        implements IConfigurationCircuitSupport, IAddUIWidgets {
     public GT_Recipe_Map mRecipeMap = null;
     public boolean disableSort;
     public boolean disableFilter = true;
@@ -108,23 +111,8 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch im
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        switch (mTier) {
-            case 0:
-                return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
-            case 1:
-                return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
-            case 2:
-                return new GT_Container_3by3(aPlayerInventory, aBaseMetaTileEntity);
-            default:
-                return new GT_Container_4by4(aPlayerInventory, aBaseMetaTileEntity);
-        }
     }
 
     @Override
@@ -143,22 +131,6 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch im
             GT_ClientPreference tPreference = GT_Mod.gregtechproxy.getClientPreference(
                     getBaseMetaTileEntity().getOwnerUuid());
             if (tPreference != null) disableFilter = !tPreference.isInputBusInitialFilterEnabled();
-        }
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        switch (mInventory.length) {
-            case 2:
-                return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, "Input Bus");
-            case 5:
-                return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, "Input Bus");
-            case 10:
-                return new GT_GUIContainer_3by3(aPlayerInventory, aBaseMetaTileEntity, "Input Bus");
-            case 17:
-                return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Input Bus");
-            default:
-                return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Input Bus");
         }
     }
 
@@ -286,5 +258,28 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch im
     @Override
     public int getCircuitSlot() {
         return getSlots(mTier);
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        switch (mTier) {
+            case 0:
+                getBaseMetaTileEntity().add1by1Slot(builder);
+                break;
+            case 1:
+                getBaseMetaTileEntity().add2by2Slots(builder);
+                break;
+            case 2:
+                getBaseMetaTileEntity().add3by3Slots(builder);
+                break;
+            default:
+                getBaseMetaTileEntity().add4by4Slots(builder);
+                break;
+        }
     }
 }

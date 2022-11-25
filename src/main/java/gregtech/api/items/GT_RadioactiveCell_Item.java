@@ -131,7 +131,7 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
     }
 
     @Override
-    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+    public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         // aList.add("Time left: " + (this.maxDelay - getDurabilityOfStack(aStack)) + " secs");
         int rDmg = getDurabilityOfStack(aStack) * 6 / this.maxDmg;

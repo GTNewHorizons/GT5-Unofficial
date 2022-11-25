@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 import net.minecraft.init.Blocks;
@@ -101,9 +102,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             int aDuration) {
         return addCentrifugeRecipe(
                 aInput1,
-                aInput2 < 0
-                        ? ItemList.IC2_Fuel_Can_Empty.get(-aInput2, new Object[0])
-                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null,
+                aInput2 < 0 ? null : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
                 null,
                 null,
                 aOutput1,
@@ -131,9 +130,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             int aEUt) {
         return addCentrifugeRecipe(
                 aInput1,
-                aInput2 < 0
-                        ? ItemList.IC2_Fuel_Can_Empty.get(-aInput2, new Object[0])
-                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null,
+                aInput2 < 0 ? null : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
                 null,
                 null,
                 aOutput1,
@@ -292,9 +289,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             int aEUt) {
         return addElectrolyzerRecipe(
                 aInput1,
-                aInput2 < 0
-                        ? ItemList.IC2_Fuel_Can_Empty.get(-aInput2, new Object[0])
-                        : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null,
+                aInput2 < 0 ? null : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2) : null,
                 null,
                 null,
                 aOutput1,
@@ -996,6 +991,9 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     @Override
     public boolean addCutterRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, int aDuration, int aEUt, int aSpecial) {
         if ((aInputs == null) || (aOutputs == null) || aInputs.length == 0 || aOutputs.length == 0) {
+            return false;
+        }
+        if (Arrays.stream(aOutputs).noneMatch(Objects::nonNull)) {
             return false;
         }
         if ((aDuration = GregTech_API.sRecipeFile.get("cutting", aInputs[0], aDuration)) <= 0) {

@@ -7,7 +7,6 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMachineCallback;
@@ -22,7 +21,6 @@ import gregtech.api.util.GT_Recipe;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -252,7 +250,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         }
         if (this.mMaintenanceHatches.size() != 1
                 || this.mEnergyHatches.size() != 1
-                || mDoorCount > 2
+                || mDoorCount > 4
                 || mHullCount > 10) {
             return false;
         }
@@ -345,12 +343,6 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             };
         }
         return new ITexture[] {TextureFactory.of(BLOCK_PLASCRETE)};
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MultiblockDisplay.png");
     }
 
     @Override

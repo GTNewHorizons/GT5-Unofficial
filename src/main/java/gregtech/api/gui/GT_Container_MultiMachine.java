@@ -9,6 +9,7 @@ import net.minecraft.inventory.Slot;
  * <p/>
  * The Container I use for all my Basic Machines
  */
+@Deprecated
 public class GT_Container_MultiMachine extends GT_ContainerMetaTile_Machine {
     public GT_Container_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);

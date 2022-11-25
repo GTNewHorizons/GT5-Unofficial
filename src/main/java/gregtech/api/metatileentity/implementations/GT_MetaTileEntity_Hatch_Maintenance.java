@@ -7,16 +7,21 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.GT_Container_2by2;
-import gregtech.api.gui.GT_Container_MaintenanceHatch;
-import gregtech.api.gui.GT_GUIContainer_2by2;
-import gregtech.api.gui.GT_GUIContainer_MaintenanceHatch;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -28,13 +33,12 @@ import ic2.core.item.ItemToolbox;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.FakePlayer;
 
-public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
     private static ItemStack[] sAutoMaintenanceInputs;
     public boolean mWrench = false,
             mScrewdriver = false,
@@ -173,25 +177,13 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
                     if (--tStack.stackSize == 0) {
                         aPlayer.inventory.mainInventory[aPlayer.inventory.currentItem] = null;
                     }
-                } else aBaseMetaTileEntity.openGUI(aPlayer);
+                } else GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             } else {
-                aBaseMetaTileEntity.openGUI(aPlayer);
+                GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             }
             return true;
         }
         return false;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mAuto) return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
-        return new GT_Container_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mAuto) return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-        return new GT_GUIContainer_MaintenanceHatch(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     public void updateSlots() {
@@ -311,8 +303,8 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     private void applyToolbox(ItemStack aStack, EntityPlayer aPlayer) {
-        ItemToolbox aToolbox = (ItemToolbox) aStack.getItem();
-        IHasGui aToolboxGUI = aToolbox.getInventory(aPlayer, aStack);
+        final ItemToolbox aToolbox = (ItemToolbox) aStack.getItem();
+        final IHasGui aToolboxGUI = aToolbox.getInventory(aPlayer, aStack);
         for (int i = 0; i < aToolboxGUI.getSizeInventory(); i++) {
             if (aToolboxGUI.getStackInSlot(i) != null) {
                 onToolClick(aToolboxGUI.getStackInSlot(i), aPlayer, aToolboxGUI);
@@ -340,5 +332,44 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
                     return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        if (mAuto) {
+            getBaseMetaTileEntity().add2by2Slots(builder);
+        } else {
+            builder.widget(new DrawableWidget()
+                            .setDrawable(GT_UITextures.SLOT_MAINTENANCE)
+                            .setPos(78, 33)
+                            .setSize(20, 20))
+                    .widget(
+                            new SlotWidget(BaseSlot.empty()) {
+                                @Override
+                                public boolean handleDragAndDrop(ItemStack draggedStack, int button) {
+                                    return false;
+                                }
+
+                                @Override
+                                protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+                                    if (cursorStack == null) return;
+                                    onToolClick(cursorStack, getContext().getPlayer());
+                                    if (cursorStack.stackSize < 1) {
+                                        getContext().getPlayer().inventory.setItemStack(null);
+                                    }
+                                    if (getContext().getPlayer() instanceof EntityPlayerMP) {
+                                        ((EntityPlayerMP) getContext().getPlayer()).updateHeldItem();
+                                    }
+                                }
+                            }.setBackground(GT_UITextures.TRANSPARENT).setPos(79, 34))
+                    .widget(new TextWidget("Click with Tool to repair.")
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(8, 12));
+        }
     }
 }

@@ -1,16 +1,17 @@
 package gregtech.common.covers;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconButton;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.client.gui.GuiButton;
+import gregtech.api.util.ISerializableObject;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -204,88 +205,99 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
         return 1;
     }
 
-    /**
-     * GUI Stuff
-     */
+    // GUI stuff
+
     @Override
     public boolean hasCoverGUI() {
         return true;
     }
 
     @Override
-    public Object getClientGUI(byte aSide, int aCoverID, int coverData, ICoverable aTileEntity) {
-        return new GT_PumpGUICover(aSide, aCoverID, coverData, aTileEntity);
+    public boolean useModularUI() {
+        return true;
     }
 
-    private class GT_PumpGUICover extends GT_GUICover {
-        private final byte side;
-        private final int coverID;
-        private int coverVariable;
+    @Override
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new PumpUIFactory(buildContext).createWindow();
+    }
+
+    private class PumpUIFactory extends UIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private final int textColor = this.getTextColorOrDefault("text", 0xFF555555);
-
-        public GT_PumpGUICover(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-            super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
-            this.side = aSide;
-            this.coverID = aCoverID;
-            this.coverVariable = aCoverVariable;
-
-            GT_GuiIconButton b;
-            b = new GT_GuiIconButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.EXPORT)
-                    .setTooltipText(GT_Utility.trans("006", "Export"));
-            b = new GT_GuiIconButton(this, 1, startX + spaceX * 1, startY + spaceY * 0, GT_GuiIcon.IMPORT)
-                    .setTooltipText(GT_Utility.trans("007", "Import"));
-            b = new GT_GuiIconButton(this, 2, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.CHECKMARK)
-                    .setTooltipText(GT_Utility.trans("224", "Always On"));
-            b = new GT_GuiIconButton(this, 3, startX + spaceX * 1, startY + spaceY * 1, GT_GuiIcon.REDSTONE_ON)
-                    .setTooltipText(GT_Utility.trans("225", "Active with Redstone Signal"));
-            b = new GT_GuiIconButton(this, 4, startX + spaceX * 2, startY + spaceY * 1, GT_GuiIcon.REDSTONE_OFF)
-                    .setTooltipText(GT_Utility.trans("226", "Inactive with Redstone Signal"));
-            b = new GT_GuiIconButton(this, 5, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.ALLOW_INPUT)
-                    .setTooltipText(GT_Utility.trans("227", "Allow Input"));
-            b = new GT_GuiIconButton(this, 6, startX + spaceX * 1, startY + spaceY * 2, GT_GuiIcon.BLOCK_INPUT)
-                    .setTooltipText(GT_Utility.trans("228", "Block Input"));
+        public PumpUIFactory(GT_CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
 
+        @SuppressWarnings("PointlessArithmeticExpression")
         @Override
-        public void drawExtras(int mouseX, int mouseY, float parTicks) {
-            super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(
-                    GT_Utility.trans("229", "Import/Export"), startX + spaceX * 3, 3 + startY + spaceY * 0, textColor);
-            this.fontRendererObj.drawString(
-                    GT_Utility.trans("230", "Conditional"), startX + spaceX * 3, 3 + startY + spaceY * 1, textColor);
-            this.fontRendererObj.drawString(
-                    GT_Utility.trans("231", "Enable Input"), startX + spaceX * 3, 3 + startY + spaceY * 2, textColor);
+        protected void addUIWidgets(ModularWindow.Builder builder) {
+            builder.widget(new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                                    this::getCoverData,
+                                    this::setCoverData,
+                                    GT_Cover_Pump.this,
+                                    (id, coverData) -> !getClickable(id, convert(coverData)),
+                                    (id, coverData) -> new ISerializableObject.LegacyCoverData(
+                                            getNewCoverVariable(id, convert(coverData))))
+                            .addToggleButton(
+                                    0,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                            .addTooltip(GT_Utility.trans("006", "Export"))
+                                            .setPos(spaceX * 0, spaceY * 0))
+                            .addToggleButton(
+                                    1,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                            .addTooltip(GT_Utility.trans("007", "Import"))
+                                            .setPos(spaceX * 1, spaceY * 0))
+                            .addToggleButton(
+                                    2,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                                            .addTooltip(GT_Utility.trans("224", "Always On"))
+                                            .setPos(spaceX * 0, spaceY * 1))
+                            .addToggleButton(
+                                    3,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
+                                            .addTooltip(GT_Utility.trans("225", "Active with Redstone Signal"))
+                                            .setPos(spaceX * 1, spaceY * 1))
+                            .addToggleButton(
+                                    4,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                                            .addTooltip(GT_Utility.trans("226", "Inactive with Redstone Signal"))
+                                            .setPos(spaceX * 2, spaceY * 1))
+                            .addToggleButton(
+                                    5,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ALLOW_INPUT)
+                                            .addTooltip(GT_Utility.trans("227", "Allow Input"))
+                                            .setPos(spaceX * 0, spaceY * 2))
+                            .addToggleButton(
+                                    6,
+                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLOCK_INPUT)
+                                            .addTooltip(GT_Utility.trans("228", "Block Input"))
+                                            .setPos(spaceX * 1, spaceY * 2))
+                            .setPos(startX, startY))
+                    .widget(new TextWidget(GT_Utility.trans("229", "Import/Export"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 3, 3 + startY + spaceY * 0))
+                    .widget(new TextWidget(GT_Utility.trans("230", "Conditional"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 3, 3 + startY + spaceY * 1))
+                    .widget(new TextWidget(GT_Utility.trans("231", "Enable Input"))
+                            .setDefaultColor(COLOR_TEXT_GRAY.get())
+                            .setPos(startX + spaceX * 3, 3 + startY + spaceY * 2));
         }
 
-        @Override
-        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
-            updateButtons();
-        }
-
-        @Override
-        public void buttonClicked(GuiButton btn) {
-            if (getClickable(btn.id)) {
-                coverVariable = getNewCoverVariable(btn.id);
-                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
-            }
-            updateButtons();
-        }
-
-        private void updateButtons() {
-            GuiButton b;
-            for (Object o : buttonList) {
-                b = (GuiButton) o;
-                b.enabled = getClickable(b.id);
-            }
-        }
-
-        private int getNewCoverVariable(int id) {
+        private int getNewCoverVariable(int id, int coverVariable) {
             switch (id) {
                 case 0:
                     return coverVariable & ~0x1;
@@ -309,9 +321,8 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
             return coverVariable;
         }
 
-        private boolean getClickable(int id) {
+        private boolean getClickable(int id, int coverVariable) {
             if (coverVariable < 0 | 11 < coverVariable) return false;
-
             switch (id) {
                 case 0:
                 case 1:

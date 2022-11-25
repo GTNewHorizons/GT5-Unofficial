@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBLASTFURNACE_
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -69,6 +70,11 @@ public class GT_MetaTileEntity_BronzeBlastFurnace extends GT_MetaTileEntity_Prim
     @Override
     public String getName() {
         return "Bronze Blast Furnace";
+    }
+
+    @Override
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.BRONZE;
     }
 
     @Override

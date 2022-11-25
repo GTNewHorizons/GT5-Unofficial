@@ -2,17 +2,19 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.*;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -23,7 +25,8 @@ import net.minecraft.util.EnumChatFormatting;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_TieredMachineBlock {
+public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_TieredMachineBlock
+        implements IAddUIWidgets {
     public boolean mCharge = false, mDecharge = false;
     public int mBatteryCount = 0, mChargeableCount = 0;
     private long count = 0;
@@ -208,39 +211,8 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        switch (mInventory.length) {
-            case 1:
-                return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
-            case 4:
-                return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
-            case 9:
-                return new GT_Container_3by3(aPlayerInventory, aBaseMetaTileEntity);
-            case 16:
-                return new GT_Container_4by4(aPlayerInventory, aBaseMetaTileEntity);
-        }
-        return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        switch (mInventory.length) {
-            case 1:
-                return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-            case 4:
-                return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-            case 9:
-                return new GT_GUIContainer_3by3(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-            case 16:
-                return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-        }
-        return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
     }
 
     @Override
@@ -356,5 +328,28 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     @Override
     public boolean isGivingInformation() {
         return true;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        switch (mInventory.length) {
+            case 4:
+                getBaseMetaTileEntity().add2by2Slots(builder);
+                break;
+            case 9:
+                getBaseMetaTileEntity().add3by3Slots(builder);
+                break;
+            case 16:
+                getBaseMetaTileEntity().add4by4Slots(builder);
+                break;
+            default:
+                getBaseMetaTileEntity().add1by1Slot(builder);
+                break;
+        }
     }
 }

@@ -10,7 +10,7 @@ public class IMCForNEI {
             return;
         }
 
-        sendHandler("gt.recipe.plasmaforge", "gregtech:gt.blockmachines:1004");
+        sendHandler("gt.recipe.plasmaforge", "gregtech:gt.blockmachines:1004", 1);
         sendCatalyst("gt.recipe.plasmaforge", "gregtech:gt.blockmachines:1004");
 
         sendHandler("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:1193");
@@ -19,9 +19,12 @@ public class IMCForNEI {
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:1195");
 
         sendCatalyst("gt.recipe.gasturbinefuel", "gregtech:gt.blockmachines:1005", -1);
+
+        // overwrite yShift to 6
+        sendHandler("gt.recipe.fakeAssemblylineProcess", "gregtech:gt.blockmachines:1170");
     }
 
-    private static void sendHandler(String aName, String aBlock) {
+    private static void sendHandler(String aName, String aBlock, int aMaxRecipesPerPage) {
         NBTTagCompound aNBT = new NBTTagCompound();
         aNBT.setString("handler", aName);
         aNBT.setString("modName", "GregTech");
@@ -30,9 +33,13 @@ public class IMCForNEI {
         aNBT.setString("itemName", aBlock);
         aNBT.setInteger("handlerHeight", 135);
         aNBT.setInteger("handlerWidth", 166);
-        aNBT.setInteger("maxRecipesPerPage", 2);
+        aNBT.setInteger("maxRecipesPerPage", aMaxRecipesPerPage);
         aNBT.setInteger("yShift", 6);
         FMLInterModComms.sendMessage("NotEnoughItems", "registerHandlerInfo", aNBT);
+    }
+
+    private static void sendHandler(String aName, String aBlock) {
+        sendHandler(aName, aBlock, 2);
     }
 
     private static void sendCatalyst(String aName, String aStack, int aPriority) {

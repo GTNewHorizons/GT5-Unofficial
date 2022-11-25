@@ -8,6 +8,8 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SteamVariant;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -426,5 +428,15 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
                     Dyes.getModulation(aColor, Dyes._NULL.mRGBa)),
             TextureFactory.of(OVERLAY_PIPE_OUT)
         };
+    }
+
+    @Override
+    public SteamVariant getSteamVariant() {
+        return SteamVariant.BRONZE;
+    }
+
+    @Override
+    public GUITextureSet getGUITextureSet() {
+        return GUITextureSet.STEAM.apply(getSteamVariant());
     }
 }

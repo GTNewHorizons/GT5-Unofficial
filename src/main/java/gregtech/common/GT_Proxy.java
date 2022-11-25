@@ -26,7 +26,6 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import forestry.api.genetics.AlleleManager;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
@@ -71,8 +70,6 @@ import gregtech.api.util.GT_Shapeless_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.entities.GT_Entity_Arrow;
-import gregtech.common.gui.GT_ContainerVolumetricFlask;
-import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
@@ -112,7 +109,6 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -143,7 +139,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import org.apache.commons.lang3.text.WordUtils;
 
 public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IGlobalWirelessEnergy {
     private static final EnumSet<OreGenEvent.GenerateMinable.EventType> PREVENTED_ORES = EnumSet.of(
@@ -569,7 +564,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public int mPollutionBaseDieselGeneratorPerSecond = 200;
     public double[] mPollutionDieselGeneratorReleasedByTier = new double[] {0.1, 1.0, 0.9, 0.8};
     public int mPollutionBaseGasTurbinePerSecond = 200;
-    public double[] mPollutionGasTurbineReleasedByTier = new double[] {0.1, 1.0, 0.9, 0.8};
+    public double[] mPollutionGasTurbineReleasedByTier = new double[] {0.1, 1.0, 0.9, 0.8, 0.7, 0.6};
     public final GT_UO_DimensionList mUndergroundOil = new GT_UO_DimensionList();
     public int mTicksUntilNextCraftSound = 0;
     public double mMagneticraftBonusOutputPercent = 0d;
@@ -647,6 +642,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
      * How verbose should tooltips be when LSHIFT is held? 0: disabled, 1: one-line, 2: normal, 3+: extended
      */
     public int mTooltipShiftVerbosity = 3;
+
+    /**
+     * Which style to use for title tab on machine GUI? 0: text tab split-dark, 1: text tab unified, 2: item icon tab
+     */
+    public int mTitleTabStyle = 0;
 
     /**
      * Whether to show seconds or ticks on NEI
@@ -852,11 +852,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         ItemList.IC2_Item_Casing_Lead.set(GT_ModHandler.getIC2Item("casinglead", 1L));
         ItemList.IC2_Item_Casing_Steel.set(GT_ModHandler.getIC2Item("casingadviron", 1L));
         ItemList.IC2_Spray_WeedEx.set(GT_ModHandler.getIC2Item("weedEx", 1L));
-        ItemList.IC2_Fuel_Can_Empty.set(GT_ModHandler.getIC2Item(
-                "fuelCan",
-                1L,
-                GT_ModHandler.getIC2Item("fuelCanEmpty", 1L, GT_ModHandler.getIC2Item("emptyFuelCan", 1L))));
-        ItemList.IC2_Fuel_Can_Filled.set(GT_ModHandler.getIC2Item("filledFuelCan", 1L));
         ItemList.IC2_Mixed_Metal_Ingot.set(GT_ModHandler.getIC2Item("mixedMetalIngot", 1L));
         ItemList.IC2_Fertilizer.set(GT_ModHandler.getIC2Item("fertilizer", 1L));
         ItemList.IC2_CoffeeBeans.set(GT_ModHandler.getIC2Item("coffeeBeans", 1L));
@@ -2207,112 +2202,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                             tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
                         }
                         if (this.mInventoryUnification) {
-
-                            if (tStack.getTagCompound() != null
-                                    && (tStack.getTagCompound().getTag("Mate") != null
-                                            || tStack.getTagCompound().getTag("Genome") != null)) {
-
-                                String orgMate = "";
-                                if (tStack.getTagCompound().getTag("Mate") != null)
-                                    orgMate = (tStack.getTagCompound().getCompoundTag("Mate"))
-                                            .getTagList("Chromosomes", 10)
-                                            .getCompoundTagAt(0)
-                                            .getString("UID1");
-
-                                String orgGen = orgMate;
-
-                                if (tStack.getTagCompound().getTag("Genome") != null)
-                                    orgGen = (tStack.getTagCompound().getCompoundTag("Genome"))
-                                            .getTagList("Chromosomes", 10)
-                                            .getCompoundTagAt(0)
-                                            .getString("UID1");
-
-                                final boolean[] yn = {orgMate.contains("gendustry"), orgGen.contains("gendustry")};
-
-                                if (yn[0] || yn[1]) {
-
-                                    final NBTTagCompound NBTTAGCOMPOUND = (NBTTagCompound)
-                                            tStack.getTagCompound().copy();
-
-                                    // MATE
-                                    if (yn[0]) {
-                                        final NBTTagCompound MATE = NBTTAGCOMPOUND.getCompoundTag("Mate");
-                                        final NBTTagList chromosomesMate = MATE.getTagList("Chromosomes", 10);
-                                        final NBTTagCompound species = chromosomesMate.getCompoundTagAt(0);
-
-                                        String ident1 = species.getString("UID1");
-                                        final String[] split = ident1.split("[.]");
-                                        ident1 = "gregtech.bee.species"
-                                                + WordUtils.capitalize(split[2].toLowerCase(Locale.ENGLISH));
-
-                                        if (AlleleManager.alleleRegistry.getAllele(ident1) == null) return;
-
-                                        String ident2 = species.getString("UID0");
-                                        final String[] split2 = ident2.split("[.]");
-                                        ident2 = "gregtech.bee.species"
-                                                + WordUtils.capitalize(split2[2].toLowerCase(Locale.ENGLISH));
-
-                                        if (AlleleManager.alleleRegistry.getAllele(ident2) == null) return;
-
-                                        final NBTTagCompound nuspeciesmate = new NBTTagCompound();
-                                        nuspeciesmate.setString("UID1", ident1);
-                                        nuspeciesmate.setString("UID0", ident2);
-                                        nuspeciesmate.setByte("Slot", (byte) 0);
-
-                                        final NBTTagCompound nuMate2 = new NBTTagCompound();
-                                        final NBTTagList nuMate = new NBTTagList();
-                                        nuMate.appendTag(nuspeciesmate);
-
-                                        for (int j = 1; j < chromosomesMate.tagCount(); j++) {
-                                            nuMate.appendTag(chromosomesMate.getCompoundTagAt(j));
-                                        }
-
-                                        nuMate2.setTag("Chromosomes", nuMate);
-                                        NBTTAGCOMPOUND.removeTag("Mate");
-                                        NBTTAGCOMPOUND.setTag("Mate", nuMate2);
-                                    }
-                                    if (yn[1]) {
-                                        // Genome
-                                        final NBTTagCompound genome = NBTTAGCOMPOUND.getCompoundTag("Genome");
-                                        final NBTTagList chromosomesGenome = genome.getTagList("Chromosomes", 10);
-                                        final NBTTagCompound speciesGenome = chromosomesGenome.getCompoundTagAt(0);
-
-                                        String ident1Genome = speciesGenome.getString("UID1");
-                                        final String[] splitGenome = ident1Genome.split("[.]");
-                                        ident1Genome = "gregtech.bee.species"
-                                                + WordUtils.capitalize(splitGenome[2].toLowerCase(Locale.ENGLISH));
-
-                                        if (AlleleManager.alleleRegistry.getAllele(ident1Genome) == null) return;
-
-                                        String ident2Genome = speciesGenome.getString("UID0");
-                                        final String[] splitGenome2 = ident2Genome.split("[.]");
-                                        ident2Genome = "gregtech.bee.species"
-                                                + WordUtils.capitalize(splitGenome2[2].toLowerCase(Locale.ENGLISH));
-
-                                        if (AlleleManager.alleleRegistry.getAllele(ident2Genome) == null) return;
-
-                                        final NBTTagCompound nuspeciesgenome = new NBTTagCompound();
-                                        nuspeciesgenome.setString("UID1", ident1Genome);
-                                        nuspeciesgenome.setString("UID0", ident2Genome);
-                                        nuspeciesgenome.setByte("Slot", (byte) 0);
-
-                                        final NBTTagCompound nugenome2 = new NBTTagCompound();
-                                        final NBTTagList nuGenome = new NBTTagList();
-                                        nuGenome.appendTag(nuspeciesgenome);
-
-                                        for (int j = 1; j < chromosomesGenome.tagCount(); j++) {
-                                            nuGenome.appendTag(chromosomesGenome.getCompoundTagAt(j));
-                                        }
-
-                                        nugenome2.setTag("Chromosomes", nuGenome);
-                                        NBTTAGCOMPOUND.removeTag("Genome");
-                                        NBTTAGCOMPOUND.setTag("Genome", nugenome2);
-                                    }
-                                    tStack.setTagCompound(new NBTTagCompound());
-                                    tStack.setTagCompound(NBTTAGCOMPOUND);
-                                } else return;
-                            }
-
                             GT_OreDictUnificator.setStack(true, tStack);
                         }
                     }
@@ -2355,10 +2244,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     @Override
     public Object getServerGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
         if (aID >= 1000) {
-            int ID = aID - 1000;
-            if (ID == 10) {
-                return new GT_ContainerVolumetricFlask(aPlayer.inventory);
-            }
             return null;
         }
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
@@ -2367,7 +2252,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 return null;
             }
             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-            if (tMetaTileEntity != null) {
+            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
                 return tMetaTileEntity.getServerGUI(aID, aPlayer.inventory, (IGregTechTileEntity) tTileEntity);
             }
         }
@@ -2377,10 +2262,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     @Override
     public Object getClientGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
         if (aID >= 1000) {
-            int ID = aID - 1000;
-            if (ID == 10) {
-                return new GT_GUIContainerVolumetricFlask(new GT_ContainerVolumetricFlask(aPlayer.inventory));
-            }
             return null;
         }
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
@@ -2391,7 +2272,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 byte side = (byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
                 GT_CoverBehaviorBase<?> cover = tile.getCoverBehaviorAtSideNew(side);
 
-                if (cover.hasCoverGUI()) {
+                if (cover.hasCoverGUI() && !cover.useModularUI()) {
                     return cover.getClientGUI(
                             side,
                             tile.getCoverIDAtSide(side),
@@ -2403,7 +2284,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 return null;
             }
             IMetaTileEntity tMetaTileEntity = tile.getMetaTileEntity();
-            if (tMetaTileEntity != null) {
+            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
                 return tMetaTileEntity.getClientGUI(aID, aPlayer.inventory, tile);
             }
         }
@@ -2465,6 +2346,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         // All lower case.
         final String fluidTexture =
                 aMaterial.mIconSet.is_custom ? "fluid." + aMaterial.mName.toLowerCase() : "autogenerated";
+
         return GT_FluidFactory.builder(aMaterial.mName.toLowerCase(Locale.ENGLISH))
                 .withLocalizedName(aMaterial.mDefaultLocalName)
                 .withTextureName(fluidTexture)
@@ -2483,6 +2365,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         // lower case.
         final String fluidTexture =
                 aMaterial.mIconSet.is_custom ? ("gas." + aMaterial.mName.toLowerCase()) : "autogenerated";
+
         return GT_FluidFactory.builder(aMaterial.mName.toLowerCase(Locale.ENGLISH))
                 .withLocalizedName(aMaterial.mDefaultLocalName)
                 .withTextureName(fluidTexture)
@@ -2501,6 +2384,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         // All lower case.
         final String fluidTexture =
                 aMaterial.mIconSet.is_custom ? ("plasma." + aMaterial.mName.toLowerCase()) : "plasma.autogenerated";
+
         return GT_FluidFactory.builder("plasma." + aMaterial.mName.toLowerCase(Locale.ENGLISH))
                 .withLocalizedName(aMaterial.mDefaultLocalName + " Plasma")
                 .withTextureName(fluidTexture)
@@ -2521,6 +2405,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         // All lower case.
         final String fluidTexture =
                 aMaterial.mIconSet.is_custom ? ("molten." + aMaterial.mName.toLowerCase()) : "molten.autogenerated";
+
         return GT_FluidFactory.builder("molten." + aMaterial.mName.toLowerCase(Locale.ENGLISH))
                 .withLocalizedName("Molten " + aMaterial.mDefaultLocalName)
                 .withTextureName(fluidTexture)

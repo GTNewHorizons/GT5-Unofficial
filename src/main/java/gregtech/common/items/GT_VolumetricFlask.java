@@ -6,19 +6,31 @@ import static ic2.core.util.LiquidUtil.drainContainerStack;
 import static ic2.core.util.LiquidUtil.fillContainerStack;
 import static ic2.core.util.LiquidUtil.placeFluid;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.MathExpression;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.IItemWithModularUI;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.INetworkUpdatableItem;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
 import ic2.core.util.LiquidUtil;
 import java.util.List;
+import java.util.function.Function;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -37,7 +49,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem, INetworkUpdatableItem {
+public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem, IItemWithModularUI {
     private final int maxCapacity;
     private final String unlocalFlaskName;
 
@@ -55,7 +67,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (!world.isRemote && isEmpty(stack) && getMovingObjectPositionFromPlayer(world, player, true) == null)
-            player.openGui(GT_Values.GT, 1010, world, 0, 0, 0);
+            GT_UIInfos.openPlayerHeldItemUI(player);
         return super.onItemRightClick(stack, world, player);
     }
 
@@ -207,9 +219,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean b) {
-        super.addInformation(stack, player, info, b);
+    protected void addAdditionalToolTips(List<String> info, ItemStack stack, EntityPlayer aPlayer) {
         FluidStack fs = getFluid(stack);
         if (fs != null) {
             info.add(String.format("< %s, %s mB >", GT_Utility.getFluidName(fs, true), formatNumbers(fs.amount)));
@@ -302,12 +312,83 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     }
 
     @Override
-    public boolean receive(ItemStack stack, EntityPlayerMP player, NBTTagCompound tag) {
-        if (stack != null && stack.stackSize > 0) {
-            Item item = stack.getItem();
-            if (item == this) setCapacity(stack, tag.getInteger("cap"));
-            return true;
+    public ModularWindow createWindow(UIBuildContext buildContext, ItemStack stack) {
+        if (!(stack.getItem() instanceof GT_VolumetricFlask)) return null;
+        return new VolumetricFlaskUIFactory(buildContext, stack).createWindow();
+    }
+
+    private class VolumetricFlaskUIFactory {
+
+        private final UIBuildContext buildContext;
+        private final int maxCapacity;
+        private TextFieldWidget textField;
+
+        public VolumetricFlaskUIFactory(UIBuildContext buildContext, ItemStack flask) {
+            this.buildContext = buildContext;
+            this.maxCapacity = ((GT_VolumetricFlask) flask.getItem()).getMaxCapacity();
         }
-        return false;
+
+        public ModularWindow createWindow() {
+            ModularWindow.Builder builder = ModularWindow.builder(176, 107);
+            builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
+
+            textField = new TextFieldWidget() {
+                @Override
+                public void onDestroy() {
+                    if (isClient()) return;
+                    setCapacity(getCurrentItem(), (int) MathExpression.parseMathExpression(getText(), 1));
+                    getContext().onWidgetUpdate();
+                }
+            };
+            textField.setText(
+                    String.valueOf(((GT_VolumetricFlask) getCurrentItem().getItem()).getCapacity(getCurrentItem())));
+            builder.widget(textField
+                    .setNumbers(() -> 1, () -> maxCapacity)
+                    .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setTextColor(Color.WHITE.dark(1))
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                    .setPos(60, 55)
+                    .setSize(59, 12));
+
+            addChangeAmountButton(builder, "+1", new Pos2d(20, 26), new Size(22, 20), val -> val + 1);
+            addChangeAmountButton(builder, "+10", new Pos2d(48, 26), new Size(28, 20), val -> val + 10);
+            addChangeAmountButton(builder, "+100", new Pos2d(82, 26), new Size(32, 20), val -> val + 100);
+            addChangeAmountButton(builder, "+1000", new Pos2d(120, 26), new Size(38, 20), val -> val + 1000);
+            addChangeAmountButton(builder, "-1", new Pos2d(20, 75), new Size(22, 20), val -> val - 1);
+            addChangeAmountButton(builder, "-10", new Pos2d(48, 75), new Size(28, 20), val -> val - 10);
+            addChangeAmountButton(builder, "-100", new Pos2d(82, 75), new Size(32, 20), val -> val - 100);
+            addChangeAmountButton(builder, "-1000", new Pos2d(120, 75), new Size(38, 20), val -> val - 1000);
+            builder.widget(new VanillaButtonWidget()
+                    .setDisplayString("Accept")
+                    .setClickableGetter(() -> MathExpression.parseMathExpression(textField.getText()) > 0)
+                    .setOnClick((clickData, widget) -> {
+                        textField.onRemoveFocus();
+                        widget.getWindow().tryClose();
+                    })
+                    .setPos(128, 51)
+                    .setSize(38, 20));
+
+            return builder.build();
+        }
+
+        private void addChangeAmountButton(
+                ModularWindow.Builder builder, String text, Pos2d pos, Size size, Function<Integer, Integer> function) {
+            builder.widget(new VanillaButtonWidget()
+                    .setDisplayString(text)
+                    .setOnClick((clickData, widget) -> {
+                        String currentText = textField.getText();
+                        int amount = (int) MathExpression.parseMathExpression(currentText, 1);
+                        amount = Math.min(maxCapacity, Math.max(1, function.apply(amount)));
+                        textField.setText(String.valueOf(amount));
+                    })
+                    .setPos(pos)
+                    .setSize(size));
+        }
+
+        private ItemStack getCurrentItem() {
+            return buildContext.getPlayer().inventory.getCurrentItem();
+        }
     }
 }

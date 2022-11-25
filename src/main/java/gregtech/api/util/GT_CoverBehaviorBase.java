@@ -2,11 +2,22 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.E;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.api.objects.GT_ItemStack;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -34,6 +45,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     protected GT_CoverBehaviorBase(Class<T> typeToken, ITexture coverTexture) {
         this.typeToken = typeToken;
         this.coverFGTexture = coverTexture;
+        this.colorOverride = new GT_GUIColorOverride(guiTexturePath);
     }
 
     public abstract T createDataObject(int aLegacyData);
@@ -216,6 +228,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return onCoverShiftRightClickImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity, aPlayer);
     }
 
+    @Deprecated
     public final Object getClientGUI(
             byte aSide,
             int aCoverID,
@@ -404,6 +417,136 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
     // endregion
 
+    // region UI stuff
+
+    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    protected GT_GUIColorOverride colorOverride;
+    private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
+
+    /**
+     * For back compatibility, you need to override this if this cover uses ModularUI.
+     */
+    public boolean useModularUI() {
+        return false;
+    }
+
+    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+        return new UIFactory(buildContext).createWindow();
+    }
+
+    /**
+     * Creates {@link ModularWindow} for this cover.
+     * This is separated from base class, as attaching the same covers in different sides of the same tile
+     * needs different UI with different context.
+     */
+    protected class UIFactory {
+
+        private final GT_CoverUIBuildContext uiBuildContext;
+
+        public UIFactory(GT_CoverUIBuildContext buildContext) {
+            this.uiBuildContext = buildContext;
+        }
+
+        public ModularWindow createWindow() {
+            ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
+            builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
+            builder.setGuiTint(getUIBuildContext().getGuiColorization());
+            if (doesBindPlayerInventory() && !getUIBuildContext().isAnotherWindow()) {
+                builder.bindPlayerInventory(getUIBuildContext().getPlayer());
+            }
+            addTitleToUI(builder);
+            addUIWidgets(builder);
+            if (getUIBuildContext().isAnotherWindow()) {
+                builder.widget(ButtonWidget.closeWindowButton(true).setPos(getGUIWidth() - 15, 3));
+            }
+            return builder.build();
+        }
+
+        /**
+         * Override this to add widgets for your UI.
+         */
+        protected void addUIWidgets(ModularWindow.Builder builder) {}
+
+        public GT_CoverUIBuildContext getUIBuildContext() {
+            return uiBuildContext;
+        }
+
+        /**
+         * Can return null when cover data is invalid e.g. tile is broken or cover is removed
+         */
+        @Nullable
+        public T getCoverData() {
+            if (isCoverValid()) {
+                return forceCast(getUIBuildContext()
+                        .getTile()
+                        .getComplexCoverDataAtSide(getUIBuildContext().getCoverSide()));
+            } else {
+                return null;
+            }
+        }
+
+        public boolean setCoverData(T data) {
+            if (isCoverValid()) {
+                getUIBuildContext()
+                        .getTile()
+                        .receiveCoverData(
+                                getUIBuildContext().getCoverSide(),
+                                getUIBuildContext().getCoverID(),
+                                data,
+                                getUIBuildContext().getPlayer() instanceof EntityPlayerMP
+                                        ? (EntityPlayerMP) getUIBuildContext().getPlayer()
+                                        : null);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public boolean isCoverValid() {
+            return !getUIBuildContext().getTile().isDead()
+                    && getUIBuildContext()
+                                    .getTile()
+                                    .getCoverBehaviorAtSideNew(
+                                            getUIBuildContext().getCoverSide())
+                            != GregTech_API.sNoBehavior;
+        }
+
+        protected void addTitleToUI(ModularWindow.Builder builder) {
+            ItemStack coverItem = GT_Utility.intToStack(getUIBuildContext().getCoverID());
+            if (coverItem != null) {
+                builder.widget(new ItemDrawable(coverItem)
+                                .asWidget()
+                                .setPos(5, 5)
+                                .setSize(16, 16))
+                        .widget(new TextWidget(coverItem.getDisplayName())
+                                .setDefaultColor(COLOR_TITLE.get())
+                                .setPos(25, 9));
+            }
+        }
+
+        protected int getGUIWidth() {
+            return 176;
+        }
+
+        protected int getGUIHeight() {
+            return 107;
+        }
+
+        protected boolean doesBindPlayerInventory() {
+            return false;
+        }
+
+        protected int getTextColorOrDefault(String textType, int defaultColor) {
+            return colorOverride.getTextColorOrDefault(textType, defaultColor);
+        }
+
+        protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x222222);
+        protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
+        protected Supplier<Integer> COLOR_TEXT_WARN = () -> getTextColorOrDefault("text_warn", 0xff0000);
+    }
+
+    // endregion
+
     // region impl
 
     protected Block getFacadeBlockImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
@@ -494,15 +637,20 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
-            GT_Values.NW.sendToPlayer(
-                    new GT_Packet_TileEntityCoverGUI(
-                            aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
-                    (EntityPlayerMP) aPlayer);
+            if (useModularUI()) {
+                GT_UIInfos.openCoverUI(aTileEntity, aPlayer, aSide);
+            } else {
+                GT_Values.NW.sendToPlayer(
+                        new GT_Packet_TileEntityCoverGUI(
+                                aSide, aCoverID, aCoverVariable, aTileEntity, (EntityPlayerMP) aPlayer),
+                        (EntityPlayerMP) aPlayer);
+            }
             return true;
         }
         return false;
     }
 
+    @Deprecated
     protected Object getClientGUIImpl(
             byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
         return null;

@@ -6,13 +6,11 @@ import static gregtech.api.enums.GT_Values.VN;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import java.util.List;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
 public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTileEntity_DrillerBase {
@@ -50,12 +48,6 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
                 .addOutputBus("Mining Pipes, optional, any base casing", 1)
                 .toolTipFinisher("Gregtech");
         return tt;
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "DrillingRig.png");
     }
 
     protected abstract int getRadius();
