@@ -2454,9 +2454,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         null,
                         RES_PATH_GUI + "basicmachines/LCRNEI",
                         6,
-                        1,
+                        9,
                         4,
-                        0,
+                        2,
                         1,
                         E,
                         0,
@@ -2464,6 +2464,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true,
                         true)
                 .useModularUI(true)
+                .setUsualFluidInputCount(3)
+                .setUsualFluidOutputCount(0)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
 
         /**

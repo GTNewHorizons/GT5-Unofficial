@@ -11644,8 +11644,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         });
 
         GT_ProcessingArrayRecipeLoader.registerDefaultGregtechMaps();
-        GT_PCBFactoryMaterialLoader.load();
-
         ItemList.Distillation_Tower.set(
                 new GT_MetaTileEntity_DistillationTower(1126, "multimachine.distillationtower", "Distillation Tower")
                         .getStackForm(1L));
@@ -12723,6 +12721,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
         ItemList.PCBFactory.set(
                 new GT_MetaTileEntity_PCBFactory(356, "multimachine.pcbfactory", "PCB Factory").getStackForm(1));
+        GT_PCBFactoryMaterialLoader.load();
         ItemList.NanoForge.set(
                 new GT_MetaTileEntity_NanoForge(357, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
     }
