@@ -13,8 +13,6 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.github.technus.tectech.Reference;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
@@ -29,7 +27,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -154,17 +151,6 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, false);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(
-                aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", true, false, false);
-    }
-
-    @Override
     public ITexture[] getTexture(
             IGregTechTileEntity aBaseMetaTileEntity,
             byte aSide,
@@ -223,5 +209,20 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
+    }
+
+    @Override
+    public boolean isPowerPassButtonEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isSafeVoidButtonEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isAllowedToWorkButtonEnabled() {
+        return false;
     }
 }

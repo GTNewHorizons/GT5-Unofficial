@@ -11,6 +11,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+@Deprecated
 public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     public LedStatus[] eParamsInStatus = LedStatus.makeArray(20, LedStatus.STATUS_UNDEFINED);
     public LedStatus[] eParamsOutStatus = LedStatus.makeArray(20, LedStatus.STATUS_UNDEFINED);

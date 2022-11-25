@@ -29,7 +29,6 @@ import java.util.HashSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
@@ -240,23 +239,6 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, true);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                getLocalName(),
-                "EMDisplay.png",
-                true,
-                false,
-                true); // todo texture
-    }
-
-    @Override
     public ITexture[] getTexture(
             IGregTechTileEntity aBaseMetaTileEntity,
             byte aSide,
@@ -325,5 +307,20 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
+    }
+
+    @Override
+    public boolean isPowerPassButtonEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isSafeVoidButtonEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isAllowedToWorkButtonEnabled() {
+        return true;
     }
 }

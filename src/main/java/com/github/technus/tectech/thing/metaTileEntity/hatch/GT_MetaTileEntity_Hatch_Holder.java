@@ -2,28 +2,34 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Holder;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Holder;
+import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Created by Tec on 03.04.2017.
  */
-public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch implements IAddGregtechLogo {
     private static Textures.BlockIcons.CustomIcon EM_H;
     private static Textures.BlockIcons.CustomIcon EM_H_ACTIVE;
 
@@ -90,19 +96,6 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_Holder(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Holder(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                translateToLocal("gt.blockmachines.hatch.holder.tier.09.name")); // Object Holder
-    }
-
-    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
@@ -112,7 +105,7 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
         // else if(heat>0)
         //    aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
         // else
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -129,5 +122,55 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
             EnumChatFormatting.AQUA
                     + translateToLocal("gt.blockmachines.hatch.holder.desc.1") // Advanced Holding Mechanism!
         };
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO)
+                .setSize(18, 18)
+                .setPos(151, 63));
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(TecTechUITextures.PICTURE_HEAT_SINK)
+                        .setPos(46, 17)
+                        .setSize(84, 60))
+                .widget(new DrawableWidget()
+                        .setDrawable(TecTechUITextures.PICTURE_RACK_LARGE)
+                        .setPos(68, 27)
+                        .setSize(40, 40))
+                .widget(new SlotWidget(new BaseSlot(inventoryHandler, 0) {
+                            @Override
+                            public int getSlotStackLimit() {
+                                return 1;
+                            }
+
+                            @Override
+                            public boolean isEnabled() {
+                                return !getBaseMetaTileEntity().isActive();
+                            }
+                        })
+                        .setPos(79, 38))
+                .widget(new DrawableWidget()
+                        .setDrawable(TecTechUITextures.BUTTON_STANDARD_LIGHT_16x16)
+                        .setPos(152, 24)
+                        .setSize(16, 16))
+                .widget(new DrawableWidget()
+                        .setDrawable(() -> getBaseMetaTileEntity().isActive()
+                                ? TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON
+                                : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED)
+                        .setPos(152, 24)
+                        .setSize(16, 16))
+                .widget(new FakeSyncWidget.BooleanSyncer(
+                        () -> getBaseMetaTileEntity().isActive(),
+                        val -> getBaseMetaTileEntity().setActive(val)));
     }
 }

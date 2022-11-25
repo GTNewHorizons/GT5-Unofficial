@@ -7,14 +7,18 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Capacitor;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Capacitor;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
@@ -23,14 +27,13 @@ import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 /**
  * Created by Tec on 03.04.2017.
  */
-public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
     private static Textures.BlockIcons.CustomIcon TM_H;
     private static Textures.BlockIcons.CustomIcon TM_H_ACTIVE;
     private static Map<String, GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> componentBinds = new HashMap<>();
@@ -103,24 +106,8 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_Capacitor(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Capacitor(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name")); // Capacitor Hatch
-    }
-
-    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -173,6 +160,32 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
             }
         }
         return new long[] {tier, tCurrent, tEnergyMax};
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
+                .startFromSlot(0)
+                .endAtSlot(15)
+                .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                    @Override
+                    public int getSlotStackLimit() {
+                        return 1;
+                    }
+
+                    @Override
+                    public boolean isEnabled() {
+                        return !getBaseMetaTileEntity().isActive();
+                    }
+                })
+                .background(getGUITextureSet().getItemSlot())
+                .build()
+                .setPos(52, 7));
     }
 
     public static void run() {

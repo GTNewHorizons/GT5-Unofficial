@@ -6,8 +6,6 @@ import static gregtech.api.enums.ItemList.Display_Fluid;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.ItemList;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.guihook.IContainerInputHandler;
-import codechicken.nei.guihook.IContainerTooltipHandler;
 import codechicken.nei.recipe.*;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
@@ -25,7 +23,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -257,64 +254,6 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
                 i++;
             }
         }
-    }
-
-    @Deprecated // Unnecessary copy of a class base GT5U uses to manage NEI transfer rects
-    public static class GT_RectHandler implements IContainerInputHandler, IContainerTooltipHandler {
-        @Override
-        public boolean mouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyCode) {
-            return false;
-        }
-
-        public boolean canHandle(GuiContainer gui) {
-            return false;
-        }
-
-        @Override
-        public List<String> handleTooltip(GuiContainer gui, int mousex, int mousey, List<String> currenttip) {
-            return currenttip;
-        }
-
-        @Override
-        public List<String> handleItemDisplayName(GuiContainer gui, ItemStack itemstack, List<String> currenttip) {
-            return currenttip;
-        }
-
-        @Override
-        public List<String> handleItemTooltip(
-                GuiContainer gui, ItemStack itemstack, int mousex, int mousey, List<String> currenttip) {
-            return currenttip;
-        }
-
-        @Override
-        public boolean keyTyped(GuiContainer gui, char keyChar, int keyCode) {
-            return false;
-        }
-
-        @Override
-        public void onKeyTyped(GuiContainer gui, char keyChar, int keyID) {}
-
-        @Override
-        public void onMouseClicked(GuiContainer gui, int mousex, int mousey, int button) {}
-
-        @Override
-        public void onMouseUp(GuiContainer gui, int mousex, int mousey, int button) {}
-
-        @Override
-        public boolean mouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
-            return false;
-        }
-
-        @Override
-        public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {}
-
-        @Override
-        public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime) {}
     }
 
     public static class FixedPositionedStack extends PositionedStack {
