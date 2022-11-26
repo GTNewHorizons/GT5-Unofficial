@@ -42,6 +42,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -80,7 +81,7 @@ import org.apache.commons.lang3.tuple.Pair;
  * Extend this class to make a simple Machine
  */
 public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank
-        implements IConfigurationCircuitSupport, IAddUIWidgets {
+        implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets {
 
     /**
      * return values for checkRecipe()
@@ -1302,6 +1303,18 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     @Override
     public int getCircuitSlotY() {
         return 63;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        if (getRecipeList() != null) {
+            getRecipeList().addGregTechLogoUI(builder, new Pos2d(0, 0));
+        } else {
+            builder.widget(new DrawableWidget()
+                    .setDrawable(getGUITextureSet().getGregTechLogo())
+                    .setSize(17, 17)
+                    .setPos(152, 63));
+        }
     }
 
     @Override
