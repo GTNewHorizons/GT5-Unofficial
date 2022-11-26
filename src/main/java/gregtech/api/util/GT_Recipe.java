@@ -1700,7 +1700,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setUsualFluidInputCount(16)
                 .setUsualFluidOutputCount(16)
                 .setNEITransferRect(new Rectangle(79, 34, 18, 18))
-                .setNEIGregTechLogoPos(80, 61);
+                .setLogoPos(80, 61);
         public static final GT_Recipe_Map sCentrifugeRecipes = new GT_Recipe_Map(
                         new HashSet<>(1200),
                         "gt.recipe.centrifuge",
@@ -2600,7 +2600,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          */
         public final List<Pair<SteamTexture, Pair<Size, Pos2d>>> specialTexturesSteam = new ArrayList<>();
 
-        public Pos2d neiGregTechLogoPos = new Pos2d(152, 63);
+        public IDrawable logo = GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT;
+
+        public Pos2d logoPos = new Pos2d(152, 63);
+
+        public Size logoSize = new Size(17, 17);
 
         public Pos2d neiBackgroundOffset = new Pos2d(2, 3);
 
@@ -2814,9 +2818,21 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return this;
         }
 
-        public GT_Recipe_Map setNEIGregTechLogoPos(int x, int y) {
+        public GT_Recipe_Map setLogo(IDrawable logo) {
             useModularUI(true);
-            this.neiGregTechLogoPos = new Pos2d(x, y);
+            this.logo = logo;
+            return this;
+        }
+
+        public GT_Recipe_Map setLogoPos(int x, int y) {
+            useModularUI(true);
+            this.logoPos = new Pos2d(x, y);
+            return this;
+        }
+
+        public GT_Recipe_Map setLogoSize(int width, int height) {
+            useModularUI(true);
+            this.logoSize = new Size(width, height);
             return this;
         }
 
@@ -3379,7 +3395,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return builder;
         }
 
-        protected void addProgressBarUI(
+        public void addProgressBarUI(
                 ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
             builder.widget(new ProgressBar()
                     .setTexture(progressBarTexture, 20)
@@ -3390,11 +3406,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     .setSize(progressBarSize));
         }
 
-        protected void addGregTechLogoUI(ModularWindow.Builder builder, Pos2d windowOffset) {
-            builder.widget(new DrawableWidget()
-                    .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
-                    .setSize(17, 17)
-                    .setPos(neiGregTechLogoPos.add(windowOffset)));
+        public void addGregTechLogoUI(ModularWindow.Builder builder, Pos2d windowOffset) {
+            builder.widget(
+                    new DrawableWidget().setDrawable(logo).setSize(logoSize).setPos(logoPos.add(windowOffset)));
         }
 
         /**
@@ -3498,7 +3512,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
             useModularUI(true);
-            setNEIGregTechLogoPos(80, 62);
+            setLogoPos(80, 62);
         }
 
         @Override
@@ -5520,7 +5534,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     E,
                     true,
                     true);
-            setNEIGregTechLogoPos(80, 62);
+            setLogoPos(80, 62);
         }
 
         @Override
@@ -5851,7 +5865,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         @Override
-        protected void addProgressBarUI(
+        public void addProgressBarUI(
                 ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
             int bar1Width = 17;
             int bar2Width = 18;

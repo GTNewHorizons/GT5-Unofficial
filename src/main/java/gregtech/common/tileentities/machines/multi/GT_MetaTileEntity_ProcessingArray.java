@@ -244,10 +244,12 @@ public class GT_MetaTileEntity_ProcessingArray
     }
 
     public boolean processRecipe(ItemStack[] tInputs, FluidStack[] tFluids, GT_Recipe.GT_Recipe_Map map) {
-        if (tInputs.length <= 0 && tFluids.length <= 0) return false;
+        if (tInputs.length <= 0 && tFluids.length <= 0)
+            return false;
         GT_Recipe tRecipe = map.findRecipe(
                 getBaseMetaTileEntity(), mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-        if (tRecipe == null) return false;
+        if (tRecipe == null)
+            return false;
         if (GT_Mod.gregtechproxy.mLowGravProcessing
                 && tRecipe.mSpecialValue == -100
                 && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
@@ -258,7 +260,7 @@ public class GT_MetaTileEntity_ProcessingArray
             // We're locked to a single recipe, but haven't built the recipe checker yet.
             // Build the checker on next successful recipe.
             tSingleRecipeCheckBuilder = GT_Single_Recipe_Check_Processing_Array.processingArrayBuilder(this)
-                    .setBefore();
+                    .setBefore(tInputs, tFluids);
         }
 
         boolean recipeLocked = false;
@@ -271,7 +273,7 @@ public class GT_MetaTileEntity_ProcessingArray
             } else if (mLockedToSingleRecipe && !recipeLocked) {
                 // We want to lock to a single run of the recipe.
                 mSingleRecipeCheck = tSingleRecipeCheckBuilder
-                        .setAfter()
+                        .setAfter(tInputs, tFluids)
                         .setRecipe(tRecipe)
                         .setRecipeAmperage(map.mAmperage)
                         .build();
