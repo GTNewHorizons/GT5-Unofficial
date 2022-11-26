@@ -243,6 +243,18 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'I',
             OrePrefixes.pipeMedium.get(Materials.Polytetrafluoroethylene)
         });
+
+        GT_ModHandler.addCraftingRecipe(ItemList.Casing_Pipe_Polybenzimidazole.get(1L), bits, new Object[] {
+            "PIP",
+            "IFI",
+            "PIP",
+            'P',
+            OrePrefixes.plate.get(Materials.Polybenzimidazole),
+            'F',
+            OrePrefixes.frameGt.get(Materials.Polybenzimidazole),
+            'I',
+            OrePrefixes.pipeMedium.get(Materials.Polybenzimidazole)
+        });
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_ULV.get(1L), bits, new Object[] {
             aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.WroughtIron)
         });
