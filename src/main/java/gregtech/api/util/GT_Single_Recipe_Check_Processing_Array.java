@@ -168,6 +168,7 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
             }
             return itemMap;
         }
+
         static Map<Fluid, Integer> buildFluidMapDirect(FluidStack[] fluids) {
             Map<Fluid, Integer> fluidMap = new HashMap<>();
             for (FluidStack fluidStack : fluids) {
