@@ -3318,6 +3318,46 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Override
+    public boolean addNanoForgeRecipe(
+            ItemStack[] aInputs,
+            FluidStack[] aFluidInputs,
+            ItemStack[] aOutputs,
+            FluidStack[] aFluidOutputs,
+            int[] aChances,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue) {
+        if (aInputs == null || aOutputs == null || aSpecialValue == 0) return false;
+
+        GT_Recipe.GT_Recipe_Map.sNanoForge.addRecipe(new GT_Recipe(
+                false, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+        return true;
+    }
+
+    @Override
+    public boolean addPCBFactoryRecipe(
+            ItemStack[] aInputs,
+            FluidStack[] aFluidInputs,
+            ItemStack[] aOutputs,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue) {
+
+        if (aInputs == null || aFluidInputs == null || aOutputs == null) {
+            return false;
+        }
+
+        if (aSpecialValue <= 0 || aEUt < 0 || aDuration < 0) {
+            return false;
+        }
+
+        GT_Recipe.GT_Recipe_Map.sPCBFactory.addRecipe(new GT_Recipe(
+                false, aInputs, aOutputs, null, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue));
+
+        return true;
+    }
+
     private boolean areItemsAndFluidsBothNull(ItemStack[] items, FluidStack[] fluids) {
         boolean itemsNull = true;
         if (items != null) {

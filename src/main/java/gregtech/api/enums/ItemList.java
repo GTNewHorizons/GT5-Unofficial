@@ -1684,6 +1684,7 @@ public enum ItemList implements IItemContainer {
     OreDrill4,
     PyrolyseOven,
     OilCracker,
+    NanoForge,
     Crop_Drop_UUMBerry,
     Crop_Drop_UUABerry,
     Empty_Board_Basic,
@@ -1959,7 +1960,13 @@ public enum ItemList implements IItemContainer {
     Superconducting_Magnet_Solenoid_UHV,
     Superconducting_Magnet_Solenoid_UEV,
     Superconducting_Magnet_Solenoid_UIV,
-    Superconducting_Magnet_Solenoid_UMV;
+    Superconducting_Magnet_Solenoid_UMV,
+    RadiantNaquadahAlloyCasing,
+    PCBFactory,
+    BasicPhotolithographicFrameworkCasing,
+    ReinforcedPhotolithographicFrameworkCasing,
+    RadiationProofPhotolithographicFrameworkCasing,
+    InfinityCooledCasing;
     public static final ItemList[]
             DYE_ONLY_ITEMS =
                     {

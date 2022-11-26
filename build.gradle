@@ -1,4 +1,4 @@
-//version: 1668274302
+//version: 1669171387
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -338,10 +338,10 @@ dependencies {
         annotationProcessor('org.ow2.asm:asm-debug-all:5.0.3')
         annotationProcessor('com.google.guava:guava:24.1.1-jre')
         annotationProcessor('com.google.code.gson:gson:2.8.6')
-        annotationProcessor('org.spongepowered:mixin:0.8.5-GTNH:processor')
+        annotationProcessor('com.gtnewhorizon:gtnhmixins:2.1.0:processor')
     }
     if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
-        compile('com.gtnewhorizon:gtnhmixins:2.0.2')
+        compile('com.gtnewhorizon:gtnhmixins:2.1.0')
     }
 }
 

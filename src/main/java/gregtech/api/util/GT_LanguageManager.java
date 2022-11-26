@@ -479,6 +479,9 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_333", "OR Gate");
         addStringLocalization("Interaction_DESCRIPTION_Index_334", "NOR Gate");
         addStringLocalization("Interaction_DESCRIPTION_Index_335", "Gate Mode");
+        addStringLocalization("Interaction_DESCRIPTION_Index_336", "PCB Factory Tier: ");
+        addStringLocalization("Interaction_DESCRIPTION_Index_337", "Upgrade Required: ");
+        addStringLocalization("Interaction_DESCRIPTION_Index_338", "Bio");
         addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
         addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
         addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");

@@ -14,6 +14,8 @@ import gregtech.api.util.*;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
 import gregtech.loaders.postload.chains.GT_BauxiteRefineChain;
+import gregtech.loaders.postload.chains.GT_NaniteChain;
+import gregtech.loaders.postload.chains.GT_PCBFactoryRecipes;
 import ic2.api.recipe.ILiquidHeatExchangerManager;
 import ic2.api.recipe.Recipes;
 import java.util.Arrays;
@@ -1345,6 +1347,17 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.Block_SSFUEL.get(1),
                 100,
                 250);
+        GT_Values.RA.addMixerRecipe(
+                new ItemStack[] {
+                    Materials.NaquadahEnriched.getDust(8),
+                    Materials.Holmium.getDust(2),
+                    GT_Utility.getIntegratedCircuit(4)
+                },
+                null,
+                new ItemStack[] {Materials.EnrichedHolmium.getDust(10)},
+                null,
+                30 * 20,
+                120000);
 
         GT_Values.RA.addExtruderRecipe(
                 ItemList.FR_Wax.get(1L), ItemList.Shape_Extruder_Cell.get(0L), ItemList.FR_WaxCapsule.get(1L), 64, 16);
@@ -9762,6 +9775,15 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.neutroniumHeatCapacitor.get(1L),
                 100,
                 120000);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                    Materials.NaquadahAlloy.getPlates(8),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1)
+                },
+                null,
+                ItemList.RadiantNaquadahAlloyCasing.get(1),
+                10,
+                400000);
 
         GT_ModHandler.removeRecipe(new ItemStack(Items.lava_bucket), ItemList.Cell_Empty.get(1L));
         GT_ModHandler.removeRecipe(new ItemStack(Items.water_bucket), ItemList.Cell_Empty.get(1L));
@@ -13284,6 +13306,30 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.Ore_Processor.get(1),
                 1200,
                 900000);
+
+        GT_Values.RA.addAssemblylineRecipe(
+                Materials.Carbon.getNanite(1),
+                3600 * 20,
+                new Object[] {
+                    ItemList.Hull_UV.get(16),
+                    Materials.Carbon.getNanite(16),
+                    ItemList.Field_Generator_ZPM.get(16),
+                    ItemList.Conveyor_Module_UV.get(16),
+                    ItemList.Electric_Motor_UV.get(32),
+                    new Object[] {OrePrefixes.circuit.get(Materials.Master), 16},
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadria, 32)
+                },
+                new FluidStack[] {
+                    new FluidStack(solderIndalloy, 144 * 32),
+                    Materials.HSSS.getMolten(144L * 32),
+                    Materials.Osmiridium.getMolten(144L * 16)
+                },
+                ItemList.NanoForge.get(1),
+                2400 * 20,
+                100000);
+
+        GT_NaniteChain.run();
+        GT_PCBFactoryRecipes.load();
 
         if (GregTech_API.sThaumcraftCompat != null) {
             String tKey = "GT_WOOD_TO_CHARCOAL";
