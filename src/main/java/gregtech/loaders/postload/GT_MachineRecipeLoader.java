@@ -1349,7 +1349,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 250);
         GT_Values.RA.addMixerRecipe(
                 new ItemStack[] {
-                    Materials.EnrichedNaquadria.getDust(8),
+                    Materials.NaquadahEnriched.getDust(8),
                     Materials.Holmium.getDust(2),
                     GT_Utility.getIntegratedCircuit(4)
                 },

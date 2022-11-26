@@ -31,7 +31,7 @@ public class GT_PCBFactoryRecipes {
                 ItemList.Circuit_Board_Wetware.get(1),
                 3600,
                 new Object[] {
-                    GT_OreDictUnificator.get(OrePrefixes.frame, Materials.Neutronium, 32),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 32),
                     ItemList.Machine_ZPM_CircuitAssembler.get(4),
                     new Object[] {OrePrefixes.circuit.get(Materials.Master), 16},
                     ItemList.Robot_Arm_ZPM.get(8)
@@ -42,7 +42,7 @@ public class GT_PCBFactoryRecipes {
                 491520);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.frame, Materials.NaquadahAlloy, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1),
                     Materials.get("Artherium-Sn").getPlates(6)
                 },
                 null,
@@ -51,7 +51,7 @@ public class GT_PCBFactoryRecipes {
                 122880);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.frame, Materials.Infinity, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                     Materials.EnrichedHolmium.getPlates(6)
                 },
                 null,
@@ -60,8 +60,8 @@ public class GT_PCBFactoryRecipes {
                 122880);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                    Materials.get("Quantum").getPlates(6),
-                    GT_OreDictUnificator.get(OrePrefixes.frame, Materials.get("Celestial Tungsten"), 1)
+                    GT_OreDictUnificator.get(OrePrefixes.frame, Materials.get("CelestialTungsten"), 1),
+                    Materials.get("Quantum").getPlates(6)
                 },
                 null,
                 ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1),
@@ -413,7 +413,7 @@ public class GT_PCBFactoryRecipes {
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 4)))),
                         Materials.IronIIIChloride.getFluid((long) (5000 * (Math.sqrt(tier - 4)))),
-                        Materials.GrowthMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 4))))
+                        Materials.GrowthMediumSterilized.getFluid((long) (2000 * (Math.sqrt(tier - 4))))
                     },
                     aBoards.toArray(new ItemStack[0]),
                     30 * 20,
@@ -441,7 +441,7 @@ public class GT_PCBFactoryRecipes {
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 4)))),
                         Materials.IronIIIChloride.getFluid((long) (5000 * (Math.sqrt(tier - 4)))),
-                        Materials.GrowthMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 4))))
+                        Materials.GrowthMediumSterilized.getFluid((long) (2000 * (Math.sqrt(tier - 4))))
                     },
                     aBoards.toArray(new ItemStack[0]),
                     30 * 20,
@@ -469,7 +469,7 @@ public class GT_PCBFactoryRecipes {
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 4)))),
                         Materials.IronIIIChloride.getFluid((long) (5000 * (Math.sqrt(tier - 4)))),
-                        Materials.GrowthMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 4))))
+                        Materials.GrowthMediumSterilized.getFluid((long) (2000 * (Math.sqrt(tier - 4))))
                     },
                     aBoards.toArray(new ItemStack[0]),
                     30 * 20,
@@ -498,7 +498,7 @@ public class GT_PCBFactoryRecipes {
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 5)))),
                         Materials.IronIIIChloride.getFluid((long) (7500 * (Math.sqrt(tier - 5)))),
-                        Materials.BioMediumSterilized.getFluid((long) (16000 * (Math.sqrt(tier - 5))))
+                        Materials.BioMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 5))))
                     },
                     aBoards.toArray(new ItemStack[0]),
                     30 * 20,
@@ -526,7 +526,7 @@ public class GT_PCBFactoryRecipes {
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 5)))),
                         Materials.IronIIIChloride.getFluid((long) (7500 * (Math.sqrt(tier - 5)))),
-                        Materials.BioMediumSterilized.getFluid((long) (16000 * (Math.sqrt(tier - 5))))
+                        Materials.BioMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 5))))
                     },
                     aBoards.toArray(new ItemStack[0]),
                     30 * 20,
@@ -554,7 +554,7 @@ public class GT_PCBFactoryRecipes {
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 5)))),
                         Materials.IronIIIChloride.getFluid((long) (7500 * (Math.sqrt(tier - 5)))),
-                        Materials.BioMediumSterilized.getFluid((long) (16000 * (Math.sqrt(tier - 5))))
+                        Materials.BioMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 5))))
                     },
                     aBoards.toArray(new ItemStack[0]),
                     30 * 20,
