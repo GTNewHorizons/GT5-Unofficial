@@ -486,21 +486,32 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public void getWailaBody(
             ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
-        final byte side = (byte) accessor.getSide().ordinal();
+        final byte currentFacing = (byte) accessor.getSide().ordinal();
 
         final int[] coverSides = tag.getIntArray("mCoverSides");
         // Not all data is available on the client, so get it from the NBT packet
-        if (coverSides != null && coverSides.length == 6 && coverSides[side] != 0) {
-            final int coverId = coverSides[side];
-            final GT_CoverBehaviorBase<?> behavior = GregTech_API.getCoverBehaviorNew(coverId);
-            if (behavior != null && behavior != GregTech_API.sNoBehavior) {
-                if (tag.hasKey(CoverableTileEntity.COVER_DATA_NBT_KEYS[side])) {
-                    final ISerializableObject dataObject =
-                            behavior.createDataObject(tag.getTag(CoverableTileEntity.COVER_DATA_NBT_KEYS[side]));
-                    final ItemStack coverStack = behavior.getDisplayStack(coverId, dataObject);
-                    if (coverStack != null) currenttip.add(String.format("Cover: %s", coverStack.getDisplayName()));
-                    final String behaviorDesc = behavior.getDescription(side, coverId, dataObject, null);
-                    if (!Objects.equals(behaviorDesc, E)) currenttip.add(behaviorDesc);
+        if (coverSides != null && coverSides.length == 6) {
+            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+                final byte side = (byte) direction.ordinal();
+                final int coverId = coverSides[side];
+                final GT_CoverBehaviorBase<?> behavior = GregTech_API.getCoverBehaviorNew(coverId);
+
+                if (coverId != 0 && behavior != null && behavior != GregTech_API.sNoBehavior) {
+                    if (tag.hasKey(CoverableTileEntity.COVER_DATA_NBT_KEYS[side])) {
+                        final ISerializableObject dataObject =
+                                behavior.createDataObject(tag.getTag(CoverableTileEntity.COVER_DATA_NBT_KEYS[side]));
+                        final ItemStack coverStack = behavior.getDisplayStack(coverId, dataObject);
+                        if (coverStack != null)
+                            currenttip.add(String.format(
+                                    "Cover (%s): %s",
+                                    currentFacing == side
+                                            ? StatCollector.translateToLocal("GT5U.waila.cover.current_facing")
+                                            : StatCollector.translateToLocal("GT5U.interface.coverTabs."
+                                                    + direction.toString().toLowerCase()),
+                                    coverStack.getDisplayName()));
+                        final String behaviorDesc = behavior.getDescription(side, coverId, dataObject, null);
+                        if (!Objects.equals(behaviorDesc, E)) currenttip.add(behaviorDesc);
+                    }
                 }
             }
         }

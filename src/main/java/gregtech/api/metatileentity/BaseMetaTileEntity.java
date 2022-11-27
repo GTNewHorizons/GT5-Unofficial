@@ -621,7 +621,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     @Override
     public void getWailaBody(
             ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() != null) {
+        if (hasValidMetaTileEntity()) {
             getMetaTileEntity().getWailaBody(itemStack, currenttip, accessor, config);
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -631,7 +631,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     public void getWailaNBTData(
             EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        if (hasValidMetaTileEntity() && getMetaTileEntity() != null) {
+        if (hasValidMetaTileEntity()) {
             getMetaTileEntity().getWailaNBTData(player, tile, tag, world, x, y, z);
         }
     }
