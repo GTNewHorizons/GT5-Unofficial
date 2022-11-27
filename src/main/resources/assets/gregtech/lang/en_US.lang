@@ -298,6 +298,9 @@ GT5U.interface.coverTabs.south=South
 GT5U.interface.coverTabs.west=West
 GT5U.interface.coverTabs.east=East
 
+# Waila
+GT5U.waila.cover.current_facing=Current Facing
+
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
 achievement.crops=Farming
