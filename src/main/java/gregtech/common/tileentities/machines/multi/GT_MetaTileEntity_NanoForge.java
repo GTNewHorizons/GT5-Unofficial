@@ -276,7 +276,7 @@ public class GT_MetaTileEntity_NanoForge
             ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
             for (int i = tItemInputs.length - 1; i >= 0; i--) {
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)) {
-                    tOutputs.add(tRecipe.mOutputs[i]);
+                    tOutputs.add(tRecipe.getOutput(i));
                 }
             }
             mOutputItems = tOutputs.toArray(new ItemStack[0]);
@@ -410,7 +410,6 @@ public class GT_MetaTileEntity_NanoForge
                 .addInfo("Requires a Transcendent Metal Nanite to use tier 3")
                 .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
                 .addInfo("it gains perfect overclock")
-                .addInfo("The amount of nanites inside determine the max parallel")
                 .addInfo(AuthorBlueWeabo)
                 .addSeparator()
                 .beginStructureBlock(30, 38, 13, false)

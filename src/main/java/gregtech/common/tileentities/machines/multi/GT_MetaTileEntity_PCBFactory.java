@@ -17,9 +17,19 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -30,11 +40,11 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_PCBFactoryManager;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings8;
 import java.util.ArrayList;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -241,6 +251,10 @@ public class GT_MetaTileEntity_PCBFactory
         if (mOCTier1 && !mOCTier2) {
             buildPiece(ocTier1Upgrade, stackSize, hintsOnly, mOCTier1Offsets[0], 10, mOCTier1Offsets[1]);
         }
+
+        if (!mOCTier1 && mOCTier2) {
+            buildPiece(ocTier2Upgrade, stackSize, hintsOnly, mOCTier2Offsets[0], 10, mOCTier2Offsets[1]);
+        }
     }
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
@@ -287,6 +301,18 @@ public class GT_MetaTileEntity_PCBFactory
                     mOCTier1Offsets[0],
                     10,
                     mOCTier1Offsets[1],
+                    elementBudget,
+                    env,
+                    false,
+                    true);
+        }
+        if (!mOCTier1 && mOCTier2) {
+            built += survivialBuildPiece(
+                    ocTier2Upgrade,
+                    stackSize,
+                    mOCTier2Offsets[0],
+                    10,
+                    mOCTier2Offsets[1],
                     elementBudget,
                     env,
                     false,
@@ -458,19 +484,55 @@ public class GT_MetaTileEntity_PCBFactory
     }
 
     private boolean processRecipe(
-            ItemStack aStack, ItemStack[] aInputs, FluidStack[] aFluidInputs, GT_Recipe.GT_Recipe_Map aMap) {
+            ItemStack aStack, ItemStack[] tItemInputs, FluidStack[] aFluidInputs, GT_Recipe.GT_Recipe_Map aMap) {
         mOutputItems = null;
         mOutputFluids = null;
-        if (aInputs == null || aFluidInputs == null) {
+        if (tItemInputs == null || aFluidInputs == null) {
             return false;
         }
 
         long voltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
+        long amps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
+        long tTotalEU = voltage / getExoticAndNormalEnergyHatchList().size() * amps;
 
-        GT_Recipe tRecipe = aMap.findRecipe(getBaseMetaTileEntity(), true, true, voltage, aFluidInputs, aInputs);
+        GT_Recipe tRecipe = aMap.findRecipe(getBaseMetaTileEntity(), true, true, voltage, aFluidInputs, tItemInputs);
 
         if (tRecipe == null) {
             return false;
+        }
+
+        int recipeBitMap = tRecipe.mSpecialValue;
+
+        if (tRecipe.isRecipeInputEqual(true, aFluidInputs, tItemInputs)
+                && ((recipeBitMap & mTier1BitMap) == 1
+                        || (recipeBitMap & mTier2BitMap) == 1
+                        || (recipeBitMap & mTier3BitMap) == 1)
+                && ((recipeBitMap & mBioBitMap) == 0 || (recipeBitMap & mBioBitMap) == 1 == mBioUpgrade)) {
+            this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
+            this.mEfficiencyIncrease = getMaxEfficiency(aStack);
+            this.lEUt = tRecipe.mEUt;
+            this.mMaxProgresstime = tRecipe.mDuration;
+            if (mOCTier1 || mOCTier2) {
+                calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tTotalEU, mOCTier2);
+            }
+
+            if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
+
+            mOutputItems = new ItemStack[tRecipe.mOutputs.length];
+            ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
+            int remainingEfficiency = getMaxEfficiency(aStack);
+            int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
+            for (int j = 0; j < repeats; j++) {
+                for (int i = tItemInputs.length - 1; i >= 0; i--) {
+                    if (getBaseMetaTileEntity().getRandomNumber(10000) < remainingEfficiency) {
+                        tOutputs.add(tRecipe.getOutput(i));
+                        remainingEfficiency -= 10000;
+                    }
+                }
+            }
+            mOutputItems = tOutputs.toArray(new ItemStack[0]);
+            mOutputFluids = tRecipe.mFluidOutputs.clone();
+            updateSlots();
         }
 
         return true;
@@ -615,16 +677,118 @@ public class GT_MetaTileEntity_PCBFactory
         return false;
     }
 
-    private int findPlasticTier(ItemStack[] aItems) {
-        int maxTier = 0;
-        for (ItemStack aItem : aItems) {
-            Materials aMaterial = GT_OreDictUnificator.getAssociation(aItem).mMaterial.mMaterial;
-            int curTier = GT_PCBFactoryManager.getPlasticTier(aMaterial);
-            if (curTier > maxTier) {
-                maxTier = curTier;
-            }
-        }
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
 
-        return maxTier;
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        buildContext.addSyncedWindow(10, this::createConfigurationWindow);
+        builder.widget(new ButtonWidget()
+                .setOnClick((clickData, widget) -> {
+                    if (!widget.isClient()) widget.getContext().openSyncedWindow(10);
+                })
+                .setSize(18, 18)
+                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setBackground(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                .addTooltip("Configuration Menu")
+                .setPos(151, 28));
+    }
+
+    protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
+        ModularWindow.Builder builder = ModularWindow.builder(200, 160);
+        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                        .setPos(5, 5)
+                        .setSize(16, 16))
+                .widget(new TextWidget("Configuration").setPos(25, 9))
+                .widget(ButtonWidget.closeWindowButton(true).setPos(195, 3))
+                .widget(new DynamicPositionedColumn()
+                        .setSynced(false)
+                        .widget(new CycleButtonWidget()
+                                .setToggle(() -> mBioUpgrade, val -> {
+                                    mBioUpgrade = val;
+                                    if (!mBioUpgrade) {
+                                        GT_Utility.sendChatToPlayer(
+                                                player, GT_Utility.trans("339.1", "Bio Upgrade Disabled"));
+                                    } else {
+                                        GT_Utility.sendChatToPlayer(
+                                                player, GT_Utility.trans("339", "Bio Upgrade Enabled"));
+                                    }
+                                })
+                                .setBackground(
+                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
+                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
+                                        new Text("Bio Upgrade").withOffset(10, 0))
+                                .setSize(80, 18)
+                                .addTooltip("Bio Upgrade")
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        .widget(new CycleButtonWidget()
+                                .setToggle(() -> mBioRotate, val -> {
+                                    mBioRotate = val;
+                                    if (!mBioRotate) {
+                                        GT_Utility.sendChatToPlayer(
+                                                player,
+                                                GT_Utility.trans("340.1", "Rotate Bio Upgrade 90 Degrees Disabled"));
+                                    } else {
+                                        GT_Utility.sendChatToPlayer(
+                                                player,
+                                                GT_Utility.trans("340", "Rotate Bio Upgrade 90 Degrees Enabled"));
+                                    }
+                                })
+                                .setBackground(
+                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
+                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
+                                        new Text("Bio Rotation").withOffset(10, 0))
+                                .setSize(80, 18)
+                                .addTooltip("Bio Rotation")
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        .widget(new CycleButtonWidget()
+                                .setToggle(() -> mOCTier1, val -> {
+                                    mOCTier1 = val;
+                                    if (!mOCTier1) {
+                                        GT_Utility.sendChatToPlayer(
+                                                player, GT_Utility.trans("341.1", "Tier 1 OC Disabled"));
+                                    } else {
+                                        GT_Utility.sendChatToPlayer(
+                                                player, GT_Utility.trans("341", "Tier 1 OC Enabled"));
+                                    }
+                                })
+                                .setBackground(
+                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
+                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
+                                        new Text("OC Tier 1").withOffset(10, 0))
+                                .setSize(80, 18)
+                                .addTooltip("OC Tier 1 Upgrade")
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        .widget(new CycleButtonWidget()
+                                .setToggle(() -> mOCTier2, val -> {
+                                    mOCTier2 = val;
+                                    if (!mOCTier2) {
+                                        GT_Utility.sendChatToPlayer(
+                                                player, GT_Utility.trans("342.1", "Tier 2 OC Disabled"));
+                                    } else {
+                                        GT_Utility.sendChatToPlayer(
+                                                player, GT_Utility.trans("342", "Tier 2 OC Enabled"));
+                                    }
+                                })
+                                .setBackground(
+                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
+                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
+                                        new Text("OC Tier 2").withOffset(10, 0))
+                                .setSize(80, 18)
+                                .addTooltip("OC Tier 2 Upgrade")
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        .widget(new DrawableWidget()
+                                .setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                                .setSize(18, 18)
+                                .addTooltip(
+                                        new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
+                                .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
+                        .setPos(10, 25));
+        return builder.build();
     }
 }

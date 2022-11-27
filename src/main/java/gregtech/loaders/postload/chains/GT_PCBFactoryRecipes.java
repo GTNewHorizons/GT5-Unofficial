@@ -57,7 +57,7 @@ public class GT_PCBFactoryRecipes {
                 null,
                 ItemList.ReinforcedPhotolithographicFrameworkCasing.get(1),
                 30 * 20,
-                122880);
+                122880 * 16);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.frame, Materials.get("CelestialTungsten"), 1),
@@ -66,7 +66,7 @@ public class GT_PCBFactoryRecipes {
                 null,
                 ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1),
                 30 * 20,
-                122880);
+                122880 * 16 * 16);
 
         // Load CircuitBoard Recipes
 
