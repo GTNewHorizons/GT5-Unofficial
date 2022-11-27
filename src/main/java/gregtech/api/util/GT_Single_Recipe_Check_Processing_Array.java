@@ -155,16 +155,32 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
         }
 
         /** Call this before inputs are consumed by the recipe. */
-        public Builder setBefore() {
-            beforeItems = buildItemMap(multiBlockBase);
-            beforeFluids = buildFluidMap(multiBlockBase);
+        public Builder setBefore(ItemStack[] inputs, FluidStack[] fluids) {
+            beforeItems = buildItemMapDirect(inputs);
+            beforeFluids = buildFluidMapDirect(fluids);
             return this;
         }
 
+        static Map<GT_Utility.ItemId, Integer> buildItemMapDirect(ItemStack[] inputs) {
+            Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
+            for (ItemStack itemStack : inputs) {
+                itemMap.merge(GT_Utility.ItemId.create(itemStack), itemStack.stackSize, Integer::sum);
+            }
+            return itemMap;
+        }
+
+        static Map<Fluid, Integer> buildFluidMapDirect(FluidStack[] fluids) {
+            Map<Fluid, Integer> fluidMap = new HashMap<>();
+            for (FluidStack fluidStack : fluids) {
+                fluidMap.merge(fluidStack.getFluid(), fluidStack.amount, Integer::sum);
+            }
+            return fluidMap;
+        }
+
         /** Call this after inputs are consumed by the recipe. */
-        public Builder setAfter() {
-            afterItems = buildItemMap(multiBlockBase);
-            afterFluids = buildFluidMap(multiBlockBase);
+        public Builder setAfter(ItemStack[] inputs, FluidStack[] fluids) {
+            afterItems = buildItemMapDirect(inputs);
+            afterFluids = buildFluidMapDirect(fluids);
             return this;
         }
 

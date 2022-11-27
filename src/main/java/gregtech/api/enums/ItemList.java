@@ -823,6 +823,7 @@ public enum ItemList implements IItemContainer {
     Casing_Pipe_Titanium,
     Casing_Pipe_TungstenSteel,
     Casing_Pipe_Polytetrafluoroethylene,
+    Casing_Pipe_Polybenzimidazole,
 
     Casing_Stripes_A,
     Casing_Stripes_B,
@@ -836,6 +837,7 @@ public enum ItemList implements IItemContainer {
     Casing_NoiseHazard,
     Casing_Grate,
     Casing_Vent,
+    Casing_Vent_T2,
     Casing_RadiationProof,
     Casing_AdvancedRadiationProof,
     Casing_Firebox_Bronze,
@@ -1740,6 +1742,7 @@ public enum ItemList implements IItemContainer {
     QuantumEye,
     QuantumStar,
     Gravistar,
+    NuclearStar,
     Block_SSFUEL,
     Block_MSSFUEL,
     SFMixture,

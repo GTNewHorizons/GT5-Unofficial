@@ -7538,6 +7538,26 @@ public class GT_MachineRecipeLoader implements Runnable {
                 10000,
                 480,
                 7680);
+        GT_Values.RA.addAutoclaveRecipe(
+                GT_OreDictUnificator.get(ItemList.Gravistar.get(16L)),
+                Materials.Infinity.getMolten(288),
+                ItemList.NuclearStar.get(1L),
+                10000,
+                480,
+                7864320);
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1L),
+                    ItemList.Electric_Motor_UV.get(1L),
+                    GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Iridium, 1L),
+                    ItemList.Component_Filter.get(8L),
+                    GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Iridium, 8L),
+                },
+                null,
+                ItemList.Casing_Vent_T2.get(1L),
+                30 * 20,
+                30720);
 
         // Silicon Line
         // SiO2 + 2Mg = 2MgO + Si

@@ -258,7 +258,7 @@ public class GT_MetaTileEntity_ProcessingArray
             // We're locked to a single recipe, but haven't built the recipe checker yet.
             // Build the checker on next successful recipe.
             tSingleRecipeCheckBuilder = GT_Single_Recipe_Check_Processing_Array.processingArrayBuilder(this)
-                    .setBefore();
+                    .setBefore(tInputs, tFluids);
         }
 
         boolean recipeLocked = false;
@@ -271,7 +271,7 @@ public class GT_MetaTileEntity_ProcessingArray
             } else if (mLockedToSingleRecipe && !recipeLocked) {
                 // We want to lock to a single run of the recipe.
                 mSingleRecipeCheck = tSingleRecipeCheckBuilder
-                        .setAfter()
+                        .setAfter(tInputs, tFluids)
                         .setRecipe(tRecipe)
                         .setRecipeAmperage(map.mAmperage)
                         .build();
