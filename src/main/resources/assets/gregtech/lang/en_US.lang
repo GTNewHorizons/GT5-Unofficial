@@ -299,6 +299,7 @@ GT5U.interface.coverTabs.west=West
 GT5U.interface.coverTabs.east=East
 
 # Waila
+GT5U.waila.cover=Cover (%s): %s
 GT5U.waila.cover.current_facing=Current Facing
 
 achievement.flintpick=First Tools

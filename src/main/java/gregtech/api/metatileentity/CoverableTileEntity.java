@@ -502,8 +502,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                                 behavior.createDataObject(tag.getTag(CoverableTileEntity.COVER_DATA_NBT_KEYS[side]));
                         final ItemStack coverStack = behavior.getDisplayStack(coverId, dataObject);
                         if (coverStack != null)
-                            currenttip.add(String.format(
-                                    "Cover (%s): %s",
+                            currenttip.add(StatCollector.translateToLocalFormatted(
+                                    "GT5U.waila.cover",
                                     currentFacing == side
                                             ? StatCollector.translateToLocal("GT5U.waila.cover.current_facing")
                                             : StatCollector.translateToLocal("GT5U.interface.coverTabs."
