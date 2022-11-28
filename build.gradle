@@ -338,10 +338,10 @@ dependencies {
         annotationProcessor('org.ow2.asm:asm-debug-all:5.0.3')
         annotationProcessor('com.google.guava:guava:24.1.1-jre')
         annotationProcessor('com.google.code.gson:gson:2.8.6')
-        annotationProcessor('com.gtnewhorizon:gtnhmixins:2.1.1:processor')
+        annotationProcessor('org.spongepowered:mixin:0.8.5-GTNH:processor')
     }
     if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
-        compile('com.gtnewhorizon:gtnhmixins:2.1.1')
+        compile('com.gtnewhorizon:gtnhmixins:2.0.2')
     }
 }
 

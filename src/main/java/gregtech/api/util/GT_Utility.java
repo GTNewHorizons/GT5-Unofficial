@@ -4301,6 +4301,11 @@ public class GT_Utility {
         return signal;
     }
 
+    public static ItemStack getNaniteAsCatalyst(Materials material) {
+        ItemStack aItem = material.getNanite(1);
+        return new ItemStack(aItem.getItem(), 0, aItem.getItemDamage());
+    }
+
     @AutoValue
     public abstract static class ItemId {
         /** This method copies NBT, as it is mutable. */

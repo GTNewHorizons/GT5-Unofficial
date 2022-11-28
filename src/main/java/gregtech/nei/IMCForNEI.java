@@ -22,6 +22,10 @@ public class IMCForNEI {
 
         // overwrite yShift to 6
         sendHandler("gt.recipe.fakeAssemblylineProcess", "gregtech:gt.blockmachines:1170");
+        sendHandler("gt.recipe.nanoforge", "gregtech:gt.blockmachines:357");
+        sendCatalyst("gt.recipe.nanoforge", "gregtech:gt.blockmachines:357");
+        sendHandler("gt.recipe.pcbfactory", "gregtech:gt.blockmachines:356");
+        sendCatalyst("gt.recipe.pcbfactory", "gregtech:gt.blockmachines:356");
     }
 
     private static void sendHandler(String aName, String aBlock, int aMaxRecipesPerPage) {
