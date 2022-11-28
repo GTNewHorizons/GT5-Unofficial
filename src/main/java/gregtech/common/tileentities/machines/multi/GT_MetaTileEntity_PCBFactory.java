@@ -18,6 +18,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -25,7 +26,10 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -65,7 +69,7 @@ public class GT_MetaTileEntity_PCBFactory
     private float mSpeedMultiplier = 1;
     private byte mTier = 1, mSetTier = 1, mUpgradesInstalled = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
-    private byte[] mBioOffsets = new byte[2], mOCTier1Offsets = new byte[2], mOCTier2Offsets = new byte[2];
+    private int[] mBioOffsets = new int[2], mOCTier1Offsets = new int[2], mOCTier2Offsets = new int[2];
     private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
     private static final int mBioBitMap = 0b1000;
     private static final int mTier3BitMap = 0b100;
@@ -510,7 +514,7 @@ public class GT_MetaTileEntity_PCBFactory
                 && ((recipeBitMap & mBioBitMap) == 0 || (recipeBitMap & mBioBitMap) == 1 == mBioUpgrade)) {
             this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = getMaxEfficiency(aStack);
-            this.lEUt = tRecipe.mEUt;
+            this.lEUt = -tRecipe.mEUt;
             this.mMaxProgresstime = tRecipe.mDuration;
             if (mOCTier1 || mOCTier2) {
                 calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tTotalEU, mOCTier2);
@@ -652,11 +656,11 @@ public class GT_MetaTileEntity_PCBFactory
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
         aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
-        aNBT.setByteArray("mBioOffsets", mBioOffsets);
+        aNBT.setIntArray("mBioOffsets", mBioOffsets);
         aNBT.setBoolean("mOCTier1Upgrade", mOCTier1);
-        aNBT.setByteArray("mOCTier1Offsets", mOCTier1Offsets);
+        aNBT.setIntArray("mOCTier1Offsets", mOCTier1Offsets);
         aNBT.setBoolean("mOCTier2Upgrade", mOCTier2);
-        aNBT.setByteArray("mOCTier2Offsets", mOCTier2Offsets);
+        aNBT.setIntArray("mOCTier2Offsets", mOCTier2Offsets);
     }
 
     @Override
@@ -664,11 +668,11 @@ public class GT_MetaTileEntity_PCBFactory
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
         mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
-        mBioOffsets = aNBT.getByteArray("mBioOffsets");
+        mBioOffsets = aNBT.getIntArray("mBioOffsets");
         mOCTier1 = aNBT.getBoolean("mOCTier1Upgrade");
-        mOCTier1Offsets = aNBT.getByteArray("mOCTier1Offsets");
+        mOCTier1Offsets = aNBT.getIntArray("mOCTier1Offsets");
         mOCTier2 = aNBT.getBoolean("mOCTier2Upgrade");
-        mOCTier2Offsets = aNBT.getByteArray("mOCTier2Offsets");
+        mOCTier2Offsets = aNBT.getIntArray("mOCTier2Offsets");
     }
 
     @Override
@@ -700,12 +704,13 @@ public class GT_MetaTileEntity_PCBFactory
     protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(200, 160);
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
         builder.widget(new DrawableWidget()
                         .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
                         .setPos(5, 5)
                         .setSize(16, 16))
                 .widget(new TextWidget("Configuration").setPos(25, 9))
-                .widget(ButtonWidget.closeWindowButton(true).setPos(195, 3))
+                .widget(ButtonWidget.closeWindowButton(true).setPos(185, 3))
                 .widget(new DynamicPositionedColumn()
                         .setSynced(false)
                         .widget(new CycleButtonWidget()
@@ -722,8 +727,8 @@ public class GT_MetaTileEntity_PCBFactory
                                 .setBackground(
                                         GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
                                         GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("Bio Upgrade").withOffset(10, 0))
-                                .setSize(80, 18)
+                                        new Text("Bio Upgrade").withOffset(5, 0))
+                                .setSize(90, 18)
                                 .addTooltip("Bio Upgrade")
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new CycleButtonWidget()
@@ -742,8 +747,8 @@ public class GT_MetaTileEntity_PCBFactory
                                 .setBackground(
                                         GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
                                         GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("Bio Rotation").withOffset(10, 0))
-                                .setSize(80, 18)
+                                        new Text("Bio Rotation").withOffset(5, 0))
+                                .setSize(90, 18)
                                 .addTooltip("Bio Rotation")
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new CycleButtonWidget()
@@ -760,9 +765,9 @@ public class GT_MetaTileEntity_PCBFactory
                                 .setBackground(
                                         GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
                                         GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("OC Tier 1").withOffset(10, 0))
-                                .setSize(80, 18)
-                                .addTooltip("OC Tier 1 Upgrade")
+                                        new Text("Cooler Tier 1").withOffset(5, 0))
+                                .setSize(90, 18)
+                                .addTooltip("Cooler Tier 1 Upgrade")
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new CycleButtonWidget()
                                 .setToggle(() -> mOCTier2, val -> {
@@ -778,17 +783,110 @@ public class GT_MetaTileEntity_PCBFactory
                                 .setBackground(
                                         GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
                                         GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("OC Tier 2").withOffset(10, 0))
-                                .setSize(80, 18)
-                                .addTooltip("OC Tier 2 Upgrade")
+                                        new Text("Cooler Tier 2").withOffset(5, 0))
+                                .setSize(90, 18)
+                                .addTooltip("Cooler Tier 2 Upgrade")
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        .widget(new TextWidget(new Text("Roughness Multiplier")).setSize(90, 18).setEnabled(widget -> !getBaseMetaTileEntity().isActive()).setPos(0, 5))
+                        .widget(new TextFieldWidget()
+                                .setGetterInt(() -> (int) (mRoughnessMultiplier * 10000))
+                                .setSetterInt(val -> {
+                                    mRoughnessMultiplier = val / 10000f;
+                                })
+                                .setNumbers(100, 100000)
+                                .setTextColor(Color.WHITE.normal)
+                                .setTextAlignment(Alignment.Center)
+                                .addTooltip("The Roughness multiplier is multiplied and devided by 10000 before displaying!")
+                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                .setSize(90, 18))
                         .widget(new DrawableWidget()
                                 .setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
                                 .setSize(18, 18)
                                 .addTooltip(
                                         new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
                                 .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
-                        .setPos(10, 25));
+                        .setPos(10, 25))
+                        .widget(new DynamicPositionedColumn()
+                                .setSynced(false)
+                                .widget(new TextWidget(new Text("Bio Upgrade Offsets")).setSize(72, 18).setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                .widget(new DynamicPositionedRow()
+                                        .setSynced(false)
+                                        .widget(new TextFieldWidget()
+                                                .setGetterInt(() -> mBioOffsets[0])
+                                                .setSetterInt(val -> {
+                                                    mBioOffsets[0] = val;
+                                                })
+                                                .setNumbers(-16, 16)
+                                                .setTextColor(Color.WHITE.normal)
+                                                .setTextAlignment(Alignment.Center)
+                                                .addTooltip("X Offset")
+                                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                .setSize(36, 18))
+                                        .widget(new TextFieldWidget()
+                                                .setGetterInt(() -> mBioOffsets[1])
+                                                .setSetterInt(val -> {
+                                                    mBioOffsets[1] = val;
+                                                })
+                                                .setNumbers(-16, 16)
+                                                .setTextColor(Color.WHITE.normal)
+                                                .setTextAlignment(Alignment.Center)
+                                                .addTooltip("Z Offset")
+                                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                .setSize(36, 18))
+                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                        .widget(new TextWidget(new Text("Cooler Tier 1 Offsets")).setSize(72, 18).setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                        .widget(new DynamicPositionedRow()
+                                                .setSynced(false)
+                                                .widget(new TextFieldWidget()
+                                                        .setGetterInt(() -> mOCTier1Offsets[0])
+                                                        .setSetterInt(val -> {
+                                                            mOCTier1Offsets[0] = val;
+                                                        })
+                                                        .setNumbers(-16, 16)
+                                                        .setTextColor(Color.WHITE.normal)
+                                                        .setTextAlignment(Alignment.Center)
+                                                        .addTooltip("X Offset")
+                                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                        .setSize(36, 18))
+                                                .widget(new TextFieldWidget()
+                                                        .setGetterInt(() -> mOCTier1Offsets[1])
+                                                        .setSetterInt(val -> {
+                                                            mOCTier1Offsets[1] = val;
+                                                        })
+                                                        .setNumbers(-16, 16)
+                                                        .setTextColor(Color.WHITE.normal)
+                                                        .setTextAlignment(Alignment.Center)
+                                                        .addTooltip("Z Offset")
+                                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                        .setSize(36, 18))
+                                                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                                        .widget(new TextWidget(new Text("Cooler Tier 2 Offsets")).setSize(72, 18).setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                        .widget(new DynamicPositionedRow()
+                                                .setSynced(false)
+                                                .widget(new TextFieldWidget()
+                                                        .setGetterInt(() -> mOCTier2Offsets[0])
+                                                        .setSetterInt(val -> {
+                                                            mOCTier2Offsets[0] = val;
+                                                        })
+                                                        .setNumbers(-16, 16)
+                                                        .setTextColor(Color.WHITE.normal)
+                                                        .setTextAlignment(Alignment.Center)
+                                                        .addTooltip("X Offset")
+                                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                        .setSize(36, 18))
+                                                .widget(new TextFieldWidget()
+                                                        .setGetterInt(() -> mOCTier2Offsets[1])
+                                                        .setSetterInt(val -> {
+                                                            mOCTier2Offsets[1] = val;
+                                                        })
+                                                        .setNumbers(-16, 16)
+                                                        .setTextColor(Color.WHITE.normal)
+                                                        .setTextAlignment(Alignment.Center)
+                                                        .addTooltip("Z Offset")
+                                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                                        .setSize(36, 18))
+                                                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                                        .setPos(110, 25));
         return builder.build();
     }
 }
