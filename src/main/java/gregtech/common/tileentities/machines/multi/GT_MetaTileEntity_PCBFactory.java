@@ -31,6 +31,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -43,6 +44,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings8;
@@ -515,8 +517,22 @@ public class GT_MetaTileEntity_PCBFactory
             this.mEfficiencyIncrease = getMaxEfficiency(aStack);
             this.lEUt = -tRecipe.mEUt;
             this.mMaxProgresstime = tRecipe.mDuration;
+
+            int aNanitesOfRecipe = 0;
+
+            ItemStack aNanite = tRecipe.getRepresentativeInput(0);
+            if (GT_OreDictUnificator.getAssociation(aNanite).mPrefix.equals(OrePrefixes.nanite)) {
+                for (ItemStack aItem : tItemInputs) {
+                    if (aItem.isItemEqual(aNanite)) {
+                        aNanitesOfRecipe += aItem.stackSize;
+                    }
+                }
+            }
+
+            int aParallel = (int) Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2));
+
             if (mOCTier1 || mOCTier2) {
-                calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tTotalEU, mOCTier2);
+                calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, aParallel, tTotalEU, mOCTier2);
             }
 
             if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
@@ -640,8 +656,9 @@ public class GT_MetaTileEntity_PCBFactory
                 .addSeparator()
                 .beginStructureBlock(30, 38, 13, false)
                 .addStructureInfo("PCB Factory Structure is too complex! See schematic for details.")
-                .addStructureInfo("Stellar Alloy Frames")
-                .addEnergyHatch("Any Energy Hatch, Determines Power Tier", 1)
+                .addStructureInfo("Basic Photolithographic Casings")
+                .addStructureInfo("Damascus Steel Frames")
+                .addEnergyHatch("Any Energy Hatch", 1)
                 .addMaintenanceHatch("Required 1", 1)
                 .addInputBus("Required 1", 1)
                 .addOutputBus("Required 1", 1)
@@ -660,6 +677,7 @@ public class GT_MetaTileEntity_PCBFactory
         aNBT.setIntArray("mOCTier1Offsets", mOCTier1Offsets);
         aNBT.setBoolean("mOCTier2Upgrade", mOCTier2);
         aNBT.setIntArray("mOCTier2Offsets", mOCTier2Offsets);
+        aNBT.setFloat("mRoughnessMultiplier", mRoughnessMultiplier);
     }
 
     @Override
@@ -672,6 +690,7 @@ public class GT_MetaTileEntity_PCBFactory
         mOCTier1Offsets = aNBT.getIntArray("mOCTier1Offsets");
         mOCTier2 = aNBT.getBoolean("mOCTier2Upgrade");
         mOCTier2Offsets = aNBT.getIntArray("mOCTier2Offsets");
+        mRoughnessMultiplier = aNBT.getFloat("mRoughnessMultiplier");
     }
 
     @Override

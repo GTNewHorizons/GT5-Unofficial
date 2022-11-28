@@ -3324,6 +3324,8 @@ public enum OrePrefixes {
 
         lens.mGeneratedItems.add(Materials.EnderPearl);
         lens.mGeneratedItems.add(Materials.EnderEye);
+        lens.mGeneratedItems.add(Materials.get("ChromaticGlass"));
+        lens.mGeneratedItems.add(Materials.get("RadoxPoly"));
 
         stickLong.mGeneratedItems.add(Materials.Blaze);
 
