@@ -26,8 +26,7 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTI
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.*;
@@ -162,13 +161,12 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
                     .addElement('p', ofBlock(GregTech_API.sBlockCasings4, 1))
                     .addElement(
                             'l',
-                            ofChain( // TODO figure out what to do with this
-                                    ofHatchAdder(
-                                            GT_TileEntity_MegaOilCracker::addLeftHatchToMachineList, CASING_INDEX, 2)))
+                            InputHatch.withAdder(GT_TileEntity_MegaOilCracker::addLeftHatchToMachineList)
+                                    .newAny(CASING_INDEX, 2))
                     .addElement(
                             'r',
-                            ofChain(ofHatchAdder(
-                                    GT_TileEntity_MegaOilCracker::addRightHatchToMachineList, CASING_INDEX, 3)))
+                            OutputHatch.withAdder(GT_TileEntity_MegaOilCracker::addRightHatchToMachineList)
+                                    .newAny(CASING_INDEX, 3))
                     .addElement(
                             'm',
                             buildHatchAdder(GT_TileEntity_MegaOilCracker.class)
@@ -188,8 +186,8 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
     private byte glasTier;
     private HeatingCoilLevel heatLevel;
     protected final List<GT_MetaTileEntity_Hatch_Input> mMiddleInputHatches = new ArrayList<>();
-    protected int mInputOnSide;
-    protected int mOutputOnSide;
+    protected int mInputOnSide = -1;
+    protected int mOutputOnSide = -1;
 
     public GT_TileEntity_MegaOilCracker(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -369,6 +367,9 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         glasTier = 0;
+        mInputOnSide = -1;
+        mOutputOnSide = -1;
+        mMiddleInputHatches.clear();
 
         if (LoaderReference.tectech) {
             this.getTecTechEnergyMultis().clear();
