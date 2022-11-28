@@ -101,6 +101,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
                 .beginStructureBlock(7, 9, 7, false)
                 .addController("Top Middle")
                 .addCasingInfo(getCasingName(), 360)
+                .addCasingInfo("Rotor Shaft", 30)
                 .addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1)
                 .addInputBus("Any 4 dot hint (min 1)", 4)
                 .addInputHatch("Any 4 dot hint(min 1)", 4);
