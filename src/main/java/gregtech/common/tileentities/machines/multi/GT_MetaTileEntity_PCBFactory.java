@@ -29,7 +29,6 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -787,7 +786,10 @@ public class GT_MetaTileEntity_PCBFactory
                                 .setSize(90, 18)
                                 .addTooltip("Cooler Tier 2 Upgrade")
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new TextWidget(new Text("Roughness Multiplier")).setSize(90, 18).setEnabled(widget -> !getBaseMetaTileEntity().isActive()).setPos(0, 5))
+                        .widget(new TextWidget(new Text("Roughness Multiplier"))
+                                .setSize(90, 18)
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
+                                .setPos(0, 5))
                         .widget(new TextFieldWidget()
                                 .setGetterInt(() -> (int) (mRoughnessMultiplier * 10000))
                                 .setSetterInt(val -> {
@@ -796,7 +798,8 @@ public class GT_MetaTileEntity_PCBFactory
                                 .setNumbers(100, 100000)
                                 .setTextColor(Color.WHITE.normal)
                                 .setTextAlignment(Alignment.Center)
-                                .addTooltip("The Roughness multiplier is multiplied and devided by 10000 before displaying!")
+                                .addTooltip(
+                                        "The Roughness multiplier is multiplied and devided by 10000 before displaying!")
                                 .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
                                 .setSize(90, 18))
                         .widget(new DrawableWidget()
@@ -806,87 +809,93 @@ public class GT_MetaTileEntity_PCBFactory
                                         new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
                                 .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
                         .setPos(10, 25))
-                        .widget(new DynamicPositionedColumn()
+                .widget(new DynamicPositionedColumn()
+                        .setSynced(false)
+                        .widget(new TextWidget(new Text("Bio Upgrade Offsets"))
+                                .setSize(72, 18)
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        .widget(new DynamicPositionedRow()
                                 .setSynced(false)
-                                .widget(new TextWidget(new Text("Bio Upgrade Offsets")).setSize(72, 18).setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                                .widget(new DynamicPositionedRow()
-                                        .setSynced(false)
-                                        .widget(new TextFieldWidget()
-                                                .setGetterInt(() -> mBioOffsets[0])
-                                                .setSetterInt(val -> {
-                                                    mBioOffsets[0] = val;
-                                                })
-                                                .setNumbers(-16, 16)
-                                                .setTextColor(Color.WHITE.normal)
-                                                .setTextAlignment(Alignment.Center)
-                                                .addTooltip("X Offset")
-                                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                                .setSize(36, 18))
-                                        .widget(new TextFieldWidget()
-                                                .setGetterInt(() -> mBioOffsets[1])
-                                                .setSetterInt(val -> {
-                                                    mBioOffsets[1] = val;
-                                                })
-                                                .setNumbers(-16, 16)
-                                                .setTextColor(Color.WHITE.normal)
-                                                .setTextAlignment(Alignment.Center)
-                                                .addTooltip("Z Offset")
-                                                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                                .setSize(36, 18))
-                                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                                        .widget(new TextWidget(new Text("Cooler Tier 1 Offsets")).setSize(72, 18).setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                                        .widget(new DynamicPositionedRow()
-                                                .setSynced(false)
-                                                .widget(new TextFieldWidget()
-                                                        .setGetterInt(() -> mOCTier1Offsets[0])
-                                                        .setSetterInt(val -> {
-                                                            mOCTier1Offsets[0] = val;
-                                                        })
-                                                        .setNumbers(-16, 16)
-                                                        .setTextColor(Color.WHITE.normal)
-                                                        .setTextAlignment(Alignment.Center)
-                                                        .addTooltip("X Offset")
-                                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                                        .setSize(36, 18))
-                                                .widget(new TextFieldWidget()
-                                                        .setGetterInt(() -> mOCTier1Offsets[1])
-                                                        .setSetterInt(val -> {
-                                                            mOCTier1Offsets[1] = val;
-                                                        })
-                                                        .setNumbers(-16, 16)
-                                                        .setTextColor(Color.WHITE.normal)
-                                                        .setTextAlignment(Alignment.Center)
-                                                        .addTooltip("Z Offset")
-                                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                                        .setSize(36, 18))
-                                                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                                                        .widget(new TextWidget(new Text("Cooler Tier 2 Offsets")).setSize(72, 18).setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                                        .widget(new DynamicPositionedRow()
-                                                .setSynced(false)
-                                                .widget(new TextFieldWidget()
-                                                        .setGetterInt(() -> mOCTier2Offsets[0])
-                                                        .setSetterInt(val -> {
-                                                            mOCTier2Offsets[0] = val;
-                                                        })
-                                                        .setNumbers(-16, 16)
-                                                        .setTextColor(Color.WHITE.normal)
-                                                        .setTextAlignment(Alignment.Center)
-                                                        .addTooltip("X Offset")
-                                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                                        .setSize(36, 18))
-                                                .widget(new TextFieldWidget()
-                                                        .setGetterInt(() -> mOCTier2Offsets[1])
-                                                        .setSetterInt(val -> {
-                                                            mOCTier2Offsets[1] = val;
-                                                        })
-                                                        .setNumbers(-16, 16)
-                                                        .setTextColor(Color.WHITE.normal)
-                                                        .setTextAlignment(Alignment.Center)
-                                                        .addTooltip("Z Offset")
-                                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                                        .setSize(36, 18))
-                                                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                                        .setPos(110, 25));
+                                .widget(new TextFieldWidget()
+                                        .setGetterInt(() -> mBioOffsets[0])
+                                        .setSetterInt(val -> {
+                                            mBioOffsets[0] = val;
+                                        })
+                                        .setNumbers(-16, 16)
+                                        .setTextColor(Color.WHITE.normal)
+                                        .setTextAlignment(Alignment.Center)
+                                        .addTooltip("X Offset")
+                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                        .setSize(36, 18))
+                                .widget(new TextFieldWidget()
+                                        .setGetterInt(() -> mBioOffsets[1])
+                                        .setSetterInt(val -> {
+                                            mBioOffsets[1] = val;
+                                        })
+                                        .setNumbers(-16, 16)
+                                        .setTextColor(Color.WHITE.normal)
+                                        .setTextAlignment(Alignment.Center)
+                                        .addTooltip("Z Offset")
+                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                        .setSize(36, 18))
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        .widget(new TextWidget(new Text("Cooler Tier 1 Offsets"))
+                                .setSize(72, 18)
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        .widget(new DynamicPositionedRow()
+                                .setSynced(false)
+                                .widget(new TextFieldWidget()
+                                        .setGetterInt(() -> mOCTier1Offsets[0])
+                                        .setSetterInt(val -> {
+                                            mOCTier1Offsets[0] = val;
+                                        })
+                                        .setNumbers(-16, 16)
+                                        .setTextColor(Color.WHITE.normal)
+                                        .setTextAlignment(Alignment.Center)
+                                        .addTooltip("X Offset")
+                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                        .setSize(36, 18))
+                                .widget(new TextFieldWidget()
+                                        .setGetterInt(() -> mOCTier1Offsets[1])
+                                        .setSetterInt(val -> {
+                                            mOCTier1Offsets[1] = val;
+                                        })
+                                        .setNumbers(-16, 16)
+                                        .setTextColor(Color.WHITE.normal)
+                                        .setTextAlignment(Alignment.Center)
+                                        .addTooltip("Z Offset")
+                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                        .setSize(36, 18))
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        .widget(new TextWidget(new Text("Cooler Tier 2 Offsets"))
+                                .setSize(72, 18)
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        .widget(new DynamicPositionedRow()
+                                .setSynced(false)
+                                .widget(new TextFieldWidget()
+                                        .setGetterInt(() -> mOCTier2Offsets[0])
+                                        .setSetterInt(val -> {
+                                            mOCTier2Offsets[0] = val;
+                                        })
+                                        .setNumbers(-16, 16)
+                                        .setTextColor(Color.WHITE.normal)
+                                        .setTextAlignment(Alignment.Center)
+                                        .addTooltip("X Offset")
+                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                        .setSize(36, 18))
+                                .widget(new TextFieldWidget()
+                                        .setGetterInt(() -> mOCTier2Offsets[1])
+                                        .setSetterInt(val -> {
+                                            mOCTier2Offsets[1] = val;
+                                        })
+                                        .setNumbers(-16, 16)
+                                        .setTextColor(Color.WHITE.normal)
+                                        .setTextAlignment(Alignment.Center)
+                                        .addTooltip("Z Offset")
+                                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                                        .setSize(36, 18))
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        .setPos(110, 25));
         return builder.build();
     }
 }
