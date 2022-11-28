@@ -17786,18 +17786,18 @@ public class GT_MachineRecipeLoader implements Runnable {
         // CH4 + 2H2O = CO2 + 8H
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {GT_Utility.getIntegratedCircuit(11)},
-                new FluidStack[] {Materials.Methane.getGas(5000), Materials.Water.getFluid(10000)},
+                new FluidStack[] {Materials.Methane.getGas(5000), GT_ModHandler.getDistilledWater(10000)},
                 new FluidStack[] {Materials.CarbonDioxide.getGas(5000), Materials.Hydrogen.getGas(40000)},
                 null,
-                175,
+                200,
                 480);
         // CH4 + H2O = CO + 6H
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {GT_Utility.getIntegratedCircuit(12)},
-                new FluidStack[] {Materials.Methane.getGas(5000), Materials.Water.getFluid(5000)},
+                new FluidStack[] {Materials.Methane.getGas(5000), GT_ModHandler.getDistilledWater(5000)},
                 new FluidStack[] {Materials.CarbonMonoxide.getGas(5000), Materials.Hydrogen.getGas(30000)},
                 null,
-                175,
+                200,
                 480);
     }
 
