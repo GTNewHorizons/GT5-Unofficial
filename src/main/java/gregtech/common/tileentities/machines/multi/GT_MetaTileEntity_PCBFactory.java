@@ -78,6 +78,7 @@ public class GT_MetaTileEntity_PCBFactory
     private static final int mTier3BitMap = 0b100;
     private static final int mTier2BitMap = 0b10;
     private static final int mTier1BitMap = 0b1;
+    private static final int COOLANT_CONSUMED_PER_SEC = 10;
     private static final IStructureDefinition<GT_MetaTileEntity_PCBFactory> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_PCBFactory>builder()
                     .addShape(tier1, transpose(new String[][] {
@@ -579,7 +580,7 @@ public class GT_MetaTileEntity_PCBFactory
 
         if (ticker % 20 == 0) {
             if (mOCTier1) {
-                if (!depleteInput(GT_ModHandler.getDistilledWater(10))) {
+                if (!depleteInput(GT_ModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC))) {
                     criticalStopMachine();
                     return false;
                 }
@@ -587,7 +588,7 @@ public class GT_MetaTileEntity_PCBFactory
 
             if (mOCTier2) {
                 Fluid superCoolant = FluidRegistry.getFluid("supercoolant");
-                if (!depleteInput(new FluidStack(superCoolant, 10))) {
+                if (!depleteInput(new FluidStack(superCoolant, COOLANT_CONSUMED_PER_SEC))) {
                     criticalStopMachine();
                     return false;
                 }
