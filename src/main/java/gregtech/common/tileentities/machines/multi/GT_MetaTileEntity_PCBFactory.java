@@ -486,7 +486,7 @@ public class GT_MetaTileEntity_PCBFactory
                 else tInputList.clear();
             }
         } else {
-            ItemStack[] tItemInputs = getCompactedInputs();
+            ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
             return processRecipe(aStack, tItemInputs, tFluidInputs, aMap);
         }
 
