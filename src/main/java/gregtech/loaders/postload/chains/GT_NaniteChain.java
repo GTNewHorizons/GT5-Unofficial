@@ -7,6 +7,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_NaniteChain {
@@ -14,24 +16,28 @@ public class GT_NaniteChain {
     public static void run() {
 
         ItemStack aUVTierLens = GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0);
-        ItemStack aUHVTierLens = GT_OreDictUnificator.get(OrePrefixes.lens, Materials.get("ChromaticGlass"), 0, false);
-        ItemStack aUEVTierLens = GT_OreDictUnificator.get(OrePrefixes.lens, Materials.get("RadoxPoly"), 0, false);
+        ItemStack aUHVTierLens = GT_ModHandler.getModItem("dreamcraft", "item.ChromaticLens", 0);
+        ItemStack aUEVTierLens = GT_ModHandler.getModItem("dreamcraft", "item.RadoxPolymerLens", 0);
         ItemStack aUIVTierLens = ItemList.EnergisedTesseract.get(0);
         ItemStack aUMVTierLens = GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
 
         // Carbon Nanite Recipe Before Nano Forge
+        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
+                ? FluidRegistry.getFluid("molten.indalloy140")
+                : FluidRegistry.getFluid("molten.solderingalloy");
+
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Circuit_Crystalmainframe.get(1),
                 144000,
                 new Object[] {
-                    new Object[] {OrePrefixes.circuit.get(Materials.Superconductor)},
+                    new Object[] {OrePrefixes.circuit.get(Materials.SuperconductorUHV), 16},
                     ItemList.Robot_Arm_UV.get(16),
                     ItemList.Circuit_Chip_Stemcell.get(32),
                     GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahAlloy, 16),
                     Materials.Carbon.getDust(64)
                 },
-                new FluidStack[] {Materials.UUMatter.getFluid(10000)},
+                new FluidStack[] {Materials.UUMatter.getFluid(10000), new FluidStack(solderIndalloy, 144 * 32)},
                 Materials.Carbon.getNanite(2),
                 50 * 20,
                 400000);
@@ -47,9 +53,9 @@ public class GT_NaniteChain {
         // Carbon Nanites - Used to make more Nano Forge Controllers
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
-                    GT_ModHandler.getModItem("bartworks", "blockcasing.01", 8, 31776),
-                    ItemList.Circuit_Chip_SoC.get(64),
-                    aUVTierLens
+                    aUVTierLens,
+                    GT_ModHandler.getModItem("bartworks", "bw.werkstoffblockscasingadvanced.01", 8, 31776),
+                    ItemList.Circuit_Chip_SoC.get(64)
                 },
                 new FluidStack[] {Materials.UUMatter.getFluid(200000)},
                 new ItemStack[] {
@@ -63,7 +69,7 @@ public class GT_NaniteChain {
 
         // Silver Nanites - Used in Tier 2 PCB Factory to improve board production
         GT_Values.RA.addNanoForgeRecipe(
-                new ItemStack[] {Materials.Silver.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16), aUHVTierLens},
+                new ItemStack[] {aUHVTierLens, Materials.Silver.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16)},
                 new FluidStack[] {Materials.UUMatter.getFluid(200000)},
                 new ItemStack[] {Materials.Silver.getNanite(1)},
                 null,
@@ -75,10 +81,10 @@ public class GT_NaniteChain {
         // Neutronium Nanites - Used to upgrade the Nano Forge to Tier 2
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
+                    aUEVTierLens,
                     Materials.Neutronium.getBlocks(8),
                     ItemList.Circuit_Chip_SoC2.get(64),
-                    ItemList.Circuit_Chip_SoC2.get(32),
-                    aUEVTierLens
+                    ItemList.Circuit_Chip_SoC2.get(32)
                 },
                 new FluidStack[] {Materials.UUMatter.getFluid(200000)},
                 new ItemStack[] {Materials.Neutronium.getNanite(1)},
@@ -90,7 +96,7 @@ public class GT_NaniteChain {
 
         // Gold Nanites - Used in Tier 3 PCB Factory to improve board production
         GT_Values.RA.addNanoForgeRecipe(
-                new ItemStack[] {Materials.Gold.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16), aUIVTierLens},
+                new ItemStack[] {aUIVTierLens, Materials.Gold.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16)},
                 new FluidStack[] {Materials.UUMatter.getFluid(300000)},
                 new ItemStack[] {Materials.Gold.getNanite(1)},
                 null,
@@ -102,11 +108,11 @@ public class GT_NaniteChain {
         // Transcendent Metal Nanites - Used to upgrade the Nano Forge to Tier 3
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
+                    aUMVTierLens,
                     Materials.TranscendentMetal.getBlocks(8),
                     ItemList.Circuit_Chip_SoC2.get(64),
                     ItemList.Circuit_Chip_SoC2.get(64),
-                    ItemList.Circuit_Chip_SoC2.get(64),
-                    aUMVTierLens
+                    ItemList.Circuit_Chip_SoC2.get(64)
                 },
                 new FluidStack[] {Materials.UUMatter.getFluid(2000000)},
                 new ItemStack[] {Materials.TranscendentMetal.getNanite(1)},
