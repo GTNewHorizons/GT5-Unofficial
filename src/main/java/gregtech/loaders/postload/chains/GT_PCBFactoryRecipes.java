@@ -60,13 +60,23 @@ public class GT_PCBFactoryRecipes {
                 122880 * 16);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.frame, Materials.get("CelestialTungsten"), 1),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.get("CelestialTungsten"), 1),
                     Materials.get("Quantum").getPlates(6)
                 },
                 null,
                 ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1),
                 30 * 20,
                 122880 * 16 * 16);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.get("Hypogen"), 1),
+                    GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
+                    Materials.Thulium.getPlates(6)
+                },
+                Materials.SpaceTime.getMolten(144 * 8),
+                ItemList.InfinityCooledCasing.get(1),
+                10 * 20,
+                122880 * 64 * 16);
 
         // Load CircuitBoard Recipes
 
