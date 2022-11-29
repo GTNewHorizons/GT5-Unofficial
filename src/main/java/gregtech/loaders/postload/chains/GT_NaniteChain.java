@@ -13,7 +13,7 @@ public class GT_NaniteChain {
 
     public static void run() {
 
-        ItemStack aUVTierLens = GT_ModHandler.getModItem("dreamcrtaft", "MysteriousCrystalLens", 0);
+        ItemStack aUVTierLens = GT_ModHandler.getModItem("dreamcraft", "MysteriousCrystalLens", 0);
         ItemStack aUHVTierLens = GT_OreDictUnificator.get(OrePrefixes.lens, Materials.get("ChromaticGlass"), 0, false);
         ItemStack aUEVTierLens = GT_OreDictUnificator.get(OrePrefixes.lens, Materials.get("RadoxPoly"), 0, false);
         ItemStack aUIVTierLens = ItemList.EnergisedTesseract.get(0);
@@ -47,7 +47,7 @@ public class GT_NaniteChain {
         // Carbon Nanites - Used to make more Nano Forge Controllers
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
-                    GT_ModHandler.getModItem("bartworks", "werksoffblockcasing.01", 8, 31776),
+                    GT_ModHandler.getModItem("bartworks", "werkstoffblockcasing.01", 8, 31776),
                     ItemList.Circuit_Chip_SoC.get(64),
                     aUVTierLens
                 },
