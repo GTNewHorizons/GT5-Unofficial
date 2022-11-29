@@ -452,7 +452,10 @@ public class GT_MetaTileEntity_PCBFactory
             mUpgradesInstalled++;
         }
 
-        if (mMaintenanceHatches.size() != 1 || mOutputBusses.size() < 1 || mInputBusses.size() < 1 || mInputHatches.size() < 1) {
+        if (mMaintenanceHatches.size() != 1
+                || mOutputBusses.size() < 1
+                || mInputBusses.size() < 1
+                || mInputHatches.size() < 1) {
             return false;
         }
 
@@ -535,7 +538,12 @@ public class GT_MetaTileEntity_PCBFactory
             float aExtraPower = (float) Math.ceil(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled));
 
             if (mOCTier1 || mOCTier2) {
-                calculateOverclockedNessMultiInternal((long) Math.ceil(tRecipe.mEUt * aParallel * aExtraPower), tRecipe.mDuration, aParallel, tTotalEU, mOCTier2);
+                calculateOverclockedNessMultiInternal(
+                        (long) Math.ceil(tRecipe.mEUt * aParallel * aExtraPower),
+                        tRecipe.mDuration,
+                        aParallel,
+                        tTotalEU,
+                        mOCTier2);
             }
 
             if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
@@ -758,19 +766,19 @@ public class GT_MetaTileEntity_PCBFactory
         super.addUIWidgets(builder, buildContext);
         buildContext.addSyncedWindow(10, this::createConfigurationWindow);
         builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext().openSyncedWindow(10);
-                })
-                .setSize(18, 18)
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
-                .setBackground(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                .addTooltip("Configuration Menu")
-                .setPos(151, 24))
+                        .setOnClick((clickData, widget) -> {
+                            if (!widget.isClient()) widget.getContext().openSyncedWindow(10);
+                        })
+                        .setSize(18, 18)
+                        .setBackground(GT_UITextures.BUTTON_STANDARD)
+                        .setBackground(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                        .addTooltip("Configuration Menu")
+                        .setPos(151, 24))
                 .widget(new TextWidget(new Text("Tier"))
                         .setTextAlignment(Alignment.Center)
                         .setScale(0.91f)
                         .setSize(20, 16)
-                        .setPos(152 , 46))
+                        .setPos(152, 46))
                 .widget(new TextFieldWidget()
                         .setGetterInt(() -> mSetTier)
                         .setSetterInt(val -> {
@@ -851,7 +859,8 @@ public class GT_MetaTileEntity_PCBFactory
                                         GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
                                         new Text("Cooler Tier 1").withOffset(5, 0))
                                 .setSize(90, 18)
-                                .addTooltip("Incompatible with Tier 2, Requires a constant supply of distilled water. Allows for overclocking")
+                                .addTooltip(
+                                        "Incompatible with Tier 2, Requires a constant supply of distilled water. Allows for overclocking")
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new CycleButtonWidget()
                                 .setToggle(() -> mOCTier2, val -> {
@@ -869,7 +878,8 @@ public class GT_MetaTileEntity_PCBFactory
                                         GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
                                         new Text("Cooler Tier 2").withOffset(5, 0))
                                 .setSize(90, 18)
-                                .addTooltip("Incompatible with Tier 1, Requires a constant supply of super coolant. Allows for perfect overclocking")
+                                .addTooltip(
+                                        "Incompatible with Tier 1, Requires a constant supply of super coolant. Allows for perfect overclocking")
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new TextWidget(new Text("Roughness Multiplier"))
                                 .setSize(90, 18)
@@ -883,8 +893,7 @@ public class GT_MetaTileEntity_PCBFactory
                                 .setNumbers(100, 100000)
                                 .setTextColor(Color.WHITE.normal)
                                 .setTextAlignment(Alignment.Center)
-                                .addTooltip(
-                                        "The Roughness multiplier is multiplied by 10000 before displaying!")
+                                .addTooltip("The Roughness multiplier is multiplied by 10000 before displaying!")
                                 .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
                                 .setSize(90, 18))
                         .widget(new DrawableWidget()
