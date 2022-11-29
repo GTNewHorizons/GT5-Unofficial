@@ -811,6 +811,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        return aDoShowAllItems;
+        return aDoShowAllItems || (aPrefix.toString().toLowerCase().contains("nanite"));
     }
 }
