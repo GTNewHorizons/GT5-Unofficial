@@ -2442,7 +2442,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         "Tier: ",
                         1,
                         "",
-                        true,
+                        false,
                         true)
                 .useModularUI(true)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);

@@ -31,6 +31,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -42,7 +43,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings8;
@@ -52,6 +55,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_PCBFactory
@@ -65,8 +70,7 @@ public class GT_MetaTileEntity_PCBFactory
     private static final String ocTier2Upgrade = "ocTier2Upgrade";
     private boolean mSeparate = false;
     private float mRoughnessMultiplier = 1;
-    private float mSpeedMultiplier = 1;
-    private byte mTier = 1, mSetTier = 1, mUpgradesInstalled = 0;
+    private int mTier = 1, mSetTier = 1, mUpgradesInstalled = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
     private int[] mBioOffsets = new int[2], mOCTier1Offsets = new int[2], mOCTier2Offsets = new int[2];
     private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
@@ -74,6 +78,7 @@ public class GT_MetaTileEntity_PCBFactory
     private static final int mTier3BitMap = 0b100;
     private static final int mTier2BitMap = 0b10;
     private static final int mTier1BitMap = 0b1;
+    private static final int COOLANT_CONSUMED_PER_SEC = 10;
     private static final IStructureDefinition<GT_MetaTileEntity_PCBFactory> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_PCBFactory>builder()
                     .addShape(tier1, transpose(new String[][] {
@@ -223,7 +228,7 @@ public class GT_MetaTileEntity_PCBFactory
         if (mSetTier < 3) {
             buildPiece(tier1, stackSize, hintsOnly, 3, 5, 0);
             if (mSetTier == 2) {
-                buildPiece(tier2, stackSize, hintsOnly, 7, 6, -1);
+                buildPiece(tier2, stackSize, hintsOnly, 7, 6, 2);
             }
         } else {
             buildPiece(tier3, stackSize, hintsOnly, 3, 21, 0);
@@ -266,7 +271,7 @@ public class GT_MetaTileEntity_PCBFactory
         if (mSetTier < 3) {
             built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
             if (mSetTier == 2) {
-                built += survivialBuildPiece(tier2, stackSize, 7, 6, -1, elementBudget, env, false, true);
+                built += survivialBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, true);
             }
         } else {
             built += survivialBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
@@ -396,7 +401,7 @@ public class GT_MetaTileEntity_PCBFactory
                 return false;
             }
 
-            if (mSetTier == 2 && checkPiece(tier2, 7, 6, -1)) {
+            if (mSetTier == 2 && checkPiece(tier2, 7, 6, 2)) {
                 mTier = 2;
             } else {
                 mTier = 1;
@@ -448,11 +453,14 @@ public class GT_MetaTileEntity_PCBFactory
             mUpgradesInstalled++;
         }
 
-        if (mRoughnessMultiplier <= 0.5 || mSpeedMultiplier <= 0 || mTier <= 0 || mTier >= 4) {
+        if (mMaintenanceHatches.size() != 1
+                || mOutputBusses.size() < 1
+                || mInputBusses.size() < 1
+                || mInputHatches.size() < 1) {
             return false;
         }
 
-        if (mMaintenanceHatches.size() != 1 || mOutputBusses.size() != 1) {
+        if (mExoticEnergyHatches.size() + mEnergyHatches.size() < 1) {
             return false;
         }
 
@@ -479,7 +487,7 @@ public class GT_MetaTileEntity_PCBFactory
                 else tInputList.clear();
             }
         } else {
-            ItemStack[] tItemInputs = getCompactedInputs();
+            ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
             return processRecipe(aStack, tItemInputs, tFluidInputs, aMap);
         }
 
@@ -515,8 +523,28 @@ public class GT_MetaTileEntity_PCBFactory
             this.mEfficiencyIncrease = getMaxEfficiency(aStack);
             this.lEUt = -tRecipe.mEUt;
             this.mMaxProgresstime = tRecipe.mDuration;
+
+            int aNanitesOfRecipe = 0;
+
+            ItemStack aNanite = tRecipe.getRepresentativeInput(0);
+            if (GT_OreDictUnificator.getAssociation(aNanite).mPrefix.equals(OrePrefixes.nanite)) {
+                for (ItemStack aItem : tItemInputs) {
+                    if (aItem.isItemEqual(aNanite)) {
+                        aNanitesOfRecipe += aItem.stackSize;
+                    }
+                }
+            }
+
+            int aParallel = (int) Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2));
+            float aExtraPower = (float) Math.ceil(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled));
+
             if (mOCTier1 || mOCTier2) {
-                calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tTotalEU, mOCTier2);
+                calculateOverclockedNessMultiInternal(
+                        (long) Math.ceil(tRecipe.mEUt * aParallel * aExtraPower),
+                        tRecipe.mDuration,
+                        aParallel,
+                        tTotalEU,
+                        mOCTier2);
             }
 
             if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
@@ -537,6 +565,38 @@ public class GT_MetaTileEntity_PCBFactory
             mOutputFluids = tRecipe.mFluidOutputs.clone();
             updateSlots();
         }
+
+        return true;
+    }
+
+    private int ticker = 0;
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (!super.onRunningTick(aStack)) {
+            criticalStopMachine();
+            return false;
+        }
+
+        if (ticker % 20 == 0) {
+            if (mOCTier1) {
+                if (!depleteInput(GT_ModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC))) {
+                    criticalStopMachine();
+                    return false;
+                }
+            }
+
+            if (mOCTier2) {
+                Fluid superCoolant = FluidRegistry.getFluid("supercoolant");
+                if (!depleteInput(new FluidStack(superCoolant, COOLANT_CONSUMED_PER_SEC))) {
+                    criticalStopMachine();
+                    return false;
+                }
+            }
+            ticker = 0;
+        }
+
+        ticker++;
 
         return true;
     }
@@ -636,16 +696,29 @@ public class GT_MetaTileEntity_PCBFactory
                 .addInfo("Controller block for the PCB Factory")
                 .addInfo(EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD + "!IMPORTANT!"
                         + " Check out the configurations menu before building")
+                .addInfo("For each upgrade above 1, it draws more power equal to sqrt(Upgrades)")
+                .addInfo("The tier is set by the player in the controller")
+                .addInfo("The Configuration menu can be used to add upgrades")
+                .addInfo("If the recipe has a nanite it can have a parallel equal to: log2(Nanites) rounding up")
+                .addInfo("Consumes 10/s distilled water or super coolant with cooler upgrades")
                 .addInfo(AuthorBlueWeabo)
                 .addSeparator()
                 .beginStructureBlock(30, 38, 13, false)
                 .addStructureInfo("PCB Factory Structure is too complex! See schematic for details.")
-                .addStructureInfo("Stellar Alloy Frames")
-                .addEnergyHatch("Any Energy Hatch, Determines Power Tier", 1)
+                .addStructureInfo("Photolithographic Casings")
+                .addStructureInfo("Plascreate Block")
+                .addStructureInfo("Grate Machine Casings")
+                .addStructureInfo("Radiant Naquadah alloy Casings")
+                .addStructureInfo("Stainless Steel Casings")
+                .addStructureInfo("Damascus Steel Frames")
+                .addStructureInfo("Vibrant Alloy Frames")
+                .addStructureInfo("Americium Frames")
+                .addEnergyHatch("Any Energy Hatch, Determins the power tier", 1)
                 .addMaintenanceHatch("Required 1", 1)
                 .addInputBus("Required 1", 1)
                 .addOutputBus("Required 1", 1)
                 .addInputHatch("Required 0", 1)
+                .addInputHatch("Coolant Hatch", 2)
                 .toolTipFinisher("GregTech");
         return tt;
     }
@@ -660,6 +733,8 @@ public class GT_MetaTileEntity_PCBFactory
         aNBT.setIntArray("mOCTier1Offsets", mOCTier1Offsets);
         aNBT.setBoolean("mOCTier2Upgrade", mOCTier2);
         aNBT.setIntArray("mOCTier2Offsets", mOCTier2Offsets);
+        aNBT.setFloat("mRoughnessMultiplier", mRoughnessMultiplier);
+        aNBT.setInteger("mSetTier", mSetTier);
     }
 
     @Override
@@ -672,6 +747,8 @@ public class GT_MetaTileEntity_PCBFactory
         mOCTier1Offsets = aNBT.getIntArray("mOCTier1Offsets");
         mOCTier2 = aNBT.getBoolean("mOCTier2Upgrade");
         mOCTier2Offsets = aNBT.getIntArray("mOCTier2Offsets");
+        mRoughnessMultiplier = aNBT.getFloat("mRoughnessMultiplier");
+        mSetTier = aNBT.getInteger("mSetTier");
     }
 
     @Override
@@ -690,14 +767,31 @@ public class GT_MetaTileEntity_PCBFactory
         super.addUIWidgets(builder, buildContext);
         buildContext.addSyncedWindow(10, this::createConfigurationWindow);
         builder.widget(new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext().openSyncedWindow(10);
-                })
-                .setSize(18, 18)
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
-                .setBackground(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                .addTooltip("Configuration Menu")
-                .setPos(151, 28));
+                        .setOnClick((clickData, widget) -> {
+                            if (!widget.isClient()) widget.getContext().openSyncedWindow(10);
+                        })
+                        .setSize(18, 18)
+                        .setBackground(GT_UITextures.BUTTON_STANDARD)
+                        .setBackground(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                        .addTooltip("Configuration Menu")
+                        .setPos(151, 24))
+                .widget(new TextWidget(new Text("Tier"))
+                        .setTextAlignment(Alignment.Center)
+                        .setScale(0.91f)
+                        .setSize(20, 16)
+                        .setPos(152, 46))
+                .widget(new TextFieldWidget()
+                        .setGetterInt(() -> mSetTier)
+                        .setSetterInt(val -> {
+                            mSetTier = val;
+                        })
+                        .setNumbers(-16, 16)
+                        .setTextColor(Color.WHITE.normal)
+                        .setTextAlignment(Alignment.Center)
+                        .addTooltip("PCB Factory Tier")
+                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                        .setSize(18, 18)
+                        .setPos(151, 61));
     }
 
     protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
@@ -708,7 +802,7 @@ public class GT_MetaTileEntity_PCBFactory
                         .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
                         .setPos(5, 5)
                         .setSize(16, 16))
-                .widget(new TextWidget("Configuration").setPos(25, 9))
+                .widget(new TextWidget("Configuration Menu").setPos(25, 9))
                 .widget(ButtonWidget.closeWindowButton(true).setPos(185, 3))
                 .widget(new DynamicPositionedColumn()
                         .setSynced(false)
@@ -728,7 +822,7 @@ public class GT_MetaTileEntity_PCBFactory
                                         GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
                                         new Text("Bio Upgrade").withOffset(5, 0))
                                 .setSize(90, 18)
-                                .addTooltip("Bio Upgrade")
+                                .addTooltip("Required for Bioware and Wetware boards.")
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new CycleButtonWidget()
                                 .setToggle(() -> mBioRotate, val -> {
@@ -748,7 +842,7 @@ public class GT_MetaTileEntity_PCBFactory
                                         GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
                                         new Text("Bio Rotation").withOffset(5, 0))
                                 .setSize(90, 18)
-                                .addTooltip("Bio Rotation")
+                                .addTooltip("Switches aroung the X and Z offsets")
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new CycleButtonWidget()
                                 .setToggle(() -> mOCTier1, val -> {
@@ -766,7 +860,8 @@ public class GT_MetaTileEntity_PCBFactory
                                         GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
                                         new Text("Cooler Tier 1").withOffset(5, 0))
                                 .setSize(90, 18)
-                                .addTooltip("Cooler Tier 1 Upgrade")
+                                .addTooltip(
+                                        "Incompatible with Tier 2, Requires a constant supply of distilled water. Allows for overclocking")
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new CycleButtonWidget()
                                 .setToggle(() -> mOCTier2, val -> {
@@ -784,7 +879,8 @@ public class GT_MetaTileEntity_PCBFactory
                                         GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
                                         new Text("Cooler Tier 2").withOffset(5, 0))
                                 .setSize(90, 18)
-                                .addTooltip("Cooler Tier 2 Upgrade")
+                                .addTooltip(
+                                        "Incompatible with Tier 1, Requires a constant supply of super coolant. Allows for perfect overclocking")
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new TextWidget(new Text("Roughness Multiplier"))
                                 .setSize(90, 18)
@@ -798,8 +894,7 @@ public class GT_MetaTileEntity_PCBFactory
                                 .setNumbers(100, 100000)
                                 .setTextColor(Color.WHITE.normal)
                                 .setTextAlignment(Alignment.Center)
-                                .addTooltip(
-                                        "The Roughness multiplier is multiplied and devided by 10000 before displaying!")
+                                .addTooltip("The Roughness multiplier is multiplied by 10000 before displaying!")
                                 .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
                                 .setSize(90, 18))
                         .widget(new DrawableWidget()
