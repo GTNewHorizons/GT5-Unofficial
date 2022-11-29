@@ -2434,8 +2434,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         "Nano Forge",
                         null,
                         RES_PATH_GUI + "basicmachines/LCRNEI",
-                        4,
-                        3,
+                        6,
+                        2,
                         3,
                         1,
                         1,
@@ -2445,6 +2445,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         false,
                         true)
                 .useModularUI(true)
+                .setUsualFluidInputCount(1)
+                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_LENS)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
 
         public static final GT_Recipe_Map sPCBFactory = new GT_Recipe_Map(
