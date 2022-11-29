@@ -72,7 +72,9 @@ public class GT_MetaTileEntity_PCBFactory
     private float mRoughnessMultiplier = 1;
     private int mTier = 1, mSetTier = 1, mUpgradesInstalled = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
-    private int[] mBioOffsets = new int[] {-5, -1}, mOCTier1Offsets = new int[] {2, -11}, mOCTier2Offsets = new int[] {2, -11};
+    private int[] mBioOffsets = new int[] {-5, -1},
+            mOCTier1Offsets = new int[] {2, -11},
+            mOCTier2Offsets = new int[] {2, -11};
     private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
     private static final int mBioBitMap = 0b1000;
     private static final int mTier3BitMap = 0b100;

@@ -1856,15 +1856,15 @@ public class Textures {
                             BLOCK_TERRACRYSTAL
                         },
                 STORAGE_BLOCKS11 =
+                        {BLOCK_TOPAZ, BLOCK_VINTEUM, BLOCK_YELLOWGARNET, BLOCK_NETHERSTAR, BLOCK_CHARCOAL, BLOCK_BLAZE},
+                STORAGE_BLOCKS12 =
                         {
-                            BLOCK_TOPAZ,
-                            BLOCK_VINTEUM,
-                            BLOCK_YELLOWGARNET,
-                            BLOCK_NETHERSTAR,
-                            BLOCK_CHARCOAL,
-                            BLOCK_BLAZE
-                        },
-                STORAGE_BLOCKS12 = {BLOCK_CRYOLITE, BLOCK_SILICONSG, BLOCK_NICKELALUMINIUM, BLOCK_SPACETIME, BLOCK_TRANSCENDENTMETAL};
+                            BLOCK_CRYOLITE,
+                            BLOCK_SILICONSG,
+                            BLOCK_NICKELALUMINIUM,
+                            BLOCK_SPACETIME,
+                            BLOCK_TRANSCENDENTMETAL
+                        };
 
         public static final ITexture[] HIDDEN_TEXTURE = {
             TextureFactory.builder().addIcon(HIDDEN_FACE).stdOrient().build()

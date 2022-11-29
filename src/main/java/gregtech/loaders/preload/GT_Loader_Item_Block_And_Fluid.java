@@ -719,7 +719,11 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockMetal9 = new GT_Block_Metal(
                 "gt.blockmetal9",
                 new Materials[] {
-                    Materials.Cryolite, Materials.SiliconSG, MaterialsKevlar.NickelAluminide, Materials.SpaceTime, Materials.TranscendentMetal
+                    Materials.Cryolite,
+                    Materials.SiliconSG,
+                    MaterialsKevlar.NickelAluminide,
+                    Materials.SpaceTime,
+                    Materials.TranscendentMetal
                 },
                 OrePrefixes.block,
                 gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
