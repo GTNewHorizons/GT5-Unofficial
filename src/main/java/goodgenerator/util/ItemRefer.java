@@ -151,6 +151,22 @@ public final class ItemRefer {
     public static ItemRefer Compact_Fusion_MK5 = getItemStack(LFC[4]);
     public static ItemRefer Large_Essentia_Smeltery = getItemStack(LES);
     public static ItemRefer Coolant_Tower = getItemStack(CT);
+    public static ItemRefer Component_Assembly_Line = getItemStack(CompAssline);
+
+    public static ItemRefer Compassline_Casing_LV = getItemStack(componentAssemblylineCasing, 0);
+    public static ItemRefer Compassline_Casing_MV = getItemStack(componentAssemblylineCasing, 1);
+    public static ItemRefer Compassline_Casing_HV = getItemStack(componentAssemblylineCasing, 2);
+    public static ItemRefer Compassline_Casing_EV = getItemStack(componentAssemblylineCasing, 3);
+    public static ItemRefer Compassline_Casing_IV = getItemStack(componentAssemblylineCasing, 4);
+    public static ItemRefer Compassline_Casing_LuV = getItemStack(componentAssemblylineCasing, 5);
+    public static ItemRefer Compassline_Casing_ZPM = getItemStack(componentAssemblylineCasing, 6);
+    public static ItemRefer Compassline_Casing_UV = getItemStack(componentAssemblylineCasing, 7);
+    public static ItemRefer Compassline_Casing_UHV = getItemStack(componentAssemblylineCasing, 8);
+    public static ItemRefer Compassline_Casing_UEV = getItemStack(componentAssemblylineCasing, 9);
+    public static ItemRefer Compassline_Casing_UIV = getItemStack(componentAssemblylineCasing, 10);
+    public static ItemRefer Compassline_Casing_UMV = getItemStack(componentAssemblylineCasing, 11);
+    public static ItemRefer Compassline_Casing_UXV = getItemStack(componentAssemblylineCasing, 12);
+    public static ItemRefer Compassline_Casing_MAX = getItemStack(componentAssemblylineCasing, 13);
 
     private Item mItem = null;
     private Block mBlock = null;

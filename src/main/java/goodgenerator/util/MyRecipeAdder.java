@@ -1,8 +1,11 @@
 package goodgenerator.util;
 
+import static gregtech.api.enums.GT_Values.NI;
+
 import codechicken.nei.PositionedStack;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.nei.GT_NEI_DefaultHandler;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -467,6 +470,7 @@ public class MyRecipeAdder {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public static class PreciseAssemblerRecipe extends GT_Recipe {
         public PreciseAssemblerRecipe(
                 ItemStack[] input1, FluidStack[] input2, ItemStack output, int EUt, int ticks, int tier) {
@@ -510,5 +514,112 @@ public class MyRecipeAdder {
         if (aOutput == null) return;
         PA.addRecipe(
                 false, aItemInputs, new ItemStack[] {aOutput}, null, null, aFluidInputs, null, aDuration, aEUt, aTier);
+    }
+
+    public static class ComponentAssemblyLineMapper extends GT_Recipe.GT_Recipe_Map {
+
+        public ComponentAssemblyLineMapper(
+                Collection<GT_Recipe> aRecipeList,
+                String aUnlocalizedName,
+                String aLocalName,
+                String aNEIName,
+                String aNEIGUIPath,
+                int aUsualInputCount,
+                int aUsualOutputCount,
+                int aMinimalInputItems,
+                int aMinimalInputFluids,
+                int aAmperage,
+                String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier,
+                String aNEISpecialValuePost,
+                boolean aShowVoltageAmperageInNEI,
+                boolean aNEIAllowed) {
+
+            super(
+                    aRecipeList,
+                    aUnlocalizedName,
+                    aLocalName,
+                    aNEIName,
+                    aNEIGUIPath,
+                    aUsualInputCount,
+                    aUsualOutputCount,
+                    aMinimalInputItems,
+                    aMinimalInputFluids,
+                    aAmperage,
+                    aNEISpecialValuePre,
+                    aNEISpecialValueMultiplier,
+                    aNEISpecialValuePost,
+                    aShowVoltageAmperageInNEI,
+                    aNEIAllowed,
+                    true);
+        }
+
+        @Override
+        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
+            ArrayList<PositionedStack> inputStacks = new ArrayList<>();
+
+            if (recipe.mInputs != null) {
+                for (int j = 0; j < recipe.mInputs.length; j++) {
+                    if (recipe.mInputs[j] == NI) continue;
+                    inputStacks.add(new GT_NEI_DefaultHandler.FixedPositionedStack(
+                            recipe.mInputs[j].copy(), 12 + 18 * (j % 3), 5 + 18 * (j / 3)));
+                }
+            }
+            if (recipe.mFluidInputs != null) {
+                for (int j = 0; j < recipe.mFluidInputs.length; j++) {
+
+                    inputStacks.add(new GT_NEI_DefaultHandler.FixedPositionedStack(
+                            GT_Utility.getFluidDisplayStack(recipe.mFluidInputs[j], true),
+                            84 + 18 * (j % 4),
+                            27 + 18 * (j / 4)));
+                }
+            }
+            return inputStacks;
+        }
+
+        @Override
+        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
+            ArrayList<PositionedStack> outputStacks = new ArrayList<>();
+            if (recipe.mOutputs != null) {
+                outputStacks.add(new GT_NEI_DefaultHandler.FixedPositionedStack(recipe.mOutputs[0].copy(), 138, 5));
+            }
+            return outputStacks;
+        }
+    }
+
+    public final ComponentAssemblyLineMapper COMPASSLINE_RECIPES = new ComponentAssemblyLineMapper(
+            new HashSet<>(110),
+            "gg.recipe.componentassemblyline",
+            "Component Assembly Line",
+            null,
+            "goodgenerator:textures/gui/ComponentAssline",
+            9,
+            1,
+            0,
+            0,
+            1,
+            "Casing Tier: ",
+            1,
+            "",
+            false,
+            false);
+
+    public GT_Recipe addComponentAssemblyLineRecipe(
+            ItemStack[] ItemInputArray,
+            FluidStack[] FluidInputArray,
+            ItemStack OutputItem,
+            int aDuration,
+            int aEUt,
+            int casingLevel) {
+        return COMPASSLINE_RECIPES.addRecipe(
+                false,
+                ItemInputArray,
+                new ItemStack[] {OutputItem},
+                null,
+                FluidInputArray,
+                null,
+                aDuration,
+                aEUt,
+                casingLevel);
     }
 }

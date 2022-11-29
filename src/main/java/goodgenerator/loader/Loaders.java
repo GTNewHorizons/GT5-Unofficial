@@ -109,8 +109,26 @@ public class Loaders {
                 GoodGenerator.MOD_ID + ":ciruits/2",
                 GoodGenerator.MOD_ID + ":ciruits/3",
                 GoodGenerator.MOD_ID + ":ciruits/4",
-                GoodGenerator.MOD_ID + ":ciruits/5"
+                GoodGenerator.MOD_ID + ":ciruits/5",
             });
+
+    public static final Item circuitWrap = new MyItems("circuitWrap", GoodGenerator.GG, new String[] {
+        GoodGenerator.MOD_ID + ":wraps/0",
+        GoodGenerator.MOD_ID + ":wraps/1",
+        GoodGenerator.MOD_ID + ":wraps/2",
+        GoodGenerator.MOD_ID + ":wraps/3",
+        GoodGenerator.MOD_ID + ":wraps/4",
+        GoodGenerator.MOD_ID + ":wraps/5",
+        GoodGenerator.MOD_ID + ":wraps/6",
+        GoodGenerator.MOD_ID + ":wraps/7",
+        GoodGenerator.MOD_ID + ":wraps/8",
+        GoodGenerator.MOD_ID + ":wraps/9",
+        GoodGenerator.MOD_ID + ":wraps/10",
+        GoodGenerator.MOD_ID + ":wraps/11",
+        GoodGenerator.MOD_ID + ":wraps/12",
+        GoodGenerator.MOD_ID + ":wraps/13",
+        GoodGenerator.MOD_ID + ":wraps/14"
+    });
 
     public static final Block MAR_Casing =
             new Casing("MAR_Casing", new String[] {GoodGenerator.MOD_ID + ":MAR_Casing"});
@@ -179,7 +197,22 @@ public class Loaders {
     public static Block essentiaHatch;
     public static Block essentiaOutputHatch;
     public static Block essentiaOutputHatch_ME;
-
+    public static final Block componentAssemblylineCasing = new Casing("componentAssemblyLineCasing", new String[] {
+        GoodGenerator.MOD_ID + ":compAsslineCasing/0", // LV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/1", // MV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/2", // HV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/3", // EV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/4", // IV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/5", // LuV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/6", // ZPM
+        GoodGenerator.MOD_ID + ":compAsslineCasing/7", // UV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/8", // UHV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/9", // UEV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/10", // UIV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/11", // UMV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/12", // UXV
+        GoodGenerator.MOD_ID + ":compAsslineCasing/13" // MAX
+    });
     public static ItemStack MAR;
     public static ItemStack FRF;
     public static ItemStack UCFE;
@@ -198,6 +231,7 @@ public class Loaders {
     public static ItemStack[] NeutronAccelerators = new ItemStack[9];
     public static ItemStack[] Generator_Diesel = new ItemStack[2];
 
+    public static ItemStack CompAssline;
     // public static Item Isotope = new NuclearMetaItemGenerator();
 
     public static void GTMetaTileRegister() {
@@ -249,6 +283,9 @@ public class Loaders {
                         1114, "basicgenerator.diesel.tier.05", "Ultimate Chemical Energy Releaser", 5)
                 .getStackForm(1L);
         Loaders.CT = new CoolantTower(IDOffset + 24, "CoolantTower", "Coolant Tower").getStackForm(1L);
+        Loaders.CompAssline = new ComponentAssemblyLine(
+                        IDOffset + 25, "ComponentAssemblyLine", "Component Assembly Line")
+                .getStackForm(1L);
         CrackRecipeAdder.registerPipe(30995, MyMaterial.incoloy903, 15000, 8000, true);
         CrackRecipeAdder.registerWire(32749, MyMaterial.signalium, 12, 131072, 16, true);
         CrackRecipeAdder.registerWire(32737, MyMaterial.lumiium, 8, 524288, 64, true);
@@ -273,6 +310,7 @@ public class Loaders {
         GameRegistry.registerBlock(yottaFluidTankCasing, MyItemBlocks.class, "yottaFluidTankCasing");
         GameRegistry.registerBlock(
                 supercriticalFluidTurbineCasing, MyItemBlocks.class, "supercriticalFluidTurbineCasing");
+        GameRegistry.registerBlock(componentAssemblylineCasing, MyItemBlocks.class, "componentAssemblylineCasing");
         GameRegistry.registerBlock(pressureResistantWalls, MyItemBlocks.class, "pressureResistantWalls");
         GameRegistry.registerBlock(preciseUnitCasing, MyItemBlocks.class, "preciseUnitCasing");
         GameRegistry.registerBlock(compactFusionCoil, MyItemBlocks.class, "compactFusionCoil");
@@ -307,6 +345,7 @@ public class Loaders {
         GameRegistry.registerItem(highEnergyMixture, "highEnergyMixture", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(saltyRoot, "saltyRoot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(huiCircuit, "huiCircuit", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(circuitWrap, "circuitWrap", GoodGenerator.MOD_ID);
     }
 
     public static void compactMod() {
@@ -385,6 +424,7 @@ public class Loaders {
     public static void completeLoad() {
         RecipeLoader_02.FinishLoadRecipe();
         MaterialFix.addRecipeForMultiItems();
+        ComponentAssemblyLineRecipeLoader.run();
     }
 
     public static void initLoadRecipes() {
