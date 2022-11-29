@@ -2446,7 +2446,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true)
                 .useModularUI(true)
                 .setUsualFluidInputCount(1)
-                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_LENS)
+                .setSlotOverlay(false, false, true, GT_UITextures.OVERLAY_SLOT_LENS)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
 
         public static final GT_Recipe_Map sPCBFactory = new GT_Recipe_Map(

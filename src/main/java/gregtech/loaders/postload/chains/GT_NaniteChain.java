@@ -7,6 +7,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_NaniteChain {
@@ -20,18 +22,22 @@ public class GT_NaniteChain {
         ItemStack aUMVTierLens = GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
 
         // Carbon Nanite Recipe Before Nano Forge
+        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
+                ? FluidRegistry.getFluid("molten.indalloy140")
+                : FluidRegistry.getFluid("molten.solderingalloy");
+
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Circuit_Crystalmainframe.get(1),
                 144000,
                 new Object[] {
-                    new Object[] {OrePrefixes.circuit.get(Materials.Superconductor)},
+                    new Object[] {OrePrefixes.circuit.get(Materials.SuperconductorUHV), 16},
                     ItemList.Robot_Arm_UV.get(16),
                     ItemList.Circuit_Chip_Stemcell.get(32),
                     GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahAlloy, 16),
                     Materials.Carbon.getDust(64)
                 },
-                new FluidStack[] {Materials.UUMatter.getFluid(10000)},
+                new FluidStack[] {Materials.UUMatter.getFluid(10000), new FluidStack(solderIndalloy, 144 * 32)},
                 Materials.Carbon.getNanite(2),
                 50 * 20,
                 400000);
@@ -63,7 +69,7 @@ public class GT_NaniteChain {
 
         // Silver Nanites - Used in Tier 2 PCB Factory to improve board production
         GT_Values.RA.addNanoForgeRecipe(
-                new ItemStack[] {Materials.Silver.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16), aUHVTierLens},
+                new ItemStack[] {aUHVTierLens, Materials.Silver.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16)},
                 new FluidStack[] {Materials.UUMatter.getFluid(200000)},
                 new ItemStack[] {Materials.Silver.getNanite(1)},
                 null,
