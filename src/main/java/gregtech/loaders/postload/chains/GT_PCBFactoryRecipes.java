@@ -4,6 +4,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_PCBFactoryManager;
 import gregtech.api.util.GT_Utility;
@@ -60,7 +61,7 @@ public class GT_PCBFactoryRecipes {
                 122880 * 16);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.get("CelestialTungsten"), 1),
+                    GT_ModHandler.getModItem("miscutils", "blockFrameGtCelestialTungsten", 1),
                     Materials.get("Quantum").getPlates(6)
                 },
                 null,
@@ -69,7 +70,7 @@ public class GT_PCBFactoryRecipes {
                 122880 * 16 * 16);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.get("Hypogen"), 1),
+                    GT_ModHandler.getModItem("miscutils", "blockFrameGtHypogen", 1),
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
                     Materials.Thulium.getPlates(6)
                 },
@@ -333,9 +334,9 @@ public class GT_PCBFactoryRecipes {
                     new ItemStack[] {
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 4)))),
+                                OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 3)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 4)))),
+                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3)))),
                         GT_Utility.getIntegratedCircuit(1)
                     },
                     new FluidStack[] {
@@ -360,9 +361,9 @@ public class GT_PCBFactoryRecipes {
                         GT_Utility.getNaniteAsCatalyst(Materials.Silver),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 4)))),
+                                OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 3)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 4)))),
+                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3)))),
                         GT_Utility.getIntegratedCircuit(2)
                     },
                     new FluidStack[] {
@@ -387,9 +388,9 @@ public class GT_PCBFactoryRecipes {
                         GT_Utility.getNaniteAsCatalyst(Materials.Gold),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 4)))),
+                                OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 3)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 4)))),
+                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3)))),
                         GT_Utility.getIntegratedCircuit(3)
                     },
                     new FluidStack[] {
