@@ -1359,7 +1359,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                 aDuration,
                 aEUt,
                 0,
-                true);
+                false);
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe_AssemblyLine(
                 aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt));
         return true;
@@ -1447,7 +1447,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                 aEUt,
                 0,
                 tAlts,
-                true);
+                false);
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe_AssemblyLine(
                 aResearchItem, aResearchTime, tInputs, aFluidInputs, aOutput, aDuration, aEUt, tAlts));
         return true;
