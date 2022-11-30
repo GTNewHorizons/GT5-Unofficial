@@ -72,7 +72,9 @@ public class GT_MetaTileEntity_PCBFactory
     private float mRoughnessMultiplier = 1;
     private int mTier = 1, mSetTier = 1, mUpgradesInstalled = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
-    private int[] mBioOffsets = new int[2], mOCTier1Offsets = new int[2], mOCTier2Offsets = new int[2];
+    private int[] mBioOffsets = new int[] {-5, -1},
+            mOCTier1Offsets = new int[] {2, -11},
+            mOCTier2Offsets = new int[] {2, -11};
     private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
     private static final int mBioBitMap = 0b1000;
     private static final int mTier3BitMap = 0b100;
@@ -514,35 +516,44 @@ public class GT_MetaTileEntity_PCBFactory
 
         int recipeBitMap = tRecipe.mSpecialValue;
 
-        if (tRecipe.isRecipeInputEqual(true, aFluidInputs, tItemInputs)
-                && ((recipeBitMap & mTier1BitMap) == 1
+        int aNanitesOfRecipe = 0;
+
+        ItemStack aNanite = tRecipe.getRepresentativeInput(0);
+        if (GT_OreDictUnificator.getAssociation(aNanite).mPrefix.equals(OrePrefixes.nanite)) {
+            for (ItemStack aItem : tItemInputs) {
+                if (aItem.isItemEqual(aNanite)) {
+                    aNanitesOfRecipe += aItem.stackSize;
+                }
+            }
+        }
+
+        int aMaxParallel = (int) Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2));
+        float aExtraPower = (float) Math.ceil(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled));
+
+        if (((recipeBitMap & mTier1BitMap) == 1
                         || (recipeBitMap & mTier2BitMap) == 1
                         || (recipeBitMap & mTier3BitMap) == 1)
                 && ((recipeBitMap & mBioBitMap) == 0 || (recipeBitMap & mBioBitMap) == 1 == mBioUpgrade)) {
-            this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = getMaxEfficiency(aStack);
-            this.lEUt = -tRecipe.mEUt;
-            this.mMaxProgresstime = tRecipe.mDuration;
 
-            int aNanitesOfRecipe = 0;
-
-            ItemStack aNanite = tRecipe.getRepresentativeInput(0);
-            if (GT_OreDictUnificator.getAssociation(aNanite).mPrefix.equals(OrePrefixes.nanite)) {
-                for (ItemStack aItem : tItemInputs) {
-                    if (aItem.isItemEqual(aNanite)) {
-                        aNanitesOfRecipe += aItem.stackSize;
-                    }
+            int aCurrentParallel = 1;
+            for (int i = 0; i < aMaxParallel; i++) {
+                if (tRecipe.isRecipeInputEqual(true, aFluidInputs, tItemInputs)) {
+                    aCurrentParallel++;
+                } else {
+                    break;
                 }
             }
 
-            int aParallel = (int) Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2));
-            float aExtraPower = (float) Math.ceil(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled));
+            this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
+            this.mEfficiencyIncrease = getMaxEfficiency(aStack);
+            this.lEUt = (long) -Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
+            this.mMaxProgresstime = tRecipe.mDuration;
 
             if (mOCTier1 || mOCTier2) {
                 calculateOverclockedNessMultiInternal(
-                        (long) Math.ceil(tRecipe.mEUt * aParallel * aExtraPower),
+                        (long) Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower),
                         tRecipe.mDuration,
-                        aParallel,
+                        1,
                         tTotalEU,
                         mOCTier2);
             }
@@ -557,16 +568,17 @@ public class GT_MetaTileEntity_PCBFactory
                 for (int i = tItemInputs.length - 1; i >= 0; i--) {
                     if (getBaseMetaTileEntity().getRandomNumber(10000) < remainingEfficiency) {
                         tOutputs.add(tRecipe.getOutput(i));
-                        remainingEfficiency -= 10000;
                     }
                 }
+                remainingEfficiency -= 10000;
             }
             mOutputItems = tOutputs.toArray(new ItemStack[0]);
             mOutputFluids = tRecipe.mFluidOutputs.clone();
             updateSlots();
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     private int ticker = 0;
