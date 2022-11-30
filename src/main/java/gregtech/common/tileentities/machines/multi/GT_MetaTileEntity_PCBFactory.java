@@ -752,7 +752,7 @@ public class GT_MetaTileEntity_PCBFactory
                 .addStructureInfo(EnumChatFormatting.GOLD + "292" + EnumChatFormatting.GRAY
                         + " Radiation Proof Photolithography Framework Casing")
                 .addStructureInfo(
-                        EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naqudah Alloy Casing")
+                        EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
                 .addStructureInfo(EnumChatFormatting.BLUE + "Bio Upgrade")
                 .addStructureInfo(EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY
                         + " Clean Stainless Steel Machine Casing")
@@ -764,7 +764,7 @@ public class GT_MetaTileEntity_PCBFactory
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
                 .addStructureInfo(
-                        EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Radiant Naqudah Alloy Casing")
+                        EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Extreme Engine Intake Casing")
                 .addStructureInfo(

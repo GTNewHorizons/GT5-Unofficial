@@ -414,7 +414,7 @@ public class GT_MetaTileEntity_NanoForge
                 .addSeparator()
                 .beginStructureBlock(30, 38, 13, false)
                 .addStructureInfo("Nano Forge Structure is too complex! See schematic for details.")
-                .addStructureInfo("Radiant Naqudah Casings")
+                .addStructureInfo("Radiant Naquadah Casings")
                 .addStructureInfo("Stellar Alloy Frames")
                 .addEnergyHatch("Any Energy Hatch, Determines Power Tier", 1)
                 .addMaintenanceHatch("Required 1", 1)

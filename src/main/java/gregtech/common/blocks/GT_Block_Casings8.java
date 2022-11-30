@@ -37,7 +37,7 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
                 getUnlocalizedName() + ".7.name", "Advanced Iridium Plated Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Magical Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "HSS-S Turbine Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Radiant Naqudah Alloy Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Radiant Naquadah Alloy Casing");
         GT_LanguageManager.addStringLocalization(
                 getUnlocalizedName() + ".11.name", "Basic Photolithographic Framework Casing");
         GT_LanguageManager.addStringLocalization(
