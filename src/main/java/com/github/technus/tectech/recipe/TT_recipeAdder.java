@@ -75,7 +75,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
                 assDuration,
                 assEUt,
                 0,
-                true);
+                false);
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe.GT_Recipe_AssemblyLine(
                 CustomItemList.UnusedStuff.get(1),
                 totalComputationRequired / computationRequiredPerSec,
@@ -211,7 +211,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
                 assEUt,
                 0,
                 tAlts,
-                true);
+                false);
         GT_Recipe_AssemblyLine recipeGT = new GT_Recipe_AssemblyLine(
                 CustomItemList.UnusedStuff.get(1),
                 totalComputationRequired / computationRequiredPerSec,
