@@ -19,7 +19,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IHasFluidDisplayItem;
@@ -62,7 +61,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -690,14 +688,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
             afterSomeTime++;
             if (afterSomeTime >= 100L) {
                 afterSomeTime = 0;
-                StatFileWriter sfw = Minecraft.getMinecraft().thePlayer.getStatFileWriter();
-                try {
-                    for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList) {
-                        recipe.mHidden = GT_Values.hideAssLineRecipes
-                                && !sfw.hasAchievementUnlocked(GT_Mod.achievements.getAchievement(
-                                        recipe.getOutput(0).getUnlocalizedName()));
-                    }
-                } catch (Exception ignored) {
+                for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList) {
+                    recipe.mHidden = false;
                 }
             }
             for (Iterator<Map.Entry<GT_PlayedSound, Integer>> iterator =
