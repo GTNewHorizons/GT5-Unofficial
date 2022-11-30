@@ -1577,5 +1577,7 @@ public class RecipeLoader {
     public static void Fixer() {
         MaterialFix.MaterialFluidExtractionFix(MyMaterial.atomicSeparationCatalyst);
         MaterialFix.MaterialFluidExtractionFix(MyMaterial.extremelyUnstableNaquadah);
+        MaterialFix.MaterialFluidExtractionFix(MyMaterial.metastableOganesson);
+        MaterialFix.MaterialFluidExtractionFix(MyMaterial.shirabon);
     }
 }

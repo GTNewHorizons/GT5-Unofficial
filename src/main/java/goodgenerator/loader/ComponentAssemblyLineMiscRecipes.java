@@ -7,6 +7,7 @@ import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.google.common.collect.HashBiMap;
 import cpw.mods.fml.common.registry.GameRegistry;
+import goodgenerator.util.StackUtils;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -211,7 +212,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 new FluidStack[] {
                     new FluidStack(sold, 144 * t * 4),
                     CI.getTieredFluid(t, 144 * t * 2),
-                    CI.getAlternativeTieredFluid(t, 144 * t),
+                    StackUtils.getTieredFluid(t, 144 * t),
                     Materials.Lubricant.getFluid(1000 * (t - 2))
                 },
                 Compassline_Casing_LuV.get(1),
@@ -237,7 +238,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 new FluidStack[] {
                     new FluidStack(sold, 144 * t * 4),
                     CI.getTieredFluid(t, 144 * t * 2),
-                    CI.getAlternativeTieredFluid(t, 144 * t),
+                    StackUtils.getTieredFluid(t, 144 * t),
                     Materials.Lubricant.getFluid(1000 * (t - 2))
                 },
                 Compassline_Casing_ZPM.get(1),
@@ -263,7 +264,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 new FluidStack[] {
                     new FluidStack(sold, 144 * t * 4),
                     CI.getTieredFluid(t, 144 * t * 2),
-                    CI.getAlternativeTieredFluid(t, 144 * t),
+                    StackUtils.getTieredFluid(t, 144 * t),
                     Materials.Lubricant.getFluid(1000 * (t - 2))
                 },
                 Compassline_Casing_UV.get(1),
@@ -291,8 +292,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 },
                 new FluidStack[] {
                     new FluidStack(sold, 144 * t * 4),
-                    Materials.Naquadria.getMolten(144 * t * 4),
                     CI.getTieredFluid(t, 144 * t * 2),
+                    StackUtils.getTieredFluid(t, 144 * t),
                     Materials.Lubricant.getFluid(1000 * (t - 2))
                 },
                 Compassline_Casing_UHV.get(1),
@@ -321,8 +322,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 },
                 new FluidStack[] {
                     new FluidStack(sold, 144 * t * 4),
-                    Materials.Quantium.getMolten(144 * t * 4),
                     CI.getTieredFluid(t, 144 * t * 2),
+                    StackUtils.getTieredFluid(t, 144 * t),
                     Materials.Lubricant.getFluid(1000 * (t - 2))
                 },
                 Compassline_Casing_UEV.get(1),
@@ -351,7 +352,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 new FluidStack[] {
                     new FluidStack(sold, 144 * t * 4),
                     CI.getTieredFluid(t, 144 * t * 2),
-                    CI.getAlternativeTieredFluid(t - 1, 144 * t * 2),
+                    StackUtils.getTieredFluid(t, 144 * t),
                     Materials.Lubricant.getFluid(1000 * (t - 2))
                 },
                 Compassline_Casing_UIV.get(1),
@@ -380,7 +381,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 new FluidStack[] {
                     new FluidStack(sold, 144 * t * 4),
                     CI.getTieredFluid(t - 1, 144 * t * 2),
-                    CI.getAlternativeTieredFluid(t - 2, 144 * t * 2),
+                    StackUtils.getTieredFluid(t, 144 * t),
                     Materials.Lubricant.getFluid(1000 * (t - 2))
                 },
                 Compassline_Casing_UMV.get(1),
@@ -395,26 +396,35 @@ public class ComponentAssemblyLineMiscRecipes {
     private static void generateWrapRecipes() {
         for (int i = 0; i <= 10; i++) {
             GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] {getCircuit(i, 16)},
+                    new ItemStack[] {getCircuit(i, 16), GT_Utility.getIntegratedCircuit(16)},
                     Materials.SolderingAlloy.getMolten(72L),
                     new ItemStack(Loaders.circuitWrap, 1, i),
                     30 * 20,
                     30);
         }
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] {GameRegistry.findItemStack("dreamcraft", "item.NanoCircuit", 16)},
+                new ItemStack[] {
+                    GameRegistry.findItemStack("dreamcraft", "item.NanoCircuit", 16),
+                    GT_Utility.getIntegratedCircuit(16)
+                },
                 Materials.SolderingAlloy.getMolten(72L),
                 new ItemStack(Loaders.circuitWrap, 1, 11),
                 30 * 20,
                 30);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] {GameRegistry.findItemStack("dreamcraft", "item.PikoCircuit", 16)},
+                new ItemStack[] {
+                    GameRegistry.findItemStack("dreamcraft", "item.PikoCircuit", 16),
+                    GT_Utility.getIntegratedCircuit(16)
+                },
                 Materials.SolderingAlloy.getMolten(72L),
                 new ItemStack(Loaders.circuitWrap, 1, 12),
                 30 * 20,
                 30);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] {GameRegistry.findItemStack("dreamcraft", "item.QuantumCircuit", 16)},
+                new ItemStack[] {
+                    GameRegistry.findItemStack("dreamcraft", "item.QuantumCircuit", 16),
+                    GT_Utility.getIntegratedCircuit(16)
+                },
                 Materials.SolderingAlloy.getMolten(72L),
                 new ItemStack(Loaders.circuitWrap, 1, 13),
                 30 * 20,

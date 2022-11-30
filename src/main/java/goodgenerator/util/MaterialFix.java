@@ -11,12 +11,18 @@ import gregtech.api.util.GT_Utility;
 
 public class MaterialFix {
     public static void MaterialFluidExtractionFix(Werkstoff material) {
-        if (material.hasItemType(OrePrefixes.ingot))
+        if (material.hasItemType(OrePrefixes.ingot)) {
             GT_Values.RA.addFluidExtractionRecipe(
                     material.get(OrePrefixes.ingot), null, material.getMolten(144), 0, 32, 8);
-        if (material.hasItemType(OrePrefixes.plate))
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Ingot.get(0), material.getMolten(144), material.get(OrePrefixes.ingot), 32, 48);
+        }
+        if (material.hasItemType(OrePrefixes.plate)) {
             GT_Values.RA.addFluidExtractionRecipe(
                     material.get(OrePrefixes.plate), null, material.getMolten(144), 0, 32, 8);
+            GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Plate.get(0), material.getMolten(144), material.get(OrePrefixes.plate), 32, 48);
+        }
         if (material.hasItemType(OrePrefixes.gearGtSmall))
             GT_Values.RA.addFluidExtractionRecipe(
                     material.get(OrePrefixes.gearGtSmall), null, material.getMolten(144), 0, 32, 8);

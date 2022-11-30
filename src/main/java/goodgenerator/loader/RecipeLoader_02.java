@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+@SuppressWarnings("deprecation")
 public class RecipeLoader_02 {
 
     public static void RecipeLoad() {
@@ -87,12 +88,24 @@ public class RecipeLoader_02 {
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.dalisenite, 800, 491520, 8700, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.hikarium, 1200, 30720, 5400, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.tairitsu, 1200, 1966080, 7400, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.preciousMetalAlloy, 2400, 7864320, 10000, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.enrichedNaquadahAlloy, 2400, 7864320, 11000, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.metastableOganesson, 600, 7864320, 12000, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.shirabon, 600, 31457280, 13000, true);
+
+        GT_ModHandler.removeFurnaceSmelting(MyMaterial.dalisenite.get(OrePrefixes.dust)); // :doom:
 
         GT_Values.RA.addVacuumFreezerRecipe(
                 MyMaterial.dalisenite.get(OrePrefixes.ingotHot, 1),
                 MyMaterial.dalisenite.get(OrePrefixes.ingot, 1),
                 315,
                 120);
+
+        GT_Values.RA.addVacuumFreezerRecipe(
+                MyMaterial.shirabon.get(OrePrefixes.ingotHot, 1),
+                MyMaterial.shirabon.get(OrePrefixes.ingot, 1),
+                2400,
+                1966080);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -1854,6 +1867,37 @@ public class RecipeLoader_02 {
                 MyMaterial.lumiium.get(OrePrefixes.dust, 1),
                 240,
                 120);
+
+        GT_Values.RA.addFusionReactorRecipe(
+                MyMaterial.enrichedNaquadahAlloy.getMolten(144),
+                WerkstoffLoader.Oganesson.getFluidOrGas(250),
+                MyMaterial.metastableOganesson.getMolten(36),
+                600,
+                491520,
+                1000000000);
+
+        MyRecipeAdder.instance.addNeutronActivatorRecipe(
+                null,
+                new ItemStack[] {MyMaterial.metastableOganesson.get(OrePrefixes.dust)},
+                new FluidStack[] {WerkstoffLoader.Oganesson.getFluidOrGas(250)},
+                null,
+                2000,
+                1100,
+                1000);
+
+        GT_Values.RA.addPlasmaForgeRecipe(
+                new ItemStack[] {ItemRefer.HiC_T5.get(0)},
+                new FluidStack[] {
+                    MyMaterial.metastableOganesson.getMolten(1152),
+                    MyMaterial.preciousMetalAlloy.getMolten(2304),
+                    Materials.SpaceTime.getMolten(288),
+                    Materials.DimensionallyTranscendentResidue.getFluid(5000)
+                },
+                new ItemStack[] {},
+                new FluidStack[] {MyMaterial.shirabon.getMolten(144)},
+                200,
+                1500000000,
+                13500);
     }
 
     public static void FinishLoadRecipe() {

@@ -2,13 +2,13 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_LongPowerUsageBase;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.GregTech_API;
@@ -18,12 +18,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.*;
-import java.util.ArrayList;
-import java.util.List;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_StructureUtility;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import net.minecraft.item.ItemStack;
@@ -33,12 +31,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
-public class ComponentAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<ComponentAssemblyLine>
+public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<ComponentAssemblyLine>
         implements ISurvivalConstructable {
 
     private int casingTier;
-    private final double log4 = Math.log(4);
-    private long EU_per_tick = 0;
+    private GT_Recipe lastRecipe;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<ComponentAssemblyLine> STRUCTURE_DEFINITION =
             StructureDefinition.<ComponentAssemblyLine>builder()
@@ -557,42 +554,12 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockB
      * */
     @Override
     public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-
-        for (GT_MetaTileEntity_Hatch tHatch : mExoticEnergyHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
-            }
-        }
-        return new String[] {
-            "------------ Critical Information ------------",
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(mProgresstime) + EnumChatFormatting.RESET + "t / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(mMaxProgresstime) + EnumChatFormatting.RESET + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(-EU_per_tick) + EnumChatFormatting.RESET + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(
-                            GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
-                    + EnumChatFormatting.RESET + " EU/t(*" + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(
-                            GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList()))
-                    + EnumChatFormatting.RESET + "A) " + StatCollector.translateToLocal("GT5U.machines.tier")
-                    + ": " + EnumChatFormatting.YELLOW
-                    + VN[
-                            GT_Utility.getTier(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(
-                                    getExoticAndNormalEnergyHatchList()))]
-                    + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("scanner.info.CASS.tier")
-                    + (casingTier >= 0 ? GT_Values.VN[casingTier + 1] : "None!")
-        };
+        String[] origin = super.getInfoData();
+        String[] ret = new String[origin.length + 1];
+        System.arraycopy(origin, 0, ret, 0, origin.length);
+        ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
+                + (casingTier >= 0 ? GT_Values.VN[casingTier + 1] : "None!");
+        return ret;
     }
 
     @Override
@@ -640,54 +607,25 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockB
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        long tVoltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
-        long tAmps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
-        long totalEU = tVoltage * tAmps;
+        this.mEfficiencyIncrease = 10000;
+        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+        long totalEU = getRealVoltage();
         ItemStack[] tItems = getStoredInputs().toArray(new ItemStack[0]);
         FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
-        GT_Recipe foundRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, totalEU, tFluids, tItems);
-        if (foundRecipe == null) return false;
-        if (foundRecipe.mSpecialValue > casingTier + 1) return false;
-        if (!foundRecipe.isRecipeInputEqual(true, tFluids, tItems)) return false;
+        this.lastRecipe =
+                getRecipeMap().findRecipe(getBaseMetaTileEntity(), this.lastRecipe, false, totalEU, tFluids, tItems);
+        if (this.lastRecipe == null) return false;
+        if (this.lastRecipe.mSpecialValue > casingTier + 1) return false;
+        if (!this.lastRecipe.isRecipeInputEqual(true, tFluids, tItems)) return false;
 
-        // Logic for overclocking calculations.
-        double EU_input_tier = Math.log(totalEU) / log4;
-        double EU_recipe_tier = Math.log(foundRecipe.mEUt) / log4;
-        long overclock_count = (long) Math.floor(EU_input_tier - EU_recipe_tier);
+        calculateOverclockedNessMulti((long) this.lastRecipe.mEUt, this.lastRecipe.mDuration, 1, totalEU);
+        if (this.lEUt > 0) {
+            this.lEUt = (-this.lEUt);
+        }
 
-        // Vital recipe info. Calculate overclocks here if necessary.
-        EU_per_tick = (long) -(foundRecipe.mEUt * Math.pow(4, overclock_count));
-
-        mMaxProgresstime = (int) (foundRecipe.mDuration / Math.pow(2, overclock_count));
-        mMaxProgresstime = Math.max(1, mMaxProgresstime);
-
-        mOutputItems = foundRecipe.mOutputs;
+        mOutputItems = this.lastRecipe.mOutputs;
         updateSlots();
         return true;
-    }
-
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (EU_per_tick < 0) {
-            if (!drainEnergyInput(-EU_per_tick)) {
-                EU_per_tick = 0;
-                criticalStopMachine();
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public boolean drainEnergyInput(long aEU) {
-        return GT_ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
-    }
-
-    public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
-        List<GT_MetaTileEntity_Hatch> tHatches = new ArrayList<>();
-        tHatches.addAll(mExoticEnergyHatches);
-        tHatches.addAll(mEnergyHatches);
-        return tHatches;
     }
 
     @Override
@@ -700,12 +638,6 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockB
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingTier = -1;
         return checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0);
-    }
-
-    @Override
-    public void clearHatches() {
-        super.clearHatches();
-        mExoticEnergyHatches.clear();
     }
 
     @Override
@@ -731,14 +663,12 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockB
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("casingTier", casingTier);
-        aNBT.setLong("euPerTick", EU_per_tick);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         casingTier = aNBT.getInteger("casingTier");
-        EU_per_tick = aNBT.getLong("euPerTick");
         super.loadNBTData(aNBT);
     }
 }

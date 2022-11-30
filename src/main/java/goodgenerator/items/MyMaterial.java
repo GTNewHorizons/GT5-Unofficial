@@ -1294,6 +1294,95 @@ public class MyMaterial implements Runnable {
             new Pair<>(Sulfur, 1),
             new Pair<>(Oxygen, 4));
 
+    public static final Werkstoff preciousMetalAlloy = new Werkstoff(
+            new short[] {0x9d, 0x90, 0xc6},
+            "Precious Metals Alloy",
+            new Werkstoff.Stats()
+                    .setBlastFurnace(true)
+                    .setMeltingPoint(10000)
+                    .setCentrifuge(true)
+                    .setSpeedOverride(100F),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures()
+                    .onlyDust()
+                    .addMolten()
+                    .addMetalItems()
+                    .addCraftingMetalWorkingItems()
+                    .addMixerRecipes((short) 6),
+            OffsetID + 108,
+            TextureSet.SET_SHINY,
+            new Pair<>(WerkstoffLoader.Ruthenium, 1),
+            new Pair<>(WerkstoffLoader.Rhodium, 1),
+            new Pair<>(Palladium, 1),
+            new Pair<>(Platinum, 1),
+            new Pair<>(Osmium, 1),
+            new Pair<>(Iridium, 1));
+
+    public static final Werkstoff enrichedNaquadahAlloy = new Werkstoff(
+            new short[] {0x16, 0x07, 0x40},
+            "Enriched Naquadah Alloy",
+            new Werkstoff.Stats()
+                    .setBlastFurnace(true)
+                    .setMeltingPoint(11000)
+                    .setCentrifuge(true)
+                    .setSpeedOverride(180F),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures()
+                    .onlyDust()
+                    .addMolten()
+                    .addMetalItems()
+                    .addCraftingMetalWorkingItems()
+                    .addSimpleMetalWorkingItems()
+                    .addMultipleIngotMetalWorkingItems()
+                    .addMixerRecipes((short) 4),
+            OffsetID + 109,
+            TextureSet.SET_METALLIC,
+            new Pair<>(NaquadahEnriched, 8),
+            new Pair<>(Tritanium, 5),
+            new Pair<>(WerkstoffLoader.Californium, 3),
+            new Pair<>(BlackPlutonium, 2));
+
+    public static final Werkstoff metastableOganesson = new Werkstoff(
+            new short[] {0x14, 0x39, 0x7f},
+            "Metastable Oganesson",
+            "Og*",
+            new Werkstoff.Stats()
+                    .setBlastFurnace(true)
+                    .setProtons(118)
+                    .setMass(294)
+                    .setMeltingPoint(11000),
+            Werkstoff.Types.ELEMENT,
+            new Werkstoff.GenerationFeatures()
+                    .onlyDust()
+                    .addMolten()
+                    .addMetalItems()
+                    .addCraftingMetalWorkingItems(),
+            OffsetID + 110,
+            TextureSet.SET_SHINY);
+
+    public static final Werkstoff shirabon = new Werkstoff(
+            new short[] {0xe0, 0x15, 0x6d},
+            "Shirabon",
+            "Sh" + CharExchanger.shifter(9191),
+            new Werkstoff.Stats()
+                    .setBlastFurnace(true)
+                    .setProtons(500)
+                    .setMass(750)
+                    .setMeltingPoint(13000)
+                    .setSpeedOverride(640.0F)
+                    .setDurOverride(15728640)
+                    .setQualityOverride((byte) 26),
+            Werkstoff.Types.ELEMENT,
+            new Werkstoff.GenerationFeatures()
+                    .onlyDust()
+                    .addMolten()
+                    .addMetalItems()
+                    .addCraftingMetalWorkingItems()
+                    .addSimpleMetalWorkingItems()
+                    .addMultipleIngotMetalWorkingItems(),
+            OffsetID + 111,
+            TextureSet.SET_SHINY);
+
     @Override
     public void run() {}
 }

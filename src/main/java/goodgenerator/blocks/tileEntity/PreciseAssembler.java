@@ -203,7 +203,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
                                 this.getBaseMetaTileEntity(),
                                 this.lastRecipe,
                                 false,
-                                Math.min(getMachineVoltageLimit(), getMaxInputEnergyPA()),
+                                Math.min(getMachineVoltageLimit(), getRealVoltage()),
                                 inputFluids,
                                 getStoredItemFromHatch(bus));
                 if (this.lastRecipe != null && this.lastRecipe.mSpecialValue <= (casingTier + 1)) {
@@ -211,8 +211,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
                     this.mEfficiencyIncrease = 10000;
                     this.lastRecipe.isRecipeInputEqual(true, inputFluids, getStoredItemFromHatch(bus));
                     mOutputItems = this.lastRecipe.mOutputs;
-                    calculateOverclockedNessMulti(
-                            this.lastRecipe.mEUt, this.lastRecipe.mDuration, 1, getMaxInputEnergyPA());
+                    calculateOverclockedNessMulti(this.lastRecipe.mEUt, this.lastRecipe.mDuration, 1, getRealVoltage());
                     this.updateSlots();
                     if (this.lEUt > 0) {
                         this.lEUt = (-this.lEUt);
@@ -228,13 +227,13 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
                                 this.getBaseMetaTileEntity(),
                                 this.lastRecipe,
                                 false,
-                                Math.min(getMachineVoltageLimit(), getMaxInputEnergyPA()),
+                                Math.min(getMachineVoltageLimit(), getRealVoltage()),
                                 inputFluids,
                                 getStoredItemFromHatch(bus));
                 if (this.lastRecipe != null) {
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
-                    long fullInput = getMaxInputEnergyPA();
+                    long fullInput = getRealVoltage();
                     int pall = handleParallelRecipe(this.lastRecipe, inputFluids, getStoredItemFromHatch(bus), (int)
                             Math.min((long) Math.pow(2, 4 + (casingTier + 1)), fullInput / this.lastRecipe.mEUt));
                     if (pall <= 0) continue;
@@ -244,7 +243,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
                             (long) this.lastRecipe.mEUt * (long) pall,
                             this.lastRecipe.mDuration / 2,
                             1,
-                            getMaxInputEnergyPA());
+                            getRealVoltage());
                     this.updateSlots();
                     if (this.lEUt > 0) {
                         this.lEUt = (-this.lEUt);
@@ -254,25 +253,6 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
             }
         }
         return false;
-    }
-
-    private long getMaxInputEnergyPA() {
-        long rEnergy = 0;
-        if (mEnergyHatches.size() == 1) {
-            // it works like most of the gt multies
-            return mEnergyHatches.get(0).getBaseMetaTileEntity().getInputVoltage();
-        }
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                rEnergy += tHatch.maxEUInput() * tHatch.maxAmperesIn();
-            }
-        }
-        for (GT_MetaTileEntity_Hatch tHatch : mExoticEnergyHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                rEnergy += tHatch.maxEUInput() * ((GT_MetaTileEntity_Hatch_EnergyMulti) tHatch).Amperes;
-            }
-        }
-        return rEnergy;
     }
 
     @Override
@@ -299,11 +279,6 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         if (this.mode == 0) return MyRecipeAdder.instance.PA;
         else return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
-    }
-
-    @Override
-    protected long getRealVoltage() {
-        return getMaxInputEnergyPA();
     }
 
     @Override

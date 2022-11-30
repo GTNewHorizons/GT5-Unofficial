@@ -1,11 +1,14 @@
 package goodgenerator.util;
 
+import goodgenerator.items.MyMaterial;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class StackUtils {
 
@@ -77,5 +80,38 @@ public class StackUtils {
 
     public static HashMap<ItemStack, Integer> getTotalItems(ItemStack[] items) {
         return getTotalItems(Arrays.asList(items));
+    }
+
+    public static FluidStack getTieredFluid(int aTier, int aAmount) {
+        switch (aTier) {
+            case 0: // ULV
+                return Materials.RedAlloy.getMolten(aAmount);
+            case 1: // LV
+                return Materials.TinAlloy.getMolten(aAmount);
+            case 2: // MV
+                return Materials.RoseGold.getMolten(aAmount);
+            case 3: // HV
+                return MyMaterial.zircaloy4.getMolten(aAmount);
+            case 4: // EV
+                return MyMaterial.incoloy903.getMolten(aAmount);
+            case 5: // IV
+                return MyMaterial.titaniumBetaC.getMolten(aAmount);
+            case 6: // LuV
+                return MyMaterial.artheriumSn.getMolten(aAmount);
+            case 7: // ZPM
+                return MyMaterial.dalisenite.getMolten(aAmount);
+            case 8: // UV
+                return MyMaterial.tairitsu.getMolten(aAmount);
+            case 9: // UHV
+                return MyMaterial.preciousMetalAlloy.getMolten(aAmount);
+            case 10: // UEV
+                return MyMaterial.enrichedNaquadahAlloy.getMolten(aAmount);
+            case 11: // UIV
+                return MyMaterial.metastableOganesson.getMolten(aAmount);
+            case 12: // UMV
+                return Materials.SpaceTime.getMolten(aAmount);
+            default:
+                return MyMaterial.shirabon.getMolten(aAmount);
+        }
     }
 }

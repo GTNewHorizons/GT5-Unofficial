@@ -49,7 +49,24 @@ public abstract class GT_MetaTileEntity_LongPowerUsageBase<T extends GT_MetaTile
         return getInfoDataArray(this);
     }
 
-    protected abstract long getRealVoltage();
+    protected long getRealVoltage() {
+        long rEnergy = 0;
+        if (mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty()) {
+            // it works like most of the gt multies
+            return mEnergyHatches.get(0).getBaseMetaTileEntity().getInputVoltage();
+        }
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                rEnergy += tHatch.maxEUInput() * tHatch.maxAmperesIn();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch tHatch : mExoticEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                rEnergy += tHatch.maxEUInput() * ((GT_MetaTileEntity_Hatch_EnergyMulti) tHatch).Amperes;
+            }
+        }
+        return rEnergy;
+    }
 
     protected long getMaxInputAmps() {
         long rAmps = 0;
