@@ -17,6 +17,8 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -27,6 +29,7 @@ import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.GregTech_API;
@@ -818,81 +821,111 @@ public class GT_MetaTileEntity_PCBFactory
                 .widget(ButtonWidget.closeWindowButton(true).setPos(185, 3))
                 .widget(new DynamicPositionedColumn()
                         .setSynced(false)
-                        .widget(new CycleButtonWidget()
-                                .setToggle(() -> mBioUpgrade, val -> {
-                                    mBioUpgrade = val;
-                                    if (!mBioUpgrade) {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("339.1", "Bio Upgrade Disabled"));
-                                    } else {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("339", "Bio Upgrade Enabled"));
-                                    }
-                                })
-                                .setBackground(
-                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
-                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("Bio Upgrade").withOffset(5, 0))
-                                .setSize(90, 18)
-                                .addTooltip("Required for Bioware and Wetware boards.")
+                        .widget(new MultiChildWidget()
+                                .addChild(new CycleButtonWidget()
+                                        .setToggle(() -> mBioUpgrade, val -> {
+                                            mBioUpgrade = val;
+                                            if (!mBioUpgrade) {
+                                                GT_Utility.sendChatToPlayer(
+                                                        player, GT_Utility.trans("339.1", "Bio Upgrade Disabled"));
+                                            } else {
+                                                GT_Utility.sendChatToPlayer(
+                                                        player, GT_Utility.trans("339", "Bio Upgrade Enabled"));
+                                            }
+                                        })
+                                        .setVariableBackgroundGetter(state -> state == 0
+                                                ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
+                                                : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                        .setSize(90, 18)
+                                        .addTooltip("Required for Bioware and Wetware boards."))
+                                .addChild(new DrawableWidget()
+                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                        .setSize(18, 18))
+                                .addChild(new TextWidget("Bio Upgrade")
+                                        .setTextAlignment(Alignment.Center)
+                                        .setPos(23, 6))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new CycleButtonWidget()
-                                .setToggle(() -> mBioRotate, val -> {
-                                    mBioRotate = val;
-                                    if (!mBioRotate) {
-                                        GT_Utility.sendChatToPlayer(
-                                                player,
-                                                GT_Utility.trans("340.1", "Rotate Bio Upgrade 90 Degrees Disabled"));
-                                    } else {
-                                        GT_Utility.sendChatToPlayer(
-                                                player,
-                                                GT_Utility.trans("340", "Rotate Bio Upgrade 90 Degrees Enabled"));
-                                    }
-                                })
-                                .setBackground(
-                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
-                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("Bio Rotation").withOffset(5, 0))
-                                .setSize(90, 18)
-                                .addTooltip("Switches aroung the X and Z offsets")
+                        .widget(new MultiChildWidget()
+                                .addChild(new CycleButtonWidget()
+                                        .setToggle(() -> mBioRotate, val -> {
+                                            mBioRotate = val;
+                                            if (!mBioRotate) {
+                                                GT_Utility.sendChatToPlayer(
+                                                        player,
+                                                        GT_Utility.trans(
+                                                                "340.1", "Rotate Bio Upgrade 90 Degrees Disabled"));
+                                            } else {
+                                                GT_Utility.sendChatToPlayer(
+                                                        player,
+                                                        GT_Utility.trans(
+                                                                "340", "Rotate Bio Upgrade 90 Degrees Enabled"));
+                                            }
+                                        })
+                                        .setVariableBackgroundGetter(state -> state == 0
+                                                ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
+                                                : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                        .setSize(90, 18)
+                                        .addTooltip("Switches around the X and Z axis, rotates the shape 90 degrees"))
+                                .addChild(new DrawableWidget()
+                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                        .setSize(18, 18))
+                                .addChild(new TextWidget("Bio Rotation")
+                                        .setTextAlignment(Alignment.Center)
+                                        .setPos(23, 6))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new CycleButtonWidget()
-                                .setToggle(() -> mOCTier1, val -> {
-                                    mOCTier1 = val;
-                                    if (!mOCTier1) {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("341.1", "Tier 1 OC Disabled"));
-                                    } else {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("341", "Tier 1 OC Enabled"));
-                                    }
-                                })
-                                .setBackground(
-                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
-                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("Cooler Tier 1").withOffset(5, 0))
-                                .setSize(90, 18)
-                                .addTooltip(
-                                        "Incompatible with Tier 2, Requires a constant supply of distilled water. Allows for overclocking")
+                        .widget(new MultiChildWidget()
+                                .addChild(
+                                        new CycleButtonWidget()
+                                                .setToggle(() -> mOCTier1, val -> {
+                                                    mOCTier1 = val;
+                                                    if (!mOCTier1) {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player,
+                                                                GT_Utility.trans("341.1", "Tier 1 OC Disabled"));
+                                                    } else {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player, GT_Utility.trans("341", "Tier 1 OC Enabled"));
+                                                    }
+                                                })
+                                                .setVariableBackgroundGetter(state -> state == 0
+                                                        ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
+                                                        : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                                .setSize(90, 18)
+                                                .addTooltip(
+                                                        "Incompatible with Tier 2, Requires a constant supply of distilled water. Allows for overclocking"))
+                                .addChild(new DrawableWidget()
+                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                        .setSize(18, 18))
+                                .addChild(new TextWidget("Cooler Tier 2")
+                                        .setTextAlignment(Alignment.Center)
+                                        .setPos(20, 6))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new CycleButtonWidget()
-                                .setToggle(() -> mOCTier2, val -> {
-                                    mOCTier2 = val;
-                                    if (!mOCTier2) {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("342.1", "Tier 2 OC Disabled"));
-                                    } else {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("342", "Tier 2 OC Enabled"));
-                                    }
-                                })
-                                .setBackground(
-                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
-                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("Cooler Tier 2").withOffset(5, 0))
-                                .setSize(90, 18)
-                                .addTooltip(
-                                        "Incompatible with Tier 1, Requires a constant supply of super coolant. Allows for perfect overclocking")
+                        .widget(new MultiChildWidget()
+                                .addChild(
+                                        new CycleButtonWidget()
+                                                .setToggle(() -> mOCTier2, val -> {
+                                                    mOCTier2 = val;
+                                                    if (!mOCTier2) {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player,
+                                                                GT_Utility.trans("342.1", "Tier 2 OC Disabled"));
+                                                    } else {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player, GT_Utility.trans("342", "Tier 2 OC Enabled"));
+                                                    }
+                                                })
+                                                .setVariableBackgroundGetter(state -> state == 0
+                                                        ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
+                                                        : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                                .setSize(90, 18)
+                                                .addTooltip(
+                                                        "Incompatible with Tier 1, Requires a constant supply of super coolant. Allows for perfect overclocking"))
+                                .addChild(new DrawableWidget()
+                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                        .setSize(18, 18))
+                                .addChild(new TextWidget("Cooler Tier 2")
+                                        .setTextAlignment(Alignment.Center)
+                                        .setPos(23, 6))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new TextWidget(new Text("Roughness Multiplier"))
                                 .setSize(90, 18)
