@@ -569,8 +569,9 @@ public class GT_MetaTileEntity_PCBFactory
             int remainingEfficiency = getMaxEfficiency(aStack);
             int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
             for (int j = 0; j < repeats; j++) {
+                int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
                 for (int i = tItemInputs.length - 1; i >= 0; i--) {
-                    if (getBaseMetaTileEntity().getRandomNumber(10000) < remainingEfficiency) {
+                    if (chanced < remainingEfficiency) {
                         tOutputs.add(tRecipe.getOutput(i));
                     }
                 }
@@ -983,7 +984,7 @@ public class GT_MetaTileEntity_PCBFactory
                                 .setSetterInt(val -> {
                                     mRoughnessMultiplier = val / 10000f;
                                 })
-                                .setNumbers(100, 100000)
+                                .setNumbers(100, 20000)
                                 .setTextColor(Color.WHITE.normal)
                                 .setTextAlignment(Alignment.Center)
                                 .addTooltip("The roughness multiplier is multiplied by 10,000 before displaying!")
