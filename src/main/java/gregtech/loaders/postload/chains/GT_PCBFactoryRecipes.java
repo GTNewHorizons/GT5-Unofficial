@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class GT_PCBFactoryRecipes {
 
     public static void load() {
