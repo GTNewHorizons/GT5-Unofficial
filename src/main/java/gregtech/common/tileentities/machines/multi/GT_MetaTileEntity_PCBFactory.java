@@ -710,55 +710,78 @@ public class GT_MetaTileEntity_PCBFactory
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Circuit Board Fabricator")
                 .addInfo("Controller block for the PCB Factory")
-                .addInfo(EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD +  "IMPORTANT!"
+                .addInfo(EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD + "IMPORTANT!"
                         + " Check out the configurations menu before building.")
                 .addInfo("The tier is selected in the controller GUI. Determines avaliable recipes.")
                 .addInfo("The configuration menu can be used to add upgrades.")
                 .addInfo("The parallel of the current recipe is Log₂(nanites used), rounded up.")
                 .addInfo("Coolant tier determines overclock ability. No cooler allows no overclocking.")
-                .addInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.GRAY + " cooler allows regular overclocking, takes 10L/s of coolant.")
-                .addInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.GRAY + " allows perfect overclocking, takes 10L/s of space coolant.")
+                .addInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.GRAY
+                        + " cooler allows regular overclocking, takes 10L/s of coolant.")
+                .addInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.GRAY
+                        + " allows perfect overclocking, takes 10L/s of space coolant.")
                 .addInfo("Machine power consumption multiplies by sqrt(upgrade count).")
                 .addInfo("I.e. cooler + bio upgrade = sqrt(2) power consumption multiplier.")
                 .addInfo(AuthorBlueWeabo)
                 .beginStructureBlock(30, 38, 13, false)
-            .addSeparator()
-            .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addEnergyHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addStructureInfo("Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD + "1")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Base Multi (Tier " + EnumChatFormatting.DARK_PURPLE + 1  + EnumChatFormatting.BLUE + "):")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Vibrant Alloy Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Reinforced Glass")
-            .addStructureInfo(EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY + " Basic Photolithography Framework Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Grate Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Plascrete Block")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.BLUE + " (Adds to Tier " + EnumChatFormatting.DARK_PURPLE + 1  + EnumChatFormatting.BLUE + "):")
-            .addStructureInfo(EnumChatFormatting.GOLD + "34" + EnumChatFormatting.GRAY + " Duranium Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "158" + EnumChatFormatting.GRAY + " Reinforced Photolithography Framework Casing")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 3 + EnumChatFormatting.BLUE + ":")
-            .addStructureInfo(EnumChatFormatting.GOLD + "292" + EnumChatFormatting.GRAY + " Radiation Proof Photolithography Framework Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naqudah Alloy Casing")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Bio Upgrade")
-            .addStructureInfo(EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Clean Stainless Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Reinforced Glass")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Cooler Upgrade Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.BLUE + ":")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Radiant Naqudah Alloy Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Extreme Engine Intake Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "21" + EnumChatFormatting.GRAY + " Reinforced Photolithography Framework Casing")
-            .addStructureInfo(EnumChatFormatting.BLUE +"Cooler Upgrade Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.BLUE + ":")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "41" + EnumChatFormatting.GRAY + " Reinforced Photolithography Framework Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Basic Photolithography Framework Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
-            .toolTipFinisher("GregTech");
+                .addSeparator()
+                .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
+                .addEnergyHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+                .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+                .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+                .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+                .addStructureInfo("Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD + "1")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Base Multi (Tier " + EnumChatFormatting.DARK_PURPLE + 1
+                        + EnumChatFormatting.BLUE + "):")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Vibrant Alloy Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Reinforced Glass")
+                .addStructureInfo(EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY
+                        + " Basic Photolithography Framework Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Grate Machine Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Plascrete Block")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2
+                        + EnumChatFormatting.BLUE + " (Adds to Tier " + EnumChatFormatting.DARK_PURPLE + 1
+                        + EnumChatFormatting.BLUE + "):")
+                .addStructureInfo(EnumChatFormatting.GOLD + "34" + EnumChatFormatting.GRAY + " Duranium Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "158" + EnumChatFormatting.GRAY
+                        + " Reinforced Photolithography Framework Casing")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 3
+                        + EnumChatFormatting.BLUE + ":")
+                .addStructureInfo(EnumChatFormatting.GOLD + "292" + EnumChatFormatting.GRAY
+                        + " Radiation Proof Photolithography Framework Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naqudah Alloy Casing")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Bio Upgrade")
+                .addStructureInfo(EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY
+                        + " Clean Stainless Steel Machine Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Reinforced Glass")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Cooler Upgrade Tier " + EnumChatFormatting.DARK_PURPLE + 1
+                        + EnumChatFormatting.BLUE + ":")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Radiant Naqudah Alloy Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Extreme Engine Intake Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "21" + EnumChatFormatting.GRAY
+                        + " Reinforced Photolithography Framework Casing")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Cooler Upgrade Tier " + EnumChatFormatting.DARK_PURPLE + 2
+                        + EnumChatFormatting.BLUE + ":")
+                .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "41" + EnumChatFormatting.GRAY
+                        + " Reinforced Photolithography Framework Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY
+                        + " Basic Photolithography Framework Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
+                .toolTipFinisher("GregTech");
         return tt;
     }
 
