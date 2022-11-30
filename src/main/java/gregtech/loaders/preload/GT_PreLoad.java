@@ -476,9 +476,6 @@ public class GT_PreLoad {
     public static void loadConfig(Configuration tMainConfig) {
         GT_Values.D1 = tMainConfig.get(GT_Mod.aTextGeneral, "Debug", false).getBoolean(false);
         GT_Values.D2 = tMainConfig.get(GT_Mod.aTextGeneral, "Debug2", false).getBoolean(false);
-        GT_Values.hideAssLineRecipes = tMainConfig
-                .get(GT_Mod.aTextGeneral, "hide assline recipes", false)
-                .getBoolean(false);
         GT_Values.updateFluidDisplayItems = tMainConfig
                 .get(GT_Mod.aTextGeneral, "update fluid display items", true)
                 .getBoolean(true);
