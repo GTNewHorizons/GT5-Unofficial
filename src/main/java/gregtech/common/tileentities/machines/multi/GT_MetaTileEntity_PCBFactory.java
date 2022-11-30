@@ -262,11 +262,11 @@ public class GT_MetaTileEntity_PCBFactory
         }
 
         if (mOCTier1 && !mOCTier2) {
-            buildPiece(ocTier1Upgrade, stackSize, hintsOnly, mOCTier1Offsets[0], 10, mOCTier1Offsets[1]);
+            buildPiece(ocTier1Upgrade, stackSize, hintsOnly, mOCTier1Offsets[0], 9, mOCTier1Offsets[1]);
         }
 
         if (!mOCTier1 && mOCTier2) {
-            buildPiece(ocTier2Upgrade, stackSize, hintsOnly, mOCTier2Offsets[0], 10, mOCTier2Offsets[1]);
+            buildPiece(ocTier2Upgrade, stackSize, hintsOnly, mOCTier2Offsets[0], 9, mOCTier2Offsets[1]);
         }
     }
 
@@ -312,7 +312,7 @@ public class GT_MetaTileEntity_PCBFactory
                     ocTier1Upgrade,
                     stackSize,
                     mOCTier1Offsets[0],
-                    10,
+                    9,
                     mOCTier1Offsets[1],
                     elementBudget,
                     env,
@@ -324,7 +324,7 @@ public class GT_MetaTileEntity_PCBFactory
                     ocTier2Upgrade,
                     stackSize,
                     mOCTier2Offsets[0],
-                    10,
+                    9,
                     mOCTier2Offsets[1],
                     elementBudget,
                     env,
@@ -445,14 +445,14 @@ public class GT_MetaTileEntity_PCBFactory
         }
 
         if (mOCTier1 && !mOCTier2) {
-            if (!checkPiece(ocTier1Upgrade, mOCTier1Offsets[0], 10, mOCTier1Offsets[1])) {
+            if (!checkPiece(ocTier1Upgrade, mOCTier1Offsets[0], 9, mOCTier1Offsets[1])) {
                 return false;
             }
             mUpgradesInstalled++;
         }
 
         if (mOCTier2 && !mOCTier1) {
-            if (!checkPiece(ocTier2Upgrade, mOCTier2Offsets[0], 0, mOCTier2Offsets[1])) {
+            if (!checkPiece(ocTier2Upgrade, mOCTier2Offsets[0], 9, mOCTier2Offsets[1])) {
                 return false;
             }
             mUpgradesInstalled++;
@@ -843,7 +843,7 @@ public class GT_MetaTileEntity_PCBFactory
                                         .setSize(18, 18))
                                 .addChild(new TextWidget("Bio Upgrade")
                                         .setTextAlignment(Alignment.Center)
-                                        .setPos(23, 6))
+                                        .setPos(23, 5))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new MultiChildWidget()
                                 .addChild(new CycleButtonWidget()
@@ -871,7 +871,7 @@ public class GT_MetaTileEntity_PCBFactory
                                         .setSize(18, 18))
                                 .addChild(new TextWidget("Bio Rotation")
                                         .setTextAlignment(Alignment.Center)
-                                        .setPos(23, 6))
+                                        .setPos(23, 5))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new MultiChildWidget()
                                 .addChild(
@@ -896,9 +896,9 @@ public class GT_MetaTileEntity_PCBFactory
                                 .addChild(new DrawableWidget()
                                         .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
                                         .setSize(18, 18))
-                                .addChild(new TextWidget("Cooler Tier 2")
+                                .addChild(new TextWidget("Cooler Tier 1")
                                         .setTextAlignment(Alignment.Center)
-                                        .setPos(20, 6))
+                                        .setPos(20, 5))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new MultiChildWidget()
                                 .addChild(
@@ -925,7 +925,7 @@ public class GT_MetaTileEntity_PCBFactory
                                         .setSize(18, 18))
                                 .addChild(new TextWidget("Cooler Tier 2")
                                         .setTextAlignment(Alignment.Center)
-                                        .setPos(23, 6))
+                                        .setPos(20, 5))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new TextWidget(new Text("Roughness Multiplier"))
                                 .setSize(90, 18)
