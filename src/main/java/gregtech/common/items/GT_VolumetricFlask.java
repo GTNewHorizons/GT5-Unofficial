@@ -364,8 +364,11 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
                     .setDisplayString("Accept")
                     .setClickableGetter(() -> MathExpression.parseMathExpression(textField.getText()) > 0)
                     .setOnClick((clickData, widget) -> {
-                        textField.onRemoveFocus();
-                        widget.getWindow().tryClose();
+                        if (widget.isClient()) {
+                            textField.onRemoveFocus();
+                        } else {
+                            widget.getWindow().tryClose();
+                        }
                     })
                     .setPos(128, 51)
                     .setSize(38, 20));
