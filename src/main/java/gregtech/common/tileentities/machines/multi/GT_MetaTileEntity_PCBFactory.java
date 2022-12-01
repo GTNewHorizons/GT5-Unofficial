@@ -17,8 +17,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -884,9 +882,7 @@ public class GT_MetaTileEntity_PCBFactory
                                                         player, GT_Utility.trans("339", "Bio Upgrade Enabled"));
                                             }
                                         })
-                                        .setVariableBackgroundGetter(state -> state == 0
-                                                ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
-                                                : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                         .setSize(90, 18)
                                         .addTooltip("Required for Bioware and Wetware boards."))
                                 .addChild(new DrawableWidget()
@@ -912,9 +908,7 @@ public class GT_MetaTileEntity_PCBFactory
                                                                 "340", "Rotate Bio Upgrade 90 Degrees Enabled"));
                                             }
                                         })
-                                        .setVariableBackgroundGetter(state -> state == 0
-                                                ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
-                                                : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                         .setSize(90, 18)
                                         .addTooltip("Switches around the X and Z axis, rotates the shape 90 degrees"))
                                 .addChild(new DrawableWidget()
@@ -938,9 +932,7 @@ public class GT_MetaTileEntity_PCBFactory
                                                                 player, GT_Utility.trans("341", "Tier 1 OC Enabled"));
                                                     }
                                                 })
-                                                .setVariableBackgroundGetter(state -> state == 0
-                                                        ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
-                                                        : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                                .setBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                                 .setSize(90, 18)
                                                 .addTooltip(
                                                         "Incompatible with Tier 2, Requires a constant supply of distilled water. Allows for overclocking"))
@@ -965,9 +957,7 @@ public class GT_MetaTileEntity_PCBFactory
                                                                 player, GT_Utility.trans("342", "Tier 2 OC Enabled"));
                                                     }
                                                 })
-                                                .setVariableBackgroundGetter(state -> state == 0
-                                                        ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
-                                                        : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                                 .setSize(90, 18)
                                                 .addTooltip(
                                                         "Incompatible with Tier 1, Requires a constant supply of super coolant. Allows for perfect overclocking"))
