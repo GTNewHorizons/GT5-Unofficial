@@ -17,8 +17,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -162,13 +160,13 @@ public class GT_MetaTileEntity_PCBFactory
                     .addShape(ocTier2Upgrade, transpose(new String[][] {
                         // spotless:off
                         {"RGGGR","G   G","G   G","G   G","RGGGR"},
-                        {"R   R"," GGG "," GPG "," GGG ","R   R"},
-                        {"R   R"," NNN "," NPN "," NNN ","R   R"},
-                        {"R   R"," QQQ "," QPQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QPQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QPQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QPQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QPQ "," QQQ ","R   R"},
+                        {"R   R"," GGG "," GTG "," GGG ","R   R"},
+                        {"R   R"," NNN "," NTN "," NNN ","R   R"},
+                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
+                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
+                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
+                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
+                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
                         {"RNNNR","NQQQN","NQPQN","NQQQN","RNNNR"},
                         {"RSSSR","SSSSS","SSSSS","SSSSS","RSSSR"}
                         //spotless:on
@@ -226,7 +224,7 @@ public class GT_MetaTileEntity_PCBFactory
                                 //spotless:on
                     .addElement('R', ofFrame(Materials.Americium))
                     .addElement('Q', ofBlock(GregTech_API.sBlockCasings8, 14))
-                    .addElement('P', ofBlock(GregTech_API.sBlockCasings1, 15))
+                    .addElement('T', ofBlock(GregTech_API.sBlockCasings1, 15))
                     .build();
 
     @Override
@@ -361,7 +359,7 @@ public class GT_MetaTileEntity_PCBFactory
             if (aActive)
                 return new ITexture[] {
                     BlockIcons.getCasingTextureForId(
-                            mTier < 3
+                            mSetTier < 3
                                     ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
                                     : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)),
                     TextureFactory.builder()
@@ -376,7 +374,7 @@ public class GT_MetaTileEntity_PCBFactory
                 };
             return new ITexture[] {
                 BlockIcons.getCasingTextureForId(
-                        mTier < 3
+                        mSetTier < 3
                                 ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
                                 : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)),
                 TextureFactory.builder()
@@ -391,7 +389,10 @@ public class GT_MetaTileEntity_PCBFactory
             };
         }
         return new ITexture[] {
-            BlockIcons.getCasingTextureForId(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11))
+            BlockIcons.getCasingTextureForId(
+                    mSetTier < 3
+                            ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
+                            : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13))
         };
     }
 
@@ -777,8 +778,8 @@ public class GT_MetaTileEntity_PCBFactory
                 .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
                 .addStructureInfo(EnumChatFormatting.GOLD + "41" + EnumChatFormatting.GRAY
                         + " Reinforced Photolithography Framework Casing")
-                .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY
-                        + " Basic Photolithography Framework Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
                 .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
@@ -791,11 +792,14 @@ public class GT_MetaTileEntity_PCBFactory
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
         aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
-        aNBT.setIntArray("mBioOffsets", mBioOffsets);
+        aNBT.setInteger("mBioOffsetX", mBioOffsets[0]);
+        aNBT.setInteger("mBioOffsetZ", mBioOffsets[1]);
         aNBT.setBoolean("mOCTier1Upgrade", mOCTier1);
-        aNBT.setIntArray("mOCTier1Offsets", mOCTier1Offsets);
+        aNBT.setInteger("mOCTier1OffsetX", mOCTier1Offsets[0]);
+        aNBT.setInteger("mOCTier1OffsetZ", mOCTier1Offsets[1]);
         aNBT.setBoolean("mOCTier2Upgrade", mOCTier2);
-        aNBT.setIntArray("mOCTier2Offsets", mOCTier2Offsets);
+        aNBT.setInteger("mOCTier2OffsetX", mOCTier2Offsets[0]);
+        aNBT.setInteger("mOCTier2OffsetZ", mOCTier2Offsets[1]);
         aNBT.setFloat("mRoughnessMultiplier", mRoughnessMultiplier);
         aNBT.setInteger("mSetTier", mSetTier);
     }
@@ -805,11 +809,14 @@ public class GT_MetaTileEntity_PCBFactory
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
         mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
-        mBioOffsets = aNBT.getIntArray("mBioOffsets");
+        mBioOffsets[0] = aNBT.getInteger("mBioOffsetX");
+        mBioOffsets[1] = aNBT.getInteger("mBioOffsetZ");
         mOCTier1 = aNBT.getBoolean("mOCTier1Upgrade");
-        mOCTier1Offsets = aNBT.getIntArray("mOCTier1Offsets");
+        mOCTier1Offsets[0] = aNBT.getInteger("mOCTier1OffsetX");
+        mOCTier1Offsets[1] = aNBT.getInteger("mOCTier1OffsetZ");
         mOCTier2 = aNBT.getBoolean("mOCTier2Upgrade");
-        mOCTier2Offsets = aNBT.getIntArray("mOCTier2Offsets");
+        mOCTier2Offsets[0] = aNBT.getInteger("mOCTier2OffsetX");
+        mOCTier2Offsets[1] = aNBT.getInteger("mOCTier2OffsetZ");
         mRoughnessMultiplier = aNBT.getFloat("mRoughnessMultiplier");
         mSetTier = aNBT.getInteger("mSetTier");
     }
@@ -881,9 +888,7 @@ public class GT_MetaTileEntity_PCBFactory
                                                         player, GT_Utility.trans("339", "Bio Upgrade Enabled"));
                                             }
                                         })
-                                        .setVariableBackgroundGetter(state -> state == 0
-                                                ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
-                                                : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                         .setSize(90, 18)
                                         .addTooltip("Required for Bioware and Wetware boards."))
                                 .addChild(new DrawableWidget()
@@ -909,9 +914,7 @@ public class GT_MetaTileEntity_PCBFactory
                                                                 "340", "Rotate Bio Upgrade 90 Degrees Enabled"));
                                             }
                                         })
-                                        .setVariableBackgroundGetter(state -> state == 0
-                                                ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
-                                                : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                         .setSize(90, 18)
                                         .addTooltip("Switches around the X and Z axis, rotates the shape 90 degrees"))
                                 .addChild(new DrawableWidget()
@@ -935,9 +938,7 @@ public class GT_MetaTileEntity_PCBFactory
                                                                 player, GT_Utility.trans("341", "Tier 1 OC Enabled"));
                                                     }
                                                 })
-                                                .setVariableBackgroundGetter(state -> state == 0
-                                                        ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
-                                                        : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                                 .setSize(90, 18)
                                                 .addTooltip(
                                                         "Incompatible with Tier 2, Requires a constant supply of distilled water. Allows for overclocking"))
@@ -962,9 +963,7 @@ public class GT_MetaTileEntity_PCBFactory
                                                                 player, GT_Utility.trans("342", "Tier 2 OC Enabled"));
                                                     }
                                                 })
-                                                .setVariableBackgroundGetter(state -> state == 0
-                                                        ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
-                                                        : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                                 .setSize(90, 18)
                                                 .addTooltip(
                                                         "Incompatible with Tier 1, Requires a constant supply of super coolant. Allows for perfect overclocking"))
