@@ -792,11 +792,14 @@ public class GT_MetaTileEntity_PCBFactory
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
         aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
-        aNBT.setIntArray("mBioOffsets", mBioOffsets);
+        aNBT.setInteger("mBioOffsetX", mBioOffsets[0]);
+        aNBT.setInteger("mBioOffsetZ", mBioOffsets[1]);
         aNBT.setBoolean("mOCTier1Upgrade", mOCTier1);
-        aNBT.setIntArray("mOCTier1Offsets", mOCTier1Offsets);
+        aNBT.setInteger("mOCTier1OffsetX", mOCTier1Offsets[0]);
+        aNBT.setInteger("mOCTier1OffsetZ", mOCTier1Offsets[1]);
         aNBT.setBoolean("mOCTier2Upgrade", mOCTier2);
-        aNBT.setIntArray("mOCTier2Offsets", mOCTier2Offsets);
+        aNBT.setInteger("mOCTier2OffsetX", mOCTier2Offsets[0]);
+        aNBT.setInteger("mOCTier2OffsetZ", mOCTier2Offsets[1]);
         aNBT.setFloat("mRoughnessMultiplier", mRoughnessMultiplier);
         aNBT.setInteger("mSetTier", mSetTier);
     }
@@ -806,11 +809,14 @@ public class GT_MetaTileEntity_PCBFactory
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
         mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
-        mBioOffsets = aNBT.getIntArray("mBioOffsets");
+        mBioOffsets[0] = aNBT.getInteger("mBioOffsetX");
+        mBioOffsets[1] = aNBT.getInteger("mBioOffsetZ");
         mOCTier1 = aNBT.getBoolean("mOCTier1Upgrade");
-        mOCTier1Offsets = aNBT.getIntArray("mOCTier1Offsets");
+        mOCTier1Offsets[0] = aNBT.getInteger("mOCTier1OffsetX");
+        mOCTier1Offsets[1] = aNBT.getInteger("mOCTier1OffsetZ");
         mOCTier2 = aNBT.getBoolean("mOCTier2Upgrade");
-        mOCTier2Offsets = aNBT.getIntArray("mOCTier2Offsets");
+        mOCTier2Offsets[0] = aNBT.getInteger("mOCTier2OffsetX");
+        mOCTier2Offsets[1] = aNBT.getInteger("mOCTier2OffsetZ");
         mRoughnessMultiplier = aNBT.getFloat("mRoughnessMultiplier");
         mSetTier = aNBT.getInteger("mSetTier");
     }
@@ -932,7 +938,7 @@ public class GT_MetaTileEntity_PCBFactory
                                                                 player, GT_Utility.trans("341", "Tier 1 OC Enabled"));
                                                     }
                                                 })
-                                                .setBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                                 .setSize(90, 18)
                                                 .addTooltip(
                                                         "Incompatible with Tier 2, Requires a constant supply of distilled water. Allows for overclocking"))
