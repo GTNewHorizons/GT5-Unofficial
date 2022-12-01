@@ -17,6 +17,8 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -27,6 +29,7 @@ import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.GregTech_API;
@@ -59,6 +62,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class GT_MetaTileEntity_PCBFactory
         extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PCBFactory>
         implements ISurvivalConstructable {
@@ -259,11 +263,11 @@ public class GT_MetaTileEntity_PCBFactory
         }
 
         if (mOCTier1 && !mOCTier2) {
-            buildPiece(ocTier1Upgrade, stackSize, hintsOnly, mOCTier1Offsets[0], 10, mOCTier1Offsets[1]);
+            buildPiece(ocTier1Upgrade, stackSize, hintsOnly, mOCTier1Offsets[0], 9, mOCTier1Offsets[1]);
         }
 
         if (!mOCTier1 && mOCTier2) {
-            buildPiece(ocTier2Upgrade, stackSize, hintsOnly, mOCTier2Offsets[0], 10, mOCTier2Offsets[1]);
+            buildPiece(ocTier2Upgrade, stackSize, hintsOnly, mOCTier2Offsets[0], 9, mOCTier2Offsets[1]);
         }
     }
 
@@ -309,7 +313,7 @@ public class GT_MetaTileEntity_PCBFactory
                     ocTier1Upgrade,
                     stackSize,
                     mOCTier1Offsets[0],
-                    10,
+                    9,
                     mOCTier1Offsets[1],
                     elementBudget,
                     env,
@@ -321,7 +325,7 @@ public class GT_MetaTileEntity_PCBFactory
                     ocTier2Upgrade,
                     stackSize,
                     mOCTier2Offsets[0],
-                    10,
+                    9,
                     mOCTier2Offsets[1],
                     elementBudget,
                     env,
@@ -442,14 +446,14 @@ public class GT_MetaTileEntity_PCBFactory
         }
 
         if (mOCTier1 && !mOCTier2) {
-            if (!checkPiece(ocTier1Upgrade, mOCTier1Offsets[0], 10, mOCTier1Offsets[1])) {
+            if (!checkPiece(ocTier1Upgrade, mOCTier1Offsets[0], 9, mOCTier1Offsets[1])) {
                 return false;
             }
             mUpgradesInstalled++;
         }
 
         if (mOCTier2 && !mOCTier1) {
-            if (!checkPiece(ocTier2Upgrade, mOCTier2Offsets[0], 0, mOCTier2Offsets[1])) {
+            if (!checkPiece(ocTier2Upgrade, mOCTier2Offsets[0], 9, mOCTier2Offsets[1])) {
                 return false;
             }
             mUpgradesInstalled++;
@@ -547,12 +551,12 @@ public class GT_MetaTileEntity_PCBFactory
             this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = getMaxEfficiency(aStack);
             this.lEUt = (long) -Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
-            this.mMaxProgresstime = tRecipe.mDuration;
+            this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * mRoughnessMultiplier);
 
             if (mOCTier1 || mOCTier2) {
                 calculateOverclockedNessMultiInternal(
                         (long) Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower),
-                        tRecipe.mDuration,
+                        (int) Math.ceil(tRecipe.mDuration * mRoughnessMultiplier),
                         1,
                         tTotalEU,
                         mOCTier2);
@@ -565,8 +569,9 @@ public class GT_MetaTileEntity_PCBFactory
             int remainingEfficiency = getMaxEfficiency(aStack);
             int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
             for (int j = 0; j < repeats; j++) {
+                int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
                 for (int i = tItemInputs.length - 1; i >= 0; i--) {
-                    if (getBaseMetaTileEntity().getRandomNumber(10000) < remainingEfficiency) {
+                    if (chanced < remainingEfficiency) {
                         tOutputs.add(tRecipe.getOutput(i));
                     }
                 }
@@ -615,7 +620,7 @@ public class GT_MetaTileEntity_PCBFactory
 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
-        return (int) (mTier * mRoughnessMultiplier * 10000);
+        return (int) (mRoughnessMultiplier * 10000);
     }
 
     @Override
@@ -704,33 +709,79 @@ public class GT_MetaTileEntity_PCBFactory
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("PCB Factory")
+        tt.addMachineType("Circuit Board Fabricator")
                 .addInfo("Controller block for the PCB Factory")
-                .addInfo(EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD + "!IMPORTANT!"
-                        + " Check out the configurations menu before building")
-                .addInfo("For each upgrade above 1, it draws more power equal to sqrt(Upgrades)")
-                .addInfo("The tier is set by the player in the controller")
-                .addInfo("The Configuration menu can be used to add upgrades")
-                .addInfo("If the recipe has a nanite it can have a parallel equal to: log2(Nanites) rounding up")
-                .addInfo("Consumes 10/s distilled water or super coolant with cooler upgrades")
+                .addInfo(EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD + "IMPORTANT!"
+                        + " Check out the configurations menu before building.")
+                .addInfo("The tier is selected in the controller GUI. Determines avaliable recipes.")
+                .addInfo("The configuration menu can be used to add upgrades.")
+                .addInfo("The parallel of the current recipe is Log₂(nanites used), rounded up.")
+                .addInfo("Coolant tier determines overclock ability. No cooler allows no overclocking.")
+                .addInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.GRAY
+                        + " cooler allows regular overclocking, takes 10L/s of coolant.")
+                .addInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.GRAY
+                        + " allows perfect overclocking, takes 10L/s of space coolant.")
+                .addInfo("Machine power consumption multiplies by sqrt(upgrade count).")
+                .addInfo("I.e. cooler + bio upgrade = sqrt(2) power consumption multiplier.")
                 .addInfo(AuthorBlueWeabo)
-                .addSeparator()
                 .beginStructureBlock(30, 38, 13, false)
-                .addStructureInfo("PCB Factory Structure is too complex! See schematic for details.")
-                .addStructureInfo("Photolithographic Casings")
-                .addStructureInfo("Plascreate Block")
-                .addStructureInfo("Grate Machine Casings")
-                .addStructureInfo("Radiant Naquadah alloy Casings")
-                .addStructureInfo("Stainless Steel Casings")
-                .addStructureInfo("Damascus Steel Frames")
-                .addStructureInfo("Vibrant Alloy Frames")
-                .addStructureInfo("Americium Frames")
-                .addEnergyHatch("Any Energy Hatch, Determins the power tier", 1)
-                .addMaintenanceHatch("Required 1", 1)
-                .addInputBus("Required 1", 1)
-                .addOutputBus("Required 1", 1)
-                .addInputHatch("Required 0", 1)
-                .addInputHatch("Coolant Hatch", 2)
+                .addSeparator()
+                .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
+                .addEnergyHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+                .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+                .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+                .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+                .addStructureInfo("Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD + "1")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Base Multi (Tier " + EnumChatFormatting.DARK_PURPLE + 1
+                        + EnumChatFormatting.BLUE + "):")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Vibrant Alloy Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Reinforced Glass")
+                .addStructureInfo(EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY
+                        + " Basic Photolithography Framework Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Grate Machine Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Plascrete Block")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2
+                        + EnumChatFormatting.BLUE + " (Adds to Tier " + EnumChatFormatting.DARK_PURPLE + 1
+                        + EnumChatFormatting.BLUE + "):")
+                .addStructureInfo(EnumChatFormatting.GOLD + "34" + EnumChatFormatting.GRAY + " Duranium Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "158" + EnumChatFormatting.GRAY
+                        + " Reinforced Photolithography Framework Casing")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 3
+                        + EnumChatFormatting.BLUE + ":")
+                .addStructureInfo(EnumChatFormatting.GOLD + "292" + EnumChatFormatting.GRAY
+                        + " Radiation Proof Photolithography Framework Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Bio Upgrade")
+                .addStructureInfo(EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY
+                        + " Clean Stainless Steel Machine Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Reinforced Glass")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Cooler Upgrade Tier " + EnumChatFormatting.DARK_PURPLE + 1
+                        + EnumChatFormatting.BLUE + ":")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Extreme Engine Intake Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "21" + EnumChatFormatting.GRAY
+                        + " Reinforced Photolithography Framework Casing")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Cooler Upgrade Tier " + EnumChatFormatting.DARK_PURPLE + 2
+                        + EnumChatFormatting.BLUE + ":")
+                .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "41" + EnumChatFormatting.GRAY
+                        + " Reinforced Photolithography Framework Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY
+                        + " Basic Photolithography Framework Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
                 .toolTipFinisher("GregTech");
         return tt;
     }
@@ -818,97 +869,127 @@ public class GT_MetaTileEntity_PCBFactory
                 .widget(ButtonWidget.closeWindowButton(true).setPos(185, 3))
                 .widget(new DynamicPositionedColumn()
                         .setSynced(false)
-                        .widget(new CycleButtonWidget()
-                                .setToggle(() -> mBioUpgrade, val -> {
-                                    mBioUpgrade = val;
-                                    if (!mBioUpgrade) {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("339.1", "Bio Upgrade Disabled"));
-                                    } else {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("339", "Bio Upgrade Enabled"));
-                                    }
-                                })
-                                .setBackground(
-                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
-                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("Bio Upgrade").withOffset(5, 0))
-                                .setSize(90, 18)
-                                .addTooltip("Required for Bioware and Wetware boards.")
+                        .widget(new MultiChildWidget()
+                                .addChild(new CycleButtonWidget()
+                                        .setToggle(() -> mBioUpgrade, val -> {
+                                            mBioUpgrade = val;
+                                            if (!mBioUpgrade) {
+                                                GT_Utility.sendChatToPlayer(
+                                                        player, GT_Utility.trans("339.1", "Bio Upgrade Disabled"));
+                                            } else {
+                                                GT_Utility.sendChatToPlayer(
+                                                        player, GT_Utility.trans("339", "Bio Upgrade Enabled"));
+                                            }
+                                        })
+                                        .setVariableBackgroundGetter(state -> state == 0
+                                                ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
+                                                : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                        .setSize(90, 18)
+                                        .addTooltip("Required for Bioware and Wetware boards."))
+                                .addChild(new DrawableWidget()
+                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                        .setSize(18, 18))
+                                .addChild(new TextWidget("Bio Upgrade")
+                                        .setTextAlignment(Alignment.Center)
+                                        .setPos(23, 5))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new CycleButtonWidget()
-                                .setToggle(() -> mBioRotate, val -> {
-                                    mBioRotate = val;
-                                    if (!mBioRotate) {
-                                        GT_Utility.sendChatToPlayer(
-                                                player,
-                                                GT_Utility.trans("340.1", "Rotate Bio Upgrade 90 Degrees Disabled"));
-                                    } else {
-                                        GT_Utility.sendChatToPlayer(
-                                                player,
-                                                GT_Utility.trans("340", "Rotate Bio Upgrade 90 Degrees Enabled"));
-                                    }
-                                })
-                                .setBackground(
-                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
-                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("Bio Rotation").withOffset(5, 0))
-                                .setSize(90, 18)
-                                .addTooltip("Switches aroung the X and Z offsets")
+                        .widget(new MultiChildWidget()
+                                .addChild(new CycleButtonWidget()
+                                        .setToggle(() -> mBioRotate, val -> {
+                                            mBioRotate = val;
+                                            if (!mBioRotate) {
+                                                GT_Utility.sendChatToPlayer(
+                                                        player,
+                                                        GT_Utility.trans(
+                                                                "340.1", "Rotate Bio Upgrade 90 Degrees Disabled"));
+                                            } else {
+                                                GT_Utility.sendChatToPlayer(
+                                                        player,
+                                                        GT_Utility.trans(
+                                                                "340", "Rotate Bio Upgrade 90 Degrees Enabled"));
+                                            }
+                                        })
+                                        .setVariableBackgroundGetter(state -> state == 0
+                                                ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
+                                                : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                        .setSize(90, 18)
+                                        .addTooltip("Switches around the X and Z axis, rotates the shape 90 degrees"))
+                                .addChild(new DrawableWidget()
+                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                        .setSize(18, 18))
+                                .addChild(new TextWidget("Bio Rotation")
+                                        .setTextAlignment(Alignment.Center)
+                                        .setPos(23, 5))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new CycleButtonWidget()
-                                .setToggle(() -> mOCTier1, val -> {
-                                    mOCTier1 = val;
-                                    if (!mOCTier1) {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("341.1", "Tier 1 OC Disabled"));
-                                    } else {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("341", "Tier 1 OC Enabled"));
-                                    }
-                                })
-                                .setBackground(
-                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
-                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("Cooler Tier 1").withOffset(5, 0))
-                                .setSize(90, 18)
-                                .addTooltip(
-                                        "Incompatible with Tier 2, Requires a constant supply of distilled water. Allows for overclocking")
+                        .widget(new MultiChildWidget()
+                                .addChild(
+                                        new CycleButtonWidget()
+                                                .setToggle(() -> mOCTier1, val -> {
+                                                    mOCTier1 = val;
+                                                    if (!mOCTier1) {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player,
+                                                                GT_Utility.trans("341.1", "Tier 1 OC Disabled"));
+                                                    } else {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player, GT_Utility.trans("341", "Tier 1 OC Enabled"));
+                                                    }
+                                                })
+                                                .setVariableBackgroundGetter(state -> state == 0
+                                                        ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
+                                                        : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                                .setSize(90, 18)
+                                                .addTooltip(
+                                                        "Incompatible with Tier 2, Requires a constant supply of distilled water. Allows for overclocking"))
+                                .addChild(new DrawableWidget()
+                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                        .setSize(18, 18))
+                                .addChild(new TextWidget("Cooler Tier 1")
+                                        .setTextAlignment(Alignment.Center)
+                                        .setPos(20, 5))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new CycleButtonWidget()
-                                .setToggle(() -> mOCTier2, val -> {
-                                    mOCTier2 = val;
-                                    if (!mOCTier2) {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("342.1", "Tier 2 OC Disabled"));
-                                    } else {
-                                        GT_Utility.sendChatToPlayer(
-                                                player, GT_Utility.trans("342", "Tier 2 OC Enabled"));
-                                    }
-                                })
-                                .setBackground(
-                                        GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT,
-                                        GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
-                                        new Text("Cooler Tier 2").withOffset(5, 0))
-                                .setSize(90, 18)
-                                .addTooltip(
-                                        "Incompatible with Tier 1, Requires a constant supply of super coolant. Allows for perfect overclocking")
+                        .widget(new MultiChildWidget()
+                                .addChild(
+                                        new CycleButtonWidget()
+                                                .setToggle(() -> mOCTier2, val -> {
+                                                    mOCTier2 = val;
+                                                    if (!mOCTier2) {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player,
+                                                                GT_Utility.trans("342.1", "Tier 2 OC Disabled"));
+                                                    } else {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player, GT_Utility.trans("342", "Tier 2 OC Enabled"));
+                                                    }
+                                                })
+                                                .setVariableBackgroundGetter(state -> state == 0
+                                                        ? new IDrawable[] {GT_UITextures.BUTTON_STANDARD}
+                                                        : new IDrawable[] {ModularUITextures.ITEM_SLOT})
+                                                .setSize(90, 18)
+                                                .addTooltip(
+                                                        "Incompatible with Tier 1, Requires a constant supply of super coolant. Allows for perfect overclocking"))
+                                .addChild(new DrawableWidget()
+                                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                        .setSize(18, 18))
+                                .addChild(new TextWidget("Cooler Tier 2")
+                                        .setTextAlignment(Alignment.Center)
+                                        .setPos(20, 5))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                         .widget(new TextWidget(new Text("Roughness Multiplier"))
                                 .setSize(90, 18)
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
-                                .setPos(0, 5))
+                                .setPos(0, 4))
                         .widget(new TextFieldWidget()
                                 .setGetterInt(() -> (int) (mRoughnessMultiplier * 10000))
                                 .setSetterInt(val -> {
                                     mRoughnessMultiplier = val / 10000f;
                                 })
-                                .setNumbers(100, 100000)
+                                .setNumbers(100, 20000)
                                 .setTextColor(Color.WHITE.normal)
                                 .setTextAlignment(Alignment.Center)
-                                .addTooltip("The Roughness multiplier is multiplied by 10000 before displaying!")
+                                .addTooltip("The roughness multiplier is multiplied by 10,000 before displaying!")
                                 .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                .setSize(90, 18))
+                                .setSize(90, 16))
                         .widget(new DrawableWidget()
                                 .setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
                                 .setSize(18, 18)
