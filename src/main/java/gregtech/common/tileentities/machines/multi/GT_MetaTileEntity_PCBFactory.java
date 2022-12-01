@@ -162,13 +162,13 @@ public class GT_MetaTileEntity_PCBFactory
                     .addShape(ocTier2Upgrade, transpose(new String[][] {
                         // spotless:off
                         {"RGGGR","G   G","G   G","G   G","RGGGR"},
-                        {"R   R"," GGG "," GPG "," GGG ","R   R"},
-                        {"R   R"," NNN "," NPN "," NNN ","R   R"},
-                        {"R   R"," QQQ "," QPQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QPQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QPQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QPQ "," QQQ ","R   R"},
-                        {"R   R"," QQQ "," QPQ "," QQQ ","R   R"},
+                        {"R   R"," GGG "," GTG "," GGG ","R   R"},
+                        {"R   R"," NNN "," NTN "," NNN ","R   R"},
+                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
+                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
+                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
+                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
+                        {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
                         {"RNNNR","NQQQN","NQPQN","NQQQN","RNNNR"},
                         {"RSSSR","SSSSS","SSSSS","SSSSS","RSSSR"}
                         //spotless:on
@@ -226,7 +226,7 @@ public class GT_MetaTileEntity_PCBFactory
                                 //spotless:on
                     .addElement('R', ofFrame(Materials.Americium))
                     .addElement('Q', ofBlock(GregTech_API.sBlockCasings8, 14))
-                    .addElement('P', ofBlock(GregTech_API.sBlockCasings1, 15))
+                    .addElement('T', ofBlock(GregTech_API.sBlockCasings1, 15))
                     .build();
 
     @Override
@@ -361,7 +361,7 @@ public class GT_MetaTileEntity_PCBFactory
             if (aActive)
                 return new ITexture[] {
                     BlockIcons.getCasingTextureForId(
-                            mTier < 3
+                            mSetTier < 3
                                     ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
                                     : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)),
                     TextureFactory.builder()
@@ -376,7 +376,7 @@ public class GT_MetaTileEntity_PCBFactory
                 };
             return new ITexture[] {
                 BlockIcons.getCasingTextureForId(
-                        mTier < 3
+                        mSetTier < 3
                                 ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
                                 : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)),
                 TextureFactory.builder()
@@ -391,7 +391,10 @@ public class GT_MetaTileEntity_PCBFactory
             };
         }
         return new ITexture[] {
-            BlockIcons.getCasingTextureForId(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11))
+            BlockIcons.getCasingTextureForId(
+                    mSetTier < 3
+                            ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
+                            : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13))
         };
     }
 
@@ -777,8 +780,8 @@ public class GT_MetaTileEntity_PCBFactory
                 .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
                 .addStructureInfo(EnumChatFormatting.GOLD + "41" + EnumChatFormatting.GRAY
                         + " Reinforced Photolithography Framework Casing")
-                .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY
-                        + " Basic Photolithography Framework Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
                 .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
