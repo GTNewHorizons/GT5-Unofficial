@@ -13,7 +13,7 @@ import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.LowPowerLase
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
+import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.interfaces.IHatchElement;
@@ -25,13 +25,10 @@ import gregtech.api.util.IGT_HatchAdder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -373,18 +370,16 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         }
 
         @Override
+        public BlocksToPlace getBlocksToPlace(
+                T t, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            return BlocksToPlace.createEmpty();
+        }
+
+        @Override
         public PlaceResult survivalPlaceBlock(
-                T o,
-                World world,
-                int x,
-                int y,
-                int z,
-                ItemStack trigger,
-                IItemSource s,
-                EntityPlayerMP actor,
-                Consumer<IChatComponent> chatter) {
+                T o, World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
             if (check(o, world, x, y, z)) return PlaceResult.SKIP;
-            if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, actor)) return PlaceResult.REJECT;
+            if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return PlaceResult.REJECT;
             world.setBlock(x, y, z, Blocks.air, 0, 2);
             return PlaceResult.ACCEPT;
         }

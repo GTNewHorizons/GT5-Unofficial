@@ -33,6 +33,7 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -150,6 +151,30 @@ public class GT_TileEntity_ElectricImplosionCompressor
                             if (te.piston) world.setBlock(x, y, z, GregTech_API.sBlockMetal5, 2, 3);
                             else world.setBlockToAir(x, y, z);
                             return true;
+                        }
+
+                        @Override
+                        public BlocksToPlace getBlocksToPlace(
+                                GT_TileEntity_ElectricImplosionCompressor t,
+                                World world,
+                                int x,
+                                int y,
+                                int z,
+                                ItemStack trigger,
+                                AutoPlaceEnvironment env) {
+                            return BlocksToPlace.createEmpty();
+                        }
+
+                        @Override
+                        public PlaceResult survivalPlaceBlock(
+                                GT_TileEntity_ElectricImplosionCompressor t,
+                                World world,
+                                int x,
+                                int y,
+                                int z,
+                                ItemStack trigger,
+                                AutoPlaceEnvironment env) {
+                            return isAir().survivalPlaceBlock(t, world, x, y, z, trigger, env);
                         }
                     })
                     .build();
