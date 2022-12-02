@@ -1,6 +1,7 @@
 package gregtech.loaders.postload;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
+import static gregtech.api.enums.GT_Values.VP;
 
 import com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.Loader;
@@ -279,7 +280,7 @@ public class GT_PostLoad {
                             new FluidStack[] {Materials.UUMatter.getFluid(tMaterial.getMass())},
                             null,
                             (int) (tMaterial.getMass() * 512L),
-                            30,
+                            (int) VP[1],
                             0);
                 }
                 tInput = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
@@ -303,7 +304,7 @@ public class GT_PostLoad {
                             new FluidStack[] {Materials.UUMatter.getFluid(tMaterial.getMass())},
                             null,
                             (int) (tMaterial.getMass() * 512L),
-                            30,
+                            (int) VP[1],
                             0);
                 }
             }

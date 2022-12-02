@@ -135,7 +135,7 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
                 long tMass = cubicFluidMultiplier(MASS_OVERRIDES.getOrDefault(tMaterial, tMaterial.getMass()));
                 if ((tFluid.amount >= tMass) && (tMass > 0L)) {
 
-                    this.mEUt = GT_Utility.safeInt(gregtech.api.enums.GT_Values.V[this.mTier], 1);
+                    this.mEUt = GT_Utility.safeInt(gregtech.api.enums.GT_Values.VP[this.mTier], 1);
                     this.mMaxProgresstime = GT_Utility.safeInt(tMass * 1024L / (1L << this.mTier), 1);
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 || mEUt == Integer.MAX_VALUE - 1)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
