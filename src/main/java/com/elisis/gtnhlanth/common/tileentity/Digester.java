@@ -19,7 +19,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -28,7 +27,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import java.util.ArrayList;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -133,11 +131,6 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
         return 200;
-    }
-
-    @Override
-    public Object getClientGUI(int id, InventoryPlayer playerInventory, IGregTechTileEntity metaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(playerInventory, metaTileEntity, getLocalName(), "Digester.png");
     }
 
     @Override
