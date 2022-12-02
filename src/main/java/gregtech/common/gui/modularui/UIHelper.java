@@ -99,8 +99,8 @@ public class UIHelper {
             case 3:
                 return getItemGridPositions(itemInputCount, 16, 24, 3, 1);
             case 4:
+                return getItemGridPositions(itemInputCount, 34, 15, 2, 2);
             case 5:
-                return getItemGridPositions(itemInputCount, 16, 24, 3, 2);
             case 6:
                 return getItemGridPositions(itemInputCount, 16, 15, 3, 2);
             default:
