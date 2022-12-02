@@ -1,6 +1,5 @@
 package common.tileentities;
 
-import client.gui.GUIContainer_ModularNuclearReactor;
 import common.Blocks;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
@@ -10,7 +9,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.joml.Vector3i;
@@ -92,13 +90,6 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
                                     : Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)
                 }
                 : new ITexture[] {Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID)};
-    }
-
-    // TODO: Opening UI crashes server. Controller isn't craftable right now.
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        /*return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-        "MultiblockDisplay.png");*/
-        return new GUIContainer_ModularNuclearReactor(aBaseMetaTileEntity, aPlayerInventory.player);
     }
 
     @Override

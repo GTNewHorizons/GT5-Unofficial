@@ -10,7 +10,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -24,7 +23,6 @@ import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -137,11 +135,6 @@ public class GTMTE_SOFuelCellMK1 extends GT_MetaTileEntity_EnhancedMultiBlockBas
             };
         }
         return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID)};
-    }
-
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MultiblockDisplay.png");
     }
 
     @Override
