@@ -22,7 +22,6 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.classic;
 
-import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,7 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank, IFluidHandler, ITileWithGUI {
+public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank, IFluidHandler {
 
     final ArrayList<FluidStack> INTERNALTANKS = new ArrayList<>();
 
@@ -153,10 +152,5 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
                     outputstack, this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, this, actualdrain));
         }
         return ret;
-    }
-
-    @Override
-    public int getGUIID() {
-        return 4;
     }
 }

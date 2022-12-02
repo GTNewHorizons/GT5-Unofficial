@@ -25,9 +25,17 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.classic;
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
 import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
-import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
+import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.forge.InvWrapper;
+import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import java.util.Arrays;
@@ -47,7 +55,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
         implements ITileDropsContent,
                 IFluidHandler,
                 IFluidTank,
-                ITileWithGUI,
+                ITileWithModularUI,
                 ITileAddsInformation,
                 ITileHasDifferentTextureSides {
 
@@ -88,7 +96,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
     }
 
     private boolean checkPreUpdate() {
-        return this.worldObj.isRemote || ((this.fuelstack == null || this.fuelstack.stackSize <= 0) && this.fuel <= 0);
+        return (this.fuelstack == null || this.fuelstack.stackSize <= 0) && this.fuel <= 0;
     }
 
     private void fixUnderlflow() {
@@ -117,7 +125,10 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
 
     @Override
     public void updateEntity() {
+        if (this.worldObj.isRemote) return;
+
         pushWaterToAdjacentTiles();
+        fakestack.setStackDisplayName(outputstack.amount + "L Water");
         if (checkPreUpdate()) return;
 
         fixUnderlflow();
@@ -280,11 +291,6 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
     }
 
     @Override
-    public int getGUIID() {
-        return 3;
-    }
-
-    @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         return 0;
     }
@@ -339,5 +345,26 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity
             ITileHasDifferentTextureSides.texture[i] =
                     par1IconRegister.registerIcon(MainMod.MOD_ID + ":heatedWaterPumpSide");
         }
+    }
+
+    @Override
+    public ModularWindow createWindow(UIBuildContext buildContext) {
+        ModularWindow.Builder builder = ModularWindow.builder(176, 166);
+        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
+        builder.bindPlayerInventory(buildContext.getPlayer());
+        final IItemHandlerModifiable invWrapper = new InvWrapper(this);
+
+        builder.widget(new SlotWidget(invWrapper, 0)
+                        .setFilter(stack -> TileEntityFurnace.getItemBurnTime(stack) > 0)
+                        .setPos(55, 52))
+                .widget(SlotWidget.phantom(invWrapper, 1).disableInteraction().setPos(85, 32))
+                .widget(new ProgressBar()
+                        .setProgress(() -> (float) fuel / maxfuel)
+                        .setTexture(BW_UITextures.PROGRESSBAR_FUEL, 14)
+                        .setDirection(ProgressBar.Direction.UP)
+                        .setPos(56, 36)
+                        .setSize(14, 14));
+
+        return builder.build();
     }
 }

@@ -61,7 +61,7 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
     }
 
     public void drawExtras(int aRecipeIndex) {
-        int base = 70;
+        int base = getDescriptionYOffset() - 2;
         int[] lines = {base, base + 8, base + 16, base + 24, base + 32, base + 40, base + 48, base + 56, base + 64};
         int tEUt = ((GT_NEI_DefaultHandler.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
         int tDuration = ((GT_NEI_DefaultHandler.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;

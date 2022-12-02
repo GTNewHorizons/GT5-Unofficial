@@ -35,11 +35,14 @@ public class BW_NEI_RadHatchHandler extends GT_NEI_DefaultHandler {
         int radioLevel = recipe.mEUt;
         int amount = recipe.mDuration;
         long time = recipe.mSpecialValue;
-        drawText(10, 73, StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", radioLevel), -16777216);
-        drawText(10, 83, StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", amount), -16777216);
+        int y = getDescriptionYOffset();
+        drawText(10, y, StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", radioLevel), -16777216);
+        y += 10;
+        drawText(10, y, StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", amount), -16777216);
+        y += 10;
         drawText(
                 10,
-                93,
+                y,
                 StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.2", time * amount / 20.0),
                 -16777216);
     }

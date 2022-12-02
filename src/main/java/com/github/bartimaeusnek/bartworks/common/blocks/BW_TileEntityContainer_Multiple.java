@@ -22,8 +22,9 @@
 
 package com.github.bartimaeusnek.bartworks.common.blocks;
 
-import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.gtnewhorizons.modularui.api.UIInfos;
+import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.tile.IWrenchable;
@@ -90,8 +91,10 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
             TileEntity tile = worldObj.getTileEntity(x, y, z);
             if (tile instanceof IHasGui) {
                 return worldObj.isRemote || IC2.platform.launchGui(player, (IHasGui) tile);
-            } else if (tile instanceof ITileWithGUI) {
-                return worldObj.isRemote || ((ITileWithGUI) tile).openGUI(tile, player);
+            } else if (tile instanceof ITileWithModularUI) {
+                if (!worldObj.isRemote) {
+                    UIInfos.TILE_MODULAR_UI.open(player, worldObj, x, y, z);
+                }
             }
         }
 

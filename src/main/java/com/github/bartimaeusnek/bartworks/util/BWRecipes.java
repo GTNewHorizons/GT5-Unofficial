@@ -25,11 +25,17 @@ package com.github.bartimaeusnek.bartworks.util;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.calculateSv;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.specialToByte;
 
+import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -38,6 +44,7 @@ import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 import ic2.core.item.ItemFluidCell;
 import java.util.*;
+import java.util.function.Supplier;
 import javax.annotation.Nonnegative;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -45,6 +52,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
 
 public class BWRecipes {
 
@@ -71,57 +79,88 @@ public class BWRecipes {
             "",
             true,
             false // special handler
-            );
-    private final BacteriaVatRecipeMap sBacteriaVat = new BacteriaVatRecipeMap(
-            new HashSet<>(50),
-            "bw.recipe.BacteriaVat",
-            StatCollector.translateToLocal("tile.biovat.name"),
-            null,
-            "gregtech:textures/gui/basicmachines/Default",
-            6,
-            2,
-            0,
-            1,
-            1,
-            " Sievert: ",
-            1,
-            " Sv",
-            true,
-            false // special handler
-            );
-    private final BW_Recipe_Map_LiquidFuel sAcidGenFuels = new BW_Recipe_Map_LiquidFuel(
-            new HashSet<>(10),
-            "bw.fuels.acidgens",
-            StatCollector.translateToLocal("tile.acidgenerator.name"),
-            null,
-            "gregtech:textures/gui/basicmachines/Default",
-            1,
-            1,
-            1,
-            1,
-            1,
-            "EU generated: ",
-            1000,
-            "",
-            false,
-            true);
-    private final BWRecipes.SpecialObjectSensitiveMap sCircuitAssemblyLineMap = new SpecialObjectSensitiveMap(
-            new HashSet<>(60),
-            "bw.recipe.cal",
-            "Circuit Assembly Line",
-            null,
-            "gregtech:textures/gui/basicmachines/Default",
-            6,
-            6,
-            1,
-            1,
-            1,
-            "",
-            1,
-            "",
-            true,
-            true // special handler
-            );
+            ) {
+        @Nullable
+        @Override
+        public IDrawable getOverlayForSlot(boolean isFluid, boolean isOutput, int index, boolean isSpecial) {
+            if (!isFluid && !isOutput && !isSpecial) {
+                switch (index) {
+                    case 0:
+                        return BW_UITextures.OVERLAY_SLOT_DISH;
+                    case 1:
+                        return BW_UITextures.OVERLAY_SLOT_DNA_FLASK;
+                    case 2:
+                        return GT_UITextures.OVERLAY_SLOT_CIRCUIT;
+                    case 3:
+                        return GT_UITextures.OVERLAY_SLOT_MOLECULAR_1;
+                    case 4:
+                        return GT_UITextures.OVERLAY_SLOT_MOLECULAR_2;
+                    case 5:
+                        return GT_UITextures.OVERLAY_SLOT_DATA_ORB;
+                }
+            } else if (isFluid && !isOutput) {
+                return GT_UITextures.OVERLAY_SLOT_VIAL_2;
+            } else if (isSpecial) {
+                return BW_UITextures.OVERLAY_SLOT_MODULE;
+            }
+            return super.getOverlayForSlot(isFluid, isOutput, index, false);
+        }
+    }.setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
+            .setLogo(BW_UITextures.PICTURE_BW_LOGO_47X21)
+            .setLogoPos(125, 3)
+            .setLogoSize(47, 21);
+    private final GT_Recipe.GT_Recipe_Map sBacteriaVat = new BacteriaVatRecipeMap(
+                    new HashSet<>(50),
+                    "bw.recipe.BacteriaVat",
+                    StatCollector.translateToLocal("tile.biovat.name"),
+                    null,
+                    "gregtech:textures/gui/basicmachines/Default",
+                    6,
+                    2,
+                    0,
+                    1,
+                    1,
+                    " Sievert: ",
+                    1,
+                    " Sv",
+                    true,
+                    false // special handler
+                    )
+            .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE);
+    private final GT_Recipe.GT_Recipe_Map sAcidGenFuels = new BW_Recipe_Map_LiquidFuel(
+                    new HashSet<>(10),
+                    "bw.fuels.acidgens",
+                    StatCollector.translateToLocal("tile.acidgenerator.name"),
+                    null,
+                    "gregtech:textures/gui/basicmachines/Default",
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    "EU generated: ",
+                    1000,
+                    "",
+                    false,
+                    true)
+            .useModularUI(true);
+    private final GT_Recipe.GT_Recipe_Map sCircuitAssemblyLineMap = new SpecialObjectSensitiveMap(
+                    new HashSet<>(60),
+                    "bw.recipe.cal",
+                    "Circuit Assembly Line",
+                    null,
+                    "gregtech:textures/gui/basicmachines/Default",
+                    6,
+                    1,
+                    1,
+                    1,
+                    1,
+                    "",
+                    1,
+                    "",
+                    true,
+                    true)
+            .setProgressBar(GT_UITextures.PROGRESSBAR_CIRCUIT_ASSEMBLER);
     private final GT_Recipe.GT_Recipe_Map sRadHatch = new GT_Recipe.GT_Recipe_Map(
             new HashSet<>(150),
             "bw.recipe.radhatch",
@@ -138,7 +177,19 @@ public class BWRecipes {
             "",
             false,
             false // special handler
-            );
+            ) {
+        @Override
+        public void addProgressBarUI(
+                ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+            builder.widget(new DrawableWidget()
+                    .setDrawable(BW_UITextures.PICTURE_RADIATION)
+                    .setPos(new Pos2d(74, 20).add(windowOffset))
+                    .setSize(29, 27));
+        }
+    }.setSlotOverlay(false, false, BW_UITextures.OVERLAY_SLOT_ROD)
+            .setLogo(BW_UITextures.PICTURE_BW_LOGO_47X21)
+            .setLogoPos(118, 55)
+            .setLogoSize(47, 21);
 
     /**
      * @param machine 0 = biolab; 1 = BacterialVat; 2 = sAcidGenFuels; 3 = circuitAssemblyLine

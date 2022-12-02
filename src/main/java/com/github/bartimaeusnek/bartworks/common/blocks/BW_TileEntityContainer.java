@@ -25,9 +25,10 @@ package com.github.bartimaeusnek.bartworks.common.blocks;
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
 import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
-import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
+import com.gtnewhorizons.modularui.api.UIInfos;
+import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.tile.IWrenchable;
@@ -98,8 +99,11 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
         if (!player.isSneaking()) {
             if (tile instanceof IHasGui) {
                 return worldObj.isRemote || IC2.platform.launchGui(player, (IHasGui) tile);
-            } else if (tile instanceof ITileWithGUI) {
-                return worldObj.isRemote || ((ITileWithGUI) tile).openGUI(tile, player);
+            } else if (tile instanceof ITileWithModularUI) {
+                if (!worldObj.isRemote) {
+                    UIInfos.TILE_MODULAR_UI.open(player, worldObj, x, y, z);
+                }
+                return true;
             }
         }
         return false;

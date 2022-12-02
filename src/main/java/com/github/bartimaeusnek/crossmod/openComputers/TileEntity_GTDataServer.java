@@ -24,7 +24,6 @@ package com.github.bartimaeusnek.crossmod.openComputers;
 
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
-import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -47,7 +46,7 @@ import net.minecraft.tileentity.TileEntity;
 
 @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")
 public class TileEntity_GTDataServer extends TileEntity
-        implements ISidedInventory, ITileWithGUI, ITileAddsInformation, ITileHasDifferentTextureSides, SimpleComponent {
+        implements ISidedInventory, ITileAddsInformation, ITileHasDifferentTextureSides, SimpleComponent {
 
     private final BiMap<Long, GT_NBT_DataBase> OrbDataBase = HashBiMap.create();
 
@@ -133,11 +132,6 @@ public class TileEntity_GTDataServer extends TileEntity
 
     @Override
     public void registerBlockIcons(IIconRegister par1IconRegister) {}
-
-    @Override
-    public int getGUIID() {
-        return 0;
-    }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int p_94128_1_) {

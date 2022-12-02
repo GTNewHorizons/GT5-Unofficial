@@ -22,10 +22,21 @@
 
 package com.github.bartimaeusnek.bartworks.common.items;
 
+import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.screen.IItemWithModularUI;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.items.GT_Generic_Item;
 import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -33,7 +44,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class GT_Destructopack_Item extends GT_Generic_Item {
+public class GT_Destructopack_Item extends GT_Generic_Item implements IItemWithModularUI {
 
     public GT_Destructopack_Item() {
         super("GT2Destructopack", "Destructopack", "Mobile Trash Bin");
@@ -52,12 +63,34 @@ public class GT_Destructopack_Item extends GT_Generic_Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-        aPlayer.openGui(MainMod.instance, 0, aWorld, 0, 0, 0);
+        GT_UIInfos.openPlayerHeldItemUI(aPlayer);
         return aStack;
     }
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aIconRegister) {
         this.mIcon = aIconRegister.registerIcon("bartworks:gt.GT2Destructopack");
+    }
+
+    @Override
+    public ModularWindow createWindow(UIBuildContext buildContext, ItemStack heldStack) {
+        ModularWindow.Builder builder = ModularWindow.builder(176, 166);
+        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
+        builder.bindPlayerInventory(buildContext.getPlayer());
+
+        builder.widget(new SlotWidget(new BaseSlot(new ItemStackHandler(), 0) {
+                            @Override
+                            public void putStack(ItemStack stack) {
+                                onSlotChanged();
+                            }
+                        })
+                        .setBackground(ModularUITextures.ITEM_SLOT, BW_UITextures.OVERLAY_SLOT_CROSS)
+                        .setPos(79, 16))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
+                        .setSize(17, 17)
+                        .setPos(152, 63));
+
+        return builder.build();
     }
 }

@@ -26,24 +26,37 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTI
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.V;
 
+import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.client.gui.BW_GUIContainer_Windmill;
 import com.github.bartimaeusnek.bartworks.common.items.BW_Stonage_Rotors;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
-import com.github.bartimaeusnek.bartworks.server.container.BW_Container_Windmill;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.*;
+import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.objects.XSTR;
@@ -52,6 +65,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -59,7 +73,6 @@ import java.util.List;
 import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -70,7 +83,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_Windmill>
-        implements ISurvivalConstructable {
+        implements ISurvivalConstructable, IGetTitleColor {
 
     private static final IIcon[] iIcons = new IIcon[2];
     private static final IIconContainer[] iIconContainers = new IIconContainer[2];
@@ -336,16 +349,6 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
     }
 
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new BW_GUIContainer_Windmill(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new BW_Container_Windmill(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
     public void stopMachine() {
         getBaseMetaTileEntity().disableWorking();
     }
@@ -575,5 +578,76 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
         } catch (Exception e) {
             rotorBlock.rotorSlot.damage(damage, false);
         }
+    }
+
+    @Override
+    public GUITextureSet getGUITextureSet() {
+        return new GUITextureSet()
+                .setMainBackground(BW_UITextures.BACKGROUND_BROWN)
+                .setItemSlot(BW_UITextures.SLOT_BROWN)
+                .setTitleTab(
+                        BW_UITextures.TAB_TITLE_BROWN,
+                        BW_UITextures.TAB_TITLE_DARK_BROWN,
+                        BW_UITextures.TAB_TITLE_ANGULAR_BROWN);
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(BW_UITextures.PICTURE_BW_LOGO_47X21)
+                .setSize(47, 21)
+                .setPos(123, 59));
+    }
+
+    @Override
+    public int getTitleColor() {
+        return COLOR_TITLE_WHITE.get();
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new SlotWidget(inventoryHandler, 1)
+                        .setBackground(getGUITextureSet().getItemSlot())
+                        .setPos(59, 35))
+                .widget(
+                        new DrawableWidget() {
+                            private static final int DIVIDER = 125;
+
+                            @Override
+                            public void onScreenUpdate() {
+                                super.onScreenUpdate();
+                                if (mMaxProgresstime > 0) {
+                                    if (System.currentTimeMillis() / DIVIDER % 40 == 30)
+                                        setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[3]);
+                                    else if (System.currentTimeMillis() / DIVIDER % 40 == 20)
+                                        setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[2]);
+                                    else if (System.currentTimeMillis() / DIVIDER % 40 == 10)
+                                        setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[1]);
+                                    else if (System.currentTimeMillis() / DIVIDER % 40 == 0)
+                                        setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[0]);
+                                } else {
+                                    setDrawable(BW_UITextures.PICTURE_WINDMILL_EMPTY);
+                                }
+                            }
+                        }.setDrawable(BW_UITextures.PICTURE_WINDMILL_EMPTY)
+                                .setPos(85, 27)
+                                .setSize(32, 32))
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val))
+                .widget(new ItemDrawable(
+                                () -> mMachine && !getBaseMetaTileEntity().isActive()
+                                        ? GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                                                GT_MetaGenerated_Tool_01.SOFTMALLET, 1, null, null, null)
+                                        : null)
+                        .asWidget()
+                        .setPos(66, 66))
+                .widget(new FakeSyncWidget.BooleanSyncer(
+                        () -> getBaseMetaTileEntity().isActive(),
+                        val -> getBaseMetaTileEntity().setActive(val)))
+                .widget(new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setMaxWidth(150)
+                        .setEnabled(widget -> !mMachine)
+                        .setPos(92, 22))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
     }
 }

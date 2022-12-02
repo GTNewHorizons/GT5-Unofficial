@@ -1,14 +1,18 @@
 // Add your dependencies here
 
 dependencies {
-    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.41.99:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.41.148:dev")
     compile("com.github.GTNewHorizons:StructureLib:1.2.0-beta.2:dev")
-    compile("com.github.GTNewHorizons:TecTech:5.0.42:dev")
-    compile("com.github.GTNewHorizons:NotEnoughItems:2.3.7-GTNH:dev")
+    compile("com.github.GTNewHorizons:TecTech:5.0.52:dev")
+    compile("com.github.GTNewHorizons:NotEnoughItems:2.3.14-GTNH:dev")
     compile("com.github.GTNewHorizons:TinkersConstruct:1.9.4-GTNH:dev")
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.5:dev")
     compile("com.github.GTNewHorizons:CodeChickenCore:1.1.6:dev")
-    compile("com.github.GTNewHorizons:Galacticraft:3.0.44-GTNH:dev")
+    compile("com.github.GTNewHorizons:Galacticraft:3.0.47-GTNH:dev") {
+        exclude group:"com.github.GTNewHorizons", module:"SpongePoweredMixin"
+        exclude group:"com.github.GTNewHorizons", module:"SpongeMixins"
+    }
+    compile("com.github.GTNewHorizons:ModularUI:1.0.23:dev")
     compile("com.github.GTNewHorizons:GalacticGregGT5:1.0.8:dev") {
         exclude group:"com.github.GTNewHorizons", module:"bartworks"
     }

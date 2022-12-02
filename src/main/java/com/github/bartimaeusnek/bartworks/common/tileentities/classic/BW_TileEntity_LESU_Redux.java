@@ -25,7 +25,6 @@
 // import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 // import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
 // import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
-// import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
 // import com.github.bartimaeusnek.bartworks.MainMod;
 // import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 // import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
@@ -51,7 +50,7 @@
 //
 //
 // public class BW_TileEntity_LESU_Redux extends TileEntity implements ITileHasDifferentTextureSides,
-// ITileAddsInformation, ITileWithGUI, ITileDropsContent, IEnergyConnected {
+// ITileAddsInformation, ITileDropsContent, IEnergyConnected {
 //
 //    public ConnectedBlocksChecker connectedcells;
 //    public ItemStack[] circuits = new ItemStack[5];
@@ -80,11 +79,6 @@
 //    @Override
 //    public void registerBlockIcons(IIconRegister par1IconRegister) {
 //        par1IconRegister.registerIcon(MainMod.MOD_ID + ":LESU_CASING_" + i);
-//    }
-//
-//    @Override
-//    public int getGUIID() {
-//        return 0;
 //    }
 //
 //    @Override
