@@ -5,6 +5,8 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -92,6 +94,18 @@ public class GT_Values {
         // Error tier to prevent out of bounds errors. Not really a real tier (for now).
         8_589_934_592L
     };
+
+    /**
+     * The Voltage Practical. These are recipe voltage you should use if you expect the recipe to use a full amp of
+     * that tier. These leave a bit of headroom for cable and transformer losses, but not enough to make it a great gain.
+     */
+    // this will correctly map ULV to 7.
+    public static final long[] VP = Arrays.stream(V)
+            .map(i -> BigInteger.valueOf(i)
+                    .multiply(BigInteger.valueOf(30))
+                    .divide(BigInteger.valueOf(32))
+                    .longValueExact())
+            .toArray();
     // Why -7? Mystery of the universe. Something may break if you change this so please do not without extensive
     // testing.
     // TODO:Adding that in coremod!!!
@@ -454,7 +468,6 @@ public class GT_Values {
     public static final Set<String> mCTMEnabledBlock = new HashSet<>();
     public static final Set<String> mCTMDisabledBlock = new HashSet<>();
 
-    public static boolean hideAssLineRecipes = false;
     public static boolean updateFluidDisplayItems = true;
     public static final int STEAM_PER_WATER = 160;
     /**
