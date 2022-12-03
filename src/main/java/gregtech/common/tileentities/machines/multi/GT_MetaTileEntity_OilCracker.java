@@ -54,8 +54,8 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                             'l',
                             buildHatchAdder(GT_MetaTileEntity_OilCracker.class)
                                     .atLeast(
-                                            GT_HatchElement.InputHatch.or(GT_HatchElement.OutputHatch)
-                                                    .withAdder(GT_MetaTileEntity_OilCracker::addLeftHatchToMachineList),
+                                            GT_HatchElement.InputHatch.withAdder(
+                                                    GT_MetaTileEntity_OilCracker::addLeftHatchToMachineList),
                                             GT_HatchElement.Energy,
                                             GT_HatchElement.Maintenance)
                                     .dot(2)
@@ -67,9 +67,8 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                             'r',
                             buildHatchAdder(GT_MetaTileEntity_OilCracker.class)
                                     .atLeast(
-                                            GT_HatchElement.InputHatch.or(GT_HatchElement.OutputHatch)
-                                                    .withAdder(
-                                                            GT_MetaTileEntity_OilCracker::addRightHatchToMachineList),
+                                            GT_HatchElement.OutputHatch.withAdder(
+                                                    GT_MetaTileEntity_OilCracker::addRightHatchToMachineList),
                                             GT_HatchElement.Energy,
                                             GT_HatchElement.Maintenance)
                                     .dot(3)
