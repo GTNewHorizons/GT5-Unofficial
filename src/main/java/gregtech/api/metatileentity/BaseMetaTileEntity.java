@@ -1453,6 +1453,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                     .isGUIClickable(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
                 return false;
         }
+
         if (isServerSide()) {
             if (!privateAccess() || aPlayer.getDisplayName().equalsIgnoreCase(getOwnerName())) {
                 final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
@@ -1611,6 +1612,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                             return true;
                         }
                     }
+                    // End item != null
                 } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
                     aSide = (getCoverIDAtSide(aSide) == 0)
                             ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ)
