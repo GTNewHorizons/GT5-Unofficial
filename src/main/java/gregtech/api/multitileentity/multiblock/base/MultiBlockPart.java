@@ -15,6 +15,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -142,6 +144,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
      * True if `aMode` is one of the allowed modes
      */
     public boolean hasMode(int aMode) {
+        // This is not sent to the client
         return (mAllowedModes & aMode) != 0;
     }
 
@@ -628,4 +631,32 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
 
     // End Inventory
 
+    // === Modular UI ===
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public String getLocalName() {
+        // TODO: modeSelected() doesn't work client side, because it doesn't have allowedModes available
+        if (mMode == getModeOrdinal(ITEM_IN)) return "Input Inventory";
+        if (mMode == getModeOrdinal(ITEM_OUT)) return "Output Inventory";
+
+        return "Unknown";
+    }
+
+    @Override
+    public boolean hasGui(byte aSide) {
+        // UIs only for specific mode(s)
+        if (modeSelected(ITEM_IN, ITEM_OUT) && mFacing == aSide) return true;
+
+        return false;
+    }
+
+    @Override
+    public ModularWindow createWindow(UIBuildContext buildContext) {
+        System.out.println("MultiBlockPart::createWindow");
+        return super.createWindow(buildContext);
+    }
 }
