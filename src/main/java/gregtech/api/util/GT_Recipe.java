@@ -2428,6 +2428,48 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 (GT_Recipe_Map_LargeBoilerFakeFuels) new GT_Recipe_Map_LargeBoilerFakeFuels()
                         .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
 
+        public static final GT_Recipe_Map sNanoForge = new GT_Recipe_Map(
+                        new HashSet<>(10),
+                        "gt.recipe.nanoforge",
+                        "Nano Forge",
+                        null,
+                        RES_PATH_GUI + "basicmachines/LCRNEI",
+                        6,
+                        2,
+                        3,
+                        1,
+                        1,
+                        "Tier: ",
+                        1,
+                        "",
+                        false,
+                        true)
+                .useModularUI(true)
+                .setUsualFluidInputCount(1)
+                .setSlotOverlay(false, false, true, GT_UITextures.OVERLAY_SLOT_LENS)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
+
+        public static final GT_Recipe_Map sPCBFactory = new GT_Recipe_Map(
+                        new HashSet<>(10),
+                        "gt.recipe.pcbfactory",
+                        "PCB Factory",
+                        null,
+                        RES_PATH_GUI + "basicmachines/LCRNEI",
+                        6,
+                        9,
+                        4,
+                        2,
+                        1,
+                        E,
+                        0,
+                        E,
+                        true,
+                        true)
+                .useModularUI(true)
+                .setUsualFluidInputCount(3)
+                .setUsualFluidOutputCount(0)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
+
         /**
          * HashMap of Recipes based on their Items
          */

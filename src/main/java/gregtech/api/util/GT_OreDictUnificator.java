@@ -118,6 +118,14 @@ public class GT_OreDictUnificator {
         return get(aPrefix.get(aMaterial), aReplacement, aAmount, false, true);
     }
 
+    public static ItemStack get(OrePrefixes aPrefix, Object aMaterial, long aAmount, boolean aNoInvalidAmounts) {
+        // if (Materials.mDefaultComponents.contains(aPrefix) && !aPrefix.mDynamicItems.contains((Materials)aMaterial))
+        // aPrefix.mDynamicItems.add((Materials) aMaterial);
+        if (OrePrefixes.mPreventableComponents.contains(aPrefix) && aPrefix.mDisabledItems.contains(aMaterial))
+            return null;
+        return get(aPrefix.get(aMaterial), null, aAmount, false, aNoInvalidAmounts);
+    }
+
     public static ItemStack get(
             Object aName,
             ItemStack aReplacement,
