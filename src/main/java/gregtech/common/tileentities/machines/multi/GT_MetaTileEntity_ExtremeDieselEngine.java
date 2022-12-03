@@ -38,7 +38,7 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Combustion Generator")
                 .addInfo("Controller block for the Extreme Combustion Engine")
-                .addInfo("Supply High Octane Gasoline and 8000L of Lubricant per hour to run")
+                .addInfo("Supply high rating fuel and 8000L of Lubricant per hour to run")
                 .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
                 .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
                 .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
