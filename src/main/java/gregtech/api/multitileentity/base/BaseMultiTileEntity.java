@@ -15,6 +15,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
@@ -252,7 +253,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
 
     @Override
     public boolean useModularUI() {
-        return true;
+        return false;
     }
 
     @Override
@@ -829,9 +830,26 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                 if (!getCoverBehaviorAtSideNew(aSide)
                         .isGUIClickable(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
                     return false;
+
+                return openModularUi(aPlayer, aSide);
             }
         }
         return false;
+    }
+
+    public boolean hasGui(byte aSide) {
+        return false;
+    }
+
+    boolean openModularUi(EntityPlayer aPlayer, byte aSide) {
+        if (!hasGui(aSide) || !isServerSide()) {
+            System.out.println("No GUI or Not Serverside");
+            return false;
+        }
+
+        GT_UIInfos.openGTTileEntityUI(this, aPlayer);
+        System.out.println("Trying to open a UI");
+        return true;
     }
 
     public boolean onWrenchRightClick(
@@ -1039,6 +1057,8 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                 case GregTechTileClientEvents.CHANGE_CUSTOM_DATA:
                     if ((aValue & 0x80) != 0) // Is texture index
                     setTextureData((byte) (aValue & 0x7F));
+                    // TODO: Should we also receive/send allowed modes here?
+
                     // else if (mMetaTileEntity instanceof GT_MetaTileEntity_Hatch)//is texture page and hatch
                     //    ((GT_MetaTileEntity_Hatch) mMetaTileEntity).onTexturePageUpdate((byte) (aValue & 0x7F));
                     break;
@@ -1262,11 +1282,13 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
      */
     @Override
     public void openInventory() {
+        System.out.println("Open Inventory");
         /* Do nothing */
     }
 
     @Override
     public void closeInventory() {
+        System.out.println("Close Inventory");
         /* Do nothing */
     }
 
