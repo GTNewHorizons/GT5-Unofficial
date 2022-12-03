@@ -40,7 +40,7 @@ public class GT_NaniteChain {
                 new FluidStack[] {Materials.UUMatter.getFluid(10000), new FluidStack(solderIndalloy, 144 * 32)},
                 Materials.Carbon.getNanite(2),
                 50 * 20,
-                400000);
+                (int) GT_Values.VP[8]);
 
         /*
          * General Rules for making nanite recipes:
