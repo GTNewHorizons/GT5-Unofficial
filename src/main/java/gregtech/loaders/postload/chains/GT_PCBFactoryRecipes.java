@@ -513,7 +513,7 @@ public class GT_PCBFactoryRecipes {
                         Materials.BioMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 5))))
                     },
                     aBoards.toArray(new ItemStack[0]),
-                    (int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 6.5))),
+                    (int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 5.5))),
                     (int) GT_Values.VP[tier],
                     mTier1BitMap | mTier2BitMap | mTier3BitMap | mBioUpgradeBitMap);
         }
