@@ -154,7 +154,6 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
                 .addCasingInfo("SC Turbine Casing", 24)
                 .addDynamoHatch("Back center", 1)
                 .addMaintenanceHatch("Side centered", 2)
-                .addMufflerHatch("Side centered", 2)
                 .addInputHatch("Supercritical Fluid, Side centered", 2)
                 .toolTipFinisher("Good Generator");
         return tt;
