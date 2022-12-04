@@ -13326,7 +13326,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 },
                 ItemList.NanoForge.get(1),
                 2400 * 20,
-                100000);
+                (int) GT_Values.VP[7]);
 
         GT_NaniteChain.run();
         GT_PCBFactoryRecipes.load();
