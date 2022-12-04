@@ -518,7 +518,7 @@ public class GT_PCBFactoryRecipes {
                     mTier1BitMap | mTier2BitMap | mTier3BitMap | mBioUpgradeBitMap);
         }
         for (int tier = 6; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
-            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 6.5))));
+            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 5.5))));
             List<ItemStack> aBoards = new ArrayList<ItemStack>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Bio_Ultra.get(i));
