@@ -88,7 +88,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     private int mSievert;
     private int mNeededSievert;
     private int mCasing = 0;
-    private int mExpectedTimes = 0;
+    private int mExpectedMultiplier = 0;
     private int mTimes = 0;
 
     public GT_TileEntity_BioVat(int aID, String aName, String aNameRegional) {
@@ -222,7 +222,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
      * @param needEqual if the recipeFluidOutput should be equal to the fluid in the output hatch
      * @return the expected output multiplier
      */
-    private int getExpectedTimes(@Nullable FluidStack recipeFluidOutput, boolean needEqual) {
+    private int getExpectedMultiplier(@Nullable FluidStack recipeFluidOutput, boolean needEqual) {
         FluidStack storedFluidOutputs = this.getStoredFluidOutputs();
         if (storedFluidOutputs == null) return 1;
         if (!needEqual || storedFluidOutputs.isFluidEqual(recipeFluidOutput)) {
@@ -319,10 +319,10 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         final FluidStack recipeFluidOutput = gtRecipe.getFluidOutput(0);
         final FluidStack recipeFluidInput = gtRecipe.mFluidInputs[0];
 
-        this.mExpectedTimes = this.getExpectedTimes(recipeFluidOutput, true);
+        this.mExpectedMultiplier = this.getExpectedMultiplier(recipeFluidOutput, true);
 
         this.mTimes = 1;
-        for (int i = 1; i < this.mExpectedTimes; i++) {
+        for (int i = 1; i < this.mExpectedMultiplier; i++) {
             if (this.depleteInput(recipeFluidInput)) {
                 this.mTimes++;
             }
@@ -755,9 +755,13 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         final String[] baseInfoData = super.getInfoData();
         final String[] infoData = new String[baseInfoData.length + 2];
         System.arraycopy(baseInfoData, 0, infoData, 0, baseInfoData.length);
+        // See https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/11923
+        // here we must check the machine is well-formed as otherwise getExpectedMultiplier might error out!
         infoData[infoData.length - 2] = StatCollector.translateToLocal("BW.infoData.BioVat.expectedProduction") + ": "
                 + EnumChatFormatting.GREEN
-                + (mMaxProgresstime <= 0 ? getExpectedTimes(null, false) : mExpectedTimes) * 100
+                + (mMachine
+                        ? (mMaxProgresstime <= 0 ? getExpectedMultiplier(null, false) : mExpectedMultiplier) * 100
+                        : -1)
                 + EnumChatFormatting.RESET + " %";
         infoData[infoData.length - 1] =
                 StatCollector.translateToLocal("BW.infoData.BioVat.production") + ": " + EnumChatFormatting.GREEN
