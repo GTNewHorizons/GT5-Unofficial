@@ -308,7 +308,7 @@ public class GT_MetaTileEntity_NanoForge
             mSpecialTier = 3;
         }
 
-        if (mMaintenanceHatches.size() != 1 && mInputBusses.size() < 1 && mOutputBusses.size() < 1) {
+        if (mMaintenanceHatches.size() != 1 || mInputBusses.size() < 1 || mOutputBusses.size() < 1) {
             return false;
         }
 
