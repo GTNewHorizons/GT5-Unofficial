@@ -414,7 +414,7 @@ public class GT_MetaTileEntity_PCBFactory
                 mTier = 1;
             }
         } else {
-            if (!checkPiece(tier3, 3, 21, 9)) {
+            if (!checkPiece(tier3, 3, 21, 0)) {
                 return false;
             }
             mTier = 3;
