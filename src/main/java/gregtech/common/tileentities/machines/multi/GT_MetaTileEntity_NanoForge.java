@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -226,7 +227,6 @@ public class GT_MetaTileEntity_NanoForge
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -345,7 +345,6 @@ public class GT_MetaTileEntity_NanoForge
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -399,29 +398,54 @@ public class GT_MetaTileEntity_NanoForge
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Nano Forge")
+        tt.addMachineType("Nanite Fabricator")
                 .addInfo("Controller block for the Nano Forge")
-                .addInfo("Requires insane amounts of power to create nanites")
-                .addInfo("TecTech Hatches work on the Nano Forge")
-                .addInfo("Each tier the multi gains a new building next to it")
-                .addInfo("Putting a nanite in the controller allows the user to choose the tier")
-                .addInfo("Requires a Carbon Nanite to use tier 1")
-                .addInfo("Requires a Neutronium Nanite to use tier 2")
-                .addInfo("Requires a Transcendent Metal Nanite to use tier 3")
+                .addInfo("Requires insane amounts of power to create nanites. Each tier")
+                .addInfo("the multi gains a new building next to it. The nanite in the")
+                .addInfo("controller slot controls the tier.")
+                .addInfo("--------------------------------------------")
+                .addInfo("Requires a Carbon Nanite to use tier tier " + EnumChatFormatting.DARK_PURPLE + 1)
+                .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 2)
+                .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 3)
+                .addInfo("--------------------------------------------")
                 .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
-                .addInfo("it gains perfect overclock")
+                .addInfo("it gains " + EnumChatFormatting.RED + "perfect overclock" + EnumChatFormatting.GRAY + ".")
                 .addInfo(AuthorBlueWeabo)
                 .addSeparator()
                 .beginStructureBlock(30, 38, 13, false)
                 .addStructureInfo("Nano Forge Structure is too complex! See schematic for details.")
-                .addStructureInfo("Radiant Naquadah Casings")
-                .addStructureInfo("Stellar Alloy Frames")
-                .addEnergyHatch("Any Energy Hatch, Determines Power Tier", 1)
-                .addMaintenanceHatch("Required 1", 1)
-                .addInputBus("Required 1", 1)
-                .addOutputBus("Required 1", 1)
-                .addInputHatch("Required 0", 1)
-                .addOutputHatch("Required 0", 1)
+                .addStructureInfo("--------------------------------------------")
+                .addStructureInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.GRAY)
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "527" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "171" + EnumChatFormatting.GRAY + " Stellar Alloy Frame Box")
+                .addStructureInfo("--------------------------------------------")
+                .addStructureInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.GRAY)
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "148" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "16" + EnumChatFormatting.GRAY + " Assembling Line Casing")
+                .addStructureInfo("--------------------------------------------")
+                .addStructureInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 3 + EnumChatFormatting.GRAY)
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "228" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "84" + EnumChatFormatting.GRAY + " Stellar Alloy Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "16" + EnumChatFormatting.GRAY + " Assembling Line Casing")
+                .addStructureInfo("--------------------------------------------")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-"
+                        + EnumChatFormatting.GOLD + "2" + EnumChatFormatting.GRAY + " energy hatches or "
+                        + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " TT energy hatch.")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 0 + EnumChatFormatting.GRAY + "+"
+                        + EnumChatFormatting.GRAY + " input hatches.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 0 + EnumChatFormatting.GRAY + "+"
+                        + EnumChatFormatting.GRAY + " output hatches.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + "+"
+                        + EnumChatFormatting.GRAY + " input busses.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + "+"
+                        + EnumChatFormatting.GRAY + " output busses.")
+                .addStructureInfo("--------------------------------------------")
                 .toolTipFinisher("GregTech");
         return tt;
     }
