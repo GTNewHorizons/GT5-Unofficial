@@ -23,7 +23,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
@@ -292,17 +291,17 @@ public class GT_MetaTileEntity_NanoForge
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (aStack == null) return false;
-        if (aStack == Materials.Carbon.getNanite(aStack.stackSize) && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)) {
+        if (aStack.equals(Materials.Carbon.getNanite(1)) && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)) {
             mSpecialTier = 1;
         }
 
-        if (aStack == Materials.Neutronium.getNanite(aStack.stackSize)
+        if (aStack.equals(Materials.Neutronium.getNanite(1))
                 && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)) {
             mSpecialTier = 2;
         }
 
-        if (aStack == Materials.TranscendentMetal.getNanite(aStack.stackSize)
+        if (aStack.equals(Materials.TranscendentMetal.getNanite(1))
                 && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
                 && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
@@ -313,29 +312,11 @@ public class GT_MetaTileEntity_NanoForge
             return false;
         }
 
-        // If there is more than 1 TT energy hatch, the structure check will fail.
-        // If there is a TT hatch and a normal hatch, the structure check will fail.
-        if (mExoticEnergyHatches.size() > 0) {
-            if (mEnergyHatches.size() > 0) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
+        if (mEnergyHatches.size() + mExoticEnergyHatches.size() < 1) {
+            return false;
         }
 
-        // If there is 0 or more than 2 energy hatches structure check will fail.
-        if (mEnergyHatches.size() > 0) {
-            if (mEnergyHatches.size() > 2) return false;
-
-            // Check will also fail if energy hatches are not of the same tier.
-            byte tier_of_hatch = mEnergyHatches.get(0).mTier;
-            for (GT_MetaTileEntity_Hatch_Energy energyHatch : mEnergyHatches) {
-                if (energyHatch.mTier != tier_of_hatch) {
-                    return false;
-                }
-            }
-        }
-
-        if ((mEnergyHatches.size() == 0) && (mExoticEnergyHatches.size() == 0)) return false;
-
-        return !(mSpecialTier <= 0);
+        return mSpecialTier > 0;
     }
 
     @Override

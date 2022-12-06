@@ -92,7 +92,7 @@ public class GT_NaniteChain {
                 null,
                 100 * 20,
                 100000000,
-                2);
+                1);
 
         // Gold Nanites - Used in Tier 3 PCB Factory to improve board production
         GT_Values.RA.addNanoForgeRecipe(
