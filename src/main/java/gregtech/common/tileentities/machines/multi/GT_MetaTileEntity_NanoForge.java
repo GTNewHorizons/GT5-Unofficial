@@ -103,7 +103,7 @@ public class GT_MetaTileEntity_NanoForge
                         {"        ", "        ", "        ", "   CC   ", "   CC   ", "        ", "        ", "        "},
                         {"        ", "        ", "        ", "   CC   ", "   CC   ", "        ", "        ", "        "},
                         {"        ", "        ", "        ", "   CC   ", "   CC   ", "        ", "        ", "        "},
-                        {" BBBBBB ", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", " BBBBBB "}
+                        {" CCCCCC ", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", " CCCCCC "}
                     }))
                     .addShape(STRUCTURE_PIECE_TIER3, transpose(new String[][] {
                         {"        ", "        ", "   CC   ", "  CCCC  ", "  CCCC  ", "   CC   ", "        ", "        "},
@@ -132,7 +132,7 @@ public class GT_MetaTileEntity_NanoForge
                         {"    FF  ", "        ", "        ", "   CC   ", "   CC   ", "        ", "        ", "  FF    "},
                         {"  FF    ", "        ", "        ", "   CC   ", "   CC   ", "        ", "        ", "    FF  "},
                         {"        ", " F      ", "        ", "   CC   ", "   CC   ", "        ", "      F ", "        "},
-                        {" BBBBBB ", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", " BBBBBB "}
+                        {" CCCCCC ", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", " CCCCCC "}
                     }))
                     //spotless:on
                     .addElement('F', ofFrame(Materials.StellarAlloy))
@@ -290,18 +290,19 @@ public class GT_MetaTileEntity_NanoForge
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mSpecialTier = 0;
         if (aStack == null) return false;
-        if (aStack.equals(Materials.Carbon.getNanite(1)) && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)) {
+        if (aStack.isItemEqual(Materials.Carbon.getNanite(1)) && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)) {
             mSpecialTier = 1;
         }
 
-        if (aStack.equals(Materials.Neutronium.getNanite(1))
+        if (aStack.isItemEqual(Materials.Neutronium.getNanite(1))
                 && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)) {
             mSpecialTier = 2;
         }
 
-        if (aStack.equals(Materials.TranscendentMetal.getNanite(1))
+        if (aStack.isItemEqual(Materials.TranscendentMetal.getNanite(1))
                 && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
                 && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
@@ -352,12 +353,14 @@ public class GT_MetaTileEntity_NanoForge
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
+        aNBT.setByte("mSpecialTier", mSpecialTier);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
+        mSpecialTier = aNBT.getByte("mSpecialTier");
     }
 
     /** Get possible alignments of this controller
