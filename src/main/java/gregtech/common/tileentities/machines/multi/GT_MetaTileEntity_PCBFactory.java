@@ -800,7 +800,7 @@ public class GT_MetaTileEntity_PCBFactory
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
         aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
-        aNBT.setBoolean("mBioRotte", mBioRotate);
+        aNBT.setBoolean("mBioRotate", mBioRotate);
         aNBT.setInteger("mBioOffsetX", mBioOffsets[0]);
         aNBT.setInteger("mBioOffsetZ", mBioOffsets[1]);
         aNBT.setBoolean("mOCTier1Upgrade", mOCTier1);
