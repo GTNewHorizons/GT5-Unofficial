@@ -2232,7 +2232,7 @@ public class RECIPES_Machines {
 
                 // Matter Fabricator CPU
                 RecipeUtils.addShapedGregtechRecipe(
-                        CI.getDoublePlate(8, 1),
+                        CI.getPlate(8, 1),
                         GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Superconductor), 1L),
                         CI.getPlate(8, 1),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 1L),
