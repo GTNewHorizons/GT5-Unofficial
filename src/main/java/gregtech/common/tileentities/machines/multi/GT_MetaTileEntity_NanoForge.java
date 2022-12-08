@@ -255,7 +255,8 @@ public class GT_MetaTileEntity_NanoForge
         mOutputFluids = null;
         long tVoltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
         long tAmps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
-        long tTotalEU = tVoltage / getExoticAndNormalEnergyHatchList().size() * tAmps;;
+        long tTotalEU = tVoltage / getExoticAndNormalEnergyHatchList().size() * tAmps;
+        ;
         GT_Recipe tRecipe =
                 map.findRecipe(getBaseMetaTileEntity(), null, false, false, tTotalEU, tFluidInputs, null, tItemInputs);
 
