@@ -393,9 +393,10 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
                 tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
                 tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(
                         this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
-                if (tRecipe == null) return false;
             }
         }
+
+        if (tRecipe == null) return false;
 
         ArrayList<ItemStack> outputItems = new ArrayList<>();
         ArrayList<FluidStack> outputFluids = new ArrayList<>();
