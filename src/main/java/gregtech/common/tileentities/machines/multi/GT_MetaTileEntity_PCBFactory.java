@@ -532,15 +532,19 @@ public class GT_MetaTileEntity_PCBFactory
             }
         }
 
-        int aMaxParallel = (int) Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2));
+        int aMaxParallel = (int) Math.max(Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2)), 1);
         float aExtraPower = (float) Math.ceil(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled));
+
+        if (tRecipe.mEUt > voltage) {
+            return false;
+        }
 
         if (((recipeBitMap & mTier1BitMap) == 1
                         || (recipeBitMap & mTier2BitMap) == 1
                         || (recipeBitMap & mTier3BitMap) == 1)
                 && ((recipeBitMap & mBioBitMap) == 0 || (recipeBitMap & mBioBitMap) == 1 == mBioUpgrade)) {
 
-            int aCurrentParallel = 1;
+            int aCurrentParallel = 0;
             for (int i = 0; i < aMaxParallel; i++) {
                 if (tRecipe.isRecipeInputEqual(true, aFluidInputs, tItemInputs)) {
                     aCurrentParallel++;
@@ -549,39 +553,43 @@ public class GT_MetaTileEntity_PCBFactory
                 }
             }
 
-            this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = getMaxEfficiency(aStack);
-            this.lEUt = (long) -Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
-            this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * mRoughnessMultiplier);
+            if (aCurrentParallel > 0) {
+                this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
+                this.mEfficiencyIncrease = getMaxEfficiency(aStack);
+                this.lEUt = (long) -Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
+                this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * mRoughnessMultiplier);
 
-            if (mOCTier1 || mOCTier2) {
-                calculateOverclockedNessMultiInternal(
-                        (long) Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower),
-                        (int) Math.ceil(tRecipe.mDuration * mRoughnessMultiplier),
-                        1,
-                        tTotalEU,
-                        mOCTier2);
-            }
-
-            if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
-
-            mOutputItems = new ItemStack[tRecipe.mOutputs.length];
-            ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
-            int remainingEfficiency = getMaxEfficiency(aStack);
-            int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
-            for (int j = 0; j < repeats; j++) {
-                int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
-                for (int i = tItemInputs.length - 1; i >= 0; i--) {
-                    if (chanced < remainingEfficiency) {
-                        tOutputs.add(tRecipe.getOutput(i));
-                    }
+                if (mOCTier1 || mOCTier2) {
+                    calculateOverclockedNessMultiInternal(
+                            (long) Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower),
+                            (int) Math.ceil(tRecipe.mDuration * mRoughnessMultiplier),
+                            1,
+                            tTotalEU,
+                            mOCTier2);
                 }
-                remainingEfficiency -= 10000;
+
+                if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
+
+                mOutputItems = new ItemStack[tRecipe.mOutputs.length];
+                ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
+                int remainingEfficiency = getMaxEfficiency(aStack);
+                int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
+                for (int j = 0; j < repeats; j++) {
+                    int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
+                    for (int i = tItemInputs.length - 1; i >= 0; i--) {
+                        if (chanced < remainingEfficiency) {
+                            tOutputs.add(tRecipe.getOutput(i));
+                        }
+                    }
+                    remainingEfficiency -= 10000;
+                }
+
+                mOutputItems = tOutputs.toArray(new ItemStack[0]);
+                mOutputFluids = tRecipe.mFluidOutputs.clone();
+                updateSlots();
+
+                return true;
             }
-            mOutputItems = tOutputs.toArray(new ItemStack[0]);
-            mOutputFluids = tRecipe.mFluidOutputs.clone();
-            updateSlots();
-            return true;
         }
 
         return false;
@@ -792,6 +800,7 @@ public class GT_MetaTileEntity_PCBFactory
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
         aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
+        aNBT.setBoolean("mBioRotte", mBioRotate);
         aNBT.setInteger("mBioOffsetX", mBioOffsets[0]);
         aNBT.setInteger("mBioOffsetZ", mBioOffsets[1]);
         aNBT.setBoolean("mOCTier1Upgrade", mOCTier1);
@@ -809,6 +818,7 @@ public class GT_MetaTileEntity_PCBFactory
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
         mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
+        mBioRotate = aNBT.getBoolean("mBioRotate");
         mBioOffsets[0] = aNBT.getInteger("mBioOffsetX");
         mBioOffsets[1] = aNBT.getInteger("mBioOffsetZ");
         mOCTier1 = aNBT.getBoolean("mOCTier1Upgrade");

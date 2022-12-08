@@ -255,7 +255,7 @@ public class GT_MetaTileEntity_NanoForge
         mOutputFluids = null;
         long tVoltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
         long tAmps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
-        long tTotalEU = tVoltage * tAmps;
+        long tTotalEU = tVoltage / getExoticAndNormalEnergyHatchList().size() * tAmps;;
         GT_Recipe tRecipe =
                 map.findRecipe(getBaseMetaTileEntity(), null, false, false, tTotalEU, tFluidInputs, null, tItemInputs);
 
@@ -266,6 +266,8 @@ public class GT_MetaTileEntity_NanoForge
         if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
+            this.mMaxProgresstime = tRecipe.mDuration;
+            this.lEUt = tRecipe.mEUt;
             calculateOverclockedNessMultiInternal(
                     tRecipe.mEUt, tRecipe.mDuration, 1, tTotalEU, tRecipe.mSpecialValue < mSpecialTier);
 
