@@ -13,6 +13,8 @@ public class TecTechUITextures {
             AdaptableUITexture.of(MODID, "gui/background/screen_blue", 90, 72, 2);
     public static final UITexture BACKGROUND_SCREEN_BLUE_PARAMETRIZER_TXT =
             UITexture.fullImage(MODID, "gui/background/screen_blue_parametrizer_txt");
+    public static final UITexture BACKGROUND_SCREEN_BLUE_NO_INVENTORY =
+            UITexture.fullImage(MODID, "gui/background/screen_blue_no_inventory");
 
     public static final UITexture BUTTON_STANDARD_16x16 = UITexture.fullImage(MODID, "gui/button/standard_16x16");
     public static final UITexture BUTTON_STANDARD_LIGHT_16x16 =

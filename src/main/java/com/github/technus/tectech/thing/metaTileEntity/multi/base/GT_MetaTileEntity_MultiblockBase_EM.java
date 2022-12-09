@@ -2934,18 +2934,27 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new DrawableWidget()
-                .setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
-                .setPos(4, 4)
-                .setSize(190, 91));
+        if (doesBindPlayerInventory()) {
+            builder.widget(new DrawableWidget()
+                    .setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                    .setPos(4, 4)
+                    .setSize(190, 91));
+        } else {
+            builder.widget(new DrawableWidget()
+                    .setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE_NO_INVENTORY)
+                    .setPos(4, 4)
+                    .setSize(190, 171));
+        }
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
-        builder.widget(inventorySlot
-                        .setBackground(getGUITextureSet().getItemSlot(), TecTechUITextures.OVERLAY_SLOT_MESH)
-                        .setPos(173, 167))
-                .widget(new DrawableWidget()
-                        .setDrawable(TecTechUITextures.PICTURE_HEAT_SINK_SMALL)
-                        .setPos(173, 185)
-                        .setSize(18, 6));
+        if (doesBindPlayerInventory()) {
+            builder.widget(inventorySlot
+                            .setBackground(getGUITextureSet().getItemSlot(), TecTechUITextures.OVERLAY_SLOT_MESH)
+                            .setPos(173, 167))
+                    .widget(new DrawableWidget()
+                            .setDrawable(TecTechUITextures.PICTURE_HEAT_SINK_SMALL)
+                            .setPos(173, 185)
+                            .setSize(18, 6));
+        }
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
@@ -2980,7 +2989,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     }
                     return ret.toArray(new IDrawable[0]);
                 })
-                .setPos(174, 116)
+                .setPos(174, doesBindPlayerInventory() ? 116 : 140)
                 .setSize(16, 16);
         if (isPowerPassButtonEnabled()) {
             powerPassButton.addTooltip("Power Pass").setTooltipShowUpDelay(TOOLTIP_DELAY);
@@ -3010,7 +3019,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     }
                     return ret.toArray(new IDrawable[0]);
                 })
-                .setPos(174, 132)
+                .setPos(174, doesBindPlayerInventory() ? 132 : 156)
                 .setSize(16, 16);
         if (isSafeVoidButtonEnabled()) {
             safeVoidButton.addTooltip("Safe Void").setTooltipShowUpDelay(TOOLTIP_DELAY);
@@ -3043,7 +3052,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     }
                     return ret.toArray(new IDrawable[0]);
                 })
-                .setPos(174, 148)
+                .setPos(174, doesBindPlayerInventory() ? 148 : 172)
                 .setSize(16, 16);
         if (isAllowedToWorkButtonEnabled()) {
             powerSwitchButton.addTooltip("Power Switch").setTooltipShowUpDelay(TOOLTIP_DELAY);
@@ -3063,7 +3072,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         LEDCounter = (byte) ((1 + LEDCounter) % 6);
                     }
                 }.setDrawable(TecTechUITextures.PICTURE_PARAMETER_BLANK)
-                        .setPos(5, 96)
+                        .setPos(5, doesBindPlayerInventory() ? 96 : 176)
                         .setSize(166, 12));
         for (int hatch = 0; hatch < 10; hatch++) {
             for (int param = 0; param < 2; param++) {
@@ -3072,51 +3081,53 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             }
         }
 
-        builder.widget(new DrawableWidget()
-                .setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE)
-                .setPos(173, 96)
-                .setSize(18, 18));
-        for (int i = 0; i < 9; i++) {
-            final int index = i;
+        if (doesBindPlayerInventory()) {
             builder.widget(new DrawableWidget()
-                    .setDrawable(() -> {
-                        UITexture valid = TecTechUITextures.PICTURE_UNCERTAINTY_VALID[index];
-                        UITexture invalid = TecTechUITextures.PICTURE_UNCERTAINTY_INVALID[index];
-                        switch (eCertainMode) {
-                            case 1: // ooo oxo ooo
-                                if (index == 4) return eCertainStatus == 0 ? valid : invalid;
-                                break;
-                            case 2: // ooo xox ooo
-                                if (index == 3) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                                if (index == 5) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                                break;
-                            case 3: // oxo xox oxo
-                                if (index == 1) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                                if (index == 3) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                                if (index == 5) return (eCertainStatus & 4) == 0 ? valid : invalid;
-                                if (index == 7) return (eCertainStatus & 8) == 0 ? valid : invalid;
-                                break;
-                            case 4: // xox ooo xox
-                                if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                                if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                                if (index == 6) return (eCertainStatus & 4) == 0 ? valid : invalid;
-                                if (index == 8) return (eCertainStatus & 8) == 0 ? valid : invalid;
-                                break;
-                            case 5: // xox oxo xox
-                                if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                                if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                                if (index == 4) return (eCertainStatus & 4) == 0 ? valid : invalid;
-                                if (index == 6) return (eCertainStatus & 8) == 0 ? valid : invalid;
-                                if (index == 8) return (eCertainStatus & 16) == 0 ? valid : invalid;
-                                break;
-                        }
-                        return null;
-                    })
-                    .setPos(174 + (index % 3) * 6, 97 + (index / 3) * 6)
-                    .setSize(4, 4));
+                    .setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE)
+                    .setPos(173, 96)
+                    .setSize(18, 18));
+            for (int i = 0; i < 9; i++) {
+                final int index = i;
+                builder.widget(new DrawableWidget()
+                        .setDrawable(() -> {
+                            UITexture valid = TecTechUITextures.PICTURE_UNCERTAINTY_VALID[index];
+                            UITexture invalid = TecTechUITextures.PICTURE_UNCERTAINTY_INVALID[index];
+                            switch (eCertainMode) {
+                                case 1: // ooo oxo ooo
+                                    if (index == 4) return eCertainStatus == 0 ? valid : invalid;
+                                    break;
+                                case 2: // ooo xox ooo
+                                    if (index == 3) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                                    if (index == 5) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                                    break;
+                                case 3: // oxo xox oxo
+                                    if (index == 1) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                                    if (index == 3) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                                    if (index == 5) return (eCertainStatus & 4) == 0 ? valid : invalid;
+                                    if (index == 7) return (eCertainStatus & 8) == 0 ? valid : invalid;
+                                    break;
+                                case 4: // xox ooo xox
+                                    if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                                    if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                                    if (index == 6) return (eCertainStatus & 4) == 0 ? valid : invalid;
+                                    if (index == 8) return (eCertainStatus & 8) == 0 ? valid : invalid;
+                                    break;
+                                case 5: // xox oxo xox
+                                    if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                                    if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                                    if (index == 4) return (eCertainStatus & 4) == 0 ? valid : invalid;
+                                    if (index == 6) return (eCertainStatus & 8) == 0 ? valid : invalid;
+                                    if (index == 8) return (eCertainStatus & 16) == 0 ? valid : invalid;
+                                    break;
+                            }
+                            return null;
+                        })
+                        .setPos(174 + (index % 3) * 6, 97 + (index / 3) * 6)
+                        .setSize(4, 4));
+            }
+            builder.widget(new FakeSyncWidget.ByteSyncer(() -> eCertainMode, val -> eCertainMode = val))
+                    .widget(new FakeSyncWidget.ByteSyncer(() -> eCertainStatus, val -> eCertainStatus = val));
         }
-        builder.widget(new FakeSyncWidget.ByteSyncer(() -> eCertainMode, val -> eCertainMode = val))
-                .widget(new FakeSyncWidget.ByteSyncer(() -> eCertainStatus, val -> eCertainStatus = val));
     }
 
     private void addParameterLED(ModularWindow.Builder builder, int hatch, int param, boolean input) {
@@ -3224,7 +3235,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                 return getFullLedDescriptionOut(hatch, param);
                             }
                         })
-                        .setPos(12 + posIndex * 8, 97 + (input ? 0 : 1) * 6)
+                        .setPos(12 + posIndex * 8, (doesBindPlayerInventory() ? 97 : 177) + (input ? 0 : 1) * 6)
                         .setSize(6, 4));
         if (input) {
             builder.widget(new FakeSyncWidget.ByteSyncer(
