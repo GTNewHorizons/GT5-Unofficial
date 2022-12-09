@@ -189,8 +189,7 @@ public class GT_MetaTileEntity_NanoForge
         if (aSide == aFacing) {
             if (aActive)
                 return new ITexture[] {
-                    BlockIcons.getCasingTextureForId(
-                            ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(10)),
+                    BlockIcons.getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 10)),
                     TextureFactory.builder()
                             .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
                             .extFacing()
@@ -202,7 +201,7 @@ public class GT_MetaTileEntity_NanoForge
                             .build()
                 };
             return new ITexture[] {
-                BlockIcons.getCasingTextureForId(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(10)),
+                BlockIcons.getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 10)),
                 TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
                         .extFacing()
@@ -215,7 +214,7 @@ public class GT_MetaTileEntity_NanoForge
             };
         }
         return new ITexture[] {
-            BlockIcons.getCasingTextureForId(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(10))
+            BlockIcons.getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 10))
         };
     }
 
@@ -226,7 +225,7 @@ public class GT_MetaTileEntity_NanoForge
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        return false;
+        return true;
     }
 
     @Override
@@ -256,7 +255,7 @@ public class GT_MetaTileEntity_NanoForge
         mOutputFluids = null;
         long tVoltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
         long tAmps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
-        long tTotalEU = tVoltage / getExoticAndNormalEnergyHatchList().size() * tAmps;
+        long tTotalEU = tVoltage * tAmps;
         GT_Recipe tRecipe =
                 map.findRecipe(getBaseMetaTileEntity(), null, false, false, tTotalEU, tFluidInputs, null, tItemInputs);
 
@@ -272,19 +271,20 @@ public class GT_MetaTileEntity_NanoForge
             calculateOverclockedNessMultiInternal(
                     tRecipe.mEUt, tRecipe.mDuration, 1, tTotalEU, tRecipe.mSpecialValue < mSpecialTier);
 
-            if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
+            if (this.lEUt == Long.MAX_VALUE - 1 || this.mMaxProgresstime == Integer.MAX_VALUE - 1) return false;
 
             if (this.lEUt > 0) {
                 this.lEUt *= -1;
             }
 
-            mOutputItems = new ItemStack[tRecipe.mOutputs.length];
             ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
-            for (int i = tRecipe.mOutputs.length - 1; i >= 0; i--) {
+            for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)) {
                     tOutputs.add(tRecipe.getOutput(i));
                 }
             }
+
+            this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             mOutputItems = tOutputs.toArray(new ItemStack[0]);
             mOutputFluids = tRecipe.mFluidOutputs.clone();
             updateSlots();
@@ -316,15 +316,18 @@ public class GT_MetaTileEntity_NanoForge
             mSpecialTier = 3;
         }
 
-        if (mMaintenanceHatches.size() != 1 || mInputBusses.size() < 1 || mOutputBusses.size() < 1) {
+        if (mMaintenanceHatches.size() != 1
+                || mInputBusses.isEmpty()
+                || mOutputBusses.isEmpty()
+                || mInputHatches.isEmpty()) {
             return false;
         }
 
-        if (mEnergyHatches.size() + mExoticEnergyHatches.size() < 1) {
-            return false;
-        }
+        // Makes sure that the multi can accept only 1 TT Energy Hatch OR up to 2 Normal Energy Hatches. Deform if both
+        // present or more than 1 TT Hatch.
+        boolean hatch = mExoticEnergyHatches.size() == 1 ^ (mEnergyHatches.size() <= 2 && !mEnergyHatches.isEmpty());
 
-        return mSpecialTier > 0;
+        return mSpecialTier > 0 && hatch;
     }
 
     @Override

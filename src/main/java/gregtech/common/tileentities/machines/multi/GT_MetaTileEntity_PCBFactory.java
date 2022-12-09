@@ -198,7 +198,7 @@ public class GT_MetaTileEntity_PCBFactory
                     .addElement(
                             'J',
                             buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
-                                    .atLeast(InputHatch, OutputBus, InputBus, Maintenance, ExoticEnergy, Energy)
+                                    .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                                     .dot(1)
                                     .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13))
                                     .buildAndChain(GregTech_API.sBlockCasings8, 13))
@@ -359,9 +359,9 @@ public class GT_MetaTileEntity_PCBFactory
             if (aActive)
                 return new ITexture[] {
                     BlockIcons.getCasingTextureForId(
-                            mSetTier < 3
-                                    ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
-                                    : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)),
+                            getTier() < 3
+                                    ? GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)
+                                    : GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)),
                     TextureFactory.builder()
                             .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
                             .extFacing()
@@ -374,9 +374,9 @@ public class GT_MetaTileEntity_PCBFactory
                 };
             return new ITexture[] {
                 BlockIcons.getCasingTextureForId(
-                        mSetTier < 3
-                                ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
-                                : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)),
+                        getTier() < 3
+                                ? GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)
+                                : GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)),
                 TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
                         .extFacing()
@@ -403,6 +403,7 @@ public class GT_MetaTileEntity_PCBFactory
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mTier = 0;
         if (mSetTier < 3) {
             if (!checkPiece(tier1, 3, 5, 0)) {
                 return false;
@@ -461,17 +462,17 @@ public class GT_MetaTileEntity_PCBFactory
         }
 
         if (mMaintenanceHatches.size() != 1
-                || mOutputBusses.size() < 1
-                || mInputBusses.size() < 1
-                || mInputHatches.size() < 1) {
+                || mOutputBusses.isEmpty()
+                || mInputBusses.isEmpty()
+                || mInputHatches.isEmpty()) {
             return false;
         }
 
-        if (mExoticEnergyHatches.size() + mEnergyHatches.size() < 1) {
-            return false;
-        }
+        // Makes sure that the multi can accept only 1 TT Energy Hatch OR up to 2 Normal Energy Hatches. Deform if both
+        // present or more than 1 TT Hatch.
+        boolean hatch = mExoticEnergyHatches.size() == 1 ^ (mEnergyHatches.size() <= 2 && !mEnergyHatches.isEmpty());
 
-        return true;
+        return mTier > 0 && hatch;
     }
 
     @Override
@@ -509,8 +510,7 @@ public class GT_MetaTileEntity_PCBFactory
             return false;
         }
 
-        long voltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList())
-                / getExoticAndNormalEnergyHatchList().size();
+        long voltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
         long amps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
         long tTotalEU = voltage * amps;
 
@@ -581,7 +581,7 @@ public class GT_MetaTileEntity_PCBFactory
                 int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
                 for (int j = 0; j < repeats; j++) {
                     int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
-                    for (int i = tRecipe.mOutputs.length - 1; i >= 0; i--) {
+                    for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                         if (chanced < remainingEfficiency) {
                             tOutputs.add(tRecipe.getOutput(i));
                         }
@@ -639,8 +639,11 @@ public class GT_MetaTileEntity_PCBFactory
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
-        // TODO Auto-generated method stub
         return 0;
+    }
+
+    private int getTier() {
+        return mSetTier;
     }
 
     private ExtendedFacing transformFacing(ExtendedFacing facing) {
@@ -838,8 +841,7 @@ public class GT_MetaTileEntity_PCBFactory
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        // not needed here
-        return false;
+        return true;
     }
 
     @Override
