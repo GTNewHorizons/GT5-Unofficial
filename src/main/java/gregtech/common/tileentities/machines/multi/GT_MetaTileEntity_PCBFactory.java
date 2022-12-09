@@ -509,9 +509,10 @@ public class GT_MetaTileEntity_PCBFactory
             return false;
         }
 
-        long voltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
+        long voltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList())
+                / getExoticAndNormalEnergyHatchList().size();
         long amps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
-        long tTotalEU = voltage / getExoticAndNormalEnergyHatchList().size() * amps;
+        long tTotalEU = voltage * amps;
 
         GT_Recipe tRecipe = aMap.findRecipe(getBaseMetaTileEntity(), true, true, voltage, aFluidInputs, tItemInputs);
 
@@ -557,12 +558,12 @@ public class GT_MetaTileEntity_PCBFactory
                 this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = getMaxEfficiency(aStack);
                 this.lEUt = (long) -Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
-                this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * mRoughnessMultiplier);
+                this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2));
 
                 if (mOCTier1 || mOCTier2) {
                     calculateOverclockedNessMultiInternal(
                             (long) Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower),
-                            (int) Math.ceil(tRecipe.mDuration * mRoughnessMultiplier),
+                            (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2)),
                             1,
                             tTotalEU,
                             mOCTier2);
@@ -570,13 +571,17 @@ public class GT_MetaTileEntity_PCBFactory
 
                 if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
 
+                if (this.lEUt > 0) {
+                    this.lEUt *= -1;
+                }
+
                 mOutputItems = new ItemStack[tRecipe.mOutputs.length];
                 ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
                 int remainingEfficiency = getMaxEfficiency(aStack);
                 int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
                 for (int j = 0; j < repeats; j++) {
                     int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
-                    for (int i = tItemInputs.length - 1; i >= 0; i--) {
+                    for (int i = tRecipe.mOutputs.length - 1; i >= 0; i--) {
                         if (chanced < remainingEfficiency) {
                             tOutputs.add(tRecipe.getOutput(i));
                         }

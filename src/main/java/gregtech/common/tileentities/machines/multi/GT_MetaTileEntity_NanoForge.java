@@ -251,6 +251,7 @@ public class GT_MetaTileEntity_NanoForge
     }
 
     private boolean processRecipe(ItemStack[] tItemInputs, FluidStack[] tFluidInputs, GT_Recipe.GT_Recipe_Map map) {
+        lEUt = 0;
         mOutputItems = null;
         mOutputFluids = null;
         long tVoltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
@@ -267,15 +268,19 @@ public class GT_MetaTileEntity_NanoForge
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = tRecipe.mDuration;
-            this.lEUt = tRecipe.mEUt;
+            this.lEUt = -tRecipe.mEUt;
             calculateOverclockedNessMultiInternal(
                     tRecipe.mEUt, tRecipe.mDuration, 1, tTotalEU, tRecipe.mSpecialValue < mSpecialTier);
 
             if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
 
+            if (this.lEUt > 0) {
+                this.lEUt *= -1;
+            }
+
             mOutputItems = new ItemStack[tRecipe.mOutputs.length];
             ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
-            for (int i = tItemInputs.length - 1; i >= 0; i--) {
+            for (int i = tRecipe.mOutputs.length - 1; i >= 0; i--) {
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)) {
                     tOutputs.add(tRecipe.getOutput(i));
                 }
