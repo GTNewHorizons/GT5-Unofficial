@@ -37,4 +37,10 @@ public class GT_Cover_AdvancedRedstoneReceiverInternal extends GT_Cover_Advanced
             byte aSide, byte aInputRedstone, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity) {
         return getSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), aCoverVariable.getGateMode());
     }
+
+    @Override
+    protected boolean isRedstoneSensitiveImpl(
+            byte aSide, int aCoverID, ReceiverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        return true;
+    }
 }

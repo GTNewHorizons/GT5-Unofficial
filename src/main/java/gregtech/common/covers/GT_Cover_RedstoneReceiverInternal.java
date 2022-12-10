@@ -4,6 +4,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.api.util.ISerializableObject;
 
 public class GT_Cover_RedstoneReceiverInternal extends GT_Cover_RedstoneWirelessBase {
 
@@ -32,11 +33,21 @@ public class GT_Cover_RedstoneReceiverInternal extends GT_Cover_RedstoneWireless
     }
 
     @Override
+    protected boolean isRedstoneSensitiveImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
+        return true;
+    }
+
+    @Override
     public byte getRedstoneInput(
             byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return GregTech_API.sWirelessRedstone.get(Integer.valueOf(aCoverVariable)) == null
+        return GregTech_API.sWirelessRedstone.get(aCoverVariable) == null
                 ? 0
-                : ((Byte) GregTech_API.sWirelessRedstone.get(Integer.valueOf(aCoverVariable))).byteValue();
+                : GregTech_API.sWirelessRedstone.get(aCoverVariable);
     }
 
     @Override

@@ -67,6 +67,16 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
         return aCoverVariable;
     }
 
+    @Override
+    protected boolean isRedstoneSensitiveImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
+        return aCoverVariable.get() != 3; // always off, so no redstone needed either
+    }
+
     /**
      * Make sure there is only one GT_Cover_ControlsWork on the aTileEntity
      * @return true if the cover is the first (side) one

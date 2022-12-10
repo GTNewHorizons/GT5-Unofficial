@@ -585,7 +585,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     protected boolean isRedstoneSensitiveImpl(
             byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        return true;
+        return false;
     }
 
     /**

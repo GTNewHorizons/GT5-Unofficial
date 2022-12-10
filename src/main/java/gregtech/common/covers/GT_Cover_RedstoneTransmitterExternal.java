@@ -3,6 +3,7 @@ package gregtech.common.covers;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.ISerializableObject;
 
 public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirelessBase {
 
@@ -23,6 +24,16 @@ public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirel
             byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         GregTech_API.sWirelessRedstone.put(aCoverVariable, aInputRedstone);
         return aCoverVariable;
+    }
+
+    @Override
+    protected boolean isRedstoneSensitiveImpl(
+            byte aSide,
+            int aCoverID,
+            ISerializableObject.LegacyCoverData aCoverVariable,
+            ICoverable aTileEntity,
+            long aTimer) {
+        return true;
     }
 
     @Override
