@@ -767,6 +767,20 @@ public class GT_Achievements {
             issueAchievement(player, "buildQArmor");
         } else if (stack.getUnlocalizedName().equals("ic2.itemPartCircuitAdv")) {
             issueAchievement(player, "stepforward");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.1")) {
+            issueAchievement(player, "upgrade");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.2")) {
+            issueAchievement(player, "upgrade2");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.3")) {
+            issueAchievement(player, "upgrade3");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.4")) {
+            issueAchievement(player, "upgrade4");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.5")) {
+            issueAchievement(player, "upgrade5");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings5.6")) {
+            issueAchievement(player, "over9000");
+        } else if (stack.getUnlocalizedName().equals("gt.blockcasings.15")) {
+            issueAchievement(player, "conducting");
         }
         if (player.capabilities.isCreativeMode
                 && stack.getUnlocalizedName()
