@@ -1308,6 +1308,7 @@ public class MyMaterial implements Runnable {
                     .addMolten()
                     .addMetalItems()
                     .addCraftingMetalWorkingItems()
+                    .addMultipleIngotMetalWorkingItems()
                     .addMixerRecipes((short) 6),
             OffsetID + 108,
             TextureSet.SET_SHINY,
@@ -1356,7 +1357,8 @@ public class MyMaterial implements Runnable {
                     .onlyDust()
                     .addMolten()
                     .addMetalItems()
-                    .addCraftingMetalWorkingItems(),
+                    .addCraftingMetalWorkingItems()
+                    .addMultipleIngotMetalWorkingItems(),
             OffsetID + 110,
             TextureSet.SET_SHINY);
 
