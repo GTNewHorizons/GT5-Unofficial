@@ -38,6 +38,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
@@ -461,6 +462,8 @@ public class GT_MetaTileEntity_PCBFactory
             mUpgradesInstalled++;
         }
 
+        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+
         if (mMaintenanceHatches.size() != 1
                 || mOutputBusses.isEmpty()
                 || mInputBusses.isEmpty()
@@ -644,6 +647,13 @@ public class GT_MetaTileEntity_PCBFactory
 
     private int getTier() {
         return mSetTier;
+    }
+
+    @Override
+    public void receiveClientEvent(byte aEventID, byte aValue) {
+        if (aEventID == 1) {
+            mSetTier = aValue;
+        }
     }
 
     private ExtendedFacing transformFacing(ExtendedFacing facing) {
@@ -847,6 +857,11 @@ public class GT_MetaTileEntity_PCBFactory
     @Override
     public boolean useModularUI() {
         return true;
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) mSetTier;
     }
 
     @Override
