@@ -105,7 +105,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 1.5))),
-                    (int) GT_Values.VP[tier],
+                    (int) GT_Values.VP[tier] * 3 / 4,
                     mTier1BitMap | mTier2BitMap | mTier3BitMap);
         }
         for (int tier = 1; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -131,7 +131,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 1.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier2BitMap | mTier3BitMap);
         }
         for (int tier = 1; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -157,7 +157,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 1.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier3BitMap);
         }
 
@@ -184,7 +184,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 2.5))),
-                    (int) GT_Values.VP[tier],
+                    (int) GT_Values.VP[tier] * 3 / 4,
                     mTier1BitMap | mTier2BitMap | mTier3BitMap);
         }
         for (int tier = 2; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -210,7 +210,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 2.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier2BitMap | mTier3BitMap);
         }
         for (int tier = 2; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -236,7 +236,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 2.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier3BitMap);
         }
 
@@ -264,7 +264,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 3.5))),
-                    (int) GT_Values.VP[tier],
+                    (int) GT_Values.VP[tier] * 3 / 4,
                     mTier1BitMap | mTier2BitMap | mTier3BitMap);
         }
         for (int tier = 3; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -291,7 +291,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 3.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier2BitMap | mTier3BitMap);
         }
         for (int tier = 3; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -318,7 +318,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 3.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier3BitMap);
         }
 
@@ -346,7 +346,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 4.5))),
-                    (int) GT_Values.VP[tier],
+                    (int) GT_Values.VP[tier] * 3 / 4,
                     mTier1BitMap | mTier2BitMap | mTier3BitMap);
         }
         for (int tier = 4; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -373,7 +373,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 4.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier2BitMap | mTier3BitMap);
         }
         for (int tier = 4; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -400,7 +400,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 4.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier3BitMap);
         }
 
@@ -429,7 +429,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 5.5))),
-                    (int) GT_Values.VP[tier],
+                    (int) GT_Values.VP[tier] * 3 / 4,
                     mTier1BitMap | mTier2BitMap | mTier3BitMap | mBioUpgradeBitMap);
         }
         for (int tier = 5; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -457,7 +457,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 5.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier2BitMap | mTier3BitMap | mBioUpgradeBitMap);
         }
         for (int tier = 5; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -485,7 +485,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 5.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier3BitMap | mBioUpgradeBitMap);
         }
 
@@ -514,7 +514,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 5.5))),
-                    (int) GT_Values.VP[tier],
+                    (int) GT_Values.VP[tier] * 3 / 4,
                     mTier1BitMap | mTier2BitMap | mTier3BitMap | mBioUpgradeBitMap);
         }
         for (int tier = 6; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -542,7 +542,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 6.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier2BitMap | mTier3BitMap | mBioUpgradeBitMap);
         }
         for (int tier = 6; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
@@ -570,7 +570,7 @@ public class GT_PCBFactoryRecipes {
                     },
                     aBoards.toArray(new ItemStack[0]),
                     (int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 6.5))),
-                    (int) GT_Values.VP[tier + 1],
+                    (int) GT_Values.VP[tier + 1] * 3 / 4,
                     mTier3BitMap | mBioUpgradeBitMap);
         }
     }
