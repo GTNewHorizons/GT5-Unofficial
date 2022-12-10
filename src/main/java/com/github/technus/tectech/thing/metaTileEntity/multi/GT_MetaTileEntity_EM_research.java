@@ -10,6 +10,9 @@ import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.CommonValues.VN;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static mcp.mobius.waila.api.SpecialChars.*;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -94,7 +97,13 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     .addElement('A', ofBlock(sBlockCasingsTT, 1))
                     .addElement('B', ofBlock(sBlockCasingsTT, 2))
                     .addElement('C', ofBlock(sBlockCasingsTT, 3))
-                    .addElement('D', classicHatches(textureOffset + 1, 1, sBlockCasingsTT, 1))
+                    .addElement(
+                            'D',
+                            buildHatchAdder(GT_MetaTileEntity_EM_research.class)
+                                    .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, HatchElement.InputData)
+                                    .casingIndex(textureOffset + 1)
+                                    .dot(1)
+                                    .buildAndChain(ofBlock(sBlockCasingsTT, 1)))
                     .addElement('E', HolderHatchElement.INSTANCE.newAny(textureOffset + 3, 2))
                     .build();
     // endregion
