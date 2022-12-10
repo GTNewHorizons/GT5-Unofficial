@@ -27,6 +27,27 @@ public class GT_NaniteChain {
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
         GT_Values.RA.addAssemblylineRecipe(
+                Materials.Carbon.getNanite(1),
+                3600 * 20,
+                new Object[] {
+                    ItemList.Hull_UV.get(16),
+                    Materials.Carbon.getNanite(16),
+                    ItemList.Field_Generator_ZPM.get(16),
+                    ItemList.Conveyor_Module_UV.get(16),
+                    ItemList.Electric_Motor_UV.get(32),
+                    new Object[] {OrePrefixes.circuit.get(Materials.Master), 16},
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32)
+                },
+                new FluidStack[] {
+                    new FluidStack(solderIndalloy, 144 * 32),
+                    Materials.HSSS.getMolten(144L * 32),
+                    Materials.Osmiridium.getMolten(144L * 16)
+                },
+                ItemList.NanoForge.get(1),
+                2400 * 20,
+                (int) GT_Values.VP[7]);
+
+        GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Circuit_Crystalmainframe.get(1),
                 144000,
                 new Object[] {
@@ -92,7 +113,7 @@ public class GT_NaniteChain {
                 null,
                 100 * 20,
                 100000000,
-                2);
+                1);
 
         // Gold Nanites - Used in Tier 3 PCB Factory to improve board production
         GT_Values.RA.addNanoForgeRecipe(

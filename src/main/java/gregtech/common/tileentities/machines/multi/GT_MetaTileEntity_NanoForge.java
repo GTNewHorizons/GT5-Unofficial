@@ -23,7 +23,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
@@ -35,6 +34,7 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -103,7 +103,7 @@ public class GT_MetaTileEntity_NanoForge
                         {"        ", "        ", "        ", "   CC   ", "   CC   ", "        ", "        ", "        "},
                         {"        ", "        ", "        ", "   CC   ", "   CC   ", "        ", "        ", "        "},
                         {"        ", "        ", "        ", "   CC   ", "   CC   ", "        ", "        ", "        "},
-                        {" BBBBBB ", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", " BBBBBB "}
+                        {" CCCCCC ", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", " CCCCCC "}
                     }))
                     .addShape(STRUCTURE_PIECE_TIER3, transpose(new String[][] {
                         {"        ", "        ", "   CC   ", "  CCCC  ", "  CCCC  ", "   CC   ", "        ", "        "},
@@ -132,7 +132,7 @@ public class GT_MetaTileEntity_NanoForge
                         {"    FF  ", "        ", "        ", "   CC   ", "   CC   ", "        ", "        ", "  FF    "},
                         {"  FF    ", "        ", "        ", "   CC   ", "   CC   ", "        ", "        ", "    FF  "},
                         {"        ", " F      ", "        ", "   CC   ", "   CC   ", "        ", "      F ", "        "},
-                        {" BBBBBB ", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", "BBBBBBBB", " BBBBBB "}
+                        {" CCCCCC ", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", "CCCCCCCC", " CCCCCC "}
                     }))
                     //spotless:on
                     .addElement('F', ofFrame(Materials.StellarAlloy))
@@ -189,8 +189,7 @@ public class GT_MetaTileEntity_NanoForge
         if (aSide == aFacing) {
             if (aActive)
                 return new ITexture[] {
-                    BlockIcons.getCasingTextureForId(
-                            ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(10)),
+                    BlockIcons.getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 10)),
                     TextureFactory.builder()
                             .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
                             .extFacing()
@@ -202,7 +201,7 @@ public class GT_MetaTileEntity_NanoForge
                             .build()
                 };
             return new ITexture[] {
-                BlockIcons.getCasingTextureForId(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(10)),
+                BlockIcons.getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 10)),
                 TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
                         .extFacing()
@@ -215,7 +214,7 @@ public class GT_MetaTileEntity_NanoForge
             };
         }
         return new ITexture[] {
-            BlockIcons.getCasingTextureForId(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(10))
+            BlockIcons.getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 10))
         };
     }
 
@@ -226,8 +225,7 @@ public class GT_MetaTileEntity_NanoForge
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
     @Override
@@ -252,6 +250,7 @@ public class GT_MetaTileEntity_NanoForge
     }
 
     private boolean processRecipe(ItemStack[] tItemInputs, FluidStack[] tFluidInputs, GT_Recipe.GT_Recipe_Map map) {
+        lEUt = 0;
         mOutputItems = null;
         mOutputFluids = null;
         long tVoltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
@@ -267,18 +266,25 @@ public class GT_MetaTileEntity_NanoForge
         if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
+            this.mMaxProgresstime = tRecipe.mDuration;
+            this.lEUt = -tRecipe.mEUt;
             calculateOverclockedNessMultiInternal(
                     tRecipe.mEUt, tRecipe.mDuration, 1, tTotalEU, tRecipe.mSpecialValue < mSpecialTier);
 
-            if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
+            if (this.lEUt == Long.MAX_VALUE - 1 || this.mMaxProgresstime == Integer.MAX_VALUE - 1) return false;
 
-            mOutputItems = new ItemStack[tRecipe.mOutputs.length];
+            if (this.lEUt > 0) {
+                this.lEUt *= -1;
+            }
+
             ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
-            for (int i = tItemInputs.length - 1; i >= 0; i--) {
+            for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)) {
                     tOutputs.add(tRecipe.getOutput(i));
                 }
             }
+
+            this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             mOutputItems = tOutputs.toArray(new ItemStack[0]);
             mOutputFluids = tRecipe.mFluidOutputs.clone();
             updateSlots();
@@ -291,51 +297,37 @@ public class GT_MetaTileEntity_NanoForge
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mSpecialTier = 0;
         if (aStack == null) return false;
-        if (aStack == Materials.Carbon.getNanite(aStack.stackSize) && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)) {
+        if (aStack.isItemEqual(Materials.Carbon.getNanite(1)) && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)) {
             mSpecialTier = 1;
         }
 
-        if (aStack == Materials.Neutronium.getNanite(aStack.stackSize)
+        if (aStack.isItemEqual(Materials.Neutronium.getNanite(1))
                 && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)) {
             mSpecialTier = 2;
         }
 
-        if (aStack == Materials.TranscendentMetal.getNanite(aStack.stackSize)
+        if (aStack.isItemEqual(Materials.TranscendentMetal.getNanite(1))
                 && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
                 && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
             mSpecialTier = 3;
         }
 
-        if (mMaintenanceHatches.size() != 1 && mInputBusses.size() < 1 && mOutputBusses.size() < 1) {
+        if (mMaintenanceHatches.size() != 1
+                || mInputBusses.isEmpty()
+                || mOutputBusses.isEmpty()
+                || mInputHatches.isEmpty()) {
             return false;
         }
 
-        // If there is more than 1 TT energy hatch, the structure check will fail.
-        // If there is a TT hatch and a normal hatch, the structure check will fail.
-        if (mExoticEnergyHatches.size() > 0) {
-            if (mEnergyHatches.size() > 0) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
-        }
+        // Makes sure that the multi can accept only 1 TT Energy Hatch OR up to 2 Normal Energy Hatches. Deform if both
+        // present or more than 1 TT Hatch.
+        boolean hatch = mExoticEnergyHatches.size() == 1 ^ (mEnergyHatches.size() <= 2 && !mEnergyHatches.isEmpty());
 
-        // If there is 0 or more than 2 energy hatches structure check will fail.
-        if (mEnergyHatches.size() > 0) {
-            if (mEnergyHatches.size() > 2) return false;
-
-            // Check will also fail if energy hatches are not of the same tier.
-            byte tier_of_hatch = mEnergyHatches.get(0).mTier;
-            for (GT_MetaTileEntity_Hatch_Energy energyHatch : mEnergyHatches) {
-                if (energyHatch.mTier != tier_of_hatch) {
-                    return false;
-                }
-            }
-        }
-
-        if ((mEnergyHatches.size() == 0) && (mExoticEnergyHatches.size() == 0)) return false;
-
-        return !(mSpecialTier <= 0);
+        return mSpecialTier > 0 && hatch;
     }
 
     @Override
@@ -345,7 +337,6 @@ public class GT_MetaTileEntity_NanoForge
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -372,12 +363,14 @@ public class GT_MetaTileEntity_NanoForge
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
+        aNBT.setByte("mSpecialTier", mSpecialTier);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
+        mSpecialTier = aNBT.getByte("mSpecialTier");
     }
 
     /** Get possible alignments of this controller
@@ -399,29 +392,54 @@ public class GT_MetaTileEntity_NanoForge
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Nano Forge")
+        tt.addMachineType("Nanite Fabricator")
                 .addInfo("Controller block for the Nano Forge")
-                .addInfo("Requires insane amounts of power to create nanites")
-                .addInfo("TecTech Hatches work on the Nano Forge")
-                .addInfo("Each tier the multi gains a new building next to it")
-                .addInfo("Putting a nanite in the controller allows the user to choose the tier")
-                .addInfo("Requires a Carbon Nanite to use tier 1")
-                .addInfo("Requires a Neutronium Nanite to use tier 2")
-                .addInfo("Requires a Transcendent Metal Nanite to use tier 3")
+                .addInfo("Requires insane amounts of power to create nanites. Each tier")
+                .addInfo("the multi gains a new building next to it. The nanite in the")
+                .addInfo("controller slot controls the tier.")
+                .addInfo("--------------------------------------------")
+                .addInfo("Requires a Carbon Nanite to use tier tier " + EnumChatFormatting.DARK_PURPLE + 1)
+                .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 2)
+                .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 3)
+                .addInfo("--------------------------------------------")
                 .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
-                .addInfo("it gains perfect overclock")
+                .addInfo("it gains " + EnumChatFormatting.RED + "perfect overclock" + EnumChatFormatting.GRAY + ".")
                 .addInfo(AuthorBlueWeabo)
                 .addSeparator()
                 .beginStructureBlock(30, 38, 13, false)
                 .addStructureInfo("Nano Forge Structure is too complex! See schematic for details.")
-                .addStructureInfo("Radiant Naquadah Casings")
-                .addStructureInfo("Stellar Alloy Frames")
-                .addEnergyHatch("Any Energy Hatch, Determines Power Tier", 1)
-                .addMaintenanceHatch("Required 1", 1)
-                .addInputBus("Required 1", 1)
-                .addOutputBus("Required 1", 1)
-                .addInputHatch("Required 0", 1)
-                .addOutputHatch("Required 0", 1)
+                .addStructureInfo("--------------------------------------------")
+                .addStructureInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.GRAY)
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "527" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "171" + EnumChatFormatting.GRAY + " Stellar Alloy Frame Box")
+                .addStructureInfo("--------------------------------------------")
+                .addStructureInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.GRAY)
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "148" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "16" + EnumChatFormatting.GRAY + " Assembling Line Casing")
+                .addStructureInfo("--------------------------------------------")
+                .addStructureInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 3 + EnumChatFormatting.GRAY)
+                .addStructureInfo(
+                        EnumChatFormatting.GOLD + "228" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "84" + EnumChatFormatting.GRAY + " Stellar Alloy Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "16" + EnumChatFormatting.GRAY + " Assembling Line Casing")
+                .addStructureInfo("--------------------------------------------")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-"
+                        + EnumChatFormatting.GOLD + "2" + EnumChatFormatting.GRAY + " energy hatches or "
+                        + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " TT energy hatch.")
+                .addStructureInfo(
+                        "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 0 + EnumChatFormatting.GRAY + "+"
+                        + EnumChatFormatting.GRAY + " input hatches.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 0 + EnumChatFormatting.GRAY + "+"
+                        + EnumChatFormatting.GRAY + " output hatches.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + "+"
+                        + EnumChatFormatting.GRAY + " input busses.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + "+"
+                        + EnumChatFormatting.GRAY + " output busses.")
+                .addStructureInfo("--------------------------------------------")
                 .toolTipFinisher("GregTech");
         return tt;
     }

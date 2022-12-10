@@ -198,7 +198,7 @@ public class GT_MetaTileEntity_PCBFactory
                     .addElement(
                             'J',
                             buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
-                                    .atLeast(InputHatch, OutputBus, InputBus, Maintenance, ExoticEnergy, Energy)
+                                    .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                                     .dot(1)
                                     .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13))
                                     .buildAndChain(GregTech_API.sBlockCasings8, 13))
@@ -359,9 +359,9 @@ public class GT_MetaTileEntity_PCBFactory
             if (aActive)
                 return new ITexture[] {
                     BlockIcons.getCasingTextureForId(
-                            mSetTier < 3
-                                    ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
-                                    : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)),
+                            getTier() < 3
+                                    ? GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)
+                                    : GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)),
                     TextureFactory.builder()
                             .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
                             .extFacing()
@@ -374,9 +374,9 @@ public class GT_MetaTileEntity_PCBFactory
                 };
             return new ITexture[] {
                 BlockIcons.getCasingTextureForId(
-                        mSetTier < 3
-                                ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
-                                : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)),
+                        getTier() < 3
+                                ? GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)
+                                : GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)),
                 TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
                         .extFacing()
@@ -403,6 +403,7 @@ public class GT_MetaTileEntity_PCBFactory
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mTier = 0;
         if (mSetTier < 3) {
             if (!checkPiece(tier1, 3, 5, 0)) {
                 return false;
@@ -414,7 +415,7 @@ public class GT_MetaTileEntity_PCBFactory
                 mTier = 1;
             }
         } else {
-            if (!checkPiece(tier3, 3, 21, 9)) {
+            if (!checkPiece(tier3, 3, 21, 0)) {
                 return false;
             }
             mTier = 3;
@@ -461,17 +462,17 @@ public class GT_MetaTileEntity_PCBFactory
         }
 
         if (mMaintenanceHatches.size() != 1
-                || mOutputBusses.size() < 1
-                || mInputBusses.size() < 1
-                || mInputHatches.size() < 1) {
+                || mOutputBusses.isEmpty()
+                || mInputBusses.isEmpty()
+                || mInputHatches.isEmpty()) {
             return false;
         }
 
-        if (mExoticEnergyHatches.size() + mEnergyHatches.size() < 1) {
-            return false;
-        }
+        // Makes sure that the multi can accept only 1 TT Energy Hatch OR up to 2 Normal Energy Hatches. Deform if both
+        // present or more than 1 TT Hatch.
+        boolean hatch = mExoticEnergyHatches.size() == 1 ^ (mEnergyHatches.size() <= 2 && !mEnergyHatches.isEmpty());
 
-        return true;
+        return mTier > 0 && hatch;
     }
 
     @Override
@@ -511,7 +512,7 @@ public class GT_MetaTileEntity_PCBFactory
 
         long voltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
         long amps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
-        long tTotalEU = voltage / getExoticAndNormalEnergyHatchList().size() * amps;
+        long tTotalEU = voltage * amps;
 
         GT_Recipe tRecipe = aMap.findRecipe(getBaseMetaTileEntity(), true, true, voltage, aFluidInputs, tItemInputs);
 
@@ -532,15 +533,19 @@ public class GT_MetaTileEntity_PCBFactory
             }
         }
 
-        int aMaxParallel = (int) Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2));
+        int aMaxParallel = (int) Math.max(Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2)), 1);
         float aExtraPower = (float) Math.ceil(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled));
+
+        if (tRecipe.mEUt > voltage) {
+            return false;
+        }
 
         if (((recipeBitMap & mTier1BitMap) == 1
                         || (recipeBitMap & mTier2BitMap) == 1
                         || (recipeBitMap & mTier3BitMap) == 1)
                 && ((recipeBitMap & mBioBitMap) == 0 || (recipeBitMap & mBioBitMap) == 1 == mBioUpgrade)) {
 
-            int aCurrentParallel = 1;
+            int aCurrentParallel = 0;
             for (int i = 0; i < aMaxParallel; i++) {
                 if (tRecipe.isRecipeInputEqual(true, aFluidInputs, tItemInputs)) {
                     aCurrentParallel++;
@@ -549,39 +554,47 @@ public class GT_MetaTileEntity_PCBFactory
                 }
             }
 
-            this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = getMaxEfficiency(aStack);
-            this.lEUt = (long) -Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
-            this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * mRoughnessMultiplier);
+            if (aCurrentParallel > 0) {
+                this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
+                this.mEfficiencyIncrease = getMaxEfficiency(aStack);
+                this.lEUt = (long) -Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
+                this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2));
 
-            if (mOCTier1 || mOCTier2) {
-                calculateOverclockedNessMultiInternal(
-                        (long) Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower),
-                        (int) Math.ceil(tRecipe.mDuration * mRoughnessMultiplier),
-                        1,
-                        tTotalEU,
-                        mOCTier2);
-            }
-
-            if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
-
-            mOutputItems = new ItemStack[tRecipe.mOutputs.length];
-            ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
-            int remainingEfficiency = getMaxEfficiency(aStack);
-            int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
-            for (int j = 0; j < repeats; j++) {
-                int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
-                for (int i = tItemInputs.length - 1; i >= 0; i--) {
-                    if (chanced < remainingEfficiency) {
-                        tOutputs.add(tRecipe.getOutput(i));
-                    }
+                if (mOCTier1 || mOCTier2) {
+                    calculateOverclockedNessMultiInternal(
+                            (long) Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower),
+                            (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2)),
+                            1,
+                            tTotalEU,
+                            mOCTier2);
                 }
-                remainingEfficiency -= 10000;
+
+                if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
+
+                if (this.lEUt > 0) {
+                    this.lEUt *= -1;
+                }
+
+                mOutputItems = new ItemStack[tRecipe.mOutputs.length];
+                ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
+                int remainingEfficiency = getMaxEfficiency(aStack);
+                int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
+                for (int j = 0; j < repeats; j++) {
+                    int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
+                    for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                        if (chanced < remainingEfficiency) {
+                            tOutputs.add(tRecipe.getOutput(i));
+                        }
+                    }
+                    remainingEfficiency -= 10000;
+                }
+
+                mOutputItems = tOutputs.toArray(new ItemStack[0]);
+                mOutputFluids = tRecipe.mFluidOutputs.clone();
+                updateSlots();
+
+                return true;
             }
-            mOutputItems = tOutputs.toArray(new ItemStack[0]);
-            mOutputFluids = tRecipe.mFluidOutputs.clone();
-            updateSlots();
-            return true;
         }
 
         return false;
@@ -626,8 +639,11 @@ public class GT_MetaTileEntity_PCBFactory
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
-        // TODO Auto-generated method stub
         return 0;
+    }
+
+    private int getTier() {
+        return mSetTier;
     }
 
     private ExtendedFacing transformFacing(ExtendedFacing facing) {
@@ -792,6 +808,7 @@ public class GT_MetaTileEntity_PCBFactory
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
         aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
+        aNBT.setBoolean("mBioRotate", mBioRotate);
         aNBT.setInteger("mBioOffsetX", mBioOffsets[0]);
         aNBT.setInteger("mBioOffsetZ", mBioOffsets[1]);
         aNBT.setBoolean("mOCTier1Upgrade", mOCTier1);
@@ -809,6 +826,7 @@ public class GT_MetaTileEntity_PCBFactory
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
         mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
+        mBioRotate = aNBT.getBoolean("mBioRotate");
         mBioOffsets[0] = aNBT.getInteger("mBioOffsetX");
         mBioOffsets[1] = aNBT.getInteger("mBioOffsetZ");
         mOCTier1 = aNBT.getBoolean("mOCTier1Upgrade");
@@ -823,8 +841,7 @@ public class GT_MetaTileEntity_PCBFactory
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        // not needed here
-        return false;
+        return true;
     }
 
     @Override
