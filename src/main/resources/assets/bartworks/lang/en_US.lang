@@ -133,6 +133,7 @@ tooltip.tile.radhatch.6.name=t
 tooltip.tile.radhatch.7.name=s
 tooltip.tile.radhatch.8.name=m
 tooltip.tile.radhatch.9.name=h
+tooltip.tile.radhatch.10.name=Remaining: %s s / %s s
 tooltip.tile.acidgen.0.name=An Acid Generator
 tooltip.tile.acidgen.1.name=Creates Power from Chemical Energy Potentials.
 nei.biovat.0.name=Needs Glass Tier:

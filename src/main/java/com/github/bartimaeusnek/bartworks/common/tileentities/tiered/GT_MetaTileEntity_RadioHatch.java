@@ -62,6 +62,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import java.util.Collections;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -370,7 +371,20 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                                             .draw(new Pos2d(0, 48 - height), new Size(16, height), partialTicks);
                                 }
                             }
-                        }.setPos(124, 18).setSize(16, 48))
+                        }.dynamicTooltip(() -> Collections.singletonList(StatCollector.translateToLocalFormatted(
+                                        "tooltip.tile.radhatch.10.name",
+                                        timer <= 1 ? 0 : (decayTime - timer) / 20,
+                                        timer <= 1 ? 0 : decayTime / 20)))
+                                .setPos(124, 18)
+                                .setSize(16, 48)
+                                .attachSyncer(
+                                        new FakeSyncWidget.LongSyncer(() -> decayTime, val -> decayTime = val),
+                                        builder,
+                                        (widget, val) -> widget.notifyTooltipChange())
+                                .attachSyncer(
+                                        new FakeSyncWidget.LongSyncer(() -> timer, val -> timer = val),
+                                        builder,
+                                        (widget, val) -> widget.notifyTooltipChange()))
                 .widget(new FakeSyncWidget.ShortSyncer(() -> colorForGUI[0], val -> colorForGUI[0] = val))
                 .widget(new FakeSyncWidget.ShortSyncer(() -> colorForGUI[1], val -> colorForGUI[1] = val))
                 .widget(new FakeSyncWidget.ShortSyncer(() -> colorForGUI[2], val -> colorForGUI[2] = val))
@@ -378,14 +392,12 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                         .setBackground(BW_UITextures.PICTURE_DECAY_TIME_CONTAINER)
                         .setPos(120, 14)
                         .setSize(24, 56))
-                .widget(new FakeSyncWidget.LongSyncer(() -> decayTime, val -> decayTime = val))
-                .widget(new FakeSyncWidget.LongSyncer(() -> timer, val -> timer = val))
                 .widget(TextWidget.dynamicString(
                                 () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", mass))
                         .setTextAlignment(Alignment.Center)
                         .setPos(65, 62))
-                .widget(TextWidget.dynamicString(
-                                () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", sievert))
+                .widget(TextWidget.dynamicString(() ->
+                                StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", getSievert()))
                         .setTextAlignment(Alignment.Center)
                         .setPos(60, 72))
                 .widget(new ButtonWidget()
