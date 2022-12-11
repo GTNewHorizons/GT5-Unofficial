@@ -493,6 +493,18 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                             + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt))) {
                 lineCounter++;
             }
+        } else if (this.mRecipeMap.mNEIName.equals("gt.recipe.pcbfactory")) {
+            int bitmap = recipe.mSpecialValue;
+            if ((bitmap & 0b1) > 0) {
+                drawLine(lineCounter++, GT_Utility.trans("336", "PCB Factory Tier: ") + 1);
+            } else if ((bitmap & 0b10) > 0) {
+                drawLine(lineCounter++, GT_Utility.trans("336", "PCB Factory Tier: ") + 2);
+            } else if ((bitmap & 0b100) > 0) {
+                drawLine(lineCounter++, GT_Utility.trans("336", "PCB Factory Tier: ") + 3);
+            }
+            if ((bitmap & 0b1000) > 0) {
+                drawLine(lineCounter++, GT_Utility.trans("337", "Upgrade Required: ") + GT_Utility.trans("338", "Bio"));
+            }
         } else if (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)
                 && this.mRecipeMap.mNEISpecialValuePre.toLowerCase().contains("heat capacity")) {
             drawLine(lineCounter, getSpecialInfo(recipe.mSpecialValue));

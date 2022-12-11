@@ -34,6 +34,13 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                         2400,
                         16);
                 break;
+            case "ChromaticGlass":
+                GT_Values.RA.addCompressorRecipe(
+                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L),
+                        GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
+                        600 * 20,
+                        1966080);
+                break;
             default:
                 GT_Values.RA.addLatheRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L),

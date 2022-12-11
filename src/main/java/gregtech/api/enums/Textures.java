@@ -250,6 +250,7 @@ public class Textures {
         MACHINE_CASING_RHODIUM_PALLADIUM,
         MACHINE_CASING_IRIDIUM,
         MACHINE_CASING_MAGICAL,
+        MACHINE_CASING_RADIANT_NAQUADAH_ALLOY,
 
         MACHINE_CASING_FIREBOX_TITANIUM,
         MACHINE_CASING_FUSION_COIL,
@@ -1117,6 +1118,7 @@ public class Textures {
         MARBLE_COBBLE,
         BLOCK_NICKELALUMINIUM,
         BLOCK_SILICONSG,
+        BLOCK_TRANSCENDENTMETAL,
 
         MARBLE_COBBLE_MOSSY,
         MARBLE_BRICKS,
@@ -1305,7 +1307,11 @@ public class Textures {
         UIV_SIDE_CYCLOTRON_SOLENOID,
         UMV_SIDE_CYCLOTRON_SOLENOID,
         ZPM_TOP_CYCLOTRON_SOLENOID,
-        ZPM_SIDE_CYCLOTRON_SOLENOID;
+        ZPM_SIDE_CYCLOTRON_SOLENOID,
+        MACHINE_CASING_PCB_TIER_1,
+        MACHINE_CASING_PCB_TIER_2,
+        MACHINE_CASING_PCB_TIER_3,
+        INFINITY_COOLED_CASING;
 
         /**
          * Icon for Fresh CFoam
@@ -1850,15 +1856,15 @@ public class Textures {
                             BLOCK_TERRACRYSTAL
                         },
                 STORAGE_BLOCKS11 =
+                        {BLOCK_TOPAZ, BLOCK_VINTEUM, BLOCK_YELLOWGARNET, BLOCK_NETHERSTAR, BLOCK_CHARCOAL, BLOCK_BLAZE},
+                STORAGE_BLOCKS12 =
                         {
-                            BLOCK_TOPAZ,
-                            BLOCK_VINTEUM,
-                            BLOCK_YELLOWGARNET,
-                            BLOCK_NETHERSTAR,
-                            BLOCK_CHARCOAL,
-                            BLOCK_BLAZE,
-                        },
-                STORAGE_BLOCKS12 = {BLOCK_CRYOLITE, BLOCK_SILICONSG, BLOCK_NICKELALUMINIUM, BLOCK_SPACETIME};
+                            BLOCK_CRYOLITE,
+                            BLOCK_SILICONSG,
+                            BLOCK_NICKELALUMINIUM,
+                            BLOCK_SPACETIME,
+                            BLOCK_TRANSCENDENTMETAL
+                        };
 
         public static final ITexture[] HIDDEN_TEXTURE = {
             TextureFactory.builder().addIcon(HIDDEN_FACE).stdOrient().build()
