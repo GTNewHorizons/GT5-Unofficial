@@ -1121,6 +1121,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         addFullHazmatToGeneralItem("Avaritia", "Infinity_Pants", 1L);
         addFullHazmatToGeneralItem("Avaritia", "Infinity_Shoes", 1L);
 
+        // EnderIO Hazmat
+        addFullHazmatToGeneralItem("EnderIO", "item.endSteel_helmet", 1L);
+        addFullHazmatToGeneralItem("EnderIO", "item.endSteel_chestplate", 1L);
+        addFullHazmatToGeneralItem("EnderIO", "item.endSteel_leggings", 1L);
+        addFullHazmatToGeneralItem("EnderIO", "item.endSteel_boots", 1L);
+        addFullHazmatToGeneralItem("EnderIO", "item.stellar_helmet", 1L);
+        addFullHazmatToGeneralItem("EnderIO", "item.stellar_chestplate", 1L);
+        addFullHazmatToGeneralItem("EnderIO", "item.stellar_leggings", 1L);
+        addFullHazmatToGeneralItem("EnderIO", "item.stellar_boots", 1L);
+
         GregTech_API.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData :
                 FluidContainerRegistry.getRegisteredFluidContainerData()) {
