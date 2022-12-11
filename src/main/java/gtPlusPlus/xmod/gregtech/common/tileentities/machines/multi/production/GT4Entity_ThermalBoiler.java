@@ -64,7 +64,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         // log("Trying to damage component.");
-        return ItemList.Component_LavaFilter.get(1L).getClass().isInstance(aStack) ? 1 : 0;
+        return (aStack != null && aStack.getItem() == mLavaFilter) ? 1 : 0;
     }
 
     private static Item mLavaFilter;
@@ -105,45 +105,40 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                 if (tFluid.getFluid() == mLava || tFluid.getFluid() == mPahoehoe) {
                     if (depleteInput(tFluid)) {
                         this.mMaxProgresstime = Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2));
+                        this.mEUt = getEUt();
                         this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
 
                         int loot_MAXCHANCE = 100000;
-                        if (mLavaFilter.getClass().isInstance(aStack.getItem())) {
+                        if (aStack != null && aStack.getItem() == mLavaFilter) {
                             if ((tRecipe.getOutput(0) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(0))) {
-                                this.mOutputItems =
-                                        new ItemStack[] {GT_Utility.copy(new Object[] {tRecipe.getOutput(0)})};
+                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(0))};
                             }
                             if ((tRecipe.getOutput(1) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(1))) {
-                                this.mOutputItems =
-                                        new ItemStack[] {GT_Utility.copy(new Object[] {tRecipe.getOutput(1)})};
+                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(1))};
                             }
                             if ((tRecipe.getOutput(2) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(2))) {
-                                this.mOutputItems =
-                                        new ItemStack[] {GT_Utility.copy(new Object[] {tRecipe.getOutput(2)})};
+                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(2))};
                             }
                             if ((tRecipe.getOutput(3) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(3))) {
-                                this.mOutputItems =
-                                        new ItemStack[] {GT_Utility.copy(new Object[] {tRecipe.getOutput(3)})};
+                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(3))};
                             }
                             if ((tRecipe.getOutput(4) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(4))) {
-                                this.mOutputItems =
-                                        new ItemStack[] {GT_Utility.copy(new Object[] {tRecipe.getOutput(4)})};
+                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(4))};
                             }
                             if ((tRecipe.getOutput(5) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(5))) {
-                                this.mOutputItems =
-                                        new ItemStack[] {GT_Utility.copy(new Object[] {tRecipe.getOutput(5)})};
+                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(5))};
                             }
                         }
                         // Give Obsidian without Lava Filter
@@ -151,8 +146,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                             if ((tRecipe.getOutput(6) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(6))) {
-                                this.mOutputItems =
-                                        new ItemStack[] {GT_Utility.copy(new Object[] {tRecipe.getOutput(6)})};
+                                this.mOutputItems = new ItemStack[] {GT_Utility.copy(tRecipe.getOutput(6))};
                             }
                         }
                         return true;
@@ -160,6 +154,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                 } else if (tFluid.getFluid() == mSolarSaltHot) {
                     if (depleteInput(tFluid)) {
                         this.mMaxProgresstime = tRecipe.mDuration;
+                        this.mEUt = 0;
                         this.mEfficiency = 10000;
                         for (FluidStack aOutput : tRecipe.mFluidOutputs) {
                             this.addOutput(FluidUtils.getFluidStack(aOutput, aOutput.amount));
@@ -242,6 +237,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
         tt.addMachineType(getMachineType())
                 .addInfo("Thermal Boiler Controller")
                 .addInfo("Converts Water & Heat into Steam")
+                .addInfo("Explodes if water is not supplied")
                 .addInfo("Consult user manual for more information")
                 .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
