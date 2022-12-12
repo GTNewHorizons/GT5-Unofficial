@@ -24,7 +24,10 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialMixer
@@ -34,6 +37,7 @@ public class GregtechMetaTileEntity_IndustrialMixer
     public static String mCasingName = "Multi-Use Casing";
     public static String mCasingName2 = "Titanium Turbine Casing";
     private int mCasing;
+    private boolean isBussesSeparate = true;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialMixer> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialMixer(final int aID, final String aName, final String aNameRegional) {
@@ -44,6 +48,18 @@ public class GregtechMetaTileEntity_IndustrialMixer
     public GregtechMetaTileEntity_IndustrialMixer(final String aName) {
         super(aName);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 2);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("isBussesSeparate", isBussesSeparate);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
     }
 
     @Override
@@ -148,31 +164,41 @@ public class GregtechMetaTileEntity_IndustrialMixer
 
     @Override
     public boolean checkRecipe(final ItemStack aStack) {
-        for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-            ArrayList<ItemStack> rList = new ArrayList<>();
-            for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-                    rList.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+        if (isBussesSeparate) {
+            for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+                ArrayList<ItemStack> rList = new ArrayList<>();
+                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+                        rList.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                }
+
+                if (checkRecipeGeneric(
+                        rList.toArray(new ItemStack[0]),
+                        getStoredFluids().toArray(new FluidStack[0]),
+                        getMaxParallelRecipes(),
+                        getEuDiscountForParallelism(),
+                        250,
+                        10000)) {
+                    return true;
+                }
             }
 
-            if (checkRecipeGeneric(
-                    rList.toArray(new ItemStack[0]),
+            return checkRecipeGeneric(
+                    new ItemStack[0],
                     getStoredFluids().toArray(new FluidStack[0]),
                     getMaxParallelRecipes(),
                     getEuDiscountForParallelism(),
                     250,
-                    10000)) {
-                return true;
-            }
+                    10000);
+        } else {
+            return checkRecipeGeneric(
+                    getStoredInputs().toArray(new ItemStack[0]),
+                    getStoredFluids().toArray(new FluidStack[0]),
+                    getMaxParallelRecipes(),
+                    getEuDiscountForParallelism(),
+                    250,
+                    10000);
         }
-
-        return checkRecipeGeneric(
-                new ItemStack[0],
-                getStoredFluids().toArray(new FluidStack[0]),
-                getMaxParallelRecipes(),
-                getEuDiscountForParallelism(),
-                250,
-                10000);
     }
 
     @Override
@@ -198,6 +224,15 @@ public class GregtechMetaTileEntity_IndustrialMixer
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMixer;
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        isBussesSeparate = !isBussesSeparate;
+        GT_Utility.sendChatToPlayer(
+                aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
+        return true;
     }
 
     @Override
