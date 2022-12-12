@@ -13011,9 +13011,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         makeWires(
                 Materials.TPV,
                 1840,
-                bEC ? 2L : 14L,
-                bEC ? 4L : 28L,
-                1L,
+                bEC ? 1L : 14L,
+                bEC ? 2L : 28L,
+                6L,
                 gregtech.api.enums.GT_Values.V[4],
                 true,
                 false);
