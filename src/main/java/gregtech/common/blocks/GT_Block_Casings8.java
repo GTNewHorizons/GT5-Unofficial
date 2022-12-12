@@ -37,6 +37,11 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
                 getUnlocalizedName() + ".7.name", "Advanced Iridium Plated Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Magical Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "HSS-S Turbine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Steel Air Pipe Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Titanium Air Pipe Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Tungstensteel Air Pipe Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Rhodium-Palladium Air Pipe Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Naquadah Air Pipe Casing");
 
         ItemList.Casing_Chemically_Inert.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Pipe_Polytetrafluoroethylene.set(new ItemStack(this, 1, 1));
@@ -48,6 +53,11 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Advanced_Iridium.set(new ItemStack(this, 1, 7));
         ItemList.Casing_Magical.set(new ItemStack(this, 1, 8));
         ItemList.Casing_TurbineGasAdvanced.set(new ItemStack(this, 1, 9));
+        ItemList.Casing_Airpipe_Steel.set(new ItemStack(this, 1, 10));
+        ItemList.Casing_Airpipe_Titanium.set(new ItemStack(this, 1, 11));
+        ItemList.Casing_Airpipe_Tungstensteel.set(new ItemStack(this, 1, 12));
+        ItemList.Casing_Airpipe_RhodiumPalladium.set(new ItemStack(this, 1, 13));
+        ItemList.Casing_Airpipe_Naquadah.set(new ItemStack(this, 1, 14));
     }
 
     @Override
@@ -80,6 +90,16 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
                 return Textures.BlockIcons.MACHINE_CASING_MAGICAL.getIcon();
             case 9:
                 return Textures.BlockIcons.MACHINE_CASING_ADVANCEDGAS.getIcon();
+            case 10:
+                return Textures.BlockIcons.MACHINE_AIRPIPE_STEEL_CASING.getIcon();
+            case 11:
+                return Textures.BlockIcons.MACHINE_AIRPIPE_TITANIUM_CASING.getIcon();
+            case 12:
+                return Textures.BlockIcons.MACHINE_AIRPIPE_TUNGSTENSTEEL_CASING.getIcon();
+            case 13:
+                return Textures.BlockIcons.MACHINE_AIRPIPE_RHODIUMPALLADIUM_CASING.getIcon();
+            case 14:
+                return Textures.BlockIcons.MACHINE_AIRPIPE_NAQUADAH_CASING.getIcon();
         }
         return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
     }

@@ -1639,6 +1639,12 @@ public enum ItemList implements IItemContainer {
     Casing_Tank_15,
     Casing_Tank_0,
 
+    Casing_Airpipe_Steel,
+    Casing_Airpipe_Titanium,
+    Casing_Airpipe_Tungstensteel,
+    Casing_Airpipe_RhodiumPalladium,
+    Casing_Airpipe_Naquadah,
+
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,
@@ -1673,9 +1679,9 @@ public enum ItemList implements IItemContainer {
     OilDrill1,
     OilDrill2,
     OilDrill3,
-
     OilDrill4,
     OilDrillInfinite,
+    AtmospherePump,
     ConcreteBackfiller1,
     ConcreteBackfiller2,
     OreDrill1,
