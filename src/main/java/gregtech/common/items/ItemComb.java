@@ -1033,7 +1033,6 @@ public class ItemComb extends Item {
         addProcessGT(CombType.TUNGSTEN, new Materials[] {Materials.Tungsten}, Voltage.IV);
         addProcessGT(CombType.PLATINUM, new Materials[] {Materials.Platinum}, Voltage.HV);
         addProcessGT(CombType.MOLYBDENUM, new Materials[] {Materials.Molybdenum}, Voltage.LV);
-        // addAutoclaveProcess(CombType.MOLYBDENUM, Materials.Osmium, Voltage.IV, 5);
         addProcessGT(CombType.IRIDIUM, new Materials[] {Materials.Iridium}, Voltage.IV);
         addProcessGT(CombType.OSMIUM, new Materials[] {Materials.Osmium}, Voltage.IV);
         addProcessGT(CombType.LITHIUM, new Materials[] {Materials.Lithium}, Voltage.MV);
