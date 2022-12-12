@@ -125,6 +125,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
     private long inputVoltage;
     private long baseEUt;
     private boolean stuck;
+    private final ConcatList<GT_MetaTileEntity_Hatch> allEnergyHatchesView = new ConcatList<>(mExoticEnergyHatches, mEnergyHatches);
 
     public MTE_AdvAssLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -302,9 +303,15 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
     }
 
     @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mExoticEnergyHatches.clear();
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (super.checkMachine(aBaseMetaTileEntity, aStack)) {
-            if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty())
+            if (mEnergyHatches.isEmpty() || mExoticEnergyHatches.isEmpty())
                 return false;
             inputVoltage = Integer.MAX_VALUE;
             for (GT_MetaTileEntity_Hatch tHatch : mEnergyHatches) {
@@ -318,6 +325,11 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
             inputVoltage = V[0];
             return false;
         }
+    }
+
+    @Override
+    public boolean drainEnergyInput(long aEU) {
+        return GT_ExoticEnergyInputHelper.drainEnergy(aEU, allEnergyHatchesView);
     }
 
     @Override
@@ -567,7 +579,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
             l.appendTag(new NBTTagInt(slices[i].progress));
         }
         tag.setTag(TAG_KEY_PROGRESS_TIMES, l);
-        tag.setInteger("mDuration", currentRecipe.mDuration / currentRecipe.mInputs.length);
+        tag.setInteger("mDuration", mMaxProgresstime / currentRecipe.mInputs.length);
     }
 
     private void drainAllFluids(GT_Recipe.GT_Recipe_AssemblyLine recipe) {
@@ -578,9 +590,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
 
     @Override
     public void stopMachine() {
-        for (Slice slice : slices) {
-            slice.reset();
-        }
+        clearCurrentRecipe();
         super.stopMachine();
     }
 
@@ -680,6 +690,32 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
         @Override
         public long count(GT_MetaTileEntity_AssemblyLine t) {
             return t.mDataAccessHatches.size();
+        }
+    }
+
+    private static class ConcatList<T> extends AbstractList<T> {
+        private final List<? extends T> la, lb;
+
+        public ConcatList(List<? extends T> la, List<? extends T> lb) {
+            this.la = la;
+            this.lb = lb;
+        }
+
+        @Override
+        public T get(int index) {
+            int lasize = la.size();
+            return index < lasize ? la.get(index) : lb.get(index - lasize);
+        }
+
+        @Override
+        public int size() {
+            return la.size() + lb.size();
+        }
+
+        @Override
+        public T remove(int index) {
+            int lasize = la.size();
+            return index < lasize ? la.remove(index) : lb.remove(index - lasize);
         }
     }
 }
