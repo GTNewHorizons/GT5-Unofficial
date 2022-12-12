@@ -6,7 +6,6 @@ import goodgenerator.items.MyMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MyRecipeAdder;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -1554,13 +1553,11 @@ public class RecipeLoader_02 {
                     600,
                     7680000);
 
-            int tID = GregTech_API.METATILEENTITIES[31076] != null ? 31076 : 965;
-
             GT_Values.RA.addAssemblylineRecipe(
                     ItemRefer.Compact_Fusion_MK3.get(1),
                     24000,
                     new Object[] {
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 48, tID),
+                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 48, 965),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorLuV, 32),
                         ItemList.Circuit_Wafer_PPIC.get(64),
                         ItemList.UHV_Coil.get(16),
