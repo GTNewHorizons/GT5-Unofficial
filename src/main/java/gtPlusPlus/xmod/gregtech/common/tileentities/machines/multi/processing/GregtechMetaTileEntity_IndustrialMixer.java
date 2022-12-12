@@ -59,7 +59,13 @@ public class GregtechMetaTileEntity_IndustrialMixer
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
+        if (aNBT.hasKey("isBussesSeparate")) {
+            isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
+        }
+        // Fallback for existing mixers
+        else {
+            isBussesSeparate = true;
+        }
     }
 
     @Override
