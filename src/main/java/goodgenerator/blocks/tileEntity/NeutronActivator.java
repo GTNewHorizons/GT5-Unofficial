@@ -10,11 +10,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronAccelerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronSensor;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
-import goodgenerator.client.GUI.NeutronActivatorGUIClient;
-import goodgenerator.common.container.NeutronActivatorGUIContainer;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.CharExchanger;
 import goodgenerator.util.DescTextLocalization;
@@ -37,7 +39,6 @@ import ic2.core.Ic2Items;
 import java.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -141,16 +142,6 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
         return 0;
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new NeutronActivatorGUIClient(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png");
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new NeutronActivatorGUIContainer(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -341,7 +332,7 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         }
     }
 
-    protected String rawProcessExp(String exp) {
+    public static String rawProcessExp(String exp) {
         StringBuilder ret = new StringBuilder();
         for (char c : exp.toCharArray()) {
             if (exp.length() - ret.length() == 3) {
@@ -445,6 +436,33 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     protected void onCasingFound() {
         casingAmount++;
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        screenElements
+                .widget(new TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0"))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get()))
+                .widget(TextWidget.dynamicString(() -> processNumber(eV) + "eV")
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> eV, val -> eV = val));
+    }
+
+    private String processNumber(int num) {
+        float num2;
+        num2 = ((float) num) / 1000F;
+        if (num2 <= 0) {
+            return String.format("%d", num);
+        }
+        if (num2 < 1000.0) {
+            return String.format("%.1fK", num2);
+        }
+        num2 /= 1000F;
+        return String.format("%.1fM", num2);
     }
 
     private enum NeutronHatchElement implements IHatchElement<NeutronActivator> {

@@ -13,8 +13,6 @@ public class ComponentAssemblyLineHandler extends GT_NEI_DefaultHandler {
     public ComponentAssemblyLineHandler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
 
         super(aRecipeMap);
-        this.transferRects.remove(new RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
-        this.transferRects.add(new RecipeTransferRect(new Rectangle(69, 18, 9, 34), getOverlayIdentifier()));
         if (!NEI_Config.isAdded) {
             FMLInterModComms.sendRuntimeMessage(
                     GT_Values.GT,

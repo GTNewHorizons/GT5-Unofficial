@@ -1,15 +1,20 @@
 package goodgenerator.util;
 
-import static gregtech.api.enums.GT_Values.NI;
-
-import codechicken.nei.PositionedStack;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import goodgenerator.client.GUI.GG_UITextures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.nei.GT_NEI_DefaultHandler;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
@@ -19,22 +24,32 @@ public class MyRecipeAdder {
 
     public static final MyRecipeAdder instance = new MyRecipeAdder();
 
-    public final liquidMentalFuelMapper NqGFuels = new liquidMentalFuelMapper(
-            new HashSet<>(50),
-            "gg.recipe.naquadah_reactor",
-            StatCollector.translateToLocal("tile.recipe.naquadah_reactor"),
-            null,
-            "goodgenerator:textures/gui/naquadah_reactor",
-            0,
-            0,
-            0,
-            1,
-            1,
-            StatCollector.translateToLocal("value.naquadah_reactor") + " ",
-            1,
-            " EU/t",
-            false,
-            true);
+    public final liquidMentalFuelMapper NqGFuels = (liquidMentalFuelMapper)
+            new liquidMentalFuelMapper(
+                    new HashSet<>(50),
+                    "gg.recipe.naquadah_reactor",
+                    StatCollector.translateToLocal("tile.recipe.naquadah_reactor"),
+                    null,
+                    "goodgenerator:textures/gui/naquadah_reactor",
+                    0,
+                    0,
+                    0,
+                    1,
+                    1,
+                    StatCollector.translateToLocal("value.naquadah_reactor") + " ",
+                    1,
+                    " EU/t",
+                    false,
+                    true) {
+                @Override
+                public void addProgressBarUI(
+                        ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+                    builder.widget(new DrawableWidget()
+                            .setDrawable(GG_UITextures.PICTURE_NAQUADAH_REACTOR)
+                            .setPos(new Pos2d(59, 20).add(windowOffset))
+                            .setSize(58, 42));
+                }
+            }.useModularUI(true);
 
     public final NaqFuelRefineMapper FRF = new NaqFuelRefineMapper(
             new HashSet<>(50),
@@ -102,7 +117,7 @@ public class MyRecipeAdder {
             1,
             StatCollector.translateToLocal("value.precise_assembler.1"),
             true,
-            false);
+            true);
 
     public static class liquidMentalFuelMapper extends GT_Recipe.GT_Recipe_Map_Fuel {
         public liquidMentalFuelMapper(
@@ -181,6 +196,7 @@ public class MyRecipeAdder {
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
+            setUsualFluidInputCount(2);
         }
 
         public void addNaqFuelRefineRecipe(
@@ -227,6 +243,7 @@ public class MyRecipeAdder {
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
+            useModularUI(true);
         }
 
         public void addNARecipe(
@@ -237,6 +254,15 @@ public class MyRecipeAdder {
                 int ticks,
                 int special) {
             super.addRecipe(false, input2, output2, null, input1, output1, ticks, 0, special);
+        }
+
+        @Override
+        public void addProgressBarUI(
+                ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+            builder.widget(new DrawableWidget()
+                    .setDrawable(GG_UITextures.PICTURE_NEUTRON_ACTIVATOR)
+                    .setPos(new Pos2d(73, 22).add(windowOffset))
+                    .setSize(31, 21));
         }
     }
 
@@ -290,6 +316,8 @@ public class MyRecipeAdder {
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
+            setUsualFluidInputCount(2);
+            setUsualFluidOutputCount(3);
         }
 
         @Override
@@ -309,38 +337,31 @@ public class MyRecipeAdder {
             mXHeatExchangerFuelMap.put(aFluidInputs[0].getFluid(), tRecipe);
             return addRecipe(tRecipe);
         }
+
+        @Override
+        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+            return Arrays.asList(new Pos2d(26, 13), new Pos2d(26, 37));
+        }
+
+        @Override
+        public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
+            return Arrays.asList(new Pos2d(128, 13), new Pos2d(128, 31), new Pos2d(128, 54));
+        }
+
+        @Override
+        public void addProgressBarUI(
+                ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+            builder.widget(new DrawableWidget()
+                    .setDrawable(GG_UITextures.PICTURE_EXTREME_HEAT_EXCHANGER)
+                    .setPos(new Pos2d(47, 13).add(windowOffset))
+                    .setSize(78, 59));
+        }
     }
 
     public static class ExtremeHeatExchangerRecipe extends GT_Recipe {
 
         public ExtremeHeatExchangerRecipe(FluidStack[] input, FluidStack[] output, int special) {
             super(false, null, null, null, null, input, output, 0, 0, special);
-        }
-
-        @Override
-        public ArrayList<PositionedStack> getInputPositionedStacks() {
-            ArrayList<PositionedStack> inputStacks = new ArrayList<>();
-            if (this.mFluidInputs != null && this.mFluidInputs.length == 2) {
-                inputStacks.add(
-                        new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[0], true), 22, 3));
-                inputStacks.add(
-                        new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[1], true), 22, 27));
-            }
-            return inputStacks;
-        }
-
-        @Override
-        public ArrayList<PositionedStack> getOutputPositionedStacks() {
-            ArrayList<PositionedStack> outputStacks = new ArrayList<>();
-            if (this.mFluidOutputs != null && this.mFluidOutputs.length == 3) {
-                outputStacks.add(
-                        new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[0], true), 124, 3));
-                outputStacks.add(
-                        new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[1], true), 124, 21));
-                outputStacks.add(
-                        new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[2], true), 124, 44));
-            }
-            return outputStacks;
         }
 
         public int getMaxHotFluidConsume() {
@@ -450,6 +471,10 @@ public class MyRecipeAdder {
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
+            setUsualFluidInputCount(4);
+            setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE);
+            setProgressBarPos(85, 30);
+            setNEITransferRect(new Rectangle(80, 30, 35, 18));
         }
 
         @Override
@@ -468,44 +493,35 @@ public class MyRecipeAdder {
                     new PreciseAssemblerRecipe(aInputs, aFluidInputs, aOutputs[0], aEUt, aDuration, aSpecialValue);
             return addRecipe(tRecipe);
         }
+
+        @Override
+        public List<Pos2d> getItemInputPositions(int itemInputCount) {
+            List<Pos2d> results = new ArrayList<>();
+            for (int i = 0; i < itemInputCount; i++) {
+                results.add(new Pos2d(8 + i * 18, 13));
+            }
+            return results;
+        }
+
+        @Override
+        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
+            return Collections.singletonList(new Pos2d(115, 30));
+        }
+
+        @Override
+        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+            List<Pos2d> results = new ArrayList<>();
+            for (int i = 0; i < fluidInputCount; i++) {
+                results.add(new Pos2d(8 + i * 18, 48));
+            }
+            return results;
+        }
     }
 
-    @SuppressWarnings("deprecation")
     public static class PreciseAssemblerRecipe extends GT_Recipe {
         public PreciseAssemblerRecipe(
                 ItemStack[] input1, FluidStack[] input2, ItemStack output, int EUt, int ticks, int tier) {
             super(false, input1, new ItemStack[] {output}, null, null, input2, null, ticks, EUt, tier);
-        }
-
-        @Override
-        public ArrayList<PositionedStack> getInputPositionedStacks() {
-            ArrayList<PositionedStack> inputStacks = new ArrayList<>();
-            if (this.mFluidInputs != null) {
-                int index = 0;
-                for (FluidStack inFluid : mFluidInputs) {
-                    if (inFluid == null) continue;
-                    inputStacks.add(
-                            new PositionedStack(GT_Utility.getFluidDisplayStack(inFluid, true), 4 + index * 18, 38));
-                    index++;
-                }
-            }
-            if (this.mInputs != null) {
-                int index = 0;
-                for (ItemStack inItem : mInputs) {
-                    if (inItem == null) continue;
-                    inputStacks.add(new PositionedStack(inItem, 4 + index * 18, 3));
-                    index++;
-                }
-            }
-            return inputStacks;
-        }
-
-        @Override
-        public ArrayList<PositionedStack> getOutputPositionedStacks() {
-            ArrayList<PositionedStack> outputStacks = new ArrayList<>();
-            if (this.mOutputs != null && this.mOutputs.length > 0)
-                outputStacks.add(new PositionedStack(this.mOutputs[0], 111, 20));
-            return outputStacks;
         }
     }
 
@@ -550,40 +566,44 @@ public class MyRecipeAdder {
                     aNEISpecialValueMultiplier,
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
-                    aNEIAllowed,
-                    true);
+                    aNEIAllowed);
+            setUsualFluidInputCount(8);
+            setNEITransferRect(new Rectangle(70, 15, 18, 54));
         }
 
         @Override
-        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
-            ArrayList<PositionedStack> inputStacks = new ArrayList<>();
-
-            if (recipe.mInputs != null) {
-                for (int j = 0; j < recipe.mInputs.length; j++) {
-                    if (recipe.mInputs[j] == NI) continue;
-                    inputStacks.add(new GT_NEI_DefaultHandler.FixedPositionedStack(
-                            recipe.mInputs[j].copy(), 12 + 18 * (j % 3), 5 + 18 * (j / 3)));
-                }
+        public List<Pos2d> getItemInputPositions(int itemInputCount) {
+            List<Pos2d> results = new ArrayList<>();
+            for (int i = 0; i < itemInputCount; i++) {
+                results.add(new Pos2d(16 + (i % 3) * 18, 15 + (i / 3) * 18));
             }
-            if (recipe.mFluidInputs != null) {
-                for (int j = 0; j < recipe.mFluidInputs.length; j++) {
-
-                    inputStacks.add(new GT_NEI_DefaultHandler.FixedPositionedStack(
-                            GT_Utility.getFluidDisplayStack(recipe.mFluidInputs[j], true),
-                            84 + 18 * (j % 4),
-                            27 + 18 * (j / 4)));
-                }
-            }
-            return inputStacks;
+            return results;
         }
 
         @Override
-        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
-            ArrayList<PositionedStack> outputStacks = new ArrayList<>();
-            if (recipe.mOutputs != null) {
-                outputStacks.add(new GT_NEI_DefaultHandler.FixedPositionedStack(recipe.mOutputs[0].copy(), 138, 5));
+        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
+            return Collections.singletonList(new Pos2d(142, 15));
+        }
+
+        @Override
+        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+            List<Pos2d> results = new ArrayList<>();
+            for (int i = 0; i < fluidInputCount; i++) {
+                results.add(new Pos2d(88 + (i % 4) * 18, 37 + (i / 4) * 18));
             }
-            return outputStacks;
+            return results;
+        }
+
+        @Override
+        public void addGregTechLogoUI(ModularWindow.Builder builder, Pos2d windowOffset) {}
+
+        @Override
+        public void addProgressBarUI(
+                ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+            builder.widget(new DrawableWidget()
+                    .setDrawable(GG_UITextures.PICTURE_COMPONENT_ASSLINE)
+                    .setPos(new Pos2d(70, 22).add(windowOffset))
+                    .setSize(72, 40));
         }
     }
 

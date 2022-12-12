@@ -12,7 +12,10 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import goodgenerator.client.GUI.LargeFusionComputerGUIClient;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -31,7 +34,6 @@ import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
@@ -101,11 +103,6 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
 
     public LargeFusionComputerPP(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new LargeFusionComputerGUIClient(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png");
     }
 
     @Override
@@ -580,6 +577,27 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
             StatCollector.translateToLocal("GT5U.fusion.plasma") + ": " + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(plasmaOut) + EnumChatFormatting.RESET + "L/t"
         };
+    }
+
+    protected long energyStorageCache;
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        screenElements
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
+                                + GT_Utility.formatNumbers(energyStorageCache) + " EU")
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                .widget(new FakeSyncWidget.LongSyncer(this::maxEUStore, val -> energyStorageCache = val))
+                .widget(TextWidget.dynamicString(() -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
+                                + GT_Utility.formatNumbers(getEUVar()) + " EU")
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));
     }
 
     public static final String[] L0 = {

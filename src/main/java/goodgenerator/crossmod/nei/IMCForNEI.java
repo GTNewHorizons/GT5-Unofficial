@@ -12,7 +12,7 @@ public class IMCForNEI {
         sendHandler("goodgenerator.crossmod.nei.ExtremeHeatExchangerHandler", "gregtech:gt.blockmachines:32017");
         sendCatalyst("gg.recipe.extreme_heat_exchanger", "gregtech:gt.blockmachines:32017");
 
-        sendHandler("goodgenerator.crossmod.nei.PreciseAssemblerHandler", "gregtech:gt.blockmachines:32018");
+        sendHandler("gg.recipe.precise_assembler", "gregtech:gt.blockmachines:32018");
         sendCatalyst("gg.recipe.precise_assembler", "gregtech:gt.blockmachines:32018");
         sendCatalyst("gt.recipe.assembler", "gregtech:gt.blockmachines:32018");
 

@@ -1,10 +1,17 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
-import goodgenerator.client.GUI.NeutronSensorGUIClient;
-import goodgenerator.common.container.NeutronSensorGUIContainer;
-import goodgenerator.main.GoodGenerator;
-import goodgenerator.network.MessageOpenNeutronSensorGUI;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import goodgenerator.blocks.tileEntity.NeutronActivator;
+import goodgenerator.util.CharExchanger;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -12,10 +19,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 public class NeutronSensor extends GT_MetaTileEntity_Hatch {
 
@@ -81,29 +87,10 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new NeutronSensorGUIClient(
-                aPlayerInventory,
-                aBaseMetaTileEntity,
-                GoodGenerator.MOD_ID + ":textures/gui/NeutronSensorGUI.png",
-                this.texts);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new NeutronSensorGUIContainer(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
     public boolean onRightclick(
             IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (aSide == aBaseMetaTileEntity.getFrontFacing() && aPlayer instanceof EntityPlayerMP) {
-            GoodGenerator.CHANNEL.sendTo(
-                    new MessageOpenNeutronSensorGUI(aBaseMetaTileEntity, texts), (EntityPlayerMP) aPlayer);
-            return true;
-        }
-        return false;
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        return true;
     }
 
     public void setText(String text) {
@@ -164,5 +151,63 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        TextFieldWidget textField = new TextFieldWidget();
+        builder.widget(textField
+                        .setGetter(this::getText)
+                        .setSetter(this::setText)
+                        .setValidator(str -> isValidExpression(str)
+                                ? str
+                                : textField.getLastText().size() > 0
+                                        ? textField.getLastText().get(0)
+                                        : "")
+                        .setFocusOnGuiOpen(true)
+                        .setTextColor(Color.WHITE.dark(1))
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                        .setPos(8, 48)
+                        .setSize(100, 18))
+                .widget(new TextWidget(StatCollector.translateToLocal("gui.NeutronSensor.0"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(8, 8))
+                .widget(new TextWidget(StatCollector.translateToLocal("gui.NeutronSensor.1"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(8, 32))
+                .widget(TextWidget.dynamicText(() -> isValidExpression(textField.getText())
+                                ? new Text(StatCollector.translateToLocal("gui.NeutronSensor.2")).color(0x077d02)
+                                : new Text(StatCollector.translateToLocal("gui.NeutronSensor.3"))
+                                        .color(COLOR_TEXT_RED.get()))
+                        .setSynced(false)
+                        .setPos(120, 53));
+    }
+
+    private boolean isValidExpression(String exp) {
+        return isValidSuffix(exp) && CharExchanger.isValidCompareExpress(NeutronActivator.rawProcessExp(exp));
+    }
+
+    private boolean isValidSuffix(String exp) {
+        int index;
+        index = exp.length() - 1;
+        if (index < 0) return false;
+        if (exp.charAt(index) != 'V' && exp.charAt(index) != 'v') return false;
+        index = exp.length() - 2;
+        if (index < 0) return false;
+        if (exp.charAt(index) != 'E' && exp.charAt(index) != 'e') return false;
+        index = exp.length() - 3;
+        if (index < 0) return false;
+        return exp.charAt(index) == 'M'
+                || exp.charAt(index) == 'm'
+                || exp.charAt(index) == 'K'
+                || exp.charAt(index) == 'k'
+                || Character.isDigit(exp.charAt(index));
     }
 }

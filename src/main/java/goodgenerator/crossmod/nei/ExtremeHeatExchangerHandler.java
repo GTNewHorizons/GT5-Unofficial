@@ -16,8 +16,6 @@ public class ExtremeHeatExchangerHandler extends GT_NEI_DefaultHandler {
 
     public ExtremeHeatExchangerHandler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
         super(aRecipeMap);
-        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(
-                new Rectangle(65, 13, 36, 18), this.getOverlayIdentifier()));
         if (!NEI_Config.isAdded) {
             FMLInterModComms.sendRuntimeMessage(
                     GT_Values.GT,
@@ -39,19 +37,25 @@ public class ExtremeHeatExchangerHandler extends GT_NEI_DefaultHandler {
         FluidStack[] Inputs = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mFluidInputs;
         FluidStack[] Outputs = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mFluidOutputs;
         int Threshold = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
+        int y = getDescriptionYOffset();
         drawText(
                 10,
-                73,
+                y,
                 StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
                         + GT_Utility.formatNumbers(Inputs[0].amount) + " L/s",
                 -16777216);
-        drawText(10, 83, StatCollector.translateToLocal("value.extreme_heat_exchanger.1"), -16777216);
-        drawText(10, 93, GT_Utility.formatNumbers(Outputs[0].amount / 160) + " L/s", -16777216);
-        drawText(10, 103, StatCollector.translateToLocal("value.extreme_heat_exchanger.2"), -16777216);
-        drawText(10, 113, GT_Utility.formatNumbers(Outputs[1].amount / 160) + " L/s", -16777216);
+        y += 10;
+        drawText(10, y, StatCollector.translateToLocal("value.extreme_heat_exchanger.1"), -16777216);
+        y += 10;
+        drawText(10, y, GT_Utility.formatNumbers(Outputs[0].amount / 160) + " L/s", -16777216);
+        y += 10;
+        drawText(10, y, StatCollector.translateToLocal("value.extreme_heat_exchanger.2"), -16777216);
+        y += 10;
+        drawText(10, y, GT_Utility.formatNumbers(Outputs[1].amount / 160) + " L/s", -16777216);
+        y += 10;
         drawText(
                 10,
-                123,
+                y,
                 StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " " + Threshold + " L/s",
                 -16777216);
     }

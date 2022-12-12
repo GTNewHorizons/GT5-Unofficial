@@ -10,14 +10,11 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
 import goodgenerator.common.CommonProxy;
 import goodgenerator.crossmod.thaumcraft.Research;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.loader.Loaders;
 import goodgenerator.loader.NaquadahReworkRecipeLoader;
-import goodgenerator.network.MessageOpenNeutronSensorGUI;
-import goodgenerator.network.MessageSetNeutronSensorData;
 import goodgenerator.tabs.MyTabs;
 import net.minecraft.creativetab.CreativeTabs;
 
@@ -45,10 +42,6 @@ public final class GoodGenerator {
     public static SimpleNetworkWrapper CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
 
     static {
-        CHANNEL.registerMessage(
-                MessageSetNeutronSensorData.ServerHandler.class, MessageSetNeutronSensorData.class, 0, Side.SERVER);
-        CHANNEL.registerMessage(
-                MessageOpenNeutronSensorGUI.ClientHandler.class, MessageOpenNeutronSensorGUI.class, 1, Side.CLIENT);
     }
 
     @Mod.Instance(GoodGenerator.MOD_ID)

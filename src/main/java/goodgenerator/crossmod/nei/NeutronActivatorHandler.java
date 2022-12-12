@@ -15,8 +15,6 @@ public class NeutronActivatorHandler extends GT_NEI_DefaultHandler {
 
     public NeutronActivatorHandler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
         super(aRecipeMap);
-        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(
-                new Rectangle(65, 13, 36, 18), this.getOverlayIdentifier()));
         if (!NEI_Config.isAdded) {
             FMLInterModComms.sendRuntimeMessage(
                     GT_Values.GT,
@@ -38,23 +36,28 @@ public class NeutronActivatorHandler extends GT_NEI_DefaultHandler {
         int tDuration = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
         int minNKE = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue % 10000;
         int maxNKE = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue / 10000;
+        int y = getDescriptionYOffset();
         drawText(
                 10,
-                73,
+                y,
                 this.trans("158", "Time: ")
                         + GT_Utility.formatNumbers((float) tDuration / 20.0)
                         + this.trans("161", " secs"),
                 -16777216);
-        drawText(10, 83, StatCollector.translateToLocal("value.neutron_activator.0"), -16777216);
+        y += 10;
+        drawText(10, y, StatCollector.translateToLocal("value.neutron_activator.0"), -16777216);
+        y += 10;
         drawText(
                 10,
-                93,
+                y,
                 GT_Utility.formatNumbers(minNKE) + StatCollector.translateToLocal("value.neutron_activator.2"),
                 -16777216);
-        drawText(10, 103, StatCollector.translateToLocal("value.neutron_activator.1"), -16777216);
+        y += 10;
+        drawText(10, y, StatCollector.translateToLocal("value.neutron_activator.1"), -16777216);
+        y += 10;
         drawText(
                 10,
-                113,
+                y,
                 GT_Utility.formatNumbers(maxNKE) + StatCollector.translateToLocal("value.neutron_activator.2"),
                 -16777216);
     }
