@@ -1756,16 +1756,6 @@ public class ItemComb extends Item {
             if (GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial[i], 4) != NI) {
                 switch (comb) {
                     case NEUTRONIUM:
-                        // RA.addAutoclaveRecipe(
-                        //        GT_Utility.copyAmount(9, tComb),
-                        //         GT_Utility.getIntegratedCircuit(i + 1),
-                        //         Materials.UUMatter.getFluid(
-                        //                 Math.max(1, ((aMaterial[i].getMass() + volt.getUUAmplifier()) / 10))),
-                        //         GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial[i], 4),
-                        //          10000,
-                        //         (int) (aMaterial[i].getMass() * 128),
-                        //         volt.getAutoClaveEnergy(),
-                        //         volt.compareTo(Voltage.HV) > 0);
                         RA.addChemicalRecipe(
                                 GT_Utility.copyAmount(4, tComb),
                                 null,
@@ -1777,16 +1767,6 @@ public class ItemComb extends Item {
                                 volt.getChemicalEnergy(),
                                 volt.compareTo(Voltage.IV) > 0);
                     case OSMIUM:
-                        // RA.addAutoclaveRecipe(
-                        //         GT_Utility.copyAmount(9, tComb),
-                        //         GT_Utility.getIntegratedCircuit(i + 1),
-                        //         Materials.UUMatter.getFluid(
-                        //                 Math.max(1, ((aMaterial[i].getMass() + volt.getUUAmplifier()) / 10))),
-                        //        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial[i], 4),
-                        //         10000,
-                        //         (int) (aMaterial[i].getMass() * 128),
-                        //         volt.getAutoClaveEnergy(),
-                        //         volt.compareTo(Voltage.HV) > 0);
                         RA.addChemicalRecipe(
                                 GT_Utility.copyAmount(4, tComb),
                                 null,
@@ -1798,16 +1778,6 @@ public class ItemComb extends Item {
                                 volt.getChemicalEnergy(),
                                 volt.compareTo(Voltage.IV) > 0);
                     case PLATINUM:
-                        // RA.addAutoclaveRecipe(
-                        //         GT_Utility.copyAmount(9, tComb),
-                        //         GT_Utility.getIntegratedCircuit(i + 1),
-                        //         Materials.UUMatter.getFluid(
-                        //                 Math.max(1, ((aMaterial[i].getMass() + volt.getUUAmplifier()) / 10))),
-                        //        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial[i], 4),
-                        //        10000,
-                        //         (int) (aMaterial[i].getMass() * 128),
-                        //          volt.getAutoClaveEnergy(),
-                        //          volt.compareTo(Voltage.HV) > 0);
                         RA.addChemicalRecipe(
                                 GT_Utility.copyAmount(4, tComb),
                                 null,
@@ -1819,16 +1789,6 @@ public class ItemComb extends Item {
                                 volt.getChemicalEnergy(),
                                 volt.compareTo(Voltage.HV) > 0);
                     case IRIDIUM:
-                        // RA.addAutoclaveRecipe(
-                        //        GT_Utility.copyAmount(9, tComb),
-                        //        GT_Utility.getIntegratedCircuit(i + 1),
-                        //        Materials.UUMatter.getFluid(
-                        //                Math.max(1, ((aMaterial[i].getMass() + volt.getUUAmplifier()) / 10))),
-                        //        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial[i], 4),
-                        //        10000,
-                        //        (int) (aMaterial[i].getMass() * 128),
-                        //        volt.getAutoClaveEnergy(),
-                        //        volt.compareTo(Voltage.HV) > 0);
                         RA.addChemicalRecipe(
                                 GT_Utility.copyAmount(4, tComb),
                                 null,
@@ -1850,16 +1810,6 @@ public class ItemComb extends Item {
                                 volt.getComplexTime(),
                                 volt.getChemicalEnergy(),
                                 volt.compareTo(Voltage.IV) > 0);
-                        // RA.addAutoclaveRecipe(
-                        //        GT_Utility.copyAmount(9, tComb),
-                        //        GT_Utility.getIntegratedCircuit(i + 1),
-                        //        Materials.UUMatter.getFluid(
-                        //                Math.max(1, ((aMaterial[i].getMass() + volt.getUUAmplifier()) / 10))),
-                        //        GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial[i], 4),
-                        //        10000,
-                        //        (int) (aMaterial[i].getMass() * 128),
-                        //        volt.getAutoClaveEnergy(),
-                        //        volt.compareTo(Voltage.HV) > 0);
                         break;
                 }
             }
