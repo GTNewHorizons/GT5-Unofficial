@@ -5,6 +5,7 @@ import cpw.mods.fml.common.event.*;
 import gregtech.api.GregTech_API;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import net.glease.ggfab.mte.MTE_AdvAssLine;
+import net.glease.ggfab.nei.IMCForNEI;
 
 @Mod(modid = GGConstants.MODID, version = GGConstants.VERSION, name = GGConstants.MODNAME, acceptedMinecraftVersions = "[1.7.10]", dependencies = "required-after:IC2;required-before:gregtech")
 public class GigaGramFab {
@@ -25,6 +26,7 @@ public class GigaGramFab {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        IMCForNEI.IMCSender();
     }
 
     @Mod.EventHandler
