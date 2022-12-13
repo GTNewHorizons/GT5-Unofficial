@@ -789,8 +789,8 @@ public class GT_MetaTileEntity_PCBFactory
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
                 .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Reinforced Glass")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Liquid Cooling Tower (Tier " + EnumChatFormatting.DARK_PURPLE + 1
-                        + EnumChatFormatting.BLUE + "):")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Liquid Cooling Tower (Tier "
+                        + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.BLUE + "):")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
                 .addStructureInfo(
@@ -801,8 +801,8 @@ public class GT_MetaTileEntity_PCBFactory
                         EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
                 .addStructureInfo(EnumChatFormatting.GOLD + "21" + EnumChatFormatting.GRAY
                         + " Reinforced Photolithography Framework Casing")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Thermosink Radiator(Tier " + EnumChatFormatting.DARK_PURPLE + 2
-                        + EnumChatFormatting.BLUE + "):")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Thermosink Radiator(Tier " + EnumChatFormatting.DARK_PURPLE
+                        + 2 + EnumChatFormatting.BLUE + "):")
                 .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
                 .addStructureInfo(EnumChatFormatting.GOLD + "41" + EnumChatFormatting.GRAY
                         + " Reinforced Photolithography Framework Casing")
@@ -911,20 +911,25 @@ public class GT_MetaTileEntity_PCBFactory
                 .widget(new DynamicPositionedColumn()
                         .setSynced(false)
                         .widget(new MultiChildWidget()
-                                .addChild(new CycleButtonWidget()
-                                        .setToggle(() -> mBioUpgrade, val -> {
-                                            mBioUpgrade = val;
-                                            if (!mBioUpgrade) {
-                                                GT_Utility.sendChatToPlayer(
-                                                        player, GT_Utility.trans("339.1", "Biochamber Upgrade Disabled"));
-                                            } else {
-                                                GT_Utility.sendChatToPlayer(
-                                                        player, GT_Utility.trans("339", "Biochamber Upgrade Enabled"));
-                                            }
-                                        })
-                                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                                        .setSize(90, 18)
-                                        .addTooltip("Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards."))
+                                .addChild(
+                                        new CycleButtonWidget()
+                                                .setToggle(() -> mBioUpgrade, val -> {
+                                                    mBioUpgrade = val;
+                                                    if (!mBioUpgrade) {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player,
+                                                                GT_Utility.trans(
+                                                                        "339.1", "Biochamber Upgrade Disabled"));
+                                                    } else {
+                                                        GT_Utility.sendChatToPlayer(
+                                                                player,
+                                                                GT_Utility.trans("339", "Biochamber Upgrade Enabled"));
+                                                    }
+                                                })
+                                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                                .setSize(90, 18)
+                                                .addTooltip(
+                                                        "Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards."))
                                 .addChild(new DrawableWidget()
                                         .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
                                         .setSize(18, 18))
@@ -939,13 +944,10 @@ public class GT_MetaTileEntity_PCBFactory
                                             if (!mBioRotate) {
                                                 GT_Utility.sendChatToPlayer(
                                                         player,
-                                                        GT_Utility.trans(
-                                                                "340.1", "Rotated biochamber disabled"));
+                                                        GT_Utility.trans("340.1", "Rotated biochamber disabled"));
                                             } else {
                                                 GT_Utility.sendChatToPlayer(
-                                                        player,
-                                                        GT_Utility.trans(
-                                                                "340", "Rotated biochamber enabled"));
+                                                        player, GT_Utility.trans("340", "Rotated biochamber enabled"));
                                             }
                                         })
                                         .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
@@ -969,7 +971,8 @@ public class GT_MetaTileEntity_PCBFactory
                                                                 GT_Utility.trans("341.1", "Tier 1 cooling disabled"));
                                                     } else {
                                                         GT_Utility.sendChatToPlayer(
-                                                                player, GT_Utility.trans("341", "Tier 1 cooling enabled"));
+                                                                player,
+                                                                GT_Utility.trans("341", "Tier 1 cooling enabled"));
                                                     }
                                                 })
                                                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
@@ -994,7 +997,8 @@ public class GT_MetaTileEntity_PCBFactory
                                                                 GT_Utility.trans("342.1", "Tier 2 cooling disabled"));
                                                     } else {
                                                         GT_Utility.sendChatToPlayer(
-                                                                player, GT_Utility.trans("342", "Tier 2 cooling enabled"));
+                                                                player,
+                                                                GT_Utility.trans("342", "Tier 2 cooling enabled"));
                                                     }
                                                 })
                                                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
@@ -1013,14 +1017,15 @@ public class GT_MetaTileEntity_PCBFactory
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                                 .setPos(0, 4))
                         .widget(new TextFieldWidget()
-                                .setGetterInt(() -> (int) ( (1f / mRoughnessMultiplier) * 100f))
+                                .setGetterInt(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
                                 .setSetterInt(val -> {
                                     mRoughnessMultiplier = 100f / val;
                                 })
                                 .setNumbers(50, 200)
                                 .setTextColor(Color.WHITE.normal)
                                 .setTextAlignment(Alignment.Center)
-                                .addTooltip("Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200μm.")
+                                .addTooltip(
+                                        "Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200μm.")
                                 .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
                                 .setSize(90, 16))
                         .widget(new DrawableWidget()
