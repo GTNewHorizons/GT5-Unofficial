@@ -237,21 +237,22 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     .build();
 
     public static final GT_Recipe.GT_Recipe_Map fakeRecipeMap = new GT_Recipe.GT_Recipe_Map(
-            new HashSet<>(),
-            "bw.recipe.htgr",
-            "High Temperature Gas-cooled Reactor",
-            null,
-            "gregtech:textures/gui/basicmachines/Default",
-            1,
-            1,
-            1,
-            0,
-            1,
-            "",
-            1,
-            "",
-            false,
-            false);
+                    new HashSet<>(),
+                    "bw.recipe.htgr",
+                    "High Temperature Gas-cooled Reactor",
+                    null,
+                    "gregtech:textures/gui/basicmachines/Default",
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    "",
+                    1,
+                    "",
+                    false,
+                    false)
+            .useModularUI(true);
     private static final int HELIUM_NEEDED = 730000;
     private static final int powerUsage = BW_Util.getMachineVoltageFromTier(6);
     private static final int maxcapacity = 720000;

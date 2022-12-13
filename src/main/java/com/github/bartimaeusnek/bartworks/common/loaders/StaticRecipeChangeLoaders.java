@@ -36,10 +36,12 @@ import com.github.bartimaeusnek.bartworks.util.StreamUtils;
 import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.google.common.collect.ArrayListMultimap;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 import gregtech.api.enums.*;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -604,21 +606,23 @@ public class StaticRecipeChangeLoaders {
     public static void addElectricImplosionCompressorRecipes() {
         if (eicMap == null) {
             eicMap = new GT_Recipe.GT_Recipe_Map(
-                    new HashSet<>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()),
-                    "gt.recipe.electricimplosioncompressor",
-                    "Electric Implosion Compressor",
-                    (String) null,
-                    "gregtech:textures/gui/basicmachines/Default",
-                    1,
-                    2,
-                    0,
-                    0,
-                    1,
-                    "",
-                    1,
-                    "",
-                    true,
-                    true);
+                            new HashSet<>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()),
+                            "gt.recipe.electricimplosioncompressor",
+                            "Electric Implosion Compressor",
+                            (String) null,
+                            "gregtech:textures/gui/basicmachines/Default",
+                            1,
+                            2,
+                            0,
+                            0,
+                            1,
+                            "",
+                            1,
+                            "",
+                            true,
+                            true)
+                    .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_IMPLOSION)
+                    .setProgressBar(GT_UITextures.PROGRESSBAR_COMPRESS, ProgressBar.Direction.RIGHT);
             GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.stream()
                     .filter(e -> e.mInputs != null)
                     .forEach(recipe -> eicMap.addRecipe(
