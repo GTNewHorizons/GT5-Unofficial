@@ -737,19 +737,21 @@ public class GT_MetaTileEntity_PCBFactory
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Circuit Board Fabricator")
-                .addInfo("Controller block for the PCB Factory")
+                .addInfo("Controller for the PCB Factory")
                 .addInfo(EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD + "IMPORTANT!"
-                        + " Check out the configurations menu before building.")
-                .addInfo("The tier is selected in the controller GUI. Determines avaliable recipes.")
+                        + " Check the configuration menu before building.")
+                .addInfo("Tier of the machine determines the available recipes.")
+                .addInfo("Machine tier (1-3) is set in the controller GUI.")
                 .addInfo("The configuration menu can be used to add upgrades.")
-                .addInfo("The parallel of the current recipe is Log₂(nanites used), rounded up.")
-                .addInfo("Coolant tier determines overclock ability. No cooler allows no overclocking.")
-                .addInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.GRAY
-                        + " cooler allows regular overclocking, takes 10L/s of coolant.")
-                .addInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.GRAY
-                        + " allows perfect overclocking, takes 10L/s of space coolant.")
-                .addInfo("Machine power consumption multiplies by sqrt(upgrade count).")
-                .addInfo("I.e. cooler + bio upgrade = sqrt(2) power consumption multiplier.")
+                .addInfo("Each tier and upgrade requires additional structures.")
+                .addInfo("Power consumption is multiplied by Sqrt(structures).")
+                .addInfo("Tier 2 and 3 allow parallel by using extra nanites.")
+                .addInfo("Every doubling of nanites adds one parallel.")
+                .addInfo("1x->1, 2x->2, 4x->3, 8x->4 with no limit.")
+                .addInfo("Recipes require a cooling upgrade to be overclocked.")
+                .addInfo("Liquid Cooling uses 10L/s of distilled water and enables default overclocks.")
+                .addInfo("Thermosink uses 10L/s of Space Coolant and enables perfect overclocks.")
+                .addInfo("Trace size can be changed to modify the material usage and machine speed.")
                 .addInfo(AuthorBlueWeabo)
                 .beginStructureBlock(30, 38, 13, false)
                 .addSeparator()
@@ -781,14 +783,14 @@ public class GT_MetaTileEntity_PCBFactory
                         + " Radiation Proof Photolithography Framework Casing")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Bio Upgrade")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Biochamber Upgrade")
                 .addStructureInfo(EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY
                         + " Clean Stainless Steel Machine Casing")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
                 .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Reinforced Glass")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Cooler Upgrade Tier " + EnumChatFormatting.DARK_PURPLE + 1
-                        + EnumChatFormatting.BLUE + ":")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Liquid Cooling Tower (Tier " + EnumChatFormatting.DARK_PURPLE + 1
+                        + EnumChatFormatting.BLUE + "):")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
                 .addStructureInfo(
@@ -799,8 +801,8 @@ public class GT_MetaTileEntity_PCBFactory
                         EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
                 .addStructureInfo(EnumChatFormatting.GOLD + "21" + EnumChatFormatting.GRAY
                         + " Reinforced Photolithography Framework Casing")
-                .addStructureInfo(EnumChatFormatting.BLUE + "Cooler Upgrade Tier " + EnumChatFormatting.DARK_PURPLE + 2
-                        + EnumChatFormatting.BLUE + ":")
+                .addStructureInfo(EnumChatFormatting.BLUE + "Thermosink Radiator(Tier " + EnumChatFormatting.DARK_PURPLE + 2
+                        + EnumChatFormatting.BLUE + "):")
                 .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
                 .addStructureInfo(EnumChatFormatting.GOLD + "41" + EnumChatFormatting.GRAY
                         + " Reinforced Photolithography Framework Casing")
@@ -887,7 +889,7 @@ public class GT_MetaTileEntity_PCBFactory
                         .setSetterInt(val -> {
                             mSetTier = val;
                         })
-                        .setNumbers(-16, 16)
+                        .setNumbers(1, 3)
                         .setTextColor(Color.WHITE.normal)
                         .setTextAlignment(Alignment.Center)
                         .addTooltip("PCB Factory Tier")
@@ -914,19 +916,19 @@ public class GT_MetaTileEntity_PCBFactory
                                             mBioUpgrade = val;
                                             if (!mBioUpgrade) {
                                                 GT_Utility.sendChatToPlayer(
-                                                        player, GT_Utility.trans("339.1", "Bio Upgrade Disabled"));
+                                                        player, GT_Utility.trans("339.1", "Biochamber Upgrade Disabled"));
                                             } else {
                                                 GT_Utility.sendChatToPlayer(
-                                                        player, GT_Utility.trans("339", "Bio Upgrade Enabled"));
+                                                        player, GT_Utility.trans("339", "Biochamber Upgrade Enabled"));
                                             }
                                         })
                                         .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                         .setSize(90, 18)
-                                        .addTooltip("Required for Bioware and Wetware boards."))
+                                        .addTooltip("Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards."))
                                 .addChild(new DrawableWidget()
                                         .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
                                         .setSize(18, 18))
-                                .addChild(new TextWidget("Bio Upgrade")
+                                .addChild(new TextWidget("Biochamber")
                                         .setTextAlignment(Alignment.Center)
                                         .setPos(23, 5))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
@@ -938,17 +940,17 @@ public class GT_MetaTileEntity_PCBFactory
                                                 GT_Utility.sendChatToPlayer(
                                                         player,
                                                         GT_Utility.trans(
-                                                                "340.1", "Rotate Bio Upgrade 90 Degrees Disabled"));
+                                                                "340.1", "Rotated biochamber disabled"));
                                             } else {
                                                 GT_Utility.sendChatToPlayer(
                                                         player,
                                                         GT_Utility.trans(
-                                                                "340", "Rotate Bio Upgrade 90 Degrees Enabled"));
+                                                                "340", "Rotated biochamber enabled"));
                                             }
                                         })
                                         .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                         .setSize(90, 18)
-                                        .addTooltip("Switches around the X and Z axis, rotates the shape 90 degrees"))
+                                        .addTooltip("Rotates the biochamber by 90 degrees."))
                                 .addChild(new DrawableWidget()
                                         .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
                                         .setSize(18, 18))
@@ -964,20 +966,20 @@ public class GT_MetaTileEntity_PCBFactory
                                                     if (!mOCTier1) {
                                                         GT_Utility.sendChatToPlayer(
                                                                 player,
-                                                                GT_Utility.trans("341.1", "Tier 1 OC Disabled"));
+                                                                GT_Utility.trans("341.1", "Tier 1 cooling disabled"));
                                                     } else {
                                                         GT_Utility.sendChatToPlayer(
-                                                                player, GT_Utility.trans("341", "Tier 1 OC Enabled"));
+                                                                player, GT_Utility.trans("341", "Tier 1 cooling enabled"));
                                                     }
                                                 })
                                                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                                 .setSize(90, 18)
                                                 .addTooltip(
-                                                        "Incompatible with Tier 2, Requires a constant supply of distilled water. Allows for overclocking"))
+                                                        "Allows for overclocking. Requires 10L/s of distilled water. Cooling upgrades are mutually exclusive."))
                                 .addChild(new DrawableWidget()
                                         .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
                                         .setSize(18, 18))
-                                .addChild(new TextWidget("Cooler Tier 1")
+                                .addChild(new TextWidget("Liquid Cooling")
                                         .setTextAlignment(Alignment.Center)
                                         .setPos(20, 5))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
@@ -989,36 +991,36 @@ public class GT_MetaTileEntity_PCBFactory
                                                     if (!mOCTier2) {
                                                         GT_Utility.sendChatToPlayer(
                                                                 player,
-                                                                GT_Utility.trans("342.1", "Tier 2 OC Disabled"));
+                                                                GT_Utility.trans("342.1", "Tier 2 cooling disabled"));
                                                     } else {
                                                         GT_Utility.sendChatToPlayer(
-                                                                player, GT_Utility.trans("342", "Tier 2 OC Enabled"));
+                                                                player, GT_Utility.trans("342", "Tier 2 cooling enabled"));
                                                     }
                                                 })
                                                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                                                 .setSize(90, 18)
                                                 .addTooltip(
-                                                        "Incompatible with Tier 1, Requires a constant supply of super coolant. Allows for perfect overclocking"))
+                                                        "Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10L/s of space coolant."))
                                 .addChild(new DrawableWidget()
                                         .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
                                         .setSize(18, 18))
-                                .addChild(new TextWidget("Cooler Tier 2")
+                                .addChild(new TextWidget("Thermosink")
                                         .setTextAlignment(Alignment.Center)
                                         .setPos(20, 5))
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(new TextWidget(new Text("Roughness Multiplier"))
+                        .widget(new TextWidget(new Text("Trace Size"))
                                 .setSize(90, 18)
                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                                 .setPos(0, 4))
                         .widget(new TextFieldWidget()
-                                .setGetterInt(() -> (int) (mRoughnessMultiplier * 10000))
+                                .setGetterInt(() -> (int) ( (1f / mRoughnessMultiplier) * 100f))
                                 .setSetterInt(val -> {
-                                    mRoughnessMultiplier = val / 10000f;
+                                    mRoughnessMultiplier = 100f / val;
                                 })
-                                .setNumbers(100, 20000)
+                                .setNumbers(50, 200)
                                 .setTextColor(Color.WHITE.normal)
                                 .setTextAlignment(Alignment.Center)
-                                .addTooltip("The roughness multiplier is multiplied by 10,000 before displaying!")
+                                .addTooltip("Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200μm.")
                                 .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
                                 .setSize(90, 16))
                         .widget(new DrawableWidget()
