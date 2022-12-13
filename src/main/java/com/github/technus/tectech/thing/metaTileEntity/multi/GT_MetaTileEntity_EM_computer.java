@@ -6,9 +6,9 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.util.CommonValues.V;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
@@ -74,7 +74,17 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                     .addElement('B', ofBlock(sBlockCasingsTT, 1))
                     .addElement('C', ofBlock(sBlockCasingsTT, 2))
                     .addElement('D', ofBlock(sBlockCasingsTT, 3))
-                    .addElement('A', classicHatches(textureOffset + 1, 1, sBlockCasingsTT, 1))
+                    .addElement(
+                            'A',
+                            buildHatchAdder(GT_MetaTileEntity_EM_computer.class)
+                                    .atLeast(
+                                            Energy.or(HatchElement.EnergyMulti),
+                                            Maintenance,
+                                            HatchElement.Uncertainty,
+                                            HatchElement.OutputData)
+                                    .casingIndex(textureOffset + 1)
+                                    .dot(1)
+                                    .buildAndChain(ofBlock(sBlockCasingsTT, 1)))
                     .addElement(
                             'E',
                             ofChain(
