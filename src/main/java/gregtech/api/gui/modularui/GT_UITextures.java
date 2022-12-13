@@ -189,8 +189,9 @@ public class GT_UITextures {
     public static final SteamTexture TAB_TITLE_ANGULAR_STEAM =
             SteamTexture.adaptableTexture(MODID, "gui/tab/title_angular_%s", 28, 28, 4);
 
-    public static final UITexture BUTTON_STANDARD = UITexture.fullImage(MODID, "gui/button/standard");
-    public static final UITexture BUTTON_STANDARD_TOGGLE = UITexture.fullImage(MODID, "gui/button/standard_toggle");
+    public static final UITexture BUTTON_STANDARD = AdaptableUITexture.of(MODID, "gui/button/standard", 18, 18, 1);
+    public static final UITexture BUTTON_STANDARD_TOGGLE =
+            AdaptableUITexture.of(MODID, "gui/button/standard_toggle", 18, 18, 1);
     public static final UITexture BUTTON_COVER_NORMAL = UITexture.fullImage(MODID, "gui/button/cover_normal");
     public static final UITexture BUTTON_COVER_NORMAL_HOVERED =
             UITexture.fullImage(MODID, "gui/button/cover_normal_hovered");

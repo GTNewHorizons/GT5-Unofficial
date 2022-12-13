@@ -1000,12 +1000,12 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                 .beginStructureBlock(33, 24, 33, false)
                 .addStructureInfo("DTPF Structure is too complex! See schematic for details.")
                 .addStructureInfo(
-                        EnumChatFormatting.GOLD + "2112" + EnumChatFormatting.GRAY + " Heating coils required.")
+                        EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
                 .addStructureInfo(EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY
                         + " Dimensional bridge blocks required.")
-                .addStructureInfo(EnumChatFormatting.GOLD + "1270" + EnumChatFormatting.GRAY
+                .addStructureInfo(EnumChatFormatting.GOLD + "1,270" + EnumChatFormatting.GRAY
                         + " Dimensional injection casings required.")
-                .addStructureInfo(EnumChatFormatting.GOLD + "2121" + EnumChatFormatting.GRAY
+                .addStructureInfo(EnumChatFormatting.GOLD + "2,121" + EnumChatFormatting.GRAY
                         + " Dimensionally transcendent casings required.")
                 .addStructureInfo("--------------------------------------------")
                 .addStructureInfo("Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-"

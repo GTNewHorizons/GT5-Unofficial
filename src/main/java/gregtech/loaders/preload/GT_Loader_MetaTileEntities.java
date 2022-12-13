@@ -19,6 +19,7 @@ import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_Lon
 import gregtech.common.tileentities.machines.multi.*;
 import gregtech.common.tileentities.machines.steam.*;
 import gregtech.common.tileentities.storage.*;
+import gregtech.loaders.postload.GT_PCBFactoryMaterialLoader;
 import gregtech.loaders.postload.GT_ProcessingArrayRecipeLoader;
 import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
@@ -27,8 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
-//    356
-//    357
 //    358
 //    359
 //    366
@@ -11657,7 +11656,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         });
 
         GT_ProcessingArrayRecipeLoader.registerDefaultGregtechMaps();
-
         ItemList.Distillation_Tower.set(
                 new GT_MetaTileEntity_DistillationTower(1126, "multimachine.distillationtower", "Distillation Tower")
                         .getStackForm(1L));
@@ -12732,6 +12730,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             'B',
             ItemList.Hull_HV
         });
+
+        ItemList.PCBFactory.set(
+                new GT_MetaTileEntity_PCBFactory(356, "multimachine.pcbfactory", "PCB Factory").getStackForm(1));
+        GT_PCBFactoryMaterialLoader.load();
+        ItemList.NanoForge.set(
+                new GT_MetaTileEntity_NanoForge(357, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
     }
 
     private static void run4() {

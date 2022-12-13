@@ -310,7 +310,12 @@ public class GT_PreLoad {
                                     };
                                 if (mIt == 3)
                                     tags = new String[] {
-                                        "crateGtDust", "crateGtIngot", "crateGtGem", "crateGtPlate", "itemCasing"
+                                        "crateGtDust",
+                                        "crateGtIngot",
+                                        "crateGtGem",
+                                        "crateGtPlate",
+                                        "itemCasing",
+                                        "nanite"
                                     };
                                 if (tags.length > prefix) tag = tags[prefix];
                                 if (GregTech_API.sGeneratedMaterials[material] != null) {
@@ -392,6 +397,7 @@ public class GT_PreLoad {
             "crateGtIngot",
             "crateGtGem",
             "crateGtPlate",
+            "nanite",
             "cellMolten"
         };
 

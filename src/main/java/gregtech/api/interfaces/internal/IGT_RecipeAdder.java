@@ -1278,4 +1278,49 @@ public interface IGT_RecipeAdder {
             int[] aChances,
             int aDuration,
             int aEUt);
+
+    /**
+     * Add a Nano Forge Recipe. The Nano Forge's main use is to make nanites/nanorobots.
+     * Tier 1 Nano Forge - Can make partly biological, partly metal nanites
+     * TIer 2 Nano Forge - Can make mostly metal nanites with some biological aspects
+     * TIer 3 Nano Forge - Can make nanites entierly out of metal
+     *
+     * @param aInputs = must not be null
+     * @param aFluidInputs = can be null
+     * @param aOutputs = must not be null, the nanite or other output
+     * @param aFluidOutputs = can be null
+     * @param aChances = can be null
+     * @param aDuration
+     * @param aEUt
+     * @param aSpecialValue = defines the tier of nano forge required.
+     *
+     */
+    boolean addNanoForgeRecipe(
+            ItemStack[] aInputs,
+            FluidStack[] aFluidInputs,
+            ItemStack[] aOutputs,
+            FluidStack[] aFluidOutputs,
+            int[] aChances,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue);
+
+    /**
+     * Add a Board Manufacturer Recipe. The Board Manufacturer's main use is to make the circuit boards
+     * needed to make circuits.
+     *
+     * @param aInputs = must not be null
+     * @param aFluidInputs = must not be null
+     * @param aOutputs = must not be null
+     * @param aDuration
+     * @param aEUt
+     * @param aSpecialValue = defines the tier of the board manufacturer required.
+     */
+    boolean addPCBFactoryRecipe(
+            ItemStack[] aInputs,
+            FluidStack[] aFluidInputs,
+            ItemStack[] aOutputs,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue);
 }
