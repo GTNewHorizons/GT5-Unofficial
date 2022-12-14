@@ -17,6 +17,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.*;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_Bees;
+import gtPlusPlus.core.item.chemistry.GenericChem;
+import gtPlusPlus.core.lib.CORE;
 import java.lang.reflect.*;
 import java.util.HashSet;
 import net.minecraft.item.ItemStack;
@@ -31,11 +33,154 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+@SuppressWarnings("deprecation")
 public class NaquadahReworkRecipeLoader {
 
     public static void RecipeLoad() {
 
         if (!EnableNaquadahRework) return;
+
+        if (LoadedList.GTPP) {
+            try {
+                // Naquadah (UEV)
+                CORE.RA.addQuantumTransformerRecipe(
+                        new ItemStack[] {
+                            naquadahEarth.get(OrePrefixes.dust, 32),
+                            Materials.SodiumHydroxide.getDust(64),
+                            GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst)
+                        },
+                        new FluidStack[] {fluoroantimonicAcid.getFluidOrGas(16000), P507.getFluidOrGas(10)},
+                        new FluidStack[] {},
+                        new ItemStack[] {
+                            inertNaquadah.get(OrePrefixes.dust, 64),
+                            Materials.Titanium.getDust(64),
+                            Materials.Adamantium.getDust(64),
+                            Materials.Gallium.getDust(64)
+                        },
+                        new int[] {2500, 2500, 2500, 2500},
+                        20 * 20,
+                        (int) GT_Values.VP[9],
+                        2);
+                // Enriched Naquadah (UIV)
+                CORE.RA.addQuantumTransformerRecipe(
+                        new ItemStack[] {
+                            enrichedNaquadahEarth.get(OrePrefixes.dust, 32),
+                            Materials.Zinc.getDust(64),
+                            GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst)
+                        },
+                        new FluidStack[] {Materials.SulfuricAcid.getFluid(16000), P507.getFluidOrGas(10)},
+                        new FluidStack[] {wasteLiquid.getFluidOrGas(32000)},
+                        new ItemStack[] {
+                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
+                            Materials.Trinium.getDust(64),
+                            ItemList.NaquadriaSupersolid.get(1)
+                        },
+                        new int[] {3300, 3300, 3300},
+                        20 * 20,
+                        (int) GT_Values.VP[11],
+                        3);
+                // Naquadria (UMV)
+                CORE.RA.addQuantumTransformerRecipe(
+                        new ItemStack[] {
+                            naquadriaEarth.get(OrePrefixes.dust, 32),
+                            Materials.Magnesium.getDust(64),
+                            GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst)
+                        },
+                        new FluidStack[] {
+                            Materials.PhosphoricAcid.getFluid(16000),
+                            Materials.SulfuricAcid.getFluid(16000),
+                            P507.getFluidOrGas(10)
+                        },
+                        new FluidStack[] {},
+                        new ItemStack[] {
+                            inertNaquadria.get(OrePrefixes.dust, 64),
+                            Materials.Barium.getDust(64),
+                            Materials.Indium.getDust(64)
+                        },
+                        new int[] {3300, 3300, 3300},
+                        20 * 20,
+                        (int) GT_Values.VP[12],
+                        4);
+                // Activate Them
+                MyRecipeAdder.instance.addNeutronActivatorRecipe(
+                        new FluidStack[] {Materials.Nickel.getPlasma(2880)},
+                        new ItemStack[] {
+                            inertNaquadah.get(OrePrefixes.dust, 64),
+                            inertNaquadah.get(OrePrefixes.dust, 64),
+                            inertNaquadah.get(OrePrefixes.dust, 64),
+                            inertNaquadah.get(OrePrefixes.dust, 64),
+                            inertNaquadah.get(OrePrefixes.dust, 64),
+                            inertNaquadah.get(OrePrefixes.dust, 64),
+                        },
+                        new FluidStack[] {Materials.Nickel.getMolten(2880)},
+                        new ItemStack[] {
+                            Materials.Naquadah.getDust(64),
+                            Materials.Naquadah.getDust(64),
+                            Materials.Naquadah.getDust(64),
+                            Materials.Naquadah.getDust(64),
+                            Materials.Naquadah.getDust(64),
+                            Materials.Naquadah.getDust(64),
+                            Materials.Naquadah.getDust(64),
+                            Materials.Naquadah.getDust(64),
+                            Materials.Naquadah.getDust(64),
+                        },
+                        2000,
+                        600,
+                        500);
+                MyRecipeAdder.instance.addNeutronActivatorRecipe(
+                        new FluidStack[] {Materials.Titanium.getPlasma(2880)},
+                        new ItemStack[] {
+                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
+                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
+                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
+                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
+                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
+                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
+                        },
+                        new FluidStack[] {Materials.Titanium.getMolten(2880)},
+                        new ItemStack[] {
+                            Materials.NaquadahEnriched.getDust(64),
+                            Materials.NaquadahEnriched.getDust(64),
+                            Materials.NaquadahEnriched.getDust(64),
+                            Materials.NaquadahEnriched.getDust(64),
+                            Materials.NaquadahEnriched.getDust(64),
+                            Materials.NaquadahEnriched.getDust(64),
+                            Materials.NaquadahEnriched.getDust(64),
+                            Materials.NaquadahEnriched.getDust(64),
+                            Materials.NaquadahEnriched.getDust(64),
+                        },
+                        2000,
+                        900,
+                        850);
+                MyRecipeAdder.instance.addNeutronActivatorRecipe(
+                        new FluidStack[] {Materials.Americium.getPlasma(2880)},
+                        new ItemStack[] {
+                            inertNaquadria.get(OrePrefixes.dust, 64),
+                            inertNaquadria.get(OrePrefixes.dust, 64),
+                            inertNaquadria.get(OrePrefixes.dust, 64),
+                            inertNaquadria.get(OrePrefixes.dust, 64),
+                            inertNaquadria.get(OrePrefixes.dust, 64),
+                            inertNaquadria.get(OrePrefixes.dust, 64),
+                        },
+                        new FluidStack[] {Materials.Americium.getMolten(2880)},
+                        new ItemStack[] {
+                            Materials.Naquadria.getDust(64),
+                            Materials.Naquadria.getDust(64),
+                            Materials.Naquadria.getDust(64),
+                            Materials.Naquadria.getDust(64),
+                            Materials.Naquadria.getDust(64),
+                            Materials.Naquadria.getDust(64),
+                            Materials.Naquadria.getDust(64),
+                            Materials.Naquadria.getDust(64),
+                            Materials.Naquadria.getDust(64),
+                        },
+                        2000,
+                        1100,
+                        1080);
+            } catch (Throwable t) {
+                // Cry about it
+            }
+        }
 
         // Fix shit
         GT_Values.RA.addPulveriserRecipe(

@@ -598,7 +598,7 @@ public class MyMaterial implements Runnable {
             new short[] {0xc0, 0x92, 0xa8},
             "Titanium Trifluoride",
             subscriptNumbers("TiF3"),
-            new Werkstoff.Stats().setElektrolysis(true),
+            new Werkstoff.Stats().setElektrolysis(false),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             OffsetID + 54,
@@ -620,7 +620,7 @@ public class MyMaterial implements Runnable {
             new short[] {0xa6, 0xa6, 0xa6},
             "Gallium Hydroxide",
             subscriptNumbers("Ga(OH)3"),
-            new Werkstoff.Stats().setElektrolysis(true),
+            new Werkstoff.Stats().setElektrolysis(false),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             OffsetID + 56,
@@ -742,7 +742,7 @@ public class MyMaterial implements Runnable {
             new short[] {0xda, 0xda, 0xda},
             "Trinium Sulphate",
             subscriptNumbers("KeSO4"),
-            new Werkstoff.Stats().setElektrolysis(true),
+            new Werkstoff.Stats().setElektrolysis(false),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             OffsetID + 67,
@@ -775,7 +775,7 @@ public class MyMaterial implements Runnable {
             new short[] {0x52, 0x39, 0x39},
             "Enriched-Naquadah Sulphate",
             "Nq" + CharExchanger.shifter(8314) + subscriptNumbers("(SO4)2"),
-            new Werkstoff.Stats().setRadioactive(true).setElektrolysis(true),
+            new Werkstoff.Stats().setRadioactive(true).setElektrolysis(false),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             OffsetID + 70,
@@ -798,7 +798,7 @@ public class MyMaterial implements Runnable {
             new short[] {0x2b, 0x2e, 0x70},
             "Indium Phosphate",
             subscriptNumbers("InPO4"),
-            new Werkstoff.Stats().setToxic(true).setElektrolysis(true),
+            new Werkstoff.Stats().setToxic(true).setElektrolysis(false),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             OffsetID + 72,
@@ -851,7 +851,7 @@ public class MyMaterial implements Runnable {
             new short[] {0x1f, 0x1e, 0x33},
             "Naquadria Sulphate",
             subscriptNumbers("Nq*(SO4)2"),
-            new Werkstoff.Stats().setRadioactive(true).setToxic(true).setElektrolysis(true),
+            new Werkstoff.Stats().setRadioactive(true).setToxic(true).setElektrolysis(false),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             OffsetID + 77,
@@ -1384,6 +1384,36 @@ public class MyMaterial implements Runnable {
                     .addMultipleIngotMetalWorkingItems(),
             OffsetID + 111,
             TextureSet.SET_SHINY);
+
+    public static final Werkstoff inertNaquadah = new Werkstoff(
+            new short[] {0x3b, 0x3b, 0x3b},
+            "Inert Naquadah",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 112,
+            TextureSet.SET_METALLIC,
+            new Pair<>(Naquadah, 1));
+
+    public static final Werkstoff inertEnrichedNaquadah = new Werkstoff(
+            new short[] {0x61, 0x44, 0x44},
+            "Inert Enriched Naquadah",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 113,
+            TextureSet.SET_METALLIC,
+            new Pair<>(NaquadahEnriched, 1));
+
+    public static final Werkstoff inertNaquadria = new Werkstoff(
+            new short[] {0x00, 0x00, 0x00},
+            "Inert Naquadria",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MATERIAL,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 114,
+            TextureSet.SET_METALLIC,
+            new Pair<>(Naquadria, 1));
 
     @Override
     public void run() {}
