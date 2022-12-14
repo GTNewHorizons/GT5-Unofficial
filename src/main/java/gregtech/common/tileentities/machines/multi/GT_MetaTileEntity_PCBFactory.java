@@ -486,7 +486,7 @@ public class GT_MetaTileEntity_PCBFactory
     @Override
     public boolean checkRecipe(ItemStack aStack) {
         GT_Recipe.GT_Recipe_Map aMap = getRecipeMap();
-        FluidStack[] tFluidInputs = getCompactedFluids();
+        FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
         if (mSeparate) {
             ArrayList<ItemStack> tInputList = new ArrayList<ItemStack>();
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
@@ -517,7 +517,8 @@ public class GT_MetaTileEntity_PCBFactory
         long amps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
         long tTotalEU = voltage * amps;
 
-        GT_Recipe tRecipe = aMap.findRecipe(getBaseMetaTileEntity(), true, true, voltage, aFluidInputs, tItemInputs);
+        GT_Recipe tRecipe =
+                aMap.findRecipe(getBaseMetaTileEntity(), null, true, false, voltage, aFluidInputs, aStack, tItemInputs);
 
         if (tRecipe == null) {
             return false;
@@ -527,8 +528,8 @@ public class GT_MetaTileEntity_PCBFactory
 
         int aNanitesOfRecipe = 0;
 
-        ItemStack aNanite = tRecipe.getRepresentativeInput(0);
-        if (GT_OreDictUnificator.getAssociation(aNanite).mPrefix.equals(OrePrefixes.nanite)) {
+        ItemStack aNanite = tRecipe.getRepresentativeInput(1);
+        if (mTier > 1 && GT_OreDictUnificator.getAssociation(aNanite).mPrefix.equals(OrePrefixes.nanite)) {
             for (ItemStack aItem : tItemInputs) {
                 if (aItem.isItemEqual(aNanite)) {
                     aNanitesOfRecipe += aItem.stackSize;
@@ -536,17 +537,19 @@ public class GT_MetaTileEntity_PCBFactory
             }
         }
 
-        int aMaxParallel = (int) Math.max(Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2)), 1);
+        int aMaxParallel = (int) Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2) + 0.00001);
         float aExtraPower = (float) Math.ceil(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled));
 
         if (tRecipe.mEUt > voltage) {
             return false;
         }
 
-        if (((recipeBitMap & mTier1BitMap) == 1 && (mTier >= 1)
-                        || (recipeBitMap & mTier2BitMap) == 1 && (mTier >= 2)
-                        || (recipeBitMap & mTier3BitMap) == 1 && (mTier == 3))
-                && ((recipeBitMap & mBioBitMap) == 0 || (recipeBitMap & mBioBitMap) == 1 && mBioUpgrade)) {
+        boolean recipeAllowed = (((recipeBitMap & mTier1BitMap) == mTier1BitMap && (mTier >= 1))
+                        || ((recipeBitMap & mTier2BitMap) == mTier2BitMap && (mTier >= 2))
+                        || ((recipeBitMap & mTier3BitMap) == mTier3BitMap && (mTier >= 3)))
+                && ((recipeBitMap & mBioBitMap) == 0 || (recipeBitMap & mBioBitMap) == mBioBitMap && mBioUpgrade);
+
+        if (recipeAllowed) {
 
             int aCurrentParallel = 0;
             for (int i = 0; i < aMaxParallel; i++) {

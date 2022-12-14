@@ -90,7 +90,7 @@ public class GT_NaniteChain {
 
         // Silver Nanites - Used in Tier 2 PCB Factory to improve board production
         GT_Values.RA.addNanoForgeRecipe(
-                new ItemStack[] {aUHVTierLens, Materials.Silver.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16)},
+                new ItemStack[] {aUEVTierLens, Materials.Silver.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16)},
                 new FluidStack[] {Materials.UUMatter.getFluid(200000)},
                 new ItemStack[] {Materials.Silver.getNanite(1)},
                 null,
@@ -102,7 +102,7 @@ public class GT_NaniteChain {
         // Neutronium Nanites - Used to upgrade the Nano Forge to Tier 2
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
-                    aUEVTierLens,
+                    aUHVTierLens,
                     Materials.Neutronium.getBlocks(8),
                     ItemList.Circuit_Chip_SoC2.get(64),
                     ItemList.Circuit_Chip_SoC2.get(32)
@@ -117,7 +117,7 @@ public class GT_NaniteChain {
 
         // Gold Nanites - Used in Tier 3 PCB Factory to improve board production
         GT_Values.RA.addNanoForgeRecipe(
-                new ItemStack[] {aUIVTierLens, Materials.Gold.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16)},
+                new ItemStack[] {aUMVTierLens, Materials.Gold.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16)},
                 new FluidStack[] {Materials.UUMatter.getFluid(300000)},
                 new ItemStack[] {Materials.Gold.getNanite(1)},
                 null,
@@ -129,7 +129,7 @@ public class GT_NaniteChain {
         // Transcendent Metal Nanites - Used to upgrade the Nano Forge to Tier 3
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] {
-                    aUMVTierLens,
+                    aUIVTierLens,
                     Materials.TranscendentMetal.getBlocks(8),
                     ItemList.Circuit_Chip_SoC2.get(64),
                     ItemList.Circuit_Chip_SoC2.get(64),

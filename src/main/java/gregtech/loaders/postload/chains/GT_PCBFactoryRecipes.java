@@ -93,11 +93,11 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Plastic_Advanced.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(1),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Copper, (long) (16 * (Math.sqrt(tier)))),
-                        GT_Utility.getIntegratedCircuit(1)
+                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Copper, (long) (16 * (Math.sqrt(tier))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier)))),
@@ -118,12 +118,12 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Plastic_Advanced.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(2),
                         GT_Utility.getNaniteAsCatalyst(Materials.Silver),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Copper, (long) (16 * (Math.sqrt(tier)))),
-                        GT_Utility.getIntegratedCircuit(2)
+                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Copper, (long) (16 * (Math.sqrt(tier))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier)))),
@@ -144,12 +144,12 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Plastic_Advanced.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(3),
                         GT_Utility.getNaniteAsCatalyst(Materials.Gold),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Copper, (long) (16 * (Math.sqrt(tier)))),
-                        GT_Utility.getIntegratedCircuit(3)
+                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Copper, (long) (16 * (Math.sqrt(tier))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier)))),
@@ -172,11 +172,11 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Epoxy_Advanced.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(1),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, (long) (16 * (Math.sqrt(tier - 1)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Electrum, (long) (16 * (Math.sqrt(tier - 1)))),
-                        GT_Utility.getIntegratedCircuit(1)
+                                OrePrefixes.foil, Materials.Electrum, (long) (16 * (Math.sqrt(tier - 1))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 1)))),
@@ -197,12 +197,12 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Epoxy_Advanced.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(2),
                         GT_Utility.getNaniteAsCatalyst(Materials.Silver),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, (long) (16 * (Math.sqrt(tier - 1)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Electrum, (long) (16 * (Math.sqrt(tier - 1)))),
-                        GT_Utility.getIntegratedCircuit(2)
+                                OrePrefixes.foil, Materials.Electrum, (long) (16 * (Math.sqrt(tier - 1))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 1)))),
@@ -223,12 +223,12 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Epoxy_Advanced.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(3),
                         GT_Utility.getNaniteAsCatalyst(Materials.Gold),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, (long) (16 * (Math.sqrt(tier - 1)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Electrum, (long) (16 * (Math.sqrt(tier - 1)))),
-                        GT_Utility.getIntegratedCircuit(3)
+                                OrePrefixes.foil, Materials.Electrum, (long) (16 * (Math.sqrt(tier - 1))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 1)))),
@@ -251,12 +251,12 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Fiberglass_Advanced.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(1),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.Aluminium, (long) (16 * (Math.sqrt(tier - 2)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))),
-                        GT_Utility.getIntegratedCircuit(1)
+                                OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 2)))),
@@ -277,13 +277,13 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Fiberglass_Advanced.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(2),
                         GT_Utility.getNaniteAsCatalyst(Materials.Silver),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.Aluminium, (long) (16 * (Math.sqrt(tier - 2)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))),
-                        GT_Utility.getIntegratedCircuit(2)
+                                OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 2)))),
@@ -304,13 +304,13 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Fiberglass_Advanced.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(3),
                         GT_Utility.getNaniteAsCatalyst(Materials.Gold),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.Aluminium, (long) (16 * (Math.sqrt(tier - 2)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))),
-                        GT_Utility.getIntegratedCircuit(3)
+                                OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 2)))),
@@ -333,12 +333,12 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Multifiberglass_Elite.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(1),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 3)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3)))),
-                        GT_Utility.getIntegratedCircuit(1)
+                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 3)))),
@@ -359,13 +359,13 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Multifiberglass_Elite.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(2),
                         GT_Utility.getNaniteAsCatalyst(Materials.Silver),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 3)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3)))),
-                        GT_Utility.getIntegratedCircuit(2)
+                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 3)))),
@@ -386,13 +386,13 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Multifiberglass_Elite.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(3),
                         GT_Utility.getNaniteAsCatalyst(Materials.Gold),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 3)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3)))),
-                        GT_Utility.getIntegratedCircuit(3)
+                                OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 3)))),
@@ -415,12 +415,12 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Wetware_Extreme.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(1),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.EnrichedHolmium, (long) (16 * (Math.sqrt(tier - 4)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4)))),
-                        GT_Utility.getIntegratedCircuit(1)
+                                OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 4)))),
@@ -442,13 +442,13 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Wetware_Extreme.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(2),
                         GT_Utility.getNaniteAsCatalyst(Materials.Silver),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.EnrichedHolmium, (long) (16 * (Math.sqrt(tier - 4)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4)))),
-                        GT_Utility.getIntegratedCircuit(2)
+                                OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 4)))),
@@ -470,13 +470,13 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Wetware_Extreme.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(3),
                         GT_Utility.getNaniteAsCatalyst(Materials.Gold),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.foil, Materials.EnrichedHolmium, (long) (16 * (Math.sqrt(tier - 4)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4)))),
-                        GT_Utility.getIntegratedCircuit(3)
+                                OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 4)))),
@@ -500,12 +500,12 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Bio_Ultra.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(1),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Longasssuperconductornameforuvwire, (long)
                                 (16 * (Math.sqrt(tier - 5)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))),
-                        GT_Utility.getIntegratedCircuit(1)
+                                OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 5)))),
@@ -527,13 +527,13 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Bio_Ultra.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(2),
                         GT_Utility.getNaniteAsCatalyst(Materials.Silver),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Longasssuperconductornameforuvwire, (long)
                                 (16 * (Math.sqrt(tier - 5)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))),
-                        GT_Utility.getIntegratedCircuit(2)
+                                OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 5)))),
@@ -555,13 +555,13 @@ public class GT_PCBFactoryRecipes {
             aBoards.add(ItemList.Circuit_Board_Bio_Ultra.get(amountOfBoards));
             GT_Values.RA.addPCBFactoryRecipe(
                     new ItemStack[] {
+                        GT_Utility.getIntegratedCircuit(3),
                         GT_Utility.getNaniteAsCatalyst(Materials.Gold),
                         GT_PCBFactoryManager.getPlasticMaterialFromTier(tier).getPlates(1),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Longasssuperconductornameforuvwire, (long)
                                 (16 * (Math.sqrt(tier - 5)))),
                         GT_OreDictUnificator.get(
-                                OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))),
-                        GT_Utility.getIntegratedCircuit(3),
+                                OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5))))
                     },
                     new FluidStack[] {
                         Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 5)))),
