@@ -1025,7 +1025,7 @@ public class GT_MetaTileEntity_PCBFactory
                                 .setTextColor(Color.WHITE.normal)
                                 .setTextAlignment(Alignment.Center)
                                 .addTooltip(
-                                        "Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200μm.")
+                                        "Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.")
                                 .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
                                 .setSize(90, 16))
                         .widget(new DrawableWidget()
