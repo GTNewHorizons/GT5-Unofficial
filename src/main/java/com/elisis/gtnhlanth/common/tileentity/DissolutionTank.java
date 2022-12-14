@@ -19,7 +19,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -30,7 +29,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import java.util.List;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -168,11 +166,6 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
     @Override
     public int getMaxEfficiency(ItemStack itemStack) {
         return 10000;
-    }
-
-    @Override
-    public Object getClientGUI(int id, InventoryPlayer playerInventory, IGregTechTileEntity metaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(playerInventory, metaTileEntity, getLocalName(), "Disstank.png");
     }
 
     @Override
