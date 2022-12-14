@@ -74,7 +74,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
             ISerializableObject.LegacyCoverData aCoverVariable,
             ICoverable aTileEntity,
             long aTimer) {
-        return aCoverVariable.get() != 3; // always off, so no redstone needed either
+        return aCoverVariable.get() != 2; // always off, so no redstone needed either
     }
 
     /**
