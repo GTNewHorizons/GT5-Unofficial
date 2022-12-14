@@ -362,7 +362,7 @@ public class GT_MetaTileEntity_PCBFactory
                     BlockIcons.getCasingTextureForId(
                             getTier() < 3
                                     ? GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)
-                                    : GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)),
+                                    : GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 13)),
                     TextureFactory.builder()
                             .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
                             .extFacing()
@@ -377,7 +377,7 @@ public class GT_MetaTileEntity_PCBFactory
                 BlockIcons.getCasingTextureForId(
                         getTier() < 3
                                 ? GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)
-                                : GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)),
+                                : GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 13)),
                 TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
                         .extFacing()
