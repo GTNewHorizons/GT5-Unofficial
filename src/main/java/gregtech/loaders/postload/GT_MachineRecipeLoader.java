@@ -1357,7 +1357,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new ItemStack[] {Materials.EnrichedHolmium.getDust(10)},
                 null,
                 30 * 20,
-                120000);
+                (int) GT_Values.VP[7]);
 
         GT_Values.RA.addExtruderRecipe(
                 ItemList.FR_Wax.get(1L), ItemList.Shape_Extruder_Cell.get(0L), ItemList.FR_WaxCapsule.get(1L), 64, 16);
