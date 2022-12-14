@@ -558,8 +558,8 @@ public class GT_MetaTileEntity_PCBFactory
             }
 
             if (aCurrentParallel > 0) {
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = 10000;
+                this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
+                this.mEfficiencyIncrease = getMaxEfficiency(aStack);
                 this.lEUt = (long) -Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
                 this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2));
 
