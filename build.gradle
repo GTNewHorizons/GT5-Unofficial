@@ -45,7 +45,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.11'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2.13'
     }
 }
 plugins {
