@@ -5,6 +5,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.covers.IControlsWorkCover;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GT_CoverBehavior;
@@ -16,7 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
-public class GT_Cover_ControlsWork extends GT_CoverBehavior {
+public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControlsWorkCover {
 
     /**
      * @deprecated use {@link #GT_Cover_ControlsWork(ITexture coverTexture)} instead
@@ -79,17 +80,11 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
 
     /**
      * Make sure there is only one GT_Cover_ControlsWork on the aTileEntity
+     * TODO this is a migration thing. Remove this after 2.3.0 is released.
      * @return true if the cover is the first (side) one
      **/
     private boolean makeSureOnlyOne(byte aSide, ICoverable aTileEntity) {
-        for (byte i = 0; i < 6; i++) {
-            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof GT_Cover_ControlsWork && i < aSide) {
-                aTileEntity.dropCover(aSide, aSide, true);
-                aTileEntity.markDirty();
-                return false;
-            }
-        }
-        return true;
+        return IControlsWorkCover.makeSureOnlyOne(aSide, aTileEntity);
     }
 
     @Override
@@ -174,7 +169,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
     public boolean isCoverPlaceable(byte aSide, ItemStack aStack, ICoverable aTileEntity) {
         if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
         for (byte i = 0; i < 6; i++) {
-            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof GT_Cover_ControlsWork) {
+            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof IControlsWorkCover) {
                 return false;
             }
         }
