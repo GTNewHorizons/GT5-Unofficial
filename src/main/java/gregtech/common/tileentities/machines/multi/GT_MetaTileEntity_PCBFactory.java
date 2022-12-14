@@ -543,10 +543,10 @@ public class GT_MetaTileEntity_PCBFactory
             return false;
         }
 
-        if (((recipeBitMap & mTier1BitMap) == 1 == (mTier >= 1)
-                        || (recipeBitMap & mTier2BitMap) == 1 == (mTier >= 2)
-                        || (recipeBitMap & mTier3BitMap) == 1 == (mTier == 3))
-                && ((recipeBitMap & mBioBitMap) == 0 || (recipeBitMap & mBioBitMap) == 1 == mBioUpgrade)) {
+        if (((recipeBitMap & mTier1BitMap) == 1 && (mTier >= 1)
+                        || (recipeBitMap & mTier2BitMap) == 1 && (mTier >= 2)
+                        || (recipeBitMap & mTier3BitMap) == 1 && (mTier == 3))
+                && ((recipeBitMap & mBioBitMap) == 0 || (recipeBitMap & mBioBitMap) == 1 && mBioUpgrade)) {
 
             int aCurrentParallel = 0;
             for (int i = 0; i < aMaxParallel; i++) {
