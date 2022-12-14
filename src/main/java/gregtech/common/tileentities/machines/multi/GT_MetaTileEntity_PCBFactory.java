@@ -529,7 +529,7 @@ public class GT_MetaTileEntity_PCBFactory
         int aNanitesOfRecipe = 0;
 
         ItemStack aNanite = tRecipe.getRepresentativeInput(1);
-        if (mTier > 1 && GT_OreDictUnificator.getAssociation(aNanite).mPrefix.equals(OrePrefixes.nanite)) {
+        if (GT_OreDictUnificator.getAssociation(aNanite).mPrefix.equals(OrePrefixes.nanite)) {
             for (ItemStack aItem : tItemInputs) {
                 if (aItem.isItemEqual(aNanite)) {
                     aNanitesOfRecipe += aItem.stackSize;
@@ -537,7 +537,7 @@ public class GT_MetaTileEntity_PCBFactory
             }
         }
 
-        int aMaxParallel = (int) Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2) + 0.00001);
+        int aMaxParallel = (int) Math.max(Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2) + 0.00001), 1);
         float aExtraPower = (float) Math.ceil(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled));
 
         if (tRecipe.mEUt > voltage) {

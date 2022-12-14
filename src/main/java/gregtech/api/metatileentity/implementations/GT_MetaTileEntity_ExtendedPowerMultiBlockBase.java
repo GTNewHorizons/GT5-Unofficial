@@ -124,6 +124,8 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
+        long voltage = getMaxInputVoltage();
+        long amps = getMaxInputAmps();
 
         return new String[] {
             /* 1*/ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN
@@ -137,10 +139,10 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
             /* 3*/ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
                     + GT_Utility.formatNumbers(getActualEnergyUsage()) + EnumChatFormatting.RESET + " EU/t",
             /* 4*/ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*2A) "
+                    + GT_Utility.formatNumbers(voltage) + EnumChatFormatting.RESET + " EU/t(*" + amps + ")"
                     + StatCollector.translateToLocal("GT5U.machines.tier")
                     + ": " + EnumChatFormatting.YELLOW
-                    + VN[GT_Utility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET,
+                    + VN[GT_Utility.getTier(voltage)] + EnumChatFormatting.RESET,
             /* 5*/ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED
                     + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " "
                     + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
@@ -154,5 +156,9 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
     @Override
     public long getMaxInputVoltage() {
         return GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
+    }
+
+    public long getMaxInputAmps() {
+        return GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
     }
 }
