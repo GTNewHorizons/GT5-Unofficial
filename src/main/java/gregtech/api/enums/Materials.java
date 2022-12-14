@@ -1973,7 +1973,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SuperconductorUMVBase.mChemicalFormula =
                 "?\u2086Or\u2083(Hy⚶)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085۞\u2082";
         Diatomite.mChemicalFormula = "(SiO\u2082)\u2088Fe\u2082O\u2083(Al\u2082O\u2083)";
-        EnrichedHolmium.mChemicalFormula = "Nq+Ho";
+        EnrichedHolmium.mChemicalFormula = "Nq+\u2088Ho\u2082";
     }
 
     private static void initSubTags() {

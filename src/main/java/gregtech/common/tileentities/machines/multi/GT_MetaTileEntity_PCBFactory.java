@@ -543,9 +543,9 @@ public class GT_MetaTileEntity_PCBFactory
             return false;
         }
 
-        if (((recipeBitMap & mTier1BitMap) == 1
-                        || (recipeBitMap & mTier2BitMap) == 1
-                        || (recipeBitMap & mTier3BitMap) == 1)
+        if (((recipeBitMap & mTier1BitMap) == 1 == (mTier >= 1)
+                        || (recipeBitMap & mTier2BitMap) == 1 == (mTier >= 2)
+                        || (recipeBitMap & mTier3BitMap) == 1 == (mTier == 3))
                 && ((recipeBitMap & mBioBitMap) == 0 || (recipeBitMap & mBioBitMap) == 1 == mBioUpgrade)) {
 
             int aCurrentParallel = 0;
@@ -558,8 +558,8 @@ public class GT_MetaTileEntity_PCBFactory
             }
 
             if (aCurrentParallel > 0) {
-                this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = getMaxEfficiency(aStack);
+                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+                this.mEfficiencyIncrease = 10000;
                 this.lEUt = (long) -Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
                 this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2));
 
@@ -580,7 +580,7 @@ public class GT_MetaTileEntity_PCBFactory
 
                 mOutputItems = new ItemStack[tRecipe.mOutputs.length];
                 ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
-                int remainingEfficiency = getMaxEfficiency(aStack);
+                int remainingEfficiency = getMaxEfficiency(aStack) < 10000 ? 10000 : getMaxEfficiency(aStack);
                 int repeats = (int) Math.ceil(getMaxEfficiency(aStack) / 10000);
                 for (int j = 0; j < repeats; j++) {
                     int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
@@ -614,7 +614,9 @@ public class GT_MetaTileEntity_PCBFactory
 
         if (ticker % 20 == 0) {
             if (mOCTier1) {
-                if (!depleteInput(GT_ModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC))) {
+                FluidStack tFluid = GT_ModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC);
+                FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
+                if (tLiquid == null || tLiquid.amount < tFluid.amount) {
                     criticalStopMachine();
                     return false;
                 }
@@ -622,7 +624,9 @@ public class GT_MetaTileEntity_PCBFactory
 
             if (mOCTier2) {
                 Fluid superCoolant = FluidRegistry.getFluid("supercoolant");
-                if (!depleteInput(new FluidStack(superCoolant, COOLANT_CONSUMED_PER_SEC))) {
+                FluidStack tFluid = new FluidStack(superCoolant, COOLANT_CONSUMED_PER_SEC);
+                FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
+                if (tLiquid == null || tLiquid.amount < tFluid.amount) {
                     criticalStopMachine();
                     return false;
                 }
@@ -726,7 +730,7 @@ public class GT_MetaTileEntity_PCBFactory
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;
             mCoolantInputHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
             return true;
         }
