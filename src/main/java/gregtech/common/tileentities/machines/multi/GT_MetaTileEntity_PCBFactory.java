@@ -303,7 +303,7 @@ public class GT_MetaTileEntity_PCBFactory
                                 false);
             } else {
                 built += survivialBuildPiece(
-                        bioUpgrade, stackSize, mBioOffsets[0], 6, mBioOffsets[2], elementBudget, env, false, true);
+                        bioUpgrade, stackSize, mBioOffsets[0], 6, mBioOffsets[1], elementBudget, env, false, true);
             }
         }
 
