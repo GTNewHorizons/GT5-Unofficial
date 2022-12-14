@@ -3,7 +3,6 @@ package common.tileentities;
 import common.Blocks;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -12,7 +11,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import java.util.ArrayList;
 import java.util.HashSet;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
@@ -101,11 +99,6 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
             };
         }
         return sTexture;
-    }
-
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(
-                aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MultiblockDisplay.png");
     }
 
     @Override
