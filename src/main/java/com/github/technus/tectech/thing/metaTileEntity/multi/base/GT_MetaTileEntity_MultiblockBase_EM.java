@@ -3210,18 +3210,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         break;
                     case STATUS_UNUSED:
                     default:
-                        // if (GregTech_API.sColoredGUI && this.mContainer.mTileEntity != null) {
-                        //    int tColor = this.mContainer.mTileEntity.getColorization() & 15;
-                        //    if (tColor < ItemDye.field_150922_c.length) {
-                        //        tColor = ItemDye.field_150922_c[tColor];
-                        //        GL11.glColor4f((float)(tColor >> 16 & 255) / 255.0F, (float)(tColor >> 8 &
-                        // 255) / 255.0F,
-                        // (float)(tColor & 255) / 255.0F, 1F);
-                        //    }
-                        // }
-                        // drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su+2, sv+2);
-                        // GL11.glColor4f(1f, 1f, 1f, 1f);
-                        // break;
+                        // no-op
+                        break;
                 }
                 setDrawable(texture);
                 super.draw(partialTicks);
