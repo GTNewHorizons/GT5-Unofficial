@@ -72,7 +72,7 @@ public class ComponentAssemblyLineMiscRecipes {
 
         // The controller itself
         GT_Values.RA.addAssemblylineRecipe(
-                ItemList.Machine_Multi_Assemblyline.get(1),
+                Compassline_Casing_EV.get(1),
                 3600 * 20,
                 new Object[] {
                     ItemList.Machine_Multi_Assemblyline.get(16L),
