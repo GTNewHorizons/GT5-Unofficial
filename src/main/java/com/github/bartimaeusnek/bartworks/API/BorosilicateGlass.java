@@ -61,11 +61,12 @@ public class BorosilicateGlass {
             Block block = getGlassBlock();
             doRegister((byte) 3, block, 0, ret);
             doRegister((byte) 4, block, 1, ret);
+            doRegister((byte) 5, block, 12, ret);
             doRegister((byte) 5, block, 2, ret);
             doRegister((byte) 6, block, 3, ret);
             doRegister((byte) 7, block, 4, ret);
             doRegister((byte) 8, block, 5, ret);
-            for (int i = 6; i < 13; i++) {
+            for (int i = 6; i < 12; i++) {
                 doRegister((byte) 3, block, i, ret);
             }
             doRegister((byte) 9, block, 13, ret);
