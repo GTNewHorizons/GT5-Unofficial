@@ -3133,124 +3133,129 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private void addParameterLED(ModularWindow.Builder builder, int hatch, int param, boolean input) {
         final int parameterIndex = hatch + param * 10;
         final int posIndex = hatch * 2 + param;
-        builder.widget(
-                new DrawableWidget() {
-                    @Override
-                    public void draw(float partialTicks) {
-                        IDrawable texture = null;
-                        final LedStatus status = input
-                                ? parametrization.eParamsInStatus[parameterIndex]
-                                : parametrization.eParamsOutStatus[parameterIndex];
-                        switch (status) {
-                            case STATUS_WTF: {
-                                int c = LEDCounter;
-                                if (c > 4) {
-                                    c = TecTech.RANDOM.nextInt(5);
-                                }
-                                switch (c) {
-                                    case 0:
-                                        texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
-                                        break;
-                                    case 1:
-                                        texture = TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
-                                        break;
-                                    case 2:
-                                        texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
-                                        break;
-                                    case 3:
-                                        texture = TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
-                                        break;
-                                    case 4:
-                                        texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
-                                        break;
-                                }
+        DrawableWidget ledWidget = new DrawableWidget() {
+            @Override
+            public void draw(float partialTicks) {
+                IDrawable texture = null;
+                final LedStatus status = input
+                        ? parametrization.eParamsInStatus[parameterIndex]
+                        : parametrization.eParamsOutStatus[parameterIndex];
+                switch (status) {
+                    case STATUS_WTF: {
+                        int c = LEDCounter;
+                        if (c > 4) {
+                            c = TecTech.RANDOM.nextInt(5);
+                        }
+                        switch (c) {
+                            case 0:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
                                 break;
-                            }
-                            case STATUS_WRONG: // fallthrough
-                                if (LEDCounter < 2) {
-                                    texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
-                                    break;
-                                } else if (LEDCounter < 4) {
-                                    texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
-                                    break;
-                                }
-                            case STATUS_OK: // ok
-                                texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
-                                break;
-                            case STATUS_TOO_LOW: // too low blink
-                                if (LEDCounter < 3) {
-                                    texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
-                                    break;
-                                }
-                            case STATUS_LOW: // too low
+                            case 1:
                                 texture = TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
                                 break;
-                            case STATUS_TOO_HIGH: // too high blink
-                                if (LEDCounter < 3) {
-                                    texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
-                                    break;
-                                }
-                            case STATUS_HIGH: // too high
+                            case 2:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
+                                break;
+                            case 3:
                                 texture = TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
                                 break;
-                            case STATUS_NEUTRAL:
-                                if (LEDCounter < 3) {
-                                    GL11.glColor4f(.85f, .9f, .95f, .5F);
-                                } else {
-                                    GL11.glColor4f(.8f, .9f, 1f, .5F);
-                                }
-                                texture = TecTechUITextures.PICTURE_PARAMETER_GRAY;
+                            case 4:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
                                 break;
-                            case STATUS_UNDEFINED:
-                                if (LEDCounter < 3) {
-                                    GL11.glColor4f(.5f, .1f, .15f, .5F);
-                                } else {
-                                    GL11.glColor4f(0f, .1f, .2f, .5F);
-                                }
-                                texture = TecTechUITextures.PICTURE_PARAMETER_GRAY;
-                                break;
-                            case STATUS_UNUSED:
-                            default:
-                                // if (GregTech_API.sColoredGUI && this.mContainer.mTileEntity != null) {
-                                //    int tColor = this.mContainer.mTileEntity.getColorization() & 15;
-                                //    if (tColor < ItemDye.field_150922_c.length) {
-                                //        tColor = ItemDye.field_150922_c[tColor];
-                                //        GL11.glColor4f((float)(tColor >> 16 & 255) / 255.0F, (float)(tColor >> 8 &
-                                // 255) / 255.0F,
-                                // (float)(tColor & 255) / 255.0F, 1F);
-                                //    }
-                                // }
-                                // drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su+2, sv+2);
-                                // GL11.glColor4f(1f, 1f, 1f, 1f);
-                                // break;
                         }
-                        setDrawable(texture);
-                        super.draw(partialTicks);
-                        GL11.glColor4f(1f, 1f, 1f, 1f);
+                        break;
                     }
-                }.dynamicTooltip(() -> {
-                            if (input) {
-                                return getFullLedDescriptionIn(hatch, param);
-                            } else {
-                                return getFullLedDescriptionOut(hatch, param);
-                            }
-                        })
-                        .setPos(12 + posIndex * 8, (doesBindPlayerInventory() ? 97 : 177) + (input ? 0 : 1) * 6)
-                        .setSize(6, 4));
+                    case STATUS_WRONG: // fallthrough
+                        if (LEDCounter < 2) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
+                            break;
+                        } else if (LEDCounter < 4) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
+                            break;
+                        }
+                    case STATUS_OK: // ok
+                        texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
+                        break;
+                    case STATUS_TOO_LOW: // too low blink
+                        if (LEDCounter < 3) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
+                            break;
+                        }
+                    case STATUS_LOW: // too low
+                        texture = TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
+                        break;
+                    case STATUS_TOO_HIGH: // too high blink
+                        if (LEDCounter < 3) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
+                            break;
+                        }
+                    case STATUS_HIGH: // too high
+                        texture = TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
+                        break;
+                    case STATUS_NEUTRAL:
+                        if (LEDCounter < 3) {
+                            GL11.glColor4f(.85f, .9f, .95f, .5F);
+                        } else {
+                            GL11.glColor4f(.8f, .9f, 1f, .5F);
+                        }
+                        texture = TecTechUITextures.PICTURE_PARAMETER_GRAY;
+                        break;
+                    case STATUS_UNDEFINED:
+                        if (LEDCounter < 3) {
+                            GL11.glColor4f(.5f, .1f, .15f, .5F);
+                        } else {
+                            GL11.glColor4f(0f, .1f, .2f, .5F);
+                        }
+                        texture = TecTechUITextures.PICTURE_PARAMETER_GRAY;
+                        break;
+                    case STATUS_UNUSED:
+                    default:
+                        // if (GregTech_API.sColoredGUI && this.mContainer.mTileEntity != null) {
+                        //    int tColor = this.mContainer.mTileEntity.getColorization() & 15;
+                        //    if (tColor < ItemDye.field_150922_c.length) {
+                        //        tColor = ItemDye.field_150922_c[tColor];
+                        //        GL11.glColor4f((float)(tColor >> 16 & 255) / 255.0F, (float)(tColor >> 8 &
+                        // 255) / 255.0F,
+                        // (float)(tColor & 255) / 255.0F, 1F);
+                        //    }
+                        // }
+                        // drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su+2, sv+2);
+                        // GL11.glColor4f(1f, 1f, 1f, 1f);
+                        // break;
+                }
+                setDrawable(texture);
+                super.draw(partialTicks);
+                GL11.glColor4f(1f, 1f, 1f, 1f);
+            }
+        };
+        builder.widget(ledWidget
+                .dynamicTooltip(() -> {
+                    if (input) {
+                        return getFullLedDescriptionIn(hatch, param);
+                    } else {
+                        return getFullLedDescriptionOut(hatch, param);
+                    }
+                })
+                .setPos(12 + posIndex * 8, (doesBindPlayerInventory() ? 97 : 177) + (input ? 0 : 1) * 6)
+                .setSize(6, 4));
         if (input) {
             builder.widget(new FakeSyncWidget.ByteSyncer(
-                            () -> parametrization.eParamsInStatus[parameterIndex].getOrdinalByte(),
-                            val -> parametrization.eParamsInStatus[parameterIndex] = LedStatus.getStatus(val)))
+                                    () -> parametrization.eParamsInStatus[parameterIndex].getOrdinalByte(),
+                                    val -> parametrization.eParamsInStatus[parameterIndex] = LedStatus.getStatus(val))
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
                     .widget(new FakeSyncWidget.DoubleSyncer(
-                            () -> parametrization.iParamsIn[parameterIndex],
-                            val -> parametrization.iParamsIn[parameterIndex] = val));
+                                    () -> parametrization.iParamsIn[parameterIndex],
+                                    val -> parametrization.iParamsIn[parameterIndex] = val)
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
         } else {
             builder.widget(new FakeSyncWidget.ByteSyncer(
-                            () -> parametrization.eParamsOutStatus[parameterIndex].getOrdinalByte(),
-                            val -> parametrization.eParamsOutStatus[parameterIndex] = LedStatus.getStatus(val)))
+                                    () -> parametrization.eParamsOutStatus[parameterIndex].getOrdinalByte(),
+                                    val -> parametrization.eParamsOutStatus[parameterIndex] = LedStatus.getStatus(val))
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
                     .widget(new FakeSyncWidget.DoubleSyncer(
-                            () -> parametrization.iParamsOut[parameterIndex],
-                            val -> parametrization.iParamsOut[parameterIndex] = val));
+                                    () -> parametrization.iParamsOut[parameterIndex],
+                                    val -> parametrization.iParamsOut[parameterIndex] = val)
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
         }
     }
 
