@@ -1663,22 +1663,31 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_BOXED)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sFusionRecipes = new GT_Recipe_Map(
-                        new HashSet<>(50),
-                        "gt.recipe.fusionreactor",
-                        "Fusion Reactor",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FusionReactor",
-                        0,
-                        0,
-                        0,
-                        2,
-                        1,
-                        "Start: ",
-                        1,
-                        " EU",
-                        true,
-                        true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                new HashSet<>(50),
+                "gt.recipe.fusionreactor",
+                "Fusion Reactor",
+                null,
+                RES_PATH_GUI + "basicmachines/FusionReactor",
+                0,
+                0,
+                0,
+                2,
+                1,
+                "Start: ",
+                1,
+                " EU",
+                true,
+                true) {
+            @Override
+            public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+                return UIHelper.getItemInputPositions(fluidInputCount);
+            }
+
+            @Override
+            public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
+                return UIHelper.getItemOutputPositions(fluidOutputCount);
+            }
+        }.setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                 .setUsualFluidInputCount(2);
         public static final GT_Recipe_Map sComplexFusionRecipes = new GT_Recipe_Map_ComplexFusion(
                         new HashSet<>(50),
