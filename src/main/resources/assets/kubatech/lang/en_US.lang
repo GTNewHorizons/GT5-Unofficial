@@ -28,6 +28,17 @@ command.config.invalid_option=§cInvalid option ! Possible options: reload
 command.config.success=§aConfig reloaded successfully !
 command.config.usage=<option>
 
+command.tea.invalid_option=§cInvalid usage !
+command.tea.player_not_found=§cPlayer not found !
+command.tea.success_get=Player %s has %d Tea
+command.tea.success_set=Player %s now has %d Tea
+command.tea.success_add=Player %s now has %d Tea
+command.tea.usage=<username> get/set/add (<amount>)
+
+
+#Blocks
+kubablock.tea_acceptor.name=§4§lTea Acceptor
+
 #Items
 kubaitem.fromcollection=This item is from
 kubaitem.notyours=It looks like that item is not yours
@@ -74,6 +85,8 @@ kubaitem.teacollection.white_tea.name=§e§lKuba's White Tea
 kubaitem.teacollection.yellow_tea.name=§6§lKuba's Yellow Tea
 kubaitem.teacollection.ultimate_tea.name=§6§lKuba's %s §6§lTea
 
+kubaitem.tea_acceptor_research_note.name=Tea Acceptor Research Note
+
 #Achievements
 achievement.teacollection.black_tea=§6§lKuba's Black Tea
 achievement.teacollection.butterfly_tea=§1§lKuba's Butterfly Pea Tea
@@ -102,3 +115,8 @@ achievement.teacollection.red_tea.desc=§cWhy would anyone drink this ?
 achievement.teacollection.white_tea.desc=§eThe healthiest one
 achievement.teacollection.yellow_tea.desc=§6Green Tea with more grassy flavour
 achievement.teacollection.ultimate_tea.desc=§4§lOne Tea to drink them all
+
+#Thaumcraft
+tc.research_name.KT_UltimateTea=%s §6§lTea
+tc.research_text.KT_UltimateTea=§4§lPure power
+KT.research.ultimatetea=You have found a way to convert all this Tea into pure power creating the %s §6§lTea

@@ -19,15 +19,21 @@
 
 package kubatech;
 
-import static kubatech.loaders.ItemLoader.RegisterItems;
+import static kubatech.loaders.BlockLoader.registerBlocks;
+import static kubatech.loaders.ItemLoader.registerItems;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
+import kubatech.api.LoaderReference;
 import kubatech.commands.CommandConfig;
 import kubatech.commands.CommandHandler;
 import kubatech.commands.CommandHelp;
+import kubatech.commands.CommandTea;
 import kubatech.config.Config;
 import kubatech.loaders.RecipeLoader;
+import kubatech.loaders.TCLoader;
+import kubatech.savedata.PlayerDataManager;
+import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy {
 
@@ -37,22 +43,28 @@ public class CommonProxy {
         Config.init(event.getModConfigurationDirectory());
         Config.synchronizeConfiguration();
         FMLCommonHandler.instance().bus().register(new FMLEventHandler());
-        RegisterItems();
-        RecipeLoader.addRecipes();
+        MinecraftForge.EVENT_BUS.register(new PlayerDataManager());
+        registerItems();
+        registerBlocks();
+        if (LoaderReference.Thaumcraft) TCLoader.load();
     }
 
     public void init(FMLInitializationEvent event) {}
 
-    public void postInit(FMLPostInitializationEvent event) {}
+    public void postInit(FMLPostInitializationEvent event) {
+        RecipeLoader.addRecipes();
+    }
 
     public void serverAboutToStart(FMLServerAboutToStartEvent event) {}
 
     public void serverStarting(FMLServerStartingEvent event) {
         RecipeLoader.addRecipesLate();
+        if (LoaderReference.Thaumcraft) TCLoader.lateLoad();
         CommandHandler cmd = new CommandHandler();
         cmd.addCommand(new CommandHelp());
         cmd.addCommand(new CommandConfig());
         // cmd.addCommand(new CommandBees());
+        cmd.addCommand(new CommandTea());
         event.registerServerCommand(cmd);
     }
 

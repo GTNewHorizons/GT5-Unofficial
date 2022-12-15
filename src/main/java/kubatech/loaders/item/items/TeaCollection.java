@@ -32,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -66,6 +67,21 @@ public class TeaCollection extends ItemProxy {
         {1, 3}
     };
 
+    boolean checkTeaOwner(ItemStack stack, String username) {
+        NBTTagCompound tag = stack.stackTagCompound;
+        if (tag == null || !stack.stackTagCompound.hasKey("TeaOwner")) return true;
+        return stack.stackTagCompound.getString("TeaOwner").equals(username);
+    }
+
+    private boolean checkOrSetTeaOwner(ItemStack stack, String username) {
+        NBTTagCompound tag = stack.stackTagCompound;
+        if (tag == null || !stack.stackTagCompound.hasKey("TeaOwner")) {
+            stack.setTagInfo("TeaOwner", new NBTTagString(username));
+            return true;
+        }
+        return stack.stackTagCompound.getString("TeaOwner").equals(username);
+    }
+
     @Override
     public void ItemInit(int index) {
         super.ItemInit(index);
@@ -87,9 +103,7 @@ public class TeaCollection extends ItemProxy {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
-        if (stack.stackTagCompound != null
-                && stack.stackTagCompound.hasKey("TeaOwner")
-                && !stack.stackTagCompound.getString("TeaOwner").equals(entity.getCommandSenderName())) {
+        if (!checkTeaOwner(stack, entity.getCommandSenderName())) {
             tooltipList.add(EnumChatFormatting.GRAY + "" + EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC
                     + StatCollector.translateToLocal("kubaitem.notyours"));
             return;
@@ -105,20 +119,16 @@ public class TeaCollection extends ItemProxy {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-        if (p_77659_1_.stackTagCompound == null || !p_77659_1_.stackTagCompound.hasKey("TeaOwner")) return p_77659_1_;
-        if (!p_77659_1_.stackTagCompound.getString("TeaOwner").equals(p_77659_3_.getCommandSenderName()))
-            return p_77659_1_;
-        p_77659_3_.setItemInUse(p_77659_1_, 32);
-        return p_77659_1_;
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer entity) {
+        if (!checkTeaOwner(stack, entity.getCommandSenderName())) return stack;
+        entity.setItemInUse(stack, 32);
+        return stack;
     }
 
     @Override
     public ItemStack onEaten(ItemStack stack, World world, EntityPlayer entity) {
         if (world.isRemote) return stack;
         if (!(entity instanceof EntityPlayerMP)) return stack;
-        if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("TeaOwner")) return stack;
-        if (!stack.stackTagCompound.getString("TeaOwner").equals(entity.getCommandSenderName())) return stack;
         entity.addChatComponentMessage(new ChatComponentText(
                 EnumChatFormatting.GREEN + StatCollector.translateToLocal("kubaitem.teacollection.mmm")));
         entity.triggerAchievement(achievement);
@@ -133,11 +143,7 @@ public class TeaCollection extends ItemProxy {
     @Override
     public String getDisplayName(ItemStack stack) {
         if (!ModUtils.isClientSided) return super.getDisplayName(stack);
-        if (stack.stackTagCompound == null
-                || (!stack.stackTagCompound.hasKey("TeaOwner")
-                        || stack.stackTagCompound
-                                .getString("TeaOwner")
-                                .equals(Minecraft.getMinecraft().thePlayer.getCommandSenderName())))
+        if (checkTeaOwner(stack, Minecraft.getMinecraft().thePlayer.getCommandSenderName()))
             return super.getDisplayName(stack);
         return EnumChatFormatting.GOLD + "" + EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC + "???????";
     }
@@ -146,11 +152,9 @@ public class TeaCollection extends ItemProxy {
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isCurrentItem) {
         if (world.isRemote) return;
         if (!(entity instanceof EntityPlayerMP)) return;
+        checkOrSetTeaOwner(stack, entity.getCommandSenderName());
         NBTTagCompound tag = stack.stackTagCompound;
-        if (tag == null) tag = stack.stackTagCompound = new NBTTagCompound();
         if (tag.hasKey("display")) tag.removeTag("display");
-        if (tag.hasKey("TeaOwner")) return;
-        tag.setString("TeaOwner", entity.getCommandSenderName());
     }
 
     private static class TeaPage extends AchievementPage {

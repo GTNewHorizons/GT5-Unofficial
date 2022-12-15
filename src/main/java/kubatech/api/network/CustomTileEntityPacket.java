@@ -128,7 +128,11 @@ public class CustomTileEntityPacket implements IMessage {
         @Override
         public IMessage onMessage(CustomTileEntityPacket message, MessageContext ctx) {
             if (!ModUtils.isClientSided) return null;
-            World w = Minecraft.getMinecraft().thePlayer.getEntityWorld();
+            Minecraft mc = Minecraft.getMinecraft();
+            if (mc == null) return null;
+            if (mc.thePlayer == null) return null;
+            World w = mc.thePlayer.getEntityWorld();
+            if (w == null) return null;
             if (message.w != w.provider.dimensionId) return null;
             TileEntity e = w.getTileEntity(message.x, message.y, message.z);
             if (e == null || e.isInvalid()) return null;

@@ -38,6 +38,13 @@ import com.google.common.collect.Multimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.*;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -47,6 +54,7 @@ import crazypants.enderio.EnderIO;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,6 +66,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.Function;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.helpers.GTHelper;
@@ -76,6 +85,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -620,6 +630,195 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             } else info.add("Total attack damage: " + EnumChatFormatting.YELLOW + DIAMOND_SPIKES_DAMAGE);
         }
         return info.toArray(new String[0]);
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    private final Function<Widget, Boolean> isFixed = widget -> getIdealStatus() == getRepairStatus() && mMachine;
+    private static final Function<Integer, IDrawable[]> toggleButtonBackgroundGetter = val -> {
+        if (val == 0) return new IDrawable[] {GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS};
+        else return new IDrawable[] {GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CHECKMARK};
+    };
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 4)
+                .setSize(143, 75)
+                .setEnabled(widget -> !isFixed.apply(widget)));
+        final SlotWidget inventorySlot =
+                new SlotWidget(inventoryHandler, 1).setFilter(stack -> stack.getItem() == poweredSpawnerItem);
+        /*
+        Widget.PosProvider provider = (screenSize, window, parent)->{
+            if(getRepairStatus() == getIdealStatus() && mMachine)
+                return new Pos2d(50, 50);
+            else
+                return new Pos2d(151, 4);
+        };
+        builder.widget(inventorySlot.setPosProvider(provider).setTicker(widget -> {
+            if(!widget.getPos().equals(provider.getPos(null, null, null)))
+                widget.checkNeedsRebuild();
+        }));
+         */
+
+        DynamicPositionedColumn configurationElements = new DynamicPositionedColumn();
+        addConfigurationWidgets(configurationElements, buildContext, inventorySlot);
+
+        builder.widget(new DynamicPositionedColumn()
+                .setSynced(false)
+                .widget(inventorySlot)
+                .widget(new CycleButtonWidget()
+                        .setToggle(() -> getBaseMetaTileEntity().isAllowedToWork(), works -> {
+                            if (works) getBaseMetaTileEntity().enableWorking();
+                            else getBaseMetaTileEntity().disableWorking();
+
+                            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
+                            String tChat = GT_Utility.trans("090", "Machine Processing: ")
+                                    + (works
+                                            ? GT_Utility.trans("088", "Enabled")
+                                            : GT_Utility.trans("087", "Disabled"));
+                            if (hasAlternativeModeText()) tChat = getAlternativeModeText();
+                            GT_Utility.sendChatToPlayer(buildContext.getPlayer(), tChat);
+                        })
+                        .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
+                        .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
+                        .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+                        .setSize(18, 18)
+                        .addTooltip("Working status"))
+                .widget(configurationElements.setEnabled(
+                        widget -> !getBaseMetaTileEntity().isActive()))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                        .setSize(18, 18)
+                        .addTooltip(new Text("Please stop the machine to configure it").color(Color.RED.dark(3)))
+                        .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
+                .setPos(151, 4));
+
+        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
+        drawTexts(screenElements, inventorySlot);
+        builder.widget(screenElements);
+    }
+
+    private void addConfigurationWidgets(
+            DynamicPositionedColumn configurationElements, UIBuildContext buildContext, SlotWidget inventorySlot) {
+        configurationElements.setSynced(false);
+        configurationElements.widget(new CycleButtonWidget()
+                .setToggle(() -> isInRitualMode, v -> {
+                    if (this.mMaxProgresstime > 0) {
+                        GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
+                        return;
+                    }
+
+                    isInRitualMode = v;
+
+                    if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
+                    if (!isInRitualMode) {
+                        GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode disabled");
+                    } else {
+                        GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode enabled");
+                        if (connectToRitual())
+                            GT_Utility.sendChatToPlayer(
+                                    buildContext.getPlayer(), "Successfully connected to the ritual");
+                        else GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Can't connect to the ritual");
+                    }
+                })
+                .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+                .setSize(18, 18)
+                .addTooltip("Ritual mode"));
+        configurationElements.widget(new CycleButtonWidget()
+                .setToggle(() -> mIsProducingInfernalDrops, v -> {
+                    if (this.mMaxProgresstime > 0) {
+                        GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
+                        return;
+                    }
+
+                    mIsProducingInfernalDrops = v;
+
+                    if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
+                    if (!mIsProducingInfernalDrops)
+                        GT_Utility.sendChatToPlayer(
+                                buildContext.getPlayer(), "Mobs will now be prevented from spawning infernal");
+                    else GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Mobs can spawn infernal now");
+                })
+                .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+                .setSize(18, 18)
+                .addTooltip("Is allowed to spawn infernal mobs")
+                .addTooltip(new Text("Does not affect mobs that are always infernal !").color(Color.GRAY.normal)));
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        screenElements.setSynced(false).setSpace(0).setPos(10, 7);
+
+        screenElements.widget(new DynamicPositionedRow()
+                .setSynced(false)
+                .widget(new TextWidget("Status: ").setDefaultColor(COLOR_TEXT_GRAY.get()))
+                .widget(new DynamicTextWidget(() -> {
+                    if (getBaseMetaTileEntity().isActive()) return new Text("Working !").color(Color.GREEN.dark(3));
+                    else if (getBaseMetaTileEntity().isAllowedToWork())
+                        return new Text("Enabled").color(Color.GREEN.dark(3));
+                    else if (getBaseMetaTileEntity().wasShutdown())
+                        return new Text("Shutdown (CRITICAL)").color(Color.RED.dark(3));
+                    else return new Text("Disabled").color(Color.RED.dark(3));
+                }))
+                .setEnabled(isFixed));
+        screenElements.widget(new DynamicTextWidget(() -> {
+                    ItemStack aStack = mInventory[1];
+                    if (aStack == null) return new Text("Insert Powered Spawner").color(Color.RED.dark(3));
+                    else {
+                        Text invalid = new Text("Invalid Spawner").color(Color.RED.dark(3));
+                        if (aStack.getItem() != poweredSpawnerItem) return invalid;
+
+                        if (aStack.getTagCompound() == null) return invalid;
+                        String mobType = aStack.getTagCompound().getString("mobType");
+                        if (mobType.isEmpty()) return invalid;
+
+                        if (!MobNameToRecipeMap.containsKey(mobType)) return invalid;
+
+                        return new Text(mobType).color(Color.GREEN.dark(3));
+                    }
+                })
+                .setEnabled(isFixed));
+
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("132", "Pipe is loose."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mWrench))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("133", "Screws are loose."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mScrewdriver))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("134", "Something is stuck."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mSoftHammer))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("135", "Platings are dented."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mHardHammer))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("136", "Circuitry burned out."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mSolderingTool))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("137", "That doesn't belong there."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mCrowbar))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mMachine))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
     }
 
     @Override

@@ -30,6 +30,15 @@ import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.*;
 import forestry.api.apiculture.*;
 import forestry.apiculture.blocks.BlockAlveary;
 import forestry.apiculture.blocks.BlockApicultureType;
@@ -38,6 +47,7 @@ import forestry.plugins.PluginApiculture;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,22 +56,27 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.helpers.GTHelper;
+import kubatech.api.network.CustomTileEntityPacket;
+import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class GT_MetaTileEntity_MegaIndustrialApiary
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MegaIndustrialApiary> {
+        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MegaIndustrialApiary>
+        implements CustomTileEntityPacketHandler {
 
     private byte mGlassTier = 0;
     private int mCasing = 0;
@@ -73,6 +88,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     private static final ItemStack royalJelly = PluginApiculture.items.royalJelly.getItemStack(1);
     private static final int CASING_INDEX = 10;
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final int CONFIGURATION_WINDOW_ID = 999;
 
     private static final IStructureDefinition<GT_MetaTileEntity_MegaIndustrialApiary> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_MegaIndustrialApiary>builder()
@@ -284,12 +300,18 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         else mMaxSlots = 1;
     }
 
+    private CustomTileEntityPacket packet = null;
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             // TODO: Look for proper fix
             if (mUpdate < 0) mUpdate = 600;
+            if (packet == null) packet = new CustomTileEntityPacket((TileEntity) aBaseMetaTileEntity, null);
+            packet.resetHelperData();
+            packet.addData(mMaxSlots);
+            packet.sendToAllAround(20);
         }
         // Beeeee rendering inside ?
     }
@@ -357,7 +379,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                         this.updateSlots();
                         return false;
                     }
-                    calculateOverclockedNessMulti((int) GT_Values.V[5], 1200, 2, getMaxInputVoltage());
+                    calculateOverclockedNessMulti(GT_Values.V[5], 1200, 2, getMaxInputVoltage());
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     this.mOutputItems = new ItemStack[] {this.mStorage.get(0).createIgnobleCopy()};
@@ -470,6 +492,303 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             };
         }
         return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    private final Function<Widget, Boolean> isFixed = widget -> getIdealStatus() == getRepairStatus() && mMachine;
+
+    @Override
+    public void HandleCustomPacket(CustomTileEntityPacket customdata) {
+        mMaxSlots = customdata.getDataInt();
+    }
+
+    private static final Function<Integer, IDrawable[]> toggleButtonBackgroundGetter = val -> {
+        if (val == 0) return new IDrawable[] {GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS};
+        else return new IDrawable[] {GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CHECKMARK};
+    };
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 4)
+                .setSize(143, 75)
+                .setEnabled(widget -> !isFixed.apply(widget)));
+
+        buildContext.addSyncedWindow(CONFIGURATION_WINDOW_ID, this::createConfigurationWindow);
+        EntityPlayer player = buildContext.getPlayer();
+
+        // Slot is not needed
+
+        builder.widget(new DynamicPositionedColumn()
+                .setSynced(false)
+                .widget(new CycleButtonWidget()
+                        .setToggle(() -> getBaseMetaTileEntity().isAllowedToWork(), works -> {
+                            if (works) getBaseMetaTileEntity().enableWorking();
+                            else getBaseMetaTileEntity().disableWorking();
+
+                            if (!(player instanceof EntityPlayerMP)) return;
+                            String tChat = GT_Utility.trans("090", "Machine Processing: ")
+                                    + (works
+                                            ? GT_Utility.trans("088", "Enabled")
+                                            : GT_Utility.trans("087", "Disabled"));
+                            if (hasAlternativeModeText()) tChat = getAlternativeModeText();
+                            GT_Utility.sendChatToPlayer(player, tChat);
+                        })
+                        .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
+                        .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
+                        .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+                        .setSize(18, 18)
+                        .addTooltip("Working status"))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> {
+                            if (!widget.isClient()) widget.getContext().openSyncedWindow(CONFIGURATION_WINDOW_ID);
+                        })
+                        .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                        .addTooltip("Configuration")
+                        .setSize(18, 18))
+                .setPos(151, 4));
+
+        final List<ItemStack> drawables = new ArrayList<>(mMaxSlots);
+        final int perRow = 7;
+
+        Scrollable beesContainer = new Scrollable().setVerticalScroll();
+
+        if (mMaxSlots > 0)
+            for (int i = 0, imax = ((mMaxSlots - 1) / perRow); i <= imax; i++) {
+                DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
+                for (int j = 0, jmax = (i == imax ? (mMaxSlots - 1) % perRow : (perRow - 1)); j <= jmax; j++) {
+                    final int finalI = i * perRow;
+                    final int finalJ = j;
+                    final int ID = finalI + finalJ;
+                    row.widget(new ButtonWidget()
+                            .setOnClick((clickData, widget) -> {
+                                if (!(player instanceof EntityPlayerMP)) return;
+                                if (mStorage.size() <= ID) return;
+                                if (this.mMaxProgresstime > 0) {
+                                    GT_Utility.sendChatToPlayer(player, "Can't eject while running !");
+                                    return;
+                                }
+                                BeeSimulator removed = mStorage.remove(ID);
+                                addOutput(removed.queenStack);
+                                GT_Utility.sendChatToPlayer(player, "Queen ejected !");
+                            })
+                            .setBackground(() -> new IDrawable[] {
+                                getBaseMetaTileEntity().getGUITextureSet().getItemSlot(),
+                                GT_UITextures.OVERLAY_SLOT_BEE_QUEEN,
+                                new ItemDrawable(drawables.size() > ID ? drawables.get(ID) : null)
+                                        .withFixedSize(16, 16, 1, 1)
+                            })
+                            .dynamicTooltip(() -> {
+                                if (drawables.size() > ID)
+                                    return Arrays.asList(
+                                            drawables.get(ID).getDisplayName(),
+                                            EnumChatFormatting.GRAY + "Left click to eject");
+                                return Collections.emptyList();
+                            })
+                            .setSize(18, 18));
+                }
+                beesContainer.widget(row.setPos(0, i * 18).setEnabled(widget -> {
+                    int y = widget.getPos().y;
+                    int cy = beesContainer.getVerticalScrollOffset();
+                    int ch = beesContainer.getVisibleHeight();
+                    return y >= cy - ch && y <= cy + ch;
+                }));
+            }
+        beesContainer.attachSyncer(
+                new FakeSyncWidget.ListSyncer<>(
+                        () -> mStorage.stream().map(s -> s.queenStack).collect(Collectors.toList()),
+                        l -> {
+                            drawables.clear();
+                            drawables.addAll(l);
+                        },
+                        (buffer, i) -> {
+                            try {
+                                buffer.writeItemStackToBuffer(i);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        },
+                        buffer -> {
+                            try {
+                                return buffer.readItemStackFromBuffer();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }),
+                builder);
+
+        builder.widget(beesContainer.setPos(10, 16).setSize(128, 60));
+
+        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
+        drawTexts(screenElements, null);
+        builder.widget(screenElements);
+    }
+
+    protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
+        ModularWindow.Builder builder = ModularWindow.builder(200, 100);
+        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                        .setPos(5, 5)
+                        .setSize(16, 16))
+                .widget(new TextWidget("Configuration").setPos(25, 9))
+                .widget(ButtonWidget.closeWindowButton(true).setPos(185, 3))
+                .widget(new Column()
+                        .widget(new CycleButtonWidget()
+                                .setLength(3)
+                                .setGetter(() -> mPrimaryMode)
+                                .setSetter(val -> {
+                                    if (this.mMaxProgresstime > 0) {
+                                        GT_Utility.sendChatToPlayer(player, "Can't change mode when running !");
+                                        return;
+                                    }
+                                    mPrimaryMode = val;
+
+                                    if (!(player instanceof EntityPlayerMP)) return;
+                                    switch (mPrimaryMode) {
+                                        case 0:
+                                            GT_Utility.sendChatToPlayer(player, "Changed primary mode to: Input mode");
+                                            break;
+                                        case 1:
+                                            GT_Utility.sendChatToPlayer(player, "Changed primary mode to: Output mode");
+                                            break;
+                                        case 2:
+                                            GT_Utility.sendChatToPlayer(
+                                                    player, "Changed primary mode to: Operating mode");
+                                            break;
+                                    }
+                                })
+                                .addTooltip(0, new Text("Input").color(Color.YELLOW.dark(3)))
+                                .addTooltip(1, new Text("Output").color(Color.YELLOW.dark(3)))
+                                .addTooltip(2, new Text("Operating").color(Color.GREEN.dark(3)))
+                                .setVariableBackgroundGetter(i -> new IDrawable[] {
+                                    ModularUITextures.VANILLA_BACKGROUND,
+                                    GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
+                                    i == 0
+                                            ? new Text("Input")
+                                                    .color(Color.YELLOW.dark(3))
+                                                    .withFixedSize(70 - 18, 18, 15, 0)
+                                            : i == 1
+                                                    ? new Text("Output")
+                                                            .color(Color.YELLOW.dark(3))
+                                                            .withFixedSize(70 - 18, 18, 15, 0)
+                                                    : new Text("Operating")
+                                                            .color(Color.GREEN.dark(3))
+                                                            .withFixedSize(70 - 18, 18, 15, 0)
+                                })
+                                .setSize(70, 18)
+                                .addTooltip("Primary mode"))
+                        .widget(new CycleButtonWidget()
+                                .setLength(2)
+                                .setGetter(() -> mSecondaryMode)
+                                .setSetter(val -> {
+                                    if (this.mMaxProgresstime > 0) {
+                                        GT_Utility.sendChatToPlayer(player, "Can't change mode when running !");
+                                        return;
+                                    }
+
+                                    mSecondaryMode = val;
+
+                                    if (!(player instanceof EntityPlayerMP)) return;
+                                    switch (mSecondaryMode) {
+                                        case 0:
+                                            GT_Utility.sendChatToPlayer(
+                                                    player, "Changed secondary mode to: Normal mode");
+                                            break;
+                                        case 1:
+                                            GT_Utility.sendChatToPlayer(
+                                                    player, "Changed secondary mode to: Swarmer mode");
+                                            break;
+                                    }
+                                })
+                                .addTooltip(0, new Text("Normal").color(Color.GREEN.dark(3)))
+                                .addTooltip(1, new Text("Swarmer").color(Color.YELLOW.dark(3)))
+                                .setVariableBackgroundGetter(i -> new IDrawable[] {
+                                    ModularUITextures.VANILLA_BACKGROUND,
+                                    GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
+                                    i == 0
+                                            ? new Text("Normal")
+                                                    .color(Color.GREEN.dark(3))
+                                                    .withFixedSize(70 - 18, 18, 15, 0)
+                                            : new Text("Swarmer")
+                                                    .color(Color.YELLOW.dark(3))
+                                                    .withFixedSize(70 - 18, 18, 15, 0)
+                                })
+                                .setSize(70, 18)
+                                .addTooltip("Secondary mode"))
+                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
+                        .setPos(10, 30))
+                .widget(new Column()
+                        .widget(new TextWidget("Primary mode").setSize(100, 18))
+                        .widget(new TextWidget("Secondary mode").setSize(100, 18))
+                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
+                        .setPos(80, 30))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                        .setSize(18, 18)
+                        .setPos(10, 30)
+                        .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
+                        .setEnabled(widget -> getBaseMetaTileEntity().isActive()));
+        return builder.build();
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        screenElements.setSynced(false).setSpace(0).setPos(10, 7);
+
+        screenElements.widget(new DynamicPositionedRow()
+                .setSynced(false)
+                .widget(new TextWidget("Status: ").setDefaultColor(COLOR_TEXT_GRAY.get()))
+                .widget(new DynamicTextWidget(() -> {
+                    if (getBaseMetaTileEntity().isActive()) return new Text("Working !").color(Color.GREEN.dark(3));
+                    else if (getBaseMetaTileEntity().isAllowedToWork())
+                        return new Text("Enabled").color(Color.GREEN.dark(3));
+                    else if (getBaseMetaTileEntity().wasShutdown())
+                        return new Text("Shutdown (CRITICAL)").color(Color.RED.dark(3));
+                    else return new Text("Disabled").color(Color.RED.dark(3));
+                }))
+                .setEnabled(isFixed));
+
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("132", "Pipe is loose."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mWrench))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("133", "Screws are loose."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mScrewdriver))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("134", "Something is stuck."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mSoftHammer))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("135", "Platings are dented."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mHardHammer))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("136", "Circuitry burned out."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mSolderingTool))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("137", "That doesn't belong there."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mCrowbar))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mMachine))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
     }
 
     private static class BeeSimulator {

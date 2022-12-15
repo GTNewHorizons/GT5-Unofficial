@@ -19,6 +19,13 @@
 
 package kubatech.loaders.item;
 
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.builder.UIBuilder;
+import com.gtnewhorizons.modularui.common.builder.UIInfo;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import java.util.List;
 import kubatech.Tags;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -31,6 +38,25 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class ItemProxy {
+    private static final UIInfo<?, ?> HeldItemUIInfo = UIBuilder.of()
+            .container((player, w, x, y, z) -> {
+                ItemStack stack = player.getHeldItem();
+                ItemProxy proxy = KubaItems.getItemProxy(stack);
+                if (!(proxy instanceof IItemProxyGUI)) return null;
+                UIBuildContext context = new UIBuildContext(player);
+                ModularWindow window = ((IItemProxyGUI) proxy).createWindow(stack, player);
+                return new ModularUIContainer(
+                        new ModularUIContext(context, () -> player.inventoryContainer.detectAndSendChanges()), window);
+            })
+            .gui((player, w, x, y, z) -> {
+                ItemStack stack = player.getHeldItem();
+                ItemProxy proxy = KubaItems.getItemProxy(stack);
+                if (!(proxy instanceof IItemProxyGUI)) return null;
+                UIBuildContext context = new UIBuildContext(player);
+                ModularWindow window = ((IItemProxyGUI) proxy).createWindow(stack, player);
+                return new ModularGui(new ModularUIContainer(new ModularUIContext(context, null), window));
+            })
+            .build();
     private final String unlocalizedName;
     private final String texturepath;
     private IIcon icon;
@@ -79,5 +105,10 @@ public class ItemProxy {
 
     public int getMaxItemUseDuration() {
         return 0;
+    }
+
+    public static void openHeldItemGUI(EntityPlayer player) {
+        ItemStack stack = player.getHeldItem();
+        if (KubaItems.getItemProxy(stack) instanceof IItemProxyGUI) HeldItemUIInfo.open(player);
     }
 }

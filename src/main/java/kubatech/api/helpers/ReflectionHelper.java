@@ -45,6 +45,7 @@ public class ReflectionHelper {
             boolean exceptionDetected = false;
             Field f = null;
             do {
+                exceptionDetected = false;
                 try {
                     f = cl.getDeclaredField(fieldName);
                     f.setAccessible(true);
@@ -58,6 +59,38 @@ public class ReflectionHelper {
             return (T) f.get(obj);
         } catch (Exception ex) {
             return defaultvalue;
+        }
+    }
+
+    public static <T> boolean setField(Object obj, String fieldName, T value) {
+        Class<?> cl = obj.getClass();
+        String clName = cl.getName();
+        HashMap<String, Field> classmap = classes.computeIfAbsent(clName, s -> new _FieldsMethods()).fields;
+        try {
+            if (classmap.containsKey(fieldName)) {
+                Field f = classmap.get(fieldName);
+                if (f == null) return false;
+                f.set(obj, value);
+                return true;
+            }
+            boolean exceptionDetected = false;
+            Field f = null;
+            do {
+                exceptionDetected = false;
+                try {
+                    f = cl.getDeclaredField(fieldName);
+                    f.setAccessible(true);
+                } catch (Exception ex) {
+                    exceptionDetected = true;
+                    cl = cl.getSuperclass();
+                }
+            } while (exceptionDetected && !cl.equals(Object.class));
+            classmap.put(fieldName, f);
+            if (f == null) return false;
+            f.set(obj, value);
+            return true;
+        } catch (Exception ex) {
+            return false;
         }
     }
 
@@ -87,6 +120,7 @@ public class ReflectionHelper {
             boolean exceptionDetected = false;
             Method m = null;
             do {
+                exceptionDetected = false;
                 try {
                     m = cl.getDeclaredMethod(methodName, argsTypes);
                     m.setAccessible(true);

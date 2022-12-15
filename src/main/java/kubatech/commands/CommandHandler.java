@@ -61,7 +61,7 @@ public class CommandHandler extends CommandBase {
         }
     }
 
-    private static final ArrayList<String> aliases = new ArrayList<>(Collections.singleton("kt"));
+    private static final List<String> aliases = Collections.singletonList("kt");
     public static final HashMap<String, ICommand> commands = new HashMap<>();
 
     @Override

@@ -9,7 +9,8 @@ import java.util.List;
 
 public enum Mixin {
     // Minecraft
-    EnchantmentHelperMixin("minecraft.EnchantmentHelperMixin", VANILLA);
+    EnchantmentHelperMixin("minecraft.EnchantmentHelperMixin", VANILLA),
+    WorldMixin("minecraft.WorldMixin", VANILLA);
 
     public final String mixinClass;
     public final List<TargetedMod> targetedMods;

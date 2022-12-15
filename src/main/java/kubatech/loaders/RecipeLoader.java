@@ -21,6 +21,7 @@ package kubatech.loaders;
 
 import static kubatech.api.enums.ItemList.*;
 
+import com.dreammaster.gthandler.CustomItemList;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -269,6 +270,25 @@ public class RecipeLoader {
             GameRegistry.addSmelting(PuerhTeaLeaf.get(1), PuerhTea.get(1), 10);
             GameRegistry.addSmelting(WhiteTeaLeaf.get(1), WhiteTea.get(1), 10);
             GameRegistry.addSmelting(YellowTeaLeaf.get(1), YellowTea.get(1), 10);
+        }
+        if (LoaderReference.Avaritia && LoaderReference.GTNHCoreMod) {
+            GT_Values.RA.addAssemblylineRecipe(
+                    TeaAcceptorResearchNote.get(1),
+                    10000,
+                    new Object[] {
+                        LegendaryUltimateTea.get(0),
+                        GameRegistry.findItemStack("Avaritia", "Neutronium_Compressor", 1),
+                        gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
+                        CustomItemList.FluidExtractorUHV.get(10),
+                        new Object[] {OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L},
+                        new Object[] {OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L},
+                        new Object[] {OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L},
+                        new Object[] {OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L},
+                    },
+                    new FluidStack[] {FluidRegistry.getFluidStack("molten.indalloy140", 28800)},
+                    TeaAcceptor.get(1),
+                    6000,
+                    2_048_000);
         }
     }
 }

@@ -25,6 +25,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import java.util.HashMap;
 import java.util.List;
+import kubatech.loaders.ItemLoader;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -54,6 +55,11 @@ public class KubaItems extends Item {
 
     private ItemProxy getItem(ItemStack stack) {
         return items.get(stack.getItemDamage());
+    }
+
+    public static ItemProxy getItemProxy(ItemStack stack) {
+        if (!(stack.getItem() instanceof KubaItems)) return null;
+        return ItemLoader.kubaitems.getItem(stack);
     }
 
     private ItemProxy getItem(int damage) {
