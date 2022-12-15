@@ -63,6 +63,7 @@ public class Config {
                 _CacheRegenerationTrigger.ModAdditionRemovalChange;
         public static boolean includeEmptyMobs = true;
         public static String[] mobBlacklist;
+        public static double playerOnlyDropsModifier = .1d;
 
         private static void load(Configuration configuration) {
             Category category = Category.MOB_HANDLER;
@@ -114,6 +115,13 @@ public class Config {
                             },
                             "These mobs will be skipped when generating recipe map")
                     .getStringList();
+            playerOnlyDropsModifier = configuration
+                    .get(
+                            category.get(),
+                            "PlayerOnlyDropsModifier",
+                            .1d,
+                            "Hard player only loot (such as core mod drops) will be multiplied by this number")
+                    .getDouble();
         }
     }
 

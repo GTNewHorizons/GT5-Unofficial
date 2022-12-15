@@ -209,14 +209,7 @@ public class MobRecipeLoader {
 
             mOutputs = (ArrayList<MobDrop>) outputs.clone();
             int maxdamagechance = 0;
-            for (Iterator<MobDrop> iterator = mOutputs.iterator(); iterator.hasNext(); ) {
-                MobDrop o = iterator.next();
-                if (o.playerOnly) {
-                    iterator.remove();
-                    continue;
-                }
-                if (o.damages != null) for (int v : o.damages.values()) maxdamagechance += v;
-            }
+            for (MobDrop o : mOutputs) if (o.damages != null) for (int v : o.damages.values()) maxdamagechance += v;
             mMaxDamageChance = maxdamagechance;
             maxEntityHealth = e.getMaxHealth();
             mDuration = Math.max(MOB_SPAWN_INTERVAL, (int) ((maxEntityHealth / DIAMOND_SPIKES_DAMAGE) * 10d));
@@ -226,14 +219,7 @@ public class MobRecipeLoader {
 
         public void refresh() {
             int maxdamagechance = 0;
-            for (Iterator<MobDrop> iterator = mOutputs.iterator(); iterator.hasNext(); ) {
-                MobDrop o = iterator.next();
-                if (o.playerOnly) {
-                    iterator.remove();
-                    continue;
-                }
-                if (o.damages != null) for (int v : o.damages.values()) maxdamagechance += v;
-            }
+            for (MobDrop o : mOutputs) if (o.damages != null) for (int v : o.damages.values()) maxdamagechance += v;
             mMaxDamageChance = maxdamagechance;
         }
 
@@ -248,6 +234,10 @@ public class MobRecipeLoader {
             ArrayList<ItemStack> stacks = new ArrayList<>(mOutputs.size());
             for (MobDrop o : mOutputs) {
                 int chance = o.chance;
+                if (o.playerOnly) {
+                    chance = (int) ((double) chance * Config.MobHandler.playerOnlyDropsModifier);
+                    if (chance < 1) chance = 1;
+                }
                 int amount = o.stack.stackSize;
                 if (o.lootable && lootinglevel > 0) {
                     chance += lootinglevel * 5000;
@@ -1186,8 +1176,7 @@ public class MobRecipeLoader {
                         recipe.mOutputs.removeIf(removal::isMatching);
                     }
                 drops.addAll(override.additions);
-                recipe.mOutputs.addAll(
-                        override.additions.stream().filter(d -> !d.playerOnly).collect(Collectors.toList()));
+                recipe.mOutputs.addAll(override.additions);
                 LoadConfigPacket.instance.mobsOverrides.put(k, override);
             }
             recipe.refresh();
@@ -1233,8 +1222,7 @@ public class MobRecipeLoader {
                         recipe.mOutputs.removeIf(removal::isMatching);
                     }
                 drops.addAll(override.additions);
-                recipe.mOutputs.addAll(
-                        override.additions.stream().filter(d -> !d.playerOnly).collect(Collectors.toList()));
+                recipe.mOutputs.addAll(override.additions);
                 drops.sort(Comparator.comparing(d -> d.type)); // Fix GUI
             }
             recipe.refresh();

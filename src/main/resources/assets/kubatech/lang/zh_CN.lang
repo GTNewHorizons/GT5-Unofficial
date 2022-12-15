@@ -13,7 +13,6 @@ mobhandler.max_health=最大生命值：
 mobhandler.chance=几率：
 mobhandler.average_reminder=§7§o请注意，这些是掉落的平均期望值.
 mobhandler.lootable=掠夺附魔已生效
-mobhandler.player_only=§7不在工业屠宰场内掉落
 
 #Commands
 commandhandler.invalid=§c无效使用 ! 该指令的正确使用是 /%s

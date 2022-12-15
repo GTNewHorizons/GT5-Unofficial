@@ -779,7 +779,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
                         if (!MobNameToRecipeMap.containsKey(mobType)) return invalid;
 
-                        return new Text(mobType).color(Color.GREEN.dark(3));
+                        return new Text(StatCollector.translateToLocal("entity." + mobType + ".name"))
+                                .color(Color.GREEN.dark(3));
                     }
                 })
                 .setEnabled(isFixed));
