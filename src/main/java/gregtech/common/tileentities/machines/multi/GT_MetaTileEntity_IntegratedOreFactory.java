@@ -289,7 +289,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                     ore.stackSize = 0;
                 } else {
                     tRealUsed = tCharged;
-                    tOres.add(GT_Utility.copyAmount(tCharged, ore));
+                    tOres.add(GT_Utility.copyAmountUnsafe(tCharged, ore));
                     ore.stackSize -= tCharged;
                     tCharged = 0;
                     break;
