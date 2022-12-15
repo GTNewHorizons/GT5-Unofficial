@@ -12,11 +12,12 @@ import net.minecraft.client.Minecraft;
 abstract class RecipeMapHandler extends TemplateRecipeHandler {
     protected final GT_Recipe.GT_Recipe_Map mRecipeMap;
 
-    private GT_GUIColorOverride colorOverride;
+    protected final GT_GUIColorOverride colorOverride;
     private int overrideTextColor = -1;
 
     RecipeMapHandler(GT_Recipe.GT_Recipe_Map mRecipeMap) {
         this.mRecipeMap = mRecipeMap;
+        colorOverride = new GT_GUIColorOverride(mRecipeMap.mNEIGUIPath);
     }
 
     GT_Recipe.GT_Recipe_Map getRecipeMap() {
@@ -24,7 +25,6 @@ abstract class RecipeMapHandler extends TemplateRecipeHandler {
     }
 
     protected void updateOverrideTextColor() {
-        colorOverride = new GT_GUIColorOverride(mRecipeMap.mNEIGUIPath);
         overrideTextColor = colorOverride.getTextColorOrDefault("nei", -1);
     }
 
