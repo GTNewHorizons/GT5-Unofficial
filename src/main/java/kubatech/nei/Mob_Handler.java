@@ -506,8 +506,8 @@ public class Mob_Handler extends TemplateRecipeHandler {
             if (lootable) extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + LOOTABLE.get()));
             if (isPlayerOnly) {
                 extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + PLAYER_ONLY.get()));
-                extratooltip.appendTag(
-                        new NBTTagString(EnumChatFormatting.RESET + EEC_CHANCE.get((double) chance / 1_000d)));
+                extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET
+                        + EEC_CHANCE.get(((double) chance / 100d) * Config.MobHandler.playerOnlyDropsModifier)));
             }
             extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + AVERAGE_REMINDER.get()));
 

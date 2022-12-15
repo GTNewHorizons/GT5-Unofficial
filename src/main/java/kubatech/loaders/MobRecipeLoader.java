@@ -235,7 +235,7 @@ public class MobRecipeLoader {
             for (MobDrop o : mOutputs) {
                 int chance = o.chance;
                 if (o.playerOnly) {
-                    chance /= 10;
+                    chance = (int) ((double) chance * Config.MobHandler.playerOnlyDropsModifier);
                     if (chance < 1) chance = 1;
                 }
                 int amount = o.stack.stackSize;
