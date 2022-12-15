@@ -143,8 +143,11 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         super.initDefaultModes(aNBT);
-        if (getBaseMetaTileEntity().isServerSide()) {
+        // blockrenderer6343 seems to place the block in a weird way, let's catch that
+        if (getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isServerSide()) {
             UUID ownerUuid = getBaseMetaTileEntity().getOwnerUuid();
+            if (ownerUuid == null)
+                return;
             @SuppressWarnings("unchecked") List<EntityPlayerMP> l = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
             for (EntityPlayerMP p : l) {
                 if (p.getUniqueID().equals(ownerUuid)) {
