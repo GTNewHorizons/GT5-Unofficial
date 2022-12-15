@@ -91,6 +91,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
         BOSS,
         LOOTABLE,
         PLAYER_ONLY,
+        EEC_CHANCE,
         ;
         final String key;
 
@@ -501,10 +502,13 @@ public class Mob_Handler extends TemplateRecipeHandler {
             NBTTagList extratooltip = new NBTTagList();
 
             if (chance != 10000)
-                extratooltip.appendTag(new NBTTagString(
-                        EnumChatFormatting.RESET + CHANCE.get() + (chance / 100) + "." + (chance % 100) + "%"));
+                extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + CHANCE.get((double) chance / 100d)));
             if (lootable) extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + LOOTABLE.get()));
-            if (isPlayerOnly) extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + PLAYER_ONLY.get()));
+            if (isPlayerOnly) {
+                extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + PLAYER_ONLY.get()));
+                extratooltip.appendTag(
+                        new NBTTagString(EnumChatFormatting.RESET + EEC_CHANCE.get((double) chance / 1_000d)));
+            }
             extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + AVERAGE_REMINDER.get()));
 
             NBTTagCompound itemtag = this.items[0].getTagCompound();

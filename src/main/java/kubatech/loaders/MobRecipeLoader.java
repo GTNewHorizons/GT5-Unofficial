@@ -211,10 +211,6 @@ public class MobRecipeLoader {
             int maxdamagechance = 0;
             for (Iterator<MobDrop> iterator = mOutputs.iterator(); iterator.hasNext(); ) {
                 MobDrop o = iterator.next();
-                if (o.playerOnly) {
-                    iterator.remove();
-                    continue;
-                }
                 if (o.damages != null) for (int v : o.damages.values()) maxdamagechance += v;
             }
             mMaxDamageChance = maxdamagechance;
@@ -248,6 +244,7 @@ public class MobRecipeLoader {
             ArrayList<ItemStack> stacks = new ArrayList<>(mOutputs.size());
             for (MobDrop o : mOutputs) {
                 int chance = o.chance;
+                if (o.playerOnly) chance /= 10;
                 int amount = o.stack.stackSize;
                 if (o.lootable && lootinglevel > 0) {
                     chance += lootinglevel * 5000;
