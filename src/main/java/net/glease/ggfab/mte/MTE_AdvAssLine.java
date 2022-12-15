@@ -1,20 +1,19 @@
 package net.glease.ggfab.mte;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_AssemblyLine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.glease.ggfab.GGConstants;
@@ -49,14 +48,14 @@ Dev note:
 1. This multi will be an assline but with greater throughput. it will take one input every
 2.
  */
-public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
+public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE_AdvAssLine> implements ISurvivalConstructable {
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
     public static final String TAG_KEY_CURRENT_STICK = "mCurrentStick";
     public static final String TAG_KEY_PROGRESS_TIMES = "mProgressTimeArray";
-    private static final IStructureDefinition<GT_MetaTileEntity_AssemblyLine> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_AssemblyLine>builder()
+    private static final IStructureDefinition<MTE_AdvAssLine> STRUCTURE_DEFINITION =
+            StructureDefinition.<MTE_AdvAssLine>builder()
                     .addShape(STRUCTURE_PIECE_FIRST, transpose(new String[][] {
                             {" ", "e", " "},
                             {"~", "l", "G"},
@@ -92,7 +91,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
                                     ofBlock(GregTech_API.sBlockCasings2, 0)))
                     .addElement(
                             'd',
-                            buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
+                            buildHatchAdder(MTE_AdvAssLine.class)
                                     .atLeast(DataHatchElement.DataAccess)
                                     .dot(2)
                                     .casingIndex(42)
@@ -100,7 +99,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
                                     .buildAndChain(GregTech_API.sBlockCasings3, 10))
                     .addElement(
                             'b',
-                            buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
+                            buildHatchAdder(MTE_AdvAssLine.class)
                                     .atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
                                     .casingIndex(16)
                                     .dot(3)
@@ -108,13 +107,13 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
                                     .buildAndChain(
                                             ofBlock(GregTech_API.sBlockCasings2, 0),
                                             ofHatchAdder(
-                                                    GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
+                                                    MTE_AdvAssLine::addOutputToMachineList, 16, 4)))
                     .addElement(
                             'I',
                             ofChain(
                                     // all blocks nearby use solid steel casing, so let's use the texture of that
                                     InputBus.newAny(16, 5, ForgeDirection.DOWN),
-                                    ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
+                                    ofHatchAdder(MTE_AdvAssLine::addOutputToMachineList, 16, 4)))
                     .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
                     .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN))
                     .build();
@@ -125,6 +124,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
     private long inputVoltage;
     private long baseEUt;
     private boolean stuck;
+
+    private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
     private final ConcatList<GT_MetaTileEntity_Hatch> allEnergyHatchesView = new ConcatList<>(mExoticEnergyHatches, mEnergyHatches);
 
     public MTE_AdvAssLine(int aID, String aName, String aNameRegional) {
@@ -138,6 +139,53 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTE_AdvAssLine(mName);
+    }
+
+    public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
+        }
+        return false;
+    }
+
+    private boolean checkMachine() {
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0)) return false;
+        return checkMachine(true) || checkMachine(false);
+    }
+
+    private boolean checkMachine(boolean leftToRight) {
+        for (int i = 1; i < 16; i++) {
+            if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0)) return false;
+            if (!mOutputBusses.isEmpty())
+                return !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1 && mDataAccessHatches.size() <= 1;
+        }
+        return false;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 1, 0);
+        int tLength = Math.min(stackSize.stackSize + 3, 16); // render 4 slices at minimal
+        for (int i = 1; i < tLength; i++) {
+            buildPiece(STRUCTURE_PIECE_LATER, stackSize, hintsOnly, -i, 1, 0);
+        }
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        int build = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
+        if (build >= 0) return build;
+        int tLength = Math.min(stackSize.stackSize + 3, 16); // render 4 slices at minimal
+        for (int i = 1; i < tLength - 1; i++) {
+            build = survivialBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
+            if (build >= 0) return build;
+        }
+        return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -301,7 +349,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
     }
 
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_AssemblyLine> getStructureDefinition() {
+    public IStructureDefinition<MTE_AdvAssLine> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -309,11 +357,12 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
     public void clearHatches() {
         super.clearHatches();
         mExoticEnergyHatches.clear();
+        mDataAccessHatches.clear();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (super.checkMachine(aBaseMetaTileEntity, aStack)) {
+        if (checkMachine()) {
             if (mEnergyHatches.isEmpty() || mExoticEnergyHatches.isEmpty())
                 return false;
             inputVoltage = Integer.MAX_VALUE;
@@ -364,6 +413,9 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
         if (currentRecipe == null) {
             criticalStopMachine();
             return false;
+        }
+        for (GT_MetaTileEntity_Hatch_DataAccess hatch_dataAccess : mDataAccessHatches) {
+            hatch_dataAccess.setActive(true);
         }
         if (!super.onRunningTick(aStack))
             return false;
@@ -476,6 +528,35 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
         return true;
     }
 
+    /**
+     * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
+     */
+    private boolean isCorrectDataItem(ItemStack aStack, int state) {
+        if ((state & 1) != 0 && ItemList.Circuit_Integrated.isStackEqual(aStack, true, true)) return true;
+        if ((state & 2) != 0 && ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) return true;
+        return (state & 4) != 0 && ItemList.Tool_DataOrb.isStackEqual(aStack, false, true);
+    }
+
+    /**
+     * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
+     */
+    public ArrayList<ItemStack> getDataItems(int state) {
+        ArrayList<ItemStack> rList = new ArrayList<>();
+        if (GT_Utility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
+            rList.add(mInventory[1]);
+        }
+        for (GT_MetaTileEntity_Hatch_DataAccess tHatch : mDataAccessHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
+                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null
+                            && isCorrectDataItem(tHatch.getBaseMetaTileEntity().getStackInSlot(i), state))
+                        rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+                }
+            }
+        }
+        return rList;
+    }
+
     // this is only called when all slices have finished their work
     // and the first slice cannot find a input/fluid cannot be found
     // so we are safe to assume the old recipe no longer works
@@ -544,6 +625,31 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
             GT_FML_LOGGER.info("Recipe successful");
         }
         return true;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return null;
+    }
+
+    @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
+    }
+
+    @Override
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
+    }
+
+    @Override
+    public int getDamageToComponent(ItemStack aStack) {
+        return 0;
+    }
+
+    @Override
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
     }
 
     @Override
@@ -677,7 +783,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
         }
     }
 
-    private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_AssemblyLine> {
+    private enum DataHatchElement implements IHatchElement<MTE_AdvAssLine> {
         DataAccess;
 
         @Override
@@ -686,12 +792,12 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_AssemblyLine {
         }
 
         @Override
-        public IGT_HatchAdder<GT_MetaTileEntity_AssemblyLine> adder() {
-            return GT_MetaTileEntity_AssemblyLine::addDataAccessToMachineList;
+        public IGT_HatchAdder<MTE_AdvAssLine> adder() {
+            return MTE_AdvAssLine::addDataAccessToMachineList;
         }
 
         @Override
-        public long count(GT_MetaTileEntity_AssemblyLine t) {
+        public long count(MTE_AdvAssLine t) {
             return t.mDataAccessHatches.size();
         }
     }
