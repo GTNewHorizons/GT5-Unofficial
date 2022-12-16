@@ -2,7 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.GT_Values.AuthorBlueWeabo;
+import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -43,8 +43,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPow
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -56,6 +56,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -73,7 +74,7 @@ public class GT_MetaTileEntity_PCBFactory
     private static final String ocTier2Upgrade = "ocTier2Upgrade";
     private boolean mSeparate = false;
     private float mRoughnessMultiplier = 1;
-    private int mTier = 1, mSetTier = 1, mUpgradesInstalled = 0;
+    private int mTier = 1, mSetTier = 1, mUpgradesInstalled = 0, mCurrentParallel = 0, mMaxParallel = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
     private int[] mBioOffsets = new int[] {-5, -1},
             mOCTier1Offsets = new int[] {2, -11},
@@ -168,7 +169,7 @@ public class GT_MetaTileEntity_PCBFactory
                         {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
                         {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
                         {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
-                        {"RNNNR","NQQQN","NQPQN","NQQQN","RNNNR"},
+                        {"RNNNR","NQQQN","NQTQN","NQQQN","RNNNR"},
                         {"RSSSR","SSSSS","SSSSS","SSSSS","RSSSR"}
                         //spotless:on
                     }))
@@ -222,7 +223,7 @@ public class GT_MetaTileEntity_PCBFactory
                                         .withCount(t -> isValidMetaTileEntity(t.mCoolantInputHatch) ? 1 : 0)
                                         .newAny(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(12),2),
                                     ofBlock(GregTech_API.sBlockCasings8, 12)))
-                                //spotless:on
+                            //spotless:on
                     .addElement('R', ofFrame(Materials.Americium))
                     .addElement('Q', ofBlock(GregTech_API.sBlockCasings8, 14))
                     .addElement('T', ofBlock(GregTech_API.sBlockCasings1, 15))
@@ -405,6 +406,7 @@ public class GT_MetaTileEntity_PCBFactory
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mTier = 0;
+        mUpgradesInstalled = 0;
         if (mSetTier < 3) {
             if (!checkPiece(tier1, 3, 5, 0)) {
                 return false;
@@ -471,11 +473,15 @@ public class GT_MetaTileEntity_PCBFactory
             return false;
         }
 
+        if (!checkExoticAndNormalEnergyHatches()) {
+            return false;
+        }
+
         // Makes sure that the multi can accept only 1 TT Energy Hatch OR up to 2 Normal Energy Hatches. Deform if both
         // present or more than 1 TT Hatch.
-        boolean hatch = mExoticEnergyHatches.size() == 1 ^ (mEnergyHatches.size() <= 2 && !mEnergyHatches.isEmpty());
+        boolean hatch = (mExoticEnergyHatches.size() == 1) ^ (mEnergyHatches.size() <= 2 && !mEnergyHatches.isEmpty());
 
-        return mTier > 0 && hatch;
+        return mTier > 0;
     }
 
     @Override
@@ -513,12 +519,11 @@ public class GT_MetaTileEntity_PCBFactory
             return false;
         }
 
-        long voltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
-        long amps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
-        long tTotalEU = voltage * amps;
+        long voltage = getMaxInputVoltage();
+        int tier = GT_Utility.getTier(voltage);
 
         GT_Recipe tRecipe =
-                aMap.findRecipe(getBaseMetaTileEntity(), null, true, false, voltage, aFluidInputs, aStack, tItemInputs);
+                aMap.findRecipe(getBaseMetaTileEntity(), null, true, false, V[tier], aFluidInputs, aStack, tItemInputs);
 
         if (tRecipe == null) {
             return false;
@@ -538,7 +543,8 @@ public class GT_MetaTileEntity_PCBFactory
         }
 
         int aMaxParallel = (int) Math.max(Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2) + 0.00001), 1);
-        float aExtraPower = (float) Math.ceil(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled));
+        mMaxParallel = aMaxParallel;
+        float aExtraPower = (float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled);
 
         if (tRecipe.mEUt > voltage) {
             return false;
@@ -560,18 +566,20 @@ public class GT_MetaTileEntity_PCBFactory
                 }
             }
 
+            mCurrentParallel = aCurrentParallel;
+
             if (aCurrentParallel > 0) {
                 this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = getMaxEfficiency(aStack);
-                this.lEUt = (long) -Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
-                this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2));
+                this.lEUt = -(long) Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
+                this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration / Math.pow(mRoughnessMultiplier, 2));
 
                 if (mOCTier1 || mOCTier2) {
                     calculateOverclockedNessMultiInternal(
-                            (long) Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower),
-                            (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2)),
-                            1,
-                            tTotalEU,
+                            (long) Math.ceil(tRecipe.mEUt * aExtraPower),
+                            (int) Math.ceil(tRecipe.mDuration / Math.pow(mRoughnessMultiplier, 2)),
+                            aCurrentParallel,
+                            V[tier],
                             mOCTier2);
                 }
 
@@ -631,10 +639,10 @@ public class GT_MetaTileEntity_PCBFactory
                 Fluid superCoolant = FluidRegistry.getFluid("supercoolant");
                 FluidStack tFluid = new FluidStack(superCoolant, COOLANT_CONSUMED_PER_SEC);
                 FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
-                if (tLiquid == null || tLiquid.amount < tFluid.amount) {
-                    criticalStopMachine();
-                    return false;
-                }
+                //if (tLiquid == null || tLiquid.amount < tFluid.amount) {
+                //    criticalStopMachine();
+                //    return false;
+                //}
             }
             ticker = 0;
         }
@@ -646,7 +654,7 @@ public class GT_MetaTileEntity_PCBFactory
 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
-        return (int) (mRoughnessMultiplier * 10000);
+        return (int) (10000f / mRoughnessMultiplier);
     }
 
     @Override
@@ -740,6 +748,98 @@ public class GT_MetaTileEntity_PCBFactory
             return true;
         }
         return false;
+    }
+
+    boolean mBrokeTime = false;
+
+    @Override
+    protected void calculateOverclockedNessMultiInternal(
+            long aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
+        int hatches = Math.max(getExoticEnergyHatches().size(), 1);
+        long zMaxInputVoltage = maxInputVoltage;
+        long zTime = aDuration;
+        long zEUt = aEUt;
+        if (zMaxInputVoltage < zEUt) {
+            this.lEUt = Long.MAX_VALUE - 1;
+            this.mMaxProgresstime = Integer.MAX_VALUE - 1;
+            return;
+        }
+
+        while (zEUt < zMaxInputVoltage) {
+            zEUt = zEUt << 2;
+            zTime = zTime >> (perfectOC ? 2 : 1);
+            if (zTime <= 0) {
+                mBrokeTime = true;
+                break;
+            }
+        }
+
+        while (zEUt * mAmperage > zMaxInputVoltage * getMaxInputAmps() / hatches) {
+            zEUt = zEUt >> 2;
+            zTime = zTime << (perfectOC ? 2 : 1);
+        }
+
+        if (zTime <= 0) {
+            zTime = 1;
+        }
+
+        if (zEUt > zMaxInputVoltage) {
+            zEUt = zEUt >> 2;
+            zTime = zTime << (perfectOC ? 2 : 1);
+        }
+
+        this.lEUt = zEUt * mAmperage;
+        this.mMaxProgresstime = (int) zTime;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        int mPollutionReduction = 0;
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
+            }
+        }
+
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        for (GT_MetaTileEntity_Hatch tHatch : getExoticAndNormalEnergyHatchList()) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        long voltage = getMaxInputVoltage();
+        long amps = getMaxInputAmps();
+
+        return new String[] {
+            /* 1*/ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET + " s / "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
+            /* 2*/ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
+            /* 3*/ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(getActualEnergyUsage()) + EnumChatFormatting.RESET + " EU/t",
+            /* 4*/ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(voltage) + EnumChatFormatting.RESET + " EU/t(*" + amps + "A)"
+                    + StatCollector.translateToLocal("GT5U.machines.tier")
+                    + ": " + EnumChatFormatting.YELLOW
+                    + VN[GT_Utility.getTier(voltage)] + EnumChatFormatting.RESET,
+            /* 5*/ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED
+                    + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " "
+                    + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                    + ": " + EnumChatFormatting.YELLOW
+                    + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",
+            /* 6*/ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN
+                    + mPollutionReduction + EnumChatFormatting.RESET + " %",
+            /* 7*/ StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": " + EnumChatFormatting.GREEN
+                    + mMaxParallel,
+            /* 8*/ StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": " + EnumChatFormatting.GREEN
+                    + mCurrentParallel
+        };
     }
 
     @Override
