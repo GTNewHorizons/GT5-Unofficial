@@ -22,10 +22,7 @@ import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_JubilanceMegaApiary;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
@@ -1228,6 +1225,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             new Color(0xa2baa3),
             beeSpecies -> {
                 beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.KEVLAR), 0.075f);
+                beeSpecies.addSpecialty(MaterialsKevlar.Kevlar.getNuggets(1), 0.05f);
                 beeSpecies.setHumidity(DAMP);
                 beeSpecies.setTemperature(COLD);
                 beeSpecies.setHasEffect();
