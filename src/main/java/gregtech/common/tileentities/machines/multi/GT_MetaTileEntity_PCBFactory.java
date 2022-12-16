@@ -639,10 +639,10 @@ public class GT_MetaTileEntity_PCBFactory
                 Fluid superCoolant = FluidRegistry.getFluid("supercoolant");
                 FluidStack tFluid = new FluidStack(superCoolant, COOLANT_CONSUMED_PER_SEC);
                 FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
-                //if (tLiquid == null || tLiquid.amount < tFluid.amount) {
-                //    criticalStopMachine();
-                //    return false;
-                //}
+                if (tLiquid == null || tLiquid.amount < tFluid.amount) {
+                    criticalStopMachine();
+                    return false;
+                }
             }
             ticker = 0;
         }
