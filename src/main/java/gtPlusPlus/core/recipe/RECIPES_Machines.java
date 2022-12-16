@@ -2233,13 +2233,13 @@ public class RECIPES_Machines {
                 // Matter Fabricator CPU
                 RecipeUtils.addShapedGregtechRecipe(
                         CI.getPlate(8, 1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Superconductor), 1L),
+                        CI.circuitTier8,
                         CI.getPlate(8, 1),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 1L),
                         CI.machineCasing_UV,
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 1L),
                         CI.getPlate(8, 1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Superconductor), 1L),
+                        CI.circuitTier8,
                         CI.getPlate(8, 1),
                         RECIPE_IndustrialMatterFabController);
                 // Matter Fabricator Frame Casing
