@@ -790,6 +790,11 @@ public class GT_MetaTileEntity_PCBFactory
     }
 
     @Override
+    protected long getActualEnergyUsage() {
+        return (-this.lEUt * 10000) / Math.min(Math.max(1000, mEfficiency), 10000);
+    }
+
+    @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
         for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
