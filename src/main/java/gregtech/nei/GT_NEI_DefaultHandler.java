@@ -26,6 +26,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIContainer;
@@ -44,6 +45,7 @@ import gregtech.common.power.Power;
 import gregtech.common.power.UnspecifiedEUPower;
 import java.awt.*;
 import java.lang.ref.SoftReference;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,7 +61,6 @@ import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
@@ -374,23 +375,18 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             for (PositionedStack tStack : tRecipe.mOutputs) {
                 if (aStack == tStack.item) {
                     if ((!(tStack instanceof FixedPositionedStack))
-                            || (((FixedPositionedStack) tStack).mChance <= 0)
-                            || (((FixedPositionedStack) tStack).mChance == 10000)) {
+                            || (!((FixedPositionedStack) tStack).isChanceBased())) {
                         break;
                     }
                     currentTip.add(
-                            GT_Utility.trans("150", "Chance: ") + ((FixedPositionedStack) tStack).mChance / 100 + "."
-                                    + (((FixedPositionedStack) tStack).mChance % 100 < 10
-                                            ? "0" + ((FixedPositionedStack) tStack).mChance % 100
-                                            : Integer.valueOf(((FixedPositionedStack) tStack).mChance % 100))
-                                    + "%");
+                            GT_Utility.trans("150", "Chance: ") + ((FixedPositionedStack) tStack).getChanceText());
                     break;
                 }
             }
             for (PositionedStack tStack : tRecipe.mInputs) {
                 if (aStack == tStack.item) {
-                    if ((gregtech.api.enums.ItemList.Display_Fluid.isStackEqual(tStack.item, true, true))
-                            || (tStack.item.stackSize != 0)) {
+                    if ((!(tStack instanceof FixedPositionedStack))
+                            || (!((FixedPositionedStack) tStack).isNotConsumed())) {
                         break;
                     }
                     currentTip.add(GT_Utility.trans("151", "Does not get consumed in the process"));
@@ -418,13 +414,15 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     @Override
     public void drawExtras(int aRecipeIndex) {
-        GT_Recipe recipe = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe;
+        CachedDefaultRecipe cachedRecipe = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex));
+        GT_Recipe recipe = cachedRecipe.mRecipe;
         String[] recipeDesc = recipe.getNeiDesc();
         if (recipeDesc == null) {
             drawDescription(recipe);
         } else {
             drawOverrideDescription(recipeDesc);
         }
+        drawOverlays(cachedRecipe);
     }
 
     private void drawDescription(GT_Recipe recipe) {
@@ -647,6 +645,38 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         return mRecipeMap.neiBackgroundSize.height + mRecipeMap.neiBackgroundOffset.y + WINDOW_OFFSET.y + 3;
     }
 
+    protected void drawOverlays(CachedDefaultRecipe recipe) {
+        for (PositionedStack stack : recipe.mInputs) {
+            if (!(stack instanceof FixedPositionedStack)) continue;
+            drawOverlayForStack((FixedPositionedStack) stack);
+        }
+        for (PositionedStack stack : recipe.mOutputs) {
+            if (!(stack instanceof FixedPositionedStack)) continue;
+            drawOverlayForStack((FixedPositionedStack) stack);
+        }
+    }
+
+    protected void drawOverlayForStack(FixedPositionedStack stack) {
+        if (stack.isChanceBased()) {
+            drawOverlayText(stack.getChanceText(), stack);
+        } else if (stack.isNotConsumed()) {
+            drawOverlayText("NC", stack);
+        }
+    }
+
+    protected void drawOverlayText(String text, FixedPositionedStack stack) {
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(0.5, 0.5, 1);
+        Minecraft.getMinecraft()
+                .fontRenderer
+                .drawString(
+                        text,
+                        stack.relx * 2,
+                        stack.rely * 2 + 1,
+                        colorOverride.getTextColorOrDefault("nei_overlay", 0xFDD835));
+        GlStateManager.popMatrix();
+    }
+
     protected void drawUI(ModularWindow window) {
         for (IDrawable background : window.getBackground()) {
             GlStateManager.pushMatrix();
@@ -767,8 +797,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     public static class FixedPositionedStack extends PositionedStack {
+        public static final DecimalFormat chanceFormat = new DecimalFormat("##0.##%");
         public final int mChance;
-        public boolean permutated = false;
 
         public FixedPositionedStack(Object object, int x, int y) {
             this(object, x, y, 0);
@@ -787,36 +817,16 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             this.mChance = aChance;
         }
 
-        @Override
-        public void generatePermutations() {
-            if (this.permutated) {
-                return;
-            }
-            ArrayList<ItemStack> tDisplayStacks = new ArrayList<>();
-            for (ItemStack tStack : this.items) {
-                if (GT_Utility.isStackValid(tStack)) {
-                    if (tStack.getItemDamage() == 32767) {
-                        List<ItemStack> permutations = codechicken.nei.ItemList.itemMap.get(tStack.getItem());
-                        if (!permutations.isEmpty()) {
-                            for (ItemStack permutation : permutations) {
-                                tDisplayStacks.add(GT_Utility.copyAmount(tStack.stackSize, permutation));
-                            }
-                        } else {
-                            ItemStack base = new ItemStack(tStack.getItem(), tStack.stackSize);
-                            base.stackTagCompound = tStack.stackTagCompound;
-                            tDisplayStacks.add(base);
-                        }
-                    } else {
-                        tDisplayStacks.add(GT_Utility.copyOrNull(tStack));
-                    }
-                }
-            }
-            this.items = tDisplayStacks.toArray(new ItemStack[0]);
-            if (this.items.length == 0) {
-                this.items = new ItemStack[] {new ItemStack(Blocks.fire)};
-            }
-            this.permutated = true;
-            setPermutationToRender(0);
+        public boolean isChanceBased() {
+            return mChance > 0 && mChance < 10000;
+        }
+
+        public String getChanceText() {
+            return chanceFormat.format((float) mChance / 10000);
+        }
+
+        public boolean isNotConsumed() {
+            return !ItemList.Display_Fluid.isStackEqual(item, true, true) && item.stackSize == 0;
         }
     }
 
