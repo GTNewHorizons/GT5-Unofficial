@@ -572,12 +572,12 @@ public class GT_MetaTileEntity_PCBFactory
                 this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = getMaxEfficiency(aStack);
                 this.lEUt = -(long) Math.ceil(tRecipe.mEUt * aCurrentParallel * aExtraPower);
-                this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration / Math.pow(mRoughnessMultiplier, 2));
+                this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2));
 
                 if (mOCTier1 || mOCTier2) {
                     calculateOverclockedNessMultiInternal(
                             (long) Math.ceil(tRecipe.mEUt * aExtraPower),
-                            (int) Math.ceil(tRecipe.mDuration / Math.pow(mRoughnessMultiplier, 2)),
+                            (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2)),
                             aCurrentParallel,
                             V[tier],
                             mOCTier2);
@@ -654,7 +654,7 @@ public class GT_MetaTileEntity_PCBFactory
 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
-        return (int) (10000f / mRoughnessMultiplier);
+        return (int) (10000f * mRoughnessMultiplier);
     }
 
     @Override
