@@ -1287,6 +1287,14 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return (this.quality & 0x40) != 0;
         }
 
+        public FluidState getFluidState() {
+            if ((this.quality & 0x40) != 0) {
+                return FluidState.GAS;
+            } else {
+                return FluidState.LIQUID;
+            }
+        }
+
         public Werkstoff.Stats setGas(boolean gas) {
             if (gas) this.quality = (byte) (this.quality | 0x40);
             else this.quality = (byte) (this.quality & 0b0111111);
