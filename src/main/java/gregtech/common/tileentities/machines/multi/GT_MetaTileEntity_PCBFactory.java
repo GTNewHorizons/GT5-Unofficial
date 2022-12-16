@@ -750,8 +750,6 @@ public class GT_MetaTileEntity_PCBFactory
         return false;
     }
 
-    boolean mBrokeTime = false;
-
     @Override
     protected void calculateOverclockedNessMultiInternal(
             long aEUt, int aDuration, int mAmperage, long maxInputVoltage, boolean perfectOC) {
@@ -768,19 +766,18 @@ public class GT_MetaTileEntity_PCBFactory
         while (zEUt < zMaxInputVoltage) {
             zEUt = zEUt << 2;
             zTime = zTime >> (perfectOC ? 2 : 1);
-            if (zTime <= 0) {
-                mBrokeTime = true;
+            if (zTime <= 1) {
                 break;
             }
+        }
+
+        if (zTime <= 0) {
+            zTime = 1;
         }
 
         while (zEUt * mAmperage > zMaxInputVoltage * getMaxInputAmps() / hatches) {
             zEUt = zEUt >> 2;
             zTime = zTime << (perfectOC ? 2 : 1);
-        }
-
-        if (zTime <= 0) {
-            zTime = 1;
         }
 
         if (zEUt > zMaxInputVoltage) {
