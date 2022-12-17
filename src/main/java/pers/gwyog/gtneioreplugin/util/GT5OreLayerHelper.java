@@ -14,12 +14,12 @@ import net.minecraft.item.ItemStack;
 
 public class GT5OreLayerHelper {
 
-    private static class OreDimensionWrapper {
-        public final ArrayList<OreLayerWrapper> internalDimOreList = new ArrayList<>();
-        public final HashMap<OreLayerWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<>();
+    class oreDimensionWrapper {
+        ArrayList<OreLayerWrapper> internalDimOreList = new ArrayList<>();
+        HashMap<OreLayerWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<OreLayerWrapper, Double>();
 
         // Calculate all weights of ore veins once dimension is initialised.
-        private void calculateWeights() {
+        void calculateWeights() {
             int totalWeight = 0;
             for (OreLayerWrapper oreVein : internalDimOreList) {
                 totalWeight += oreVein.randomWeight;
@@ -35,7 +35,7 @@ public class GT5OreLayerHelper {
     public static Integer[] DimIDs = new Integer[DIMENSION_COUNT];
     public static HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<>();
     public static HashMap<OreLayerWrapper, String> bufferedDims = new HashMap<>();
-    public static HashMap<String, OreDimensionWrapper> dimToOreWrapper = new HashMap<>();
+    public static HashMap<String, oreDimensionWrapper> dimToOreWrapper = new HashMap<>();
 
     public GT5OreLayerHelper() {
         Arrays.fill(weightPerWorld, 0);
@@ -58,7 +58,7 @@ public class GT5OreLayerHelper {
 
             for (String dim : dims.split(",")) {
                 if (dim.length() != 0) {
-                    OreDimensionWrapper dimensionOres = dimToOreWrapper.getOrDefault(dim, new OreDimensionWrapper());
+                    oreDimensionWrapper dimensionOres = dimToOreWrapper.getOrDefault(dim, new oreDimensionWrapper());
                     dimensionOres.internalDimOreList.add(oreLayer);
                     dimToOreWrapper.put(dim, dimensionOres);
                 }
@@ -68,6 +68,7 @@ public class GT5OreLayerHelper {
             for (String dim : dimToOreWrapper.keySet()) {
                 dimToOreWrapper.get(dim).calculateWeights();
             }
+
         }
     }
 
