@@ -1286,6 +1286,31 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return mExoticEnergyHatches;
     }
 
+    /**
+     * @return Returns true if there is 1 TT Energy Hatch OR up to 2 Energy Hatches
+     */
+    public boolean checkExoticAndNormalEnergyHatches() {
+        if (mExoticEnergyHatches.isEmpty() && mEnergyHatches.isEmpty()) {
+            return false;
+        }
+
+        if (mExoticEnergyHatches.size() >= 1) {
+            if (!mEnergyHatches.isEmpty()) {
+                return false;
+            }
+
+            if (mExoticEnergyHatches.size() != 1) {
+                return false;
+            }
+        }
+
+        if (mEnergyHatches.size() > 2) {
+            return false;
+        }
+
+        return true;
+    }
+
     @Override
     public boolean useModularUI() {
         return true;
