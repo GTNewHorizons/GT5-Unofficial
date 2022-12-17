@@ -47,17 +47,18 @@ public class GT5OreLayerHelper {
             bufferedDims.put(layer, getDims(layer));
         }
 
-        // ------------------------------
+        // --- Handling of dimToOreWrapper ---
+
         // Get dims as "Ow,Ne,Ma" etc.
-        bufferedDims.forEach((oreLayer, dims) -> {
+        bufferedDims.forEach((veinInfo, dims) -> {
             if (dims.equals(oreVeinNotInAnyDim)) {
                 return;
             }
 
             for (String dim : dims.split(",")) {
-                if (dim.isEmpty()) {
+                if (!dim.isEmpty()) {
                     OreDimensionWrapper dimensionOres = dimToOreWrapper.getOrDefault(dim, new OreDimensionWrapper());
-                    dimensionOres.internalDimOreList.add(oreLayer);
+                    dimensionOres.internalDimOreList.add(veinInfo);
                     dimToOreWrapper.put(dim, dimensionOres);
                 }
             }
@@ -67,6 +68,7 @@ public class GT5OreLayerHelper {
                 dimToOreWrapper.get(dim).calculateWeights();
             }
         });
+        // --- End of handling for dimToOreWrapper ---
     }
 
     public static String getDims(OreLayerWrapper oreLayer) {
