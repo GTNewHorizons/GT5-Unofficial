@@ -134,7 +134,7 @@ public class BaseItemComponent extends Item {
         if (aFormattedLangName.equals(componentType.getName())) {
             aFormattedLangName = "%material" + aFormattedLangName;
         }
-        GT_LanguageManager.addStringLocalization("gtplusplus.item." + unlocalName + ".name", aFormattedLangName);
+        GT_LanguageManager.addStringLocalization("gtplusplus.item." + this.unlocalName + ".name", aFormattedLangName);
     }
 
     public boolean registerComponent() {
