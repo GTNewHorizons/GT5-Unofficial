@@ -48,16 +48,13 @@ public class GT5OreLayerHelper {
 
         // ------------------------------
         // Get dims as "Ow,Ne,Ma" etc.
-        for (OreLayerWrapper oreLayer : bufferedDims.keySet()) {
-
-            String dims = bufferedDims.get(oreLayer);
-
+        bufferedDims.forEach((oreLayer, dims) -> {
             if (dims.equals("Not available in any Galactic Dim!")) {
-                continue;
+                return;
             }
 
             for (String dim : dims.split(",")) {
-                if (dim.length() != 0) {
+                if (dim.isEmpty()) {
                     OreDimensionWrapper dimensionOres = dimToOreWrapper.getOrDefault(dim, new OreDimensionWrapper());
                     dimensionOres.internalDimOreList.add(oreLayer);
                     dimToOreWrapper.put(dim, dimensionOres);
@@ -68,7 +65,7 @@ public class GT5OreLayerHelper {
             for (String dim : dimToOreWrapper.keySet()) {
                 dimToOreWrapper.get(dim).calculateWeights();
             }
-        }
+        });
     }
 
     public static String getDims(OreLayerWrapper oreLayer) {
