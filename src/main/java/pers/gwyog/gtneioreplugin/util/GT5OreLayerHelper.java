@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 
 public class GT5OreLayerHelper {
 
-    private static class OreDimensionWrapper {
+    public static class OreDimensionWrapper {
         public final ArrayList<OreLayerWrapper> internalDimOreList = new ArrayList<>();
         public final HashMap<OreLayerWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<>();
 
