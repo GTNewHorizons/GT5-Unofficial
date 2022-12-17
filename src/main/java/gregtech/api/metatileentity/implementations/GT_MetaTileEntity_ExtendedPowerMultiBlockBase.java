@@ -139,7 +139,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
             /* 3*/ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
                     + GT_Utility.formatNumbers(getActualEnergyUsage()) + EnumChatFormatting.RESET + " EU/t",
             /* 4*/ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(voltage) + EnumChatFormatting.RESET + " EU/t(*" + amps + "A)"
+                    + GT_Utility.formatNumbers(voltage) + EnumChatFormatting.RESET + " EU/t(*" + amps + " A)"
                     + StatCollector.translateToLocal("GT5U.machines.tier")
                     + ": " + EnumChatFormatting.YELLOW
                     + VN[GT_Utility.getTier(voltage)] + EnumChatFormatting.RESET,
