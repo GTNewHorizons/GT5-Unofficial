@@ -21,6 +21,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
+import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -31,6 +32,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GT_ClientPreference;
+import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_PlayedSound;
@@ -58,6 +60,9 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -598,6 +603,17 @@ public class GT_Client extends GT_Proxy implements Runnable {
             // CosmicItemRendererGT.registerItemWithMeta(Item.getItemFromBlock(GregTech_API.sBlockCasings5), 14);
             CosmicItemRendererGT.init();
         }
+
+        // reobf doesn't work with lambda, so this must be a class
+        //noinspection Convert2Lambda
+        ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager())
+                .registerReloadListener(new IResourceManagerReloadListener() {
+                    @Override
+                    public void onResourceManagerReload(IResourceManager l) {
+                        GT_GUIColorOverride.onResourceManagerReload();
+                        GregTech_API.sCoverBehaviors.values().forEach(GT_CoverBehaviorBase::reloadColorOverride);
+                    }
+                });
     }
 
     @Override

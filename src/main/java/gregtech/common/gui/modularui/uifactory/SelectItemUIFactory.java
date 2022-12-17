@@ -46,7 +46,7 @@ public class SelectItemUIFactory {
     private final ItemStackHandler currentDisplayItemHandler = new ItemStackHandler();
     private Supplier<ItemStack> currentGetter;
 
-    private final GT_GUIColorOverride colorOverride = new GT_GUIColorOverride("SelectItemUIFactory");
+    private final GT_GUIColorOverride colorOverride = GT_GUIColorOverride.get("SelectItemUIFactory");
 
     private int getTextColorOrDefault(String textType, int defaultColor) {
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
