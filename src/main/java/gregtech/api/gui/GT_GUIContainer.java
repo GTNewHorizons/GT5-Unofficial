@@ -27,7 +27,7 @@ public class GT_GUIContainer extends GuiContainer {
     public GT_GUIContainer(Container aContainer, String aGUIbackground) {
         super(aContainer);
         mGUIbackground = new ResourceLocation(mGUIbackgroundPath = aGUIbackground);
-        colorOverride = new GT_GUIColorOverride(aGUIbackground);
+        colorOverride = GT_GUIColorOverride.get(aGUIbackground);
     }
 
     protected int getTextColorOrDefault(String textType, int defaultColor) {

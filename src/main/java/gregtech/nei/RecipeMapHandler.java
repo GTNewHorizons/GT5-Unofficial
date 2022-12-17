@@ -17,7 +17,7 @@ abstract class RecipeMapHandler extends TemplateRecipeHandler {
 
     RecipeMapHandler(GT_Recipe.GT_Recipe_Map mRecipeMap) {
         this.mRecipeMap = mRecipeMap;
-        colorOverride = new GT_GUIColorOverride(mRecipeMap.mNEIGUIPath);
+        colorOverride = GT_GUIColorOverride.get(mRecipeMap.mNEIGUIPath);
     }
 
     GT_Recipe.GT_Recipe_Map getRecipeMap() {

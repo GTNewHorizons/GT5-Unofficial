@@ -45,7 +45,11 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     protected GT_CoverBehaviorBase(Class<T> typeToken, ITexture coverTexture) {
         this.typeToken = typeToken;
         this.coverFGTexture = coverTexture;
-        this.colorOverride = new GT_GUIColorOverride(guiTexturePath);
+        reloadColorOverride();
+    }
+
+    public void reloadColorOverride() {
+        this.colorOverride = GT_GUIColorOverride.get(guiTexturePath);
     }
 
     public abstract T createDataObject(int aLegacyData);

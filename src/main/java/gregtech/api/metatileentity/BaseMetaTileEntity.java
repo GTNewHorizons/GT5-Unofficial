@@ -118,7 +118,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             oTextureData = 0,
             oUpdateData = 0,
             oTexturePage = 0;
-    private byte oLightValueClient = -1,
+    private byte oLightValueClient = 0,
             oLightValue = -1,
             mLightValue = 0,
             mOtherUpgrades = 0,
