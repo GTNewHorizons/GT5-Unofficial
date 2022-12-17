@@ -69,16 +69,7 @@ public class GT5OreLayerHelper {
                 dimToOreWrapper.get(dim).calculateWeights();
             }
 
-            for (String dim : dimToOreWrapper.keySet()) {
-                double a = dimToOreWrapper.get(dim).oreVeinToProbabilityInDimension.values()
-                .stream()
-                .mapToDouble(Double::valueOf)
-                .sum();
-
-                System.out.println("TEST312IMJD + " + a);
-            }
         }
-        // ------------------------------
     }
 
     public static String getDims(OreLayerWrapper oreLayer) {
@@ -106,11 +97,23 @@ public class GT5OreLayerHelper {
 
             // Black magic, don't ask me how it works, I have no idea.
             try {
-                this.mPrimaryVeinMaterial = GT_OreDictUnificator.getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mPrimaryMeta)).mMaterial.mMaterial;
-                this.mSecondaryMaterial = GT_OreDictUnificator.getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSecondaryMeta)).mMaterial.mMaterial;
-                this.mBetweenMaterial = GT_OreDictUnificator.getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mBetweenMeta)).mMaterial.mMaterial;
-                this.mSporadicMaterial = GT_OreDictUnificator.getAssociation(new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSporadicMeta)).mMaterial.mMaterial;
-            } catch(Exception ignored) {
+                this.mPrimaryVeinMaterial = GT_OreDictUnificator.getAssociation(
+                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mPrimaryMeta))
+                        .mMaterial
+                        .mMaterial;
+                this.mSecondaryMaterial = GT_OreDictUnificator.getAssociation(
+                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSecondaryMeta))
+                        .mMaterial
+                        .mMaterial;
+                this.mBetweenMaterial = GT_OreDictUnificator.getAssociation(
+                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mBetweenMeta))
+                        .mMaterial
+                        .mMaterial;
+                this.mSporadicMaterial = GT_OreDictUnificator.getAssociation(
+                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSporadicMeta))
+                        .mMaterial
+                        .mMaterial;
+            } catch (Exception ignored) {
 
             }
 
