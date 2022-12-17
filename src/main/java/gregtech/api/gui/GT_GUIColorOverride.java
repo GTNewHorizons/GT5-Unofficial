@@ -5,6 +5,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
+import gregtech.GT_Test;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.ColorsMetadataSection;
 import java.util.concurrent.ExecutionException;
@@ -30,12 +31,12 @@ public class GT_GUIColorOverride {
     private ColorsMetadataSection cmSection;
 
     public static GT_GUIColorOverride get(String fullLocation) {
-        if (FMLLaunchHandler.side().isServer()) return FALLBACK;
+        if (FMLLaunchHandler.side().isServer() || GT_Test.isTestEnv) return FALLBACK;
         return get(new ResourceLocation(fullLocation));
     }
 
     public static GT_GUIColorOverride get(ResourceLocation path) {
-        if (FMLLaunchHandler.side().isServer()) return FALLBACK;
+        if (FMLLaunchHandler.side().isServer() || GT_Test.isTestEnv) return FALLBACK;
         return new GT_GUIColorOverride(path);
     }
 
