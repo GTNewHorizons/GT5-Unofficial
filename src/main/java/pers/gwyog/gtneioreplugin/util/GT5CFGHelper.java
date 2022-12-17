@@ -16,6 +16,8 @@ import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 
 public class GT5CFGHelper {
 
+    public static String oreVeinNotInAnyDim = "Not available in any Galactic Dim!";
+
     private static File F = GregTech_API.sWorldgenFile.mConfig.getConfigFile();
 
     public static String GT5CFGSmallOres(String Veinname) {
@@ -59,7 +61,7 @@ public class GT5CFGHelper {
             }
         }
         ret = ret.trim();
-        if (ret.equals("") || ret.equals(" ")) ret = "Not available in any Galactic Dim!";
+        if (ret.equals("") || ret.equals(" ")) ret = oreVeinNotInAnyDim;
         return ret;
     }
 
@@ -173,7 +175,7 @@ public class GT5CFGHelper {
                 }
                 ret = ret.trim();
                 // FMLLog.info("ret:"+ret);
-                if (ret.equals("") || ret.equals(" ")) ret = "Not available in any Galactic Dim!";
+                if (ret.equals("") || ret.equals(" ")) ret = oreVeinNotInAnyDim;
                 return ret;
             } catch (IOException e) {
                 e.printStackTrace();

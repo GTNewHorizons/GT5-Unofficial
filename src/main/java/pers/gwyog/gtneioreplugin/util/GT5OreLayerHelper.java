@@ -1,8 +1,11 @@
 package pers.gwyog.gtneioreplugin.util;
 
+import static pers.gwyog.gtneioreplugin.util.GT5CFGHelper.oreVeinNotInAnyDim;
 import static pers.gwyog.gtneioreplugin.util.OreVeinLayer.*;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,11 +15,28 @@ import net.minecraft.item.ItemStack;
 
 public class GT5OreLayerHelper {
 
+    private static class OreDimensionWrapper {
+        public final ArrayList<OreLayerWrapper> internalDimOreList = new ArrayList<>();
+        public final HashMap<OreLayerWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<>();
+
+        // Calculate all weights of ore veins once dimension is initialised.
+        private void calculateWeights() {
+            int totalWeight = 0;
+            for (OreLayerWrapper oreVein : internalDimOreList) {
+                totalWeight += oreVein.randomWeight;
+            }
+            for (OreLayerWrapper oreVein : internalDimOreList) {
+                oreVeinToProbabilityInDimension.put(oreVein, ((double) oreVein.randomWeight) / ((double) totalWeight));
+            }
+        }
+    }
+
     private static final int DIMENSION_COUNT = 33;
     public static Integer[] weightPerWorld = new Integer[DIMENSION_COUNT];
     public static Integer[] DimIDs = new Integer[DIMENSION_COUNT];
     public static HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<>();
     public static HashMap<OreLayerWrapper, String> bufferedDims = new HashMap<>();
+    public static HashMap<String, OreDimensionWrapper> dimToOreWrapper = new HashMap<>();
 
     public GT5OreLayerHelper() {
         Arrays.fill(weightPerWorld, 0);
@@ -26,6 +46,27 @@ public class GT5OreLayerHelper {
         for (OreLayerWrapper layer : mapOreLayerWrapper.values()) {
             bufferedDims.put(layer, getDims(layer));
         }
+
+        // ------------------------------
+        // Get dims as "Ow,Ne,Ma" etc.
+        bufferedDims.forEach((oreLayer, dims) -> {
+            if (dims.equals(oreVeinNotInAnyDim)) {
+                return;
+            }
+
+            for (String dim : dims.split(",")) {
+                if (dim.isEmpty()) {
+                    OreDimensionWrapper dimensionOres = dimToOreWrapper.getOrDefault(dim, new OreDimensionWrapper());
+                    dimensionOres.internalDimOreList.add(oreLayer);
+                    dimToOreWrapper.put(dim, dimensionOres);
+                }
+            }
+
+            // Calculate probabilities for each dim.
+            for (String dim : dimToOreWrapper.keySet()) {
+                dimToOreWrapper.get(dim).calculateWeights();
+            }
+        });
     }
 
     public static String getDims(OreLayerWrapper oreLayer) {
@@ -39,12 +80,40 @@ public class GT5OreLayerHelper {
         public short randomWeight, size, density;
         public List<Integer> Weight = new ArrayList<>();
 
+        public Materials mPrimaryVeinMaterial;
+        public Materials mSecondaryMaterial;
+        public Materials mBetweenMaterial;
+        public Materials mSporadicMaterial;
+
         public OreLayerWrapper(GT_Worldgen_GT_Ore_Layer worldGen) {
             this.veinName = worldGen.mWorldGenName;
             this.Meta[0] = worldGen.mPrimaryMeta;
             this.Meta[1] = worldGen.mSecondaryMeta;
             this.Meta[2] = worldGen.mBetweenMeta;
             this.Meta[3] = worldGen.mSporadicMeta;
+
+            // Black magic, don't ask me how it works, I have no idea.
+            try {
+                this.mPrimaryVeinMaterial = GT_OreDictUnificator.getAssociation(
+                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mPrimaryMeta))
+                        .mMaterial
+                        .mMaterial;
+                this.mSecondaryMaterial = GT_OreDictUnificator.getAssociation(
+                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSecondaryMeta))
+                        .mMaterial
+                        .mMaterial;
+                this.mBetweenMaterial = GT_OreDictUnificator.getAssociation(
+                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mBetweenMeta))
+                        .mMaterial
+                        .mMaterial;
+                this.mSporadicMaterial = GT_OreDictUnificator.getAssociation(
+                                new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.mSporadicMeta))
+                        .mMaterial
+                        .mMaterial;
+            } catch (Exception ignored) {
+
+            }
+
             this.size = worldGen.mSize;
             this.density = worldGen.mDensity;
             this.worldGenHeightRange = worldGen.mMinY + "-" + worldGen.mMaxY;
