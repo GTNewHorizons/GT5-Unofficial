@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +45,7 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
                 aList.add(EnumChatFormatting.YELLOW + tChemicalFormula + EnumChatFormatting.RESET);
         }
         NBTTagCompound aNBT = aStack.getTagCompound();
-        if (GT_Values.D1) {
+        if (GT_Values.D1 || Minecraft.getMinecraft().gameSettings.advancedItemTooltips) {
             Fluid tFluid = FluidRegistry.getFluid(aStack.getItemDamage());
             if (tFluid != null) {
                 aList.add("Registry: " + tFluid.getName());
