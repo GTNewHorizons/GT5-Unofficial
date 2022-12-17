@@ -323,11 +323,7 @@ public class GT_MetaTileEntity_NanoForge
             return false;
         }
 
-        // Makes sure that the multi can accept only 1 TT Energy Hatch OR up to 2 Normal Energy Hatches. Deform if both
-        // present or more than 1 TT Hatch.
-        boolean hatch = mExoticEnergyHatches.size() == 1 ^ (mEnergyHatches.size() <= 2 && !mEnergyHatches.isEmpty());
-
-        return mSpecialTier > 0 && hatch;
+        return mSpecialTier > 0 && checkExoticAndNormalEnergyHatches();
     }
 
     @Override
