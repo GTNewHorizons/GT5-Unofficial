@@ -32,7 +32,7 @@ public class GT_GUIColorOverride {
 
     public static GT_GUIColorOverride get(String fullLocation) {
         if (GT_Test.isTestEnv || FMLLaunchHandler.side().isServer()) return FALLBACK;
-        return get(new ResourceLocation(fullLocation));
+        return new GT_GUIColorOverride(new ResourceLocation(fullLocation));
     }
 
     public static GT_GUIColorOverride get(ResourceLocation path) {
