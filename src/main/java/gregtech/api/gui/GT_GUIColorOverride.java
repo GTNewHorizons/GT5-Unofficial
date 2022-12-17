@@ -31,12 +31,12 @@ public class GT_GUIColorOverride {
     private ColorsMetadataSection cmSection;
 
     public static GT_GUIColorOverride get(String fullLocation) {
-        if (FMLLaunchHandler.side().isServer() || GT_Test.isTestEnv) return FALLBACK;
+        if (GT_Test.isTestEnv || FMLLaunchHandler.side().isServer()) return FALLBACK;
         return get(new ResourceLocation(fullLocation));
     }
 
     public static GT_GUIColorOverride get(ResourceLocation path) {
-        if (FMLLaunchHandler.side().isServer() || GT_Test.isTestEnv) return FALLBACK;
+        if (GT_Test.isTestEnv || FMLLaunchHandler.side().isServer()) return FALLBACK;
         return new GT_GUIColorOverride(path);
     }
 
