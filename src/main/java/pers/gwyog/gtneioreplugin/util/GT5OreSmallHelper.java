@@ -106,13 +106,13 @@ public class GT5OreSmallHelper {
             try {
                 Field fieldRestrictBiome = clazzGTOreSmall.getField("mRestrictBiome");
                 restrictBiomeSupport = true;
-            } catch (Exception ignored) {
+            } catch (Exception e) {
             }
             try {
                 Field fieldGCMoon = clazzGTOreSmall.getField("mMoon");
                 Field fieldGCMars = clazzGTOreSmall.getField("mMars");
                 gcBasicSupport = true;
-            } catch (Exception ignored) {
+            } catch (Exception e) {
             }
         }
     }
