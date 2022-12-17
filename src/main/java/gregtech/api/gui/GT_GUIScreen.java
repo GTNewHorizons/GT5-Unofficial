@@ -48,7 +48,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
         this.header = header;
         this.headerIcon = new GT_GuiFakeItemButton(this, 5, 5, null);
         this.mGUIbackgroundLocation = new ResourceLocation(guiTexturePath);
-        this.colorOverride = new GT_GUIColorOverride(guiTexturePath);
+        this.colorOverride = GT_GUIColorOverride.get(guiTexturePath);
         this.textColor = getTextColorOrDefault("title", 0xFF222222);
     }
 

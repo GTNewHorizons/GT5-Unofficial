@@ -138,8 +138,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         mInventory = new ItemStack[aInvSlotCount];
         mName = aName;
         inventoryHandler = new ItemStackHandler(mInventory);
-        colorOverride = new GT_GUIColorOverride(
-                getGUITextureSet().getMainBackground().location.getResourcePath());
+        colorOverride = GT_GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
     /**
