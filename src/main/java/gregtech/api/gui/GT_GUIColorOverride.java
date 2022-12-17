@@ -5,7 +5,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
-import gregtech.GT_Test;
+import cpw.mods.fml.relauncher.Side;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.ColorsMetadataSection;
 import java.util.concurrent.ExecutionException;
@@ -31,12 +31,17 @@ public class GT_GUIColorOverride {
     private ColorsMetadataSection cmSection;
 
     public static GT_GUIColorOverride get(String fullLocation) {
-        if (GT_Test.isTestEnv || FMLLaunchHandler.side().isServer()) return FALLBACK;
+        // see other get for more info
+        if (FMLLaunchHandler.side() != Side.CLIENT) return FALLBACK;
         return new GT_GUIColorOverride(new ResourceLocation(fullLocation));
     }
 
     public static GT_GUIColorOverride get(ResourceLocation path) {
-        if (GT_Test.isTestEnv || FMLLaunchHandler.side().isServer()) return FALLBACK;
+        // use dummy fallback if there isn't such thing as a resource pack.
+        // #side() usually has two possible return value, but since this might be called by test code, it might
+        // also return null when in test env. Using #isClient will cause a NPE. A plain inequality test won't.
+        // FMLCommonHandler's #getSide() might trigger a NPE when in test env, so no.
+        if (FMLLaunchHandler.side() != Side.CLIENT) return FALLBACK;
         return new GT_GUIColorOverride(path);
     }
 
@@ -54,15 +59,11 @@ public class GT_GUIColorOverride {
 
     private GT_GUIColorOverride(ResourceLocation resourceLocation) {
         try {
-            // this is dumb, but CombTypeTest causes cascading class load
-            // and leads to instantiation of GT_CoverBehaviorBase
-            if (Minecraft.getMinecraft() == null) return;
             Object metadata = cache.get(resourceLocation);
             if (metadata != NOT_FOUND) cmSection = (ColorsMetadataSection) metadata;
         } catch (ExecutionException | UncheckedExecutionException ignore) {
             // make sure it doesn't cache a failing entry
             cache.invalidate(resourceLocation);
-            // this is also dumb, but FMLCommonHandler#getEffectiveSide doesn't work during test
         }
     }
 
