@@ -161,7 +161,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
         for (int i = 1; i < 16; i++) {
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0)) return false;
             if (!mOutputBusses.isEmpty())
-                return !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1 && mDataAccessHatches.size() <= 1;
+                return (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) && mMaintenanceHatches.size() == 1 && mDataAccessHatches.size() <= 1;
         }
         return false;
     }
@@ -363,8 +363,6 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (checkMachine()) {
-            if (mEnergyHatches.isEmpty() || mExoticEnergyHatches.isEmpty())
-                return false;
             inputVoltage = Integer.MAX_VALUE;
             for (GT_MetaTileEntity_Hatch tHatch : mEnergyHatches) {
                 inputVoltage = Math.min(inputVoltage, tHatch.maxEUInput());
@@ -563,7 +561,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
     @Override
     public boolean checkRecipe(ItemStack aStack) {
         if (GT_Values.D1) {
-            GT_FML_LOGGER.info("Start ALine recipe check");
+            GT_FML_LOGGER.info("Start Adv ALine recipe check");
         }
         clearCurrentRecipe();
         ArrayList<ItemStack> tDataStickList = getDataItems(2);
