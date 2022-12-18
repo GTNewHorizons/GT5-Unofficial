@@ -43,9 +43,7 @@ public class EyeOfHarmonyRecipe {
                               long euOutput,
                               double baseSuccessChance
     ) {
-        System.out.println("TEST12345MKFWA");
-
-        ArrayList<Pair<Materials, Long>> materialList = processDimension(dimensionWrapper, miningTime, 6);
+        ArrayList<Pair<Materials, Long>> materialList = processDimension(dimensionWrapper, miningTime, 6 * 64);
 
         this.outputItems = validDustGenerator(materialList);
         this.outputFluids = validPlasmaGenerator(materialList, 0.1);
@@ -100,11 +98,12 @@ public class EyeOfHarmonyRecipe {
         return spacetimeCasingTierRequired;
     }
 
-    static final double primaryMultiplier = (0.1 + 1.0/9.0);
-    static final double secondaryMultiplier = (1.0/9.0);
-    static final double tertiaryMultiplier = (0.1);
+    static final double primaryMultiplier = (0.1 + 1.0/9.0); // Byproduct from macerating/washing chance.
+    static final double secondaryMultiplier = (1.0/9.0); // Thermal centrifuge byproduct chance.
+    static final double tertiaryMultiplier = (0.1); // Macerating thermal centrifuged byproduct chance.
+    static final double quaternaryMultiplier = (0.7); // Mercury/chem bath processing chance.
 
-    static final double[] oreMultiplier = {primaryMultiplier, secondaryMultiplier, tertiaryMultiplier};
+    static final double[] oreMultiplier = {primaryMultiplier, secondaryMultiplier, tertiaryMultiplier, quaternaryMultiplier};
 
     private static class HashMapHelper extends HashMap<Materials, Double> {
 
@@ -122,11 +121,11 @@ public class EyeOfHarmonyRecipe {
     }
 
     static void processHelper(HashMapHelper outputMap, Materials material, double mainMultiplier, double probability) {
-        outputMap.add(material, material.mOreMultiplier * mainMultiplier * probability);
+        outputMap.add(material, (material.mOreMultiplier * 2) * mainMultiplier * probability);
 
         int index = 0;
         for (Materials byProductMaterial : material.mOreByProducts) {
-            outputMap.add(byProductMaterial, mainMultiplier * oreMultiplier[index++]);
+            outputMap.add(byProductMaterial, mainMultiplier * (oreMultiplier[index++] * 2) * probability);
         }
     }
 
@@ -166,7 +165,10 @@ public class EyeOfHarmonyRecipe {
         List<Pair<ItemStack, Long>> dust_list = new ArrayList<>();
 
         for (Pair<Materials, Long> pair : planetList) {
-            dust_list.add(Pair.of(pair.getLeft().getDust(1), pair.getRight()));
+            ItemStack dust = pair.getLeft().getDust(1);
+            if (dust != null) {
+                dust_list.add(Pair.of(dust, pair.getRight()));
+            }
         }
         return dust_list;
     }

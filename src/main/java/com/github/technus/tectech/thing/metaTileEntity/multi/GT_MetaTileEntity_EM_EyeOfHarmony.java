@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
+import com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage;
 import com.github.technus.tectech.thing.casing.TT_Block_SpacetimeCompressionFieldGenerators;
 import com.github.technus.tectech.thing.casing.TT_Block_StabilisationFieldGenerators;
 import com.github.technus.tectech.thing.casing.TT_Block_TimeAccelerationFieldGenerators;
@@ -34,7 +35,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
-import static com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage.overworld;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -43,12 +43,15 @@ import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static java.lang.Math.*;
 import static net.minecraft.util.EnumChatFormatting.*;
+import static pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.dimToOreWrapper;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable, IGlobalWirelessEnergy {
     //region variables
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
+
+    private static EyeOfHarmonyRecipeStorage recipes;
 
     private int SpacetimeCompressionFieldMetadata = -1;
     private int TimeAccelerationFieldMetadata = -1;
@@ -398,8 +401,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         long hydrogen_stored = validFluidMap.get(Materials.Hydrogen.getGas(1));
         long helium_stored = validFluidMap.get(Materials.Helium.getGas(1));
 
-        if ((hydrogen_stored >= overworld.getHydrogenRequirement()) & (helium_stored >= overworld.getHeliumRequirement())) {
-            return processRecipe(overworld);
+        if ((hydrogen_stored >= recipes.overworld.getHydrogenRequirement()) & (helium_stored >= recipes.overworld.getHeliumRequirement())) {
+            return processRecipe(recipes.overworld);
         }
 
         return false;
@@ -504,6 +507,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             user_uuid = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());
             user_name = getBaseMetaTileEntity().getOwnerName();
             strongCheckOrAddUser(user_uuid, user_name);
+
+            // Move into tick == 1 after debug.
+            if (recipes == null) {
+                recipes = new EyeOfHarmonyRecipeStorage();
+            }
         }
 
         // Add computation to stack. Prevents small interruptions causing issues.
