@@ -4,6 +4,8 @@ import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
@@ -438,5 +440,13 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     @Override
     public GUITextureSet getGUITextureSet() {
         return GUITextureSet.STEAM.apply(getSteamVariant());
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(152, 63));
     }
 }
