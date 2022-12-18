@@ -1,13 +1,12 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_EPSILON;
+import static com.github.technus.tectech.util.DoubleCount.*;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
-
 import java.util.Map;
-
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_EPSILON;
-import static com.github.technus.tectech.util.DoubleCount.*;
 
 public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
     IEMMapWrite<T> clone();
@@ -18,23 +17,23 @@ public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
      * @param amountToConsume should be comparable to {@link EMTransformationRegistry#EM_COUNT_PER_MATERIAL_AMOUNT}
      * @return consumed successfully
      */
-    default boolean removeAmount(IEMDefinition def, double amountToConsume){
-        double amountRequired=amountToConsume- EM_COUNT_EPSILON;
-        if(amountRequired==amountToConsume){
-            amountRequired-=ulpSigned(amountRequired);
+    default boolean removeAmount(IEMDefinition def, double amountToConsume) {
+        double amountRequired = amountToConsume - EM_COUNT_EPSILON;
+        if (amountRequired == amountToConsume) {
+            amountRequired -= ulpSigned(amountRequired);
         }
-        return removeAmount(def,amountToConsume,amountRequired);
+        return removeAmount(def, amountToConsume, amountRequired);
     }
 
-    default boolean removeAmount(IEMDefinition def, double amountToConsume, double amountRequired){
-        T current=get(def);
-        if(current!=null){
-            if(current.getAmount()>=amountRequired){
-                double newAmount=sub(current.getAmount(),amountToConsume);
-                if(IEMStack.isValidAmount(newAmount)){
-                    current=(T)current.mutateAmount(newAmount);
+    default boolean removeAmount(IEMDefinition def, double amountToConsume, double amountRequired) {
+        T current = get(def);
+        if (current != null) {
+            if (current.getAmount() >= amountRequired) {
+                double newAmount = sub(current.getAmount(), amountToConsume);
+                if (IEMStack.isValidAmount(newAmount)) {
+                    current = (T) current.mutateAmount(newAmount);
                     putReplace(current);
-                }else {
+                } else {
                     removeKey(current.getDefinition());
                 }
                 return true;
@@ -44,7 +43,7 @@ public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
     }
 
     default boolean removeAmount(IEMStack stack) {
-        return removeAmount(stack.getDefinition(),stack.getAmount());
+        return removeAmount(stack.getDefinition(), stack.getAmount());
     }
 
     default boolean removeAllAmounts(IEMStack... stacks) {
@@ -62,7 +61,7 @@ public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
     }
 
     default boolean removeAllAmounts(IEMMapRead<? extends IEMStack> map) {
-        boolean test=true;
+        boolean test = true;
         for (Map.Entry<IEMDefinition, ? extends IEMStack> entry : map.entrySet()) {
             test &= containsAmount(entry.getValue());
         }
@@ -75,24 +74,24 @@ public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
         return true;
     }
 
-    //Put unify
+    // Put unify
     /**
      *
      * @param stack thing to put
      * @return new mapping or null if merging actually removed stuff
      */
     default T putUnify(T stack) {
-        T target=get(stack.getDefinition());
-        if(target==null) {
+        T target = get(stack.getDefinition());
+        if (target == null) {
             putReplace(stack);
             return stack;
         }
         double newAmount = add(target.getAmount(), stack.getAmount());
         if (IEMStack.isValidAmount(newAmount)) {
-            stack=(T) target.mutateAmount(newAmount);
+            stack = (T) target.mutateAmount(newAmount);
             putReplace(stack);
             return stack;
-        }else {
+        } else {
             removeKey(stack.getDefinition());
             return null;
         }

@@ -1,10 +1,10 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_MINIMUM;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import net.minecraft.nbt.NBTTagCompound;
-
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_MINIMUM;
 
 /**
  * Created by danie_000 on 30.01.2017.
@@ -17,6 +17,7 @@ public interface IEMStack extends Comparable<IEMStack>, Cloneable {
     static boolean isInvalidAmount(double amount) {
         return amount < EM_COUNT_MINIMUM;
     }
+
     default boolean isValidAmount() {
         return isValidAmount(getAmount());
     }

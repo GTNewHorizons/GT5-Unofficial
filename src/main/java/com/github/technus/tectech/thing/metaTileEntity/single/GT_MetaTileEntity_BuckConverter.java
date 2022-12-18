@@ -1,40 +1,50 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_BuckConverter;
-import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_BuckConverter;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
+import static com.github.technus.tectech.util.CommonValues.VN;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import java.util.function.Consumer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
-public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMachineBlock {
-    private static GT_RenderedTexture BUCK,BUCK_ACTIVE;
-    public int EUT=0,AMP=0;
+public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMachineBlock
+        implements IAddUIWidgets, IAddGregtechLogo {
+    private static GT_RenderedTexture BUCK, BUCK_ACTIVE;
+    public int EUT = 0, AMP = 0;
 
     public GT_MetaTileEntity_BuckConverter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
-        TT_Utility.setTier(aTier,this);
+        TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_BuckConverter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TT_Utility.setTier(aTier,this);
+        TT_Utility.setTier(aTier, this);
     }
 
     @Override
@@ -51,26 +61,26 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aSide == aFacing ? (aActive?BUCK_ACTIVE:BUCK) :
-                (aSide==GT_Utility.getOppositeSide(aFacing)?
-                        OVERLAYS_ENERGY_IN_POWER_TT[mTier]:
-                        (aActive ? OVERLAYS_ENERGY_OUT_POWER_TT[mTier] : OVERLAYS_ENERGY_IN_POWER_TT[mTier]))};
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
+        return new ITexture[] {
+            MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+            aSide == aFacing
+                    ? (aActive ? BUCK_ACTIVE : BUCK)
+                    : (aSide == GT_Utility.getOppositeSide(aFacing)
+                            ? OVERLAYS_ENERGY_IN_POWER_TT[mTier]
+                            : (aActive ? OVERLAYS_ENERGY_OUT_POWER_TT[mTier] : OVERLAYS_ENERGY_IN_POWER_TT[mTier]))
+        };
     }
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return null;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_BuckConverter(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BuckConverter(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -85,15 +95,15 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("eEUT",EUT);
-        aNBT.setInteger("eAMP",AMP);
+        aNBT.setInteger("eEUT", EUT);
+        aNBT.setInteger("eAMP", AMP);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        EUT=aNBT.getInteger("eEUT");
-        AMP=aNBT.getInteger("eAMP");
-        getBaseMetaTileEntity().setActive((long)AMP*EUT >=0);
+        EUT = aNBT.getInteger("eEUT");
+        AMP = aNBT.getInteger("eAMP");
+        getBaseMetaTileEntity().setActive((long) AMP * EUT >= 0);
     }
 
     @Override
@@ -103,10 +113,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
@@ -122,11 +129,13 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"),//Electronic voltage regulator
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"),//Adjustable step down transformer
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.2")//Switching power supply...
+        return new String[] {
+            CommonValues.TEC_MARK_GENERAL,
+            translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"), // Electronic voltage regulator
+            EnumChatFormatting.BLUE
+                    + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"), // Adjustable step down transformer
+            EnumChatFormatting.BLUE
+                    + translateToLocal("gt.blockmachines.machine.tt.buck.desc.2") // Switching power supply...
         };
     }
 
@@ -152,7 +161,9 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public boolean isOutputFacing(byte aSide) {
-        return getBaseMetaTileEntity().isActive() && aSide != getBaseMetaTileEntity().getFrontFacing() && aSide != getBaseMetaTileEntity().getBackFacing();
+        return getBaseMetaTileEntity().isActive()
+                && aSide != getBaseMetaTileEntity().getFrontFacing()
+                && aSide != getBaseMetaTileEntity().getBackFacing();
     }
 
     @Override
@@ -162,7 +173,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public long maxAmperesOut() {
-        return getBaseMetaTileEntity().isActive()?Math.min(Math.abs(AMP),64):0;
+        return getBaseMetaTileEntity().isActive() ? Math.min(Math.abs(AMP), 64) : 0;
     }
 
     @Override
@@ -172,17 +183,17 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public long maxEUOutput() {
-        return getBaseMetaTileEntity().isActive()?Math.min(Math.abs(EUT),maxEUInput()):0;
+        return getBaseMetaTileEntity().isActive() ? Math.min(Math.abs(EUT), maxEUInput()) : 0;
     }
 
     @Override
     public long maxEUStore() {
-        return CommonValues.V[mTier]<<4;
+        return CommonValues.V[mTier] << 4;
     }
 
     @Override
     public long getMinimumStoredEU() {
-        return CommonValues.V[mTier]<<2;
+        return CommonValues.V[mTier] << 2;
     }
 
     @Override
@@ -193,5 +204,76 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
     @Override
     public int maxProgresstime() {
         return (int) getBaseMetaTileEntity().getUniversalEnergyCapacity();
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
+                .setSize(17, 17)
+                .setPos(113, 56));
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setSize(90, 72)
+                        .setPos(43, 4))
+                .widget(TextWidget.dynamicString(() -> "EUT: " + EUT)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(46, 8))
+                .widget(TextWidget.dynamicString(() -> "TIER: " + VN[TT_Utility.getTier(Math.abs(EUT))])
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(46, 16))
+                .widget(TextWidget.dynamicString(() -> "AMP: " + AMP)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(46, 24))
+                .widget(TextWidget.dynamicString(() -> "SUM: " + (long) AMP * EUT)
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(46, 32));
+
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT -= val, 512, 64, 7, 4);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT /= val, 512, 64, 7, 22);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> AMP -= val, 512, 64, 7, 40);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> AMP /= val, 512, 64, 7, 58);
+
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> EUT -= val, 16, 1, 25, 4);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> EUT /= val, 16, 2, 25, 22);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> AMP -= val, 16, 1, 25, 40);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> AMP /= val, 16, 2, 25, 58);
+
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> EUT += val, 16, 1, 133, 4);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> EUT *= val, 16, 2, 133, 22);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> AMP += val, 16, 1, 133, 40);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> AMP *= val, 16, 2, 133, 58);
+
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> EUT += val, 512, 64, 151, 4);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> EUT *= val, 512, 64, 151, 22);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> AMP += val, 512, 64, 151, 40);
+        addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> AMP *= val, 512, 64, 151, 58);
+    }
+
+    private void addChangeNumberButton(
+            ModularWindow.Builder builder,
+            IDrawable overlay,
+            Consumer<Integer> setter,
+            int changeNumberShift,
+            int changeNumber,
+            int xPos,
+            int yPos) {
+        builder.widget(new ButtonWidget()
+                .setOnClick((clickData, widget) -> {
+                    setter.accept(clickData.shift ? changeNumberShift : changeNumber);
+                    getBaseMetaTileEntity().setActive((long) AMP * EUT >= 0);
+                })
+                .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
+                .setSize(18, 18)
+                .setPos(xPos, yPos));
     }
 }

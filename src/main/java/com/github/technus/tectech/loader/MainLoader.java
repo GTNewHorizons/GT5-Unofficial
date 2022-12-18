@@ -1,5 +1,16 @@
 package com.github.technus.tectech.loader;
 
+import static com.github.technus.tectech.TecTech.LOGGER;
+import static com.github.technus.tectech.TecTech.configTecTech;
+import static com.github.technus.tectech.TecTech.creativeTabEM;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
+import static com.github.technus.tectech.TecTech.instance;
+import static com.github.technus.tectech.TecTech.proxy;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat.aspectDefinitionCompat;
+import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static gregtech.api.enums.GT_Values.W;
+
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat;
@@ -22,44 +33,26 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.em_collider.GT_Meta
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import java.util.Collection;
+import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-
-import static com.github.technus.tectech.TecTech.*;
-import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat.aspectDefinitionCompat;
-import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.util.CommonValues.*;
-import static gregtech.api.enums.GT_Values.W;
-
 public final class MainLoader {
     public static DamageSource microwaving, elementalPollution, subspace;
 
-    private MainLoader() {
-    }
+    private MainLoader() {}
 
     public static void staticLoad() {
-        for (int i = 0; i < 16; i++) {
-            GT_Values.V[i] = V[i];
-            GT_Values.VN[i] = VN[i];
-            GT_Values.VOLTAGE_NAMES[i] = VOLTAGE_NAMES[i];
-        }
         new ComponentLoader();
     }
 
@@ -67,7 +60,7 @@ public final class MainLoader {
         creativeTabTecTech = new CreativeTabTecTech("TecTech");
         creativeTabEM = new CreativeTabEM("EM");
 
-        //set expanded texture arrays for tiers
+        // set expanded texture arrays for tiers
         try {
             Textures.run();
         } catch (Throwable t) {
@@ -124,14 +117,16 @@ public final class MainLoader {
         ProgressManager.pop(progressBarLoad);
     }
 
-    public static void postLoad(EMDefinitionsRegistry definitionsRegistry, EMTransformationRegistry transformationInfo) {
+    public static void postLoad(
+            EMDefinitionsRegistry definitionsRegistry, EMTransformationRegistry transformationInfo) {
         ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 4);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
         if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
             try {
                 Class<?> clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
-                TT_Container_Casings.sBlockCasingsNH = (Block) clazz.getField("sBlockCasingsNH").get(null);
+                TT_Container_Casings.sBlockCasingsNH =
+                        (Block) clazz.getField("sBlockCasingsNH").get(null);
 
                 if (TT_Container_Casings.sBlockCasingsNH == null) {
                     throw new NullPointerException("sBlockCasingsNH Is not set at this time");
@@ -153,14 +148,14 @@ public final class MainLoader {
         new BaseRecipeLoader().run(transformationInfo);
         TecTech.LOGGER.info("Recipe Init Done");
 
-        //Hazmat moved to GT5U
-        //progressBarPostLoad.step("Register Extra Hazmat Suits");
-        //registerExtraHazmats();
-        //TecTech.LOGGER.info("Hazmat additions done");
+        // Hazmat moved to GT5U
+        // progressBarPostLoad.step("Register Extra Hazmat Suits");
+        // registerExtraHazmats();
+        // TecTech.LOGGER.info("Hazmat additions done");
 
         if (!configTecTech.DISABLE_BLOCK_HARDNESS_NERF) {
             progressBarPostLoad.step("Nerf blocks blast resistance");
-            fixBlocks();
+            adjustTwilightBlockResistance();
             TecTech.LOGGER.info("Blocks nerf done");
         } else {
             progressBarPostLoad.step("Do not nerf blocks blast resistance");
@@ -171,8 +166,8 @@ public final class MainLoader {
     }
 
     private static void registerExtraHazmats() {
-        ItemStack EMT_iqC   = GT_ModHandler.getModItem("EMT", "itemArmorQuantumChestplate", 1, W);
-        ItemStack GRAVI_gC  = GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, W);
+        ItemStack EMT_iqC = GT_ModHandler.getModItem("EMT", "itemArmorQuantumChestplate", 1, W);
+        ItemStack GRAVI_gC = GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, W);
         ItemStack GRAVI_anC = GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);
 
         ItemStack IC2_qH = GT_ModHandler.getIC2Item("quantumHelmet", 1L, W);
@@ -239,7 +234,7 @@ public final class MainLoader {
         GregTech_API.sElectroHazmatList.add(IC2_qL);
         GregTech_API.sElectroHazmatList.add(IC2_qB);
 
-        //todo add GC GS stuff
+        // todo add GC GS stuff
     }
 
     public static void addAfterGregTechPostLoadRunner() {
@@ -259,11 +254,11 @@ public final class MainLoader {
                 if (DEBUG_MODE) {
                     LOGGER.info("Found Plasma of " + material.mName);
                 }
-                if (material.mElement != null &&
-                        (material.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
-                                -material.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
-                                material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons ||
-                                -material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
+                if (material.mElement != null
+                        && (material.mElement.mProtons >= Materials.Iron.mElement.mProtons
+                                || -material.mElement.mProtons >= Materials.Iron.mElement.mProtons
+                                || material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons
+                                || -material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
                     if (DEBUG_MODE) {
                         LOGGER.info("Attempting to bind " + material.mName);
                     }
@@ -306,74 +301,27 @@ public final class MainLoader {
 
     public static int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null || GT_Recipe.GT_Recipe_Map.sTurbineFuels == null) return 0;
-        FluidStack            tLiquid;
+        FluidStack tLiquid;
         Collection<GT_Recipe> tRecipeList = GT_Recipe.GT_Recipe_Map.sPlasmaFuels.mRecipeList;
-        if (tRecipeList != null) for (GT_Recipe tFuel : tRecipeList)
-            if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null)
-                if (aLiquid.isFluidEqual(tLiquid)) return tFuel.mSpecialValue;
+        if (tRecipeList != null)
+            for (GT_Recipe tFuel : tRecipeList)
+                if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null)
+                    if (aLiquid.isFluidEqual(tLiquid)) return tFuel.mSpecialValue;
         return 0;
     }
 
-    private static void fixBlocks() {
-        HashSet<String> modIDs = new HashSet<>(Arrays.asList(
-                "minecraft",
-                "IC2",
-                "gregtech",
-                Reference.DREAMCRAFT,
-                Reference.GTPLUSPLUS,
-                "GT++DarkWorld",
-                "GalacticraftCore",
-                "GalacticraftMars",
-                "GalaxySpace",
-                "extracells",
-                "Avaritia",
-                "avaritiaddons",
-                "EnderStorage",
-                "enhancedportals",
-                "DraconicEvolution",
-                "IC2NuclearControl",
-                "IronChest",
-                "irontank",
-                "opensecurity",
-                "openmodularturrets",
-                "Railcraft",
-                "RIO",
-                "SGCraft",
-                "appliedenergistics2",
-                "thaumicenergistics",
-                "witchery",
-                "lootgames",
-                "utilityworlds",
-                Reference.MODID
-        ));
-        for (Block block : GameData.getBlockRegistry().typeSafeIterable()) {
-            GameRegistry.UniqueIdentifier uniqueIdentifier = GameRegistry.findUniqueIdentifierFor(block);
-            if (uniqueIdentifier != null) {
-                if (block.blockHardness < 0 || modIDs.contains(uniqueIdentifier.modId)) {
-                    continue;
-                } else if ("OpenBlocks".equals(uniqueIdentifier.modId)) {
-                    if ("grave".equals(uniqueIdentifier.name)) {
-                        continue;
-                    }
-                } else if ("TwilightForest".equals(uniqueIdentifier.modId)) {
-                    if ("tile.TFShield".equals(uniqueIdentifier.name)) {
-                        block.setResistance(30);
-                        continue;
-                    } else if ("tile.TFThorns".equals(uniqueIdentifier.name)) {
-                        block.setResistance(10);
-                        continue;
-                    } else if ("tile.TFTowerTranslucent".equals(uniqueIdentifier.name)) {
-                        block.setResistance(30);
-                        continue;
-                    } else if ("tile.TFDeadrock".equals(uniqueIdentifier.name)) {
-                        block.setResistance(5);
-                        continue;
-                    } else {
-                        continue;
-                    }
-                }
-            }
-            block.setResistance(5);
+    private static void safeSetResistance(Block block, float resistance) {
+        if (block != null) {
+            block.setResistance(resistance);
+        }
+    }
+
+    private static void adjustTwilightBlockResistance() {
+        if (Loader.isModLoaded("TwilightForest")) {
+            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFShield"), 30);
+            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFThorns"), 10);
+            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFTowerTranslucent"), 30);
+            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFDeadrock"), 5);
         }
     }
 }

@@ -21,24 +21,23 @@ public class PipeActivityMessage implements IMessage {
     int mPosD;
     int mActive;
 
-    public PipeActivityMessage() {
-    }
+    public PipeActivityMessage() {}
 
     private PipeActivityMessage(IActivePipe metaTile) {
-        IGregTechTileEntity base=metaTile.getBaseMetaTileEntity();
-        mPosX=base.getXCoord();
-        mPosY=base.getYCoord();
-        mPosZ=base.getZCoord();
-        mPosD=base.getWorld().provider.dimensionId;
-        mActive=metaTile.getActive()?1:0;
+        IGregTechTileEntity base = metaTile.getBaseMetaTileEntity();
+        mPosX = base.getXCoord();
+        mPosY = base.getYCoord();
+        mPosZ = base.getZCoord();
+        mPosD = base.getWorld().provider.dimensionId;
+        mActive = metaTile.getActive() ? 1 : 0;
     }
 
     private PipeActivityMessage(World world, int x, int y, int z, boolean active) {
-        mPosX=x;
-        mPosY=y;
-        mPosZ=z;
-        mPosD=world.provider.dimensionId;
-        mActive=active?1:0;
+        mPosX = x;
+        mPosY = y;
+        mPosZ = z;
+        mPosD = world.provider.dimensionId;
+        mActive = active ? 1 : 0;
     }
 
     @Override
@@ -64,48 +63,46 @@ public class PipeActivityMessage implements IMessage {
     }
 
     public static class PipeActivityQuery extends PipeActivityMessage {
-        public PipeActivityQuery() {
-        }
+        public PipeActivityQuery() {}
 
         public PipeActivityQuery(IActivePipe metaTile) {
             super(metaTile);
         }
 
-        public PipeActivityQuery(World world, int x,int y,int z, boolean active) {
-            super(world,x,y,z,active);
+        public PipeActivityQuery(World world, int x, int y, int z, boolean active) {
+            super(world, x, y, z, active);
         }
     }
 
     public static class PipeActivityData extends PipeActivityMessage {
-        public PipeActivityData() {
-        }
+        public PipeActivityData() {}
 
-        private PipeActivityData(PipeActivityQuery query){
-            mPosX=query.mPosX;
-            mPosY=query.mPosY;
-            mPosZ=query.mPosZ;
-            mPosD=query.mPosD;
-            mActive=query.mActive;
+        private PipeActivityData(PipeActivityQuery query) {
+            mPosX = query.mPosX;
+            mPosY = query.mPosY;
+            mPosZ = query.mPosZ;
+            mPosD = query.mPosD;
+            mActive = query.mActive;
         }
 
         public PipeActivityData(IActivePipe metaTile) {
             super(metaTile);
         }
 
-        public PipeActivityData(World world, int x,int y,int z, boolean active) {
-            super(world,x,y,z,active);
+        public PipeActivityData(World world, int x, int y, int z, boolean active) {
+            super(world, x, y, z, active);
         }
     }
 
     public static class ClientHandler extends AbstractClientMessageHandler<PipeActivityData> {
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, PipeActivityData pMessage, MessageContext pCtx) {
-            if(pPlayer.worldObj.provider.dimensionId==pMessage.mPosD){
-                TileEntity te=pPlayer.worldObj.getTileEntity(pMessage.mPosX,pMessage.mPosY,pMessage.mPosZ);
-                if(te instanceof IGregTechTileEntity){
+            if (pPlayer.worldObj.provider.dimensionId == pMessage.mPosD) {
+                TileEntity te = pPlayer.worldObj.getTileEntity(pMessage.mPosX, pMessage.mPosY, pMessage.mPosZ);
+                if (te instanceof IGregTechTileEntity) {
                     IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if(meta instanceof IActivePipe){
-                        ((IActivePipe) meta).setActive(pMessage.mActive==1);
+                    if (meta instanceof IActivePipe) {
+                        ((IActivePipe) meta).setActive(pMessage.mActive == 1);
                     }
                 }
             }
@@ -116,13 +113,13 @@ public class PipeActivityMessage implements IMessage {
     public static class ServerHandler extends AbstractServerMessageHandler<PipeActivityQuery> {
         @Override
         public IMessage handleServerMessage(EntityPlayer pPlayer, PipeActivityQuery pMessage, MessageContext pCtx) {
-            World world= DimensionManager.getWorld(pMessage.mPosD);
-            if(world!=null) {
+            World world = DimensionManager.getWorld(pMessage.mPosD);
+            if (world != null) {
                 TileEntity te = world.getTileEntity(pMessage.mPosX, pMessage.mPosY, pMessage.mPosZ);
                 if (te instanceof IGregTechTileEntity) {
                     IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
                     if (meta instanceof IActivePipe) {
-                        pMessage.mActive=((IActivePipe) meta).getActive()?1:0;
+                        pMessage.mActive = ((IActivePipe) meta).getActive() ? 1 : 0;
                         return new PipeActivityData(pMessage);
                     }
                 }

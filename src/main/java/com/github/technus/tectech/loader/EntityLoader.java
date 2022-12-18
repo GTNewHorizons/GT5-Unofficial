@@ -11,7 +11,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 public class EntityLoader implements Runnable {
     @Override
     public void run() {
-        if(Loader.isModLoaded("openmodularturrets")) {
+        if (Loader.isModLoaded("openmodularturrets")) {
             EntityRegistry.registerModEntity(projectileEM.class, "projectileEM", 0, TecTech.instance, 16, 5, true);
         }
     }

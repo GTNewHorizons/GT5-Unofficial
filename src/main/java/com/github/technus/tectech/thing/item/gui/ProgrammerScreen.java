@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class ProgrammerScreen extends GuiScreen {
     private NBTTagCompound tag;
 
-    public ProgrammerScreen(EntityPlayer player){
-        tag=player.getHeldItem().getTagCompound();
+    public ProgrammerScreen(EntityPlayer player) {
+        tag = player.getHeldItem().getTagCompound();
     }
 }

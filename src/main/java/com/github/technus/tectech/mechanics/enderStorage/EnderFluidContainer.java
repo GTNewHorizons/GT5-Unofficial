@@ -1,46 +1,38 @@
 package com.github.technus.tectech.mechanics.enderStorage;
 
+import com.github.technus.tectech.TecTech;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import java.io.Serializable;
-
 public class EnderFluidContainer implements IFluidHandler, Serializable {
-    private static final int CAPACITY = 64000;
-    @Deprecated()
-    private int fluidID = -1;
-    @Deprecated()
-    private int fluidQuantity = 0;
-    private NBTTagCompound fluid;
+    private static final long serialVersionUID = 2L;
+    private static final int SERIALIZE_TYPE_WITH_NBT = 0;
+    private static final int SERIALIZE_TYPE_WITHOUT_NBT = 1;
+    private static final int SERIALIZE_TYPE_NULL = 2;
 
-    public EnderFluidContainer() {
-    }
+    private static final int CAPACITY = 64000;
+    private transient FluidStack fluidStack;
+
+    public EnderFluidContainer() {}
 
     private FluidStack getFluidStack() {
-        FluidStack fluidStack = null;
-        if (fluidID >= 0) {
-            fluid = new FluidStack(fluidID, fluidQuantity).writeToNBT(new NBTTagCompound());
-            fluidID = -1;
-            fluidQuantity = 0;
-        }
-        if (fluid != null) {
-            fluidStack = FluidStack.loadFluidStackFromNBT(fluid);
-        }
         return fluidStack;
     }
 
     private void setFluidStack(FluidStack fluidStack) {
-        if (fluidStack != null) {
-            fluid = fluidStack.writeToNBT(new NBTTagCompound());
-        } else {
-            fluid = null;
-        }
+        this.fluidStack = fluidStack;
     }
-
 
     @Override
     public int fill(ForgeDirection side, FluidStack fluidStackIn, boolean doFill) {
@@ -102,6 +94,36 @@ public class EnderFluidContainer implements IFluidHandler, Serializable {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection forgeDirection) {
-        return new FluidTankInfo[]{new FluidTankInfo(getFluidStack(), CAPACITY)};
+        return new FluidTankInfo[] {new FluidTankInfo(getFluidStack(), CAPACITY)};
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        if (fluidStack != null) {
+            out.writeByte(fluidStack.tag != null ? SERIALIZE_TYPE_WITH_NBT : SERIALIZE_TYPE_WITHOUT_NBT);
+            if (fluidStack.tag != null) CompressedStreamTools.write(fluidStack.tag, out);
+            out.writeUTF(fluidStack.getFluid().getName());
+            out.writeInt(fluidStack.amount);
+        } else {
+            out.writeByte(SERIALIZE_TYPE_NULL);
+        }
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        byte type = in.readByte();
+        NBTTagCompound tag = null;
+        switch (type) {
+            case SERIALIZE_TYPE_WITH_NBT:
+                tag = CompressedStreamTools.read(new DataInputStream(in));
+            case SERIALIZE_TYPE_WITHOUT_NBT:
+                fluidStack = FluidRegistry.getFluidStack(in.readUTF(), in.readInt());
+                break;
+            case SERIALIZE_TYPE_NULL:
+                fluidStack = null;
+                break;
+            default:
+                TecTech.LOGGER.error("Something very wrong... got a fluid container with state " + type);
+                fluidStack = null;
+        }
+        if (fluidStack != null) fluidStack.tag = tag;
     }
 }

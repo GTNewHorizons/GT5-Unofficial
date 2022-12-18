@@ -1,16 +1,16 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMType;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
-import com.github.technus.tectech.util.TT_Utility;
-
 import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay.NO_DECAY;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.*;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.*;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
+
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMType;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
+import com.github.technus.tectech.util.TT_Utility;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -19,15 +19,16 @@ public class EMGaugeBosonDefinition extends EMBosonDefinition {
     public static final EMGaugeBosonDefinition
             boson_g__ = new EMGaugeBosonDefinition("tt.keyword.Gluon", "g", 0, 0, 8, 27, "g"),
             boson_Y__ = new EMGaugeBosonDefinition("tt.keyword.Photon", "\u03b3", 1e-18D, 0, -1, 28, "Y"),
-            boson_Z   = new EMGaugeBosonDefinition("tt.keyword.Weak0", "Z0", 91.1876e9, 0, -1, 29, "Z0"),
-            boson_W_  = new EMGaugeBosonDefinition("tt.keyword.WeakPlus", "W+", 80.379e9, 3, -1, 30, "W+"),
-            boson_W   = new EMGaugeBosonDefinition("tt.keyword.WeakMinus", "W-", 80.379e9, -3, -1, 31, "W-");
-    //deadEnd
-    public static final EMDecay           deadEnd     = new EMDecay(boson_Y__, boson_Y__);
-    public static final EMDefinitionStack boson_Y__1  = new EMDefinitionStack(boson_Y__, 1);
-    public static final EMDecay           deadEndHalf = new EMDecay(boson_Y__1);
+            boson_Z = new EMGaugeBosonDefinition("tt.keyword.Weak0", "Z0", 91.1876e9, 0, -1, 29, "Z0"),
+            boson_W_ = new EMGaugeBosonDefinition("tt.keyword.WeakPlus", "W+", 80.379e9, 3, -1, 30, "W+"),
+            boson_W = new EMGaugeBosonDefinition("tt.keyword.WeakMinus", "W-", 80.379e9, -3, -1, 31, "W-");
+    // deadEnd
+    public static final EMDecay deadEnd = new EMDecay(boson_Y__, boson_Y__);
+    public static final EMDefinitionStack boson_Y__1 = new EMDefinitionStack(boson_Y__, 1);
+    public static final EMDecay deadEndHalf = new EMDecay(boson_Y__1);
 
-    protected EMGaugeBosonDefinition(String name, String symbol, double mass, int charge, int color, int ID, String bind) {
+    protected EMGaugeBosonDefinition(
+            String name, String symbol, double mass, int charge, int color, int ID, String bind) {
         super(name, TT_Utility.toSuperscript(symbol), 0, mass, charge, color, ID, bind);
     }
 
@@ -35,7 +36,12 @@ public class EMGaugeBosonDefinition extends EMBosonDefinition {
         registry.registerDefinitionClass(new EMType(EMGaugeBosonDefinition.class, "tt.keyword.GaugeBoson"));
         boson_g__.init(registry, boson_g__, 3e-50, 0, 0, deadEndHalf);
         boson_Y__.init(registry, boson_Y__, NO_DECAY_RAW_LIFE_TIME, -1, -1, NO_DECAY);
-        boson_Z.init(registry, boson_Z, 3e-25, 11, 11,
+        boson_Z.init(
+                registry,
+                boson_Z,
+                3e-25,
+                11,
+                11,
                 new EMDecay(0.03363, lepton_e, lepton_e_),
                 new EMDecay(0.03366, lepton_m, lepton_m_),
                 new EMDecay(0.03367, lepton_t, lepton_t_),
@@ -48,7 +54,12 @@ public class EMGaugeBosonDefinition extends EMBosonDefinition {
                 new EMDecay(0.152, quark_s, quark_s_),
                 new EMDecay(0.152, quark_b, quark_b_),
                 deadEnd);
-        boson_W.init(registry, boson_W_, 3e-25, 9, 9,
+        boson_W.init(
+                registry,
+                boson_W_,
+                3e-25,
+                9,
+                9,
                 new EMDecay(0.108, lepton_e, lepton_Ve_),
                 new EMDecay(0.108, lepton_m, lepton_Vm_),
                 new EMDecay(0.108, lepton_t, lepton_Vt_),
@@ -59,7 +70,12 @@ public class EMGaugeBosonDefinition extends EMBosonDefinition {
                 new EMDecay(0.112666, quark_c_, quark_s),
                 new EMDecay(0.112666, quark_c_, quark_b),
                 deadEnd);
-        boson_W_.init(registry, boson_W, 3e-25, 9, 9,
+        boson_W_.init(
+                registry,
+                boson_W,
+                3e-25,
+                9,
+                9,
                 new EMDecay(0.108, lepton_e_, lepton_Ve),
                 new EMDecay(0.108, lepton_m_, lepton_Vm),
                 new EMDecay(0.108, lepton_t_, lepton_Vt),

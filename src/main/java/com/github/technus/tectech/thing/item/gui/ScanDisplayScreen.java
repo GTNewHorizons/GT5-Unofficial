@@ -1,8 +1,12 @@
 package com.github.technus.tectech.thing.item.gui;
 
+import static com.github.technus.tectech.Reference.MODID;
+import static org.lwjgl.opengl.GL11.*;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
+import java.util.Objects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
@@ -10,11 +14,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.Objects;
-
-import static com.github.technus.tectech.Reference.MODID;
-import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created by danie_000 on 17.12.2017.
@@ -24,22 +23,23 @@ public class ScanDisplayScreen extends GuiScreen {
     private int baseX, baseY;
     private Button up, down, pgUp, pgDown;
     private final String[] lines;
-    private       int      firstLine;
+    private int firstLine;
 
-    private static final ResourceLocation[] BACKGROUNDS = new ResourceLocation[]{
-            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen1.png"),
-            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen2.png"),
-            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen3.png"),
-            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen4.png"),
-            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen5.png"),
-            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen6.png"),
-            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen7.png"),
-            new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen8.png")};
-    private static final ResourceLocation   ITEM        =
-            new ResourceLocation(MODID + ":textures/gui/scanDisplayItem.png");
+    private static final ResourceLocation[] BACKGROUNDS = new ResourceLocation[] {
+        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen1.png"),
+        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen2.png"),
+        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen3.png"),
+        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen4.png"),
+        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen5.png"),
+        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen6.png"),
+        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen7.png"),
+        new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen8.png")
+    };
+    private static final ResourceLocation ITEM = new ResourceLocation(MODID + ":textures/gui/scanDisplayItem.png");
 
     public ScanDisplayScreen(EntityPlayer player) {
-        lines = Objects.requireNonNull(ElementalDefinitionScanStorage_EM.getLines(player.getHeldItem())).toArray(new String[0]);
+        lines = Objects.requireNonNull(ElementalDefinitionScanStorage_EM.getLines(player.getHeldItem()))
+                .toArray(new String[0]);
     }
 
     @Override
@@ -47,8 +47,8 @@ public class ScanDisplayScreen extends GuiScreen {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         mc.getTextureManager().bindTexture(ITEM);
-        long tick  = System.currentTimeMillis() / 150;
-        int  itick = (int) (tick % 12);
+        long tick = System.currentTimeMillis() / 150;
+        int itick = (int) (tick % 12);
         drawTexturedModalRect(baseX + 99, baseY + 189, 32 * (itick / 6), 32 * (itick % 6), 32, 32);
         mc.getTextureManager().bindTexture(BACKGROUNDS[(int) (tick % 8)]);
         drawTexturedModalRect(baseX, baseY, 0, 0, sizeX, sizeY);
@@ -56,14 +56,16 @@ public class ScanDisplayScreen extends GuiScreen {
         super.drawScreen(x, y, partialTicks);
 
         itick = (TecTech.RANDOM.nextInt(0x66) << 16) + 0x77EEFF;
-        int textBaseX  = baseX + 20;
+        int textBaseX = baseX + 20;
         int textBaseXX = baseX + 95;
-        int textBaseY  = baseY + 28;
+        int textBaseY = baseY + 28;
         for (int i = firstLine - 1, j = 8; i >= 0 && j != 0; i--, j /= 2) {
             int equalPos = lines[i].indexOf('=');
             if (equalPos >= 0) {
-                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(0, equalPos), textBaseX, textBaseY - 8 + j, 200, itick);
-                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(equalPos), textBaseXX, textBaseY - 8 + j, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(
+                        lines[i].substring(0, equalPos), textBaseX, textBaseY - 8 + j, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(
+                        lines[i].substring(equalPos), textBaseXX, textBaseY - 8 + j, 200, itick);
             } else {
                 TecTechFontRender.INSTANCE.drawSplitString(lines[i], textBaseX, textBaseY - 8 + j, 200, itick);
             }
@@ -72,8 +74,10 @@ public class ScanDisplayScreen extends GuiScreen {
             textBaseY += 9;
             int equalPos = lines[i].indexOf('=');
             if (equalPos >= 0) {
-                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(0, equalPos), textBaseX, textBaseY, 200, itick);
-                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(equalPos), textBaseXX, textBaseY, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(
+                        lines[i].substring(0, equalPos), textBaseX, textBaseY, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(
+                        lines[i].substring(equalPos), textBaseXX, textBaseY, 200, itick);
             } else {
                 TecTechFontRender.INSTANCE.drawSplitString(lines[i], textBaseX, textBaseY, 200, itick);
             }
@@ -81,8 +85,10 @@ public class ScanDisplayScreen extends GuiScreen {
         for (int i = firstLine + renderedLines, j = 8; i < lines.length && j != 0; i++, j /= 2) {
             int equalPos = lines[i].indexOf('=');
             if (equalPos >= 0) {
-                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(0, equalPos), textBaseX, textBaseY + 17 - j, 200, itick);
-                TecTechFontRender.INSTANCE.drawSplitString(lines[i].substring(equalPos), textBaseXX, textBaseY + 17 - j, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(
+                        lines[i].substring(0, equalPos), textBaseX, textBaseY + 17 - j, 200, itick);
+                TecTechFontRender.INSTANCE.drawSplitString(
+                        lines[i].substring(equalPos), textBaseXX, textBaseY + 17 - j, 200, itick);
             } else {
                 TecTechFontRender.INSTANCE.drawSplitString(lines[i], textBaseX, textBaseY + 17 - j, 200, itick);
             }
@@ -141,7 +147,8 @@ public class ScanDisplayScreen extends GuiScreen {
         @Override
         public void drawButton(Minecraft mc, int xPos, int yPos) {
             if (visible) {
-                field_146123_n = xPos >= xPosition && yPos >= yPosition && xPos < xPosition + width && yPos < yPosition + height;
+                field_146123_n =
+                        xPos >= xPosition && yPos >= yPosition && xPos < xPosition + width && yPos < yPosition + height;
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 mc.getTextureManager().bindTexture(BACKGROUNDS[0]);
@@ -151,10 +158,11 @@ public class ScanDisplayScreen extends GuiScreen {
             }
         }
 
-        //play cool sound fx
+        // play cool sound fx
         @Override
         public void func_146113_a(SoundHandler soundHandler) {
-            soundHandler.playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation(MODID + ":fx_click"), 1.0F));
+            soundHandler.playSound(
+                    PositionedSoundRecord.func_147674_a(new ResourceLocation(MODID + ":fx_click"), 1.0F));
         }
     }
 }

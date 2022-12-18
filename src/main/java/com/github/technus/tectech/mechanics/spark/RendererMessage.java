@@ -7,27 +7,25 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
 import io.netty.buffer.ByteBuf;
+import java.io.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 
-import java.io.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Random;
-
-//TODO Re-work how sparks are distributed
+// TODO Re-work how sparks are distributed
 public class RendererMessage implements IMessage {
     HashSet<ThaumSpark> sparkList;
 
-    public RendererMessage() {
-    }
+    public RendererMessage() {}
 
     @Override
     public void fromBytes(ByteBuf pBuffer) {
         try {
-            //I'd love to know why I need to offset by one byte for this to work
+            // I'd love to know why I need to offset by one byte for this to work
             byte[] boop = pBuffer.array();
             boop = Arrays.copyOfRange(boop, 1, boop.length);
             InputStream is = new ByteArrayInputStream(boop);
@@ -52,19 +50,17 @@ public class RendererMessage implements IMessage {
     }
 
     public static class RendererData extends RendererMessage {
-        public RendererData() {
-        }
+        public RendererData() {}
 
         public RendererData(HashSet<ThaumSpark> eSparkList) {
             sparkList = eSparkList;
         }
     }
 
-
     public static class ClientHandler extends AbstractClientMessageHandler<RendererData> {
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, RendererData pMessage, MessageContext pCtx) {
-            //disgusting
+            // disgusting
             Random localRand = Minecraft.getMinecraft().theWorld.rand;
             int[] zapsToUse = new int[4];
             for (int i = 0; i < 3; i++) {
@@ -73,7 +69,7 @@ public class RendererMessage implements IMessage {
             int i = 0;
             for (ThaumSpark sp : pMessage.sparkList) {
                 for (int j : zapsToUse) {
-                    if(i == j){
+                    if (i == j) {
                         thaumLightning(sp.x, sp.y, sp.z, sp.xR, sp.yR, sp.zR, sp.wID);
                     }
                 }
@@ -86,11 +82,22 @@ public class RendererMessage implements IMessage {
 
     @SideOnly(Side.CLIENT)
     private static void thaumLightning(int tX, int tY, int tZ, int tXN, int tYN, int tZN, int wID) {
-        //This is enough to check for thaum, since it only ever matters for client side effects (Tested not to crash)
+        // This is enough to check for thaum, since it only ever matters for client side effects (Tested not to crash)
         if (Loader.isModLoaded("Thaumcraft")) {
             World world = Minecraft.getMinecraft().theWorld;
-            if (world.provider.dimensionId == wID){
-                FXLightningBolt bolt = new FXLightningBolt(world, tX + 0.5F, tY + 0.5F, tZ + 0.5F, tX + tXN + 0.5F, tY + tYN + 0.5F, tZ + tZN + 0.5F, world.rand.nextLong(), 6, 0.5F, 8);
+            if (world.provider.dimensionId == wID) {
+                FXLightningBolt bolt = new FXLightningBolt(
+                        world,
+                        tX + 0.5F,
+                        tY + 0.5F,
+                        tZ + 0.5F,
+                        tX + tXN + 0.5F,
+                        tY + tYN + 0.5F,
+                        tZ + tZN + 0.5F,
+                        world.rand.nextLong(),
+                        6,
+                        0.5F,
+                        8);
                 bolt.defaultFractal();
                 bolt.setType(2);
                 bolt.setWidth(0.125F);

@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class EMDequantizationInfo {
     private final IEMStack definition;
-    private       Object   stack;
+    private Object stack;
 
     public EMDequantizationInfo(IEMStack definition) {
         this.definition = definition;

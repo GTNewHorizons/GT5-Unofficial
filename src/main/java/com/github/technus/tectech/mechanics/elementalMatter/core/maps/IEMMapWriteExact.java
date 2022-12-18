@@ -2,11 +2,10 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
-
 import java.util.Map;
 
 public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
-    default void cleanUp(){
+    default void cleanUp() {
         entrySet().removeIf(entry -> entry.getValue().isInvalidAmount());
     }
 
@@ -16,30 +15,30 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
 
     IEMMapWriteExact<T> clone();
 
-    //Remove
+    // Remove
     default T removeKey(IEMDefinition def) {
         return getBackingMap().remove(def);
     }
 
     default boolean removeKeys(IEMDefinition... definitions) {
-        boolean hadAll=true;
+        boolean hadAll = true;
         for (IEMDefinition def : definitions) {
-            hadAll&=removeKey(def)!=null;
+            hadAll &= removeKey(def) != null;
         }
         return hadAll;
     }
 
     default boolean removeKeys(IEMStack... hasElementalDefinition) {
-        boolean hadAll=true;
+        boolean hadAll = true;
         for (IEMStack has : hasElementalDefinition) {
-            hadAll&=removeKey(has.getDefinition())!=null;
+            hadAll &= removeKey(has.getDefinition()) != null;
         }
         return hadAll;
     }
 
     default boolean removeAllKeys(IEMDefinition... definitions) {
-        boolean hadAll=containsAllKeys(definitions);
-        if(hadAll){
+        boolean hadAll = containsAllKeys(definitions);
+        if (hadAll) {
             for (IEMDefinition def : definitions) {
                 removeKey(def);
             }
@@ -48,8 +47,8 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
     }
 
     default boolean removeAllKeys(IEMStack... hasElementalDefinition) {
-        boolean hadAll=containsAllKeys(hasElementalDefinition);
-        if(hadAll){
+        boolean hadAll = containsAllKeys(hasElementalDefinition);
+        if (hadAll) {
             for (IEMStack stack : hasElementalDefinition) {
                 removeKey(stack.getDefinition());
             }
@@ -76,8 +75,8 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
      * @param def
      * @return
      */
-    default boolean removeAmountExact(IEMStack def){
-        return removeAmountExact(def.getDefinition(),def.getAmount());
+    default boolean removeAmountExact(IEMStack def) {
+        return removeAmountExact(def.getDefinition(), def.getAmount());
     }
 
     /**
@@ -86,13 +85,13 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
      * @param amountToConsume
      * @return
      */
-    default boolean removeAmountExact(IEMDefinition def, double amountToConsume){
-        T current=get(def);
-        if(current!=null){
-            double newAmount=current.getAmount()-amountToConsume;
-            if(newAmount>=0){
-                if(current.isValidAmount()){
-                    current=(T)current.mutateAmount(newAmount);
+    default boolean removeAmountExact(IEMDefinition def, double amountToConsume) {
+        T current = get(def);
+        if (current != null) {
+            double newAmount = current.getAmount() - amountToConsume;
+            if (newAmount >= 0) {
+                if (current.isValidAmount()) {
+                    current = (T) current.mutateAmount(newAmount);
                     putReplace(current);
                 } else {
                     removeKey(current.getDefinition());
@@ -118,7 +117,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
     }
 
     default boolean removeAllAmountsExact(IEMMapRead<? extends IEMStack> map) {
-        boolean test=true;
+        boolean test = true;
         for (Map.Entry<IEMDefinition, ? extends IEMStack> entry : map.entrySet()) {
             test &= containsAmountExact(entry.getValue());
         }
@@ -132,17 +131,17 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
     }
 
     default T putUnifyExact(T stack) {
-        T target=get(stack.getDefinition());
-        if(target==null) {
+        T target = get(stack.getDefinition());
+        if (target == null) {
             putReplace(stack);
             return stack;
         }
-        double newAmount = target.getAmount()+stack.getAmount();
+        double newAmount = target.getAmount() + stack.getAmount();
         if (IEMStack.isValidAmount(newAmount)) {
-            stack=(T) target.mutateAmount(newAmount);
+            stack = (T) target.mutateAmount(newAmount);
             putReplace(stack);
             return stack;
-        }else {
+        } else {
             removeKey(stack.getDefinition());
             return null;
         }

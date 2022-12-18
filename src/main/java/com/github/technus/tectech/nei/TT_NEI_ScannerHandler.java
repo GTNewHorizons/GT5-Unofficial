@@ -1,10 +1,11 @@
 package com.github.technus.tectech.nei;
 
+import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
+import static gregtech.api.enums.ItemList.Display_Fluid;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.ItemList;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.guihook.IContainerInputHandler;
-import codechicken.nei.guihook.IContainerTooltipHandler;
 import codechicken.nei.recipe.*;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
@@ -16,22 +17,17 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
-import static gregtech.api.enums.ItemList.Display_Fluid;
+import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.opengl.GL11;
 
 public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
 
@@ -41,7 +37,11 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
         mRecipeMap = aRecipeMap;
         transferRects.add(new RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
         if (!NEI_TT_Config.sIsAdded) {
-            FMLInterModComms.sendRuntimeMessage(TecTech.instance, "NEIPlugins", "register-crafting-handler", Reference.MODID+ '@' + getRecipeName() + '@' + getOverlayIdentifier());
+            FMLInterModComms.sendRuntimeMessage(
+                    TecTech.instance,
+                    "NEIPlugins",
+                    "register-crafting-handler",
+                    Reference.MODID + '@' + getRecipeName() + '@' + getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
             GuiUsageRecipe.usagehandlers.add(this);
         }
@@ -59,7 +59,7 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
 
     @Override
     public TemplateRecipeHandler newInstance() {
-        NEI_TT_Config.TT_SH=new TT_NEI_ScannerHandler(mRecipeMap);
+        NEI_TT_Config.TT_SH = new TT_NEI_ScannerHandler(mRecipeMap);
         return NEI_TT_Config.TT_SH;
     }
 
@@ -83,7 +83,9 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
         ArrayList<ItemStack> tResults = new ArrayList<>();
         tResults.add(aResult);
         tResults.add(GT_OreDictUnificator.get(true, aResult));
-        if (tPrefixMaterial != null && !tPrefixMaterial.mBlackListed && !tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty()) {
+        if (tPrefixMaterial != null
+                && !tPrefixMaterial.mBlackListed
+                && !tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty()) {
             for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
                 tResults.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
@@ -91,7 +93,8 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
         FluidStack tFluid = GT_Utility.getFluidForFilledItem(aResult, true);
         if (tFluid != null) {
             tResults.add(GT_Utility.getFluidDisplayStack(tFluid, false));
-            for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
+            for (FluidContainerRegistry.FluidContainerData tData :
+                    FluidContainerRegistry.getRegisteredFluidContainerData()) {
                 if (tData.fluid.isFluidEqual(tFluid)) {
                     tResults.add(GT_Utility.copy(tData.filledContainer));
                 }
@@ -125,7 +128,8 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
         FluidStack tFluid = GT_Utility.getFluidForFilledItem(aInput, true);
         if (tFluid != null) {
             tInputs.add(GT_Utility.getFluidDisplayStack(tFluid, false));
-            for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
+            for (FluidContainerRegistry.FluidContainerData tData :
+                    FluidContainerRegistry.getRegisteredFluidContainerData()) {
                 if (tData.fluid.isFluidEqual(tFluid)) {
                     tInputs.add(GT_Utility.copy(tData.filledContainer));
                 }
@@ -168,21 +172,30 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
 
     @Override
     public String getGuiTexture() {
-//    return "gregtech:textures/gui/" + this.mRecipeMap.mUnlocalizedName + ".png";
+        //    return "gregtech:textures/gui/" + this.mRecipeMap.mUnlocalizedName + ".png";
         return mRecipeMap.mNEIGUIPath;
     }
 
     @Override
-    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
+    public List<String> handleItemTooltip(
+            GuiRecipe<?> gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
         TemplateRecipeHandler.CachedRecipe tObject = arecipes.get(aRecipeIndex);
         if (tObject instanceof CachedDefaultRecipe) {
             CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;
             for (PositionedStack tStack : tRecipe.mOutputs) {
                 if (aStack == tStack.item) {
-                    if (!(tStack instanceof FixedPositionedStack) || ((FixedPositionedStack) tStack).mChance <= 0 || ((FixedPositionedStack) tStack).mChance == 10000) {
+                    if (!(tStack instanceof FixedPositionedStack)
+                            || ((FixedPositionedStack) tStack).mChance <= 0
+                            || ((FixedPositionedStack) tStack).mChance == 10000) {
                         break;
                     }
-                    currenttip.add(trans("150","Chance: ") + ((FixedPositionedStack) tStack).mChance / 100 + '.' + (((FixedPositionedStack) tStack).mChance % 100 < 10 ? "0" + ((FixedPositionedStack) tStack).mChance % 100 : Integer.valueOf(((FixedPositionedStack) tStack).mChance % 100)) + '%');
+                    currenttip.add(trans("150", "Chance: ")
+                            + ((FixedPositionedStack) tStack).mChance / 100
+                            + '.'
+                            + (((FixedPositionedStack) tStack).mChance % 100 < 10
+                                    ? "0" + ((FixedPositionedStack) tStack).mChance % 100
+                                    : Integer.valueOf(((FixedPositionedStack) tStack).mChance % 100))
+                            + '%');
                     break;
                 }
             }
@@ -191,7 +204,7 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
                     if (Display_Fluid.isStackEqual(tStack.item, true, true) || tStack.item.stackSize != 0) {
                         break;
                     }
-                    currenttip.add(trans("151","Does not get consumed in the process"));
+                    currenttip.add(trans("151", "Does not get consumed in the process"));
                     break;
                 }
             }
@@ -199,96 +212,47 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
         return currenttip;
     }
 
-	@Override
+    @Override
     public void drawExtras(int aRecipeIndex) {
-		int tEUt = ((CachedDefaultRecipe) arecipes.get(aRecipeIndex)).mRecipe.mEUt;
-		int computation = ((CachedDefaultRecipe) arecipes.get(aRecipeIndex)).mRecipe.mDuration;
-		String[] recipeDesc = ((CachedDefaultRecipe) arecipes.get(aRecipeIndex)).mRecipe.getNeiDesc();
-		if (recipeDesc == null) {
+        int tEUt = ((CachedDefaultRecipe) arecipes.get(aRecipeIndex)).mRecipe.mEUt;
+        int computation = ((CachedDefaultRecipe) arecipes.get(aRecipeIndex)).mRecipe.mDuration;
+        String[] recipeDesc = ((CachedDefaultRecipe) arecipes.get(aRecipeIndex)).mRecipe.getNeiDesc();
+        if (recipeDesc == null) {
             int tSpecial = ((CachedDefaultRecipe) arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
-            short ampere=(short) (tSpecial & 0xFFFF),minComputationPerSec=(short)(tSpecial>>>16);
-			if (tEUt != 0) {
-                drawText(10, 73, trans("152","Max EU: ") + GT_Utility.formatNumbers((1 + (computation - minComputationPerSec) / minComputationPerSec) * (long) tEUt * ampere * 20) + " EU", -16777216);
-                drawText(10, 83, trans("153","Usage: ") + GT_Utility.formatNumbers((long) tEUt * ampere) + " EU/t", -16777216);
-				if (mRecipeMap.mShowVoltageAmperageInNEI) {
-                    drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(tEUt) + " EU", -16777216);
-                    drawText(10, 103, trans("155","Amperage: ") + GT_Utility.formatNumbers(ampere), -16777216);
-				} else {
-                    drawText(10, 93, trans("156","Voltage: unspecified"), -16777216);
-                    drawText(10, 103, trans("157","Amperage: unspecified"), -16777216);
-				}
-			}
+            short ampere = (short) (tSpecial & 0xFFFF), minComputationPerSec = (short) (tSpecial >>> 16);
+            if (tEUt != 0) {
+                drawText(
+                        10,
+                        73,
+                        trans("152.1", "Max EU: ")
+                                + GT_Utility.formatNumbers(
+                                        (1 + (computation - minComputationPerSec) / minComputationPerSec)
+                                                * (long) tEUt
+                                                * ampere
+                                                * 20)
+                                + " EU",
+                        -16777216);
+                drawText(
+                        10,
+                        83,
+                        trans("153", "Usage: ") + GT_Utility.formatNumbers((long) tEUt * ampere) + " EU/t",
+                        -16777216);
+                if (mRecipeMap.mShowVoltageAmperageInNEI) {
+                    drawText(10, 93, trans("154", "Voltage: ") + GT_Utility.formatNumbers(tEUt) + " EU", -16777216);
+                    drawText(10, 103, trans("155", "Amperage: ") + GT_Utility.formatNumbers(ampere), -16777216);
+                } else {
+                    drawText(10, 93, trans("156", "Voltage: unspecified"), -16777216);
+                    drawText(10, 103, trans("157", "Amperage: unspecified"), -16777216);
+                }
+            }
             drawText(10, 113, "Computation: " + GT_Utility.formatNumbers(computation), -16777216);
             drawText(10, 123, "Min Computation: " + GT_Utility.formatNumbers(minComputationPerSec) + " /s", -16777216);
-		} else {
-			int i = 0;
-			for (String descLine : recipeDesc) {
+        } else {
+            int i = 0;
+            for (String descLine : recipeDesc) {
                 drawText(10, 73 + 10 * i, descLine, -16777216);
-				i++;
-			}
-		}
-	}
-
-    @Deprecated // Unnecessary copy of a class base GT5U uses to manage NEI transfer rects
-    public static class GT_RectHandler
-            implements IContainerInputHandler, IContainerTooltipHandler {
-        @Override
-        public boolean mouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyCode) {
-            return false;
-        }
-
-        public boolean canHandle(GuiContainer gui) {
-            return false;
-        }
-
-        @Override
-        public List<String> handleTooltip(GuiContainer gui, int mousex, int mousey, List<String> currenttip) {
-            return currenttip;
-        }
-
-        @Override
-        public List<String> handleItemDisplayName(GuiContainer gui, ItemStack itemstack, List<String> currenttip) {
-            return currenttip;
-        }
-
-        @Override
-        public List<String> handleItemTooltip(GuiContainer gui, ItemStack itemstack, int mousex, int mousey, List<String> currenttip) {
-            return currenttip;
-        }
-
-        @Override
-        public boolean keyTyped(GuiContainer gui, char keyChar, int keyCode) {
-            return false;
-        }
-
-        @Override
-        public void onKeyTyped(GuiContainer gui, char keyChar, int keyID) {
-        }
-
-        @Override
-        public void onMouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
-        }
-
-        @Override
-        public void onMouseUp(GuiContainer gui, int mousex, int mousey, int button) {
-        }
-
-        @Override
-        public boolean mouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
-            return false;
-        }
-
-        @Override
-        public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
-        }
-
-        @Override
-        public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime) {
+                i++;
+            }
         }
     }
 
@@ -317,7 +281,9 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
                         List<ItemStack> permutations = ItemList.itemMap.get(tStack.getItem());
                         if (!permutations.isEmpty()) {
                             ItemStack stack;
-                            for (Iterator<ItemStack> iterator = permutations.iterator(); iterator.hasNext(); tDisplayStacks.add(GT_Utility.copyAmount(tStack.stackSize, stack))) {
+                            for (Iterator<ItemStack> iterator = permutations.iterator();
+                                    iterator.hasNext();
+                                    tDisplayStacks.add(GT_Utility.copyAmount(tStack.stackSize, stack))) {
                                 stack = iterator.next();
                             }
                         } else {
@@ -332,15 +298,14 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
             }
             items = tDisplayStacks.toArray(nullItem);
             if (items.length == 0) {
-                items = new ItemStack[]{new ItemStack(Blocks.fire)};
+                items = new ItemStack[] {new ItemStack(Blocks.fire)};
             }
             permutated = true;
             setPermutationToRender(0);
         }
     }
 
-    public class CachedDefaultRecipe
-            extends TemplateRecipeHandler.CachedRecipe {
+    public class CachedDefaultRecipe extends TemplateRecipeHandler.CachedRecipe {
         public final GT_Recipe mRecipe;
         public final List<PositionedStack> mOutputs;
         public final List<PositionedStack> mInputs;
@@ -359,7 +324,8 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
                 mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, 120, 52));
             }
             if (aRecipe.getOutput(tStartIndex) != null) {
-                mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14 + 9, aRecipe.getOutputChance(tStartIndex)));
+                mOutputs.add(new FixedPositionedStack(
+                        aRecipe.getOutput(tStartIndex), 102, 14 + 9, aRecipe.getOutputChance(tStartIndex)));
             }
         }
 
@@ -377,9 +343,9 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
         public List<PositionedStack> getOtherStacks() {
             return mOutputs;
         }
-    } 
-    
-    public String trans(String aKey, String aEnglish){
-    	return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
+    }
+
+    public String trans(String aKey, String aEnglish) {
+        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
     }
 }

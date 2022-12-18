@@ -1,28 +1,28 @@
 package com.github.technus.tectech.util;
 /*
-  A subclass of java.util.random that implements the Xorshift random number
-  generator
-  <p>
-  - it is 30% faster than the generator from Java's library - it produces
-  random sequences of higher quality than java.util.Random - this class also
-  provides a clone() function
-  <p>
-  Usage: XSRandom rand = new XSRandom(); //Instantiation x = rand.nextInt();
-  //pull a random number
-  <p>
-  To use the class in legacy code, you may also instantiate an XSRandom object
-  and assign it to a java.util.Random object: java.util.Random rand = new
-  XSRandom();
-  <p>
-  for an explanation of the algorithm, see
-  http://demesos.blogspot.com/2011/09/pseudo-random-number-generators.html
+ A subclass of java.util.random that implements the Xorshift random number
+ generator
+ <p>
+ - it is 30% faster than the generator from Java's library - it produces
+ random sequences of higher quality than java.util.Random - this class also
+ provides a clone() function
+ <p>
+ Usage: XSRandom rand = new XSRandom(); //Instantiation x = rand.nextInt();
+ //pull a random number
+ <p>
+ To use the class in legacy code, you may also instantiate an XSRandom object
+ and assign it to a java.util.Random object: java.util.Random rand = new
+ XSRandom();
+ <p>
+ for an explanation of the algorithm, see
+ http://demesos.blogspot.com/2011/09/pseudo-random-number-generators.html
 
-  @author Wilfried Elmenreich University of Klagenfurt/Lakeside Labs
- * http://www.elmenreich.tk
- * <p>
- * This code is released under the GNU Lesser General Public License Version 3
- * http://www.gnu.org/licenses/lgpl-3.0.txt
- */
+ @author Wilfried Elmenreich University of Klagenfurt/Lakeside Labs
+* http://www.elmenreich.tk
+* <p>
+* This code is released under the GNU Lesser General Public License Version 3
+* http://www.gnu.org/licenses/lgpl-3.0.txt
+*/
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -40,22 +40,22 @@ public class XSTR extends Random {
     private static final long GAMMA = 0x9e3779b97f4a7c15L;
     private static final int PROBE_INCREMENT = 0x9e3779b9;
     private static final long SEEDER_INCREMENT = 0xbb67ae8584caa73bL;
-    private static final double DOUBLE_UNIT = 0x1.0p-53;  // 1.0  / (1L << 53)
+    private static final double DOUBLE_UNIT = 0x1.0p-53; // 1.0  / (1L << 53)
     private static final float FLOAT_UNIT = 0x1.0p-24f; // 1.0f / (1 << 24)
     private static final AtomicLong seedUniquifier = new AtomicLong(8682522807148012L);
-    public static final XSTR XSTR_INSTANCE=new XSTR(){
+    public static final XSTR XSTR_INSTANCE = new XSTR() {
         @Override
         public synchronized void setSeed(long seed) {
-            if(!Thread.currentThread().getStackTrace()[2].getClassName().equals(Random.class.getName())) {
+            if (!Thread.currentThread().getStackTrace()[2].getClassName().equals(Random.class.getName())) {
                 throw new NoSuchMethodError("This is meant to be shared!, leave seed state alone!");
             }
         }
     };
 
     /*
-     MODIFIED BY: Robotia
-     Modification: Implemented Random class seed generator
-     */
+    MODIFIED BY: Robotia
+    Modification: Implemented Random class seed generator
+    */
 
     /**
      * Creates a new pseudo random number generator. The seed is initialized to
@@ -226,9 +226,9 @@ public class XSTR extends Random {
      */
     @Override
     public int nextInt(int bound) {
-        //if (bound <= 0) {
-        //throw new RuntimeException("BadBound");
-        //}
+        // if (bound <= 0) {
+        // throw new RuntimeException("BadBound");
+        // }
 
         /*int r = next(31);
         int m = bound - 1;
@@ -242,7 +242,7 @@ public class XSTR extends Random {
                 ;
         }
         return r;*/
-        //speedup, new nextInt ~+40%
+        // speedup, new nextInt ~+40%
         long last = seed ^ seed << 21;
         last ^= last >>> 35;
         last ^= last << 4;
@@ -270,7 +270,9 @@ public class XSTR extends Random {
     @Override
     public void nextBytes(byte[] bytes_arr) {
         for (int iba = 0, lenba = bytes_arr.length; iba < lenba; ) {
-            for (int rndba = nextInt(), nba = Math.min(lenba - iba, Integer.SIZE / Byte.SIZE); nba-- > 0; rndba >>= Byte.SIZE) {
+            for (int rndba = nextInt(), nba = Math.min(lenba - iba, Integer.SIZE / Byte.SIZE);
+                    nba-- > 0;
+                    rndba >>= Byte.SIZE) {
                 bytes_arr[iba++] = (byte) rndba;
             }
         }
