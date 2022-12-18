@@ -184,7 +184,8 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer implem
                         .phantom(true)
                         .startFromSlot(9)
                         .endAtSlot(17)
-                        .applyForWidget(widget -> widget.setBackground(GT_UITextures.TRANSPARENT))
+                        .applyForWidget(
+                                widget -> widget.setControlsAmount(true).setBackground(GT_UITextures.TRANSPARENT))
                         .build()
                         .setPos(62, 5))
                 .widget(new DrawableWidget()
