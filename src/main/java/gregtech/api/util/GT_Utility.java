@@ -4342,5 +4342,4 @@ public class GT_Utility {
         if (tFuel != null) return tFuel.mSpecialValue;
         return 0;
     }
-
 }
