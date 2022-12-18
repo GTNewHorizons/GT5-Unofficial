@@ -5,6 +5,7 @@
 
 package gregtech.common;
 
+import static gregtech.api.enums.GT_Values.calculateMaxPlasmaTurbineEfficiency;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 
 import codechicken.lib.vec.Rotation;
@@ -641,6 +642,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
+
+        // Calculate highest plasma turbine efficiency.
     }
 
     @Override
@@ -648,6 +651,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {
         mFirstTick = true;
         mReloadCount++;
+        calculateMaxPlasmaTurbineEfficiency();
     }
 
     @Override

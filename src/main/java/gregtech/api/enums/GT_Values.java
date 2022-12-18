@@ -6,10 +6,9 @@ import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
+
+import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -188,7 +187,7 @@ public class GT_Values {
         EnumChatFormatting.DARK_GREEN.toString(), // UV,  8
         EnumChatFormatting.DARK_RED.toString(), // UHV, 9
         EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
-        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD.toString(), // UIV, 11
+        EnumChatFormatting.DARK_BLUE + EnumChatFormatting.BOLD.toString(), // UIV, 11
         EnumChatFormatting.RED.toString()
                 + EnumChatFormatting.BOLD.toString()
                 + EnumChatFormatting.UNDERLINE.toString(), // UMV, 12
@@ -406,7 +405,7 @@ public class GT_Values {
      */
     public static boolean debugDriller = false;
     /**
-     * Debug parameter for world generation. Tracks chunks added/removed from run queue.
+     * Debug parameter for world generation. Track chunks added/removed from run queue.
      */
     public static boolean debugWorldGen = false;
     /**
@@ -510,4 +509,28 @@ public class GT_Values {
 
     public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Blue"
             + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD + "Weabo";
+
+    // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
+    public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
+        return (5F + (7.5F + material.mToolQuality)) / 10.0;
+    }
+
+    // Called once in GT_Client on world load, has to be called late so that Materials is populated.
+    public static void calculateMaxPlasmaTurbineEfficiency() {
+
+        ArrayList<Double> effArray = new ArrayList<>();
+
+        // Iteration seems to work but need to check turbine as all items appear null.
+        for (Materials material : Materials.values()) {
+            effArray.add(getMaxPlasmaTurbineEfficiencyFromMaterial(material));
+        }
+
+        maxPlasmaTurbineEfficiency = Collections.max(effArray);
+    }
+
+    private static double maxPlasmaTurbineEfficiency;
+
+    public static double getMaxPlasmaTurbineEfficiency() {
+        return maxPlasmaTurbineEfficiency;
+    }
 }
