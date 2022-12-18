@@ -1,5 +1,6 @@
 package net.glease.ggfab.mte;
 
+import com.google.common.collect.Collections2;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -126,7 +127,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
     private boolean stuck;
 
     private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
-    private final ConcatList<GT_MetaTileEntity_Hatch> allEnergyHatchesView = new ConcatList<>(mExoticEnergyHatches, mEnergyHatches);
+    private final Collection<GT_MetaTileEntity_Hatch> allEnergyHatchesView = Collections2.filter(new ConcatList<>(mExoticEnergyHatches, mEnergyHatches), GT_MetaTileEntity_MultiBlockBase::isValidMetaTileEntity);
 
     public MTE_AdvAssLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
