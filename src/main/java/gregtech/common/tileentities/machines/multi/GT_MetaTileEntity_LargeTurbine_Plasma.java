@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_Utility.getPlasmaFuelValueInEUPerLiterFromFluid;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -23,6 +24,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_LargeTurbine {
 
     public GT_MetaTileEntity_LargeTurbine_Plasma(int aID, String aName, String aNameRegional) {
@@ -81,6 +83,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
         return tt;
     }
 
+    @Deprecated // See GT_Utility#getPlasmaFuelValuePerLiterFromFluid
     public int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) return 0;
         GT_Recipe tFuel = GT_Recipe_Map.sPlasmaFuels.findFuel(aLiquid);
@@ -117,14 +120,14 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
             aOptFlow *= 800; // CHANGED THINGS HERE, check recipe runs once per 20 ticks
-            int tEU = 0;
+            int tEU;
 
-            int actualOptimalFlow = 0;
+            int actualOptimalFlow;
 
             FluidStack firstFuelType = new FluidStack(
                     aFluids.get(0),
                     0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
-            int fuelValue = getFuelValue(firstFuelType);
+            int fuelValue = getPlasmaFuelValueInEUPerLiterFromFluid(firstFuelType);
             actualOptimalFlow =
                     GT_Utility.safeInt((long) Math.ceil((double) aOptFlow * flowMultipliers[2] / (double) fuelValue));
             this.realOptFlow = actualOptimalFlow; // For scanner info
@@ -139,7 +142,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             // - 550% if it is 3
             // Variable required outside of loop for multi-hatch scenarios.
             int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * (1.5f * overflowMultiplier + 1)));
-            int flow = 0;
+            int flow;
             int totalFlow = 0;
 
             storedFluid = 0;
@@ -169,13 +172,12 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 
             // GT_FML_LOGGER.info(totalFlow+" : "+fuelValue+" : "+aOptFlow+" : "+actualOptimalFlow+" : "+tEU);
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
                 tEU = (int) (tEU * efficiency);
-                tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
             }
+            // Round to the nearest EU.
+            tEU = Math.round(aBaseEff * tEU);
 
             // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
             // turbine
@@ -197,7 +199,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
         // fuel used
         // The bigger this number is, the slower efficiency loss happens as flow moves beyond the optimal value
         // Plasmas are the most efficient out of all turbine fuels in this regard
-        float efficiency = 0;
+        float efficiency;
 
         if (totalFlow > actualOptimalFlow) {
             efficiency = 1.0f
@@ -346,7 +348,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                     + ")", /* 5 */
             StatCollector.translateToLocal("GT5U.turbine.fuel") + ": " + EnumChatFormatting.GOLD
                     + GT_Utility.formatNumbers(storedFluid) + EnumChatFormatting.RESET + "L", /* 6 */
-            StatCollector.translateToLocal("GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + Integer.toString(tDura)
+            StatCollector.translateToLocal("GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + tDura
                     + EnumChatFormatting.RESET + "%", /* 7 */
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " + EnumChatFormatting.GREEN
                     + mPollutionReduction + EnumChatFormatting.RESET + " %" /* 8 */
