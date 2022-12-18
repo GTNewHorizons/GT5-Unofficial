@@ -80,6 +80,9 @@ public class GT_MetaTileEntity_PCBFactory
             mOCTier1Offsets = new int[] {2, -11},
             mOCTier2Offsets = new int[] {2, -11};
     private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
+    private static final int mBioRotateBitMap = 0b1000000;
+    private static final int mOCTier2BitMap = 0b100000;
+    private static final int mOCTier1BitMap = 0b10000;
     private static final int mBioBitMap = 0b1000;
     private static final int mTier3BitMap = 0b100;
     private static final int mTier2BitMap = 0b10;
@@ -156,7 +159,7 @@ public class GT_MetaTileEntity_PCBFactory
                         {"E   E"," KKK "," K K "," KKK ","E   E"},
                         {"E   E"," KKK "," K K "," KKK ","E   E"},
                         {"ENNNE","NKKKN","NK KN","NKKKN","ENNNE"},
-                        {"EMMME","MMMMM","MMMMM","MMMMM","EMMME"}
+                        {"EGGGE","GGGGG","GGMGG","GGGGG","EGGGE"}
                         //spotless:on
                     }))
                     .addShape(ocTier2Upgrade, transpose(new String[][] {
@@ -170,7 +173,7 @@ public class GT_MetaTileEntity_PCBFactory
                         {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
                         {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
                         {"RNNNR","NQQQN","NQTQN","NQQQN","RNNNR"},
-                        {"RSSSR","SSSSS","SSSSS","SSSSS","RSSSR"}
+                        {"RGGGR","GGGGG","GGSGG","GGGGG","RGGGR"}
                         //spotless:on
                     }))
                     .addElement('E', ofFrame(Materials.DamascusSteel))
@@ -207,23 +210,22 @@ public class GT_MetaTileEntity_PCBFactory
                     .addElement('L', ofBlock(GregTech_API.sBlockCasings4, 1))
                     .addElement(
                             'M',
-                            // spotless:off
-                            ofChain(
-                                ofChain(InputHatch.withAdder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
-                                        .withCount(t -> isValidMetaTileEntity(t.mCoolantInputHatch) ? 1 : 0)
-                                        .newAny(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(10),2),
-                                    ofBlock(GregTech_API.sBlockCasings8, 12))))
-                            //spotless:on
+                            buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
+                                    .hatchClass(GT_MetaTileEntity_Hatch_Input.class)
+                                    .adder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
+                                    .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12))
+                                    .dot(2)
+                                    .buildAndChain(GregTech_API.sBlockCasings8, 12))
                     .addElement('N', ofBlock(GregTech_API.sBlockCasings2, 15))
                     .addElement('O', ofBlock(GregTech_API.sBlockCasings8, 4))
                     .addElement(
                             'S',
-                            // spotless:off
-                                ofChain(InputHatch.withAdder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
-                                        .withCount(t -> isValidMetaTileEntity(t.mCoolantInputHatch) ? 1 : 0)
-                                        .newAny(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(12),2),
-                                    ofBlock(GregTech_API.sBlockCasings8, 12)))
-                            //spotless:on
+                            buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
+                                    .hatchClass(GT_MetaTileEntity_Hatch_Input.class)
+                                    .adder(GT_MetaTileEntity_PCBFactory::addCoolantInputToMachineList)
+                                    .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 12))
+                                    .dot(2)
+                                    .buildAndChain(GregTech_API.sBlockCasings8, 12))
                     .addElement('R', ofFrame(Materials.Americium))
                     .addElement('Q', ofBlock(GregTech_API.sBlockCasings8, 14))
                     .addElement('T', ofBlock(GregTech_API.sBlockCasings1, 15))
@@ -407,6 +409,7 @@ public class GT_MetaTileEntity_PCBFactory
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mTier = 0;
         mUpgradesInstalled = 0;
+        mCoolantInputHatch = null;
         if (mSetTier < 3) {
             if (!checkPiece(tier1, 3, 5, 0)) {
                 return false;
@@ -454,11 +457,17 @@ public class GT_MetaTileEntity_PCBFactory
             if (!checkPiece(ocTier1Upgrade, mOCTier1Offsets[0], 9, mOCTier1Offsets[1])) {
                 return false;
             }
+            if (mCoolantInputHatch == null) {
+                return false;
+            }
             mUpgradesInstalled++;
         }
 
         if (mOCTier2 && !mOCTier1) {
             if (!checkPiece(ocTier2Upgrade, mOCTier2Offsets[0], 9, mOCTier2Offsets[1])) {
+                return false;
+            }
+            if (mCoolantInputHatch == null) {
                 return false;
             }
             mUpgradesInstalled++;
@@ -549,7 +558,7 @@ public class GT_MetaTileEntity_PCBFactory
         boolean recipeAllowed = (((recipeBitMap & mTier1BitMap) == mTier1BitMap && (mTier >= 1))
                         || ((recipeBitMap & mTier2BitMap) == mTier2BitMap && (mTier >= 2))
                         || ((recipeBitMap & mTier3BitMap) == mTier3BitMap && (mTier >= 3)))
-                && ((recipeBitMap & mBioBitMap) == 0 || (recipeBitMap & mBioBitMap) == mBioBitMap && mBioUpgrade);
+                && ((recipeBitMap & mBioBitMap) == 0 || ((recipeBitMap & mBioBitMap) == mBioBitMap && mBioUpgrade));
 
         if (recipeAllowed) {
 
@@ -623,19 +632,27 @@ public class GT_MetaTileEntity_PCBFactory
 
         if (ticker % 20 == 0) {
             if (mOCTier1) {
+                if (mCoolantInputHatch == null) {
+                    criticalStopMachine();
+                    return false;
+                }
                 FluidStack tFluid = GT_ModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC);
                 FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
-                if (tLiquid == null || tLiquid.amount < tFluid.amount) {
+                if (tLiquid == null || tLiquid.amount < tFluid.amount || !tLiquid.equals(tFluid)) {
                     criticalStopMachine();
                     return false;
                 }
             }
 
             if (mOCTier2) {
+                if (mCoolantInputHatch == null) {
+                    criticalStopMachine();
+                    return false;
+                }
                 Fluid superCoolant = FluidRegistry.getFluid("supercoolant");
                 FluidStack tFluid = new FluidStack(superCoolant, COOLANT_CONSUMED_PER_SEC);
                 FluidStack tLiquid = mCoolantInputHatch.drain(tFluid.amount, true);
-                if (tLiquid == null || tLiquid.amount < tFluid.amount) {
+                if (tLiquid == null || tLiquid.amount < tFluid.amount || !tLiquid.equals(tFluid)) {
                     criticalStopMachine();
                     return false;
                 }
@@ -665,7 +682,33 @@ public class GT_MetaTileEntity_PCBFactory
     @Override
     public void receiveClientEvent(byte aEventID, byte aValue) {
         if (aEventID == 1) {
-            mSetTier = aValue;
+            if ((aValue & mTier1BitMap) == mTier1BitMap) {
+                mSetTier = 1;
+            }
+
+            if ((aValue & mTier2BitMap) == mTier2BitMap) {
+                mSetTier = 2;
+            }
+
+            if ((aValue & mTier3BitMap) == mTier3BitMap) {
+                mSetTier = 3;
+            }
+
+            if ((aValue & mBioBitMap) == mBioBitMap) {
+                mBioUpgrade = true;
+            }
+
+            if ((aValue & mBioRotateBitMap) == mBioRotateBitMap) {
+                mBioRotate = true;
+            }
+
+            if ((aValue & mOCTier1BitMap) == mOCTier1BitMap) {
+                mOCTier1 = true;
+            }
+
+            if ((aValue & mOCTier2BitMap) == mOCTier2BitMap) {
+                mOCTier2 = true;
+            }
         }
     }
 
@@ -867,7 +910,8 @@ public class GT_MetaTileEntity_PCBFactory
                 .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
                 .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
                 .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-                .addStructureInfo("Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD + "1")
+                .addStructureInfo("Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD + "1"
+                        + EnumChatFormatting.GRAY + "Center of the Liquid Cooling/Thermosink")
                 .addStructureInfo(EnumChatFormatting.BLUE + "Base Multi (Tier " + EnumChatFormatting.DARK_PURPLE + 1
                         + EnumChatFormatting.BLUE + "):")
                 .addStructureInfo(
@@ -970,7 +1014,32 @@ public class GT_MetaTileEntity_PCBFactory
 
     @Override
     public byte getUpdateData() {
-        return (byte) mSetTier;
+        byte data = 0;
+        if (mSetTier == 1) {
+            data += mTier1BitMap;
+        } else if (mSetTier == 2) {
+            data += mTier2BitMap;
+        } else {
+            data += mTier3BitMap;
+        }
+
+        if (mBioUpgrade) {
+            data += mBioBitMap;
+        }
+
+        if (mBioRotate) {
+            data += mBioRotateBitMap;
+        }
+
+        if (mOCTier1) {
+            data += mOCTier1BitMap;
+        }
+
+        if (mOCTier2) {
+            data += mOCTier2BitMap;
+        }
+
+        return data;
     }
 
     @Override
