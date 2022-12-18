@@ -662,7 +662,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
 
     @Override
     public String[] getInfoData() {
-        List<String> informationData = Arrays.asList(super.getInfoData());
+        List<String> informationData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         String parallelism = StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                 + EnumChatFormatting.BLUE + getCurrentParallelism() + EnumChatFormatting.RESET;
         informationData.add(parallelism);
