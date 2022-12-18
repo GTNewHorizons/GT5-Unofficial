@@ -1,4 +1,4 @@
-//version: 1671234391
+//version: 1671313514
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -280,7 +280,9 @@ minecraft {
     runDir = 'run'
 
     if (replaceGradleTokenInFile) {
-        replaceIn replaceGradleTokenInFile
+        for (f in replaceGradleTokenInFile.split(',')) {
+            replaceIn f
+        }
         if (gradleTokenModId) {
             replace gradleTokenModId, modId
         }
