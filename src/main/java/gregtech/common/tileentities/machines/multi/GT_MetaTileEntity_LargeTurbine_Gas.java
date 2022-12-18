@@ -41,16 +41,13 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
                     ? (aActive
                             ? TextureFactory.builder()
                                     .addIcon(LARGETURBINE_SS_ACTIVE5)
-                                    .extFacing()
                                     .build()
                             : hasTurbine()
                                     ? TextureFactory.builder()
                                             .addIcon(LARGETURBINE_SS5)
-                                            .extFacing()
                                             .build()
                                     : TextureFactory.builder()
                                             .addIcon(LARGETURBINE_SS_EMPTY5)
-                                            .extFacing()
                                             .build())
                     : casingTexturePages[0][58]
         };

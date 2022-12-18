@@ -47,16 +47,13 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
                     ? (aActive
                             ? TextureFactory.builder()
                                     .addIcon(LARGETURBINE_TI_ACTIVE5)
-                                    .extFacing()
                                     .build()
                             : hasTurbine()
                                     ? TextureFactory.builder()
                                             .addIcon(LARGETURBINE_TI5)
-                                            .extFacing()
                                             .build()
                                     : TextureFactory.builder()
                                             .addIcon(LARGETURBINE_TI_EMPTY5)
-                                            .extFacing()
                                             .build())
                     : casingTexturePages[0][59]
         };
