@@ -113,7 +113,7 @@ public class GT_TextureBuilder implements ITextureBuilder {
                 return new GT_CopiedCTMBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
             else return new GT_CopiedBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
         }
-        if (worldCoord == Boolean.TRUE) throw new IllegalStateException("worldCoord without from block");
+        if (worldCoord != null) throw new IllegalStateException("worldCoord without from block");
         if (!textureLayers.isEmpty()) return new GT_MultiTexture(textureLayers.toArray(new ITexture[0]));
         switch (iconContainerList.size()) {
             case 1:
