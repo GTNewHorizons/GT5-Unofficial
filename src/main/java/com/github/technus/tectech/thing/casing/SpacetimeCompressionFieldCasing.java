@@ -33,13 +33,13 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
             Textures.BlockIcons.casingTexturePages[texturePage][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
         }
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "TEST Crude Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "TEST Primitive Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "TEST Stable Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "TEST Superb Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "TEST Resplendent Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "TEST Perfect Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "TEST Tipler Grade Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Crude Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Primitive Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Stable Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Superb Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Resplendent Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Perfect Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Tipler Grade Spacetime Compression Field Generator");
 
         CustomItemList.SpacetimeCompressionFieldGeneratorTier0.set(new ItemStack(this, 1, 0));
         CustomItemList.SpacetimeCompressionFieldGeneratorTier1.set(new ItemStack(this, 1, 1));

@@ -5,18 +5,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.Sys;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class EyeOfHarmonyRecipe {
+import static com.google.common.math.LongMath.pow;
+import static gregtech.api.enums.GT_Values.getMaxPlasmaTurbineEfficiency;
+import static gregtech.api.util.GT_Utility.getPlasmaFuelValueInEUPerLiterFromMaterial;
 
-    private static final double maxPlasmaEfficiency = 3;
+public class EyeOfHarmonyRecipe {
 
     private final List<Pair<ItemStack, Long>> outputItems;
     private final FluidStack[] outputFluids;
@@ -31,26 +30,31 @@ public class EyeOfHarmonyRecipe {
 
     private final long spacetimeCasingTierRequired;
 
-    private final long miningTime;
+    private final long miningTimeSeconds;
 
 
     public EyeOfHarmonyRecipe(GT5OreLayerHelper.OreDimensionWrapper dimensionWrapper,
                               double recipeEnergyEfficiency,
                               long hydrogenRequirement,
                               long heliumRequirement,
-                              long miningTime,
+                              long miningTimeSeconds,
                               long spacetimeCasingTierRequired,
                               long euOutput,
                               double baseSuccessChance
     ) {
-        ArrayList<Pair<Materials, Long>> materialList = processDimension(dimensionWrapper, miningTime, 6 * 64);
+        // 6 * 64 = 6 stacks/second.
+        ArrayList<Pair<Materials, Long>> materialList = processDimension(dimensionWrapper, miningTimeSeconds, 6 * 64);
 
         this.outputItems = validDustGenerator(materialList);
         this.outputFluids = validPlasmaGenerator(materialList, 0.1);
 
         this.spacetimeCasingTierRequired = spacetimeCasingTierRequired;
 
-        this.euStartCost = (long) (plasmaCostCalculator(this.outputFluids) * recipeEnergyEfficiency);
+        // 20 ticks, 2^19 (1A UV) eu/t, mining
+        long euOfVMRunning = miningTimeSeconds * 20 * pow(2, 19);
+        long euValueOfPlasmas = plasmaCostCalculator(this.outputFluids);
+
+        this.euStartCost = euOfVMRunning + euValueOfPlasmas;
         this.euOutput = euOutput;
 
         this.hydrogenRequirement = hydrogenRequirement;
@@ -58,8 +62,7 @@ public class EyeOfHarmonyRecipe {
 
         this.baseSuccessChance = baseSuccessChance;
 
-        this.miningTime = miningTime;
-
+        this.miningTimeSeconds = miningTimeSeconds;
     }
 
     public List<Pair<ItemStack, Long>> getOutputItems() {
@@ -87,7 +90,7 @@ public class EyeOfHarmonyRecipe {
     }
 
     public long getRecipeTime() {
-        return miningTime;
+        return miningTimeSeconds;
     }
 
     public double getBaseRecipeSuccessChance() {
@@ -150,27 +153,27 @@ public class EyeOfHarmonyRecipe {
 
     static FluidStack[] validPlasmaGenerator(final List<Pair<Materials, Long>> planetList, final double percentageOfPlasma) {
 
-        List<FluidStack> plasma_list = new ArrayList<>();
+        List<FluidStack> plasmaList = new ArrayList<>();
 
         for (Pair<Materials, Long> pair : planetList) {
             if (validPlasmas.contains(pair.getLeft())) {
-                plasma_list.add(pair.getLeft().getPlasma((int) (pair.getRight() * percentageOfPlasma)));
+                plasmaList.add(pair.getLeft().getPlasma((int) (pair.getRight() * percentageOfPlasma)));
             }
         }
-        return plasma_list.toArray(new FluidStack[0]);
+        return plasmaList.toArray(new FluidStack[0]);
     }
 
     static List<Pair<ItemStack, Long>> validDustGenerator(final List<Pair<Materials, Long>> planetList) {
 
-        List<Pair<ItemStack, Long>> dust_list = new ArrayList<>();
+        List<Pair<ItemStack, Long>> dustList = new ArrayList<>();
 
         for (Pair<Materials, Long> pair : planetList) {
             ItemStack dust = pair.getLeft().getDust(1);
             if (dust != null) {
-                dust_list.add(Pair.of(dust, pair.getRight()));
+                dustList.add(Pair.of(dust, pair.getRight()));
             }
         }
-        return dust_list;
+        return dustList;
     }
 
     static long plasmaCostCalculator(FluidStack[] plasmas) {
@@ -180,7 +183,7 @@ public class EyeOfHarmonyRecipe {
             total += (plasmaEnergyMap.get(plasma.getFluid()) * plasma.amount);
         }
 
-        return (long) (total * maxPlasmaEfficiency);
+        return (long) (total * getMaxPlasmaTurbineEfficiency());
     }
 
     static final List<Materials> validPlasmas = Stream.of(
@@ -202,23 +205,8 @@ public class EyeOfHarmonyRecipe {
             Materials.Niobium
     ).collect(Collectors.toList());
 
-    static HashMap<Fluid, Long> plasmaEnergyMap = new HashMap<Fluid, Long>()  {{
-        put(Materials.Helium.getPlasma(1).getFluid(), 81_920L);
-        put(Materials.Boron.getPlasma(1).getFluid(), 112_640L);
-        put(Materials.Nitrogen.getPlasma(1).getFluid(), 129_024L);
-        put(Materials.Oxygen.getPlasma(1).getFluid(), 131_072L);
-        put(Materials.Sulfur.getPlasma(1).getFluid(), 170_393L);
-        put(Materials.Calcium.getPlasma(1).getFluid(), 188_416L);
-        put(Materials.Titanium.getPlasma(1).getFluid(), 196_608L);
-        put(Materials.Iron.getPlasma(1).getFluid(), 206_438L);
-        put(Materials.Nickel.getPlasma(1).getFluid(), 213_811L);
-        put(Materials.Zinc.getPlasma(1).getFluid(), 226_304L);
-        put(Materials.Niobium.getPlasma(1).getFluid(), 269_516L);
-        put(Materials.Silver.getPlasma(1).getFluid(), 282_685L);
-        put(Materials.Tin.getPlasma(1).getFluid(), 304_496L);
-        put(Materials.Americium.getPlasma(1).getFluid(), 501_760L);
-        put(Materials.Radon.getPlasma(1).getFluid(), 450_560L);
-        put(Materials.Bismuth.getPlasma(1).getFluid(), 425_984L);
+    static HashMap<Fluid, Long> plasmaEnergyMap = new HashMap<Fluid, Long>() {{
+        validPlasmas.forEach((material -> put(material.getPlasma(1).getFluid(), (long) getPlasmaFuelValueInEUPerLiterFromMaterial(material))));
     }};
 }
 

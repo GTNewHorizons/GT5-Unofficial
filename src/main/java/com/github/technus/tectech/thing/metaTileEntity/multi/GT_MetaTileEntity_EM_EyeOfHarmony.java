@@ -43,7 +43,6 @@ import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static java.lang.Math.*;
 import static net.minecraft.util.EnumChatFormatting.*;
-import static pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.dimToOreWrapper;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable, IGlobalWirelessEnergy {
@@ -57,8 +56,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private int TimeAccelerationFieldMetadata = -1;
     private int StabilisationFieldMetadata = -1;
 
-    private String user_uuid = "";
-    private String user_name = "";
+    private String userUUID = "";
+    private String userName = "";
     private long euOutput = 0;
 
     private final long[] computationStack = new long[computationTickCacheSize];
@@ -395,20 +394,32 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
     }
 
+    EyeOfHarmonyRecipe currentRecipeObject;
+
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
 
-        long hydrogen_stored = validFluidMap.get(Materials.Hydrogen.getGas(1));
-        long helium_stored = validFluidMap.get(Materials.Helium.getGas(1));
-
-        if ((hydrogen_stored >= recipes.overworld.getHydrogenRequirement()) & (helium_stored >= recipes.overworld.getHeliumRequirement())) {
-            return processRecipe(recipes.overworld);
+        currentRecipeObject = recipes.recipeLookUp(aStack);
+        if (processRecipe(currentRecipeObject)) {
+            return true;
         }
-
+        currentRecipeObject = null;
         return false;
     }
 
+    private long getHydrogenStored() {
+        return validFluidMap.get(Materials.Hydrogen.getGas(1));
+    }
+
+    private long getHeliumStored() {
+        return validFluidMap.get(Materials.Helium.getGas(1));
+    }
+
     public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
+
+        if ((getHydrogenStored() < currentRecipeObject.getHydrogenRequirement()) & (getHeliumStored() < currentRecipeObject.getHeliumRequirement())) {
+            return false;
+        }
 
         // Check tier of spacetime compression blocks is high enough.
         if (SpacetimeCompressionFieldMetadata <= recipeObject.getSpacetimeCasingTierRequired()) {
@@ -416,7 +427,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
 
         // Remove EU from the users network.
-        if (!addEUToGlobalEnergyMap(user_uuid, -recipeObject.getEUStartCost())) {
+        if (!addEUToGlobalEnergyMap(userUUID, -recipeObject.getEUStartCost())) {
             return false;
         }
 
@@ -481,7 +492,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             return;
         }
 
-        addEUToGlobalEnergyMap(user_uuid, euOutput);
+        addEUToGlobalEnergyMap(userUUID, euOutput);
         euOutput = 0;
 
         for (Pair<ItemStack, Long> itemPair : output_items) {
@@ -504,9 +515,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
         if (aTick == 1) {
-            user_uuid = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());
-            user_name = getBaseMetaTileEntity().getOwnerName();
-            strongCheckOrAddUser(user_uuid, user_name);
+            userUUID = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());
+            userName = getBaseMetaTileEntity().getOwnerName();
+            strongCheckOrAddUser(userUUID, userName);
 
             // Move into tick == 1 after debug.
             if (recipes == null) {
