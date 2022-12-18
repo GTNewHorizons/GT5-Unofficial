@@ -409,6 +409,7 @@ public class GT_MetaTileEntity_PCBFactory
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mTier = 0;
         mUpgradesInstalled = 0;
+        mCoolantInputHatch = null;
         if (mSetTier < 3) {
             if (!checkPiece(tier1, 3, 5, 0)) {
                 return false;
