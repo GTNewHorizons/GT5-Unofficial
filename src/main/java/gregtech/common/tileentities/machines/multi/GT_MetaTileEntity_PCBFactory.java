@@ -910,7 +910,8 @@ public class GT_MetaTileEntity_PCBFactory
                 .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
                 .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
                 .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-                .addStructureInfo("Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD + "1")
+                .addStructureInfo("Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD + "1"
+                        + EnumChatFormatting.GRAY + "Center of the Liquid Cooling/Thermosink")
                 .addStructureInfo(EnumChatFormatting.BLUE + "Base Multi (Tier " + EnumChatFormatting.DARK_PURPLE + 1
                         + EnumChatFormatting.BLUE + "):")
                 .addStructureInfo(
