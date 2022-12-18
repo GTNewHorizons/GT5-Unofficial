@@ -18,20 +18,23 @@ import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
-import static com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage.recipe_0;
+import static com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage.overworld;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -151,6 +154,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private double hydrogen_overflow_probability_adjustment;
     private double helium_overflow_probability_adjustment;
 
+    // Maximum additional chance of recipe success that can be obtained from adding computation.
     private static final double max_percentage_chance_gain_from_computation_per_second = 0.3;
 
     private static final long ticks_between_hatch_drain = 20;
@@ -177,13 +181,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 - helium_overflow_probability_adjustment
                 + max_percentage_chance_gain_from_computation_per_second * (1 - exp(-10e-5 * getComputation())));
 
-        return clamp_probability(chance);
+        return clamp(chance, 0.0, 1.0);
     }
 
-    // Restrict number between 0 and 1. MathHelper.clamp was giving NoClassDefFoundError, so I wrote this.
-    private double clamp_probability(double number) {
-        if (number > (double) 1) { return 1; }
-        return Math.max(number, 0);
+    public static double clamp(double amount, double min, double max) {
+        return Math.max(min, Math.min(amount, max));
     }
 
     private double recipeYieldCalculator() {
@@ -192,8 +194,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 - helium_overflow_probability_adjustment
                 - StabilisationFieldMetadata * 0.05;
 
-        // Restrict value between 0 and 1 given it is a probability.
-        return clamp_probability(yield);
+        return clamp(yield, 0.0, 1.0);
     }
 
     private long recipeProcessTimeCalculator(long recipe_time, long recipe_spacetime_casing_required) {
@@ -224,7 +225,61 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM("main", 16, 16, 0);
+
+        // Check structure of multi.
+        if (!structureCheck_EM("main", 16, 16, 0)) {
+            return false;
+        }
+
+        // Check if there is 1+ output bus, and they are ME output busses.
+        {
+            if (mOutputBusses.size() == 0) {
+                return false;
+            }
+
+            for (GT_MetaTileEntity_Hatch_OutputBus hatch : mOutputBusses) {
+                if (!(hatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) {
+                    return false;
+                }
+            }
+        }
+
+        // Check if there is 1+ output hatch, and they are ME output hatches.
+        {
+            if (mOutputHatches.size() == 0) {
+                return false;
+            }
+
+            for (GT_MetaTileEntity_Hatch_Output hatch : mOutputHatches) {
+                if (!(hatch instanceof GT_MetaTileEntity_Hatch_Output_ME)) {
+                    return false;
+                }
+            }
+        }
+
+        // Make sure there are no energy hatches.
+        {
+            if (mEnergyHatches.size() > 0) {
+                return false;
+            }
+
+            if (mExoticEnergyHatches.size() > 0) {
+                return false;
+            }
+        }
+
+        // Make sure there is 2 input hatches.
+        if (mInputHatches.size() != 2) {
+            return false;
+        }
+
+        // Make sure there is 1 input bus.
+        if (mInputBusses.size() != 1) {
+            return false;
+        }
+
+        // 1 Maintenance hatch, as usual.
+        return (mMaintenanceHatches.size() == 1);
     }
 
     @Override
@@ -266,19 +321,27 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("starts at 1 and subtracts depending on penalities. All fluid/item outputs are multiplied")
                 .addInfo("by the yield calculated.")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
-                .addInfo("This multiblock requires a quantum chest to be placed in front each output bus for")
-                .addInfo("items to output properly. Items will be instantly deposited into them when the recipe")
-                .addInfo("finishes. If a quantum chest is full it will void any items over the max it can hold.")
-                .addInfo("If a quantum chest is occupied by another item it will be passed over. If no chest is")
-                .addInfo("avaliable the items will be " + UNDERLINE + DARK_RED + "voided" + RESET + GRAY + ".")
+                .addInfo("This multiblock can only output to ME output busses/hatches. If no space in the network")
+                .addInfo("is avaliable the items/fluids will be " + UNDERLINE + DARK_RED + "voided" + RESET + GRAY + ".")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("Recipes that fail will return a random amount of the fluid back from the recipe and some")
-                .addInfo("exotic materials that reject conventional physics.")
-
+                .addInfo("exotic material that rejects conventional physics.")
                 .addSeparator()
-
+                .addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
+                .addStructureInfo(EnumChatFormatting.GOLD + "888" + EnumChatFormatting.GRAY + " Ultimate Molecular Casing.")
+                .addStructureInfo(EnumChatFormatting.GOLD + "534" + EnumChatFormatting.GRAY + " Ultimate Advanced Molecular Casing.")
+                .addStructureInfo(EnumChatFormatting.GOLD + "680" + EnumChatFormatting.GRAY + " Time Dilation Field Generator.")
+                .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Stabilisation Field Generator.")
+                .addStructureInfo(EnumChatFormatting.GOLD + "138" + EnumChatFormatting.GRAY + " Spacetime Compression Field Generator.")
+                .addStructureInfo("--------------------------------------------")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " maintenance hatch.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 2 + EnumChatFormatting.GRAY + " input hatches.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + "+ ME output hatch.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input busses.")
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
+                .addStructureInfo("--------------------------------------------")
                 .beginStructureBlock(33, 33, 33, false)
-                .toolTipFinisher(CommonValues.TEC_MARK_EM + " & " + AuthorColen.substring(8));
+                .toolTipFinisher( AuthorColen.substring(8) + EnumChatFormatting.GRAY + "&" + CommonValues.TEC_MARK_EM);
         return tt;
     }
 
@@ -335,10 +398,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         long hydrogen_stored = validFluidMap.get(Materials.Hydrogen.getGas(1));
         long helium_stored = validFluidMap.get(Materials.Helium.getGas(1));
 
-        System.out.println("TEST123VC" + recipe_0.getEUOutput());
-
-        if ((hydrogen_stored >= recipe_0.getHydrogenRequirement()) & (helium_stored >= recipe_0.getHeliumRequirement())) {
-            return processRecipe(recipe_0);
+        if ((hydrogen_stored >= overworld.getHydrogenRequirement()) & (helium_stored >= overworld.getHeliumRequirement())) {
+            return processRecipe(overworld);
         }
 
         return false;
@@ -377,14 +438,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         double yield = recipeYieldCalculator();
 
-        List<Pair<ItemStack, Long>> tmp_items_output = recipeObject.getOutputItems();
+        List<Pair<ItemStack, Long>> tmp_items_output = new ArrayList<>();
         FluidStack[] tmp_fluids_output = recipeObject.getOutputFluids().clone();
 
         // Iterate over item output list and apply yield values.
-        for (int i = 0; i < tmp_items_output.size(); i++) {
-            Pair<ItemStack, Long> tmp_0 = tmp_items_output.get(i);
-            Pair<ItemStack, Long> tmp_1 = Pair.of(tmp_0.getLeft(), (long) (tmp_0.getRight() * yield));
-            tmp_items_output.set(i, tmp_1);
+        for (Pair<ItemStack, Long> pair : recipeObject.getOutputItems()) {
+            tmp_items_output.add(Pair.of(pair.getLeft(), (long) (pair.getRight() * yield)));
         }
 
         // Iterate over fluid output list and apply yield values.
@@ -402,9 +461,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private double success_chance;
 
-    private void outputFailedChance() {
-
-    }
+    private void outputFailedChance() {}
 
     @Override
     public void stopMachine() {
@@ -424,14 +481,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         addEUToGlobalEnergyMap(user_uuid, euOutput);
         euOutput = 0;
 
-        int index = 0;
-        for (Pair<ItemStack, Long> item : output_items) {
-            // If you can output the item, increment the input hatch index.
-            try {
-                if (outputItemToQuantumChest(mOutputBusses.get(index), item.getLeft(), item.getRight())) {
-                    index++;
-                }
-            } catch(Exception ignored) { break; }
+        for (Pair<ItemStack, Long> itemPair : output_items) {
+            outputItemToAENetwork(itemPair.getLeft(), itemPair.getRight());
         }
 
         super.outputAfterRecipe_EM();
@@ -450,10 +501,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
         if (aTick == 1) {
-
             user_uuid = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());
             user_name = getBaseMetaTileEntity().getOwnerName();
-
             strongCheckOrAddUser(user_uuid, user_name);
         }
 
@@ -461,7 +510,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         pushComputation();
 
         if (!recipeRunning) {
-            if (aTick % ticks_between_hatch_drain == 0) {
+            if ((aTick % ticks_between_hatch_drain) == 0) {
                 drainFluidFromHatchesAndStoreInternally();
             }
         }
@@ -477,93 +526,36 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private long max(long[] array) {
         long max = array[0];
 
-        for (int i = 1; i < array.length; i++) {
-            if (array[i] > max) {
-                max = array[i];
-            }
+        for (long i : array) {
+            if (i > max) { max = i; }
         }
 
         return max;
     }
 
-    private void addItemsToQuantumChest(IGregTechTileEntity quantum_chest, long amount) {
-        long stored_quantity = quantum_chest.getProgress();
-        int max_inventory_size = quantum_chest.getMaxItemCount();
+    // Will void if AE network is full.
+    private void outputItemToAENetwork(ItemStack item, long amount) {
 
-        if ((stored_quantity + amount) > max_inventory_size) {
-            quantum_chest.setItemCount(max_inventory_size);
+        if ((item == null) || (amount <= 0)) {
+            return;
+        }
+
+        if (amount < Integer.MAX_VALUE) {
+            ItemStack tmpItem = item.copy();
+            tmpItem.stackSize = (int) amount;
+            ((GT_MetaTileEntity_Hatch_OutputBus_ME) mOutputBusses.get(0)).store(tmpItem);
         } else {
-            quantum_chest.setItemCount((int) (amount + stored_quantity));
-        }
-    }
-
-    private int[] coordinate_calculator(GT_MetaTileEntity_Hatch output_bus) {
-
-        IGregTechTileEntity tile_entity = output_bus.getBaseMetaTileEntity();
-
-        int x = tile_entity.getXCoord();
-        int y = tile_entity.getYCoord();
-        int z = tile_entity.getZCoord();
-
-        // Get direction that the output bus is currently facing.
-        switch (tile_entity.getFrontFacing()) {
-            case 0:
-                y -= 1;
-            case 1:
-                y += 1;
-            case 2:
-                z -= 1;
-            case 3:
-                z += 1;
-            case 4:
-                x -= 1;
-            case 5:
-                x += 1;
-        }
-
-        int[] coordinates = new int[3];
-
-        coordinates[0] = x;
-        coordinates[1] = y;
-        coordinates[2] = z;
-
-        return coordinates;
-    }
-
-    private boolean outputItemToQuantumChest(GT_MetaTileEntity_Hatch_OutputBus output_bus, ItemStack item, long amount) {
-
-        int[] coords = coordinate_calculator(output_bus);
-        int x = coords[0];
-        int y = coords[1];
-        int z = coords[2];
-
-        try {
-            // Get block in front of output bus.
-            IGregTechTileEntity quantum_chest = (IGregTechTileEntity) getBaseMetaTileEntity().getTileEntity(x, y, z);
-
-            // Slot 0 = Top input slot of quantum chest.
-            // Slot 1 = Bottom output slot of quantum chest.
-            // Slot 2 = Stored item slot.
-            ItemStack quantum_chest_stored_item = quantum_chest.getStackInSlot(2);
-
-            // Adjust sizes so no extra items from quantum chest nonsense.
-            amount = amount - 64;
-            item.stackSize = 64;
-
-            // Check if chest contains item already. If not, add it.
-            if (quantum_chest_stored_item == null) {
-                quantum_chest.setInventorySlotContents(0, item);
-                addItemsToQuantumChest(quantum_chest, amount);
-                return true;
-            } else if (quantum_chest_stored_item.isItemEqual(item)) {
-                addItemsToQuantumChest(quantum_chest, amount);
-                return true;
+            // For item stacks > Int max.
+            while (amount >= Integer.MAX_VALUE) {
+                ItemStack tmpItem = item.copy();
+                tmpItem.stackSize = Integer.MAX_VALUE;
+                ((GT_MetaTileEntity_Hatch_OutputBus_ME) mOutputBusses.get(0)).store(tmpItem);
+                amount -= Integer.MAX_VALUE;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            ItemStack tmpItem = item.copy();
+            tmpItem.stackSize = (int) amount;
+            ((GT_MetaTileEntity_Hatch_OutputBus_ME) mOutputBusses.get(0)).store(tmpItem);
         }
-
-        return false;
     }
 
     @Override
@@ -587,7 +579,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-
         // Save the quantity of fluid stored inside the controller.
         validFluidMap.forEach((key, value) -> aNBT.setLong("stored." + key.getUnlocalizedName(), value));
 
@@ -601,7 +592,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         // Load the quantity of fluid stored inside the controller.
         validFluidMap.forEach((key, value) -> validFluidMap.put(key, aNBT.getLong("stored." + key.getUnlocalizedName())));
-
         recipeRunning = aNBT.getBoolean("eye_of_harmony_recipeRunning");
 
         super.loadNBTData(aNBT);
