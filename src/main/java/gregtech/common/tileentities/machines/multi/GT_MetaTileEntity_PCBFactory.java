@@ -159,7 +159,7 @@ public class GT_MetaTileEntity_PCBFactory
                         {"E   E"," KKK "," K K "," KKK ","E   E"},
                         {"E   E"," KKK "," K K "," KKK ","E   E"},
                         {"ENNNE","NKKKN","NK KN","NKKKN","ENNNE"},
-                        {"EMMME","MMMMM","MMMMM","MMMMM","EMMME"}
+                        {"EGGGE","GGGGG","GGMGG","GGGGG","EGGGE"}
                         //spotless:on
                     }))
                     .addShape(ocTier2Upgrade, transpose(new String[][] {
@@ -173,7 +173,7 @@ public class GT_MetaTileEntity_PCBFactory
                         {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
                         {"R   R"," QQQ "," QTQ "," QQQ ","R   R"},
                         {"RNNNR","NQQQN","NQTQN","NQQQN","RNNNR"},
-                        {"RSSSR","SSSSS","SSSSS","SSSSS","RSSSR"}
+                        {"RGGGR","GGGGG","GGSGG","GGGGG","RGGGR"}
                         //spotless:on
                     }))
                     .addElement('E', ofFrame(Materials.DamascusSteel))
@@ -456,11 +456,17 @@ public class GT_MetaTileEntity_PCBFactory
             if (!checkPiece(ocTier1Upgrade, mOCTier1Offsets[0], 9, mOCTier1Offsets[1])) {
                 return false;
             }
+            if (mCoolantInputHatch == null) {
+                return false;
+            }
             mUpgradesInstalled++;
         }
 
         if (mOCTier2 && !mOCTier1) {
             if (!checkPiece(ocTier2Upgrade, mOCTier2Offsets[0], 9, mOCTier2Offsets[1])) {
+                return false;
+            }
+            if (mCoolantInputHatch == null) {
                 return false;
             }
             mUpgradesInstalled++;
@@ -619,6 +625,11 @@ public class GT_MetaTileEntity_PCBFactory
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (!super.onRunningTick(aStack)) {
+            criticalStopMachine();
+            return false;
+        }
+
+        if (mCoolantInputHatch == null) {
             criticalStopMachine();
             return false;
         }
