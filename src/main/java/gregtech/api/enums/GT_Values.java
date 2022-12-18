@@ -7,8 +7,6 @@ import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 import java.math.BigInteger;
 import java.util.*;
-
-import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
