@@ -96,7 +96,7 @@ public class RecipeLoader {
                     },
                     new FluidStack[] {
                         FluidRegistry.getFluidStack("molten.indalloy140", 28800),
-                        FluidRegistry.getFluidStack("honey", 20000)
+                        FluidRegistry.getFluidStack("for.honey", 20000)
                     },
                     ExtremeIndustrialApiary.get(1),
                     6000,
