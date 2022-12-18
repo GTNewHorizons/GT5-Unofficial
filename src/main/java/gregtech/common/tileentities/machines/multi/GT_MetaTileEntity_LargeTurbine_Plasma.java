@@ -49,16 +49,13 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                     ? (aActive
                             ? TextureFactory.builder()
                                     .addIcon(LARGETURBINE_TU_ACTIVE5)
-                                    .extFacing()
                                     .build()
                             : hasTurbine()
                                     ? TextureFactory.builder()
                                             .addIcon(LARGETURBINE_TU5)
-                                            .extFacing()
                                             .build()
                                     : TextureFactory.builder()
                                             .addIcon(LARGETURBINE_TU_EMPTY5)
-                                            .extFacing()
                                             .build())
                     : casingTexturePages[0][60]
         };
