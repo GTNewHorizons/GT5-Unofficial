@@ -581,10 +581,10 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (recipe != null) {
                 setCurrentRecipe(stack, recipe);
                 // first overclock normally
-                calculateOverclockedNessMulti(currentRecipe.mEUt, Math.max(recipe.mDuration / recipe.mInputs.length, 1), 1, inputVoltage);
+                calculateOverclockedNessMulti((long) currentRecipe.mEUt, Math.max(recipe.mDuration / recipe.mInputs.length, 1), 1, inputVoltage);
                 // then laser overclock if needed
                 if (!mExoticEnergyHatches.isEmpty()) {
-                    OverclockHelper.OverclockOutput laserOverclock = OverclockHelper.laserOverclock(mEUt, mMaxProgresstime, inputEUt / recipe.mInputs.length, 0.3f);
+                    OverclockHelper.OverclockOutput laserOverclock = OverclockHelper.laserOverclock(lEUt, mMaxProgresstime, inputEUt / recipe.mInputs.length, 0.3f);
                     if (laserOverclock == null) {
                         if (GT_Values.D1) {
                             GT_FML_LOGGER.info("Recipe too OP");
