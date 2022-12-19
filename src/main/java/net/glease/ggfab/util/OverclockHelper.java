@@ -20,7 +20,8 @@ public class OverclockHelper {
         if (recipeEUt > inputEUt) return null;
         float currentPenalty = 4 + penaltyIncreaseFactor;
         // 2/(n+k) overclock until energy hatch is crying
-        while (recipeEUt * currentPenalty < inputEUt && duration > 1) {
+        // must ensure it doesn't go to negative after overclock
+        while (recipeEUt * currentPenalty > 0 && recipeEUt * currentPenalty < inputEUt && duration > 1) {
             duration >>= 1;
             recipeEUt *= currentPenalty;
             currentPenalty += penaltyIncreaseFactor;

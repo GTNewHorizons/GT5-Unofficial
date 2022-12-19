@@ -297,6 +297,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         for (Slice slice : slices) {
             slice.reset();
         }
+        getBaseMetaTileEntity().issueClientUpdate();
     }
 
     @Override
@@ -364,10 +365,14 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (checkMachine()) {
+            long oV = inputVoltage, oEut = inputEUt;
             inputVoltage = Integer.MAX_VALUE;
             inputEUt = 0;
             mEnergyHatches.forEach(this::recordEnergySupplier);
             mExoticEnergyHatches.forEach(this::recordEnergySupplier);
+            if (mMaxProgresstime > 0 && (oV != inputVoltage || oEut != inputEUt)) {
+                criticalStopMachine();
+            }
             return true;
         } else {
             inputVoltage = V[0];
@@ -448,7 +453,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (slice.progress > 0)
                 tEUt += baseEUt;
         }
-        mEUt = tEUt;
+        lEUt = tEUt;
 
         if (slices[0].canStart() && getBaseMetaTileEntity().isAllowedToWork()) {
             if (hasAllFluids(currentRecipe)) {
@@ -595,7 +600,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                     mMaxProgresstime = laserOverclock.getDuration();
                 }
                 // In case recipe is too OP for that machine
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {
+                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && lEUt == Integer.MAX_VALUE - 1) {
                     if (GT_Values.D1) {
                         GT_FML_LOGGER.info("Recipe too OP");
                     }
@@ -627,10 +632,10 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
         mOutputItems = new ItemStack[]{recipe.mOutput};
 
-        if (this.mEUt > 0) {
-            this.mEUt = -this.mEUt;
+        if (this.lEUt > 0) {
+            this.lEUt = -this.lEUt;
         }
-        baseEUt = mEUt;
+        baseEUt = lEUt;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         updateSlots();
@@ -703,11 +708,6 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         }
         tag.setTag(TAG_KEY_PROGRESS_TIMES, l);
         tag.setInteger("mDuration", mMaxProgresstime / currentRecipe.mInputs.length);
-    }
-
-    @Override
-    public String[] getInfoData() {
-        return super.getInfoData();
     }
 
     private void drainAllFluids(GT_Recipe.GT_Recipe_AssemblyLine recipe) {
