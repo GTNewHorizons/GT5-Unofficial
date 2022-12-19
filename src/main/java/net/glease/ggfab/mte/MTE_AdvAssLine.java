@@ -667,7 +667,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                 NBTTagInt t = list.get(i);
                 int progress = t.func_150287_d();
                 if (progress > 20) {
-                    currentTip.add(I18n.format("ggfab.waila.advassline.slice", i, progress / 20, duration / 20));
+                    currentTip.add(I18n.format("ggfab.waila.advassline.slice", i + 1, progress / 20, duration / 20));
                 } else if (progress > 0) {
                     currentTip.add(I18n.format("ggfab.waila.advassline.slice.small", i, progress));
                 } else if (progress == 0) {

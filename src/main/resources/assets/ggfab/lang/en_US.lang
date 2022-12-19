@@ -5,7 +5,9 @@ ggfab.info.advassline.3=You can think of an advanced assembly line as a collecti
 ggfab.info.advassline.4=It will start processing once the input bus contents align with any stored data stick. The first slice will consume the input in Bus #1. After (recipe time/number of inputs) time, the first slice's work is concluded and will start the second slice. At the same time, first slice will look for input in input bus #1. If there are still enough input there slice #1 will start working again.
 ggfab.info.advassline.5=The terminal slice (the n-th slice, where n is number of item input in recipe) will put the recipe output in output bus when it has concluded his work. Whenever a non-terminal slice finished its work, it will try to pass the work onto next slice. If the next slice cannot find the materials in its input bus, the just-finished slice will remain in §4STUCK§r state and hang the assembly line. To help locate these §4STUCK§r assembly lines, the controller's front face will have its status light turned orange.
 ggfab.info.advassline.6=The EU/t cost of this machine is number of slices active multiplied by the original recipe EU/t. §4STUCK§r slices do not consume power.
-ggfab.waila.advassline.slice=Slice %s: %s s/%s s
-ggfab.waila.advassline.slice.small=Slice %s: %s ticks remaining
-ggfab.waila.advassline.slice.idle=Slice %s: Idle
-ggfab.waila.advassline.slice.stuck=Slice %s: §4STUCK
+ggfab.waila.advassline.slice=Slice #%s: %s s/%s s
+ggfab.waila.advassline.slice.small=Slice #%s: %s ticks remaining
+ggfab.waila.advassline.slice.idle=Slice #%s: Idle
+ggfab.waila.advassline.slice.stuck=Slice #%s: §4STUCK
+
+ggfab.info.biome=Biome:
