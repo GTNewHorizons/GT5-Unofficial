@@ -295,6 +295,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private void clearCurrentRecipe() {
         currentRecipe = null;
         currentStick = null;
+        stuck = false;
+        baseEUt = 0;
         for (Slice slice : slices) {
             slice.reset();
         }
@@ -311,6 +313,10 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             aNBT.setTag(TAG_KEY_CURRENT_STICK, currentStick.writeToNBT(new NBTTagCompound()));
             aNBT.setInteger("mRecipeHash", currentRecipe.getPersistentHash());
             aNBT.setIntArray(TAG_KEY_PROGRESS_TIMES, Arrays.stream(slices).limit(currentRecipe.mInputs.length).mapToInt(s -> s.progress).toArray());
+            aNBT.setBoolean("stuck", stuck);
+            aNBT.setLong("inputV", inputVoltage);
+            aNBT.setLong("inputEU", inputEUt);
+            aNBT.setLong("baseEU", baseEUt);
         }
     }
 
@@ -337,6 +343,10 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             switch (lookupResult.getType()) {
                 case VALID_STACK_AND_VALID_HASH:
                     recipe = lookupResult.getRecipe();
+                    stuck = aNBT.getBoolean("stuck");
+                    inputVoltage = aNBT.getLong("inputV");
+                    inputEUt = aNBT.getLong("inputEU");
+                    baseEUt = aNBT.getLong("baseEU");
                     break;
                 case VALID_STACK_AND_VALID_RECIPE:
                     // recipe is there, but it has been changed. to prevent issues, abort the current recipe
@@ -407,7 +417,10 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     @Override
     public void onValueUpdate(byte aValue) {
+        boolean oStuck = stuck;
         stuck = (aValue & 1) == 1;
+        if (oStuck != stuck)
+            getBaseMetaTileEntity().issueTextureUpdate();
     }
 
     @Override
@@ -488,7 +501,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         // If we run into missing buses/hatches or bad inputs, we go to the next data stick.
         // This check only happens if we have a valid up-to-date data stick.
 
-        // Check Inputs allign
+        // Check Inputs align
         int aItemCount = tRecipe.mInputs.length;
         for (int i = 0; i < aItemCount; i++) {
             GT_MetaTileEntity_Hatch_InputBus tInputBus = mInputBusses.get(i);
@@ -504,7 +517,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             }
         }
 
-        // Check Fluid Inputs allign
+        // Check Fluid Inputs align
         if (!hasAllFluids(tRecipe))
             return null;
 
@@ -690,11 +703,11 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 if (progress > 20) {
                     currentTip.add(I18n.format("ggfab.waila.advassline.slice", i + 1, progress / 20, duration / 20));
                 } else if (progress > 0) {
-                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.small", i, progress));
+                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.small", i + 1, progress));
                 } else if (progress == 0) {
-                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.stuck", i));
+                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.stuck", i + 1));
                 } else
-                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.idle", i));
+                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.idle", i + 1));
             }
         }
     }
