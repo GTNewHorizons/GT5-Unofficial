@@ -702,14 +702,15 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             for (int i = 0, listSize = list.size(); i < listSize; i++) {
                 NBTTagInt t = list.get(i);
                 int progress = t.func_150287_d();
-                if (progress > 20) {
-                    currentTip.add(I18n.format("ggfab.waila.advassline.slice", i + 1, progress / 20, duration / 20));
-                } else if (progress > 0) {
-                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.small", i + 1, progress));
-                } else if (progress == 0) {
+                if (progress == 0) {
                     currentTip.add(I18n.format("ggfab.waila.advassline.slice.stuck", i + 1));
-                } else
+                } else if (progress < 0) {
                     currentTip.add(I18n.format("ggfab.waila.advassline.slice.idle", i + 1));
+                } else if (duration > 20) {
+                    currentTip.add(I18n.format("ggfab.waila.advassline.slice", i + 1, (duration - progress) / 20, duration / 20));
+                } else {
+                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.small", i + 1, progress));
+                }
             }
         }
     }
