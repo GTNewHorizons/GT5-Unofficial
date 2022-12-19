@@ -20,6 +20,7 @@ import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.TT_Utility;
+import com.google.common.collect.Iterables;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -2190,56 +2191,28 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         extraExplosions_EM();
         GT_Pollution.addPollution(getBaseMetaTileEntity(), 600000);
         mInventory[1] = null;
-        for (MetaTileEntity tTileEntity : mInputBusses) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
-        }
-        for (MetaTileEntity tTileEntity : mOutputBusses) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
-        }
-        for (MetaTileEntity tTileEntity : mInputHatches) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
-        }
-        for (MetaTileEntity tTileEntity : mOutputHatches) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
-        }
-        for (MetaTileEntity tTileEntity : mDynamoHatches) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[14]);
-        }
-        for (MetaTileEntity tTileEntity : mMufflerHatches) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
-        }
-        for (MetaTileEntity tTileEntity : mEnergyHatches) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[14]);
-        }
-        for (MetaTileEntity tTileEntity : mMaintenanceHatches) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
-        }
-        for (MetaTileEntity tTileEntity : eParamHatches) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
-        }
-        for (MetaTileEntity tTileEntity : eInputHatches) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[14]);
-        }
-        for (MetaTileEntity tTileEntity : eOutputHatches) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[14]);
-        }
-        for (MetaTileEntity tTileEntity : eMufflerHatches) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[14]);
-        }
-        for (MetaTileEntity tTileEntity : eEnergyMulti) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[14]);
-        }
-        for (MetaTileEntity tTileEntity : eUncertainHatches) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
-        }
-        for (MetaTileEntity tTileEntity : eDynamoMulti) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[14]);
-        }
-        for (MetaTileEntity tTileEntity : eInputData) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
-        }
-        for (MetaTileEntity tTileEntity : eOutputData) {
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
+        Iterable<MetaTileEntity> allHatches = Iterables.concat(
+                mInputBusses,
+                mOutputBusses,
+                mInputHatches,
+                mOutputHatches,
+                mDynamoHatches,
+                mMufflerHatches,
+                mEnergyHatches,
+                mMaintenanceHatches,
+                eParamHatches,
+                eInputHatches,
+                eOutputHatches,
+                eMufflerHatches,
+                eEnergyMulti,
+                eUncertainHatches,
+                eDynamoMulti,
+                eInputData,
+                eOutputData);
+        for (MetaTileEntity tTileEntity : allHatches) {
+            if (tTileEntity != null && tTileEntity.getBaseMetaTileEntity() != null) {
+                tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
+            }
         }
         getBaseMetaTileEntity().doExplosion(V[15]);
     }
