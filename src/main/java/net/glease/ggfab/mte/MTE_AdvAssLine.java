@@ -609,20 +609,17 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 // then laser overclock if needed
                 if (!mExoticEnergyHatches.isEmpty()) {
                     OverclockHelper.OverclockOutput laserOverclock = OverclockHelper.laserOverclock(lEUt, mMaxProgresstime, inputEUt / recipe.mInputs.length, 0.3f);
-                    if (laserOverclock == null) {
-                        if (GT_Values.D1) {
-                            GT_FML_LOGGER.info("Recipe too OP");
-                        }
-                        continue;
+                    if (laserOverclock != null) {
+                        lEUt = laserOverclock.getEUt();
+                        mMaxProgresstime = laserOverclock.getDuration();
                     }
-                    lEUt = laserOverclock.getEUt();
-                    mMaxProgresstime = laserOverclock.getDuration();
                 }
                 // In case recipe is too OP for that machine
                 if (mMaxProgresstime == Integer.MAX_VALUE - 1 && lEUt == Integer.MAX_VALUE - 1) {
                     if (GT_Values.D1) {
                         GT_FML_LOGGER.info("Recipe too OP");
                     }
+                    mMaxProgresstime = 0;
                     continue;
                 }
                 // correct the recipe duration
