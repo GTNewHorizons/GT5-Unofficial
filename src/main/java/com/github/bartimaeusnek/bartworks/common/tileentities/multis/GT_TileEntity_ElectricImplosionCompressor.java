@@ -29,7 +29,11 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.client.renderer.BW_EICPistonVisualizer;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.common.net.EICPacket;
+import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -37,7 +41,10 @@ import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -49,6 +56,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
@@ -61,7 +69,7 @@ public class GT_TileEntity_ElectricImplosionCompressor
     public static GT_Recipe.GT_Recipe_Map eicMap;
     private static final boolean pistonEnabled = !ConfigHandler.disablePistonInEIC;
     private Boolean piston = true;
-    private static final String sound = GregTech_API.sSoundList.get(5);
+    private static final SoundResource sound = SoundResource.RANDOM_EXPLODE;
     private final ArrayList<ChunkCoordinates> chunkCoordinates = new ArrayList<>(5);
 
     public GT_TileEntity_ElectricImplosionCompressor(int aID, String aName, String aNameRegional) {
@@ -208,7 +216,6 @@ public class GT_TileEntity_ElectricImplosionCompressor
                 .addInputBus("Any bottom casing", 1)
                 .addInputHatch("Any bottom casing", 1)
                 .addOutputBus("Any bottom casing", 1)
-                .addMaintenanceHatch("Any bottom casing", 1)
                 .addEnergyHatch("Bottom and top middle", 2)
                 .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
@@ -283,13 +290,25 @@ public class GT_TileEntity_ElectricImplosionCompressor
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (pistonEnabled && aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isActive() && aTick % 10 == 0)
-            togglePiston(aBaseMetaTileEntity);
+        if (pistonEnabled && aBaseMetaTileEntity.isActive() && aTick % 20 == 0) {
+            if (aBaseMetaTileEntity.isClientSide()) animatePiston(aBaseMetaTileEntity);
+            else if (aBaseMetaTileEntity.hasMufflerUpgrade())
+                MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
+                        aBaseMetaTileEntity.getWorld(),
+                        new EICPacket(
+                                new Coords(
+                                        aBaseMetaTileEntity.getXCoord(),
+                                        aBaseMetaTileEntity.getYCoord(),
+                                        aBaseMetaTileEntity.getZCoord()),
+                                true),
+                        aBaseMetaTileEntity.getXCoord(),
+                        aBaseMetaTileEntity.getZCoord());
+        }
     }
 
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
-        super.setExtendedFacing(newExtendedFacing);
+        super.setExtendedFacing(newExtendedFacing); // Will call stopMachine
 
         updateChunkCoordinates();
     }
@@ -300,46 +319,52 @@ public class GT_TileEntity_ElectricImplosionCompressor
     }
 
     public void stopMachine() {
-        if (pistonEnabled) this.resetPiston();
+        this.resetPiston();
         super.stopMachine();
     }
 
     private void resetPiston() {
+        if (!pistonEnabled) return;
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
         if (!aBaseMetaTileEntity.isServerSide()) return;
-        if (!this.piston && this.mMachine) {
+        if (!this.piston) {
             chunkCoordinates.forEach(c ->
                     aBaseMetaTileEntity.getWorld().setBlock(c.posX, c.posY, c.posZ, GregTech_API.sBlockMetal5, 2, 3));
             this.piston = !this.piston;
         }
     }
 
-    private void togglePiston(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (aBaseMetaTileEntity.getWorld().isRemote) return;
+    private void activatePiston() {
+        if (!pistonEnabled) return;
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+        if (!aBaseMetaTileEntity.isServerSide()) return;
         if (this.piston) {
-            for (ChunkCoordinates c : chunkCoordinates) {
-                if (aBaseMetaTileEntity.getBlock(c.posX, c.posY, c.posZ) != GregTech_API.sBlockMetal5
-                        || aBaseMetaTileEntity.getMetaID(c.posX, c.posY, c.posZ) != 2) {
-                    this.explodeMultiblock();
-                    return;
-                }
-                aBaseMetaTileEntity.getWorld().setBlockToAir(c.posX, c.posY, c.posZ);
-            }
-
-        } else {
-            chunkCoordinates.forEach(c ->
-                    aBaseMetaTileEntity.getWorld().setBlock(c.posX, c.posY, c.posZ, GregTech_API.sBlockMetal5, 2, 3));
-            if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-                GT_Utility.sendSoundToPlayers(
-                        aBaseMetaTileEntity.getWorld(),
-                        sound,
-                        1f,
-                        1f,
-                        chunkCoordinates.get(0).posX,
-                        chunkCoordinates.get(0).posY,
-                        chunkCoordinates.get(0).posZ);
+            chunkCoordinates.forEach(c -> aBaseMetaTileEntity.getWorld().setBlockToAir(c.posX, c.posY, c.posZ));
+            this.piston = !this.piston;
         }
-        this.piston = !this.piston;
+    }
+
+    private void animatePiston(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (!aBaseMetaTileEntity.getWorld().isRemote) return;
+
+        if (!getBaseMetaTileEntity().hasMufflerUpgrade())
+            GT_Utility.doSoundAtClient(
+                    sound,
+                    10,
+                    1f,
+                    1f,
+                    chunkCoordinates.get(0).posX,
+                    chunkCoordinates.get(0).posY,
+                    chunkCoordinates.get(0).posZ);
+        chunkCoordinates.forEach(c -> {
+            spawnVisualPistonBlock(aBaseMetaTileEntity.getWorld(), c.posX, c.posY, c.posZ, 10);
+        });
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void spawnVisualPistonBlock(World world, int x, int y, int z, int age) {
+        BW_EICPistonVisualizer pistonVisualizer = new BW_EICPistonVisualizer(world, x, y, z, age);
+        Minecraft.getMinecraft().effectRenderer.addEffect(pistonVisualizer);
     }
 
     @Override
@@ -356,8 +381,15 @@ public class GT_TileEntity_ElectricImplosionCompressor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0)) return false;
-        return this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() == 2;
+        boolean isOK = checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0);
+        isOK = isOK && this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() == 2;
+        if (isOK) {
+            activatePiston();
+            return true;
+        } else {
+            resetPiston();
+            return false;
+        }
     }
 
     @Override

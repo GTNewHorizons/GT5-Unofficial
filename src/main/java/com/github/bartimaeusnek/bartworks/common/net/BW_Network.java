@@ -63,7 +63,8 @@ public class BW_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
             new CircuitProgrammerPacket(),
             new MetaBlockPacket(),
             new OreDictCachePacket(),
-            new ServerJoinedPackage()
+            new ServerJoinedPackage(),
+            new EICPacket()
         };
     }
 
