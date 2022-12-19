@@ -347,6 +347,11 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                     inputVoltage = aNBT.getLong("inputV");
                     inputEUt = aNBT.getLong("inputEU");
                     baseEUt = aNBT.getLong("baseEU");
+                    if (inputVoltage <= 0 || inputEUt <= 0 || baseEUt <= 0) {
+                        criticalStopMachine();
+                        loadedStack = null;
+                        recipe = null;
+                    }
                     break;
                 case VALID_STACK_AND_VALID_RECIPE:
                     // recipe is there, but it has been changed. to prevent issues, abort the current recipe
