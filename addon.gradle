@@ -5,3 +5,9 @@ idea {
         testOutputDir = compileTestJava.destinationDir
     }
 }
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}

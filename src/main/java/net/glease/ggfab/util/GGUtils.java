@@ -1,4 +1,4 @@
-package net.glease.ggfab;
+package net.glease.ggfab.util;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

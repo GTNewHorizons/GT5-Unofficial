@@ -1,6 +1,5 @@
 package net.glease.ggfab.mte;
 
-import com.google.common.collect.Collections2;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -18,6 +17,7 @@ import gregtech.api.util.*;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.glease.ggfab.GGConstants;
+import net.glease.ggfab.util.OverclockHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -49,7 +49,7 @@ Dev note:
 1. This multi will be an assline but with greater throughput. it will take one input every
 2.
  */
-public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE_AdvAssLine> implements ISurvivalConstructable {
+public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<MTE_AdvAssLine> implements ISurvivalConstructable {
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -123,12 +123,12 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
     private final Slice[] slices = IntStream.range(0, 16).mapToObj(Slice::new).toArray(Slice[]::new);
     private boolean processing;
     private long inputVoltage;
+    // surely no one is using more EUt than this, no?
+    private long inputEUt;
     private long baseEUt;
     private boolean stuck;
 
     private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
-    private final Collection<GT_MetaTileEntity_Hatch> allEnergyHatchesView = Collections2.filter(new ConcatList<>(mExoticEnergyHatches, mEnergyHatches), GT_MetaTileEntity_MultiBlockBase::isValidMetaTileEntity);
-
     public MTE_AdvAssLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -200,7 +200,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
             @SuppressWarnings("unchecked") List<EntityPlayerMP> l = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
             for (EntityPlayerMP p : l) {
                 if (p.getUniqueID().equals(ownerUuid)) {
-                    for (int i = 0; i < 7; i++) {
+                    for (int i = 0; i < 9; i++) {
                         p.addChatMessage(new ChatComponentTranslation("ggfab.info.advassline." + i));
                     }
                 }
@@ -365,12 +365,9 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (checkMachine()) {
             inputVoltage = Integer.MAX_VALUE;
-            for (GT_MetaTileEntity_Hatch tHatch : mEnergyHatches) {
-                inputVoltage = Math.min(inputVoltage, tHatch.maxEUInput());
-            }
-            for (GT_MetaTileEntity_Hatch tHatch : mExoticEnergyHatches) {
-                inputVoltage = Math.min(inputVoltage, tHatch.maxEUInput());
-            }
+            inputEUt = 0;
+            mEnergyHatches.forEach(this::recordEnergySupplier);
+            mExoticEnergyHatches.forEach(this::recordEnergySupplier);
             return true;
         } else {
             inputVoltage = V[0];
@@ -378,9 +375,14 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
         }
     }
 
-    @Override
-    public boolean drainEnergyInput(long aEU) {
-        return GT_ExoticEnergyInputHelper.drainEnergy(aEU, allEnergyHatchesView);
+    private void recordEnergySupplier(GT_MetaTileEntity_Hatch hatch) {
+        if (!isValidMetaTileEntity(hatch))
+            return;
+        inputEUt += hatch.maxEUInput() * hatch.maxAmperesIn();
+        inputVoltage = Math.min(inputVoltage, hatch.maxEUInput());
+        if (inputEUt < 0)
+            // I'd prefer bullying colen than use bigint
+            inputEUt = Long.MAX_VALUE;
     }
 
     @Override
@@ -578,9 +580,20 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
             recipe = findRecipe(stack);
             if (recipe != null) {
                 setCurrentRecipe(stack, recipe);
+                // first overclock normally
                 calculateOverclockedNessMulti(currentRecipe.mEUt, Math.max(recipe.mDuration / recipe.mInputs.length, 1), 1, inputVoltage);
-                // correct the recipe duration
-                mMaxProgresstime *= recipe.mInputs.length;
+                // then laser overclock if needed
+                if (!mExoticEnergyHatches.isEmpty()) {
+                    OverclockHelper.OverclockOutput laserOverclock = OverclockHelper.laserOverclock(mEUt, mMaxProgresstime, inputEUt / recipe.mInputs.length, 0.3f);
+                    if (laserOverclock == null) {
+                        if (GT_Values.D1) {
+                            GT_FML_LOGGER.info("Recipe too OP");
+                        }
+                        continue;
+                    }
+                    lEUt = laserOverclock.getEUt();
+                    mMaxProgresstime = laserOverclock.getDuration();
+                }
                 // In case recipe is too OP for that machine
                 if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {
                     if (GT_Values.D1) {
@@ -588,6 +601,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
                     }
                     continue;
                 }
+                // correct the recipe duration
+                mMaxProgresstime *= recipe.mInputs.length;
                 break;
             }
         }
@@ -688,6 +703,11 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
         }
         tag.setTag(TAG_KEY_PROGRESS_TIMES, l);
         tag.setInteger("mDuration", mMaxProgresstime / currentRecipe.mInputs.length);
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return super.getInfoData();
     }
 
     private void drainAllFluids(GT_Recipe.GT_Recipe_AssemblyLine recipe) {
@@ -798,32 +818,6 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<MTE
         @Override
         public long count(MTE_AdvAssLine t) {
             return t.mDataAccessHatches.size();
-        }
-    }
-
-    private static class ConcatList<T> extends AbstractList<T> {
-        private final List<? extends T> la, lb;
-
-        public ConcatList(List<? extends T> la, List<? extends T> lb) {
-            this.la = la;
-            this.lb = lb;
-        }
-
-        @Override
-        public T get(int index) {
-            int lasize = la.size();
-            return index < lasize ? la.get(index) : lb.get(index - lasize);
-        }
-
-        @Override
-        public int size() {
-            return la.size() + lb.size();
-        }
-
-        @Override
-        public T remove(int index) {
-            int lasize = la.size();
-            return index < lasize ? la.remove(index) : lb.remove(index - lasize);
         }
     }
 }
