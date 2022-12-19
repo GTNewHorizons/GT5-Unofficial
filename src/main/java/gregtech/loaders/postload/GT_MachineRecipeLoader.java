@@ -5233,11 +5233,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new ItemStack(Items.string, 32),
                 80,
                 48);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.SpaceTime, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 2L),
-                400,
-                32000);
+        GT_RecipeRegistrator.registerWiremillRecipes(Materials.SpaceTime, 400, 32000);
 
         GT_Values.RA.addDistilleryRecipe(
                 GT_Utility.getIntegratedCircuit(24),
@@ -8595,11 +8591,8 @@ public class GT_MachineRecipeLoader implements Runnable {
                     200,
                     1);
         }
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Graphene, 1L),
-                400,
-                2);
+        GT_RecipeRegistrator.registerWiremillRecipes(
+                Materials.Graphene, 400, 2, OrePrefixes.dust, OrePrefixes.stick, 1);
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "torchesFromCoal", false)) {
             GT_Values.RA.addAssemblerRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L),
