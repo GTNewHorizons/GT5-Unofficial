@@ -5,6 +5,7 @@ import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
+import com.google.common.collect.Iterables;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -620,22 +621,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         GT_Pollution.addPollution(getBaseMetaTileEntity(), GT_Mod.gregtechproxy.mPollutionOnExplosion);
         mInventory[1] = null;
-        for (MetaTileEntity tTileEntity : mInputBusses)
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
-        for (MetaTileEntity tTileEntity : mOutputBusses)
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
-        for (MetaTileEntity tTileEntity : mInputHatches)
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
-        for (MetaTileEntity tTileEntity : mOutputHatches)
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
-        for (MetaTileEntity tTileEntity : mDynamoHatches)
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
-        for (MetaTileEntity tTileEntity : mMufflerHatches)
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
-        for (MetaTileEntity tTileEntity : mEnergyHatches)
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
-        for (MetaTileEntity tTileEntity : mMaintenanceHatches)
-            tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
+        Iterable<MetaTileEntity> allHatches = Iterables.concat(
+                mInputBusses,
+                mOutputBusses,
+                mInputHatches,
+                mOutputHatches,
+                mDynamoHatches,
+                mMufflerHatches,
+                mEnergyHatches,
+                mMaintenanceHatches);
+        for (MetaTileEntity tTileEntity : allHatches) {
+            if (tTileEntity != null && tTileEntity.getBaseMetaTileEntity() != null) {
+                tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
+            }
+        }
         getBaseMetaTileEntity().doExplosion(V[8]);
     }
 
