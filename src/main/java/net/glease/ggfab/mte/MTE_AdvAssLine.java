@@ -17,6 +17,7 @@ import gregtech.api.util.*;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.glease.ggfab.GGConstants;
+import net.glease.ggfab.util.LaserHelper;
 import net.glease.ggfab.util.OverclockHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -383,7 +384,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private void recordEnergySupplier(GT_MetaTileEntity_Hatch hatch) {
         if (!isValidMetaTileEntity(hatch))
             return;
-        inputEUt += hatch.maxEUInput() * hatch.maxAmperesIn();
+        inputEUt += hatch.maxEUInput() * LaserHelper.getAmperes(hatch);
         inputVoltage = Math.min(inputVoltage, hatch.maxEUInput());
         if (inputEUt < 0)
             // I'd prefer bullying colen than use bigint
