@@ -1312,7 +1312,7 @@ public class WerkstoffLoader {
                     .onlyDust()
                     .addMolten()
                     .addMetalItems()
-                    .addMixerRecipes()
+                    .addMixerRecipes((short) 1)
                     .addSimpleMetalWorkingItems()
                     .addCraftingMetalWorkingItems()
                     .addMultipleIngotMetalWorkingItems(),
@@ -1352,7 +1352,7 @@ public class WerkstoffLoader {
                     .onlyDust()
                     .addMolten()
                     .addMetalItems()
-                    .addMixerRecipes()
+                    .addMixerRecipes((short) 1)
                     .addSimpleMetalWorkingItems()
                     .addCraftingMetalWorkingItems()
                     .addMultipleIngotMetalWorkingItems(),
