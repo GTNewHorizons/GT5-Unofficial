@@ -20,7 +20,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetBlockHardness;
@@ -671,59 +670,47 @@ public class MultiTileEntityBlock extends Block
         return aTileEntity instanceof IMultiTileEntity ? ((IMultiTileEntity) aTileEntity).getPickBlock(aTarget) : null;
     }
 
-    public final void receiveMultiTileEntityData(
-            IBlockAccess aWorld,
-            int aX,
-            short aY,
-            int aZ,
-            short aRID,
-            short aID,
-            int aCover0,
-            int aCover1,
-            int aCover2,
-            int aCover3,
-            int aCover4,
-            int aCover5,
-            byte aTextureData,
-            byte aTexturePage,
-            byte aUpdateData,
-            byte aRedstoneData,
-            byte aColorData) {
-        if (!(aWorld instanceof World)) return;
-        final IMultiTileEntity te;
-
+    public final IMultiTileEntity receiveMultiTileEntityData(
+            IBlockAccess aWorld, int aX, short aY, int aZ, short aRID, short aID) {
+        if (!(aWorld instanceof World)) return null;
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         if (!(aTileEntity instanceof IMultiTileEntity)
                 || ((IMultiTileEntity) aTileEntity).getMultiTileEntityRegistryID() != aRID
                 || ((IMultiTileEntity) aTileEntity).getMultiTileEntityID() != aID) {
             final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(aRID);
-            if (tRegistry == null) return;
+            if (tRegistry == null) return null;
 
             aTileEntity = tRegistry.getNewTileEntity((World) aWorld, aX, aY, aZ, aID);
-            if (!(aTileEntity instanceof IMultiTileEntity)) return;
+            if (!(aTileEntity instanceof IMultiTileEntity)) return null;
+
             setTileEntity((World) aWorld, aX, aY, aZ, aTileEntity, false);
         }
-        te = (IMultiTileEntity) aTileEntity;
+        return ((IMultiTileEntity) aTileEntity);
+    }
 
+    public void receiveCoverData(
+            IMultiTileEntity mte, int aCover0, int aCover1, int aCover2, int aCover3, int aCover4, int aCover5) {
         boolean updated;
-        updated = te.setCoverIDAtSideNoUpdate((byte) 0, aCover0);
-        updated |= te.setCoverIDAtSideNoUpdate((byte) 1, aCover1);
-        updated |= te.setCoverIDAtSideNoUpdate((byte) 2, aCover2);
-        updated |= te.setCoverIDAtSideNoUpdate((byte) 3, aCover3);
-        updated |= te.setCoverIDAtSideNoUpdate((byte) 4, aCover4);
-        updated |= te.setCoverIDAtSideNoUpdate((byte) 5, aCover5);
+        updated = mte.setCoverIDAtSideNoUpdate((byte) 0, aCover0);
+        updated |= mte.setCoverIDAtSideNoUpdate((byte) 1, aCover1);
+        updated |= mte.setCoverIDAtSideNoUpdate((byte) 2, aCover2);
+        updated |= mte.setCoverIDAtSideNoUpdate((byte) 3, aCover3);
+        updated |= mte.setCoverIDAtSideNoUpdate((byte) 4, aCover4);
+        updated |= mte.setCoverIDAtSideNoUpdate((byte) 5, aCover5);
 
         if (updated) {
-            te.issueBlockUpdate();
+            mte.issueBlockUpdate();
         }
-
-        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
-        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
-        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aTexturePage | 0x80);
-        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
-        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
     }
+    //
+    //        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
+    //
+    //        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
+    //        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aTexturePage | 0x80);
+    //
+    //        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
+    //        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
 
     @Override
     public final TileEntity createTileEntity(World aWorld, int aMeta) {

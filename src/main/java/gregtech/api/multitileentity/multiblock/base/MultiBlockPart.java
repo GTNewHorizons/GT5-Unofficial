@@ -25,6 +25,7 @@ import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.BaseNontickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasModes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
@@ -47,7 +48,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IMTE_BreakBlock {
+public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IMTE_BreakBlock, IMTE_HasModes {
     public static final int NOTHING = 0,
             ENERGY_IN = B[0],
             ENERGY_OUT = B[1],
@@ -140,6 +141,26 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
         }
     }
 
+    @Override
+    public void setMode(byte aMode) {
+        mMode = aMode;
+    }
+
+    @Override
+    public byte getMode() {
+        return mMode;
+    }
+
+    @Override
+    public int getAllowedModes() {
+        return mAllowedModes;
+    }
+
+    @Override
+    public void setAllowedModes(int aAllowedModes) {
+        mAllowedModes = aAllowedModes;
+    }
+
     /**
      * True if `aMode` is one of the allowed modes
      */
@@ -176,16 +197,6 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
                 ((IMultiBlockController) te).onStructureChange();
             }
         }
-    }
-
-    @Override
-    public byte getTextureData() {
-        return mMode;
-    }
-
-    @Override
-    public void setTextureData(byte aData) {
-        mMode = aData;
     }
 
     @Override
@@ -639,9 +650,8 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
 
     @Override
     public String getLocalName() {
-        // TODO: modeSelected() doesn't work client side, because it doesn't have allowedModes available
-        if (mMode == getModeOrdinal(ITEM_IN)) return "Input Inventory";
-        if (mMode == getModeOrdinal(ITEM_OUT)) return "Output Inventory";
+        if (modeSelected(ITEM_IN)) return "Input Inventory";
+        if (modeSelected(ITEM_OUT)) return "Output Inventory";
 
         return "Unknown";
     }
