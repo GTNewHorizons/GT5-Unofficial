@@ -408,8 +408,10 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     @Override
     protected void startRecipeProcessing() {
-        if (!processing)
+        if (!processing) {
             super.startRecipeProcessing();
+            processing = true;
+        }
     }
 
     @Override
