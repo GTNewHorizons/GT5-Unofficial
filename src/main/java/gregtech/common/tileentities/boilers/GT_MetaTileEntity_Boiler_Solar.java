@@ -6,6 +6,7 @@ import static mcp.mobius.waila.api.SpecialChars.GOLD;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -292,6 +293,18 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     @Override
     protected IDrawable[] getAshSlotBackground() {
         return new IDrawable[] {GT_UITextures.TRANSPARENT};
+    }
+
+    @Override
+    protected SlotWidget createFuelSlot() {
+        // todo: remove this slot after some time
+        return super.createFuelSlot().setAccess(true, false);
+    }
+
+    @Override
+    protected SlotWidget createAshSlot() {
+        // todo: remove this slot after some time
+        return super.createAshSlot().setAccess(true, false);
     }
 
     @Override

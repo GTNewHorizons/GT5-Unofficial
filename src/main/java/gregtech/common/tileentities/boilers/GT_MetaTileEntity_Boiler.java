@@ -444,8 +444,8 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
                 .widget(new SlotWidget(inventoryHandler, 1)
                         .setPos(43, 61)
                         .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
-                .widget(new SlotWidget(inventoryHandler, 2).setPos(115, 61).setBackground(getFuelSlotBackground()))
-                .widget(new SlotWidget(inventoryHandler, 3).setPos(115, 25).setBackground(getAshSlotBackground()))
+                .widget(createFuelSlot())
+                .widget(createAshSlot())
                 .widget(new ProgressBar()
                         .setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
                         .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
@@ -476,6 +476,14 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
                         .setDrawable(getOverlaySlotCanister())
                         .setPos(43, 43)
                         .setSize(18, 18));
+    }
+
+    protected SlotWidget createFuelSlot() {
+        return (SlotWidget) new SlotWidget(inventoryHandler, 2).setPos(115, 61).setBackground(getFuelSlotBackground());
+    }
+
+    protected SlotWidget createAshSlot() {
+        return (SlotWidget) new SlotWidget(inventoryHandler, 3).setPos(115, 25).setBackground(getAshSlotBackground());
     }
 
     @Override
