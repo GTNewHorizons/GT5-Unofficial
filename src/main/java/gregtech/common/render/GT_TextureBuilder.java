@@ -12,7 +12,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "ClassWithTooManyFields"})
 public class GT_TextureBuilder implements ITextureBuilder {
     private final List<IIconContainer> iconContainerList;
     private final List<ITexture> textureLayers;
@@ -81,14 +81,12 @@ public class GT_TextureBuilder implements ITextureBuilder {
 
     @Override
     public ITextureBuilder useWorldCoord() {
-        if (fromBlock == null) throw new IllegalStateException("no from block");
         this.worldCoord = true;
         return this;
     }
 
     @Override
     public ITextureBuilder noWorldCoord() {
-        if (fromBlock == null) throw new IllegalStateException("no from block");
         this.worldCoord = false;
         return this;
     }
@@ -105,6 +103,9 @@ public class GT_TextureBuilder implements ITextureBuilder {
         return this;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public ITexture build() {
         if (fromBlock != null) {
@@ -112,6 +113,7 @@ public class GT_TextureBuilder implements ITextureBuilder {
                 return new GT_CopiedCTMBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
             else return new GT_CopiedBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
         }
+        if (worldCoord != null) throw new IllegalStateException("worldCoord without from block");
         if (!textureLayers.isEmpty()) return new GT_MultiTexture(textureLayers.toArray(new ITexture[0]));
         switch (iconContainerList.size()) {
             case 1:

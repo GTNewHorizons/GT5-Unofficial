@@ -14,6 +14,7 @@ public interface ITextureBuilder {
      * Build the {@link ITexture}
      *
      * @return The built {@link ITexture}
+     * @throws IllegalStateException if setFromBlock has never been called.
      */
     ITexture build();
 
@@ -76,7 +77,6 @@ public interface ITextureBuilder {
      * Force using meta overload of getIcon.
      *
      * @return {@link ITextureBuilder} for chaining
-     * @throws IllegalStateException if setFromBlock has never been called.
      */
     ITextureBuilder noWorldCoord();
 

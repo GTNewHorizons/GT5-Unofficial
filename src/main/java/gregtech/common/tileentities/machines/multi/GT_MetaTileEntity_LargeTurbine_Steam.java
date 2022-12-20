@@ -48,16 +48,13 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
                     ? (aActive
                             ? TextureFactory.builder()
                                     .addIcon(LARGETURBINE_ST_ACTIVE5)
-                                    .extFacing()
                                     .build()
                             : hasTurbine()
                                     ? TextureFactory.builder()
                                             .addIcon(LARGETURBINE_ST5)
-                                            .extFacing()
                                             .build()
                                     : TextureFactory.builder()
                                             .addIcon(LARGETURBINE_ST_EMPTY5)
-                                            .extFacing()
                                             .build())
                     : casingTexturePages[0][57]
         };
