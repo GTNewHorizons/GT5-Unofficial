@@ -4956,7 +4956,7 @@ public class DreamCraftRecipeLoader {
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 7L)
                 },
-                new FluidStack[] {fluid_0, fluid_1, fluid_2},
+                new FluidStack[] {fluid_0, fluid_1},
                 ItemList.Sensor_UHV.get(1L),
                 crafting_time_in_ticks,
                 crafting_eu_per_tick);
@@ -4987,7 +4987,7 @@ public class DreamCraftRecipeLoader {
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 8L)
                 },
-                new FluidStack[] {fluid_0, fluid_1, fluid_2},
+                new FluidStack[] {fluid_0, fluid_1},
                 ItemList.Field_Generator_UHV.get(1L),
                 crafting_time_in_ticks,
                 crafting_eu_per_tick);
