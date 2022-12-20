@@ -1703,6 +1703,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                 }
                                 return;
                             }
+                            if (aEvent.Name.equals("circuitQuantum")) {
+                                // GT++ registers another material named Quantum
+                                aMaterial = Materials.Quantum;
+                            }
                             if (!aPrefix.isIgnored(aMaterial)) {
                                 aPrefix.add(GT_Utility.copyAmount(1L, aEvent.Ore));
                             }
