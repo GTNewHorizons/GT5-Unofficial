@@ -46,6 +46,10 @@ item.itemStaballoyPickaxe.name=Tunnel Digger
 item.itemStaballoyAxe.name=Tree Feller
 item.itemSandstoneHammer.name=Cobblestone Breaker
 
+# Tooltips
+GTPP.machines.chisel_slot.tooltip=Target Slot
+GTPP.machines.chisel_slot.tooltip.1=§7Put chiseled item to specify output
+
 //Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
 item.MiscUtils.bucket.bucketCryotheum.name=Gelid Cryotheum Bucket

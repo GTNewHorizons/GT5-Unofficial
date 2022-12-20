@@ -1,6 +1,14 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -162,5 +170,33 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
             }
         }
         return DID_NOT_FIND_RECIPE;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        builder.widget(createProgressBar(
+                GT_UITextures.PROGRESSBAR_COMPRESS,
+                20,
+                ProgressBar.Direction.RIGHT,
+                new Pos2d(78, 24),
+                new Size(20, 18)));
+    }
+
+    @Override
+    protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
+        return (SlotWidget) super.createItemInputSlot(index, backgrounds, pos)
+                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_COMPRESSOR);
+    }
+
+    @Override
+    protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos) {
+        return (SlotWidget) super.createSpecialSlot(backgrounds, pos)
+                .setGTTooltip(() -> mTooltipCache.getData("GTPP.machines.chisel_slot.tooltip"));
     }
 }

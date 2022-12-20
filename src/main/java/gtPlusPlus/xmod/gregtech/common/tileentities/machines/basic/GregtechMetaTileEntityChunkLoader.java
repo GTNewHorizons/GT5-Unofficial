@@ -77,6 +77,11 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
     }
 
     @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        return false;
+    }
+
+    @Override
     public String[] getDescription() {
         return new String[] {
             "Loads " + getMaxChunksToLoadForTier(this.mTier) + " chunks when powered",

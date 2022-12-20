@@ -405,6 +405,7 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                                 E,
                                 true,
                                 true)
+                        .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CAULDRON)
                         .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE);
 
         // Molecular Transformer Map
