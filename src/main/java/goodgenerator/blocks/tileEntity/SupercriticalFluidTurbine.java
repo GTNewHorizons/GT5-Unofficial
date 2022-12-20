@@ -7,6 +7,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -100,7 +101,8 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
-        return looseFit ? 2 : 8;
+        // 2x more damage than normal turbine
+        return looseFit ? (XSTR.XSTR_INSTANCE.nextInt(2) == 0 ? 0 : 1) : 2;
     }
 
     @Override
