@@ -16,6 +16,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.glease.ggfab.ConfigurationHandler;
 import net.glease.ggfab.GGConstants;
 import net.glease.ggfab.util.LaserHelper;
 import net.glease.ggfab.util.OverclockHelper;
@@ -28,6 +29,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -58,19 +60,19 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     public static final String TAG_KEY_PROGRESS_TIMES = "mProgressTimeArray";
     private static final IStructureDefinition<MTE_AdvAssLine> STRUCTURE_DEFINITION =
             StructureDefinition.<MTE_AdvAssLine>builder()
-                    .addShape(STRUCTURE_PIECE_FIRST, transpose(new String[][] {
+                    .addShape(STRUCTURE_PIECE_FIRST, transpose(new String[][]{
                             {" ", "e", " "},
                             {"~", "l", "G"},
                             {"g", "m", "g"},
                             {"b", "i", "b"},
                     }))
-                    .addShape(STRUCTURE_PIECE_LATER, transpose(new String[][] {
+                    .addShape(STRUCTURE_PIECE_LATER, transpose(new String[][]{
                             {" ", "e", " "},
                             {"d", "l", "d"},
                             {"g", "m", "g"},
                             {"b", "I", "b"},
                     }))
-                    .addShape(STRUCTURE_PIECE_LAST, transpose(new String[][] {
+                    .addShape(STRUCTURE_PIECE_LAST, transpose(new String[][]{
                             {" ", "e", " "},
                             {"d", "l", "d"},
                             {"g", "m", "g"},
@@ -130,6 +132,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private boolean stuck;
 
     private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
+
     public MTE_AdvAssLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -198,11 +201,25 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             UUID ownerUuid = getBaseMetaTileEntity().getOwnerUuid();
             if (ownerUuid == null)
                 return;
-            @SuppressWarnings("unchecked") List<EntityPlayerMP> l = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+            float factor = ConfigurationHandler.INSTANCE.getLaserOCPenaltyFactor();
+            @SuppressWarnings("unchecked")
+            List<EntityPlayerMP> l = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
             for (EntityPlayerMP p : l) {
                 if (p.getUniqueID().equals(ownerUuid)) {
                     for (int i = 0; i < 9; i++) {
-                        p.addChatMessage(new ChatComponentTranslation("ggfab.info.advassline." + i));
+                        // switch is stupid, but I have no better idea
+                        Object[] args;
+                        switch (i) {
+                            case 7:
+                                args = new Object[]{factor};
+                                break;
+                            case 8:
+                                args = new Object[]{(int) (factor * 100) + 400, (int) ((4 + factor) * (4 + factor + factor) * 100), 4 + factor, 4 + factor + factor};
+                                break;
+                            default:
+                                args = new Object[0];
+                        }
+                        p.addChatMessage(new ChatComponentTranslation("ggfab.info.advassline." + i, args));
                     }
                 }
             }
@@ -610,7 +627,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 calculateOverclockedNessMulti((long) currentRecipe.mEUt, Math.max(recipe.mDuration / recipe.mInputs.length, 1), 1, inputVoltage);
                 // then laser overclock if needed
                 if (!mExoticEnergyHatches.isEmpty()) {
-                    OverclockHelper.OverclockOutput laserOverclock = OverclockHelper.laserOverclock(lEUt, mMaxProgresstime, inputEUt / recipe.mInputs.length, 0.3f);
+                    OverclockHelper.OverclockOutput laserOverclock = OverclockHelper.laserOverclock(lEUt, mMaxProgresstime, inputEUt / recipe.mInputs.length, ConfigurationHandler.INSTANCE.getLaserOCPenaltyFactor());
                     if (laserOverclock != null) {
                         lEUt = laserOverclock.getEUt();
                         mMaxProgresstime = laserOverclock.getDuration();

@@ -22,6 +22,7 @@ public class GigaGramFab {
             GGItemList.AdvAssLine.set(new MTE_AdvAssLine(13532, "ggfab.machine.adv_assline", "Advanced Assembly Line").getStackForm(1));
         });
         GregTech_API.sBeforeGTPostload.add(new ComponentRecipeLoader());
+        ConfigurationHandler.INSTANCE.init(event.getSuggestedConfigurationFile());
     }
 
     @Mod.EventHandler
