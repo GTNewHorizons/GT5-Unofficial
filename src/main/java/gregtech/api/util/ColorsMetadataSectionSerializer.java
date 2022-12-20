@@ -7,6 +7,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import java.lang.reflect.Type;
@@ -21,21 +22,18 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
             JsonElement metadataColors, Type type, JsonDeserializationContext context) {
         // Default values
         boolean enableGuiTint = GregTech_API.sColoredGUI;
-        Map<String, String> hexGuiTintMap = new HashMap<String, String>();
-        Map<String, String> hexTextColorMap = new HashMap<String, String>() {
-            {
-                put("title", "");
-                put("text", "");
-                put("value", "");
-                put("nei", "");
-            }
-        };
+        Map<String, String> hexGuiTintMap = new HashMap<>();
+        Map<String, String> hexTextColorMap = new HashMap<>();
 
         JsonObject jsonObject = JsonUtils.getJsonElementAsJsonObject(metadataColors, "metadata section");
         if (jsonObject.has("textColor")) {
             JsonObject textColors = JsonUtils.func_152754_s(jsonObject, "textColor");
-            for (String key : hexTextColorMap.keySet()) {
-                hexTextColorMap.replace(key, JsonUtils.getJsonObjectStringFieldValueOrDefault(textColors, key, ""));
+            for (Map.Entry<String, JsonElement> entry : textColors.entrySet()) {
+                if (entry.getValue().isJsonPrimitive()) {
+                    hexTextColorMap.put(entry.getKey(), entry.getValue().getAsString());
+                } else {
+                    GT_Mod.GT_FML_LOGGER.warn("ColorOverride expects primitive value for key `textColor`");
+                }
             }
         }
 
