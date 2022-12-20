@@ -1,15 +1,8 @@
 package gregtech.client;
 
-import static gregtech.api.render.AnimatedTooltipHandler.*;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import java.util.Arrays;
-import java.util.function.Supplier;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.oredict.OreDictionary;
-
-public class GT_TooltipEventHandler {
+public class GT_TooltipHandler {
 
     /*
      * What you can do:
@@ -86,25 +79,5 @@ public class GT_TooltipEventHandler {
                                 BLUE + OBFUSCATED + BOLD + UNDERLINE,
                                 LIGHT_PURPLE + OBFUSCATED + BOLD + UNDERLINE,
                                 RED + OBFUSCATED + BOLD + UNDERLINE)));
-    }
-
-    @SubscribeEvent
-    public void renderTooltip(ItemTooltipEvent event) {
-        Supplier<String> tooltip = getTooltip(event.itemStack);
-        if (tooltip != null) {
-            String text = tooltip.get();
-            if (!text.isEmpty()) {
-                event.toolTip.addAll(Arrays.asList(text.split("\n")));
-            }
-        }
-        ItemStack wildcardItem = event.itemStack.copy();
-        wildcardItem.setItemDamage(OreDictionary.WILDCARD_VALUE);
-        tooltip = getTooltip(wildcardItem);
-        if (tooltip != null) {
-            String text = tooltip.get();
-            if (!text.isEmpty()) {
-                event.toolTip.addAll(Arrays.asList(text.split("\n")));
-            }
-        }
     }
 }

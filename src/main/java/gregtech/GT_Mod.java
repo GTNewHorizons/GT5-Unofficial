@@ -47,7 +47,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_SpawnEventHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.client.GT_TooltipEventHandler;
+import gregtech.client.GT_TooltipHandler;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
@@ -87,7 +87,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
@@ -99,7 +98,7 @@ import org.apache.logging.log4j.Logger;
         version = "MC1710",
         guiFactory = "gregtech.client.GT_GuiFactory",
         dependencies = " required-after:IC2;" + " required-after:structurelib;"
-                + " required-after:gtnhlib;"
+                + " required-after:gtnhlib@[0.0.8,);"
                 + " required-after:modularui;"
                 + " after:dreamcraft;"
                 + " after:Forestry;"
@@ -496,8 +495,7 @@ public class GT_Mod implements IGT_Mod {
 
         GT_PostLoad.nerfVanillaTools();
         new GT_ExtremeDieselFuelLoader().run();
-        GT_TooltipEventHandler.init();
-        MinecraftForge.EVENT_BUS.register(new GT_TooltipEventHandler());
+        GT_TooltipHandler.init();
 
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered.
