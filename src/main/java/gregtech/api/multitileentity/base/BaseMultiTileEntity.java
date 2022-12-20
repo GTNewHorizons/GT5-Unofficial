@@ -26,8 +26,8 @@ import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
 import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.net.GT_Packet_New;
-import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
@@ -79,9 +79,10 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
     public Materials mMaterial = Materials._NULL;
     protected final boolean mIsTicking; // If this TileEntity is ticking at all
 
-    protected boolean mShouldRefresh =
-            true; // This Variable checks if this TileEntity should refresh when the Block is being set. That way you
+    // This Variable checks if this TileEntity should refresh when the Block is being set. That way you
     // can turn this check off any time you need it.
+    protected boolean mShouldRefresh = true;
+
     protected boolean mDoesBlockUpdate = false; // This Variable is for a buffered Block Update.
     protected boolean mForceFullSelectionBoxes = false; // This Variable is for forcing the Selection Box to be full.
     protected boolean mNeedsUpdate = false;
@@ -973,56 +974,37 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
         return mLockUpgrade;
     }
 
-    public byte getTextureData() {
-        return 0;
-    }
-
     /**
      * @return a Packet containing all Data which has to be synchronised to the Client - Override as needed
      */
     public GT_Packet_New getClientDataPacket() {
-        return new GT_Packet_TileEntity(
+
+        final GT_Packet_MultiTileEntity packet = new GT_Packet_MultiTileEntity(
+                0,
                 xCoord,
                 (short) yCoord,
                 zCoord,
                 getMultiTileEntityRegistryID(),
                 getMultiTileEntityID(),
-                mCoverSides[0],
-                mCoverSides[1],
-                mCoverSides[2],
-                mCoverSides[3],
-                mCoverSides[4],
-                mCoverSides[5],
                 (byte) ((mFacing & 7) | (mRedstone ? 16 : 0)),
-                (byte) getTextureData(), /*getTexturePage()*/
-                (byte) 0, /*getUpdateData()*/
-                (byte) (((mSidedRedstone[0] > 0) ? 1 : 0)
-                        | ((mSidedRedstone[1] > 0) ? 2 : 0)
-                        | ((mSidedRedstone[2] > 0) ? 4 : 0)
-                        | ((mSidedRedstone[3] > 0) ? 8 : 0)
-                        | ((mSidedRedstone[4] > 0) ? 16 : 0)
-                        | ((mSidedRedstone[5] > 0) ? 32 : 0)),
                 mColor);
-    }
 
-    @Override
-    public Packet getDescriptionPacket() {
-        issueClientUpdate();
-        return null;
-    }
+        packet.setCoverData(
+                mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5]);
 
-    @Override
-    public void getWailaBody(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(String.format(
-                "Facing: %s", ForgeDirection.getOrientation(getFrontFacing()).name()));
-    }
+        packet.setRedstoneData((byte) (((mSidedRedstone[0] > 0) ? 1 : 0)
+                | ((mSidedRedstone[1] > 0) ? 2 : 0)
+                | ((mSidedRedstone[2] > 0) ? 4 : 0)
+                | ((mSidedRedstone[3] > 0) ? 8 : 0)
+                | ((mSidedRedstone[4] > 0) ? 16 : 0)
+                | ((mSidedRedstone[5] > 0) ? 32 : 0)));
 
-    @Override
-    public void getWailaNBTData(
-            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        if (this instanceof IMTE_HasModes) {
+            final IMTE_HasModes mteModes = (IMTE_HasModes) this;
+            packet.setModes(mteModes.getMode(), mteModes.getAllowedModes());
+        }
+
+        return packet;
     }
 
     @Override
@@ -1035,10 +1017,6 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
             GT_Values.NW.sendToPlayer(tPacket, aPlayer);
         }
         sendCoverDataIfNeeded();
-    }
-
-    public void setTextureData(byte aValue) {
-        /*Do nothing*/
     }
 
     @Override
@@ -1055,12 +1033,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                     // mWorks =  ((aValue & 64) != 0);
                     break;
                 case GregTechTileClientEvents.CHANGE_CUSTOM_DATA:
-                    if ((aValue & 0x80) != 0) // Is texture index
-                    setTextureData((byte) (aValue & 0x7F));
-                    // TODO: Should we also receive/send allowed modes here?
-
-                    // else if (mMetaTileEntity instanceof GT_MetaTileEntity_Hatch)//is texture page and hatch
-                    //    ((GT_MetaTileEntity_Hatch) mMetaTileEntity).onTexturePageUpdate((byte) (aValue & 0x7F));
+                    // Nothing here, currently
                     break;
                 case GregTechTileClientEvents.CHANGE_COLOR:
                     if (aValue > 16 || aValue < 0) aValue = 0;
@@ -1092,6 +1065,26 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
             }
         }
         return true;
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        issueClientUpdate();
+        return null;
+    }
+
+    @Override
+    public void getWailaBody(
+            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        currenttip.add(String.format(
+                "Facing: %s", ForgeDirection.getOrientation(getFrontFacing()).name()));
+    }
+
+    @Override
+    public void getWailaNBTData(
+            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
     @Override
