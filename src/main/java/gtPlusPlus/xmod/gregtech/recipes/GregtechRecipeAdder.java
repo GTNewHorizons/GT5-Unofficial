@@ -176,7 +176,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
             int aDuration,
             int aEUt) {
         return addCokeOvenRecipe(
-                CI.getNumberedCircuit(aCircuit), aInput2, aFluidInputs, aFluidOutputs, aOutputs, aDuration, aEUt);
+                aInput2, CI.getNumberedCircuit(aCircuit), aFluidInputs, aFluidOutputs, aOutputs, aDuration, aEUt);
     }
 
     @Override

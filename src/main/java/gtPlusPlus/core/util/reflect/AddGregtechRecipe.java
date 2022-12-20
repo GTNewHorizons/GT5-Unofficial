@@ -6,7 +6,6 @@ import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import net.minecraft.item.Item;
@@ -79,8 +78,7 @@ public final class AddGregtechRecipe {
         // Seconds Conversion
         int TIME = timeInSeconds * 20;
         int TIMEPYRO = TIME + (TIME / 5);
-        CORE.RA.addCokeOvenRecipe(
-                input1, ItemUtils.getGregtechCircuit(circuitNumber), inputFluid1, outputFluid1, output1, TIME, euTick);
+        // Even though it says coke and pyrolyse, ICO recipes are imported from pyrolyse by #importPyroRecipe
         PyrolyseOven(input1, inputFluid1, circuitNumber, output1, outputFluid1, TIMEPYRO, euTick);
 
         return false;
