@@ -1,5 +1,7 @@
 package com.github.technus.tectech.thing.casing;
 
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
+
 import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -8,16 +10,13 @@ import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
+import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-
-import java.util.List;
-
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 
 public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
     private static IIcon texture_tier_0;
@@ -27,16 +26,24 @@ public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
     public StabilisationFieldCasing() {
         super(GT_Item_CasingsBA0.class, "gt.stabilisation_field_generator", GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[texturePage][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[texturePage][b + START_INDEX] =
+                    new GT_CopiedBlockTexture(this, 6, b);
         }
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Crude Stabilisation Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Primitive Stabilisation Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Stable Stabilisation Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Superb Stabilisation Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Resplendent Stabilisation Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Perfect Stabilisation Dilation Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Tipler Grade Stabilisation Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".0.name", "Crude Stabilisation Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".1.name", "Primitive Stabilisation Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".2.name", "Stable Stabilisation Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".3.name", "Superb Stabilisation Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".4.name", "Resplendent Stabilisation Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".5.name", "Perfect Stabilisation Dilation Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".6.name", "Tipler Grade Stabilisation Field Generator");
 
         CustomItemList.StabilisationFieldGeneratorTier0.set(new ItemStack(this, 1, 0));
         CustomItemList.StabilisationFieldGeneratorTier1.set(new ItemStack(this, 1, 1));

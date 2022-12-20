@@ -486,6 +486,4 @@ public class TT_recipeAdder extends GT_RecipeAdder {
                 check));
         return true;
     }
-
-
 }

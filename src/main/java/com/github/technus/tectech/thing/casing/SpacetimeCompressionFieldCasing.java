@@ -1,5 +1,7 @@
 package com.github.technus.tectech.thing.casing;
 
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
+
 import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -8,16 +10,13 @@ import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
+import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-
-import java.util.List;
-
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 
 /**
  * Created by danie_000 on 03.10.2016.
@@ -30,16 +29,24 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
     public SpacetimeCompressionFieldCasing() {
         super(GT_Item_CasingsBA0.class, "gt.spacetime_compression_field_generator", GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[texturePage][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[texturePage][b + START_INDEX] =
+                    new GT_CopiedBlockTexture(this, 6, b);
         }
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Crude Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Primitive Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Stable Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Superb Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Resplendent Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Perfect Spacetime Compression Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Tipler Grade Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".0.name", "Crude Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".1.name", "Primitive Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".2.name", "Stable Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".3.name", "Superb Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".4.name", "Resplendent Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".5.name", "Perfect Spacetime Compression Field Generator");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".6.name", "Tipler Grade Spacetime Compression Field Generator");
 
         CustomItemList.SpacetimeCompressionFieldGeneratorTier0.set(new ItemStack(this, 1, 0));
         CustomItemList.SpacetimeCompressionFieldGeneratorTier1.set(new ItemStack(this, 1, 1));
@@ -48,7 +55,6 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
         CustomItemList.SpacetimeCompressionFieldGeneratorTier4.set(new ItemStack(this, 1, 4));
         CustomItemList.SpacetimeCompressionFieldGeneratorTier5.set(new ItemStack(this, 1, 5));
         CustomItemList.SpacetimeCompressionFieldGeneratorTier6.set(new ItemStack(this, 1, 6));
-
     }
 
     @Override
