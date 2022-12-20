@@ -1604,10 +1604,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         structureBuild_EM("main", 16, 16, 0, stackSize, hintsOnly);
     }
 
-    private final Map<FluidStack, Long> validFluidMap = new HashMap<FluidStack, Long>() {{
-        put(Materials.Hydrogen.getGas(1), 0L);
-        put(Materials.Helium.getGas(1), 0L);
-    }};
+    private final Map<FluidStack, Long> validFluidMap = new HashMap<FluidStack, Long>() {
+        {
+            put(Materials.Hydrogen.getGas(1), 0L);
+            put(Materials.Helium.getGas(1), 0L);
+        }
+    };
 
     private void drainFluidFromHatchesAndStoreInternally() {
         for (GT_MetaTileEntity_Hatch_Input inputHatch : mInputHatches) {
@@ -1650,7 +1652,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
-        if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement()) && (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
+        if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement())
+                && (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
             return false;
         }
 
