@@ -26,6 +26,8 @@ class OverclockHelperTest {
         assertNull(OverclockHelper.laserOverclock(10000, 10000, 1, 5));
         // no overclock
         assertEquals(new OverclockHelper.OverclockOutput(30, 64), OverclockHelper.laserOverclock(30, 64, 32, 0.5f));
+        // 0.3 amp overclock. 0.25 amp would be not in current tier so no point in testing that
+        assertEquals(new OverclockHelper.OverclockOutput(10, 64), OverclockHelper.laserOverclock(10, 64, 32, 0.5f));
         // laser overclock
         assertEquals(new OverclockHelper.OverclockOutput(135, 32), OverclockHelper.laserOverclock(30, 64, 32 * 16, 0.5f));
         // lots of overclock
