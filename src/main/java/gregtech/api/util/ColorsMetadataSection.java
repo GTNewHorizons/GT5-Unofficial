@@ -42,15 +42,15 @@ public class ColorsMetadataSection implements IMetadataSection {
     }
 
     public int getTextColorOrDefault(String key, int defaultColor) {
-        return notFound(key, this.hexTextColors) ? defaultColor : this.textColors.get(key);
+        return sColorInMap(key, this.hexTextColors) ? this.textColors.get(key) : defaultColor;
     }
 
     public int getGuiTintOrDefault(String key, int defaultColor) {
-        return notFound(key, this.hexGuiTints) ? defaultColor : this.guiTints.get(key);
+        return sColorInMap(key, this.hexGuiTints) ? this.guiTints.get(key) : defaultColor;
     }
 
-    private boolean notFound(String key, Map<String, String> hexMap) {
-        return !hexMap.containsKey(key) || hexMap.get(key).isEmpty();
+    private boolean sColorInMap(String key, Map<String, String> hexMap) {
+        return hexMap.containsKey(key) && !hexMap.get(key).isEmpty();
     }
 
     public boolean sGuiTintingEnabled() {
