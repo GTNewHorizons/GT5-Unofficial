@@ -1250,10 +1250,19 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (tag.getBoolean("stutteringSingleBlock")) {
             currenttip.add("Status: insufficient energy");
         } else {
+            boolean isActive = tag.getBoolean("isActiveSingleBlock");
+            if (isActive) {
+                int mEUt = tag.getInteger("eut");
+                if (mEUt > 0) {
+                    currenttip.add(StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.use", GT_Utility.formatNumbers(mEUt)));
+                } else if (mEUt < 0) {
+                    currenttip.add(StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.produce", GT_Utility.formatNumbers(-mEUt)));
+                }
+            }
             currenttip.add(GT_Waila.getMachineProgressString(
-                    tag.getBoolean("isActiveSingleBlock"),
-                    tag.getInteger("maxProgressSingleBlock"),
-                    tag.getInteger("progressSingleBlock")));
+                    isActive, tag.getInteger("maxProgressSingleBlock"), tag.getInteger("progressSingleBlock")));
         }
 
         currenttip.add(String.format(
@@ -1281,6 +1290,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (tileEntity != null) {
             tag.setBoolean("isActiveSingleBlock", tileEntity.isActive());
             tag.setInteger("outputFacingSingleBlock", tileEntity.getFrontFacing());
+            if (tileEntity.isActive()) tag.setInteger("eut", mEUt);
         }
     }
 

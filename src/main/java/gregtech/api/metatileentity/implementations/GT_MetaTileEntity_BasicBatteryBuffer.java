@@ -14,10 +14,17 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItem;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -306,12 +313,7 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
 
     @Override
     public String[] getInfoData() {
-        if (mMax == 0 || (count > 20)) {
-            long[] tmp = getStoredEnergy();
-            mStored = tmp[0];
-            mMax = tmp[1];
-            count = 0;
-        }
+        updateStorageInfo();
 
         return new String[] {
             EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET,
@@ -323,6 +325,41 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
             "Average output:",
             GT_Utility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput()) + " EU/t"
         };
+    }
+
+    private void updateStorageInfo() {
+        if (mMax == 0 || (count > 20)) {
+            long[] tmp = getStoredEnergy();
+            mStored = tmp[0];
+            mMax = tmp[1];
+            count = 0;
+        }
+    }
+
+    @Override
+    public void getWailaBody(
+            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        NBTTagCompound tag = accessor.getNBTData();
+        currenttip.add(StatCollector.translateToLocalFormatted(
+                "GT5U.waila.energy.stored",
+                GT_Utility.formatNumbers(tag.getLong("mStored")),
+                GT_Utility.formatNumbers(tag.getLong("mMax"))));
+        currenttip.add(StatCollector.translateToLocalFormatted(
+                "GT5U.waila.energy.avg_in", GT_Utility.formatNumbers(tag.getLong("AvgIn"))));
+        currenttip.add(StatCollector.translateToLocalFormatted(
+                "GT5U.waila.energy.avg_out", GT_Utility.formatNumbers(tag.getLong("AvgOut"))));
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    @Override
+    public void getWailaNBTData(
+            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        updateStorageInfo();
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("mStored", mStored);
+        tag.setLong("mMax", mMax);
+        tag.setLong("AvgIn", getBaseMetaTileEntity().getAverageElectricInput());
+        tag.setLong("AvgOut", getBaseMetaTileEntity().getAverageElectricOutput());
     }
 
     @Override

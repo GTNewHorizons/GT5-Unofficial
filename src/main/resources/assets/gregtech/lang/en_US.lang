@@ -302,6 +302,11 @@ GT5U.interface.coverTabs.east=East
 # Waila
 GT5U.waila.cover=Cover (%s): %s
 GT5U.waila.cover.current_facing=Current Facing
+GT5U.waila.energy.stored=Stored: §a%s§r EU / §e%s§r EU
+GT5U.waila.energy.avg_in=Average Input: §a%s§r EU
+GT5U.waila.energy.avg_out=Average Output: §c%s§r EU
+GT5U.waila.energy.use=Probably uses: §e%s§r EU
+GT5U.waila.energy.produce=Probably generates: §a%s§r EU
 
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
