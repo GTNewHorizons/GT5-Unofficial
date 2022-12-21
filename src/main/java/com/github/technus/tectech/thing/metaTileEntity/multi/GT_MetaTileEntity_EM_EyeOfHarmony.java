@@ -1882,10 +1882,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final String recipeSuccessChanceNBTTag = eyeOfHarmony + "recipeSuccessChance";
 
     // Sub tags, less specific names required.
-    private static final String damageValueNBTTag = "damageValue";
     private static final String stackSizeNBTTag = "stackSize";
     private static final String itemStackNBTTag = "itemStack";
-    private static final String unlocalisedNameNBTTag = "unlocalisedName";
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
