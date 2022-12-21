@@ -16,6 +16,7 @@ import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 
 public class GT5CFGHelper {
 
+    // Do NOT ever put a comma in this or it will break split calls later in the code. Bad, but it is what it is.
     public static String oreVeinNotInAnyDim = "Not available in any Galactic Dim!";
 
     private static File F = GregTech_API.sWorldgenFile.mConfig.getConfigFile();

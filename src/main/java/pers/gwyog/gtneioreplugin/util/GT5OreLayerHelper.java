@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 
 public class GT5OreLayerHelper {
 
-    public static class OreDimensionWrapper {
+    public static class NormalOreDimensionWrapper {
         public final ArrayList<OreLayerWrapper> internalDimOreList = new ArrayList<>();
         public final HashMap<OreLayerWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<>();
 
@@ -36,7 +36,7 @@ public class GT5OreLayerHelper {
     public static Integer[] DimIDs = new Integer[DIMENSION_COUNT];
     public static HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<>();
     public static HashMap<OreLayerWrapper, String> bufferedDims = new HashMap<>();
-    public static HashMap<String, OreDimensionWrapper> dimToOreWrapper = new HashMap<>();
+    public static HashMap<String, NormalOreDimensionWrapper> dimToOreWrapper = new HashMap<>();
 
     public GT5OreLayerHelper() {
         Arrays.fill(weightPerWorld, 0);
@@ -57,7 +57,8 @@ public class GT5OreLayerHelper {
 
             for (String dim : dims.split(",")) {
                 if (!dim.isEmpty()) {
-                    OreDimensionWrapper dimensionOres = dimToOreWrapper.getOrDefault(dim, new OreDimensionWrapper());
+                    NormalOreDimensionWrapper dimensionOres =
+                            dimToOreWrapper.getOrDefault(dim, new NormalOreDimensionWrapper());
                     dimensionOres.internalDimOreList.add(veinInfo);
                     dimToOreWrapper.put(dim, dimensionOres);
                 }
@@ -113,7 +114,6 @@ public class GT5OreLayerHelper {
                         .mMaterial
                         .mMaterial;
             } catch (Exception ignored) {
-
             }
 
             this.size = worldGen.mSize;

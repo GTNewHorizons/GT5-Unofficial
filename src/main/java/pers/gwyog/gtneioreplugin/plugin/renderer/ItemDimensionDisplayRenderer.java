@@ -22,6 +22,7 @@ public class ItemDimensionDisplayRenderer implements IItemRenderer {
         return false;
     }
 
+    // Renders the actual text on top of planet items.
     @Override
     public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
         String dimension = ItemDimensionDisplay.getDimension(stack);
@@ -32,56 +33,65 @@ public class ItemDimensionDisplayRenderer implements IItemRenderer {
         renderItem.renderItemIntoGUI(
                 Minecraft.getMinecraft().fontRenderer, Minecraft.getMinecraft().renderEngine, stack, 0, 0, false);
 
-        String prefix = getPrefix(dimension);
-        if (!prefix.isEmpty()) {
-            FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
-            float smallTextScale = 3F / 4F;
+        FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
+        float smallTextScale = 3F / 4F;
 
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0, 0, 300);
-            GL11.glScalef(smallTextScale, smallTextScale, 1.0f);
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0, 0, 300);
+        GL11.glScalef(smallTextScale, smallTextScale, 1.0f);
 
-            fontRender.drawString(prefix, 0, (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
+        long prefix = getPrefix(dimension);
+        String tooltipPrefix = prefix != -1 ? "T" + prefix : "INVALID. Please, report this to the GTNH team";
 
-            GL11.glPopMatrix();
-        }
+        fontRender.drawString(
+                tooltipPrefix, 0, (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
+
+        GL11.glPopMatrix();
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
     }
 
-    private static String getPrefix(String dimName) {
+    // See DimensionHelper.DimNameDisplayed for real names of these.
+    public static long getPrefix(String dimName) {
         switch (dimName) {
+            case "Ow":
+            case "Ne":
+            case "TF":
+            case "ED":
+            case "VA":
+            case "EA":
+                return 0L;
             case "Mo":
-                return "T1";
+                return 1L;
             case "De":
             case "Ma":
             case "Ph":
-                return "T2";
+                return 2L;
             case "As":
             case "Ca":
             case "Ce":
             case "Eu":
             case "Ga":
             case "Rb":
-                return "T3";
+                return 3L;
             case "Io":
             case "Me":
             case "Ve":
-                return "T4";
+                return 4L;
             case "En":
             case "Mi":
             case "Ob":
             case "Ti":
             case "Ra":
-                return "T5";
+                return 5L;
             case "Pr":
             case "Tr":
-                return "T6";
+                return 6L;
             case "Ha":
             case "KB":
             case "MM":
             case "Pl":
-                return "T7";
+                return 7L;
             case "BC":
             case "BE":
             case "BF":
@@ -89,9 +99,9 @@ public class ItemDimensionDisplayRenderer implements IItemRenderer {
             case "TE":
             case "DD":
             case "VB":
-                return "T8";
+                return 8L;
             default:
-                return "";
+                return -1L;
         }
     }
 }
