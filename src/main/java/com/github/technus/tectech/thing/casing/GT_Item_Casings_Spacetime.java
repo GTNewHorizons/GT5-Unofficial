@@ -28,9 +28,10 @@ public class GT_Item_Casings_Spacetime extends GT_Item_Casings_Abstract {
             case 6:
             case 7:
             case 8:
-                aList.add("Supports an internal spacetime volume of up to " + formatNumbers(pow(10, 5+aStack.getItemDamage())) + "km³.");
-                aList.add(EnumChatFormatting.AQUA.toString()
-                        + EnumChatFormatting.BOLD + "Capable of running recipes up to tier " + aStack.getItemDamage());
+                aList.add("Supports an internal spacetime volume of up to "
+                        + formatNumbers(pow(10, 5 + aStack.getItemDamage())) + "km³.");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+                        + "Capable of running recipes up to tier " + aStack.getItemDamage());
                 break;
             default:
                 aList.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + "Error, report to GTNH team");

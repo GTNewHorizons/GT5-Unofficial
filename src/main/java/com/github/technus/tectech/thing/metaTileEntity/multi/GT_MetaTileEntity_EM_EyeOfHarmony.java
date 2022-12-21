@@ -17,6 +17,7 @@ import com.github.technus.tectech.thing.casing.TT_Block_TimeAccelerationFieldGen
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -1356,7 +1357,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                                     TT_Block_TimeAccelerationFieldGenerators
                                                             .TimeAccelerationFieldGenerator,
                                                     8)),
-
                                     -1,
                                     (t, meta) -> t.timeAccelerationFieldMetadata = meta,
                                     t -> t.timeAccelerationFieldMetadata))
@@ -1387,7 +1387,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     // todo: make higher on final release.
     private static final long ticksBetweenHatchDrain = 20;
 
-    List<Pair<ItemStack, Long>> outputItems;
+    List<ItemStackLong> outputItems;
 
     private void calculateHydrogenHeliumInputExcessValues(
             long hydrogen_recipe_requirement, long helium_recipe_requirement) {
@@ -1698,7 +1698,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         calculateHydrogenHeliumInputExcessValues(
                 recipeObject.getHydrogenRequirement(), recipeObject.getHeliumRequirement());
 
-        // DEBUG ! DELETE THESE TWO LINES:
+        // todo: DEBUG ! DELETE THESE TWO LINES:
         hydrogenOverflowProbabilityAdjustment = 0;
         heliumOverflowProbabilityAdjustment = 0;
 
@@ -1716,23 +1716,22 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         double yield = recipeYieldCalculator();
 
-        List<Pair<ItemStack, Long>> tmpItemsOutput = new ArrayList<>();
-        FluidStack[] tmpFluidsOutput = recipeObject.getOutputFluids().clone();
+        outputItems = new ArrayList<>();
+        mOutputFluids = recipeObject.getOutputFluids().clone();
 
         if (yield != 1.0) {
             // Iterate over item output list and apply yield values.
-            for (Pair<ItemStack, Long> pair : recipeObject.getOutputItems()) {
-                tmpItemsOutput.add(Pair.of(pair.getLeft(), (long) (pair.getRight() * yield)));
+            for (ItemStackLong itemStack : recipeObject.getOutputItems()) {
+                itemStack.stackSize *= yield;
+                outputItems.add(itemStack);
             }
 
             // Iterate over fluid output list and apply yield values.
-            for (FluidStack fluidStack : tmpFluidsOutput) {
+            for (FluidStack fluidStack : mOutputFluids) {
                 fluidStack.amount *= yield;
             }
         }
 
-        outputItems = tmpItemsOutput;
-        mOutputFluids = tmpFluidsOutput;
         updateSlots();
 
         recipeRunning = true;
@@ -1761,8 +1760,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         addEUToGlobalEnergyMap(userUUID, euOutput);
         euOutput = 0;
 
-        for (Pair<ItemStack, Long> itemPair : outputItems) {
-            outputItemToAENetwork(itemPair.getLeft(), itemPair.getRight());
+        for (ItemStackLong itemStack : outputItems) {
+            outputItemToAENetwork(itemStack.itemStack, itemStack.stackSize);
         }
 
         super.outputAfterRecipe_EM();
@@ -1785,7 +1784,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             userName = getBaseMetaTileEntity().getOwnerName();
             strongCheckOrAddUser(userUUID, userName);
 
-            // Move into tick == 1 after debug.
+            // If no multi exists this will set the recipe storage.
+            // This must be done after game load otherwise it fails.
             if (recipes == null) {
                 recipes = new EyeOfHarmonyRecipeStorage();
             }

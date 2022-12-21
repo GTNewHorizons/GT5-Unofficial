@@ -6,15 +6,13 @@ import net.minecraft.util.EnumChatFormatting;
 /**
  * Created by danie_000 on 11.01.2017.
  */
-
 @SuppressWarnings("SpellCheckingInspection")
 public final class CommonValues {
     public static final String TEC_MARK_SHORT = EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech";
     public static final String TEC_MARK_GENERAL = TEC_MARK_SHORT + EnumChatFormatting.BLUE + ": Interdimensional";
     public static final String TEC_MARK_EM = TEC_MARK_SHORT + EnumChatFormatting.BLUE + ": Elemental Matter";
     public static final String THETA_MOVEMENT = TEC_MARK_SHORT + EnumChatFormatting.BLUE + ": Theta Movement";
-    public static final String COSMIC_MARK = TEC_MARK_SHORT + EnumChatFormatting.BLUE
-            + ": Cosmic"; // TODO get a better name than cosmic for *UNDEFINED* thing
+    public static final String COSMIC_MARK = TEC_MARK_SHORT + EnumChatFormatting.BLUE + ": Cosmic";
 
     public static final byte DECAY_AT = 0; // hatches compute decays
     public static final byte MULTI_PURGE_1_AT = 2; // multiblocks clean their hatches 1
@@ -33,7 +31,9 @@ public final class CommonValues {
     public static final String[] VN = GT_Values.VN;
     public static final long[] V = GT_Values.V;
 
-    public static final String[] EOH_TIER_FANCY_NAMES = {"Crude", "Primitive", "Stable", "Advanced", "Superb", "Exotic", "Perfect", "Tipler", "Gallifreyan"};
+    public static final String[] EOH_TIER_FANCY_NAMES = {
+        "Crude", "Primitive", "Stable", "Advanced", "Superb", "Exotic", "Perfect", "Tipler", "Gallifreyan"
+    };
 
     private CommonValues() {}
 }

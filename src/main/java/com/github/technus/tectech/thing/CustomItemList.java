@@ -423,7 +423,6 @@ public enum CustomItemList implements IItemContainer {
     StabilisationFieldGeneratorTier7,
     StabilisationFieldGeneratorTier8;
 
-
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
 

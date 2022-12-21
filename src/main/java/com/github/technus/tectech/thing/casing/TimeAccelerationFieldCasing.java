@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-
 @SuppressWarnings("SpellCheckingInspection")
 public class TimeAccelerationFieldCasing extends GT_Block_Casings_Abstract {
     private static IIcon textureTier0;
@@ -28,15 +27,19 @@ public class TimeAccelerationFieldCasing extends GT_Block_Casings_Abstract {
     private static final byte START_INDEX = 16;
 
     public TimeAccelerationFieldCasing() {
-        super(GT_Item_Casings_TimeAcceleration.class, "gt.time_acceleration_field_generator", GT_Material_Casings.INSTANCE);
+        super(
+                GT_Item_Casings_TimeAcceleration.class,
+                "gt.time_acceleration_field_generator",
+                GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[texturePage][b + START_INDEX] =
                     new GT_CopiedBlockTexture(this, 6, b);
         }
 
-        for(int i = 0; i < maxBlockTier; i++) {
+        for (int i = 0; i < maxBlockTier; i++) {
             GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + i + ".name", EOH_TIER_FANCY_NAMES[i] + " Time Dilation Field Generator");
+                    getUnlocalizedName() + "." + i + ".name",
+                    EOH_TIER_FANCY_NAMES[i] + " Time Dilation Field Generator");
         }
 
         CustomItemList.TimeAccelerationFieldGeneratorTier0.set(new ItemStack(this, 1, 0));

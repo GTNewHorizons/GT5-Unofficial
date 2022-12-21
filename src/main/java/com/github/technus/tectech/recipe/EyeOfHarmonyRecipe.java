@@ -3,6 +3,7 @@ package com.github.technus.tectech.recipe;
 import static com.google.common.math.LongMath.pow;
 import static gregtech.api.util.GT_Utility.getPlasmaFuelValueInEUPerLiterFromMaterial;
 
+import com.github.technus.tectech.util.ItemStackLong;
 import gregtech.api.enums.Materials;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,7 +17,7 @@ import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 
 public class EyeOfHarmonyRecipe {
 
-    private final List<Pair<ItemStack, Long>> outputItems;
+    private final List<ItemStackLong> outputItems;
     private final FluidStack[] outputFluids;
 
     private final long hydrogenRequirement;
@@ -41,6 +42,7 @@ public class EyeOfHarmonyRecipe {
             long spacetimeCasingTierRequired,
             long euOutput,
             double baseSuccessChance) {
+
         // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.
         ArrayList<Pair<Materials, Long>> materialList =
                 processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds, 6 * 64);
@@ -65,12 +67,12 @@ public class EyeOfHarmonyRecipe {
         this.miningTimeSeconds = miningTimeSeconds;
     }
 
-    public List<Pair<ItemStack, Long>> getOutputItems() {
+    public List<ItemStackLong> getOutputItems() {
         return outputItems;
     }
 
     public FluidStack[] getOutputFluids() {
-        return outputFluids.clone();
+        return outputFluids;
     }
 
     public long getHydrogenRequirement() {
@@ -177,14 +179,14 @@ public class EyeOfHarmonyRecipe {
         return plasmaList.toArray(new FluidStack[0]);
     }
 
-    static ArrayList<Pair<ItemStack, Long>> validDustGenerator(final ArrayList<Pair<Materials, Long>> planetList) {
+    static ArrayList<ItemStackLong> validDustGenerator(final ArrayList<Pair<Materials, Long>> planetList) {
 
-        ArrayList<Pair<ItemStack, Long>> dustList = new ArrayList<>();
+        ArrayList<ItemStackLong> dustList = new ArrayList<>();
 
         for (Pair<Materials, Long> pair : planetList) {
             ItemStack dust = pair.getLeft().getDust(1);
             if (dust != null) {
-                dustList.add(Pair.of(dust, pair.getRight()));
+                dustList.add(new ItemStackLong(dust, pair.getRight()));
             }
         }
         return dustList;

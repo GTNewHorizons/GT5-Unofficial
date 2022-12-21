@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-
 @SuppressWarnings("SpellCheckingInspection")
 public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
     private static IIcon textureTier0;
@@ -34,9 +33,10 @@ public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
                     new GT_CopiedBlockTexture(this, 6, b);
         }
 
-        for(int i = 0; i < maxBlockTier; i++) {
+        for (int i = 0; i < maxBlockTier; i++) {
             GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + i + ".name", EOH_TIER_FANCY_NAMES[i] + " Stabilisation Field Generator");
+                    getUnlocalizedName() + "." + i + ".name",
+                    EOH_TIER_FANCY_NAMES[i] + " Stabilisation Field Generator");
         }
 
         CustomItemList.StabilisationFieldGeneratorTier0.set(new ItemStack(this, 1, 0));
