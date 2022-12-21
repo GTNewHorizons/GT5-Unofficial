@@ -4,19 +4,24 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
 import appeng.api.AEApi;
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
 import appeng.api.networking.GridFlags;
+import appeng.api.networking.energy.IEnergySource;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.networking.security.PlayerSource;
+import appeng.api.storage.IMEInventory;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
+import appeng.core.stats.Stats;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.IWideReadableNumberConverter;
-import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
@@ -191,7 +196,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             IMEMonitor<IAEFluidStack> sg = proxy.getStorage().getFluidInventory();
             for (IAEFluidStack s : fluidCache) {
                 if (s.getStackSize() == 0) continue;
-                IAEFluidStack rest = Platform.poweredInsert(proxy.getEnergy(), sg, s, getRequest());
+                IAEFluidStack rest = fluidAEInsert(proxy.getEnergy(), sg, s, getRequest());
                 if (rest != null && rest.getStackSize() > 0) {
                     lastOutputFailed = true;
                     s.setStackSize(rest.getStackSize());
@@ -289,5 +294,55 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             }
         }
         return ss.toArray(new String[fluidCache.size() + 2]);
+    }
+
+    @Optional.Method(modid = "appliedenergistics2")
+    public static IAEFluidStack fluidAEInsert(
+            final IEnergySource energy,
+            final IMEInventory<IAEFluidStack> cell,
+            final IAEFluidStack input,
+            final BaseActionSource src) {
+        final IAEFluidStack possible = cell.injectItems(input.copy(), Actionable.SIMULATE, src);
+
+        long stored = input.getStackSize();
+        if (possible != null) {
+            stored -= possible.getStackSize();
+        }
+        // 1000 mb fluid will be considered as 1 item
+        long power = Math.max(1, stored / 1000);
+
+        final double availablePower = energy.extractAEPower(power, Actionable.SIMULATE, PowerMultiplier.CONFIG);
+
+        final long itemToAdd = Math.min((long) (availablePower + 0.9), stored);
+
+        if (itemToAdd > 0) {
+            energy.extractAEPower(power, Actionable.MODULATE, PowerMultiplier.CONFIG);
+
+            if (itemToAdd < input.getStackSize()) {
+                final long original = input.getStackSize();
+                final IAEFluidStack split = input.copy();
+                split.decStackSize(itemToAdd);
+                input.setStackSize(itemToAdd);
+                split.add(cell.injectItems(input, Actionable.MODULATE, src));
+
+                if (src.isPlayer()) {
+                    final long diff = original - split.getStackSize();
+                    Stats.ItemsInserted.addToPlayer(((PlayerSource) src).player, (int) diff);
+                }
+
+                return split;
+            }
+
+            final IAEFluidStack ret = cell.injectItems(input, Actionable.MODULATE, src);
+
+            if (src.isPlayer()) {
+                final long diff = ret == null ? input.getStackSize() : input.getStackSize() - ret.getStackSize();
+                Stats.ItemsInserted.addToPlayer(((PlayerSource) src).player, (int) diff);
+            }
+
+            return ret;
+        }
+
+        return input;
     }
 }
