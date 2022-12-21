@@ -38,11 +38,13 @@ public class EyeOfHarmonyRecipeStorage {
                                     0.5 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
                                     100,
                                     100, // todo: DEBUG ONLY
+
                                     //                                    BILLION *
                                     // (blockDimensionDisplay.getDimensionRocketTier() + 1),
                                     //                                    BILLION *
                                     // (blockDimensionDisplay.getDimensionRocketTier() + 1),
-                                    36_000L,
+//                                    36_000L,
+                                    2000L, // todo: debug only
                                     blockDimensionDisplay.getDimensionRocketTier(),
                                     0,
                                     1.0 - blockDimensionDisplay.getDimensionRocketTier() / 10.0));

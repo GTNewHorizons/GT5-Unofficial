@@ -21,6 +21,7 @@ import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -32,12 +33,17 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
+
 import java.util.*;
+
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -47,7 +53,7 @@ import org.apache.commons.lang3.tuple.Pair;
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable, IGlobalWirelessEnergy {
-    // region variables
+    // Region variables.
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
@@ -57,11 +63,13 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private int timeAccelerationFieldMetadata = -1;
     private int stabilisationFieldMetadata = -1;
 
+    private static final double spacetimeCasingDifferenceDiscountPercentage = 0.03;
+
     private String userUUID = "";
     private String userName = "";
     private long euOutput = 0;
 
-    private final long[] computationStack = new long[computationTickCacheSize];
+    private final Stack<Long> computationStack = new Stack<>();
 
     // Multiblock structure.
     private static final IStructureDefinition<GT_MetaTileEntity_EM_EyeOfHarmony> STRUCTURE_DEFINITION =
@@ -1387,7 +1395,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     // todo: make higher on final release.
     private static final long ticksBetweenHatchDrain = 20;
 
-    List<ItemStackLong> outputItems;
+    private List<ItemStackLong> outputItems = new ArrayList<>();
 
     private void calculateHydrogenHeliumInputExcessValues(
             long hydrogen_recipe_requirement, long helium_recipe_requirement) {
@@ -1418,7 +1426,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     }
 
     private double recipeYieldCalculator() {
-        double yield = 1
+        double yield = 1.0
                 - hydrogenOverflowProbabilityAdjustment
                 - heliumOverflowProbabilityAdjustment
                 - stabilisationFieldMetadata * 0.05;
@@ -1426,13 +1434,19 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         return clamp(yield, 0.0, 1.0);
     }
 
-    private long recipeProcessTimeCalculator(long recipe_time, long recipe_spacetime_casing_required) {
+    private int recipeProcessTimeCalculator(long recipeTime, long recipeSpacetimeCasingRequired) {
 
-        double double_recipe_time = (double) recipe_time;
+        // Tier 1 recipe.
+        // Tier 2 spacetime blocks.
+        // = 3% discount.
 
-        long spacetime_casing_difference = (recipe_spacetime_casing_required - spacetimeCompressionFieldMetadata);
-        return (long)
-                (double_recipe_time * pow(2, -timeAccelerationFieldMetadata) * pow(0.97, spacetime_casing_difference));
+        // Tier 1 recipe.
+        // Tier 3 spacetime blocks.
+        // = 3%*3% = 5.91% discount.
+
+        long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
+        double recipeTimeDiscounted = recipeTime * pow(2.0, -timeAccelerationFieldMetadata) * pow(1 - spacetimeCasingDifferenceDiscountPercentage, spacetimeCasingDifference);
+        return (int) Math.max(recipeTimeDiscounted, 1.0);
     }
 
     @Override
@@ -1657,6 +1671,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
 
+        // No item in multi gui slot.
+        if (aStack == null) {
+            return false;
+        }
+
         currentRecipe = recipes.recipeLookUp(aStack);
         if (processRecipe(currentRecipe)) {
             return true;
@@ -1690,10 +1709,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             return false;
         }
 
-        mMaxProgresstime = (int) Math.max(
-                1,
-                recipeProcessTimeCalculator(
-                        recipeObject.getRecipeTimeInTicks(), recipeObject.getSpacetimeCasingTierRequired()));
+        mMaxProgresstime = recipeProcessTimeCalculator(recipeObject.getRecipeTimeInTicks(), recipeObject.getSpacetimeCasingTierRequired());
 
         calculateHydrogenHeliumInputExcessValues(
                 recipeObject.getHydrogenRequirement(), recipeObject.getHeliumRequirement());
@@ -1715,17 +1731,18 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         validFluidMap.put(Materials.Helium.getGas(1), 0L);
 
         double yield = recipeYieldCalculator();
+        yield = 1; //todo debug, remove.
+        successChance = 1; // todo debug, remove.
 
-        outputItems = new ArrayList<>();
         mOutputFluids = recipeObject.getOutputFluids().clone();
 
-        if (yield != 1.0) {
-            // Iterate over item output list and apply yield values.
-            for (ItemStackLong itemStack : recipeObject.getOutputItems()) {
-                itemStack.stackSize *= yield;
-                outputItems.add(itemStack);
-            }
+        // Iterate over item output list and apply yield values.
+        for (ItemStackLong itemStack : recipeObject.getOutputItems()) {
+            itemStack.stackSize *= yield;
+            outputItems.add(itemStack);
+        }
 
+        if (yield != 1.0) {
             // Iterate over fluid output list and apply yield values.
             for (FluidStack fluidStack : mOutputFluids) {
                 fluidStack.amount *= yield;
@@ -1752,8 +1769,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         recipeRunning = false;
         eRequiredData = 0L;
 
-        if (successChance > random()) {
+        if (successChance < random()) {
             outputFailedChance();
+            outputItems = new ArrayList<>();
             return;
         }
 
@@ -1764,15 +1782,18 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             outputItemToAENetwork(itemStack.itemStack, itemStack.stackSize);
         }
 
+        // Clear the array list for new recipes.
+        outputItems = new ArrayList<>();
+
+        // Do other stuff from TT superclasses. E.g. outputting fluids.
         super.outputAfterRecipe_EM();
     }
 
     private void pushComputation() {
-        // Add computation to finite "stack".
-        for (int i = computationTickCacheSize - 1; i > 2; i--) {
-            computationStack[i - 1] = computationStack[i];
+        if (computationStack.size() == computationTickCacheSize) {
+            computationStack.remove(0);
         }
-        computationStack[0] = eAvailableData;
+        computationStack.push(eAvailableData);
     }
 
     @Override
@@ -1805,19 +1826,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final int computationTickCacheSize = 5;
 
     private long getComputation() {
-        return max(computationStack);
-    }
-
-    private long max(long[] array) {
-        long max = array[0];
-
-        for (long i : array) {
-            if (i > max) {
-                max = i;
-            }
-        }
-
-        return max;
+        return Collections.max(computationStack);
     }
 
     // Will void if AE network is full.
@@ -1864,12 +1873,45 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         return new String[] {"Eye of Harmony multiblock"};
     }
 
+    // NBT save/load strings.
+    private static final String eyeOfHarmony = "eyeOfHarmonyOutput";
+    private static final String numberOfItemsNBTTag = eyeOfHarmony + "numberOfItems";
+    private static final String itemOutputNBTTag = eyeOfHarmony + "itemOutput";
+    private static final String recipeRunningNBTTag = eyeOfHarmony + "recipeRunning";
+    private static final String recipeEUOutputNBTTag = eyeOfHarmony + "euOutput";
+    private static final String recipeSuccessChanceNBTTag = eyeOfHarmony + "recipeSuccessChance";
+
+    // Sub tags, less specific names required.
+    private static final String damageValueNBTTag = "damageValue";
+    private static final String stackSizeNBTTag = "stackSize";
+    private static final String itemStackNBTTag = "itemStack";
+    private static final String unlocalisedNameNBTTag = "unlocalisedName";
+
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         // Save the quantity of fluid stored inside the controller.
         validFluidMap.forEach((key, value) -> aNBT.setLong("stored." + key.getUnlocalizedName(), value));
 
-        aNBT.setBoolean("eye_of_harmony_recipeRunning", recipeRunning);
+        aNBT.setBoolean(recipeRunningNBTTag, recipeRunning);
+        aNBT.setLong(recipeEUOutputNBTTag, euOutput);
+        aNBT.setDouble(recipeSuccessChanceNBTTag, successChance);
+
+        // Store damage values/stack sizes of GT items being outputted.
+        NBTTagCompound itemStackListNBTTag = new NBTTagCompound();
+        itemStackListNBTTag.setLong(numberOfItemsNBTTag, outputItems.size());
+
+        int index = 0;
+        for (ItemStackLong itemStackLong : outputItems) {
+            // Save stack size to NBT.
+            itemStackListNBTTag.setLong(index + stackSizeNBTTag, itemStackLong.stackSize);
+
+            // Save ItemStack to NBT.
+            aNBT.setTag(index + itemStackNBTTag, itemStackLong.itemStack.writeToNBT(new NBTTagCompound()));
+
+            index++;
+        }
+
+        aNBT.setTag(itemOutputNBTTag, itemStackListNBTTag);
 
         super.saveNBTData(aNBT);
     }
@@ -1882,7 +1924,24 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 (key, value) -> validFluidMap.put(key, aNBT.getLong("stored." + key.getUnlocalizedName())));
 
         // Load other stuff from NBT.
-        recipeRunning = aNBT.getBoolean("eye_of_harmony_recipeRunning");
+        recipeRunning = aNBT.getBoolean(recipeRunningNBTTag);
+        euOutput = aNBT.getLong(recipeEUOutputNBTTag);
+        successChance = aNBT.getDouble(recipeSuccessChanceNBTTag);
+
+        // Load damage values/stack sizes of GT items being outputted and convert back to items.
+        NBTTagCompound tempItemTag = aNBT.getCompoundTag(itemOutputNBTTag);
+
+        // Iterate over all stored items.
+        for (int index = 0; index < tempItemTag.getInteger(numberOfItemsNBTTag); index++) {
+
+            // Load stack size from NBT.
+            long stackSize = tempItemTag.getLong(index + stackSizeNBTTag);
+
+            // Load ItemStack from NBT.
+            ItemStack itemStack = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(index + itemStackNBTTag));
+
+            outputItems.add(new ItemStackLong(itemStack, stackSize));
+        }
 
         super.loadNBTData(aNBT);
     }
