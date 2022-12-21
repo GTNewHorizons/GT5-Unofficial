@@ -464,7 +464,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         if (!super.onRunningTick(aStack))
             return false;
 
-        if (mInputBusses.size() <= currentRecipe.mInputs.length) {
+        if (mInputBusses.size() < currentRecipe.mInputs.length) {
             criticalStopMachine();
             return false;
         }
