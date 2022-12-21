@@ -723,7 +723,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     Materials.SiliconSG,
                     MaterialsKevlar.NickelAluminide,
                     Materials.SpaceTime,
-                    Materials.TranscendentMetal
+                    Materials.TranscendentMetal,
+                    Materials.Oriharukon
                 },
                 OrePrefixes.block,
                 gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
