@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.casing;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
+import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
 
 import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.relauncher.Side;
@@ -18,32 +19,25 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+
+@SuppressWarnings("SpellCheckingInspection")
 public class TimeAccelerationFieldCasing extends GT_Block_Casings_Abstract {
-    private static IIcon texture_tier_0;
+    private static IIcon textureTier0;
+    private static final int maxBlockTier = 9;
 
     private static final byte START_INDEX = 16;
 
     public TimeAccelerationFieldCasing() {
-        super(GT_Item_CasingsBA0.class, "gt.time_acceleration_field_generator", GT_Material_Casings.INSTANCE);
+        super(GT_Item_Casings_TimeAcceleration.class, "gt.time_acceleration_field_generator", GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[texturePage][b + START_INDEX] =
                     new GT_CopiedBlockTexture(this, 6, b);
         }
 
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".0.name", "Crude Time Dilation Field Generator");
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".1.name", "Primitive Time Dilation Field Generator");
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".2.name", "Stable Time Dilation Field Generator");
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".3.name", "Superb Time Dilation Field Generator");
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".4.name", "Resplendent Time Dilation Field Generator");
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".5.name", "Perfect Time Temporal Dilation Generator");
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".6.name", "Tipler Grade Time Dilation Field Generator");
+        for(int i = 0; i < maxBlockTier; i++) {
+            GT_LanguageManager.addStringLocalization(
+                    getUnlocalizedName() + "." + i + ".name", EOH_TIER_FANCY_NAMES[i] + " Time Dilation Field Generator");
+        }
 
         CustomItemList.TimeAccelerationFieldGeneratorTier0.set(new ItemStack(this, 1, 0));
         CustomItemList.TimeAccelerationFieldGeneratorTier1.set(new ItemStack(this, 1, 1));
@@ -52,30 +46,36 @@ public class TimeAccelerationFieldCasing extends GT_Block_Casings_Abstract {
         CustomItemList.TimeAccelerationFieldGeneratorTier4.set(new ItemStack(this, 1, 4));
         CustomItemList.TimeAccelerationFieldGeneratorTier5.set(new ItemStack(this, 1, 5));
         CustomItemList.TimeAccelerationFieldGeneratorTier6.set(new ItemStack(this, 1, 6));
+        CustomItemList.TimeAccelerationFieldGeneratorTier7.set(new ItemStack(this, 1, 7));
+        CustomItemList.TimeAccelerationFieldGeneratorTier7.set(new ItemStack(this, 1, 8));
     }
 
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
-        texture_tier_0 = aIconRegister.registerIcon("gregtech:iconsets/EM_FIELD");
+        textureTier0 = aIconRegister.registerIcon("gregtech:iconsets/EM_FIELD");
     }
 
     @Override
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
             case 0:
-                return texture_tier_0;
+                return textureTier0;
             case 1:
-                return texture_tier_0;
+                return textureTier0;
             case 2:
-                return texture_tier_0;
+                return textureTier0;
             case 3:
-                return texture_tier_0;
+                return textureTier0;
             case 4:
-                return texture_tier_0;
+                return textureTier0;
             case 5:
-                return texture_tier_0;
+                return textureTier0;
             case 6:
-                return texture_tier_0;
+                return textureTier0;
+            case 7:
+                return textureTier0;
+            case 8:
+                return textureTier0;
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
@@ -88,9 +88,10 @@ public class TimeAccelerationFieldCasing extends GT_Block_Casings_Abstract {
         return getIcon(aSide, tMeta);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        for (int i = 0; i <= 6; i++) {
+        for (int i = 0; i < maxBlockTier; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }

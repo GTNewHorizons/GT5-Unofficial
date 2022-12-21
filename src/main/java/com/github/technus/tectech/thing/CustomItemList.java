@@ -400,6 +400,8 @@ public enum CustomItemList implements IItemContainer {
     SpacetimeCompressionFieldGeneratorTier4,
     SpacetimeCompressionFieldGeneratorTier5,
     SpacetimeCompressionFieldGeneratorTier6,
+    SpacetimeCompressionFieldGeneratorTier7,
+    SpacetimeCompressionFieldGeneratorTier8,
 
     TimeAccelerationFieldGeneratorTier0,
     TimeAccelerationFieldGeneratorTier1,
@@ -408,6 +410,8 @@ public enum CustomItemList implements IItemContainer {
     TimeAccelerationFieldGeneratorTier4,
     TimeAccelerationFieldGeneratorTier5,
     TimeAccelerationFieldGeneratorTier6,
+    TimeAccelerationFieldGeneratorTier7,
+    TimeAccelerationFieldGeneratorTier8,
 
     StabilisationFieldGeneratorTier0,
     StabilisationFieldGeneratorTier1,
@@ -415,7 +419,10 @@ public enum CustomItemList implements IItemContainer {
     StabilisationFieldGeneratorTier3,
     StabilisationFieldGeneratorTier4,
     StabilisationFieldGeneratorTier5,
-    StabilisationFieldGeneratorTier6;
+    StabilisationFieldGeneratorTier6,
+    StabilisationFieldGeneratorTier7,
+    StabilisationFieldGeneratorTier8;
+
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
