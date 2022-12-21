@@ -21,7 +21,6 @@ import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -33,17 +32,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
-
 import java.util.*;
-
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -1445,7 +1439,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         // = 3%*3% = 5.91% discount.
 
         long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
-        double recipeTimeDiscounted = recipeTime * pow(2.0, -timeAccelerationFieldMetadata) * pow(1 - spacetimeCasingDifferenceDiscountPercentage, spacetimeCasingDifference);
+        double recipeTimeDiscounted = recipeTime
+                * pow(2.0, -timeAccelerationFieldMetadata)
+                * pow(1 - spacetimeCasingDifferenceDiscountPercentage, spacetimeCasingDifference);
         return (int) Math.max(recipeTimeDiscounted, 1.0);
     }
 
@@ -1695,7 +1691,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
         // todo: fix changing the tier of block causing multi to unform
-        if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement()) || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
+        if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement())
+                || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
             return false;
         }
 
@@ -1709,7 +1706,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             return false;
         }
 
-        mMaxProgresstime = recipeProcessTimeCalculator(recipeObject.getRecipeTimeInTicks(), recipeObject.getSpacetimeCasingTierRequired());
+        mMaxProgresstime = recipeProcessTimeCalculator(
+                recipeObject.getRecipeTimeInTicks(), recipeObject.getSpacetimeCasingTierRequired());
 
         calculateHydrogenHeliumInputExcessValues(
                 recipeObject.getHydrogenRequirement(), recipeObject.getHeliumRequirement());

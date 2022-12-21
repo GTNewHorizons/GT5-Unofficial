@@ -1,11 +1,16 @@
 package com.github.technus.tectech.recipe;
 
+import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.IEMMapRead;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Recipe;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -238,6 +243,28 @@ public class TT_recipe extends GT_Recipe {
     }
 
     public static class GT_Recipe_MapTT extends GT_Recipe.GT_Recipe_Map {
+
+        public static final GT_Recipe_Map sEyeofHarmonyRecipes = new GT_Recipe_Map(
+                        new HashSet<>(250),
+                        "gt.recipe.eyeofharmony",
+                        "Eye of Harmony",
+                        null,
+                        RES_PATH_GUI + "basicmachines/Extractor",
+                        1,
+                        1,
+                        1,
+                        0,
+                        1,
+                        E,
+                        1,
+                        E,
+                        true,
+                        true)
+                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CENTRIFUGE)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_EXTRACT, ProgressBar.Direction.RIGHT)
+                .setSlotOverlaySteam(false, GT_UITextures.OVERLAY_SLOT_CENTRIFUGE_STEAM)
+                .setProgressBarSteam(GT_UITextures.PROGRESSBAR_EXTRACT_STEAM);
+
         public static GT_Recipe_MapTT sResearchableFakeRecipes = new GT_Recipe_MapTT(
                 new HashSet<>(32),
                 "gt.recipe.researchStation",

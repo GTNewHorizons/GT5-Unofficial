@@ -8,6 +8,7 @@ import gregtech.api.enums.Materials;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -32,6 +33,8 @@ public class EyeOfHarmonyRecipe {
 
     private final long miningTimeSeconds;
 
+    private final ItemStack recipeTriggerItem;
+
     public EyeOfHarmonyRecipe(
             GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimensionWrapper,
             GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimensionWrapper,
@@ -40,8 +43,11 @@ public class EyeOfHarmonyRecipe {
             long heliumRequirement,
             long miningTimeSeconds,
             long spacetimeCasingTierRequired,
+            Block block,
             long euOutput,
             double baseSuccessChance) {
+
+        recipeTriggerItem = new ItemStack(block);
 
         // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.
         ArrayList<Pair<Materials, Long>> materialList =
@@ -113,6 +119,10 @@ public class EyeOfHarmonyRecipe {
 
     public long getSpacetimeCasingTierRequired() {
         return spacetimeCasingTierRequired;
+    }
+
+    public ItemStack getRecipeTriggerItem() {
+        return recipeTriggerItem;
     }
 
     static final double primaryMultiplier = (0.1 + 1.0 / 9.0); // Byproduct from macerating/washing chance.

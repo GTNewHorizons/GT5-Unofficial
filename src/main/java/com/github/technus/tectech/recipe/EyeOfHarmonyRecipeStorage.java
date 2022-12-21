@@ -1,6 +1,10 @@
 package com.github.technus.tectech.recipe;
 
+import static com.github.technus.tectech.recipe.TT_recipe.GT_Recipe_MapTT.sEyeofHarmonyRecipes;
+
+import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.math.LongMath;
+import java.util.ArrayList;
 import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -43,9 +47,10 @@ public class EyeOfHarmonyRecipeStorage {
                                     // (blockDimensionDisplay.getDimensionRocketTier() + 1),
                                     //                                    BILLION *
                                     // (blockDimensionDisplay.getDimensionRocketTier() + 1),
-//                                    36_000L,
+                                    //                                    36_000L,
                                     2000L, // todo: debug only
                                     blockDimensionDisplay.getDimensionRocketTier(),
+                                    blockDimensionDisplay,
                                     0,
                                     1.0 - blockDimensionDisplay.getDimensionRocketTier() / 10.0));
                 } catch (Exception e) {
@@ -60,5 +65,41 @@ public class EyeOfHarmonyRecipeStorage {
     public EyeOfHarmonyRecipe recipeLookUp(ItemStack aStack) {
         String dimAbbreviation = blocksMapInverted.get(Block.getBlockFromItem(aStack.getItem()));
         return recipeHashMap.get(dimAbbreviation);
+    }
+
+    public EyeOfHarmonyRecipeStorage() {
+
+        for (EyeOfHarmonyRecipe recipe : recipeHashMap.values()) {
+
+            // todo sort items by fake long stack size.
+            ArrayList<ItemStack> outputItems = new ArrayList<>();
+            for (ItemStackLong itemStackLong : recipe.getOutputItems()) {
+                outputItems.add(itemStackLong.itemStack);
+            }
+
+            // GT_Recipe addRecipe(
+            //                boolean aOptimize,
+            //                ItemStack[] aInputs,
+            //                ItemStack[] aOutputs,
+            //                Object aSpecial,
+            //                int[] aOutputChances,
+            //                FluidStack[] aFluidInputs,
+            //                FluidStack[] aFluidOutputs,
+            //                int aDuration,
+            //                int aEUt,
+            //                int aSpecialValue) {
+
+            sEyeofHarmonyRecipes.addRecipe(
+                    false,
+                    new ItemStack[] {recipe.getRecipeTriggerItem()},
+                    outputItems.toArray(new ItemStack[0]),
+                    recipe,
+                    null,
+                    null,
+                    recipe.getOutputFluids(),
+                    (int) recipe.getRecipeTimeInTicks(),
+                    0,
+                    0);
+        }
     }
 }
