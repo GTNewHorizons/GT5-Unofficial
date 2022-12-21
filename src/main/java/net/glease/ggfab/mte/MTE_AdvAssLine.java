@@ -419,7 +419,6 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         inputEUt += hatch.maxEUInput() * LaserHelper.getAmperes(hatch);
         inputVoltage = Math.min(inputVoltage, hatch.maxEUInput());
         if (inputEUt < 0)
-            // I'd prefer bullying colen than use bigint
             inputEUt = Long.MAX_VALUE;
     }
 
@@ -461,8 +460,6 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         for (GT_MetaTileEntity_Hatch_DataAccess hatch_dataAccess : mDataAccessHatches) {
             hatch_dataAccess.setActive(true);
         }
-        if (!super.onRunningTick(aStack))
-            return false;
 
         if (mInputBusses.size() < currentRecipe.mInputs.length) {
             criticalStopMachine();
@@ -480,7 +477,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             getBaseMetaTileEntity().issueClientUpdate();
 
         boolean foundWorking = false;
-        int tEUt = 0;
+        int working = 0;
         for (Slice slice : slices) {
             if (slice.progress >= 0) {
                 if (!foundWorking) {
@@ -489,9 +486,24 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 }
             }
             if (slice.progress > 0)
-                tEUt += baseEUt;
+                working++;
         }
-        lEUt = tEUt;
+        lEUt = working * baseEUt;
+
+        if (lEUt > 0) {
+            // overflow again :(
+            lEUt = Long.MIN_VALUE;
+            for (int i = 0; i < working; i++) {
+                if (!drainEnergyInput(-baseEUt)){
+                    criticalStopMachine();
+                    return false;
+                }
+            }
+        } else {
+            if (!super.onRunningTick(aStack))
+                return false;
+        }
+
 
         if (slices[0].canStart() && getBaseMetaTileEntity().isAllowedToWork()) {
             if (hasAllFluids(currentRecipe)) {
@@ -725,10 +737,10 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                     currentTip.add(I18n.format("ggfab.waila.advassline.slice.stuck", i + 1));
                 } else if (progress < 0) {
                     currentTip.add(I18n.format("ggfab.waila.advassline.slice.idle", i + 1));
-                } else if (duration > 20) {
+                } else if (duration > 40) {
                     currentTip.add(I18n.format("ggfab.waila.advassline.slice", i + 1, (duration - progress) / 20, duration / 20));
                 } else {
-                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.small", i + 1, progress));
+                    currentTip.add(I18n.format("ggfab.waila.advassline.slice.small", i + 1, duration - progress, duration));
                 }
             }
         }
