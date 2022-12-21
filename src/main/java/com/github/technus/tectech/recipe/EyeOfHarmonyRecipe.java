@@ -67,12 +67,24 @@ public class EyeOfHarmonyRecipe {
         this.miningTimeSeconds = miningTimeSeconds;
     }
 
-    public List<ItemStackLong> getOutputItems() {
-        return outputItems;
+    // Return clone of list.
+    public ArrayList<ItemStackLong> getOutputItems() {
+        ArrayList<ItemStackLong> copyOutputList = new ArrayList<>();
+        for (ItemStackLong itemStackLong : outputItems) {
+            copyOutputList.add(new ItemStackLong(itemStackLong));
+        }
+
+        return copyOutputList;
     }
 
     public FluidStack[] getOutputFluids() {
-        return outputFluids;
+        ArrayList<FluidStack> copyOutputList = new ArrayList<>();
+
+        for (FluidStack fluidStack : outputFluids) {
+            copyOutputList.add(fluidStack.copy());
+        }
+
+        return copyOutputList.toArray(new FluidStack[0]);
     }
 
     public long getHydrogenRequirement() {

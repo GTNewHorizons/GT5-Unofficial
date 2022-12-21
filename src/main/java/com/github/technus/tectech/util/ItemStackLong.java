@@ -11,4 +11,10 @@ public class ItemStackLong {
         this.itemStack = itemStack;
         this.stackSize = stackSize;
     }
+
+    // Copy constructor.
+    public ItemStackLong(ItemStackLong itemStackLong) {
+        this.itemStack = itemStackLong.itemStack;
+        this.stackSize = itemStackLong.stackSize;
+    }
 }

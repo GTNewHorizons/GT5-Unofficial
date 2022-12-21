@@ -1694,8 +1694,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
-        if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement())
-                && (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
+        // todo: fix changing the tier of block causing multi to unform
+        if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement()) || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
             return false;
         }
 
@@ -1731,18 +1731,18 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         validFluidMap.put(Materials.Helium.getGas(1), 0L);
 
         double yield = recipeYieldCalculator();
-        yield = 1; //todo debug, remove.
         successChance = 1; // todo debug, remove.
 
-        mOutputFluids = recipeObject.getOutputFluids().clone();
-
-        // Iterate over item output list and apply yield values.
-        for (ItemStackLong itemStack : recipeObject.getOutputItems()) {
-            itemStack.stackSize *= yield;
-            outputItems.add(itemStack);
-        }
+        // Return copies of the output objects.
+        mOutputFluids = recipeObject.getOutputFluids();
+        outputItems = recipeObject.getOutputItems();
 
         if (yield != 1.0) {
+            // Iterate over item output list and apply yield values.
+            for (ItemStackLong itemStackLong : outputItems) {
+                itemStackLong.stackSize *= yield;
+            }
+
             // Iterate over fluid output list and apply yield values.
             for (FluidStack fluidStack : mOutputFluids) {
                 fluidStack.amount *= yield;
