@@ -1217,33 +1217,6 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 IBeeMutationCustom tMutation = dis.registerMutation(FIRESTONE, COAL, 4);
                 tMutation.requireResource(GameRegistry.findBlock("IC2", "blockITNT"), 0);
             }),
-    KEVLAR(
-            GT_BranchDefinition.IC2,
-            "kevlar",
-            false,
-            new Color(0x2d542f),
-            new Color(0xa2baa3),
-            beeSpecies -> {
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.KEVLAR), 0.075f);
-                beeSpecies.addSpecialty(MaterialsKevlar.Kevlar.getNuggets(1), 0.05f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(COLD);
-                beeSpecies.setHasEffect();
-                beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
-            },
-            template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectSnowing);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.NONE);
-                AlleleHelper.instance.set(template, NOCTURNAL, true);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
-                AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
-            },
-            dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(OIL, ENERGY, 4);
-                tMutation.requireResource("frameGtKevlar");
-            }),
     // Alloy
     REDALLOY(
             GT_BranchDefinition.GTALLOY,
@@ -3482,6 +3455,33 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, COSMICNEUTRONIUM, 1, 10);
                 if (Loader.isModLoaded("avaritiaddons"))
                     tMutation.requireResource(GameRegistry.findBlock("avaritiaddons", "InfinityChest"), 0);
+            }),
+    KEVLAR(
+            GT_BranchDefinition.IC2,
+            "kevlar",
+            false,
+            new Color(0x2d542f),
+            new Color(0xa2baa3),
+            beeSpecies -> {
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.KEVLAR), 0.075f);
+                beeSpecies.addSpecialty(MaterialsKevlar.Kevlar.getNuggets(1), 0.01f);
+                beeSpecies.setHumidity(DAMP);
+                beeSpecies.setTemperature(COLD);
+                beeSpecies.setHasEffect();
+                beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+            },
+            template -> {
+                AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
+                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectSnowing);
+                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.NONE);
+                AlleleHelper.instance.set(template, NOCTURNAL, true);
+                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
+                AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
+            },
+            dis -> {
+                IBeeMutationCustom tMutation = dis.registerMutation(OIL, INFINITY, 4);
+                tMutation.requireResource("frameGtKevlar");
             }),
 
     // Noble Gas Line
