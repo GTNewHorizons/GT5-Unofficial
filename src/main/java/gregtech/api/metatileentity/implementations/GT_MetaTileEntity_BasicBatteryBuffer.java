@@ -341,13 +341,13 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
             ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(StatCollector.translateToLocalFormatted(
-                "GT5U.waila.battery_buffer.stored",
+                "GT5U.waila.energy.stored",
                 GT_Utility.formatNumbers(tag.getLong("mStored")),
                 GT_Utility.formatNumbers(tag.getLong("mMax"))));
         currenttip.add(StatCollector.translateToLocalFormatted(
-                "GT5U.waila.battery_buffer.avg_in", GT_Utility.formatNumbers(tag.getLong("AvgIn"))));
+                "GT5U.waila.energy.avg_in", GT_Utility.formatNumbers(tag.getLong("AvgIn"))));
         currenttip.add(StatCollector.translateToLocalFormatted(
-                "GT5U.waila.battery_buffer.avg_out", GT_Utility.formatNumbers(tag.getLong("AvgOut"))));
+                "GT5U.waila.energy.avg_out", GT_Utility.formatNumbers(tag.getLong("AvgOut"))));
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
