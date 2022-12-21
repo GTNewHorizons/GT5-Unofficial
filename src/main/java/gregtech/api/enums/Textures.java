@@ -1119,6 +1119,7 @@ public class Textures {
         BLOCK_NICKELALUMINIUM,
         BLOCK_SILICONSG,
         BLOCK_TRANSCENDENTMETAL,
+        BLOCK_ORIHARUKON,
 
         MARBLE_COBBLE_MOSSY,
         MARBLE_BRICKS,
@@ -1863,7 +1864,8 @@ public class Textures {
                             BLOCK_SILICONSG,
                             BLOCK_NICKELALUMINIUM,
                             BLOCK_SPACETIME,
-                            BLOCK_TRANSCENDENTMETAL
+                            BLOCK_TRANSCENDENTMETAL,
+                            BLOCK_ORIHARUKON
                         };
 
         public static final ITexture[] HIDDEN_TEXTURE = {
