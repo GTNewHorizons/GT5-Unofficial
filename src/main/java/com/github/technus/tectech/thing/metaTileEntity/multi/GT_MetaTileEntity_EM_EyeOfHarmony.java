@@ -1681,7 +1681,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
 
         // Check tier of spacetime compression blocks is high enough.
-        if (spacetimeCompressionFieldMetadata <= recipeObject.getSpacetimeCasingTierRequired()) {
+        if (spacetimeCompressionFieldMetadata < recipeObject.getSpacetimeCasingTierRequired()) {
             return false;
         }
 
