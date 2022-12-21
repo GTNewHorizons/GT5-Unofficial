@@ -1242,8 +1242,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         currentTip.add((tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
                 + "  Efficiency: " + tag.getFloat("efficiency") + "%");
 
-        currentTip.add(GT_Waila.getMachineProgressString(
-                tag.getBoolean("isActive"), tag.getInteger("maxProgress"), tag.getInteger("progress")));
+        boolean isActive = tag.getBoolean("isActive");
+        if (isActive) {
+            long lEUt = tag.getLong("eut");
+            if (lEUt > 0) {
+                currentTip.add(StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.energy.use", GT_Utility.formatNumbers(lEUt)));
+            } else if (lEUt < 0) {
+                currentTip.add(StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.energy.produce", GT_Utility.formatNumbers(-lEUt)));
+            }
+        }
+        currentTip.add(
+                GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
@@ -1262,6 +1273,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             tag.setBoolean("isActive", tileEntity.isActive());
+            if (tileEntity.isActive()) tag.setLong("eut", getActualEnergyUsage());
         }
     }
 
