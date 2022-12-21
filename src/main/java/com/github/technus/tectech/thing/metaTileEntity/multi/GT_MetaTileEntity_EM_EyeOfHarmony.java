@@ -1258,7 +1258,15 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                             Pair.of(
                                                     TT_Block_SpacetimeCompressionFieldGenerators
                                                             .SpacetimeCompressionFieldGenerators,
-                                                    6)),
+                                                    6),
+                                            Pair.of(
+                                                    TT_Block_SpacetimeCompressionFieldGenerators
+                                                            .SpacetimeCompressionFieldGenerators,
+                                                    7),
+                                            Pair.of(
+                                                    TT_Block_SpacetimeCompressionFieldGenerators
+                                                            .SpacetimeCompressionFieldGenerators,
+                                                    8)),
                                     -1,
                                     (t, meta) -> t.spacetimeCompressionFieldMetadata = meta,
                                     t -> t.spacetimeCompressionFieldMetadata))
@@ -1290,7 +1298,13 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                                     5),
                                             Pair.of(
                                                     TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
-                                                    6)),
+                                                    6),
+                                            Pair.of(
+                                                    TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
+                                                    7),
+                                            Pair.of(
+                                                    TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
+                                                    8)),
                                     -1,
                                     (t, meta) -> t.stabilisationFieldMetadata = meta,
                                     t -> t.stabilisationFieldMetadata))
@@ -1333,7 +1347,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                             Pair.of(
                                                     TT_Block_TimeAccelerationFieldGenerators
                                                             .TimeAccelerationFieldGenerator,
-                                                    6)),
+                                                    6),
+                                            Pair.of(
+                                                    TT_Block_TimeAccelerationFieldGenerators
+                                                            .TimeAccelerationFieldGenerator,
+                                                    7),
+                                            Pair.of(
+                                                    TT_Block_TimeAccelerationFieldGenerators
+                                                            .TimeAccelerationFieldGenerator,
+                                                    8)),
+
                                     -1,
                                     (t, meta) -> t.timeAccelerationFieldMetadata = meta,
                                     t -> t.timeAccelerationFieldMetadata))
@@ -1359,7 +1382,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private double heliumOverflowProbabilityAdjustment;
 
     // Maximum additional chance of recipe success that can be obtained from adding computation.
-    private static final double max_percentage_chance_gain_from_computation_per_second = 0.3;
+    private static final double maxPercentageChanceGainFromComputationPerSecond = 0.3;
 
     // todo: make higher on final release.
     private static final long ticksBetweenHatchDrain = 20;
@@ -1385,7 +1408,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 + stabilisationFieldMetadata * 0.05
                 - hydrogenOverflowProbabilityAdjustment
                 - heliumOverflowProbabilityAdjustment
-                + max_percentage_chance_gain_from_computation_per_second * (1 - exp(-10e-5 * getComputation())));
+                + maxPercentageChanceGainFromComputationPerSecond * (1 - exp(-10e-5 * getComputation())));
 
         return clamp(chance, 0.0, 1.0);
     }
@@ -1501,7 +1524,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("This multiblock will constantly consume hydrogen and helium when it is")
                 .addInfo("not running. It will store this internally, you can see the totals by")
-                .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + "7" + GRAY + " tiers")
+                .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + "9" + GRAY + " tiers")
                 .addInfo("each. They are as follows and have the associated effects on the multi.")
                 .addInfo(BLUE + "Spacetime Compression Field Generator:")
                 .addInfo("- The tier of this block determines what recipes can be run. If the multiblocks")
@@ -1520,7 +1543,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("  Decreases the yield of a recipe by " + RED + "5%" + GRAY + " per tier (additive). ")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("Computation/s provided to the multiblock can increase the chance by up to " + RED
-                        + GT_Utility.formatNumbers(max_percentage_chance_gain_from_computation_per_second * 100) + GRAY
+                        + GT_Utility.formatNumbers(maxPercentageChanceGainFromComputationPerSecond * 100) + GRAY
                         + "%.")
                 .addInfo("The associated formula is " + GREEN
                         + "additional_chance = 0.3 * exp(10^(-5) * computation_per_second)" + GRAY + ".")

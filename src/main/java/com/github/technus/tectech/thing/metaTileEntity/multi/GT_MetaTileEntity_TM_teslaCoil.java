@@ -672,7 +672,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 .addMaintenanceHatch(
                         translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"),
                         1) // Maintenance Hatch: Any outer Tesla Base Casing
-                .toolTipFinisher(CommonValues.BASS_MARK);
+                .toolTipFinisher(CommonValues.THETA_MOVEMENT);
         return tt;
     }
 
