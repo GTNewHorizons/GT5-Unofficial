@@ -1244,13 +1244,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
-            long lEUt = tag.getLong("eut");
-            if (lEUt > 0) {
+            long actualEnergyUsage = tag.getLong("energyUsage");
+            if (actualEnergyUsage > 0) {
                 currentTip.add(StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.use", GT_Utility.formatNumbers(lEUt)));
-            } else if (lEUt < 0) {
+                        "GT5U.waila.energy.use", GT_Utility.formatNumbers(actualEnergyUsage)));
+            } else if (actualEnergyUsage < 0) {
                 currentTip.add(StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.produce", GT_Utility.formatNumbers(-lEUt)));
+                        "GT5U.waila.energy.produce", GT_Utility.formatNumbers(-actualEnergyUsage)));
             }
         }
         currentTip.add(
@@ -1273,7 +1273,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             tag.setBoolean("isActive", tileEntity.isActive());
-            if (tileEntity.isActive()) tag.setLong("eut", getActualEnergyUsage());
+            if (tileEntity.isActive()) tag.setLong("energyUsage", getActualEnergyUsage());
         }
     }
 
