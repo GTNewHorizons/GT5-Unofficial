@@ -323,7 +323,11 @@ public class GT_MetaTileEntity_NanoForge
             return false;
         }
 
-        return mSpecialTier > 0 && checkExoticAndNormalEnergyHatches();
+        if (!checkExoticAndNormalEnergyHatches()) {
+            return false;
+        }
+
+        return mSpecialTier > 0;
     }
 
     @Override

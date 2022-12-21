@@ -414,8 +414,10 @@ public class GT_MetaTileEntity_PCBFactory
             if (!checkPiece(tier1, 3, 5, 0)) {
                 return false;
             }
-
-            if (mSetTier == 2 && checkPiece(tier2, 7, 6, 2)) {
+            if (mSetTier == 2) {
+                if (!checkPiece(tier2, 7, 6, 2)) {
+                    return false;
+                }
                 mTier = 2;
             } else {
                 mTier = 1;
