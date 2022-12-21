@@ -1693,7 +1693,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         mMaxProgresstime = (int) Math.max(
                 1,
                 recipeProcessTimeCalculator(
-                        recipeObject.getRecipeTime(), recipeObject.getSpacetimeCasingTierRequired()));
+                        recipeObject.getRecipeTimeInTicks(), recipeObject.getSpacetimeCasingTierRequired()));
 
         calculateHydrogenHeliumInputExcessValues(
                 recipeObject.getHydrogenRequirement(), recipeObject.getHeliumRequirement());

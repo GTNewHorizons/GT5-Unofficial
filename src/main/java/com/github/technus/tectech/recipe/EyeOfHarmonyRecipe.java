@@ -41,7 +41,7 @@ public class EyeOfHarmonyRecipe {
             long spacetimeCasingTierRequired,
             long euOutput,
             double baseSuccessChance) {
-        // 6 * 64 = 6 stacks/second.
+        // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.
         ArrayList<Pair<Materials, Long>> materialList =
                 processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds, 6 * 64);
 
@@ -89,8 +89,8 @@ public class EyeOfHarmonyRecipe {
         return euStartCost;
     }
 
-    public long getRecipeTime() {
-        return miningTimeSeconds;
+    public long getRecipeTimeInTicks() {
+        return miningTimeSeconds * 20;
     }
 
     public double getBaseRecipeSuccessChance() {

@@ -30,7 +30,7 @@ public class EyeOfHarmonyRecipeStorage {
     private final HashMap<String, EyeOfHarmonyRecipe> recipeHashMap = new HashMap<String, EyeOfHarmonyRecipe>() {
         {
             for (String dimAbbreviation : DimensionHelper.DimNameDisplayed) {
-                BlockDimensionDisplay a = (BlockDimensionDisplay) ModBlocks.blocks.get(dimAbbreviation);
+                BlockDimensionDisplay blockDimensionDisplay = (BlockDimensionDisplay) ModBlocks.blocks.get(dimAbbreviation);
 
                 try {
                     put(
@@ -38,13 +38,13 @@ public class EyeOfHarmonyRecipeStorage {
                             new EyeOfHarmonyRecipe(
                                     GT5OreLayerHelper.dimToOreWrapper.get(dimAbbreviation),
                                     GT5OreSmallHelper.dimToSmallOreWrapper.get(dimAbbreviation),
-                                    1.0,
-                                    100,
-                                    100,
+                                    0.5 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
+                                    1_000_000_000L * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                                    1_000_000_000L * (blockDimensionDisplay.getDimensionRocketTier() + 1),
                                     36_000L,
+                                    blockDimensionDisplay.getDimensionRocketTier(),
                                     0,
-                                    100 * 10,
-                                    0.4));
+                                    1.0 - blockDimensionDisplay.getDimensionRocketTier() / 10.0));
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.out.println(dimAbbreviation + " dimension not found in dimToOreWrapper");
