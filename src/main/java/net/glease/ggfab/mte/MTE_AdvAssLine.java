@@ -202,8 +202,12 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (ownerUuid == null)
                 return;
             float factor = ConfigurationHandler.INSTANCE.getLaserOCPenaltyFactor();
+            MinecraftServer server = MinecraftServer.getServer();
+            // more blockrenderer6343 weirdness
+            if (server == null)
+                return;
             @SuppressWarnings("unchecked")
-            List<EntityPlayerMP> l = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+            List<EntityPlayerMP> l = server.getConfigurationManager().playerEntityList;
             for (EntityPlayerMP p : l) {
                 if (p.getUniqueID().equals(ownerUuid)) {
                     for (int i = 0; i < 9; i++) {
