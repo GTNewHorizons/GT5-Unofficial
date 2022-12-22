@@ -24,7 +24,7 @@ dependencies {
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev') {transitive=false}
 
     //compile('com.github.GTNewHorizons:GalacticGregGT5:1.0.8:dev')
-    //compile('com.github.GTNewHorizons:TecTech:5.0.22:dev')
+    //compile('com.github.GTNewHorizons:TecTech:5.0.61:dev')
     //compile('com.github.GTNewHorizons:Galacticraft:3.0.44-GTNH:dev')
 
     //compileOnly('com.github.GTNewHorizons:Avaritia:1.28)
