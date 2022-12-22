@@ -46,10 +46,15 @@ public class NaquadahReworkRecipeLoader {
                 CORE.RA.addQuantumTransformerRecipe(
                         new ItemStack[] {
                             naquadahEarth.get(OrePrefixes.dust, 32),
-                            Materials.SodiumHydroxide.getDust(64),
+                            Materials.Sodium.getDust(64),
+                            Materials.Carbon.getDust(1),
                             GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst)
                         },
-                        new FluidStack[] {fluoroantimonicAcid.getFluidOrGas(16000), P507.getFluidOrGas(10)},
+                        new FluidStack[] {
+                            Materials.Hydrogen.getGas(64000L),
+                            Materials.Fluorine.getGas(64000L),
+                            Materials.Oxygen.getGas(100L)
+                        },
                         new FluidStack[] {},
                         new ItemStack[] {
                             inertNaquadah.get(OrePrefixes.dust, 64),
@@ -58,17 +63,18 @@ public class NaquadahReworkRecipeLoader {
                             Materials.Gallium.getDust(64)
                         },
                         new int[] {2500, 2500, 2500, 2500},
-                        20 * 20,
-                        (int) GT_Values.VP[9],
+                        10 * 20,
+                        (int) GT_Values.VP[10],
                         2);
                 // Enriched Naquadah (UIV)
                 CORE.RA.addQuantumTransformerRecipe(
                         new ItemStack[] {
                             enrichedNaquadahEarth.get(OrePrefixes.dust, 32),
                             Materials.Zinc.getDust(64),
+                            Materials.Carbon.getDust(1),
                             GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst)
                         },
-                        new FluidStack[] {Materials.SulfuricAcid.getFluid(16000), P507.getFluidOrGas(10)},
+                        new FluidStack[] {Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L)},
                         new FluidStack[] {wasteLiquid.getFluidOrGas(32000)},
                         new ItemStack[] {
                             inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
@@ -76,9 +82,9 @@ public class NaquadahReworkRecipeLoader {
                             ItemList.NaquadriaSupersolid.get(1)
                         },
                         new int[] {3300, 3300, 3300},
-                        20 * 20,
+                        10 * 20,
                         (int) GT_Values.VP[11],
-                        3);
+                        2);
                 // Naquadria (UMV)
                 CORE.RA.addQuantumTransformerRecipe(
                         new ItemStack[] {
@@ -89,7 +95,7 @@ public class NaquadahReworkRecipeLoader {
                         new FluidStack[] {
                             Materials.PhosphoricAcid.getFluid(16000),
                             Materials.SulfuricAcid.getFluid(16000),
-                            P507.getFluidOrGas(10)
+                            Materials.Oxygen.getGas(100L)
                         },
                         new FluidStack[] {},
                         new ItemStack[] {
@@ -98,9 +104,9 @@ public class NaquadahReworkRecipeLoader {
                             Materials.Indium.getDust(64)
                         },
                         new int[] {3300, 3300, 3300},
-                        20 * 20,
+                        5 * 20,
                         (int) GT_Values.VP[12],
-                        4);
+                        3);
                 // Activate Them
                 MyRecipeAdder.instance.addNeutronActivatorRecipe(
                         new FluidStack[] {Materials.Nickel.getPlasma(2880)},
