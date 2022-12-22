@@ -313,7 +313,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
         final double availablePower = energy.extractAEPower(power, Actionable.SIMULATE, PowerMultiplier.CONFIG);
 
-        final long itemToAdd = Math.min((long) (availablePower + 0.9), stored);
+        final long itemToAdd = Math.min((long) (availablePower + 0.9) * 1000, stored);
 
         if (itemToAdd > 0) {
             energy.extractAEPower(power, Actionable.MODULATE, PowerMultiplier.CONFIG);
