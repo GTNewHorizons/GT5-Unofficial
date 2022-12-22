@@ -1,17 +1,9 @@
 package com.elisis.gtnhlanth.loader;
 
-import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.LMP103S;
-import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.MonomethylhydrazineFuelMix;
-import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.SodiumTungstate;
-import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.TertButylbenzene;
-import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.TungstenTrioxide;
-import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.TungsticAcid;
-import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.UnsymmetricalDimethylhydrazineFuelMix;
-import static gregtech.api.enums.OrePrefixes.cell;
-import static gregtech.api.enums.OrePrefixes.dust;
-import static gregtech.api.enums.OrePrefixes.ingotHot;
-import static gregtech.api.enums.OrePrefixes.item;
+import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
+import static gregtech.api.enums.OrePrefixes.*;
 
+import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
@@ -20,6 +12,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import ic2.core.Ic2Items;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -139,7 +132,7 @@ public class BotRecipes {
         // rocket fuels
         // LMP103S
         // 2Cl + CO = COCl2
-        /*GT_Values.RA.addChemicalRecipe(
+        GT_Values.RA.addChemicalRecipe(
                 Materials.CarbonMonoxide.getCells(1),
                 C2,
                 Materials.Chlorine.getGas(2000),
@@ -273,6 +266,7 @@ public class BotRecipes {
                 1920);
 
         // LMP-103S
+        /*
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {C24},
                 new FluidStack[] {
@@ -285,6 +279,7 @@ public class BotRecipes {
                 null,
                 1200,
                 1920);
+         */
 
         // P4O10 + 2HNO3 + 5H2O = 4H3PO4 + N2O5
         GT_Values.RA.addChemicalRecipe(
@@ -485,6 +480,7 @@ public class BotRecipes {
                 80,
                 16000);
 
+        /*
         GT_Values.RA.addMixerRecipe(
                 AmmoniumDinitramide.get(cell, 1),
                 C1,
@@ -507,6 +503,7 @@ public class BotRecipes {
                 cells,
                 20,
                 480);
+         */
         cells.stackSize = 1;
 
         // unsimetrical hydazine
@@ -649,6 +646,7 @@ public class BotRecipes {
                 20,
                 122_880);
 
+        /*
         cells.stackSize = 2;
         GT_Values.RA.addMixerRecipe(
                 UnsymmetricalDimethylhydrazine.get(cell, 2),
@@ -671,7 +669,8 @@ public class BotRecipes {
                 UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(3000),
                 cells,
                 10,
-                120);*/
+                120);
+         */
     }
 
     public static void addFuels() {
