@@ -100,7 +100,7 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
             else yourStack.setItemDamage(myLevel);
         }
 
-        return true;
+        return false;
     }
 
     protected int getNewDamage(IReactor reactor, ItemStack stack) {
