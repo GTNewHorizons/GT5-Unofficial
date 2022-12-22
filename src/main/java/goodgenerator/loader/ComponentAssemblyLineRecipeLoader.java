@@ -70,11 +70,6 @@ public class ComponentAssemblyLineRecipeLoader {
                     ArrayList<ItemStack> fixedInputs = new ArrayList<>();
                     ArrayList<FluidStack> fixedFluids = new ArrayList<>();
 
-                    // This is done in order to differentiate between emitter and sensor recipes. Without the circuit,
-                    // both components have virtually the same recipe after the inputs are melted.
-                    if (info.getLeft().name().contains("Sensor")) {
-                        fixedInputs.add(GT_Utility.getIntegratedCircuit(1));
-                    }
                     for (int j = 0; j < recipe.mInputs.length; j++) {
                         ItemStack input = recipe.mInputs[j];
                         if (GT_Utility.isStackValid(input) && !(input.getItem() instanceof GT_IntegratedCircuit_Item))
@@ -87,8 +82,7 @@ public class ComponentAssemblyLineRecipeLoader {
                     }
 
                     int tier = info.getRight();
-                    int energy = (int) Math.min(Integer.MAX_VALUE - 7, (GT_Values.V[tier] - (GT_Values.V[tier] >> 4)));
-
+                    int energy = (int) Math.min(Integer.MAX_VALUE - 7, GT_Values.VP[tier - 1]);
                     MyRecipeAdder.instance.addComponentAssemblyLineRecipe(
                             compactItems(fixedInputs, info.getRight()).toArray(new ItemStack[0]),
                             fixedFluids.toArray(new FluidStack[0]),
@@ -105,16 +99,18 @@ public class ComponentAssemblyLineRecipeLoader {
         allAsslineRecipes.forEach((recipeList, info) -> {
             for (GT_Recipe.GT_Recipe_AssemblyLine recipe : recipeList) {
                 if (recipe != null) {
+                    int componentCircuit = -1;
+                    for (int i = 0; i < compPrefixes.length; i++)
+                        if (info.getLeft().toString().startsWith(compPrefixes[i])) componentCircuit = i + 1;
+                    if (componentCircuit == -1) {
+                        throw new NullPointerException(
+                                "Wrong circuit. Comp: " + info.getLeft().toString());
+                    }
+                    final boolean addProgrammedCircuit = componentCircuit <= 7;
                     // Arrays of the item and fluid inputs, that are updated to be multiplied and/or condensed in the
                     // following code
                     ArrayList<ItemStack> fixedInputs = new ArrayList<>();
                     ArrayList<FluidStack> fixedFluids = new ArrayList<>();
-
-                    // This is done in order to differentiate between emitter and sensor recipes. Without the circuit,
-                    // both components have virtually the same recipe after the inputs are melted.
-                    if (info.getLeft().name().contains("Sensor")) {
-                        fixedInputs.add(GT_Utility.getIntegratedCircuit(1));
-                    }
 
                     // Multiplies the original fluid inputs
                     for (int j = 0; j < recipe.mFluidInputs.length; j++) {
@@ -141,11 +137,12 @@ public class ComponentAssemblyLineRecipeLoader {
                             }
                         }
                     }
-
                     fixedInputs = compactItems(fixedInputs, info.getRight());
                     replaceIntoFluids(fixedInputs, fixedFluids, 128);
                     // If it overflows then it tries REALLY HARD to cram as much stuff into there.
-                    if (fixedInputs.size() > 9) replaceIntoFluids(fixedInputs, fixedFluids, 32);
+                    if (fixedInputs.size() > (addProgrammedCircuit ? 8 : 9))
+                        replaceIntoFluids(fixedInputs, fixedFluids, 32);
+                    if (addProgrammedCircuit) fixedInputs.add(GT_Utility.getIntegratedCircuit(componentCircuit));
                     MyRecipeAdder.instance.addComponentAssemblyLineRecipe(
                             fixedInputs.toArray(new ItemStack[0]),
                             fixedFluids.toArray(new FluidStack[0]),
@@ -156,17 +153,6 @@ public class ComponentAssemblyLineRecipeLoader {
                 }
             }
         });
-    }
-    /**
-     * Returns {@code true} if the {@code ItemStack} is able to be compacted
-     * into its respective gear/wire/etc.
-     * */
-    private static boolean isCompactable(ItemStack toCompact) {
-        ItemData data = GT_OreDictUnificator.getAssociation(toCompact);
-        return data != null
-                && conversion.containsKey(data.mPrefix)
-                && conversion.get(data.mPrefix) != null
-                && GT_OreDictUnificator.get(conversion.get(data.mPrefix), data.mMaterial.mMaterial, 1) != null;
     }
 
     private static void replaceIntoFluids(List<ItemStack> inputs, List<FluidStack> fluidOutputs, int threshold) {
@@ -246,6 +232,9 @@ public class ComponentAssemblyLineRecipeLoader {
 
             // Prevents things like AnyCopper or AnyIron from messing the search up.
             if (strippedOreDict.contains("Any")) continue;
+            if (strippedOreDict.contains("PTMEG"))
+                return FluidRegistry.getFluidStack(
+                        "molten.silicone", (int) (orePrefix.mMaterialAmount / (GT_Values.M / 144)) * input.stackSize);
             return FluidRegistry.getFluidStack(
                     "molten." + strippedOreDict.toLowerCase(),
                     (int) (orePrefix.mMaterialAmount / (GT_Values.M / 144)) * input.stackSize);
@@ -285,16 +274,21 @@ public class ComponentAssemblyLineRecipeLoader {
             int totalItems = totals.get(itemstack);
             ItemData data = GT_OreDictUnificator.getAssociation(itemstack);
             boolean isCompacted = false;
-            if (data != null) {
-                if (data.mPrefix == OrePrefixes.circuit) {
-                    stacks.addAll(getWrappedCircuits(itemstack, totalItems));
+
+            for (String dict : Arrays.stream(OreDictionary.getOreIDs(itemstack))
+                    .mapToObj(OreDictionary::getOreName)
+                    .collect(Collectors.toList())) {
+                if (dict.startsWith("circuit")) {
+                    stacks.addAll(getWrappedCircuits(itemstack, totalItems, dict));
                     isCompacted = true;
-                } else {
-                    OrePrefixes goInto = conversion.get(data.mPrefix);
-                    if (goInto != null && GT_OreDictUnificator.get(goInto, data.mMaterial.mMaterial, 1) != null) {
-                        compactorHelper(data, goInto, stacks, totalItems);
-                        isCompacted = true;
-                    }
+                }
+            }
+
+            if (data != null && !isCompacted) {
+                OrePrefixes goInto = conversion.get(data.mPrefix);
+                if (goInto != null && GT_OreDictUnificator.get(goInto, data.mMaterial.mMaterial, 1) != null) {
+                    compactorHelper(data, goInto, stacks, totalItems);
+                    isCompacted = true;
                 }
             }
             if (GT_Utility.areStacksEqual(itemstack, ItemList.Gravistar.get(1)) && tier >= 9) {
@@ -321,40 +315,41 @@ public class ComponentAssemblyLineRecipeLoader {
         allAssemblerRecipes = new LinkedHashMap<>();
         allAsslineRecipes = new LinkedHashMap<>();
         for (String compPrefix : compPrefixes) {
-
             for (int t = 1; t <= 12; t++) {
                 String vName = GT_Values.VN[t];
                 ItemList currentComponent = ItemList.valueOf(compPrefix + vName);
                 if (currentComponent.hasBeenSet()) {
                     if (t < 6) {
-                        allAssemblerRecipes.put(
-                                GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList.stream()
-                                        .filter(rec -> rec.mOutputs[0].isItemEqual(currentComponent.get(1)))
-                                        .collect(Collectors.toList()),
-                                Pair.of(currentComponent, t));
+                        ArrayList<GT_Recipe> foundRecipes = new ArrayList<>();
+                        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList) {
+                            if (GT_Utility.areStacksEqual(currentComponent.get(1), recipe.mOutputs[0])) {
+                                foundRecipes.add(recipe);
+                            }
+                        }
+                        allAssemblerRecipes.put(foundRecipes, Pair.of(currentComponent, t));
                     } else {
-                        allAsslineRecipes.put(
-                                GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.stream()
-                                        .filter(rec -> rec.mOutput.isItemEqual(currentComponent.get(1)))
-                                        .collect(Collectors.toList()),
-                                Pair.of(currentComponent, t));
+                        ArrayList<GT_Recipe.GT_Recipe_AssemblyLine> foundRecipes = new ArrayList<>();
+                        for (GT_Recipe.GT_Recipe_AssemblyLine recipe :
+                                GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+                            if (GT_Utility.areStacksEqual(currentComponent.get(1), recipe.mOutput)) {
+                                foundRecipes.add(recipe);
+                            }
+                        }
+                        allAsslineRecipes.put(foundRecipes, Pair.of(currentComponent, t));
                     }
                 }
             }
         }
     }
 
-    private static List<ItemStack> getWrappedCircuits(ItemStack item, int total) {
+    private static List<ItemStack> getWrappedCircuits(ItemStack item, int total, String oreDict) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
-        for (ItemStack i2 : ComponentAssemblyLineMiscRecipes.CircuitToTier.keySet()) {
-            int tier = ComponentAssemblyLineMiscRecipes.CircuitToTier.get(i2);
-            if (GT_Utility.areStacksEqual(item, i2)) {
-                if (total >= 16)
-                    stacks.addAll(multiplyAndSplitIntoStacks(new ItemStack(Loaders.circuitWrap, 1, tier), total / 16));
-                else stacks.addAll(multiplyAndSplitIntoStacks(item, total));
-                break;
-            }
-        }
+        String circuitMaterial = oreDict.substring(7);
+        int tier = ComponentAssemblyLineMiscRecipes.NameToTier.get(circuitMaterial);
+        if (total >= 16)
+            stacks.addAll(multiplyAndSplitIntoStacks(new ItemStack(Loaders.circuitWrap, 1, tier), total / 16));
+        else stacks.addAll(multiplyAndSplitIntoStacks(item, total));
+
         return stacks;
     }
 }

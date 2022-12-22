@@ -15,7 +15,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.recipe.common.CI;
-import java.util.HashMap;
 import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -26,33 +25,27 @@ import org.apache.logging.log4j.Level;
 public class ComponentAssemblyLineMiscRecipes {
 
     @SuppressWarnings("deprecation")
-    public static final Materials[] circuitTierMaterials = {
-        Materials.Primitive,
-        Materials.Basic,
-        Materials.Good,
-        Materials.Advanced,
-        Materials.Data,
-        Materials.Elite,
-        Materials.Master,
-        Materials.Ultimate,
-        Materials.Superconductor,
-        Materials.Infinite,
-        Materials.Bio,
-        Materials.Nano,
-        Materials.Piko,
-        Materials.Quantum
+    public static final String[] circuitTierMaterials = {
+        "Primitive",
+        "Basic",
+        "Good",
+        "Advanced",
+        "Data",
+        "Elite",
+        "Master",
+        "Ultimate",
+        "Superconductor",
+        "Infinite",
+        "Bio",
+        "Nano",
+        "Piko",
+        "Quantum"
     };
 
-    static final HashBiMap<Materials, Integer> MatToTier = HashBiMap.create();
-
-    static final HashMap<ItemStack, Integer> CircuitToTier = new HashMap<>();
+    static final HashBiMap<String, Integer> NameToTier = HashBiMap.create();
 
     static void run() {
-        for (int i = 0; i < circuitTierMaterials.length; i++) MatToTier.put(circuitTierMaterials[i], i);
-
-        MatToTier.forEach((mat, tier) -> {
-            for (ItemStack item : mat.mMaterialItems) CircuitToTier.put(item, tier);
-        });
+        for (int i = 0; i < circuitTierMaterials.length; i++) NameToTier.put(circuitTierMaterials[i], i);
 
         generateCasingRecipes();
         generateWrapRecipes();
@@ -458,12 +451,6 @@ public class ComponentAssemblyLineMiscRecipes {
 
     @Nullable
     public static Materials getCircuitMaterial(int tier) {
-        Materials circuitMaterial;
-        try {
-            circuitMaterial = circuitTierMaterials[tier];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return null;
-        }
-        return circuitMaterial;
+        return Materials.getRealMaterial(circuitTierMaterials[tier]);
     }
 }

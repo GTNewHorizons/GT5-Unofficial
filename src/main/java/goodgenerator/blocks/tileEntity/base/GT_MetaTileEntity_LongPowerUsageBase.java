@@ -68,7 +68,8 @@ public abstract class GT_MetaTileEntity_LongPowerUsageBase<T extends GT_MetaTile
         return rEnergy;
     }
 
-    protected long getMaxInputAmps() {
+    @Override
+    public long getMaxInputAmps() {
         long rAmps = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
