@@ -540,14 +540,13 @@ public class RecipeLoader {
         GT_Values.RA.addSifterRecipe(
                 WerkstoffMaterialPool.NeutralizedUraniumFiltrate.get(OrePrefixes.dust, 1),
                 new ItemStack[] {
-                    Materials.Fluorite.getDust(1),
                     Materials.Uranium.getDust(1),
                     Materials.Uranium.getDust(1),
                     Materials.Uranium.getDust(1),
                     Materials.Uranium235.getDust(1),
                     Materials.Uranium235.getDust(1),
                 },
-                new int[] {9500, 4500, 4000, 3000, 3000, 2000},
+                new int[] {4500, 4000, 3000, 3000, 2000},
                 1000,
                 30);
 
