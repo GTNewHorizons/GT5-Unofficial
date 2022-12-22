@@ -58,7 +58,7 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Cyclotron Coil");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Cyclotron Outer Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Thermal Containment Casing");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Autocrafter Frame");
+        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Bulk Production Frame");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Cutting Factory Frame");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
         GT_LanguageManager.addStringLocalization(

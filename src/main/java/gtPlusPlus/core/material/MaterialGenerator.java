@@ -21,6 +21,7 @@ import gtPlusPlus.core.item.base.ore.BaseItemImpureDust;
 import gtPlusPlus.core.item.base.ore.BaseItemPurifiedCrushedOre;
 import gtPlusPlus.core.item.base.ore.BaseItemPurifiedDust;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
+import gtPlusPlus.core.item.base.plates.BaseItemPlateDense;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.base.rings.BaseItemRing;
 import gtPlusPlus.core.item.base.rods.BaseItemRod;
@@ -154,6 +155,7 @@ public class MaterialGenerator {
                         temp = new BaseItemScrew(matInfo);
                         temp = new BaseItemRotor(matInfo);
                         temp = new BaseItemGear(matInfo);
+                        temp = new BaseItemPlateDense(matInfo);
                     }
                 } else {
                     tempBlock = new BlockBaseModular(matInfo, BlockTypes.STANDARD);

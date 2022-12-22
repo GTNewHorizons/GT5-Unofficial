@@ -426,10 +426,11 @@ public class BaseItemComponent extends Item {
         PLASMACELL("CellPlasma", " Plasma Cell", "cellPlasma", OrePrefixes.cellPlasma),
         CELL("Cell", " Cell", "cell", OrePrefixes.cell),
         NUGGET("Nugget", " Nugget", "nugget", OrePrefixes.nugget),
-        PLATEHEAVY("HeavyPlate", "Heavy@Plate", "plateHeavy", OrePrefixes.plateDense),
+        PLATEHEAVY("HeavyPlate", "Heavy@Plate", "plateHeavy", OrePrefixes.plateQuadruple),
         SPRING("Spring", " Spring", "spring", OrePrefixes.spring),
         SMALLSPRING("SmallSpring", "Small@Spring", "springSmall", OrePrefixes.springSmall),
         FINEWIRE("FineWire", "Fine@Wire", "wireFine", OrePrefixes.wireFine),
+        PLATEDENSE("PlateDense", "Dense@Plate", "plateDense", OrePrefixes.plateDense),
         ;
 
         private String COMPONENT_NAME;

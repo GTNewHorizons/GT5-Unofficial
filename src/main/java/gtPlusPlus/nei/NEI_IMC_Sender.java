@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class NEI_IMC_Sender {
     public static void IMCSender() {
         // NEI jar is using some outdated handler names
-        sendHandler("gtpp.recipe.alloyblastsmelter", "gregtech:gt.blockmachines:810");
+        sendHandler("gtpp.recipe.alloyblastsmelter", "gregtech:gt.blockmachines:810", 1);
         sendCatalyst("gtpp.recipe.alloyblastsmelter", "gregtech:gt.blockmachines:31150");
         sendHandler("gtpp.recipe.rocketenginefuel", "gregtech:gt.blockmachines:793");
         sendHandler("gtpp.recipe.cyclotron", "gregtech:gt.blockmachines:828");
@@ -53,6 +53,9 @@ public class NEI_IMC_Sender {
         sendHandler("gtpp.recipe.treefarm", "gregtech:gt.blockmachines:836");
         sendCatalyst("gtpp.recipe.treefarm", "gregtech:gt.blockmachines:836");
 
+        sendHandler("gtpp.recipe.quantumforcesmelter", "gregtech:gt.blockmachines:31151");
+        sendCatalyst("gtpp.recipe.quantumforcesmelter", "gregtech:gt.blockmachines:31151");
+
         if (LoadedMods.AdvancedSolarPanel) {
             sendHandler("gtpp.recipe.moleculartransformer", "AdvancedSolarPanel:BlockMolecularTransformer");
             sendCatalyst("gtpp.recipe.moleculartransformer", "gregtech:gt.blockmachines:31072");
@@ -85,7 +88,6 @@ public class NEI_IMC_Sender {
 
         // overwrite yShift
         sendHandler("gtPlusPlus.nei.GT_NEI_FluidReactor", "gregtech:gt.blockmachines:998");
-
         sendHandler("gtpp.recipe.multidehydrator", "gregtech:gt.blockmachines:995");
         sendCatalyst("gtpp.recipe.multidehydrator", "gregtech:gt.blockmachines:995");
         sendRemoveCatalyst("gtpp.recipe.chemicaldehydrator", "gregtech:gt.blockmachines:995");

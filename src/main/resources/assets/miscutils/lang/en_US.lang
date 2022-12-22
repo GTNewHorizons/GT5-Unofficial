@@ -3377,3 +3377,20 @@ item.BasicGenericChemItem.14.name=Solid-Acid Catalyst
 
 //Added 30/05/22
 item.BasicGenericChemItem.15.name=Infinite Mutation Catalyst
+
+//Added 23/10/22
+miscutils.machines.QFTFluidMode=Quantum Force Transformer Fluid Output Mode
+
+//Added 16/11/22
+item.BasicGenericChemItem.16.name=Platinum Group Catalyst
+item.BasicGenericChemItem.17.name=Plastic Polymer Catalyst
+item.BasicGenericChemItem.18.name=Rubber Polymer Catalyst
+item.BasicGenericChemItem.19.name=Adhesion Promoter Catalyst
+item.BasicGenericChemItem.20.name=Tita-Tungsten Indium Catalyst
+item.BasicGenericChemItem.21.name=Radioactivity Catalyst
+item.BasicGenericChemItem.22.name=Rare-Earth Group Catalyst
+item.BasicGenericChemItem.23.name=Simple Naquadah Catalyst
+item.BasicGenericChemItem.24.name=Advanced Naquadah Catalyst
+item.BasicGenericChemItem.25.name=Raw Intelligence Catalyst
+item.BasicGenericChemItem.26.name=Ultimate Plasticizer Catalyst
+item.BasicGenericChemItem.27.name=Biological Intelligence Catalyst

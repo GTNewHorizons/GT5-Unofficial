@@ -32,3 +32,4 @@ src/main/resources/mixins.*.json
 /world
 /saves
 /asm
+/.vscode

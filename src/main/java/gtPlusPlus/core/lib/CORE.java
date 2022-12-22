@@ -209,6 +209,7 @@ public class CORE {
 
         // Multiblocks
         public static boolean enableMultiblock_AlloyBlastSmelter = true;
+        public static boolean enableMultiblock_QuantumForceTransformer = true;
         public static boolean enableMultiblock_IndustrialCentrifuge = true;
         public static boolean enableMultiblock_IndustrialCokeOven = true;
         public static boolean enableMultiblock_IndustrialElectrolyzer = true;
@@ -236,6 +237,7 @@ public class CORE {
         // Visuals
         public static boolean enableTreeFarmerParticles = true;
         public static boolean useGregtechTextures = true;
+        public static boolean enableAnimatedTextures = false;
 
         // Pollution
         public static int pollutionPerSecondMultiPackager = 40;

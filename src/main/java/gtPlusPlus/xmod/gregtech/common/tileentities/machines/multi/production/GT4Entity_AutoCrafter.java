@@ -141,7 +141,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3, true)
                 .addController("Front Center")
-                .addCasingInfo("Autocrafter Frame", 10)
+                .addCasingInfo("Bulk Production Frame", 10)
                 .addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1)
                 .addInputHatch("Any Casing", 1)

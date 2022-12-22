@@ -24,7 +24,8 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reactor Piping");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Naquadah Containment Chamber");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Tempered Arc Furnace Casing");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", ""); // Unused
+        GT_LanguageManager.addStringLocalization(
+                this.getUnlocalizedName() + ".4.name", "Quantum Force Transformer Coil Casings"); // Unused
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", ""); // Unused
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", ""); // Unused
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", ""); // Unused
@@ -40,6 +41,7 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
         GregtechItemList.Casing_Naq_Reactor_B.set(new ItemStack(this, 1, 1));
         GregtechItemList.Casing_Naq_Reactor_C.set(new ItemStack(this, 1, 2));
         GregtechItemList.Casing_Industrial_Arc_Furnace.set(new ItemStack(this, 1, 3));
+        GregtechItemList.Casing_Coil_QuantumForceTransformer.set(new ItemStack(this, 1, 4));
         GregtechItemList.Casing_Vacuum_Furnace.set(new ItemStack(this, 1, 10));
         GregtechItemList.Casing_RocketEngine.set(new ItemStack(this, 1, 11));
     }
@@ -71,7 +73,7 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
                 case 3:
                     return TexturesGtBlock.TEXTURE_METAL_PANEL_A.getIcon();
                 case 4:
-                    return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+                    return TexturesGtBlock.Casing_Coil_QFT.getIcon();
                 case 5:
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
                 case 6:

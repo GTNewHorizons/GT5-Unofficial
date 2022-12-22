@@ -1387,6 +1387,42 @@ public class ItemUtils {
         if (GT_Utility.areStacksEqual(aStack, AgriculturalChem.mGreenCatalyst, true)) {
             return true;
         }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mPlatinumGroupCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mPlasticPolymerCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mRubberPolymerCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mAdhesionPromoterCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mTitaTungstenIndiumCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mRadioactivityCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mRareEarthGroupCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mSimpleNaquadahCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mAdvancedNaquadahCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mRawIntelligenceCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mUltimatePlasticCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mBiologicalIntelligenceCatalyst, true)) {
+            return true;
+        }
         return false;
     }
 

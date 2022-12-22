@@ -267,6 +267,19 @@ public enum GregtechItemList implements GregtechItemContainer {
     Casing_BlastSmelter,
     Mega_AlloyBlastSmelter,
 
+    // Quantum Force Transformer
+    QuantumForceTransformer,
+    Casing_Coil_QuantumForceTransformer,
+    NeutronPulseManipulator,
+    CosmicFabricManipulator,
+    InfinityInfusedManipulator,
+    SpaceTimeContinuumRipper,
+    NeutronShieldingCore,
+    CosmicFabricShieldingCore,
+    InfinityInfusedShieldingCore,
+    SpaceTimeBendingCore,
+    ForceFieldGlass,
+
     // Industrial Electrolyzer
     Industrial_Electrolyzer,
     Casing_Electrolyzer,

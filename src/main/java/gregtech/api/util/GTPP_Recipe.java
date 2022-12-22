@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.*;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar.Direction;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gtPlusPlus.api.interfaces.IComparableRecipe;
 import gtPlusPlus.api.objects.Logger;
@@ -200,6 +201,27 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                         true,
                         true)
                 .useModularUI(true);
+
+        public static final GT_Recipe_Map sQuantumForceTransformerRecipes = new GT_Recipe_Map_LargeNEI(
+                        new HashSet<>(20),
+                        "gtpp.recipe.quantumforcesmelter",
+                        "Quantum Force Transformer",
+                        null,
+                        RES_PATH_GUI + "basicmachines/LCRNEI",
+                        6,
+                        6,
+                        1,
+                        0,
+                        1,
+                        "Tier: ",
+                        1,
+                        E,
+                        true,
+                        true)
+                .useModularUI(true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, Direction.RIGHT)
+                .setUsualFluidInputCount(6)
+                .setUsualFluidOutputCount(6);
 
         public static final GT_Recipe_Map sGeoThermalFuels = new GT_Recipe_Map(
                         new HashSet<>(10),
@@ -724,6 +746,7 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                 .setProgressBar(GT_UITextures.PROGRESSBAR_MIXER, ProgressBar.Direction.CIRCULAR_CW)
                 .setUsualFluidInputCount(6)
                 .setUsualFluidOutputCount(6);
+
         public static final GT_Recipe_Map sMultiblockChemicalDehydratorRecipes = new GT_Recipe_Map_LargeNEI(
                         new HashSet<>(2000),
                         "gtpp.recipe.multidehydrator",

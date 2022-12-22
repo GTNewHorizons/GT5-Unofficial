@@ -595,6 +595,10 @@ public class ConfigHandler {
                         pollutionReleasedByTierGeothermalGenerator,
                         "coefficient applied to the base rate of the single block geothermal engines based on its tier (first is tier 0 aka ULV)")
                 .getDoubleList();
+
+        // Visual
+        enableAnimatedTextures = config.getBoolean(
+                "enableAnimatedTextures", "visual", true, "Enables Animated GT++ Textures, Requires Restart");
         config.save();
     }
 }

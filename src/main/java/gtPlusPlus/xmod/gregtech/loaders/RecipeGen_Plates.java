@@ -38,11 +38,13 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         final ItemStack ingotStackOne = material.getIngot(1);
         final ItemStack ingotStackTwo = material.getIngot(2);
         final ItemStack ingotStackThree = material.getIngot(3);
+        final ItemStack ingotStackNine = material.getIngot(9);
         final ItemStack shape_Mold = ItemList.Shape_Mold_Plate.get(0);
         final ItemStack plate_Single = material.getPlate(1);
         final ItemStack plate_SingleTwo = material.getPlate(2);
         final ItemStack plate_SingleNine = material.getPlate(9);
         final ItemStack plate_Double = material.getPlateDouble(1);
+        final ItemStack plate_Dense = material.getPlateDense(1);
         final ItemStack block = material.getBlock(1);
 
         Logger.WARNING("Generating Plate recipes for " + material.getLocalizedName());
@@ -131,6 +133,29 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                 Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Success");
             } else {
                 Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Failed");
+            }
+
+        // Making Dense Plates
+        if (ItemUtils.checkForInvalidItems(ingotStackNine) && ItemUtils.checkForInvalidItems(plate_Dense))
+            if (addBenderRecipe(
+                    ingotStackNine,
+                    plate_Dense,
+                    (int) Math.max(material.getMass() * 2L, 1L),
+                    material.vVoltageMultiplier)) {
+                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
+            }
+
+        if (ItemUtils.checkForInvalidItems(plate_SingleNine) && ItemUtils.checkForInvalidItems(plate_Dense))
+            if (addBenderRecipe(
+                    plate_SingleNine,
+                    plate_Double,
+                    (int) Math.max(material.getMass() * 2L, 1L),
+                    material.vVoltageMultiplier)) {
+                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
             }
     }
 

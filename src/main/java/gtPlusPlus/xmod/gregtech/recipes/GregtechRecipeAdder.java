@@ -674,6 +674,59 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
     @Override
+    public boolean addQuantumTransformerRecipe(
+            ItemStack[] aInput,
+            FluidStack[] aFluidInput,
+            FluidStack[] aFluidOutput,
+            ItemStack[] aOutputStack,
+            int[] aChances,
+            int aDuration,
+            int aEUt,
+            int aSpecialValue) {
+        if (aInput == null) {
+            aInput = new ItemStack[0];
+        }
+
+        if (aFluidInput == null) {
+            aFluidInput = new FluidStack[0];
+        }
+
+        // if (aInput.length + aFluidInput.length < 1) {
+        //    return false;
+        // }
+
+        if (aOutputStack == null) {
+            aOutputStack = new ItemStack[0];
+        }
+
+        if (aFluidOutput == null) {
+            aFluidOutput = new FluidStack[0];
+        }
+
+        // if (aOutputStack.length + aFluidOutput.length < 4) {
+        //    return false;
+        // }
+
+        // if (aChances == null || aChances.length != aOutputStack.length + aFluidOutput.length) {
+        //    return false;
+        // }
+
+        GTPP_Recipe.GTPP_Recipe_Map.sQuantumForceTransformerRecipes.add(new GT_Recipe(
+                false,
+                aInput,
+                aOutputStack,
+                null,
+                aChances,
+                aFluidInput,
+                aFluidOutput,
+                aDuration,
+                aEUt,
+                aSpecialValue));
+
+        return true;
+    }
+
+    @Override
     public boolean addLFTRRecipe(
             final ItemStack aInput1,
             final FluidStack aInput2,

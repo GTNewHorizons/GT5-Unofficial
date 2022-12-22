@@ -1170,6 +1170,10 @@ public class Material {
         return getComponentByPrefix(OrePrefixes.plateDouble, stacksize);
     }
 
+    public final ItemStack getPlateDense(final int stacksize) {
+        return getComponentByPrefix(OrePrefixes.plateDense, stacksize);
+    }
+
     public final ItemStack getGear(final int stacksize) {
         return getComponentByPrefix(OrePrefixes.gearGt, stacksize);
     }
