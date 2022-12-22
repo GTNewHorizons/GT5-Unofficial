@@ -20,7 +20,4 @@ repositories {
             includeGroup 'curse.maven'
         }
     }
-    maven {
-        url 'https://jitpack.io'
-    }
 }
