@@ -4956,7 +4956,7 @@ public class DreamCraftRecipeLoader {
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 7L)
                 },
-                new FluidStack[] {fluid_0, fluid_1, fluid_2},
+                new FluidStack[] {fluid_0, fluid_1},
                 ItemList.Sensor_UHV.get(1L),
                 crafting_time_in_ticks,
                 crafting_eu_per_tick);
@@ -4987,7 +4987,7 @@ public class DreamCraftRecipeLoader {
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 8L)
                 },
-                new FluidStack[] {fluid_0, fluid_1, fluid_2},
+                new FluidStack[] {fluid_0, fluid_1},
                 ItemList.Field_Generator_UHV.get(1L),
                 crafting_time_in_ticks,
                 crafting_eu_per_tick);
@@ -5448,7 +5448,7 @@ public class DreamCraftRecipeLoader {
                 new Object[] {
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 6L),
-                    ItemList.Gravistar.get(32),
+                    ItemList.Gravistar.get(16L),
                     ItemList.Emitter_UIV.get(4L),
                     new Object[] {OrePrefixes.circuit.get(Materials.Piko), 4},
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
@@ -5691,7 +5691,7 @@ public class DreamCraftRecipeLoader {
                 new Object[] {
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 6L),
-                    ItemList.Gravistar.get(8L),
+                    ItemList.Gravistar.get(32L),
                     ItemList.Emitter_UMV.get(4L),
                     new Object[] {OrePrefixes.circuit.get(Materials.Quantum), 4},
                     GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
