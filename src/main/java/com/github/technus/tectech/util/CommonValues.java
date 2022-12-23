@@ -32,7 +32,15 @@ public final class CommonValues {
     public static final long[] V = GT_Values.V;
 
     public static final String[] EOH_TIER_FANCY_NAMES = {
-        "Crude", "Primitive", "Stable", "Advanced", "Superb", "Exotic", "Perfect", "Tipler", EnumChatFormatting.BOLD + "Gallifreyan"
+        "Crude",
+        "Primitive",
+        "Stable",
+        "Advanced",
+        "Superb",
+        "Exotic",
+        "Perfect",
+        "Tipler",
+        EnumChatFormatting.BOLD + "Gallifreyan"
     };
 
     private CommonValues() {}

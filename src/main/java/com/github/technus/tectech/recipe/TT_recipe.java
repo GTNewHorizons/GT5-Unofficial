@@ -262,9 +262,10 @@ public class TT_recipe extends GT_Recipe {
                         true,
                         false) // Custom NEI handler means this must be false.
                 .setProgressBar(GT_UITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
-                .setProgressBarPos(78+1, 24+2)
+                .setProgressBarPos(78 + 1, 24 + 2)
                 .setUsualFluidOutputCount(18)
-                .setLogoPos(10, 10).setNEIBackgroundSize(172, 82 + (9 + 10) * 18);
+                .setLogoPos(10, 10)
+                .setNEIBackgroundSize(172, 82 + (9 + 10) * 18);
 
         public static GT_Recipe_MapTT sResearchableFakeRecipes = new GT_Recipe_MapTT(
                 new HashSet<>(32),

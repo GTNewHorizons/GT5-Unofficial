@@ -3,8 +3,6 @@ package com.github.technus.tectech.nei;
 import codechicken.nei.api.IConfigureNEI;
 import com.github.technus.tectech.recipe.TT_recipe;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class NEI_TT_Config implements IConfigureNEI { // must be NEI*Config
     public static boolean sIsAdded = true;
@@ -32,5 +30,4 @@ public class NEI_TT_Config implements IConfigureNEI { // must be NEI*Config
     public String getVersion() {
         return "(1.0)";
     }
-
 }

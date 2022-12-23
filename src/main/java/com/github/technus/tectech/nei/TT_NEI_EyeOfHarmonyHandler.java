@@ -124,10 +124,7 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
         drawLine(index++, "Time: " + formatNumbers(recipe.getRecipeTimeInTicks() / 20) + " secs");
         drawLine(index++, "Hydrogen: " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
         drawLine(index++, "Helium: " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
-        drawLine(
-                index++,
-                "Spacetime Tier: "
-                        + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
+        drawLine(index++, "Spacetime Tier: " + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
         drawLine(index++, "EU Output: " + formatNumbers(recipe.getEUOutput()) + " EU");
         drawLine(index++, "EU Input: " + formatNumbers(recipe.getEUStartCost()) + " EU");
         drawLine(index++, "Base Recipe Chance: " + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");

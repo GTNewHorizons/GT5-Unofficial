@@ -34,23 +34,20 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import java.util.*;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.tuple.Pair;
-
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import gregtech.api.render.TextureFactory;
+import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -1768,8 +1765,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private void outputFailedChance() {
         // todo Replace with proper fluid once added to GT.
-        int exoticMaterialOutputAmount = (int) ((successChance) * 1440 * (getHydrogenStored() + getHeliumStored()) / 1_000_000_000.0);
-        mOutputFluids = new FluidStack[] { Materials.Infinity.getFluid(exoticMaterialOutputAmount)};
+        int exoticMaterialOutputAmount =
+                (int) ((successChance) * 1440 * (getHydrogenStored() + getHeliumStored()) / 1_000_000_000.0);
+        mOutputFluids = new FluidStack[] {Materials.Infinity.getFluid(exoticMaterialOutputAmount)};
         super.outputAfterRecipe_EM();
     }
 
@@ -1876,8 +1874,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         str.add("Time Dilation Field Grade: " + BLUE + timeAccelerationFieldMetadata);
         str.add("Stabilisation Field Grade: " + BLUE + stabilisationFieldMetadata);
         str.add(GOLD + "----------------- Internal Fluids Stored ----------------");
-        validFluidMap.forEach((key, value) ->
-                str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumbers(value)));
+        validFluidMap.forEach(
+                (key, value) -> str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumbers(value)));
         str.add(GOLD + "---------------------- Other Stats ---------------");
         if (recipeRunning) {
             str.add("Recipe Success Chance: " + formatNumbers(100 * successChance) + "%");
@@ -1885,7 +1883,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             str.add("EU Output: " + formatNumbers(euOutput));
             if (mOutputFluids.length > 0) {
                 // Star matter is always the last element in the array.
-                str.add("Estimated Star Matter Output: " + formatNumbers(mOutputFluids[mOutputFluids.length-1].amount));
+                str.add("Estimated Star Matter Output: "
+                        + formatNumbers(mOutputFluids[mOutputFluids.length - 1].amount));
             }
             str.add(GOLD + "-----------------------------------------------------");
         }
@@ -2051,5 +2050,4 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         return false;
         //spotless:on
     }
-
 }

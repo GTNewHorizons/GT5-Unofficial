@@ -125,7 +125,8 @@ public class EyeOfHarmonyRecipe {
                 // EU is split between Plasma output and EU output, hence /2.
                 // recipeEnergyEfficiency > 1 determines if this recipe makes more EU than you put in when you sum the
                 // EU in the plasma + the EU output.
-                fluidStack.amount = (int) ((recipeEnergyEfficiency * 0.01) * this.euOutput / totalEUSumOfIndividualPlasmaFuels);
+                fluidStack.amount =
+                        (int) ((recipeEnergyEfficiency * 0.01) * this.euOutput / totalEUSumOfIndividualPlasmaFuels);
             } else {
                 // Hopefully won't happen but just in case.
                 fluidStack.amount = Integer.MAX_VALUE;
@@ -138,9 +139,9 @@ public class EyeOfHarmonyRecipe {
             fluidStackArrayList.add(Materials.Infinity.getMolten((long) (0.1 * fluidStackArrayList.get(0).amount)));
         }
 
-//         Sort fluids by stack size.
-//        fluidStackArrayList.sort(Comparator.comparingLong((FluidStack fluid) -> fluid.amount));
-//        Collections.reverse(fluidStackArrayList);
+        //         Sort fluids by stack size.
+        //        fluidStackArrayList.sort(Comparator.comparingLong((FluidStack fluid) -> fluid.amount));
+        //        Collections.reverse(fluidStackArrayList);
 
         outputFluids = fluidStackArrayList;
         // End fluid processing.
@@ -236,7 +237,8 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
-    private static void processHelper(HashMapHelper outputMap, Materials material, double mainMultiplier, double probability) {
+    private static void processHelper(
+            HashMapHelper outputMap, Materials material, double mainMultiplier, double probability) {
         outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
 
         int index = 0;
@@ -313,7 +315,7 @@ public class EyeOfHarmonyRecipe {
             try {
                 String plasmaName = plasma.getFluid().getUnlocalizedName();
                 total += plasmaEnergyMap.get(plasmaName) * plasma.amount;
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -348,8 +350,9 @@ public class EyeOfHarmonyRecipe {
 
     private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<String, Long>() {
         {
-            validPlasmas.forEach((material -> put(
-                    material.getPlasma(1).getFluid().getUnlocalizedName(), (long) (getPlasmaFuelValueInEUPerLiterFromMaterial(material) * getMaxPlasmaTurbineEfficiency()))));
+            validPlasmas.forEach(
+                    (material -> put(material.getPlasma(1).getFluid().getUnlocalizedName(), (long)
+                            (getPlasmaFuelValueInEUPerLiterFromMaterial(material) * getMaxPlasmaTurbineEfficiency()))));
         }
     };
 }
