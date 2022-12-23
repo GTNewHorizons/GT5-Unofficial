@@ -265,6 +265,8 @@ public class GT_UITextures {
     public static final AdaptableUITexture PICTURE_SCREEN_BLACK =
             AdaptableUITexture.of(MODID, "gui/picture/screen_black", 16, 16, 2);
 
+    public static final UITexture PICTURE_RADIATION_WARNING =
+            UITexture.fullImage(MODID, "gui/picture/radiation_warning");
     public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT =
             UITexture.fullImage(MODID, "gui/picture/gt_logo_17x17_transparent");
     public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY =

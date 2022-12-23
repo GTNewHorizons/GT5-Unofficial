@@ -26,6 +26,8 @@ public class IMCForNEI {
         sendCatalyst("gt.recipe.nanoforge", "gregtech:gt.blockmachines:357");
         sendHandler("gt.recipe.pcbfactory", "gregtech:gt.blockmachines:356");
         sendCatalyst("gt.recipe.pcbfactory", "gregtech:gt.blockmachines:356");
+        sendHandler("gt.recipe.ic2nuke", "IC2:blockGenerator:5");
+        sendCatalyst("gt.recipe.ic2nuke", "IC2:blockGenerator:5");
     }
 
     private static void sendHandler(String aName, String aBlock, int aMaxRecipesPerPage) {
