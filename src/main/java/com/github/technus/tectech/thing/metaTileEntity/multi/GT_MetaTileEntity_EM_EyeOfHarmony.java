@@ -45,6 +45,14 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import gregtech.api.render.TextureFactory;
+import org.lwjgl.opengl.GL11;
+
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable, IGlobalWirelessEnergy {
@@ -1959,4 +1967,89 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         super.loadNBTData(aNBT);
     }
+
+    @SideOnly(Side.CLIENT)
+    private void renderQuad(
+            double x, double y, double z, int side, double minU, double maxU, double minV, double maxV) {
+        // spotless:off
+        Tessellator tes = Tessellator.instance;
+        tes.addVertexWithUV(x + 3 - 0.5, y    , z + 7, maxU, maxV);
+        tes.addVertexWithUV(x + 3 - 0.5, y + 4, z + 7, maxU, minV);
+        tes.addVertexWithUV(x - 3 + 0.5, y + 4, z + 7, minU, minV);
+        tes.addVertexWithUV(x - 3 + 0.5, y    , z + 7, minU, maxV);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean renderInWorld(IBlockAccess aWorld, int x, int y, int z, Block block, RenderBlocks renderer) {
+        Tessellator tes = Tessellator.instance;
+        IIcon texture = Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        float size = 2.0f;
+        //if (getBaseMetaTileEntity().isActive()) {
+        if (true) {
+            double minU = texture.getMinU();
+            double maxU = texture.getMaxU();
+            double minV = texture.getMinV();
+            double maxV = texture.getMaxV();
+            double xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+            double zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+            GL11.glPushMatrix();
+            GL11.glDisable(GL11.GL_CULL_FACE);
+            GL11.glDisable(GL11.GL_ALPHA_TEST);
+            GL11.glEnable(GL11.GL_BLEND);
+            tes.setColorOpaque_F(1f, 1f, 1f);
+            //   5---6
+            //  /|  /|    |  /
+            // 2-4-1 7    y z
+            // |/  |/     |/
+            // 3---0      0---x---
+
+            //Add the rendering calls here (Can and should use helper functions that do the vertex calls)
+
+            double X[] = {x + xOffset - 0.5 - size, x + xOffset - 0.5 - size, x + xOffset + 0.5 + size, x + xOffset + 0.5 + size,
+                         x + xOffset + 0.5 + size, x + xOffset + 0.5 + size, x + xOffset - 0.5 - size, x + xOffset - 0.5 - size};
+            double Y[] = {y + 0.5 + size, y - 0.5 - size, y - 0.5 - size, y + 0.5 + size,
+                         y + 0.5 + size, y - 0.5 - size, y - 0.5 - size, y + 0.5 + size};
+            double Z[] = {z + zOffset + 0.5 + size, z + zOffset + 0.5 + size, z + zOffset + 0.5 + size, z + zOffset + 0.5 + size,
+                         z + zOffset - 0.5 - size, z + zOffset - 0.5 - size, z + zOffset - 0.5 - size, z + zOffset - 0.5 - size};
+            tes.addVertexWithUV(X[0], Y[0], Z[0], maxU, maxV);
+            tes.addVertexWithUV(X[1], Y[1], Z[1], maxU, minV);
+            tes.addVertexWithUV(X[2], Y[2], Z[2], minU, minV);
+            tes.addVertexWithUV(X[3], Y[3], Z[3], minU, maxV);
+
+            tes.addVertexWithUV(X[7], Y[7], Z[7], maxU, maxV);
+            tes.addVertexWithUV(X[6], Y[6], Z[6], maxU, minV);
+            tes.addVertexWithUV(X[1], Y[1], Z[1], minU, minV);
+            tes.addVertexWithUV(X[0], Y[0], Z[0], minU, maxV);
+
+            tes.addVertexWithUV(X[4], Y[4], Z[4], maxU, maxV);
+            tes.addVertexWithUV(X[5], Y[5], Z[5], maxU, minV);
+            tes.addVertexWithUV(X[6], Y[6], Z[6], minU, minV);
+            tes.addVertexWithUV(X[7], Y[7], Z[7], minU, maxV);
+
+            tes.addVertexWithUV(X[3], Y[3], Z[3], maxU, maxV);
+            tes.addVertexWithUV(X[2], Y[2], Z[2], maxU, minV);
+            tes.addVertexWithUV(X[5], Y[5], Z[5], minU, minV);
+            tes.addVertexWithUV(X[4], Y[4], Z[4], minU, maxV);
+
+            tes.addVertexWithUV(X[1], Y[1], Z[1], maxU, maxV);
+            tes.addVertexWithUV(X[6], Y[6], Z[6], maxU, minV);
+            tes.addVertexWithUV(X[5], Y[5], Z[5], minU, minV);
+            tes.addVertexWithUV(X[2], Y[2], Z[2], minU, maxV);
+
+            tes.addVertexWithUV(X[7], Y[7], Z[7], maxU, maxV);
+            tes.addVertexWithUV(X[0], Y[0], Z[0], maxU, minV);
+            tes.addVertexWithUV(X[3], Y[3], Z[3], minU, minV);
+            tes.addVertexWithUV(X[4], Y[4], Z[4], minU, maxV);
+
+            // ----------------------------------------------
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
+            GL11.glEnable(GL11.GL_CULL_FACE);
+            GL11.glPopMatrix();
+        }
+        return false;
+        //spotless:on
+    }
+
 }
