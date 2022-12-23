@@ -19,6 +19,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.commands.EMList
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData;
+import com.github.technus.tectech.nei.IMCForNEI;
 import com.github.technus.tectech.proxy.CommonProxy;
 import com.github.technus.tectech.util.XSTR;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -209,6 +210,7 @@ public class TecTech {
 
         MainLoader.load(definitionsRegistry);
         MainLoader.addAfterGregTechPostLoadRunner();
+        IMCForNEI.IMCSender();
     }
 
     @Mod.EventHandler
