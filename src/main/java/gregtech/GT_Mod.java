@@ -368,6 +368,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_BlockResistanceLoader().run();
         new GT_RecyclerBlacklistLoader().run();
         new GT_MinableRegistrator().run();
+        new GT_FakeRecipeLoader().run();
         new GT_MachineRecipeLoader().run();
         new GT_ScrapboxDropLoader().run();
         new GT_CropLoader().run();
