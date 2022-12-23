@@ -3368,7 +3368,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             int heatStep,
             int heatMultiplier,
             int requiredPulses) {
-        return GT_Recipe.GT_Recipe_Map.sIC2BreedingFakeRecipe.addFakeRecipe(
+        return GT_Recipe.GT_Recipe_Map.sIC2NuclearFakeRecipe.addFakeRecipe(
                 input,
                 output,
                 reflector ? "Neutron reflecting Breeder" : "Heat neutral Breeder",
@@ -3385,7 +3385,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         // don't ask, just accept
         int pulses = aCells / 2 + 1;
         float nukePowerMult = 5.0f * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear");
-        return GT_Recipe.GT_Recipe_Map.sIC2BreedingFakeRecipe.addFakeRecipe(
+        return GT_Recipe.GT_Recipe_Map.sIC2NuclearFakeRecipe.addFakeRecipe(
                 input,
                 output,
                 aMox ? "MOX Model" : "Uranium Model",

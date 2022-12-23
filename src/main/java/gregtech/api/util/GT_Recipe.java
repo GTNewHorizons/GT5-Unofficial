@@ -2479,7 +2479,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setUsualFluidOutputCount(0)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
 
-        public static final GT_Recipe_Map_IC2NuclearFake sIC2BreedingFakeRecipe = new GT_Recipe_Map_IC2NuclearFake();
+        public static final GT_Recipe_Map_IC2NuclearFake sIC2NuclearFakeRecipe = new GT_Recipe_Map_IC2NuclearFake();
 
         /**
          * HashMap of Recipes based on their Items
