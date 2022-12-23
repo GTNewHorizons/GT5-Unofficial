@@ -1,34 +1,26 @@
 package com.github.technus.tectech.nei;
 
-import appeng.core.localization.GuiColors;
+import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
+import static gregtech.api.util.GT_Utility.formatNumbers;
+
 import appeng.util.ReadableNumberConverter;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
-import com.github.technus.tectech.util.ItemStackLong;
-import com.gtnewhorizons.modularui.api.GlStateManager;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gregtech.nei.GT_NEI_DefaultHandler;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-
-import java.util.List;
-
-import static com.github.technus.tectech.Reference.MODID;
-import static gregtech.api.util.GT_Utility.formatNumbers;
 
 public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
 
@@ -46,15 +38,14 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
         }
     }
 
-
     @Override
     public TemplateRecipeHandler newInstance() {
         return new TT_NEI_EyeOfHarmonyHandler(this.mRecipeMap);
     }
 
     @Override
-    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currentToolTip, int aRecipeIndex) {
-        super.handleItemTooltip(gui, aStack, currentToolTip, aRecipeIndex);
+    public List<String> handleItemTooltip(
+            GuiRecipe<?> gui, ItemStack aStack, List<String> currentToolTip, int aRecipeIndex) {
 
         if (aStack == null) {
             return currentToolTip;
@@ -70,10 +61,14 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
 
             if (percentage != -1.0) {
                 currentToolTip.add(EnumChatFormatting.GRAY + "Percentage of Solid Mass: " + percentage + "%");
-                currentToolTip.add(EnumChatFormatting.GRAY + "Item Count: " + formatNumbers(currentRecipe.getItemStackToTrueStackSizeMap().get(aStack)));
+                currentToolTip.add(EnumChatFormatting.GRAY + "Item Count: "
+                        + formatNumbers(
+                                currentRecipe.getItemStackToTrueStackSizeMap().get(aStack)));
             }
         }
 
+        // So elements are displayed at bottom, call super method after.
+        super.handleItemTooltip(gui, aStack, currentToolTip, aRecipeIndex);
         return currentToolTip;
     }
 
@@ -85,13 +80,11 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
             EyeOfHarmonyRecipe EOHRecipe = (EyeOfHarmonyRecipe) recipe.mRecipe.mSpecialItems;
 
             if (EOHRecipe.getItemStackToTrueStackSizeMap().containsKey(stack.item)) {
-                drawOverlayForStack((FixedPositionedStack) stack, EOHRecipe.getItemStackToTrueStackSizeMap().get(stack.item));
+                drawOverlayForStack(
+                        (FixedPositionedStack) stack,
+                        EOHRecipe.getItemStackToTrueStackSizeMap().get(stack.item));
             }
         }
-//        for (PositionedStack stack : recipe.mOutputs) {
-//            if (!(stack instanceof FixedPositionedStack)) continue;
-//            drawOverlayForStack((FixedPositionedStack) stack);
-//        }
     }
 
     protected void drawOverlayForStack(FixedPositionedStack stack, long stackSize) {
@@ -121,5 +114,29 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
         super.drawOverlayForStack(stack);
     }
 
-}
+    @Override
+    public void drawExtras(int aRecipeIndex) {
+        GT_NEI_DefaultHandler.CachedDefaultRecipe cachedRecipe =
+                ((GT_NEI_DefaultHandler.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex));
+        EyeOfHarmonyRecipe recipe = ((EyeOfHarmonyRecipe) cachedRecipe.mRecipe.mSpecialItems);
 
+        int index = 0;
+        drawLine(index++, "Time: " + formatNumbers(recipe.getRecipeTimeInTicks() / 20) + " secs");
+        drawLine(index++, "Hydrogen: " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
+        drawLine(index++, "Helium: " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
+        drawLine(
+                index++,
+                "Spacetime Tier: "
+                        + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
+        drawLine(index++, "EU Output: " + formatNumbers(recipe.getEUOutput()) + " EU");
+        drawLine(index++, "EU Input: " + formatNumbers(recipe.getEUStartCost()) + " EU");
+        drawLine(index++, "Base Recipe Chance: " + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
+        drawLine(index, "Recipe Energy Efficiency: " + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
+        drawOverlays(cachedRecipe);
+    }
+
+    @Override
+    protected void drawLine(int lineNumber, String line) {
+        drawText(4, getDescriptionYOffset() + 30 + lineNumber * 9, line, 0xFF000000);
+    }
+}

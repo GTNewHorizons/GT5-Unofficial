@@ -1,6 +1,7 @@
 package com.github.technus.tectech.recipe;
 
 import static com.github.technus.tectech.recipe.TT_recipe.GT_Recipe_MapTT.sEyeofHarmonyRecipes;
+import static java.lang.Math.pow;
 
 import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.math.LongMath;
@@ -16,7 +17,7 @@ import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 
 public class EyeOfHarmonyRecipeStorage {
 
-    private static final long BILLION = LongMath.pow(10, 9);
+    public static final long BILLION = LongMath.pow(10, 9);
 
     // Map is unique so this is fine.
     HashMap<Block, String> blocksMapInverted = new HashMap<Block, String>() {
@@ -39,19 +40,15 @@ public class EyeOfHarmonyRecipeStorage {
                             new EyeOfHarmonyRecipe(
                                     GT5OreLayerHelper.dimToOreWrapper.get(dimAbbreviation),
                                     GT5OreSmallHelper.dimToSmallOreWrapper.get(dimAbbreviation),
-                                    0.5 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
-                                    100,
-                                    100, // todo: DEBUG ONLY
-
-                                    //                                    BILLION *
-                                    // (blockDimensionDisplay.getDimensionRocketTier() + 1),
-                                    //                                    BILLION *
-                                    // (blockDimensionDisplay.getDimensionRocketTier() + 1),
-                                    //                                    36_000L,
-                                    2000L, // todo: debug only
+                                    0.6 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
+                                    //                                    100,
+                                    //                                    100, // todo: DEBUG ONLY
+                                    BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                                    BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                                    (long) (18_000L * pow(1.4, blockDimensionDisplay.getDimensionRocketTier())),
+                                    //                                    2000L, // todo: debug only
                                     blockDimensionDisplay.getDimensionRocketTier(),
                                     blockDimensionDisplay,
-                                    0,
                                     1.0 - blockDimensionDisplay.getDimensionRocketTier() / 10.0));
                 } catch (Exception e) {
                     e.printStackTrace();

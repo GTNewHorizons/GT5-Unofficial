@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
@@ -36,7 +37,7 @@ public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
         for (int i = 0; i < maxBlockTier; i++) {
             GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + i + ".name",
-                    EOH_TIER_FANCY_NAMES[i] + " Stabilisation Field Generator");
+                    EOH_TIER_FANCY_NAMES[i] + EnumChatFormatting.RESET + " Stabilisation Field Generator");
         }
 
         CustomItemList.StabilisationFieldGeneratorTier0.set(new ItemStack(this, 1, 0));

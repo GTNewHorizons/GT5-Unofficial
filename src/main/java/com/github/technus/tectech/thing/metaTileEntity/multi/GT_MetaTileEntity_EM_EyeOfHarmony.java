@@ -6,6 +6,7 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 import static java.lang.Math.*;
 import static net.minecraft.util.EnumChatFormatting.*;
 
@@ -1531,14 +1532,14 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Spacetime Manipulator")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
-                .addInfo("Creates a pocket of spacetime that is bigger on the inside using")
-                .addInfo("transdimensional engineering. Certified Time Lord regulation compliant.")
-                .addInfo("This multi outputs too much EU to be handled with conventional means.")
-                .addInfo("All EU requirements are handled directly by your wireless EU network.")
+                .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
+                .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
+                .addInfo("to be handled with conventional means. All EU requirements are handled directly by your")
+                .addInfo("your wireless EU network.")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
-                .addInfo("This multiblock will constantly consume hydrogen and helium when it is")
-                .addInfo("not running. It will store this internally, you can see the totals by")
-                .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + "9" + GRAY + " tiers")
+                .addInfo("This multiblock will constantly consume hydrogen and helium when it is not running a")
+                .addInfo("recipe as fast as it can. It will store this internally, you can see the totals by")
+                .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + 9 + GRAY + " tiers")
                 .addInfo("each. They are as follows and have the associated effects on the multi.")
                 .addInfo(BLUE + "Spacetime Compression Field Generator:")
                 .addInfo("- The tier of this block determines what recipes can be run. If the multiblocks")
@@ -1557,7 +1558,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("  Decreases the yield of a recipe by " + RED + "5%" + GRAY + " per tier (additive). ")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("Computation/s provided to the multiblock can increase the chance by up to " + RED
-                        + GT_Utility.formatNumbers(maxPercentageChanceGainFromComputationPerSecond * 100) + GRAY
+                        + formatNumbers(maxPercentageChanceGainFromComputationPerSecond * 100) + GRAY
                         + "%.")
                 .addInfo("The associated formula is " + GREEN
                         + "additional_chance = 0.3 * exp(10^(-5) * computation_per_second)" + GRAY + ".")
@@ -1757,7 +1758,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private double successChance;
 
-    private void outputFailedChance() {}
+    private void outputFailedChance() {
+        // todo Replace with proper fluid once added to GT.
+        int exoticMaterialOutputAmount = (int) ((successChance) * 1440 * (getHydrogenStored() + getHeliumStored()) / 1_000_000_000.0);
+        mOutputFluids = new FluidStack[] { Materials.Infinity.getFluid(exoticMaterialOutputAmount)};
+        super.outputAfterRecipe_EM();
+    }
 
     @Override
     public void stopMachine() {
@@ -1863,8 +1869,18 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         str.add("Stabilisation Field Grade: " + BLUE + stabilisationFieldMetadata);
         str.add(GOLD + "----------------- Internal Fluids Stored ----------------");
         validFluidMap.forEach((key, value) ->
-                str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + GT_Utility.formatNumbers(value)));
-        str.add(GOLD + "-----------------------------------------------------");
+                str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumbers(value)));
+        str.add(GOLD + "---------------------- Other Stats ---------------");
+        if (recipeRunning) {
+            str.add("Recipe Success Chance: " + formatNumbers(100 * successChance) + "%");
+            str.add("Recipe Yield: " + formatNumbers(100 * successChance) + "%");
+            str.add("EU Output: " + formatNumbers(euOutput));
+            if (mOutputFluids.length > 0) {
+                // Star matter is always the last element in the array.
+                str.add("Estimated Star Matter Output: " + formatNumbers(mOutputFluids[mOutputFluids.length-1].amount));
+            }
+            str.add(GOLD + "-----------------------------------------------------");
+        }
         return str.toArray(new String[0]);
     }
 
