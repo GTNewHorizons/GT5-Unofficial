@@ -307,7 +307,7 @@ public class RecipeLoader_ChemicalSkips {
                     CI.getNumberedCircuit(10),
                     CI.getEmptyCatalyst(1),
                     Materials.Polybenzimidazole.getDust(64),
-                    Materials.Tetrafluoroethylene.getDust(64),
+                    Materials.Polytetrafluoroethylene.getDust(64),
                     Materials.Carbon.getNanite(64)
                 },
                 ELEMENT.STANDALONE.HYPOGEN.getFluidStack(1440),
