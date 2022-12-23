@@ -3392,9 +3392,9 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 "Neutron Pulse: " + aCells,
                 aCells == 1
                         ? String.format("Heat: %.1f * n1 * (n1 + 1)", aHeat / 2f)
-                        : String.format("Heat: %.1f * (%d + n2) * (%d + n2)", aHeat * aCells / 2f, aCells, aCells + 1),
+                        : String.format("Heat: %.1f * (%d + n1) * (%d + n1)", aHeat * aCells / 2f, aCells, aCells + 1),
                 String.format(
-                        "Energy: %.1f + n * %.1f EU/t",
+                        "Energy: %.1f + n2 * %.1f EU/t",
                         aEnergy * aCells * pulses * nukePowerMult, aEnergy * nukePowerMult));
     }
 
