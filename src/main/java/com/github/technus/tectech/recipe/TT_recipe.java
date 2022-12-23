@@ -1,6 +1,5 @@
 package com.github.technus.tectech.recipe;
 
-import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
@@ -8,14 +7,16 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstant
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.IEMMapRead;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Recipe;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import gregtech.common.gui.modularui.UIHelper;
+import java.util.*;
+import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -244,26 +245,25 @@ public class TT_recipe extends GT_Recipe {
 
     public static class GT_Recipe_MapTT extends GT_Recipe.GT_Recipe_Map {
 
-        public static final GT_Recipe_Map sEyeofHarmonyRecipes = new GT_Recipe_Map(
+        public static final GT_Recipe_Map sEyeofHarmonyRecipes = new Eye_Of_Harmony_Recipe_Map(
                         new HashSet<>(250),
                         "gt.recipe.eyeofharmony",
                         "Eye of Harmony",
                         null,
                         RES_PATH_GUI + "basicmachines/Extractor",
                         1,
-                        1,
+                        9 * 10,
                         1,
                         0,
                         1,
-                        E,
+                        "",
                         1,
-                        E,
+                        "",
                         true,
-                        true)
-                .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CENTRIFUGE)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_EXTRACT, ProgressBar.Direction.RIGHT)
-                .setSlotOverlaySteam(false, GT_UITextures.OVERLAY_SLOT_CENTRIFUGE_STEAM)
-                .setProgressBarSteam(GT_UITextures.PROGRESSBAR_EXTRACT_STEAM);
+                false) // Custom NEI handler means this must be false.
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.DOWN)
+                .setUsualFluidOutputCount(18)
+                .setLogoPos(10,10);
 
         public static GT_Recipe_MapTT sResearchableFakeRecipes = new GT_Recipe_MapTT(
                 new HashSet<>(32),
@@ -491,6 +491,102 @@ public class TT_recipe extends GT_Recipe {
 
         public Collection<T> recipeList() {
             return mRecipeMap.values();
+        }
+    }
+
+    public static class Eye_Of_Harmony_Recipe_Map extends GT_Recipe_Map {
+
+        private static final int xDirMaxCount = 9;
+        private static final int yOrigin = 8;
+
+        public Eye_Of_Harmony_Recipe_Map(
+                Collection<GT_Recipe> aRecipeList,
+                String aUnlocalizedName,
+                String aLocalName,
+                String aNEIName,
+                String aNEIGUIPath,
+                int aUsualInputCount,
+                int aUsualOutputCount,
+                int aMinimalInputItems,
+                int aMinimalInputFluids,
+                int aAmperage,
+                String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier,
+                String aNEISpecialValuePost,
+                boolean aShowVoltageAmperageInNEI,
+                boolean aNEIAllowed) {
+            super(
+                    aRecipeList,
+                    aUnlocalizedName,
+                    aLocalName,
+                    aNEIName,
+                    aNEIGUIPath,
+                    aUsualInputCount,
+                    aUsualOutputCount,
+                    aMinimalInputItems,
+                    aMinimalInputFluids,
+                    aAmperage,
+                    aNEISpecialValuePre,
+                    aNEISpecialValueMultiplier,
+                    aNEISpecialValuePost,
+                    aShowVoltageAmperageInNEI,
+                    aNEIAllowed);
+            useModularUI(true);
+            setLogoPos(8, yOrigin);
+        }
+
+        @Override
+        public boolean usesSpecialSlot() {
+            return false;
+        }
+
+        @Override
+        public List<Pos2d> getItemInputPositions(int itemInputCount) {
+            return UIHelper.getItemGridPositions(itemInputCount, 80, yOrigin, 1, 1);
+        }
+
+        @Override
+        public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
+            return UIHelper.getItemGridPositions(itemOutputCount, 8, yOrigin + 36, xDirMaxCount, 12);
+        }
+
+        @Override
+        public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+            return UIHelper.getItemGridPositions(fluidInputCount, 0, 0, 0, 0);
+        }
+
+        @Override
+        public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
+            return UIHelper.getItemGridPositions(fluidOutputCount, 8, yOrigin + 13 * 17 - 4, xDirMaxCount, 3);
+        }
+
+        @Override
+        public ModularWindow.Builder createNEITemplate(
+                IItemHandlerModifiable itemInputsInventory,
+                IItemHandlerModifiable itemOutputsInventory,
+                IItemHandlerModifiable specialSlotInventory,
+                IItemHandlerModifiable fluidInputsInventory,
+                IItemHandlerModifiable fluidOutputsInventory,
+                Supplier<Float> progressSupplier,
+                Pos2d windowOffset) {
+            // Delay setter so that calls to #setUsualFluidInputCount and #setUsualFluidOutputCount are considered
+            setNEIBackgroundSize(172, 82 + (Math.max(getItemRowCount() + getFluidRowCount() - 4, 0)) * 18);
+            return super.createNEITemplate(
+                    itemInputsInventory,
+                    itemOutputsInventory,
+                    specialSlotInventory,
+                    fluidInputsInventory,
+                    fluidOutputsInventory,
+                    progressSupplier,
+                    windowOffset);
+        }
+
+        private int getItemRowCount() {
+            return (Math.max(mUsualInputCount, mUsualOutputCount) - 1) / xDirMaxCount + 1;
+        }
+
+        private int getFluidRowCount() {
+            return (Math.max(getUsualFluidInputCount(), getUsualFluidOutputCount()) - 1) / xDirMaxCount + 1;
         }
     }
 }

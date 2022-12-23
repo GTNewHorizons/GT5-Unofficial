@@ -17,4 +17,8 @@ public class ItemStackLong {
         this.itemStack = itemStackLong.itemStack;
         this.stackSize = itemStackLong.stackSize;
     }
+
+    public long getStackSize() {
+        return stackSize;
+    }
 }

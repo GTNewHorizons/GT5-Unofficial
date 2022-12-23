@@ -77,21 +77,12 @@ public class EyeOfHarmonyRecipeStorage {
                 outputItems.add(itemStackLong.itemStack);
             }
 
-            // GT_Recipe addRecipe(
-            //                boolean aOptimize,
-            //                ItemStack[] aInputs,
-            //                ItemStack[] aOutputs,
-            //                Object aSpecial,
-            //                int[] aOutputChances,
-            //                FluidStack[] aFluidInputs,
-            //                FluidStack[] aFluidOutputs,
-            //                int aDuration,
-            //                int aEUt,
-            //                int aSpecialValue) {
+            ItemStack planetItem = recipe.getRecipeTriggerItem().copy();
+            planetItem.stackSize = 0;
 
             sEyeofHarmonyRecipes.addRecipe(
                     false,
-                    new ItemStack[] {recipe.getRecipeTriggerItem()},
+                    new ItemStack[] {planetItem},
                     outputItems.toArray(new ItemStack[0]),
                     recipe,
                     null,

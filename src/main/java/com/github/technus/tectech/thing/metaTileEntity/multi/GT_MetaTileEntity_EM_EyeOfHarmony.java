@@ -1466,6 +1466,10 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
 
+        spacetimeCompressionFieldMetadata = -1;
+        timeAccelerationFieldMetadata = -1;
+        stabilisationFieldMetadata = -1;
+
         // Check structure of multi.
         if (!structureCheck_EM("main", 16, 16, 0)) {
             return false;
@@ -1631,9 +1635,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        spacetimeCompressionFieldMetadata = -1;
-        timeAccelerationFieldMetadata = -1;
-        stabilisationFieldMetadata = -1;
+
         structureBuild_EM("main", 16, 16, 0, stackSize, hintsOnly);
     }
 

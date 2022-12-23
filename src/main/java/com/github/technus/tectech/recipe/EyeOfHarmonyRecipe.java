@@ -4,6 +4,10 @@ import static com.google.common.math.LongMath.pow;
 import static gregtech.api.util.GT_Utility.getPlasmaFuelValueInEUPerLiterFromMaterial;
 
 import com.github.technus.tectech.util.ItemStackLong;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.TCustomHashMap;
+import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.Materials;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,6 +21,24 @@ import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 
 public class EyeOfHarmonyRecipe {
+
+    HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<ItemStack>() {
+        @Override
+        public int computeHashCode(ItemStack stack) {
+            // Not really sure how this works or if it is "unique enough".
+            int result = stack.getItem().hashCode();
+            result = 31 * result + stack.getItemDamage();
+            return result;
+        }
+
+        @Override
+        public boolean equals(ItemStack item1, ItemStack item2) {
+            return item1.getUnlocalizedName().equals(item2.getUnlocalizedName());
+        }
+    };
+
+    private final TMap<ItemStack, Double> itemStackToProbabilityMap = new TCustomHashMap<>(itemStackHashingStrategy);
+    private final TMap<ItemStack, Long> itemStackToTrueStackSizeMap = new TCustomHashMap<>(itemStackHashingStrategy);
 
     private final List<ItemStackLong> outputItems;
     private final FluidStack[] outputFluids;
@@ -34,6 +56,14 @@ public class EyeOfHarmonyRecipe {
     private final long miningTimeSeconds;
 
     private final ItemStack recipeTriggerItem;
+
+    public TMap<ItemStack, Double> getItemStackToProbabilityMap() {
+        return itemStackToProbabilityMap;
+    }
+
+    public TMap<ItemStack, Long> getItemStackToTrueStackSizeMap() {
+        return itemStackToTrueStackSizeMap;
+    }
 
     public EyeOfHarmonyRecipe(
             GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimensionWrapper,
@@ -54,7 +84,28 @@ public class EyeOfHarmonyRecipe {
                 processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds, 6 * 64);
 
         this.outputItems = validDustGenerator(materialList);
-        this.outputFluids = validPlasmaGenerator(materialList, 0.1);
+        this.outputItems.sort(Comparator.comparingLong(ItemStackLong::getStackSize));
+        Collections.reverse(this.outputItems);
+
+        long sumOfItems = this.outputItems.stream()
+                .map(ItemStackLong::getStackSize)
+                .reduce(0L, Long::sum);
+
+        for (ItemStackLong itemStackLong : outputItems) {
+            double stackSize = (double) itemStackLong.getStackSize();
+            double probability = Math.round(100_000 * stackSize / sumOfItems) / 1000.0;
+
+            itemStackToProbabilityMap.put(itemStackLong.itemStack, probability);
+            itemStackToTrueStackSizeMap.put(itemStackLong.itemStack, itemStackLong.stackSize);
+        }
+
+        // --- Output fluids and sort them.
+        ArrayList<FluidStack> tmpFluidOutputs = validPlasmaGenerator(materialList, 0.1);
+        tmpFluidOutputs.sort(Comparator.comparingLong((FluidStack fluid) -> fluid.amount));
+        Collections.reverse(tmpFluidOutputs);
+
+        outputFluids = tmpFluidOutputs.toArray(new FluidStack[0]);
+        // End.
 
         this.spacetimeCasingTierRequired = spacetimeCasingTierRequired;
 
@@ -73,7 +124,7 @@ public class EyeOfHarmonyRecipe {
         this.miningTimeSeconds = miningTimeSeconds;
     }
 
-    // Return clone of list.
+    // Return clone of list. Deep copy. Maybe a better way to do this?
     public ArrayList<ItemStackLong> getOutputItems() {
         ArrayList<ItemStackLong> copyOutputList = new ArrayList<>();
         for (ItemStackLong itemStackLong : outputItems) {
@@ -188,17 +239,17 @@ public class EyeOfHarmonyRecipe {
         return outputList;
     }
 
-    static FluidStack[] validPlasmaGenerator(
+    static ArrayList<FluidStack> validPlasmaGenerator(
             final List<Pair<Materials, Long>> planetList, final double percentageOfPlasma) {
 
-        List<FluidStack> plasmaList = new ArrayList<>();
+        ArrayList<FluidStack> plasmaList = new ArrayList<>();
 
         for (Pair<Materials, Long> pair : planetList) {
             if (validPlasmas.contains(pair.getLeft())) {
                 plasmaList.add(pair.getLeft().getPlasma((int) (pair.getRight() * percentageOfPlasma)));
             }
         }
-        return plasmaList.toArray(new FluidStack[0]);
+        return plasmaList;
     }
 
     static ArrayList<ItemStackLong> validDustGenerator(final ArrayList<Pair<Materials, Long>> planetList) {
@@ -226,6 +277,7 @@ public class EyeOfHarmonyRecipe {
 
     public static double getMaxPlasmaTurbineEfficiency() {
         // I hate Shirabon.
+//        return getMaxPlasmaTurbineEfficiency();
         return 3.85;
     }
 
