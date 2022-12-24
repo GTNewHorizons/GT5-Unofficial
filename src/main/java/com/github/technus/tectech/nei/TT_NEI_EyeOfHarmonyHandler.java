@@ -2,6 +2,7 @@ package com.github.technus.tectech.nei;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
+import static com.google.common.math.LongMath.pow;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 
 import appeng.util.ReadableNumberConverter;
@@ -23,6 +24,8 @@ import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
 
 public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
+
+    private static final long TRILLION = pow(10, 12);
 
     public TT_NEI_EyeOfHarmonyHandler(final GT_Recipe.GT_Recipe_Map tMap) {
         super(tMap);
@@ -46,6 +49,7 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
     @Override
     public List<String> handleItemTooltip(
             GuiRecipe<?> gui, ItemStack aStack, List<String> currentToolTip, int aRecipeIndex) {
+        super.handleItemTooltip(gui, aStack, currentToolTip, aRecipeIndex);
 
         if (aStack == null) {
             return currentToolTip;
@@ -67,8 +71,6 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
             }
         }
 
-        // So elements are displayed at bottom, call super method after.
-        super.handleItemTooltip(gui, aStack, currentToolTip, aRecipeIndex);
         return currentToolTip;
     }
 
@@ -125,8 +127,19 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
         drawLine(index++, "Hydrogen: " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
         drawLine(index++, "Helium: " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
         drawLine(index++, "Spacetime Tier: " + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
-        drawLine(index++, "EU Output: " + formatNumbers(recipe.getEUOutput()) + " EU");
-        drawLine(index++, "EU Input: " + formatNumbers(recipe.getEUStartCost()) + " EU");
+
+        if (recipe.getEUOutput() < TRILLION ) {
+            drawLine(index++, "EU Output: " + formatNumbers(recipe.getEUOutput()) + " EU");
+        } else {
+            drawLine(index++, "EU Output: " + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput()) + " EU");
+        }
+
+        if (recipe.getEUOutput() < TRILLION ) {
+            drawLine(index++, "EU Input: " + formatNumbers(recipe.getEUStartCost()) + " EU");
+        } else {
+            drawLine(index++, "EU Input: " + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost()) + " EU");
+        }
+
         drawLine(index++, "Base Recipe Chance: " + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
         drawLine(index, "Recipe Energy Efficiency: " + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
         drawOverlays(cachedRecipe);
@@ -134,6 +147,6 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
 
     @Override
     protected void drawLine(int lineNumber, String line) {
-        drawText(4, getDescriptionYOffset() + 30 + lineNumber * 9, line, 0xFF000000);
+        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
     }
 }

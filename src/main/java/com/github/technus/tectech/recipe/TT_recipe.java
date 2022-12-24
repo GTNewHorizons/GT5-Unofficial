@@ -9,6 +9,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.IEMMapRead
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -20,6 +21,7 @@ import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class TT_recipe extends GT_Recipe {
     public static final String E_RECIPE_ID = "eRecipeID";
     public final EMConstantStackMap[] input;
@@ -252,7 +254,7 @@ public class TT_recipe extends GT_Recipe {
                         null,
                         RES_PATH_GUI + "basicmachines/Extractor",
                         1,
-                        9 * 10,
+                        9 * 9,
                         1,
                         0,
                         1,
@@ -264,8 +266,7 @@ public class TT_recipe extends GT_Recipe {
                 .setProgressBar(GT_UITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
                 .setProgressBarPos(78 + 1, 24 + 2)
                 .setUsualFluidOutputCount(18)
-                .setLogoPos(10, 10)
-                .setNEIBackgroundSize(172, 82 + (9 + 10) * 18);
+                .setLogoPos(10, 10);
 
         public static GT_Recipe_MapTT sResearchableFakeRecipes = new GT_Recipe_MapTT(
                 new HashSet<>(32),
@@ -538,6 +539,13 @@ public class TT_recipe extends GT_Recipe {
         }
 
         @Override
+        public GT_Recipe_Map setNEIBackgroundSize(int width, int height) {
+            useModularUI(true);
+            this.neiBackgroundSize = new Size(172, 80 + 9 * 18);
+            return this;
+        }
+
+        @Override
         public boolean usesSpecialSlot() {
             return false;
         }
@@ -559,7 +567,7 @@ public class TT_recipe extends GT_Recipe {
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            return UIHelper.getItemGridPositions(fluidOutputCount, 8, yOrigin + 13 * 17 - 5, xDirMaxCount, 3);
+            return UIHelper.getItemGridPositions(fluidOutputCount, 8, yOrigin + 13 * 17 - 7 - 16, xDirMaxCount, 3);
         }
 
         @Override
