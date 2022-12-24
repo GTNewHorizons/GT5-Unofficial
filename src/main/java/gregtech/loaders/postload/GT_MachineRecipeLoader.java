@@ -7857,7 +7857,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 21,
                 4);
         GT_Values.RA.addPulveriserRecipe(
-                new ItemStack(Items.sugar, 1),
+                new ItemStack(Items.reeds, 1),
                 new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L)},
                 null,
                 50,
