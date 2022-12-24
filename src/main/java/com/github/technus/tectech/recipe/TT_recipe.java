@@ -1,6 +1,7 @@
 package com.github.technus.tectech.recipe;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static java.lang.Math.min;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
@@ -264,7 +265,7 @@ public class TT_recipe extends GT_Recipe {
                         true,
                         false) // Custom NEI handler means this must be false.
                 .setProgressBar(GT_UITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
-                .setProgressBarPos(78 + 1, 24 + 2)
+                .setProgressBarPos(78, 24 + 2)
                 .setUsualFluidOutputCount(18)
                 .setLogoPos(10, 10);
 
@@ -541,7 +542,7 @@ public class TT_recipe extends GT_Recipe {
         @Override
         public GT_Recipe_Map setNEIBackgroundSize(int width, int height) {
             useModularUI(true);
-            this.neiBackgroundSize = new Size(172, 80 + 9 * 18);
+            this.neiBackgroundSize = new Size(172, 81 + 9 * 18);
             return this;
         }
 
@@ -552,12 +553,15 @@ public class TT_recipe extends GT_Recipe {
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            return UIHelper.getItemGridPositions(itemInputCount, 80, yOrigin, 1, 1);
+            return UIHelper.getItemGridPositions(itemInputCount, 79, yOrigin, 1, 1);
         }
+
+        public static final int maxItemsToRender = 80;
 
         @Override
         public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return UIHelper.getItemGridPositions(itemOutputCount, 8, yOrigin + 36, xDirMaxCount, 12);
+            return UIHelper.getItemGridPositions(min(itemOutputCount, maxItemsToRender+1), 7, yOrigin + 36, xDirMaxCount, 12);
+
         }
 
         @Override
@@ -567,7 +571,7 @@ public class TT_recipe extends GT_Recipe {
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            return UIHelper.getItemGridPositions(fluidOutputCount, 8, yOrigin + 13 * 17 - 7 - 16, xDirMaxCount, 3);
+            return UIHelper.getItemGridPositions(fluidOutputCount, 7, yOrigin + 13 * 17 - 7 - 16, xDirMaxCount, 3);
         }
 
         @Override

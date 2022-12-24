@@ -1,9 +1,11 @@
 package com.github.technus.tectech.nei;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.recipe.TT_recipe.Eye_Of_Harmony_Recipe_Map.maxItemsToRender;
 import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
 import static com.google.common.math.LongMath.pow;
 import static gregtech.api.util.GT_Utility.formatNumbers;
+import static net.minecraft.util.EnumChatFormatting.*;
 
 import appeng.util.ReadableNumberConverter;
 import codechicken.nei.PositionedStack;
@@ -56,11 +58,19 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
         }
 
         CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
+
         if (tObject instanceof CachedDefaultRecipe) {
 
             CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;
             EyeOfHarmonyRecipe currentRecipe = (EyeOfHarmonyRecipe) tRecipe.mRecipe.mSpecialItems;
 
+            // Draw tooltip on planet item.
+            if (aStack.isItemEqual(currentRecipe.getRecipeTriggerItem())) {
+                currentToolTip.add(EnumChatFormatting.GRAY + "Total Items: " + formatNumbers(currentRecipe.getSumOfItems()));
+                return currentToolTip;
+            }
+
+            // Draw tooltip on other items.
             double percentage = currentRecipe.getItemStackToProbabilityMap().getOrDefault(aStack, -1.0);
 
             if (percentage != -1.0) {
@@ -141,12 +151,19 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
         }
 
         drawLine(index++, "Base Recipe Chance: " + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
-        drawLine(index, "Recipe Energy Efficiency: " + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
+        drawLine(index++, "Recipe Energy Efficiency: " + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
+
+        if (recipe.getOutputItems().size() > maxItemsToRender) {
+            drawLine(index, "" + DARK_RED + BOLD + "Warning" + RESET + ": Not all items displayed.");
+        }
+
         drawOverlays(cachedRecipe);
     }
 
     @Override
     protected void drawLine(int lineNumber, String line) {
-        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
+        drawText(7, getDescriptionYOffset() + lineNumber * 10 + 1, line, 0xFF000000);
     }
+
+
 }

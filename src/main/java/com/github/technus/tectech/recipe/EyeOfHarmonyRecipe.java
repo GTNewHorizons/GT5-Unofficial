@@ -60,6 +60,8 @@ public class EyeOfHarmonyRecipe {
 
     private final ItemStack recipeTriggerItem;
 
+    private final long sumOfItems;
+
     public TMap<ItemStack, Double> getItemStackToProbabilityMap() {
         return itemStackToProbabilityMap;
     }
@@ -75,21 +77,25 @@ public class EyeOfHarmonyRecipe {
     @SuppressWarnings("FieldCanBeLocal")
     private final long standardRecipeEUOutPerTick = 100 * BILLION;
 
+    public long getSumOfItems() {
+        return sumOfItems;
+    }
+
     public EyeOfHarmonyRecipe(ArrayList<Pair<Materials, Long>> materialList,
-                               Block block,
-                               final double recipeEnergyEfficiency,
-                               final long hydrogenRequirement,
-                               final long heliumRequirement,
-                               final long miningTimeSeconds,
-                               final long spacetimeCasingTierRequired,
-                               final double baseSuccessChance) {
+                              Block block,
+                              final double recipeEnergyEfficiency,
+                              final long hydrogenRequirement,
+                              final long heliumRequirement,
+                              final long miningTimeSeconds,
+                              final long spacetimeCasingTierRequired,
+                              final double baseSuccessChance) {
         this.recipeTriggerItem = new ItemStack(block);
 
         this.outputItems = validDustGenerator(materialList);
         this.outputItems.sort(Comparator.comparingLong(ItemStackLong::getStackSize));
         Collections.reverse(this.outputItems);
 
-        long sumOfItems =
+        this.sumOfItems =
                 this.outputItems.stream().map(ItemStackLong::getStackSize).reduce(0L, Long::sum);
 
         for (ItemStackLong itemStackLong : outputItems) {

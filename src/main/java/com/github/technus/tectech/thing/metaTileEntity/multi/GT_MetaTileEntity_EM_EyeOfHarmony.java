@@ -10,6 +10,7 @@ import static gregtech.api.util.GT_Utility.formatNumbers;
 import static java.lang.Math.*;
 import static net.minecraft.util.EnumChatFormatting.*;
 
+import appeng.util.ReadableNumberConverter;
 import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
 import com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage;
 import com.github.technus.tectech.thing.casing.TT_Block_SpacetimeCompressionFieldGenerators;
@@ -49,6 +50,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
+import org.spongepowered.libraries.com.google.common.math.LongMath;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
@@ -1672,19 +1674,27 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private EyeOfHarmonyRecipe currentRecipe;
 
+    private long lagPreventer = 0;
+    private final long recipeCheckInterval = 3 * 20;
+
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
-
-        // No item in multi gui slot.
         if (aStack == null) {
             return false;
         }
 
-        currentRecipe = recipes.recipeLookUp(aStack);
-        if (processRecipe(currentRecipe)) {
-            return true;
+        lagPreventer++;
+        if (lagPreventer < recipeCheckInterval) {
+            lagPreventer = 0;
+            // No item in multi gui slot.
+
+            currentRecipe = recipes.recipeLookUp(aStack);
+            if (processRecipe(currentRecipe)) {
+                return true;
+            }
+
+            currentRecipe = null;
         }
-        currentRecipe = null;
         return false;
     }
 
@@ -1698,9 +1708,13 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
-        // todo: fix changing the tier of block causing multi to unform
-        if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement())
-                || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
+//        if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement())
+//                || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
+//            return false;
+//        }
+
+        if ((getHydrogenStored() < 100)
+                || (getHeliumStored() < 100)) {
             return false;
         }
 
@@ -1767,7 +1781,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         // todo Replace with proper fluid once added to GT.
         int exoticMaterialOutputAmount =
                 (int) ((successChance) * 1440 * (getHydrogenStored() + getHeliumStored()) / 1_000_000_000.0);
-        mOutputFluids = new FluidStack[] {Materials.Infinity.getFluid(exoticMaterialOutputAmount)};
+        mOutputFluids = new FluidStack[] {Materials.SpaceTime.getFluid(exoticMaterialOutputAmount)};
         super.outputAfterRecipe_EM();
     }
 
@@ -1876,15 +1890,21 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         str.add(GOLD + "----------------- Internal Fluids Stored ----------------");
         validFluidMap.forEach(
                 (key, value) -> str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumbers(value)));
-        str.add(GOLD + "---------------------- Other Stats ---------------");
         if (recipeRunning) {
-            str.add("Recipe Success Chance: " + formatNumbers(100 * successChance) + "%");
-            str.add("Recipe Yield: " + formatNumbers(100 * successChance) + "%");
-            str.add("EU Output: " + formatNumbers(euOutput));
+            str.add(GOLD + "---------------------- Other Stats ---------------");
+            str.add("Recipe Success Chance: " + RED + formatNumbers(100 * successChance) + RESET + "%");
+            str.add("Recipe Yield: " + RED + formatNumbers(100 * successChance) + RESET + "%");
+            str.add("EU Output: " + RED + formatNumbers(euOutput) + RESET + " EU");
             if (mOutputFluids.length > 0) {
                 // Star matter is always the last element in the array.
                 str.add("Estimated Star Matter Output: "
-                        + formatNumbers(mOutputFluids[mOutputFluids.length - 1].amount));
+                        + RED + formatNumbers(mOutputFluids[mOutputFluids.length - 1].amount) + RESET + " L");
+            }
+            long euPerTick = euOutput / maxProgresstime();
+            if (euPerTick < LongMath.pow(10, 12)) {
+                str.add("Estimated EU/t: " + RED + formatNumbers(euOutput / maxProgresstime()) + RESET + " EU/t");
+            } else {
+                str.add("Estimated EU/t: " + RED + ReadableNumberConverter.INSTANCE.toWideReadableForm(euOutput / maxProgresstime()) + RESET + " EU/t");
             }
             str.add(GOLD + "-----------------------------------------------------");
         }
@@ -1982,7 +2002,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     @Override
     public boolean renderInWorld(IBlockAccess aWorld, int x, int y, int z, Block block, RenderBlocks renderer) {
         Tessellator tes = Tessellator.instance;
-        IIcon texture = Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        IIcon texture = Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_GLOW.getIcon();
         float size = 2.0f;
         //if (getBaseMetaTileEntity().isActive()) {
         if (true) {
@@ -2045,6 +2065,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_CULL_FACE);
+            GL11.glRotated(Math.random(),Math.random(),Math.random(),Math.random());
             GL11.glPopMatrix();
         }
         return false;
