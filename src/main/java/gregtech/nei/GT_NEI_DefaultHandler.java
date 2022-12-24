@@ -1,7 +1,6 @@
 package gregtech.nei;
 
 import static codechicken.nei.recipe.RecipeInfo.getGuiOffset;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientUtils;
@@ -26,7 +25,6 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SteamVariant;
@@ -41,9 +39,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.power.EUPower;
 import gregtech.common.power.Power;
-import gregtech.common.power.UnspecifiedEUPower;
 import java.awt.*;
 import java.lang.ref.SoftReference;
 import java.text.DecimalFormat;
@@ -63,19 +59,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.Range;
 import org.lwjgl.opengl.GL11;
 
 public class GT_NEI_DefaultHandler extends RecipeMapHandler {
-    @SuppressWarnings("unused") // Public constant
-    public static final int sOffsetX = 5;
 
-    @SuppressWarnings("unused") // Public constant
+    public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
 
-    private static final int M = 1000000;
     private static final ConcurrentMap<GT_Recipe.GT_Recipe_Map, SortedRecipeListCache> CACHE =
             new ConcurrentHashMap<>();
 
@@ -316,6 +308,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         if (mRecipeName == null) {
             mRecipeName = computeRecipeName();
             updateOverrideTextColor();
+            mRecipeMap.updateNEITextColorOverride();
         }
         return mRecipeName;
     }
@@ -372,29 +365,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             GuiRecipe<?> gui, ItemStack aStack, List<String> currentTip, int aRecipeIndex) {
         CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
         if ((tObject instanceof CachedDefaultRecipe)) {
-            CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;
-            for (PositionedStack tStack : tRecipe.mOutputs) {
-                if (aStack == tStack.item) {
-                    if ((!(tStack instanceof FixedPositionedStack))
-                            || (!((FixedPositionedStack) tStack).isChanceBased())) {
-                        break;
-                    }
-                    currentTip.add(GRAY
-                            + GT_Utility.trans("150", "Chance: ")
-                            + ((FixedPositionedStack) tStack).getChanceText());
-                    break;
-                }
-            }
-            for (PositionedStack tStack : tRecipe.mInputs) {
-                if (aStack == tStack.item) {
-                    if ((!(tStack instanceof FixedPositionedStack))
-                            || (!((FixedPositionedStack) tStack).isNotConsumed())) {
-                        break;
-                    }
-                    currentTip.add(GRAY + GT_Utility.trans("151", "Does not get consumed in the process"));
-                    break;
-                }
-            }
+            currentTip = mRecipeMap.handleNEIItemTooltip(aStack, currentTip, (CachedDefaultRecipe) tObject);
         }
 
         if (mRecipeNameTooltip != null) {
@@ -403,242 +374,31 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         return currentTip;
     }
 
-    private Power getPowerFromRecipeMap() {
-        // By default, assume generic EU LV power with no overclocks
-        Power power;
-        if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
-            power = new EUPower((byte) 1, this.mRecipeMap.mAmperage);
-        } else {
-            power = new UnspecifiedEUPower((byte) 1, this.mRecipeMap.mAmperage);
-        }
-        return power;
-    }
-
     @Override
     public void drawExtras(int aRecipeIndex) {
         CachedDefaultRecipe cachedRecipe = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex));
-        GT_Recipe recipe = cachedRecipe.mRecipe;
-        String[] recipeDesc = recipe.getNeiDesc();
-        if (recipeDesc == null) {
-            drawDescription(recipe);
-        } else {
-            drawOverrideDescription(recipeDesc);
-        }
+
+        drawDescription(cachedRecipe);
         drawOverlays(cachedRecipe);
     }
 
-    private void drawDescription(GT_Recipe recipe) {
+    private void drawDescription(CachedDefaultRecipe cachedRecipe) {
+        GT_Recipe recipe = cachedRecipe.mRecipe;
         if (mPower == null) {
-            mPower = getPowerFromRecipeMap();
+            mPower = mRecipeMap.getPowerFromRecipeMap();
         }
         mPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
 
-        int lineCounter = 0;
-        if (mPower.getEuPerTick() > 0) {
-            drawLine(lineCounter, GT_Utility.trans("152", "Total: ") + mPower.getTotalPowerString());
-            lineCounter++;
-
-            String amperage = mPower.getAmperageString();
-            String powerUsage = mPower.getPowerUsageString();
-            if (amperage == null || amperage.equals("unspecified") || powerUsage.contains("(OC)")) {
-                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + powerUsage);
-                lineCounter++;
-                if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
-                    Power originalPower = getPowerFromRecipeMap();
-                    if (!(originalPower instanceof UnspecifiedEUPower)) {
-                        originalPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
-                        drawLine(
-                                lineCounter,
-                                GT_Utility.trans("275", "Original voltage: ") + originalPower.getVoltageString());
-                        lineCounter++;
-                    }
-                }
-                if (amperage != null && !amperage.equals("unspecified") && !amperage.equals("1")) {
-                    drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + amperage);
-                    lineCounter++;
-                }
-            } else if (amperage.equals("1")) {
-                drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
-                lineCounter++;
-            } else {
-                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + powerUsage);
-                lineCounter++;
-                drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
-                lineCounter++;
-                drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + amperage);
-                lineCounter++;
-            }
-        }
-        if (mPower.getDurationTicks() > 0) {
-            if (GT_Mod.gregtechproxy.mNEIRecipeSecondMode) {
-                if (mPower.getDurationSeconds() > 1.0d) {
-                    drawLine(lineCounter, GT_Utility.trans("158", "Time: ") + mPower.getDurationStringSeconds());
-                } else {
-                    drawLine(
-                            lineCounter,
-                            GT_Utility.trans("158", "Time: ")
-                                    + mPower.getDurationStringSeconds()
-                                    + String.format(" (%s)", mPower.getDurationStringTicks()));
-                }
-            } else {
-                drawLine(lineCounter, GT_Utility.trans("158", "Time: ") + mPower.getDurationStringTicks());
-            }
-            lineCounter++;
-        }
-        if (this.mRecipeMap.mNEIName.equals("gt.recipe.fusionreactor")
-                || this.mRecipeMap.mNEIName.equals("gt.recipe.complexfusionreactor")) {
-            if (drawOptionalLine(
-                    lineCounter,
-                    getSpecialInfo(recipe.mSpecialValue) + " "
-                            + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt))) {
-                lineCounter++;
-            }
-        } else if (this.mRecipeMap.mNEIName.equals("gt.recipe.pcbfactory")) {
-            int bitmap = recipe.mSpecialValue;
-            if ((bitmap & 0b1) > 0) {
-                drawLine(lineCounter++, GT_Utility.trans("336", "PCB Factory Tier: ") + 1);
-            } else if ((bitmap & 0b10) > 0) {
-                drawLine(lineCounter++, GT_Utility.trans("336", "PCB Factory Tier: ") + 2);
-            } else if ((bitmap & 0b100) > 0) {
-                drawLine(lineCounter++, GT_Utility.trans("336", "PCB Factory Tier: ") + 3);
-            }
-            if ((bitmap & 0b1000) > 0) {
-                drawLine(lineCounter++, GT_Utility.trans("337", "Upgrade Required: ") + GT_Utility.trans("338", "Bio"));
-            }
-        } else if (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)
-                && this.mRecipeMap.mNEISpecialValuePre.toLowerCase().contains("heat capacity")) {
-            drawLine(lineCounter, getSpecialInfo(recipe.mSpecialValue));
-            lineCounter++;
-            drawLine(lineCounter, " " + formatSpecialValueHeatCoil(recipe.mSpecialValue));
-            lineCounter++;
-        } else if (drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue))) {
-            lineCounter++;
-        }
-        if (GT_Mod.gregtechproxy.mNEIRecipeOwner) {
-            if (recipe.owners.size() > 1) {
-                drawLine(
-                        lineCounter,
-                        EnumChatFormatting.ITALIC
-                                + GT_Utility.trans("273", "Original Recipe by: ")
-                                + recipe.owners.get(0).getName());
-                lineCounter++;
-                for (int i = 1; i < recipe.owners.size(); i++) {
-                    drawLine(
-                            lineCounter,
-                            EnumChatFormatting.ITALIC
-                                    + GT_Utility.trans("274", "Modified by: ")
-                                    + recipe.owners.get(i).getName());
-                    lineCounter++;
-                }
-            } else if (recipe.owners.size() > 0) {
-                drawLine(
-                        lineCounter,
-                        EnumChatFormatting.ITALIC
-                                + GT_Utility.trans("272", "Recipe by: ")
-                                + recipe.owners.get(0).getName());
-                lineCounter++;
-            }
-        }
-        if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace
-                && recipe.stackTraces != null
-                && !recipe.stackTraces.isEmpty()) {
-            drawLine(lineCounter, "stackTrace:");
-            lineCounter++;
-            // todo: good way to show all stacktraces
-            for (StackTraceElement stackTrace : recipe.stackTraces.get(0)) {
-                drawLine(lineCounter, stackTrace.toString());
-                lineCounter++;
-            }
-        }
+        mRecipeMap.drawNEIDescription(
+                new NEIRecipeInfo(recipe, mRecipeMap, cachedRecipe, mPower, getDescriptionYOffset()));
     }
 
-    private void drawOverrideDescription(String[] recipeDesc) {
-        for (int i = 0; i < recipeDesc.length; i++) {
-            if (recipeDesc[i] != null) {
-                drawLine(i, recipeDesc[i]);
-            }
-        }
-    }
-
+    @Deprecated
     protected String getSpecialInfo(int specialValue) {
-        String specialInfo = null;
-        if (specialValue == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
-            specialInfo = GT_Utility.trans("159", "Needs Low Gravity");
-        } else if (specialValue == -200 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-            specialInfo = GT_Utility.trans("160", "Needs Cleanroom");
-        } else if (specialValue == -201) {
-            specialInfo = GT_Utility.trans("206", "Scan for Assembly Line");
-        } else if (specialValue == -300 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-            specialInfo = GT_Utility.trans("160.1", "Needs Cleanroom & LowGrav");
-        } else if (specialValue == -400) {
-            specialInfo = GT_Utility.trans("216", "Deprecated Recipe");
-        } else if (hasSpecialValueFormat()) {
-            specialInfo = formatSpecialValue(specialValue);
-        }
-        return specialInfo;
+        return "";
     }
 
-    private boolean hasSpecialValueFormat() {
-        return (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre))
-                || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost));
-    }
-
-    protected String formatSpecialValue(int SpecialValue) {
-        return this.mRecipeMap.mNEISpecialValuePre
-                + GT_Utility.formatNumbers((long) SpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier)
-                + this.mRecipeMap.mNEISpecialValuePost;
-    }
-
-    private String formatSpecialValueFusion(int SpecialValue, int Voltage) {
-        int tier;
-        if (SpecialValue <= 10 * M * 16) {
-            tier = 1;
-        } else if (SpecialValue <= 20 * M * 16) {
-            tier = 2;
-        } else if (SpecialValue <= 40 * M * 16) {
-            tier = 3;
-        } else {
-            tier = 4;
-        }
-        if (Voltage <= GT_Values.V[6]) {
-            // no-op
-        } else if (Voltage <= GT_Values.V[7]) {
-            tier = Math.max(tier, 2);
-        } else if (Voltage <= GT_Values.V[8]) {
-            tier = Math.max(tier, 3);
-        } else {
-            tier = 4;
-        }
-        return "(MK " + tier + ")";
-    }
-
-    private String formatSpecialValueHeatCoil(int heat) {
-        for (HeatingCoilLevel heatLevel : HeatingCoilLevel.values()) {
-            if (heatLevel == HeatingCoilLevel.None || heatLevel == HeatingCoilLevel.ULV) continue;
-            if (heatLevel.getHeat() >= heat) {
-                return "(" + heatLevel.getName() + ")";
-            }
-        }
-        return "(" + HeatingCoilLevel.MAX.getName() + "+)";
-    }
-
-    @SuppressWarnings("unused") // TODO: Consider removing
-    protected boolean drawOptionalLine(int lineNumber, String line, String prefix) {
-        if (!(line == null || "unspecified".equals(line))) {
-            drawLine(lineNumber, prefix + line);
-            return true;
-        }
-        return false;
-    }
-
-    protected boolean drawOptionalLine(int lineNumber, String line) {
-        if (!(line == null || "unspecified".equals(line))) {
-            drawLine(lineNumber, line);
-            return true;
-        }
-        return false;
-    }
-
+    @Deprecated
     protected void drawLine(int lineNumber, String line) {
         drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
     }

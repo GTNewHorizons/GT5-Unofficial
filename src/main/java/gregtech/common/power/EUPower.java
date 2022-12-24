@@ -52,6 +52,6 @@ public class EUPower extends Power {
     }
 
     protected int computeVoltageForEuRate(int euPerTick) {
-        return euPerTick / amperage;
+        return amperage != 0 ? euPerTick / amperage : euPerTick;
     }
 }
