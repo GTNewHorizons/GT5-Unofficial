@@ -1,6 +1,7 @@
 package gregtech.nei;
 
 import static codechicken.nei.recipe.RecipeInfo.getGuiOffset;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientUtils;
@@ -378,8 +379,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                             || (!((FixedPositionedStack) tStack).isChanceBased())) {
                         break;
                     }
-                    currentTip.add(
-                            GT_Utility.trans("150", "Chance: ") + ((FixedPositionedStack) tStack).getChanceText());
+                    currentTip.add(GRAY
+                            + GT_Utility.trans("150", "Chance: ")
+                            + ((FixedPositionedStack) tStack).getChanceText());
                     break;
                 }
             }
@@ -389,7 +391,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                             || (!((FixedPositionedStack) tStack).isNotConsumed())) {
                         break;
                     }
-                    currentTip.add(GT_Utility.trans("151", "Does not get consumed in the process"));
+                    currentTip.add(GRAY + GT_Utility.trans("151", "Does not get consumed in the process"));
                     break;
                 }
             }
