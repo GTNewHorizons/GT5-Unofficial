@@ -1,6 +1,8 @@
 package com.github.technus.tectech.recipe;
 
 import static com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage.BILLION;
+import static com.google.common.math.IntMath.pow;
+import static gregtech.api.GregTech_API.getUnificatedOreDictStack;
 import static gregtech.api.util.GT_Utility.getPlasmaFuelValueInEUPerLiterFromMaterial;
 
 import com.github.technus.tectech.util.ItemStackLong;
@@ -18,6 +20,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class EyeOfHarmonyRecipe {
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<ItemStack>() {
@@ -69,27 +72,18 @@ public class EyeOfHarmonyRecipe {
         return recipeEnergyEfficiency;
     }
 
-    private final long standardRecipeEUPerTick = 500 * BILLION;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final long standardRecipeEUOutPerTick = 100 * BILLION;
 
-    public EyeOfHarmonyRecipe(
-            final GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimensionWrapper,
-            final GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimensionWrapper,
-            final double recipeEnergyEfficiency, // E.g. 90% efficient = 0.9 = lose 10% EU from plasma + EU output.
-            final long hydrogenRequirement,
-            final long heliumRequirement,
-            final long miningTimeSeconds,
-            final long spacetimeCasingTierRequired,
-            final Block block,
-            final double baseSuccessChance) {
-
-        this.euOutput = (long) ((recipeEnergyEfficiency / 2) * standardRecipeEUPerTick * miningTimeSeconds * 20);
-
-        recipeTriggerItem = new ItemStack(block);
-
-        // Process recipes output items.
-        // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.
-        ArrayList<Pair<Materials, Long>> materialList =
-                processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds, 6 * 64);
+    public EyeOfHarmonyRecipe(ArrayList<Pair<Materials, Long>> materialList,
+                               Block block,
+                               final double recipeEnergyEfficiency,
+                               final long hydrogenRequirement,
+                               final long heliumRequirement,
+                               final long miningTimeSeconds,
+                               final long spacetimeCasingTierRequired,
+                               final double baseSuccessChance) {
+        this.recipeTriggerItem = new ItemStack(block);
 
         this.outputItems = validDustGenerator(materialList);
         this.outputItems.sort(Comparator.comparingLong(ItemStackLong::getStackSize));
@@ -108,40 +102,15 @@ public class EyeOfHarmonyRecipe {
         // End item processing.
 
         // --- Output and process fluids of the recipe.
-
-        // The idea behind this is to generate
-
-        Pair<Long, ArrayList<FluidStack>> pair = validPlasmaGenerator(materialList);
-        // The idea behind this is to get e.g.
-        // totalEuOutput = timeRun * standardRecipeEUPerTick.
-        // recipeEnergyEfficiency * (10 EU * plasmaAmount + 100 EU * plasmaAmount) = totalEuOutput.
-        // Where 10 EU and 100 EU are the (plasmaFuelValues * maxTurbineEfficiency) of 1L of that specific plasma.
-        // Then we solve for plasmaAmount, so that each plasma has the same output amount.
-        long totalEUSumOfIndividualPlasmaFuels = pair.getLeft();
-        ArrayList<FluidStack> fluidStackArrayList = pair.getRight();
+        ArrayList<FluidStack> fluidStackArrayList = validPlasmaGenerator(materialList);
 
         for (FluidStack fluidStack : fluidStackArrayList) {
-            if (this.euOutput / totalEUSumOfIndividualPlasmaFuels < Integer.MAX_VALUE) {
-                // EU is split between Plasma output and EU output, hence /2.
-                // recipeEnergyEfficiency > 1 determines if this recipe makes more EU than you put in when you sum the
-                // EU in the plasma + the EU output.
-                fluidStack.amount =
-                        (int) ((recipeEnergyEfficiency * 0.01) * this.euOutput / totalEUSumOfIndividualPlasmaFuels);
-            } else {
-                // Hopefully won't happen but just in case.
-                fluidStack.amount = Integer.MAX_VALUE;
-            }
+            fluidStack.amount = (int) ((spacetimeCasingTierRequired+1) * 1_000_000L);
         }
 
-        // Add a bonus fluid of compressed star matter which is equal to 10% of 1 plasma fluid stacks output.
-        if (fluidStackArrayList.size() > 0) {
-            // todo replace with Bonus star matter when added to GT5.
-            fluidStackArrayList.add(Materials.Infinity.getMolten((long) (0.1 * fluidStackArrayList.get(0).amount)));
-        }
-
-        //         Sort fluids by stack size.
-        //        fluidStackArrayList.sort(Comparator.comparingLong((FluidStack fluid) -> fluid.amount));
-        //        Collections.reverse(fluidStackArrayList);
+        // Add a bonus fluid of compressed star matter.
+        // todo replace with Bonus star matter when added to GT5.
+        fluidStackArrayList.add(Materials.Infinity.getMolten((spacetimeCasingTierRequired + 1) * 100_000));
 
         outputFluids = fluidStackArrayList;
         // End fluid processing.
@@ -156,8 +125,33 @@ public class EyeOfHarmonyRecipe {
         this.miningTimeSeconds = miningTimeSeconds;
         this.recipeEnergyEfficiency = recipeEnergyEfficiency;
 
-        long a = (long) (recipeEnergyEfficiency * (plasmaCostCalculator(outputFluids) + this.euOutput) / 2);
-        this.euStartCost = a;
+        long plasmaEU = plasmaCostCalculator(outputFluids);
+        long VM3EU = miningTimeSeconds * pow(2, 19) * 20;
+        this.euOutput = standardRecipeEUOutPerTick * 20 * miningTimeSeconds;
+        this.euStartCost = (long) (plasmaEU + VM3EU + this.euOutput * recipeEnergyEfficiency);
+    }
+
+    public EyeOfHarmonyRecipe(
+            final GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimensionWrapper,
+            final GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimensionWrapper,
+            final Block block,
+            final double recipeEnergyEfficiency,
+            final long hydrogenRequirement,
+            final long heliumRequirement,
+            final long miningTimeSeconds,
+            final long spacetimeCasingTierRequired,
+            final double baseSuccessChance) {
+
+        // Process recipes output items.
+        // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.
+        this(processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds, 6 * 64),
+                block,
+                recipeEnergyEfficiency,
+                hydrogenRequirement,
+                heliumRequirement,
+                miningTimeSeconds,
+                spacetimeCasingTierRequired,
+                baseSuccessChance);
     }
 
     // Return clone of list. Deep copy. Maybe a better way to do this?
@@ -222,7 +216,7 @@ public class EyeOfHarmonyRecipe {
         primaryMultiplier, secondaryMultiplier, tertiaryMultiplier, quaternaryMultiplier
     };
 
-    private static class HashMapHelper extends HashMap<Materials, Double> {
+    public static class HashMapHelper extends HashMap<Materials, Double> {
 
         void add(Materials material, double value) {
 
@@ -237,7 +231,7 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
-    private static void processHelper(
+    public static void processHelper(
             HashMapHelper outputMap, Materials material, double mainMultiplier, double probability) {
         outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
 
@@ -277,22 +271,18 @@ public class EyeOfHarmonyRecipe {
         return outputList;
     }
 
-    private static Pair<Long, ArrayList<FluidStack>> validPlasmaGenerator(
+    private static ArrayList<FluidStack> validPlasmaGenerator(
             final List<Pair<Materials, Long>> planetList) {
 
         ArrayList<FluidStack> plasmaList = new ArrayList<>();
 
-        long sumOfPlasmasEU = 0;
-
         for (Pair<Materials, Long> pair : planetList) {
             if (validPlasmas.contains(pair.getLeft())) {
                 plasmaList.add(pair.getLeft().getPlasma(1));
-                String plasmaString = pair.getLeft().getPlasma(1).getFluid().getUnlocalizedName();
-                sumOfPlasmasEU += plasmaEnergyMap.getOrDefault(plasmaString, -100000000000000000L);
             }
         }
 
-        return Pair.of(sumOfPlasmasEU, plasmaList);
+        return plasmaList;
     }
 
     private static ArrayList<ItemStackLong> validDustGenerator(final ArrayList<Pair<Materials, Long>> planetList) {
@@ -300,7 +290,7 @@ public class EyeOfHarmonyRecipe {
         ArrayList<ItemStackLong> dustList = new ArrayList<>();
 
         for (Pair<Materials, Long> pair : planetList) {
-            ItemStack dust = pair.getLeft().getDust(1);
+            ItemStack dust = getUnificatedOreDictStack(pair.getLeft().getDust(1));
             if (dust != null) {
                 dustList.add(new ItemStackLong(dust, pair.getRight()));
             }
@@ -325,7 +315,6 @@ public class EyeOfHarmonyRecipe {
 
     private static double getMaxPlasmaTurbineEfficiency() {
         // I hate Shirabon.
-        //        return getMaxPlasmaTurbineEfficiency();
         return 3.85;
     }
 

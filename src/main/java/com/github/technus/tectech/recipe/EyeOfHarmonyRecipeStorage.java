@@ -40,6 +40,7 @@ public class EyeOfHarmonyRecipeStorage {
                             new EyeOfHarmonyRecipe(
                                     GT5OreLayerHelper.dimToOreWrapper.get(dimAbbreviation),
                                     GT5OreSmallHelper.dimToSmallOreWrapper.get(dimAbbreviation),
+                                    blockDimensionDisplay,
                                     0.6 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
                                     //                                    100,
                                     //                                    100, // todo: DEBUG ONLY
@@ -48,7 +49,6 @@ public class EyeOfHarmonyRecipeStorage {
                                     (long) (18_000L * pow(1.4, blockDimensionDisplay.getDimensionRocketTier())),
                                     //                                    2000L, // todo: debug only
                                     blockDimensionDisplay.getDimensionRocketTier(),
-                                    blockDimensionDisplay,
                                     1.0 - blockDimensionDisplay.getDimensionRocketTier() / 10.0));
                 } catch (Exception e) {
                     e.printStackTrace();
