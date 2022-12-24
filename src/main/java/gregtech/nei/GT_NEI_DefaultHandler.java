@@ -1,7 +1,6 @@
 package gregtech.nei;
 
 import static codechicken.nei.recipe.RecipeInfo.getGuiOffset;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientUtils;
@@ -366,29 +365,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             GuiRecipe<?> gui, ItemStack aStack, List<String> currentTip, int aRecipeIndex) {
         CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
         if ((tObject instanceof CachedDefaultRecipe)) {
-            CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;
-            for (PositionedStack tStack : tRecipe.mOutputs) {
-                if (aStack == tStack.item) {
-                    if ((!(tStack instanceof FixedPositionedStack))
-                            || (!((FixedPositionedStack) tStack).isChanceBased())) {
-                        break;
-                    }
-                    currentTip.add(GRAY
-                            + GT_Utility.trans("150", "Chance: ")
-                            + ((FixedPositionedStack) tStack).getChanceText());
-                    break;
-                }
-            }
-            for (PositionedStack tStack : tRecipe.mInputs) {
-                if (aStack == tStack.item) {
-                    if ((!(tStack instanceof FixedPositionedStack))
-                            || (!((FixedPositionedStack) tStack).isNotConsumed())) {
-                        break;
-                    }
-                    currentTip.add(GRAY + GT_Utility.trans("151", "Does not get consumed in the process"));
-                    break;
-                }
-            }
+            currentTip = mRecipeMap.handleNEIItemTooltip(aStack, currentTip, (CachedDefaultRecipe) tObject);
         }
 
         if (mRecipeNameTooltip != null) {

@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.*;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import codechicken.nei.PositionedStack;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
@@ -37,6 +38,7 @@ import gregtech.common.power.Power;
 import gregtech.common.power.UnspecifiedEUPower;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
 import gregtech.nei.FusionSpecialValueFormatter;
+import gregtech.nei.GT_NEI_DefaultHandler;
 import gregtech.nei.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.INEISpecialInfoFormatter;
 import gregtech.nei.NEIRecipeInfo;
@@ -1677,32 +1679,23 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true)
                 .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_BOXED)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
-        public static final GT_Recipe_Map sFusionRecipes = new GT_Recipe_Map(
-                new HashSet<>(50),
-                "gt.recipe.fusionreactor",
-                "Fusion Reactor",
-                null,
-                RES_PATH_GUI + "basicmachines/FusionReactor",
-                0,
-                0,
-                0,
-                2,
-                1,
-                "Start: ",
-                1,
-                " EU",
-                true,
-                true) {
-            @Override
-            public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-                return UIHelper.getItemInputPositions(fluidInputCount);
-            }
-
-            @Override
-            public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-                return UIHelper.getItemOutputPositions(fluidOutputCount);
-            }
-        }.setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+        public static final GT_Recipe_Map sFusionRecipes = new GT_Recipe_Map_FluidOnly(
+                        new HashSet<>(50),
+                        "gt.recipe.fusionreactor",
+                        "Fusion Reactor",
+                        null,
+                        RES_PATH_GUI + "basicmachines/FusionReactor",
+                        0,
+                        0,
+                        0,
+                        2,
+                        1,
+                        "Start: ",
+                        1,
+                        " EU",
+                        true,
+                        true)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                 .setUsualFluidInputCount(2)
                 .setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE);
         public static final GT_Recipe_Map sComplexFusionRecipes = new GT_Recipe_Map_ComplexFusion(
@@ -3675,6 +3668,45 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             for (String text : texts) {
                 drawNEIText(recipeInfo, text, 10);
             }
+        }
+
+        public List<String> handleNEIItemTooltip(
+                ItemStack stack, List<String> currentTip, GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+            for (PositionedStack pStack : neiCachedRecipe.mInputs) {
+                if (stack == pStack.item) {
+                    if (pStack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
+                        currentTip = handleNEIItemInputTooltip(
+                                currentTip, (GT_NEI_DefaultHandler.FixedPositionedStack) pStack);
+                    }
+                    break;
+                }
+            }
+            for (PositionedStack pStack : neiCachedRecipe.mOutputs) {
+                if (stack == pStack.item) {
+                    if (pStack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
+                        currentTip = handleNEIItemOutputTooltip(
+                                currentTip, (GT_NEI_DefaultHandler.FixedPositionedStack) pStack);
+                    }
+                    break;
+                }
+            }
+            return currentTip;
+        }
+
+        protected List<String> handleNEIItemInputTooltip(
+                List<String> currentTip, GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+            if (pStack.isNotConsumed()) {
+                currentTip.add(GRAY + GT_Utility.trans("151", "Does not get consumed in the process"));
+            }
+            return currentTip;
+        }
+
+        protected List<String> handleNEIItemOutputTooltip(
+                List<String> currentTip, GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+            if (pStack.isChanceBased()) {
+                currentTip.add(GRAY + GT_Utility.trans("150", "Chance: ") + pStack.getChanceText());
+            }
+            return currentTip;
         }
 
         public void updateNEITextColorOverride() {
