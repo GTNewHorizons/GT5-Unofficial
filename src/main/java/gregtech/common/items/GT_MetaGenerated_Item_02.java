@@ -2515,8 +2515,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addPulverisationRecipe(
                 ItemList.Crop_Drop_Tine.get(1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L));
         GT_ModHandler.addPulverisationRecipe(
-                new ItemStack(Items.reeds, 1), new ItemStack(Items.sugar, 1), null, 0, false);
-        GT_ModHandler.addPulverisationRecipe(
                 new ItemStack(Blocks.melon_block, 1, 0),
                 new ItemStack(Items.melon, 8, 0),
                 new ItemStack(Items.melon_seeds, 1),
