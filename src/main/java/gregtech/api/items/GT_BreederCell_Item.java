@@ -3,6 +3,7 @@ package gregtech.api.items;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
@@ -25,6 +26,9 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
     protected final int mHeatBonusStep;
     protected final int mHeatBonusMultiplier;
     protected ItemStack mProduct;
+    protected boolean deflector = false;
+    protected boolean hidden = false;
+    protected boolean neiAdded = false;
 
     public GT_BreederCell_Item(
             String aUnlocalized,
@@ -39,7 +43,24 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
         this.mHeatBonusMultiplier = aHeatBonusMultiplier;
         this.setMaxDamage(aRequiredPulse);
         setNoRepair();
-        GregTech_API.sAfterGTServerstart.add(() -> mProduct = aProduct.get());
+        GregTech_API.sAfterGTPostload.add(() -> {
+            mProduct = aProduct.get();
+            if (!hidden && !neiAdded) {
+                GT_Values.RA.addIC2ReactorBreederCell(
+                        new ItemStack(this), mProduct, deflector, mHeatBonusStep, mHeatBonusMultiplier, getMaxDamage());
+                neiAdded = true;
+            }
+        });
+    }
+
+    public GT_BreederCell_Item setDeflector() {
+        deflector = true;
+        return this;
+    }
+
+    public GT_BreederCell_Item setHidden() {
+        hidden = true;
+        return this;
     }
 
     @Override
@@ -100,7 +121,7 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
             else yourStack.setItemDamage(myLevel);
         }
 
-        return false;
+        return deflector;
     }
 
     protected int getNewDamage(IReactor reactor, ItemStack stack) {

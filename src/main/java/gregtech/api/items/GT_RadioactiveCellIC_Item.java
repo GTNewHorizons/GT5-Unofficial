@@ -1,6 +1,7 @@
 package gregtech.api.items;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implements IReactorComponent {
+    private static final int MYSTERIOUS_MULTIPLIER_HEAT = 4;
     public final int numberOfCells;
     public final float sEnergy;
     public final int sRadiation;
@@ -38,6 +40,11 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
         this.sHeat = aHeat;
         this.sDepleted = aDepleted;
         this.sMox = aMox;
+        if (aDepleted != null && aEnergy > 0 && aHeat > 0) {
+            // avoid adding depleted cells to recipe map
+            GT_Values.RA.addIC2ReactorFuelCell(
+                    new ItemStack(this), aDepleted, aMox, aHeat * MYSTERIOUS_MULTIPLIER_HEAT, aEnergy, aCellcount);
+        }
     }
 
     private static int checkPulseable(IReactor reactor, int x, int y, ItemStack me, int mex, int mey, boolean heatrun) {
@@ -74,11 +81,11 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
 
                 //                int heat = sumUp(pulses) * 4;
 
-                int heat = triangularNumber(pulses) * 4;
+                int heat = triangularNumber(pulses) * MYSTERIOUS_MULTIPLIER_HEAT;
 
                 heat = getFinalHeat(reactor, yourStack, x, y, heat);
 
-                ArrayList<ItemStackCoord> heatAcceptors = new ArrayList();
+                ArrayList<ItemStackCoord> heatAcceptors = new ArrayList<>();
                 checkHeatAcceptor(reactor, x - 1, y, heatAcceptors);
                 checkHeatAcceptor(reactor, x + 1, y, heatAcceptors);
                 checkHeatAcceptor(reactor, x, y - 1, heatAcceptors);

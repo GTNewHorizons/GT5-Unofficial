@@ -16,6 +16,8 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
+import ic2.core.init.MainConfig;
+import ic2.core.util.ConfigUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -3356,6 +3358,44 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 false, aInputs, aOutputs, null, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue));
 
         return true;
+    }
+
+    @Override
+    public GT_Recipe addIC2ReactorBreederCell(
+            ItemStack input,
+            ItemStack output,
+            boolean reflector,
+            int heatStep,
+            int heatMultiplier,
+            int requiredPulses) {
+        return GT_Recipe.GT_Recipe_Map.sIC2NuclearFakeRecipe.addFakeRecipe(
+                input,
+                output,
+                reflector ? "Neutron reflecting Breeder" : "Heat neutral Breeder",
+                String.format("Every %d reactor hull heat", heatStep),
+                String.format("increase speed by %d00%%", heatMultiplier),
+                String.format("Required pulses: %d", requiredPulses));
+    }
+
+    @Override
+    public GT_Recipe addIC2ReactorFuelCell(
+            ItemStack input, ItemStack output, boolean aMox, float aHeat, float aEnergy, int aCells) {
+        // for the mysterious constant 5.0f,
+        // see ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric.getOfferedEnergy
+        // don't ask, just accept
+        int pulses = aCells / 2 + 1;
+        float nukePowerMult = 5.0f * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear");
+        return GT_Recipe.GT_Recipe_Map.sIC2NuclearFakeRecipe.addFakeRecipe(
+                input,
+                output,
+                aMox ? "MOX Model" : "Uranium Model",
+                "Neutron Pulse: " + aCells,
+                aCells == 1
+                        ? String.format("Heat: %.1f * n1 * (n1 + 1)", aHeat / 2f)
+                        : String.format("Heat: %.1f * (%d + n1) * (%d + n1)", aHeat * aCells / 2f, aCells, aCells + 1),
+                String.format(
+                        "Energy: %.1f + n2 * %.1f EU/t",
+                        aEnergy * aCells * pulses * nukePowerMult, aEnergy * nukePowerMult));
     }
 
     private boolean areItemsAndFluidsBothNull(ItemStack[] items, FluidStack[] fluids) {
