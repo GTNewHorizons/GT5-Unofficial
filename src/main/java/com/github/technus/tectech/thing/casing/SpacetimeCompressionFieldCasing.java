@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.casing;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
+import static net.minecraft.util.EnumChatFormatting.RESET;
 
 import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.relauncher.Side;
@@ -39,7 +40,7 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
         for (int i = 0; i < maxBlockTier; i++) {
             GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + i + ".name",
-                    EOH_TIER_FANCY_NAMES[i] + " Spacetime Compression Field Generator");
+                    EOH_TIER_FANCY_NAMES[i] + RESET + " Spacetime Compression Field Generator");
         }
 
         CustomItemList.SpacetimeCompressionFieldGeneratorTier0.set(new ItemStack(this, 1, 0));
