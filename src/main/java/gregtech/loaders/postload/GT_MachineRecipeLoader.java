@@ -7177,7 +7177,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 400,
                 120);
         GT_Values.RA.addDistillationTowerRecipe(
-                Materials.OilLight.getFluid(1000L),
+                Materials.OilHeavy.getFluid(1000L),
                 new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
                 new FluidStack[] {Materials.Lubricant.getFluid(750L)},
                 null,
