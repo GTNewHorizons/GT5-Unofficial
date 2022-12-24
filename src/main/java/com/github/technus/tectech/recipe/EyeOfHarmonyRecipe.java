@@ -144,7 +144,7 @@ public class EyeOfHarmonyRecipe {
 
         // Process recipes output items.
         // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.
-        this(processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds, 6 * 64),
+        this(processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds),
                 block,
                 recipeEnergyEfficiency,
                 hydrogenRequirement,
@@ -245,11 +245,10 @@ public class EyeOfHarmonyRecipe {
     private static ArrayList<Pair<Materials, Long>> processDimension(
             GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimWrapper,
             GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimWrapper,
-            long timeInSeconds,
-            long miningMultiplier) {
+            long timeInSeconds) {
         HashMapHelper outputMap = new HashMapHelper();
 
-        double mainMultiplier = timeInSeconds * miningMultiplier;
+        double mainMultiplier = timeInSeconds * 384.0;
 
         normalOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
             processHelper(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);

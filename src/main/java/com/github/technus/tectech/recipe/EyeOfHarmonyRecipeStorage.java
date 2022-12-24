@@ -134,7 +134,7 @@ public class EyeOfHarmonyRecipeStorage {
     private ArrayList<Pair<Materials, Long>> processDD(ArrayList<Materials> validMaterialList) {
         EyeOfHarmonyRecipe.HashMapHelper outputMap = new EyeOfHarmonyRecipe.HashMapHelper();
 
-        // 9 from rocketTier + 1;
+        // 9 from rocketTier + 1, 6 * 64 = VM3 + Og, 1.4 = time increase per tier.
         double mainMultiplier = (18_000L * pow(1.4, 9) * (6 * 64));
         double probability = 1.0 / validMaterialList.size();
 
@@ -145,9 +145,6 @@ public class EyeOfHarmonyRecipeStorage {
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();
 
         outputMap.forEach((material, quantity) -> outputList.add(Pair.of(material, (long) Math.floor(quantity))));
-
-//        Collections.sort(outputList);
-//        Collections.reverse(outputList);
 
         return outputList;
     }
