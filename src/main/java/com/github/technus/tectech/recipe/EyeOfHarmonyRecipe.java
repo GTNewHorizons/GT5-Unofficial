@@ -81,14 +81,15 @@ public class EyeOfHarmonyRecipe {
         return sumOfItems;
     }
 
-    public EyeOfHarmonyRecipe(ArrayList<Pair<Materials, Long>> materialList,
-                              Block block,
-                              final double recipeEnergyEfficiency,
-                              final long hydrogenRequirement,
-                              final long heliumRequirement,
-                              final long miningTimeSeconds,
-                              final long spacetimeCasingTierRequired,
-                              final double baseSuccessChance) {
+    public EyeOfHarmonyRecipe(
+            ArrayList<Pair<Materials, Long>> materialList,
+            Block block,
+            final double recipeEnergyEfficiency,
+            final long hydrogenRequirement,
+            final long heliumRequirement,
+            final long miningTimeSeconds,
+            final long spacetimeCasingTierRequired,
+            final double baseSuccessChance) {
         this.recipeTriggerItem = new ItemStack(block);
 
         this.outputItems = validDustGenerator(materialList);
@@ -111,7 +112,7 @@ public class EyeOfHarmonyRecipe {
         ArrayList<FluidStack> fluidStackArrayList = validPlasmaGenerator(materialList);
 
         for (FluidStack fluidStack : fluidStackArrayList) {
-            fluidStack.amount = (int) ((spacetimeCasingTierRequired+1) * 1_000_000L);
+            fluidStack.amount = (int) ((spacetimeCasingTierRequired + 1) * 1_000_000L);
         }
 
         // Add a bonus fluid of compressed star matter.
@@ -150,7 +151,8 @@ public class EyeOfHarmonyRecipe {
 
         // Process recipes output items.
         // 6 * 64 = 6 stacks/second for VM tier 3 + Og gas.
-        this(processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds),
+        this(
+                processDimension(normalOreDimensionWrapper, smallOreDimensionWrapper, miningTimeSeconds),
                 block,
                 recipeEnergyEfficiency,
                 hydrogenRequirement,
@@ -265,7 +267,8 @@ public class EyeOfHarmonyRecipe {
         });
 
         // Iterate over small ores in dimension and add them, kinda hacky but works and is close enough.
-        smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> processHelper(outputMap, veinInfo.getOreMaterial(), mainMultiplier, probability));
+        smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) ->
+                processHelper(outputMap, veinInfo.getOreMaterial(), mainMultiplier, probability));
 
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();
 
@@ -274,8 +277,7 @@ public class EyeOfHarmonyRecipe {
         return outputList;
     }
 
-    private static ArrayList<FluidStack> validPlasmaGenerator(
-            final List<Pair<Materials, Long>> planetList) {
+    private static ArrayList<FluidStack> validPlasmaGenerator(final List<Pair<Materials, Long>> planetList) {
 
         ArrayList<FluidStack> plasmaList = new ArrayList<>();
 

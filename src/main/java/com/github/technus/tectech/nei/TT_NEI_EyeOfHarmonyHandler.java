@@ -66,7 +66,8 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
 
             // Draw tooltip on planet item.
             if (aStack.isItemEqual(currentRecipe.getRecipeTriggerItem())) {
-                currentToolTip.add(EnumChatFormatting.GRAY + "Total Items: " + formatNumbers(currentRecipe.getSumOfItems()));
+                currentToolTip.add(
+                        EnumChatFormatting.GRAY + "Total Items: " + formatNumbers(currentRecipe.getSumOfItems()));
                 return currentToolTip;
             }
 
@@ -138,16 +139,21 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
         drawLine(index++, "Helium: " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
         drawLine(index++, "Spacetime Tier: " + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
 
-        if (recipe.getEUOutput() < TRILLION ) {
+        if (recipe.getEUOutput() < TRILLION) {
             drawLine(index++, "EU Output: " + formatNumbers(recipe.getEUOutput()) + " EU");
         } else {
-            drawLine(index++, "EU Output: " + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput()) + " EU");
+            drawLine(
+                    index++,
+                    "EU Output: " + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput()) + " EU");
         }
 
-        if (recipe.getEUOutput() < TRILLION ) {
+        if (recipe.getEUOutput() < TRILLION) {
             drawLine(index++, "EU Input: " + formatNumbers(recipe.getEUStartCost()) + " EU");
         } else {
-            drawLine(index++, "EU Input: " + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost()) + " EU");
+            drawLine(
+                    index++,
+                    "EU Input: " + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost())
+                            + " EU");
         }
 
         drawLine(index++, "Base Recipe Chance: " + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
@@ -164,6 +170,4 @@ public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
     protected void drawLine(int lineNumber, String line) {
         drawText(7, getDescriptionYOffset() + lineNumber * 10 + 1, line, 0xFF000000);
     }
-
-
 }

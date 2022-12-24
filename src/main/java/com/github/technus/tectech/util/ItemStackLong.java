@@ -22,8 +22,7 @@ public class ItemStackLong {
         return stackSize;
     }
 
-    public long compareTo(ItemStackLong itemStackLong)
-    {
-        return(stackSize - itemStackLong.stackSize);
+    public long compareTo(ItemStackLong itemStackLong) {
+        return (stackSize - itemStackLong.stackSize);
     }
 }

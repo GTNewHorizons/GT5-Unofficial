@@ -560,8 +560,8 @@ public class TT_recipe extends GT_Recipe {
 
         @Override
         public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return UIHelper.getItemGridPositions(min(itemOutputCount, maxItemsToRender+1), 7, yOrigin + 36, xDirMaxCount, 12);
-
+            return UIHelper.getItemGridPositions(
+                    min(itemOutputCount, maxItemsToRender + 1), 7, yOrigin + 36, xDirMaxCount, 12);
         }
 
         @Override

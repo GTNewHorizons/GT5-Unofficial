@@ -1708,14 +1708,13 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
-//        if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement())
-//                || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
-//            return false;
-//        }
+        //        if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement())
+        //                || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
+        //            return false;
+        //        }
 
         // todo: DEBUG, DELETE THIS:
-        if ((getHydrogenStored() < 100)
-                || (getHeliumStored() < 100)) {
+        if ((getHydrogenStored() < 100) || (getHeliumStored() < 100)) {
             return false;
         }
 
@@ -1898,14 +1897,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             str.add("EU Output: " + RED + formatNumbers(euOutput) + RESET + " EU");
             if (mOutputFluids.length > 0) {
                 // Star matter is always the last element in the array.
-                str.add("Estimated Star Matter Output: "
-                        + RED + formatNumbers(mOutputFluids[mOutputFluids.length - 1].amount) + RESET + " L");
+                str.add("Estimated Star Matter Output: " + RED
+                        + formatNumbers(mOutputFluids[mOutputFluids.length - 1].amount) + RESET + " L");
             }
             long euPerTick = euOutput / maxProgresstime();
             if (euPerTick < LongMath.pow(10, 12)) {
                 str.add("Estimated EU/t: " + RED + formatNumbers(euOutput / maxProgresstime()) + RESET + " EU/t");
             } else {
-                str.add("Estimated EU/t: " + RED + ReadableNumberConverter.INSTANCE.toWideReadableForm(euOutput / maxProgresstime()) + RESET + " EU/t");
+                str.add("Estimated EU/t: " + RED
+                        + ReadableNumberConverter.INSTANCE.toWideReadableForm(euOutput / maxProgresstime()) + RESET
+                        + " EU/t");
             }
             str.add(GOLD + "-----------------------------------------------------");
         }

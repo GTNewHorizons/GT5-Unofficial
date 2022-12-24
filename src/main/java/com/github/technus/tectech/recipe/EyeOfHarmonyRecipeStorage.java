@@ -6,12 +6,10 @@ import static java.lang.Math.pow;
 
 import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.math.LongMath;
-
-import java.util.*;
-
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import java.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
@@ -50,12 +48,13 @@ public class EyeOfHarmonyRecipeStorage {
                                         GT5OreLayerHelper.dimToOreWrapper.get(dimAbbreviation),
                                         GT5OreSmallHelper.dimToSmallOreWrapper.get(dimAbbreviation),
                                         blockDimensionDisplay,
-                                    0.6 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
-                                    BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
-                                    BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
-                                    (long) (18_000L * pow(1.4, blockDimensionDisplay.getDimensionRocketTier())),
-                                    blockDimensionDisplay.getDimensionRocketTier(),
-                                    1.0 - blockDimensionDisplay.getDimensionRocketTier() / 10.0));}
+                                        0.6 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
+                                        BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                                        BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                                        (long) (18_000L * pow(1.4, blockDimensionDisplay.getDimensionRocketTier())),
+                                        blockDimensionDisplay.getDimensionRocketTier(),
+                                        1.0 - blockDimensionDisplay.getDimensionRocketTier() / 10.0));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.out.println(
@@ -84,7 +83,7 @@ public class EyeOfHarmonyRecipeStorage {
 
             sEyeofHarmonyRecipes.addRecipe(
                     false,
-                    new ItemStack[]{planetItem},
+                    new ItemStack[] {planetItem},
                     outputItems.toArray(new ItemStack[0]),
                     recipe,
                     null,
@@ -96,7 +95,8 @@ public class EyeOfHarmonyRecipeStorage {
         }
     }
 
-    private void specialDeepDarkRecipe(HashMap<String, EyeOfHarmonyRecipe> hashMap, final BlockDimensionDisplay planetItem) {
+    private void specialDeepDarkRecipe(
+            HashMap<String, EyeOfHarmonyRecipe> hashMap, final BlockDimensionDisplay planetItem) {
 
         HashSet<Materials> validMaterialSet = new HashSet<>();
 
@@ -119,16 +119,17 @@ public class EyeOfHarmonyRecipeStorage {
 
         long rocketTier = 9;
 
-        hashMap.put("DD", new EyeOfHarmonyRecipe(
-                processDD(validMaterialList),
-                planetItem,
-                0.6 + rocketTier / 10.0,
-                BILLION * (rocketTier + 1),
-                BILLION * (rocketTier + 1),
-                (long) (18_000L * pow(1.4, rocketTier)),
-                rocketTier-1, // -1 so that we avoid out of bounds exception on NEI render.
-                1.0 - rocketTier / 10.0));
-
+        hashMap.put(
+                "DD",
+                new EyeOfHarmonyRecipe(
+                        processDD(validMaterialList),
+                        planetItem,
+                        0.6 + rocketTier / 10.0,
+                        BILLION * (rocketTier + 1),
+                        BILLION * (rocketTier + 1),
+                        (long) (18_000L * pow(1.4, rocketTier)),
+                        rocketTier - 1, // -1 so that we avoid out of bounds exception on NEI render.
+                        1.0 - rocketTier / 10.0));
     }
 
     private ArrayList<Pair<Materials, Long>> processDD(ArrayList<Materials> validMaterialList) {
