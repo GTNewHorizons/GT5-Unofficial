@@ -1713,6 +1713,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 //            return false;
 //        }
 
+        // todo: DEBUG, DELETE THIS:
         if ((getHydrogenStored() < 100)
                 || (getHeliumStored() < 100)) {
             return false;
