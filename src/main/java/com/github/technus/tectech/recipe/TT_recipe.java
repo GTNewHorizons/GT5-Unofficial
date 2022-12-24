@@ -1,8 +1,13 @@
 package com.github.technus.tectech.recipe;
 
+import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
+import static com.google.common.math.LongMath.pow;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 import static java.lang.Math.min;
+import static net.minecraft.util.EnumChatFormatting.*;
 
+import appeng.util.ReadableNumberConverter;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
@@ -10,16 +15,18 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.IEMMapRead
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.nei.GT_NEI_DefaultHandler;
+import gregtech.nei.NEIRecipeInfo;
 import java.util.*;
 import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -502,6 +509,7 @@ public class TT_recipe extends GT_Recipe {
 
         private static final int xDirMaxCount = 9;
         private static final int yOrigin = 8;
+        private static final long TRILLION = pow(10, 12);
 
         public Eye_Of_Harmony_Recipe_Map(
                 Collection<GT_Recipe> aRecipeList,
@@ -537,13 +545,38 @@ public class TT_recipe extends GT_Recipe {
                     aNEIAllowed);
             useModularUI(true);
             setLogoPos(8, yOrigin);
-        }
+            setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+                EyeOfHarmonyRecipe recipe = (EyeOfHarmonyRecipe) recipeInfo.recipe.mSpecialItems;
+                List<String> result = new ArrayList<>();
 
-        @Override
-        public GT_Recipe_Map setNEIBackgroundSize(int width, int height) {
-            useModularUI(true);
-            this.neiBackgroundSize = new Size(172, 81 + 9 * 18);
-            return this;
+                result.add("Hydrogen: " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
+                result.add("Helium: " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
+                result.add("Spacetime Tier: " + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
+
+                if (recipe.getEUOutput() < TRILLION) {
+                    result.add("EU Output: " + formatNumbers(recipe.getEUOutput()) + " EU");
+                } else {
+                    result.add("EU Output: " + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput())
+                            + " EU");
+                }
+
+                if (recipe.getEUOutput() < TRILLION) {
+                    result.add("EU Input: " + formatNumbers(recipe.getEUStartCost()) + " EU");
+                } else {
+                    result.add("EU Input: "
+                            + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost()) + " EU");
+                }
+
+                result.add("Base Recipe Chance: " + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
+                result.add(
+                        "Recipe Energy Efficiency: " + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
+
+                if (recipe.getOutputItems().size() > maxItemsToRender) {
+                    result.add("" + DARK_RED + BOLD + "Warning" + RESET + ": Not all items displayed.");
+                }
+
+                return result;
+            });
         }
 
         @Override
@@ -584,7 +617,7 @@ public class TT_recipe extends GT_Recipe {
                 Supplier<Float> progressSupplier,
                 Pos2d windowOffset) {
             // Delay setter so that calls to #setUsualFluidInputCount and #setUsualFluidOutputCount are considered
-            setNEIBackgroundSize(172, 82 + (Math.max(getItemRowCount() + getFluidRowCount() - 4, 0)) * 18);
+            setNEIBackgroundSize(172, 117 + (Math.max(getItemRowCount() + getFluidRowCount() - 4, 0)) * 18);
             return super.createNEITemplate(
                     itemInputsInventory,
                     itemOutputsInventory,
@@ -601,6 +634,39 @@ public class TT_recipe extends GT_Recipe {
 
         private int getFluidRowCount() {
             return (Math.max(getUsualFluidInputCount(), getUsualFluidOutputCount()) - 1) / xDirMaxCount + 1;
+        }
+
+        @Override
+        protected void drawNEIText(NEIRecipeInfo recipeInfo, String text, int yShift) {
+            drawNEIText(recipeInfo, text, 7, yShift);
+        }
+
+        @Override
+        public List<String> handleNEIItemTooltip(
+                ItemStack stack, List<String> currentTip, GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+            super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
+            if (stack == null) return currentTip;
+
+            EyeOfHarmonyRecipe currentRecipe = (EyeOfHarmonyRecipe) neiCachedRecipe.mRecipe.mSpecialItems;
+
+            // Draw tooltip on planet item.
+            if (stack.isItemEqual(currentRecipe.getRecipeTriggerItem())) {
+                currentTip.add(
+                        EnumChatFormatting.GRAY + "Total Items: " + formatNumbers(currentRecipe.getSumOfItems()));
+                return currentTip;
+            }
+
+            // Draw tooltip on other items.
+            double percentage = currentRecipe.getItemStackToProbabilityMap().getOrDefault(stack, -1.0);
+
+            if (percentage != -1.0) {
+                currentTip.add(EnumChatFormatting.GRAY + "Percentage of Solid Mass: " + percentage + "%");
+                currentTip.add(EnumChatFormatting.GRAY + "Item Count: "
+                        + formatNumbers(
+                                currentRecipe.getItemStackToTrueStackSizeMap().get(stack)));
+            }
+
+            return currentTip;
         }
     }
 }
