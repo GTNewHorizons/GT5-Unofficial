@@ -21,6 +21,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.enums.SteamVariant;
+import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -31,7 +32,14 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.power.EUPower;
+import gregtech.common.power.Power;
+import gregtech.common.power.UnspecifiedEUPower;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
+import gregtech.nei.FusionSpecialValueFormatter;
+import gregtech.nei.HeatingCoilSpecialValueFormatter;
+import gregtech.nei.INEISpecialInfoFormatter;
+import gregtech.nei.NEIRecipeInfo;
 import ic2.core.Ic2Items;
 import java.awt.*;
 import java.util.*;
@@ -39,12 +47,14 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -737,6 +747,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         return neiDesc;
     }
 
+    /**
+     * Sets description shown on NEI.
+     * <br>If you have a large number of recipes for the recipemap,
+     * this is not efficient memory wise, so use {@link GT_Recipe_Map#setNEISpecialInfoFormatter} instead.
+     */
     protected void setNeiDesc(String... neiDesc) {
         this.neiDesc = neiDesc;
     }
@@ -1688,7 +1703,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 return UIHelper.getItemOutputPositions(fluidOutputCount);
             }
         }.setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .setUsualFluidInputCount(2);
+                .setUsualFluidInputCount(2)
+                .setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE);
         public static final GT_Recipe_Map sComplexFusionRecipes = new GT_Recipe_Map_ComplexFusion(
                         new HashSet<>(50),
                         "gt.recipe.complexfusionreactor",
@@ -1709,7 +1725,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setUsualFluidInputCount(16)
                 .setUsualFluidOutputCount(16)
                 .setNEITransferRect(new Rectangle(79, 34, 18, 18))
-                .setLogoPos(80, 61);
+                .setLogoPos(80, 61)
+                .setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE);
         public static final GT_Recipe_Map sCentrifugeRecipes = new GT_Recipe_Map(
                         new HashSet<>(1200),
                         "gt.recipe.centrifuge",
@@ -1766,7 +1783,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         " K",
                         false,
                         true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
         public static final GT_Recipe_Map sPlasmaForgeRecipes = new GT_Recipe_Map_LargeNEI(
                         new HashSet<>(20),
                         "gt.recipe.plasmaforge",
@@ -1785,7 +1803,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         true)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                 .setUsualFluidInputCount(9)
-                .setUsualFluidOutputCount(9);
+                .setUsualFluidOutputCount(9)
+                .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
         public static final GT_Recipe_Map sPrimitiveBlastRecipes = new GT_Recipe_Map(
                         new HashSet<>(200),
                         "gt.recipe.primitiveblastfurnace",
@@ -2477,7 +2496,22 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .useModularUI(true)
                 .setUsualFluidInputCount(3)
                 .setUsualFluidOutputCount(0)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT)
+                .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+                    List<String> result = new ArrayList<>();
+                    int bitmap = recipeInfo.recipe.mSpecialValue;
+                    if ((bitmap & 0b1) > 0) {
+                        result.add(GT_Utility.trans("336", "PCB Factory Tier: ") + 1);
+                    } else if ((bitmap & 0b10) > 0) {
+                        result.add(GT_Utility.trans("336", "PCB Factory Tier: ") + 2);
+                    } else if ((bitmap & 0b100) > 0) {
+                        result.add(GT_Utility.trans("336", "PCB Factory Tier: ") + 3);
+                    }
+                    if ((bitmap & 0b1000) > 0) {
+                        result.add(GT_Utility.trans("337", "Upgrade Required: ") + GT_Utility.trans("338", "Bio"));
+                    }
+                    return result;
+                });
 
         public static final GT_Recipe_Map_IC2NuclearFake sIC2NuclearFakeRecipe = new GT_Recipe_Map_IC2NuclearFake();
 
@@ -2623,6 +2657,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public Size neiBackgroundSize = new Size(172, 82);
 
+        protected final GT_GUIColorOverride colorOverride;
+        private int neiTextColorOverride = -1;
+
+        private INEISpecialInfoFormatter neiSpecialInfoFormatter;
+
         /**
          * Initialises a new type of Recipe Handler.
          *
@@ -2678,6 +2717,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aUsualOutputCount,
                     aMinimalInputFluids,
                     aMinimalInputItems);
+            colorOverride = GT_GUIColorOverride.get(ModularUITextures.VANILLA_BACKGROUND.location);
             if (sIndexedMappings.put(mUniqueIdentifier, this) != null)
                 throw new IllegalArgumentException("Duplicate recipe map registered: " + mUniqueIdentifier);
         }
@@ -2858,6 +2898,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public GT_Recipe_Map setNEIBackgroundSize(int width, int height) {
             useModularUI(true);
             this.neiBackgroundSize = new Size(width, height);
+            return this;
+        }
+
+        public GT_Recipe_Map setNEISpecialInfoFormatter(INEISpecialInfoFormatter neiSpecialInfoFormatter) {
+            this.neiSpecialInfoFormatter = neiSpecialInfoFormatter;
             return this;
         }
 
@@ -3457,6 +3502,194 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          */
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
             return UIHelper.getFluidOutputPositions(fluidOutputCount);
+        }
+
+        public void drawNEIDescription(NEIRecipeInfo recipeInfo) {
+            drawNEIEnergyInfo(recipeInfo);
+            drawNEIDurationInfo(recipeInfo);
+            drawNEISpecialInfo(recipeInfo);
+            drawNEIRecipeOwnerInfo(recipeInfo);
+        }
+
+        protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {
+            GT_Recipe recipe = recipeInfo.recipe;
+            Power power = recipeInfo.power;
+            if (power.getEuPerTick() > 0) {
+                drawNEIText(recipeInfo, GT_Utility.trans("152", "Total: ") + power.getTotalPowerString());
+
+                String amperage = power.getAmperageString();
+                String powerUsage = power.getPowerUsageString();
+                if (amperage == null || amperage.equals("unspecified") || powerUsage.contains("(OC)")) {
+                    drawNEIText(recipeInfo, GT_Utility.trans("153", "Usage: ") + powerUsage);
+                    if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
+                        Power originalPower = getPowerFromRecipeMap();
+                        if (!(originalPower instanceof UnspecifiedEUPower)) {
+                            originalPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
+                            drawNEIText(
+                                    recipeInfo,
+                                    GT_Utility.trans("275", "Original voltage: ") + originalPower.getVoltageString());
+                        }
+                    }
+                    if (amperage != null && !amperage.equals("unspecified") && !amperage.equals("1")) {
+                        drawNEIText(recipeInfo, GT_Utility.trans("155", "Amperage: ") + amperage);
+                    }
+                } else if (amperage.equals("1")) {
+                    drawNEIText(recipeInfo, GT_Utility.trans("154", "Voltage: ") + power.getVoltageString());
+                } else {
+                    drawNEIText(recipeInfo, GT_Utility.trans("153", "Usage: ") + powerUsage);
+                    drawNEIText(recipeInfo, GT_Utility.trans("154", "Voltage: ") + power.getVoltageString());
+                    drawNEIText(recipeInfo, GT_Utility.trans("155", "Amperage: ") + amperage);
+                }
+            }
+        }
+
+        protected void drawNEIDurationInfo(NEIRecipeInfo recipeInfo) {
+            Power power = recipeInfo.power;
+            if (power.getDurationTicks() > 0) {
+                String textToDraw = GT_Utility.trans("158", "Time: ");
+                if (GT_Mod.gregtechproxy.mNEIRecipeSecondMode) {
+                    textToDraw += power.getDurationStringSeconds();
+                    if (power.getDurationSeconds() <= 1.0d) {
+                        textToDraw += String.format(" (%s)", power.getDurationStringTicks());
+                    }
+                } else {
+                    textToDraw += power.getDurationStringTicks();
+                }
+                drawNEIText(recipeInfo, textToDraw);
+            }
+        }
+
+        protected void drawNEISpecialInfo(NEIRecipeInfo recipeInfo) {
+            String[] recipeDesc = recipeInfo.recipe.getNeiDesc();
+            if (recipeDesc != null) {
+                for (String s : recipeDesc) {
+                    drawOptionalNEIText(recipeInfo, s);
+                }
+            } else if (neiSpecialInfoFormatter != null) {
+                drawNEITextMultipleLines(
+                        recipeInfo, neiSpecialInfoFormatter.format(recipeInfo, this::formatSpecialValue));
+            } else {
+                drawOptionalNEIText(recipeInfo, getNEISpecialInfo(recipeInfo.recipe.mSpecialValue));
+            }
+        }
+
+        protected String getNEISpecialInfo(int specialValue) {
+            if (specialValue == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
+                return GT_Utility.trans("159", "Needs Low Gravity");
+            } else if (specialValue == -200 && GT_Mod.gregtechproxy.mEnableCleanroom) {
+                return GT_Utility.trans("160", "Needs Cleanroom");
+            } else if (specialValue == -201) {
+                return GT_Utility.trans("206", "Scan for Assembly Line");
+            } else if (specialValue == -300 && GT_Mod.gregtechproxy.mEnableCleanroom) {
+                return GT_Utility.trans("160.1", "Needs Cleanroom & LowGrav");
+            } else if (specialValue == -400) {
+                return GT_Utility.trans("216", "Deprecated Recipe");
+            } else if (hasSpecialValueFormat()) {
+                return formatSpecialValue(specialValue);
+            }
+            return null;
+        }
+
+        private boolean hasSpecialValueFormat() {
+            return (GT_Utility.isStringValid(mNEISpecialValuePre)) || (GT_Utility.isStringValid(mNEISpecialValuePost));
+        }
+
+        protected String formatSpecialValue(int specialValue) {
+            return mNEISpecialValuePre
+                    + GT_Utility.formatNumbers((long) specialValue * mNEISpecialValueMultiplier)
+                    + mNEISpecialValuePost;
+        }
+
+        protected void drawNEIRecipeOwnerInfo(NEIRecipeInfo recipeInfo) {
+            GT_Recipe recipe = recipeInfo.recipe;
+            if (GT_Mod.gregtechproxy.mNEIRecipeOwner) {
+                if (recipe.owners.size() > 1) {
+                    drawNEIText(
+                            recipeInfo,
+                            EnumChatFormatting.ITALIC
+                                    + GT_Utility.trans("273", "Original Recipe by: ")
+                                    + recipe.owners.get(0).getName());
+                    for (int i = 1; i < recipe.owners.size(); i++) {
+                        drawNEIText(
+                                recipeInfo,
+                                EnumChatFormatting.ITALIC
+                                        + GT_Utility.trans("274", "Modified by: ")
+                                        + recipe.owners.get(i).getName());
+                    }
+                } else if (recipe.owners.size() > 0) {
+                    drawNEIText(
+                            recipeInfo,
+                            EnumChatFormatting.ITALIC
+                                    + GT_Utility.trans("272", "Recipe by: ")
+                                    + recipe.owners.get(0).getName());
+                }
+            }
+            if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace
+                    && recipe.stackTraces != null
+                    && !recipe.stackTraces.isEmpty()) {
+                drawNEIText(recipeInfo, "stackTrace:");
+                // todo: good way to show all stacktraces
+                for (StackTraceElement stackTrace : recipe.stackTraces.get(0)) {
+                    drawNEIText(recipeInfo, stackTrace.toString());
+                }
+            }
+        }
+
+        protected void drawNEIText(NEIRecipeInfo recipeInfo, String text) {
+            drawNEIText(recipeInfo, text, 10);
+        }
+
+        /**
+         * Draws text on NEI recipe.
+         * @param yShift y position to shift after this text
+         */
+        @SuppressWarnings("SameParameterValue")
+        protected void drawNEIText(NEIRecipeInfo recipeInfo, String text, int yShift) {
+            drawNEIText(recipeInfo, text, 10, yShift);
+        }
+
+        /**
+         * Draws text on NEI recipe.
+         * @param xStart x position to start drawing
+         * @param yShift y position to shift after this text
+         */
+        @SuppressWarnings("SameParameterValue")
+        protected void drawNEIText(NEIRecipeInfo recipeInfo, String text, int xStart, int yShift) {
+            Minecraft.getMinecraft()
+                    .fontRenderer
+                    .drawString(
+                            text,
+                            xStart,
+                            recipeInfo.yPos,
+                            neiTextColorOverride != -1 ? neiTextColorOverride : 0x000000);
+            recipeInfo.yPos += yShift;
+        }
+
+        protected void drawOptionalNEIText(NEIRecipeInfo recipeInfo, String text) {
+            if (GT_Utility.isStringValid(text) && !text.equals("unspecified")) {
+                drawNEIText(recipeInfo, text, 10);
+            }
+        }
+
+        protected void drawNEITextMultipleLines(NEIRecipeInfo recipeInfo, List<String> texts) {
+            for (String text : texts) {
+                drawNEIText(recipeInfo, text, 10);
+            }
+        }
+
+        public void updateNEITextColorOverride() {
+            neiTextColorOverride = colorOverride.getTextColorOrDefault("nei", -1);
+        }
+
+        public Power getPowerFromRecipeMap() {
+            // By default, assume generic EU LV power with no overclocks
+            Power power;
+            if (mShowVoltageAmperageInNEI) {
+                power = new EUPower((byte) 1, mAmperage);
+            } else {
+                power = new UnspecifiedEUPower((byte) 1, mAmperage);
+            }
+            return power;
         }
 
         /**
