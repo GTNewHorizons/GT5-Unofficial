@@ -5264,26 +5264,26 @@ public class GT_MachineRecipeLoader implements Runnable {
                 30,
                 false);
         GT_Values.RA.addDistilleryRecipe(
-            GT_Utility.getIntegratedCircuit(24),
-            Materials.OilLight.getFluid(120L),
-            Materials.Lubricant.getFluid(30L),
-            160,
-            30,
-            false);
+                GT_Utility.getIntegratedCircuit(24),
+                Materials.OilLight.getFluid(120L),
+                Materials.Lubricant.getFluid(30L),
+                160,
+                30,
+                false);
         GT_Values.RA.addDistilleryRecipe(
-            GT_Utility.getIntegratedCircuit(24),
-            Materials.OilMedium.getFluid(120L),
-            Materials.Lubricant.getFluid(60L),
-            160,
-            30,
-            false);
+                GT_Utility.getIntegratedCircuit(24),
+                Materials.OilMedium.getFluid(120L),
+                Materials.Lubricant.getFluid(60L),
+                160,
+                30,
+                false);
         GT_Values.RA.addDistilleryRecipe(
-            GT_Utility.getIntegratedCircuit(24),
-            Materials.OilHeavy.getFluid(120L),
-            Materials.Lubricant.getFluid(90L),
-            160,
-            30,
-            false);
+                GT_Utility.getIntegratedCircuit(24),
+                Materials.OilHeavy.getFluid(120L),
+                Materials.Lubricant.getFluid(90L),
+                160,
+                30,
+                false);
         GT_Values.RA.addDistilleryRecipe(
                 GT_Utility.getIntegratedCircuit(1),
                 Materials.Biomass.getFluid(40L),
@@ -5396,71 +5396,71 @@ public class GT_MachineRecipeLoader implements Runnable {
                 FluidRegistry.getFluid("lubricant"),
                 false);
         GT_Values.RA.addBrewingRecipeCustom(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
-            FluidRegistry.getFluidStack("liquid_light_oil", 750),
-            FluidRegistry.getFluidStack("lubricant", 500),
-            128,
-            4,
-            false);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
+                FluidRegistry.getFluidStack("liquid_light_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 500),
+                128,
+                4,
+                false);
 
         GT_Values.RA.addBrewingRecipeCustom(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 1L),
-            FluidRegistry.getFluidStack("liquid_light_oil", 750),
-            FluidRegistry.getFluidStack("lubricant", 500),
-            128,
-            4,
-            false);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 1L),
+                FluidRegistry.getFluidStack("liquid_light_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 500),
+                128,
+                4,
+                false);
         GT_Values.RA.addBrewingRecipeCustom(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
-            FluidRegistry.getFluidStack("liquid_light_oil", 750),
-            FluidRegistry.getFluidStack("lubricant", 500),
-            128,
-            4,
-            false);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                FluidRegistry.getFluidStack("liquid_light_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 500),
+                128,
+                4,
+                false);
         GT_Values.RA.addBrewingRecipeCustom(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
-            FluidRegistry.getFluidStack("liquid_medium_oil", 750),
-            FluidRegistry.getFluidStack("lubricant", 750),
-            128,
-            4,
-            false);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
+                FluidRegistry.getFluidStack("liquid_medium_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                128,
+                4,
+                false);
 
         GT_Values.RA.addBrewingRecipeCustom(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 1L),
-            FluidRegistry.getFluidStack("liquid_medium_oil", 750),
-            FluidRegistry.getFluidStack("lubricant", 750),
-            128,
-            4,
-            false);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 1L),
+                FluidRegistry.getFluidStack("liquid_medium_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                128,
+                4,
+                false);
         GT_Values.RA.addBrewingRecipeCustom(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
-            FluidRegistry.getFluidStack("liquid_medium_oil", 750),
-            FluidRegistry.getFluidStack("lubricant", 750),
-            128,
-            4,
-            false);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                FluidRegistry.getFluidStack("liquid_medium_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                128,
+                4,
+                false);
         GT_Values.RA.addBrewingRecipeCustom(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
-            FluidRegistry.getFluidStack("liquid_heavy_oil", 500),
-            FluidRegistry.getFluidStack("lubricant", 750),
-            64,
-            4,
-            false);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
+                FluidRegistry.getFluidStack("liquid_heavy_oil", 500),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                64,
+                4,
+                false);
 
         GT_Values.RA.addBrewingRecipeCustom(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 1L),
-            FluidRegistry.getFluidStack("liquid_heavy_oil", 500),
-            FluidRegistry.getFluidStack("lubricant", 750),
-            64,
-            4,
-            false);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 1L),
+                FluidRegistry.getFluidStack("liquid_heavy_oil", 500),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                64,
+                4,
+                false);
         GT_Values.RA.addBrewingRecipeCustom(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
-            FluidRegistry.getFluidStack("liquid_heavy_oil", 500),
-            FluidRegistry.getFluidStack("lubricant", 750),
-            64,
-            4,
-            false);
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                FluidRegistry.getFluidStack("liquid_heavy_oil", 500),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                64,
+                4,
+                false);
         GT_Values.RA.addBrewingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
                 FluidRegistry.getFluid("creosote"),
@@ -7131,21 +7131,21 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addDistillationTowerRecipe(
                 Materials.Creosote.getFluid(1000L),
-            new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
                 new FluidStack[] {Materials.Lubricant.getFluid(500L)},
                 null,
                 400,
                 120);
         GT_Values.RA.addDistillationTowerRecipe(
                 Materials.SeedOil.getFluid(1400L),
-            new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
                 new FluidStack[] {Materials.Lubricant.getFluid(500L)},
                 null,
                 400,
                 120);
         GT_Values.RA.addDistillationTowerRecipe(
                 Materials.FishOil.getFluid(1200L),
-            new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
                 new FluidStack[] {Materials.Lubricant.getFluid(500L)},
                 null,
                 400,
@@ -7163,26 +7163,26 @@ public class GT_MachineRecipeLoader implements Runnable {
                 32,
                 120);
         GT_Values.RA.addDistillationTowerRecipe(
-            Materials.OilLight.getFluid(1000L),
-            new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
-            new FluidStack[] {Materials.Lubricant.getFluid(250L)},
-            null,
-            400,
-            120);
+                Materials.OilLight.getFluid(1000L),
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
+                new FluidStack[] {Materials.Lubricant.getFluid(250L)},
+                null,
+                400,
+                120);
         GT_Values.RA.addDistillationTowerRecipe(
-            Materials.OilMedium.getFluid(1000L),
-            new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
-            new FluidStack[] {Materials.Lubricant.getFluid(500L)},
-            null,
-            400,
-            120);
+                Materials.OilMedium.getFluid(1000L),
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
+                new FluidStack[] {Materials.Lubricant.getFluid(500L)},
+                null,
+                400,
+                120);
         GT_Values.RA.addDistillationTowerRecipe(
-            Materials.OilLight.getFluid(1000L),
-            new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
-            new FluidStack[] {Materials.Lubricant.getFluid(750L)},
-            null,
-            400,
-            120);
+                Materials.OilLight.getFluid(1000L),
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
+                new FluidStack[] {Materials.Lubricant.getFluid(750L)},
+                null,
+                400,
+                120);
 
         if (!GregTech_API.mIC2Classic) {
             GT_Values.RA.addDistillationTowerRecipe(
