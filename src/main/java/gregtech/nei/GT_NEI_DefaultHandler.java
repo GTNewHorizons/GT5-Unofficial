@@ -379,8 +379,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                             || (!((FixedPositionedStack) tStack).isChanceBased())) {
                         break;
                     }
-                    currentTip.add(
-                        GRAY + GT_Utility.trans("150", "Chance: ") + ((FixedPositionedStack) tStack).getChanceText());
+                    currentTip.add(GRAY
+                            + GT_Utility.trans("150", "Chance: ")
+                            + ((FixedPositionedStack) tStack).getChanceText());
                     break;
                 }
             }
