@@ -133,8 +133,8 @@ public class EyeOfHarmonyRecipe {
 
         long plasmaEU = plasmaCostCalculator(outputFluids);
         long VM3EU = miningTimeSeconds * pow(2, 19) * 20;
-        this.euOutput = standardRecipeEUOutPerTick * 20 * miningTimeSeconds;
-        this.euStartCost = (long) (plasmaEU + VM3EU + this.euOutput * recipeEnergyEfficiency);
+        this.euStartCost = (plasmaEU + VM3EU + standardRecipeEUOutPerTick * 20 * miningTimeSeconds);
+        this.euOutput = (long) (euStartCost * recipeEnergyEfficiency);
     }
 
     public EyeOfHarmonyRecipe(
@@ -265,9 +265,7 @@ public class EyeOfHarmonyRecipe {
         });
 
         // Iterate over small ores in dimension and add them, kinda hacky but works and is close enough.
-        smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
-            processHelper(outputMap, veinInfo.getOreMaterial(), mainMultiplier, probability);
-        });
+        smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> processHelper(outputMap, veinInfo.getOreMaterial(), mainMultiplier, probability));
 
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();
 
