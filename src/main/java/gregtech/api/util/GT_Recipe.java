@@ -3727,13 +3727,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         protected void drawNEIOverlayForInput(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
             if (stack.isNotConsumed()) {
-                drawOverlayText("NC", stack);
+                drawNEIOverlayText("NC", stack);
             }
         }
 
         protected void drawNEIOverlayForOutput(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
             if (stack.isChanceBased()) {
-                drawOverlayText(stack.getChanceText(), stack);
+                drawNEIOverlayText(stack.getChanceText(), stack);
             }
         }
 
@@ -3753,7 +3753,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             GlStateManager.popMatrix();
         }
 
-        protected void drawOverlayText(String text, PositionedStack stack) {
+        protected void drawNEIOverlayText(String text, PositionedStack stack) {
             drawNEIOverlayText(
                     text,
                     stack,
@@ -3849,24 +3849,22 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            return UIHelper.getItemGridPositions(itemInputCount, 16, yOrigin, xDirMaxCount, 3);
+            return UIHelper.getGridPositions(itemInputCount, 16, yOrigin, xDirMaxCount);
         }
 
         @Override
         public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return UIHelper.getItemGridPositions(itemOutputCount, 106, yOrigin, xDirMaxCount, 3);
+            return UIHelper.getGridPositions(itemOutputCount, 106, yOrigin, xDirMaxCount);
         }
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            return UIHelper.getItemGridPositions(
-                    fluidInputCount, 16, yOrigin + getItemRowCount() * 18, xDirMaxCount, 3);
+            return UIHelper.getGridPositions(fluidInputCount, 16, yOrigin + getItemRowCount() * 18, xDirMaxCount);
         }
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            return UIHelper.getItemGridPositions(
-                    fluidOutputCount, 106, yOrigin + getItemRowCount() * 18, xDirMaxCount, 3);
+            return UIHelper.getGridPositions(fluidOutputCount, 106, yOrigin + getItemRowCount() * 18, xDirMaxCount);
         }
 
         @Override
@@ -5593,7 +5591,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     null,
                     RES_PATH_GUI + "basicmachines/Default",
                     1,
-                    0,
+                    1,
                     1,
                     0,
                     1,
@@ -6172,20 +6170,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < fluidInputCount; i++) {
-                results.add(new Pos2d(7 + (i % 4) * 18, 9 + (i / 4) * 18));
-            }
-            return results;
+            return UIHelper.getGridPositions(fluidInputCount, 7, 9, 4);
         }
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < fluidOutputCount; i++) {
-                results.add(new Pos2d(97 + (i % 4) * 18, 9 + (i / 4) * 18));
-            }
-            return results;
+            return UIHelper.getGridPositions(fluidOutputCount, 97, 9, 4);
         }
     }
 
@@ -6228,11 +6218,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < itemInputCount; i++) {
-                results.add(new Pos2d(16 + (i % 4) * 18, 8 + (i / 4) * 18));
-            }
-            return results;
+            return UIHelper.getGridPositions(itemInputCount, 16, 8, 4);
         }
 
         @Override
@@ -6247,11 +6233,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < fluidInputCount; i++) {
-                results.add(new Pos2d(106, 8 + i * 18));
-            }
-            return results;
+            return UIHelper.getGridPositions(fluidInputCount, 106, 8, 1);
         }
 
         @Override
