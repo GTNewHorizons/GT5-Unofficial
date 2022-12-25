@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.V;
 import static net.minecraftforge.common.ForgeChunkManager.getMaxChunkDepthFor;
 
 import com.google.common.collect.MapMaker;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -321,7 +322,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
     }
 
     public long getEnergyConsumption() {
-        return V[mTier] * 2 * updateCycleLength;
+        return GT_Values.VP[mTier] * 2 * updateCycleLength;
     }
 
     @Override
