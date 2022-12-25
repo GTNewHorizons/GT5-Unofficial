@@ -8,12 +8,14 @@ import static java.lang.Math.min;
 import static net.minecraft.util.EnumChatFormatting.*;
 
 import appeng.util.ReadableNumberConverter;
+import codechicken.nei.PositionedStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.IEMMapRead;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
@@ -586,25 +588,25 @@ public class TT_recipe extends GT_Recipe {
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            return UIHelper.getItemGridPositions(itemInputCount, 79, yOrigin, 1, 1);
+            return UIHelper.getGridPositions(itemInputCount, 79, yOrigin, 1, 1);
         }
 
         public static final int maxItemsToRender = 80;
 
         @Override
         public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return UIHelper.getItemGridPositions(
+            return UIHelper.getGridPositions(
                     min(itemOutputCount, maxItemsToRender + 1), 7, yOrigin + 36, xDirMaxCount, 12);
         }
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            return UIHelper.getItemGridPositions(fluidInputCount, 0, 0, 0, 0);
+            return UIHelper.getGridPositions(fluidInputCount, 0, 0, 0, 0);
         }
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            return UIHelper.getItemGridPositions(fluidOutputCount, 7, yOrigin + 13 * 17 - 7 - 16, xDirMaxCount, 3);
+            return UIHelper.getGridPositions(fluidOutputCount, 7, yOrigin + 13 * 17 - 7 - 16, xDirMaxCount);
         }
 
         @Override
@@ -667,6 +669,34 @@ public class TT_recipe extends GT_Recipe {
             }
 
             return currentTip;
+        }
+
+        @Override
+        public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+            EyeOfHarmonyRecipe EOHRecipe = (EyeOfHarmonyRecipe) neiCachedRecipe.mRecipe.mSpecialItems;
+            for (PositionedStack stack : neiCachedRecipe.mInputs) {
+                if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
+                    if (stack.item.isItemEqual(EOHRecipe.getRecipeTriggerItem())) {
+                        drawNEIOverlayText("NC", stack);
+                    }
+                }
+            }
+            for (PositionedStack stack : neiCachedRecipe.mOutputs) {
+                if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
+                    if (EOHRecipe.getItemStackToTrueStackSizeMap().containsKey(stack.item)) {
+                        long stackSize =
+                                EOHRecipe.getItemStackToTrueStackSizeMap().get(stack.item);
+                        String displayString;
+                        if (stackSize > 9999) {
+                            displayString = ReadableNumberConverter.INSTANCE.toWideReadableForm(stackSize);
+                        } else {
+                            displayString = String.valueOf(stackSize);
+                        }
+
+                        drawNEIOverlayText(displayString, stack, 0xffffff, 0.5f, true, Alignment.BottomRight);
+                    }
+                }
+            }
         }
     }
 }
