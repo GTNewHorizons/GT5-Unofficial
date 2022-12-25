@@ -1853,7 +1853,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         E,
                         false,
                         true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                .setUsualFluidInputCount(2);
         public static final GT_Recipe_Map sChemicalRecipes = new GT_Recipe_Map(
                         new HashSet<>(1170),
                         "gt.recipe.chemicalreactor",
