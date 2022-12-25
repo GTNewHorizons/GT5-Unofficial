@@ -1,22 +1,25 @@
 package gregtech.common.render.items;
 
+import com.gtnewhorizons.modularui.api.math.Pos2d;
 import gregtech.api.enums.Textures;
-import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.common.render.GT_RenderUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import static gregtech.common.render.GT_RenderUtil.colourGTItem;
 
 public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
+
+    // spotless:off
+    final Pos2d point0 = new Pos2d(0  - 10, 0  - 10);
+    final Pos2d point1 = new Pos2d(17 + 10, 0  - 10);
+    final Pos2d point2 = new Pos2d(17 + 10, 17 + 10);
+    final Pos2d point3 = new Pos2d(0  - 10, 17 + 10);
+    // spotless:on
 
     @Override
     public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
@@ -56,24 +59,33 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
 //        t.addVertexWithUV(16 + spread, -spread, 0, haloFuzzy.getMaxU(), haloFuzzy.getMinV());
 //        t.draw();
 
+
+        // spotless:off
+        // 0 - 1
+        // | I | // I = Item.
+        // 3 - 2
+
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
             t.startDrawingQuads();
-            t.addVertexWithUV(-spread, -spread, 0, haloFuzzy.getMinU(), haloFuzzy.getMinV());
-            t.addVertexWithUV(-spread, 16 + spread, 0, haloFuzzy.getMinU(), haloFuzzy.getMaxV());
-            t.addVertexWithUV(16 + spread, 16 + spread, 0, haloFuzzy.getMaxU(), haloFuzzy.getMaxV());
-            t.addVertexWithUV(16 + spread, -spread, 0, haloFuzzy.getMaxU(), haloFuzzy.getMinV());
+            t.addVertexWithUV(point0.x, point0.y, 0, haloFuzzy.getMinU(), haloFuzzy.getMinV());
+            t.addVertexWithUV(point3.x, point3.y, 0, haloFuzzy.getMinU(), haloFuzzy.getMaxV()); // Lower left?
+            t.addVertexWithUV(point2.x, point2.y, 0, haloFuzzy.getMaxU(), haloFuzzy.getMaxV()); // Lower right?
+            t.addVertexWithUV(point1.x, point1.y, 0, haloFuzzy.getMaxU(), haloFuzzy.getMinV());
             t.draw();
-        } else {
-            ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                haloFuzzy.getMaxU(),
-                haloFuzzy.getMinV(),
-                haloFuzzy.getMinU(),
-                haloFuzzy.getMaxV(),
-                haloFuzzy.getIconWidth()*2,
-                haloFuzzy.getIconHeight()*2,
-                0.0625F); // Depth of item held in hand.
         }
+        //spotless:on
+
+//        else {
+//            ItemRenderer.renderItemIn2D(
+//                Tessellator.instance,
+//                haloFuzzy.getMaxU(),
+//                haloFuzzy.getMinV(),
+//                haloFuzzy.getMinU(),
+//                haloFuzzy.getMaxV(),
+//                haloFuzzy.getIconWidth()*2,
+//                haloFuzzy.getIconHeight()*2,
+//                0.0625F); // Depth of item held in hand.
+//        }
 
         {
             // Draw actual cosmic Nt item.
