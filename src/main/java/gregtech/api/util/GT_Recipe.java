@@ -4,10 +4,12 @@ import static gregtech.api.enums.GT_Values.*;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import codechicken.nei.PositionedStack;
+import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -50,6 +52,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -3707,6 +3710,57 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 currentTip.add(GRAY + GT_Utility.trans("150", "Chance: ") + pStack.getChanceText());
             }
             return currentTip;
+        }
+
+        public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+            for (PositionedStack stack : neiCachedRecipe.mInputs) {
+                if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
+                    drawNEIOverlayForInput((GT_NEI_DefaultHandler.FixedPositionedStack) stack);
+                }
+            }
+            for (PositionedStack stack : neiCachedRecipe.mOutputs) {
+                if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
+                    drawNEIOverlayForOutput((GT_NEI_DefaultHandler.FixedPositionedStack) stack);
+                }
+            }
+        }
+
+        protected void drawNEIOverlayForInput(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
+            if (stack.isNotConsumed()) {
+                drawOverlayText("NC", stack);
+            }
+        }
+
+        protected void drawNEIOverlayForOutput(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
+            if (stack.isChanceBased()) {
+                drawOverlayText(stack.getChanceText(), stack);
+            }
+        }
+
+        @SuppressWarnings("SameParameterValue")
+        protected void drawNEIOverlayText(
+                String text, PositionedStack stack, int color, float scale, boolean shadow, Alignment alignment) {
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            int width = fontRenderer.getStringWidth(text);
+            int x = (int) ((stack.relx + 8 + 8 * alignment.x) / scale) - (width / 2 * (alignment.x + 1));
+            int y = (int) ((stack.rely + 8 + 8 * alignment.y) / scale)
+                    - (fontRenderer.FONT_HEIGHT / 2 * (alignment.y + 1))
+                    - (alignment.y - 1) / 2;
+
+            GlStateManager.pushMatrix();
+            GlStateManager.scale(scale, scale, 1);
+            fontRenderer.drawString(text, x, y, color, shadow);
+            GlStateManager.popMatrix();
+        }
+
+        protected void drawOverlayText(String text, PositionedStack stack) {
+            drawNEIOverlayText(
+                    text,
+                    stack,
+                    colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
+                    0.5f,
+                    false,
+                    Alignment.TopLeft);
         }
 
         public void updateNEITextColorOverride() {
