@@ -364,7 +364,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     public List<String> handleItemTooltip(
             GuiRecipe<?> gui, ItemStack aStack, List<String> currentTip, int aRecipeIndex) {
         CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
-        if ((tObject instanceof CachedDefaultRecipe)) {
+        if (tObject instanceof CachedDefaultRecipe) {
             currentTip = mRecipeMap.handleNEIItemTooltip(aStack, currentTip, (CachedDefaultRecipe) tObject);
         }
 
@@ -379,7 +379,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         CachedDefaultRecipe cachedRecipe = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex));
 
         drawDescription(cachedRecipe);
-        drawOverlays(cachedRecipe);
+        mRecipeMap.drawNEIOverlays(cachedRecipe);
     }
 
     private void drawDescription(CachedDefaultRecipe cachedRecipe) {
@@ -405,38 +405,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     protected int getDescriptionYOffset() {
         return mRecipeMap.neiBackgroundSize.height + mRecipeMap.neiBackgroundOffset.y + WINDOW_OFFSET.y + 3;
-    }
-
-    protected void drawOverlays(CachedDefaultRecipe recipe) {
-        for (PositionedStack stack : recipe.mInputs) {
-            if (!(stack instanceof FixedPositionedStack)) continue;
-            drawOverlayForStack((FixedPositionedStack) stack);
-        }
-        for (PositionedStack stack : recipe.mOutputs) {
-            if (!(stack instanceof FixedPositionedStack)) continue;
-            drawOverlayForStack((FixedPositionedStack) stack);
-        }
-    }
-
-    protected void drawOverlayForStack(FixedPositionedStack stack) {
-        if (stack.isChanceBased()) {
-            drawOverlayText(stack.getChanceText(), stack);
-        } else if (stack.isNotConsumed()) {
-            drawOverlayText("NC", stack);
-        }
-    }
-
-    protected void drawOverlayText(String text, FixedPositionedStack stack) {
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(0.5, 0.5, 1);
-        Minecraft.getMinecraft()
-                .fontRenderer
-                .drawString(
-                        text,
-                        stack.relx * 2,
-                        stack.rely * 2 + 1,
-                        colorOverride.getTextColorOrDefault("nei_overlay", 0xFDD835));
-        GlStateManager.popMatrix();
     }
 
     protected void drawUI(ModularWindow window) {

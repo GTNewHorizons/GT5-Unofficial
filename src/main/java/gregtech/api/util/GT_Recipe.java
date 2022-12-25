@@ -4,10 +4,12 @@ import static gregtech.api.enums.GT_Values.*;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import codechicken.nei.PositionedStack;
+import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -50,6 +52,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -1850,7 +1853,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         E,
                         false,
                         true)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                .setUsualFluidInputCount(2);
         public static final GT_Recipe_Map sChemicalRecipes = new GT_Recipe_Map(
                         new HashSet<>(1170),
                         "gt.recipe.chemicalreactor",
@@ -3709,6 +3713,57 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return currentTip;
         }
 
+        public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+            for (PositionedStack stack : neiCachedRecipe.mInputs) {
+                if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
+                    drawNEIOverlayForInput((GT_NEI_DefaultHandler.FixedPositionedStack) stack);
+                }
+            }
+            for (PositionedStack stack : neiCachedRecipe.mOutputs) {
+                if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
+                    drawNEIOverlayForOutput((GT_NEI_DefaultHandler.FixedPositionedStack) stack);
+                }
+            }
+        }
+
+        protected void drawNEIOverlayForInput(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
+            if (stack.isNotConsumed()) {
+                drawNEIOverlayText("NC", stack);
+            }
+        }
+
+        protected void drawNEIOverlayForOutput(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
+            if (stack.isChanceBased()) {
+                drawNEIOverlayText(stack.getChanceText(), stack);
+            }
+        }
+
+        @SuppressWarnings("SameParameterValue")
+        protected void drawNEIOverlayText(
+                String text, PositionedStack stack, int color, float scale, boolean shadow, Alignment alignment) {
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            int width = fontRenderer.getStringWidth(text);
+            int x = (int) ((stack.relx + 8 + 8 * alignment.x) / scale) - (width / 2 * (alignment.x + 1));
+            int y = (int) ((stack.rely + 8 + 8 * alignment.y) / scale)
+                    - (fontRenderer.FONT_HEIGHT / 2 * (alignment.y + 1))
+                    - (alignment.y - 1) / 2;
+
+            GlStateManager.pushMatrix();
+            GlStateManager.scale(scale, scale, 1);
+            fontRenderer.drawString(text, x, y, color, shadow);
+            GlStateManager.popMatrix();
+        }
+
+        protected void drawNEIOverlayText(String text, PositionedStack stack) {
+            drawNEIOverlayText(
+                    text,
+                    stack,
+                    colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
+                    0.5f,
+                    false,
+                    Alignment.TopLeft);
+        }
+
         public void updateNEITextColorOverride() {
             neiTextColorOverride = colorOverride.getTextColorOrDefault("nei", -1);
         }
@@ -3795,24 +3850,22 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            return UIHelper.getItemGridPositions(itemInputCount, 16, yOrigin, xDirMaxCount, 3);
+            return UIHelper.getGridPositions(itemInputCount, 16, yOrigin, xDirMaxCount);
         }
 
         @Override
         public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            return UIHelper.getItemGridPositions(itemOutputCount, 106, yOrigin, xDirMaxCount, 3);
+            return UIHelper.getGridPositions(itemOutputCount, 106, yOrigin, xDirMaxCount);
         }
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            return UIHelper.getItemGridPositions(
-                    fluidInputCount, 16, yOrigin + getItemRowCount() * 18, xDirMaxCount, 3);
+            return UIHelper.getGridPositions(fluidInputCount, 16, yOrigin + getItemRowCount() * 18, xDirMaxCount);
         }
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            return UIHelper.getItemGridPositions(
-                    fluidOutputCount, 106, yOrigin + getItemRowCount() * 18, xDirMaxCount, 3);
+            return UIHelper.getGridPositions(fluidOutputCount, 106, yOrigin + getItemRowCount() * 18, xDirMaxCount);
         }
 
         @Override
@@ -5539,7 +5592,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     null,
                     RES_PATH_GUI + "basicmachines/Default",
                     1,
-                    0,
+                    1,
                     1,
                     0,
                     1,
@@ -6118,20 +6171,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < fluidInputCount; i++) {
-                results.add(new Pos2d(7 + (i % 4) * 18, 9 + (i / 4) * 18));
-            }
-            return results;
+            return UIHelper.getGridPositions(fluidInputCount, 7, 9, 4);
         }
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < fluidOutputCount; i++) {
-                results.add(new Pos2d(97 + (i % 4) * 18, 9 + (i / 4) * 18));
-            }
-            return results;
+            return UIHelper.getGridPositions(fluidOutputCount, 97, 9, 4);
         }
     }
 
@@ -6174,11 +6219,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < itemInputCount; i++) {
-                results.add(new Pos2d(16 + (i % 4) * 18, 8 + (i / 4) * 18));
-            }
-            return results;
+            return UIHelper.getGridPositions(itemInputCount, 16, 8, 4);
         }
 
         @Override
@@ -6193,11 +6234,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < fluidInputCount; i++) {
-                results.add(new Pos2d(106, 8 + i * 18));
-            }
-            return results;
+            return UIHelper.getGridPositions(fluidInputCount, 106, 8, 1);
         }
 
         @Override
