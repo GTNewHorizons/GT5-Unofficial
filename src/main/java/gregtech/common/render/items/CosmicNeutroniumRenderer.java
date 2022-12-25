@@ -61,6 +61,8 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
 
 
         // spotless:off
+        // For those following in my footsteps, this may be of use - Colen 25th dec 2022.
+        // http://greyminecraftcoder.blogspot.com/2013/08/the-tessellator.html
         // 0 - 1
         // | I | // I = Item.
         // 3 - 2
