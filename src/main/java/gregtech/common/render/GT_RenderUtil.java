@@ -13,11 +13,7 @@ public class GT_RenderUtil {
             GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
 
             short[] tModulation = aItem.getRGBa(aStack);
-            GL11.glColor4f(
-                tModulation[0] / 255.0F,
-                tModulation[1] / 255.0F,
-                tModulation[2] / 255.0F,
-                255.0f);
+            GL11.glColor4f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F, 255.0f);
         } else {
             System.out.println("WARNING: " + aStack.getDisplayName() + " does not have an associated GT colour.");
         }
