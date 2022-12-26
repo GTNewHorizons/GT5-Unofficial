@@ -513,8 +513,7 @@ public class RECIPES_GREGTECH {
                     CI.getTieredFluid(8, 144 * 32),
                     CI.getAlternativeTieredFluid(7, 144 * 16),
                     CI.getTertiaryTieredFluid(7, 144 * 16),
-                    ALLOY.BABBIT_ALLOY.getFluidStack(128 * 144),
-                    ALLOY.ZERON_100.getFluidStack(144 * 64)
+                    ALLOY.BABBIT_ALLOY.getFluidStack(128 * 144)
                 },
                 GregtechItemList.Hatch_Input_TurbineHousing.get(4),
                 20 * 60 * 60 * (GTNH ? 2 : 1),
