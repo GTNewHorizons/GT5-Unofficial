@@ -180,7 +180,6 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
             f2 = icon.getMinV();
             f3 = icon.getMaxV();
 
-            int colour = item.getItem().getColorFromItemStack(item, i);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             // RENDER ITEM IN HAND
@@ -199,6 +198,7 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
         float maxu = cosmicIcon.getMaxU();
         float minv = cosmicIcon.getMinV();
         float maxv = cosmicIcon.getMaxV();
+
         // RENDER COSMIC OVERLAY IN HAND
         ItemRenderer.renderItemIn2D(
             Tessellator.instance,
