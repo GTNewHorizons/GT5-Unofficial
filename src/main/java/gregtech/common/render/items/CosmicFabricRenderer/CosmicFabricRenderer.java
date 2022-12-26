@@ -2,7 +2,8 @@ package gregtech.common.render.items.CosmicFabricRenderer;
 
 import fox.spiteful.avaritia.items.ItemResource;
 import fox.spiteful.avaritia.items.LudicrousItems;
-import fox.spiteful.avaritia.render.ICosmicRenderItem;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -33,9 +34,12 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
     }
 
     @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    public void renderItem(ItemRenderType type, ItemStack tmpTtem, Object... data) {
 
         int spread = 4;
+
+        IIcon tIcon = getTrueIcon(tmpTtem);
+
         IIcon halo = ((ItemResource) LudicrousItems.resource).halo[0];
         int haloColour = -16777216;
 
@@ -43,27 +47,28 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
         Minecraft mc = Minecraft.getMinecraft();
         Tessellator t = Tessellator.instance;
 
-        this.processLightLevel(type, item, data);
+        this.processLightLevel(type, tmpTtem, data);
 
         switch (type) {
             case ENTITY: {
                 GL11.glPushMatrix();
                 GL11.glTranslatef(-0.5F, 0F, 0F);
-                if (item.isOnItemFrame()) GL11.glTranslatef(0F, -0.3F, 0.01F);
-                render(item, null);
+                if (tmpTtem.isOnItemFrame()) GL11.glTranslatef(0F, -0.3F, 0.01F);
+                render(tmpTtem, null);
                 GL11.glPopMatrix();
 
                 break;
             }
             case EQUIPPED: {
-                render(item, data[1] instanceof EntityPlayer ? (EntityPlayer) data[1] : null);
+                render(tmpTtem, data[1] instanceof EntityPlayer ? (EntityPlayer) data[1] : null);
                 break;
             }
             case EQUIPPED_FIRST_PERSON: {
-                render(item, data[1] instanceof EntityPlayer ? (EntityPlayer) data[1] : null);
+                render(tmpTtem, data[1] instanceof EntityPlayer ? (EntityPlayer) data[1] : null);
                 break;
             }
             case INVENTORY: {
+
                 GL11.glPushMatrix();
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -85,7 +90,9 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
                 t.addVertexWithUV(16 + spread, 0 - spread, 0, halo.getMaxU(), halo.getMinV());
                 t.draw();
 
-                r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), item, 0, 0, true);
+                r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), tmpTtem, 0, 0, true);
+
+
 
                 GL11.glEnable(GL11.GL_ALPHA_TEST);
                 GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -104,7 +111,7 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-                r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), item, 0, 0, true);
+                r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), tmpTtem, 0, 0, true);
 
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -117,15 +124,14 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
                 CosmicRenderStuffs.inventoryRender = true;
                 CosmicRenderStuffs.useShader();
 
-                IIcon cosmicicon = item.getIconIndex();
-
                 GL11.glColor4d(1, 1, 1, 1);
 
-                float minu = cosmicicon.getMinU();
-                float maxu = cosmicicon.getMaxU();
-                float minv = cosmicicon.getMinV();
-                float maxv = cosmicicon.getMaxV();
+                float minu = tIcon.getMinU();
+                float maxu = tIcon.getMaxU();
+                float minv = tIcon.getMinV();
+                float maxv = tIcon.getMaxV();
 
+                // Draw cosmic overlay
                 t.startDrawingQuads();
                 t.addVertexWithUV(0, 0, 0, minu, minv);
                 t.addVertexWithUV(0, 16, 0, minu, maxv);
@@ -142,7 +148,7 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
 
                 r.renderWithColor = true;
 
-                GL11.glDisable(GL11.GL_BLEND);
+//                GL11.glDisable(GL11.GL_BLEND); // todo re-enable.
                 GL11.glPopMatrix();
                 break;
             }
@@ -161,20 +167,13 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1F, 1F, 1F, 1F);
-        // ItemRenderer.renderItemIn2D(Tessellator.instance, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(),
-        // scale);
 
-        float r, g, b;
         IIcon icon;
         float f, f1, f2, f3;
         float scale = 1F / 16F;
 
-        // Lumberjack.log(Level.INFO, "passes: "+passes);
-
         for (int i = 0; i < passes; i++) {
-            icon = this.getStackIcon(item, i, player);
-
-            // Lumberjack.log(Level.INFO, "icon "+i+": "+icon);
+            icon = this.getStackIcon(item, player);
 
             f = icon.getMinU();
             f1 = icon.getMaxU();
@@ -182,10 +181,9 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
             f3 = icon.getMaxV();
 
             int colour = item.getItem().getColorFromItemStack(item, i);
-            r = (float) (colour & 255) / 255.0F;
-            g = (float) (colour & 255) / 255.0F;
-            b = (float) (colour & 255) / 255.0F;
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+            // RENDER ITEM IN HAND
             ItemRenderer.renderItemIn2D(
                 Tessellator.instance, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(), scale);
         }
@@ -195,20 +193,21 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
         CosmicRenderStuffs.cosmicOpacity = 1.0f;
         CosmicRenderStuffs.useShader();
 
-        IIcon cosmicicon = item.getIconIndex();
+        IIcon cosmicIcon = getTrueIcon(item);
 
-        float minu = cosmicicon.getMinU();
-        float maxu = cosmicicon.getMaxU();
-        float minv = cosmicicon.getMinV();
-        float maxv = cosmicicon.getMaxV();
+        float minu = cosmicIcon.getMinU();
+        float maxu = cosmicIcon.getMaxU();
+        float minv = cosmicIcon.getMinV();
+        float maxv = cosmicIcon.getMaxV();
+        // RENDER COSMIC OVERLAY IN HAND
         ItemRenderer.renderItemIn2D(
             Tessellator.instance,
             maxu,
             minv,
             minu,
             maxv,
-            cosmicicon.getIconWidth(),
-            cosmicicon.getIconHeight(),
+            cosmicIcon.getIconWidth(),
+            cosmicIcon.getIconHeight(),
             scale);
         CosmicRenderStuffs.releaseShader();
         GL11.glDepthFunc(GL11.GL_LEQUAL);
@@ -265,7 +264,17 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
         }
     }
 
-    public IIcon getStackIcon(ItemStack stack, int pass, EntityPlayer player) {
-        return stack.getItem().getIcon(stack, pass);
+    public IIcon getStackIcon(ItemStack stack, EntityPlayer player) {
+        return getTrueIcon(stack);
     }
+
+    public IIcon getTrueIcon(ItemStack stack) {
+        short aMetaData = (short) stack.getItemDamage();
+        GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) stack.getItem();
+
+        IIconContainer aIconContainer = aItem.getIconContainer(aMetaData);
+
+        return aIconContainer.getIcon();
+    }
+
 }
