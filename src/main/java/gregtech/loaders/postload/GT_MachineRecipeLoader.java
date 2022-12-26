@@ -17434,7 +17434,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         // Custom Sodium Persulfate Ore Processing Recipes
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Tantalite, 1),
-                Materials.SodiumPersulfate.getFluid(500L),
+                Materials.SodiumPersulfate.getFluid(100L),
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Tantalite, 1),
                 Materials.Tantalum.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
@@ -17443,7 +17443,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 8);
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Pyrolusite, 1),
-                Materials.SodiumPersulfate.getFluid(500L),
+                Materials.SodiumPersulfate.getFluid(100L),
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pyrolusite, 1),
                 Materials.Manganese.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
@@ -17452,7 +17452,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 8);
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Quartzite, 1),
-                Materials.SodiumPersulfate.getFluid(500L),
+                Materials.SodiumPersulfate.getFluid(100L),
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Quartzite, 1),
                 Materials.CertusQuartz.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
@@ -17461,7 +17461,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 8);
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.CertusQuartz, 1),
-                Materials.SodiumPersulfate.getFluid(500L),
+                Materials.SodiumPersulfate.getFluid(100L),
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.CertusQuartz, 1),
                 Materials.Barium.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
@@ -17470,7 +17470,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 8);
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Bauxite, 1),
-                Materials.SodiumPersulfate.getFluid(500L),
+                Materials.SodiumPersulfate.getFluid(100L),
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Bauxite, 1),
                 Materials.Rutile.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
@@ -17479,7 +17479,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 8);
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Thorium, 1),
-                Materials.SodiumPersulfate.getFluid(500L),
+                Materials.SodiumPersulfate.getFluid(100L),
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Thorium, 1),
                 Materials.Uranium.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
@@ -17488,7 +17488,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 8);
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Stibnite, 1),
-                Materials.SodiumPersulfate.getFluid(500L),
+                Materials.SodiumPersulfate.getFluid(100L),
                 GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Stibnite, 1),
                 Materials.Antimony.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
