@@ -19363,7 +19363,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.NitricOxide.getGas(2000),
                 Materials.Potassiumdichromate.getDust(11),
                 GT_Values.NI,
-                100,
+                600,
                 480);
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
                 Materials.PotassiumNitrade.getDust(10),
@@ -19372,7 +19372,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.NitricOxide.getGas(2000),
                 Materials.Potassiumdichromate.getDust(11),
                 GT_Values.NI,
-                100,
+            600,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {
@@ -19383,7 +19383,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new FluidStack[] {Materials.Oxygen.getGas(6000)},
                 new FluidStack[] {Materials.NitricOxide.getGas(2000), Materials.Oxygen.getGas(3000)},
                 new ItemStack[] {Materials.Potassiumdichromate.getDust(11)},
-                100,
+            600,
                 480);
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {
@@ -19392,7 +19392,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new FluidStack[] {Materials.Oxygen.getGas(6000)},
                 new FluidStack[] {Materials.NitricOxide.getGas(2000), Materials.Oxygen.getGas(3000)},
                 new ItemStack[] {Materials.Potassiumdichromate.getDust(11)},
-                100,
+            600,
                 480);
 
         // Nitrochlorobenzene
