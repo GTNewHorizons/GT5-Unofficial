@@ -20,13 +20,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
 
-
 public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-    return true;
-}
+        return true;
+    }
 
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
@@ -68,7 +67,6 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
                 break;
             }
             case INVENTORY: {
-
                 GL11.glPushMatrix();
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -91,8 +89,6 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
                 t.draw();
 
                 r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), tmpTtem, 0, 0, true);
-
-
 
                 GL11.glEnable(GL11.GL_ALPHA_TEST);
                 GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -148,7 +144,7 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
 
                 r.renderWithColor = true;
 
-//                GL11.glDisable(GL11.GL_BLEND); // todo re-enable.
+                //                GL11.glDisable(GL11.GL_BLEND); // todo re-enable.
                 GL11.glPopMatrix();
                 break;
             }
@@ -184,7 +180,7 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
 
             // RENDER ITEM IN HAND
             ItemRenderer.renderItemIn2D(
-                Tessellator.instance, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(), scale);
+                    Tessellator.instance, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(), scale);
         }
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -201,14 +197,14 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
 
         // RENDER COSMIC OVERLAY IN HAND
         ItemRenderer.renderItemIn2D(
-            Tessellator.instance,
-            maxu,
-            minv,
-            minu,
-            maxv,
-            cosmicIcon.getIconWidth(),
-            cosmicIcon.getIconHeight(),
-            scale);
+                Tessellator.instance,
+                maxu,
+                minv,
+                minu,
+                maxv,
+                cosmicIcon.getIconWidth(),
+                cosmicIcon.getIconHeight(),
+                scale);
         CosmicRenderStuffs.releaseShader();
         GL11.glDepthFunc(GL11.GL_LEQUAL);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -225,10 +221,10 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
                 EntityItem ent = (EntityItem) (data[1]);
                 if (ent != null) {
                     CosmicRenderStuffs.setLightFromLocation(
-                        ent.worldObj,
-                        MathHelper.floor_double(ent.posX),
-                        MathHelper.floor_double(ent.posY),
-                        MathHelper.floor_double(ent.posZ));
+                            ent.worldObj,
+                            MathHelper.floor_double(ent.posX),
+                            MathHelper.floor_double(ent.posY),
+                            MathHelper.floor_double(ent.posZ));
                 }
                 break;
             }
@@ -236,10 +232,10 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
                 EntityLivingBase ent = (EntityLivingBase) (data[1]);
                 if (ent != null) {
                     CosmicRenderStuffs.setLightFromLocation(
-                        ent.worldObj,
-                        MathHelper.floor_double(ent.posX),
-                        MathHelper.floor_double(ent.posY),
-                        MathHelper.floor_double(ent.posZ));
+                            ent.worldObj,
+                            MathHelper.floor_double(ent.posX),
+                            MathHelper.floor_double(ent.posY),
+                            MathHelper.floor_double(ent.posZ));
                 }
                 break;
             }
@@ -247,10 +243,10 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
                 EntityLivingBase ent = (EntityLivingBase) (data[1]);
                 if (ent != null) {
                     CosmicRenderStuffs.setLightFromLocation(
-                        ent.worldObj,
-                        MathHelper.floor_double(ent.posX),
-                        MathHelper.floor_double(ent.posY),
-                        MathHelper.floor_double(ent.posZ));
+                            ent.worldObj,
+                            MathHelper.floor_double(ent.posX),
+                            MathHelper.floor_double(ent.posY),
+                            MathHelper.floor_double(ent.posZ));
                 }
                 break;
             }
@@ -276,5 +272,4 @@ public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
 
         return aIconContainer.getIcon();
     }
-
 }
