@@ -11,6 +11,7 @@ dependencies {
     compile("com.github.GTNewHorizons:GTNHLib:0.0.8:dev")
     compile("com.github.GTNewHorizons:ModularUI:1.0.24:dev")
     compile("com.github.GTNewHorizons:waila:1.5.21:dev")
+    compile("com.github.GTNewHorizons:ForestryMC:4.5.3:dev")
 
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 

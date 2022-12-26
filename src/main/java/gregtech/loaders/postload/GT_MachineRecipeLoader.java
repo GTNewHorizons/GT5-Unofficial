@@ -19354,6 +19354,47 @@ public class GT_MachineRecipeLoader implements Runnable {
                 100,
                 480);
 
+        // Potassium Dichromate shortcut
+        // 2 Cr + 6O + 10 Saltpeter/Potassium Dichromate = 10 K2Cr2O7 + 2NO + 3O
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                Materials.Saltpeter.getDust(10),
+                Materials.Chrome.getDust(2),
+                Materials.Oxygen.getGas(6000),
+                Materials.NitricOxide.getGas(2000),
+                Materials.Potassiumdichromate.getDust(11),
+                GT_Values.NI,
+                100,
+                480);
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                Materials.PotassiumNitrade.getDust(10),
+                Materials.Chrome.getDust(2),
+                Materials.Oxygen.getGas(6000),
+                Materials.NitricOxide.getGas(2000),
+                Materials.Potassiumdichromate.getDust(11),
+                GT_Values.NI,
+                100,
+                480);
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] {
+                    Materials.PotassiumNitrade.getDust(10),
+                    Materials.Chrome.getDust(2),
+                    GT_Utility.getIntegratedCircuit(11)
+                },
+                new FluidStack[] {Materials.Oxygen.getGas(6000)},
+                new FluidStack[] {Materials.NitricOxide.getGas(2000), Materials.Oxygen.getGas(3000)},
+                new ItemStack[] {Materials.Potassiumdichromate.getDust(11)},
+                100,
+                480);
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] {
+                    Materials.Saltpeter.getDust(10), Materials.Chrome.getDust(2), GT_Utility.getIntegratedCircuit(11)
+                },
+                new FluidStack[] {Materials.Oxygen.getGas(6000)},
+                new FluidStack[] {Materials.NitricOxide.getGas(2000), Materials.Oxygen.getGas(3000)},
+                new ItemStack[] {Materials.Potassiumdichromate.getDust(11)},
+                100,
+                480);
+
         // Nitrochlorobenzene
         // C6H5Cl + HNO3 = C6H4ClNO2 + H2O
         GT_Values.RA.addChemicalRecipe(
