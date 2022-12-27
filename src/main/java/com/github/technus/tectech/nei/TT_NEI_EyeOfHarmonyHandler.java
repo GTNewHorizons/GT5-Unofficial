@@ -1,14 +1,21 @@
 package com.github.technus.tectech.nei;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static net.minecraft.util.EnumChatFormatting.*;
 
+import appeng.util.ReadableNumberConverter;
+import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Recipe;
 import gregtech.nei.GT_NEI_DefaultHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class TT_NEI_EyeOfHarmonyHandler extends GT_NEI_DefaultHandler {
 

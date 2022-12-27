@@ -301,6 +301,9 @@ public enum CustomItemList implements IItemContainer {
 
     tM_TeslaBase,
     tM_TeslaToroid,
+    EOH_INNER,
+    EOH_OUTER,
+    EOH_INFINITE,
     tM_TeslaSecondary,
     tM_TeslaPrimary_0,
     tM_TeslaPrimary_1,
