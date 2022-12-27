@@ -310,7 +310,7 @@ public class EyeOfHarmonyRecipe {
         for (FluidStack plasma : plasmas) {
             try {
                 String plasmaName = plasma.getFluid().getUnlocalizedName();
-                total += plasmaEnergyMap.get(plasmaName) * plasma.amount;
+                total += plasmaEnergyMap.getOrDefault(plasmaName, 0L) * plasma.amount;
             } catch (Exception e) {
                 e.printStackTrace();
             }
