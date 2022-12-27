@@ -2784,7 +2784,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         /**
          * Some resource packs want to use custom progress bar textures even for plain arrow.
          * This method allows them to add unique textures, yet other packs don't need to make textures
-         * for every recipemaps.
+         * for every recipemap.
          */
         public GT_Recipe_Map setProgressBarWithFallback(
                 FallbackableUITexture progressBarTexture, ProgressBar.Direction progressBarDirection) {
