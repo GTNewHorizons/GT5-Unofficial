@@ -60,7 +60,7 @@ public class FallbackableSteamTexture {
                     }
                 }
             } else {
-                useFallback = false;
+                useFallback = true;
             }
             useFallbackMap.put(steamVariant, useFallback);
         }
