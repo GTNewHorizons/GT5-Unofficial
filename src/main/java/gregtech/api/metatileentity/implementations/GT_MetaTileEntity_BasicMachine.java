@@ -1341,8 +1341,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             builder.widget(setNEITransferRect(
                     createProgressBar(
                             isSteampowered()
-                                    ? getRecipeList().progressBarTextureSteam.get(getSteamVariant())
-                                    : getRecipeList().progressBarTexture,
+                                    ? getRecipeList().getProgressBarTextureSteam(getSteamVariant())
+                                    : getRecipeList().getProgressBarTexture(),
                             getRecipeList().getProgressBarImageSize(),
                             getRecipeList().progressBarDirection,
                             getRecipeList().progressBarPos,

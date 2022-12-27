@@ -23,6 +23,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -612,6 +613,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
                     @Override
                     public void onResourceManagerReload(IResourceManager l) {
                         GT_GUIColorOverride.onResourceManagerReload();
+                        FallbackableSteamTexture.reload();
                         GregTech_API.sCoverBehaviors.values().forEach(GT_CoverBehaviorBase::reloadColorOverride);
                     }
                 });
