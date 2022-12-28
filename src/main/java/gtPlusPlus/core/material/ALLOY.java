@@ -16,7 +16,9 @@ public final class ALLOY {
     public static final Material TUNGSTENSTEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.TungstenSteel);
     public static final Material STAINLESS_STEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.StainlessSteel);
     public static final Material OSMIRIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Osmiridium);
-
+    public static final Material POLYETHYLENE = MaterialUtils.generateMaterialFromGtENUM(Materials.Plastic);
+    public static final Material POLYTETRAFLUOROETHYLENE =
+            MaterialUtils.generateMaterialFromGtENUM(Materials.Polytetrafluoroethylene);
     public static final Material ENERGYCRYSTAL = new Material(
             "Energy Crystal", // Material Name
             MaterialState.SOLID, // State

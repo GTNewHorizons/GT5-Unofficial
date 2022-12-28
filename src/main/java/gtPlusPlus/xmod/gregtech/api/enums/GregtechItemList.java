@@ -872,6 +872,8 @@ public enum GregtechItemList implements GregtechItemContainer {
     Generator_SemiFluid_LV,
     Generator_SemiFluid_MV,
     Generator_SemiFluid_HV,
+    Generator_SemiFluid_EV,
+    Generator_SemiFluid_IV,
 
     // Advanced Mixer 4x4
     Machine_Advanced_LV_Mixer,
