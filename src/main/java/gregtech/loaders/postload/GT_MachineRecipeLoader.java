@@ -12205,7 +12205,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(
                 Materials.Cobalt.getDust(1),
                 Materials.NitricAcid.getCells(2),
-                Materials.Water.getFluid(6000L),
+                GT_Values.NF,
                 GT_Values.NF,
                 MaterialsKevlar.CobaltIINitrate.getDust(9),
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2L),
