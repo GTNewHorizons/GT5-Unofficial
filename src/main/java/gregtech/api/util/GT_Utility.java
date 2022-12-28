@@ -4339,15 +4339,4 @@ public class GT_Utility {
         @Nullable
         protected abstract NBTTagCompound nbt();
     }
-
-    public static int getPlasmaFuelValueInEUPerLiterFromMaterial(Materials material) {
-        return getPlasmaFuelValueInEUPerLiterFromFluid(material.getPlasma(1));
-    }
-
-    public static int getPlasmaFuelValueInEUPerLiterFromFluid(FluidStack aLiquid) {
-        if (aLiquid == null) return 0;
-        GT_Recipe tFuel = GT_Recipe.GT_Recipe_Map.sPlasmaFuels.findFuel(aLiquid);
-        if (tFuel != null) return tFuel.mSpecialValue;
-        return 0;
-    }
 }
