@@ -358,11 +358,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        super.onLeftclick(aBaseMetaTileEntity, aPlayer);
-    }
-
-    @Override
     public boolean isFacingValid(byte aFacing) {
         return true;
     }
