@@ -431,7 +431,7 @@ public class GT_MetaTileEntity_NanoForge
                         + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " TT energy hatch.")
                 .addStructureInfo(
                         "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
-                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 0 + EnumChatFormatting.GRAY + "+"
+                .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + "+"
                         + EnumChatFormatting.GRAY + " input hatches.")
                 .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 0 + EnumChatFormatting.GRAY + "+"
                         + EnumChatFormatting.GRAY + " output hatches.")
