@@ -2568,10 +2568,10 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             }
         }
         List<ItemStack> tItemOutputList;
-        if (ItemInputArray == null) {
+        if (ItemOutputArray == null) {
             tItemOutputList = new ArrayList<>(1);
         } else {
-            tItemOutputList = new ArrayList<>(Arrays.asList(ItemInputArray));
+            tItemOutputList = new ArrayList<>(Arrays.asList(ItemOutputArray));
         }
         List<FluidStack> tFluidOutputList;
         if (FluidOutputArray != null) {
