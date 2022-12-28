@@ -42,7 +42,6 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         implements IFluidLockable, IAddUIWidgets {
     public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected String lockedFluidName = null;
-    private boolean voidBreak;
     public boolean mAllowInputFromOutputSide = false;
 
     public GT_MetaTileEntity_DigitalTankBase(int aID, String aName, String aNameRegional, int aTier) {
@@ -96,17 +95,16 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        if (!voidBreak) {
-            if (mFluid != null && mFluid.amount >= 0) {
-                aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
-            }
-            if (mOutputFluid) aNBT.setBoolean("mOutputFluid", true);
-            if (mVoidFluidPart) aNBT.setBoolean("mVoidOverflow", true);
-            if (mVoidFluidFull) aNBT.setBoolean("mVoidFluidFull", true);
-            if (mLockFluid) aNBT.setBoolean("mLockFluid", true);
-            if (GT_Utility.isStringValid(lockedFluidName)) aNBT.setString("lockedFluidName", lockedFluidName);
-            if (this.mAllowInputFromOutputSide) aNBT.setBoolean("mAllowInputFromOutputSide", true);
+        if (mFluid != null && mFluid.amount >= 0) {
+            aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
         }
+        if (mOutputFluid) aNBT.setBoolean("mOutputFluid", true);
+        if (mVoidFluidPart) aNBT.setBoolean("mVoidOverflow", true);
+        if (mVoidFluidFull) aNBT.setBoolean("mVoidFluidFull", true);
+        if (mLockFluid) aNBT.setBoolean("mLockFluid", true);
+        if (GT_Utility.isStringValid(lockedFluidName)) aNBT.setString("lockedFluidName", lockedFluidName);
+        if (this.mAllowInputFromOutputSide) aNBT.setBoolean("mAllowInputFromOutputSide", true);
+        
         super.setItemNBT(aNBT);
     }
 
@@ -252,7 +250,6 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        voidBreak = aPlayer.isSneaking();
         super.onLeftclick(aBaseMetaTileEntity, aPlayer);
     }
 
