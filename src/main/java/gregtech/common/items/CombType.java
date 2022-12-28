@@ -200,7 +200,7 @@ public enum CombType {
     // ESSENTIA gets a use soon. Dont remove.
     ESSENTIA(158, "essentia", true, Materials._NULL, 100, 0xED3601, 0xFF6D50, ItemComb.Voltage.MV),
     INDIUM(159, "indium", true, Materials.Indium, 100, 0x8F5D99, 0xFFA9FF, ItemComb.Voltage.ZPM),
-    BLIZZ(160, "cryotheum", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff, ItemComb.Voltage.MV),
+    BLIZZ(160, "blizz", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff, ItemComb.Voltage.MV),
     KEVLAR(161, "kevlar", true, Materials._NULL, 50, 0xa2baa3, 0x2d542f, ItemComb.Voltage.MV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
