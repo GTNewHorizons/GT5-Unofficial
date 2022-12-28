@@ -49,7 +49,6 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             StatCollector.translateToLocalFormatted(
                     "GT5U.machines.digitaltank.tooltip", GT_Utility.formatNumbers(commonSizeCompute(aTier))),
             StatCollector.translateToLocal("GT5U.machines.digitaltank.tooltip1"),
-            StatCollector.translateToLocal("GT5U.machines.digitaltank.tooltip2")
         });
     }
 
