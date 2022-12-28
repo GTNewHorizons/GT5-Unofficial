@@ -104,7 +104,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         if (mLockFluid) aNBT.setBoolean("mLockFluid", true);
         if (GT_Utility.isStringValid(lockedFluidName)) aNBT.setString("lockedFluidName", lockedFluidName);
         if (this.mAllowInputFromOutputSide) aNBT.setBoolean("mAllowInputFromOutputSide", true);
-        
+
         super.setItemNBT(aNBT);
     }
 
