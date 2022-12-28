@@ -894,7 +894,7 @@ public class ProcessingToolHead
                             'B',
                             ItemList.Battery_RE_HV_Sodium.get(1L)
                         });
-                if (aSpecialRecipeReq2)
+                if (aSpecialRecipeReq2) {
                     GT_ModHandler.addCraftingRecipe(
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L),
                             GT_Proxy.tBits,
@@ -907,6 +907,23 @@ public class ProcessingToolHead
                                 'S',
                                 OrePrefixes.plate.get(Materials.Steel)
                             });
+                    if (aMaterial.getMolten(0) != null) {
+                        GT_Values.RA.addFluidSolidifierRecipe(
+                                ItemList.Shape_Mold_ToolHeadDrill.get(0),
+                                aMaterial.getMolten(144 * 3),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L),
+                                5 * 20,
+                                (int) GT_Values.VP[2]);
+                    }
+                    if (aMaterial.getIngots(0) != null) {
+                        GT_Values.RA.addExtruderRecipe(
+                                aMaterial.getIngots(3),
+                                ItemList.Shape_Extruder_ToolHeadDrill.get(0),
+                                GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L),
+                                5 * 20,
+                                (int) GT_Values.VP[2]);
+                    }
+                }
                 break;
             case toolHeadFile:
                 GT_ModHandler.addShapelessCraftingRecipe(
