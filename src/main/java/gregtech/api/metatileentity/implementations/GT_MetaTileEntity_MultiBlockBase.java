@@ -1247,10 +1247,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             long actualEnergyUsage = tag.getLong("energyUsage");
             if (actualEnergyUsage > 0) {
                 currentTip.add(StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.use", GT_Utility.formatNumbers(actualEnergyUsage)));
+                        "GT5U.waila.energy.use",
+                        GT_Utility.formatNumbers(actualEnergyUsage),
+                        GT_Utility.getColoredTierNameFromVoltage(actualEnergyUsage)));
             } else if (actualEnergyUsage < 0) {
                 currentTip.add(StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.produce", GT_Utility.formatNumbers(-actualEnergyUsage)));
+                        "GT5U.waila.energy.produce",
+                        GT_Utility.formatNumbers(-actualEnergyUsage),
+                        GT_Utility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
             }
         }
         currentTip.add(
