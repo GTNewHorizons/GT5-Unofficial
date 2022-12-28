@@ -12010,7 +12010,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         // C8H10 + 6O =CoC22H14O4= C8H6O4 + 2H2O
         GT_Values.RA.addChemicalRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.IVDimethylbenzene, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIINaphthenate, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIINaphthenate, 41L),
                 Materials.Oxygen.getGas(6000L),
                 Materials.Water.getFluid(2000L),
                 GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.TerephthalicAcid, 1L),
@@ -12171,16 +12171,16 @@ public class GT_MachineRecipeLoader implements Runnable {
                 MaterialsKevlar.NaphthenicAcid.getCells(1),
                 GT_Values.NF,
                 GT_Values.NF,
-                MaterialsKevlar.CobaltIINaphthenate.getDust(1),
+                MaterialsKevlar.CobaltIINaphthenate.getDust(41),
                 ItemList.Cell_Empty.get(1L),
                 100,
                 480);
         GT_Values.RA.addChemicalRecipe(
-                MaterialsKevlar.CobaltIIHydroxide.getDust(10),
+                MaterialsKevlar.CobaltIIHydroxide.getDust(5),
                 GT_Utility.getIntegratedCircuit(1),
-                MaterialsKevlar.NaphthenicAcid.getFluid(2000L),
-                Materials.AceticAcid.getFluid(1000L),
-                MaterialsKevlar.CobaltIINaphthenate.getDust(2),
+                MaterialsKevlar.NaphthenicAcid.getFluid(1000L),
+                GT_Values.NF,
+                MaterialsKevlar.CobaltIINaphthenate.getDust(41),
                 200,
                 480);
 
@@ -12188,30 +12188,37 @@ public class GT_MachineRecipeLoader implements Runnable {
                 MaterialsKevlar.CobaltIIAcetate.getDust(15),
                 MaterialsKevlar.NaphthenicAcid.getCells(1),
                 GT_Values.NF,
-                GT_Values.NF,
-                MaterialsKevlar.CobaltIINaphthenate.getDust(1),
+                Materials.AceticAcid.getFluid(1500L),
+                MaterialsKevlar.CobaltIINaphthenate.getDust(41),
                 ItemList.Cell_Empty.get(1L),
                 100,
                 480);
         GT_Values.RA.addChemicalRecipe(
-                MaterialsKevlar.CobaltIIAcetate.getDust(30),
+                MaterialsKevlar.CobaltIIAcetate.getDust(15),
                 GT_Utility.getIntegratedCircuit(1),
-                MaterialsKevlar.NaphthenicAcid.getFluid(2000L),
-                Materials.AceticAcid.getFluid(1000L),
-                MaterialsKevlar.CobaltIINaphthenate.getDust(2),
+                MaterialsKevlar.NaphthenicAcid.getFluid(1000L),
+                Materials.AceticAcid.getFluid(1500L),
+                MaterialsKevlar.CobaltIINaphthenate.getDust(41),
                 100,
                 480);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {
                     GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIHydroxide, 50L)
+                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIHydroxide, 45L)
                 },
                 new FluidStack[] {MaterialsKevlar.NaphthenicAcid.getFluid(10000L)},
                 new FluidStack[] {
-                    Materials.AceticAcid.getFluid(7500L),
+                    GT_Values.NF,
                 },
-                new ItemStack[] {MaterialsKevlar.CobaltIINaphthenate.getDust(10)},
+                new ItemStack[] {
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(49),
+                },
                 200,
                 1920);
         GT_Values.RA.addMultiblockChemicalRecipe(
@@ -12219,13 +12226,20 @@ public class GT_MachineRecipeLoader implements Runnable {
                     GT_Utility.getIntegratedCircuit(9),
                     GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 22L)
+                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 7L)
                 },
                 new FluidStack[] {MaterialsKevlar.NaphthenicAcid.getFluid(10000L)},
                 new FluidStack[] {
-                    Materials.AceticAcid.getFluid(7500L),
+                    Materials.AceticAcid.getFluid(15000L),
                 },
-                new ItemStack[] {MaterialsKevlar.CobaltIINaphthenate.getDust(10)},
+                new ItemStack[] {
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(49),
+                },
                 200,
                 1920);
         // Co + 2HNO3 = Co(NO3)2 + 2H
