@@ -3,7 +3,6 @@ package gregtech.common.blocks;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
@@ -77,19 +76,19 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
-                        final int inputTier = GT_Utility.getTier(tTileEntity.getInputVoltage());
+                        final byte inputTier = GT_Utility.getTier(tTileEntity.getInputVoltage());
                         aList.add(GT_LanguageManager.addStringLocalization(
                                         "TileEntity_EUp_IN", "Voltage IN: ", !GregTech_API.sPostloadFinished)
                                 + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(tTileEntity.getInputVoltage())
-                                + " (" + GT_Values.TIER_COLORS[inputTier] + GT_Values.VN[inputTier]
+                                + " (" + GT_Utility.getColoredTierNameFromTier(inputTier)
                                 + EnumChatFormatting.GREEN + ")" + EnumChatFormatting.GRAY);
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
-                        final int outputTier = GT_Utility.getTier(tTileEntity.getOutputVoltage());
+                        final byte outputTier = GT_Utility.getTier(tTileEntity.getOutputVoltage());
                         aList.add(GT_LanguageManager.addStringLocalization(
                                         "TileEntity_EUp_OUT", "Voltage OUT: ", !GregTech_API.sPostloadFinished)
                                 + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(tTileEntity.getOutputVoltage())
-                                + " (" + GT_Values.TIER_COLORS[outputTier] + GT_Values.VN[outputTier]
+                                + " (" + GT_Utility.getColoredTierNameFromTier(outputTier)
                                 + EnumChatFormatting.GREEN + ")" + EnumChatFormatting.GRAY);
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {

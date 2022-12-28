@@ -14,7 +14,6 @@ import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.power.IPowerContainer;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -304,11 +303,11 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
                 "%s %s(%dA) -> %s(%dA)",
                 (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
                 GT_Mod.gregtechproxy.mWailaTransformerVoltageTier
-                        ? GT_Values.TIER_COLORS[inputTier] + GT_Values.VN[inputTier] + RESET
+                        ? GT_Utility.getColoredTierNameFromTier(inputTier)
                         : tag.getLong("maxEUInput"),
                 tag.getLong("maxAmperesIn"),
                 GT_Mod.gregtechproxy.mWailaTransformerVoltageTier
-                        ? GT_Values.TIER_COLORS[outputTier] + GT_Values.VN[outputTier] + RESET
+                        ? GT_Utility.getColoredTierNameFromTier(outputTier)
                         : tag.getLong("maxEUOutput"),
                 tag.getLong("maxAmperesOut")));
 
@@ -316,14 +315,14 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
             currenttip.add(String.format(
                     GOLD + "Input:" + RESET + " %s(%dA)",
                     GT_Mod.gregtechproxy.mWailaTransformerVoltageTier
-                            ? GT_Values.TIER_COLORS[inputTier] + GT_Values.VN[inputTier] + RESET
+                            ? GT_Utility.getColoredTierNameFromTier(inputTier)
                             : tag.getLong("maxEUInput"),
                     tag.getLong("maxAmperesIn")));
         } else {
             currenttip.add(String.format(
                     BLUE + "Output:" + RESET + " %s(%dA)",
                     GT_Mod.gregtechproxy.mWailaTransformerVoltageTier
-                            ? GT_Values.TIER_COLORS[outputTier] + GT_Values.VN[outputTier] + RESET
+                            ? GT_Utility.getColoredTierNameFromTier(outputTier)
                             : tag.getLong("maxEUOutput"),
                     tag.getLong("maxAmperesOut")));
         }
