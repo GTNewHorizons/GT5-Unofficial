@@ -19354,6 +19354,43 @@ public class GT_MachineRecipeLoader implements Runnable {
                 100,
                 480);
 
+        // Potassium Dichromate shortcut
+        // 2 Cr + 6O + 10 Saltpeter/Potassium Dichromate = 10 K2Cr2O7 + 2NO + 3O
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] {
+                    Materials.PotassiumNitrade.getDust(64),
+                    Materials.PotassiumNitrade.getDust(64),
+                    Materials.PotassiumNitrade.getDust(32),
+                    Materials.Chrome.getDust(2 * 16),
+                    GT_Utility.getIntegratedCircuit(11)
+                },
+                new FluidStack[] {Materials.Oxygen.getGas(6000 * 16)},
+                new FluidStack[] {Materials.NitricOxide.getGas(2000 * 16), Materials.Oxygen.getGas(3000 * 16)},
+                new ItemStack[] {
+                    Materials.Potassiumdichromate.getDust(64),
+                    Materials.Potassiumdichromate.getDust(64),
+                    Materials.Potassiumdichromate.getDust(48)
+                },
+                2560,
+                (int) GT_Values.VP[7]);
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] {
+                    Materials.Saltpeter.getDust(64),
+                    Materials.Saltpeter.getDust(64),
+                    Materials.Saltpeter.getDust(32),
+                    Materials.Chrome.getDust(2 * 16),
+                    GT_Utility.getIntegratedCircuit(11)
+                },
+                new FluidStack[] {Materials.Oxygen.getGas(6000 * 16)},
+                new FluidStack[] {Materials.NitricOxide.getGas(2000 * 16), Materials.Oxygen.getGas(3000 * 16)},
+                new ItemStack[] {
+                    Materials.Potassiumdichromate.getDust(64),
+                    Materials.Potassiumdichromate.getDust(64),
+                    Materials.Potassiumdichromate.getDust(48)
+                },
+                2560,
+                (int) GT_Values.VP[7]);
+
         // Nitrochlorobenzene
         // C6H5Cl + HNO3 = C6H4ClNO2 + H2O
         GT_Values.RA.addChemicalRecipe(
