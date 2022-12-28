@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.*;
 
 import codechicken.nei.PositionedStack;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
@@ -21,6 +22,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.enums.SteamVariant;
+import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -2579,7 +2581,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * First is (20, 18) size of "empty" image at the top,
          * Second is (20, 18) size of "filled" image at the bottom.
          */
-        public UITexture progressBarTexture = GT_UITextures.PROGRESSBAR_ARROW;
+        private FallbackableUITexture progressBarTexture;
 
         /**
          * Progressbar used for steam machine GUI and/or NEI.
@@ -2587,7 +2589,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * First is (20, 18) size of "empty" image at the top,
          * Second is (20, 18) size of "filled" image at the bottom.
          */
-        public SteamTexture progressBarTextureSteam;
+        private FallbackableSteamTexture progressBarTextureSteam;
 
         public ProgressBar.Direction progressBarDirection = ProgressBar.Direction.RIGHT;
 
@@ -2678,6 +2680,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aUsualOutputCount,
                     aMinimalInputFluids,
                     aMinimalInputItems);
+            progressBarTexture = new FallbackableUITexture(
+                    UITexture.fullImage("gregtech", "gui/progressbar/" + mUnlocalizedName),
+                    GT_UITextures.PROGRESSBAR_ARROW);
             if (sIndexedMappings.put(mUniqueIdentifier, this) != null)
                 throw new IllegalArgumentException("Duplicate recipe map registered: " + mUniqueIdentifier);
         }
@@ -2766,17 +2771,36 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe_Map setProgressBar(UITexture progressBarTexture, ProgressBar.Direction progressBarDirection) {
-            useModularUI(true);
-            this.progressBarTexture = progressBarTexture;
-            this.progressBarDirection = progressBarDirection;
-            return this;
+            return setProgressBarWithFallback(
+                    new FallbackableUITexture(
+                            UITexture.fullImage("gregtech", "gui/progressbar/" + mUnlocalizedName), progressBarTexture),
+                    progressBarDirection);
         }
 
         public GT_Recipe_Map setProgressBar(UITexture progressBarTexture) {
             return setProgressBar(progressBarTexture, ProgressBar.Direction.RIGHT);
         }
 
+        /**
+         * Some resource packs want to use custom progress bar textures even for plain arrow.
+         * This method allows them to add unique textures, yet other packs don't need to make textures
+         * for every recipemap.
+         */
+        public GT_Recipe_Map setProgressBarWithFallback(
+                FallbackableUITexture progressBarTexture, ProgressBar.Direction progressBarDirection) {
+            useModularUI(true);
+            this.progressBarTexture = progressBarTexture;
+            this.progressBarDirection = progressBarDirection;
+            return this;
+        }
+
         public GT_Recipe_Map setProgressBarSteam(SteamTexture progressBarTexture) {
+            return setProgressBarSteamWithFallback(new FallbackableSteamTexture(
+                    SteamTexture.fullImage("gregtech", "gui/progressbar/" + mUnlocalizedName + "_%s"),
+                    progressBarTexture));
+        }
+
+        public GT_Recipe_Map setProgressBarSteamWithFallback(FallbackableSteamTexture progressBarTexture) {
             this.progressBarTextureSteam = progressBarTexture;
             return this;
         }
@@ -3332,6 +3356,14 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return null;
         }
 
+        public UITexture getProgressBarTexture() {
+            return progressBarTexture.get();
+        }
+
+        public UITexture getProgressBarTextureSteam(SteamVariant steamVariant) {
+            return progressBarTextureSteam.get(steamVariant);
+        }
+
         public int getProgressBarImageSize() {
             if (progressBarImageSize != 0) {
                 return progressBarImageSize;
@@ -3411,7 +3443,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public void addProgressBarUI(
                 ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
             builder.widget(new ProgressBar()
-                    .setTexture(progressBarTexture, 20)
+                    .setTexture(getProgressBarTexture(), 20)
                     .setDirection(progressBarDirection)
                     .setProgress(progressSupplier)
                     .setSynced(false, false)
