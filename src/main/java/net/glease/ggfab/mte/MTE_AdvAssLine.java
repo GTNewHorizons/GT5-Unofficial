@@ -509,10 +509,9 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         }
 
 
-        if (slices[0].canStart() && getBaseMetaTileEntity().isAllowedToWork()) {
-            if (hasAllFluids(currentRecipe)) {
+        if (getBaseMetaTileEntity().isAllowedToWork()) {
+            if (hasAllFluids(currentRecipe) && slices[0].start()) {
                 drainAllFluids(currentRecipe);
-                slices[0].start();
                 mProgresstime = 0;
             }
         }
