@@ -1165,7 +1165,7 @@ public class RECIPES_Machines {
                         CI.getElectricMotor(i, 2),
                         CI.getPlate(i, 4)
                     },
-                    FluidUtils.getWater((i + 1) * 750),
+                    Materials.SolderingAlloy.getFluid(i * (144 * 1)),
                     aOutputs[i].copy(),
                     20 * 20,
                     MaterialUtils.getVoltageForTier(i));
