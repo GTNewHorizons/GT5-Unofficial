@@ -7,6 +7,7 @@ import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 import java.math.BigInteger;
 import java.util.*;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -185,7 +186,7 @@ public class GT_Values {
         EnumChatFormatting.DARK_GREEN.toString(), // UV,  8
         EnumChatFormatting.DARK_RED.toString(), // UHV, 9
         EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
-        EnumChatFormatting.DARK_BLUE + EnumChatFormatting.BOLD.toString(), // UIV, 11
+        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD.toString(), // UIV, 11
         EnumChatFormatting.RED.toString()
                 + EnumChatFormatting.BOLD.toString()
                 + EnumChatFormatting.UNDERLINE.toString(), // UMV, 12
@@ -403,7 +404,7 @@ public class GT_Values {
      */
     public static boolean debugDriller = false;
     /**
-     * Debug parameter for world generation. Track chunks added/removed from run queue.
+     * Debug parameter for world generation. Tracks chunks added/removed from run queue.
      */
     public static boolean debugWorldGen = false;
     /**
@@ -487,7 +488,7 @@ public class GT_Values {
     /**
      *  Pretty formatting for author names.
      */
-    public static final String AuthorColen = "Author: " + EnumChatFormatting.DARK_RED
+    public static final String Colen = "" + EnumChatFormatting.DARK_RED
             + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "C"
             + EnumChatFormatting.GOLD
             + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "o"
@@ -498,6 +499,7 @@ public class GT_Values {
             + EnumChatFormatting.DARK_PURPLE
             + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "n";
 
+    public static final String AuthorColen = "Author: " + Colen;
     public static final String AuthorKuba = "Author: " + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + "k"
             + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "u"
             + EnumChatFormatting.GOLD + EnumChatFormatting.BOLD + "b" + EnumChatFormatting.YELLOW
@@ -507,6 +509,7 @@ public class GT_Values {
 
     public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Blue"
             + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD + "Weabo";
+
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
