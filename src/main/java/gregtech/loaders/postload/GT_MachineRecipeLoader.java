@@ -386,7 +386,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 (int) (500L * OrePrefixes.dust.mMaterialAmount / 3628800L),
                 8);
         GT_Values.RA.addMixerRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BlackBronze, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BlackBronze, 5L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 3L),
                 GT_Values.NI,
@@ -394,7 +394,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_Utility.getIntegratedCircuit(1),
                 GT_Values.NF,
                 GT_Values.NF,
-                GT_OreDictUnificator.getDust(Materials.BlackSteel, 5L * OrePrefixes.dust.mMaterialAmount),
+                GT_OreDictUnificator.getDust(Materials.BlackSteel, 9L * OrePrefixes.dust.mMaterialAmount),
                 (int) (500L * OrePrefixes.dust.mMaterialAmount / 3628800L),
                 8);
         GT_Values.RA.addMixerRecipe(
@@ -425,12 +425,12 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 3L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 5L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 15L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 3L),
                 GT_Utility.getIntegratedCircuit(14),
                 GT_Values.NF,
                 GT_Values.NF,
-                GT_OreDictUnificator.getDust(Materials.BlackSteel, 25L * OrePrefixes.dust.mMaterialAmount),
+                GT_OreDictUnificator.getDust(Materials.BlackSteel, 9L * OrePrefixes.dust.mMaterialAmount),
                 (int) (800L * OrePrefixes.dust.mMaterialAmount / 3628800L),
                 480);
         GT_Values.RA.addMixerRecipe(
