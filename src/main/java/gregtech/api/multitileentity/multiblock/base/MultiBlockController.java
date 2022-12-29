@@ -719,6 +719,25 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
+    public ItemStack[] getInventoryForGUI(MultiBlockPart aPart) {
+        final Map<String, ItemStack[]> multiBlockInventory = getMultiBlockInventory(aPart);
+        if (multiBlockInventory == null) return null;
+        List<ItemStack> aItems = new ArrayList<ItemStack>();
+        final String lockedInventory = aPart.getLockedInventory();
+        if (lockedInventory == null) {
+            for (ItemStack[] inv : multiBlockInventory.values()) {
+                for (ItemStack aItem : inv) {
+                    aItems.add(aItem);
+                }
+            }
+            return aItems.toArray(new ItemStack[0]);
+        } else {
+            final ItemStack[] inv = multiBlockInventory.get(lockedInventory);
+            return inv != null ? inv : null;
+        }
+    }
+
+    @Override
     public boolean addStackToSlot(MultiBlockPart aPart, int aIndex, ItemStack aStack) {
         return false;
     }

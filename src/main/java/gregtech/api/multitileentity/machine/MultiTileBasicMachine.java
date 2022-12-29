@@ -34,8 +34,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     protected FluidTankGT[] mTanksInput = GT_Values.emptyFluidTankGT, mTanksOutput = GT_Values.emptyFluidTankGT;
     protected FluidStack[] mOutputFluids = GT_Values.emptyFluidStack;
 
-    protected ItemStack[] mInputInventory = GT_Values.emptyItemStackArray;
-    protected ItemStack[] mOutputInventory = GT_Values.emptyItemStackArray;
+    protected ItemStack[] mInputInventory = new ItemStack[4];
+    protected ItemStack[] mOutputInventory = new ItemStack[4];
     protected boolean mOutputInventoryChanged = false;
 
     @Override
