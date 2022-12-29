@@ -6,10 +6,8 @@ import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -490,7 +488,7 @@ public class GT_Values {
     /**
      *  Pretty formatting for author names.
      */
-    public static final String AuthorColen = "Author: " + EnumChatFormatting.DARK_RED
+    public static final String Colen = "" + EnumChatFormatting.DARK_RED
             + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "C"
             + EnumChatFormatting.GOLD
             + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "o"
@@ -501,6 +499,7 @@ public class GT_Values {
             + EnumChatFormatting.DARK_PURPLE
             + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "n";
 
+    public static final String AuthorColen = "Author: " + Colen;
     public static final String AuthorKuba = "Author: " + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + "k"
             + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "u"
             + EnumChatFormatting.GOLD + EnumChatFormatting.BOLD + "b" + EnumChatFormatting.YELLOW
@@ -510,4 +509,29 @@ public class GT_Values {
 
     public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Blue"
             + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD + "Weabo";
+
+
+    // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
+    public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
+        return (5F + (7.5F + material.mToolQuality)) / 10.0;
+    }
+
+    // Called once in GT_Client on world load, has to be called late so that Materials is populated.
+    public static void calculateMaxPlasmaTurbineEfficiency() {
+
+        ArrayList<Double> effArray = new ArrayList<>();
+
+        // Iteration seems to work but need to check turbine as all items appear null.
+        for (Materials material : Materials.values()) {
+            effArray.add(getMaxPlasmaTurbineEfficiencyFromMaterial(material));
+        }
+
+        maxPlasmaTurbineEfficiency = Collections.max(effArray);
+    }
+
+    private static double maxPlasmaTurbineEfficiency;
+
+    public static double getMaxPlasmaTurbineEfficiency() {
+        return maxPlasmaTurbineEfficiency;
+    }
 }
