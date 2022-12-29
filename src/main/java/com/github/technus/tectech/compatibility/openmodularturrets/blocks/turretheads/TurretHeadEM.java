@@ -1,8 +1,10 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads;
 
+import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 
 import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
+import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -64,5 +66,6 @@ public class TurretHeadEM extends Block implements ITileEntityProvider {
         INSTANCE = new TurretHeadEM();
         GameRegistry.registerBlock(INSTANCE, TurretHeadItemEM.class, INSTANCE.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTurretHeadEM.class, "TileTurretHeadEM");
+
     }
 }

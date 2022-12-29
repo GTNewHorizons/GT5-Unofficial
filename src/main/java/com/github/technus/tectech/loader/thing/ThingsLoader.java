@@ -1,5 +1,6 @@
 package com.github.technus.tectech.loader.thing;
 
+import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.TecTech.tectechTexturePage1;
 
 import com.github.technus.tectech.Reference;
@@ -9,9 +10,11 @@ import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turret
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.block.ReactorSimBlock;
+import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
 import com.github.technus.tectech.thing.casing.*;
 import com.github.technus.tectech.thing.item.*;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 
@@ -21,6 +24,9 @@ import gregtech.api.interfaces.ITexture;
 public class ThingsLoader implements Runnable {
     @Override
     public void run() {
+
+        GameRegistry.registerTileEntity(TileEyeOfHarmony.class, MODID + ":EyeOfHarmonyRenderBlock");
+
         if (Textures.BlockIcons.casingTexturePages[tectechTexturePage1] == null) {
             Textures.BlockIcons.casingTexturePages[tectechTexturePage1] = new ITexture[128];
         }
@@ -75,5 +81,7 @@ public class ThingsLoader implements Runnable {
         ElementalDefinitionContainer_EM.run();
         DebugElementalInstanceContainer_EM.run();
         TecTech.LOGGER.info("Debug Items registered");
+
+
     }
 }
