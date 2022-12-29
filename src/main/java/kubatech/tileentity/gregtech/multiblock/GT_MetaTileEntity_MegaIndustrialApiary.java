@@ -42,6 +42,8 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.*;
 import forestry.apiculture.blocks.BlockAlveary;
 import forestry.apiculture.blocks.BlockApicultureType;
@@ -69,6 +71,8 @@ import kubatech.api.LoaderReference;
 import kubatech.api.helpers.GTHelper;
 import kubatech.api.network.CustomTileEntityPacket;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
+import kubatech.client.effect.MegaApiaryBeesRenderer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -339,8 +343,23 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             packet.resetHelperData();
             packet.addData(mMaxSlots);
             packet.sendToAllAround(20);
+        } else {
+            if (aBaseMetaTileEntity.isActive() && aTick % 100 == 0) {
+                int[] abc = new int[] {0, -2, 7};
+                int[] xyz = new int[] {0, 0, 0};
+                this.getExtendedFacing().getWorldOffset(abc, xyz);
+                xyz[0] += aBaseMetaTileEntity.getXCoord();
+                xyz[1] += aBaseMetaTileEntity.getYCoord();
+                xyz[2] += aBaseMetaTileEntity.getZCoord();
+                showBees(aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], 100);
+            }
         }
-        // Beeeee rendering inside ?
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void showBees(World world, int x, int y, int z, int age) {
+        MegaApiaryBeesRenderer bee = new MegaApiaryBeesRenderer(world, x, y, z, age);
+        Minecraft.getMinecraft().effectRenderer.addEffect(bee);
     }
 
     @Override
