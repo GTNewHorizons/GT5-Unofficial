@@ -24,10 +24,7 @@ import static kubatech.api.enums.ItemList.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import kubatech.loaders.item.ItemProxy;
 import kubatech.loaders.item.KubaItems;
-import kubatech.loaders.item.items.Tea;
-import kubatech.loaders.item.items.TeaCollection;
-import kubatech.loaders.item.items.TeaIngredient;
-import kubatech.loaders.item.items.TeaUltimate;
+import kubatech.loaders.item.items.*;
 
 public class ItemLoader {
     public static final KubaItems kubaitems = new KubaItems();
@@ -79,5 +76,6 @@ public class ItemLoader {
 
         TeaAcceptorResearchNote.set(
                 kubaitems.registerProxyItem(new ItemProxy("tea_acceptor_research_note", "research_note")));
+        Beeeeee.set(kubaitems.registerProxyItem(new ItemProxy("beeeeee", "beeeeee")));
     }
 }
