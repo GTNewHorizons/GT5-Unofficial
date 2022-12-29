@@ -707,8 +707,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_HELL.set(addItem(
                 tLastID = 217,
-                "HELL Upgrade",
-                "HELL upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: HELL/n * Energy Consumption +50%",
+                "HELL Emulation Upgrade",
+                "HELL emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: HELL/n * Energy Consumption +50%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_POLLEN.set(addItem(
                 tLastID = 218,
@@ -717,8 +717,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_DESERT.set(addItem(
                 tLastID = 219,
-                "Desert Upgrade",
-                "Desert upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Desert/n * Energy Consumption +20%",
+                "Desert Emulation Upgrade",
+                "Desert emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Desert/n * Energy Consumption +20%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_COOLER.set(addItem(
                 tLastID = 220,
