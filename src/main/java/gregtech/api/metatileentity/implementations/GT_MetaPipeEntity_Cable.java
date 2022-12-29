@@ -1,13 +1,10 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.VN;
-
 import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
@@ -441,7 +438,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public String[] getDescription() {
         return new String[] {
             "Max Voltage: %%%" + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mVoltage) + " ("
-                    + GT_Values.TIER_COLORS[GT_Utility.getTier(mVoltage)] + VN[GT_Utility.getTier(mVoltage)]
+                    + GT_Utility.getColoredTierNameFromVoltage(mVoltage)
                     + EnumChatFormatting.GREEN + ")" + EnumChatFormatting.GRAY,
             "Max Amperage: %%%" + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mAmperage)
                     + EnumChatFormatting.GRAY,

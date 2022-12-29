@@ -19,6 +19,8 @@ public class IMCForNEI {
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:1195");
 
         sendCatalyst("gt.recipe.gasturbinefuel", "gregtech:gt.blockmachines:1005", -1);
+        sendCatalyst("gt.recipe.gasturbinefuel", "gregtech:gt.blockmachines:1118");
+        sendCatalyst("gt.recipe.gasturbinefuel", "gregtech:gt.blockmachines:1119");
 
         // overwrite yShift to 6
         sendHandler("gt.recipe.fakeAssemblylineProcess", "gregtech:gt.blockmachines:1170");

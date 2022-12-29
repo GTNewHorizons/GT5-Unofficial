@@ -4,6 +4,8 @@ import static gregtech.api.enums.GT_Values.V;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -344,10 +346,16 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
                 "GT5U.waila.energy.stored",
                 GT_Utility.formatNumbers(tag.getLong("mStored")),
                 GT_Utility.formatNumbers(tag.getLong("mMax"))));
+        long avgIn = tag.getLong("AvgIn");
+        long avgOut = tag.getLong("AvgOut");
         currenttip.add(StatCollector.translateToLocalFormatted(
-                "GT5U.waila.energy.avg_in", GT_Utility.formatNumbers(tag.getLong("AvgIn"))));
+                "GT5U.waila.energy.avg_in",
+                GT_Utility.formatNumbers(avgIn),
+                GT_Utility.getColoredTierNameFromVoltage(avgIn)));
         currenttip.add(StatCollector.translateToLocalFormatted(
-                "GT5U.waila.energy.avg_out", GT_Utility.formatNumbers(tag.getLong("AvgOut"))));
+                "GT5U.waila.energy.avg_out",
+                GT_Utility.formatNumbers(avgOut),
+                GT_Utility.getColoredTierNameFromVoltage(avgOut)));
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
@@ -376,16 +384,60 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mInventory.length) {
             case 4:
-                getBaseMetaTileEntity().add2by2Slots(builder);
+                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 2)
+                        .startFromSlot(0)
+                        .endAtSlot(3)
+                        .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                            @Override
+                            public int getSlotStackLimit() {
+                                return 1;
+                            }
+                        })
+                        .background(getGUITextureSet().getItemSlot())
+                        .build()
+                        .setPos(70, 25));
                 break;
             case 9:
-                getBaseMetaTileEntity().add3by3Slots(builder);
+                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 3)
+                        .startFromSlot(0)
+                        .endAtSlot(8)
+                        .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                            @Override
+                            public int getSlotStackLimit() {
+                                return 1;
+                            }
+                        })
+                        .background(getGUITextureSet().getItemSlot())
+                        .build()
+                        .setPos(61, 16));
                 break;
             case 16:
-                getBaseMetaTileEntity().add4by4Slots(builder);
+                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
+                        .startFromSlot(0)
+                        .endAtSlot(15)
+                        .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                            @Override
+                            public int getSlotStackLimit() {
+                                return 1;
+                            }
+                        })
+                        .background(getGUITextureSet().getItemSlot())
+                        .build()
+                        .setPos(52, 7));
                 break;
             default:
-                getBaseMetaTileEntity().add1by1Slot(builder);
+                builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 1)
+                        .startFromSlot(0)
+                        .endAtSlot(0)
+                        .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                            @Override
+                            public int getSlotStackLimit() {
+                                return 1;
+                            }
+                        })
+                        .background(getGUITextureSet().getItemSlot())
+                        .build()
+                        .setPos(79, 34));
                 break;
         }
     }
