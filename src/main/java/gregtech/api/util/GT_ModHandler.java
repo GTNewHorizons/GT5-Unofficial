@@ -1444,17 +1444,15 @@ public class GT_ModHandler {
     }
 
     /**
-     * Removes a Smelting Recipe
+     * Removes all matching Smelting Recipes by output
      */
     public static boolean removeFurnaceSmeltingByOutput(ItemStack aOutput) {
         if (aOutput != null) {
-            for (Object tInput : FurnaceRecipes.smelting().getSmeltingList().keySet()) {
-                Object tOutput = FurnaceRecipes.smelting().getSmeltingList().get(tInput);
-                if (GT_Utility.isStackValid(tOutput) && GT_Utility.areStacksEqual(aOutput, (ItemStack) tOutput, true)) {
-                    FurnaceRecipes.smelting().getSmeltingList().remove(tInput);
-                    return true;
-                }
-            }
+            return FurnaceRecipes.smelting()
+                    .getSmeltingList()
+                    .values()
+                    .removeIf(tOutput -> GT_Utility.isStackValid(tOutput)
+                            && GT_Utility.areStacksEqual(aOutput, (ItemStack) tOutput, true));
         }
         return false;
     }
