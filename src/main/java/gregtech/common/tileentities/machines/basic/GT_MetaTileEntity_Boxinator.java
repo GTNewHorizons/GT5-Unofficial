@@ -144,7 +144,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
                 if (this.mOutputItems[0] != null) {
                     if (canOutput(this.mOutputItems[0])) {
                         tSlot0.stackSize -= 1;
-                        calculateOverclockedNess(32, 16);
+                        calculateOverclockedNess(30, 16);
                         // In case recipe is too OP for that machine
                         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -162,7 +162,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
                 if (this.mOutputItems[0] != null) {
                     if (canOutput(this.mOutputItems[0])) {
                         getInputAt(0).stackSize -= 4;
-                        calculateOverclockedNess(32, 32);
+                        calculateOverclockedNess(30, 32);
                         // In case recipe is too OP for that machine
                         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -181,7 +181,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
                 if (this.mOutputItems[0] != null) {
                     if (canOutput(this.mOutputItems[0])) {
                         getInputAt(0).stackSize -= 9;
-                        calculateOverclockedNess(32, 64);
+                        calculateOverclockedNess(30, 64);
                         // In case recipe is too OP for that machine
                         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
