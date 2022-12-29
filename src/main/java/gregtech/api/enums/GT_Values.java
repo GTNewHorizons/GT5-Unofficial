@@ -7,7 +7,6 @@ import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 import java.math.BigInteger;
 import java.util.*;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -509,7 +508,6 @@ public class GT_Values {
 
     public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Blue"
             + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD + "Weabo";
-
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
