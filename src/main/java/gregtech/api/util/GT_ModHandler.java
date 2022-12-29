@@ -1444,6 +1444,22 @@ public class GT_ModHandler {
     }
 
     /**
+     * Removes a Smelting Recipe
+     */
+    public static boolean removeFurnaceSmeltingByOutput(ItemStack aOutput) {
+        if (aOutput != null) {
+            for (Object tInput : FurnaceRecipes.smelting().getSmeltingList().keySet()) {
+                Object tOutput = FurnaceRecipes.smelting().getSmeltingList().get(tInput);
+                if (GT_Utility.isStackValid(tOutput) && GT_Utility.areStacksEqual(aOutput, (ItemStack) tOutput, true)) {
+                    FurnaceRecipes.smelting().getSmeltingList().remove(tInput);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Removes a Crafting Recipe and gives you the former output of it.
      *
      * @param aRecipe The content of the Crafting Grid as ItemStackArray with length 9
