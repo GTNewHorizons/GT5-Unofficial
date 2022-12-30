@@ -13,7 +13,9 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
@@ -720,19 +722,13 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public ItemStackHandler getInventoryForGUI(MultiBlockPart aPart) {
+    public IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart) {
         final Map<String, ItemStackHandler> multiBlockInventory = getMultiBlockInventory(aPart);
         if (multiBlockInventory == null) return null;
 
         final String lockedInventory = aPart.getLockedInventory();
         if (lockedInventory == null) {
-            List<ItemStack> aItems = new ArrayList<ItemStack>();
-            for (ItemStackHandler inv : multiBlockInventory.values()) {
-                for (int i = 0; i < inv.getSlots(); i++) {
-                    aItems.add(inv.getStackInSlot(i));
-                }
-            }
-            return new ItemStackHandler(aItems);
+            return new ListItemHandler(multiBlockInventory.values());
         } else {
             final ItemStackHandler inv = multiBlockInventory.get(lockedInventory);
             return inv != null ? inv : null;

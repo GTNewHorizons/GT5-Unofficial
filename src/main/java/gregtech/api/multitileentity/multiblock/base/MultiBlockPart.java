@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 import com.gtnewhorizon.gtnhlib.GTNHLib;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
@@ -688,7 +689,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
             GTNHLib.proxy.addDebugToChat("Controller Missing");
             return;
         }
-        final ItemStackHandler inventoryHandler = controller.getInventoryForGUI(this);
+        final IItemHandlerModifiable inventoryHandler = controller.getInventoryForGUI(this);
         builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
         .startFromSlot(0)
         .endAtSlot(15)
