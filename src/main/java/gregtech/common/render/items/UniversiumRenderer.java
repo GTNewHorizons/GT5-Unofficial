@@ -51,7 +51,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         switch (type) {
             case ENTITY: {
                 GL11.glPushMatrix();
-                GL11.glTranslatef(-0.5F, 0F, 0F);
+//                GL11.glTranslatef(-0.5F, 0F, 0F);
                 if (tmpTtem.isOnItemFrame()) GL11.glTranslatef(0F, -0.3F, 0.01F);
                 render(tmpTtem, null);
                 GL11.glPopMatrix();
