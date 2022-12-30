@@ -162,7 +162,7 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                                 GT_MetaGenerated_Tool_01.SOLDERING_IRON_HV,
                                 1,
                                 aMaterial,
-                                Materials.StyreneButadieneRubber,
+                                Materials.AnySyntheticRubber,
                                 new long[] {1600000L, 512L, 3L, -1L}),
                         GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
                         new Object[] {
@@ -172,7 +172,7 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                             'B',
                             OrePrefixes.bolt.get(aMaterial),
                             'P',
-                            OrePrefixes.plate.get(Materials.StyreneButadieneRubber),
+                            OrePrefixes.plate.get(Materials.AnySyntheticRubber),
                             'S',
                             OrePrefixes.stick.get(Materials.StainlessSteel),
                             'L',
