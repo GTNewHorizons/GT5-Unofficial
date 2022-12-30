@@ -172,9 +172,11 @@ public class DimensionHelper {
                         case "BarnardF":
                         case "CentauriA":
                         case "TcetiE":
-                        case "Underdark":
                         case "VegaB":
                             s = "T8: " + s;
+                            break;
+                        case "Underdark":
+                            s = "T9: " + s;
                             break;
                     }
 
