@@ -399,7 +399,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials WoodGas                 = new MaterialBuilder(660, TextureSet.SET_FLUID             ,                                                                                                     "Wood Gas").addCell().addGas().setRGB(222, 205, 135).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(24).constructMaterial();
     public static Materials WoodTar                 = new MaterialBuilder(662, TextureSet.SET_FLUID             ,                                                                                                     "Wood Tar").addCell().addFluid().setRGB(40, 23, 11).setColor(Dyes.dyeBrown).constructMaterial();
     public static Materials WoodVinegar             = new MaterialBuilder(661, TextureSet.SET_FLUID             ,                                                                                                     "Wood Vinegar").addCell().addFluid().setRGB(212, 85, 0).setColor(Dyes.dyeBrown).constructMaterial();
-    public static Materials WeedEX9000              = new MaterialBuilder( 49, TextureSet.SET_FLUID             ,                                                                                                     "Weed-EX 9000").addCell().addFluid().setRGB(64, 224, 86).setColor(Dyes.dyeGreen).constructMaterial();
+    public static Materials WeedEX9000              = new MaterialBuilder(242, TextureSet.SET_FLUID             ,                                                                                                     "Weed-EX 9000").addCell().addFluid().setRGB(64, 224, 86).setColor(Dyes.dyeGreen).constructMaterial();
 
     /**
      * TODO: This
