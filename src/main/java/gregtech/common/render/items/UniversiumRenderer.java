@@ -39,8 +39,8 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
         IIcon tIcon = getTrueIcon(tmpTtem);
 
-        IIcon halo = ((ItemResource) LudicrousItems.resource).halo[0];
-        int haloColour = -16777216;
+//        IIcon halo = ((ItemResource) LudicrousItems.resource).halo[0];
+//        int haloColour = -16777216;
 
         RenderItem r = RenderItem.getInstance();
         Minecraft mc = Minecraft.getMinecraft();
@@ -58,10 +58,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
                 break;
             }
-            case EQUIPPED: {
-                render(tmpTtem, data[1] instanceof EntityPlayer ? (EntityPlayer) data[1] : null);
-                break;
-            }
+            case EQUIPPED:
             case EQUIPPED_FIRST_PERSON: {
                 render(tmpTtem, data[1] instanceof EntityPlayer ? (EntityPlayer) data[1] : null);
                 break;
@@ -74,19 +71,6 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-
-                float ca = (float) (haloColour >> 24 & 255) / 255.0F;
-                float cr = (float) (haloColour >> 16 & 255) / 255.0F;
-                float cg = (float) (haloColour >> 8 & 255) / 255.0F;
-                float cb = (float) (haloColour & 255) / 255.0F;
-                GL11.glColor4f(cr, cg, cb, ca);
-
-                t.startDrawingQuads();
-                t.addVertexWithUV(0 - spread, 0 - spread, 0, halo.getMinU(), halo.getMinV());
-                t.addVertexWithUV(0 - spread, 16 + spread, 0, halo.getMinU(), halo.getMaxV());
-                t.addVertexWithUV(16 + spread, 16 + spread, 0, halo.getMaxU(), halo.getMaxV());
-                t.addVertexWithUV(16 + spread, 0 - spread, 0, halo.getMaxU(), halo.getMinV());
-                t.draw();
 
                 r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), tmpTtem, 0, 0, true);
 
