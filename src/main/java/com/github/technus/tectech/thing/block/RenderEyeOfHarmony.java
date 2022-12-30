@@ -46,9 +46,10 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
             FMLClientHandler.instance().getClient().getTextureManager().bindTexture(starLayer0);
 
-            float starRed = 1.0f;
-            float starGreen = 1.0f;
-            float starBlue = 1.0f;
+
+            float starRed = EOHRenderTile.getColour().getRed() / 255.0f;
+            float starGreen = EOHRenderTile.getColour().getGreen() / 255.0f;
+            float starBlue = EOHRenderTile.getColour().getBlue() / 255.0f;
 
             GL11.glScalef(scale, scale, scale);
 
@@ -84,11 +85,16 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             GL11.glDepthMask(true);
             GL11.glEnable(GL11.GL_LIGHTING);
 
-
             GL11.glColor4d(starRed, starGreen, starBlue, 0.1F);
 
-
             GL11.glPopMatrix();
+
+            if (!tile.getWorldObj().isRemote)
+
+            {
+                // todo check
+                tile.getWorldObj().spawnParticle("reddust", x, y, z, 1.0, 1.0, 1.0);
+            }
         }
     }
 }

@@ -41,7 +41,11 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
+
+import java.awt.*;
 import java.util.*;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -1782,10 +1786,47 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         double zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
         double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
 
+        this.getBaseMetaTileEntity().getWorld().setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
         this.getBaseMetaTileEntity().getWorld().setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), eyeOfHarmonyRenderBlock);
         TileEyeOfHarmony rendererTileEntity = (TileEyeOfHarmony) this.getBaseMetaTileEntity().getWorld().getTileEntity((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
-        rendererTileEntity.setSize(100);
-        rendererTileEntity.setRotationSpeed(100);
+
+        int recipeSpacetimeTier = (int) currentRecipe.getSpacetimeCasingTierRequired();
+
+        // Star is a larger size depending on the spacetime tier of the recipe.
+        rendererTileEntity.setSize((1 + recipeSpacetimeTier) * 0.5f);
+        // Star rotates faster the higher tier time dilation you use in the multi.
+        rendererTileEntity.setRotationSpeed((float) pow(2, 8-timeAccelerationFieldMetadata));
+        Color colour = getStarColour(recipeSpacetimeTier);
+        rendererTileEntity.setColour(colour);
+    }
+
+    private static final Color redStar = new Color(255, 0, 50);
+    private static final Color orangeStar = new Color(255, 102, 0);
+    private static final Color blueStar = new Color(96, 152, 234);
+    private static final Color whiteStar = new Color(200, 200, 200);
+    private static final Color blackStar = new Color(17, 8, 8);
+    public static final Color errorStar = new Color(222, 0, 255);
+
+    Color getStarColour(final int tier) {
+        switch (tier) {
+            case 0:
+            case 1:
+                return redStar;
+            case 2:
+            case 3:
+                return orangeStar;
+            case 4:
+            case 5:
+                return blueStar;
+            case 6:
+            case 7:
+            case 8:
+                return whiteStar;
+            case 9:
+                return blackStar;
+            default:
+                return errorStar;
+        }
     }
 
     private double successChance;
@@ -1828,6 +1869,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         super.outputAfterRecipe_EM();
     }
 
+    // todo probably remove me.
     private void pushComputation() {
         if (computationStack.size() == computationTickCacheSize) {
             computationStack.remove(0);
