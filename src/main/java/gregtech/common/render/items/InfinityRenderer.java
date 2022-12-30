@@ -43,7 +43,7 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-        GL11.glColor4f(0, 0, 0, (float) (haloAlpha >> 24 & 255) / 255.0F);
+        GL11.glColor4f(20/255.0f, 20/255.0f, 20/255.0f, (float) (haloAlpha >> 24 & 255) / 255.0F);
 
         t.startDrawingQuads();
         t.addVertexWithUV(-spread, -spread, 0, halo.getMinU(), halo.getMinV());
