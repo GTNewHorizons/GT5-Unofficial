@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.eyeOfHarmonyRenderBlock;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.AuthorColen;
@@ -11,8 +12,10 @@ import static java.lang.Math.*;
 import static net.minecraft.util.EnumChatFormatting.*;
 
 import appeng.util.ReadableNumberConverter;
+import com.cricketcraft.chisel.api.IChiselItem;
 import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
 import com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage;
+import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
 import com.github.technus.tectech.thing.casing.TT_Block_SpacetimeCompressionFieldGenerators;
 import com.github.technus.tectech.thing.casing.TT_Block_StabilisationFieldGenerators;
 import com.github.technus.tectech.thing.casing.TT_Block_TimeAccelerationFieldGenerators;
@@ -23,6 +26,7 @@ import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -48,6 +52,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
@@ -1577,9 +1583,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addSeparator()
                 .addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
                 .addStructureInfo(
-                        EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Ultimate Molecular Casing.")
+                        EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Reinforced Spacetime Structure Casing.")
                 .addStructureInfo(EnumChatFormatting.GOLD + "534" + EnumChatFormatting.GRAY
-                        + " Ultimate Advanced Molecular Casing.")
+                        + " Ultimate Temporal Boundary Casing.")
                 .addStructureInfo(
                         EnumChatFormatting.GOLD + "680" + EnumChatFormatting.GRAY + " Time Dilation Field Generator.")
                 .addStructureInfo(
@@ -1758,8 +1764,28 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         updateSlots();
 
+        createRenderBlock();
+
         recipeRunning = true;
         return true;
+    }
+
+    private void createRenderBlock() {
+
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+
+        double xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+
+        this.getBaseMetaTileEntity().getWorld().setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), eyeOfHarmonyRenderBlock);
+        TileEyeOfHarmony rendererTileEntity = (TileEyeOfHarmony) this.getBaseMetaTileEntity().getWorld().getTileEntity((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
+        rendererTileEntity.setSize(100);
+        rendererTileEntity.setRotationSpeed(100);
     }
 
     private double successChance;

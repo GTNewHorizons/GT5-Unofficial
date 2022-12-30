@@ -15,26 +15,31 @@ public class TileEyeOfHarmony extends TileEntity {
         return INFINITE_EXTENT_AABB;
     }
 
-    private static final int maxRotationSpeed = 64;
-    private static final int maxSize = 200;
+    public void setSize(float size) {
+        this.size = size;
+    }
 
-    private int size = 1;
-    private int rotationSpeed = 0;
+    public void setRotationSpeed(float rotationSpeed) {
+        this.rotationSpeed = rotationSpeed;
+    }
+
+    private float size = 1;
+    private float rotationSpeed = 0;
 
     public void incrementSize() {
-        size++;
+        size += 1.5f;
     }
 
     public void increaseRotationSpeed() {
         rotationSpeed++;
     }
 
-    public int getSize() {
-        return size % maxSize;
+    public float getSize() {
+        return size;
     }
 
-    public int getRotationSpeed() {
-        return rotationSpeed % maxRotationSpeed;
+    public float getRotationSpeed() {
+        return rotationSpeed;
     }
 
     private static final String rotationSpeedNBTTag = "EOH:rotationSpeed";
@@ -43,15 +48,15 @@ public class TileEyeOfHarmony extends TileEntity {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger(rotationSpeedNBTTag, rotationSpeed);
-        compound.setInteger(sizeNBTTag, size);
+        compound.setFloat(rotationSpeedNBTTag, rotationSpeed);
+        compound.setFloat(sizeNBTTag, size);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        rotationSpeed = compound.getInteger(rotationSpeedNBTTag);
-        size = compound.getInteger(sizeNBTTag);
+        rotationSpeed = compound.getFloat(rotationSpeedNBTTag);
+        size = compound.getFloat(sizeNBTTag);
     }
 
     @Override
