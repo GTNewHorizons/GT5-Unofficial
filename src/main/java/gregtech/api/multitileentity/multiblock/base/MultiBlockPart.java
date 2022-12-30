@@ -682,8 +682,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
         return false;
     }
 
-    @Override
-    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
+    protected void addItemInventory(Builder builder, UIBuildContext buildContext) {
         final IMultiBlockController controller = getTarget(false);
         if (controller == null) {
             return;
@@ -698,8 +697,15 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
             }
         }
         builder.widget(scrollable
-                .setSize(18 * 4, 18 * 4)
+                .setSize(18 * 4 + 4, 18 * 4)
                 .setPos(52, 7));
+    }
+
+    @Override
+    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
+        if (modeSelected(ITEM_IN, ITEM_OUT)) {
+            addItemInventory(builder, buildContext);
+        }
     }
 
     @Override
