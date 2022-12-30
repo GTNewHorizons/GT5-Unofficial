@@ -1,4 +1,4 @@
-package gregtech.common.render.items.CosmicFabricRenderer;
+package gregtech.common.render.items;
 
 import fox.spiteful.avaritia.items.ItemResource;
 import fox.spiteful.avaritia.items.LudicrousItems;
@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
 
-public class CosmicFabricRenderer extends GT_GeneratedMaterial_Renderer {
+public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
