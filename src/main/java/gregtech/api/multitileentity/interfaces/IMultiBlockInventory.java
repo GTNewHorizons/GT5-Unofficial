@@ -1,8 +1,6 @@
 package gregtech.api.multitileentity.interfaces;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -48,5 +46,5 @@ public interface IMultiBlockInventory {
 
     boolean isItemValidForSlot(MultiBlockPart aPart, int aSlot, ItemStack aStack);
 
-    ItemStack[] getInventoryForGUI(MultiBlockPart aPart);
+    ItemStackHandler getInventoryForGUI(MultiBlockPart aPart);
 }

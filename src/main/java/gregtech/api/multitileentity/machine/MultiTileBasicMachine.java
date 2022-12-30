@@ -3,6 +3,7 @@ package gregtech.api.multitileentity.machine;
 import static com.google.common.primitives.Ints.saturatedCast;
 import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
 
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.Textures;
@@ -34,8 +35,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     protected FluidTankGT[] mTanksInput = GT_Values.emptyFluidTankGT, mTanksOutput = GT_Values.emptyFluidTankGT;
     protected FluidStack[] mOutputFluids = GT_Values.emptyFluidStack;
 
-    protected ItemStack[] mInputInventory = new ItemStack[4];
-    protected ItemStack[] mOutputInventory = new ItemStack[4];
+    protected ItemStackHandler mInputInventory = new ItemStackHandler(4);
+    protected ItemStackHandler mOutputInventory = new ItemStackHandler(4);
     protected boolean mOutputInventoryChanged = false;
 
     @Override
@@ -48,17 +49,17 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         super.writeMultiTileNBT(aNBT);
         if (mParallel > 0) aNBT.setInteger(NBT.PARALLEL, mParallel);
         if (mActive) aNBT.setBoolean(NBT.ACTIVE, mActive);
-        if (mInputInventory != null && mInputInventory.length > 0)
+        if (mInputInventory != null && mInputInventory.getSlots() > 0)
             writeInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
-        if (mOutputInventory != null && mOutputInventory.length > 0)
+        if (mOutputInventory != null && mOutputInventory.getSlots() > 0)
             writeInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
     }
 
-    protected void writeInventory(NBTTagCompound aNBT, ItemStack[] inv, String invListTag) {
-        if (inv != null && inv.length > 0) {
+    protected void writeInventory(NBTTagCompound aNBT, ItemStackHandler inv, String invListTag) {
+        if (inv != null && inv.getSlots() > 0) {
             final NBTTagList tList = new NBTTagList();
-            for (int tSlot = 0; tSlot < inv.length; tSlot++) {
-                final ItemStack tStack = inv[tSlot];
+            for (int tSlot = 0; tSlot < inv.getSlots(); tSlot++) {
+                final ItemStack tStack = inv.getStackInSlot(tSlot);
                 if (tStack != null) {
                     final NBTTagCompound tag = new NBTTagCompound();
                     tag.setByte("s", (byte) tSlot);
@@ -100,14 +101,14 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
             mOutputFluids[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag(NBT.FLUID_OUT + "." + i));
     }
 
-    protected ItemStack[] loadInventory(NBTTagCompound aNBT, String sizeTag, String invListTag) {
-        final ItemStack[] inv = getDefaultInventory(aNBT, sizeTag);
+    protected ItemStackHandler loadInventory(NBTTagCompound aNBT, String sizeTag, String invListTag) {
+        final ItemStackHandler inv = getDefaultInventory(aNBT, sizeTag);
         if (inv != null) {
             final NBTTagList tList = aNBT.getTagList(invListTag, 10);
             for (int i = 0; i < tList.tagCount(); i++) {
                 final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
                 final int tSlot = tNBT.getShort("s");
-                if (tSlot >= 0 && tSlot < inv.length) inv[tSlot] = GT_Utility.loadItem(tNBT);
+                if (tSlot >= 0 && tSlot < inv.getSlots()) inv.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
             }
         }
 
@@ -185,9 +186,9 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         return 2;
     }
 
-    public ItemStack[] getDefaultInventory(NBTTagCompound aNBT, String invSizeKey) {
+    public ItemStackHandler getDefaultInventory(NBTTagCompound aNBT, String invSizeKey) {
         final int tSize = Math.max(0, aNBT.getShort(invSizeKey));
-        return tSize > 0 ? new ItemStack[tSize] : GT_Values.emptyItemStackArray;
+        return tSize > 0 ? new ItemStackHandler(tSize) : new ItemStackHandler();
     }
 
     @Override

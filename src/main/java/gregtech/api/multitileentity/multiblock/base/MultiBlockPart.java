@@ -18,14 +18,11 @@ import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
@@ -152,7 +149,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
     public void setTargetPos(ChunkCoordinates aTargetPos) {
         mTargetPos = aTargetPos;
         if (getTarget(false) != null) GTNHLib.proxy.addDebugToChat("Controller gotten");
-        if (getTarget(false) == null) GTNHLib.proxy.addDebugToChat("Controller gotten");
+        if (getTarget(false) == null) GTNHLib.proxy.addDebugToChat("Controller Not here");
     }
 
     @Override
@@ -686,15 +683,13 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
     @Override
     public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
         final IMultiBlockController controller = getTarget(true);
-        if (controller == null) return;
-        final ItemStackHandler inventoryHandler = new ItemStackHandler(controller.getInventoryForGUI(this));
-        Scrollable itemsScrollable = new Scrollable();
-        for (int i = 1; i < inventoryHandler.getSlots(); i++) {
-            builder.widget(new SlotWidget(inventoryHandler, i-1)
-            .setPos(9 + 18 * (i%4-1), 18 + 18 * (i/4)));
+        if (controller == null) {
+            GTNHLib.proxy.addDebugToChat("Controller Missing");
         }
-        builder.widget(itemsScrollable.setSize(18 * 4 + 8, 18 * 4 + 8));
-        
+        final ItemStackHandler inventoryHandler = controller.getInventoryForGUI(this);
+        for (int i = 1; i <= inventoryHandler.getSlots(); i++) {
+            builder.widget(new SlotWidget(inventoryHandler, i - 1).setPos(9 + 18 * (i % 4 - 1), 18 + 18 * (i / 4)));
+        }
     }
 
     @Override
