@@ -2079,7 +2079,9 @@ public class Textures {
         }
 
         public static ITexture getCasingTextureForId(int id) {
-            return casingTexturePages[(id >> 7) & 0x7f][id & 0x7f];
+            final ITexture[] page = casingTexturePages[(id >> 7) & 0x7f];
+            if (page == null) return null;
+            return page[id & 0x7f];
         }
 
         public static void setCasingTextureForId(int id, ITexture iTexture) {
