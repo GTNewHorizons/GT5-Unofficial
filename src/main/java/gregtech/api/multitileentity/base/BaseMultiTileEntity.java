@@ -56,6 +56,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
@@ -1002,6 +1003,10 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
         if (this instanceof IMTE_HasModes) {
             final IMTE_HasModes mteModes = (IMTE_HasModes) this;
             packet.setModes(mteModes.getMode(), mteModes.getAllowedModes());
+            if (mteModes.getTargetPos() != null) {
+                ChunkCoordinates aTarget = mteModes.getTargetPos();
+                packet.setTargetPos(aTarget.posX, (short) aTarget.posY, aTarget.posZ);
+            }
         }
 
         return packet;

@@ -13,6 +13,9 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
@@ -66,8 +69,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     protected BuildState buildState = new BuildState();
 
-    protected Map<String, ItemStack[]> multiBlockInputInventory = new LinkedHashMap<>();
-    protected Map<String, ItemStack[]> multiBlockOutputInventory = new LinkedHashMap<>();
+    protected Map<String, IItemHandlerModifiable> multiBlockInputInventory = new LinkedHashMap<>();
+    protected Map<String, IItemHandlerModifiable> multiBlockOutputInventory = new LinkedHashMap<>();
 
     private int mMaxProgresstime = 0, mProgresstime = 0;
     private boolean mStructureOkay = false, mStructureChanged = false;
@@ -126,6 +129,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         // inventory,
         // and the others are added by inventory extending blocks.
         if (mInputInventory != null) multiBlockInputInventory.put("controller", mInputInventory);
+        if (mOutputInventory != null) multiBlockOutputInventory.put("controller", mOutputInventory);
 
         mStructureOkay = aNBT.getBoolean(NBT.STRUCTURE_OK);
         mExtendedFacing = ExtendedFacing.of(
@@ -699,7 +703,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     /**
      * Item - MultiBlock related Item behaviour.
      */
-    protected boolean registerInventory(String invName, ItemStack[] inventory) {
+    protected boolean registerInventory(String invName, ItemStackHandler inventory) {
         if (multiBlockInputInventory.containsKey(invName)) return false;
         multiBlockInputInventory.put(invName, inventory);
         return true;
@@ -719,6 +723,20 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
+    public IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart) {
+        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
+        if (multiBlockInventory == null) return null;
+
+        final String lockedInventory = aPart.getLockedInventory();
+        if (lockedInventory == null) {
+            return new ListItemHandler(multiBlockInventory.values());
+        } else {
+            final IItemHandlerModifiable inv = multiBlockInventory.get(lockedInventory);
+            return inv != null ? inv : null;
+        }
+    }
+
+    @Override
     public boolean addStackToSlot(MultiBlockPart aPart, int aIndex, ItemStack aStack) {
         return false;
     }
@@ -728,25 +746,25 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         return false;
     }
 
-    protected Map<String, ItemStack[]> getMultiBlockInventory(MultiBlockPart aPart) {
+    protected Map<String, IItemHandlerModifiable> getMultiBlockInventory(MultiBlockPart aPart) {
         if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) return multiBlockInputInventory;
         else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) return multiBlockOutputInventory;
         return null;
     }
 
-    protected Pair<ItemStack[], Integer> getInventory(MultiBlockPart aPart, int aSlot) {
-        final Map<String, ItemStack[]> multiBlockInventory = getMultiBlockInventory(aPart);
+    protected Pair<IItemHandlerModifiable, Integer> getInventory(MultiBlockPart aPart, int aSlot) {
+        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
         if (multiBlockInventory == null) return null;
 
         final String invName = aPart.getLockedInventory();
         if (invName == null || !invName.isEmpty()) return new ImmutablePair<>(multiBlockInventory.get(invName), aSlot);
 
         int start = 0;
-        for (ItemStack[] inv : multiBlockInventory.values()) {
-            if (aSlot > start && aSlot < start + inv.length) {
+        for (IItemHandlerModifiable inv : multiBlockInventory.values()) {
+            if (aSlot > start && aSlot < start + inv.getSlots()) {
                 return new ImmutablePair<>(inv, aSlot - start);
             }
-            start += inv.length;
+            start += inv.getSlots();
         }
         return null;
     }
@@ -754,7 +772,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public int[] getAccessibleSlotsFromSide(MultiBlockPart aPart, byte aSide) {
         final TIntList tList = new TIntArrayList();
-        final Map<String, ItemStack[]> multiBlockInventory = getMultiBlockInventory(aPart);
+        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
         if (multiBlockInventory == null) return tList.toArray();
 
         final String lockedInventory = aPart.getLockedInventory();
@@ -763,13 +781,13 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
         int start = 0;
         if (lockedInventory == null) {
-            for (ItemStack[] inv : multiBlockInventory.values()) {
-                for (int i = start; i < inv.length + start; i++) tList.add(i);
-                start += inv.length;
+            for (IItemHandlerModifiable inv : multiBlockInventory.values()) {
+                for (int i = start; i < inv.getSlots() + start; i++) tList.add(i);
+                start += inv.getSlots();
             }
         } else {
-            final ItemStack[] inv = multiBlockInventory.get(lockedInventory);
-            final int len = inv != null ? inv.length : 0;
+            final IItemHandlerModifiable inv = multiBlockInventory.get(lockedInventory);
+            final int len = inv != null ? inv.getSlots() : 0;
             for (int i = 0; i < len; i++) tList.add(i);
         }
         return tList.toArray();
@@ -777,56 +795,59 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public boolean canInsertItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, byte aSide) {
-        final Pair<ItemStack[], Integer> tInv = getInventory(aPart, aSlot);
+        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
         if (tInv == null) return false;
 
         final int tSlot = tInv.getRight();
-        final ItemStack[] inv = tInv.getLeft();
+        final IItemHandlerModifiable inv = tInv.getLeft();
         ;
 
-        return inv[tSlot] == null
+        return inv.getStackInSlot(tSlot) == null
                 || GT_Utility.areStacksEqual(
-                        aStack, inv[tSlot]); // && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack)
+                        aStack,
+                        inv.getStackInSlot(
+                                tSlot)); // && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack)
     }
 
     @Override
     public boolean canExtractItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, byte aSide) {
-        final Pair<ItemStack[], Integer> tInv = getInventory(aPart, aSlot);
+        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
         if (tInv == null) return false;
 
         final int tSlot = tInv.getRight();
-        final ItemStack[] inv = tInv.getLeft();
+        final IItemHandlerModifiable inv = tInv.getLeft();
         ;
 
-        return inv[tSlot] != null; // && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+        return inv.getStackInSlot(tSlot)
+                != null; // && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
     }
 
     @Override
     public int getSizeInventory(MultiBlockPart aPart) {
-        final Map<String, ItemStack[]> multiBlockInventory = getMultiBlockInventory(aPart);
+        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
         if (multiBlockInventory == null) return 0;
 
         final String lockedInventory = aPart.getLockedInventory();
         if (lockedInventory == null) {
             int len = 0;
-            for (ItemStack[] inv : multiBlockInventory.values()) len += inv.length;
+            for (IItemHandlerModifiable inv : multiBlockInventory.values()) len += inv.getSlots();
             return len;
         } else {
-            final ItemStack[] inv = multiBlockInventory.get(lockedInventory);
-            return inv != null ? inv.length : 0;
+            final IItemHandlerModifiable inv = multiBlockInventory.get(lockedInventory);
+            return inv != null ? inv.getSlots() : 0;
         }
     }
 
     @Override
     public ItemStack getStackInSlot(MultiBlockPart aPart, int aSlot) {
-        final Pair<ItemStack[], Integer> tInv = getInventory(aPart, aSlot);
+        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
         if (tInv == null) return null;
 
         final int tSlot = tInv.getRight();
-        final ItemStack[] inv = tInv.getLeft();
+        final IItemHandlerModifiable inv = tInv.getLeft();
         ;
 
-        return inv[tSlot];
+        return inv.getStackInSlot(tSlot);
     }
 
     @Override
@@ -846,25 +867,25 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public ItemStack getStackInSlotOnClosing(MultiBlockPart aPart, int aSlot) {
-        final Pair<ItemStack[], Integer> tInv = getInventory(aPart, aSlot);
+        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
         if (tInv == null) return null;
 
-        final ItemStack[] inv = tInv.getLeft();
+        final IItemHandlerModifiable inv = tInv.getLeft();
         final int tSlot = tInv.getRight();
 
-        final ItemStack rStack = inv[tSlot];
-        inv[tSlot] = null;
+        final ItemStack rStack = inv.getStackInSlot(tSlot);
+        inv.setStackInSlot(tSlot, null);
         return rStack;
     }
 
     @Override
     public void setInventorySlotContents(MultiBlockPart aPart, int aSlot, ItemStack aStack) {
-        final Pair<ItemStack[], Integer> tInv = getInventory(aPart, aSlot);
+        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
         if (tInv == null) return;
 
-        final ItemStack[] inv = tInv.getLeft();
+        final IItemHandlerModifiable inv = tInv.getLeft();
         final int tSlot = tInv.getRight();
-        inv[tSlot] = aStack;
+        inv.setStackInSlot(tSlot, aStack);
     }
 
     @Override
