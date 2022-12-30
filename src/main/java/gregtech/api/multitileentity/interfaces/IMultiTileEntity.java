@@ -26,6 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -296,5 +297,9 @@ public interface IMultiTileEntity
         int getAllowedModes();
 
         void setAllowedModes(int aAllowedModes);
+
+        ChunkCoordinates getTargetPos();
+
+        void setTargetPos(ChunkCoordinates aTargetPos);
     }
 }

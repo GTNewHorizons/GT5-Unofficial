@@ -15,10 +15,18 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
+import com.gtnewhorizon.gtnhlib.GTNHLib;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.ScrollBar;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
@@ -139,6 +147,16 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
             aNBT.setShort(NBT.TARGET_Y, (short) mTargetPos.posY);
             aNBT.setInteger(NBT.TARGET_Z, mTargetPos.posZ);
         }
+    }
+
+    @Override
+    public void setTargetPos(ChunkCoordinates aTargetPos) {
+        mTargetPos = aTargetPos;
+    }
+
+    @Override
+    public ChunkCoordinates getTargetPos() {
+        return mTargetPos;
     }
 
     @Override
@@ -664,8 +682,37 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
         return false;
     }
 
+    protected void addItemInventory(Builder builder, UIBuildContext buildContext) {
+        final IMultiBlockController controller = getTarget(false);
+        if (controller == null) {
+            return;
+        }
+        final IItemHandlerModifiable inv = controller.getInventoryForGUI(this);
+        Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int rows = 1; rows * 4 <= inv.getSlots(); rows++) {
+            for (int column = 0; column < 4; column++) {
+                scrollable.widget(new SlotWidget(inv, (rows - 1) * 4 + column)
+                        .setPos((column) * 18, (rows - 1) * 18)
+                        .setSize(18, 18));
+            }
+        }
+        builder.widget(scrollable
+                .setSize(18 * 4 + 4, 18 * 4)
+                .setPos(52, 7));
+    }
+
+    @Override
+    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
+        if (modeSelected(ITEM_IN, ITEM_OUT)) {
+            addItemInventory(builder, buildContext);
+        }
+    }
+
     @Override
     public ModularWindow createWindow(UIBuildContext buildContext) {
+        if (isServerSide()) {
+            issueClientUpdate();
+        }
         System.out.println("MultiBlockPart::createWindow");
         return super.createWindow(buildContext);
     }
