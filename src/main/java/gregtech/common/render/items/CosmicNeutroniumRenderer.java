@@ -1,6 +1,6 @@
 package gregtech.common.render.items;
 
-import static gregtech.common.render.GT_RenderUtil.colourGTItem;
+import static gregtech.common.render.GT_RenderUtil.colorGTItem;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -40,16 +40,16 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
 
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
+
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.enableGUIStandardItemLighting();
 
-        GL11.glDisable(GL11.GL_ALPHA_TEST); //
         GL11.glEnable(GL_DEPTH_TEST); // This one means that items don't render through walls.
 
         // Ideally this magic haloColour number should scale depending on the # of transparent pixels,
         // but I'm not sure how to determine this with OpenGL.
         // This is from Avaritia code, but modified to untangle the interfaces.
-        int haloColour = 1_090_519_039;
+        int haloColour = 0x40ffffff;
         float ca = (float) (haloColour >> 24 & 255) / 255.0F;
         float cr = (float) (haloColour >> 16 & 255) / 255.0F;
         float cg = (float) (haloColour >> 8 & 255) / 255.0F;
@@ -73,7 +73,7 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
             // Draw actual cosmic Nt item.
             GL11.glPushMatrix();
 
-            colourGTItem(item);
+            colorGTItem(item);
 
             if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                 GT_RenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
@@ -98,9 +98,8 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
 
         r.renderWithColor = true;
 
-        GL11.glDisable(GL11.GL_BLEND);
 
         GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
+//        GL11.glEnable(GL11.GL_ALPHA_TEST);
     }
 }
