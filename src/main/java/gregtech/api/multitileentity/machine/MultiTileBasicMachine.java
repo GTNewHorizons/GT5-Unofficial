@@ -3,6 +3,7 @@ package gregtech.api.multitileentity.machine;
 import static com.google.common.primitives.Ints.saturatedCast;
 import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
 
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
@@ -35,8 +36,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     protected FluidTankGT[] mTanksInput = GT_Values.emptyFluidTankGT, mTanksOutput = GT_Values.emptyFluidTankGT;
     protected FluidStack[] mOutputFluids = GT_Values.emptyFluidStack;
 
-    protected final ItemStackHandler mInputInventory = new ItemStackHandler(16);
-    protected final ItemStackHandler mOutputInventory = new ItemStackHandler(16);
+    protected final IItemHandlerModifiable mInputInventory = new ItemStackHandler(20);
+    protected final IItemHandlerModifiable mOutputInventory = new ItemStackHandler(20);
     protected boolean mOutputInventoryChanged = false;
 
     @Override
@@ -55,7 +56,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
             writeInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
     }
 
-    protected void writeInventory(NBTTagCompound aNBT, ItemStackHandler inv, String invListTag) {
+    protected void writeInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
         if (inv != null && inv.getSlots() > 0) {
             final NBTTagList tList = new NBTTagList();
             for (int tSlot = 0; tSlot < inv.getSlots(); tSlot++) {
@@ -102,7 +103,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     }
 
     protected void loadInventory(NBTTagCompound aNBT, String sizeTag, String invListTag) {
-        final ItemStackHandler inv = mInputInventory;
+        final IItemHandlerModifiable inv = mInputInventory;
         if (inv != null) {
             final NBTTagList tList = aNBT.getTagList(invListTag, 10);
             for (int i = 0; i < tList.tagCount(); i++) {
