@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GT_RenderUtil {
 
-    public static void colourGTItem(ItemStack aStack) {
+    public static void colorGTItem(ItemStack aStack) {
         if (aStack.getItem() instanceof GT_MetaGenerated_Item) {
             GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
 
