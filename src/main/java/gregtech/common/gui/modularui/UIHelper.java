@@ -187,6 +187,9 @@ public class UIHelper {
         return getGridPositions(totalCount, xOrigin, yOrigin, xDirMaxCount, 100);
     }
 
+    /**
+     * @deprecated Renamed to {@link #getGridPositions}
+     */
     @Deprecated
     public static List<Pos2d> getItemGridPositions(
             int itemCount, int xOrigin, int yOrigin, int xDirMaxCount, int yDirMaxCount) {
