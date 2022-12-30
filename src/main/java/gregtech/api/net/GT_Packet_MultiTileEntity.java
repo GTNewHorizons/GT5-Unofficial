@@ -10,10 +10,11 @@ import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
 
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {
-    public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2];
+    public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3];
 
     private int features = 0;
 
@@ -21,6 +22,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
     private int mC0 = 0, mC1 = 0, mC2 = 0, mC3 = 0, mC4 = 0, mC5 = 0;
     private short mY, mID, mRID;
     private byte mCommonData, mTexturePage, mUpdate, mRedstone, mColor;
+    private ChunkCoordinates mTargetPos = null;
 
     // MultiBlockPart
     private byte mMode;
@@ -68,6 +70,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         mAllowedModes = aAllowedModes;
     }
 
+    public void setTargetPos(int aX, short aY, int aZ) {
+        features |= CONTROLLER;
+        mTargetPos = new ChunkCoordinates(aX, aY, aZ);
+    }
+
     @Override
     public void encode(ByteBuf aOut) {
         // Features
@@ -96,6 +103,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         if ((features & MODES) == MODES) {
             aOut.writeByte(mMode);
             aOut.writeInt(mAllowedModes);
+        }
+        if ((features & CONTROLLER) == CONTROLLER) {
+            aOut.writeInt(mTargetPos.posX);
+            aOut.writeShort(mTargetPos.posY);
+            aOut.writeInt(mTargetPos.posZ);
         }
 
         if (false) {
@@ -136,6 +148,9 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         if ((packetFeatures & MODES) == MODES) {
             packet.setModes(aData.readByte(), aData.readInt());
         }
+        if ((packetFeatures & CONTROLLER) == CONTROLLER) {
+            packet.setTargetPos(aData.readInt(), aData.readShort(), aData.readInt());
+        }
 
         return packet;
     }
@@ -164,6 +179,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     final IMultiTileEntity.IMTE_HasModes mteModes = (IMultiTileEntity.IMTE_HasModes) mte;
                     mteModes.setMode(mMode);
                     mteModes.setAllowedModes(mAllowedModes);
+                }
+
+                if ((features & CONTROLLER) == CONTROLLER && mte instanceof IMultiTileEntity.IMTE_HasModes) {
+                    final IMultiTileEntity.IMTE_HasModes mteModes = (IMultiTileEntity.IMTE_HasModes) mte;
+                    mteModes.setTargetPos(mTargetPos);
                 }
             }
         } catch (Exception e) {
