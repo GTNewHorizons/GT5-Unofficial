@@ -12,6 +12,8 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.TecTech.RANDOM;
+import static java.lang.Math.pow;
 
 
 public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
@@ -36,65 +38,79 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         if (!(tile instanceof TileEyeOfHarmony)) return;
 
         TileEyeOfHarmony EOHRenderTile = (TileEyeOfHarmony) tile;
-        float scale = 0.01f * EOHRenderTile.getSize();
 
         {
             GL11.glPushMatrix();
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 150f, 150f);
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_CULL_FACE);
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
-            FMLClientHandler.instance().getClient().getTextureManager().bindTexture(starLayer0);
 
-
-            float starRed = EOHRenderTile.getColour().getRed() / 255.0f;
-            float starGreen = EOHRenderTile.getColour().getGreen() / 255.0f;
-            float starBlue = EOHRenderTile.getColour().getBlue() / 255.0f;
-
-            GL11.glScalef(scale, scale, scale);
-
-            GL11.glPushMatrix();
-
-            GL11.glColor4d(starRed, starGreen, starBlue, 1F);
-            if (EOHRenderTile.getRotationSpeed() != 0) {
-                GL11.glRotatef((System.currentTimeMillis() / (int) EOHRenderTile.getRotationSpeed()) % 360, 0F, 0F, 1F);
-            }
-            modelCustom.renderAll();
-            GL11.glPopMatrix();
-
-            float outerShellScaleIncrease = 1.05f;
-            GL11.glScalef(outerShellScaleIncrease, outerShellScaleIncrease, outerShellScaleIncrease);
-            GL11.glDepthMask(false);
-            FMLClientHandler.instance().getClient().getTextureManager().bindTexture(starLayer1);
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 200F, 200F);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    //        GL11.glRotatef(-180, 1F, 0F, 1F);
-    //        GL11.glRotatef(90, 1F, 0F, 0F);
-            // Random axis of rotation.
-            GL11.glRotatef(42, 1F, 1F, 0F);
-            GL11.glRotatef(-139, 1F, 0F, 0F);
-            GL11.glRotatef(29, 0F, 1F, 1F);
-            // End.
-            GL11.glColor4f(starRed, starGreen, starBlue, 0.3F);
-            if (EOHRenderTile.getRotationSpeed() != 0) {
-                GL11.glRotatef(-(System.currentTimeMillis() / (int) EOHRenderTile.getRotationSpeed()) % 360, 0F, 0F, 1F);
-            }
-            modelCustom.renderAll();
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glDepthMask(true);
-            GL11.glEnable(GL11.GL_LIGHTING);
-
-            GL11.glColor4d(starRed, starGreen, starBlue, 0.1F);
+            renderStarLayer(EOHRenderTile, 0, starLayer0, 1.0f);
+            renderStarLayer(EOHRenderTile, 1, starLayer1, 0.3f);
 
             GL11.glPopMatrix();
-
-            if (!tile.getWorldObj().isRemote)
-
-            {
-                // todo check
-                tile.getWorldObj().spawnParticle("reddust", x, y, z, 1.0, 1.0, 1.0);
-            }
         }
+
+        // Todo remove
+        tile.getWorldObj().spawnParticle(
+                "largesmoke",
+                x + RANDOM.nextFloat() * 0.5F,
+                y + RANDOM.nextFloat() * 0.5F,
+                z + RANDOM.nextFloat() * 0.5F,
+                0.0,
+                0,
+                0);
+    }
+
+    void renderStarLayer(TileEyeOfHarmony EOHRenderTile, int layer, ResourceLocation texture, float alpha) {
+
+        // OpenGL settings, not sure exactly what these do.
+
+        // Disables lighting, so star is always lit (I think).
+        GL11.glDisable(GL11.GL_LIGHTING);
+        // Culls things out of line of sight?
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        // Merges colours of the various layers of the star?
+        GL11.glEnable(GL11.GL_BLEND);
+        // ???
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+
+        // Begin animation.
+        GL11.glPushMatrix();
+
+        // Bind animation to layer of star.
+        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(texture);
+
+        // 0.01f magic number to shrink sphere obj down.
+        // Size obtained from the multis current recipe.
+        float scale = 0.01f * EOHRenderTile.getSize();
+
+        // Put each subsequent layer further out.
+        scale *= pow(1.05f, layer);
+
+        // Scale the star up in the x, y and z directions.
+        GL11.glScalef(scale, scale, scale);
+
+        // Rotate star upright.
+        GL11.glRotatef(-180, 1F, 0F, 1F);
+        GL11.glRotatef(90, 1F, 0F, 0F);
+
+        // Set colour and alpha (transparency) of the star layer. Set by the current recipe.
+        float starRed = EOHRenderTile.getColour().getRed() / 255.0f;
+        float starGreen = EOHRenderTile.getColour().getGreen() / 255.0f;
+        float starBlue = EOHRenderTile.getColour().getBlue() / 255.0f;
+        GL11.glColor4f(starRed, starGreen, starBlue, alpha);
+
+        // Spin the star around according to the multis time dilation tier.
+        if (EOHRenderTile.getRotationSpeed() != 0) {
+            GL11.glRotatef(-(System.currentTimeMillis() / (int) EOHRenderTile.getRotationSpeed()) % 360, 0F, 0F, 1F);
+        }
+        modelCustom.renderAll();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_LIGHTING);
+
+        // Finish animation.
+        GL11.glPopMatrix();
     }
 }
+
