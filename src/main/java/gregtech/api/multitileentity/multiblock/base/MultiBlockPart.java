@@ -20,6 +20,7 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
@@ -682,14 +683,17 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
 
     @Override
     public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
-        final IMultiBlockController controller = getTarget(true);
+        final IMultiBlockController controller = getTarget(false);
         if (controller == null) {
             GTNHLib.proxy.addDebugToChat("Controller Missing");
+            return;
         }
         final ItemStackHandler inventoryHandler = controller.getInventoryForGUI(this);
-        for (int i = 1; i <= inventoryHandler.getSlots(); i++) {
-            builder.widget(new SlotWidget(inventoryHandler, i - 1).setPos(9 + 18 * (i % 4 - 1), 18 + 18 * (i / 4)));
-        }
+        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 4)
+        .startFromSlot(0)
+        .endAtSlot(15)
+        .build()
+        .setPos(52, 7));
     }
 
     @Override
