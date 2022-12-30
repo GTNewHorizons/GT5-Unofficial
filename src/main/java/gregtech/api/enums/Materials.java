@@ -17,7 +17,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.*;
-import gregtech.common.render.items.CosmicFabricRenderer.CosmicFabricRenderer;
+import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import java.util.*;
@@ -2495,7 +2495,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsBotania.GaiaSpirit.renderer = new GaiaSpiritRenderer();
         Infinity.renderer = new InfinityRenderer();
         CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
-        Universium.renderer = new CosmicFabricRenderer();
+        Universium.renderer = new UniversiumRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {
