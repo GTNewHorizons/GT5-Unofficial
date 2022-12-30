@@ -62,6 +62,9 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
     void renderStarLayer(TileEyeOfHarmony EOHRenderTile, int layer, ResourceLocation texture, float alpha) {
 
+        // Begin animation.
+        GL11.glPushMatrix();
+
         // OpenGL settings, not sure exactly what these do.
 
         // Disables lighting, so star is always lit (I think).
@@ -72,10 +75,6 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         // ???
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-
-        // Begin animation.
-        GL11.glPushMatrix();
 
         // Bind animation to layer of star.
         FMLClientHandler.instance().getClient().getTextureManager().bindTexture(texture);
