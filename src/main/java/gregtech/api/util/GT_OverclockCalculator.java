@@ -122,8 +122,8 @@ public class GT_OverclockCalculator {
             return;
         }
 
-        mRecipeEUt /= mEUtDiscount;
-        mDuration /= mSpeedBoost;
+        mRecipeEUt = (long) Math.ceil(mRecipeEUt / mEUtDiscount);
+        mDuration = (int) Math.ceil(mDuration / mSpeedBoost);
         int heatDiscounts = (mMultiHeat - mRecipeHeat) / 900;
         if (mHeatOC) {
             while (mRecipeHeat + 1800 <= mMultiHeat && mRecipeEUt * mParallel << 2 < mEUt * mAmps) {
@@ -149,7 +149,7 @@ public class GT_OverclockCalculator {
         }
 
         if (mHeatOC) {
-            mRecipeEUt = (long) (mRecipeEUt * Math.pow(mHeatDiscount, heatDiscounts));
+            mRecipeEUt = (long) Math.ceil(mRecipeEUt * Math.pow(mHeatDiscount, heatDiscounts));
         }
 
         mRecipeEUt *= mParallel;
