@@ -25,6 +25,7 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
 import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.net.GT_Packet_New;
@@ -1003,8 +1004,11 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
         if (this instanceof IMTE_HasModes) {
             final IMTE_HasModes mteModes = (IMTE_HasModes) this;
             packet.setModes(mteModes.getMode(), mteModes.getAllowedModes());
-            if (mteModes.getTargetPos() != null) {
-                ChunkCoordinates aTarget = mteModes.getTargetPos();
+        }
+        if (this instanceof IMultiBlockPart) {
+            final IMultiBlockPart mtePart = (IMultiBlockPart) this;
+            if (mtePart.getTargetPos() != null) {
+                final ChunkCoordinates aTarget = mtePart.getTargetPos();
                 packet.setTargetPos(aTarget.posX, (short) aTarget.posY, aTarget.posZ);
             }
         }

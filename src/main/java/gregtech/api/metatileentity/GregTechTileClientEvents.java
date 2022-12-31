@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity;
 
-public class GregTechTileClientEvents {
+public final class GregTechTileClientEvents {
     public static final byte CHANGE_COMMON_DATA = 0;
     public static final byte CHANGE_CUSTOM_DATA = 1;
     public static final byte CHANGE_COLOR = 2;
