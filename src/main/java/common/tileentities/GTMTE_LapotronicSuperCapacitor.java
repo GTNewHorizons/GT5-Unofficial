@@ -423,8 +423,8 @@ public class GTMTE_LapotronicSuperCapacitor
                 .addInfo("it will withdraw from the network and add to the LSC. If there is more it will add")
                 .addInfo("the EU to the network and remove it from the LSC.")
                 .addSeparator()
-                .beginVariableStructureBlock(5, 5, 4, 18, 5, 5, false)
-                .addStructureInfo("Modular height of 4-18 blocks.")
+                .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
+                .addStructureInfo("Modular height of 4-50 blocks.")
                 .addController("Front center bottom")
                 .addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
                 .addOtherStructurePart(
@@ -432,7 +432,7 @@ public class GTMTE_LapotronicSuperCapacitor
                                 + "-" + GT_Values.TIER_COLORS[8] + GT_Values.VN[8] + EnumChatFormatting.GRAY
                                 + "), Ultimate Capacitor (" + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
                                 + EnumChatFormatting.GRAY + ")",
-                        "Center 3x(1-15)x3 above base (9-135 blocks)")
+                        "Center 3x(1-48)x3 above base (9-423 blocks)")
                 .addStructureInfo(
                         "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
                 .addOtherStructurePart("Borosilicate Glass (any)", "41-265x, Encase capacitor pillar")
@@ -530,7 +530,7 @@ public class GTMTE_LapotronicSuperCapacitor
             layer++;
             if (topState == TopState.Top) break; // top found, break out
             topState = TopState.MayBeTop;
-            if (layer > 18) return false; // too many layers
+            if (layer > 50) return false; // too many layers
         }
 
         // Make sure glass tier is T-2 of the highest tier capacitor in the structure
@@ -571,7 +571,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        int layer = min(stackSize.stackSize + 3, 18);
+        int layer = min(stackSize.stackSize + 3, 50);
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 2, 1, 0);
         for (int i = 2; i < layer - 1; i++) buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, i, 0);
         buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, layer - 1, 0);
@@ -580,7 +580,7 @@ public class GTMTE_LapotronicSuperCapacitor
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        int layer = Math.min(ChannelDataAccessor.getChannelData(stackSize, "height") + 3, 18);
+        int layer = Math.min(ChannelDataAccessor.getChannelData(stackSize, "height") + 3, 50);
         int built;
         built = survivialBuildPiece(
                 STRUCTURE_PIECE_BASE, stackSize, 2, 1, 0, elementBudget, source, actor, false, true);
