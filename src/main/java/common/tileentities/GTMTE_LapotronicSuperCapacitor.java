@@ -432,7 +432,7 @@ public class GTMTE_LapotronicSuperCapacitor
                                 + "-" + GT_Values.TIER_COLORS[8] + GT_Values.VN[8] + EnumChatFormatting.GRAY
                                 + "), Ultimate Capacitor (" + GT_Values.TIER_COLORS[9] + GT_Values.VN[9]
                                 + EnumChatFormatting.GRAY + ")",
-                        "Center 3x(1-48)x3 above base (9-423 blocks)")
+                        "Center 3x(1-47)x3 above base (9-423 blocks)")
                 .addStructureInfo(
                         "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
                 .addOtherStructurePart("Borosilicate Glass (any)", "41-265x, Encase capacitor pillar")
