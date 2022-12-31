@@ -13,7 +13,7 @@ class GT_OverclockCalculator_UnitTest {
     private static final String messageEUt = "EUt Calculated Wrong";
 
     @Test
-    void fullPerfectOverclockEBFTest() {
+    void fullPerfectOverclockEBF_Test() {
         int heatDiscounts = (1800 * 4) / 900;
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
@@ -28,7 +28,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void imperfectOverclockEBFWithOneHeatDiscountTest() {
+    void imperfectOverclockEBFWithOneHeatDiscount_Test() {
         int heatDiscounts = 1;
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
@@ -43,7 +43,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void imperfectOverclockEBFWithoutHeatDiscountsTest() {
+    void imperfectOverclockEBFWithoutHeatDiscounts_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[5])
@@ -57,7 +57,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void perfectAndImperfectOverclockEBFWithTwoHeatDiscountsTest() {
+    void perfectAndImperfectOverclockEBFWithTwoHeatDiscounts_Test() {
         int heatDiscounts = 2;
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
@@ -72,7 +72,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void generalImperfectOverclockTest() {
+    void generalImperfectOverclock_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[6])
@@ -83,7 +83,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void generalPerfectOverclockTest() {
+    void generalPerfectOverclock_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[6])
@@ -95,7 +95,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void weirdHeatEBFTest() {
+    void weirdHeatEBF_Test() {
         int heatDiscounts = 3;
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
@@ -110,7 +110,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void doubleEnergyHatchOCTest() {
+    void doubleEnergyHatchOC_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[6] + V[6])
@@ -122,7 +122,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void multiAmpHatchOCTest() {
+    void multiAmpHatchOC_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[6])
@@ -134,7 +134,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void weirdAmpHatchOCTest() {
+    void weirdAmpHatchOC_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[6])
@@ -146,7 +146,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void parallelImperfectOCTest() {
+    void parallelImperfectOC_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[8])
@@ -159,7 +159,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void parallelPerfectOCTest() {
+    void parallelPerfectOC_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[8])
@@ -173,7 +173,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void parallelMultiAmpOCTest() {
+    void parallelMultiAmpOC_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[6])
@@ -186,7 +186,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void weirdParallelOCTest() {
+    void weirdParallelOC_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[8])
@@ -198,7 +198,7 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void weirdParallelAndAmpsOCTest() {
+    void weirdParallelAndAmpsOC_Test() {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[8])
@@ -208,5 +208,117 @@ class GT_OverclockCalculator_UnitTest {
                 .calculate();
         assertEquals(1024 >> 9, calculator.getDuration(), messageDuration);
         assertEquals(VP[6] * 8 * 256, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void weirdTimeOC_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(VP[1])
+                .setEUt(V[6])
+                .setDuration(77)
+                .calculate();
+        assertEquals(77 >> 5, calculator.getDuration(), messageDuration);
+        assertEquals(VP[6], calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void stopsCorrectlyWhenOneTicking_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(VP[1])
+                .setEUt(V[6])
+                .setDuration(1)
+                .calculate();
+        assertEquals(1, calculator.getDuration(), messageDuration);
+        assertEquals(VP[1], calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void imperfectOCWithEUtDiscount_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(VP[1])
+                .setEUt(V[6])
+                .setEUtDiscount(1.1f)
+                .setDuration(1024)
+                .calculate();
+        assertEquals(1024 >> 5, calculator.getDuration(), messageDuration);
+        assertEquals((long) Math.ceil(VP[1] / 1.1f) << 10, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void perfectOCWithEUtDiscount_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(VP[1])
+                .setEUt(V[6])
+                .setEUtDiscount(1.1f)
+                .setDuration(1024)
+                .enablePerfectOC()
+                .calculate();
+        assertEquals(1024 >> 10, calculator.getDuration(), messageDuration);
+        assertEquals((long) Math.ceil(VP[1] / 1.1f) << 10, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void imperfectOCWithSpeedBoost_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(VP[1])
+                .setEUt(V[6])
+                .setSpeedBoost(1.1f)
+                .setDuration(1024)
+                .calculate();
+        assertEquals((int) (1024 / 1.1f) >> 5, calculator.getDuration(), messageDuration);
+        assertEquals(VP[6], calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void perfectOCWithSpeedBoost_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(VP[1])
+                .setEUt(V[6])
+                .setSpeedBoost(1.1f)
+                .setDuration(2048)
+                .enablePerfectOC()
+                .calculate();
+        assertEquals((int) (2048 / 1.1f) >> 10, calculator.getDuration(), messageDuration);
+        assertEquals(VP[6], calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void oneTickDiscountTurnsToOne_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(VP[1])
+                .setEUt(V[6])
+                .setSpeedBoost(1.1f)
+                .setDuration(1)
+                .enableOneTickDiscount()
+                .calculate();
+        assertEquals(1, calculator.getDuration(), messageDuration);
+        assertEquals(1, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void oneTickDiscountImperfectOC_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(VP[1])
+                .setEUt(V[6])
+                .setSpeedBoost(1.1f)
+                .setDuration(4)
+                .enableOneTickDiscount()
+                .calculate();
+        assertEquals(1, calculator.getDuration(), messageDuration);
+        assertEquals(480 >> 3, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void oneTickDiscountPerfectOC_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(VP[1])
+                .setEUt(V[6])
+                .setSpeedBoost(1.1f)
+                .setDuration(16)
+                .enablePerfectOC()
+                .enableOneTickDiscount()
+                .calculate();
+        assertEquals(1, calculator.getDuration(), messageDuration);
+        assertEquals(480 >> 6, calculator.getConsumption(), messageEUt);
     }
 }

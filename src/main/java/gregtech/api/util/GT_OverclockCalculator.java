@@ -9,7 +9,7 @@ public class GT_OverclockCalculator {
             mParallel = 1,
             mRecipeHeat = 0,
             mMultiHeat = 0;
-    private boolean mHeatOC;
+    private boolean mHeatOC, mOneTickDiscount;
 
     public GT_OverclockCalculator() {}
 
@@ -22,7 +22,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * @param aEUt Sets the EUt that the multiblock can use.
+     * @param aEUt Sets the EUt that the multiblock can use. This is the voltage of the multi
      */
     public GT_OverclockCalculator setEUt(long aEUt) {
         mEUt = aEUt;
@@ -108,6 +108,30 @@ public class GT_OverclockCalculator {
     }
 
     /**
+     * Sets the amount that the EUt increases per overclock. This uses BitShifting! Default is 2, which is a 4x increase
+     */
+    public GT_OverclockCalculator setEUtIncreasePerOC(int aEUtIncreasePerOC) {
+        mEUtIncrasePerOC = aEUtIncreasePerOC;
+        return this;
+    }
+
+    /**
+     * Sets the amount that the duration decreases per overclock. This uses BitShifting! Default is 1, which halves the duration
+     */
+    public GT_OverclockCalculator setDurationDecreasePerOC(int aDurationDecreasePerOC) {
+        mDurationDecresePerOC = aDurationDecreasePerOC;
+        return this;
+    }
+
+    /**
+     * Enables One Tick Discount on EUt based on Duration Decrease Per Overclock. This functions the same as single blocks.
+     */
+    public GT_OverclockCalculator enableOneTickDiscount() {
+        mOneTickDiscount = true;
+        return this;
+    }
+
+    /**
      * Call this when all values have been put it.
      */
     public GT_OverclockCalculator calculate() {
@@ -137,19 +161,27 @@ public class GT_OverclockCalculator {
         }
 
         while (mRecipeEUt * mParallel << 2 < mEUt * mAmps) {
-            if (mDuration < 1) {
+            if (mDuration <= 1) {
                 break;
             }
             mRecipeEUt <<= mEUtIncrasePerOC;
             mDuration >>= mDurationDecresePerOC;
         }
 
-        if (mDuration <= 0) {
+        if (mDuration < 1) {
             mDuration = 1;
         }
 
         if (mHeatOC) {
             mRecipeEUt = (long) Math.ceil(mRecipeEUt * Math.pow(mHeatDiscount, heatDiscounts));
+        }
+
+        if (mOneTickDiscount) {
+            int voltageDifferece = GT_Utility.getTier(mEUt) - GT_Utility.getTier(mRecipeEUt);
+            mRecipeEUt >>= voltageDifferece * mDurationDecresePerOC;
+            if (mRecipeEUt < 1) {
+                mRecipeEUt = 1;
+            }
         }
 
         mRecipeEUt *= mParallel;
