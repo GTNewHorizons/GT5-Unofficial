@@ -10,7 +10,7 @@ dependencies {
     compile('com.github.GTNewHorizons:CodeChickenCore:1.1.4:dev')
     compile('com.github.GTNewHorizons:StructureLib:1.2.0-beta.2:dev')
     compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
-    compile('com.github.GTNewHorizons:GTNEIOrePlugin:1.0.24:dev')
+    compile('com.github.GTNewHorizons:GTNEIOrePlugin:1.0.26:dev')
 
     // todo To remove, for testing only.
     compile('com.github.GTNewHorizons:ExtraCells2:2.5.28:dev')

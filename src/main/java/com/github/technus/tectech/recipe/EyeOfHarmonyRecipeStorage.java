@@ -49,8 +49,8 @@ public class EyeOfHarmonyRecipeStorage {
                                         GT5OreSmallHelper.dimToSmallOreWrapper.get(dimAbbreviation),
                                         blockDimensionDisplay,
                                         0.6 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
-                                        BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
-                                        BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                                        BILLION * blockDimensionDisplay.getDimensionRocketTier(),
+                                        BILLION * blockDimensionDisplay.getDimensionRocketTier(),
                                         (long) (18_000L * pow(1.4, blockDimensionDisplay.getDimensionRocketTier())),
                                         blockDimensionDisplay.getDimensionRocketTier(),
                                         1.0 - blockDimensionDisplay.getDimensionRocketTier() / 10.0));

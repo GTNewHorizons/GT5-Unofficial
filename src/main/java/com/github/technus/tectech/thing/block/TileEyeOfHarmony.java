@@ -30,6 +30,16 @@ public class TileEyeOfHarmony extends TileEntity {
     private float size = 1;
     private float rotationSpeed = 0;
     private Color colour = errorStar;
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
+
+    private int tier = -1;
     public void incrementSize() {
         size += 1.5f;
     }
