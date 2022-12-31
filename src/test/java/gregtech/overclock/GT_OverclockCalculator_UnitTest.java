@@ -24,7 +24,7 @@ class GT_OverclockCalculator_UnitTest {
                 .setMultiHeat(1800 * 5)
                 .calculate();
         assertEquals(1024 >> 8, calculator.getDuration(), messageDuration);
-        assertEquals((long) (VP[5] * Math.pow(0.95, heatDiscounts)), calculator.getConsumption(), messageEUt);
+        assertEquals((long) Math.ceil(VP[5] * Math.pow(0.95, heatDiscounts)), calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -39,7 +39,7 @@ class GT_OverclockCalculator_UnitTest {
                 .setMultiHeat(2700)
                 .calculate();
         assertEquals(1024 >> 4, calculator.getDuration(), messageDuration);
-        assertEquals((long) (VP[5] * Math.pow(0.95, heatDiscounts)), calculator.getConsumption(), messageEUt);
+        assertEquals((long) Math.ceil(VP[5] * Math.pow(0.95, heatDiscounts)), calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -68,7 +68,7 @@ class GT_OverclockCalculator_UnitTest {
                 .setMultiHeat(3600)
                 .calculate();
         assertEquals(1024 >> 5, calculator.getDuration(), messageDuration);
-        assertEquals((long) (VP[5] * Math.pow(0.95, heatDiscounts)), calculator.getConsumption(), messageEUt);
+        assertEquals((long) Math.ceil(VP[5] * Math.pow(0.95, heatDiscounts)), calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -106,7 +106,7 @@ class GT_OverclockCalculator_UnitTest {
                 .setMultiHeat(3900)
                 .calculate();
         assertEquals(2048 >> 6, calculator.getDuration(), messageDuration);
-        assertEquals((long) (VP[6] * Math.pow(0.95, heatDiscounts)), calculator.getConsumption(), messageEUt);
+        assertEquals((long) Math.ceil(VP[6] * Math.pow(0.95, heatDiscounts)), calculator.getConsumption(), messageEUt);
     }
 
     @Test
