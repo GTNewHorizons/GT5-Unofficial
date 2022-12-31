@@ -6,6 +6,7 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.GT_Mod;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
+import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
@@ -181,9 +182,9 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     mteModes.setAllowedModes(mAllowedModes);
                 }
 
-                if ((features & CONTROLLER) == CONTROLLER && mte instanceof IMultiTileEntity.IMTE_HasModes) {
-                    final IMultiTileEntity.IMTE_HasModes mteModes = (IMultiTileEntity.IMTE_HasModes) mte;
-                    mteModes.setTargetPos(mTargetPos);
+                if ((features & CONTROLLER) == CONTROLLER && mte instanceof IMultiBlockPart) {
+                    final IMultiBlockPart mtePart = (IMultiBlockPart) mte;
+                    mtePart.setTargetPos(mTargetPos);
                 }
             }
         } catch (Exception e) {
