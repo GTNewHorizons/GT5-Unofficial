@@ -703,7 +703,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     /**
      * Item - MultiBlock related Item behaviour.
      */
-    protected boolean registerInventory(String invName, ItemStackHandler inventory) {
+    protected boolean registerInventory(String invName, IItemHandlerModifiable inventory) {
         if (multiBlockInputInventory.containsKey(invName)) return false;
         multiBlockInputInventory.put(invName, inventory);
         return true;
