@@ -78,7 +78,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets an EUtDiscount. 0.9 is 10% more energy. 1.1 is 10% less energy
+     * Sets an EUtDiscount. 0.9 is 10% less energy. 1.1 is 10% more energy
      */
     public GT_OverclockCalculator setEUtDiscount(float aEUtDiscount) {
         mEUtDiscount = aEUtDiscount;
@@ -86,7 +86,7 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets a Speed Boost for the multiblock. 0.9 is 10% slower. 1.1 is 10% faster
+     * Sets a Speed Boost for the multiblock. 0.9 is 10% faser. 1.1 is 10% slower
      */
     public GT_OverclockCalculator setSpeedBoost(float aSpeedBoost) {
         mSpeedBoost = aSpeedBoost;
@@ -150,8 +150,8 @@ public class GT_OverclockCalculator {
             return;
         }
 
-        mRecipeEUt = (long) Math.ceil(mRecipeEUt / mEUtDiscount);
-        mDuration = (int) Math.ceil(mDuration / mSpeedBoost);
+        mRecipeEUt = (long) Math.ceil(mRecipeEUt * mEUtDiscount);
+        mDuration = (int) Math.ceil(mDuration * mSpeedBoost);
         int heatDiscounts = (mMultiHeat - mRecipeHeat) / 900;
         if (mHeatOC) {
             while (mRecipeHeat + 1800 <= mMultiHeat && mRecipeEUt * mParallel << 2 < mEUt * mAmps) {
