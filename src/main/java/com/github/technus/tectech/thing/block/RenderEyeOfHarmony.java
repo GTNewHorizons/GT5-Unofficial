@@ -1,22 +1,9 @@
 package com.github.technus.tectech.thing.block;
 
-import appeng.block.AEBaseBlock;
-import appeng.tile.AEBaseTile;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
@@ -25,20 +12,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import team.chisel.block.BlockCarvableGlow;
-import team.chisel.config.Configurations;
-import team.chisel.ctmlib.Drawing;
-import team.chisel.utils.GeneralClient;
-import thaumcraft.client.lib.UtilsFX;
-
-import javax.vecmath.Vector3d;
+import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
 import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.TecTech.RANDOM;
-import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.common.render.GT_Renderer_Block.renderStandardBlock;
 import static java.lang.Math.pow;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
 
 public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
@@ -72,9 +50,10 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             GL11.glPushMatrix();
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
-            renderBlockInWorld(sBlockCasingsTT, 0, 6, 0, 15);
-//            renderBlockInWorld(Blocks.bedrock, 0, 0+6, 0);
-//            renderBlockInWorld(Blocks.brick_block, 0, 0+12, 0);
+            renderBlockInWorld(ModBlocks.blocks.get("DD"), 0, 3, 0, 0, 0.1f);
+            renderBlockInWorld(ModBlocks.blocks.get("Ne"), 0, 6, 0, 0, 0.5f);
+            renderBlockInWorld(ModBlocks.blocks.get("Mo"), 0, 8, 0, 15, 1.0f);
+            renderBlockInWorld(ModBlocks.blocks.get("Ow"), 0, 10, 0, 15, 2.0f);
 
             if (EOHRenderTile.getTier() < 9) {
                 renderStarLayer(EOHRenderTile, 0, starLayer0, 1.0f);
@@ -154,6 +133,12 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
     }
 
+
+    class SphericalCoord {
+
+
+
+    }
     class RotationInfo {
 
         float angle;
@@ -189,11 +174,10 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
 
 
-    public void renderBlockInWorld(Block block, double x, double y, double z, int meta) {
+    public void renderBlockInWorld(Block block, double x, double y, double z, int meta, float blockSize) {
         Tessellator tes = Tessellator.instance;
 
         this.bindTexture(TextureMap.locationBlocksTexture);
-        float size = 2.0f;
 
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -212,14 +196,16 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
         //Add the rendering calls here (Can and should use helper functions that do the vertex calls)
 
-        double X[] = {x + xOffset - 0.5 - size, x + xOffset - 0.5 - size, x + xOffset + 0.5 + size, x + xOffset + 0.5 + size,
-                x + xOffset + 0.5 + size, x + xOffset + 0.5 + size, x + xOffset - 0.5 - size, x + xOffset - 0.5 - size};
-        double Y[] = {y + 0.5 + size, y - 0.5 - size, y - 0.5 - size, y + 0.5 + size,
-                y + 0.5 + size, y - 0.5 - size, y - 0.5 - size, y + 0.5 + size};
-        double Z[] = {z + zOffset + 0.5 + size, z + zOffset + 0.5 + size, z + zOffset + 0.5 + size, z + zOffset + 0.5 + size,
-                z + zOffset - 0.5 - size, z + zOffset - 0.5 - size, z + zOffset - 0.5 - size, z + zOffset - 0.5 - size};
+        double[] X = {x - 0.5 , x - 0.5 , x + 0.5 , x + 0.5 ,
+                x + 0.5 , x + 0.5 , x - 0.5 , x - 0.5 };
+        double[] Y = {y + 0.5 , y - 0.5 , y - 0.5 , y + 0.5 ,
+                y + 0.5 , y - 0.5 , y - 0.5 , y + 0.5 };
+        double[] Z = {z + 0.5 , z + 0.5 , z + 0.5 , z + 0.5 ,
+                z - 0.5 , z - 0.5 , z - 0.5 , z - 0.5 };
 
         tes.startDrawingQuads();
+
+        GL11.glScalef(blockSize, blockSize, blockSize);
 
         IIcon texture;
 
