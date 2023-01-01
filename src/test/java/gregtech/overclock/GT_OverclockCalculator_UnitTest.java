@@ -307,11 +307,11 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void imperfectOCWithEUtDiscount_Test() {
-        long correctConsumption = (long) Math.ceil(VP[1] / 1.1f) << 10;
+        long correctConsumption = (long) Math.ceil(VP[1] * 0.9f) << 10;
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[6])
-                .setEUtDiscount(1.1f)
+                .setEUtDiscount(0.9f)
                 .setDuration(1024)
                 .calculate();
         try {
@@ -324,11 +324,11 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void perfectOCWithEUtDiscount_Test() {
-        long correctConsumption = (long) Math.ceil(VP[1] / 1.1f) << 10;
+        long correctConsumption = (long) Math.ceil(VP[1] * 0.9f) << 10;
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[6])
-                .setEUtDiscount(1.1f)
+                .setEUtDiscount(0.9f)
                 .setDuration(1024)
                 .enablePerfectOC()
                 .calculate();
@@ -346,11 +346,11 @@ class GT_OverclockCalculator_UnitTest {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[6])
-                .setSpeedBoost(1.1f)
+                .setSpeedBoost(0.9f)
                 .setDuration(1024)
                 .calculate();
         try {
-            assertEquals((int) (1024 / 1.1f) >> 5, calculator.getDuration(), messageDuration);
+            assertEquals((int) (1024 * 0.9f) >> 5, calculator.getDuration(), messageDuration);
             assertEquals(VP[6], calculator.getConsumption(), messageEUt);
         } catch (Exception e) {
             assert fail("There was an exception") != null;
@@ -362,12 +362,12 @@ class GT_OverclockCalculator_UnitTest {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[6])
-                .setSpeedBoost(1.1f)
+                .setSpeedBoost(0.9f)
                 .setDuration(2048)
                 .enablePerfectOC()
                 .calculate();
         try {
-            assertEquals((int) (2048 / 1.1f) >> 10, calculator.getDuration(), messageDuration);
+            assertEquals((int) (2048 * 0.9f) >> 10, calculator.getDuration(), messageDuration);
             assertEquals(VP[6], calculator.getConsumption(), messageEUt);
         } catch (Exception e) {
             assert fail("There was an exception") != null;
@@ -379,7 +379,6 @@ class GT_OverclockCalculator_UnitTest {
         GT_OverclockCalculator calculator = new GT_OverclockCalculator()
                 .setRecipeEUt(VP[1])
                 .setEUt(V[6])
-                .setSpeedBoost(1.1f)
                 .setDuration(1)
                 .enableOneTickDiscount()
                 .calculate();
