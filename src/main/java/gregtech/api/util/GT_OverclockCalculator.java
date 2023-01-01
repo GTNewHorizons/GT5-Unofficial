@@ -9,8 +9,11 @@ public class GT_OverclockCalculator {
             mParallel = 1,
             mRecipeHeat = 0,
             mMultiHeat = 0;
-    private boolean mHeatOC, mOneTickDiscount;
+    private boolean mHeatOC, mOneTickDiscount, calculated;
 
+    /**
+     * An Overclock helper for calculating overclocks in many different situations
+     */
     public GT_OverclockCalculator() {}
 
     /**
@@ -136,6 +139,7 @@ public class GT_OverclockCalculator {
      */
     public GT_OverclockCalculator calculate() {
         CalculateOverclock();
+        calculated = true;
         return this;
     }
 
@@ -190,14 +194,22 @@ public class GT_OverclockCalculator {
     /**
      * @return The consumtipn after overclock has been calculated
      */
-    public long getConsumption() {
+    public long getConsumption() throws Exception {
+        if (!calculated) {
+            throw new Exception("Trtying to get consumption before calculating!");
+        }
         return mRecipeEUt;
     }
 
     /**
      * @return The duration of the recipe after overclock has been calculated
      */
-    public int getDuration() {
+    public int getDuration() throws Exception {
+        if (!calculated) {
+            if (!calculated) {
+                throw new Exception("Trtying to get duration before calculating!");
+            }
+        }
         return mDuration;
     }
 }
