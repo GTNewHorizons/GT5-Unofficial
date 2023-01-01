@@ -285,7 +285,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Nichrome);
                             break;
                         case 5:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.TungstenSteel);
+                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.TPV);
                             break;
                         case 6:
                             aRecipe[i] = OrePrefixes.wireGt02.get(Materials.HSSG);
