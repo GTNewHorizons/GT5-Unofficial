@@ -2859,7 +2859,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(
                 ItemList.Steam_Valve_LV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)),
-                new GT_Cover_SteamValve(102, TextureFactory.of(OVERLAY_VALVE)));
+                new GT_Cover_SteamValve(1024, TextureFactory.of(OVERLAY_VALVE)));
         GregTech_API.registerCover(
                 ItemList.Steam_Valve_MV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_VALVE)),
