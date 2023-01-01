@@ -31,6 +31,8 @@ import team.chisel.ctmlib.Drawing;
 import team.chisel.utils.GeneralClient;
 import thaumcraft.client.lib.UtilsFX;
 
+import javax.vecmath.Vector3d;
+
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.TecTech.RANDOM;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -185,6 +187,8 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
     }
 
+
+
     public void renderBlockInWorld(Block block, double x, double y, double z, int meta) {
         Tessellator tes = Tessellator.instance;
 
@@ -217,17 +221,59 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
         tes.startDrawingQuads();
 
-        IIcon texture = block.getIcon(0, meta);
+        IIcon texture = block.getIcon(4, meta);
 
         double minU = texture.getMinU();
         double maxU = texture.getMaxU();
         double minV = texture.getMinV();
         double maxV = texture.getMaxV();
 
-//        tes.addVertexWithUV(X[0], Y[0], Z[0], maxU, maxV);
-//        tes.addVertexWithUV(X[1], Y[1], Z[1], maxU, minV);
-//        tes.addVertexWithUV(X[2], Y[2], Z[2], minU, minV);
-//        tes.addVertexWithUV(X[3], Y[3], Z[3], minU, maxV);
+        tes.addVertexWithUV(X[7], Y[7], Z[7], maxU, maxV);
+        tes.addVertexWithUV(X[6], Y[6], Z[6], maxU, minV);
+        tes.addVertexWithUV(X[1], Y[1], Z[1], minU, minV);
+        tes.addVertexWithUV(X[0], Y[0], Z[0], minU, maxV);
+
+        {
+            GL11.glPushMatrix();
+//            GL11.glRotatef(90, 0, 1, 0);
+
+            texture = block.getIcon(0, meta);
+
+            minU = texture.getMinU();
+            maxU = texture.getMaxU();
+            minV = texture.getMinV();
+            maxV = texture.getMaxV();
+
+            tes.addVertexWithUV(X[1], Y[1]-0.2, Z[1], maxU, maxV);
+            tes.addVertexWithUV(X[6], Y[6]-0.4, Z[6], maxU, minV);
+            tes.addVertexWithUV(X[5], Y[5]-0.6, Z[5], minU, minV);
+            tes.addVertexWithUV(X[2], Y[2]-0.8, Z[2], minU, maxV);
+
+            GL11.glPopMatrix();
+        }
+        texture = block.getIcon(2, meta);
+
+        minU = texture.getMinU();
+        maxU = texture.getMaxU();
+        minV = texture.getMinV();
+        maxV = texture.getMaxV();
+
+        tes.addVertexWithUV(X[4], Y[4], Z[4], maxU, maxV);
+        tes.addVertexWithUV(X[5], Y[5], Z[5], maxU, minV);
+        tes.addVertexWithUV(X[6], Y[6], Z[6], minU, minV);
+        tes.addVertexWithUV(X[7], Y[7], Z[7], minU, maxV);
+
+        texture = block.getIcon(3, meta);
+
+        minU = texture.getMinU();
+        maxU = texture.getMaxU();
+        minV = texture.getMinV();
+        maxV = texture.getMaxV();
+
+        tes.addVertexWithUV(X[3], Y[3], Z[3], maxU, maxV);
+        tes.addVertexWithUV(X[2], Y[2], Z[2], maxU, minV);
+        tes.addVertexWithUV(X[5], Y[5], Z[5], minU, minV);
+        tes.addVertexWithUV(X[4], Y[4], Z[4], minU, maxV);
 
         texture = block.getIcon(1, meta);
 
@@ -237,45 +283,9 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         maxV = texture.getMaxV();
 
         tes.addVertexWithUV(X[7], Y[7], Z[7], maxU, maxV);
-        tes.addVertexWithUV(X[6], Y[6], Z[6], maxU, minV);
-        tes.addVertexWithUV(X[1], Y[1], Z[1], minU, minV);
-        tes.addVertexWithUV(X[0], Y[0], Z[0], minU, maxV);
-
-        texture = block.getIcon(2, meta);
-
-        minU = texture.getMinU();
-        maxU = texture.getMaxU();
-        minV = texture.getMinV();
-        maxV = texture.getMaxV();
-
-//        tes.addVertexWithUV(X[4], Y[4], Z[4], maxU, maxV);
-//        tes.addVertexWithUV(X[5], Y[5], Z[5], maxU, minV);
-//        tes.addVertexWithUV(X[6], Y[6], Z[6], minU, minV);
-//        tes.addVertexWithUV(X[7], Y[7], Z[7], minU, maxV);
-
-        texture = block.getIcon(3, meta);
-
-        minU = texture.getMinU();
-        maxU = texture.getMaxU();
-        minV = texture.getMinV();
-        maxV = texture.getMaxV();
-
-//        tes.addVertexWithUV(X[3], Y[3], Z[3], maxU, maxV);
-//        tes.addVertexWithUV(X[2], Y[2], Z[2], maxU, minV);
-//        tes.addVertexWithUV(X[5], Y[5], Z[5], minU, minV);
-//        tes.addVertexWithUV(X[4], Y[4], Z[4], minU, maxV);
-
-        texture = block.getIcon(4, meta);
-
-        minU = texture.getMinU();
-        maxU = texture.getMaxU();
-        minV = texture.getMinV();
-        maxV = texture.getMaxV();
-
-//        tes.addVertexWithUV(X[1], Y[1], Z[1], maxU, maxV);
-//        tes.addVertexWithUV(X[6], Y[6], Z[6], maxU, minV);
-//        tes.addVertexWithUV(X[5], Y[5], Z[5], minU, minV);
-//        tes.addVertexWithUV(X[2], Y[2], Z[2], minU, maxV);
+        tes.addVertexWithUV(X[0], Y[0], Z[0], maxU, minV);
+        tes.addVertexWithUV(X[3], Y[3], Z[3], minU, minV);
+        tes.addVertexWithUV(X[4], Y[4], Z[4], minU, maxV);
 
         texture = block.getIcon(5, meta);
 
@@ -284,10 +294,11 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         minV = texture.getMinV();
         maxV = texture.getMaxV();
 
-//        tes.addVertexWithUV(X[7], Y[7], Z[7], maxU, maxV);
-//        tes.addVertexWithUV(X[0], Y[0], Z[0], maxU, minV);
-//        tes.addVertexWithUV(X[3], Y[3], Z[3], minU, minV);
-//        tes.addVertexWithUV(X[4], Y[4], Z[4], minU, maxV);
+        tes.addVertexWithUV(X[0], Y[0], Z[0], maxU, maxV);
+        tes.addVertexWithUV(X[1], Y[1], Z[1], maxU, minV);
+        tes.addVertexWithUV(X[2], Y[2], Z[2], minU, minV);
+        tes.addVertexWithUV(X[3], Y[3], Z[3], minU, maxV);
+
         tes.draw();
 
         // ----------------------------------------------
