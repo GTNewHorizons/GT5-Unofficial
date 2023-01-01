@@ -1277,7 +1277,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             tag.setBoolean("isActive", tileEntity.isActive());
-            if (tileEntity.isActive()) tag.setLong("energyUsage", getActualEnergyUsage());
+            if (tileEntity.isActive()) {
+                if (mEUt < 0) tag.setLong("energyUsage", getActualEnergyUsage());
+                else tag.setLong("energyUsage", (long) -mEUt * mEfficiency / 10000);
+            }
         }
     }
 

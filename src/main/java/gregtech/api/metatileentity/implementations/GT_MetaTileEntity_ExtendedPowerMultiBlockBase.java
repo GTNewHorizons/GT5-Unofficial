@@ -2,14 +2,18 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.*;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 /**
  * Multiblock base class that allows machine to use power over int.
@@ -105,6 +109,19 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
     @Override
     public boolean drainEnergyInput(long aEU) {
         return GT_ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
+    }
+
+    @Override
+    public void getWailaNBTData(
+            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+
+        final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
+        if (tileEntity != null) {
+            if (tileEntity.isActive()) {
+                if (mEUt >= 0) tag.setLong("energyUsage", lEUt * mEfficiency / 10000);
+            }
+        }
     }
 
     @Override
