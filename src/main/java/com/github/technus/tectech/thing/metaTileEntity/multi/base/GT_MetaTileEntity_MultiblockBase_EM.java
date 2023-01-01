@@ -3127,6 +3127,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private ModularWindow createLEDConfigurationWindow(int ledID) {
         return ModularWindow.builder(100, 40)
                 .setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                .setPos((screenSize, mainWindow) -> new Pos2d(
+                        (screenSize.width / 2 - mainWindow.getSize().width / 2) - 110,
+                        (screenSize.height / 2 - mainWindow.getSize().height / 2)))
                 .widget(ButtonWidget.closeWindowButton(true).setPos(85, 3))
                 .widget(new TextFieldWidget()
                         .setTextColor(Color.LIGHT_BLUE.normal)
