@@ -50,10 +50,26 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             GL11.glPushMatrix();
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
-            renderBlockInWorld(ModBlocks.blocks.get("DD"), 0, 3, 0, 0, 0.1f);
-            renderBlockInWorld(ModBlocks.blocks.get("Ne"), 0, 6, 0, 0, 0.5f);
-            renderBlockInWorld(ModBlocks.blocks.get("Mo"), 0, 8, 0, 15, 1.0f);
-            renderBlockInWorld(ModBlocks.blocks.get("Ow"), 0, 10, 0, 15, 2.0f);
+            GL11.glPushMatrix();
+            GL11.glTranslated(0, 3, 0);
+            renderBlockInWorld(ModBlocks.blocks.get("DD"), 0, 0.1f);
+            GL11.glPopMatrix();
+
+            GL11.glPushMatrix();
+            GL11.glTranslated(3, 0, 0);
+            renderBlockInWorld(ModBlocks.blocks.get("Ne"), 0, 0.5f);
+            GL11.glPopMatrix();
+
+            GL11.glPushMatrix();
+            GL11.glTranslated(0, 0, 3);
+            renderBlockInWorld(ModBlocks.blocks.get("Mo"), 0, 1.0f);
+            GL11.glPopMatrix();
+
+            GL11.glPushMatrix();
+            GL11.glTranslated(0, 0, -3);
+            renderBlockInWorld(ModBlocks.blocks.get("Ow"), 0, 2.0f);
+            GL11.glPopMatrix();
+
 
             if (EOHRenderTile.getTier() < 9) {
                 renderStarLayer(EOHRenderTile, 0, starLayer0, 1.0f);
@@ -174,7 +190,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
 
 
-    public void renderBlockInWorld(Block block, double x, double y, double z, int meta, float blockSize) {
+    public void renderBlockInWorld(Block block, int meta, float blockSize) {
         Tessellator tes = Tessellator.instance;
 
         this.bindTexture(TextureMap.locationBlocksTexture);
@@ -184,17 +200,17 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         tes.setColorOpaque_F(1f, 1f, 1f);
 
-        GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         tes.setColorOpaque_F(1f, 1f, 1f);
 
-        double xOffset = 0;
-        double zOffset = 0;
-
         //Add the rendering calls here (Can and should use helper functions that do the vertex calls)
+
+        double x = 0;
+        double y = 0;
+        double z = 0;
 
         double[] X = {x - 0.5 , x - 0.5 , x + 0.5 , x + 0.5 ,
                 x + 0.5 , x + 0.5 , x - 0.5 , x - 0.5 };
@@ -305,7 +321,6 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glPopMatrix();
         //spotless:on
     }
 
