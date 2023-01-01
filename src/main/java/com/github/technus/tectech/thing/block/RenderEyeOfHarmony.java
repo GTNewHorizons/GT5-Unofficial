@@ -272,7 +272,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         }
 
         {
-            texture = block.getIcon(3, meta);
+            texture = block.getIcon(5, meta);
 
             minU = texture.getMinU();
             maxU = texture.getMaxU();
@@ -300,17 +300,17 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         }
 
         {
-            texture = block.getIcon(5, meta);
+            texture = block.getIcon(3, meta);
 
             minU = texture.getMinU();
             maxU = texture.getMaxU();
             minV = texture.getMinV();
             maxV = texture.getMaxV();
 
-            tes.addVertexWithUV(X[0], Y[0], Z[0], maxU, maxV);
-            tes.addVertexWithUV(X[1], Y[1], Z[1], maxU, minV);
-            tes.addVertexWithUV(X[2], Y[2], Z[2], minU, minV);
-            tes.addVertexWithUV(X[3], Y[3], Z[3], minU, maxV);
+            tes.addVertexWithUV(X[2], Y[2], Z[2], maxU, maxV);
+            tes.addVertexWithUV(X[3], Y[3], Z[3], maxU, minV);
+            tes.addVertexWithUV(X[0], Y[0], Z[0], minU, minV);
+            tes.addVertexWithUV(X[1], Y[1], Z[1], minU, maxV);
         }
 
         tes.draw();
