@@ -14,9 +14,11 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
+import javax.vecmath.Vector3d;
+
 import static com.github.technus.tectech.Reference.MODID;
 import static gregtech.common.render.GT_Renderer_Block.renderStandardBlock;
-import static java.lang.Math.pow;
+import static java.lang.Math.*;
 
 public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
@@ -51,22 +53,24 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
             GL11.glPushMatrix();
-            GL11.glTranslated(0, 3, 0);
-            renderBlockInWorld(ModBlocks.blocks.get("DD"), 0, 0.1f);
+            GL11.glRotatef((System.currentTimeMillis() / 32) % 360, 0F, 1F, 0F);
+            GL11.glTranslated(-3, 0, 0);
+            GL11.glRotatef((System.currentTimeMillis() / 2) % 360, 0F, 1F, 0F);
+            renderBlockInWorld(ModBlocks.blocks.get("DD"), 0, 1.0f);
             GL11.glPopMatrix();
 
             GL11.glPushMatrix();
-            GL11.glTranslated(3, 0, 0);
+            GL11.glTranslated(6, 0, 0);
             renderBlockInWorld(ModBlocks.blocks.get("Ne"), 0, 0.5f);
             GL11.glPopMatrix();
 
             GL11.glPushMatrix();
-            GL11.glTranslated(0, 0, 3);
+            GL11.glTranslated(0, 0, 6);
             renderBlockInWorld(ModBlocks.blocks.get("Mo"), 0, 1.0f);
             GL11.glPopMatrix();
 
             GL11.glPushMatrix();
-            GL11.glTranslated(0, 0, -3);
+            GL11.glTranslated(0, 0, -6);
             renderBlockInWorld(ModBlocks.blocks.get("Ow"), 0, 2.0f);
             GL11.glPopMatrix();
 
@@ -324,5 +328,16 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         //spotless:on
     }
 
+    Vector3d f(int time) {
+
+        final int radius = 4;
+        final double azimuthalAngle = PI * 0.4;
+
+        final double x = radius * sin(azimuthalAngle) * cos(time);
+        final double y = radius * sin(azimuthalAngle) * sin(time);
+        final double z = radius * cos(azimuthalAngle);
+
+        return new Vector3d(x, y, z);
+    }
 }
 
