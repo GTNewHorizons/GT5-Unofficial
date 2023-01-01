@@ -22,6 +22,7 @@ class GT_OverclockCalculator_UnitTest {
                 .setEUt(V[5])
                 .setDuration(1024)
                 .enableHeatOC()
+                .enableHeatDiscount()
                 .setRecipeHeat(1800)
                 .setMultiHeat(1800 * 5)
                 .calculate();
@@ -42,6 +43,7 @@ class GT_OverclockCalculator_UnitTest {
                 .setEUt(V[5])
                 .setDuration(1024)
                 .enableHeatOC()
+                .enableHeatDiscount()
                 .setRecipeHeat(1800)
                 .setMultiHeat(2700)
                 .calculate();
@@ -60,6 +62,7 @@ class GT_OverclockCalculator_UnitTest {
                 .setEUt(V[5])
                 .setDuration(1024)
                 .enableHeatOC()
+                .enableHeatDiscount()
                 .setRecipeHeat(1800)
                 .setMultiHeat(1800)
                 .calculate();
@@ -80,6 +83,7 @@ class GT_OverclockCalculator_UnitTest {
                 .setEUt(V[5])
                 .setDuration(1024)
                 .enableHeatOC()
+                .enableHeatDiscount()
                 .setRecipeHeat(1800)
                 .setMultiHeat(3600)
                 .calculate();
@@ -131,6 +135,7 @@ class GT_OverclockCalculator_UnitTest {
                 .setEUt(V[6])
                 .setDuration(2048)
                 .enableHeatOC()
+                .enableHeatDiscount()
                 .setRecipeHeat(486)
                 .setMultiHeat(3900)
                 .calculate();
@@ -436,13 +441,13 @@ class GT_OverclockCalculator_UnitTest {
             calculator.getDuration();
             assert fail("There wasn't exception") != null;
         } catch (Exception e) {
-            assertEquals("Trtying to get duration before calculating!", e.getMessage());
+            assertEquals("Tried to get duration before calculating!", e.getMessage());
         }
         try {
             calculator.getConsumption();
             assert fail("There wasn't exception") != null;
         } catch (Exception e) {
-            assertEquals("Trtying to get consumption before calculating!", e.getMessage());
+            assertEquals("Tried to get consumption before calculating!", e.getMessage());
         }
     }
 }
