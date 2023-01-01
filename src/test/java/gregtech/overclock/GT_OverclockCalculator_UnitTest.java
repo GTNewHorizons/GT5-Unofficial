@@ -372,7 +372,6 @@ class GT_OverclockCalculator_UnitTest {
         } catch (Exception e) {
             assert fail("There was an exception") != null;
         }
-        
     }
 
     @Test
@@ -390,7 +389,6 @@ class GT_OverclockCalculator_UnitTest {
         } catch (Exception e) {
             assert fail("There was an exception") != null;
         }
-        
     }
 
     @Test
@@ -408,7 +406,6 @@ class GT_OverclockCalculator_UnitTest {
         } catch (Exception e) {
             assert fail("There was an exception") != null;
         }
-        
     }
 
     @Test
@@ -421,13 +418,12 @@ class GT_OverclockCalculator_UnitTest {
                 .enablePerfectOC()
                 .enableOneTickDiscount()
                 .calculate();
-        try{
+        try {
             assertEquals(1, calculator.getDuration(), messageDuration);
             assertEquals(480 >> 6, calculator.getConsumption(), messageEUt);
         } catch (Exception e) {
             assert fail("There was an exception") != null;
         }
-        
     }
 
     @Test
