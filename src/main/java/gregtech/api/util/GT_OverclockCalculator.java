@@ -210,7 +210,7 @@ public class GT_OverclockCalculator {
         mDuration = (int) Math.ceil(mDuration * mSpeedBoost);
         if (mHeatOC) {
             while (mRecipeHeat + HEAT_PERFECT_OVERCLOCK_THRESHOLD <= mMultiHeat
-                    && mRecipeEUt * mParallel << 2 < mEUt * mAmps) {
+                    && mRecipeEUt * mParallel * mRecipeAmps << 2 < mEUt * mAmps) {
                 if (mDuration < 1) {
                     break;
                 }
