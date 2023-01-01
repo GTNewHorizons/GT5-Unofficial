@@ -244,10 +244,10 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             minV = texture.getMinV();
             maxV = texture.getMaxV();
 
-            tes.addVertexWithUV(X[1], Y[1]-0.2, Z[1], maxU, maxV);
-            tes.addVertexWithUV(X[6], Y[6]-0.4, Z[6], maxU, minV);
-            tes.addVertexWithUV(X[5], Y[5]-0.6, Z[5], minU, minV);
-            tes.addVertexWithUV(X[2], Y[2]-0.8, Z[2], minU, maxV);
+            tes.addVertexWithUV(X[2], Y[2], Z[2], maxU, maxV);
+            tes.addVertexWithUV(X[5], Y[5], Z[5], maxU, minV);
+            tes.addVertexWithUV(X[6], Y[6], Z[6], minU, minV);
+            tes.addVertexWithUV(X[1], Y[1], Z[1], minU, maxV);
 
             GL11.glPopMatrix();
         }
