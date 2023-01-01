@@ -206,9 +206,7 @@ public class GT_OverclockCalculator {
      */
     public int getDuration() throws Exception {
         if (!calculated) {
-            if (!calculated) {
-                throw new Exception("Trtying to get duration before calculating!");
-            }
+            throw new Exception("Trtying to get duration before calculating!");
         }
         return mDuration;
     }
