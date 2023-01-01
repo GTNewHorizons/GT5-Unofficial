@@ -13244,6 +13244,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 true);
         generateFluidPipes(Materials.SpaceTime, Materials.SpaceTime.mName, 5300, 250000, 2147483647, true);
         generateFluidMultiPipes(Materials.SpaceTime, Materials.SpaceTime.mName, 5305, 250000, 2147483647, true);
+        generateFluidPipes(
+                Materials.TranscendentMetal, Materials.TranscendentMetal.mName, 5310, 220000, 2147483647, true);
+        generateFluidMultiPipes(
+                Materials.TranscendentMetal, Materials.TranscendentMetal.mName, 5315, 220000, 2147483647, true);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
