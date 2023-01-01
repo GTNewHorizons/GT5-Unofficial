@@ -907,17 +907,17 @@ public class ProcessingToolHead
                                 'S',
                                 OrePrefixes.plate.get(Materials.Steel)
                             });
-                    if (aMaterial.getMolten(0) != null) {
+                    if (aMaterial.getMolten(1) != null) {
                         GT_Values.RA.addFluidSolidifierRecipe(
                                 ItemList.Shape_Mold_ToolHeadDrill.get(0),
-                                aMaterial.getMolten(144 * 3),
+                                aMaterial.getMolten(144 * 4),
                                 GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L),
                                 5 * 20,
                                 (int) GT_Values.VP[2]);
                     }
-                    if (aMaterial.getIngots(0) != null) {
+                    if (aMaterial.getIngots(1) != null) {
                         GT_Values.RA.addExtruderRecipe(
-                                aMaterial.getIngots(3),
+                                aMaterial.getIngots(4),
                                 ItemList.Shape_Extruder_ToolHeadDrill.get(0),
                                 GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L),
                                 5 * 20,
