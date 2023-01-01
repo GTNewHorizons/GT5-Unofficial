@@ -11301,27 +11301,6 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new FluidStack[] {Materials.WeedEX9000.getFluid(750)},
                 100,
                 100);
-        RA.addMixerRecipe(
-                new ItemStack[] {GT_ModHandler.getModItem("Forestry", "pollen", 1, OreDictionary.WILDCARD_VALUE)},
-                new FluidStack[] {
-                    MaterialsKevlar.NaphthenicAcid.getFluid(10),
-                    FluidRegistry.getFluidStack("potion.poison.strong", 750)
-                },
-                new ItemStack[] {},
-                new FluidStack[] {Materials.WeedEX9000.getFluid(750)},
-                100,
-                100);
-        RA.addMixerRecipe(
-                new ItemStack[] {GT_ModHandler.getModItem("Forestry", "pollenFertile", 1, OreDictionary.WILDCARD_VALUE)
-                },
-                new FluidStack[] {
-                    MaterialsKevlar.NaphthenicAcid.getFluid(10),
-                    FluidRegistry.getFluidStack("potion.poison.strong", 750)
-                },
-                new ItemStack[] {},
-                new FluidStack[] {Materials.WeedEX9000.getFluid(750)},
-                100,
-                100);
 
         this.addRecipesMay2017OilRefining();
         this.addPyrometallurgicalRecipes();
