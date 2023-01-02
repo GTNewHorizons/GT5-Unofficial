@@ -6,10 +6,10 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class IMCForNEI {
     public static void IMCSender() {
-        sendHandler("goodgenerator.crossmod.nei.NeutronActivatorHandler", "gregtech:gt.blockmachines:32013");
+        sendHandler("gg.recipe.neutron_activator", "gregtech:gt.blockmachines:32013");
         sendCatalyst("gg.recipe.neutron_activator", "gregtech:gt.blockmachines:32013");
 
-        sendHandler("goodgenerator.crossmod.nei.ExtremeHeatExchangerHandler", "gregtech:gt.blockmachines:32017");
+        sendHandler("gg.recipe.extreme_heat_exchanger", "gregtech:gt.blockmachines:32017");
         sendCatalyst("gg.recipe.extreme_heat_exchanger", "gregtech:gt.blockmachines:32017");
 
         sendHandler("gg.recipe.precise_assembler", "gregtech:gt.blockmachines:32018");
@@ -34,7 +34,7 @@ public class IMCForNEI {
         //        sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:32023", -10); // Compact
         // Fusion MK-V
 
-        sendHandler("goodgenerator.crossmod.nei.ComponentAssemblyLineHandler", "gregtech:gt.blockmachines:32026", 2);
+        sendHandler("gg.recipe.componentassemblyline", "gregtech:gt.blockmachines:32026", 2);
         sendCatalyst("gg.recipe.componentassemblyline", "gregtech:gt.blockmachines:32026");
     }
 

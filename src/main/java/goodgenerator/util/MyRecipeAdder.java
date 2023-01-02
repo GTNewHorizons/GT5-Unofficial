@@ -4,10 +4,12 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import goodgenerator.client.GUI.GG_UITextures;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.gui.modularui.UIHelper;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -68,39 +70,63 @@ public class MyRecipeAdder {
             true,
             true);
 
-    public final NeutronActivatorMapper NA = new NeutronActivatorMapper(
-            new HashSet<>(150),
-            "gg.recipe.neutron_activator",
-            StatCollector.translateToLocal("tile.neutron_activator"),
-            null,
-            "goodgenerator:textures/gui/neutron_activator",
-            9,
-            9,
-            0,
-            0,
-            0,
-            null,
-            0,
-            null,
-            false,
-            false);
+    public final NeutronActivatorMapper NA = (NeutronActivatorMapper) new NeutronActivatorMapper(
+                    new HashSet<>(150),
+                    "gg.recipe.neutron_activator",
+                    StatCollector.translateToLocal("tile.neutron_activator"),
+                    null,
+                    "goodgenerator:textures/gui/neutron_activator",
+                    9,
+                    9,
+                    0,
+                    0,
+                    0,
+                    null,
+                    0,
+                    null,
+                    false,
+                    true)
+            .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+                int minNKE = recipeInfo.recipe.mSpecialValue % 10000;
+                int maxNKE = recipeInfo.recipe.mSpecialValue / 10000;
+                return Arrays.asList(
+                        StatCollector.translateToLocal("value.neutron_activator.0"),
+                                GT_Utility.formatNumbers(minNKE)
+                                        + StatCollector.translateToLocal("value.neutron_activator.2"),
+                        StatCollector.translateToLocal("value.neutron_activator.1"),
+                                GT_Utility.formatNumbers(maxNKE)
+                                        + StatCollector.translateToLocal("value.neutron_activator.2"));
+            });
 
-    public final ExtremeHeatExchangerMapper XHE = new ExtremeHeatExchangerMapper(
-            new HashSet<>(50),
-            "gg.recipe.extreme_heat_exchanger",
-            StatCollector.translateToLocal("tile.extreme_heat_exchanger"),
-            null,
-            "goodgenerator:textures/gui/extreme_heat_exchanger",
-            0,
-            0,
-            0,
-            0,
-            0,
-            null,
-            0,
-            null,
-            false,
-            false);
+    public final ExtremeHeatExchangerMapper XHE = (ExtremeHeatExchangerMapper) new ExtremeHeatExchangerMapper(
+                    new HashSet<>(50),
+                    "gg.recipe.extreme_heat_exchanger",
+                    StatCollector.translateToLocal("tile.extreme_heat_exchanger"),
+                    null,
+                    "goodgenerator:textures/gui/extreme_heat_exchanger",
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    null,
+                    0,
+                    null,
+                    false,
+                    true)
+            .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+                FluidStack[] Inputs = recipeInfo.recipe.mFluidInputs;
+                FluidStack[] Outputs = recipeInfo.recipe.mFluidOutputs;
+                int threshold = recipeInfo.recipe.mSpecialValue;
+                return Arrays.asList(
+                        StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
+                                + GT_Utility.formatNumbers(Inputs[0].amount) + " L/s",
+                        StatCollector.translateToLocal("value.extreme_heat_exchanger.1"),
+                        GT_Utility.formatNumbers(Outputs[0].amount / 160) + " L/s",
+                        StatCollector.translateToLocal("value.extreme_heat_exchanger.2"),
+                        GT_Utility.formatNumbers(Outputs[1].amount / 160) + " L/s",
+                        StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " " + threshold + " L/s");
+            });
 
     public final PreciseAssemblerMapper PA = new PreciseAssemblerMapper(
             new HashSet<>(120),
@@ -496,11 +522,7 @@ public class MyRecipeAdder {
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < itemInputCount; i++) {
-                results.add(new Pos2d(8 + i * 18, 13));
-            }
-            return results;
+            return UIHelper.getGridPositions(itemInputCount, 8, 13, itemInputCount);
         }
 
         @Override
@@ -510,11 +532,7 @@ public class MyRecipeAdder {
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < fluidInputCount; i++) {
-                results.add(new Pos2d(8 + i * 18, 48));
-            }
-            return results;
+            return UIHelper.getGridPositions(fluidInputCount, 8, 48, fluidInputCount);
         }
     }
 
@@ -569,15 +587,13 @@ public class MyRecipeAdder {
                     aNEIAllowed);
             setUsualFluidInputCount(8);
             setNEITransferRect(new Rectangle(70, 15, 18, 54));
+            setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> Collections.singletonList(
+                    recipeInfo.recipeMap.mNEISpecialValuePre + GT_Values.VN[recipeInfo.recipe.mSpecialValue]));
         }
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < itemInputCount; i++) {
-                results.add(new Pos2d(16 + (i % 3) * 18, 15 + (i / 3) * 18));
-            }
-            return results;
+            return UIHelper.getGridPositions(itemInputCount, 16, 15, 3);
         }
 
         @Override
@@ -587,11 +603,7 @@ public class MyRecipeAdder {
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < fluidInputCount; i++) {
-                results.add(new Pos2d(88 + (i % 4) * 18, 37 + (i / 4) * 18));
-            }
-            return results;
+            return UIHelper.getGridPositions(fluidInputCount, 88, 37, 4);
         }
 
         @Override
@@ -622,7 +634,7 @@ public class MyRecipeAdder {
             1,
             "",
             false,
-            false);
+            true);
 
     public GT_Recipe addComponentAssemblyLineRecipe(
             ItemStack[] ItemInputArray,

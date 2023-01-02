@@ -3,7 +3,6 @@ package goodgenerator.crossmod.nei;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import goodgenerator.main.GoodGenerator;
-import goodgenerator.util.MyRecipeAdder;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,9 +13,6 @@ public class NEI_Config implements IConfigureNEI {
     @Override
     public void loadConfig() {
         NEI_Config.isAdded = false;
-        new NeutronActivatorHandler(MyRecipeAdder.instance.NA);
-        new ExtremeHeatExchangerHandler(MyRecipeAdder.instance.XHE);
-        new ComponentAssemblyLineHandler(MyRecipeAdder.instance.COMPASSLINE_RECIPES);
         NEI_Config.isAdded = true;
     }
 
