@@ -28,9 +28,11 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static kubatech.api.Variables.*;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
@@ -106,9 +108,9 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         {"      GGG      ","   GGG   GGG   ","  G         G  "," G           G "," G           G "," G           G ","G             G","G             G","G             G"," G           G "," G           G "," G           G ","  G         G  ","   GGG   GGG   ","      GGG      "},
         {"      AAA      ","   OLA   ALO   ","  P         P  "," O           O "," L           L "," A           A ","A             A","A             A","A             A"," A           A "," L           L "," O           O ","  P         P  ","   OLA   ALO   ","      AAA      "},
         {"     AAAAA     ","   NA     AO   ","  P         P  "," N           O "," A           A ","A             A","A     III     A","A     III     A","A     III     A","A             A"," A           A "," N           N ","  P         P  ","   NA     AN   ","     AAAAA     "},
-        {"     AAAAA     ","   NA     AO   ","  P         P  "," N           O "," A           A ","A             A","A     JJJ     A","A     JKJ     A","A     JJJ     A","A             A"," A           A "," N           N ","  P         P  ","   NA     AN   ","     AAAAA     "},
-        {"      AAA      ","   OLA   ALO   ","  P         P  "," O           O "," L           L "," A           A ","A     KKK     A","A     KKK     A","A     KKK     A"," A           A "," L           L "," O           O ","  P         P  ","   OLA   ALO   ","      AAA      "},
-        {"      G~G      ","   GGGBBBGGG   ","  GBB     BBG  "," GB        BBG "," GB         BG "," G           G ","GB    KKK    BG","GB    KJK    BG","GB    KKK    BG"," G           G "," GB         BG "," GBB       BBG ","  GBB     BBG  ","   GGGBBBGGG   ","      GGG      "},
+        {"     AAAAA     ","   NA FFF AO   ","  PFF     FFP  "," NF        FFO "," AF         FA ","A             A","AF    JJJ    FA","AF    JKJ    FA","AF    JJJ    FA","A             A"," AF         FA "," NFF       FFN ","  PFF     FFP  ","   NA FFF AN   ","     AAAAA     "},
+        {"      AAA      ","   OLAFFFALO   ","  PFFFFFFFFFP  "," OFFFF   FFFFO "," LFF       FFL "," AFF FFFFF  FA ","AFF  FKKKFF FFA","AFF FFKKKFF FFA","AFF FFKKKF  FFA"," AF  FFFFF  FA "," LFF   FF  FFL "," OFFFF    FFFO ","  PFFFFFFFFFP  ","   OLAFFFALO   ","      AAA      "},
+        {"      G~G      ","   GGGBBBGGG   ","  GBBFFFFFBBG  "," GBFFF   FFBBG "," GBF       FBG "," GFF FFFFF  FG ","GBF  FKKKFF FBG","GBF FFKJKFF FBG","GBF FFKKKF  FBG"," GF  FFFFF  FG "," GBF   FF  FBG "," GBBFF    FBBG ","  GBBFFFFFBBG  ","   GGGBBBGGG   ","      GGG      "},
         {"      HHH      ","    HHBBBHH    ","  HHBBBBBBBHH  ","  HBBBWWWBBBH  "," HBBWWWWWWWBBH "," HBBWBBBBBWWBH ","HBBWWBBBBBBWBBH","HBBWBBBBBBBWBBH","HBBWBBBBBBWWBBH"," HBWWBBBBBWWBH "," HBBWWWBBWWBBH ","  HBBBWWWWBBH  ","  HHBBBBBBBHH  ","    HHBBBHH    ","      HHH      "},
         {"               ","     GGGGG     ","   GGGBBBBGG   ","  GBBBBBBBBBG  ","  GBBBBBBBBBG  "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG ","  GBBBBBBBBBG  ","  GBBBBBBBBBG  ","   GGBBBBBGG   ","     GGGGG     ","               "},
         {"               ","      HHH      ","    HHBBBHH    ","   HBBBBBBBH   ","  HBBBBBBBBBH  ","  HBBBBBBBBBH  "," HBBBBBBBBBBBH "," HBBBBBBBBBBBH "," HBBBBBBBBBBBH ","  HBBBBBBBBBH  ","  HBBBBBBBBBH  ","   HBBBBBBBH   ","    HHBBBHH    ","      HHH      ","               "},
@@ -126,7 +128,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                             STRUCTURE_PIECE_MAIN_SURVIVAL,
                             Arrays.stream(struct)
                                     .map(sa -> Arrays.stream(sa)
-                                            .map(s -> s.replaceAll("W", " "))
+                                            .map(s -> s.replaceAll("W", " ").replaceAll("F", " "))
                                             .toArray(String[]::new))
                                     .toArray(String[][]::new))
                     .addElement(
@@ -167,6 +169,26 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                     .addElement('O', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.HEATER.ordinal()))
                     .addElement('P', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.FAN.ordinal()))
                     .addElement('W', ofBlock(Blocks.water, 0))
+                    .addElement('F', new IStructureElementNoPlacement<GT_MetaTileEntity_MegaIndustrialApiary>() {
+                        @Override
+                        public boolean check(
+                                GT_MetaTileEntity_MegaIndustrialApiary mte, World world, int x, int y, int z) {
+                            mte.flowerCheck(world, x, y, z);
+                            return true;
+                        }
+
+                        @Override
+                        public boolean spawnHint(
+                                GT_MetaTileEntity_MegaIndustrialApiary mte,
+                                World world,
+                                int x,
+                                int y,
+                                int z,
+                                ItemStack trigger) {
+                            StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 2 - 1);
+                            return true;
+                        }
+                    })
                     .build();
 
     @SuppressWarnings("unused")
@@ -176,6 +198,16 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
 
     public GT_MetaTileEntity_MegaIndustrialApiary(String aName) {
         super(aName);
+    }
+
+    private boolean isCacheDirty = true;
+    private final HashSet<String> flowersCache = new HashSet<>();
+    private final HashSet<String> flowersCheck = new HashSet<>();
+    private boolean flowersError = false;
+
+    private void flowerCheck(final World world, final int x, final int y, final int z) {
+        if (!flowersCheck.isEmpty() && !world.isAirBlock(x, y, z))
+            flowersCheck.removeIf(s -> FlowerManager.flowerRegistry.isAcceptedFlower(s, world, x, y, z));
     }
 
     @Override
@@ -188,7 +220,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 7, 8, 0, elementBudget, env, true);
         if (built == -1) {
             GT_Utility.sendChatToPlayer(
-                    env.getActor(), EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+                    env.getActor(),
+                    EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water and flowers yourself !");
             return 0;
         }
         return built;
@@ -252,6 +285,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 .addCasingInfo("Bronze Plated Bricks", 190)
                 .addOtherStructurePart("Borosilicate Glass", "Look at the hologram")
                 .addStructureInfo("The glass tier limits the Energy Input tier")
+                .addOtherStructurePart("Flowers", "On dirt/grass", 2)
                 .addInputBus("Any casing", 1)
                 .addOutputBus("Any casing", 1)
                 .addEnergyHatch("Any casing", 1)
@@ -279,6 +313,10 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         mSecondaryMode = aNBT.getInteger("mSecondaryMode");
         for (int i = 0, isize = aNBT.getInteger("mStorageSize"); i < isize; i++)
             mStorage.add(new BeeSimulator(aNBT.getCompoundTag("mStorage." + i)));
+        flowersCache.clear();
+        mStorage.forEach(s -> flowersCache.add(s.flowerType));
+        flowersCache.remove("");
+        isCacheDirty = false;
     }
 
     @Override
@@ -372,7 +410,10 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 for (ItemStack input : inputs) {
                     if (beeRoot.getType(input) == EnumBeeType.QUEEN) {
                         BeeSimulator bs = new BeeSimulator(input, w);
-                        if (bs.isValid) mStorage.add(bs);
+                        if (bs.isValid) {
+                            mStorage.add(bs);
+                            isCacheDirty = true;
+                        }
                     }
                 }
                 updateSlots();
@@ -380,6 +421,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 for (int i = 0, imax = Math.min(10, mStorage.size()); i < imax; i++) {
                     addOutput(mStorage.get(0).queenStack);
                     mStorage.remove(0);
+                    isCacheDirty = true;
                 }
             } else return false;
             mMaxProgresstime = 10;
@@ -390,10 +432,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         } else if (mPrimaryMode == 2) {
             if (mMaxSlots > 0 && !mStorage.isEmpty()) {
                 if (mSecondaryMode == 0) {
-                    this.mEUt = -((int) GT_Values.V[6] * mStorage.size());
-                    this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                    this.mEfficiencyIncrease = 10000;
-                    this.mMaxProgresstime = 100;
+                    if (flowersError) return false;
 
                     int maxConsume = Math.min(mStorage.size(), mMaxSlots) * 40;
                     int toConsume = maxConsume;
@@ -417,6 +456,11 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                         BeeSimulator beeSimulator = mStorage.get(i);
                         stacks.addAll(beeSimulator.getDrops(64_00d * boosted));
                     }
+
+                    this.mEUt = -((int) GT_Values.V[6] * mStorage.size());
+                    this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+                    this.mEfficiencyIncrease = 10000;
+                    this.mMaxProgresstime = 100;
                     this.mOutputItems = stacks.toArray(new ItemStack[0]);
                     return true;
                 } else {
@@ -473,11 +517,19 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mGlassTier = 0;
         mCasing = 0;
+        if (isCacheDirty) {
+            flowersCache.clear();
+            mStorage.forEach(s -> flowersCache.add(s.flowerType));
+            flowersCache.remove("");
+            isCacheDirty = false;
+        }
+        flowersCheck.addAll(flowersCache);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0)) return false;
         if (this.mGlassTier < 10 && !this.mEnergyHatches.isEmpty())
             for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
                 if (this.mGlassTier < hatchEnergy.mTier) return false;
         boolean valid = this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() >= 1 && this.mCasing >= 190;
+        flowersError = valid && !this.flowersCheck.isEmpty();
         if (valid) updateMaxSlots();
         return valid;
     }
@@ -621,6 +673,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                                 }
                                 BeeSimulator removed = mStorage.remove(ID);
                                 addOutput(removed.queenStack);
+                                isCacheDirty = true;
                                 GT_Utility.sendChatToPlayer(player, "Queen ejected !");
                             })
                             .setBackground(() -> new IDrawable[] {
@@ -791,6 +844,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 .setSynced(false)
                 .widget(new TextWidget("Status: ").setDefaultColor(COLOR_TEXT_GRAY.get()))
                 .widget(new DynamicTextWidget(() -> {
+                    if (flowersError) return new Text("No flowers !").color(Color.RED.dark(3));
                     if (getBaseMetaTileEntity().isActive()) return new Text("Working !").color(Color.GREEN.dark(3));
                     else if (getBaseMetaTileEntity().isAllowedToWork())
                         return new Text("Enabled").color(Color.GREEN.dark(3));
@@ -847,6 +901,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         float beeSpeed;
 
         float maxBeeCycles;
+        String flowerType;
 
         public BeeSimulator(ItemStack queenStack, World world) {
             isValid = false;
@@ -859,6 +914,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             int h = queen.getMaxHealth();
             maxBeeCycles = (float) h / (1.f / mod);
             IBeeGenome genome = queen.getGenome();
+            this.flowerType = genome.getFlowerProvider().getFlowerType();
             // isInfinite = queen.isNatural();
             // if (!isInfinite && h < 4) return;
             IAlleleBeeSpecies primary = genome.getPrimary();
@@ -890,6 +946,12 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 specialDrops.add(new BeeDrop(tag.getCompoundTag("specialDrops" + i)));
             beeSpeed = tag.getFloat("beeSpeed");
             maxBeeCycles = tag.getFloat("maxBeeCycles");
+            if (tag.hasKey("flowerType")) flowerType = tag.getString("flowerType");
+            else {
+                IBee queen = beeRoot.getMember(this.queenStack);
+                IBeeGenome genome = queen.getGenome();
+                this.flowerType = genome.getFlowerProvider().getFlowerType();
+            }
         }
 
         public NBTTagCompound toNBTTagCompound() {
@@ -906,6 +968,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 tag.setTag("specialDrops" + i, specialDrops.get(i).toNBTTagCompound());
             tag.setFloat("beeSpeed", beeSpeed);
             tag.setFloat("maxBeeCycles", maxBeeCycles);
+            tag.setString("flowerType", flowerType);
             return tag;
         }
 
