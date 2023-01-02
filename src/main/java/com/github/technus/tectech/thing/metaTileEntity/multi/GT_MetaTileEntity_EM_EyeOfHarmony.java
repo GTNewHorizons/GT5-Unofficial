@@ -1808,7 +1808,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final Color redStar = new Color(155, 9, 38);
     private static final Color orangeStar = new Color(190, 85, 9);
     private static final Color blueStar = new Color(96, 152, 234);
-    private static final Color whiteStar = new Color(200, 200, 200);
+    private static final Color whiteStar = new Color(238, 238, 238);
     private static final Color blackHole = new Color(0, 0, 0);
     public static final Color errorStar = new Color(222, 0, 255);
 
@@ -1903,8 +1903,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
-
-        createRenderBlock();
 
         if (aTick == 1) {
             userUUID = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());
