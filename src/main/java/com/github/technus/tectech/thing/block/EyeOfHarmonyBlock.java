@@ -12,12 +12,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-
 public class EyeOfHarmonyBlock extends Block {
 
     public EyeOfHarmonyBlock() {
         super(Material.iron);
-        this.setHardness(10F);
         this.setResistance(20f);
         this.setCreativeTab(TecTech.creativeTabEM);
         this.setBlockName("Eye of Harmony Renderer");
@@ -57,7 +55,8 @@ public class EyeOfHarmonyBlock extends Block {
     }
 
     public static void registerOther(Block block) {
-        String name = block.getUnlocalizedName().substring(block.getUnlocalizedName().indexOf(".") + 1);
+        String name =
+                block.getUnlocalizedName().substring(block.getUnlocalizedName().indexOf(".") + 1);
         GameRegistry.registerBlock(block, name.substring(name.indexOf(":") + 1));
     }
 
@@ -87,5 +86,4 @@ public class EyeOfHarmonyBlock extends Block {
 
         return true;
     }
-
 }

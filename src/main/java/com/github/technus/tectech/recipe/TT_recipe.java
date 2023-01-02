@@ -671,7 +671,6 @@ public class TT_recipe extends GT_Recipe {
             return currentTip;
         }
 
-
         @Override
         public void drawNEIOverlays(GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
             EyeOfHarmonyRecipe EOHRecipe = (EyeOfHarmonyRecipe) neiCachedRecipe.mRecipe.mSpecialItems;

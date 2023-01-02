@@ -1,15 +1,15 @@
 package com.github.technus.tectech.thing.block;
 
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_EyeOfHarmony.errorStar;
+
+import java.awt.*;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-
-import java.awt.*;
-
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_EyeOfHarmony.errorStar;
 
 public class TileEyeOfHarmony extends TileEntity {
 
@@ -31,19 +31,29 @@ public class TileEyeOfHarmony extends TileEntity {
     private float rotationSpeed = 0;
     private Color colour = errorStar;
 
-    public int getTier() {
+    public Block getOrbitingBody() {
+        return orbitingBody;
+    }
+
+    public void setOrbitingBody(Block orbitingBody) {
+        this.orbitingBody = orbitingBody;
+    }
+
+    private Block orbitingBody;
+
+    public long getTier() {
         return tier;
     }
 
-    public void setTier(int tier) {
+    public void setTier(long tier) {
         this.tier = tier;
     }
 
-    private int tier = -1;
+    private long tier = -1;
+
     public void incrementSize() {
         size += 1.5f;
     }
-
 
     public void setColour(Color colour) {
         this.colour = colour;
@@ -71,7 +81,8 @@ public class TileEyeOfHarmony extends TileEntity {
     private static final String sizeRedNBTTag = EOHNBTTag + "red";
     private static final String sizeGreenNBTTag = EOHNBTTag + "green";
     private static final String sizeBlueNBTTag = EOHNBTTag + "blue";
-
+    private static final String orbitingBodyIDNBTTag = EOHNBTTag + "orbitingBodyID";
+    private static final String tierNBTTag = EOHNBTTag + "tier";
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -80,11 +91,17 @@ public class TileEyeOfHarmony extends TileEntity {
         // Save other stats.
         compound.setFloat(rotationSpeedNBTTag, rotationSpeed);
         compound.setFloat(sizeNBTTag, size);
+        compound.setLong(tierNBTTag, tier);
 
         // Save colour info.
         compound.setInteger(sizeRedNBTTag, colour.getRed());
-        compound.setInteger(sizeGreenNBTTag, colour.getBlue());
-        compound.setInteger(sizeBlueNBTTag, colour.getGreen());
+        compound.setInteger(sizeGreenNBTTag, colour.getGreen());
+        compound.setInteger(sizeBlueNBTTag, colour.getBlue());
+
+        if (orbitingBody != null) {
+            int blockID = Block.getIdFromBlock(orbitingBody);
+            compound.setInteger(orbitingBodyIDNBTTag, blockID);
+        }
     }
 
     @Override
@@ -94,12 +111,18 @@ public class TileEyeOfHarmony extends TileEntity {
         // Load other stats.
         rotationSpeed = compound.getFloat(rotationSpeedNBTTag);
         size = compound.getFloat(sizeNBTTag);
+        tier = compound.getLong(tierNBTTag);
 
         // Load colour info.
         int red = compound.getInteger(sizeRedNBTTag);
         int green = compound.getInteger(sizeGreenNBTTag);
         int blue = compound.getInteger(sizeBlueNBTTag);
         colour = new Color(red, green, blue);
+
+        if (compound.hasKey(orbitingBodyIDNBTTag)) {
+            int blockID = compound.getInteger(orbitingBodyIDNBTTag);
+            orbitingBody = Block.getBlockById(blockID);
+        }
     }
 
     @Override

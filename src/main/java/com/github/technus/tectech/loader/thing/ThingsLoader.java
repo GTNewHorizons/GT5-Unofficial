@@ -81,7 +81,5 @@ public class ThingsLoader implements Runnable {
         ElementalDefinitionContainer_EM.run();
         DebugElementalInstanceContainer_EM.run();
         TecTech.LOGGER.info("Debug Items registered");
-
-
     }
 }

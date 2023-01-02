@@ -4,6 +4,7 @@ import static com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage.BILLIO
 import static com.google.common.math.IntMath.pow;
 import static gregtech.api.GregTech_API.getUnificatedOreDictStack;
 import static gregtech.api.util.GT_Utility.getPlasmaFuelValueInEUPerLiterFromMaterial;
+import static java.lang.Math.min;
 
 import com.github.technus.tectech.util.ItemStackLong;
 import gnu.trove.map.TMap;
@@ -62,6 +63,7 @@ public class EyeOfHarmonyRecipe {
     private final ItemStack recipeTriggerItem;
 
     private final long sumOfItems;
+    private final long rocketTier;
 
     public TMap<ItemStack, Double> getItemStackToProbabilityMap() {
         return itemStackToProbabilityMap;
@@ -82,6 +84,10 @@ public class EyeOfHarmonyRecipe {
         return sumOfItems;
     }
 
+    public long getRocketTier() {
+        return rocketTier;
+    }
+
     public EyeOfHarmonyRecipe(
             ArrayList<Pair<Materials, Long>> materialList,
             Block block,
@@ -89,8 +95,12 @@ public class EyeOfHarmonyRecipe {
             final long hydrogenRequirement,
             final long heliumRequirement,
             final long miningTimeSeconds,
-            final long spacetimeCasingTierRequired,
+            final long rocketTierOfRecipe,
             final double baseSuccessChance) {
+
+        this.rocketTier = rocketTierOfRecipe;
+        this.spacetimeCasingTierRequired = min(8, rocketTierOfRecipe);
+
         this.recipeTriggerItem = new ItemStack(block);
 
         this.outputItems = validDustGenerator(materialList);
@@ -113,17 +123,15 @@ public class EyeOfHarmonyRecipe {
         ArrayList<FluidStack> fluidStackArrayList = validPlasmaGenerator(materialList);
 
         for (FluidStack fluidStack : fluidStackArrayList) {
-            fluidStack.amount = (int) ((spacetimeCasingTierRequired + 1) * 1_000_000L);
+            fluidStack.amount = (int) ((this.spacetimeCasingTierRequired + 1) * 1_000_000L);
         }
 
         // Add a bonus fluid of compressed star matter.
         // todo replace with Bonus star matter when added to GT5.
-        fluidStackArrayList.add(Materials.Infinity.getMolten((spacetimeCasingTierRequired + 1) * 100_000));
+        fluidStackArrayList.add(Materials.Infinity.getMolten((this.spacetimeCasingTierRequired + 1) * 100_000));
 
         outputFluids = fluidStackArrayList;
         // End fluid processing.
-
-        this.spacetimeCasingTierRequired = spacetimeCasingTierRequired;
 
         this.hydrogenRequirement = hydrogenRequirement;
         this.heliumRequirement = heliumRequirement;

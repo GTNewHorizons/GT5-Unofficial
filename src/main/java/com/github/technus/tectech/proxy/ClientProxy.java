@@ -10,7 +10,6 @@ import com.github.technus.tectech.thing.item.ElementalDefinitionContainer_EM;
 import com.github.technus.tectech.thing.item.renderElemental.RenderElementalName;
 import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

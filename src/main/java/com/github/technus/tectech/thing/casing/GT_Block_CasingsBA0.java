@@ -67,9 +67,12 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Tesla Toroid Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Tesla Secondary Windings");
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Ultimate Temporal Boundary Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Reinforced Spacetime Structure Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Infinite Spacetime Energy Boundary Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".10.name", "Ultimate Temporal Boundary Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".11.name", "Reinforced Spacetime Structure Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".12.name", "Infinite Spacetime Energy Boundary Casing");
 
         CustomItemList.tM_TeslaPrimary_0.set(new ItemStack(this, 1, 0));
         CustomItemList.tM_TeslaPrimary_1.set(new ItemStack(this, 1, 1));

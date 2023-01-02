@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import static com.github.technus.tectech.TecTech.eyeOfHarmonyRecipeStorage;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.eyeOfHarmonyRenderBlock;
@@ -39,17 +40,15 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
-
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.libraries.com.google.common.math.LongMath;
@@ -60,8 +59,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     // Region variables.
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
-
-    private static EyeOfHarmonyRecipeStorage recipes;
 
     private int spacetimeCompressionFieldMetadata = -1;
     private int timeAccelerationFieldMetadata = -1;
@@ -1513,7 +1510,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             }
         }
 
-        // Make sure there is 2 input hatches.
+        // Make sure there are 2 input hatches.
         if (mInputHatches.size() != 2) {
             return false;
         }
@@ -1577,8 +1574,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("exotic material that rejects conventional physics.")
                 .addSeparator()
                 .addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
-                .addStructureInfo(
-                        EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Reinforced Spacetime Structure Casing.")
+                .addStructureInfo(EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY
+                        + " Reinforced Spacetime Structure Casing.")
                 .addStructureInfo(EnumChatFormatting.GOLD + "534" + EnumChatFormatting.GRAY
                         + " Ultimate Temporal Boundary Casing.")
                 .addStructureInfo(
@@ -1662,7 +1659,10 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private EyeOfHarmonyRecipe currentRecipe;
 
+    // Counter for lag prevention.
     private long lagPreventer = 0;
+
+    // Check for recipe every recipeCheckInterval ticks.
     private final long recipeCheckInterval = 3 * 20;
 
     @Override
@@ -1676,7 +1676,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             lagPreventer = 0;
             // No item in multi gui slot.
 
-            currentRecipe = recipes.recipeLookUp(aStack);
+            currentRecipe = eyeOfHarmonyRecipeStorage.recipeLookUp(aStack);
             if (processRecipe(currentRecipe)) {
                 return true;
             }
@@ -1777,27 +1777,38 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         double zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
         double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
 
-        this.getBaseMetaTileEntity().getWorld().setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
-        this.getBaseMetaTileEntity().getWorld().setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), eyeOfHarmonyRenderBlock);
-        TileEyeOfHarmony rendererTileEntity = (TileEyeOfHarmony) this.getBaseMetaTileEntity().getWorld().getTileEntity((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
+        this.getBaseMetaTileEntity()
+                .getWorld()
+                .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+        this.getBaseMetaTileEntity()
+                .getWorld()
+                .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), eyeOfHarmonyRenderBlock);
+        TileEyeOfHarmony rendererTileEntity = (TileEyeOfHarmony)
+                this.getBaseMetaTileEntity().getWorld().getTileEntity((int) (x + xOffset), (int) (y + yOffset), (int)
+                        (z + zOffset));
 
         int recipeSpacetimeTier = (int) currentRecipe.getSpacetimeCasingTierRequired();
 
         // Star is a larger size depending on the spacetime tier of the recipe.
-        rendererTileEntity.setSize((1 + recipeSpacetimeTier) * 0.5f);
+        rendererTileEntity.setSize((1 + recipeSpacetimeTier));
+
         // Star rotates faster the higher tier time dilation you use in the multi.
-        rendererTileEntity.setRotationSpeed((float) pow(2, 8-timeAccelerationFieldMetadata));
+        // Lower value = faster rotation speed.
+        rendererTileEntity.setRotationSpeed(
+                (float) pow(2, currentRecipe.getRocketTier() - timeAccelerationFieldMetadata));
 
         // Colour of tier determined by star tier.
-        Color colour = getStarColour(recipeSpacetimeTier);
+        Color colour = getStarColour((int) currentRecipe.getRocketTier());
         rendererTileEntity.setColour(colour);
 
         // Set recipe spacetime tier for usage elsewhere.
-        rendererTileEntity.setTier(recipeSpacetimeTier);
+        rendererTileEntity.setTier(currentRecipe.getRocketTier());
+        rendererTileEntity.setOrbitingBody(
+                Block.getBlockFromItem(currentRecipe.getRecipeTriggerItem().getItem()));
     }
 
-    private static final Color redStar = new Color(255, 0, 50);
-    private static final Color orangeStar = new Color(255, 102, 0);
+    private static final Color redStar = new Color(155, 9, 38);
+    private static final Color orangeStar = new Color(190, 85, 9);
     private static final Color blueStar = new Color(96, 152, 234);
     private static final Color whiteStar = new Color(200, 200, 200);
     private static final Color blackHole = new Color(0, 0, 0);
@@ -1841,9 +1852,27 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         recipeRunning = false;
     }
 
+    private void destroyRenderBlock() {
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+
+        double xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+
+        this.getBaseMetaTileEntity()
+                .getWorld()
+                .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+    }
+
     public void outputAfterRecipe_EM() {
         recipeRunning = false;
         eRequiredData = 0L;
+
+        destroyRenderBlock();
 
         if (successChance < random()) {
             outputFailedChance();
@@ -1881,12 +1910,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             userUUID = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());
             userName = getBaseMetaTileEntity().getOwnerName();
             strongCheckOrAddUser(userUUID, userName);
-
-            // If no multi exists this will set the recipe storage.
-            // This must be done after game load otherwise it fails.
-            if (recipes == null) {
-                recipes = new EyeOfHarmonyRecipeStorage();
-            }
         }
 
         // Add computation to stack. Prevents small interruptions causing issues.

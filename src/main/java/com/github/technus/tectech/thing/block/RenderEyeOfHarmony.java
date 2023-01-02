@@ -1,50 +1,35 @@
 package com.github.technus.tectech.thing.block;
 
+import static com.github.technus.tectech.Reference.MODID;
+import static java.lang.Math.*;
+
+import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
-
-import javax.vecmath.Vector3d;
-
-import static com.github.technus.tectech.Reference.MODID;
-import static gregtech.common.render.GT_Renderer_Block.renderStandardBlock;
-import static java.lang.Math.*;
+import org.lwjgl.opengl.GL11;
 
 public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation starLayer0 = new ResourceLocation(MODID ,"models/StarLayer0.png");
-    private static final ResourceLocation starLayer1 = new ResourceLocation(MODID ,"models/StarLayer1.png");
-    private static final ResourceLocation starLayer2 = new ResourceLocation(MODID ,"models/StarLayer2.png");
+    private static final ResourceLocation starLayer0 = new ResourceLocation(MODID, "models/StarLayer0.png");
+    private static final ResourceLocation starLayer1 = new ResourceLocation(MODID, "models/StarLayer1.png");
+    private static final ResourceLocation starLayer2 = new ResourceLocation(MODID, "models/StarLayer2.png");
     private static final ResourceLocation blackHole = new ResourceLocation(MODID, "models/blackHole.png");
     public static IModelCustom modelCustom;
 
     public RenderEyeOfHarmony() {
-        modelCustom =
-                AdvancedModelLoader.loadModel(new ResourceLocation(MODID, "models/Star.obj"));
+        modelCustom = AdvancedModelLoader.loadModel(new ResourceLocation(MODID, "models/Star.obj"));
     }
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
         if (!(tile instanceof TileEyeOfHarmony)) return;
-
-//        System.out.println("NAME " + this.field_147501_a.field_147551_g.getCommandSenderName());
-//        EntityPlayer p = Minecraft.getMinecraft().thePlayer;
-//        System.out.println("TESTING NAME " + p.getCommandSenderName());
-//        System.out.println("TESTING X " + p.getLookVec().xCoord);
-//        System.out.println("TESTING Y " + p.getLookVec().yCoord);
-//        System.out.println("TESTING Z " + p.getLookVec().zCoord);
-
-//        System.out.println(this.field_147501_a.field_147551_g.get());
 
         TileEyeOfHarmony EOHRenderTile = (TileEyeOfHarmony) tile;
 
@@ -52,29 +37,18 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             GL11.glPushMatrix();
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
-            GL11.glPushMatrix();
-            GL11.glRotatef((System.currentTimeMillis() / 32) % 360, 0F, 1F, 0F);
-            GL11.glTranslated(-3, 0, 0);
-            GL11.glRotatef((System.currentTimeMillis() / 2) % 360, 0F, 1F, 0F);
-            renderBlockInWorld(ModBlocks.blocks.get("DD"), 0, 1.0f);
-            GL11.glPopMatrix();
+            if (EOHRenderTile.getOrbitingBody() != null) {
+                // Render orbiting body.
+                GL11.glPushMatrix();
+                GL11.glRotatef((System.currentTimeMillis() / 32) % 360, 0F, 1F, 0F);
+                GL11.glTranslated(-1 - EOHRenderTile.getSize() * pow(1.05f, 2), 0, 0);
+                GL11.glRotatef((System.currentTimeMillis() / 2) % 360, 0F, 1F, 0F);
+                renderBlockInWorld(EOHRenderTile.getOrbitingBody(), 0, 0.7f);
+                GL11.glPopMatrix();
+            }
 
-            GL11.glPushMatrix();
-            GL11.glTranslated(6, 0, 0);
-            renderBlockInWorld(ModBlocks.blocks.get("Ne"), 0, 0.5f);
-            GL11.glPopMatrix();
-
-            GL11.glPushMatrix();
-            GL11.glTranslated(0, 0, 6);
-            renderBlockInWorld(ModBlocks.blocks.get("Mo"), 0, 1.0f);
-            GL11.glPopMatrix();
-
-            GL11.glPushMatrix();
-            GL11.glTranslated(0, 0, -6);
-            renderBlockInWorld(ModBlocks.blocks.get("Ow"), 0, 2.0f);
-            GL11.glPopMatrix();
-
-
+            // Render star stuff.
+            // Render a black hole if the dimension is the deep dark.
             if (EOHRenderTile.getTier() < 9) {
                 renderStarLayer(EOHRenderTile, 0, starLayer0, 1.0f);
                 renderStarLayer(EOHRenderTile, 1, starLayer1, 0.4f);
@@ -82,12 +56,9 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             } else {
                 renderStarLayer(EOHRenderTile, 0, blackHole, 1.0f);
             }
-
             GL11.glPopMatrix();
         }
-
     }
-
 
     void renderStarLayer(TileEyeOfHarmony EOHRenderTile, int layer, ResourceLocation texture, float alpha) {
 
@@ -118,9 +89,6 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         // Scale the star up in the x, y and z directions.
         GL11.glScalef(scale, scale, scale);
 
-        // Rotate star upright.
-//        GL11.glRotatef(180, 1F, 1F, 1F);
-
         switch (layer) {
             case 0:
                 GL11.glRotatef(194, 0F, 1F, 1F);
@@ -140,7 +108,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glColor4f(starRed, starGreen, starBlue, alpha);
 
         // Spin the star around according to the multis time dilation tier.
-        if (EOHRenderTile.getRotationSpeed() != 0) {
+        if ((int) EOHRenderTile.getRotationSpeed() != 0) {
             GL11.glRotatef((System.currentTimeMillis() / (int) EOHRenderTile.getRotationSpeed()) % 360, 0F, 0F, 1F);
         }
 
@@ -152,47 +120,6 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         // Finish animation.
         GL11.glPopMatrix();
     }
-
-
-    class SphericalCoord {
-
-
-
-    }
-    class RotationInfo {
-
-        float angle;
-        boolean xEnabled = false;
-        boolean yEnabled = false;
-        boolean zEnabled = false;
-        RotationInfo(float angle) {
-            this.angle = angle;
-        }
-
-        void enableXRotation() {
-            xEnabled = true;
-        }
-
-        void enableYRotation() {
-            xEnabled = true;
-        }
-
-        void enableZRotation() {
-            xEnabled = true;
-        }
-
-
-//        void performRotation() {
-//            GL11.glRotatef(-180, xEnabled, 0F, 1F);
-//
-//        }
-
-
-
-
-    }
-
-
 
     public void renderBlockInWorld(Block block, int meta, float blockSize) {
         Tessellator tes = Tessellator.instance;
@@ -210,18 +137,15 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         tes.setColorOpaque_F(1f, 1f, 1f);
 
-        //Add the rendering calls here (Can and should use helper functions that do the vertex calls)
+        // Add the rendering calls here (Can and should use helper functions that do the vertex calls)
 
         double x = 0;
         double y = 0;
         double z = 0;
 
-        double[] X = {x - 0.5 , x - 0.5 , x + 0.5 , x + 0.5 ,
-                x + 0.5 , x + 0.5 , x - 0.5 , x - 0.5 };
-        double[] Y = {y + 0.5 , y - 0.5 , y - 0.5 , y + 0.5 ,
-                y + 0.5 , y - 0.5 , y - 0.5 , y + 0.5 };
-        double[] Z = {z + 0.5 , z + 0.5 , z + 0.5 , z + 0.5 ,
-                z - 0.5 , z - 0.5 , z - 0.5 , z - 0.5 };
+        double[] X = {x - 0.5, x - 0.5, x + 0.5, x + 0.5, x + 0.5, x + 0.5, x - 0.5, x - 0.5};
+        double[] Y = {y + 0.5, y - 0.5, y - 0.5, y + 0.5, y + 0.5, y - 0.5, y - 0.5, y + 0.5};
+        double[] Z = {z + 0.5, z + 0.5, z + 0.5, z + 0.5, z - 0.5, z - 0.5, z - 0.5, z - 0.5};
 
         tes.startDrawingQuads();
 
@@ -325,19 +249,6 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_CULL_FACE);
-        //spotless:on
-    }
-
-    Vector3d f(int time) {
-
-        final int radius = 4;
-        final double azimuthalAngle = PI * 0.4;
-
-        final double x = radius * sin(azimuthalAngle) * cos(time);
-        final double y = radius * sin(azimuthalAngle) * sin(time);
-        final double z = radius * cos(azimuthalAngle);
-
-        return new Vector3d(x, y, z);
+        // spotless:on
     }
 }
-

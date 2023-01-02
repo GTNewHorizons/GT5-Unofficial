@@ -13,10 +13,8 @@ public final class TT_Container_Casings {
 
     public static Block sBlockCasingsNH;
 
-
     // Do NOT delete, it will break. The IDE is a liar.
     public static Block eyeOfHarmonyRenderBlock = new EyeOfHarmonyBlock();
-
 
     private TT_Container_Casings() {}
 }

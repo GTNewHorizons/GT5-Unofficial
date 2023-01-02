@@ -1,6 +1,5 @@
 package com.github.technus.tectech.loader;
 
-import com.github.technus.tectech.thing.block.EyeOfHarmonyBlock;
 import com.github.technus.tectech.thing.block.RenderEyeOfHarmony;
 import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
 import cpw.mods.fml.client.registry.ClientRegistry;

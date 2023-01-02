@@ -49,9 +49,9 @@ public class EyeOfHarmonyRecipeStorage {
                                         GT5OreSmallHelper.dimToSmallOreWrapper.get(dimAbbreviation),
                                         blockDimensionDisplay,
                                         0.6 + blockDimensionDisplay.getDimensionRocketTier() / 10.0,
-                                        BILLION * blockDimensionDisplay.getDimensionRocketTier(),
-                                        BILLION * blockDimensionDisplay.getDimensionRocketTier(),
-                                        (long) (18_000L * pow(1.4, blockDimensionDisplay.getDimensionRocketTier())),
+                                        BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                                        BILLION * (blockDimensionDisplay.getDimensionRocketTier() + 1),
+                                        timeCalculator(blockDimensionDisplay.getDimensionRocketTier()),
                                         blockDimensionDisplay.getDimensionRocketTier(),
                                         1.0 - blockDimensionDisplay.getDimensionRocketTier() / 10.0));
                     }
@@ -64,7 +64,7 @@ public class EyeOfHarmonyRecipeStorage {
         }
     };
 
-    public EyeOfHarmonyRecipe recipeLookUp(ItemStack aStack) {
+    public EyeOfHarmonyRecipe recipeLookUp(final ItemStack aStack) {
         String dimAbbreviation = blocksMapInverted.get(Block.getBlockFromItem(aStack.getItem()));
         return recipeHashMap.get(dimAbbreviation);
     }
@@ -96,7 +96,7 @@ public class EyeOfHarmonyRecipeStorage {
     }
 
     private void specialDeepDarkRecipe(
-            HashMap<String, EyeOfHarmonyRecipe> hashMap, final BlockDimensionDisplay planetItem) {
+            final HashMap<String, EyeOfHarmonyRecipe> hashMap, final BlockDimensionDisplay planetItem) {
 
         HashSet<Materials> validMaterialSet = new HashSet<>();
 
@@ -127,16 +127,20 @@ public class EyeOfHarmonyRecipeStorage {
                         0.6 + rocketTier / 10.0,
                         BILLION * (rocketTier + 1),
                         BILLION * (rocketTier + 1),
-                        (long) (18_000L * pow(1.4, rocketTier)),
-                        rocketTier - 1, // -1 so that we avoid out of bounds exception on NEI render.
+                        timeCalculator(rocketTier),
+                        rocketTier, // -1 so that we avoid out of bounds exception on NEI render.
                         1.0 - rocketTier / 10.0));
     }
 
-    private ArrayList<Pair<Materials, Long>> processDD(ArrayList<Materials> validMaterialList) {
+    private static long timeCalculator(final long rocketTier) {
+        return (long) (18_000L * pow(1.4, rocketTier));
+    }
+
+    private ArrayList<Pair<Materials, Long>> processDD(final ArrayList<Materials> validMaterialList) {
         EyeOfHarmonyRecipe.HashMapHelper outputMap = new EyeOfHarmonyRecipe.HashMapHelper();
 
-        // 9 from rocketTier + 1, 6 * 64 = VM3 + Og, 1.4 = time increase per tier.
-        double mainMultiplier = (18_000L * pow(1.4, 9) * (6 * 64));
+        // 10 from rocketTier + 1, 6 * 64 = VM3 + Og, 1.4 = time increase per tier.
+        double mainMultiplier = (timeCalculator(10) * (6 * 64));
         double probability = 1.0 / validMaterialList.size();
 
         validMaterialList.forEach((material) -> {
