@@ -32,7 +32,6 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class GT_MachineRecipeLoader implements Runnable {
     private final MaterialStack[][] mAlloySmelterList = {
@@ -11282,20 +11281,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 60);
 
         RA.addMixerRecipe(
-                new ItemStack[] {
-                    ItemList.IC2_Spray_WeedEx.get(1),
-                    GT_ModHandler.getModItem("Forestry", "pollen", 1, OreDictionary.WILDCARD_VALUE)
-                },
-                new FluidStack[] {MaterialsKevlar.NaphthenicAcid.getFluid(10)},
-                new ItemStack[] {},
-                new FluidStack[] {Materials.WeedEX9000.getFluid(750)},
-                100,
-                100);
-        RA.addMixerRecipe(
-                new ItemStack[] {
-                    ItemList.IC2_Spray_WeedEx.get(1),
-                    GT_ModHandler.getModItem("Forestry", "pollenFertile", 1, OreDictionary.WILDCARD_VALUE)
-                },
+                new ItemStack[] {ItemList.IC2_Spray_WeedEx.get(1)},
                 new FluidStack[] {MaterialsKevlar.NaphthenicAcid.getFluid(10)},
                 new ItemStack[] {},
                 new FluidStack[] {Materials.WeedEX9000.getFluid(750)},
