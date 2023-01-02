@@ -2236,8 +2236,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
     @Override
     public void onBlockDestroyed() {
-        if (canAccessData())
-            getMetaTileEntity().onBlockDestroyed();
+        if (canAccessData()) getMetaTileEntity().onBlockDestroyed();
     }
 
     @Override
