@@ -519,4 +519,9 @@ public interface IMetaTileEntity
     default int getTextColorOrDefault(String textType, int defaultColor) {
         return defaultColor;
     }
+
+    /**
+     * Called before block is destroyed. This is before inventory dropping code has executed.
+     */
+    default void onBlockDestroyed() {}
 }
