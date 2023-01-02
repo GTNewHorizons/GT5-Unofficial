@@ -75,6 +75,13 @@ public class TileEyeOfHarmony extends TileEntity {
         return rotationSpeed;
     }
 
+    @Override
+    public void updateEntity() {
+        angle += 10.0f;
+    }
+
+    public float angle;
+
     private static final String EOHNBTTag = "EOH:";
     private static final String rotationSpeedNBTTag = EOHNBTTag + "rotationSpeed";
     private static final String sizeNBTTag = EOHNBTTag + "size";

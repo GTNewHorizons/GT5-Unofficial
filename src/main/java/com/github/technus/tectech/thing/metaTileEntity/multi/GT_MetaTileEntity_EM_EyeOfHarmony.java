@@ -1794,8 +1794,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         // Star rotates faster the higher tier time dilation you use in the multi.
         // Lower value = faster rotation speed.
-        rendererTileEntity.setRotationSpeed(
-                (float) pow(2, currentRecipe.getRocketTier() - timeAccelerationFieldMetadata));
+        rendererTileEntity.setRotationSpeed((1 + timeAccelerationFieldMetadata)/2.0f);
 
         // Colour of tier determined by star tier.
         Color colour = getStarColour((int) currentRecipe.getRocketTier());

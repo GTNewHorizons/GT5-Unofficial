@@ -17,6 +17,7 @@ public class EyeOfHarmonyBlock extends Block {
     public EyeOfHarmonyBlock() {
         super(Material.iron);
         this.setResistance(20f);
+        this.setHardness(-1.0f);
         this.setCreativeTab(TecTech.creativeTabEM);
         this.setBlockName("Eye of Harmony Renderer");
         this.setLightLevel(100.0f); // todo check
