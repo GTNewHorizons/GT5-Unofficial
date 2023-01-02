@@ -490,6 +490,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 .addInfo("All inputs go on the bottom, all outputs go on the top")
                 .addInfo("Put a circuit in the controller to specify the focused output")
                 .addInfo("Check NEI to see the order of outputs, and which circuit number you need.")
+                .addInfo("If separate input busses are enabled put the circuit in the circuit slot of the bus")
                 .addInfo("Uses FocusTier*4*sqrt(parallels) Neptunium Plasma if focusing")
                 .addInfo("Can use FocusTier*4*sqrt(parallels) Fermium Plasma for additional chance output")
                 .addInfo("This multi gets improved when all casings of some types are upgraded")
@@ -697,9 +698,11 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                         tInputList.add(tBus.getStackInSlot(i));
                     }
                 }
+
                 ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
-                if (processRecipe(tInputs, tFluidList, getRecipeMap(), aStack)) return true;
-                else tInputList.clear();
+                if (processRecipe(tInputs, tFluidList, getRecipeMap(), tBus.mInventory[tBus.getCircuitSlot()])) {
+                    return true;
+                } else tInputList.clear();
             }
         } else {
             ItemStack[] tInputList = getStoredInputs().toArray(new ItemStack[0]);
@@ -1122,84 +1125,84 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         Tessellator tes = Tessellator.instance;
         switch (side) {
             case 0:
-                tes.addVertexWithUV(x + 3 - 0.5, y    , z + 7, maxU, maxV);
-                tes.addVertexWithUV(x + 3 - 0.5, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x - 3 + 0.5, y + 4, z + 7, minU, minV);
-                tes.addVertexWithUV(x - 3 + 0.5, y    , z + 7, minU, maxV);
-                tes.addVertexWithUV(x - 3 + 0.5, y    , z + 7, minU, maxV);
-                tes.addVertexWithUV(x - 3 + 0.5, y + 4, z + 7, minU, minV);
-                tes.addVertexWithUV(x + 3 - 0.5, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x + 3 - 0.5, y    , z + 7, maxU, maxV);
+                tes.addVertexWithUV(x + 3, y    , z + 7, maxU, maxV);
+                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
+                tes.addVertexWithUV(x - 3, y + 4, z + 7, minU, minV);
+                tes.addVertexWithUV(x - 3, y    , z + 7, minU, maxV);
+                tes.addVertexWithUV(x - 3, y    , z + 7, minU, maxV);
+                tes.addVertexWithUV(x - 3, y + 4, z + 7, minU, minV);
+                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
+                tes.addVertexWithUV(x + 3, y    , z + 7, maxU, maxV);
                 break;
             case 1:
-                tes.addVertexWithUV(x + 7, y    , z + 4 - 0.5, maxU, maxV);
-                tes.addVertexWithUV(x + 7, y + 4, z + 4 - 0.5, maxU, minV);
-                tes.addVertexWithUV(x + 7, y + 4, z - 4 + 0.5, minU, minV);
-                tes.addVertexWithUV(x + 7, y    , z - 4 + 0.5, minU, maxV);
-                tes.addVertexWithUV(x + 7, y    , z - 4 + 0.5, minU, maxV);
-                tes.addVertexWithUV(x + 7, y + 4, z - 4 + 0.5, minU, minV);
-                tes.addVertexWithUV(x + 7, y + 4, z + 4 - 0.5, maxU, minV);
-                tes.addVertexWithUV(x + 7, y    , z + 4 - 0.5, maxU, maxV);
+                tes.addVertexWithUV(x + 7, y    , z + 4, maxU, maxV);
+                tes.addVertexWithUV(x + 7, y + 4, z + 4, maxU, minV);
+                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
+                tes.addVertexWithUV(x + 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
+                tes.addVertexWithUV(x + 7, y + 4, z + 4, maxU, minV);
+                tes.addVertexWithUV(x + 7, y    , z + 4, maxU, maxV);
                 break;
             case 2:
-                tes.addVertexWithUV(x + 3 + 0.5, y    , z - 7, maxU, maxV);
-                tes.addVertexWithUV(x + 3 + 0.5, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x - 3 - 0.5, y + 4, z - 7, minU, minV);
-                tes.addVertexWithUV(x - 3 - 0.5, y    , z - 7, minU, maxV);
-                tes.addVertexWithUV(x - 3 - 0.5, y    , z - 7, minU, maxV);
-                tes.addVertexWithUV(x - 3 - 0.5, y + 4, z - 7, minU, minV);
-                tes.addVertexWithUV(x + 3 + 0.5, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x + 3 + 0.5, y    , z - 7, maxU, maxV);
+                tes.addVertexWithUV(x + 3, y    , z - 7, maxU, maxV);
+                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
+                tes.addVertexWithUV(x - 3, y + 4, z - 7, minU, minV);
+                tes.addVertexWithUV(x - 3, y    , z - 7, minU, maxV);
+                tes.addVertexWithUV(x - 3, y    , z - 7, minU, maxV);
+                tes.addVertexWithUV(x - 3, y + 4, z - 7, minU, minV);
+                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
+                tes.addVertexWithUV(x + 3, y    , z - 7, maxU, maxV);
                 break;
             case 3:
-                tes.addVertexWithUV(x - 7, y    , z + 4 - 0.5, maxU, maxV);
-                tes.addVertexWithUV(x - 7, y + 4, z + 4 - 0.5, maxU, minV);
-                tes.addVertexWithUV(x - 7, y + 4, z - 4 + 0.5, minU, minV);
-                tes.addVertexWithUV(x - 7, y    , z - 4 + 0.5, minU, maxV);
-                tes.addVertexWithUV(x - 7, y    , z - 4 + 0.5, minU, maxV);
-                tes.addVertexWithUV(x - 7, y + 4, z - 4 + 0.5, minU, minV);
-                tes.addVertexWithUV(x - 7, y + 4, z + 4 - 0.5, maxU, minV);
-                tes.addVertexWithUV(x - 7, y    , z + 4 - 0.5, maxU, maxV); 
+                tes.addVertexWithUV(x - 7, y    , z + 4, maxU, maxV);
+                tes.addVertexWithUV(x - 7, y + 4, z + 4, maxU, minV);
+                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
+                tes.addVertexWithUV(x - 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
+                tes.addVertexWithUV(x - 7, y + 4, z + 4, maxU, minV);
+                tes.addVertexWithUV(x - 7, y    , z + 4, maxU, maxV); 
                 break;
             case 4:
-                tes.addVertexWithUV(x - 3 - 0.5, y    , z + 7      , maxU, maxV);
-                tes.addVertexWithUV(x - 3 - 0.5, y + 4, z + 7      , maxU, minV);
-                tes.addVertexWithUV(x - 7      , y + 4, z + 4 + 0.5, minU, minV);
-                tes.addVertexWithUV(x - 7      , y    , z + 4 + 0.5, minU, maxV);
-                tes.addVertexWithUV(x - 7      , y    , z + 4 + 0.5, minU, maxV);
-                tes.addVertexWithUV(x - 7      , y + 4, z + 4 + 0.5, minU, minV);
-                tes.addVertexWithUV(x - 3 - 0.5, y + 4, z + 7      , maxU, minV);
-                tes.addVertexWithUV(x - 3 - 0.5, y    , z + 7      , maxU, maxV);
+                tes.addVertexWithUV(x - 3, y    , z + 7, maxU, maxV);
+                tes.addVertexWithUV(x - 3, y + 4, z + 7, maxU, minV);
+                tes.addVertexWithUV(x - 7, y + 4, z + 4, minU, minV);
+                tes.addVertexWithUV(x - 7, y    , z + 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y    , z + 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y + 4, z + 4, minU, minV);
+                tes.addVertexWithUV(x - 3, y + 4, z + 7, maxU, minV);
+                tes.addVertexWithUV(x - 3, y    , z + 7, maxU, maxV);
                 break;
             case 5:
-                tes.addVertexWithUV(x - 3 - 0.5, y    , z - 7      , maxU, maxV);
-                tes.addVertexWithUV(x - 3 - 0.5, y + 4, z - 7      , maxU, minV);
-                tes.addVertexWithUV(x - 7      , y + 4, z - 4 - 0.5, minU, minV);
-                tes.addVertexWithUV(x - 7      , y    , z - 4 - 0.5, minU, maxV);
-                tes.addVertexWithUV(x - 7      , y    , z - 4 - 0.5, minU, maxV);
-                tes.addVertexWithUV(x - 7      , y + 4, z - 4 - 0.5, minU, minV);
-                tes.addVertexWithUV(x - 3 - 0.5, y + 4, z - 7      , maxU, minV);
-                tes.addVertexWithUV(x - 3 - 0.5, y    , z - 7      , maxU, maxV);
+                tes.addVertexWithUV(x - 3, y    , z - 7, maxU, maxV);
+                tes.addVertexWithUV(x - 3, y + 4, z - 7, maxU, minV);
+                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
+                tes.addVertexWithUV(x - 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
+                tes.addVertexWithUV(x - 3, y + 4, z - 7, maxU, minV);
+                tes.addVertexWithUV(x - 3, y    , z - 7, maxU, maxV);
                 break;
             case 6:
-                tes.addVertexWithUV(x + 3 + 0.5, y    , z + 7      , maxU, maxV);
-                tes.addVertexWithUV(x + 3 + 0.5, y + 4, z + 7      , maxU, minV);
-                tes.addVertexWithUV(x + 7      , y + 4, z + 4 + 0.5, minU, minV);
-                tes.addVertexWithUV(x + 7      , y    , z + 4 + 0.5, minU, maxV);
-                tes.addVertexWithUV(x + 7      , y    , z + 4 + 0.5, minU, maxV);
-                tes.addVertexWithUV(x + 7      , y + 4, z + 4 + 0.5, minU, minV);
-                tes.addVertexWithUV(x + 3 + 0.5, y + 4, z + 7      , maxU, minV);
-                tes.addVertexWithUV(x + 3 + 0.5, y    , z + 7      , maxU, maxV);
+                tes.addVertexWithUV(x + 3, y    , z + 7, maxU, maxV);
+                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
+                tes.addVertexWithUV(x + 7, y + 4, z + 4, minU, minV);
+                tes.addVertexWithUV(x + 7, y    , z + 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y    , z + 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y + 4, z + 4, minU, minV);
+                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
+                tes.addVertexWithUV(x + 3, y    , z + 7, maxU, maxV);
                 break;
             case 7:
-                tes.addVertexWithUV(x + 3 + 0.5, y    , z - 7      , maxU, maxV);
-                tes.addVertexWithUV(x + 3 + 0.5, y + 4, z - 7      , maxU, minV);
-                tes.addVertexWithUV(x + 7      , y + 4, z - 4 - 0.5, minU, minV);
-                tes.addVertexWithUV(x + 7      , y    , z - 4 - 0.5, minU, maxV);
-                tes.addVertexWithUV(x + 7      , y    , z - 4 - 0.5, minU, maxV);
-                tes.addVertexWithUV(x + 7      , y + 4, z - 4 - 0.5, minU, minV);
-                tes.addVertexWithUV(x + 3 + 0.5, y + 4, z - 7      , maxU, minV);
-                tes.addVertexWithUV(x + 3 + 0.5, y    , z - 7      , maxU, maxV);
+                tes.addVertexWithUV(x + 3, y    , z - 7, maxU, maxV);
+                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
+                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
+                tes.addVertexWithUV(x + 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
+                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
+                tes.addVertexWithUV(x + 3, y    , z - 7, maxU, maxV);
                 break;
         }
     }
