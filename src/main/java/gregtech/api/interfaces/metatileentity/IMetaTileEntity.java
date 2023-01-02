@@ -523,5 +523,5 @@ public interface IMetaTileEntity
     /**
      * Called before block is destroyed. This is before inventory dropping code has executed.
      */
-	default void onBlockDestroyed() {}
+    default void onBlockDestroyed() {}
 }
