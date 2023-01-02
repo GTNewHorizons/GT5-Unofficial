@@ -571,9 +571,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         ItemStack[] aOutput = new ItemStack[] {aLog, aSapling};
         String aOutputs = ItemUtils.getArrayStackNames(aOutput);
         Logger.INFO("" + aOutputs);
+        ItemStack inputStack = aSapling.copy();
+        inputStack.stackSize = 0;
         GTPP_Recipe_Map.sTreeSimFakeRecipes.addFakeRecipe(
                 false,
-                new ItemStack[] {aSapling.copy()},
+                new ItemStack[] {inputStack},
                 aOutput,
                 null,
                 new int[] {10000, 1000},

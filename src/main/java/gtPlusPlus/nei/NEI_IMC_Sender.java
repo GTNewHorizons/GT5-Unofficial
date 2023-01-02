@@ -30,6 +30,7 @@ public class NEI_IMC_Sender {
         sendHandler("gtpp.recipe.lftr.sparging", "gregtech:gt.blockmachines:31035", 1);
         sendHandler("gtpp.recipe.oremill", "gregtech:gt.blockmachines:31027", 1);
         sendHandler("gtpp.recipe.flotationcell", "gregtech:gt.blockmachines:31028", 1);
+        sendHandler("gtpp.recipe.fluidchemicaleactor", "gregtech:gt.blockmachines:998");
 
         sendCatalyst("GTPP_Decayables", "miscutils:blockDecayablesChest");
 
@@ -86,8 +87,6 @@ public class NEI_IMC_Sender {
 
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:965", -1);
 
-        // overwrite yShift
-        sendHandler("gtPlusPlus.nei.GT_NEI_FluidReactor", "gregtech:gt.blockmachines:998");
         sendHandler("gtpp.recipe.multidehydrator", "gregtech:gt.blockmachines:995");
         sendCatalyst("gtpp.recipe.multidehydrator", "gregtech:gt.blockmachines:995");
         sendRemoveCatalyst("gtpp.recipe.chemicaldehydrator", "gregtech:gt.blockmachines:995");

@@ -1,14 +1,21 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.*;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar.Direction;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.common.gui.modularui.UIHelper;
+import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
+import gregtech.nei.NEIRecipeInfo;
 import gtPlusPlus.api.interfaces.IComparableRecipe;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import java.util.*;
 import net.minecraft.item.ItemStack;
@@ -328,28 +335,54 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                         1,
                         " EU/t per Dynamo",
                         true,
-                        false)
+                        true)
                 .setUsualFluidInputCount(6)
-                .setUsualFluidOutputCount(6);
+                .setUsualFluidOutputCount(6)
+                .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+                    final long tEUt = recipeInfo.recipe.mSpecialValue;
+                    final int tDuration = recipeInfo.recipe.mDuration;
+                    return Arrays.asList(
+                            applyPrefixAndSuffix.apply(recipeInfo.recipe.mSpecialValue),
+                            "Dynamo: " + MathUtils.formatNumbers(tDuration * tEUt) + " EU",
+                            "Total: " + MathUtils.formatNumbers(tDuration * tEUt * 4) + " EU");
+                });
 
         // Ore Milling Map
         public static final GT_Recipe_Map sOreMillRecipes = new GT_Recipe_Map(
-                        new HashSet<>(10000),
-                        "gtpp.recipe.oremill",
-                        "Milling",
-                        null,
-                        RES_PATH_GUI + "basicmachines/LFTR",
-                        3,
-                        3,
-                        1,
-                        0,
-                        1,
-                        E,
-                        1,
-                        E,
-                        true,
-                        false)
-                .useModularUI(true);
+                new HashSet<>(10000),
+                "gtpp.recipe.oremill",
+                "Milling",
+                null,
+                RES_PATH_GUI + "basicmachines/LFTR",
+                3,
+                3,
+                1,
+                0,
+                1,
+                E,
+                1,
+                E,
+                true,
+                true) {
+            @Override
+            protected List<String> handleNEIItemInputTooltip(List<String> currentTip, FixedPositionedStack pStack) {
+                if (ItemUtils.isMillingBall(pStack.item)) {
+                    currentTip.add(GRAY + "Does not always get consumed in the process");
+                } else {
+                    super.handleNEIItemInputTooltip(currentTip, pStack);
+                }
+                return currentTip;
+            }
+
+            @Override
+            protected void drawNEIOverlayForInput(FixedPositionedStack stack) {
+                if (ItemUtils.isMillingBall(stack.item)) {
+                    drawNEIOverlayText("NC*", stack);
+                } else {
+                    super.drawNEIOverlayForInput(stack);
+                }
+            }
+        }.useModularUI(true);
 
         // Fission Fuel Plant Recipes
         public static final GT_Recipe_Map sFissionFuelProcessing = new GT_Recipe_Map_FluidOnly(
@@ -482,7 +515,7 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                 1,
                 E,
                 true,
-                false);
+                true);
 
         // RTG Fuel Map
         public static final GT_Recipe.GT_Recipe_Map_Fuel sRTGFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
@@ -524,7 +557,7 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                 .setUsualFluidOutputCount(3);
 
         // Solar Tower map
-        public static final GT_Recipe_Map sSolarTowerRecipes = new GT_Recipe_Map(
+        public static final GT_Recipe_Map sSolarTowerRecipes = new GT_Recipe_Map_FluidOnly(
                         new HashSet<>(10),
                         "gtpp.recipe.solartower",
                         "Solar Tower",
@@ -539,8 +572,12 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                         1000,
                         null,
                         true,
-                        false)
-                .useModularUI(true);
+                        true)
+                .useModularUI(true)
+                .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> Arrays.asList(
+                        "Solar Heater rings boost tier",
+                        "R1:T1, R2:T2, R3:T4, R4:T8, R5:T16",
+                        "Input Amount = 1000 x T"));
 
         // Cyclotron recipe map
         public static final GT_Recipe_Map sCyclotronRecipes = new GT_Recipe_Map(
@@ -806,25 +843,62 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
 
         // Tree Growth Simulator
         public static final GT_Recipe_Map sTreeSimFakeRecipes = new GT_Recipe_Map(
-                        new HashSet<>(100),
-                        "gtpp.recipe.treefarm",
-                        "Tree Growth Simulator",
-                        null,
-                        RES_PATH_GUI + "basicmachines/FissionFuel",
-                        1,
-                        2,
-                        1,
-                        0,
-                        1,
-                        "",
-                        1,
-                        "",
-                        false,
-                        false)
-                .useModularUI(true);
+                new HashSet<>(100),
+                "gtpp.recipe.treefarm",
+                "Tree Growth Simulator",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                1,
+                2,
+                1,
+                0,
+                1,
+                "",
+                1,
+                "",
+                false,
+                true) {
+            @Override
+            protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {}
+
+            @Override
+            protected void drawNEIDurationInfo(NEIRecipeInfo recipeInfo) {}
+
+            @Override
+            protected List<String> handleNEIItemOutputTooltip(List<String> currentTip, FixedPositionedStack pStack) {
+                if (ModItems.fluidFertBasic != null && pStack.isChanceBased()) {
+                    currentTip.add(
+                            GRAY + "Outputted if " + ModItems.fluidFertBasic.getLocalizedName() + " is provided");
+                } else {
+                    super.handleNEIItemOutputTooltip(currentTip, pStack);
+                }
+                return currentTip;
+            }
+
+            @Override
+            protected void drawNEIOverlayForOutput(FixedPositionedStack stack) {}
+        }.useModularUI(true).setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+            List<String> result = new ArrayList<>();
+            if (ModItems.fluidFertBasic != null) {
+                result.add("Sapling is outputted if");
+                result.add("" + ModItems.fluidFertBasic.getLocalizedName() + " is provided.");
+                result.add("This is optional.");
+            }
+            return result;
+        });
     }
 
     public static class GTPP_Recipe_Map_ChemicalPlant extends GT_Recipe_Map {
+
+        private static final List<String> tierMaterialNames = Arrays.asList(
+                "Bronze",
+                "Steel",
+                "Aluminium",
+                "Stainless Steel",
+                "Titanium",
+                "Tungsten Steel",
+                "Laurenium",
+                "Botmium");
 
         public GTPP_Recipe_Map_ChemicalPlant(
                 Collection<GT_Recipe> aRecipeList,
@@ -866,42 +940,56 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
             setProgressBarPos(82, 24);
             setUsualFluidInputCount(4);
             setUsualFluidOutputCount(2);
+            setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+                int specialValue = recipeInfo.recipe.mSpecialValue;
+                String tierMaterial = "";
+                for (int i = 0; i < tierMaterialNames.size(); i++) {
+                    if (i == specialValue) {
+                        tierMaterial = tierMaterialNames.get(i);
+                    }
+                }
+                return Collections.singletonList(applyPrefixAndSuffix.apply(specialValue) + " - " + tierMaterial);
+            });
         }
 
         @Override
         public List<Pos2d> getItemInputPositions(int itemInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < itemInputCount; i++) {
-                results.add(new Pos2d(7 + i * 18, 6));
-            }
-            return results;
+            return UIHelper.getGridPositions(itemInputCount, 7, 6, itemInputCount, 1);
         }
 
         @Override
         public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < itemOutputCount; i++) {
-                results.add(new Pos2d(106 + (i % 2) * 18, 15 + (i / 2) * 18));
-            }
-            return results;
+            return UIHelper.getGridPositions(itemOutputCount, 106, 15, 2);
         }
 
         @Override
         public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < fluidInputCount; i++) {
-                results.add(new Pos2d(7 + i * 18, 41));
-            }
-            return results;
+            return UIHelper.getGridPositions(fluidInputCount, 7, 41, fluidInputCount, 1);
         }
 
         @Override
         public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-            List<Pos2d> results = new ArrayList<>();
-            for (int i = 0; i < fluidOutputCount; i++) {
-                results.add(new Pos2d(142, 15 + i * 18));
+            return UIHelper.getGridPositions(fluidOutputCount, 142, 15, 1, fluidOutputCount);
+        }
+
+        @Override
+        protected List<String> handleNEIItemInputTooltip(List<String> currentTip, FixedPositionedStack pStack) {
+            if (ItemUtils.isCatalyst(pStack.item)) {
+                currentTip.add(GRAY + "Does not always get consumed in the process");
+                currentTip.add(GRAY + "Higher tier pipe casings allow this item to last longer");
+            } else {
+                super.handleNEIItemInputTooltip(currentTip, pStack);
             }
-            return results;
+            return currentTip;
+        }
+
+        @Override
+        protected void drawNEIOverlayForInput(FixedPositionedStack stack) {
+            if (ItemUtils.isCatalyst(stack.item)) {
+                drawNEIOverlayText("NC*", stack);
+            } else {
+                super.drawNEIOverlayForInput(stack);
+            }
         }
     }
 }
