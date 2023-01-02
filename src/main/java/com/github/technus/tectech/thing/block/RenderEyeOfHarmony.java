@@ -13,7 +13,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
 public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
@@ -41,9 +40,9 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             if (EOHRenderTile.getOrbitingBody() != null) {
                 // Render orbiting body.
                 GL11.glPushMatrix();
-                GL11.glRotatef((0.1f*EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
+                GL11.glRotatef((0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
                 GL11.glTranslated(-1 - EOHRenderTile.getSize() * pow(1.05f, 2), 0, 0);
-                GL11.glRotatef((0.1f*EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
+                GL11.glRotatef((0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
                 renderBlockInWorld(EOHRenderTile.getOrbitingBody(), 0, 0.7f);
                 GL11.glPopMatrix();
             }

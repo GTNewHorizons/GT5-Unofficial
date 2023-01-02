@@ -14,7 +14,6 @@ import static net.minecraft.util.EnumChatFormatting.*;
 
 import appeng.util.ReadableNumberConverter;
 import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
-import com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage;
 import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
 import com.github.technus.tectech.thing.casing.TT_Block_SpacetimeCompressionFieldGenerators;
 import com.github.technus.tectech.thing.casing.TT_Block_StabilisationFieldGenerators;
@@ -1775,7 +1774,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         double xOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetX;
         double zOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = 16 * getExtendedFacing().getRelativeBackInWorld().offsetY;
 
         this.getBaseMetaTileEntity()
                 .getWorld()
@@ -1794,7 +1793,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         // Star rotates faster the higher tier time dilation you use in the multi.
         // Lower value = faster rotation speed.
-        rendererTileEntity.setRotationSpeed((1 + timeAccelerationFieldMetadata)/2.0f);
+        rendererTileEntity.setRotationSpeed((1 + timeAccelerationFieldMetadata) / 2.0f);
 
         // Colour of tier determined by star tier.
         Color colour = getStarColour((int) currentRecipe.getRocketTier());
@@ -1904,6 +1903,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
+
+        createRenderBlock();
 
         if (aTick == 1) {
             userUUID = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());

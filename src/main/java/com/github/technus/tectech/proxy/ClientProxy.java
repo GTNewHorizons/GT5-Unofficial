@@ -30,8 +30,8 @@ public class ClientProxy extends CommonProxy {
         QuantumGlassBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(QuantumGlassBlock.renderID, new QuantumGlassRender());
 
-//        QuantumStuffBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
-//        RenderingRegistry.registerBlockHandler(QuantumStuffBlock.renderID, new QuantumStuffRender());
+        //        QuantumStuffBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
+        //        RenderingRegistry.registerBlockHandler(QuantumStuffBlock.renderID, new QuantumStuffRender());
 
         MinecraftForgeClient.registerItemRenderer(
                 ElementalDefinitionContainer_EM.INSTANCE, RenderElementalName.INSTANCE);
@@ -44,7 +44,7 @@ public class ClientProxy extends CommonProxy {
             new TT_turret_loader().run();
         }
 
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEyeOfHarmony.class, new RenderEyeOfHarmony());
+        //        ClientRegistry.bindTileEntitySpecialRenderer(TileEyeOfHarmony.class, new RenderEyeOfHarmony());
     }
 
     @Override
