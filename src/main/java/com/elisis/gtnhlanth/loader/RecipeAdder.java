@@ -2,6 +2,7 @@ package com.elisis.gtnhlanth.loader;
 
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_Recipe;
+import gregtech.nei.HeatingCoilSpecialValueFormatter;
 import java.util.Collection;
 import java.util.HashSet;
 import net.minecraft.item.ItemStack;
@@ -27,8 +28,9 @@ public class RecipeAdder {
                     1,
                     "K",
                     false,
-                    false)
-            .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE);
+                    true)
+            .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
+            .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
 
     public final DissolutionTankMap DissolutionTankRecipes = (DissolutionTankMap) new DissolutionTankMap(
                     new HashSet<>(100),
@@ -45,7 +47,7 @@ public class RecipeAdder {
                     1,
                     ":1",
                     false,
-                    false)
+                    true)
             .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
             .setUsualFluidInputCount(2);
 
