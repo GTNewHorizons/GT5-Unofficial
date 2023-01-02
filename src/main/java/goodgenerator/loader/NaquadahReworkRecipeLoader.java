@@ -72,14 +72,12 @@ public class NaquadahReworkRecipeLoader {
                             enrichedNaquadahEarth.get(OrePrefixes.dust, 32),
                             Materials.Zinc.getDust(64),
                             Materials.Carbon.getDust(1),
-                            GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst)
+                            GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst)
                         },
                         new FluidStack[] {Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L)},
                         new FluidStack[] {wasteLiquid.getFluidOrGas(32000)},
                         new ItemStack[] {
-                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
-                            Materials.Trinium.getDust(64),
-                            ItemList.NaquadriaSupersolid.get(1)
+                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64), Materials.Trinium.getDust(64),
                         },
                         new int[] {3300, 3300, 3300},
                         10 * 20,
@@ -101,9 +99,10 @@ public class NaquadahReworkRecipeLoader {
                         new ItemStack[] {
                             inertNaquadria.get(OrePrefixes.dust, 64),
                             Materials.Barium.getDust(64),
-                            Materials.Indium.getDust(64)
+                            Materials.Indium.getDust(64),
+                            ItemList.NaquadriaSupersolid.get(1)
                         },
-                        new int[] {3300, 3300, 3300},
+                        new int[] {2500, 2500, 2500, 2500},
                         5 * 20,
                         (int) GT_Values.VP[12],
                         3);
