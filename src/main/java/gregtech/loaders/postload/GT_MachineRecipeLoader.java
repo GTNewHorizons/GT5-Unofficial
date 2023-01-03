@@ -449,8 +449,8 @@ public class GT_MachineRecipeLoader implements Runnable {
                 (int) (1200L * OrePrefixes.dust.mMaterialAmount / 3628800L),
                 480);
         GT_Values.RA.addMixerRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 31L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 4L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 19L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 16L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 5L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BlackSteel, 64L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BlackSteel, 16L),
