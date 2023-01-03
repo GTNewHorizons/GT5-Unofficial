@@ -204,7 +204,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
                 this.mCropCache.clear();
             }
             // Logger.INFO("Looking for crops.");
-            for (int y = 0; y <= 2; y++) {
+            for (int y = -2; y <= 2; y++) {
                 for (int x = (-aSide); x <= aSide; x++) {
                     for (int z = (-aSide); z <= aSide; z++) {
                         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(x, y, z);
@@ -505,7 +505,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
             "Secondary mode can Hydrate/Fertilize/Weed-EX",
             "Consumes " + powerUsage() + "eu per harvest",
             "Consumes " + powerUsageSecondary() + "eu per secondary operation",
-            "Can harvest 2 blocks above",
+            "Can harvest 2 blocks above and below",
             "Radius: " + aSide + " each side (" + aRadius + "x3x" + aRadius + ")",
             "Has " + (this.mTier * 5) + "% chance for extra drops",
             "Holds " + this.getCapacity() + "L of Water",
