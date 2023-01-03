@@ -25,12 +25,24 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
+import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_CropVisualizer;
+import com.github.bartimaeusnek.bartworks.common.net.EIGPacket;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,6 +50,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,12 +67,16 @@ import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
 import ic2.core.crop.TileEntityCrop;
+import java.io.IOException;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockStem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
@@ -79,10 +96,11 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
 
     private static final boolean debug = false;
     private static final int EIG_MATH_VERSION = 0;
+    private static final int CONFIGURATION_WINDOW_ID = 999;
 
     private int oldVersion = 0;
     private int mCasing = 0;
-    private int mMaxSlots = 0;
+    public int mMaxSlots = 0;
     private int setupphase = 1;
     private boolean isIC2Mode = false;
     private byte glasTier = 0;
@@ -161,18 +179,18 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             if (this.mMaxProgresstime > 0) {
-                GT_Utility.sendChatToPlayer(aPlayer, "You cant change IC2 mode if the machine is working!");
+                GT_Utility.sendChatToPlayer(aPlayer, "You can't change IC2 mode if the machine is working!");
                 return;
             }
             if (!mStorage.isEmpty()) {
-                GT_Utility.sendChatToPlayer(aPlayer, "You cant change IC2 mode if there are seeds inside!");
+                GT_Utility.sendChatToPlayer(aPlayer, "You can't change IC2 mode if there are seeds inside!");
                 return;
             }
             this.isIC2Mode = !this.isIC2Mode;
             GT_Utility.sendChatToPlayer(aPlayer, "IC2 mode is now " + (this.isIC2Mode ? "enabled" : "disabled."));
         } else {
             if (this.mMaxProgresstime > 0) {
-                GT_Utility.sendChatToPlayer(aPlayer, "You cant enable/disable setup if the machine is working!");
+                GT_Utility.sendChatToPlayer(aPlayer, "You can't enable/disable setup if the machine is working!");
                 return;
             }
             this.setupphase++;
@@ -302,8 +320,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
     }
 
     @SideOnly(Side.CLIENT)
-    public void spawnVisualCrop(World world, int x, int y, int z, int meta, int age) {
-        BW_CropVisualizer crop = new BW_CropVisualizer(world, x, y, z, meta, age);
+    public void spawnVisualCrops(World world, int x, int y, int z, int age) {
+        BW_CropVisualizer crop = new BW_CropVisualizer(world, x, y, z, age);
         Minecraft.getMinecraft().effectRenderer.addEffect(crop);
     }
 
@@ -312,24 +330,26 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide()) {
             if (aBaseMetaTileEntity.isActive() && aTick % 40 == 0) {
-                for (int x = -1; x <= 1; x++)
-                    for (int z = -1; z <= 1; z++) {
-                        if (x == 0 && z == 0) continue;
-                        int[] abc = new int[] {x, -2, z + 2};
-                        int[] xyz = new int[] {0, 0, 0};
-                        this.getExtendedFacing().getWorldOffset(abc, xyz);
-                        xyz[0] += aBaseMetaTileEntity.getXCoord();
-                        xyz[1] += aBaseMetaTileEntity.getYCoord();
-                        xyz[2] += aBaseMetaTileEntity.getZCoord();
-                        spawnVisualCrop(
-                                aBaseMetaTileEntity.getWorld(),
-                                xyz[0],
-                                xyz[1],
-                                xyz[2],
-                                aBaseMetaTileEntity.getRandomNumber(8),
-                                40);
-                    }
+                int[] abc = new int[] {0, -2, 2};
+                int[] xyz = new int[] {0, 0, 0};
+                this.getExtendedFacing().getWorldOffset(abc, xyz);
+                xyz[0] += aBaseMetaTileEntity.getXCoord();
+                xyz[1] += aBaseMetaTileEntity.getYCoord();
+                xyz[2] += aBaseMetaTileEntity.getZCoord();
+                spawnVisualCrops(aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], 40);
             }
+        }
+        if (aBaseMetaTileEntity.isServerSide()) {
+            MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
+                    aBaseMetaTileEntity.getWorld(),
+                    new EIGPacket(
+                            new Coords(
+                                    aBaseMetaTileEntity.getXCoord(),
+                                    aBaseMetaTileEntity.getYCoord(),
+                                    aBaseMetaTileEntity.getZCoord()),
+                            mMaxSlots),
+                    aBaseMetaTileEntity.getXCoord(),
+                    aBaseMetaTileEntity.getZCoord());
         }
     }
 
@@ -369,7 +389,10 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
 
             if (setupphase == 1) {
                 List<ItemStack> inputs = getStoredInputs();
-                for (ItemStack input : inputs) addCrop(input);
+                for (ItemStack input : inputs) {
+                    addCrop(input);
+                    if (mStorage.size() >= mMaxSlots) break;
+                }
             } else if (setupphase == 2) {
                 int emptySlots = 0;
                 boolean ignoreEmptiness = false;
@@ -512,6 +535,315 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
     @Override
     public boolean explodesOnComponentBreak(ItemStack itemStack) {
         return false;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    private final Function<Widget, Boolean> isFixed = widget -> getIdealStatus() == getRepairStatus() && mMachine;
+
+    private static final Function<Integer, IDrawable[]> toggleButtonBackgroundGetter = val -> {
+        if (val == 0) return new IDrawable[] {GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS};
+        else return new IDrawable[] {GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CHECKMARK};
+    };
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 4)
+                .setSize(143, 75)
+                .setEnabled(widget -> !isFixed.apply(widget)));
+
+        buildContext.addSyncedWindow(CONFIGURATION_WINDOW_ID, this::createConfigurationWindow);
+        EntityPlayer player = buildContext.getPlayer();
+
+        // Slot is not needed
+
+        builder.widget(new DynamicPositionedColumn()
+                .setSynced(false)
+                .widget(new CycleButtonWidget()
+                        .setToggle(() -> getBaseMetaTileEntity().isAllowedToWork(), works -> {
+                            if (works) getBaseMetaTileEntity().enableWorking();
+                            else getBaseMetaTileEntity().disableWorking();
+
+                            if (!(player instanceof EntityPlayerMP)) return;
+                            String tChat = GT_Utility.trans("090", "Machine Processing: ")
+                                    + (works
+                                            ? GT_Utility.trans("088", "Enabled")
+                                            : GT_Utility.trans("087", "Disabled"));
+                            if (hasAlternativeModeText()) tChat = getAlternativeModeText();
+                            GT_Utility.sendChatToPlayer(player, tChat);
+                        })
+                        .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
+                        .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
+                        .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+                        .setSize(18, 18)
+                        .addTooltip("Working status"))
+                .widget(new ButtonWidget()
+                        .setOnClick((clickData, widget) -> {
+                            if (!widget.isClient()) widget.getContext().openSyncedWindow(CONFIGURATION_WINDOW_ID);
+                        })
+                        .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                        .addTooltip("Configuration")
+                        .setSize(18, 18))
+                .setPos(151, 4));
+
+        final List<ItemStack> drawables = new ArrayList<>(mMaxSlots);
+        final int perRow = 7;
+
+        Scrollable cropsContainer = new Scrollable().setVerticalScroll();
+
+        if (mMaxSlots > 0)
+            for (int i = 0, imax = ((mMaxSlots - 1) / perRow); i <= imax; i++) {
+                DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
+                for (int j = 0, jmax = (i == imax ? (mMaxSlots - 1) % perRow : (perRow - 1)); j <= jmax; j++) {
+                    final int finalI = i * perRow;
+                    final int finalJ = j;
+                    final int ID = finalI + finalJ;
+                    row.widget(new ButtonWidget()
+                            .setOnClick((clickData, widget) -> {
+                                if (!(player instanceof EntityPlayerMP)) return;
+                                if (mStorage.size() <= ID) return;
+                                if (this.mMaxProgresstime > 0) {
+                                    GT_Utility.sendChatToPlayer(player, "Can't eject while running !");
+                                    return;
+                                }
+                                GreenHouseSlot removed = mStorage.remove(ID);
+                                addOutput(removed.input);
+                                GT_Utility.sendChatToPlayer(player, "Crop ejected !");
+                            })
+                            .setBackground(() -> new IDrawable[] {
+                                getBaseMetaTileEntity().getGUITextureSet().getItemSlot(),
+                                new ItemDrawable(drawables.size() > ID ? drawables.get(ID) : null)
+                                        .withFixedSize(16, 16, 1, 1)
+                            })
+                            .dynamicTooltip(() -> {
+                                if (drawables.size() > ID)
+                                    return Arrays.asList(
+                                            drawables.get(ID).getDisplayName(),
+                                            "Amount: " + drawables.get(ID).stackSize,
+                                            EnumChatFormatting.GRAY + "Left click to eject");
+                                return Collections.emptyList();
+                            })
+                            .setSize(18, 18));
+                }
+                cropsContainer.widget(row.setPos(0, i * 18).setEnabled(widget -> {
+                    int y = widget.getPos().y;
+                    int cy = cropsContainer.getVerticalScrollOffset();
+                    int ch = cropsContainer.getVisibleHeight();
+                    return y >= cy - ch && y <= cy + ch;
+                }));
+            }
+        cropsContainer.attachSyncer(
+                new FakeSyncWidget.ListSyncer<>(
+                        () -> mStorage.stream().map(s -> s.input).collect(Collectors.toList()),
+                        l -> {
+                            drawables.clear();
+                            drawables.addAll(l);
+                        },
+                        (buffer, i) -> {
+                            try {
+                                buffer.writeItemStackToBuffer(i);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        },
+                        buffer -> {
+                            try {
+                                return buffer.readItemStackFromBuffer();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }),
+                builder);
+
+        builder.widget(cropsContainer.setPos(10, 16).setSize(128, 60));
+
+        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
+        drawTexts(screenElements, null);
+        builder.widget(screenElements);
+    }
+
+    protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
+        ModularWindow.Builder builder = ModularWindow.builder(200, 100);
+        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
+        builder.widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                        .setPos(5, 5)
+                        .setSize(16, 16))
+                .widget(new TextWidget("Configuration").setPos(25, 9))
+                .widget(ButtonWidget.closeWindowButton(true).setPos(185, 3))
+                .widget(new Column()
+                        .widget(new CycleButtonWidget()
+                                .setLength(3)
+                                .setGetter(() -> setupphase)
+                                .setSetter(val -> {
+                                    if (!(player instanceof EntityPlayerMP)) return;
+                                    if (this.mMaxProgresstime > 0) {
+                                        GT_Utility.sendChatToPlayer(
+                                                player, "You can't enable/disable setup if the machine is working!");
+                                        return;
+                                    }
+                                    this.setupphase = val;
+                                    GT_Utility.sendChatToPlayer(
+                                            player,
+                                            "EIG is now running in "
+                                                    + (this.setupphase == 1
+                                                            ? "setup mode (input)."
+                                                            : (this.setupphase == 2
+                                                                    ? "setup mode (output)."
+                                                                    : "normal operation.")));
+                                })
+                                .addTooltip(0, new Text("Operating").color(Color.GREEN.dark(3)))
+                                .addTooltip(1, new Text("Input").color(Color.YELLOW.dark(3)))
+                                .addTooltip(2, new Text("Output").color(Color.YELLOW.dark(3)))
+                                .setVariableBackgroundGetter(i -> new IDrawable[] {
+                                    ModularUITextures.VANILLA_BACKGROUND,
+                                    GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
+                                    i == 0
+                                            ? new Text("Operating")
+                                                    .color(Color.GREEN.dark(3))
+                                                    .withFixedSize(70 - 18, 18, 15, 0)
+                                            : i == 1
+                                                    ? new Text("Input")
+                                                            .color(Color.YELLOW.dark(3))
+                                                            .withFixedSize(70 - 18, 18, 15, 0)
+                                                    : new Text("Output")
+                                                            .color(Color.YELLOW.dark(3))
+                                                            .withFixedSize(70 - 18, 18, 15, 0)
+                                })
+                                .setSize(70, 18)
+                                .addTooltip("Setup mode"))
+                        .widget(new CycleButtonWidget()
+                                .setLength(2)
+                                .setGetter(() -> isIC2Mode ? 1 : 0)
+                                .setSetter(val -> {
+                                    if (!(player instanceof EntityPlayerMP)) return;
+                                    if (this.mMaxProgresstime > 0) {
+                                        GT_Utility.sendChatToPlayer(
+                                                player, "You can't change IC2 mode if the machine is working!");
+                                        return;
+                                    }
+                                    if (!mStorage.isEmpty()) {
+                                        GT_Utility.sendChatToPlayer(
+                                                player, "You can't change IC2 mode if there are seeds inside!");
+                                        return;
+                                    }
+                                    this.isIC2Mode = val == 1;
+                                    GT_Utility.sendChatToPlayer(
+                                            player, "IC2 mode is now " + (this.isIC2Mode ? "enabled" : "disabled."));
+                                })
+                                .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
+                                .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
+                                .setVariableBackgroundGetter(i -> new IDrawable[] {
+                                    ModularUITextures.VANILLA_BACKGROUND,
+                                    GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
+                                    i == 0
+                                            ? new Text("Disabled")
+                                                    .color(Color.RED.dark(3))
+                                                    .withFixedSize(70 - 18, 18, 15, 0)
+                                            : new Text("Enabled")
+                                                    .color(Color.GREEN.dark(3))
+                                                    .withFixedSize(70 - 18, 18, 15, 0)
+                                })
+                                .setSize(70, 18)
+                                .addTooltip("IC2 mode"))
+                        .widget(new CycleButtonWidget()
+                                .setLength(2)
+                                .setGetter(() -> isNoHumidity ? 1 : 0)
+                                .setSetter(val -> {
+                                    if (!(player instanceof EntityPlayerMP)) return;
+                                    isNoHumidity = val == 1;
+                                    GT_Utility.sendChatToPlayer(
+                                            player, "Give incoming crops no humidity " + isNoHumidity);
+                                })
+                                .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
+                                .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
+                                .setVariableBackgroundGetter(i -> new IDrawable[] {
+                                    ModularUITextures.VANILLA_BACKGROUND,
+                                    GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18),
+                                    i == 0
+                                            ? new Text("Disabled")
+                                                    .color(Color.RED.dark(3))
+                                                    .withFixedSize(70 - 18, 18, 15, 0)
+                                            : new Text("Enabled")
+                                                    .color(Color.GREEN.dark(3))
+                                                    .withFixedSize(70 - 18, 18, 15, 0)
+                                })
+                                .setSize(70, 18)
+                                .addTooltip("No Humidity mode"))
+                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
+                        .setPos(10, 30))
+                .widget(new Column()
+                        .widget(new TextWidget("Setup mode").setSize(100, 18))
+                        .widget(new TextWidget("IC2 mode").setSize(100, 18))
+                        .widget(new TextWidget("No Humidity mode").setSize(100, 18))
+                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
+                        .setPos(80, 30))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                        .setSize(18, 18)
+                        .setPos(10, 30)
+                        .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
+                        .setEnabled(widget -> getBaseMetaTileEntity().isActive()));
+        return builder.build();
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        screenElements.setSynced(false).setSpace(0).setPos(10, 7);
+
+        screenElements.widget(new DynamicPositionedRow()
+                .setSynced(false)
+                .widget(new TextWidget("Status: ").setDefaultColor(COLOR_TEXT_GRAY.get()))
+                .widget(new DynamicTextWidget(() -> {
+                    if (getBaseMetaTileEntity().isActive()) return new Text("Working !").color(Color.GREEN.dark(3));
+                    else if (getBaseMetaTileEntity().isAllowedToWork())
+                        return new Text("Enabled").color(Color.GREEN.dark(3));
+                    else if (getBaseMetaTileEntity().wasShutdown())
+                        return new Text("Shutdown (CRITICAL)").color(Color.RED.dark(3));
+                    else return new Text("Disabled").color(Color.RED.dark(3));
+                }))
+                .setEnabled(isFixed));
+
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("132", "Pipe is loose."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mWrench))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("133", "Screws are loose."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mScrewdriver))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("134", "Something is stuck."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mSoftHammer))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("135", "Platings are dented."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mHardHammer))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("136", "Circuitry burned out."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mSolderingTool))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("137", "That doesn't belong there."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mCrowbar))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
+        screenElements
+                .widget(new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> !mMachine))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
     }
 
     @Override

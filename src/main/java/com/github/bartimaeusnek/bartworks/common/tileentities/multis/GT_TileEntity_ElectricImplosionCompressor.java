@@ -356,13 +356,16 @@ public class GT_TileEntity_ElectricImplosionCompressor
                     chunkCoordinates.get(0).posX,
                     chunkCoordinates.get(0).posY,
                     chunkCoordinates.get(0).posZ);
-        chunkCoordinates.forEach(c -> {
-            spawnVisualPistonBlock(aBaseMetaTileEntity.getWorld(), c.posX, c.posY, c.posZ, 10);
-        });
+        spawnVisualPistonBlocks(
+                aBaseMetaTileEntity.getWorld(),
+                chunkCoordinates.get(2).posX,
+                chunkCoordinates.get(2).posY,
+                chunkCoordinates.get(2).posZ,
+                10);
     }
 
     @SideOnly(Side.CLIENT)
-    private void spawnVisualPistonBlock(World world, int x, int y, int z, int age) {
+    private void spawnVisualPistonBlocks(World world, int x, int y, int z, int age) {
         BW_EICPistonVisualizer pistonVisualizer = new BW_EICPistonVisualizer(world, x, y, z, age);
         Minecraft.getMinecraft().effectRenderer.addEffect(pistonVisualizer);
     }

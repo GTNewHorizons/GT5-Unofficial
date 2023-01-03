@@ -6,6 +6,7 @@ import gregtech.api.GregTech_API;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -37,20 +38,49 @@ public class BW_EICPistonVisualizer extends EntityFX {
         Tessellator tessellator = Tessellator.instance;
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDepthMask(false);
-        double f11 = this.prevPosX + (this.posX - this.prevPosX) * (double) p_70539_2_ - interpPosX;
-        double f12 = this.prevPosY + (this.posY - this.prevPosY) * (double) p_70539_2_ - interpPosY;
-        double f13 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double) p_70539_2_ - interpPosZ;
 
         RenderBlocks.getInstance().blockAccess = this.worldObj;
-        tessellator.setTranslation(f11 - this.posX, f12 - this.posY, f13 - this.posZ);
         RenderBlocks.getInstance().setRenderFromInside(false);
+
+        IIcon icon = GregTech_API.sBlockMetal5.getIcon(0, 2);
+
+        double x = this.posX + 1;
+        double z = this.posZ;
+
+        double f11 = x - interpPosX;
+        double f12 = this.posY - interpPosY;
+        double f13 = z - interpPosZ;
+        tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
         RenderBlocks.getInstance()
-                .renderBlockUsingTexture(
-                        GregTech_API.sBlockMetal5,
-                        (int) this.posX,
-                        (int) this.posY,
-                        (int) this.posZ,
-                        GregTech_API.sBlockMetal5.getIcon(0, 2));
+                .renderBlockUsingTexture(GregTech_API.sBlockMetal5, (int) x, (int) this.posY, (int) z, icon);
+
+        x = this.posX - 1;
+        z = this.posZ;
+
+        f11 = x - interpPosX;
+        f13 = z - interpPosZ;
+        tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
+        RenderBlocks.getInstance()
+                .renderBlockUsingTexture(GregTech_API.sBlockMetal5, (int) x, (int) this.posY, (int) z, icon);
+
+        x = this.posX;
+        z = this.posZ + 1;
+
+        f11 = x - interpPosX;
+        f13 = z - interpPosZ;
+        tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
+        RenderBlocks.getInstance()
+                .renderBlockUsingTexture(GregTech_API.sBlockMetal5, (int) x, (int) this.posY, (int) z, icon);
+
+        x = this.posX;
+        z = this.posZ - 1;
+
+        f11 = x - interpPosX;
+        f13 = z - interpPosZ;
+        tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
+        RenderBlocks.getInstance()
+                .renderBlockUsingTexture(GregTech_API.sBlockMetal5, (int) x, (int) this.posY, (int) z, icon);
+
         tessellator.setTranslation(0d, 0d, 0d);
 
         GL11.glEnable(GL11.GL_CULL_FACE);
