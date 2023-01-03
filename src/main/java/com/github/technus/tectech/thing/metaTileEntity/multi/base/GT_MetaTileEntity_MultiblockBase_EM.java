@@ -3143,6 +3143,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             }
                         })
                         .setTextAlignment(Alignment.CenterLeft)
+                        .setFocusOnGuiOpen(true)
                         .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
                         .setPos(5, 20)
                         .setSize(90, 15))
