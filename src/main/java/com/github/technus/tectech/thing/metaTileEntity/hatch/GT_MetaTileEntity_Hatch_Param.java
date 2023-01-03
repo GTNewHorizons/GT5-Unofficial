@@ -1,6 +1,5 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import com.github.technus.tectech.TecTech;
@@ -217,9 +216,8 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
     public String[] getDescription() {
         return new String[] {
             CommonValues.TEC_MARK_GENERAL,
-            translateToLocal("gt.blockmachines.hatch.param.desc.0"), // For parametrization of Multiblocks
-            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                    + translateToLocal("gt.blockmachines.hatch.param.desc.1") + "\u00b2" // E=mine*craft
+            EnumChatFormatting.DARK_RED + "Deprecated; Now you can set parameter by clicking LED on multiblock GUI.",
+            EnumChatFormatting.DARK_RED + "If it doesn't work, try removing Parametrizer from multiblock structure.",
         };
     }
 
