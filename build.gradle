@@ -1,4 +1,4 @@
-//version: 1670779107
+//version: 1671313514
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -47,7 +47,7 @@ buildscript {
     dependencies {
         //Overwrite the current ASM version to fix shading newer than java 8 applicatations.
         classpath 'org.ow2.asm:asm-debug-all-custom:5.0.3'  
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2.11'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2.13'
     }
 }
 plugins {
@@ -280,7 +280,9 @@ minecraft {
     runDir = 'run'
 
     if (replaceGradleTokenInFile) {
-        replaceIn replaceGradleTokenInFile
+        for (f in replaceGradleTokenInFile.split(',')) {
+            replaceIn f
+        }
         if (gradleTokenModId) {
             replace gradleTokenModId, modId
         }
