@@ -251,7 +251,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     1,
                     "",
                     false,
-                    false)
+                    true)
             .useModularUI(true);
     private static final int HELIUM_NEEDED = 730000;
     private static final int powerUsage = BW_Util.getMachineVoltageFromTier(6);

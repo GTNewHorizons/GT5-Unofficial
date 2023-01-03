@@ -28,6 +28,7 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Util.specialToByte;
 import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -41,6 +42,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.nei.NEIRecipeInfo;
 import ic2.core.Ic2Items;
 import ic2.core.item.ItemFluidCell;
 import java.util.*;
@@ -126,7 +128,16 @@ public class BWRecipes {
                     true,
                     false // special handler
                     )
-            .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE);
+            .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
+            .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+                int[] tSpecialA = GT_TileEntity_BioVat.specialValueUnpack(recipeInfo.recipe.mSpecialValue);
+                return Arrays.asList(
+                        StatCollector.translateToLocal("nei.biovat.0.name") + " " + tSpecialA[0],
+                        (tSpecialA[2] == 1
+                                        ? StatCollector.translateToLocal("nei.biovat.1.name")
+                                        : StatCollector.translateToLocal("nei.biovat.2.name"))
+                                + applyPrefixAndSuffix.apply(tSpecialA[3]));
+            });
     private final GT_Recipe.GT_Recipe_Map sAcidGenFuels = new BW_Recipe_Map_LiquidFuel(
                     new HashSet<>(10),
                     "bw.fuels.acidgens",
@@ -176,8 +187,7 @@ public class BWRecipes {
             0,
             "",
             false,
-            false // special handler
-            ) {
+            true) {
         @Override
         public void addProgressBarUI(
                 ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
@@ -186,10 +196,25 @@ public class BWRecipes {
                     .setPos(new Pos2d(74, 20).add(windowOffset))
                     .setSize(29, 27));
         }
+
+        @Override
+        protected void drawNEIEnergyInfo(NEIRecipeInfo recipeInfo) {}
+
+        @Override
+        protected void drawNEIDurationInfo(NEIRecipeInfo recipeInfo) {}
     }.setSlotOverlay(false, false, BW_UITextures.OVERLAY_SLOT_ROD)
             .setLogo(BW_UITextures.PICTURE_BW_LOGO_47X21)
             .setLogoPos(118, 55)
-            .setLogoSize(47, 21);
+            .setLogoSize(47, 21)
+            .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
+                int radioLevel = recipeInfo.recipe.mEUt;
+                int amount = recipeInfo.recipe.mDuration;
+                long time = recipeInfo.recipe.mSpecialValue;
+                return Arrays.asList(
+                        StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", radioLevel),
+                        StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", amount),
+                        StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.2", time * amount / 20.0));
+            });
 
     /**
      * @param machine 0 = biolab; 1 = BacterialVat; 2 = sAcidGenFuels; 3 = circuitAssemblyLine
