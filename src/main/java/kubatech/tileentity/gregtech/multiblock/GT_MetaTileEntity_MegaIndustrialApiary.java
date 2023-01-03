@@ -496,19 +496,15 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                         ? EnumChatFormatting.DARK_RED.toString()
                         : EnumChatFormatting.GOLD.toString())
                 + mMaxSlots + EnumChatFormatting.RESET + "):");
+        HashMap<String, Integer> infos = new HashMap<>();
         for (int i = 0; i < mStorage.size(); i++) {
             StringBuilder builder = new StringBuilder();
             if (i > mMaxSlots) builder.append(EnumChatFormatting.DARK_RED);
-            builder.append("#");
-            builder.append(i);
-            builder.append(": ");
             builder.append(EnumChatFormatting.GOLD);
             builder.append(mStorage.get(i).queenStack.getDisplayName());
-            builder.append(EnumChatFormatting.GREEN);
-            mStorage.get(i).dropProgress.values().forEach(v -> builder.append(" ")
-                    .append(String.format("%d%%", (int) (v * 100d))));
-            info.add(builder.toString());
+            infos.merge(builder.toString(), 1, Integer::sum);
         }
+        infos.forEach((key, value) -> info.add("x" + value + ": " + key));
 
         return info.toArray(new String[0]);
     }
