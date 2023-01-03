@@ -11280,6 +11280,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                 1000,
                 60);
 
+        RA.addMixerRecipe(
+                new ItemStack[] {ItemList.IC2_Spray_WeedEx.get(1)},
+                new FluidStack[] {MaterialsKevlar.NaphthenicAcid.getFluid(10)},
+                new ItemStack[] {},
+                new FluidStack[] {Materials.WeedEX9000.getFluid(750)},
+                100,
+                100);
+
         this.addRecipesMay2017OilRefining();
         this.addPyrometallurgicalRecipes();
         this.addPolybenzimidazoleRecipes();
