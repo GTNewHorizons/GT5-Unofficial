@@ -180,114 +180,108 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
     }
 
     @Override
-    public final String[] getInfoData() {
+    public String[] getInfoData() {
         ArrayList<String> mInfo = new ArrayList<>();
-        try {
-            if (!this.getMetaName().equals("")) {
-                mInfo.add(this.getMetaName());
-            }
-
-            String[] extra = getExtraInfoData();
-
-            if (extra == null) {
-                extra = new String[0];
-            }
-            if (extra.length > 0) {
-                for (String s : extra) {
-                    mInfo.add(s);
-                }
-            }
-
-            long seconds = (this.mTotalRunTime / 20);
-            int weeks = (int) (TimeUnit.SECONDS.toDays(seconds) / 7);
-            int days = (int) (TimeUnit.SECONDS.toDays(seconds) - 7 * weeks);
-            long hours =
-                    TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(days) - TimeUnit.DAYS.toHours(7 * weeks);
-            long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
-            long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
-
-            mInfo.add(getMachineTooltip());
-
-            // Lets borrow the GTNH handling
-
-            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.progress") + ": " + EnumChatFormatting.GREEN
-                    + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET + " s / "
-                    + EnumChatFormatting.YELLOW
-                    + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s");
-
-            if (!this.mAllEnergyHatches.isEmpty()) {
-                long storedEnergy = getStoredEnergyInAllEnergyHatches();
-                long maxEnergy = getMaxEnergyStorageOfAllEnergyHatches();
-                mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy") + ":");
-                mInfo.add(StatCollector.translateToLocal("" + EnumChatFormatting.GREEN + Long.toString(storedEnergy)
-                        + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW + Long.toString(maxEnergy)
-                        + EnumChatFormatting.RESET + " EU"));
-
-                mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.mei") + ":");
-                mInfo.add(StatCollector.translateToLocal("" + EnumChatFormatting.YELLOW
-                        + Long.toString(getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*2A) "
-                        + StatCollector.translateToLocal("GTPP.machines.tier") + ": " + EnumChatFormatting.YELLOW
-                        + GT_Values.VN[GT_Utility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET));
-                ;
-            }
-            if (!this.mAllDynamoHatches.isEmpty()) {
-                long storedEnergy = getStoredEnergyInAllDynamoHatches();
-                long maxEnergy = getMaxEnergyStorageOfAllDynamoHatches();
-                mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy") + " In Dynamos:");
-                mInfo.add(StatCollector.translateToLocal("" + EnumChatFormatting.GREEN + Long.toString(storedEnergy)
-                        + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW + Long.toString(maxEnergy)
-                        + EnumChatFormatting.RESET + " EU"));
-            }
-
-            if (-mEUt > 0) {
-                mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.usage") + ":");
-                mInfo.add(StatCollector.translateToLocal(
-                        "" + EnumChatFormatting.RED + Integer.toString(-mEUt) + EnumChatFormatting.RESET + " EU/t"));
-            } else {
-                mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.generation") + ":");
-                mInfo.add(StatCollector.translateToLocal(
-                        "" + EnumChatFormatting.GREEN + Integer.toString(mEUt) + EnumChatFormatting.RESET + " EU/t"));
-            }
-
-            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.problems") + ": " + EnumChatFormatting.RED
-                    + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " "
-                    + StatCollector.translateToLocal("GTPP.multiblock.efficiency") + ": " + EnumChatFormatting.YELLOW
-                    + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %");
-
-            if (this.getPollutionPerSecond(null) > 0) {
-                int mPollutionReduction = getPollutionReductionForAllMufflers();
-                mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.pollution") + ": " + EnumChatFormatting.RED
-                        + this.getPollutionPerSecond(null) + EnumChatFormatting.RESET + "/sec");
-                mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced") + ": "
-                        + EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %");
-            }
-
-            if (this.mControlCoreBus.size() > 0) {
-                int tTier = this.getControlCoreTier();
-                mInfo.add(StatCollector.translateToLocal("GTPP.CC.machinetier") + ": " + EnumChatFormatting.GREEN
-                        + tTier + EnumChatFormatting.RESET);
-            }
-
-            mInfo.add(StatCollector.translateToLocal("GTPP.CC.discount") + ": " + EnumChatFormatting.GREEN
-                    + (getEuDiscountForParallelism()) + EnumChatFormatting.RESET + "%");
-
-            mInfo.add(StatCollector.translateToLocal("GTPP.CC.parallel") + ": " + EnumChatFormatting.GREEN
-                    + (getMaxParallelRecipes()) + EnumChatFormatting.RESET);
-
-            mInfo.add("Total Time Since Built: " + EnumChatFormatting.DARK_GREEN + Integer.toString(weeks)
-                    + EnumChatFormatting.RESET + " Weeks, " + EnumChatFormatting.DARK_GREEN + Integer.toString(days)
-                    + EnumChatFormatting.RESET + " Days, ");
-            mInfo.add(EnumChatFormatting.DARK_GREEN + Long.toString(hours) + EnumChatFormatting.RESET + " Hours, "
-                    + EnumChatFormatting.DARK_GREEN + Long.toString(minutes) + EnumChatFormatting.RESET + " Minutes, "
-                    + EnumChatFormatting.DARK_GREEN + Long.toString(second) + EnumChatFormatting.RESET + " Seconds.");
-            mInfo.add("Total Time in ticks: " + EnumChatFormatting.DARK_GREEN + Long.toString(this.mTotalRunTime));
-
-            String[] mInfo2 = mInfo.toArray(new String[mInfo.size()]);
-            return mInfo2;
-        } catch (Throwable t) {
-            t.printStackTrace();
+        if (!this.getMetaName().equals("")) {
+            mInfo.add(this.getMetaName());
         }
-        return new String[] {};
+
+        String[] extra = getExtraInfoData();
+
+        if (extra == null) {
+            extra = new String[0];
+        }
+        if (extra.length > 0) {
+            for (String s : extra) {
+                mInfo.add(s);
+            }
+        }
+
+        long seconds = (this.mTotalRunTime / 20);
+        int weeks = (int) (TimeUnit.SECONDS.toDays(seconds) / 7);
+        int days = (int) (TimeUnit.SECONDS.toDays(seconds) - 7 * weeks);
+        long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(days) - TimeUnit.DAYS.toHours(7 * weeks);
+        long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
+        long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
+
+        mInfo.add(getMachineTooltip());
+
+        // Lets borrow the GTNH handling
+
+        mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.progress") + ": " + EnumChatFormatting.GREEN
+                + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET + " s / "
+                + EnumChatFormatting.YELLOW
+                + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s");
+
+        if (!this.mAllEnergyHatches.isEmpty()) {
+            long storedEnergy = getStoredEnergyInAllEnergyHatches();
+            long maxEnergy = getMaxEnergyStorageOfAllEnergyHatches();
+            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy") + ":");
+            mInfo.add(StatCollector.translateToLocal("" + EnumChatFormatting.GREEN + Long.toString(storedEnergy)
+                    + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW + Long.toString(maxEnergy)
+                    + EnumChatFormatting.RESET + " EU"));
+
+            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.mei") + ":");
+            mInfo.add(StatCollector.translateToLocal("" + EnumChatFormatting.YELLOW
+                    + Long.toString(getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*2A) "
+                    + StatCollector.translateToLocal("GTPP.machines.tier") + ": " + EnumChatFormatting.YELLOW
+                    + GT_Values.VN[GT_Utility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET));
+            ;
+        }
+        if (!this.mAllDynamoHatches.isEmpty()) {
+            long storedEnergy = getStoredEnergyInAllDynamoHatches();
+            long maxEnergy = getMaxEnergyStorageOfAllDynamoHatches();
+            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy") + " In Dynamos:");
+            mInfo.add(StatCollector.translateToLocal("" + EnumChatFormatting.GREEN + Long.toString(storedEnergy)
+                    + EnumChatFormatting.RESET + " EU / " + EnumChatFormatting.YELLOW + Long.toString(maxEnergy)
+                    + EnumChatFormatting.RESET + " EU"));
+        }
+
+        if (-mEUt > 0) {
+            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.usage") + ":");
+            mInfo.add(StatCollector.translateToLocal(
+                    "" + EnumChatFormatting.RED + Integer.toString(-mEUt) + EnumChatFormatting.RESET + " EU/t"));
+        } else {
+            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.generation") + ":");
+            mInfo.add(StatCollector.translateToLocal(
+                    "" + EnumChatFormatting.GREEN + Integer.toString(mEUt) + EnumChatFormatting.RESET + " EU/t"));
+        }
+
+        mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.problems") + ": " + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " "
+                + StatCollector.translateToLocal("GTPP.multiblock.efficiency") + ": " + EnumChatFormatting.YELLOW
+                + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %");
+
+        if (this.getPollutionPerSecond(null) > 0) {
+            int mPollutionReduction = getPollutionReductionForAllMufflers();
+            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.pollution") + ": " + EnumChatFormatting.RED
+                    + this.getPollutionPerSecond(null) + EnumChatFormatting.RESET + "/sec");
+            mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced") + ": "
+                    + EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %");
+        }
+
+        if (this.mControlCoreBus.size() > 0) {
+            int tTier = this.getControlCoreTier();
+            mInfo.add(StatCollector.translateToLocal("GTPP.CC.machinetier") + ": " + EnumChatFormatting.GREEN + tTier
+                    + EnumChatFormatting.RESET);
+        }
+
+        mInfo.add(StatCollector.translateToLocal("GTPP.CC.discount") + ": " + EnumChatFormatting.GREEN
+                + (getEuDiscountForParallelism()) + EnumChatFormatting.RESET + "%");
+
+        mInfo.add(StatCollector.translateToLocal("GTPP.CC.parallel") + ": " + EnumChatFormatting.GREEN
+                + (getMaxParallelRecipes()) + EnumChatFormatting.RESET);
+
+        mInfo.add("Total Time Since Built: " + EnumChatFormatting.DARK_GREEN + Integer.toString(weeks)
+                + EnumChatFormatting.RESET + " Weeks, " + EnumChatFormatting.DARK_GREEN + Integer.toString(days)
+                + EnumChatFormatting.RESET + " Days, ");
+        mInfo.add(EnumChatFormatting.DARK_GREEN + Long.toString(hours) + EnumChatFormatting.RESET + " Hours, "
+                + EnumChatFormatting.DARK_GREEN + Long.toString(minutes) + EnumChatFormatting.RESET + " Minutes, "
+                + EnumChatFormatting.DARK_GREEN + Long.toString(second) + EnumChatFormatting.RESET + " Seconds.");
+        mInfo.add("Total Time in ticks: " + EnumChatFormatting.DARK_GREEN + Long.toString(this.mTotalRunTime));
+
+        String[] mInfo2 = mInfo.toArray(new String[mInfo.size()]);
+        return mInfo2;
     }
 
     public int getPollutionReductionForAllMufflers() {

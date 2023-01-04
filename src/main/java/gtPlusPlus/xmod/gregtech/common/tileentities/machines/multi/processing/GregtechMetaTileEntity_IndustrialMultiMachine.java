@@ -26,11 +26,13 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -501,6 +503,22 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine
                 (mInternalMode == 0 ? "Metal" : mInternalMode == 1 ? "Fluid" : mInternalMode == 2 ? "Misc." : "null");
         PlayerUtils.messagePlayer(aPlayer, "Multi-Machine is now in " + mModeString + " mode.");
         mLastRecipe = null;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        String[] data = super.getInfoData();
+        ArrayList<String> mInfo = new ArrayList<>(Arrays.asList(data));
+        String mode;
+        if (mInternalMode == 0) {
+            mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.metal");
+        } else if (mInternalMode == 1) {
+            mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.fluid");
+        } else {
+            mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.misc");
+        }
+        mInfo.add(mode);
+        return mInfo.toArray(new String[mInfo.size()]);
     }
 
     @Override
