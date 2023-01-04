@@ -11334,15 +11334,19 @@ public class GT_MachineRecipeLoader implements Runnable {
                     900,
                     1920);
             // C6H6 + HNO3 =H2SO4= C6H5NO2 + H2O
-            GT_Values.RA.addChemicalRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitrationMixture, 10),
-                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Benzene, 5),
-                    Materials.Water.getFluid(10000),
-                    Materials.DilutedSulfuricAcid.getFluid(5000),
-                    GT_ModHandler.getModItem("miscutils", "nitrobenzene", 5L),
-                    ItemList.Cell_Empty.get(10L),
-                    200,
-                    1920);
+			GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
+                    new FluidStack[] {
+                        Materials.Benzene.getFluid(5000),
+						Materials.SulfuricAcid.getFluid(3000),
+						Materials.NitricAcid.getFluid(5000),
+                        GT_ModHandler.getDistilledWater(10000)
+                    },
+                    new FluidStack[] {new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 5000), 
+                    Materials.DilutedSulfuricAcid.getFluid(3000)},
+                    null,
+                    100,
+                    7680);
             // C13H14N2(HCl) + 2COCl2 = C15H10N2O2(5HCl)
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
