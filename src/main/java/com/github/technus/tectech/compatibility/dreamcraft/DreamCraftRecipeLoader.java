@@ -3383,6 +3383,73 @@ public class DreamCraftRecipeLoader {
                 1000,
                 128_000_000);
 
+        // UXV Dynamo/energy hatch
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                getItemContainer("Hatch_Energy_UMV").get(1L),
+                384000,
+                256,
+                800000,
+                32,
+                new Object[] {
+                        getItemContainer("Hull_UMV").get(4L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUMV, 4L),
+                        ItemList.Circuit_Chip_QPIC.get(16L),
+                        getItemContainer("QuantumCircuit").get(2),
+                        ItemList.UHV_Coil.get(32L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Electric_Pump_UMV.get(4L)
+                },
+                new FluidStack[] {
+                        Materials.SuperCoolant.getFluid(64_000L),
+                        new FluidStack(solderUEV, 80 * 144),
+                        Materials.UUMatter.getFluid(64000L)
+                },
+                getItemContainer("Hatch_Energy_UXV").get(1L),
+                1000,
+                512_000_000);
+
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                getItemContainer("Hatch_Dynamo_UMV").get(1L),
+                384000,
+                256,
+                800000,
+                32,
+                new Object[] {
+                        getItemContainer("Hull_UMV").get(4L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUMVBase, 16L),
+                        ItemList.Circuit_Chip_QPIC.get(16L),
+                        getItemContainer("QuantumCircuit").get(2),
+                        ItemList.UHV_Coil.get(32L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Reactor_Coolant_Sp_6.get(1L),
+                        ItemList.Electric_Pump_UMV.get(4L)
+                },
+                new FluidStack[] {
+                        Materials.SuperCoolant.getFluid(64_000L),
+                        new FluidStack(solderUEV, 80 * 144),
+                        Materials.UUMatter.getFluid(64000L)
+                },
+                getItemContainer("Hatch_Dynamo_UXV").get(1L),
+                1000,
+                512_000_000);
+
         // UHV Circuit Wetwaremainframe
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Circuit_Wetwaresupercomputer.get(1L),
@@ -5740,7 +5807,8 @@ public class DreamCraftRecipeLoader {
             ItemList.Hatch_Energy_MAX.get(1),
             getItemContainer("Hatch_Energy_UEV").get(1L),
             getItemContainer("Hatch_Energy_UIV").get(1L),
-            getItemContainer("Hatch_Energy_UMV").get(1L)
+            getItemContainer("Hatch_Energy_UMV").get(1L),
+            getItemContainer("Hatch_Energy_UXV").get(1L)
         };
 
         ItemStack[] dynamo_hatches = {
@@ -5756,7 +5824,8 @@ public class DreamCraftRecipeLoader {
             ItemList.Hatch_Dynamo_MAX.get(1),
             getItemContainer("Hatch_Dynamo_UEV").get(1L),
             getItemContainer("Hatch_Dynamo_UIV").get(1L),
-            getItemContainer("Hatch_Dynamo_UMV").get(1L)
+            getItemContainer("Hatch_Dynamo_UMV").get(1L),
+            getItemContainer("Hatch_Dynamo_UXV").get(1L)
         };
 
         Object[] circuits_tier_plus_two = {
@@ -5790,6 +5859,7 @@ public class DreamCraftRecipeLoader {
             ItemList.Wireless_Hatch_Energy_UEV.get(1),
             ItemList.Wireless_Hatch_Energy_UIV.get(1),
             ItemList.Wireless_Hatch_Energy_UMV.get(1),
+            ItemList.Wireless_Hatch_Energy_UXV.get(1),
         };
 
         ItemStack[] wireless_dynamos = {
@@ -5806,6 +5876,7 @@ public class DreamCraftRecipeLoader {
             ItemList.Wireless_Dynamo_Energy_UEV.get(1),
             ItemList.Wireless_Dynamo_Energy_UIV.get(1),
             ItemList.Wireless_Dynamo_Energy_UMV.get(1),
+            ItemList.Wireless_Dynamo_Energy_UXV.get(1),
         };
 
         // ------------------------ Wireless EU hatches ------------------------
