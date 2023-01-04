@@ -1467,10 +1467,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 aColor);
         mExtraData = aExtraData;
         mMaterialList.addAll(aMaterialList);
-        mChemicalFormula = mMaterialList.stream()
-                .map(MaterialStack::toString)
-                .collect(Collectors.joining())
-                .replaceAll("_", "-");
+        if (mMaterialList.size() == 1) mChemicalFormula = mMaterialList.get(0).toString(true);
+        else
+            mChemicalFormula = mMaterialList.stream()
+                    .map(MaterialStack::toString)
+                    .collect(Collectors.joining())
+                    .replaceAll("_", "-");
 
         int tAmountOfComponents = 0, tMeltingPoint = 0;
         for (MaterialStack tMaterial : mMaterialList) {
