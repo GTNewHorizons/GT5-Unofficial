@@ -40,25 +40,17 @@ public class MaterialStack implements Cloneable {
 
     @Override
     public String toString() {
-        String temp1 = "", temp2 = mMaterial.getToolTip(true), temp3 = "", temp4 = "";
-        if (mAmount > 1) {
-            temp4 = GT_Utility.toSubscript(mAmount);
-        }
-        if (mMaterial.mMaterialList.size() > 1 || isMaterialListComplex(this)) {
-            temp1 = "(";
-            temp3 = ")";
-        }
-        return temp1 + temp2 + temp3 + temp4;
+        return toString(false);
     }
 
-    public String toStringSingle() {
+    public String toString(boolean single) {
         String temp1 = "", temp2 = mMaterial.getToolTip(true), temp3 = "", temp4 = "";
         if (mAmount > 1) {
             temp4 = GT_Utility.toSubscript(mAmount);
-            if (mMaterial.mMaterialList.size() > 1 || isMaterialListComplex(this)) {
-                temp1 = "(";
-                temp3 = ")";
-            }
+        }
+        if ((!single || mAmount > 1) && isMaterialListComplex(this)) {
+            temp1 = "(";
+            temp3 = ")";
         }
         return temp1 + temp2 + temp3 + temp4;
     }

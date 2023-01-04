@@ -1467,7 +1467,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 aColor);
         mExtraData = aExtraData;
         mMaterialList.addAll(aMaterialList);
-        if (mMaterialList.size() == 1) mChemicalFormula = mMaterialList.get(0).toStringSingle();
+        if (mMaterialList.size() == 1) mChemicalFormula = mMaterialList.get(0).toString(true);
         else
             mChemicalFormula = mMaterialList.stream()
                     .map(MaterialStack::toString)
