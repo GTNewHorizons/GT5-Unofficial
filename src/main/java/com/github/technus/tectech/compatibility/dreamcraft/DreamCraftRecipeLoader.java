@@ -5843,6 +5843,8 @@ public class DreamCraftRecipeLoader {
             new Object[] {OrePrefixes.circuit.get(Materials.Quantum), 1L}, // UXV
             new Object[] {OrePrefixes.circuit.get(Materials.Quantum), 4L
             }, // MAX (Technically not MAX, can be changed once MAX circuits become craftable)
+            new Object[] {OrePrefixes.circuit.get(Materials.Quantum), 16L
+            }, // MAX (Technically not MAX, can be changed once MAX circuits become craftable)
         };
 
         ItemStack[] wireless_hatches = {
