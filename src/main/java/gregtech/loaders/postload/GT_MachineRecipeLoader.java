@@ -11347,8 +11347,8 @@ public class GT_MachineRecipeLoader implements Runnable {
                         Materials.DilutedSulfuricAcid.getFluid(3000)
                     },
                     null,
-                    100,
-                    7680);
+                    8,
+                    122880);
             // C13H14N2(HCl) + 2COCl2 = C15H10N2O2(5HCl)
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
