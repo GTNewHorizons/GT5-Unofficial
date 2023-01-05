@@ -3245,7 +3245,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             if (!widget.isClient()
                     && input
                     && parametrization.eParamsInStatus[parameterIndex] != LedStatus.STATUS_UNUSED)
-                widget.getContext().openSyncedWindow(LED_WINDOW_BASE_ID + parameterIndex);
+                // We don't use CloseAllButMain here in case MB implementation adds their own window
+                for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
+                    widget.getContext().closeWindow(LED_WINDOW_BASE_ID + i);
+                }
+            widget.getContext().openSyncedWindow(LED_WINDOW_BASE_ID + parameterIndex);
         });
         builder.widget(ledWidget
                 .dynamicTooltip(() -> {
