@@ -3,8 +3,12 @@ package gregtech.common.render.items;
 import static gregtech.common.render.GT_RenderUtil.colorGTItem;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 
+import codechicken.lib.render.TextureUtils;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_RenderUtil;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -13,6 +17,7 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -40,11 +45,11 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
 
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
-
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL_DEPTH_TEST); // This one means that items don't render through walls.
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
         RenderHelper.enableGUIStandardItemLighting();
 
-        GL11.glEnable(GL_DEPTH_TEST); // This one means that items don't render through walls.
 
         // Ideally this magic haloColour number should scale depending on the # of transparent pixels,
         // but I'm not sure how to determine this with OpenGL.
@@ -100,6 +105,5 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
 
 
         GL11.glPopMatrix();
-//        GL11.glEnable(GL11.GL_ALPHA_TEST);
     }
 }

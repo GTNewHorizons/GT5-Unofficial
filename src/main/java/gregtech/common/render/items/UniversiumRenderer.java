@@ -1,10 +1,9 @@
 package gregtech.common.render.items;
 
-import fox.spiteful.avaritia.items.ItemResource;
-import fox.spiteful.avaritia.items.LudicrousItems;
+import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
+import gregtech.common.render.GT_RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -16,11 +15,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
 
 public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
+
+    private static final float cosmicOpacity = 2.5f;
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -32,15 +36,15 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         return helper == ItemRendererHelper.ENTITY_ROTATION || helper == ItemRendererHelper.ENTITY_BOBBING;
     }
 
+//    @Override
+//    public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
+//
+//    }
+
     @Override
     public void renderItem(ItemRenderType type, ItemStack tmpTtem, Object... data) {
 
-        int spread = 4;
-
         IIcon tIcon = getTrueIcon(tmpTtem);
-
-//        IIcon halo = ((ItemResource) LudicrousItems.resource).halo[0];
-//        int haloColour = -16777216;
 
         RenderItem r = RenderItem.getInstance();
         Minecraft mc = Minecraft.getMinecraft();
@@ -51,7 +55,6 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         switch (type) {
             case ENTITY: {
                 GL11.glPushMatrix();
-//                GL11.glTranslatef(-0.5F, 0F, 0F);
                 if (tmpTtem.isOnItemFrame()) GL11.glTranslatef(0F, -0.3F, 0.01F);
                 render(tmpTtem, null);
                 GL11.glPopMatrix();
@@ -100,11 +103,11 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-                CosmicRenderStuffs.cosmicOpacity = 1.0f;
+                CosmicRenderStuffs.cosmicOpacity = cosmicOpacity;
                 CosmicRenderStuffs.inventoryRender = true;
                 CosmicRenderStuffs.useShader();
 
-                GL11.glColor4d(1, 1, 1, 1);
+                GL11.glColor4d(0, 1, 1, 1);
 
                 float minu = tIcon.getMinU();
                 float maxu = tIcon.getMaxU();
@@ -169,7 +172,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDepthFunc(GL11.GL_EQUAL);
-        CosmicRenderStuffs.cosmicOpacity = 1.0f;
+        CosmicRenderStuffs.cosmicOpacity = cosmicOpacity;
         CosmicRenderStuffs.useShader();
 
         IIcon cosmicIcon = getTrueIcon(item);
@@ -256,4 +259,6 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
         return aIconContainer.getIcon();
     }
+
+
 }
