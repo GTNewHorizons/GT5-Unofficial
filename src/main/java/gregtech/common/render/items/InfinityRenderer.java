@@ -1,13 +1,22 @@
 package gregtech.common.render.items;
 
+import codechicken.lib.render.TextureUtils;
 import gregtech.api.enums.Textures;
 import java.util.Random;
+
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.render.GT_RenderUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -17,6 +26,57 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return type == ItemRenderType.INVENTORY;
+    }
+
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
+        short aMetaData = (short) aStack.getItemDamage();
+        GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
+
+        IIconContainer aIconContainer = aItem.getIconContainer(aMetaData);
+
+        if (aIconContainer == null) {
+            return;
+        }
+
+        IIcon tIcon = aIconContainer.getIcon();
+        IIcon tOverlay = aIconContainer.getOverlayIcon();
+        FluidStack aFluid = GT_Utility.getFluidForFilledItem(aStack, true);
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+
+        if (tOverlay != null) {
+            GL11.glColor3f(1.0F, 1.0F, 1.0F);
+            TextureUtils.bindAtlas(aItem.getSpriteNumber());
+            if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+                GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+            } else {
+                ItemRenderer.renderItemIn2D(
+                    Tessellator.instance,
+                    tOverlay.getMaxU(),
+                    tOverlay.getMinV(),
+                    tOverlay.getMinU(),
+                    tOverlay.getMaxV(),
+                    tOverlay.getIconWidth(),
+                    tOverlay.getIconHeight(),
+                    0.0625F);
+            }
+        }
+
+        GL11.glDisable(GL11.GL_BLEND);
+
+        if (tIcon != null) {
+            renderRegularItem(type, aStack, tIcon, aFluid == null);
+        }
+
+        renderHalo(type, aStack, tIcon, aFluid == null);
+
+    }
+
+    private void renderHalo(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
+
     }
 
     @Override
