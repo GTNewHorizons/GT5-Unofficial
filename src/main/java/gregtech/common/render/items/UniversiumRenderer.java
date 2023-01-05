@@ -3,6 +3,7 @@ package gregtech.common.render.items;
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -42,7 +43,57 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 //    }
 
     @Override
-    public void renderItem(ItemRenderType type, ItemStack tmpTtem, Object... data) {
+    public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
+        short aMetaData = (short) aStack.getItemDamage();
+        GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
+
+        IIconContainer aIconContainer = aItem.getIconContainer(aMetaData);
+
+        if (aIconContainer == null) {
+            return;
+        }
+
+        IIcon tIcon = aIconContainer.getIcon();
+        IIcon tOverlay = aIconContainer.getOverlayIcon();
+        FluidStack aFluid = GT_Utility.getFluidForFilledItem(aStack, true);
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+
+        if (tIcon != null) {
+            magicRenderMethod(type, aStack, data);
+        }
+
+//        if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
+//            IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
+//            if (fluidIcon != null) {
+//                renderContainedFluid(type, aFluid, fluidIcon);
+//            }
+//        }
+
+        if (tOverlay != null) {
+            GL11.glColor3f(1.0F, 1.0F, 1.0F);
+            TextureUtils.bindAtlas(aItem.getSpriteNumber());
+            if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+                GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+            } else {
+                ItemRenderer.renderItemIn2D(
+                    Tessellator.instance,
+                    tOverlay.getMaxU(),
+                    tOverlay.getMinV(),
+                    tOverlay.getMinU(),
+                    tOverlay.getMaxV(),
+                    tOverlay.getIconWidth(),
+                    tOverlay.getIconHeight(),
+                    0.0625F);
+            }
+        }
+
+        GL11.glDisable(GL11.GL_BLEND);
+    }
+
+    public void magicRenderMethod(ItemRenderType type, ItemStack tmpTtem, Object... data) {
 
         IIcon tIcon = getTrueIcon(tmpTtem);
 
