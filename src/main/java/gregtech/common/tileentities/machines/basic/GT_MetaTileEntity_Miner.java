@@ -3,6 +3,8 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugBlockMiner;
 
+import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -438,14 +440,13 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
         return true;
     }
 
+    private static final FallbackableUITexture progressBarTexture = new FallbackableUITexture(
+            UITexture.fullImage("gregtech", "gui/progressbar/miner"), GT_UITextures.PROGRESSBAR_CANNER);
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(createProgressBar(
-                GT_UITextures.PROGRESSBAR_CANNER,
-                20,
-                ProgressBar.Direction.RIGHT,
-                new Pos2d(78, 24),
-                new Size(20, 18)));
+                progressBarTexture.get(), 20, ProgressBar.Direction.RIGHT, new Pos2d(78, 24), new Size(20, 18)));
     }
 }

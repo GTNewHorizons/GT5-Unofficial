@@ -3402,6 +3402,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return progressBarTexture.get();
         }
 
+        public FallbackableUITexture getProgressBarTextureRaw() {
+            return progressBarTexture;
+        }
+
         public UITexture getProgressBarTextureSteam(SteamVariant steamVariant) {
             return progressBarTextureSteam.get(steamVariant);
         }
