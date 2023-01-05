@@ -3935,6 +3935,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                             'C',
                             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING
                         })
+                .setProgressBarTextureName("E_Furnace")
                 .getStackForm(1L));
         ItemList.Machine_MV_E_Furnace.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                         262,
@@ -3967,6 +3968,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                             'C',
                             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING
                         })
+                .setProgressBarTextureName("E_Furnace")
                 .getStackForm(1L));
         ItemList.Machine_HV_E_Furnace.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                         263,
@@ -3999,6 +4001,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                             'C',
                             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING
                         })
+                .setProgressBarTextureName("E_Furnace")
                 .getStackForm(1L));
         ItemList.Machine_EV_E_Furnace.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                         264,
@@ -4031,6 +4034,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                             'C',
                             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING
                         })
+                .setProgressBarTextureName("E_Furnace")
                 .getStackForm(1L));
         ItemList.Machine_IV_E_Furnace.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                         265,
@@ -4063,6 +4067,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                             'C',
                             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING
                         })
+                .setProgressBarTextureName("E_Furnace")
                 .getStackForm(1L));
 
         ItemList.Machine_LV_Extractor.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -10856,6 +10861,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                             'C',
                             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING
                         })
+                .setProgressBarTextureName("E_Oven")
                 .getStackForm(1L));
         ItemList.Machine_MV_Oven.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                         672,
@@ -10888,6 +10894,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                             'C',
                             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING
                         })
+                .setProgressBarTextureName("E_Oven")
                 .getStackForm(1L));
         ItemList.Machine_HV_Oven.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                         673,
@@ -10920,6 +10927,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                             'C',
                             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING
                         })
+                .setProgressBarTextureName("E_Oven")
                 .getStackForm(1L));
         ItemList.Machine_EV_Oven.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                         674,
@@ -10952,6 +10960,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                             'C',
                             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING
                         })
+                .setProgressBarTextureName("E_Oven")
                 .getStackForm(1L));
         ItemList.Machine_IV_Oven.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                         675,
@@ -10984,6 +10993,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                             'C',
                             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING
                         })
+                .setProgressBarTextureName("E_Oven")
                 .getStackForm(1L));
 
         ItemList.Machine_LV_Miner.set(
