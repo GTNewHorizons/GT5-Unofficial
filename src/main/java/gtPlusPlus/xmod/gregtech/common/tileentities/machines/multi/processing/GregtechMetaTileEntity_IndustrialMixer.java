@@ -89,7 +89,7 @@ public class GregtechMetaTileEntity_IndustrialMixer
                 .addSeparator()
                 .beginStructureBlock(3, 4, 3, false)
                 .addController("Second Layer Center")
-                .addCasingInfo(mCasingName, 16)
+                .addCasingInfo(mCasingName, 6)
                 .addCasingInfo(mCasingName2, 2)
                 .addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1)
@@ -140,7 +140,7 @@ public class GregtechMetaTileEntity_IndustrialMixer
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 2, 0) && mCasing >= 16 && checkHatch();
+        return checkPiece(mName, 1, 2, 0) && mCasing >= 6 && checkHatch();
     }
 
     @Override
