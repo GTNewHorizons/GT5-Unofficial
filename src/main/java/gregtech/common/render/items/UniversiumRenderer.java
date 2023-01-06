@@ -55,22 +55,10 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
         IIcon tIcon = aIconContainer.getIcon();
         IIcon tOverlay = aIconContainer.getOverlayIcon();
-        FluidStack aFluid = GT_Utility.getFluidForFilledItem(aStack, true);
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
-
-        if (tIcon != null) {
-            magicRenderMethod(type, aStack, data);
-        }
-
-//        if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
-//            IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
-//            if (fluidIcon != null) {
-//                renderContainedFluid(type, aFluid, fluidIcon);
-//            }
-//        }
 
         if (tOverlay != null) {
             GL11.glColor3f(1.0F, 1.0F, 1.0F);
@@ -91,6 +79,10 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         }
 
         GL11.glDisable(GL11.GL_BLEND);
+
+        if (tIcon != null) {
+            magicRenderMethod(type, aStack, data);
+        }
     }
 
     public void magicRenderMethod(ItemRenderType type, ItemStack tmpTtem, Object... data) {
@@ -289,7 +281,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 break;
             }
             case INVENTORY: {
-                CosmicRenderStuffs.setLightLevel(1.2f);
+                CosmicRenderStuffs.setLightLevel(10.2f);
                 return;
             }
             default: {
