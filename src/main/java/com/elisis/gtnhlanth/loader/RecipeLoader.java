@@ -1238,9 +1238,6 @@ public class RecipeLoader {
                                         tRecipe.mOutputs[i].stackSize * 2,
                                         WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
                                 modified = true;
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Lanthanum.getDust(1))) {
-                                tRecipe.mOutputs[i] = null;
-                                modified = true;
                             }
                         }
                         if (modified) {
