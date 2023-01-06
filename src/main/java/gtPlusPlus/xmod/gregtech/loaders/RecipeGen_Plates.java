@@ -9,6 +9,7 @@ import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,6 +46,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         final ItemStack plate_SingleNine = material.getPlate(9);
         final ItemStack plate_Double = material.getPlateDouble(1);
         final ItemStack plate_Dense = material.getPlateDense(1);
+        final ItemStack foil_SingleFour = material.getFoil(4);
         final ItemStack block = material.getBlock(1);
 
         Logger.WARNING("Generating Plate recipes for " + material.getLocalizedName());
@@ -66,6 +68,17 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     ingotStackOne,
                     plate_Single,
                     (int) Math.max(material.getMass() * 1L, 1L),
+                    material.vVoltageMultiplier)) {
+                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+            } else {
+                Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
+            }
+        if (ItemUtils.checkForInvalidItems(ingotStackOne) && ItemUtils.checkForInvalidItems(foil_SingleFour))
+            if (addBenderRecipe(
+                    ingotStackOne,
+                    CI.getNumberedCircuit(10),
+                    foil_SingleFour,
+                    (int) Math.max(material.getMass() * 2L, 1L),
                     material.vVoltageMultiplier)) {
                 Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
             } else {
@@ -162,6 +175,15 @@ public class RecipeGen_Plates extends RecipeGen_Base {
     public static boolean addBenderRecipe(
             final ItemStack aInput1, final ItemStack aOutput1, int aDuration, final int aEUt) {
         return GT_Values.RA.addBenderRecipe(aInput1, aOutput1, aDuration, aEUt);
+    }
+
+    public static boolean addBenderRecipe(
+            final ItemStack aInput1,
+            final ItemStack aCircuit,
+            final ItemStack aOutput1,
+            int aDuration,
+            final int aEUt) {
+        return GT_Values.RA.addBenderRecipe(aInput1, aCircuit, aOutput1, aDuration, aEUt);
     }
 
     public static boolean addExtruderRecipe(
