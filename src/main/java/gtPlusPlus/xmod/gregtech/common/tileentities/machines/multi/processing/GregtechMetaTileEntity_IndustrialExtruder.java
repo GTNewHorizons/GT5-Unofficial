@@ -67,7 +67,7 @@ public class GregtechMetaTileEntity_IndustrialExtruder
                 .addSeparator()
                 .beginStructureBlock(3, 3, 5, true)
                 .addController("Front Center")
-                .addCasingInfo("Inconel Reinforced Casings", 28)
+                .addCasingInfo("Inconel Reinforced Casings", 14)
                 .addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1)
                 .addEnergyHatch("Any Casing", 1)
@@ -113,7 +113,7 @@ public class GregtechMetaTileEntity_IndustrialExtruder
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 28 && checkHatch();
+        return checkPiece(mName, 1, 1, 0) && mCasing >= 14 && checkHatch();
     }
 
     @Override
