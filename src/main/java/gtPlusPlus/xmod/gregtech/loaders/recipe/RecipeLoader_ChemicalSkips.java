@@ -319,7 +319,7 @@ public class RecipeLoader_ChemicalSkips {
                     Materials.Osmiridium.getDust(64),
                     Materials.Carbon.getNanite(64)
                 },
-                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(1440),
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 1),
                 60 * 20,
                 (int) GT_Values.VP[9]);
@@ -332,7 +332,7 @@ public class RecipeLoader_ChemicalSkips {
                     Materials.Polytetrafluoroethylene.getDust(64),
                     Materials.Carbon.getNanite(64)
                 },
-                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(1440),
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mPlasticPolymerCatalyst, 1),
                 60 * 20,
                 (int) GT_Values.VP[9]);
@@ -345,7 +345,7 @@ public class RecipeLoader_ChemicalSkips {
                     Materials.StyreneButadieneRubber.getDust(64),
                     Materials.Carbon.getNanite(64)
                 },
-                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(1440),
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mRubberPolymerCatalyst, 1),
                 60 * 20,
                 (int) GT_Values.VP[9]);
@@ -358,7 +358,7 @@ public class RecipeLoader_ChemicalSkips {
                     MISC_MATERIALS.ETHYL_CYANOACRYLATE.getCell(64),
                     Materials.Carbon.getNanite(64)
                 },
-                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(1440),
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mAdhesionPromoterCatalyst, 1),
                 60 * 20,
                 (int) GT_Values.VP[9]);
@@ -371,7 +371,7 @@ public class RecipeLoader_ChemicalSkips {
                     Materials.Indium.getDust(64),
                     Materials.Carbon.getNanite(64)
                 },
-                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(1440),
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mTitaTungstenIndiumCatalyst, 1),
                 60 * 20,
                 (int) GT_Values.VP[9]);
@@ -384,7 +384,7 @@ public class RecipeLoader_ChemicalSkips {
                     ELEMENT.getInstance().PLUTONIUM241.getDust(64),
                     Materials.Carbon.getNanite(64)
                 },
-                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(1440),
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
                 ItemUtils.getSimpleStack(GenericChem.mRadioactivityCatalyst, 1),
                 60 * 20,
                 (int) GT_Values.VP[9]);
@@ -483,8 +483,8 @@ public class RecipeLoader_ChemicalSkips {
                 new FluidStack[] {
                     Materials.Thulium.getMolten(144 * 10),
                     Materials.ExcitedDTCC.getFluid(5000),
-                    new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 1000 * 10),
-                    new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 1000 * 10)
+                    new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 500),
+                    new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 500)
                 },
                 GregtechItemList.NeutronPulseManipulator.get(1),
                 60 * 20,
@@ -508,8 +508,8 @@ public class RecipeLoader_ChemicalSkips {
                 new FluidStack[] {
                     Materials.Thulium.getMolten(144 * 12),
                     Materials.ExcitedDTPC.getFluid(5000),
-                    new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 1200 * 10),
-                    new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 1200 * 10)
+                    new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 2500),
+                    new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 2500)
                 },
                 GregtechItemList.CosmicFabricManipulator.get(1),
                 75 * 20,
@@ -533,8 +533,8 @@ public class RecipeLoader_ChemicalSkips {
                 new FluidStack[] {
                     Materials.Thulium.getMolten(144 * 15),
                     Materials.ExcitedDTRC.getFluid(5000),
-                    new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 1500 * 10),
-                    new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 1500 * 10)
+                    new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 1000 * 10),
+                    new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 1000 * 10)
                 },
                 GregtechItemList.InfinityInfusedManipulator.get(1),
                 90 * 20,
