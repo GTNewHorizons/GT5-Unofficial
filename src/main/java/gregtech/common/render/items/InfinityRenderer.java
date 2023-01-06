@@ -47,6 +47,11 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
+
+        GL11.glDisable(GL11.GL_BLEND);
+
+        renderHalo();
+
         if (tOverlay != null) {
             GL11.glColor3f(1.0F, 1.0F, 1.0F);
             TextureUtils.bindAtlas(aItem.getSpriteNumber());
@@ -65,23 +70,15 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
             }
         }
 
-        GL11.glDisable(GL11.GL_BLEND);
 
         if (tIcon != null) {
             renderRegularItem(type, aStack, tIcon, aFluid == null);
         }
 
-        renderHalo(type, aStack, tIcon, aFluid == null);
-
     }
 
-    private void renderHalo(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
-
-    }
-
-    @Override
-    public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
-
+    private void renderHalo() {
+        GL11.glPushMatrix();
         IIcon halo = Textures.ItemIcons.HALO.getIcon();
 
         int spread = 10;
@@ -91,11 +88,8 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
             return;
         }
 
-        RenderItem r = RenderItem.getInstance();
-        Minecraft mc = Minecraft.getMinecraft();
         Tessellator t = Tessellator.instance;
 
-        GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.enableGUIStandardItemLighting();
@@ -111,6 +105,23 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
         t.addVertexWithUV(16 + spread, 16 + spread, 0, halo.getMaxU(), halo.getMaxV());
         t.addVertexWithUV(16 + spread, -spread, 0, halo.getMaxU(), halo.getMinV());
         t.draw();
+        GL11.glPopMatrix();
+    }
+
+    @Override
+    public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
+
+        RenderItem r = RenderItem.getInstance();
+        Minecraft mc = Minecraft.getMinecraft();
+        Tessellator t = Tessellator.instance;
+
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        RenderHelper.enableGUIStandardItemLighting();
+
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
 
         GL11.glPushMatrix();
         double scale = (rand.nextGaussian() * 0.15) + 0.95;
@@ -138,6 +149,8 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
         r.renderWithColor = true;
 
         GL11.glDisable(GL11.GL_BLEND);
+        RenderHelper.enableGUIStandardItemLighting();
+
         GL11.glPopMatrix();
     }
 }
