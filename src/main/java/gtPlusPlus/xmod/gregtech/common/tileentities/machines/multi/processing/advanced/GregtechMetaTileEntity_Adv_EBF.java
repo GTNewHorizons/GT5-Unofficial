@@ -81,7 +81,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
                 .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
                 .addController("Bottom center")
-                .addCasingInfo(mCasingName, 9)
+                .addCasingInfo(mCasingName, 8)
                 .addInputHatch("Any Casing", 1)
                 .addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1)
@@ -152,7 +152,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
         mCasing = 0;
         mPyrotheumHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
-        return checkPiece(mName, 1, 3, 0) && mCasing >= 9 && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
+        return checkPiece(mName, 1, 3, 0) && mCasing >= 8 && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
     }
 
     @Override
