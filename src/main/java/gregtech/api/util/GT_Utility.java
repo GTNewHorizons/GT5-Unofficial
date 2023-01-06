@@ -103,6 +103,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -2904,7 +2905,29 @@ public class GT_Utility {
      */
     public static ItemStack loadItem(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
-        return GT_OreDictUnificator.get(true, ItemStack.loadItemStackFromNBT(aNBT));
+        ItemStack tRawStack = ItemStack.loadItemStackFromNBT(aNBT);
+        int tRealStackSize = 0;
+        if (tRawStack != null && aNBT.hasKey("Count", Constants.NBT.TAG_INT)) {
+            tRealStackSize = aNBT.getInteger("Count");
+            tRawStack.stackSize = tRealStackSize;
+        } else if (tRawStack != null) {
+            tRealStackSize = tRawStack.stackSize;
+        }
+        ItemStack tRet = GT_OreDictUnificator.get(true, tRawStack);
+        if (tRet != null) tRet.stackSize = tRealStackSize;
+        return tRet;
+    }
+
+    public static void saveItem(NBTTagCompound aParentTag, String aTagName, ItemStack aStack) {
+        if (aStack != null) aParentTag.setTag(aTagName, saveItem(aStack));
+    }
+
+    public static NBTTagCompound saveItem(ItemStack aStack) {
+        if (aStack == null) return new NBTTagCompound();
+        NBTTagCompound t = new NBTTagCompound();
+        aStack.writeToNBT(t);
+        if (aStack.stackSize > Byte.MAX_VALUE) t.setInteger("Count", aStack.stackSize);
+        return t;
     }
 
     /**

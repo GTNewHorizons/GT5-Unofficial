@@ -590,8 +590,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (mFluidOut != null) aNBT.setTag("mFluidOut", mFluidOut.writeToNBT(new NBTTagCompound()));
 
         for (int i = 0; i < mOutputItems.length; i++)
-            if (mOutputItems[i] != null)
-                aNBT.setTag("mOutputItem" + i, mOutputItems[i].writeToNBT(new NBTTagCompound()));
+            if (mOutputItems[i] != null) GT_Utility.saveItem(aNBT, "mOutputItem" + i, mOutputItems[i]);
     }
 
     @Override
