@@ -3391,7 +3391,7 @@ public class DreamCraftRecipeLoader {
                 800000,
                 32,
                 new Object[] {
-                    getItemContainer("Hull_UMV").get(4L),
+                    getItemContainer("Hull_UXV").get(4L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUMV, 4L),
                     ItemList.Circuit_Chip_QPIC.get(16L),
                     getItemContainer("QuantumCircuit").get(2),
@@ -3424,7 +3424,7 @@ public class DreamCraftRecipeLoader {
                 800000,
                 32,
                 new Object[] {
-                    getItemContainer("Hull_UMV").get(4L),
+                    getItemContainer("Hull_UXV").get(4L),
                     GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUMVBase, 16L),
                     ItemList.Circuit_Chip_QPIC.get(16L),
                     getItemContainer("QuantumCircuit").get(2),
