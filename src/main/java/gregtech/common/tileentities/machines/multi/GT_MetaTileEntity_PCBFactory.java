@@ -48,6 +48,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings8;
@@ -527,6 +528,7 @@ public class GT_MetaTileEntity_PCBFactory
         }
 
         long voltage = getMaxInputVoltage();
+        long amps = getMaxInputAmps();
         int tier = GT_Utility.getTier(voltage);
 
         GT_Recipe tRecipe =
@@ -582,12 +584,23 @@ public class GT_MetaTileEntity_PCBFactory
                 this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2));
 
                 if (mOCTier1 || mOCTier2) {
-                    calculateOverclockedNessMultiInternal(
-                            (long) Math.ceil(tRecipe.mEUt * aExtraPower),
-                            (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2)),
-                            aCurrentParallel,
-                            V[tier],
-                            mOCTier2);
+                    GT_OverclockCalculator calc = new GT_OverclockCalculator()
+                            .setRecipeEUt(tRecipe.mEUt)
+                            .setDuration(tRecipe.mDuration)
+                            .setEUt(voltage)
+                            .setAmperage(amps)
+                            .setEUtDiscount(aExtraPower)
+                            .setSpeedBoost((float) Math.pow(mRoughnessMultiplier, 2));
+                    if (mOCTier2) {
+                        calc.enablePerfectOC();
+                    }
+                    calc.calculate();
+                    try {
+                        this.lEUt = calc.getConsumption();
+                        this.mMaxProgresstime = calc.getDuration();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
@@ -833,6 +846,13 @@ public class GT_MetaTileEntity_PCBFactory
     @Override
     protected long getActualEnergyUsage() {
         return (-this.lEUt * 10000) / Math.min(Math.max(1000, mEfficiency), 10000);
+    }
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        mSeparate = !mSeparate;
+        GT_Utility.sendChatToPlayer(
+                aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparate);
     }
 
     @Override

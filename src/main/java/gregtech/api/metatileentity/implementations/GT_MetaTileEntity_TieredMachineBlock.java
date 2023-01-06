@@ -10,6 +10,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 
 public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntity {
@@ -121,13 +122,13 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
     protected SlotWidget createChargerSlot(int x, int y) {
         final String batterySlotTooltipKey;
         final Object[] batterySlotTooltipArgs;
-        final String pTier1 = powerTierName(mTier);
+        final String pTier1 = GT_Utility.getColoredTierNameFromTier(mTier);
         if (mTier == GT_Values.VN.length - 1) {
             batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP_ALT;
             batterySlotTooltipArgs = new String[] {pTier1};
         } else {
             batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP;
-            batterySlotTooltipArgs = new String[] {pTier1, powerTierName((byte) (mTier + 1))};
+            batterySlotTooltipArgs = new String[] {pTier1, GT_Utility.getColoredTierNameFromTier((byte) (mTier + 1))};
         }
         return createChargerSlot(x, y, batterySlotTooltipKey, batterySlotTooltipArgs);
     }
@@ -139,14 +140,5 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER)
                 .setPos(x, y);
-    }
-
-    /**
-     * Apply proper coloration to a machine's power tier short name
-     * @param machineTier
-     * @return colored power tier short name
-     */
-    private String powerTierName(byte machineTier) {
-        return GT_Values.TIER_COLORS[machineTier] + GT_Values.VN[machineTier];
     }
 }

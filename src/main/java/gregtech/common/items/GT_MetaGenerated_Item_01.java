@@ -951,6 +951,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Shape_Mold_Pipe_Large.set(addItem(tLastID = 329, "Mold (Large Pipe)", "Mold for making large Pipes"));
         ItemList.Shape_Mold_Pipe_Huge.set(
                 addItem(tLastID = 330, "Mold (Huge Pipe)", "Mold for making full Block Pipes"));
+        ItemList.Shape_Mold_ToolHeadDrill.set(
+                addItem(tLastID = 331, "Mold (Drill Head)", "Mold for making Drill Heads"));
         GT_ModHandler.removeRecipe(
                 new ItemStack(Blocks.glass), null, new ItemStack(Blocks.glass), null, new ItemStack(Blocks.glass));
 
@@ -1008,6 +1010,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 addItem(tLastID = 375, "Extruder Shape (Small Gear)", "Extruder Shape for a Small Gear"));
         ItemList.Shape_Extruder_Turbine_Blade.set(
                 addItem(tLastID = 376, "Extruder Shape (Turbine Blade)", "Extruder Shape for a Turbine Blade"));
+        ItemList.Shape_Extruder_ToolHeadDrill.set(
+                addItem(tLastID = 377, "Extruder Shape (Drill Head)", "Extruder Shape for a Drill Head"));
 
         ItemList.Shape_Slicer_Flat.set(addItem(tLastID = 398, "Slicer Blade (Flat)", "Slicer Blade for cutting Flat"));
         ItemList.Shape_Slicer_Stripes.set(
@@ -2855,7 +2859,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GregTech_API.registerCover(
                 ItemList.Steam_Valve_LV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)),
-                new GT_Cover_SteamValve(102, TextureFactory.of(OVERLAY_VALVE)));
+                new GT_Cover_SteamValve(1024, TextureFactory.of(OVERLAY_VALVE)));
         GregTech_API.registerCover(
                 ItemList.Steam_Valve_MV.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_VALVE)),

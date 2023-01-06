@@ -1255,10 +1255,14 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 int mEUt = tag.getInteger("eut");
                 if (mEUt > 0) {
                     currenttip.add(StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.energy.use", GT_Utility.formatNumbers(mEUt)));
+                            "GT5U.waila.energy.use",
+                            GT_Utility.formatNumbers(mEUt),
+                            GT_Utility.getColoredTierNameFromVoltage(mEUt)));
                 } else if (mEUt < 0) {
                     currenttip.add(StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.energy.produce", GT_Utility.formatNumbers(-mEUt)));
+                            "GT5U.waila.energy.produce",
+                            GT_Utility.formatNumbers(-mEUt),
+                            GT_Utility.getColoredTierNameFromVoltage(-mEUt)));
                 }
             }
             currenttip.add(GT_Waila.getMachineProgressString(
@@ -1341,8 +1345,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             builder.widget(setNEITransferRect(
                     createProgressBar(
                             isSteampowered()
-                                    ? getRecipeList().progressBarTextureSteam.get(getSteamVariant())
-                                    : getRecipeList().progressBarTexture,
+                                    ? getRecipeList().getProgressBarTextureSteam(getSteamVariant())
+                                    : getRecipeList().getProgressBarTexture(),
                             getRecipeList().getProgressBarImageSize(),
                             getRecipeList().progressBarDirection,
                             getRecipeList().progressBarPos,

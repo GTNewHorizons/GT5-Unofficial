@@ -3,7 +3,6 @@ package gregtech.common.render.items;
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -17,8 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
@@ -37,10 +34,10 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         return helper == ItemRendererHelper.ENTITY_ROTATION || helper == ItemRendererHelper.ENTITY_BOBBING;
     }
 
-//    @Override
-//    public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
-//
-//    }
+    //    @Override
+    //    public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
+    //
+    //    }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
@@ -67,14 +64,14 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             } else {
                 ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    tOverlay.getMaxU(),
-                    tOverlay.getMinV(),
-                    tOverlay.getMinU(),
-                    tOverlay.getMaxV(),
-                    tOverlay.getIconWidth(),
-                    tOverlay.getIconHeight(),
-                    0.0625F);
+                        Tessellator.instance,
+                        tOverlay.getMaxU(),
+                        tOverlay.getMinV(),
+                        tOverlay.getMinU(),
+                        tOverlay.getMaxV(),
+                        tOverlay.getIconWidth(),
+                        tOverlay.getIconHeight(),
+                        0.0625F);
             }
         }
 
@@ -302,6 +299,4 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
         return aIconContainer.getIcon();
     }
-
-
 }

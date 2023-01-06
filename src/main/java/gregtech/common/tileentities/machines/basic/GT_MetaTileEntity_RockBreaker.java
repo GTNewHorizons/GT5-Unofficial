@@ -139,7 +139,7 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
                         tOutput = new ItemStack(Blocks.obsidian, 1);
                         if (canOutput(tOutput)) {
                             getInputAt(0).stackSize -= 1;
-                            calculateOverclockedNess(32, 128);
+                            calculateOverclockedNess(30, 128);
                             // In case recipe is too OP for that machine
                             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -148,7 +148,7 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
                         }
                     }
                 } else if (canOutput(tOutput)) {
-                    calculateOverclockedNess(32, 16);
+                    calculateOverclockedNess(30, 16);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
