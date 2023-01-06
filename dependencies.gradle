@@ -1,50 +1,50 @@
 // Add your dependencies here
 
 dependencies {
-    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.41.195:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.41.204:dev")
     compile("com.github.GTNewHorizons:StructureLib:1.2.0-beta.2:dev")
-    compile("com.github.GTNewHorizons:TecTech:5.0.52:dev")
-    compile("com.github.GTNewHorizons:NotEnoughItems:2.3.14-GTNH:dev")
-    compile("com.github.GTNewHorizons:TinkersConstruct:1.9.4-GTNH:dev")
-    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.5:dev")
-    compile("com.github.GTNewHorizons:CodeChickenCore:1.1.6:dev")
-    compile("com.github.GTNewHorizons:Galacticraft:3.0.47-GTNH:dev") {
+    compile("com.github.GTNewHorizons:TecTech:5.0.67:dev")
+    compile("com.github.GTNewHorizons:NotEnoughItems:2.3.20-GTNH:dev")
+    compile("com.github.GTNewHorizons:TinkersConstruct:1.9.11-GTNH:dev")
+    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.6:dev")
+    compile("com.github.GTNewHorizons:CodeChickenCore:1.1.7:dev")
+    compile("com.github.GTNewHorizons:Galacticraft:3.0.62-GTNH:dev") {
         exclude group:"com.github.GTNewHorizons", module:"SpongePoweredMixin"
         exclude group:"com.github.GTNewHorizons", module:"SpongeMixins"
     }
-    compile("com.github.GTNewHorizons:ModularUI:1.0.23:dev")
+    compile("com.github.GTNewHorizons:ModularUI:1.0.38:dev")
     compile("com.github.GTNewHorizons:GalacticGregGT5:1.0.8:dev") {
         exclude group:"com.github.GTNewHorizons", module:"bartworks"
     }
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-107-GTNH:dev") {
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-134-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:AppleCore:3.2.2:dev") {
+    compileOnly("com.github.GTNewHorizons:AppleCore:3.2.4:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:TinkersGregworks:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.15:api") {
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.5.6:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.12:api") {
-        transitive = false
-    }
-
-    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.47:api") {
+    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.14:api") {
         transitive = false
     }
 
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.7.5.32-GTNH:api") {
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.49:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.27:dev") {
+
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.8.0.2-GTNH:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.7-GTNH:dev") {
+    compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.28:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.9-GTNH:dev") {
         transitive = false
     }
     runtime("com.github.GTNewHorizons:Yamcl:0.5.84:dev")
