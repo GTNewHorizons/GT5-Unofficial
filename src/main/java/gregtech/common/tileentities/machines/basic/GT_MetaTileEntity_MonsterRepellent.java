@@ -88,9 +88,9 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
             }
             if (aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU())
                     && aBaseMetaTileEntity.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
-                mRange = 16 + (48 * mTier);
+                mRange = GT_SpawnEventHandler.getPoweredRepellentRange(mTier);
             } else {
-                mRange = 4 + (12 * mTier);
+                mRange = GT_SpawnEventHandler.getUnpoweredRepellentRange(mTier);
             }
         }
     }
