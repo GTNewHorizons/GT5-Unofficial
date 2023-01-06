@@ -55,6 +55,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
             IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
             if (fluidIcon != null) {
+                // Adds colour to a cells fluid. Does not colour full fluid "blocks".
                 renderContainedFluid(type, aFluid, fluidIcon);
             }
         }

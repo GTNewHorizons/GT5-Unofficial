@@ -1,5 +1,6 @@
 package gregtech.common.render.items;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -7,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
+
+import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
 
 public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
@@ -58,6 +61,15 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
         if (aMetaData < aItem.mOffset) {
             IItemRenderer aMaterialRenderer = aItem.getMaterialRenderer(aMetaData);
+
+            // Handle fluid rendering.
+            if (aMaterialRenderer == null) {
+                try {
+                    Materials material = getAssociation(aStack).mMaterial.mMaterial;
+                    aMaterialRenderer = material.renderer;
+                } catch(Exception ignored) {}
+            }
+
             return aMaterialRenderer != null ? aMaterialRenderer : mMaterialRenderer;
         }
 
