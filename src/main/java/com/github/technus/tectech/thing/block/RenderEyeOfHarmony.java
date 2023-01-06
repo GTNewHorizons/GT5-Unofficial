@@ -20,7 +20,6 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
     private static final ResourceLocation starLayer0 = new ResourceLocation(MODID, "models/StarLayer0.png");
     private static final ResourceLocation starLayer1 = new ResourceLocation(MODID, "models/StarLayer1.png");
     private static final ResourceLocation starLayer2 = new ResourceLocation(MODID, "models/StarLayer2.png");
-    private static final ResourceLocation blackHole = new ResourceLocation(MODID, "models/blackHole.png");
     public static IModelCustom modelCustom;
 
     public RenderEyeOfHarmony() {
@@ -48,14 +47,9 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             }
 
             // Render star stuff.
-            // Render a black hole if the dimension is the deep dark.
-            if (EOHRenderTile.getTier() < 9) {
-                renderStarLayer(EOHRenderTile, 0, starLayer0, 1.0f);
-                renderStarLayer(EOHRenderTile, 1, starLayer1, 0.4f);
-                renderStarLayer(EOHRenderTile, 2, starLayer2, 0.2f);
-            } else {
-                renderStarLayer(EOHRenderTile, 0, blackHole, 1.0f);
-            }
+            renderStarLayer(EOHRenderTile, 0, starLayer0, 1.0f);
+            renderStarLayer(EOHRenderTile, 1, starLayer1, 0.4f);
+            renderStarLayer(EOHRenderTile, 2, starLayer2, 0.2f);
             GL11.glPopMatrix();
         }
     }
@@ -101,11 +95,8 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
                 break;
         }
 
-        // Set colour and alpha (transparency) of the star layer. Set by the current recipe.
-        float starRed = EOHRenderTile.getColour().getRed() / 255.0f;
-        float starGreen = EOHRenderTile.getColour().getGreen() / 255.0f;
-        float starBlue = EOHRenderTile.getColour().getBlue() / 255.0f;
-        GL11.glColor4f(starRed, starGreen, starBlue, alpha);
+        // Set colour and alpha (transparency) of the star layer.
+        GL11.glColor4f(1, 1, 1, alpha);
 
         // Spin the star around according to the multi time dilation tier.
         GL11.glRotatef((0.03f * EOHRenderTile.angle * EOHRenderTile.getRotationSpeed()) % 360.0f, 0F, 0F, 1F);

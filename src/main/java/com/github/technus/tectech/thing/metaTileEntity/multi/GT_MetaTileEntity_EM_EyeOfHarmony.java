@@ -1795,43 +1795,10 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         // Lower value = faster rotation speed.
         rendererTileEntity.setRotationSpeed((1 + timeAccelerationFieldMetadata) / 2.0f);
 
-        // Colour of tier determined by star tier.
-        Color colour = getStarColour((int) currentRecipe.getRocketTier());
-        rendererTileEntity.setColour(colour);
-
         // Set recipe spacetime tier for usage elsewhere.
         rendererTileEntity.setTier(currentRecipe.getRocketTier());
         rendererTileEntity.setOrbitingBody(
                 Block.getBlockFromItem(currentRecipe.getRecipeTriggerItem().getItem()));
-    }
-
-    private static final Color redStar = new Color(155, 9, 38);
-    private static final Color orangeStar = new Color(190, 85, 9);
-    private static final Color blueStar = new Color(96, 152, 234);
-    private static final Color whiteStar = new Color(238, 238, 238);
-    private static final Color blackHole = new Color(0, 0, 0);
-    public static final Color errorStar = new Color(222, 0, 255);
-
-    Color getStarColour(final int tier) {
-        switch (tier) {
-            case 0:
-            case 1:
-                return redStar;
-            case 2:
-            case 3:
-                return orangeStar;
-            case 4:
-            case 5:
-                return blueStar;
-            case 6:
-            case 7:
-            case 8:
-                return whiteStar;
-            case 9:
-                return blackHole;
-            default:
-                return errorStar;
-        }
     }
 
     private double successChance;

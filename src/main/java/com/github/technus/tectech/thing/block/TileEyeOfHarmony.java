@@ -1,8 +1,5 @@
 package com.github.technus.tectech.thing.block;
 
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_EyeOfHarmony.errorStar;
-
-import java.awt.*;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -29,7 +26,6 @@ public class TileEyeOfHarmony extends TileEntity {
 
     private float size = 1;
     private float rotationSpeed = 0;
-    private Color colour = errorStar;
 
     public Block getOrbitingBody() {
         return orbitingBody;
@@ -53,14 +49,6 @@ public class TileEyeOfHarmony extends TileEntity {
 
     public void incrementSize() {
         size += 1.5f;
-    }
-
-    public void setColour(Color colour) {
-        this.colour = colour;
-    }
-
-    public Color getColour() {
-        return colour;
     }
 
     public void increaseRotationSpeed() {
@@ -100,11 +88,6 @@ public class TileEyeOfHarmony extends TileEntity {
         compound.setFloat(sizeNBTTag, size);
         compound.setLong(tierNBTTag, tier);
 
-        // Save colour info.
-        compound.setInteger(sizeRedNBTTag, colour.getRed());
-        compound.setInteger(sizeGreenNBTTag, colour.getGreen());
-        compound.setInteger(sizeBlueNBTTag, colour.getBlue());
-
         if (orbitingBody != null) {
             int blockID = Block.getIdFromBlock(orbitingBody);
             compound.setInteger(orbitingBodyIDNBTTag, blockID);
@@ -119,12 +102,6 @@ public class TileEyeOfHarmony extends TileEntity {
         rotationSpeed = compound.getFloat(rotationSpeedNBTTag);
         size = compound.getFloat(sizeNBTTag);
         tier = compound.getLong(tierNBTTag);
-
-        // Load colour info.
-        int red = compound.getInteger(sizeRedNBTTag);
-        int green = compound.getInteger(sizeGreenNBTTag);
-        int blue = compound.getInteger(sizeBlueNBTTag);
-        colour = new Color(red, green, blue);
 
         if (compound.hasKey(orbitingBodyIDNBTTag)) {
             int blockID = compound.getInteger(orbitingBodyIDNBTTag);
