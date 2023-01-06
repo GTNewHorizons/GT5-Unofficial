@@ -106,6 +106,11 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L),
                             (int) Math.max(aMaterialMass * 9L, 1L),
                             96);
+                    GT_Values.RA.addBenderRecipe(
+                            GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(10),
+                            GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, 4L),
+                            (int) Math.max(aMaterialMass, 2L),
+                            24);
                 }
 
                 break;
