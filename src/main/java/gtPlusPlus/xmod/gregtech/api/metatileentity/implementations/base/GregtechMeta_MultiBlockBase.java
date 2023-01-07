@@ -85,8 +85,8 @@ import org.apache.commons.lang3.ArrayUtils;
 // so any method in GregtechMetaTileEntity_IndustrialDehydrator would see generic field declared in
 // GregtechMeta_MultiBlockBase without generic parameter
 
-public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>>
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> {
+public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
+        extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
 
     public static final boolean DEBUG_DISABLE_CORES_TEMPORARILY = true;
 
@@ -237,14 +237,14 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
                     + EnumChatFormatting.RESET + " EU"));
         }
 
-        if (-mEUt > 0) {
+        if (-lEUt > 0) {
             mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.usage") + ":");
             mInfo.add(StatCollector.translateToLocal(
-                    "" + EnumChatFormatting.RED + Integer.toString(-mEUt) + EnumChatFormatting.RESET + " EU/t"));
+                    "" + EnumChatFormatting.RED + (-lEUt) + EnumChatFormatting.RESET + " EU/t"));
         } else {
             mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.generation") + ":");
             mInfo.add(StatCollector.translateToLocal(
-                    "" + EnumChatFormatting.GREEN + Integer.toString(mEUt) + EnumChatFormatting.RESET + " EU/t"));
+                    "" + EnumChatFormatting.GREEN + lEUt + EnumChatFormatting.RESET + " EU/t"));
         }
 
         mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.problems") + ": " + EnumChatFormatting.RED
@@ -718,7 +718,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
      * log("Control core found."); }
      *
      *
-     * // Reset outputs and progress stats this.mEUt = 0; this.mMaxProgresstime = 0;
+     * // Reset outputs and progress stats this.lEUt = 0; this.mMaxProgresstime = 0;
      * this.mOutputItems = new ItemStack[]{}; this.mOutputFluids = new
      * FluidStack[]{};
      *
@@ -776,19 +776,19 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
      * tTimeFactor * 10000);
      *
      * int aTempEu = (int) Math.floor(tTotalEUt); log("EU4: "+aTempEu);
-     * this.mEUt = (int) aTempEu;
+     * this.lEUt = (long) aTempEu;
      *
      *
      * this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
      * this.mEfficiencyIncrease = 10000;
      *
-     * // Overclock if (this.mEUt <= 16) { this.mEUt = (this.mEUt * (1 << tTier - 1)
+     * // Overclock if (this.lEUt <= 16) { this.lEUt = (this.lEUt * (1 << tTier - 1)
      * * (1 << tTier - 1)); this.mMaxProgresstime = (this.mMaxProgresstime / (1 <<
-     * tTier - 1)); } else { while (this.mEUt <=
-     * gregtech.api.enums.GT_Values.V[(tTier - 1)]) { this.mEUt *= 4;
+     * tTier - 1)); } else { while (this.lEUt <=
+     * gregtech.api.enums.GT_Values.V[(tTier - 1)]) { this.lEUt *= 4;
      * this.mMaxProgresstime /= 2; } }
      *
-     * if (this.mEUt > 0) { this.mEUt = (-this.mEUt); }
+     * if (this.lEUt > 0) { this.lEUt = (-this.lEUt); }
      *
      * this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
      *
@@ -864,7 +864,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
         // Based on the Processing Array. A bit overkill, but very flexible.
 
         // Reset outputs and progress stats
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mMaxProgresstime = 0;
         this.mOutputItems = new ItemStack[] {};
         this.mOutputFluids = new FluidStack[] {};
@@ -975,18 +975,18 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
         float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
         this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
 
-        this.mEUt = (int) Math.ceil(tTotalEUt);
+        this.lEUt = (long) Math.ceil(tTotalEUt);
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
         // Overclock
-        if (this.mEUt <= 16) {
-            this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+        if (this.lEUt <= 16) {
+            this.lEUt = (this.lEUt * (1L << tTier - 1) * (1L << tTier - 1));
             this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
         } else {
-            while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                this.mEUt *= 4;
+            while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                this.lEUt *= 4;
                 if (hasPerfectOverclock()) {
                     this.mMaxProgresstime /= 4;
                 } else {
@@ -995,8 +995,8 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
             }
         }
 
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
+        if (this.lEUt > 0) {
+            this.lEUt = (-this.lEUt);
         }
 
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
@@ -1285,24 +1285,24 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
         float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
         this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
 
-        this.mEUt = (int) Math.ceil(tTotalEUt);
+        this.lEUt = (long) Math.ceil(tTotalEUt);
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
         // Overclock
-        if (this.mEUt <= 16) {
-            this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+        if (this.lEUt <= 16) {
+            this.lEUt = (this.lEUt * (1L << tTier - 1) * (1L << tTier - 1));
             this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
         } else {
-            while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                this.mEUt *= 4;
+            while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                this.lEUt *= 4;
                 this.mMaxProgresstime /= 2;
             }
         }
 
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
+        if (this.lEUt > 0) {
+            this.lEUt = (-this.lEUt);
         }
 
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);

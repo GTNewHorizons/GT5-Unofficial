@@ -221,7 +221,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter
         // Based on the Processing Array. A bit overkill, but very flexible.
 
         // Reset outputs and progress stats
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mMaxProgresstime = 0;
         this.mOutputItems = new ItemStack[] {};
         this.mOutputFluids = new FluidStack[] {};
@@ -286,23 +286,23 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter
         this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
         int rInt = 2;
 
-        this.mEUt = (int) Math.max(Math.ceil(tTotalEUt), 1);
+        this.lEUt = (long) Math.max(Math.ceil(tTotalEUt), 1);
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
         // Overclock
-        if (this.mEUt <= 16) {
-            this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+        if (this.lEUt <= 16) {
+            this.lEUt = (this.lEUt * (1L << tTier - 1) * (1L << tTier - 1));
             this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
         } else {
-            while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                this.mEUt *= 4;
+            while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                this.lEUt *= 4;
                 this.mMaxProgresstime /= (tHeatCapacityDivTiers >= rInt ? 4 : 2);
             }
         }
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
+        if (this.lEUt > 0) {
+            this.lEUt = (-this.lEUt);
         }
 
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);

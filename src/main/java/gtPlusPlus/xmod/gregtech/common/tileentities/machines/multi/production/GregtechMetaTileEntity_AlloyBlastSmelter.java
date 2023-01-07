@@ -263,18 +263,18 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
                     this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
                     this.mEfficiencyIncrease = 10000;
                     if (tRecipe.mEUt <= 16) {
-                        this.mEUt = (tRecipe.mEUt * (1 << (tTier - 1)) * (1 << (tTier - 1)));
+                        this.lEUt = (tRecipe.mEUt * (1L << (tTier - 1)) * (1L << (tTier - 1)));
                         this.mMaxProgresstime = (tRecipe.mDuration / (1 << (tTier - 1)));
                     } else {
-                        this.mEUt = tRecipe.mEUt;
+                        this.lEUt = tRecipe.mEUt;
                         this.mMaxProgresstime = tRecipe.mDuration;
-                        while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                            this.mEUt *= 4;
+                        while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                            this.lEUt *= 4;
                             this.mMaxProgresstime /= 2;
                         }
                     }
-                    if (this.mEUt > 0) {
-                        this.mEUt = (-this.mEUt);
+                    if (this.lEUt > 0) {
+                        this.lEUt = (-this.lEUt);
                     }
                     this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
                     this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};

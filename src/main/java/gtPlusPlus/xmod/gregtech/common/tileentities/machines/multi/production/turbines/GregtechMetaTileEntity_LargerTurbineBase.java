@@ -513,7 +513,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
             int newPower = fluidIntoPower(tFluids, optFlow, baseEff, flowMultipliers);
             // log("Bumped newPower to "+newPower);
             // log("New Power: "+newPower);
-            int difference = newPower - this.mEUt; // difference between current output and new output
+            long difference = newPower - this.lEUt; // difference between current output and new output
             // log("diff: "+difference);
 
             // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the
@@ -525,14 +525,14 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
             if (Math.abs(difference)
                     > maxChangeAllowed) { // If this difference is too big, use the maximum allowed change
                 int change = maxChangeAllowed * (difference > 0 ? 1 : -1); // Make the change positive or negative.
-                this.mEUt += change; // Apply the change
+                this.lEUt += change; // Apply the change
                 // log("Applied power change.");
             } else {
-                this.mEUt = newPower;
+                this.lEUt = newPower;
                 // log("Using same value.");
             }
-            if (this.mEUt <= 0) {
-                this.mEUt = 0;
+            if (this.lEUt <= 0) {
+                this.lEUt = 0;
                 this.mEfficiency = 0;
                 log("Running checkRecipeGeneric(bad-2)");
                 // stopMachine();
@@ -588,7 +588,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
                 // In XL turbines, durability loss is around 5.2-5.3x faster than in singles
                 // To compensate for that, the mEU/t scaling is divided by 5 to make it only slightly faster
                 for (int i = 0; i < getTurbineDamageMultiplier(); i++) {
-                    aHatch.damageTurbine(mEUt / 5, damageFactorLow, damageFactorHigh);
+                    aHatch.damageTurbine(lEUt / 5, damageFactorLow, damageFactorHigh);
                 }
             }
         }
@@ -668,7 +668,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
 
         String[] ret = new String[] {
             // 8 Lines available for information panels
-            tRunning + ": " + EnumChatFormatting.RED + (((long) mEUt * mEfficiency) / 10000) + EnumChatFormatting.RESET
+            tRunning + ": " + EnumChatFormatting.RED + ((lEUt * mEfficiency) / 10000) + EnumChatFormatting.RESET
                     + " EU/t",
             tMaintainance,
             StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": " + EnumChatFormatting.YELLOW
@@ -861,8 +861,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
      * Called every tick the Machine runs
      */
     public boolean onRunningTick(ItemStack aStack) {
-        if (mEUt > 0) {
-            addEnergyOutput(((long) mEUt * mEfficiency) / 10000);
+        if (lEUt > 0) {
+            addEnergyOutput((lEUt * mEfficiency) / 10000);
             return true;
         }
         return false;

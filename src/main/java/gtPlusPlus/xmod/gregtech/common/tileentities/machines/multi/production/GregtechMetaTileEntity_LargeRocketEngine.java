@@ -312,7 +312,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine
                             }
                             this.fuelValue = aFuel.mSpecialValue * 3;
                             this.fuelRemaining = hatchFluid1.amount;
-                            this.mEUt = (int) ((this.mEfficiency < 2000) ? 0 : GT_Values.V[5] << 1);
+                            this.lEUt = ((this.mEfficiency < 2000) ? 0 : GT_Values.V[5] << 1);
                             this.mProgresstime = 1;
                             this.mMaxProgresstime = 1;
                             this.mEfficiencyIncrease = this.euProduction / 2000;
@@ -322,14 +322,14 @@ public class GregtechMetaTileEntity_LargeRocketEngine
                 } else {
                     this.mEfficiencyIncrease = this.euProduction / 2000;
                     this.freeFuelTicks--;
-                    this.mEUt = (int) ((this.mEfficiency < 1000) ? 0 : GT_Values.V[5] << 1);
+                    this.lEUt = ((this.mEfficiency < 1000) ? 0 : GT_Values.V[5] << 1);
                     this.mProgresstime = 1;
                     this.mMaxProgresstime = 1;
                     return true;
                 }
             }
         }
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mEfficiency = 0;
         this.freeFuelTicks = 0;
         log("Bad Return 3");
@@ -558,7 +558,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine
             "Current Air: " + getAir(),
             "Current Pollution: " + getPollutionPerTick(null),
             "Time until next fuel consumption: " + this.freeFuelTicks,
-            "Current Output: " + this.mEUt * this.mEfficiency / 10000 + " EU/t",
+            "Current Output: " + this.lEUt * this.mEfficiency / 10000 + " EU/t",
             "Fuel Consumption: " + (this.fuelConsumption) + "L/s",
             "Fuel Value: " + this.fuelValue + " EU/L",
             "Fuel Remaining: " + this.fuelRemaining + " Litres",

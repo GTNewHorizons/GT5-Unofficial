@@ -204,7 +204,7 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
             if (mMaxProgresstime <= 0) continue;
 
             if (!tTag.hasKey("eu")) continue;
-            mEUt = tTag.getInteger("eu");
+            lEUt = tTag.getLong("eu");
 
             if (GT_Values.D1) System.out.println("Find avaiable recipe");
             findRecipe = true;
@@ -231,17 +231,17 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
-        if (mEUt <= 16) {
-            this.mEUt = (mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+        if (lEUt <= 16) {
+            this.lEUt = (lEUt * (1 << tTier - 1) * (1 << tTier - 1));
             this.mMaxProgresstime = (mMaxProgresstime / (1 << tTier - 1));
         } else {
-            while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                this.mEUt *= 4;
+            while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                this.lEUt *= 4;
                 this.mMaxProgresstime /= 2;
             }
         }
-        if (this.mEUt > 0) {
-            this.mEUt = -this.mEUt;
+        if (this.lEUt > 0) {
+            this.lEUt = -this.lEUt;
         }
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
         updateSlots();

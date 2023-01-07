@@ -189,7 +189,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
                 if (tOutputStack != null && this.allowPutStack(tOutputStack, schematicStack)) {
                     final ItemStack input = inputStack;
                     --input.stackSize;
-                    this.mEUt = 32 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
+                    this.lEUt = 32 * (1L << this.mTier - 1) * (1L << this.mTier - 1);
                     // this.mMaxProgresstime = 16 / (1 << this.mTier - 1);
                     this.mMaxProgresstime = 2;
                     this.addOutput(tOutputStack);
@@ -203,7 +203,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
                 if (tOutputStack != null && this.allowPutStack(tOutputStack, schematicStack)) {
                     final ItemStack input2 = inputStack;
                     input2.stackSize -= 4;
-                    this.mEUt = 32 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
+                    this.lEUt = 32 * (1L << this.mTier - 1) * (1L << this.mTier - 1);
                     // this.mMaxProgresstime = 32 / (1 << this.mTier - 1);
                     this.mMaxProgresstime = 4;
                     this.addOutput(tOutputStack);
@@ -226,7 +226,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
                 if (tOutputStack != null && this.allowPutStack(tOutputStack, schematicStack)) {
                     final ItemStack input3 = inputStack;
                     input3.stackSize -= 9;
-                    this.mEUt = 32 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
+                    this.lEUt = 32 * (1L << this.mTier - 1) * (1L << this.mTier - 1);
                     // this.mMaxProgresstime = 64 / (1 << this.mTier - 1);
                     this.mMaxProgresstime = 6;
                     this.addOutput(tOutputStack);
@@ -251,7 +251,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
         // Based on the Processing Array. A bit overkill, but very flexible.
 
         // Reset outputs and progress stats
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mMaxProgresstime = 0;
         this.mOutputItems = new ItemStack[] {};
         this.mOutputFluids = new FluidStack[] {};
@@ -318,25 +318,25 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
         float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
         this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
 
-        this.mEUt = (int) Math.ceil(tTotalEUt);
+        this.lEUt = (long) Math.ceil(tTotalEUt);
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
         // Overclock
-        if (this.mEUt <= 16) {
-            this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+        if (this.lEUt <= 16) {
+            this.lEUt = (this.lEUt * (1L << tTier - 1) * (1L << tTier - 1));
             this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
         } else {
-            while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                this.mEUt *= 4;
+            while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                this.lEUt *= 4;
                 if (this.hasPerfectOverclock()) this.mMaxProgresstime /= 4;
                 else this.mMaxProgresstime /= 2;
             }
         }
 
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
+        if (this.lEUt > 0) {
+            this.lEUt = (-this.lEUt);
         }
 
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);

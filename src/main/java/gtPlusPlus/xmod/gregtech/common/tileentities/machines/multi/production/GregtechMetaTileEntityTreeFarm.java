@@ -193,13 +193,13 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         this.mOutputItems = toOutput;
 
         this.mMaxProgresstime = TICKS_PER_OPERATION;
-        this.mEUt = MaterialUtils.getVoltageForTier(tTier);
+        this.lEUt = MaterialUtils.getVoltageForTier(tTier);
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
+        if (this.lEUt > 0) {
+            this.lEUt = (-this.lEUt);
         }
 
         this.tryDamageTool();

@@ -153,13 +153,18 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
     }
 
     public void damageTurbine(int aEUt, int damageFactorLow, float damageFactorHigh) {
+        damageTurbine((long) aEUt, damageFactorLow, damageFactorHigh);
+    }
+
+    public void damageTurbine(long aEUt, int damageFactorLow, float damageFactorHigh) {
         if (hasTurbine() && MathUtils.randInt(0, 1) == 0) {
             ItemStack aTurbine = getTurbine();
             ((GT_MetaGenerated_Tool) aTurbine.getItem())
                     .doDamage(
                             aTurbine,
                             (long) getDamageToComponent(aTurbine)
-                                    * (long) Math.min(aEUt / damageFactorLow, Math.pow(aEUt, damageFactorHigh)));
+                                    * (long) Math.min(
+                                            (float) aEUt / (float) damageFactorLow, Math.pow(aEUt, damageFactorHigh)));
         }
     }
 
@@ -207,7 +212,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
         GregtechMetaTileEntity_LargerTurbineBase x = getController();
         if (x != null) {
             // Logger.INFO("Checking Status of Controller. Running? "+(x.mEUt > 0));
-            return x.mEUt > 0;
+            return x.lEUt > 0;
         }
         // Logger.INFO("Status of Controller failed, controller is null.");
         return false;

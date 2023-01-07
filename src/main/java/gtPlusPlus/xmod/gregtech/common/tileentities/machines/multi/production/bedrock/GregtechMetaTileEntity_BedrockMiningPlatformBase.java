@@ -139,7 +139,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
             }
         }
 
-        this.mEUt = -8000;
+        this.lEUt = -8000;
         this.mMaxProgresstime = 1;
         this.mEfficiencyIncrease = 10000;
 

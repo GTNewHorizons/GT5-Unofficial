@@ -101,7 +101,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         int aOutputChanceRoll = 10000;
 
         // Reset outputs and progress stats
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mMaxProgresstime = 0;
         this.mOutputItems = new ItemStack[] {};
         this.mOutputFluids = new FluidStack[] {};
@@ -151,15 +151,15 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
         this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor * 1.5f);
 
-        this.mEUt = (int) Math.ceil(tTotalEUt * 1.33f);
+        this.lEUt = (long) Math.ceil(tTotalEUt * 1.33f);
 
         // this.mEUt = (3 * tRecipe.mEUt);
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
+        if (this.lEUt > 0) {
+            this.lEUt = (-this.lEUt);
         }
 
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
@@ -267,8 +267,8 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
      */
     public boolean onRunningTick(ItemStack aStack) {
         fixAllMaintenanceIssue();
-        if (mEUt < 0) {
-            long aSteamVal = (((long) -mEUt * 10000) / Math.max(1000, mEfficiency));
+        if (lEUt < 0) {
+            long aSteamVal = ((-lEUt * 10000) / Math.max(1000, mEfficiency));
             // Logger.INFO("Trying to drain "+aSteamVal+" steam per tick.");
             if (!tryConsumeSteam((int) aSteamVal)) {
                 stopMachine();

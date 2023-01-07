@@ -149,7 +149,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator
 
                 fuelValue = aFuel.mSpecialValue;
                 fuelRemaining = hatchFluid.amount; // Record available fuel
-                this.mEUt = mEfficiency < 2000 ? 0 : newEUt; // Output 0 if startup is less than 20%
+                this.lEUt = mEfficiency < 2000 ? 0 : newEUt; // Output 0 if startup is less than 20%
                 this.mProgresstime = 1;
                 this.mMaxProgresstime = 1;
                 this.mEfficiencyIncrease = 15;
@@ -157,7 +157,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator
             }
         }
 
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mEfficiency = 0;
         return false;
     }
@@ -299,7 +299,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator
     public String[] getExtraInfoData() {
         return new String[] {
             "Large Semifluid Generator",
-            "Current Output: " + mEUt * mEfficiency / 10000 + " EU/t",
+            "Current Output: " + lEUt * mEfficiency / 10000 + " EU/t",
             "Fuel Consumption: " + fuelConsumption + "L/t",
             "Fuel Value: " + fuelValue + " EU/L",
             "Fuel Remaining: " + fuelRemaining + " Litres",

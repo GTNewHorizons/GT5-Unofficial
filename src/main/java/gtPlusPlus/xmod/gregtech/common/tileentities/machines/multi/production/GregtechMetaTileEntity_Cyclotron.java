@@ -263,16 +263,16 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
                 this.mEfficiency = (10000 - ((getIdealStatus() - getRepairStatus()) * 1000));
                 this.mEfficiencyIncrease = 10000;
-                this.mEUt = tRecipe.mEUt;
+                this.lEUt = tRecipe.mEUt;
                 this.mMaxProgresstime = tRecipe.mDuration;
 
-                while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                    this.mEUt *= 4;
+                while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                    this.lEUt *= 4;
                     this.mMaxProgresstime /= 2;
                 }
 
-                if (this.mEUt > 0) {
-                    this.mEUt = (-this.mEUt);
+                if (this.lEUt > 0) {
+                    this.lEUt = (-this.lEUt);
                 }
 
                 this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);

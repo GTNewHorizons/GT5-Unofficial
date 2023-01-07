@@ -225,7 +225,7 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
                 superheated_threshold * 2); // Don't consume too much hot fluid per second, maximum is 2x SH threshold.
         mInputHotFluidHatch.drain(fluidAmountToConsume, true);
         this.mMaxProgresstime = 20;
-        this.mEUt = (int) (fluidAmountToConsume * steam_output_multiplier * efficiency);
+        this.lEUt = (long) (fluidAmountToConsume * steam_output_multiplier * efficiency);
         if (do_lava) {
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2pahoehoelava", fluidAmountToConsume), true);
         } else {
@@ -244,9 +244,9 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mEUt > 0) {
+        if (this.lEUt > 0) {
             int tGeneratedEU =
-                    (int) (this.mEUt * 2L * this.mEfficiency / 10000L); // APPROXIMATELY how much steam to generate.
+                    (int) (this.lEUt * 2L * this.mEfficiency / 10000L); // APPROXIMATELY how much steam to generate.
             if (tGeneratedEU > 0) {
 
                 if (superheated) tGeneratedEU /= 2; // We produce half as much superheated steam if necessary
@@ -351,7 +351,7 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
             StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
                     + StatCollector.translateToLocal("GT5U.LHE.steam") + ": "
                     + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                    + GT_Utility.formatNumbers(superheated ? -2 * mEUt : -mEUt) + EnumChatFormatting.RESET + " EU/t",
+                    + GT_Utility.formatNumbers(superheated ? -2 * lEUt : -lEUt) + EnumChatFormatting.RESET + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED
                     + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " "
                     + StatCollector.translateToLocal("GT5U.multiblock.efficiency")

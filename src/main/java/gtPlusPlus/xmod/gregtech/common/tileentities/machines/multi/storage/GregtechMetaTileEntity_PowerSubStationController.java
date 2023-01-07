@@ -565,7 +565,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
     public boolean checkRecipe(final ItemStack aStack) {
         this.mProgresstime = 0;
         this.mMaxProgresstime = 200;
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mEfficiencyIncrease = 10000;
         this.fixAllMaintenanceIssue();
         return true;

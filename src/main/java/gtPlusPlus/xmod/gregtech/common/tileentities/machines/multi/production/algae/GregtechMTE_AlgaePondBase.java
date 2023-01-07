@@ -376,7 +376,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
         }
 
         // Reset outputs and progress stats
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mMaxProgresstime = 0;
         this.mOutputItems = new ItemStack[] {};
         this.mOutputFluids = new FluidStack[] {};
@@ -404,7 +404,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
         // -- Try not to fail after this point - inputs have already been consumed! --
 
         this.mMaxProgresstime = (int) (tRecipe.mDuration);
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         Logger.INFO("Recipe time: " + this.mMaxProgresstime);

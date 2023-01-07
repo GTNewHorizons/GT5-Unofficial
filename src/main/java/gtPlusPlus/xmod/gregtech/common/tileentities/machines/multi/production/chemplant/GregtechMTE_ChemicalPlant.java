@@ -627,7 +627,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
         // Based on the Processing Array. A bit overkill, but very flexible.
 
         // Reset outputs and progress stats
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mMaxProgresstime = 0;
         this.mOutputItems = new ItemStack[] {};
         this.mOutputFluids = new FluidStack[] {};
@@ -736,24 +736,24 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
         float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
         this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
 
-        this.mEUt = (int) Math.ceil(tTotalEUt);
+        this.lEUt = (long) Math.ceil(tTotalEUt);
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
         // Overclock
-        if (this.mEUt <= 16) {
-            this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+        if (this.lEUt <= 16) {
+            this.lEUt = (this.lEUt * (1 << tTier - 1) * (1 << tTier - 1));
             this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
         } else {
-            while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                this.mEUt *= 4;
+            while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+                this.lEUt *= 4;
                 this.mMaxProgresstime /= 2;
             }
         }
 
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
+        if (this.lEUt > 0) {
+            this.lEUt = (-this.lEUt);
         }
 
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);

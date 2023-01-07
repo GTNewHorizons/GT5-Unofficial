@@ -105,7 +105,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                 if (tFluid.getFluid() == mLava || tFluid.getFluid() == mPahoehoe) {
                     if (depleteInput(tFluid)) {
                         this.mMaxProgresstime = Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2));
-                        this.mEUt = getEUt();
+                        this.lEUt = getEUt();
                         this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
 
                         int loot_MAXCHANCE = 100000;
@@ -154,7 +154,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                 } else if (tFluid.getFluid() == mSolarSaltHot) {
                     if (depleteInput(tFluid)) {
                         this.mMaxProgresstime = tRecipe.mDuration;
-                        this.mEUt = 0;
+                        this.lEUt = 0;
                         this.mEfficiency = 10000;
                         for (FluidStack aOutput : tRecipe.mFluidOutputs) {
                             this.addOutput(FluidUtils.getFluidStack(aOutput, aOutput.amount));
@@ -165,7 +165,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
             }
         }
         this.mMaxProgresstime = 0;
-        this.mEUt = 0;
+        this.lEUt = 0;
         return false;
     }
 
@@ -181,11 +181,11 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mEUt > 0) {
+        if (this.lEUt > 0) {
             if (this.mSuperEfficencyIncrease > 0) {
                 this.mEfficiency = Math.min(10000, this.mEfficiency + this.mSuperEfficencyIncrease);
             }
-            int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
+            int tGeneratedEU = (int) (this.lEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 long amount = (tGeneratedEU + 160) / 160;
                 if (depleteInput(Materials.Water.getFluid(amount))
@@ -342,7 +342,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                 }
             }
 
-            if (this.mEUt > 0) {
+            if (this.lEUt > 0) {
                 if (aTick % 600L == 0L) {
                     damageFilter();
                 }

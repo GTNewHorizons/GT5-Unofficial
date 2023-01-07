@@ -389,7 +389,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
             if (tNBT != null) {
                 tNBT = tNBT.getCompoundTag("GT.CraftingComponents");
                 if (tNBT != null) {
-                    this.mEUt = 16 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
+                    this.lEUt = 16 * (1L << this.mTier - 1) * (1L << this.mTier - 1);
                     this.mMaxProgresstime = (100 - (8 * this.mTier));
                     for (int i = 0; i < this.mOutputItems.length; ++i) {
                         if (this.getBaseMetaTileEntity().getRandomNumber(100) < 60 + 12 * this.mTier) {
@@ -403,7 +403,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
                     if (this.mTier > 5) {
                         this.mMaxProgresstime >>= this.mTier - 5;
                     }
-                    if (this.mEUt > 0) this.mEUt = (-this.mEUt);
+                    if (this.lEUt > 0) this.lEUt = (-this.lEUt);
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     inputItem.stackSize--;

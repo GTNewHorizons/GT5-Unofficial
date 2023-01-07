@@ -210,7 +210,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
                     this.mEfficiencyIncrease = 10000;
 
                     // Reset outputs and progress stats
-                    this.mEUt = 0;
+                    this.lEUt = 0;
                     this.mProgresstime = 0;
                     this.mMaxProgresstime = 0;
                     this.mOutputItems = new ItemStack[] {};
@@ -232,7 +232,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
                 Logger.INFO("Did not find recipe!");
             }
         }
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mEfficiency = 0;
         Logger.INFO("Did not find recipe! (2)");
         return false;

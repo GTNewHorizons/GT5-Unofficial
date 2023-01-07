@@ -107,7 +107,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             "Liquid Fluoride Thorium Reactor",
             tRunning,
             tMaintainance,
-            "Current Output: " + this.mEUt + " EU/t",
+            "Current Output: " + this.lEUt + " EU/t",
             "Fuel Remaining: " + this.mFuelRemaining + " Litres",
             "Current Efficiency: " + (this.mEfficiency / 5) + "%",
             "Current Efficiency (Raw): " + (this.mEfficiency),
@@ -424,7 +424,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
                 }
             }
             // Reset outputs and progress stats
-            this.mEUt = 0;
+            this.lEUt = 0;
             this.mMaxProgresstime = 0;
             this.mOutputItems = new ItemStack[] {};
             this.mOutputFluids = new FluidStack[] {};
@@ -439,8 +439,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             }
             // -- Try not to fail after this point - inputs have already been consumed! --
             this.mMaxProgresstime = (int) (aFuelProcessing.mDuration);
-            this.mEUt = aFuelProcessing.mSpecialValue * 4;
-            Logger.WARNING("Outputting " + this.mEUt + "eu/t");
+            this.lEUt = aFuelProcessing.mSpecialValue * 4L;
+            Logger.WARNING("Outputting " + this.lEUt + "eu/t");
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
@@ -452,7 +452,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             Logger.WARNING("Recipe Good!");
             return true;
         }
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mEfficiency = 0;
         Logger.WARNING("Recipe Bad!");
         return false;

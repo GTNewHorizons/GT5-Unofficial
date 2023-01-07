@@ -148,7 +148,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
 
             // How much the turbine should be producing with this flow
             int newPower = fluidIntoPower(tFluids, optFlow, baseEff, flowMultipliers);
-            int difference = newPower - this.mEUt; // difference between current output and new output
+            long difference = newPower - this.lEUt; // difference between current output and new output
             // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the
             // difference in power level (per tick)
             // This is how much the turbine can actually change during this tick
@@ -157,12 +157,12 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
             if (Math.abs(difference)
                     > maxChangeAllowed) { // If this difference is too big, use the maximum allowed change
                 int change = maxChangeAllowed * (difference > 0 ? 1 : -1); // Make the change positive or negative.
-                this.mEUt += change; // Apply the change
+                this.lEUt += change; // Apply the change
             } else {
-                this.mEUt = newPower;
+                this.lEUt = newPower;
             }
-            if (this.mEUt <= 0) {
-                this.mEUt = 0;
+            if (this.lEUt <= 0) {
+                this.lEUt = 0;
                 this.mEfficiency = 0;
                 log("Running checkRecipeGeneric(bad-2)");
                 return false;
