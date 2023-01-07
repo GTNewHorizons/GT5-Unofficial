@@ -54,6 +54,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import java.util.*;
@@ -429,21 +430,24 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
 
-            long actualEUT = precutRecipeVoltage * processed;
+            GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                    .setRecipeEUt(tRecipe.mEUt)
+                    .setParallel(processed)
+                    .setDuration(tRecipe.mDuration)
+                    .setEUt(nominalV)
+                    .setRecipeHeat(tRecipe.mSpecialValue)
+                    .setMultiHeat(mHeatingCapacity)
+                    .enableHeatOC()
+                    .enableHeatDiscount()
+                    .calculate();
 
-            byte overclockCount =
-                    this.calculateOverclockedNessMultiInternal(actualEUT, tRecipe.mDuration, nominalV, false);
+            this.mMaxProgresstime = calculator.getDuration();
+            this.lEUt = calculator.getConsumption();
 
             // In case recipe is too OP for that machine
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.lEUt == Integer.MAX_VALUE - 1) return false;
 
             if (this.lEUt > 0) this.lEUt = (-this.lEUt);
-
-            if (tHeatCapacityDivTiers > 0) {
-                this.mMaxProgresstime >>=
-                        Math.min(tHeatCapacityDivTiers / 2, overclockCount); // extra free overclocking if possible
-                if (this.mMaxProgresstime < 1) this.mMaxProgresstime = 1; // no eu efficiency correction
-            }
 
             if (mUseMultiparallelMode) {
                 this.mMaxProgresstime = (int) Math.ceil(this.mMaxProgresstime * tBatchMultiplier);

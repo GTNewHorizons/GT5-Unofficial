@@ -185,7 +185,18 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         };
     }
 
-    // Special overclocking to handle over MAX voltage
+    /**
+     * Calculates the overclock for megas. Will set this.mMaxProgressTime and this.lEUt automatically
+     * @deprecated
+     * Use GT_OverclockCalculator instead
+     *
+     * @param aEUt EUt of the recipe
+     * @param aDuration Duration of the recipe
+     * @param maxInputVoltage Max input voltage of the mega (nominal, so 1A)
+     * @param perfectOC Flag if the multi has perfect OC
+     * @return Number of performed overclocks
+     */
+    @Deprecated
     protected byte calculateOverclockedNessMultiInternal(
             long aEUt, int aDuration, long maxInputVoltage, boolean perfectOC) {
         byte mTier = (byte) Math.max(0, BW_Util.getTier(maxInputVoltage)), overclockCount = 0;
@@ -238,10 +249,29 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         return overclockCount;
     }
 
+    /**
+     * Calculates the overclock for megas. Will set this.mMaxProgressTime and this.lEUt automatically
+     * @deprecated
+     * Use GT_OverclockCalculator instead
+     *
+     * @param aEUt EUt of the recipe
+     * @param aDuration Duration of the recipe
+     * @param maxInputVoltage Max input voltage of the mega (nominal, so 1A)
+     */
     protected void calculateOverclockedNessMulti(long aEUt, int aDuration, long maxInputVoltage) {
         calculateOverclockedNessMultiInternal(aEUt, aDuration, maxInputVoltage, false);
     }
 
+    /**
+     * Calculates the overclock for megas. Will set this.mMaxProgressTime and this.lEUt automatically
+     * @deprecated
+     * Use GT_OverclockCalculator instead
+     *
+     * @param aEUt EUt of the recipe
+     * @param aDuration Duration of the recipe
+     * @param maxInputVoltage Max input voltage of the mega (nominal, so 1A)
+     */
+    @Deprecated
     protected void calculatePerfectOverclockedNessMulti(long aEUt, int aDuration, long maxInputVoltage) {
         calculateOverclockedNessMultiInternal(aEUt, aDuration, maxInputVoltage, true);
     }

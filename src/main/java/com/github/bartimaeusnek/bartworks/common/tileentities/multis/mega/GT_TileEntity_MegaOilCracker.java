@@ -53,6 +53,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
@@ -309,8 +310,17 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
         if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            long actualEUT = (long) (tRecipe.mEUt) * processed;
-            calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, nominalV);
+
+            GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                    .setRecipeEUt(tRecipe.mEUt)
+                    .setParallel(processed)
+                    .setDuration(tRecipe.mDuration)
+                    .setEUt(nominalV)
+                    .calculate();
+
+            this.mMaxProgresstime = calculator.getDuration();
+            this.lEUt = calculator.getConsumption();
+
             // In case recipe is too OP for that machine
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.lEUt == Integer.MAX_VALUE - 1) {
                 return false;
