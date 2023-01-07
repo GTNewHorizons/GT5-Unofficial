@@ -14,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
-import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
 public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
@@ -35,63 +34,47 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
         TileEyeOfHarmony EOHRenderTile = (TileEyeOfHarmony) tile;
 
+        // Render outer space layer.
+
         {
             GL11.glPushMatrix();
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
+            renderOuterSpaceShell();
 
-            if (EOHRenderTile.getOrbitingBody() != null) {
-                renderOrbitObjects(EOHRenderTile);
-            }
+            renderOrbitObjects(EOHRenderTile);
 
             // Render star stuff.
             renderStarLayer(EOHRenderTile, 0, starLayer0, 1.0f);
             renderStarLayer(EOHRenderTile, 1, starLayer1, 0.4f);
             renderStarLayer(EOHRenderTile, 2, starLayer2, 0.2f);
 
-            // Render outer space layer.
-            renderOuterSpaceShell();
             GL11.glPopMatrix();
         }
     }
 
-    public class OrbitingObject {
-        public OrbitingObject(float rotationSpeed, float orbitSpeed, float xAngle, float zAngle, float scale) {
-            this.rotationSpeed = rotationSpeed;
-            this.orbitSpeed = orbitSpeed;
-            this.xAngle = xAngle;
-            this.zAngle = zAngle;
-            this.scale = scale;
-        }
-
-        public final float rotationSpeed;
-        public final float orbitSpeed;
-        public final float xAngle;
-        public final float zAngle;
-        public final float scale;
-    }
-
     private void renderOrbitObjects(final TileEyeOfHarmony EOHRenderTile) {
 
-        switch ((int) EOHRenderTile.getTier()) {
-            case 0:
-                renderOrbit(ModBlocks.getBlock("Ow"), EOHRenderTile, new OrbitingObject(1.0f, 1.0f, -4, 3, 0.4f));
-            case 1:
-            case 2:
-            case 8:
-            case 9:
-                renderOrbit(ModBlocks.getBlock("DD"), EOHRenderTile, new OrbitingObject(1.0f, 1.0f, 90, 45, 0.4f));
+        if (EOHRenderTile.getOrbitingObjects() != null) { // Bad stuff!
+
+            if (EOHRenderTile.getOrbitingObjects().size() == 0) {
+                EOHRenderTile.generateImportantInfo();
+            }
+
+            for (TileEyeOfHarmony.OrbitingObject t : EOHRenderTile.getOrbitingObjects()) {
+                renderOrbit(EOHRenderTile, t);
+            }
         }
     }
 
-    void renderOrbit(final Block block, final TileEyeOfHarmony EOHRenderTile, final OrbitingObject orbitingObject) {
+    void renderOrbit(final TileEyeOfHarmony EOHRenderTile, final TileEyeOfHarmony.OrbitingObject orbitingObject) {
         // Render orbiting body.
         GL11.glPushMatrix();
         GL11.glRotatef(orbitingObject.zAngle, 0, 0, 1);
         GL11.glRotatef(orbitingObject.xAngle, 1, 0, 0);
         GL11.glRotatef((orbitingObject.rotationSpeed * 0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
-        GL11.glTranslated(- 1 - EOHRenderTile.getSize(), 0,0);
+        GL11.glTranslated(- 0.2 - orbitingObject.distance - starRescale * EOHRenderTile.getSize(), 0,0);
         GL11.glRotatef((orbitingObject.orbitSpeed * 0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
-        renderBlockInWorld(block, 0, orbitingObject.scale);
+        renderBlockInWorld(orbitingObject.block, 0, orbitingObject.scale);
         GL11.glPopMatrix();
     }
 
@@ -126,6 +109,8 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
     }
 
 
+    private static final float starRescale = 0.2f;
+
     private void renderStarLayer(TileEyeOfHarmony EOHRenderTile, int layer, ResourceLocation texture, float alpha) {
 
         // Begin animation.
@@ -147,7 +132,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
         // 0.01f magic number to shrink sphere obj down.
         // Size obtained from the multis current recipe.
-        float scale = 0.01f * EOHRenderTile.getSize();
+        float scale = 0.01f * starRescale * EOHRenderTile.getSize();
 
         // Put each subsequent layer further out.
         scale *= pow(1.04f, layer);

@@ -7,6 +7,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 public class TileEyeOfHarmony extends TileEntity {
 
@@ -27,15 +33,23 @@ public class TileEyeOfHarmony extends TileEntity {
     private float size = 1;
     private float rotationSpeed = 0;
 
-    public Block getOrbitingBody() {
-        return orbitingBody;
+    // Fun fact, these methods were entirely written by ChatGPT3... Take that as you will.
+    public static <T> ArrayList<T> selectNRandomElements(Collection<T> inputList, long n) {
+        ArrayList<T> randomElements = new ArrayList<>((int) n);
+        ArrayList<T> inputArray = new ArrayList<>(inputList);
+        Random rand = new Random();
+        IntStream.range(0, (int) n).forEach(i -> {
+            int randomIndex = rand.nextInt(inputArray.size());
+            randomElements.add(inputArray.get(randomIndex));
+            inputArray.remove(randomIndex);
+        });
+        return randomElements;
     }
 
-    public void setOrbitingBody(Block orbitingBody) {
-        this.orbitingBody = orbitingBody;
+    public static float generateRandomFloat(float a, float b) {
+        Random rand = new Random();
+        return rand.nextFloat() * (b - a) + a;
     }
-
-    private Block orbitingBody;
 
     public long getTier() {
         return tier;
@@ -68,15 +82,56 @@ public class TileEyeOfHarmony extends TileEntity {
         angle += 10.0f;
     }
 
-    public float angle;
+    public class OrbitingObject {
+        public OrbitingObject(Block block, float distance, float rotationSpeed, float orbitSpeed, float xAngle, float zAngle, float scale) {
+            this.block = block;
+            this.distance = distance;
+            this.rotationSpeed = rotationSpeed;
+            this.orbitSpeed = orbitSpeed;
+            this.xAngle = xAngle;
+            this.zAngle = zAngle;
+            this.scale = scale;
+        }
 
+        public final Block block;
+        public final float distance;
+        public final float rotationSpeed;
+        public final float orbitSpeed;
+        public final float xAngle;
+        public final float zAngle;
+        public final float scale;
+    }
+
+    public ArrayList<OrbitingObject> getOrbitingObjects() {
+        return orbitingObjects;
+    }
+
+    private final ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
+
+    private final static float maxAngle = 30;
+
+    // This must be set last.
+    public void generateImportantInfo() {
+
+        int index = 0;
+        for (Block block : selectNRandomElements(ModBlocks.blocks.values(), tier)) {
+
+            float xAngle = generateRandomFloat(-maxAngle, maxAngle);
+            float zAngle = generateRandomFloat(-maxAngle ,maxAngle);
+            index += 1.0;
+            float distance = index + generateRandomFloat(-0.2f, 0.2f);
+            float scale = generateRandomFloat(0.2f, 0.9f);
+            float rotationSpeed = generateRandomFloat(0.5f, 1.5f);
+            float orbitSpeed = generateRandomFloat(0.5f, 1.5f);
+            orbitingObjects.add(new OrbitingObject(block, distance, rotationSpeed, orbitSpeed, xAngle, zAngle, scale));
+        }
+
+    }
+
+    public float angle;
     private static final String EOHNBTTag = "EOH:";
     private static final String rotationSpeedNBTTag = EOHNBTTag + "rotationSpeed";
     private static final String sizeNBTTag = EOHNBTTag + "size";
-    private static final String sizeRedNBTTag = EOHNBTTag + "red";
-    private static final String sizeGreenNBTTag = EOHNBTTag + "green";
-    private static final String sizeBlueNBTTag = EOHNBTTag + "blue";
-    private static final String orbitingBodyIDNBTTag = EOHNBTTag + "orbitingBodyID";
     private static final String tierNBTTag = EOHNBTTag + "tier";
 
     @Override
@@ -87,11 +142,6 @@ public class TileEyeOfHarmony extends TileEntity {
         compound.setFloat(rotationSpeedNBTTag, rotationSpeed);
         compound.setFloat(sizeNBTTag, size);
         compound.setLong(tierNBTTag, tier);
-
-        if (orbitingBody != null) {
-            int blockID = Block.getIdFromBlock(orbitingBody);
-            compound.setInteger(orbitingBodyIDNBTTag, blockID);
-        }
     }
 
     @Override
@@ -102,11 +152,6 @@ public class TileEyeOfHarmony extends TileEntity {
         rotationSpeed = compound.getFloat(rotationSpeedNBTTag);
         size = compound.getFloat(sizeNBTTag);
         tier = compound.getLong(tierNBTTag);
-
-        if (compound.hasKey(orbitingBodyIDNBTTag)) {
-            int blockID = compound.getInteger(orbitingBodyIDNBTTag);
-            orbitingBody = Block.getBlockById(blockID);
-        }
     }
 
     @Override

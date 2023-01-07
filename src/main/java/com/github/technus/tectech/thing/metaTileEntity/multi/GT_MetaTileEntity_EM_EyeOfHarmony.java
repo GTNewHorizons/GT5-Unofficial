@@ -1786,6 +1786,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 this.getBaseMetaTileEntity().getWorld().getTileEntity((int) (x + xOffset), (int) (y + yOffset), (int)
                         (z + zOffset));
 
+        rendererTileEntity.setTier(currentRecipe.getRocketTier());
+
         int recipeSpacetimeTier = (int) currentRecipe.getSpacetimeCasingTierRequired();
 
         // Star is a larger size depending on the spacetime tier of the recipe.
@@ -1794,11 +1796,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         // Star rotates faster the higher tier time dilation you use in the multi.
         // Lower value = faster rotation speed.
         rendererTileEntity.setRotationSpeed((1 + timeAccelerationFieldMetadata) / 2.0f);
-
-        // Set recipe spacetime tier for usage elsewhere.
-        rendererTileEntity.setTier(currentRecipe.getRocketTier());
-        rendererTileEntity.setOrbitingBody(
-                Block.getBlockFromItem(currentRecipe.getRecipeTriggerItem().getItem()));
     }
 
     private double successChance;
