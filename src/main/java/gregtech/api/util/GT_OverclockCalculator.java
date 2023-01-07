@@ -250,9 +250,9 @@ public class GT_OverclockCalculator {
     /**
      * @return The consumtipn after overclock has been calculated
      */
-    public long getConsumption() throws Exception {
+    public long getConsumption() {
         if (!calculated) {
-            throw new Exception("Tried to get consumption before calculating!");
+            calculate();
         }
         return mRecipeEUt;
     }
@@ -260,9 +260,9 @@ public class GT_OverclockCalculator {
     /**
      * @return The duration of the recipe after overclock has been calculated
      */
-    public int getDuration() throws Exception {
+    public int getDuration() {
         if (!calculated) {
-            throw new Exception("Tried to get duration before calculating!");
+            calculate();
         }
         return mDuration;
     }
