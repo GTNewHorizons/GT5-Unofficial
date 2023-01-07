@@ -57,7 +57,7 @@ public class NaquadahReworkRecipeLoader {
                         },
                         new FluidStack[] {},
                         new ItemStack[] {
-                            inertNaquadah.get(OrePrefixes.dust, 64),
+                            inertNaquadah.get(OrePrefixes.dust, 1),
                             Materials.Titanium.getDust(64),
                             Materials.Adamantium.getDust(64),
                             Materials.Gallium.getDust(64)
@@ -77,7 +77,7 @@ public class NaquadahReworkRecipeLoader {
                         new FluidStack[] {Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L)},
                         new FluidStack[] {wasteLiquid.getFluidOrGas(32000)},
                         new ItemStack[] {
-                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64), Materials.Trinium.getDust(64),
+                            inertEnrichedNaquadah.get(OrePrefixes.dust, 1), Materials.Trinium.getDust(64),
                         },
                         new int[] {3300, 3300, 3300},
                         10 * 20,
@@ -97,7 +97,7 @@ public class NaquadahReworkRecipeLoader {
                         },
                         new FluidStack[] {},
                         new ItemStack[] {
-                            inertNaquadria.get(OrePrefixes.dust, 64),
+                            inertNaquadria.get(OrePrefixes.dust, 1),
                             Materials.Barium.getDust(64),
                             Materials.Indium.getDust(64),
                             ItemList.NaquadriaSupersolid.get(1)
@@ -108,77 +108,33 @@ public class NaquadahReworkRecipeLoader {
                         3);
                 // Activate Them
                 MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                        new FluidStack[] {Materials.Nickel.getPlasma(2880)},
+                        new FluidStack[] {Materials.Nickel.getPlasma(144 * 16)},
                         new ItemStack[] {
-                            inertNaquadah.get(OrePrefixes.dust, 64),
-                            inertNaquadah.get(OrePrefixes.dust, 64),
-                            inertNaquadah.get(OrePrefixes.dust, 64),
-                            inertNaquadah.get(OrePrefixes.dust, 64),
-                            inertNaquadah.get(OrePrefixes.dust, 64),
-                            inertNaquadah.get(OrePrefixes.dust, 64),
+                            inertNaquadah.get(OrePrefixes.dust, 64), inertNaquadah.get(OrePrefixes.dust, 32)
                         },
-                        new FluidStack[] {Materials.Nickel.getMolten(2880)},
-                        new ItemStack[] {
-                            Materials.Naquadah.getDust(64),
-                            Materials.Naquadah.getDust(64),
-                            Materials.Naquadah.getDust(64),
-                            Materials.Naquadah.getDust(64),
-                            Materials.Naquadah.getDust(64),
-                            Materials.Naquadah.getDust(64),
-                            Materials.Naquadah.getDust(64),
-                            Materials.Naquadah.getDust(64),
-                            Materials.Naquadah.getDust(64),
-                        },
+                        new FluidStack[] {Materials.Naquadah.getMolten(144 * 9216)},
+                        new ItemStack[] {Materials.Nickel.getDust(16)},
                         2000,
                         600,
                         500);
                 MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                        new FluidStack[] {Materials.Titanium.getPlasma(2880)},
+                        new FluidStack[] {Materials.Titanium.getPlasma(16 * 144)},
                         new ItemStack[] {
                             inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
-                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
-                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
-                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
-                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
-                            inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
+                            inertEnrichedNaquadah.get(OrePrefixes.dust, 32)
                         },
-                        new FluidStack[] {Materials.Titanium.getMolten(2880)},
-                        new ItemStack[] {
-                            Materials.NaquadahEnriched.getDust(64),
-                            Materials.NaquadahEnriched.getDust(64),
-                            Materials.NaquadahEnriched.getDust(64),
-                            Materials.NaquadahEnriched.getDust(64),
-                            Materials.NaquadahEnriched.getDust(64),
-                            Materials.NaquadahEnriched.getDust(64),
-                            Materials.NaquadahEnriched.getDust(64),
-                            Materials.NaquadahEnriched.getDust(64),
-                            Materials.NaquadahEnriched.getDust(64),
-                        },
+                        new FluidStack[] {Materials.NaquadahEnriched.getMolten(144 * 9216)},
+                        new ItemStack[] {Materials.Titanium.getDust(16)},
                         2000,
                         900,
                         850);
                 MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                        new FluidStack[] {Materials.Americium.getPlasma(2880)},
+                        new FluidStack[] {Materials.Americium.getPlasma(144 * 16)},
                         new ItemStack[] {
-                            inertNaquadria.get(OrePrefixes.dust, 64),
-                            inertNaquadria.get(OrePrefixes.dust, 64),
-                            inertNaquadria.get(OrePrefixes.dust, 64),
-                            inertNaquadria.get(OrePrefixes.dust, 64),
-                            inertNaquadria.get(OrePrefixes.dust, 64),
-                            inertNaquadria.get(OrePrefixes.dust, 64),
+                            inertNaquadria.get(OrePrefixes.dust, 64), inertNaquadria.get(OrePrefixes.dust, 32)
                         },
-                        new FluidStack[] {Materials.Americium.getMolten(2880)},
-                        new ItemStack[] {
-                            Materials.Naquadria.getDust(64),
-                            Materials.Naquadria.getDust(64),
-                            Materials.Naquadria.getDust(64),
-                            Materials.Naquadria.getDust(64),
-                            Materials.Naquadria.getDust(64),
-                            Materials.Naquadria.getDust(64),
-                            Materials.Naquadria.getDust(64),
-                            Materials.Naquadria.getDust(64),
-                            Materials.Naquadria.getDust(64),
-                        },
+                        new FluidStack[] {Materials.Naquadria.getMolten(144 * 9216)},
+                        new ItemStack[] {Materials.Americium.getDust(16)},
                         2000,
                         1100,
                         1080);
