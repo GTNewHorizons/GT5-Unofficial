@@ -14,16 +14,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
+import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
 public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
     private static final ResourceLocation starLayer0 = new ResourceLocation(MODID, "models/StarLayer0.png");
     private static final ResourceLocation starLayer1 = new ResourceLocation(MODID, "models/StarLayer1.png");
     private static final ResourceLocation starLayer2 = new ResourceLocation(MODID, "models/StarLayer2.png");
-    public static IModelCustom modelCustom;
+    private static IModelCustom starModel;
+    private static IModelCustom spaceModel;
 
     public RenderEyeOfHarmony() {
-        modelCustom = AdvancedModelLoader.loadModel(new ResourceLocation(MODID, "models/Star.obj"));
+        starModel = AdvancedModelLoader.loadModel(new ResourceLocation(MODID, "models/Star.obj"));
+        spaceModel = AdvancedModelLoader.loadModel(new ResourceLocation(MODID, "models/Space.obj"));
     }
 
     @Override
@@ -37,24 +40,93 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
             if (EOHRenderTile.getOrbitingBody() != null) {
-                // Render orbiting body.
-                GL11.glPushMatrix();
-                GL11.glRotatef((0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
-                GL11.glTranslated(-1 - EOHRenderTile.getSize() * pow(1.05f, 2), 0, 0);
-                GL11.glRotatef((0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
-                renderBlockInWorld(EOHRenderTile.getOrbitingBody(), 0, 0.7f);
-                GL11.glPopMatrix();
+                renderOrbitObjects(EOHRenderTile);
             }
 
             // Render star stuff.
             renderStarLayer(EOHRenderTile, 0, starLayer0, 1.0f);
             renderStarLayer(EOHRenderTile, 1, starLayer1, 0.4f);
             renderStarLayer(EOHRenderTile, 2, starLayer2, 0.2f);
+
+            // Render outer space layer.
+            renderOuterSpaceShell();
             GL11.glPopMatrix();
         }
     }
 
-    void renderStarLayer(TileEyeOfHarmony EOHRenderTile, int layer, ResourceLocation texture, float alpha) {
+    public class OrbitingObject {
+        public OrbitingObject(float rotationSpeed, float orbitSpeed, float xAngle, float zAngle, float scale) {
+            this.rotationSpeed = rotationSpeed;
+            this.orbitSpeed = orbitSpeed;
+            this.xAngle = xAngle;
+            this.zAngle = zAngle;
+            this.scale = scale;
+        }
+
+        public final float rotationSpeed;
+        public final float orbitSpeed;
+        public final float xAngle;
+        public final float zAngle;
+        public final float scale;
+    }
+
+    private void renderOrbitObjects(final TileEyeOfHarmony EOHRenderTile) {
+
+        switch ((int) EOHRenderTile.getTier()) {
+            case 0:
+                renderOrbit(ModBlocks.getBlock("Ow"), EOHRenderTile, new OrbitingObject(1.0f, 1.0f, -4, 3, 0.4f));
+            case 1:
+            case 2:
+            case 8:
+            case 9:
+                renderOrbit(ModBlocks.getBlock("DD"), EOHRenderTile, new OrbitingObject(1.0f, 1.0f, 90, 45, 0.4f));
+        }
+    }
+
+    void renderOrbit(final Block block, final TileEyeOfHarmony EOHRenderTile, final OrbitingObject orbitingObject) {
+        // Render orbiting body.
+        GL11.glPushMatrix();
+        GL11.glRotatef(orbitingObject.zAngle, 0, 0, 1);
+        GL11.glRotatef(orbitingObject.xAngle, 1, 0, 0);
+        GL11.glRotatef((orbitingObject.rotationSpeed * 0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
+        GL11.glTranslated(- 1 - EOHRenderTile.getSize(), 0,0);
+        GL11.glRotatef((orbitingObject.orbitSpeed * 0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
+        renderBlockInWorld(block, 0, orbitingObject.scale);
+        GL11.glPopMatrix();
+    }
+
+    private static void renderOuterSpaceShell() {
+
+        // Begin animation.
+        GL11.glPushMatrix();
+
+        // OpenGL settings, not sure exactly what these do.
+
+        // Disables lighting, so star is always lit (I think).
+        GL11.glDisable(GL11.GL_LIGHTING);
+        // Merges colours of the various layers of the star?
+        GL11.glEnable(GL11.GL_BLEND);
+
+        // Bind animation to layer of star.
+        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(new ResourceLocation(MODID, "models/spaceLayer.png"));
+
+        final float scale = 0.01f*17f;
+        // Scale the star up in the x, y and z directions.
+        GL11.glScalef(scale, scale, scale);
+
+        GL11.glColor4f(1, 1, 1, 1);
+
+        spaceModel.renderAll();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_LIGHTING);
+
+        // Finish animation.
+        GL11.glPopMatrix();
+    }
+
+
+    private void renderStarLayer(TileEyeOfHarmony EOHRenderTile, int layer, ResourceLocation texture, float alpha) {
 
         // Begin animation.
         GL11.glPushMatrix();
@@ -78,14 +150,14 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         float scale = 0.01f * EOHRenderTile.getSize();
 
         // Put each subsequent layer further out.
-        scale *= pow(1.05f, layer);
+        scale *= pow(1.04f, layer);
 
         // Scale the star up in the x, y and z directions.
         GL11.glScalef(scale, scale, scale);
 
         switch (layer) {
             case 0:
-                GL11.glRotatef(194, 0F, 1F, 1F);
+                GL11.glRotatef(130, 0F, 1F, 1F);
                 break;
             case 1:
                 GL11.glRotatef(-49, 1F, 1F, 0F);
@@ -101,7 +173,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         // Spin the star around according to the multi time dilation tier.
         GL11.glRotatef((0.03f * EOHRenderTile.angle * EOHRenderTile.getRotationSpeed()) % 360.0f, 0F, 0F, 1F);
 
-        modelCustom.renderAll();
+        starModel.renderAll();
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -110,7 +182,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
     }
 
-    public void renderBlockInWorld(Block block, int meta, float blockSize) {
+    private void renderBlockInWorld(Block block, int meta, float blockSize) {
         Tessellator tes = Tessellator.instance;
 
         this.bindTexture(TextureMap.locationBlocksTexture);
