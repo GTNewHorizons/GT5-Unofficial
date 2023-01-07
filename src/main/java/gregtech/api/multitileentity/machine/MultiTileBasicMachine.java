@@ -54,6 +54,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
             writeInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
         if (mOutputInventory != null && mOutputInventory.getSlots() > 0)
             writeInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
+        for (int i = 0; i < mTanksInput.length; i++) mTanksInput[i].writeToNBT(aNBT, NBT.TANK_IN + i);
+        for (int i = 0; i < mTanksOutput.length; i++) mTanksOutput[i].writeToNBT(aNBT, NBT.TANK_OUT + i);
     }
 
     protected void writeInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {

@@ -601,6 +601,13 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         return rInfo;
     }
 
+    @Override
+    public IFluidTank[] getFluidTanksForGUI(MultiBlockPart aPart) {
+        if (aPart.modeSelected(MultiBlockPart.FLUID_IN)) return mTanksInput;
+        if (aPart.modeSelected(MultiBlockPart.FLUID_OUT)) return mTanksOutput;
+        return GT_Values.emptyFluidTank;
+    }
+
     /**
      * Energy - MultiBlock related Energy behavior
      */
