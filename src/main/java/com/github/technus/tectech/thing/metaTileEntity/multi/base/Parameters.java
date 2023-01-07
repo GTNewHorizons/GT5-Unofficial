@@ -52,6 +52,15 @@ public class Parameters {
         return false;
     }
 
+    public boolean trySetParameters(int hatchNo, int parameterId, double parameter) {
+        Group p = groups[hatchNo];
+        if (parent.mMaxProgresstime <= 0 || (p != null && p.updateWhileRunning)) {
+            iParamsIn[hatchNo + 10 * parameterId] = parameter;
+            return true;
+        }
+        return false;
+    }
+
     public void setToDefaults(int hatch, boolean defaultIn, boolean defaultOut) {
         Group p = groups[hatch];
         if (p == null) {
