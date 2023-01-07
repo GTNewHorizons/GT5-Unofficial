@@ -49,6 +49,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -88,6 +89,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -105,10 +107,12 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
     private boolean isIC2Mode = false;
     private byte glasTier = 0;
     private int waterusage = 0;
+    private int weedexusage = 0;
     private boolean isNoHumidity = false;
     private static final int CASING_INDEX = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final Item forestryfertilizer = GameRegistry.findItem("Forestry", "fertilizerCompound");
+    private static final Fluid weedex = Materials.WeedEX9000.mFluid;
     private static final IStructureDefinition<GT_TileEntity_ExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_TileEntity_ExtremeIndustrialGreenhouse>builder()
                     .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
@@ -242,6 +246,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
                 .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
                 .addInfo("Use wire cutters to give incoming IC2 crops 0 humidity")
                 .addInfo("Uses 1000L of water per crop per operation")
+                .addInfo("If there are >= 1000 crops -> Uses 1L of Weed-EX 9000 per crop per second")
+                .addInfo("Otherwise, around 1% of crops will die each operation")
                 .addInfo("You can insert fertilizer each operation to get more drops (max +400%)")
                 .addInfo("-------------------- SETUP   MODE --------------------")
                 .addInfo("Does not take power")
@@ -424,7 +430,9 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
         if (mStorage.isEmpty()) return false;
 
         waterusage = 0;
+        weedexusage = 0;
         for (GreenHouseSlot s : mStorage) waterusage += s.input.stackSize;
+        if (waterusage >= 1000) weedexusage = waterusage;
         waterusage *= 1000;
 
         List<GT_MetaTileEntity_Hatch_Input> fluids = mInputHatches;
@@ -452,6 +460,16 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
         for (GT_MetaTileEntity_Hatch_Input i : fluidsToUse) {
             int used = i.drain(watercheck, true).amount;
             watercheck -= used;
+        }
+
+        // weedex
+        if (weedexusage > 0 && !this.depleteInput(new FluidStack(weedex, isIC2Mode ? weedexusage * 5 : weedexusage))) {
+            IGregTechTileEntity baseMTE = this.getBaseMetaTileEntity();
+            int tokill = baseMTE.getRandomNumber((int) ((double) weedexusage * 0.02d) + 1);
+            for (int i = 0; i < tokill; ) {
+                GreenHouseSlot removed = mStorage.remove(baseMTE.getRandomNumber(mStorage.size()));
+                i -= removed.input.stackSize;
+            }
         }
 
         // OVERCLOCK
@@ -855,6 +873,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse
                                 : ("Setup mode " + (setupphase == 1 ? "(input)" : "(output)")))
                         + EnumChatFormatting.RESET,
                 "Uses " + waterusage + "L/operation of water",
+                "Uses " + weedexusage + "L/second of Weed-EX 9000",
                 "Max slots: " + EnumChatFormatting.GREEN + this.mMaxSlots + EnumChatFormatting.RESET,
                 "Used slots: " + ((mStorage.size() > mMaxSlots) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
                         + this.mStorage.size() + EnumChatFormatting.RESET));
