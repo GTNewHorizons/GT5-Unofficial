@@ -3261,6 +3261,10 @@ public enum OrePrefixes {
         ingot.mNotGeneratedItems.add(Materials.BrickNether);
         ingot.mNotGeneratedItems.add(Materials.WoodSealed);
         ingot.mNotGeneratedItems.add(Materials.Wood);
+
+        frame.mNotGeneratedItems.add(Materials.Universium);
+        frameGt.mNotGeneratedItems.add(Materials.Universium);
+
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
         nugget.mNotGeneratedItems.add(Materials.Gold);
         plate.mNotGeneratedItems.add(Materials.Paper);
