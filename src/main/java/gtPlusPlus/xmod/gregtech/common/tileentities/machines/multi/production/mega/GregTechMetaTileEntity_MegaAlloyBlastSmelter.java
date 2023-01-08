@@ -20,10 +20,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
@@ -37,15 +34,13 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GregTechMetaTileEntity_MegaAlloyBlastSmelter>
+        extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GregTechMetaTileEntity_MegaAlloyBlastSmelter>
         implements ISurvivalConstructable {
 
     private static final int MAX_PARALLELS = 256;
-    private static final double log4 = Math.log(4);
     private HeatingCoilLevel coilLevel;
     private byte glassTier = -1;
     private boolean separateBusses = false;
-    private long EU_per_tick = 0L;
     private int currentParallels;
     private boolean hasNormalCoils;
 
@@ -366,13 +361,12 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
 
     protected boolean processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
         if (tItems.length <= 0 && tFluids.length <= 0) return false;
-        long tVoltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
-        long tAmps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
+        long tVoltage = this.getMaxInputVoltage()
+                / this.getExoticAndNormalEnergyHatchList().size();
+        long tAmps = (long) (GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(this.getExoticEnergyHatches()) * 0.8D
+                + GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(
+                        this.mEnergyHatches)); // Use 80% of the available amps for exotic hatches to get working amps
         long tTotalEU = tVoltage * tAmps;
-
-        if (getExoticAndNormalEnergyHatchList().get(0) instanceof GT_MetaTileEntity_Hatch_Energy) {
-            tTotalEU /= 2L;
-        }
 
         GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, tTotalEU, tFluids, tItems);
         if (recipe == null) return false;
@@ -382,34 +376,33 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         long parallels = Math.min(MAX_PARALLELS, tTotalEU / recipe.mEUt);
         currentParallels = RecipeFinderForParallel.handleParallelRecipe(recipe, tFluids, tItems, (int) parallels);
         if (currentParallels <= 0) return false;
-        double EU_input_tier = Math.log(tTotalEU) / log4;
-        double EU_recipe_tier = Math.log(recipe.mEUt * currentParallels) / log4;
-        long overclock_count = (long) Math.floor(EU_input_tier - EU_recipe_tier);
-        EU_per_tick = (long) -(recipe.mEUt * Math.pow(4, overclock_count) * currentParallels);
+
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator()
+                .setRecipeEUt(recipe.mEUt)
+                .setParallel(currentParallels)
+                .setDuration(recipe.mDuration)
+                .setEUt(tTotalEU)
+                .calculate();
+
+        lEUt = calculator.getConsumption();
+        mMaxProgresstime = calculator.getDuration();
 
         Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> outputs =
                 RecipeFinderForParallel.getMultiOutput(recipe, currentParallels);
 
-        int progressTime = (int) (recipe.mDuration / Math.pow(2, overclock_count));
-        progressTime -= coilLevel.getTier() < 0 ? 0 : progressTime * getCoilDiscount(coilLevel);
+        mMaxProgresstime -= coilLevel.getTier() < 0 ? 0 : mMaxProgresstime * getCoilDiscount(coilLevel);
 
-        mMaxProgresstime = Math.max(1, progressTime);
+        if (lEUt > 0) {
+            lEUt = -lEUt;
+        }
+
+        mMaxProgresstime = Math.max(1, mMaxProgresstime);
+        mEfficiency = getCurrentEfficiency(null);
 
         mOutputItems = outputs.getValue().toArray(new ItemStack[0]);
         mOutputFluids = outputs.getKey().toArray(new FluidStack[0]);
         updateSlots();
 
-        return true;
-    }
-
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (EU_per_tick < 0) {
-            if (!drainEnergyInput(-EU_per_tick)) {
-                criticalStopMachine();
-                return false;
-            }
-        }
         return true;
     }
 
@@ -477,11 +470,6 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     }
 
     @Override
-    public boolean drainEnergyInput(long aEU) {
-        return GT_ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece("main", stackSize, hintsOnly, 5, 16, 0);
     }
@@ -544,7 +532,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
                     + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(-EU_per_tick) + EnumChatFormatting.RESET + " EU/t",
+                    + GT_Utility.formatNumbers(-lEUt) + EnumChatFormatting.RESET + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(
                             GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
@@ -636,7 +624,6 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     public void loadNBTData(NBTTagCompound aNBT) {
         this.glassTier = aNBT.getByte("glassTier");
         this.separateBusses = aNBT.getBoolean("separateBusses");
-        this.EU_per_tick = aNBT.getLong("EU_per_tick");
         super.loadNBTData(aNBT);
     }
 
@@ -644,7 +631,6 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setByte("glassTier", glassTier);
         aNBT.setBoolean("separateBusses", separateBusses);
-        aNBT.setLong("EU_per_tick", EU_per_tick);
         super.saveNBTData(aNBT);
     }
 }
