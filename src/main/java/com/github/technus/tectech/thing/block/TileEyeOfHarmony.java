@@ -82,7 +82,7 @@ public class TileEyeOfHarmony extends TileEntity {
         angle += 10.0f;
     }
 
-    public class OrbitingObject {
+    public static class OrbitingObject {
         public OrbitingObject(Block block, float distance, float rotationSpeed, float orbitSpeed, float xAngle, float zAngle, float scale) {
             this.block = block;
             this.distance = distance;
