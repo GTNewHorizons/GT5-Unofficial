@@ -54,7 +54,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
     private void renderOrbitObjects(final TileEyeOfHarmony EOHRenderTile) {
 
-        if (EOHRenderTile.getOrbitingObjects() != null) { // Bad stuff!
+        if (EOHRenderTile.getOrbitingObjects() != null) {
 
             if (EOHRenderTile.getOrbitingObjects().size() == 0) {
                 EOHRenderTile.generateImportantInfo();

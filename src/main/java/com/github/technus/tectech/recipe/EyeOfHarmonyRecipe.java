@@ -35,7 +35,6 @@ public class EyeOfHarmonyRecipe {
 
         @Override
         public boolean equals(ItemStack item1, ItemStack item2) {
-            // todo investigate isItemEqual instead.
             return item1.getUnlocalizedName().equals(item2.getUnlocalizedName());
         }
     };
