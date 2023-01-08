@@ -78,16 +78,4 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
             super.loadUsageRecipes(aResult);
         }
     }
-
-    @Override
-    public void loadCraftingRecipes(ItemStack aResult) {
-        if (aResult != null
-                && aResult.getItem() instanceof LabParts
-                && aResult.getItemDamage() < 3
-                && aResult.getTagCompound() != null) {
-            loadLabPartRecipes(aResult);
-        } else {
-            super.loadCraftingRecipes(aResult);
-        }
-    }
 }
