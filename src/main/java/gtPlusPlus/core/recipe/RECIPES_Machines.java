@@ -38,6 +38,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RECIPES_Machines {
 
@@ -1275,17 +1276,18 @@ public class RECIPES_Machines {
                     30);
 
             // Lead Lined Chest
-            CORE.RA.addSixSlotAssemblingRecipe(
-                    new ItemStack[] {
-                        CI.machineHull_LV,
-                        ItemUtils.getItemStackOfAmountFromOreDict("plateRubber", 32),
-                        ItemUtils.getItemStackOfAmountFromOreDict("plateDenseLead", 9),
-                        ItemUtils.getSimpleStack(Blocks.chest)
-                    },
-                    ELEMENT.getInstance().LEAD.getFluidStack(144 * 16),
-                    ItemUtils.getSimpleStack(ModBlocks.blockDecayablesChest),
-                    60 * 10 * 3,
-                    60);
+            for (ItemStack plateRubber : OreDictionary.getOres("plateAnyRubber"))
+                CORE.RA.addSixSlotAssemblingRecipe(
+                        new ItemStack[] {
+                            CI.machineHull_LV,
+                            GT_Utility.copyAmount(32, plateRubber),
+                            ItemUtils.getItemStackOfAmountFromOreDict("plateDenseLead", 9),
+                            ItemUtils.getSimpleStack(Blocks.chest)
+                        },
+                        ELEMENT.getInstance().LEAD.getFluidStack(144 * 16),
+                        ItemUtils.getSimpleStack(ModBlocks.blockDecayablesChest),
+                        60 * 10 * 3,
+                        60);
 
             // RTG
             CORE.RA.addSixSlotAssemblingRecipe(
