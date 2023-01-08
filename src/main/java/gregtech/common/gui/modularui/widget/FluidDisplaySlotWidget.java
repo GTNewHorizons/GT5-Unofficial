@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -27,6 +28,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     private Supplier<IFluidAccess> fluidAccessConstructor;
     private Supplier<Boolean> canDrainGetter;
     private Supplier<Boolean> canFillGetter;
+    private Predicate<Fluid> canFillFilter;
     private Action actionRealClick = Action.NONE;
     private Action actionDragAndDrop = Action.NONE;
     private BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeRealClick;
@@ -176,6 +178,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
             if (tFluidHeld == null)
                 // no fluid to fill
                 return null;
+            // apply filter here
+            if (!canFillFilter.test(tFluidHeld.getFluid())) return null;
             return fillFluid(aFluidAccess, aPlayer, tFluidHeld, aProcessFullStack);
         }
         // tank not empty, both action possible
@@ -183,6 +187,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
             // both nonnull and have space left for filling.
             if (aCanFill)
                 // actually both pickup and fill is reasonable, but I'll go with fill here
+                // there is already fluid in here. so we assume the slot will not accept this fluid anyway if it doesn't
+                // pass the filter.
                 return fillFluid(aFluidAccess, aPlayer, tFluidHeld, aProcessFullStack);
             if (!aCanDrain)
                 // cannot take AND cannot fill, why make this call then?
@@ -392,6 +398,15 @@ public class FluidDisplaySlotWidget extends SlotWidget {
      */
     public FluidDisplaySlotWidget setActionRealClick(Action actionRealClick) {
         this.actionRealClick = actionRealClick;
+        return this;
+    }
+
+    /**
+     * Add a predicate on whether a client stack will be accepted. Note this will only be called when this slot is already
+     * empty. It is assumed whatever is already in the slot will pass the filter.
+     */
+    public FluidDisplaySlotWidget setEmptyCanFillFilter(Predicate<Fluid> canFillFilter) {
+        this.canFillFilter = canFillFilter;
         return this;
     }
 
