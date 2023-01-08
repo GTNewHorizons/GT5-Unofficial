@@ -114,7 +114,7 @@ public class TileEyeOfHarmony extends TileEntity {
     public void generateImportantInfo() {
 
         int index = 0;
-        for (Block block : selectNRandomElements(ModBlocks.blocks.values(), tier)) {
+        for (Block block : selectNRandomElements(ModBlocks.blocks.values(), tier+1)) {
 
             float xAngle = generateRandomFloat(-maxAngle, maxAngle);
             float zAngle = generateRandomFloat(-maxAngle ,maxAngle);
