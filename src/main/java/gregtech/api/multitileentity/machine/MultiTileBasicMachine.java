@@ -62,12 +62,11 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     protected void writeFluids(NBTTagCompound aNBT, FluidStack[] fluids, String fluidListTag) {
         if (fluids != null && fluids.length > 0) {
             final NBTTagList tList = new NBTTagList();
-            for (int tFluid = 0; tFluid < fluids.length; tFluid++) {
-                final FluidStack tStack = fluids[tFluid];
-                if (tStack != null) {
+            for (int i = 0; i < fluids.length; i++) {
+                final FluidStack tFluid = fluids[i];
+                if (tFluid != null) {
                     final NBTTagCompound tag = new NBTTagCompound();
-                    tag.setByte("s", (byte) tFluid);
-                    tStack.writeToNBT(tag);
+                    tFluid.writeToNBT(tag);
                     tList.appendTag(tag);
                 }
             }
