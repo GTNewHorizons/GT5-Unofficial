@@ -28,6 +28,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_CompressedFluidHatch extends GT_MetaTileEntity_Hatch_Input {
@@ -55,5 +56,10 @@ public class GT_MetaTileEntity_CompressedFluidHatch extends GT_MetaTileEntity_Ha
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_CompressedFluidHatch(
                 this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    }
+
+    @Override
+    protected FluidDisplaySlotWidget createDrainableFluidSlot() {
+        return super.createDrainableFluidSlot().setEmptyCanFillFilter(f -> f == Materials.LiquidAir.mFluid);
     }
 }
