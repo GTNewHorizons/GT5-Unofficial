@@ -17281,14 +17281,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                 120);
         GT_Values.RA.addChemicalRecipe(
                 Materials.Empty.getCells(1),
-                GT_Utility.getIntegratedCircuit(2),
+                GT_Utility.getIntegratedCircuit(5),
                 Materials.Propene.getGas(2000),
                 Materials.Isoprene.getFluid(1000),
                 Materials.Methane.getCells(1),
                 120);
         GT_Values.RA.addChemicalRecipe(
                 Materials.Propene.getCells(2),
-                GT_Utility.getIntegratedCircuit(3),
+                GT_Utility.getIntegratedCircuit(5),
                 GT_Values.NF,
                 Materials.Isoprene.getFluid(1000),
                 Materials.Methane.getCells(1),
@@ -17296,14 +17296,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                 120);
         GT_Values.RA.addChemicalRecipe(
                 Materials.Empty.getCells(1),
-                GT_Utility.getIntegratedCircuit(12),
+                GT_Utility.getIntegratedCircuit(15),
                 Materials.Propene.getGas(2000),
                 Materials.Methane.getGas(1000),
                 Materials.Isoprene.getCells(1),
                 120);
         GT_Values.RA.addChemicalRecipe(
                 Materials.Propene.getCells(2),
-                GT_Utility.getIntegratedCircuit(12),
+                GT_Utility.getIntegratedCircuit(15),
                 GT_Values.NF,
                 Materials.Methane.getGas(1000),
                 Materials.Isoprene.getCells(1),
