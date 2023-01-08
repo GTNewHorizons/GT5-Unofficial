@@ -19,6 +19,7 @@ import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.enums.GT_Values;
@@ -52,6 +53,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidTank;
 
 public class MultiBlockPart extends BaseNontickableMultiTileEntity
         implements IMultiBlockPart, IMTE_BreakBlock, IMTE_HasModes {
@@ -668,6 +670,8 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     public String getLocalName() {
         if (modeSelected(ITEM_IN)) return "Input Inventory";
         if (modeSelected(ITEM_OUT)) return "Output Inventory";
+        if (modeSelected(FLUID_IN)) return "Fluid Input Hatch";
+        if (modeSelected(FLUID_OUT)) return "Fluid Output Hatch";
 
         return "Unknown";
     }
@@ -675,7 +679,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public boolean hasGui(byte aSide) {
         // UIs only for specific mode(s)
-        if (modeSelected(ITEM_IN, ITEM_OUT) && mFacing == aSide) return true;
+        if (modeSelected(ITEM_IN, ITEM_OUT, FLUID_IN, FLUID_OUT) && mFacing == aSide) return true;
 
         return false;
     }
@@ -687,11 +691,32 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         }
         final IItemHandlerModifiable inv = controller.getInventoryForGUI(this);
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 1; rows * 4 <= inv.getSlots(); rows++) {
-            for (int column = 0; column < 4; column++) {
-                scrollable.widget(new SlotWidget(inv, (rows - 1) * 4 + column)
-                        .setPos((column) * 18, (rows - 1) * 18)
+        for (int rows = 0; rows * 4 < inv.getSlots(); rows++) {
+            int columnsToMake = Math.min(inv.getSlots() - rows * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                scrollable.widget(new SlotWidget(inv, rows * 4 + column)
+                        .setPos(column * 18, rows * 18)
                         .setSize(18, 18));
+            }
+        }
+        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
+    }
+
+    protected void addFluidInventory(Builder builder, UIBuildContext buildContext) {
+        final IMultiBlockController controller = getTarget(false);
+        if (controller == null) {
+            return;
+        }
+        final IFluidTank[] tanks = controller.getFluidTanksForGUI(this);
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int rows = 0; rows * 4 < tanks.length; rows++) {
+            int columnsToMake = Math.min(tanks.length - rows * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+                if (modeSelected(FLUID_OUT)) {
+                    fluidSlot.setInteraction(true, false);
+                }
+                scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
             }
         }
         builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
@@ -701,6 +726,9 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
         if (modeSelected(ITEM_IN, ITEM_OUT)) {
             addItemInventory(builder, buildContext);
+        }
+        if (modeSelected(FLUID_IN, FLUID_OUT)) {
+            addFluidInventory(builder, buildContext);
         }
     }
 
