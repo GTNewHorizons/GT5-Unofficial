@@ -577,7 +577,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
         float plasmaOut = 0;
         int powerRequired = 0;
         if (this.mLastRecipe != null) {
-            powerRequired = this.mLastRecipe.mEUt * this.para;
+            powerRequired = this.mLastRecipe.mEUt * this.para * overclock(this.mLastRecipe.mSpecialValue);
             if (this.mLastRecipe.getFluidOutput(0) != null) {
                 plasmaOut = (float) this.mLastRecipe.getFluidOutput(0).amount
                         / (float) this.mLastRecipe.mDuration
