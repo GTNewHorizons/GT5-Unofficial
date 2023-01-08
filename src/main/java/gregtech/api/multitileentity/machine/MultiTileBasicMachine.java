@@ -36,8 +36,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     protected FluidTankGT[] mTanksInput = GT_Values.emptyFluidTankGT, mTanksOutput = GT_Values.emptyFluidTankGT;
     protected FluidStack[] mOutputFluids = GT_Values.emptyFluidStack;
 
-    protected final IItemHandlerModifiable mInputInventory = new ItemStackHandler(20);
-    protected final IItemHandlerModifiable mOutputInventory = new ItemStackHandler(20);
+    protected final IItemHandlerModifiable mInputInventory = new ItemStackHandler(17);
+    protected final IItemHandlerModifiable mOutputInventory = new ItemStackHandler(15);
     protected boolean mOutputInventoryChanged = false;
 
     @Override
@@ -54,6 +54,24 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
             writeInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
         if (mOutputInventory != null && mOutputInventory.getSlots() > 0)
             writeInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
+        for (int i = 0; i < mTanksInput.length; i++) mTanksInput[i].writeToNBT(aNBT, NBT.TANK_IN + i);
+        for (int i = 0; i < mTanksOutput.length; i++) mTanksOutput[i].writeToNBT(aNBT, NBT.TANK_OUT + i);
+        if (mOutputFluids != null && mOutputFluids.length > 0) writeFluids(aNBT, mOutputFluids, NBT.FLUID_OUT);
+    }
+
+    protected void writeFluids(NBTTagCompound aNBT, FluidStack[] fluids, String fluidListTag) {
+        if (fluids != null && fluids.length > 0) {
+            final NBTTagList tList = new NBTTagList();
+            for (int i = 0; i < fluids.length; i++) {
+                final FluidStack tFluid = fluids[i];
+                if (tFluid != null) {
+                    final NBTTagCompound tag = new NBTTagCompound();
+                    tFluid.writeToNBT(tag);
+                    tList.appendTag(tag);
+                }
+            }
+            aNBT.setTag(fluidListTag, tList);
+        }
     }
 
     protected void writeInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
@@ -175,14 +193,14 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
      * The number of fluid (input) slots available for this machine
      */
     public int getFluidInputCount() {
-        return 2;
+        return 7;
     }
 
     /**
      * The number of fluid (output) slots available for this machine
      */
     public int getFluidOutputCount() {
-        return 2;
+        return 3;
     }
 
     @Override
