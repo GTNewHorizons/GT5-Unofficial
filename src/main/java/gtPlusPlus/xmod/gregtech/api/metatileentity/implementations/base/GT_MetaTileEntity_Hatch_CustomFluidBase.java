@@ -11,6 +11,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -200,5 +201,10 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
     @Override
     public boolean useModularUI() {
         return true;
+    }
+
+    @Override
+    protected FluidDisplaySlotWidget createDrainableFluidSlot() {
+        return super.createDrainableFluidSlot().setEmptyCanFillFilter(s -> s == mLockedFluid);
     }
 }
