@@ -713,12 +713,10 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
             int columnsToMake = Math.min(tanks.length - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
-                if (modeSelected(FLUID_OUT)){
+                if (modeSelected(FLUID_OUT)) {
                     fluidSlot.setInteraction(true, false);
                 }
-                scrollable.widget(fluidSlot
-                        .setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
+                scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
             }
         }
         builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
