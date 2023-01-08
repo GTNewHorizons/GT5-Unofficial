@@ -179,7 +179,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
                 // no fluid to fill
                 return null;
             // apply filter here
-            if (!canFillFilter.test(tFluidHeld.getFluid())) return null;
+            if (canFillFilter != null && !canFillFilter.test(tFluidHeld.getFluid())) return null;
             return fillFluid(aFluidAccess, aPlayer, tFluidHeld, aProcessFullStack);
         }
         // tank not empty, both action possible
