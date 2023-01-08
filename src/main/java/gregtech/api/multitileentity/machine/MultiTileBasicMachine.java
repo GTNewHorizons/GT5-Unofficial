@@ -56,8 +56,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
             writeInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
         for (int i = 0; i < mTanksInput.length; i++) mTanksInput[i].writeToNBT(aNBT, NBT.TANK_IN + i);
         for (int i = 0; i < mTanksOutput.length; i++) mTanksOutput[i].writeToNBT(aNBT, NBT.TANK_OUT + i);
-        if (mOutputFluids != null && mOutputFluids.length > 0) 
-            writeFluids(aNBT, mOutputFluids, NBT.FLUID_OUT);
+        if (mOutputFluids != null && mOutputFluids.length > 0) writeFluids(aNBT, mOutputFluids, NBT.FLUID_OUT);
     }
 
     protected void writeFluids(NBTTagCompound aNBT, FluidStack[] fluids, String fluidListTag) {
