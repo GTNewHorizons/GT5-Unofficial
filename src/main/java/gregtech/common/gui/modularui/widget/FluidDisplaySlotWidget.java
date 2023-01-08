@@ -28,7 +28,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     private Supplier<IFluidAccess> fluidAccessConstructor;
     private Supplier<Boolean> canDrainGetter;
     private Supplier<Boolean> canFillGetter;
-    private Predicate<ItemStack> canFillFilter;
+    private Predicate<Fluid> canFillFilter;
     private Action actionRealClick = Action.NONE;
     private Action actionDragAndDrop = Action.NONE;
     private BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeRealClick;
@@ -179,7 +179,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
                 // no fluid to fill
                 return null;
             // apply filter here
-            if (!canFillFilter.test(tStackHeld)) return null;
+            if (!canFillFilter.test(tFluidHeld.getFluid())) return null;
             return fillFluid(aFluidAccess, aPlayer, tFluidHeld, aProcessFullStack);
         }
         // tank not empty, both action possible
@@ -405,17 +405,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
      * Add a predicate on whether a client stack will be accepted. Note this will only be called when this slot is already
      * empty. It is assumed whatever is already in the slot will pass the filter.
      */
-    public FluidDisplaySlotWidget setEmptyCanFillFilterItem(Predicate<ItemStack> canFillFilter) {
+    public FluidDisplaySlotWidget setEmptyCanFillFilter(Predicate<Fluid> canFillFilter) {
         this.canFillFilter = canFillFilter;
-        return this;
-    }
-
-    /**
-     * Add a predicate on whether a client stack will be accepted. Note this will only be called when this slot is already
-     * empty. It is assumed whatever is already in the slot will pass the filter.
-     */
-    public FluidDisplaySlotWidget setEmptyCanFillFilterFluid(Predicate<FluidStack> canFillFilter) {
-        this.canFillFilter = s -> canFillFilter.test(GT_Utility.getFluidForFilledItem(s, true));
         return this;
     }
 
