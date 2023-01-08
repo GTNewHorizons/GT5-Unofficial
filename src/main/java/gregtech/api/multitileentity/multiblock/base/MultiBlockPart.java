@@ -692,7 +692,8 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         final IItemHandlerModifiable inv = controller.getInventoryForGUI(this);
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * 4 < inv.getSlots(); rows++) {
-            for (int column = 0; column < Math.min(inv.getSlots() % 4, 4); column++) {
+            int columnsToMake = inv.getSlots() - rows * 4 > 4 ? 4 : inv.getSlots() - rows * 4;
+            for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(new SlotWidget(inv, rows * 4 + column)
                         .setPos(column * 18, rows * 18)
                         .setSize(18, 18));
@@ -709,8 +710,13 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         final IFluidTank[] tanks = controller.getFluidTanksForGUI(this);
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * 4 < tanks.length; rows++) {
-            for (int column = 0; column < Math.min(tanks.length % 4, 4); column++) {
-                scrollable.widget(new FluidSlotWidget(tanks[rows * 4 + column])
+            int columnsToMake = tanks.length - rows * 4 > 4 ? 4 : tanks.length - rows * 4;
+            for (int column = 0; column < columnsToMake; column++) {
+                FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+                if (modeSelected(FLUID_OUT)){
+                    fluidSlot.setInteraction(true, false);
+                }
+                scrollable.widget(fluidSlot
                         .setPos(column * 18, rows * 18)
                         .setSize(18, 18));
             }

@@ -36,8 +36,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     protected FluidTankGT[] mTanksInput = GT_Values.emptyFluidTankGT, mTanksOutput = GT_Values.emptyFluidTankGT;
     protected FluidStack[] mOutputFluids = GT_Values.emptyFluidStack;
 
-    protected final IItemHandlerModifiable mInputInventory = new ItemStackHandler(20);
-    protected final IItemHandlerModifiable mOutputInventory = new ItemStackHandler(20);
+    protected final IItemHandlerModifiable mInputInventory = new ItemStackHandler(17);
+    protected final IItemHandlerModifiable mOutputInventory = new ItemStackHandler(15);
     protected boolean mOutputInventoryChanged = false;
 
     @Override
@@ -177,14 +177,14 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
      * The number of fluid (input) slots available for this machine
      */
     public int getFluidInputCount() {
-        return 2;
+        return 7;
     }
 
     /**
      * The number of fluid (output) slots available for this machine
      */
     public int getFluidOutputCount() {
-        return 2;
+        return 3;
     }
 
     @Override
