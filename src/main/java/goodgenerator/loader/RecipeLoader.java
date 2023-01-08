@@ -269,6 +269,16 @@ public class RecipeLoader {
                 WerkstoffLoader.SodiumNitrate.get(OrePrefixes.dust, 20),
                 200,
                 120);
+        // 2 NaNO3 + H2SO4 = Na2SO4 + 2HNO3
+        GT_Values.RA.addChemicalRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                WerkstoffLoader.SodiumNitrate.get(OrePrefixes.dust, 10),
+                Materials.SulfuricAcid.getFluid(1000),
+                Materials.NitricAcid.getFluid(2000),
+                WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 7),
+                null,
+                200,
+                480);
 
         // Th(OH)4 + 4HF = ThF4 + 4H2O
         GT_Values.RA.addChemicalRecipe(
