@@ -55,6 +55,9 @@ import org.spongepowered.libraries.com.google.common.math.LongMath;
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable, IGlobalWirelessEnergy {
+
+    private static final boolean debugMode = false;
+
     // Region variables.
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
@@ -68,8 +71,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private String userUUID = "";
     private String userName = "";
     private long euOutput = 0;
-
-    private final Stack<Long> computationStack = new Stack<>();
 
     // Multiblock structure.
     private static final IStructureDefinition<GT_MetaTileEntity_EM_EyeOfHarmony> STRUCTURE_DEFINITION =
@@ -1379,12 +1380,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private double hydrogenOverflowProbabilityAdjustment;
     private double heliumOverflowProbabilityAdjustment;
-
-    // Maximum additional chance of recipe success that can be obtained from adding computation.
-    private static final double maxPercentageChanceGainFromComputationPerSecond = 0.3;
-
-    // todo: make higher on final release.
-    private static final long ticksBetweenHatchDrain = 20;
+    private static final long ticksBetweenHatchDrain = debugMode ? 20 : 200;
 
     private List<ItemStackLong> outputItems = new ArrayList<>();
 
@@ -1402,12 +1398,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     }
 
     private double recipeChanceCalculator() {
-        double chance = (currentRecipe.getBaseRecipeSuccessChance()
+        double chance = currentRecipe.getBaseRecipeSuccessChance()
                 - timeAccelerationFieldMetadata * 0.1
                 + stabilisationFieldMetadata * 0.05
                 - hydrogenOverflowProbabilityAdjustment
-                - heliumOverflowProbabilityAdjustment
-                + maxPercentageChanceGainFromComputationPerSecond * (1 - exp(-10e-5 * getComputation())));
+                - heliumOverflowProbabilityAdjustment;
 
         return clamp(chance, 0.0, 1.0);
     }
@@ -1437,7 +1432,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
         double recipeTimeDiscounted = recipeTime
-                * pow(2.0, -timeAccelerationFieldMetadata)
+                * pow(2.0, - timeAccelerationFieldMetadata)
                 * pow(1 - spacetimeCasingDifferenceDiscountPercentage, spacetimeCasingDifference);
         return (int) Math.max(recipeTimeDiscounted, 1.0);
     }
@@ -1547,12 +1542,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("- Increases the probability of a recipe succeeding by " + RED + "5%" + GRAY
                         + " per tier (additive).")
                 .addInfo("  Decreases the yield of a recipe by " + RED + "5%" + GRAY + " per tier (additive). ")
-                .addInfo(GOLD + "--------------------------------------------------------------------------------")
-                .addInfo("Computation/s provided to the multiblock can increase the chance by up to " + RED
-                        + formatNumbers(maxPercentageChanceGainFromComputationPerSecond * 100) + GRAY
-                        + "%.")
-                .addInfo("The associated formula is " + GREEN
-                        + "additional_chance = 0.3 * exp(10^(-5) * computation_per_second)" + GRAY + ".")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe")
                 .addInfo(
@@ -1695,14 +1684,15 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
-        //        if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement())
-        //                || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
-        //            return false;
-        //        }
-
-        // todo: DEBUG, DELETE THIS:
-        if ((getHydrogenStored() < 100) || (getHeliumStored() < 100)) {
-            return false;
+        // Debug mode, overwrites the required fluids to initiate the recipe to 100L of each.
+        if (debugMode) {
+            if ((getHydrogenStored() < 100) || (getHeliumStored() < 100)) {
+                return false;
+            }
+        } else {
+            if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement()) || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
+                return false;
+            }
         }
 
         // Check tier of spacetime compression blocks is high enough.
@@ -1721,24 +1711,24 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         calculateHydrogenHeliumInputExcessValues(
                 recipeObject.getHydrogenRequirement(), recipeObject.getHeliumRequirement());
 
-        // todo: DEBUG ! DELETE THESE TWO LINES:
-        hydrogenOverflowProbabilityAdjustment = 0;
-        heliumOverflowProbabilityAdjustment = 0;
+        if (debugMode) {
+            hydrogenOverflowProbabilityAdjustment = 0;
+            heliumOverflowProbabilityAdjustment = 0;
+        }
 
         successChance = recipeChanceCalculator();
 
         // Determine EU recipe output.
         euOutput = recipeObject.getEUOutput();
 
-        // Set expected recipe computation.
-        eRequiredData = getComputation();
-
         // Reduce internal storage by hydrogen and helium quantity required for recipe.
         validFluidMap.put(Materials.Hydrogen.getGas(1), 0L);
         validFluidMap.put(Materials.Helium.getGas(1), 0L);
 
         double yield = recipeYieldCalculator();
-        successChance = 1; // todo debug, remove.
+        if (debugMode) {
+            successChance = 1; // Debug recipes, sets them to 100% output chance.
+        }
 
         // Return copies of the output objects.
         mOutputFluids = recipeObject.getOutputFluids();
@@ -1856,14 +1846,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         super.outputAfterRecipe_EM();
     }
 
-    // todo probably remove me.
-    private void pushComputation() {
-        if (computationStack.size() == computationTickCacheSize) {
-            computationStack.remove(0);
-        }
-        computationStack.push(eAvailableData);
-    }
-
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
@@ -1874,9 +1856,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             strongCheckOrAddUser(userUUID, userName);
         }
 
-        // Add computation to stack. Prevents small interruptions causing issues.
-        pushComputation();
-
         if (!recipeRunning) {
             if ((aTick % ticksBetweenHatchDrain) == 0) {
                 drainFluidFromHatchesAndStoreInternally();
@@ -1885,11 +1864,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     }
 
     private boolean recipeRunning = false;
-    private static final int computationTickCacheSize = 5;
 
-    private long getComputation() {
-        return Collections.max(computationStack);
-    }
 
     // Will void if AE network is full.
     private void outputItemToAENetwork(ItemStack item, long amount) {
