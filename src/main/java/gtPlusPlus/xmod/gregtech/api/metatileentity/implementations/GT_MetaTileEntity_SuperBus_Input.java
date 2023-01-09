@@ -1,24 +1,15 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import com.gtnewhorizons.modularui.api.UIInfos;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_InputBus {
     public GT_MetaTileEntity_SuperBus_Input(int aID, String aName, String aNameRegional, int aTier) {
@@ -46,96 +37,25 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Item Input for Multiblocks",
-            "This bus has no GUI, but can have items extracted",
-            "" + (getSlots(this.mTier) + 1) + " Slots",
-            "To set circuit slot, left click with empty hand",
-            CORE.GT_Tooltip
-        };
-    }
-
-    @Override
-    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide() && aPlayer.getCurrentEquippedItem() == null) {
-            openCircuitSelector(aPlayer);
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    private void openCircuitSelector(EntityPlayer player) {
-        List<ItemStack> circuits = getConfigurationCircuits();
-        UIInfos.openClientUI(player, buildContext -> new SelectItemUIFactory(
-                        StatCollector.translateToLocal("GT5U.machines.select_circuit"),
-                        getStackForm(0),
-                        this::onCircuitSelected,
-                        circuits,
-                        GT_Utility.findMatchingStackInList(circuits, getStackInSlot(getCircuitSlot())))
-                .createWindow(buildContext));
-    }
-
-    @SideOnly(Side.CLIENT)
-    private void onCircuitSelected(ItemStack selected) {
-        GT_Values.NW.sendToServer(new GT_Packet_SetConfigurationCircuit(getBaseMetaTileEntity(), selected));
-        // we will not do any validation on client side
-        // it doesn't get to actually decide what inventory contains anyway
-        setInventorySlotContents(getCircuitSlot(), selected);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        } else {
-            // Logger.INFO("Trying to display Super Input Bus contents.");
-            displayBusContents(aPlayer);
-            return true;
-        }
-    }
-
-    public void displayBusContents(EntityPlayer aPlayer) {
-        String STRIP = "Item Array: ";
-        String aNameString = ItemUtils.getArrayStackNames(mInventory);
-        aNameString = aNameString.replace(STRIP, "");
-
-        String[] aNames;
-        if (aNameString.length() < 1) {
-            aNames = null;
-        } else {
-            aNames = aNameString.split(",");
-        }
-
-        if (aNames == null || aNames.length == 0) {
-            PlayerUtils.messagePlayer(aPlayer, "This Super Bus (I) is Empty. Total Slots: " + mInventory.length);
-            return;
-        }
-
-        PlayerUtils.messagePlayer(aPlayer, "This Super Bus (I) contains: [" + mInventory.length + "]");
-
-        if (aNames.length <= 12) {
-            for (String s : aNames) {
-                if (s.startsWith(" ")) {
-                    s = s.substring(1);
-                }
-                // Logger.INFO("Trying to display Super Input Bus contents. "+s);
-                PlayerUtils.messagePlayer(aPlayer, s);
-            }
-        } else {
-
-            StringBuilder superString = new StringBuilder();
-
-            for (String s : aNames) {
-                if (s.startsWith(" ")) {
-                    s = s.substring(1);
-                }
-                superString.append(s).append(", ");
-            }
-            PlayerUtils.messagePlayer(aPlayer, superString.toString());
-        }
+        return new String[] {"Item Input for Multiblocks", "" + getSlots(this.mTier) + " Slots", CORE.GT_Tooltip};
     }
 
     @Override
     public int getCircuitSlot() {
         return getSlots(mTier);
+    }
+
+    @Override
+    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int row = 0; row * 4 < inventoryHandler.getSlots() - 1; row++) {
+            int columnsToMake = Math.min(inventoryHandler.getSlots() - row * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                scrollable.widget(new SlotWidget(inventoryHandler, row * 4 + column)
+                        .setPos(column * 18, row * 18)
+                        .setSize(18, 18));
+            }
+        }
+        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
     }
 }

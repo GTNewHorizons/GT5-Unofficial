@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -7,12 +11,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_OutputBus {
 
@@ -80,92 +79,23 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
     public String[] getDescription() {
-        String[] aDesc = new String[] {
-            "Item Output for Multiblocks", "This bus has no GUI", "" + getSlots(this.mTier) + " Slots", CORE.GT_Tooltip
-        };
+        String[] aDesc =
+                new String[] {"Item Output for Multiblocks", "" + getSlots(this.mTier) + " Slots", CORE.GT_Tooltip};
         return aDesc;
     }
 
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        } else {
-            displayBusContents(aPlayer);
-            return true;
-        }
-    }
-
-    public void displayBusContents(EntityPlayer aPlayer) {
-        String STRIP = "Item Array: ";
-        String aNameString = ItemUtils.getArrayStackNames(getRealInventory());
-        aNameString = aNameString.replace(STRIP, "");
-
-        String[] aNames;
-        if (aNameString.length() < 1) {
-            aNames = null;
-        } else {
-            aNames = aNameString.split(",");
-        }
-
-        if (aNames == null || aNames.length <= 0) {
-            PlayerUtils.messagePlayer(aPlayer, "This Super Bus (O) is Empty. Total Slots: " + getSlots(this.mTier));
-            return;
-        }
-
-        PlayerUtils.messagePlayer(aPlayer, "This Super Bus (O) contains:");
-        for (String s : aNames) {
-            if (s.startsWith(" ")) {
-                s = s.substring(1);
+    @Override
+    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int row = 0; row * 4 < inventoryHandler.getSlots() - 1; row++) {
+            int columnsToMake = Math.min(inventoryHandler.getSlots() - row * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                scrollable.widget(new SlotWidget(inventoryHandler, row * 4 + column)
+                        .setPos(column * 18, row * 18)
+                        .setSize(18, 18));
             }
-            // Logger.INFO("Trying to display Super Output Bus contents. "+s);
-            PlayerUtils.messagePlayer(aPlayer, s);
         }
-    }
-
-    @Override
-    public int getMaxItemCount() {
-        // TODO Auto-generated method stub
-        return super.getMaxItemCount();
-    }
-
-    @Override
-    public int getSizeInventory() {
-        // TODO Auto-generated method stub
-        return super.getSizeInventory();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int aIndex) {
-        // TODO Auto-generated method stub
-        return super.getStackInSlot(aIndex);
-    }
-
-    @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-        // TODO Auto-generated method stub
-        return super.canInsertItem(aIndex, aStack, aSide);
-    }
-
-    @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-        // TODO Auto-generated method stub
-        return super.canExtractItem(aIndex, aStack, aSide);
-    }
-
-    @Override
-    public ItemStack[] getRealInventory() {
-        // TODO Auto-generated method stub
-        return super.getRealInventory();
+        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
     }
 }
