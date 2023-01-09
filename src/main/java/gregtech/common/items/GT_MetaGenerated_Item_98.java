@@ -123,7 +123,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
          */
         @Nullable
         public ItemStack get() {
-            verify();
+            this.tryToInitialize();
             return GT_Utility.copy(mStack);
         }
 
@@ -136,7 +136,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
          */
         @Nullable
         public ItemStack getNoCopy() {
-            verify();
+            this.tryToInitialize();
             return mStack;
         }
 
@@ -147,7 +147,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
          */
         @Nullable
         public ItemStack get(int aStackSize) {
-            verify();
+            this.tryToInitialize();
             return GT_Utility.copyAmount(aStackSize, mStack);
         }
 
@@ -159,10 +159,8 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
             this.mHasNotBeenInitialized = false;
         }
 
-        private void verify() {
-            if (mHasNotBeenInitialized) {
-                INSTANCE.createItem(this);
-            }
+        private void tryToInitialize() {
+            INSTANCE.tryToInitialize(this);
         }
     }
 
@@ -235,9 +233,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
     private void createAllItems() {
         for (FluidCell tCell : FluidCell.values()) {
-            if (tCell.mHasNotBeenInitialized) {
-                createItem(tCell);
-            }
+            tryToInitialize(tCell);
         }
 
         // We're not going to use these BitSets, so clear them to save memory.
@@ -245,7 +241,9 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         mVisibleItems.clear();
     }
 
-    private void createItem(FluidCell aCell) {
+    private void tryToInitialize(FluidCell aCell) {
+        if (!aCell.mHasNotBeenInitialized) return;
+
         int id = aCell.getId();
         String fluidName = aCell.getFluidName();
         CellType cellType = aCell.getDisplayType();
