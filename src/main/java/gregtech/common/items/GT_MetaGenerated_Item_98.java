@@ -247,6 +247,9 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
             throw new IllegalStateException("Got ID collision for ID: " + id);
         }
 
+        ItemStack itemStack = new ItemStack(this, 1, id);
+        aCell.setStack(itemStack);
+
         Fluid fluid = FluidRegistry.getFluid(fluidName);
         if (fluid == null) {
             // The fluid is not guaranteed to exist.
@@ -254,14 +257,11 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
             return;
         }
 
-        ItemStack itemStack = new ItemStack(this, 1, id);
         FluidStack fluidStack = new FluidStack(fluid, cellType.capacity);
 
         ItemStack emptyCell = ItemList.Cell_Empty.get(1L);
         FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(fluidStack, itemStack, emptyCell));
-
-        aCell.setStack(itemStack);
 
         GT_LanguageManager.addStringLocalization(
                 getUnlocalizedName(itemStack) + ".name",
@@ -306,10 +306,12 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         return ItemList.Cell_Empty.get(1L);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
         Arrays.stream(FluidCell.values())
+                .filter(fluid -> FluidRegistry.getFluid(fluid.getFluidName()) != null)
                 .map(FluidCell::get)
                 .filter(Objects::nonNull)
                 .forEach(aList::add);
