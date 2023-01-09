@@ -95,13 +95,10 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         @Nullable
         private ItemStack mStack;
 
-        private boolean mHasNotBeenInitialized;
-
         FluidCell(int aId, String aFluidName, CellType aType) {
             mId = aId;
             mfluidName = aFluidName;
             mType = aType;
-            mHasNotBeenInitialized = true;
         }
 
         public int getId() {
@@ -153,10 +150,6 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         private void setStack(ItemStack mStack) {
             this.mStack = mStack;
-        }
-
-        private void init() {
-            this.mHasNotBeenInitialized = false;
         }
 
         private void tryToInitialize() {
@@ -242,7 +235,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
     }
 
     private void tryToInitialize(FluidCell aCell) {
-        if (!aCell.mHasNotBeenInitialized) return;
+        if (aCell.mStack != null) return;
 
         int id = aCell.getId();
         String fluidName = aCell.getFluidName();
@@ -253,8 +246,6 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         if (registeredFluidDataMap.containsKey(id)) {
             throw new IllegalStateException("Got ID collision for ID: " + id);
         }
-
-        aCell.init();
 
         Fluid fluid = FluidRegistry.getFluid(fluidName);
         if (fluid == null) {
