@@ -10,6 +10,7 @@ import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -280,11 +281,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
                         + cellType.prefix.mLocalizedMaterialPost);
 
         int color = fluid.getColor();
-        short[] rgba = new short[4];
-        rgba[0] = (short) ((color & 0x00FF0000) >> 16);
-        rgba[1] = (short) ((color & 0x0000FF00) >> 8);
-        rgba[2] = (short) (color & 0x000000FF);
-        rgba[3] = (short) ((color & 0xFF000000) >> 24);
+        short[] rgba = GT_Util.getRGBaArray(color);
 
         registeredFluidDataMap.put(id, new RegisteredFluidData(fluid, rgba, iconContainerMap.get(cellType)));
     }
