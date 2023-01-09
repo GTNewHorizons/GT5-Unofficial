@@ -153,7 +153,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         }
 
         private void tryToInitialize() {
-            INSTANCE.tryToInitialize(this);
+            INSTANCE.tryToInitialize(this, false);
         }
     }
 
@@ -226,7 +226,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
     private void createAllItems() {
         for (FluidCell tCell : FluidCell.values()) {
-            tryToInitialize(tCell);
+            tryToInitialize(tCell, true);
         }
 
         // We're not going to use these BitSets, so clear them to save memory.
@@ -234,8 +234,9 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         mVisibleItems.clear();
     }
 
-    private void tryToInitialize(FluidCell aCell) {
-        if (aCell.mStack != null) return;
+    private void tryToInitialize(FluidCell aCell, boolean initAll) {
+        final boolean isStackAlreadySet = aCell.mStack != null;
+        if (!initAll && isStackAlreadySet) return;
 
         int id = aCell.getId();
         String fluidName = aCell.getFluidName();
@@ -243,28 +244,37 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         // We'll check for ID uniqueness. Better to throw an exception than silently overwrite some
         // fluid cells with other fluids due to ID collision.
-        if (registeredFluidDataMap.containsKey(id)) {
+        if (!isStackAlreadySet && registeredFluidDataMap.containsKey(id)) {
             throw new IllegalStateException("Got ID collision for ID: " + id);
         }
 
-        ItemStack itemStack = new ItemStack(this, 1, id);
-        aCell.setStack(itemStack);
+        if (!isStackAlreadySet) {
+            aCell.setStack(new ItemStack(this, 1, id));
+        }
 
         Fluid fluid = FluidRegistry.getFluid(fluidName);
         if (fluid == null) {
             // The fluid is not guaranteed to exist.
             // These fluids are non-GT fluids, so the mod may not be present.
-            return;
+            if (initAll && isStackAlreadySet) {
+                throw new RuntimeException("Cell item for fluid " + fluidName
+                        + " has already been created, but the fluid doesn't exist during postload");
+            } else {
+                // not during postload, or fluid doesn't exist and this item has not been referenced
+                return;
+            }
         }
+
+        if (!initAll) return;
 
         FluidStack fluidStack = new FluidStack(fluid, cellType.capacity);
 
         ItemStack emptyCell = ItemList.Cell_Empty.get(1L);
         FluidContainerRegistry.registerFluidContainer(
-                new FluidContainerRegistry.FluidContainerData(fluidStack, itemStack, emptyCell));
+                new FluidContainerRegistry.FluidContainerData(fluidStack, aCell.mStack, emptyCell));
 
         GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName(itemStack) + ".name",
+                getUnlocalizedName(aCell.mStack) + ".name",
                 cellType.prefix.mLocalizedMaterialPre
                         + fluid.getLocalizedName(fluidStack)
                         + cellType.prefix.mLocalizedMaterialPost);
