@@ -4,8 +4,6 @@ import static com.github.technus.tectech.Reference.MODID;
 import static java.lang.Math.*;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;

@@ -259,9 +259,6 @@ public class TecTechConfig extends ConfigManager {
                 "Set true to enable the cool visual effect when tesla tower running.");
     }
 
-    void specialRenderers() {
-    }
-
     /**
      * This loading phases do not correspond to mod loading phases!
      */

@@ -39,7 +39,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
-import java.awt.*;
+
 import java.util.*;
 import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -55,7 +55,7 @@ import org.spongepowered.libraries.com.google.common.math.LongMath;
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable, IGlobalWirelessEnergy {
 
-    private static final boolean debugMode = false;
+    private static final boolean EOHDebugMode = true;
 
     // Region variables.
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -1379,7 +1379,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private double hydrogenOverflowProbabilityAdjustment;
     private double heliumOverflowProbabilityAdjustment;
-    private static final long ticksBetweenHatchDrain = debugMode ? 20 : 200;
+    private static final long ticksBetweenHatchDrain = EOHDebugMode ? 20 : 200;
 
     private List<ItemStackLong> outputItems = new ArrayList<>();
 
@@ -1684,7 +1684,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
         // Debug mode, overwrites the required fluids to initiate the recipe to 100L of each.
-        if (debugMode) {
+        if (EOHDebugMode) {
             if ((getHydrogenStored() < 100) || (getHeliumStored() < 100)) {
                 return false;
             }
@@ -1711,7 +1711,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         calculateHydrogenHeliumInputExcessValues(
                 recipeObject.getHydrogenRequirement(), recipeObject.getHeliumRequirement());
 
-        if (debugMode) {
+        if (EOHDebugMode) {
             hydrogenOverflowProbabilityAdjustment = 0;
             heliumOverflowProbabilityAdjustment = 0;
         }
@@ -1726,7 +1726,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         validFluidMap.put(Materials.Helium.getGas(1), 0L);
 
         double yield = recipeYieldCalculator();
-        if (debugMode) {
+        if (EOHDebugMode) {
             successChance = 1; // Debug recipes, sets them to 100% output chance.
         }
 

@@ -10,6 +10,7 @@ import com.github.technus.tectech.thing.item.ElementalDefinitionContainer_EM;
 import com.github.technus.tectech.thing.item.renderElemental.RenderElementalName;
 import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -44,6 +45,9 @@ public class ClientProxy extends CommonProxy {
         if (Loader.isModLoaded("openmodularturrets")) {
             new TT_turret_loader().run();
         }
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEyeOfHarmony.class, new RenderEyeOfHarmony());
+
     }
 
     @Override
