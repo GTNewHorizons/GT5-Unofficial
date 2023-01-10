@@ -6,8 +6,6 @@ import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turret
 import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
 import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileRenderEM;
 import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
-import com.github.technus.tectech.thing.block.RenderEyeOfHarmony;
-import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.item.Item;

@@ -1,11 +1,5 @@
 package com.github.technus.tectech.loader;
 
-import com.github.technus.tectech.thing.block.RenderEyeOfHarmony;
-import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.config.ConfigManager;
 import java.io.File;
 

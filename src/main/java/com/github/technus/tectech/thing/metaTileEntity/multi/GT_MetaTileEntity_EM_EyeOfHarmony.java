@@ -39,7 +39,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
-
 import java.util.*;
 import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
