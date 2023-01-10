@@ -15,9 +15,9 @@ import static net.minecraft.util.EnumChatFormatting.*;
 import appeng.util.ReadableNumberConverter;
 import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
 import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
-import com.github.technus.tectech.thing.casing.TT_Block_SpacetimeCompressionFieldGenerators;
-import com.github.technus.tectech.thing.casing.TT_Block_StabilisationFieldGenerators;
-import com.github.technus.tectech.thing.casing.TT_Block_TimeAccelerationFieldGenerators;
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
@@ -1248,45 +1248,45 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                             'A',
                             ofBlocksTiered(
                                     (block, meta) -> block
-                                                    == TT_Block_SpacetimeCompressionFieldGenerators
+                                                    == TT_Container_Casings
                                                             .SpacetimeCompressionFieldGenerators
                                             ? meta
                                             : -1,
                                     ImmutableList.of(
                                             Pair.of(
-                                                    TT_Block_SpacetimeCompressionFieldGenerators
+                                                    TT_Container_Casings
                                                             .SpacetimeCompressionFieldGenerators,
                                                     0),
                                             Pair.of(
-                                                    TT_Block_SpacetimeCompressionFieldGenerators
+                                                    TT_Container_Casings
                                                             .SpacetimeCompressionFieldGenerators,
                                                     1),
                                             Pair.of(
-                                                    TT_Block_SpacetimeCompressionFieldGenerators
+                                                    TT_Container_Casings
                                                             .SpacetimeCompressionFieldGenerators,
                                                     2),
                                             Pair.of(
-                                                    TT_Block_SpacetimeCompressionFieldGenerators
+                                                    TT_Container_Casings
                                                             .SpacetimeCompressionFieldGenerators,
                                                     3),
                                             Pair.of(
-                                                    TT_Block_SpacetimeCompressionFieldGenerators
+                                                    TT_Container_Casings
                                                             .SpacetimeCompressionFieldGenerators,
                                                     4),
                                             Pair.of(
-                                                    TT_Block_SpacetimeCompressionFieldGenerators
+                                                    TT_Container_Casings
                                                             .SpacetimeCompressionFieldGenerators,
                                                     5),
                                             Pair.of(
-                                                    TT_Block_SpacetimeCompressionFieldGenerators
+                                                    TT_Container_Casings
                                                             .SpacetimeCompressionFieldGenerators,
                                                     6),
                                             Pair.of(
-                                                    TT_Block_SpacetimeCompressionFieldGenerators
+                                                    TT_Container_Casings
                                                             .SpacetimeCompressionFieldGenerators,
                                                     7),
                                             Pair.of(
-                                                    TT_Block_SpacetimeCompressionFieldGenerators
+                                                    TT_Container_Casings
                                                             .SpacetimeCompressionFieldGenerators,
                                                     8)),
                                     -1,
@@ -1296,36 +1296,36 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                             'S',
                             ofBlocksTiered(
                                     (block, meta) ->
-                                            block == TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators
+                                            block == TT_Container_Casings.StabilisationFieldGenerators
                                                     ? meta
                                                     : -1,
                                     ImmutableList.of(
                                             Pair.of(
-                                                    TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
+                                                    TT_Container_Casings.StabilisationFieldGenerators,
                                                     0),
                                             Pair.of(
-                                                    TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
+                                                    TT_Container_Casings.StabilisationFieldGenerators,
                                                     1),
                                             Pair.of(
-                                                    TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
+                                                    TT_Container_Casings.StabilisationFieldGenerators,
                                                     2),
                                             Pair.of(
-                                                    TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
+                                                    TT_Container_Casings.StabilisationFieldGenerators,
                                                     3),
                                             Pair.of(
-                                                    TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
+                                                    TT_Container_Casings.StabilisationFieldGenerators,
                                                     4),
                                             Pair.of(
-                                                    TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
+                                                    TT_Container_Casings.StabilisationFieldGenerators,
                                                     5),
                                             Pair.of(
-                                                    TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
+                                                    TT_Container_Casings.StabilisationFieldGenerators,
                                                     6),
                                             Pair.of(
-                                                    TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
+                                                    TT_Container_Casings.StabilisationFieldGenerators,
                                                     7),
                                             Pair.of(
-                                                    TT_Block_StabilisationFieldGenerators.StabilisationFieldGenerators,
+                                                    TT_Container_Casings.StabilisationFieldGenerators,
                                                     8)),
                                     -1,
                                     (t, meta) -> t.stabilisationFieldMetadata = meta,
@@ -1336,45 +1336,45 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                             'E',
                             ofBlocksTiered(
                                     (block, meta) -> block
-                                                    == TT_Block_TimeAccelerationFieldGenerators
+                                                    == TT_Container_Casings
                                                             .TimeAccelerationFieldGenerator
                                             ? meta
                                             : -1,
                                     ImmutableList.of(
                                             Pair.of(
-                                                    TT_Block_TimeAccelerationFieldGenerators
+                                                    TT_Container_Casings
                                                             .TimeAccelerationFieldGenerator,
                                                     0),
                                             Pair.of(
-                                                    TT_Block_TimeAccelerationFieldGenerators
+                                                    TT_Container_Casings
                                                             .TimeAccelerationFieldGenerator,
                                                     1),
                                             Pair.of(
-                                                    TT_Block_TimeAccelerationFieldGenerators
+                                                    TT_Container_Casings
                                                             .TimeAccelerationFieldGenerator,
                                                     2),
                                             Pair.of(
-                                                    TT_Block_TimeAccelerationFieldGenerators
+                                                    TT_Container_Casings
                                                             .TimeAccelerationFieldGenerator,
                                                     3),
                                             Pair.of(
-                                                    TT_Block_TimeAccelerationFieldGenerators
+                                                    TT_Container_Casings
                                                             .TimeAccelerationFieldGenerator,
                                                     4),
                                             Pair.of(
-                                                    TT_Block_TimeAccelerationFieldGenerators
+                                                    TT_Container_Casings
                                                             .TimeAccelerationFieldGenerator,
                                                     5),
                                             Pair.of(
-                                                    TT_Block_TimeAccelerationFieldGenerators
+                                                    TT_Container_Casings
                                                             .TimeAccelerationFieldGenerator,
                                                     6),
                                             Pair.of(
-                                                    TT_Block_TimeAccelerationFieldGenerators
+                                                    TT_Container_Casings
                                                             .TimeAccelerationFieldGenerator,
                                                     7),
                                             Pair.of(
-                                                    TT_Block_TimeAccelerationFieldGenerators
+                                                    TT_Container_Casings
                                                             .TimeAccelerationFieldGenerator,
                                                     8)),
                                     -1,

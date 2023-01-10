@@ -12,6 +12,10 @@ public final class TT_Container_Casings {
     public static Block sBlockCasingsBA0;
 
     public static Block sBlockCasingsNH;
+    public static Block TimeAccelerationFieldGenerator;
+    public static Block SpacetimeCompressionFieldGenerators;
+    public static Block StabilisationFieldGenerators;
+
 
     // Do NOT delete, it will break. The IDE is a liar.
     public static Block eyeOfHarmonyRenderBlock = new EyeOfHarmonyBlock();
