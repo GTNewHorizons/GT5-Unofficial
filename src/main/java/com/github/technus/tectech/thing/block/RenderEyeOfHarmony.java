@@ -4,6 +4,8 @@ import static com.github.technus.tectech.Reference.MODID;
 import static java.lang.Math.*;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -15,6 +17,7 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
     private static final ResourceLocation starLayer0 = new ResourceLocation(MODID, "models/StarLayer0.png");
