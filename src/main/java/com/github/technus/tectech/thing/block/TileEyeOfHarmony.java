@@ -1,8 +1,6 @@
 package com.github.technus.tectech.thing.block;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.IntStream;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
@@ -113,6 +111,18 @@ public class TileEyeOfHarmony extends TileEntity {
     }
 
     private final ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
+    private static final Set<String> BLACKLISTED_BLOCKS =
+            Collections.unmodifiableSet(new HashSet<>(Arrays.asList("Tf", "Ow", "ED", "EA", "VA")));
+    // Map of strings to blocks
+    private static final Map<String, Block> BLOCKS;
+
+    static {
+        // Initialize the map of blocks
+        BLOCKS = ModBlocks.blocks;
+
+        // Remove blacklisted blocks from the map
+        BLOCKS.keySet().removeAll(BLACKLISTED_BLOCKS);
+    }
 
     private static final float maxAngle = 30;
 
@@ -120,7 +130,7 @@ public class TileEyeOfHarmony extends TileEntity {
     public void generateImportantInfo() {
 
         int index = 0;
-        for (Block block : selectNRandomElements(ModBlocks.blocks.values(), tier + 1)) {
+        for (Block block : selectNRandomElements(BLOCKS.values(), tier + 1)) {
 
             float xAngle = generateRandomFloat(-maxAngle, maxAngle);
             float zAngle = generateRandomFloat(-maxAngle, maxAngle);
