@@ -117,9 +117,9 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         /**
          * Get a copy of this stack with stack size 1.
          *
-         * Might return null if the fluid referenced does not exist.
+         * Always returns non-null stack even if the fluid referenced doesn't exist,
+         * so don't assume it's always valid.
          */
-        @Nullable
         public ItemStack get() {
             this.tryToInitialize();
             return GT_Utility.copy(mStack);
@@ -128,11 +128,11 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         /**
          * Get a copy of this cell WITHOUT copy.
          *
-         * Might return null if the fluid referenced does not exist.
+         * Always returns non-null stack even if the fluid referenced doesn't exist,
+         * so don't assume it's always valid.
          *
          * Use with caution.
          */
-        @Nullable
         public ItemStack getNoCopy() {
             this.tryToInitialize();
             return mStack;
@@ -141,9 +141,9 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         /**
          * Get a copy of this cell with specified stack size.
          *
-         * Might return null if the fluid referenced does not exist.
+         * Always returns non-null stack even if the fluid referenced doesn't exist,
+         * so don't assume it's always valid.
          */
-        @Nullable
         public ItemStack get(int aStackSize) {
             this.tryToInitialize();
             return GT_Utility.copyAmount(aStackSize, mStack);
