@@ -2,6 +2,8 @@ package com.github.technus.tectech.thing.casing;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
+import static net.minecraft.util.EnumChatFormatting.RESET;
 
 import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.relauncher.Side;
@@ -23,6 +25,14 @@ import net.minecraft.world.IBlockAccess;
 @SuppressWarnings("SpellCheckingInspection")
 public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
     private static IIcon textureTier0;
+    private static IIcon textureTier1;
+    private static IIcon textureTier2;
+    private static IIcon textureTier3;
+    private static IIcon textureTier4;
+    private static IIcon textureTier5;
+    private static IIcon textureTier6;
+    private static IIcon textureTier7;
+    private static IIcon textureTier8;
     private static final int maxBlockTier = 9;
 
     private static final byte START_INDEX = 16;
@@ -37,7 +47,7 @@ public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
         for (int i = 0; i < maxBlockTier; i++) {
             GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + i + ".name",
-                    EOH_TIER_FANCY_NAMES[i] + EnumChatFormatting.RESET + " Stabilisation Field Generator");
+                    GRAY + EOH_TIER_FANCY_NAMES[i] + RESET + " Stabilisation Field Generator");
         }
 
         CustomItemList.StabilisationFieldGeneratorTier0.set(new ItemStack(this, 1, 0));
@@ -53,7 +63,15 @@ public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
 
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
-        textureTier0 = aIconRegister.registerIcon("gregtech:iconsets/EM_TIMESPACE");
+        textureTier0 = aIconRegister.registerIcon("gregtech:iconsets/STABILITY_CASING_0");
+        textureTier1 = aIconRegister.registerIcon("gregtech:iconsets/STABILITY_CASING_1");
+        textureTier2 = aIconRegister.registerIcon("gregtech:iconsets/STABILITY_CASING_2");
+        textureTier3 = aIconRegister.registerIcon("gregtech:iconsets/STABILITY_CASING_3");
+        textureTier4 = aIconRegister.registerIcon("gregtech:iconsets/STABILITY_CASING_4");
+        textureTier5 = aIconRegister.registerIcon("gregtech:iconsets/STABILITY_CASING_5");
+        textureTier6 = aIconRegister.registerIcon("gregtech:iconsets/STABILITY_CASING_6");
+        textureTier7 = aIconRegister.registerIcon("gregtech:iconsets/STABILITY_CASING_7");
+        textureTier8 = aIconRegister.registerIcon("gregtech:iconsets/STABILITY_CASING_8");
     }
 
     @Override
@@ -62,21 +80,21 @@ public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
             case 0:
                 return textureTier0;
             case 1:
-                return textureTier0;
+                return textureTier1;
             case 2:
-                return textureTier0;
+                return textureTier2;
             case 3:
-                return textureTier0;
+                return textureTier3;
             case 4:
-                return textureTier0;
+                return textureTier4;
             case 5:
-                return textureTier0;
+                return textureTier5;
             case 6:
-                return textureTier0;
+                return textureTier6;
             case 7:
-                return textureTier0;
+                return textureTier7;
             case 8:
-                return textureTier0;
+                return textureTier8;
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
