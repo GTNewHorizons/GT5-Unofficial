@@ -57,7 +57,7 @@ import org.spongepowered.libraries.com.google.common.math.LongMath;
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable, IGlobalWirelessEnergy, ISurvivalConstructable {
 
-    private static final boolean EOHDebugMode = true;
+    private static final boolean EOHDebugMode = false;
 
     // Region variables.
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -1397,16 +1397,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private List<ItemStackLong> outputItems = new ArrayList<>();
 
     private void calculateHydrogenHeliumInputExcessValues(
-            long hydrogen_recipe_requirement, long helium_recipe_requirement) {
+            final long hydrogenRecipeRequirement, final long heliumRecipeRequirement) {
 
-        long hydrogen_stored = validFluidMap.get(Materials.Hydrogen.getGas(1L));
-        long helium_stored = validFluidMap.get(Materials.Helium.getGas(1L));
+        long hydrogenStored = validFluidMap.get(Materials.Hydrogen.getGas(1L));
+        long heliumStored = validFluidMap.get(Materials.Helium.getGas(1L));
 
-        double hydrogen_excess_percentage = abs(1 - hydrogen_stored / hydrogen_recipe_requirement);
-        double helium_excess_percentage = abs(1 - helium_stored / helium_recipe_requirement);
+        double hydrogenExcessPercentage = abs(1 - hydrogenStored / hydrogenRecipeRequirement);
+        double heliumExcessPercentage = abs(1 - heliumStored / heliumRecipeRequirement);
 
-        hydrogenOverflowProbabilityAdjustment = 1 - exp(-pow(30 * hydrogen_excess_percentage, 2));
-        heliumOverflowProbabilityAdjustment = 1 - exp(-pow(30 * helium_excess_percentage, 2));
+        hydrogenOverflowProbabilityAdjustment = 1 - exp(-pow(30 * hydrogenExcessPercentage, 2));
+        heliumOverflowProbabilityAdjustment = 1 - exp(-pow(30 * heliumExcessPercentage, 2));
     }
 
     private double recipeChanceCalculator() {
@@ -1528,7 +1528,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Spacetime Manipulator")
+        tt.addMachineType("Spacetime Manipulator, EOH")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
                 .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
@@ -1558,9 +1558,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe")
                 .addInfo(
                         "chance. All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
-                .addInfo(GREEN + "percentage_overflow = abs(1 - fluid_stored/recipe_requirement)")
-                .addInfo(GREEN + "adjustment_value = 1 - exp(-(30 * percentage_overflow)^2)")
-                .addInfo("The value of adjustment_value is then subtracted from the total yield and recipe chance.")
+                .addInfo(GREEN + "percentageOverflow = abs(1 - fluidStored/recipeRequirement)")
+                .addInfo(GREEN + "adjustmentValue = 1 - exp(-(30 * percentageOverflow)^2)")
+                .addInfo("The value of adjustmentValue is then subtracted from the total yield and recipe chance.")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("It should be noted that base recipe chance is determined per recipe and yield always")
                 .addInfo("starts at 1 and subtracts depending on penalities. All fluid/item outputs are multiplied")
@@ -1662,7 +1662,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private long lagPreventer = 0;
 
     // Check for recipe every recipeCheckInterval ticks.
-    private final long recipeCheckInterval = 3 * 20;
+    private static final long recipeCheckInterval = 3 * 20;
 
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
