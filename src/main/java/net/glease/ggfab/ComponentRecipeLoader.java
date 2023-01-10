@@ -1,8 +1,12 @@
 package net.glease.ggfab;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -33,5 +37,16 @@ class ComponentRecipeLoader implements Runnable {
                 1200,
                 6000
         );
+        RA.addAssemblerRecipe(new ItemStack[]{
+                        ItemList.Hatch_Input_Bus_IV.get(1L),
+                        ItemList.Emitter_IV.get(1L),
+                        ItemList.Sensor_IV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L),
+                        GT_Utility.getIntegratedCircuit(12),
+                },
+                Materials.Polybenzimidazole.getMolten(144L),
+                GGItemList.LinkedInputBus.get(1L),
+                600,
+                (int) GT_Values.VP[5]);
     }
 }

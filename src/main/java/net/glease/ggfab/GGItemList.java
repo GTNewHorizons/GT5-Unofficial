@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import static gregtech.api.enums.GT_Values.W;
 
 public enum GGItemList implements IItemContainer{
+    LinkedInputBus,
     AdvAssLine,
     ;
 

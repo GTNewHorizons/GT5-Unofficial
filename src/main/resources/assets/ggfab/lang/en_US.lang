@@ -11,6 +11,11 @@ ggfab.waila.advassline.slice=Slice #%s: %s s / %s s
 ggfab.waila.advassline.slice.small=Slice #%s: %s ticks / %s ticks
 ggfab.waila.advassline.slice.idle=Slice #%s: Idle
 ggfab.waila.advassline.slice.stuck=Slice #%s: §4STUCK
-ggfab.info.advassline.slice=Slice Info
+
+ggfab.info.linked_input_bus.no_channel=No channel specified yet!
 
 ggfab.info.biome=Biome:
+
+ggfab.tooltip.linked_input_bus.change_freq_warn=Changing channel while this is the last one on this channel will spill all items left!
+ggfab.tooltip.linked_input_bus.private=Private channel are not shared with others.
+ggfab.tooltip.linked_input_bus.private.1=Changing channel while this is the last one on this channel will spill all items left!
