@@ -29,13 +29,20 @@ public class GT_Item_Casings_Spacetime extends GT_Item_Casings_Abstract {
             case 6:
             case 7:
             case 8:
-                aList.add(GT_LanguageManager.addStringLocalization("EOH.Spacetime.Standard.Tooltip.0", "Supports an internal spacetime volume of up to ")
+                aList.add(GT_LanguageManager.addStringLocalization(
+                                "EOH.Spacetime.Standard.Tooltip.0", "Supports an internal spacetime volume of up to ")
                         + formatNumbers(pow(10, 5 + aStack.getItemDamage())) + "km³.");
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + GT_LanguageManager.addStringLocalization("EOH.Spacetime.Standard.Tooltip.1", "Capable of running recipes up to tier ") + aStack.getItemDamage());
+                aList.add(EnumChatFormatting.AQUA.toString()
+                        + EnumChatFormatting.BOLD
+                        + GT_LanguageManager.addStringLocalization(
+                                "EOH.Spacetime.Standard.Tooltip.1", "Capable of running recipes up to tier ")
+                        + aStack.getItemDamage());
                 break;
             default:
-                aList.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + GT_LanguageManager.addStringLocalization("EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
+                aList.add(EnumChatFormatting.RED.toString()
+                        + EnumChatFormatting.BOLD
+                        + GT_LanguageManager.addStringLocalization(
+                                "EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
         }
         aList.add(AuthorColen);
     }

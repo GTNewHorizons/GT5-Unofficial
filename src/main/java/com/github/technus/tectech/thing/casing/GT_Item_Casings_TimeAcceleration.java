@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.casing;
 
 import static gregtech.api.enums.GT_Values.AuthorColen;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Item_Casings_Abstract;
@@ -28,10 +27,16 @@ public class GT_Item_Casings_TimeAcceleration extends GT_Item_Casings_Abstract {
             case 6:
             case 7:
             case 8:
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + GT_LanguageManager.addStringLocalization("EOH.TimeDilation.Standard.Tooltip", "Time dilation in a box."));
+                aList.add(EnumChatFormatting.AQUA.toString()
+                        + EnumChatFormatting.BOLD
+                        + GT_LanguageManager.addStringLocalization(
+                                "EOH.TimeDilation.Standard.Tooltip", "Time dilation in a box."));
                 break;
             default:
-                aList.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + GT_LanguageManager.addStringLocalization("EOH.TimeDilation.Error.Tooltip","Error, report to GTNH team"));
+                aList.add(EnumChatFormatting.RED.toString()
+                        + EnumChatFormatting.BOLD
+                        + GT_LanguageManager.addStringLocalization(
+                                "EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
         }
         aList.add(AuthorColen);
     }

@@ -553,30 +553,40 @@ public class TT_recipe extends GT_Recipe {
                 EyeOfHarmonyRecipe recipe = (EyeOfHarmonyRecipe) recipeInfo.recipe.mSpecialItems;
                 List<String> result = new ArrayList<>();
 
-                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.Hydrogen.In","Hydrogen") + ": " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
-                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.Helium.In", "Helium") + ": " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
-                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.SpacetimeTier","Spacetime Tier") + ": " + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
+                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.Hydrogen.In", "Hydrogen") + ": "
+                        + formatNumbers(recipe.getHydrogenRequirement()) + " L");
+                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.Helium.In", "Helium") + ": "
+                        + formatNumbers(recipe.getHydrogenRequirement()) + " L");
+                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.SpacetimeTier", "Spacetime Tier") + ": "
+                        + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
 
                 if (recipe.getEUOutput() < TRILLION) {
-                    result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.Out","EU Output") + ": " + formatNumbers(recipe.getEUOutput()) + " EU");
+                    result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
+                            + formatNumbers(recipe.getEUOutput()) + " EU");
                 } else {
-                    result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.Out","EU Output") + ": " + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput())
-                            + " EU");
+                    result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
+                            + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput()) + " EU");
                 }
 
                 if (recipe.getEUOutput() < TRILLION) {
-                    result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": " + formatNumbers(recipe.getEUStartCost()) + " EU");
+                    result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
+                            + formatNumbers(recipe.getEUStartCost()) + " EU");
                 } else {
                     result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
                             + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost()) + " EU");
                 }
 
-                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.BaseRecipeChance","Base Recipe Chance") + ": " + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
-                result.add(
-                        GT_LanguageManager.addStringLocalization("EOH.Recipe.RecipeEnergyEfficiency","Recipe Energy Efficiency") + ": " + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
+                result.add(GT_LanguageManager.addStringLocalization("EOH.Recipe.BaseRecipeChance", "Base Recipe Chance")
+                        + ": " + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
+                result.add(GT_LanguageManager.addStringLocalization(
+                                "EOH.Recipe.RecipeEnergyEfficiency", "Recipe Energy Efficiency")
+                        + ": " + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
 
                 if (recipe.getOutputItems().size() > maxItemsToRender) {
-                    result.add("" + DARK_RED + BOLD + GT_LanguageManager.addStringLocalization("EOH.Recipe.Warning.0","Warning") + RESET + ": " + GT_LanguageManager.addStringLocalization("EOH.Recipe.Warning.1", "Not all items displayed."));
+                    result.add("" + DARK_RED + BOLD
+                            + GT_LanguageManager.addStringLocalization("EOH.Recipe.Warning.0", "Warning") + RESET + ": "
+                            + GT_LanguageManager.addStringLocalization(
+                                    "EOH.Recipe.Warning.1", "Not all items displayed."));
                 }
 
                 return result;
@@ -655,8 +665,9 @@ public class TT_recipe extends GT_Recipe {
 
             // Draw tooltip on planet item.
             if (stack.isItemEqual(currentRecipe.getRecipeTriggerItem())) {
-                currentTip.add(
-                        EnumChatFormatting.GRAY + translateToLocal("Total Items: ") + formatNumbers(currentRecipe.getSumOfItems()));
+                currentTip.add(EnumChatFormatting.GRAY
+                        + translateToLocal("Total Items: ")
+                        + formatNumbers(currentRecipe.getSumOfItems()));
                 return currentTip;
             }
 
@@ -664,8 +675,10 @@ public class TT_recipe extends GT_Recipe {
             double percentage = currentRecipe.getItemStackToProbabilityMap().getOrDefault(stack, -1.0);
 
             if (percentage != -1.0) {
-                currentTip.add(EnumChatFormatting.GRAY + translateToLocal("Percentage of Solid Mass: ") + percentage + "%");
-                currentTip.add(EnumChatFormatting.GRAY + translateToLocal("Item Count: ")
+                currentTip.add(
+                        EnumChatFormatting.GRAY + translateToLocal("Percentage of Solid Mass: ") + percentage + "%");
+                currentTip.add(EnumChatFormatting.GRAY
+                        + translateToLocal("Item Count: ")
                         + formatNumbers(
                                 currentRecipe.getItemStackToTrueStackSizeMap().get(stack)));
             }
