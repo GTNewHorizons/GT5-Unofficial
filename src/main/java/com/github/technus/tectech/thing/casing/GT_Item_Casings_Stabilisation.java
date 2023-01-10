@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.casing;
 
 import static gregtech.api.enums.GT_Values.AuthorColen;
 
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Item_Casings_Abstract;
 import java.util.List;
 import net.minecraft.block.Block;
@@ -27,10 +28,10 @@ public class GT_Item_Casings_Stabilisation extends GT_Item_Casings_Abstract {
             case 7:
             case 8:
                 aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + "Increases stability of spacetime field.");
+                        + GT_LanguageManager.addStringLocalization("EOH.Stability.Tooltip.0", "Increases stability of spacetime field."));
                 break;
             default:
-                aList.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + "Error, report to GTNH team");
+                aList.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + GT_LanguageManager.addStringLocalization("EOH.TimeDilation.Error.Tooltip","Error, report to GTNH team"));
         }
         aList.add(AuthorColen);
     }

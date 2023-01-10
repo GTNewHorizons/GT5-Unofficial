@@ -4,6 +4,7 @@ import static com.google.common.math.LongMath.pow;
 import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Item_Casings_Abstract;
 import java.util.List;
 import net.minecraft.block.Block;
@@ -28,13 +29,13 @@ public class GT_Item_Casings_Spacetime extends GT_Item_Casings_Abstract {
             case 6:
             case 7:
             case 8:
-                aList.add("Supports an internal spacetime volume of up to "
+                aList.add(GT_LanguageManager.addStringLocalization("EOH.Spacetime.Standard.Tooltip.0", "Supports an internal spacetime volume of up to ")
                         + formatNumbers(pow(10, 5 + aStack.getItemDamage())) + "km³.");
                 aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + "Capable of running recipes up to tier " + aStack.getItemDamage());
+                        + GT_LanguageManager.addStringLocalization("EOH.Spacetime.Standard.Tooltip.1", "Capable of running recipes up to tier ") + aStack.getItemDamage());
                 break;
             default:
-                aList.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + "Error, report to GTNH team");
+                aList.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + GT_LanguageManager.addStringLocalization("EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
         }
         aList.add(AuthorColen);
     }
