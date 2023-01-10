@@ -554,28 +554,35 @@ public class TT_recipe extends GT_Recipe {
 
                 result.add(translateToLocal("Hydrogen: ") + formatNumbers(recipe.getHydrogenRequirement()) + " L");
                 result.add(translateToLocal("Helium: ") + formatNumbers(recipe.getHydrogenRequirement()) + " L");
-                result.add(translateToLocal("Spacetime Tier: ") + translateToLocal(EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]));
+                result.add(translateToLocal("Spacetime Tier: ")
+                        + translateToLocal(EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]));
 
                 if (recipe.getEUOutput() < TRILLION) {
                     result.add(translateToLocal("EU Output: ") + formatNumbers(recipe.getEUOutput()) + " EU");
                 } else {
-                    result.add(translateToLocal("EU Output: ") + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput())
+                    result.add(translateToLocal("EU Output: ")
+                            + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput())
                             + translateToLocal(" EU"));
                 }
 
                 if (recipe.getEUOutput() < TRILLION) {
-                    result.add(translateToLocal("EU Input: ") + formatNumbers(recipe.getEUStartCost()) + translateToLocal(" EU"));
+                    result.add(translateToLocal("EU Input: ")
+                            + formatNumbers(recipe.getEUStartCost())
+                            + translateToLocal(" EU"));
                 } else {
                     result.add(translateToLocal("EU Input: ")
-                            + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost()) + translateToLocal(" EU"));
+                            + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost())
+                            + translateToLocal(" EU"));
                 }
 
-                result.add(translateToLocal("Base Recipe Chance: ") + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
-                result.add(
-                        translateToLocal("Recipe Energy Efficiency: ") + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
+                result.add(translateToLocal("Base Recipe Chance: ")
+                        + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
+                result.add(translateToLocal("Recipe Energy Efficiency: ")
+                        + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
 
                 if (recipe.getOutputItems().size() > maxItemsToRender) {
-                    result.add("" + DARK_RED + BOLD + translateToLocal("Warning") + RESET + translateToLocal(": Not all items displayed."));
+                    result.add("" + DARK_RED + BOLD + translateToLocal("Warning") + RESET
+                            + translateToLocal(": Not all items displayed."));
                 }
 
                 return result;
@@ -654,8 +661,9 @@ public class TT_recipe extends GT_Recipe {
 
             // Draw tooltip on planet item.
             if (stack.isItemEqual(currentRecipe.getRecipeTriggerItem())) {
-                currentTip.add(
-                        EnumChatFormatting.GRAY + translateToLocal("Total Items: ") + formatNumbers(currentRecipe.getSumOfItems()));
+                currentTip.add(EnumChatFormatting.GRAY
+                        + translateToLocal("Total Items: ")
+                        + formatNumbers(currentRecipe.getSumOfItems()));
                 return currentTip;
             }
 
@@ -663,8 +671,10 @@ public class TT_recipe extends GT_Recipe {
             double percentage = currentRecipe.getItemStackToProbabilityMap().getOrDefault(stack, -1.0);
 
             if (percentage != -1.0) {
-                currentTip.add(EnumChatFormatting.GRAY + translateToLocal("Percentage of Solid Mass: ") + percentage + "%");
-                currentTip.add(EnumChatFormatting.GRAY + translateToLocal("Item Count: ")
+                currentTip.add(
+                        EnumChatFormatting.GRAY + translateToLocal("Percentage of Solid Mass: ") + percentage + "%");
+                currentTip.add(EnumChatFormatting.GRAY
+                        + translateToLocal("Item Count: ")
                         + formatNumbers(
                                 currentRecipe.getItemStackToTrueStackSizeMap().get(stack)));
             }
