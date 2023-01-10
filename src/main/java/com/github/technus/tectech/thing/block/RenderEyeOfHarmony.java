@@ -93,7 +93,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         // Bind animation to layer of star.
         FMLClientHandler.instance().getClient().getTextureManager().bindTexture(new ResourceLocation(MODID, "models/spaceLayer.png"));
 
-        final float scale = 0.01f*17f;
+        final float scale = 0.01f*17.5f;
         // Scale the star up in the x, y and z directions.
         GL11.glScalef(scale, scale, scale);
 
