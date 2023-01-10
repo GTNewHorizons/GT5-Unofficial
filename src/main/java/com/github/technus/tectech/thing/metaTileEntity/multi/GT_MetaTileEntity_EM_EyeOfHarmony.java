@@ -76,13 +76,18 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stackSize, 16, 16, 0, elementBudget, source, actor, false, true);
+        int realBudget = elementBudget >= 200
+                ? elementBudget
+                : Math.min(200, elementBudget * 5); // 200 blocks max per placement.
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 16, 0, realBudget, source, actor, false, true);
     }
+
+    protected static final String STRUCTURE_PIECE_MAIN = "main";
 
     // Multiblock structure.
     private static final IStructureDefinition<GT_MetaTileEntity_EM_EyeOfHarmony> STRUCTURE_DEFINITION =
             IStructureDefinition.<GT_MetaTileEntity_EM_EyeOfHarmony>builder()
-                    .addShape("main", transpose(new String[][] {
+                    .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
                         {
                             "                                 ",
                             "                                 ",
@@ -1470,7 +1475,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         stabilisationFieldMetadata = -1;
 
         // Check structure of multi.
-        if (!structureCheck_EM("main", 16, 16, 0)) {
+        if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 16, 16, 0)) {
             return false;
         }
 
@@ -1623,7 +1628,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 16, 16, 0, stackSize, hintsOnly);
+        structureBuild_EM(STRUCTURE_PIECE_MAIN, 16, 16, 0, stackSize, hintsOnly);
     }
 
     private final Map<FluidStack, Long> validFluidMap = new HashMap<FluidStack, Long>() {
