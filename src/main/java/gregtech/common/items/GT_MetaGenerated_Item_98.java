@@ -10,15 +10,14 @@ import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import javax.annotation.Nullable;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -43,15 +42,9 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
      * only safe modification that can be made to this enum is adding new fluids, or removing
      * existing fluids. When removing fluids, maybe leave a comment mentioning the old ID, so that
      * we don't re-use it for a new fluid.
-     *
-     * <p>If, in the future, we need to get item stacks before {@link #init()} has been called (such
-     * as for creating recipes), we can probably just modify the {@code FluidCell} methods below to
-     * eagerly construct the item stack ahead of time and memoize it or something. Really, the only
-     * thing that we need before we can construct item stacks is for {@link #INSTANCE} to be
-     * initialized.
      */
     public enum FluidCell {
-        // Next unused ID: 18
+        // Next unused ID: 22
 
         // GregTech
         DRILLING_FLUID(5, "liquid_drillingfluid", CellType.REGULAR),
@@ -124,37 +117,42 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         /**
          * Get a copy of this stack with stack size 1.
          *
-         * Might return null if not yet initialized, or the fluid referenced does not exist.
+         * Always returns non-null stack even if the fluid referenced doesn't exist,
+         * so don't assume it's always valid.
          */
-        @Nullable
         public ItemStack get() {
+            trySetStack();
             return GT_Utility.copy(mStack);
         }
 
         /**
          * Get a copy of this cell WITHOUT copy.
          *
-         * Might return null if not yet initialized, or the fluid referenced does not exist.
+         * Always returns non-null stack even if the fluid referenced doesn't exist,
+         * so don't assume it's always valid.
          *
          * Use with caution.
          */
-        @Nullable
         public ItemStack getNoCopy() {
+            trySetStack();
             return mStack;
         }
 
         /**
          * Get a copy of this cell with specified stack size.
          *
-         * Might return null if not yet initialized, or the fluid referenced does not exist.
+         * Always returns non-null stack even if the fluid referenced doesn't exist,
+         * so don't assume it's always valid.
          */
-        @Nullable
         public ItemStack get(int aStackSize) {
+            trySetStack();
             return GT_Utility.copyAmount(aStackSize, mStack);
         }
 
-        private void setStack(ItemStack mStack) {
-            this.mStack = mStack;
+        private void trySetStack() {
+            if (mStack == null) {
+                mStack = new ItemStack(GT_MetaGenerated_Item_98.INSTANCE, 1, mId);
+            }
         }
     }
 
@@ -221,60 +219,64 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
     }
 
     public static synchronized void init() {
-        INSTANCE.createItems();
+        INSTANCE.createAllItems();
         INSTANCE.registerOreDict();
     }
 
-    private void createItems() {
-        ItemStack emptyCell = ItemList.Cell_Empty.get(1L);
-
-        // We'll check for ID uniqueness. Better to throw an exception than silently overwrite some
-        // fluid cells with other fluids due to ID collision.
-        Set<Integer> idSet = new HashSet<>();
+    private void createAllItems() {
         for (FluidCell tCell : FluidCell.values()) {
-            int id = tCell.getId();
-            String fluidName = tCell.getFluidName();
-            CellType cellType = tCell.getDisplayType();
-
-            if (idSet.contains(id)) {
-                throw new IllegalStateException("Got ID collision for ID: " + id);
-            }
-            idSet.add(id);
-
-            Fluid fluid = FluidRegistry.getFluid(fluidName);
-            if (fluid == null) {
-                // The fluid is not guaranteed to exist.
-                // These fluids are non-GT fluids, so the mod may not be present.
-                continue;
-            }
-
-            ItemStack itemStack = new ItemStack(this, 1, id);
-            FluidStack fluidStack = new FluidStack(fluid, cellType.capacity);
-
-            FluidContainerRegistry.registerFluidContainer(
-                    new FluidContainerRegistry.FluidContainerData(fluidStack, itemStack, emptyCell));
-
-            tCell.setStack(itemStack);
-
-            GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName(itemStack) + ".name",
-                    cellType.prefix.mLocalizedMaterialPre
-                            + fluid.getLocalizedName(fluidStack)
-                            + cellType.prefix.mLocalizedMaterialPost);
-
-            int color = fluid.getColor();
-            short[] rgba = new short[4];
-            rgba[0] = (short) ((color & 0x00FF0000) >> 16);
-            rgba[1] = (short) ((color & 0x0000FF00) >> 8);
-            rgba[2] = (short) (color & 0x000000FF);
-            rgba[3] = (short) ((color & 0xFF000000) >> 24);
-
-            registeredFluidDataMap.put(id, new RegisteredFluidData(fluid, rgba, iconContainerMap.get(cellType)));
+            tryToInitialize(tCell);
         }
 
         // We're not going to use these BitSets, so clear them to save memory.
         mEnabledItems.clear();
         mVisibleItems.clear();
+    }
+
+    private void tryToInitialize(FluidCell aCell) {
+        final boolean isStackAlreadySet = aCell.mStack != null;
+
+        int id = aCell.getId();
+        String fluidName = aCell.getFluidName();
+        CellType cellType = aCell.getDisplayType();
+
+        // We'll check for ID uniqueness. Better to throw an exception than silently overwrite some
+        // fluid cells with other fluids due to ID collision.
+        if (registeredFluidDataMap.containsKey(id)) {
+            throw new IllegalStateException("Got ID collision for ID: " + id);
+        }
+
+        aCell.trySetStack();
+
+        Fluid fluid = FluidRegistry.getFluid(fluidName);
+        if (fluid == null) {
+            // The fluid is not guaranteed to exist.
+            // These fluids are non-GT fluids, so the mod may not be present.
+            if (isStackAlreadySet) {
+                throw new RuntimeException("Cell item for fluid " + fluidName
+                        + " has already been created, but the fluid doesn't exist during postload");
+            } else {
+                // fluid doesn't exist and this item has not been referenced
+                return;
+            }
+        }
+
+        FluidStack fluidStack = new FluidStack(fluid, cellType.capacity);
+
+        ItemStack emptyCell = ItemList.Cell_Empty.get(1L);
+        FluidContainerRegistry.registerFluidContainer(
+                new FluidContainerRegistry.FluidContainerData(fluidStack, aCell.mStack, emptyCell));
+
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName(aCell.mStack) + ".name",
+                cellType.prefix.mLocalizedMaterialPre
+                        + fluid.getLocalizedName(fluidStack)
+                        + cellType.prefix.mLocalizedMaterialPost);
+
+        int color = fluid.getColor();
+        short[] rgba = GT_Util.getRGBaArray(color);
+
+        registeredFluidDataMap.put(id, new RegisteredFluidData(fluid, rgba, iconContainerMap.get(cellType)));
     }
 
     private void registerOreDict() {
@@ -304,10 +306,12 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         return ItemList.Cell_Empty.get(1L);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
         Arrays.stream(FluidCell.values())
+                .filter(fluid -> FluidRegistry.getFluid(fluid.getFluidName()) != null)
                 .map(FluidCell::get)
                 .filter(Objects::nonNull)
                 .forEach(aList::add);
