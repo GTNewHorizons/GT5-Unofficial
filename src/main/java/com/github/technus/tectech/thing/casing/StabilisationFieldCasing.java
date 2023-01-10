@@ -2,8 +2,7 @@ package com.github.technus.tectech.thing.casing;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
-import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.*;
 
 import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.relauncher.Side;
@@ -46,7 +45,7 @@ public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
         for (int i = 0; i < maxBlockTier; i++) {
             GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + i + ".name",
-                    GRAY + EOH_TIER_FANCY_NAMES[i] + RESET + " Stabilisation Field Generator");
+                    WHITE + EOH_TIER_FANCY_NAMES[i] + RESET + " Stabilisation Field Generator");
         }
 
         CustomItemList.StabilisationFieldGeneratorTier0.set(new ItemStack(this, 1, 0));
