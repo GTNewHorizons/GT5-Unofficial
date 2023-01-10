@@ -11,7 +11,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
@@ -22,9 +21,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import java.util.HashMap;
 import java.util.function.Supplier;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -186,25 +182,6 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
                 EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters);
     }
 
-    private void quantumStuff(boolean shouldIExist) {
-        IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (base != null && base.getWorld() != null) {
-            int xDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetX * 2 + base.getXCoord();
-            int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 2 + base.getYCoord();
-            int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ * 2 + base.getZCoord();
-            Block block = base.getWorld().getBlock(xDir, yDir, zDir);
-            if (shouldIExist) {
-                if (block != null && block.getMaterial() == Material.air) {
-                    base.getWorld().setBlock(xDir, yDir, zDir, QuantumStuffBlock.INSTANCE, 0, 2);
-                }
-            } else {
-                if (block instanceof QuantumStuffBlock) {
-                    base.getWorld().setBlock(xDir, yDir, zDir, Blocks.air, 0, 2);
-                }
-            }
-        }
-    }
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_machine(mName);
@@ -274,14 +251,10 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     @Override
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         setCurrentBehaviour();
-        if (aBaseMetaTileEntity.isServerSide()) {
-            quantumStuff(aBaseMetaTileEntity.isActive());
-        }
     }
 
     @Override
     public void onRemoval() {
-        quantumStuff(false);
         super.onRemoval();
     }
 
@@ -331,19 +304,16 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
         eRequiredData = control.getRequiredData();
         mEfficiencyIncrease = control.getEffIncrease();
         boolean polluted = polluteEnvironment(control.getPollutionToAdd());
-        quantumStuff(polluted);
         return polluted;
     }
 
     @Override
     public void stopMachine() {
-        quantumStuff(false);
         super.stopMachine();
     }
 
     @Override
     protected void afterRecipeCheckFailed() {
-        quantumStuff(false);
         super.afterRecipeCheckFailed();
     }
 
@@ -367,8 +337,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
                 outputEM[i] = null;
             }
         }
-        quantumStuff(false);
-        // all other are handled by base multi block code - cleaning is automatic
+        // all others are handled by base multi block code - cleaning is automatic
     }
 
     @Override
