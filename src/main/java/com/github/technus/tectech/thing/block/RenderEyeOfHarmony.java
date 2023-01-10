@@ -72,7 +72,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glRotatef(orbitingObject.zAngle, 0, 0, 1);
         GL11.glRotatef(orbitingObject.xAngle, 1, 0, 0);
         GL11.glRotatef((orbitingObject.rotationSpeed * 0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
-        GL11.glTranslated(- 0.2 - orbitingObject.distance - starRescale * EOHRenderTile.getSize(), 0,0);
+        GL11.glTranslated(-0.2 - orbitingObject.distance - starRescale * EOHRenderTile.getSize(), 0, 0);
         GL11.glRotatef((orbitingObject.orbitSpeed * 0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
         renderBlockInWorld(orbitingObject.block, 0, orbitingObject.scale);
         GL11.glPopMatrix();
@@ -91,9 +91,12 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_BLEND);
 
         // Bind animation to layer of star.
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(new ResourceLocation(MODID, "models/spaceLayer.png"));
+        FMLClientHandler.instance()
+                .getClient()
+                .getTextureManager()
+                .bindTexture(new ResourceLocation(MODID, "models/spaceLayer.png"));
 
-        final float scale = 0.01f*17.5f;
+        final float scale = 0.01f * 17.5f;
         // Scale the star up in the x, y and z directions.
         GL11.glScalef(scale, scale, scale);
 
@@ -107,7 +110,6 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         // Finish animation.
         GL11.glPopMatrix();
     }
-
 
     private static final float starRescale = 0.2f;
 

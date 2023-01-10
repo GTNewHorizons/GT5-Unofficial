@@ -1,5 +1,9 @@
 package com.github.technus.tectech.thing.block;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Random;
+import java.util.stream.IntStream;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -8,11 +12,6 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Random;
-import java.util.stream.IntStream;
 
 public class TileEyeOfHarmony extends TileEntity {
 
@@ -83,7 +82,14 @@ public class TileEyeOfHarmony extends TileEntity {
     }
 
     public static class OrbitingObject {
-        public OrbitingObject(Block block, float distance, float rotationSpeed, float orbitSpeed, float xAngle, float zAngle, float scale) {
+        public OrbitingObject(
+                Block block,
+                float distance,
+                float rotationSpeed,
+                float orbitSpeed,
+                float xAngle,
+                float zAngle,
+                float scale) {
             this.block = block;
             this.distance = distance;
             this.rotationSpeed = rotationSpeed;
@@ -108,16 +114,16 @@ public class TileEyeOfHarmony extends TileEntity {
 
     private final ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
 
-    private final static float maxAngle = 30;
+    private static final float maxAngle = 30;
 
     // This must be set last.
     public void generateImportantInfo() {
 
         int index = 0;
-        for (Block block : selectNRandomElements(ModBlocks.blocks.values(), tier+1)) {
+        for (Block block : selectNRandomElements(ModBlocks.blocks.values(), tier + 1)) {
 
             float xAngle = generateRandomFloat(-maxAngle, maxAngle);
-            float zAngle = generateRandomFloat(-maxAngle ,maxAngle);
+            float zAngle = generateRandomFloat(-maxAngle, maxAngle);
             index += 1.0;
             float distance = index + generateRandomFloat(-0.2f, 0.2f);
             float scale = generateRandomFloat(0.2f, 0.9f);
@@ -125,7 +131,6 @@ public class TileEyeOfHarmony extends TileEntity {
             float orbitSpeed = generateRandomFloat(0.5f, 1.5f);
             orbitingObjects.add(new OrbitingObject(block, distance, rotationSpeed, orbitSpeed, xAngle, zAngle, scale));
         }
-
     }
 
     public float angle;

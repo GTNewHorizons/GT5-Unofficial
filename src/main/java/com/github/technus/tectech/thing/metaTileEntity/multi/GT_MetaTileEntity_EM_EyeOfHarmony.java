@@ -42,7 +42,6 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -1432,7 +1431,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
         double recipeTimeDiscounted = recipeTime
-                * pow(2.0, - timeAccelerationFieldMetadata)
+                * pow(2.0, -timeAccelerationFieldMetadata)
                 * pow(1 - spacetimeCasingDifferenceDiscountPercentage, spacetimeCasingDifference);
         return (int) Math.max(recipeTimeDiscounted, 1.0);
     }
@@ -1690,7 +1689,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 return false;
             }
         } else {
-            if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement()) || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
+            if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement())
+                    || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
                 return false;
             }
         }
@@ -1864,7 +1864,6 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     }
 
     private boolean recipeRunning = false;
-
 
     // Will void if AE network is full.
     private void outputItemToAENetwork(ItemStack item, long amount) {
