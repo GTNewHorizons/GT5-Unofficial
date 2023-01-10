@@ -121,7 +121,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
          * so don't assume it's always valid.
          */
         public ItemStack get() {
-            this.tryToInitialize();
+            trySetStack();
             return GT_Utility.copy(mStack);
         }
 
@@ -134,7 +134,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
          * Use with caution.
          */
         public ItemStack getNoCopy() {
-            this.tryToInitialize();
+            trySetStack();
             return mStack;
         }
 
@@ -145,16 +145,14 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
          * so don't assume it's always valid.
          */
         public ItemStack get(int aStackSize) {
-            this.tryToInitialize();
+            trySetStack();
             return GT_Utility.copyAmount(aStackSize, mStack);
         }
 
-        private void setStack(ItemStack mStack) {
-            this.mStack = mStack;
-        }
-
-        private void tryToInitialize() {
-            INSTANCE.tryToInitialize(this, false);
+        private void trySetStack() {
+            if (mStack == null) {
+                mStack = new ItemStack(GT_MetaGenerated_Item_98.INSTANCE, 1, mId);
+            }
         }
     }
 
@@ -227,7 +225,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
     private void createAllItems() {
         for (FluidCell tCell : FluidCell.values()) {
-            tryToInitialize(tCell, true);
+            tryToInitialize(tCell);
         }
 
         // We're not going to use these BitSets, so clear them to save memory.
@@ -235,9 +233,8 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         mVisibleItems.clear();
     }
 
-    private void tryToInitialize(FluidCell aCell, boolean initAll) {
+    private void tryToInitialize(FluidCell aCell) {
         final boolean isStackAlreadySet = aCell.mStack != null;
-        if (!initAll && isStackAlreadySet) return;
 
         int id = aCell.getId();
         String fluidName = aCell.getFluidName();
@@ -249,24 +246,20 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
             throw new IllegalStateException("Got ID collision for ID: " + id);
         }
 
-        if (!isStackAlreadySet) {
-            aCell.setStack(new ItemStack(this, 1, id));
-        }
+        aCell.trySetStack();
 
         Fluid fluid = FluidRegistry.getFluid(fluidName);
         if (fluid == null) {
             // The fluid is not guaranteed to exist.
             // These fluids are non-GT fluids, so the mod may not be present.
-            if (initAll && isStackAlreadySet) {
+            if (isStackAlreadySet) {
                 throw new RuntimeException("Cell item for fluid " + fluidName
                         + " has already been created, but the fluid doesn't exist during postload");
             } else {
-                // not during postload, or fluid doesn't exist and this item has not been referenced
+                // fluid doesn't exist and this item has not been referenced
                 return;
             }
         }
-
-        if (!initAll) return;
 
         FluidStack fluidStack = new FluidStack(fluid, cellType.capacity);
 
