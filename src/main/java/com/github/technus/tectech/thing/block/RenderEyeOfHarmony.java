@@ -17,7 +17,6 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
 public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
     private static final ResourceLocation starLayer0 = new ResourceLocation(MODID, "models/StarLayer0.png");

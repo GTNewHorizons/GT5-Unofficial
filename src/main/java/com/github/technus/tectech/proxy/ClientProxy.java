@@ -12,6 +12,7 @@ import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -43,8 +44,6 @@ public class ClientProxy extends CommonProxy {
         if (Loader.isModLoaded("openmodularturrets")) {
             new TT_turret_loader().run();
         }
-
-        //        ClientRegistry.bindTileEntitySpecialRenderer(TileEyeOfHarmony.class, new RenderEyeOfHarmony());
     }
 
     @Override
@@ -185,4 +184,6 @@ public class ClientProxy extends CommonProxy {
     public boolean isThePlayer(EntityPlayer player) {
         return getPlayer() == player;
     }
+
+
 }

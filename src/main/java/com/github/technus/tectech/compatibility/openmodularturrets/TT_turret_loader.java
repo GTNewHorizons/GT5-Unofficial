@@ -6,6 +6,8 @@ import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turret
 import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
 import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileRenderEM;
 import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
+import com.github.technus.tectech.thing.block.RenderEyeOfHarmony;
+import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.item.Item;
@@ -16,6 +18,7 @@ public class TT_turret_loader implements Runnable {
     public void run() {
         TurretHeadRenderEM turretHeadRenderEM = new TurretHeadRenderEM();
         ClientRegistry.bindTileEntitySpecialRenderer(TileTurretHeadEM.class, turretHeadRenderEM);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEyeOfHarmony.class, new RenderEyeOfHarmony());
         MinecraftForgeClient.registerItemRenderer(
                 Item.getItemFromBlock(TurretHeadEM.INSTANCE),
                 new TurretHeadItemRenderEM(turretHeadRenderEM, new TileTurretHeadEM()));
