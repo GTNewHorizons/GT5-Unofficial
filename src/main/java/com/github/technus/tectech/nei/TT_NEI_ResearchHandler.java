@@ -173,7 +173,6 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
 
     @Override
     public String getGuiTexture() {
-        //    return "gregtech:textures/gui/" + this.mRecipeMap.mUnlocalizedName + ".png";
         return mRecipeMap.mNEIGUIPath;
     }
 
