@@ -113,7 +113,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter
                 .addSeparator()
                 .beginStructureBlock(3, 5, 3, true)
                 .addController("Bottom center")
-                .addCasingInfo("Inconel Reinforced Casings", 10)
+                .addCasingInfo("Inconel Reinforced Casings", 8)
                 .addCasingInfo("Integral Encasement V", 8)
                 .addCasingInfo("Heating Coils", 16)
                 .addInputBus("Any Inconel Reinforced Casing", 1)
@@ -172,7 +172,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter
         mLevel = 0;
         setCoilLevel(HeatingCoilLevel.None);
         return checkPiece(mName, 1, 4, 0)
-                && mCasing >= 10
+                && mCasing >= 8
                 && getCoilLevel() != HeatingCoilLevel.None
                 && (mLevel = getCoilLevel().getTier() + 1) > 0
                 && checkHatch();
