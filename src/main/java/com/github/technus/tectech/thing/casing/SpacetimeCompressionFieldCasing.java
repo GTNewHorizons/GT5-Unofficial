@@ -31,7 +31,7 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
     private static IIcon textureTier6;
     private static IIcon textureTier7;
     private static IIcon textureTier8;
-    private static final int maxBlockTier = 9;
+    private static final int MAX_BLOCK_TIER = 9;
 
     private static final byte START_INDEX = 16;
 
@@ -45,7 +45,7 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
                     new GT_CopiedBlockTexture(this, 6, b);
         }
 
-        for (int i = 0; i < maxBlockTier; i++) {
+        for (int i = 0; i < MAX_BLOCK_TIER; i++) {
             GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + i + ".name",
                     WHITE + EOH_TIER_FANCY_NAMES[i] + RESET + " Spacetime Compression Field Generator");
@@ -111,7 +111,7 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
     @SuppressWarnings("unchecked")
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        for (int i = 0; i < maxBlockTier; i++) {
+        for (int i = 0; i < MAX_BLOCK_TIER; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }

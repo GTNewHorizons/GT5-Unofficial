@@ -124,7 +124,7 @@ public class TileEyeOfHarmony extends TileEntity {
         BLOCKS.keySet().removeAll(BLACKLISTED_BLOCKS);
     }
 
-    private static final float maxAngle = 30;
+    private static final float MAX_ANGLE = 30;
 
     // This must be set last.
     public void generateImportantInfo() {
@@ -132,8 +132,8 @@ public class TileEyeOfHarmony extends TileEntity {
         int index = 0;
         for (Block block : selectNRandomElements(BLOCKS.values(), tier + 1)) {
 
-            float xAngle = generateRandomFloat(-maxAngle, maxAngle);
-            float zAngle = generateRandomFloat(-maxAngle, maxAngle);
+            float xAngle = generateRandomFloat(-MAX_ANGLE, MAX_ANGLE);
+            float zAngle = generateRandomFloat(-MAX_ANGLE, MAX_ANGLE);
             index += 1.0;
             float distance = index + generateRandomFloat(-0.2f, 0.2f);
             float scale = generateRandomFloat(0.2f, 0.9f);
@@ -143,20 +143,22 @@ public class TileEyeOfHarmony extends TileEntity {
         }
     }
 
+    // Used to track the rotation of the star/planets.
     public float angle;
-    private static final String EOHNBTTag = "EOH:";
-    private static final String rotationSpeedNBTTag = EOHNBTTag + "rotationSpeed";
-    private static final String sizeNBTTag = EOHNBTTag + "size";
-    private static final String tierNBTTag = EOHNBTTag + "tier";
+
+    private static final String EOH_NBT_TAG = "EOH:";
+    private static final String ROTATION_SPEED_NBT_TAG = EOH_NBT_TAG + "rotationSpeed";
+    private static final String SIZE_NBT_TAG = EOH_NBT_TAG + "size";
+    private static final String TIER_NBT_TAG = EOH_NBT_TAG + "tier";
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
 
         // Save other stats.
-        compound.setFloat(rotationSpeedNBTTag, rotationSpeed);
-        compound.setFloat(sizeNBTTag, size);
-        compound.setLong(tierNBTTag, tier);
+        compound.setFloat(ROTATION_SPEED_NBT_TAG, rotationSpeed);
+        compound.setFloat(SIZE_NBT_TAG, size);
+        compound.setLong(TIER_NBT_TAG, tier);
     }
 
     @Override
@@ -164,9 +166,9 @@ public class TileEyeOfHarmony extends TileEntity {
         super.readFromNBT(compound);
 
         // Load other stats.
-        rotationSpeed = compound.getFloat(rotationSpeedNBTTag);
-        size = compound.getFloat(sizeNBTTag);
-        tier = compound.getLong(tierNBTTag);
+        rotationSpeed = compound.getFloat(ROTATION_SPEED_NBT_TAG);
+        size = compound.getFloat(SIZE_NBT_TAG);
+        tier = compound.getLong(TIER_NBT_TAG);
     }
 
     @Override

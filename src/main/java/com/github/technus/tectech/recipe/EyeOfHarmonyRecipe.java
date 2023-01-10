@@ -223,13 +223,13 @@ public class EyeOfHarmonyRecipe {
         return recipeTriggerItem;
     }
 
-    static final double primaryMultiplier = (0.1 + 1.0 / 9.0); // Byproduct from macerating/washing chance.
-    static final double secondaryMultiplier = (1.0 / 9.0); // Thermal centrifuge byproduct chance.
-    static final double tertiaryMultiplier = (0.1); // Macerating thermal centrifuged byproduct chance.
-    static final double quaternaryMultiplier = (0.7); // Mercury/chem bath processing chance.
+    private static final double PRIMARY_MULTIPLIER = (0.1 + 1.0 / 9.0); // Byproduct from macerating/washing chance.
+    private static final double SECONDARY_MULTIPLIER = (1.0 / 9.0); // Thermal centrifuge byproduct chance.
+    private static final double TERTIARY_MULTIPLIER = (0.1); // Macerating thermal centrifuged byproduct chance.
+    private static final double QUATERNARY_MULTIPLIER = (0.7); // Mercury/chem bath processing chance.
 
-    static final double[] oreMultiplier = {
-        primaryMultiplier, secondaryMultiplier, tertiaryMultiplier, quaternaryMultiplier
+    private static final double[] ORE_MULTIPLIER = {
+            PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER, QUATERNARY_MULTIPLIER
     };
 
     public static class HashMapHelper extends HashMap<Materials, Double> {
@@ -254,7 +254,7 @@ public class EyeOfHarmonyRecipe {
         int index = 0;
         for (Materials byProductMaterial : material.mOreByProducts) {
             outputMap.add(
-                    byProductMaterial.mDirectSmelting, mainMultiplier * (oreMultiplier[index++] * 2) * probability);
+                    byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index++] * 2) * probability);
         }
     }
 
@@ -290,7 +290,7 @@ public class EyeOfHarmonyRecipe {
         ArrayList<FluidStack> plasmaList = new ArrayList<>();
 
         for (Pair<Materials, Long> pair : planetList) {
-            if (validPlasmas.contains(pair.getLeft())) {
+            if (VALID_PLASMAS.contains(pair.getLeft())) {
                 plasmaList.add(pair.getLeft().getPlasma(1));
             }
         }
@@ -331,7 +331,7 @@ public class EyeOfHarmonyRecipe {
         return 3.85;
     }
 
-    private static final List<Materials> validPlasmas = Stream.of(
+    private static final List<Materials> VALID_PLASMAS = Stream.of(
                     Materials.Helium,
                     Materials.Iron,
                     Materials.Calcium,
@@ -352,7 +352,7 @@ public class EyeOfHarmonyRecipe {
 
     private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<String, Long>() {
         {
-            validPlasmas.forEach(
+            VALID_PLASMAS.forEach(
                     (material -> put(material.getPlasma(1).getFluid().getUnlocalizedName(), (long)
                             (getPlasmaFuelValueInEUPerLiterFromMaterial(material) * getMaxPlasmaTurbineEfficiency()))));
         }

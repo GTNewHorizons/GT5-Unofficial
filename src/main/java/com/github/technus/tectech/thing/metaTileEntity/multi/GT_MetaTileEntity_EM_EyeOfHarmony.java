@@ -57,7 +57,7 @@ import org.spongepowered.libraries.com.google.common.math.LongMath;
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable, IGlobalWirelessEnergy, ISurvivalConstructable {
 
-    private static final boolean EOHDebugMode = false;
+    private static final boolean EOH_DEBUG_MODE = false;
 
     // Region variables.
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -67,7 +67,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private int timeAccelerationFieldMetadata = -1;
     private int stabilisationFieldMetadata = -1;
 
-    private static final double spacetimeCasingDifferenceDiscountPercentage = 0.03;
+    private static final double SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE = 0.03;
 
     private String userUUID = "";
     private String userName = "";
@@ -1392,7 +1392,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private double hydrogenOverflowProbabilityAdjustment;
     private double heliumOverflowProbabilityAdjustment;
-    private static final long ticksBetweenHatchDrain = EOHDebugMode ? 20 : 200;
+    private static final long TICKS_BETWEEN_HATCH_DRAIN = EOH_DEBUG_MODE ? 20 : 200;
 
     private List<ItemStackLong> outputItems = new ArrayList<>();
 
@@ -1445,7 +1445,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
         double recipeTimeDiscounted = recipeTime
                 * pow(2.0, -timeAccelerationFieldMetadata)
-                * pow(1 - spacetimeCasingDifferenceDiscountPercentage, spacetimeCasingDifference);
+                * pow(1 - SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE, spacetimeCasingDifference);
         return (int) Math.max(recipeTimeDiscounted, 1.0);
     }
 
@@ -1662,7 +1662,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private long lagPreventer = 0;
 
     // Check for recipe every recipeCheckInterval ticks.
-    private static final long recipeCheckInterval = 3 * 20;
+    private static final long RECIPE_CHECK_INTERVAL = 3 * 20;
 
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
@@ -1671,7 +1671,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
 
         lagPreventer++;
-        if (lagPreventer < recipeCheckInterval) {
+        if (lagPreventer < RECIPE_CHECK_INTERVAL) {
             lagPreventer = 0;
             // No item in multi gui slot.
 
@@ -1696,7 +1696,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
         // Debug mode, overwrites the required fluids to initiate the recipe to 100L of each.
-        if (EOHDebugMode) {
+        if (EOH_DEBUG_MODE) {
             if ((getHydrogenStored() < 100) || (getHeliumStored() < 100)) {
                 return false;
             }
@@ -1723,7 +1723,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         calculateHydrogenHeliumInputExcessValues(
                 recipeObject.getHydrogenRequirement(), recipeObject.getHeliumRequirement());
 
-        if (EOHDebugMode) {
+        if (EOH_DEBUG_MODE) {
             hydrogenOverflowProbabilityAdjustment = 0;
             heliumOverflowProbabilityAdjustment = 0;
         }
@@ -1738,7 +1738,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         validFluidMap.put(Materials.Helium.getGas(1), 0L);
 
         double yield = recipeYieldCalculator();
-        if (EOHDebugMode) {
+        if (EOH_DEBUG_MODE) {
             successChance = 1; // Debug recipes, sets them to 100% output chance.
         }
 
@@ -1869,7 +1869,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
 
         if (!recipeRunning) {
-            if ((aTick % ticksBetweenHatchDrain) == 0) {
+            if ((aTick % TICKS_BETWEEN_HATCH_DRAIN) == 0) {
                 drainFluidFromHatchesAndStoreInternally();
             }
         }
@@ -1941,42 +1941,42 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     }
 
     // NBT save/load strings.
-    private static final String eyeOfHarmony = "eyeOfHarmonyOutput";
-    private static final String numberOfItemsNBTTag = eyeOfHarmony + "numberOfItems";
-    private static final String itemOutputNBTTag = eyeOfHarmony + "itemOutput";
-    private static final String recipeRunningNBTTag = eyeOfHarmony + "recipeRunning";
-    private static final String recipeEUOutputNBTTag = eyeOfHarmony + "euOutput";
-    private static final String recipeSuccessChanceNBTTag = eyeOfHarmony + "recipeSuccessChance";
+    private static final String EYE_OF_HARMONY = "eyeOfHarmonyOutput";
+    private static final String NUMBER_OF_ITEMS_NBT_TAG = EYE_OF_HARMONY + "numberOfItems";
+    private static final String ITEM_OUTPUT_NBT_TAG = EYE_OF_HARMONY + "itemOutput";
+    private static final String RECIPE_RUNNING_NBT_TAG = EYE_OF_HARMONY + "recipeRunning";
+    private static final String RECIPE_EU_OUTPUT_NBT_TAG = EYE_OF_HARMONY + "euOutput";
+    private static final String RECIPE_SUCCESS_CHANCE_NBT_TAG = EYE_OF_HARMONY + "recipeSuccessChance";
 
     // Sub tags, less specific names required.
-    private static final String stackSizeNBTTag = "stackSize";
-    private static final String itemStackNBTTag = "itemStack";
+    private static final String STACK_SIZE = "stackSize";
+    private static final String ITEM_STACK_NBT_TAG = "itemStack";
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         // Save the quantity of fluid stored inside the controller.
         validFluidMap.forEach((key, value) -> aNBT.setLong("stored." + key.getUnlocalizedName(), value));
 
-        aNBT.setBoolean(recipeRunningNBTTag, recipeRunning);
-        aNBT.setLong(recipeEUOutputNBTTag, euOutput);
-        aNBT.setDouble(recipeSuccessChanceNBTTag, successChance);
+        aNBT.setBoolean(RECIPE_RUNNING_NBT_TAG, recipeRunning);
+        aNBT.setLong(RECIPE_EU_OUTPUT_NBT_TAG, euOutput);
+        aNBT.setDouble(RECIPE_SUCCESS_CHANCE_NBT_TAG, successChance);
 
         // Store damage values/stack sizes of GT items being outputted.
         NBTTagCompound itemStackListNBTTag = new NBTTagCompound();
-        itemStackListNBTTag.setLong(numberOfItemsNBTTag, outputItems.size());
+        itemStackListNBTTag.setLong(NUMBER_OF_ITEMS_NBT_TAG, outputItems.size());
 
         int index = 0;
         for (ItemStackLong itemStackLong : outputItems) {
             // Save stack size to NBT.
-            itemStackListNBTTag.setLong(index + stackSizeNBTTag, itemStackLong.stackSize);
+            itemStackListNBTTag.setLong(index + STACK_SIZE, itemStackLong.stackSize);
 
             // Save ItemStack to NBT.
-            aNBT.setTag(index + itemStackNBTTag, itemStackLong.itemStack.writeToNBT(new NBTTagCompound()));
+            aNBT.setTag(index + ITEM_STACK_NBT_TAG, itemStackLong.itemStack.writeToNBT(new NBTTagCompound()));
 
             index++;
         }
 
-        aNBT.setTag(itemOutputNBTTag, itemStackListNBTTag);
+        aNBT.setTag(ITEM_OUTPUT_NBT_TAG, itemStackListNBTTag);
 
         super.saveNBTData(aNBT);
     }
@@ -1989,21 +1989,21 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 (key, value) -> validFluidMap.put(key, aNBT.getLong("stored." + key.getUnlocalizedName())));
 
         // Load other stuff from NBT.
-        recipeRunning = aNBT.getBoolean(recipeRunningNBTTag);
-        euOutput = aNBT.getLong(recipeEUOutputNBTTag);
-        successChance = aNBT.getDouble(recipeSuccessChanceNBTTag);
+        recipeRunning = aNBT.getBoolean(RECIPE_RUNNING_NBT_TAG);
+        euOutput = aNBT.getLong(RECIPE_EU_OUTPUT_NBT_TAG);
+        successChance = aNBT.getDouble(RECIPE_SUCCESS_CHANCE_NBT_TAG);
 
         // Load damage values/stack sizes of GT items being outputted and convert back to items.
-        NBTTagCompound tempItemTag = aNBT.getCompoundTag(itemOutputNBTTag);
+        NBTTagCompound tempItemTag = aNBT.getCompoundTag(ITEM_OUTPUT_NBT_TAG);
 
         // Iterate over all stored items.
-        for (int index = 0; index < tempItemTag.getInteger(numberOfItemsNBTTag); index++) {
+        for (int index = 0; index < tempItemTag.getInteger(NUMBER_OF_ITEMS_NBT_TAG); index++) {
 
             // Load stack size from NBT.
-            long stackSize = tempItemTag.getLong(index + stackSizeNBTTag);
+            long stackSize = tempItemTag.getLong(index + STACK_SIZE);
 
             // Load ItemStack from NBT.
-            ItemStack itemStack = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(index + itemStackNBTTag));
+            ItemStack itemStack = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(index + ITEM_STACK_NBT_TAG));
 
             outputItems.add(new ItemStackLong(itemStack, stackSize));
         }

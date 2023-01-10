@@ -17,9 +17,9 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation starLayer0 = new ResourceLocation(MODID, "models/StarLayer0.png");
-    private static final ResourceLocation starLayer1 = new ResourceLocation(MODID, "models/StarLayer1.png");
-    private static final ResourceLocation starLayer2 = new ResourceLocation(MODID, "models/StarLayer2.png");
+    private static final ResourceLocation STAR_LAYER_0 = new ResourceLocation(MODID, "models/StarLayer0.png");
+    private static final ResourceLocation STAR_LAYER_1 = new ResourceLocation(MODID, "models/StarLayer1.png");
+    private static final ResourceLocation STAR_LAYER_2 = new ResourceLocation(MODID, "models/StarLayer2.png");
     private static IModelCustom starModel;
     private static IModelCustom spaceModel;
 
@@ -44,9 +44,9 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
             renderOrbitObjects(EOHRenderTile);
 
             // Render star stuff.
-            renderStarLayer(EOHRenderTile, 0, starLayer0, 1.0f);
-            renderStarLayer(EOHRenderTile, 1, starLayer1, 0.4f);
-            renderStarLayer(EOHRenderTile, 2, starLayer2, 0.2f);
+            renderStarLayer(EOHRenderTile, 0, STAR_LAYER_0, 1.0f);
+            renderStarLayer(EOHRenderTile, 1, STAR_LAYER_1, 0.4f);
+            renderStarLayer(EOHRenderTile, 2, STAR_LAYER_2, 0.2f);
 
             GL11.glPopMatrix();
         }
@@ -72,7 +72,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glRotatef(orbitingObject.zAngle, 0, 0, 1);
         GL11.glRotatef(orbitingObject.xAngle, 1, 0, 0);
         GL11.glRotatef((orbitingObject.rotationSpeed * 0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
-        GL11.glTranslated(-0.2 - orbitingObject.distance - starRescale * EOHRenderTile.getSize(), 0, 0);
+        GL11.glTranslated(-0.2 - orbitingObject.distance - STAR_RESCALE * EOHRenderTile.getSize(), 0, 0);
         GL11.glRotatef((orbitingObject.orbitSpeed * 0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
         renderBlockInWorld(orbitingObject.block, 0, orbitingObject.scale);
         GL11.glPopMatrix();
@@ -111,7 +111,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
     }
 
-    private static final float starRescale = 0.2f;
+    private static final float STAR_RESCALE = 0.2f;
 
     private void renderStarLayer(TileEyeOfHarmony EOHRenderTile, int layer, ResourceLocation texture, float alpha) {
 
@@ -134,7 +134,7 @@ public class RenderEyeOfHarmony extends TileEntitySpecialRenderer {
 
         // 0.01f magic number to shrink sphere obj down.
         // Size obtained from the multis current recipe.
-        float scale = 0.01f * starRescale * EOHRenderTile.getSize();
+        float scale = 0.01f * STAR_RESCALE * EOHRenderTile.getSize();
 
         // Put each subsequent layer further out.
         scale *= pow(1.04f, layer);

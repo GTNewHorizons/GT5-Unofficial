@@ -1,8 +1,11 @@
 package com.github.technus.tectech.nei;
 
+import com.github.technus.tectech.TecTech;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.nbt.NBTTagCompound;
+
+import static com.github.technus.tectech.Reference.MODID;
 
 public class IMCForNEI {
 
@@ -17,8 +20,8 @@ public class IMCForNEI {
     private static void sendHandler(String aName, String aBlock, int aMaxRecipesPerPage) {
         NBTTagCompound aNBT = new NBTTagCompound();
         aNBT.setString("handler", aName);
-        aNBT.setString("modName", "GregTech");
-        aNBT.setString("modId", "gregtech");
+        aNBT.setString("modName", MODID);
+        aNBT.setString("modId", MODID);
         aNBT.setBoolean("modRequired", true);
         aNBT.setString("itemName", aBlock);
         aNBT.setInteger("handlerHeight", 135);

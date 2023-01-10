@@ -6,6 +6,7 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static java.lang.Math.min;
 import static net.minecraft.util.EnumChatFormatting.*;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import appeng.util.ReadableNumberConverter;
 import codechicken.nei.PositionedStack;
@@ -551,30 +552,30 @@ public class TT_recipe extends GT_Recipe {
                 EyeOfHarmonyRecipe recipe = (EyeOfHarmonyRecipe) recipeInfo.recipe.mSpecialItems;
                 List<String> result = new ArrayList<>();
 
-                result.add("Hydrogen: " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
-                result.add("Helium: " + formatNumbers(recipe.getHydrogenRequirement()) + " L");
-                result.add("Spacetime Tier: " + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
+                result.add(translateToLocal("Hydrogen: ") + formatNumbers(recipe.getHydrogenRequirement()) + " L");
+                result.add(translateToLocal("Helium: ") + formatNumbers(recipe.getHydrogenRequirement()) + " L");
+                result.add(translateToLocal("Spacetime Tier: ") + translateToLocal(EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]));
 
                 if (recipe.getEUOutput() < TRILLION) {
-                    result.add("EU Output: " + formatNumbers(recipe.getEUOutput()) + " EU");
+                    result.add(translateToLocal("EU Output: ") + formatNumbers(recipe.getEUOutput()) + " EU");
                 } else {
-                    result.add("EU Output: " + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput())
-                            + " EU");
+                    result.add(translateToLocal("EU Output: ") + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput())
+                            + translateToLocal(" EU"));
                 }
 
                 if (recipe.getEUOutput() < TRILLION) {
-                    result.add("EU Input: " + formatNumbers(recipe.getEUStartCost()) + " EU");
+                    result.add(translateToLocal("EU Input: ") + formatNumbers(recipe.getEUStartCost()) + translateToLocal(" EU"));
                 } else {
-                    result.add("EU Input: "
-                            + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost()) + " EU");
+                    result.add(translateToLocal("EU Input: ")
+                            + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost()) + translateToLocal(" EU"));
                 }
 
-                result.add("Base Recipe Chance: " + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
+                result.add(translateToLocal("Base Recipe Chance: ") + formatNumbers(100 * recipe.getBaseRecipeSuccessChance()) + "%");
                 result.add(
-                        "Recipe Energy Efficiency: " + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
+                        translateToLocal("Recipe Energy Efficiency: ") + formatNumbers(100 * recipe.getRecipeEnergyEfficiency()) + "%");
 
                 if (recipe.getOutputItems().size() > maxItemsToRender) {
-                    result.add("" + DARK_RED + BOLD + "Warning" + RESET + ": Not all items displayed.");
+                    result.add("" + DARK_RED + BOLD + translateToLocal("Warning") + RESET + translateToLocal(": Not all items displayed."));
                 }
 
                 return result;
@@ -654,7 +655,7 @@ public class TT_recipe extends GT_Recipe {
             // Draw tooltip on planet item.
             if (stack.isItemEqual(currentRecipe.getRecipeTriggerItem())) {
                 currentTip.add(
-                        EnumChatFormatting.GRAY + "Total Items: " + formatNumbers(currentRecipe.getSumOfItems()));
+                        EnumChatFormatting.GRAY + translateToLocal("Total Items: ") + formatNumbers(currentRecipe.getSumOfItems()));
                 return currentTip;
             }
 
@@ -662,8 +663,8 @@ public class TT_recipe extends GT_Recipe {
             double percentage = currentRecipe.getItemStackToProbabilityMap().getOrDefault(stack, -1.0);
 
             if (percentage != -1.0) {
-                currentTip.add(EnumChatFormatting.GRAY + "Percentage of Solid Mass: " + percentage + "%");
-                currentTip.add(EnumChatFormatting.GRAY + "Item Count: "
+                currentTip.add(EnumChatFormatting.GRAY + translateToLocal("Percentage of Solid Mass: ") + percentage + "%");
+                currentTip.add(EnumChatFormatting.GRAY + translateToLocal("Item Count: ")
                         + formatNumbers(
                                 currentRecipe.getItemStackToTrueStackSizeMap().get(stack)));
             }
@@ -677,7 +678,7 @@ public class TT_recipe extends GT_Recipe {
             for (PositionedStack stack : neiCachedRecipe.mInputs) {
                 if (stack instanceof GT_NEI_DefaultHandler.FixedPositionedStack) {
                     if (stack.item.isItemEqual(EOHRecipe.getRecipeTriggerItem())) {
-                        drawNEIOverlayText("NC", stack);
+                        drawNEIOverlayText(translateToLocal("NC"), stack);
                     }
                 }
             }
