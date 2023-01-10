@@ -242,7 +242,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         // We'll check for ID uniqueness. Better to throw an exception than silently overwrite some
         // fluid cells with other fluids due to ID collision.
-        if (!isStackAlreadySet && registeredFluidDataMap.containsKey(id)) {
+        if (registeredFluidDataMap.containsKey(id)) {
             throw new IllegalStateException("Got ID collision for ID: " + id);
         }
 
