@@ -258,7 +258,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                             if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
                                 this.mOutputItems[0] = Outp;
                             } else this.mOutputItems[0] = ItemList.Tool_DataOrb.get(1L);
-                            this.mOutputItems[1] = ItemList.Cell_Universal_Fluid.get(2L);
+                            this.mOutputItems[1] = ItemList.Cell_Empty.get(2L);
 
                             this.calculateOverclockedNess(
                                     BW_Util.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()), 500);
@@ -305,7 +305,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                                 this.mOutputItems[0] =
                                         BioItemList.getPlasmidCell(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
                             }
-                            this.mOutputItems[1] = ItemList.Cell_Universal_Fluid.get(1L);
+                            this.mOutputItems[1] = ItemList.Cell_Empty.get(1L);
                             this.calculateOverclockedNess(
                                     BW_Util.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()), 500);
                             return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
@@ -344,7 +344,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                             if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
                                 this.mOutputItems[0] = BioItemList.getPetriDish(bioCulture);
                             }
-                            this.mOutputItems[1] = ItemList.Cell_Universal_Fluid.get(1L);
+                            this.mOutputItems[1] = ItemList.Cell_Empty.get(1L);
                             this.calculateOverclockedNess(
                                     BW_Util.getMachineVoltageFromTier(3 + rTier + cultureDNABioData.getTier()), 500);
                             return GT_MetaTileEntity_BasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;

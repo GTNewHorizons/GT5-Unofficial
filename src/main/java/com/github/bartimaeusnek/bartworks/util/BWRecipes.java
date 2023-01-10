@@ -36,6 +36,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
@@ -811,7 +812,7 @@ public class BWRecipes {
 
         public GT_Recipe addMoltenFuel(Materials M, int burn) {
             return super.addFuel(
-                    ItemFluidCell.getUniversalFluidCell(M.getMolten(144L)), Ic2Items.FluidCell.copy(), burn);
+                    GT_OreDictUnificator.get(OrePrefixes.cellMolten, M, 1), Materials.Empty.getCells(1), burn);
         }
 
         public GT_Recipe addLiquidFuel(FluidStack fluidStack, int burn) {

@@ -39,11 +39,11 @@ import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.*;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
-import ic2.core.item.ItemFluidCell;
 import java.lang.reflect.Field;
 import java.util.Map;
 import net.minecraft.init.Items;
@@ -109,7 +109,7 @@ public class AdditionalRecipes {
                                 FluidLoader.BioLabFluidCells[3],
                                 ItemList.Tool_DataOrb.get(1L)
                             },
-                            new ItemStack[] {Outp, ItemList.Cell_Universal_Fluid.get(2L)},
+                            new ItemStack[] {Outp, ItemList.Cell_Empty.get(2L)},
                             BioItemList.mBioLabParts[1],
                             new int[] {DNA.getChance(), 10000},
                             dnaFluid,
@@ -136,7 +136,7 @@ public class AdditionalRecipes {
                             new ItemStack[] {
                                 FluidLoader.BioLabFluidCells[1], BioItemList.getPlasmidCell(null), inp, inp2
                             },
-                            new ItemStack[] {stack, ItemList.Cell_Universal_Fluid.get(1L)},
+                            new ItemStack[] {stack, ItemList.Cell_Empty.get(1L)},
                             BioItemList.mBioLabParts[2],
                             new int[] {DNA.getChance(), 10000},
                             dnaFluid,
@@ -160,7 +160,7 @@ public class AdditionalRecipes {
                                 BioItemList.getPlasmidCell(BioPlasmid.convertDataToPlasmid(Plasmid)),
                                 FluidLoader.BioLabFluidCells[2],
                             },
-                            new ItemStack[] {stack, ItemList.Cell_Universal_Fluid.get(1L)},
+                            new ItemStack[] {stack, ItemList.Cell_Empty.get(1L)},
                             BioItemList.mBioLabParts[3],
                             new int[] {10000, 10000},
                             new FluidStack[] {FluidRegistry.getFluidStack("ic2distilledwater", 1000)},
@@ -226,15 +226,10 @@ public class AdditionalRecipes {
                                     BioItemList.getPetriDish(null),
                                     fluidStack.equals(Materials.Water.getFluid(1000L))
                                             ? Materials.Water.getCells(1)
-                                            : ItemFluidCell.getUniversalFluidCell(
-                                                    FluidRegistry.getFluidStack("ic2distilledwater", 1000))
+                                            : GT_Utility.getContainersFromFluid(GT_ModHandler.getDistilledWater(1000))
+                                                    .get(0)
                                 },
-                                new ItemStack[] {
-                                    BioItemList.getPetriDish(bioCulture),
-                                    fluidStack.equals(Materials.Water.getFluid(1000L))
-                                            ? Materials.Empty.getCells(1)
-                                            : ItemList.Cell_Universal_Fluid.get(1L)
-                                },
+                                new ItemStack[] {BioItemList.getPetriDish(bioCulture), Materials.Empty.getCells(1)},
                                 null,
                                 new int[] {bioCulture.getChance(), 10000},
                                 new FluidStack[] {new FluidStack(bioCulture.getFluid(), 1000)},
