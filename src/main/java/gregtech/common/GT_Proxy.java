@@ -1415,7 +1415,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         if ((aEvent.entity != null) && (!aEvent.entity.worldObj.isRemote)) {
             if ((aEvent.entity instanceof EntityItem)) {
                 ((EntityItem) aEvent.entity)
-                        .setEntityItemStack(GT_OreDictUnificator.get(((EntityItem) aEvent.entity).getEntityItem()));
+                        .setEntityItemStack(
+                                GT_OreDictUnificator.get(true, ((EntityItem) aEvent.entity).getEntityItem(), true));
             }
             if ((this.mSkeletonsShootGTArrows > 0)
                     && (aEvent.entity.getClass() == EntityArrow.class)
