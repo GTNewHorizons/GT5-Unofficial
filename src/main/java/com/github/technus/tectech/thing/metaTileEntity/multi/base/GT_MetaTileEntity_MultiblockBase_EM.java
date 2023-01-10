@@ -995,9 +995,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     /**
-     * if u want to use gt recipe maps...
-     *
-     * @return
+     * If you want to use GT recipe maps.
      */
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {

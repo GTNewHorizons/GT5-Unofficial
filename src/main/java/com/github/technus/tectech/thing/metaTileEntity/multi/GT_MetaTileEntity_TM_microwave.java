@@ -234,7 +234,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                 .addMaintenanceHatch(
                         translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"),
                         1) // Maintenance Hatch: Any outer casing on the bottom layer
-                .toolTipFinisher(CommonValues.BASS_MARK);
+                .toolTipFinisher(CommonValues.THETA_MOVEMENT);
         return tt;
     }
 

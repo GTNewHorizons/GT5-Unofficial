@@ -76,7 +76,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     @Override
     public String[] getDescription() {
         String[] jargon = new String[] {
-            CommonValues.BASS_MARK,
+            CommonValues.THETA_MOVEMENT,
             translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"), // Your Tesla I/O machine of choice
             EnumChatFormatting.AQUA
                     + translateToLocal("gt.blockmachines.machine.tt.tesla.desc.1") // Lightning stoves for the rich

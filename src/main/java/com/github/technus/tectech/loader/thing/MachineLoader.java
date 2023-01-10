@@ -844,8 +844,8 @@ public class MachineLoader implements Runnable {
         Machine_Multi_Annihilation.set(
                 new GT_MetaTileEntity_EM_annihilation(15405, "multimachine.em.annihilation", "Annihilation Generator")
                         .getStackForm(1L));
-        Machine_Multi_BHG.set(
-                new GT_MetaTileEntity_EM_bhg(15410, "multimachine.em.blackholegenerator", "Black Hole Generator")
+        Machine_Multi_EyeOfHarmony.set(
+                new GT_MetaTileEntity_EM_EyeOfHarmony(15410, "multimachine.em.eye_of_harmony", "Eye of Harmony")
                         .getStackForm(1L));
 
         // ===================================================================================================

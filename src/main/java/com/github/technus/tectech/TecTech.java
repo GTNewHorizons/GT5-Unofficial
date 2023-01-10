@@ -19,7 +19,9 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.commands.EMList
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData;
+import com.github.technus.tectech.nei.IMCForNEI;
 import com.github.technus.tectech.proxy.CommonProxy;
+import com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage;
 import com.github.technus.tectech.util.XSTR;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -209,6 +211,7 @@ public class TecTech {
 
         MainLoader.load(definitionsRegistry);
         MainLoader.addAfterGregTechPostLoadRunner();
+        IMCForNEI.IMCSender();
     }
 
     @Mod.EventHandler
@@ -231,9 +234,14 @@ public class TecTech {
         }
     }
 
+    public static EyeOfHarmonyRecipeStorage eyeOfHarmonyRecipeStorage = null;
+
     @Mod.EventHandler
     public void onServerAboutToStart(FMLServerAboutToStartEvent aEvent) {
         chunkDataHandler.clearData();
         playerPersistence.clearData();
+
+        // This must be done after game load otherwise it fails.
+        eyeOfHarmonyRecipeStorage = new EyeOfHarmonyRecipeStorage();
     }
 }

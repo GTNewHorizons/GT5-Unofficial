@@ -29,7 +29,7 @@ public final class TeslaCoilCover extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
-        aList.add(CommonValues.BASS_MARK);
+        aList.add(CommonValues.THETA_MOVEMENT);
         switch (aStack.getItemDamage()) {
             case 0:
                 aList.add(translateToLocal("item.tm.teslaCover.desc.0")); // Tesla-Enables Machines!

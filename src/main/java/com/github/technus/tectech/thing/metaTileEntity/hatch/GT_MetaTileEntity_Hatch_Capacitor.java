@@ -119,7 +119,7 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch i
     @Override
     public String[] getDescription() {
         return new String[] {
-            CommonValues.BASS_MARK,
+            CommonValues.THETA_MOVEMENT,
             translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"), // For Tesla Tower
             EnumChatFormatting.AQUA
                     + translateToLocal("gt.blockmachines.hatch.capacitor.desc.1") // Stores 'nergy! (for a while)
