@@ -1,4 +1,4 @@
-//version: 1671313514
+//version: 1673027205
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -319,9 +319,17 @@ if (file('addon.gradle').exists()) {
 apply from: 'repositories.gradle'
 
 configurations {
-    implementation.extendsFrom(shadowImplementation)  // TODO: remove after all uses are refactored
-    implementation.extendsFrom(shadowCompile)
-    implementation.extendsFrom(shadeCompile)
+    // TODO: remove Compile after all uses are refactored to Implementation
+    for (config in [
+                shadowImplementation,
+                shadowCompile,
+                shadeCompile
+            ]) {
+        compileClasspath.extendsFrom(config)
+        runtimeClasspath.extendsFrom(config)
+        testCompileClasspath.extendsFrom(config)
+        testRuntimeClasspath.extendsFrom(config)
+    }
 }
 
 repositories {
@@ -350,7 +358,8 @@ dependencies {
         annotationProcessor('com.google.code.gson:gson:2.8.6')
         annotationProcessor('com.gtnewhorizon:gtnhmixins:2.1.3:processor')
         if (usesMixinDebug.toBoolean()) {
-            runtimeOnly('org.jetbrains:intellij-fernflower:1.2.1.16')
+            runtimeClasspath('org.jetbrains:intellij-fernflower:1.2.1.16')
+            testRuntimeClasspath('org.jetbrains:intellij-fernflower:1.2.1.16')
         }
     }
     if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {

@@ -34,19 +34,19 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.*;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -85,6 +85,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     // just add new static ones in your class and and override getTexture
     protected static Textures.BlockIcons.CustomIcon ScreenOFF;
     protected static Textures.BlockIcons.CustomIcon ScreenON;
+
+    /** Base ID for the LED window popup. LED 1 I0 will have ID 100, LED 1 I1 101... */
+    protected static int LED_WINDOW_BASE_ID = 100;
 
     // Sound resource - same as with screen but override getActivitySound
     public static final ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_lo_freq");
@@ -2931,103 +2934,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         drawTexts(screenElements, inventorySlot);
         builder.widget(screenElements.setPos(7, 8));
 
-        Widget powerPassButton = new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    if (isPowerPassButtonEnabled() || ePowerPassCover) {
-                        TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                        ePowerPass = !ePowerPass;
-                        if (!isAllowedToWorkButtonEnabled()) { // TRANSFORMER HACK
-                            if (ePowerPass) {
-                                getBaseMetaTileEntity().enableWorking();
-                            } else {
-                                getBaseMetaTileEntity().disableWorking();
-                            }
-                        }
-                    }
-                })
-                .setPlayClickSound(false)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                    if (!isPowerPassButtonEnabled() && !ePowerPassCover) {
-                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_DISABLED);
-                    } else {
-                        if (ePowerPass) {
-                            ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_ON);
-                        } else {
-                            ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_OFF);
-                        }
-                    }
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .setPos(174, doesBindPlayerInventory() ? 116 : 140)
-                .setSize(16, 16);
-        if (isPowerPassButtonEnabled()) {
-            powerPassButton.addTooltip("Power Pass").setTooltipShowUpDelay(TOOLTIP_DELAY);
-        }
+        Widget powerPassButton = createPowerPassButton();
         builder.widget(powerPassButton)
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> ePowerPass, val -> ePowerPass = val))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> ePowerPassCover, val -> ePowerPassCover = val));
-        Widget safeVoidButton = new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    if (isSafeVoidButtonEnabled()) {
-                        TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                        eSafeVoid = !eSafeVoid;
-                    }
-                })
-                .setPlayClickSound(false)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                    if (!isSafeVoidButtonEnabled()) {
-                        ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_DISABLED);
-                    } else {
-                        if (eSafeVoid) {
-                            ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
-                        } else {
-                            ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
-                        }
-                    }
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .setPos(174, doesBindPlayerInventory() ? 132 : 156)
-                .setSize(16, 16);
-        if (isSafeVoidButtonEnabled()) {
-            safeVoidButton.addTooltip("Safe Void").setTooltipShowUpDelay(TOOLTIP_DELAY);
-        }
+        Widget safeVoidButton = createSafeVoidButton();
         builder.widget(safeVoidButton)
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> eSafeVoid, val -> eSafeVoid = val));
-        Widget powerSwitchButton = new ButtonWidget()
-                .setOnClick((clickData, widget) -> {
-                    if (isAllowedToWorkButtonEnabled()) {
-                        TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                        if (getBaseMetaTileEntity().isAllowedToWork()) {
-                            getBaseMetaTileEntity().disableWorking();
-                        } else {
-                            getBaseMetaTileEntity().enableWorking();
-                        }
-                    }
-                })
-                .setPlayClickSound(false)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                    if (!isAllowedToWorkButtonEnabled()) {
-                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
-                    } else {
-                        if (getBaseMetaTileEntity().isAllowedToWork()) {
-                            ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
-                        } else {
-                            ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
-                        }
-                    }
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .setPos(174, doesBindPlayerInventory() ? 148 : 172)
-                .setSize(16, 16);
-        if (isAllowedToWorkButtonEnabled()) {
-            powerSwitchButton.addTooltip("Power Switch").setTooltipShowUpDelay(TOOLTIP_DELAY);
-        }
+        Widget powerSwitchButton = createPowerSwitchButton();
         builder.widget(powerSwitchButton)
                 .widget(new FakeSyncWidget.BooleanSyncer(
                         () -> getBaseMetaTileEntity().isAllowedToWork(), val -> {
@@ -3047,6 +2961,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         .setSize(166, 12));
         for (int hatch = 0; hatch < 10; hatch++) {
             for (int param = 0; param < 2; param++) {
+                int ledID = hatch + param * 10;
+                buildContext.addSyncedWindow(
+                        LED_WINDOW_BASE_ID + ledID, (player) -> createLEDConfigurationWindow(ledID));
                 addParameterLED(builder, hatch, param, true);
                 addParameterLED(builder, hatch, param, false);
             }
@@ -3101,10 +3018,144 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
     }
 
+    protected ButtonWidget createPowerPassButton() {
+        Widget button = new ButtonWidget()
+                .setOnClick((clickData, widget) -> {
+                    if (isPowerPassButtonEnabled() || ePowerPassCover) {
+                        TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                        ePowerPass = !ePowerPass;
+                        if (!isAllowedToWorkButtonEnabled()) { // TRANSFORMER HACK
+                            if (ePowerPass) {
+                                getBaseMetaTileEntity().enableWorking();
+                            } else {
+                                getBaseMetaTileEntity().disableWorking();
+                            }
+                        }
+                    }
+                })
+                .setPlayClickSound(false)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                    if (!isPowerPassButtonEnabled() && !ePowerPassCover) {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_DISABLED);
+                    } else {
+                        if (ePowerPass) {
+                            ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_ON);
+                        } else {
+                            ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_OFF);
+                        }
+                    }
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .setPos(174, doesBindPlayerInventory() ? 116 : 140)
+                .setSize(16, 16);
+        if (isPowerPassButtonEnabled()) {
+            button.addTooltip("Power Pass").setTooltipShowUpDelay(TOOLTIP_DELAY);
+        }
+        return (ButtonWidget) button;
+    }
+
+    protected ButtonWidget createSafeVoidButton() {
+        Widget button = new ButtonWidget()
+                .setOnClick((clickData, widget) -> {
+                    if (isSafeVoidButtonEnabled()) {
+                        TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                        eSafeVoid = !eSafeVoid;
+                    }
+                })
+                .setPlayClickSound(false)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                    if (!isSafeVoidButtonEnabled()) {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_DISABLED);
+                    } else {
+                        if (eSafeVoid) {
+                            ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
+                        } else {
+                            ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+                        }
+                    }
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .setPos(174, doesBindPlayerInventory() ? 132 : 156)
+                .setSize(16, 16);
+        if (isSafeVoidButtonEnabled()) {
+            button.addTooltip("Safe Void").setTooltipShowUpDelay(TOOLTIP_DELAY);
+        }
+        return (ButtonWidget) button;
+    }
+
+    protected ButtonWidget createPowerSwitchButton() {
+        Widget button = new ButtonWidget()
+                .setOnClick((clickData, widget) -> {
+                    if (isAllowedToWorkButtonEnabled()) {
+                        TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                        if (getBaseMetaTileEntity().isAllowedToWork()) {
+                            getBaseMetaTileEntity().disableWorking();
+                        } else {
+                            getBaseMetaTileEntity().enableWorking();
+                        }
+                    }
+                })
+                .setPlayClickSound(false)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                    if (!isAllowedToWorkButtonEnabled()) {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
+                    } else {
+                        if (getBaseMetaTileEntity().isAllowedToWork()) {
+                            ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+                        } else {
+                            ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+                        }
+                    }
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .setPos(174, doesBindPlayerInventory() ? 148 : 172)
+                .setSize(16, 16);
+        if (isAllowedToWorkButtonEnabled()) {
+            button.addTooltip("Power Switch").setTooltipShowUpDelay(TOOLTIP_DELAY);
+        }
+        return (ButtonWidget) button;
+    }
+
+    private ModularWindow createLEDConfigurationWindow(int ledID) {
+        return ModularWindow.builder(100, 40)
+                .setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                .setPos((screenSize, mainWindow) -> new Pos2d(
+                        (screenSize.width / 2 - mainWindow.getSize().width / 2) - 110,
+                        (screenSize.height / 2 - mainWindow.getSize().height / 2)))
+                .widget(ButtonWidget.closeWindowButton(true).setPos(85, 3))
+                .widget(new TextFieldWidget()
+                        .setTextColor(Color.LIGHT_BLUE.normal)
+                        .setNumbersDouble((val) -> val)
+                        .setGetter(() -> Double.toString(parametrization.iParamsIn[ledID]))
+                        .setSetter(val -> {
+                            try {
+                                parametrization.iParamsIn[ledID] = Double.parseDouble(val);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        })
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setFocusOnGuiOpen(true)
+                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                        .setPos(5, 20)
+                        .setSize(90, 15))
+                .widget(new TextWidget((ledID % 10) + ":" + (ledID / 10) + ":I")
+                        .setDefaultColor(Color.WHITE.normal)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(5, 5))
+                .build();
+    }
+
     private void addParameterLED(ModularWindow.Builder builder, int hatch, int param, boolean input) {
         final int parameterIndex = hatch + param * 10;
         final int posIndex = hatch * 2 + param;
-        DrawableWidget ledWidget = new DrawableWidget() {
+        ButtonWidget ledWidget = new ButtonWidget() {
             @Override
             public void draw(float partialTicks) {
                 IDrawable texture = null;
@@ -3184,11 +3235,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         // no-op
                         break;
                 }
-                setDrawable(texture);
+                setBackground(texture);
                 super.draw(partialTicks);
                 GL11.glColor4f(1f, 1f, 1f, 1f);
             }
-        };
+        }.setOnClick((clickData, widget) -> {
+            if (!widget.isClient()
+                    && input
+                    && parametrization.eParamsInStatus[parameterIndex] != LedStatus.STATUS_UNUSED) {
+                // We don't use CloseAllButMain here in case MB implementation adds their own window
+                for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
+                    widget.getContext().closeWindow(LED_WINDOW_BASE_ID + i);
+                }
+                widget.getContext().openSyncedWindow(LED_WINDOW_BASE_ID + parameterIndex);
+            }
+        });
         builder.widget(ledWidget
                 .dynamicTooltip(() -> {
                     if (input) {
