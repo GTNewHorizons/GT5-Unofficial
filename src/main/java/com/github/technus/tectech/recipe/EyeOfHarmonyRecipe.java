@@ -229,7 +229,7 @@ public class EyeOfHarmonyRecipe {
     private static final double QUATERNARY_MULTIPLIER = (0.7); // Mercury/chem bath processing chance.
 
     private static final double[] ORE_MULTIPLIER = {
-            PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER, QUATERNARY_MULTIPLIER
+        PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER, QUATERNARY_MULTIPLIER
     };
 
     public static class HashMapHelper extends HashMap<Materials, Double> {
