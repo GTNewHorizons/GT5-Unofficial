@@ -1,7 +1,13 @@
 package gregtech.common.render;
 
+import appeng.util.ReadableNumberConverter;
+import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.items.GT_FluidDisplayItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -13,7 +19,11 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
+import java.util.ArrayList;
+import java.util.Collections;
+
+
+@SideOnly(Side.CLIENT)
 public class GT_FluidDisplayStackRenderer implements IItemRenderer {
 
     public GT_FluidDisplayStackRenderer() {
@@ -32,6 +42,8 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
         return false;
     }
 
+    private static final ArrayList<Materials> BLACKLISTED_FLUID_RENDERERS = new ArrayList<>(Collections.singleton(Materials.TranscendentMetal));
+
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         if (item == null || item.getItem() == null || !(item.getItem() instanceof GT_FluidDisplayItem)) return;
@@ -41,6 +53,15 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
         IIcon icon = item.getItem().getIconFromDamage(item.getItemDamage());
+
+        // Handle special rendering of fluids like infinity or universium.
+        try {
+            Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
+            if ((associatedFluidMaterial.renderer != null) && (!BLACKLISTED_FLUID_RENDERERS.contains(associatedFluidMaterial))) {
+                associatedFluidMaterial.renderer.renderFluidSpecial(type, item, icon);
+            }
+        } catch(Exception ignored) { }
+        // End special handling.
 
         Tessellator tess = Tessellator.instance;
         tess.startDrawingQuads();
@@ -66,19 +87,10 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
         if (fluidAmount > 0L && !item.getTagCompound().getBoolean("mHideStackSize")) {
             String amountString;
 
-            if (fluidAmount < 10000) {
+            if (fluidAmount < 10_000) {
                 amountString = "" + fluidAmount + "L";
             } else {
-                int exp = (int) (Math.log(fluidAmount) / Math.log(1000));
-                double shortAmount = fluidAmount / Math.pow(1000, exp);
-                if (shortAmount >= 100) {
-                    amountString = String.format(
-                            "%.0f%cL", shortAmount, "kMGTPE".charAt(exp - 1)); // heard it here first, PetaLiters
-                } else if (shortAmount >= 10) {
-                    amountString = String.format("%.1f%cL", shortAmount, "kMGTPE".charAt(exp - 1));
-                } else {
-                    amountString = String.format("%.2f%cL", shortAmount, "kMGTPE".charAt(exp - 1));
-                }
+                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidAmount);
             }
 
             FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;

@@ -29,6 +29,11 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         return type == ItemRenderType.ENTITY;
     }
 
+    // Do not use this method. Only for GT_FluidDisplayItem.
+    public void renderFluidSpecial(ItemRenderType type, ItemStack aStack, IIcon icon, Object... data) {
+        renderRegularItem(type, aStack, icon, false);
+    }
+
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
@@ -55,7 +60,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
         if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
             IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
             if (fluidIcon != null) {
-                // Adds colour to a cells fluid. Does not colour full fluid "blocks".
+                // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
                 renderContainedFluid(type, aFluid, fluidIcon);
             }
         }

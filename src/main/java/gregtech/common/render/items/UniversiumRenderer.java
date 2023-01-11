@@ -3,7 +3,6 @@ package gregtech.common.render.items;
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -17,8 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
@@ -37,10 +34,10 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         return helper == ItemRendererHelper.ENTITY_ROTATION || helper == ItemRendererHelper.ENTITY_BOBBING;
     }
 
-//    @Override
-//    public void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor) {
-//
-//    }
+    @Override
+    public void renderFluidSpecial(ItemRenderType type, ItemStack aStack, IIcon icon, Object... data) {
+        magicRenderMethod(type, aStack, data);
+    }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
@@ -85,7 +82,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         }
     }
 
-    public void magicRenderMethod(ItemRenderType type, ItemStack tmpTtem, Object... data) {
+    private void magicRenderMethod(ItemRenderType type, ItemStack tmpTtem, Object... data) {
 
         IIcon tIcon = getTrueIcon(tmpTtem);
 
@@ -174,7 +171,6 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
                 r.renderWithColor = true;
 
-                //                GL11.glDisable(GL11.GL_BLEND); // todo re-enable.
                 GL11.glPopMatrix();
                 break;
             }
