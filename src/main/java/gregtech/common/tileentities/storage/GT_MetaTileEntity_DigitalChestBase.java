@@ -41,7 +41,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         implements appeng.api.storage.IMEMonitor<appeng.api.storage.data.IAEItemStack>, IAddUIWidgets {
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
-    public boolean voidBreak;
     private Map<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> listeners =
             null;
 
@@ -50,8 +49,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
             "This Chest stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + " Blocks",
             "Use a screwdriver to enable",
             "voiding items on overflow",
-            "Can keep its contents when harvested",
-            "Sneak when harvesting to void its contents"
+            "Will keep its contents when harvested",
         });
     }
 
@@ -357,12 +355,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        voidBreak = aPlayer.isSneaking();
-        super.onLeftclick(aBaseMetaTileEntity, aPlayer);
     }
 
     @Override

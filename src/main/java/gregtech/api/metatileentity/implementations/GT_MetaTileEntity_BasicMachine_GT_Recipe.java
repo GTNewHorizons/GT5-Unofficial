@@ -6,6 +6,11 @@ import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,6 +19,7 @@ import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -48,6 +54,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     private final ResourceLocation mSoundResourceLocation;
     private final boolean mSharedTank, mRequiresFluidForFiltering;
     private final byte mGUIParameterA, mGUIParameterB;
+    private FallbackableUITexture progressBarTexture;
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(
             int aID,
@@ -151,6 +158,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
         this.mSoundResourceLocation = aSound;
         this.mGUIParameterA = (byte) aGUIParameterA;
         this.mGUIParameterB = (byte) aGUIParameterB;
+        this.progressBarTexture = mRecipes.getProgressBarTextureRaw();
 
         // TODO: CHECK
         if (aRecipe != null) {
@@ -285,7 +293,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Nichrome);
                             break;
                         case 5:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.TungstenSteel);
+                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.TPV);
                             break;
                         case 6:
                             aRecipe[i] = OrePrefixes.wireGt02.get(Materials.HSSG);
@@ -322,7 +330,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Nichrome);
                             break;
                         case 5:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.TungstenSteel);
+                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.TPV);
                             break;
                         case 6:
                             aRecipe[i] = OrePrefixes.wireGt04.get(Materials.HSSG);
@@ -1043,23 +1051,38 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mRecipes,
-                this.mInputSlotCount,
-                this.mOutputItems == null ? 0 : this.mOutputItems.length,
-                this.mTankCapacity,
-                this.mAmperage,
-                this.mGUIParameterA,
-                this.mGUIParameterB,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName,
-                this.mSoundResourceLocation.toString(),
-                this.mSharedTank,
-                this.mRequiresFluidForFiltering,
-                this.mSpecialEffect.ordinal());
+                        this.mName,
+                        this.mTier,
+                        this.mDescriptionArray,
+                        this.mRecipes,
+                        this.mInputSlotCount,
+                        this.mOutputItems == null ? 0 : this.mOutputItems.length,
+                        this.mTankCapacity,
+                        this.mAmperage,
+                        this.mGUIParameterA,
+                        this.mGUIParameterB,
+                        this.mTextures,
+                        this.mGUIName,
+                        this.mNEIName,
+                        this.mSoundResourceLocation.toString(),
+                        this.mSharedTank,
+                        this.mRequiresFluidForFiltering,
+                        this.mSpecialEffect.ordinal())
+                .setProgressBarTexture(this.progressBarTexture);
+    }
+
+    public GT_MetaTileEntity_BasicMachine_GT_Recipe setProgressBarTexture(FallbackableUITexture progressBarTexture) {
+        this.progressBarTexture = progressBarTexture;
+        return this;
+    }
+
+    public GT_MetaTileEntity_BasicMachine_GT_Recipe setProgressBarTextureName(String name, UITexture fallback) {
+        return setProgressBarTexture(
+                new FallbackableUITexture(UITexture.fullImage("gregtech", "gui/progressbar/" + name), fallback));
+    }
+
+    public GT_MetaTileEntity_BasicMachine_GT_Recipe setProgressBarTextureName(String name) {
+        return setProgressBarTextureName(name, GT_UITextures.PROGRESSBAR_ARROW);
     }
 
     @Override
@@ -1290,6 +1313,13 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     @Override
     protected boolean displaysOutputFluid() {
         return !this.mSharedTank;
+    }
+
+    @Override
+    protected ProgressBar createProgressBar(
+            UITexture texture, int imageSize, ProgressBar.Direction direction, Pos2d pos, Size size) {
+        return super.createProgressBar(texture, imageSize, direction, pos, size)
+                .setTexture(progressBarTexture.get(), mRecipes.getProgressBarImageSize());
     }
 
     public enum X {

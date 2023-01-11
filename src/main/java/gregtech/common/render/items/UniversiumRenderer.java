@@ -34,10 +34,10 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         return helper == ItemRendererHelper.ENTITY_ROTATION || helper == ItemRendererHelper.ENTITY_BOBBING;
     }
 
-    @Override
-    public void renderFluidSpecial(ItemRenderType type, ItemStack aStack, IIcon icon, Object... data) {
+        @Override
+        public void renderFluidSpecial(ItemRenderType type, ItemStack aStack, IIcon icon, Object... data) {
         magicRenderMethod(type, aStack, data);
-    }
+        }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
@@ -64,14 +64,14 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             } else {
                 ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    tOverlay.getMaxU(),
-                    tOverlay.getMinV(),
-                    tOverlay.getMinU(),
-                    tOverlay.getMaxV(),
-                    tOverlay.getIconWidth(),
-                    tOverlay.getIconHeight(),
-                    0.0625F);
+                        Tessellator.instance,
+                        tOverlay.getMaxU(),
+                        tOverlay.getMinV(),
+                        tOverlay.getMinU(),
+                        tOverlay.getMaxV(),
+                        tOverlay.getIconWidth(),
+                        tOverlay.getIconHeight(),
+                        0.0625F);
             }
         }
 
@@ -298,6 +298,4 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
         return aIconContainer.getIcon();
     }
-
-
 }

@@ -93,18 +93,18 @@ public class UIHelper {
             case 0:
                 return Collections.emptyList();
             case 1:
-                return getItemGridPositions(itemInputCount, 52, 24, 1, 1);
+                return getGridPositions(itemInputCount, 52, 24, 1, 1);
             case 2:
-                return getItemGridPositions(itemInputCount, 34, 24, 2, 1);
+                return getGridPositions(itemInputCount, 34, 24, 2, 1);
             case 3:
-                return getItemGridPositions(itemInputCount, 16, 24, 3, 1);
+                return getGridPositions(itemInputCount, 16, 24, 3, 1);
             case 4:
-                return getItemGridPositions(itemInputCount, 34, 15, 2, 2);
+                return getGridPositions(itemInputCount, 34, 15, 2, 2);
             case 5:
             case 6:
-                return getItemGridPositions(itemInputCount, 16, 15, 3, 2);
+                return getGridPositions(itemInputCount, 16, 15, 3, 2);
             default:
-                return getItemGridPositions(itemInputCount, 16, 6, 3, 3);
+                return getGridPositions(itemInputCount, 16, 6, 3);
         }
     }
 
@@ -116,18 +116,18 @@ public class UIHelper {
             case 0:
                 return Collections.emptyList();
             case 1:
-                return getItemGridPositions(itemOutputCount, 106, 24, 1, 1);
+                return getGridPositions(itemOutputCount, 106, 24, 1, 1);
             case 2:
-                return getItemGridPositions(itemOutputCount, 106, 24, 2, 1);
+                return getGridPositions(itemOutputCount, 106, 24, 2, 1);
             case 3:
-                return getItemGridPositions(itemOutputCount, 106, 24, 3, 1);
+                return getGridPositions(itemOutputCount, 106, 24, 3, 1);
             case 4:
-                return getItemGridPositions(itemOutputCount, 106, 15, 2, 2);
+                return getGridPositions(itemOutputCount, 106, 15, 2, 2);
             case 5:
             case 6:
-                return getItemGridPositions(itemOutputCount, 106, 15, 3, 2);
+                return getGridPositions(itemOutputCount, 106, 15, 3, 2);
             default:
-                return getItemGridPositions(itemOutputCount, 106, 6, 3, 3);
+                return getGridPositions(itemOutputCount, 106, 6, 3);
         }
     }
 
@@ -164,28 +164,36 @@ public class UIHelper {
         return results;
     }
 
-    public static List<Pos2d> getItemGridPositions(
-            int itemCount, int xOrigin, int yOrigin, int xDirMaxCount, int yDirMaxCount) {
+    public static List<Pos2d> getGridPositions(
+            int totalCount, int xOrigin, int yOrigin, int xDirMaxCount, int yDirMaxCount) {
         // 18 pixels to get to a new grid for placing an item tile since they are 16x16 and have 1 pixel buffers
         // around them.
-        int distanceGrid = 18;
-        int xMax = xOrigin + xDirMaxCount * distanceGrid;
+        int distance = 18;
 
         List<Pos2d> results = new ArrayList<>();
-        // Temp variables to keep track of current coordinates to place item at.
-        int xCoord = xOrigin;
-        int yCoord = yOrigin;
-
-        for (int i = 0; i < itemCount; i++) {
-            results.add(new Pos2d(xCoord, yCoord));
-            xCoord += distanceGrid;
-            if (xCoord == xMax) {
-                xCoord = xOrigin;
-                yCoord += distanceGrid;
+        int count = 0;
+        loop:
+        for (int j = 0; j < yDirMaxCount; j++) {
+            for (int i = 0; i < xDirMaxCount; i++) {
+                if (count >= totalCount) break loop;
+                results.add(new Pos2d(xOrigin + i * distance, yOrigin + j * distance));
+                count++;
             }
         }
-
         return results;
+    }
+
+    public static List<Pos2d> getGridPositions(int totalCount, int xOrigin, int yOrigin, int xDirMaxCount) {
+        return getGridPositions(totalCount, xOrigin, yOrigin, xDirMaxCount, 100);
+    }
+
+    /**
+     * @deprecated Renamed to {@link #getGridPositions}
+     */
+    @Deprecated
+    public static List<Pos2d> getItemGridPositions(
+            int itemCount, int xOrigin, int yOrigin, int xDirMaxCount, int yDirMaxCount) {
+        return getGridPositions(itemCount, xOrigin, yOrigin, xDirMaxCount, yDirMaxCount);
     }
 
     private static IDrawable[] getBackgroundsForSlot(

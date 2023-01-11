@@ -2,12 +2,11 @@ package gregtech.common.render.items;
 
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.enums.Textures;
-import java.util.Random;
-
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_RenderUtil;
+import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -47,7 +46,6 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-
         GL11.glDisable(GL11.GL_BLEND);
 
         renderHalo();
@@ -59,22 +57,20 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
                 GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             } else {
                 ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    tOverlay.getMaxU(),
-                    tOverlay.getMinV(),
-                    tOverlay.getMinU(),
-                    tOverlay.getMaxV(),
-                    tOverlay.getIconWidth(),
-                    tOverlay.getIconHeight(),
-                    0.0625F);
+                        Tessellator.instance,
+                        tOverlay.getMaxU(),
+                        tOverlay.getMinV(),
+                        tOverlay.getMinU(),
+                        tOverlay.getMaxV(),
+                        tOverlay.getIconWidth(),
+                        tOverlay.getIconHeight(),
+                        0.0625F);
             }
         }
-
 
         if (tIcon != null) {
             renderRegularItem(type, aStack, tIcon, aFluid == null);
         }
-
     }
 
     private void renderHalo() {
@@ -97,7 +93,7 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-        GL11.glColor4f(20/255.0f, 20/255.0f, 20/255.0f, (float) (haloAlpha >> 24 & 255) / 255.0F);
+        GL11.glColor4f(20 / 255.0f, 20 / 255.0f, 20 / 255.0f, (float) (haloAlpha >> 24 & 255) / 255.0F);
 
         t.startDrawingQuads();
         t.addVertexWithUV(-spread, -spread, 0, halo.getMinU(), halo.getMinV());

@@ -140,6 +140,8 @@ public interface IGregTechTileEntity
 
     float getBlastResistance(byte aSide);
 
+    default void onBlockDestroyed() {}
+
     ArrayList<ItemStack> getDrops();
 
     /** Check if the item at the specific index should be dropped or not

@@ -1247,10 +1247,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             long actualEnergyUsage = tag.getLong("energyUsage");
             if (actualEnergyUsage > 0) {
                 currentTip.add(StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.use", GT_Utility.formatNumbers(actualEnergyUsage)));
+                        "GT5U.waila.energy.use",
+                        GT_Utility.formatNumbers(actualEnergyUsage),
+                        GT_Utility.getColoredTierNameFromVoltage(actualEnergyUsage)));
             } else if (actualEnergyUsage < 0) {
                 currentTip.add(StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.produce", GT_Utility.formatNumbers(-actualEnergyUsage)));
+                        "GT5U.waila.energy.produce",
+                        GT_Utility.formatNumbers(-actualEnergyUsage),
+                        GT_Utility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
             }
         }
         currentTip.add(
@@ -1273,7 +1277,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             tag.setBoolean("isActive", tileEntity.isActive());
-            if (tileEntity.isActive()) tag.setLong("energyUsage", getActualEnergyUsage());
+            if (tileEntity.isActive()) {
+                if (mEUt < 0) tag.setLong("energyUsage", getActualEnergyUsage());
+                else tag.setLong("energyUsage", (long) -mEUt * mEfficiency / 10000);
+            }
         }
     }
 

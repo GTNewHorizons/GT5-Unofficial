@@ -375,14 +375,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                 8);
         GT_Values.RA.addMixerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bismuth, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Brass, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Brass, 4L),
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Utility.getIntegratedCircuit(1),
                 GT_Values.NF,
                 GT_Values.NF,
-                GT_OreDictUnificator.getDust(Materials.BismuthBronze, 2L * OrePrefixes.dust.mMaterialAmount),
+                GT_OreDictUnificator.getDust(Materials.BismuthBronze, 5L * OrePrefixes.dust.mMaterialAmount),
                 (int) (500L * OrePrefixes.dust.mMaterialAmount / 3628800L),
                 8);
         GT_Values.RA.addMixerRecipe(
@@ -449,8 +449,8 @@ public class GT_MachineRecipeLoader implements Runnable {
                 (int) (1200L * OrePrefixes.dust.mMaterialAmount / 3628800L),
                 480);
         GT_Values.RA.addMixerRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 31L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 4L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 19L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 16L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 5L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BlackSteel, 64L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BlackSteel, 16L),
@@ -5264,6 +5264,27 @@ public class GT_MachineRecipeLoader implements Runnable {
                 30,
                 false);
         GT_Values.RA.addDistilleryRecipe(
+                GT_Utility.getIntegratedCircuit(24),
+                Materials.OilLight.getFluid(120L),
+                Materials.Lubricant.getFluid(30L),
+                160,
+                30,
+                false);
+        GT_Values.RA.addDistilleryRecipe(
+                GT_Utility.getIntegratedCircuit(24),
+                Materials.OilMedium.getFluid(120L),
+                Materials.Lubricant.getFluid(60L),
+                160,
+                30,
+                false);
+        GT_Values.RA.addDistilleryRecipe(
+                GT_Utility.getIntegratedCircuit(24),
+                Materials.OilHeavy.getFluid(120L),
+                Materials.Lubricant.getFluid(90L),
+                160,
+                30,
+                false);
+        GT_Values.RA.addDistilleryRecipe(
                 GT_Utility.getIntegratedCircuit(1),
                 Materials.Biomass.getFluid(40L),
                 Materials.Ethanol.getFluid(12L),
@@ -5373,6 +5394,72 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
                 FluidRegistry.getFluid("oil"),
                 FluidRegistry.getFluid("lubricant"),
+                false);
+        GT_Values.RA.addBrewingRecipeCustom(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
+                FluidRegistry.getFluidStack("liquid_light_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 500),
+                128,
+                4,
+                false);
+
+        GT_Values.RA.addBrewingRecipeCustom(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 1L),
+                FluidRegistry.getFluidStack("liquid_light_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 500),
+                128,
+                4,
+                false);
+        GT_Values.RA.addBrewingRecipeCustom(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                FluidRegistry.getFluidStack("liquid_light_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 500),
+                128,
+                4,
+                false);
+        GT_Values.RA.addBrewingRecipeCustom(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
+                FluidRegistry.getFluidStack("liquid_medium_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                128,
+                4,
+                false);
+
+        GT_Values.RA.addBrewingRecipeCustom(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 1L),
+                FluidRegistry.getFluidStack("liquid_medium_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                128,
+                4,
+                false);
+        GT_Values.RA.addBrewingRecipeCustom(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                FluidRegistry.getFluidStack("liquid_medium_oil", 750),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                128,
+                4,
+                false);
+        GT_Values.RA.addBrewingRecipeCustom(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
+                FluidRegistry.getFluidStack("liquid_heavy_oil", 500),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                64,
+                4,
+                false);
+
+        GT_Values.RA.addBrewingRecipeCustom(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 1L),
+                FluidRegistry.getFluidStack("liquid_heavy_oil", 500),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                64,
+                4,
+                false);
+        GT_Values.RA.addBrewingRecipeCustom(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                FluidRegistry.getFluidStack("liquid_heavy_oil", 500),
+                FluidRegistry.getFluidStack("lubricant", 750),
+                64,
+                4,
                 false);
         GT_Values.RA.addBrewingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Talc, 1L),
@@ -7044,18 +7131,21 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addDistillationTowerRecipe(
                 Materials.Creosote.getFluid(1000L),
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
                 new FluidStack[] {Materials.Lubricant.getFluid(500L)},
                 null,
                 400,
                 120);
         GT_Values.RA.addDistillationTowerRecipe(
                 Materials.SeedOil.getFluid(1400L),
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
                 new FluidStack[] {Materials.Lubricant.getFluid(500L)},
                 null,
                 400,
                 120);
         GT_Values.RA.addDistillationTowerRecipe(
                 Materials.FishOil.getFluid(1200L),
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
                 new FluidStack[] {Materials.Lubricant.getFluid(500L)},
                 null,
                 400,
@@ -7071,6 +7161,27 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new FluidStack[] {GT_ModHandler.getDistilledWater(1000L)},
                 null,
                 32,
+                120);
+        GT_Values.RA.addDistillationTowerRecipe(
+                Materials.OilLight.getFluid(1000L),
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
+                new FluidStack[] {Materials.Lubricant.getFluid(250L)},
+                null,
+                400,
+                120);
+        GT_Values.RA.addDistillationTowerRecipe(
+                Materials.OilMedium.getFluid(1000L),
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
+                new FluidStack[] {Materials.Lubricant.getFluid(500L)},
+                null,
+                400,
+                120);
+        GT_Values.RA.addDistillationTowerRecipe(
+                Materials.OilHeavy.getFluid(1000L),
+                new ItemStack[] {GT_Utility.getIntegratedCircuit(2)},
+                new FluidStack[] {Materials.Lubricant.getFluid(750L)},
+                null,
+                400,
                 120);
 
         if (!GregTech_API.mIC2Classic) {
@@ -7856,6 +7967,12 @@ public class GT_MachineRecipeLoader implements Runnable {
                 null,
                 21,
                 4);
+        GT_Values.RA.addPulveriserRecipe(
+                new ItemStack(Items.reeds, 1),
+                new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L)},
+                null,
+                50,
+                2);
 
         // reactor parts vacuum
         // reactor heat switch
@@ -11163,6 +11280,14 @@ public class GT_MachineRecipeLoader implements Runnable {
                 1000,
                 60);
 
+        RA.addMixerRecipe(
+                new ItemStack[] {ItemList.IC2_Spray_WeedEx.get(1)},
+                new FluidStack[] {MaterialsKevlar.NaphthenicAcid.getFluid(10)},
+                new ItemStack[] {},
+                new FluidStack[] {Materials.WeedEX9000.getFluid(750)},
+                100,
+                100);
+
         this.addRecipesMay2017OilRefining();
         this.addPyrometallurgicalRecipes();
         this.addPolybenzimidazoleRecipes();
@@ -11209,15 +11334,21 @@ public class GT_MachineRecipeLoader implements Runnable {
                     900,
                     1920);
             // C6H6 + HNO3 =H2SO4= C6H5NO2 + H2O
-            GT_Values.RA.addChemicalRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitrationMixture, 10),
-                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Benzene, 5),
-                    Materials.Water.getFluid(10000),
-                    Materials.DilutedSulfuricAcid.getFluid(5000),
-                    GT_ModHandler.getModItem("miscutils", "nitrobenzene", 5L),
-                    ItemList.Cell_Empty.get(10L),
-                    200,
-                    1920);
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
+                    new FluidStack[] {
+                        Materials.Benzene.getFluid(5000),
+                        Materials.SulfuricAcid.getFluid(3000),
+                        Materials.NitricAcid.getFluid(5000),
+                        GT_ModHandler.getDistilledWater(10000)
+                    },
+                    new FluidStack[] {
+                        new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 5000),
+                        Materials.DilutedSulfuricAcid.getFluid(3000)
+                    },
+                    null,
+                    8,
+                    122880);
             // C13H14N2(HCl) + 2COCl2 = C15H10N2O2(5HCl)
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[] {GT_Utility.getIntegratedCircuit(1)},
@@ -12010,7 +12141,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         // C8H10 + 6O =CoC22H14O4= C8H6O4 + 2H2O
         GT_Values.RA.addChemicalRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.IVDimethylbenzene, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIINaphthenate, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIINaphthenate, 41L),
                 Materials.Oxygen.getGas(6000L),
                 Materials.Water.getFluid(2000L),
                 GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.TerephthalicAcid, 1L),
@@ -12166,13 +12297,13 @@ public class GT_MachineRecipeLoader implements Runnable {
                 4000,
                 120);
 
-        GT_Values.RA.addChemicalRecipe(
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
                 MaterialsKevlar.CobaltIIHydroxide.getDust(5),
                 MaterialsKevlar.NaphthenicAcid.getCells(1),
                 GT_Values.NF,
                 GT_Values.NF,
-                MaterialsKevlar.CobaltIINaphthenate.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L),
+                MaterialsKevlar.CobaltIINaphthenate.getDust(41),
+                ItemList.Cell_Empty.get(1L),
                 100,
                 480);
         GT_Values.RA.addChemicalRecipe(
@@ -12180,32 +12311,73 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_Utility.getIntegratedCircuit(1),
                 MaterialsKevlar.NaphthenicAcid.getFluid(1000L),
                 GT_Values.NF,
-                MaterialsKevlar.CobaltIINaphthenate.getDust(1),
+                MaterialsKevlar.CobaltIINaphthenate.getDust(41),
+                200,
+                480);
+
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                MaterialsKevlar.CobaltIIAcetate.getDust(15),
+                MaterialsKevlar.NaphthenicAcid.getCells(1),
+                GT_Values.NF,
+                Materials.AceticAcid.getFluid(1500L),
+                MaterialsKevlar.CobaltIINaphthenate.getDust(41),
+                ItemList.Cell_Empty.get(1L),
+                100,
+                480);
+        GT_Values.RA.addChemicalRecipe(
+                MaterialsKevlar.CobaltIIAcetate.getDust(15),
+                GT_Utility.getIntegratedCircuit(1),
+                MaterialsKevlar.NaphthenicAcid.getFluid(1000L),
+                Materials.AceticAcid.getFluid(1500L),
+                MaterialsKevlar.CobaltIINaphthenate.getDust(41),
                 100,
                 480);
 
-        GT_Values.RA.addChemicalRecipe(
-                MaterialsKevlar.CobaltIIAcetate.getDust(15),
-                MaterialsKevlar.NaphthenicAcid.getCells(1),
-                GT_Values.NF,
-                GT_Values.NF,
-                MaterialsKevlar.CobaltIINaphthenate.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L),
-                100,
-                480);
-        GT_Values.RA.addChemicalRecipe(
-                MaterialsKevlar.CobaltIIAcetate.getDust(15),
-                GT_Utility.getIntegratedCircuit(1),
-                MaterialsKevlar.NaphthenicAcid.getFluid(1000L),
-                GT_Values.NF,
-                MaterialsKevlar.CobaltIINaphthenate.getDust(1),
-                100,
-                480);
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] {
+                    GT_Utility.getIntegratedCircuit(9),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIHydroxide, 45L)
+                },
+                new FluidStack[] {MaterialsKevlar.NaphthenicAcid.getFluid(10000L)},
+                new FluidStack[] {
+                    GT_Values.NF,
+                },
+                new ItemStack[] {
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(49),
+                },
+                200,
+                1920);
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] {
+                    GT_Utility.getIntegratedCircuit(9),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 64L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIIAcetate, 7L)
+                },
+                new FluidStack[] {MaterialsKevlar.NaphthenicAcid.getFluid(10000L)},
+                new FluidStack[] {
+                    Materials.AceticAcid.getFluid(15000L),
+                },
+                new ItemStack[] {
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(64),
+                    MaterialsKevlar.CobaltIINaphthenate.getDust(49),
+                },
+                200,
+                1920);
         // Co + 2HNO3 = Co(NO3)2 + 2H
         GT_Values.RA.addChemicalRecipe(
                 Materials.Cobalt.getDust(1),
                 Materials.NitricAcid.getCells(2),
-                Materials.Water.getFluid(6000L),
+                GT_Values.NF,
                 GT_Values.NF,
                 MaterialsKevlar.CobaltIINitrate.getDust(9),
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2L),
@@ -12226,7 +12398,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 Materials.CobaltOxide.getDust(2),
                 Materials.AceticAcid.getCells(2),
                 GT_Values.NF,
-                Materials.Hydrogen.getGas(2000L),
+                Materials.Water.getFluid(2000L),
                 MaterialsKevlar.CobaltIIAcetate.getDust(15),
                 ItemList.Cell_Empty.get(2L),
                 100,
@@ -19353,6 +19525,43 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new ItemStack[] {Materials.Potassiumdichromate.getDust(11)},
                 100,
                 480);
+
+        // Potassium Dichromate shortcut
+        // 2 Cr + 6O + 10 Saltpeter/Potassium Dichromate = 10 K2Cr2O7 + 2NO + 3O
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] {
+                    Materials.PotassiumNitrade.getDust(64),
+                    Materials.PotassiumNitrade.getDust(64),
+                    Materials.PotassiumNitrade.getDust(32),
+                    Materials.Chrome.getDust(2 * 16),
+                    GT_Utility.getIntegratedCircuit(11)
+                },
+                new FluidStack[] {Materials.Oxygen.getGas(6000 * 16)},
+                new FluidStack[] {Materials.NitricOxide.getGas(2000 * 16), Materials.Oxygen.getGas(3000 * 16)},
+                new ItemStack[] {
+                    Materials.Potassiumdichromate.getDust(64),
+                    Materials.Potassiumdichromate.getDust(64),
+                    Materials.Potassiumdichromate.getDust(48)
+                },
+                2560,
+                (int) GT_Values.VP[7]);
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[] {
+                    Materials.Saltpeter.getDust(64),
+                    Materials.Saltpeter.getDust(64),
+                    Materials.Saltpeter.getDust(32),
+                    Materials.Chrome.getDust(2 * 16),
+                    GT_Utility.getIntegratedCircuit(11)
+                },
+                new FluidStack[] {Materials.Oxygen.getGas(6000 * 16)},
+                new FluidStack[] {Materials.NitricOxide.getGas(2000 * 16), Materials.Oxygen.getGas(3000 * 16)},
+                new ItemStack[] {
+                    Materials.Potassiumdichromate.getDust(64),
+                    Materials.Potassiumdichromate.getDust(64),
+                    Materials.Potassiumdichromate.getDust(48)
+                },
+                2560,
+                (int) GT_Values.VP[7]);
 
         // Nitrochlorobenzene
         // C6H5Cl + HNO3 = C6H4ClNO2 + H2O
