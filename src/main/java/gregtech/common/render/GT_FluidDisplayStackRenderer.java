@@ -5,10 +5,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.items.GT_FluidDisplayItem;
+import java.util.ArrayList;
+import java.util.Collections;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -18,10 +17,6 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
-
-import java.util.ArrayList;
-import java.util.Collections;
-
 
 @SideOnly(Side.CLIENT)
 public class GT_FluidDisplayStackRenderer implements IItemRenderer {
@@ -42,7 +37,8 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
         return false;
     }
 
-    private static final ArrayList<Materials> BLACKLISTED_FLUID_RENDERERS = new ArrayList<>(Collections.singleton(Materials.TranscendentMetal));
+    private static final ArrayList<Materials> BLACKLISTED_FLUID_RENDERERS =
+            new ArrayList<>(Collections.singleton(Materials.TranscendentMetal));
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
@@ -57,10 +53,12 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
         // Handle special rendering of fluids like infinity or universium.
         try {
             Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
-            if ((associatedFluidMaterial.renderer != null) && (!BLACKLISTED_FLUID_RENDERERS.contains(associatedFluidMaterial))) {
+            if ((associatedFluidMaterial.renderer != null)
+                    && (!BLACKLISTED_FLUID_RENDERERS.contains(associatedFluidMaterial))) {
                 associatedFluidMaterial.renderer.renderFluidSpecial(type, item, icon);
             }
-        } catch(Exception ignored) { }
+        } catch (Exception ignored) {
+        }
         // End special handling.
 
         Tessellator tess = Tessellator.instance;

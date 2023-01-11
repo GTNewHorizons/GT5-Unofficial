@@ -1949,7 +1949,8 @@ public class GT_Utility {
         tNBT.setBoolean("mHideStackSize", aHideStackSize);
         try {
             tNBT.setString("mFluidMaterialName", FLUID_MAP.get(aFluid.getFluid()).mName);
-        } catch(Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         rStack.setTagCompound(tNBT);
         return rStack;
     }

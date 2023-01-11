@@ -34,10 +34,10 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         return helper == ItemRendererHelper.ENTITY_ROTATION || helper == ItemRendererHelper.ENTITY_BOBBING;
     }
 
-        @Override
-        public void renderFluidSpecial(ItemRenderType type, ItemStack aStack, IIcon icon, Object... data) {
+    @Override
+    public void renderFluidSpecial(ItemRenderType type, ItemStack aStack, IIcon icon, Object... data) {
         magicRenderMethod(type, aStack, data);
-        }
+    }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
