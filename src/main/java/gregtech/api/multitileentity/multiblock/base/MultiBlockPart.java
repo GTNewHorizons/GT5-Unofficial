@@ -90,6 +90,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         mTarget = aTarget;
         mTargetPos = (mTarget == null ? null : mTarget.getCoords());
         mAllowedModes = aAllowedModes;
+        if (mTarget != null) registerCovers(mTarget);
     }
 
     @Override
@@ -117,6 +118,8 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
                 final TileEntity te = worldObj.getTileEntity(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ);
                 if (te instanceof IMultiBlockController) {
                     mTarget = (IMultiBlockController) te;
+                    // Register our covers with the controller
+                    registerCovers(mTarget);
                 } else {
                     mTargetPos = null;
                 }
@@ -125,6 +128,45 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         if (aCheckValidity) {
             return mTarget != null && mTarget.checkStructure(false) ? mTarget : null;
         } else return mTarget;
+    }
+
+    public void registerCovers(IMultiBlockController controller) {
+        for (byte i : ALL_VALID_SIDES) {
+            if (getCoverIDAtSide(i) != 0) {
+                // TODO: Filter on tickable covers
+                controller.registerCoveredPartOnSide(i, this);
+            }
+        }
+    }
+
+    @Override
+    public void setCoverItemAtSide(byte aSide, ItemStack aCover) {
+        super.setCoverItemAtSide(aSide, aCover);
+        // TODO: Filter on tickable covers
+        final IMultiBlockController tTarget = getTarget(true);
+        if (tTarget != null) {
+            tTarget.registerCoveredPartOnSide(aSide, this);
+        }
+    }
+
+    public void unregisterCovers(IMultiBlockController controller) {
+        for (byte i : ALL_VALID_SIDES) {
+            if (getCoverIDAtSide(i) != 0) {
+                // TODO: Filter on tickable covers
+                controller.unregisterCoveredPartOnSide(i, this);
+            }
+        }
+    }
+
+    @Override
+    public boolean dropCover(byte aSide, byte aDroppedSide, boolean aForced) {
+        final boolean res = super.dropCover(aSide, aDroppedSide, aForced);
+        // TODO: Filter on tickable covers
+        final IMultiBlockController tTarget = getTarget(true);
+        if (tTarget != null) {
+            tTarget.unregisterCoveredPartOnSide(aSide, this);
+        }
+        return res;
     }
 
     @Override
@@ -200,7 +242,10 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public boolean breakBlock() {
         final IMultiBlockController tTarget = getTarget(false);
-        if (tTarget != null) tTarget.onStructureChange();
+        if (tTarget != null) {
+            unregisterCovers(tTarget);
+            tTarget.onStructureChange();
+        }
         return false;
     }
 

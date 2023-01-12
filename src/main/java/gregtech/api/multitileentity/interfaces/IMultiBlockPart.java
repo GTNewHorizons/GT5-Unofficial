@@ -6,4 +6,6 @@ public interface IMultiBlockPart extends IMultiTileEntity {
     ChunkCoordinates getTargetPos();
 
     void setTargetPos(ChunkCoordinates aTargetPos);
+
+    boolean tickCoverAtSide(byte aSide, long aTickTimer);
 }
