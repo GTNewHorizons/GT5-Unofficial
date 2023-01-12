@@ -717,8 +717,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             ItemStack[] aItemInputs, FluidStack[] aFluidInputs, GT_Recipe.GT_Recipe_Map aRecipeMap, ItemStack aStack) {
         int hatches = getExoticAndNormalEnergyHatchList().size();
         long tVoltage = getMaxInputVoltage() / hatches;
-        // Need to check weather the hatches used are TT ones or not as TT hatches can request 20% more amps
-        long tAmps = (long) Math.floor(mExoticEnergyHatches.isEmpty() ? getMaxInputAmps() : getMaxInputAmps() * 0.80);
+        long tAmps = getMaxInputAmps();
         long tTotalEUt = tVoltage * tAmps;
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
         GT_Recipe tRecipe = aRecipeMap

@@ -363,9 +363,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         if (tItems.length <= 0 && tFluids.length <= 0) return false;
         long tVoltage = this.getMaxInputVoltage()
                 / this.getExoticAndNormalEnergyHatchList().size();
-        long tAmps = (long) (GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(this.getExoticEnergyHatches()) * 0.8D
-                + GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(
-                        this.mEnergyHatches)); // Use 80% of the available amps for exotic hatches to get working amps
+        long tAmps = this.getMaxInputAmps();
         long tTotalEU = tVoltage * tAmps;
 
         GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, tTotalEU, tFluids, tItems);
@@ -537,8 +535,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
                     + GT_Utility.formatNumbers(
                             GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
                     + EnumChatFormatting.RESET + " EU/t(*" + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(
-                            GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList()))
+                    + GT_Utility.formatNumbers(this.getMaxInputAmps())
                     + EnumChatFormatting.RESET + "A) " + StatCollector.translateToLocal("GT5U.machines.tier")
                     + ": " + EnumChatFormatting.YELLOW
                     + GT_Values.VN[
