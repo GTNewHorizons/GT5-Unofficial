@@ -329,6 +329,19 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
             return false;
         }
 
+        if (mUseMultiparallelMode) {
+            int extraParallelRecipes = 0;
+            for (;
+                    extraParallelRecipes + parallelRecipes < aMaxParallelRecipes * MAX_BATCH_SIZE;
+                    extraParallelRecipes++) {
+                if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
+                    break;
+                }
+            }
+            batchMultiplier = 1.0f + (float) extraParallelRecipes / aMaxParallelRecipes;
+            parallelRecipes += extraParallelRecipes;
+        }
+
         // -- Try not to fail after this point - inputs have already been consumed! --
 
         // Convert speed bonus to duration multiplier
@@ -366,6 +379,10 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
         }
 
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+
+        if (mUseMultiparallelMode) {
+            mMaxProgresstime = (int) Math.ceil(mMaxProgresstime * batchMultiplier);
+        }
 
         // Collect fluid outputs
         FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
