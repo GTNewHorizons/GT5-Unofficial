@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.NBT;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -28,15 +29,19 @@ import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockFluidHandler;
 import gregtech.api.multitileentity.interfaces.IMultiBlockInventory;
+import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -76,6 +81,16 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     private boolean mWorks = true, mWorkUpdate = false, mWasShutdown = false, mActive = false;
     private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
     private IAlignmentLimits mLimits = getInitialAlignmentLimits();
+
+    // A list of sides
+    //   Each side has a list of parts that have a cover that need to be ticked
+    protected List<LinkedList<WeakReference<IMultiBlockPart>>> registeredCoveredParts = Arrays.asList(
+            new LinkedList<>(),
+            new LinkedList<>(),
+            new LinkedList<>(),
+            new LinkedList<>(),
+            new LinkedList<>(),
+            new LinkedList<>());
 
     /** Registry ID of the required casing */
     public abstract short getCasingRegistryID();
@@ -162,12 +177,6 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     protected GT_Multiblock_Tooltip_Builder getTooltip() {
         return createTooltip();
-        //        final int tooltipId = getToolTipID();
-        //        final GT_Multiblock_Tooltip_Builder tt = tooltip.get(tooltipId);
-        //        if (tt == null) {
-        //            return tooltip.computeIfAbsent(tooltipId, k -> createTooltip());
-        //        }
-        //        return tt;
     }
 
     @Override
@@ -280,8 +289,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             return super.onWrenchRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
         if (aPlayer.isSneaking()) {
             // we won't be allowing horizontal flips, as it can be perfectly emulated by rotating twice and flipping
-            // horizontally
-            // allowing an extra round of flip make it hard to draw meaningful flip markers in GT_Proxy#drawGrid
+            // horizontally allowing an extra round of flip make it hard to draw meaningful flip markers in
+            // GT_Proxy#drawGrid
             toolSetFlip(getFlip().isHorizontallyFlipped() ? Flip.NONE : Flip.HORIZONTAL);
         } else {
             toolSetRotation(null);
@@ -290,10 +299,57 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
+    public void registerCoveredPartOnSide(final int aSide, IMultiBlockPart part) {
+        if (aSide < 0 || aSide >= 6) return;
+
+        final LinkedList<WeakReference<IMultiBlockPart>> registeredCovers = registeredCoveredParts.get(aSide);
+        // TODO: Make sure that we're not already registered on this side
+        registeredCovers.add(new WeakReference<>(part));
+    }
+
+    @Override
+    public void unregisterCoveredPartOnSide(final int aSide, IMultiBlockPart aPart) {
+        if (aSide < 0 || aSide >= 6) return;
+
+        final LinkedList<WeakReference<IMultiBlockPart>> coveredParts = registeredCoveredParts.get(aSide);
+        final Iterator<WeakReference<IMultiBlockPart>> it = coveredParts.iterator();
+        while (it.hasNext()) {
+            final IMultiBlockPart part = (it.next()).get();
+            if (part == null || part == aPart) it.remove();
+        }
+    }
+
+    @Override
     public void onFirstTick(boolean aIsServerSide) {
         super.onFirstTick(aIsServerSide);
         if (aIsServerSide) checkStructure(true);
         else StructureLibAPI.queryAlignment(this);
+    }
+
+    private boolean tickCovers() {
+        for (byte i : ALL_VALID_SIDES) {
+            // TODO: Tick controller covers, if any
+            final LinkedList<WeakReference<IMultiBlockPart>> coveredParts = this.registeredCoveredParts.get(i);
+            final Iterator<WeakReference<IMultiBlockPart>> it = coveredParts.iterator();
+            while (it.hasNext()) {
+                final IMultiBlockPart part = (it.next()).get();
+                if (part == null) {
+                    it.remove();
+                    continue;
+                }
+                if (!part.tickCoverAtSide(i, mTickTimer)) it.remove();
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onTick(long aTimer, boolean isServerSide) {
+        // Tick all covers!
+        if (!tickCovers()) {
+            return;
+        }
     }
 
     @Override
@@ -763,11 +819,11 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         if (multiBlockInventory == null) return null;
 
         final String invName = aPart.getLockedInventory();
-        if (invName == null || !invName.isEmpty()) return new ImmutablePair<>(multiBlockInventory.get(invName), aSlot);
+        if (invName != null && !invName.isEmpty()) return new ImmutablePair<>(multiBlockInventory.get(invName), aSlot);
 
         int start = 0;
         for (IItemHandlerModifiable inv : multiBlockInventory.values()) {
-            if (aSlot > start && aSlot < start + inv.getSlots()) {
+            if (aSlot >= start && aSlot < start + inv.getSlots()) {
                 return new ImmutablePair<>(inv, aSlot - start);
             }
             start += inv.getSlots();
@@ -851,7 +907,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
         final int tSlot = tInv.getRight();
         final IItemHandlerModifiable inv = tInv.getLeft();
-        ;
+        if (inv == null) return null;
 
         return inv.getStackInSlot(tSlot);
     }
@@ -862,10 +918,10 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         ItemStack rStack = GT_Utility.copyOrNull(tStack);
         if (tStack != null) {
             if (tStack.stackSize <= aDecrement) {
-                setInventorySlotContents(aSlot, null);
+                setInventorySlotContents(aPart, aSlot, null);
             } else {
                 rStack = tStack.splitStack(aDecrement);
-                if (tStack.stackSize == 0) setInventorySlotContents(aSlot, null);
+                if (tStack.stackSize == 0) setInventorySlotContents(aPart, aSlot, null);
             }
         }
         return rStack;

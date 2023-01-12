@@ -138,19 +138,28 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected boolean doCoverThings() {
         for (byte i : ALL_VALID_SIDES) {
-            if (getCoverIDAtSide(i) != 0) {
-                final GT_CoverBehaviorBase<?> tCover = getCoverBehaviorAtSideNew(i);
-                final int tCoverTickRate = tCover.getTickRate(i, getCoverIDAtSide(i), mCoverData[i], this);
-                if (tCoverTickRate > 0 && mTickTimer % tCoverTickRate == 0) {
-                    final byte tRedstone =
-                            tCover.isRedstoneSensitive(i, getCoverIDAtSide(i), mCoverData[i], this, mTickTimer)
-                                    ? getInputRedstoneSignal(i)
-                                    : 0;
-                    mCoverData[i] =
-                            tCover.doCoverThings(i, tRedstone, getCoverIDAtSide(i), mCoverData[i], this, mTickTimer);
-                    if (!isStillValid()) return false;
-                }
-            }
+            if (!tickCoverAtSide(i)) return false;
+        }
+        return true;
+    }
+
+    public boolean tickCoverAtSide(byte aSide) {
+        return tickCoverAtSide(aSide, mTickTimer);
+    }
+
+    public boolean tickCoverAtSide(byte aSide, long aTickTimer) {
+        final int coverId = getCoverIDAtSide(aSide);
+        if (coverId == 0) return false;
+        final ISerializableObject coverData = mCoverData[aSide];
+        final GT_CoverBehaviorBase<?> tCover = getCoverBehaviorAtSideNew(aSide);
+        final int tCoverTickRate = tCover.getTickRate(aSide, coverId, coverData, this);
+
+        if (tCoverTickRate > 0 && mTickTimer % tCoverTickRate == 0) {
+            final byte tRedstone = tCover.isRedstoneSensitive(aSide, coverId, coverData, this, aTickTimer)
+                    ? getInputRedstoneSignal(aSide)
+                    : 0;
+            mCoverData[aSide] = tCover.doCoverThings(aSide, tRedstone, coverId, coverData, this, aTickTimer);
+            if (!isStillValid()) return false;
         }
         return true;
     }
