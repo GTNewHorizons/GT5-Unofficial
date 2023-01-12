@@ -106,6 +106,14 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
         return 2;
     }
 
+    /** Get the maximum amount of amperes to work with, which excludes the additional amps in for loss
+     *
+     * @return Working amps
+     */
+    public long maxWorkingAmperesIn() {
+        return maxAmperesIn();
+    }
+
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_Energy(mName, mTier, mDescriptionArray, mTextures);

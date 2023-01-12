@@ -4,6 +4,7 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Mult
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -70,6 +71,19 @@ public class GT_ExoticEnergyInputHelper {
         for (GT_MetaTileEntity_Hatch tHatch : hatches)
             if (isValidMetaTileEntity(tHatch))
                 rAmp += tHatch.getBaseMetaTileEntity().getInputAmperage();
+        return rAmp;
+    }
+
+    public static long getMaxWorkingInputAmpsMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
+        long rAmp = 0;
+        for (GT_MetaTileEntity_Hatch tHatch : hatches)
+            if (isValidMetaTileEntity(tHatch)) {
+                if (tHatch instanceof GT_MetaTileEntity_Hatch_Energy) {
+                    rAmp += ((GT_MetaTileEntity_Hatch_Energy) tHatch).maxWorkingAmperesIn();
+                } else {
+                    rAmp += tHatch.getBaseMetaTileEntity().getInputAmperage();
+                }
+            }
         return rAmp;
     }
 
