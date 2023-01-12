@@ -169,6 +169,9 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         return this.mTotalRunTime;
     }
 
+    protected float batchMultiplier = 1.0f;
+    protected static final int MAX_BATCH_SIZE = 128;
+
     public abstract String getMachineType();
 
     public String getMachineTooltip() {
@@ -967,12 +970,26 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
             return false;
         }
 
+        if (mUseMultiparallelMode) {
+            int extraParallelRecipes = 0;
+            for (;
+                    extraParallelRecipes + parallelRecipes < aMaxParallelRecipes * MAX_BATCH_SIZE;
+                    extraParallelRecipes++) {
+                if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
+                    break;
+                }
+            }
+            batchMultiplier = 1.0f + (float) extraParallelRecipes / aMaxParallelRecipes;
+            parallelRecipes += extraParallelRecipes;
+        }
+
         // -- Try not to fail after this point - inputs have already been consumed! --
 
         // Convert speed bonus to duration multiplier
         // e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
         aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
         float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
+
         this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
 
         this.lEUt = (long) Math.ceil(tTotalEUt);
@@ -1000,6 +1017,10 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         }
 
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+
+        if (mUseMultiparallelMode) {
+            mMaxProgresstime = (int) Math.ceil(mMaxProgresstime * batchMultiplier);
+        }
 
         // Collect fluid outputs
         FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
@@ -2146,6 +2167,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setLong("mTotalRunTime", this.mTotalRunTime);
         aNBT.setBoolean("mVoidExcess", this.mVoidExcess);
+        aNBT.setBoolean("mUseMultiparallelMode", mUseMultiparallelMode);
         super.saveNBTData(aNBT);
     }
 
@@ -2153,6 +2175,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     public void loadNBTData(NBTTagCompound aNBT) {
         this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
         this.mVoidExcess = aNBT.getBoolean("mVoidExcess");
+        this.mUseMultiparallelMode = aNBT.getBoolean("mUseMultiparallelMode");
         super.loadNBTData(aNBT);
     }
 
@@ -2450,6 +2473,23 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         aPlayer.addChatMessage(new ChatComponentTranslation(
                 mVoidExcess ? "interaction.voidexcess.enabled" : "interaction.voidexcess.disabled"));
         return true;
+    }
+
+    protected boolean mUseMultiparallelMode = false;
+
+    @Override
+    public boolean onWireCutterRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aPlayer.isSneaking()) {
+            mUseMultiparallelMode = !mUseMultiparallelMode;
+            if (mUseMultiparallelMode) {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
+        }
+        return false;
     }
 
     public boolean isValidBlockForStructure(

@@ -445,14 +445,27 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
             return false;
         }
 
+        if (mUseMultiparallelMode) {
+            int extraParallelRecipes = 0;
+            for (;
+                    extraParallelRecipes + parallelRecipes < aMaxParallelRecipes * MAX_BATCH_SIZE;
+                    extraParallelRecipes++) {
+                if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
+                    break;
+                }
+            }
+            batchMultiplier = 1.0f + (float) extraParallelRecipes / aMaxParallelRecipes;
+            parallelRecipes += extraParallelRecipes;
+        }
+
         // -- Try not to fail after this point - inputs have already been consumed! --
 
         // Convert speed bonus to duration multiplier
         // e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
         aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
         float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
-        this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
 
+        this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
         this.lEUt = (long) Math.ceil(tTotalEUt);
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -474,6 +487,10 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         }
 
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+
+        if (mUseMultiparallelMode) {
+            mMaxProgresstime = (int) Math.ceil(mMaxProgresstime * batchMultiplier);
+        }
 
         // Collect fluid outputs
         FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
