@@ -222,3 +222,6 @@ achievement.gt.blockmachines.gtpp.multimachine.flotationcell=Flotation Cell
 achievement.gt.blockmachines.gtpp.multimachine.flotationcell.desc=[AL] Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.gtpp.multimachine.isamill=IsaMill
 achievement.gt.blockmachines.gtpp.multimachine.isamill.desc=[AL] Pickup this item to see the recipe in NEI
+
+//2023-1-13
+achievement.gt.blockmachines.industrialalloysmelter.controller.tier.mega=Fast Pikachu-Alloy at last
