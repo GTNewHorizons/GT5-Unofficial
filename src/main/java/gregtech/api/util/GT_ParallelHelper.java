@@ -2,19 +2,13 @@ package gregtech.api.util;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockController;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -29,6 +23,7 @@ public class GT_ParallelHelper {
     private FluidStack[] mFluidInputs, mFluidOutputs;
     private boolean mVoidProtection, mConsume, mBatchMode, mBuilt;
     private float mDurationMultiplier;
+
     public GT_ParallelHelper() {}
 
     /**
@@ -136,7 +131,7 @@ public class GT_ParallelHelper {
             if (!tMEOutputBus || !tMEOutputHatch) {
                 int tMaxParallelsFluids = !tMEOutputHatch ? calculateMaxParallelsForHatches() : mMaxParallel;
                 int tMaxParallelsItems = !tMEOutputHatch ? calculateMaxParallelsForBusses() : mMaxParallel;
-                tMaxCurrentParallel = Math.min(mMaxParallel, Math.min(tMaxParallelsFluids,  tMaxParallelsItems));
+                tMaxCurrentParallel = Math.min(mMaxParallel, Math.min(tMaxParallelsFluids, tMaxParallelsItems));
             }
         }
 
@@ -158,13 +153,16 @@ public class GT_ParallelHelper {
             mDurationMultiplier = 1.0f + 128.0f / tExtraParallels;
         }
     }
-    private int calculateMaxParallelsForHatches() {
-        //For now we are gonna ignore MuTEs existence as there are no recipes for them
-        if (mRecipe.mFluidOutputs.length > 0 && mMachineMeta != null && mMachineMeta.mOutputHatches.size() >= mRecipe.mFluidOutputs.length) {
 
-        }
+    private int calculateMaxParallelsForHatches() {
+        // For now we are gonna ignore MuTEs existence as there are no recipes for them
+        if (mRecipe.mFluidOutputs.length > 0
+                && mMachineMeta != null
+                && mMachineMeta.mOutputHatches.size() >= mRecipe.mFluidOutputs.length) {}
+
         return 0;
     }
+
     private int calculateMaxParallelsForBusses() {
         // Same thing we are gonna ignore MuTEs existence for now. should be in theory the same later
         Map<ItemStack, Integer> tItemOutputMap = new ItemStackMap<>();
@@ -178,7 +176,7 @@ public class GT_ParallelHelper {
                     continue;
                 }
                 final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-                for (int i = 0; i< tBusInv.getSizeInventory(); i++) {
+                for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
                     ItemStack tBusStack = tBus.getStackInSlot(i);
                     if (tBusStack == null) {
                         tSlotsFree++;
