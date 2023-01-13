@@ -3261,6 +3261,19 @@ public enum OrePrefixes {
         ingot.mNotGeneratedItems.add(Materials.BrickNether);
         ingot.mNotGeneratedItems.add(Materials.WoodSealed);
         ingot.mNotGeneratedItems.add(Materials.Wood);
+
+        plateDouble.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        plateTriple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        plateQuadruple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        plateQuintuple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        cell.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotDouble.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotTriple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotQuadruple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotQuintuple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        turbine.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        dust.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
         nugget.mNotGeneratedItems.add(Materials.Gold);
         plate.mNotGeneratedItems.add(Materials.Paper);

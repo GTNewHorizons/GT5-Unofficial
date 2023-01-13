@@ -232,9 +232,11 @@ public class GT_RecipeRegistrator {
                 || aMaterial == null
                 || aMaterialAmount <= 0
                 || aMaterial.contains(SubTag.NO_SMELTING)
-                || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL))) return;
-        aMaterialAmount /= aStack.stackSize;
+                || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL))
+                || (aMaterial.getProcessingMaterialTierEU() > Tier.IV)) return;
         if (aMaterial == Materials.Naquadah || aMaterial == Materials.NaquadahEnriched) return;
+
+        aMaterialAmount /= aStack.stackSize;
 
         boolean tHide = (aMaterial != Materials.Iron) && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
         if (aAllowAlloySmelter)
@@ -597,12 +599,6 @@ public class GT_RecipeRegistrator {
                                     aItemData.mMaterial.mMaterial + "." + sShapesA[i][0],
                                     true)) {
                                 if (null != (tStack = GT_ModHandler.removeRecipe(tRecipe.shape))) {
-                                    //
-                                    // GT_Log.out.println("###################################################################################");
-                                    //                                    GT_Log.out.println("registerStickStuff used
-                                    // aPlate: "+aPlate);
-                                    //
-                                    // GT_Log.out.println("###################################################################################");
                                     switch (sShapesA[i].length) {
                                         case 2:
                                             GT_ModHandler.addCraftingRecipe(

@@ -267,7 +267,7 @@ public class TextureSet {
         "/toolHeadMallet",
     };
 
-    public boolean is_custom = false;
+    public boolean isCustom = false;
 
     public static final TextureSet SET_NONE = new TextureSet("NONE"),
             SET_DULL = new TextureSet("DULL"),
@@ -330,9 +330,9 @@ public class TextureSet {
         }
     }
 
-    public TextureSet(String aSetName, boolean is_custom) {
+    public TextureSet(String aSetName, boolean isCustom) {
         this("CUSTOM/" + aSetName);
-        this.is_custom = is_custom;
+        this.isCustom = isCustom;
     }
 
     /**
@@ -342,7 +342,7 @@ public class TextureSet {
      */
     private TextureSet(String aSetName, TextureSet origin, boolean overrideBlock, boolean overrideItem) {
         mSetName = "CUSTOM/" + aSetName;
-        this.is_custom = true;
+        this.isCustom = true;
 
         for (int i = 0; i < 128; i++) {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
