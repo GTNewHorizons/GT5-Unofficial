@@ -6530,6 +6530,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_ModHandler.addSmeltingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L));
+        GT_ModHandler.addSmeltingRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 1L),
+            GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.WroughtIron, 1L));
         GT_ModHandler.removeFurnaceSmelting(
                 GT_OreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
         GT_ModHandler.addSmeltingRecipe(
