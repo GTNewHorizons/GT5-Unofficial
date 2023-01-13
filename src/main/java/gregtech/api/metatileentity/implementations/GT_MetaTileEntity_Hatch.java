@@ -142,6 +142,14 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
         mTexturePage = 0;
     }
 
+    /** Get the maximum amount of amperes to work with, which excludes the additional amps in for loss
+     *
+     * @return Working amps
+     */
+    public long maxWorkingAmperesIn() {
+        return maxAmperesIn();
+    }
+
     @Override
     public final byte getUpdateData() {
         return (byte) (actualTexture & 0x7F);

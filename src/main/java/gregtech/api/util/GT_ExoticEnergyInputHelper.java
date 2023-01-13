@@ -73,6 +73,15 @@ public class GT_ExoticEnergyInputHelper {
         return rAmp;
     }
 
+    public static long getMaxWorkingInputAmpsMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
+        long rAmp = 0;
+        for (GT_MetaTileEntity_Hatch tHatch : hatches)
+            if (isValidMetaTileEntity(tHatch)) {
+                rAmp += tHatch.maxWorkingAmperesIn();
+            }
+        return rAmp;
+    }
+
     public static List<Class<? extends GT_MetaTileEntity_Hatch>> getAllClasses() {
         return Collections.unmodifiableList(sExoticEnergyHatchType);
     }
