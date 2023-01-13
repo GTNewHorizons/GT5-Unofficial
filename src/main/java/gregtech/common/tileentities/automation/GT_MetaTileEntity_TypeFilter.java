@@ -1,5 +1,9 @@
 package gregtech.common.tileentities.automation;
 
+import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
+import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
+
 import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -10,37 +14,31 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
 
 public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilter {
     public int mRotationIndex = 0;
     public OrePrefixes mPrefix = OrePrefixes.ore;
 
     public static ImmutableList<OrePrefixes> OREBLOCK_PREFIXES = ImmutableList.of(
-        OrePrefixes.oreBlackgranite,
-        OrePrefixes.oreDense,
-        OrePrefixes.oreEnd,
-        OrePrefixes.oreEndstone,
-        OrePrefixes.oreNether,
-        OrePrefixes.oreNetherrack,
-        OrePrefixes.oreNormal,
-        OrePrefixes.orePoor,
-        OrePrefixes.oreRedgranite,
-        OrePrefixes.oreRich,
-        OrePrefixes.oreSmall,
-        OrePrefixes.oreBasalt,
-        OrePrefixes.oreMarble
-    );
+            OrePrefixes.oreBlackgranite,
+            OrePrefixes.oreDense,
+            OrePrefixes.oreEnd,
+            OrePrefixes.oreEndstone,
+            OrePrefixes.oreNether,
+            OrePrefixes.oreNetherrack,
+            OrePrefixes.oreNormal,
+            OrePrefixes.orePoor,
+            OrePrefixes.oreRedgranite,
+            OrePrefixes.oreRich,
+            OrePrefixes.oreSmall,
+            OrePrefixes.oreBasalt,
+            OrePrefixes.oreMarble);
 
     public GT_MetaTileEntity_TypeFilter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] {
