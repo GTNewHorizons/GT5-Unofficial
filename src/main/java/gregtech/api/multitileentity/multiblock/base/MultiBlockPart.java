@@ -19,6 +19,7 @@ import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -74,6 +75,8 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     protected int mAllowedModes = NOTHING; // BITMASK - Modes allowed for this part
     protected byte mMode = 0; // Mode selected for this part
 
+    protected String mLockedInventory = "";
+
     /**
      * What Part Tier is this part?  All Basic Casings are Tier 1, and will allow:
      *  Energy, Item, Fluid input/output.  Some of the more advanced modes can be set to require a higher tier part.
@@ -83,7 +86,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     }
 
     public String getLockedInventory() {
-        return null;
+        return mLockedInventory.equals("") ? null : mLockedInventory;
     }
 
     public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
@@ -135,6 +138,9 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
             mTargetPos = new ChunkCoordinates(
                     aNBT.getInteger(NBT.TARGET_X), aNBT.getShort(NBT.TARGET_Y), aNBT.getInteger(NBT.TARGET_Z));
         }
+        if (aNBT.hasKey(NBT.LOCKED_INVENTORY)) {
+            mLockedInventory = aNBT.getString(NBT.LOCKED_INVENTORY);
+        }
     }
 
     @Override
@@ -146,6 +152,9 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
             aNBT.setInteger(NBT.TARGET_X, mTargetPos.posX);
             aNBT.setShort(NBT.TARGET_Y, (short) mTargetPos.posY);
             aNBT.setInteger(NBT.TARGET_Z, mTargetPos.posZ);
+        }
+        if (mLockedInventory != null) {
+            aNBT.setString(NBT.LOCKED_INVENTORY, mLockedInventory);
         }
     }
 
@@ -700,6 +709,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
             }
         }
         builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
+        builder.widget(new ButtonWidget());
     }
 
     protected void addFluidInventory(Builder builder, UIBuildContext buildContext) {

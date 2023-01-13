@@ -13,14 +13,30 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.ExpandTab;
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TabButton;
+import com.gtnewhorizons.modularui.common.widget.TabContainer;
+import com.gtnewhorizons.modularui.api.screen.*;
+
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.multitileentity.MultiTileEntityContainer;
@@ -950,5 +966,115 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public boolean isItemValidForSlot(MultiBlockPart aPart, int aSlot, ItemStack aStack) {
         return isItemValidForSlot(aSlot, aStack);
+    }
+
+    /**
+     * GUI Work - Multiblock GUI related methods
+     */
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public ModularWindow createWindow(UIBuildContext buildContext) {
+        System.out.println("MultiBlockController::createWindow");
+        return super.createWindow(buildContext);
+    }
+
+    @Override
+    public boolean onRightClick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+        GT_UIInfos.openGTTileEntityUI(this, aPlayer);
+        return true;
+    }
+    
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new TabContainer().addTabButton(new TabButton(0).setBackground(
+            false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+        .setBackground(
+            true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+        .setPos(0, -28))
+                .addTabButton(new TabButton(1)
+                .setBackground(
+                    false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                .setBackground(
+                    true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                .setPos(28, -28))
+                .addTabButton(new TabButton(2)
+                .setBackground(
+                    false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                .setBackground(
+                    true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                .setPos(56, -28))
+                .addPage(new MultiChildWidget().addChild(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                        .setPos(7, 4)
+                        .setSize(143, 75)))
+                .addPage(new MultiChildWidget().addChild(getItemInventoryInputGUI()))
+                .addPage(new MultiChildWidget().addChild(getItemInventoryOutputGUI())));
+    }
+
+    protected Widget getItemInventoryInputGUI() {
+        final IItemHandlerModifiable inv = getInventoriesForInput();
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int rows = 0; rows * 4 < inv.getSlots(); rows++) {
+            int columnsToMake = Math.min(inv.getSlots() - rows * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                scrollable.widget(new SlotWidget(inv, rows * 4 + column)
+                        .setPos(column * 18, rows * 18)
+                        .setSize(18, 18));
+            }
+        }
+        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+    }
+
+    protected Widget getItemInventoryOutputGUI() {
+        final IItemHandlerModifiable inv = getInventoriesForOutput();
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int rows = 0; rows * 4 < inv.getSlots(); rows++) {
+            int columnsToMake = Math.min(inv.getSlots() - rows * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                scrollable.widget(new SlotWidget(inv, rows * 4 + column)
+                        .setPos(column * 18, rows * 18)
+                        .setSize(18, 18));
+            }
+        }
+        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+    }
+    
+    protected IItemHandlerModifiable getInventoriesForInput() {
+        return new ListItemHandler(multiBlockInputInventory.values());
+    }
+    protected IItemHandlerModifiable getInventoriesForOutput() {
+        return new ListItemHandler(multiBlockOutputInventory.values());
+    }
+
+    protected Widget getFluidInventoryInputGUI() {
+        final IFluidTank[] tanks = mTanksInput;
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int rows = 0; rows * 4 < tanks.length; rows++) {
+            int columnsToMake = Math.min(tanks.length - rows * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+                fluidSlot.setInteraction(true, false);
+                scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
+            }
+        }
+        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+    }
+
+    protected Widget getFluidInventoryOutputGUI() {
+        final IFluidTank[] tanks = mTanksOutput;
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        for (int rows = 0; rows * 4 < tanks.length; rows++) {
+            int columnsToMake = Math.min(tanks.length - rows * 4, 4);
+            for (int column = 0; column < columnsToMake; column++) {
+                FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+                fluidSlot.setInteraction(true, false);
+                scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
+            }
+        }
+        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
     }
 }
