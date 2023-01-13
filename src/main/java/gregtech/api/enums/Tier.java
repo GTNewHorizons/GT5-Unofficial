@@ -6,6 +6,43 @@ import static gregtech.api.enums.GT_Values.V;
  * Experimental Class for later
  */
 public class Tier {
+
+    private static final double RECIPE_DISCOUNT = 0.95;
+
+    // Do NOT use these for crafting recipes as they are exactly 1A! Use RECIPE_ULV etc.
+    public static final long ULV = V[0];
+    public static final long LV = V[1];
+    public static final long MV = V[2];
+    public static final long HV = V[3];
+    public static final long EV = V[4];
+    public static final long IV = V[5];
+    public static final long LuV = V[6];
+    public static final long ZPM = V[7];
+    public static final long UV = V[8];
+    public static final long UHV = V[9];
+    public static final long UEV = V[10];
+    public static final long UIV = V[11];
+    public static final long UMV = V[12];
+    public static final long UXV = V[13];
+    public static final long MAX = V[14];
+
+    // Use  me for recipes.
+    public static final long RECIPE_ULV = (long) (RECIPE_DISCOUNT * V[0]);
+    public static final long RECIPE_LV = (long) (RECIPE_DISCOUNT * V[1]);
+    public static final long RECIPE_MV = (long) (RECIPE_DISCOUNT * V[2]);
+    public static final long RECIPE_HV = (long) (RECIPE_DISCOUNT * V[3]);
+    public static final long RECIPE_EV = (long) (RECIPE_DISCOUNT * V[4]);
+    public static final long RECIPE_IV = (long) (RECIPE_DISCOUNT * V[5]);
+    public static final long RECIPE_LuV = (long) (RECIPE_DISCOUNT * V[6]);
+    public static final long RECIPE_ZPM = (long) (RECIPE_DISCOUNT * V[7]);
+    public static final long RECIPE_UV = (long) (RECIPE_DISCOUNT * V[8]);
+    public static final long RECIPE_UHV = (long) (RECIPE_DISCOUNT * V[9]);
+    public static final long RECIPE_UEV = (long) (RECIPE_DISCOUNT * V[10]);
+    public static final long RECIPE_UIV = (long) (RECIPE_DISCOUNT * V[11]);
+    public static final long RECIPE_UMV = (long) (RECIPE_DISCOUNT * V[12]);
+    public static final long RECIPE_UXV = (long) (RECIPE_DISCOUNT * V[13]);
+    public static final long RECIPE_MAX = (long) (RECIPE_DISCOUNT * V[14]);
+
     public static final Tier[]
             ELECTRIC =
                     new Tier[] {
