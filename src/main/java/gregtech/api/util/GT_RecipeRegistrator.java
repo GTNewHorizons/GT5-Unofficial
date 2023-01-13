@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.Materials.Void;
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
@@ -654,9 +655,10 @@ public class GT_RecipeRegistrator {
      * @param aMaterial material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
      * @param aEUt EU/t for recipe
+     * If you provide a proper EU tier for recipe processing then aEUt will be overriden with it.
      */
     public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {
-        registerWiremillRecipes(aMaterial, baseDuration, aEUt, OrePrefixes.ingot, OrePrefixes.stick, 2);
+        registerWiremillRecipes(aMaterial, baseDuration, calculateRecipeEU(aMaterial, aEUt), OrePrefixes.ingot, OrePrefixes.stick, 2);
     }
 
     /**

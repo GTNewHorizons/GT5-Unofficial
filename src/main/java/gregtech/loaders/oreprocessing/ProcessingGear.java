@@ -8,6 +8,8 @@ import gregtech.common.GT_Proxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
 public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingGear() {
         OrePrefixes.gearGt.add(this);
@@ -27,7 +29,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                 aMaterial.getMolten(576L),
                                 GT_OreDictUnificator.get(aPrefix, aMaterial, 1L),
                                 128,
-                                8);
+                                calculateRecipeEU(aMaterial, 8));
                     }
                 if (aMaterial.mUnificatable
                         && (aMaterial.mMaterialInto == aMaterial)
@@ -62,10 +64,11 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                     });
                             break;
                         default:
-                            GT_ModHandler.addCraftingRecipe(
+                            if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                                GT_ModHandler.addCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
                                     GT_Proxy.tBits,
-                                    new Object[] {
+                                    new Object[]{
                                         "SPS",
                                         "PwP",
                                         "SPS",
@@ -74,6 +77,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                         'S',
                                         OrePrefixes.stick.get(aMaterial)
                                     });
+                            }
                     }
                 }
                 break;
@@ -85,7 +89,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                 aMaterial.getMolten(144L),
                                 GT_Utility.copyAmount(1L, aStack),
                                 16,
-                                8);
+                                calculateRecipeEU(aMaterial, 8));
                     }
                 if (aMaterial.mUnificatable
                         && (aMaterial.mMaterialInto == aMaterial)
@@ -104,10 +108,11 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                     new Object[] {"P ", " f", 'P', OrePrefixes.stoneSmooth});
                             break;
                         default:
-                            GT_ModHandler.addCraftingRecipe(
+                            if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+                                GT_ModHandler.addCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
                                     GT_Proxy.tBits,
-                                    new Object[] {
+                                    new Object[]{
                                         " S ",
                                         "hPx",
                                         " S ",
@@ -116,6 +121,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                         'P',
                                         OrePrefixes.plate.get(aMaterial)
                                     });
+                            }
                     }
                 }
                 break;

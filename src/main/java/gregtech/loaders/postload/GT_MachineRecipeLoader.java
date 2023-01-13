@@ -5233,7 +5233,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new ItemStack(Items.string, 32),
                 80,
                 48);
-        GT_RecipeRegistrator.registerWiremillRecipes(Materials.SpaceTime, 400, 32000);
+        GT_RecipeRegistrator.registerWiremillRecipes(Materials.SpaceTime, 400, 32_000);
 
         GT_Values.RA.addDistilleryRecipe(
                 GT_Utility.getIntegratedCircuit(24),

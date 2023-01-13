@@ -2,10 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.RA;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -28,10 +25,12 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
         mMaterial = aMaterial;
 
         GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, aMaterial, getStackForm(1));
-        GT_ModHandler.addCraftingRecipe(
+        if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
+            GT_ModHandler.addCraftingRecipe(
                 getStackForm(2),
                 RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] {"SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(mMaterial)});
+                new Object[]{"SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(mMaterial)});
+        }
         RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4),
                 ItemList.Circuit_Integrated.getWithDamage(0, 4),
