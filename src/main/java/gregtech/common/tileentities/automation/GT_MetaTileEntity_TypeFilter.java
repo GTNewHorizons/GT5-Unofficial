@@ -1,9 +1,6 @@
 package gregtech.common.tileentities.automation;
 
-import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
-import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
-
+import com.google.common.collect.ImmutableList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -13,16 +10,37 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import java.util.Arrays;
-import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
+import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
+
 public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilter {
     public int mRotationIndex = 0;
     public OrePrefixes mPrefix = OrePrefixes.ore;
+
+    public static ImmutableList<OrePrefixes> OREBLOCK_PREFIXES = ImmutableList.of(
+        OrePrefixes.oreBlackgranite,
+        OrePrefixes.oreDense,
+        OrePrefixes.oreEnd,
+        OrePrefixes.oreEndstone,
+        OrePrefixes.oreNether,
+        OrePrefixes.oreNetherrack,
+        OrePrefixes.oreNormal,
+        OrePrefixes.orePoor,
+        OrePrefixes.oreRedgranite,
+        OrePrefixes.oreRich,
+        OrePrefixes.oreSmall,
+        OrePrefixes.oreBasalt,
+        OrePrefixes.oreMarble
+    );
 
     public GT_MetaTileEntity_TypeFilter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] {
@@ -126,27 +144,13 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
 
     @Override
     protected boolean isStackAllowed(ItemStack aStack) {
-        boolean tAllowPrefix = this.mPrefix.contains(aStack);
         if (this.mPrefix == OrePrefixes.ore) {
-            ItemData tData = GT_OreDictUnificator.getItemData(aStack);
-            if (tData != null && tData.mPrefix != null) {
-                OrePrefixes tFix = tData.mPrefix;
-                if (tFix == OrePrefixes.oreBlackgranite
-                        || tFix == OrePrefixes.oreDense
-                        || tFix == OrePrefixes.oreEnd
-                        || tFix == OrePrefixes.oreEndstone
-                        || tFix == OrePrefixes.oreNether
-                        || tFix == OrePrefixes.oreNetherrack
-                        || tFix == OrePrefixes.oreNormal
-                        || tFix == OrePrefixes.orePoor
-                        || tFix == OrePrefixes.oreRedgranite
-                        || tFix == OrePrefixes.oreRich
-                        || tFix == OrePrefixes.oreSmall
-                        || tFix == OrePrefixes.oreBasalt
-                        || tFix == OrePrefixes.oreMarble) tAllowPrefix = true;
+            ItemData data = GT_OreDictUnificator.getItemData(aStack);
+            if (data != null && data.mPrefix != null && OREBLOCK_PREFIXES.contains(data.mPrefix)) {
+                return true;
             }
         }
-        return tAllowPrefix;
+        return this.mPrefix.contains(aStack);
     }
 
     @Override
