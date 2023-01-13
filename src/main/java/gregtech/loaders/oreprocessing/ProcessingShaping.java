@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -8,8 +10,6 @@ import gregtech.common.GT_Proxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
-import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingShaping() {
@@ -40,18 +40,17 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             ItemList.Shape_Extruder_Block.get(0L),
                             GT_OreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount),
                             10 * tAmount,
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
 
                     // Allow creation of alloy smelter recipes for material recycling if < IV tier.
                     if (tTrueVoltage < Tier.IV) {
                         GT_Values.RA.addAlloySmelterRecipe(
-                            GT_Utility.copyAmount(9L, aStack),
-                            ItemList.Shape_Mold_Block.get(0L),
-                            GT_OreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount),
-                            5 * tAmount,
-                            calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier));
+                                GT_Utility.copyAmount(9L, aStack),
+                                ItemList.Shape_Mold_Block.get(0L),
+                                GT_OreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount),
+                                5 * tAmount,
+                                calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier));
                     }
-
                 }
                 if (((aPrefix != OrePrefixes.ingot) || (aMaterial != aMaterial.mSmeltInto))) {
                     GT_Values.RA.addExtruderRecipe(
@@ -59,7 +58,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             ItemList.Shape_Extruder_Ingot.get(0L),
                             GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, tAmount),
                             10,
-                        calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier));
                 }
 
                 GT_Values.RA.addExtruderRecipe(
@@ -67,7 +66,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         ItemList.Shape_Extruder_Pipe_Tiny.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial.mSmeltInto, tAmount * 2),
                         4 * tAmount,
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
 
                 if (!(aMaterial == Materials.Redstone || aMaterial == Materials.Glowstone)) {
                     GT_Values.RA.addExtruderRecipe(
@@ -82,14 +81,14 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             ItemList.Shape_Extruder_Pipe_Medium.get(0L),
                             GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial.mSmeltInto, tAmount),
                             24 * tAmount,
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
 
                     GT_Values.RA.addExtruderRecipe(
                             GT_Utility.copyAmount(6L, aStack),
                             ItemList.Shape_Extruder_Pipe_Large.get(0L),
                             GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial.mSmeltInto, tAmount),
                             48 * tAmount,
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 }
 
                 GT_Values.RA.addExtruderRecipe(
@@ -97,25 +96,25 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         ItemList.Shape_Extruder_Pipe_Huge.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial.mSmeltInto, tAmount),
                         96 * tAmount,
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         ItemList.Shape_Extruder_Plate.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
                         ItemList.Shape_Extruder_Small_Gear.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(6L, aStack),
                         ItemList.Shape_Extruder_Turbine_Blade.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
 
                 if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
                     GT_Values.RA.addFluidSolidifierRecipe(
@@ -123,73 +122,73 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             aMaterial.getMolten(36L),
                             GT_OreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L),
                             100,
-                        calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier));
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Screw.get(0L),
                             aMaterial.getMolten(18L),
                             GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L),
                             50,
-                        calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Rod.get(0L),
                             aMaterial.getMolten(72L),
                             GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
                             150,
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Bolt.get(0L),
                             aMaterial.getMolten(18L),
                             GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L),
                             50,
-                        calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Round.get(0L),
                             aMaterial.getMolten(18L),
                             GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L),
                             50,
-                        calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Rod_Long.get(0L),
                             aMaterial.getMolten(144L),
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
                             300,
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Turbine_Blade.get(0L),
                             aMaterial.getMolten(864L),
                             GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L),
                             400,
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Pipe_Tiny.get(0L),
                             aMaterial.getMolten(72L),
                             GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 1L),
                             20,
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Pipe_Small.get(0L),
                             aMaterial.getMolten(144L),
                             GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 1L),
                             40,
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Pipe_Medium.get(0L),
                             aMaterial.getMolten(432L),
                             GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1L),
                             80,
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Pipe_Large.get(0L),
                             aMaterial.getMolten(864L),
                             GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L),
                             160,
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                     GT_Values.RA.addFluidSolidifierRecipe(
                             ItemList.Shape_Mold_Pipe_Huge.get(0L),
                             aMaterial.getMolten(1728L),
                             GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L),
                             320,
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 }
                 if (tAmount * 2 <= 64) {
                     if (!(aMaterial == Materials.Aluminium)) {
@@ -214,21 +213,21 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             ItemList.Shape_Extruder_Wire.get(0L),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial.mSmeltInto, tAmount * 2),
                             (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
-                        calculateRecipeEU(aMaterial, 6 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 6 * tVoltageMultiplier));
                 if (tAmount * 8 <= 64)
                     GT_Values.RA.addExtruderRecipe(
                             GT_Utility.copyAmount(1L, aStack),
                             ItemList.Shape_Extruder_Bolt.get(0L),
                             GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial.mSmeltInto, tAmount * 8),
                             (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
-                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 if (tAmount * 4 <= 64) {
                     GT_Values.RA.addExtruderRecipe(
                             GT_Utility.copyAmount(1L, aStack),
                             ItemList.Shape_Extruder_Ring.get(0L),
                             GT_OreDictUnificator.get(OrePrefixes.ring, aMaterial.mSmeltInto, tAmount * 4),
                             (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
-                        calculateRecipeEU(aMaterial, 6 * tVoltageMultiplier));
+                            calculateRecipeEU(aMaterial, 6 * tVoltageMultiplier));
                     if ((aMaterial.mUnificatable)
                             && (aMaterial.mMaterialInto == aMaterial)
                             && !aMaterial.contains(SubTag.NO_SMASHING))
@@ -247,85 +246,85 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         ItemList.Shape_Extruder_Sword.get(0L, new Object[0]),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(3L, aStack),
                         ItemList.Shape_Extruder_Pickaxe.get(0L, new Object[0]),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 3L * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         ItemList.Shape_Extruder_Shovel.get(0L, new Object[0]),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 1L * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(3L, aStack),
                         ItemList.Shape_Extruder_Axe.get(0L, new Object[0]),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 3L * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(2L, aStack),
                         ItemList.Shape_Extruder_Hoe.get(0L, new Object[0]),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(6L, aStack),
                         ItemList.Shape_Extruder_Hammer.get(0L, new Object[0]),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 6L * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(2L, aStack),
                         ItemList.Shape_Extruder_File.get(0L, new Object[0]),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadFile, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(2L, aStack),
                         ItemList.Shape_Extruder_Saw.get(0L, new Object[0]),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(4L, aStack),
                         ItemList.Shape_Extruder_Gear.get(0L, new Object[0]),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 5L * tAmount, tAmount),
-                    calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
+                        calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
 
                 if (!(aMaterial == Materials.StyreneButadieneRubber || aMaterial == Materials.Silicone)) {
                     if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
                         GT_Values.RA.addAlloySmelterRecipe(
-                            GT_Utility.copyAmount(2L, aStack),
-                            ItemList.Shape_Mold_Plate.get(0L),
-                            GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount),
-                            (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
-                            calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
+                                GT_Utility.copyAmount(2L, aStack),
+                                ItemList.Shape_Mold_Plate.get(0L),
+                                GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount),
+                                (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
+                                calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
                     }
                 } else {
                     // If tier < IV then add ability to turn ingots into plates via alloy smelter.
                     if (tTrueVoltage < Tier.IV) {
-                    GT_Values.RA.addAlloySmelterRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            ItemList.Shape_Mold_Plate.get(0L),
-                            GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount),
-                            (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
-                        calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
+                        GT_Values.RA.addAlloySmelterRecipe(
+                                GT_Utility.copyAmount(1L, aStack),
+                                ItemList.Shape_Mold_Plate.get(0L),
+                                GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount),
+                                (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
+                                calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
                     }
                 }
 
                 // If tier < IV then add ability to turn ingots into gears via alloy smelter.
                 if (tTrueVoltage < Tier.IV) {
                     GT_Values.RA.addAlloySmelterRecipe(
-                        GT_Utility.copyAmount(8L, aStack),
-                        ItemList.Shape_Mold_Gear.get(0L),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial.mSmeltInto, tAmount),
-                        (int) Math.max(aMaterialMass * 10L * tAmount, tAmount),
-                        calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
+                            GT_Utility.copyAmount(8L, aStack),
+                            ItemList.Shape_Mold_Gear.get(0L),
+                            GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial.mSmeltInto, tAmount),
+                            (int) Math.max(aMaterialMass * 10L * tAmount, tAmount),
+                            calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier));
                 }
 
                 switch (aMaterial.mSmeltInto.mName) {

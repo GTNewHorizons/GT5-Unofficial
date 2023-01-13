@@ -19,9 +19,9 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
             OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
             if ((aMaterial.mUnificatable)
-                && (aMaterial.mMaterialInto == aMaterial)
-                && !aMaterial.contains(SubTag.NO_WORKING)) {
-                GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(2L, aStack), GT_Proxy.tBits, new Object[]{
+                    && (aMaterial.mMaterialInto == aMaterial)
+                    && !aMaterial.contains(SubTag.NO_WORKING)) {
+                GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(2L, aStack), GT_Proxy.tBits, new Object[] {
                     "s ", " X", 'X', OrePrefixes.stick.get(aMaterial)
                 });
             }

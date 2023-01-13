@@ -658,7 +658,8 @@ public class GT_RecipeRegistrator {
      * If you provide a proper EU tier for recipe processing then aEUt will be overriden with it.
      */
     public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {
-        registerWiremillRecipes(aMaterial, baseDuration, calculateRecipeEU(aMaterial, aEUt), OrePrefixes.ingot, OrePrefixes.stick, 2);
+        registerWiremillRecipes(
+                aMaterial, baseDuration, calculateRecipeEU(aMaterial, aEUt), OrePrefixes.ingot, OrePrefixes.stick, 2);
     }
 
     /**

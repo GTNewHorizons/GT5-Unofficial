@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -9,8 +11,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
-
-import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 public class ProcessingFoil implements IOreRecipeRegistrator {
     public ProcessingFoil() {
@@ -24,7 +24,7 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
                 GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L)),
                 GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, 4L),
                 (int) Math.max(aMaterial.getMass(), 1L),
-                calculateRecipeEU(aMaterial,24));
+                calculateRecipeEU(aMaterial, 24));
         GregTech_API.registerCover(
                 aStack, TextureFactory.of(aMaterial.mIconSet.mTextures[70], aMaterial.mRGBa, false), null);
     }

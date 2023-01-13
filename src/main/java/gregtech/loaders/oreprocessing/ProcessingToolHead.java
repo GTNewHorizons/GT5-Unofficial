@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -7,8 +9,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import net.minecraft.item.ItemStack;
-
-import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 public class ProcessingToolHead
         implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH OLD TOOL HEAD??? generator
@@ -1785,44 +1785,44 @@ public class ProcessingToolHead
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Magnalium, 1L),
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(170, 1, aMaterial, aMaterial, null),
                         160,
-                    calculateRecipeEU(aMaterial, 100));
+                        calculateRecipeEU(aMaterial, 100));
                 GT_Values.RA.addAssemblerRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 8L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Titanium, 1L),
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(172, 1, aMaterial, aMaterial, null),
                         320,
-                    calculateRecipeEU(aMaterial, 400));
+                        calculateRecipeEU(aMaterial, 400));
                 GT_Values.RA.addAssemblerRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 12L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 1L),
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(174, 1, aMaterial, aMaterial, null),
                         640,
-                    calculateRecipeEU(aMaterial, 1600));
+                        calculateRecipeEU(aMaterial, 1600));
                 GT_Values.RA.addAssemblerRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 16L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Americium, 1L),
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(176, 1, aMaterial, aMaterial, null),
                         1280,
-                    calculateRecipeEU(aMaterial, 6400));
+                        calculateRecipeEU(aMaterial, 6400));
 
                 if (aSpecialRecipeReq2) {
                     if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
                         GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L),
-                            GT_Proxy.tBits,
-                            new Object[]{
-                                "fPd",
-                                "SPS",
-                                " P ",
-                                'P',
-                                aMaterial == Materials.Wood
-                                    ? OrePrefixes.plank.get(aMaterial)
-                                    : OrePrefixes.plateDouble.get(aMaterial),
-                                'R',
-                                OrePrefixes.ring.get(aMaterial),
-                                'S',
-                                OrePrefixes.screw.get(aMaterial)
-                            });
+                                GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L),
+                                GT_Proxy.tBits,
+                                new Object[] {
+                                    "fPd",
+                                    "SPS",
+                                    " P ",
+                                    'P',
+                                    aMaterial == Materials.Wood
+                                            ? OrePrefixes.plank.get(aMaterial)
+                                            : OrePrefixes.plateDouble.get(aMaterial),
+                                    'R',
+                                    OrePrefixes.ring.get(aMaterial),
+                                    'S',
+                                    OrePrefixes.screw.get(aMaterial)
+                                });
                     }
 
                     GT_Values.RA.addFormingPressRecipe(
@@ -1830,7 +1830,7 @@ public class ProcessingToolHead
                             GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 2L),
                             GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L),
                             200,
-                            calculateRecipeEU(aMaterial,60));
+                            calculateRecipeEU(aMaterial, 60));
                 }
                 break;
             default:

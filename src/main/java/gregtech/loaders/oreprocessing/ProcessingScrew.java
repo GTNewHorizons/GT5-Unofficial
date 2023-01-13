@@ -1,13 +1,13 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import net.minecraft.item.ItemStack;
-
-import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingScrew() {
@@ -23,13 +23,13 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_Utility.copyAmount(1L, aStack),
                     null,
                     (int) Math.max(aMaterial.getMass() / 8L, 1L),
-                calculateRecipeEU(aMaterial,4));
+                    calculateRecipeEU(aMaterial, 4));
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial))
                 if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
                     GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L),
-                        GT_Proxy.tBits,
-                        new Object[]{"fX", "X ", 'X', OrePrefixes.bolt.get(aMaterial)});
+                            GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L),
+                            GT_Proxy.tBits,
+                            new Object[] {"fX", "X ", 'X', OrePrefixes.bolt.get(aMaterial)});
                 }
         }
     }

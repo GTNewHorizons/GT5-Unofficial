@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -7,8 +9,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-
-import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingGear() {
@@ -66,17 +66,17 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                         default:
                             if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
                                 GT_ModHandler.addCraftingRecipe(
-                                    GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
-                                    GT_Proxy.tBits,
-                                    new Object[]{
-                                        "SPS",
-                                        "PwP",
-                                        "SPS",
-                                        'P',
-                                        OrePrefixes.plate.get(aMaterial),
-                                        'S',
-                                        OrePrefixes.stick.get(aMaterial)
-                                    });
+                                        GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
+                                        GT_Proxy.tBits,
+                                        new Object[] {
+                                            "SPS",
+                                            "PwP",
+                                            "SPS",
+                                            'P',
+                                            OrePrefixes.plate.get(aMaterial),
+                                            'S',
+                                            OrePrefixes.stick.get(aMaterial)
+                                        });
                             }
                     }
                 }
@@ -110,17 +110,17 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                         default:
                             if (aMaterial.getProcessingMaterialTierEU() < Tier.IV) {
                                 GT_ModHandler.addCraftingRecipe(
-                                    GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
-                                    GT_Proxy.tBits,
-                                    new Object[]{
-                                        " S ",
-                                        "hPx",
-                                        " S ",
-                                        'S',
-                                        OrePrefixes.stick.get(aMaterial),
-                                        'P',
-                                        OrePrefixes.plate.get(aMaterial)
-                                    });
+                                        GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),
+                                        GT_Proxy.tBits,
+                                        new Object[] {
+                                            " S ",
+                                            "hPx",
+                                            " S ",
+                                            'S',
+                                            OrePrefixes.stick.get(aMaterial),
+                                            'P',
+                                            OrePrefixes.plate.get(aMaterial)
+                                        });
                             }
                     }
                 }
