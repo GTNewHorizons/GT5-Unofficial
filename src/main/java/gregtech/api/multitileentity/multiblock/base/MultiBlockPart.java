@@ -132,9 +132,11 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
 
     public void registerCovers(IMultiBlockController controller) {
         for (byte i : ALL_VALID_SIDES) {
-            if (getCoverIDAtSide(i) != 0) {
-                // TODO: Filter on tickable covers
-                controller.registerCoveredPartOnSide(i, this);
+            final int coverId = getCoverIDAtSide(i);
+            if (coverId != 0) {
+                if(getCoverBehaviorAtSideNew(i).getTickRate(i, coverId, getComplexCoverDataAtSide(i), this) > 0) {
+                    controller.registerCoveredPartOnSide(i, this);
+                }
             }
         }
     }
@@ -145,14 +147,18 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         // TODO: Filter on tickable covers
         final IMultiBlockController tTarget = getTarget(true);
         if (tTarget != null) {
-            tTarget.registerCoveredPartOnSide(aSide, this);
+            final int coverId = getCoverIDAtSide(aSide);
+            if (coverId != 0) {
+                if(getCoverBehaviorAtSideNew(aSide).getTickRate(aSide, coverId, getComplexCoverDataAtSide(aSide), this) > 0) {
+                    tTarget.registerCoveredPartOnSide(aSide, this);
+                }
+            }
         }
     }
 
     public void unregisterCovers(IMultiBlockController controller) {
         for (byte i : ALL_VALID_SIDES) {
             if (getCoverIDAtSide(i) != 0) {
-                // TODO: Filter on tickable covers
                 controller.unregisterCoveredPartOnSide(i, this);
             }
         }
@@ -161,7 +167,6 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public boolean dropCover(byte aSide, byte aDroppedSide, boolean aForced) {
         final boolean res = super.dropCover(aSide, aDroppedSide, aForced);
-        // TODO: Filter on tickable covers
         final IMultiBlockController tTarget = getTarget(true);
         if (tTarget != null) {
             tTarget.unregisterCoveredPartOnSide(aSide, this);
