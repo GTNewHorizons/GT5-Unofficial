@@ -108,7 +108,7 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * Enables the outputs to be calculated with its current Parallels, useful for 
+     * Enables the outputs to be calculated with its current Parallels, useful for
      */
     public GT_ParallelHelper enableOutputCalculation() {
         mCalculateOutputs = true;
@@ -140,14 +140,16 @@ public class GT_ParallelHelper {
 
     public ItemStack[] getItemOutputs() {
         if (!mBuilt || !mCalculateOutputs) {
-            throw new IllegalStateException("Tried to get item outputs before building or without enabling calculation of outputs");
+            throw new IllegalStateException(
+                    "Tried to get item outputs before building or without enabling calculation of outputs");
         }
         return mItemOutputs;
     }
 
     public FluidStack[] getFluidOutputs() {
         if (!mBuilt || !mCalculateOutputs) {
-            throw new IllegalStateException("Tried to get fluid outputs before building or without enabling calculation of outputs");
+            throw new IllegalStateException(
+                    "Tried to get fluid outputs before building or without enabling calculation of outputs");
         }
         return mFluidOutputs;
     }
@@ -201,7 +203,7 @@ public class GT_ParallelHelper {
             mCurrentParallel += tExtraParallels;
             mDurationMultiplier = 1.0f + 128.0f / tExtraParallels;
         }
-        
+
         if (mCalculateOutputs) {
             mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
             for (int i = 0; i < mRecipe.mOutputs.length; i++) {
