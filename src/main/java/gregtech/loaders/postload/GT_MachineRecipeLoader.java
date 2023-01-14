@@ -7503,7 +7503,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         // O + 2H = H2O
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L),
-                GT_Values.NI,
+                GT_Utility.getIntegratedCircuit(22),
                 Materials.Hydrogen.getGas(2000L),
                 GT_ModHandler.getDistilledWater(1000L),
                 ItemList.Cell_Empty.get(1L),
@@ -7512,7 +7512,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 30);
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
-                GT_Values.NI,
+                GT_Utility.getIntegratedCircuit(22),
                 Materials.Oxygen.getGas(500L),
                 GT_ModHandler.getDistilledWater(500L),
                 ItemList.Cell_Empty.get(1L),
