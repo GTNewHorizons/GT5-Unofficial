@@ -77,7 +77,8 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     protected int mAllowedModes = NOTHING; // BITMASK - Modes allowed for this part
     protected byte mMode = 0; // Mode selected for this part
 
-    protected String mLockedInventory = "";
+    protected String mLockedInventory = GT_Values.E;
+    protected int mLockedInventoryIndex = 0;
 
     /**
      * What Part Tier is this part?  All Basic Casings are Tier 1, and will allow:
@@ -143,6 +144,9 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         if (aNBT.hasKey(NBT.LOCKED_INVENTORY)) {
             mLockedInventory = aNBT.getString(NBT.LOCKED_INVENTORY);
         }
+        if (aNBT.hasKey(NBT.LOCKED_INVENTORY_INDEX)) {
+            mLockedInventoryIndex = aNBT.getInteger(NBT.LOCKED_INVENTORY_INDEX);
+        }
     }
 
     @Override
@@ -157,6 +161,9 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         }
         if (mLockedInventory != null) {
             aNBT.setString(NBT.LOCKED_INVENTORY, mLockedInventory);
+        }
+        if (mLockedInventoryIndex != 0) {
+            aNBT.setInteger(NBT.LOCKED_INVENTORY_INDEX, mLockedInventoryIndex);
         }
     }
 
@@ -711,30 +718,32 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
             }
         }
         builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 18));
-        builder.widget(new DropDownWidget()
+        DropDownWidget dropDown = new DropDownWidget();
+        builder.widget(dropDown
                 .addDropDownItemsSimple(
                         controller.getInventoryNames(this),
                         (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
-                            if (buttonWidget.getName().equals("all")) {
-                                mLockedInventory = "";
+                            if (getNameOfInventoryFromIndex(controller, index).equals("all")) {
+                                mLockedInventory = GT_Values.E;
+                                mLockedInventoryIndex = 0;
                             } else {
-                                mLockedInventory = buttonWidget.getName();
+                                mLockedInventory = getNameOfInventoryFromIndex(controller, index);
+                                mLockedInventoryIndex = index;
                             }
                             setSelected.run();
                         }),
                         true)
-                .setSelected(findIndexOfInventory(controller))  
+                .setSelected(mLockedInventoryIndex)  
                 .setExpandedMaxHeight(60)
                 .setDirection(DropDownWidget.Direction.DOWN)
-                .setPos(58, 5)
-                .setSize(60, 11))
-                .widget(new FakeSyncWidget.StringSyncer(() -> mLockedInventory, val -> mLockedInventory = val));
+                .setPos(53, 5)
+                .setSize(70, 11));
     }
 
     protected int findIndexOfInventory(final IMultiBlockController controller) {
         final List<String> invNames = controller.getInventoryNames(this);
         // Check if Inventory has been locked preempitily
-        if (mLockedInventory.equals("")) {
+        if (mLockedInventory == null || mLockedInventory.equals(GT_Values.E)) {
             return 0;
         }
 
@@ -746,6 +755,11 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         }
 
         return index;
+    }
+
+    protected String getNameOfInventoryFromIndex(final IMultiBlockController controller, int index) {
+        final List<String> invNames = controller.getInventoryNames(this);
+        return invNames.get(index);
     }
 
     protected void addFluidInventory(Builder builder, UIBuildContext buildContext) {

@@ -293,6 +293,7 @@ public class GT_Values {
                 TARGET_Y = "gt.target.y", // Number
                 TARGET_Z = "gt.target.z", // Number
                 LOCKED_INVENTORY = "gt.locked.inventory", // String
+                LOCKED_INVENTORY_INDEX = "gt.locked.inventory.index", // Number
                 empty_ = "";
     }
 
