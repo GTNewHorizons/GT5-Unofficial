@@ -26,11 +26,16 @@ public class TCLoader {
 
     public static void load() {}
 
-    public static void lateLoad() {
-        if (lateLoaded) return;
-        lateLoaded = true;
+    public static void register() {
         if (!LoaderReference.GTNHCoreMod || !LoaderReference.DraconicEvolution) return;
+        registerRecipe();
+        registerResearch();
+    }
 
+    private static InfusionRecipe ultimateTeaRecipe = null;
+
+    private static void registerRecipe() {
+        if (ultimateTeaRecipe != null) return;
         final ItemStack[] components = new ItemStack[] {
             // ItemList.LegendaryBlackTea.get(1),
             // ItemList.LegendaryButterflyTea.get(1),
@@ -60,7 +65,6 @@ public class TCLoader {
                 .map(stack -> ItemID.create_NoCopy(stack, true, false, true))
                 .collect(Collectors.toCollection(HashSet::new));
 
-        InfusionRecipe ultimateTeaRecipe;
         //noinspection unchecked
         ThaumcraftApi.getCraftingRecipes()
                 .add(
@@ -92,34 +96,41 @@ public class TCLoader {
                                         return hashedInputs.containsAll(componentsHashed);
                                     }
                                 });
-        ResearchItem research =
-                new ResearchItem(
-                        "KT_UltimateTea",
-                        "NEWHORIZONS",
-                        new AspectList()
-                                .add(Aspect.MAGIC, 1)
-                                .add(Aspect.HEAL, 1)
-                                .add(Aspect.PLANT, 1)
-                                .add(Aspect.EXCHANGE, 1),
-                        -2,
-                        4,
-                        2,
-                        ItemList.LegendaryUltimateTea.get(1)) {
-                    @Override
-                    public String getName() {
-                        return TeaUltimate.getUltimateTeaDisplayName(super.getName());
-                    }
-                };
-        research.setPages(
-                new ResearchPage("KT.research.ultimatetea") {
-                    @Override
-                    public String getTranslatedText() {
-                        return TeaUltimate.getUltimateTeaDisplayName(super.getTranslatedText());
-                    }
-                },
-                new ResearchPage(ultimateTeaRecipe));
-        research.setParents("INFUSION", "DEZILSMARSHMALLOW");
-        ThaumcraftApi.addWarpToResearch("KT_UltimateTea", 20);
-        ResearchCategories.addResearch(research);
+    }
+
+    private static ResearchItem ultimateTeaResearch = null;
+
+    private static void registerResearch() {
+        if (ultimateTeaResearch == null) {
+            ultimateTeaResearch =
+                    new ResearchItem(
+                            "KT_UltimateTea",
+                            "NEWHORIZONS",
+                            new AspectList()
+                                    .add(Aspect.MAGIC, 1)
+                                    .add(Aspect.HEAL, 1)
+                                    .add(Aspect.PLANT, 1)
+                                    .add(Aspect.EXCHANGE, 1),
+                            -2,
+                            4,
+                            2,
+                            ItemList.LegendaryUltimateTea.get(1)) {
+                        @Override
+                        public String getName() {
+                            return TeaUltimate.getUltimateTeaDisplayName(super.getName());
+                        }
+                    };
+            ultimateTeaResearch.setPages(
+                    new ResearchPage("KT.research.ultimatetea") {
+                        @Override
+                        public String getTranslatedText() {
+                            return TeaUltimate.getUltimateTeaDisplayName(super.getTranslatedText());
+                        }
+                    },
+                    new ResearchPage(ultimateTeaRecipe));
+            ultimateTeaResearch.setParents("INFUSION", "DEZILSMARSHMALLOW");
+            ThaumcraftApi.addWarpToResearch("KT_UltimateTea", 20);
+        }
+        ResearchCategories.addResearch(ultimateTeaResearch);
     }
 }

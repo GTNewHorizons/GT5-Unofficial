@@ -26,12 +26,10 @@ import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
-import kubatech.api.LoaderReference;
 import kubatech.config.Config;
 import kubatech.config.OverridesConfig;
 import kubatech.kubatech;
 import kubatech.loaders.MobRecipeLoader;
-import kubatech.loaders.TCLoader;
 
 public class LoadConfigPacket implements IMessage {
 
@@ -87,7 +85,6 @@ public class LoadConfigPacket implements IMessage {
         public IMessage onMessage(LoadConfigPacket message, MessageContext ctx) {
             kubatech.info("Received Mob Handler config, parsing");
             MobRecipeLoader.processMobRecipeMap(message.mobsToLoad, message.mobsOverrides);
-            if (LoaderReference.Thaumcraft) TCLoader.lateLoad();
             return null;
         }
     }

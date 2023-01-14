@@ -30,6 +30,7 @@ import kubatech.commands.CommandHandler;
 import kubatech.commands.CommandHelp;
 import kubatech.commands.CommandTea;
 import kubatech.config.Config;
+import kubatech.loaders.MTLoader;
 import kubatech.loaders.RecipeLoader;
 import kubatech.loaders.TCLoader;
 import kubatech.savedata.PlayerDataManager;
@@ -49,7 +50,9 @@ public class CommonProxy {
         if (LoaderReference.Thaumcraft) TCLoader.load();
     }
 
-    public void init(FMLInitializationEvent event) {}
+    public void init(FMLInitializationEvent event) {
+        if (LoaderReference.MineTweaker) MTLoader.init();
+    }
 
     public void postInit(FMLPostInitializationEvent event) {
         RecipeLoader.addRecipes();
@@ -59,7 +62,6 @@ public class CommonProxy {
 
     public void serverStarting(FMLServerStartingEvent event) {
         RecipeLoader.addRecipesLate();
-        if (LoaderReference.Thaumcraft) TCLoader.lateLoad();
         CommandHandler cmd = new CommandHandler();
         cmd.addCommand(new CommandHelp());
         cmd.addCommand(new CommandConfig());
