@@ -179,6 +179,10 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<
         return GT_ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(getExoticAndNormalEnergyHatchList());
     }
 
+    public long getMaxInputEu() {
+        return getMaxInputVoltage() * getMaxInputAmps();
+    }
+
     @Override
     public void clearHatches() {
         super.clearHatches();

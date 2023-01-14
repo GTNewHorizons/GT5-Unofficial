@@ -57,6 +57,10 @@ public class GT_ExoticEnergyInputHelper {
         return false;
     }
 
+    public static long getTotalEuMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
+        return getMaxWorkingInputAmpsMulti(hatches) * getMaxInputVoltageMulti(hatches);
+    }
+
     public static long getMaxInputVoltageMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         long rVoltage = 0;
         for (GT_MetaTileEntity_Hatch tHatch : hatches)
