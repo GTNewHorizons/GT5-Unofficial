@@ -361,10 +361,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
 
     protected boolean processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
         if (tItems.length <= 0 && tFluids.length <= 0) return false;
-        long tVoltage = this.getMaxInputVoltage()
-                / this.getExoticAndNormalEnergyHatchList().size();
-        long tAmps = this.getMaxInputAmps();
-        long tTotalEU = tVoltage * tAmps;
+        long tTotalEU = getAverageInputVoltage() * getMaxInputAmps();
 
         GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, tTotalEU, tFluids, tItems);
         if (recipe == null) return false;
@@ -423,7 +420,15 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
                 }
             }
         }
-        return this.glassTier >= 8 || this.getExoticEnergyHatches().size() <= 0;
+        // Disallow lasers if the glass is below UV tier
+        if (glassTier < 8) {
+            for (GT_MetaTileEntity_Hatch hatchEnergy : getExoticEnergyHatches()) {
+                if (hatchEnergy.getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
@@ -532,15 +537,12 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " + EnumChatFormatting.RED
                     + GT_Utility.formatNumbers(-lEUt) + EnumChatFormatting.RESET + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(
-                            GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
+                    + GT_Utility.formatNumbers(getAverageInputVoltage())
                     + EnumChatFormatting.RESET + " EU/t(*" + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(this.getMaxInputAmps())
+                    + GT_Utility.formatNumbers(getMaxInputAmps())
                     + EnumChatFormatting.RESET + "A) " + StatCollector.translateToLocal("GT5U.machines.tier")
                     + ": " + EnumChatFormatting.YELLOW
-                    + GT_Values.VN[
-                            GT_Utility.getTier(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(
-                                    getExoticAndNormalEnergyHatchList()))]
+                    + GT_Values.VN[GT_Utility.getTier(getAverageInputVoltage())]
                     + EnumChatFormatting.RESET,
             "Parallels: " + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET,
             "Coil Discount: " + EnumChatFormatting.BLUE + discountP + "%" + EnumChatFormatting.RESET,
