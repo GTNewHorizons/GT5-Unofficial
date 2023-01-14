@@ -36,7 +36,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.render.GT_MultiTexture;
 import gregtech.common.render.IRenderedBlock;
 import java.util.ArrayList;
@@ -196,8 +195,6 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                 copyTextures();
             }
 
-            if (mCoverData == null || mCoverData.length != 6) mCoverData = new ISerializableObject[6];
-            if (mCoverSides.length != 6) mCoverSides = new int[] {0, 0, 0, 0, 0, 0};
             if (mSidedRedstone.length != 6) mSidedRedstone = new byte[] {15, 15, 15, 15, 15, 15};
 
             updateCoverBehavior();
@@ -993,7 +990,12 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                 mColor);
 
         packet.setCoverData(
-                mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5]);
+                getCoverInfoAtSide((byte) 0).getCoverID(),
+                getCoverInfoAtSide((byte) 1).getCoverID(),
+                getCoverInfoAtSide((byte) 2).getCoverID(),
+                getCoverInfoAtSide((byte) 3).getCoverID(),
+                getCoverInfoAtSide((byte) 4).getCoverID(),
+                getCoverInfoAtSide((byte) 5).getCoverID());
 
         packet.setRedstoneData((byte) (((mSidedRedstone[0] > 0) ? 1 : 0)
                 | ((mSidedRedstone[1] > 0) ? 2 : 0)

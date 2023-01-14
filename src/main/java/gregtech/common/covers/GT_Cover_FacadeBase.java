@@ -27,6 +27,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_FacadeBase.FacadeData> {
     /**
      * This is the Dummy, if there is a generic Cover without behavior
@@ -120,6 +122,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
     public void placeCover(byte aSide, ItemStack aCover, ICoverable aTileEntity) {
         aTileEntity.setCoverIdAndDataAtSide(
                 aSide, GT_Utility.stackToInt(aCover), new FacadeData(GT_Utility.copyAmount(1, aCover), 0));
+
         if (aTileEntity.isClientSide())
             GT_RenderingWorld.getInstance()
                     .register(
@@ -193,7 +196,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
     @Override
     protected void onDroppedImpl(byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
         if (aTileEntity.isClientSide()) {
-            for (byte i = 0; i < 6; i++) {
+            for (byte i : ALL_VALID_SIDES) {
                 if (i == aSide) continue;
                 // since we do not allow multiple type of facade per block, this check would be enough.
                 if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof GT_Cover_FacadeBase) return;
@@ -237,7 +240,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         // otherwise it's not clear which block this block should impersonate
         // this restriction can be lifted later by specifying a certain facade as dominate one as an extension to this
         // class
-        for (byte i = 0; i < 6; i++) {
+        for (byte i : ALL_VALID_SIDES) {
             if (i == aSide) continue;
             GT_CoverBehaviorBase<?> behavior = aTileEntity.getCoverBehaviorAtSideNew(i);
             if (behavior == null) continue;

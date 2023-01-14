@@ -7,6 +7,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -70,6 +71,23 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.dimID = dimID;
         this.playerID = playerID;
         this.parentGuiId = -1;
+    }
+    public GT_Packet_TileEntityCoverGUI(CoverInfo coverInfo,            int dimID,
+                                        int playerID,
+                                        int parentGuiId) {
+        super(false);
+        final ICoverable tile = coverInfo.getTile();
+        this.mX = tile.getXCoord();
+        this.mY = tile.getYCoord();
+        this.mZ = tile.getZCoord();
+
+        this.side = coverInfo.getSide();
+        this.coverID = coverInfo.getCoverID();
+        this.coverData = coverInfo.getCoverData();
+
+        this.dimID = dimID;
+        this.playerID = playerID;
+        this.parentGuiId = parentGuiId;
     }
 
     public GT_Packet_TileEntityCoverGUI(

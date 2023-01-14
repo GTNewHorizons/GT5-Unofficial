@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
@@ -215,8 +216,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             loadMetaTileNBT(aNBT);
         }
 
-        if (mCoverData == null || mCoverData.length != 6) mCoverData = new ISerializableObject[6];
-        if (mCoverSides.length != 6) mCoverSides = new int[] {0, 0, 0, 0, 0, 0};
         if (mSidedRedstone.length != 6)
             if (hasValidMetaTileEntity() && mMetaTileEntity.hasSidedRedstoneOutputBehavior())
                 mSidedRedstone = new byte[] {0, 0, 0, 0, 0, 0};
@@ -375,7 +374,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         }
 
                         if (mMetaTileEntity.isEnetOutput() || mMetaTileEntity.isEnetInput()) {
-                            for (byte i = 0; i < 6; i++) {
+                            for (byte i : ALL_VALID_SIDES) {
                                 boolean temp = isEnergyInputSide(i);
                                 if (temp != mActiveEUInputs[i]) {
                                     mActiveEUInputs[i] = temp;
@@ -645,12 +644,12 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                             (short) yCoord,
                             zCoord,
                             mID,
-                            mCoverSides[0],
-                            mCoverSides[1],
-                            mCoverSides[2],
-                            mCoverSides[3],
-                            mCoverSides[4],
-                            mCoverSides[5],
+                            getCoverInfoAtSide((byte) 0).getCoverID(),
+                            getCoverInfoAtSide((byte) 1).getCoverID(),
+                            getCoverInfoAtSide((byte) 2).getCoverID(),
+                            getCoverInfoAtSide((byte) 3).getCoverID(),
+                            getCoverInfoAtSide((byte) 4).getCoverID(),
+                            getCoverInfoAtSide((byte) 5).getCoverID(),
                             oTextureData = (byte) ((mFacing & 7)
                                     | (mActive ? 8 : 0)
                                     | (mRedstone ? 16 : 0)
@@ -1136,7 +1135,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     public void generatePowerNodes() {
         if (isServerSide() && (isEnetInput() || isEnetOutput())) {
             final int time = MinecraftServer.getServer().getTickCounter();
-            for (byte i = 0; i < 6; i++) {
+            for (byte i : ALL_VALID_SIDES) {
                 if (outputsEnergyTo(i, false) || inputEnergyFrom(i, false)) {
                     final IGregTechTileEntity TE = getIGregTechTileEntityAtSide(i);
                     if (TE instanceof BaseMetaPipeEntity) {

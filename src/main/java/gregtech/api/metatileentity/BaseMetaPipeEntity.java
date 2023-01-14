@@ -23,6 +23,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import java.util.*;
+
+import gregtech.common.covers.CoverInfo;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -79,7 +81,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     public void addToLock(TileEntity tileEntity, int side) {
         if (node != null) {
-            Lock lock = node.locks[side];
+            final Lock lock = node.locks[side];
             if (lock != null) {
                 lock.addTileEntity(tileEntity);
             }
@@ -90,7 +92,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     public void removeFromLock(TileEntity tileEntity, int side) {
         if (node != null) {
-            Lock lock = node.locks[side];
+            final Lock lock = node.locks[side];
             if (lock != null) {
                 lock.removeTileEntity(tileEntity);
             }
@@ -100,7 +102,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     public void reloadLocks() {
-        IMetaTileEntity meta = getMetaTileEntity();
+        final IMetaTileEntity meta = getMetaTileEntity();
         if (meta instanceof MetaPipeEntity) {
             ((MetaPipeEntity) meta).reloadLocks();
         }
@@ -283,12 +285,12 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                             (short) yCoord,
                             zCoord,
                             mID,
-                            mCoverSides[0],
-                            mCoverSides[1],
-                            mCoverSides[2],
-                            mCoverSides[3],
-                            mCoverSides[4],
-                            mCoverSides[5],
+                            getCoverInfoAtSide((byte) 0).getCoverID(),
+                            getCoverInfoAtSide((byte) 1).getCoverID(),
+                            getCoverInfoAtSide((byte) 2).getCoverID(),
+                            getCoverInfoAtSide((byte) 3).getCoverID(),
+                            getCoverInfoAtSide((byte) 4).getCoverID(),
+                            getCoverInfoAtSide((byte) 5).getCoverID(),
                             oTextureData = mConnections,
                             oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
                             oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0)
@@ -705,16 +707,16 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide) {
-        ITexture rIcon = getCoverTexture(aSide);
+        final ITexture rIcon = getCoverTexture(aSide);
         if (rIcon != null) return new ITexture[] {rIcon};
         return getTextureUncovered(aSide);
     }
 
     @Override
     public ITexture[] getTextureCovered(byte aSide) {
-        ITexture coverTexture = getCoverTexture(aSide);
-        ITexture[] textureUncovered = getTextureUncovered(aSide);
-        ITexture[] textureCovered;
+        final ITexture coverTexture = getCoverTexture(aSide);
+        final ITexture[] textureUncovered = getTextureUncovered(aSide);
+        final ITexture[] textureCovered;
         if (coverTexture != null) {
             textureCovered = Arrays.copyOf(textureUncovered, textureUncovered.length + 1);
             textureCovered[textureUncovered.length] = coverTexture;
@@ -762,18 +764,11 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public ArrayList<ItemStack> getDrops() {
-        ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, mID);
-        NBTTagCompound tNBT = new NBTTagCompound();
-        if (mStrongRedstone > 0) tNBT.setByte("mStrongRedstone", mStrongRedstone);
-        boolean hasCover = false;
-        for (byte i = 0; i < mCoverSides.length; i++) {
-            if (mCoverSides[i] != 0) {
-                if (mCoverData[i] != null) // this really shouldn't be null if a cover is there already, but whatever
-                tNBT.setTag(COVER_DATA_NBT_KEYS[i], mCoverData[i].saveDataToNBT());
-                hasCover = true;
-            }
-        }
-        if (hasCover) tNBT.setIntArray("mCoverSides", mCoverSides);
+        final ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, mID);
+        final NBTTagCompound tNBT = new NBTTagCompound();
+
+        writeCoverNBT(tNBT, true);
+
         if (hasValidMetaTileEntity()) mMetaTileEntity.setItemNBT(tNBT);
         if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
 
@@ -791,15 +786,14 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                byte tSide =
-                        (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ) : aSide;
-                return (getCoverBehaviorAtSideNew(tSide).hasCoverGUI());
+                final byte tSide = (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ) : aSide;
+                return (getCoverInfoAtSide(tSide).hasCoverGUI());
             } else if (getCoverBehaviorAtSideNew(aSide).onCoverRightclickClient(aSide, this, aPlayer, aX, aY, aZ)) {
                 return true;
             }
         }
         if (isServerSide()) {
-            ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+            final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
                 if (getColorization() >= 0
                         && GT_Utility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
@@ -808,7 +802,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                     setColorization((byte) -1);
                     return true;
                 }
-                byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+                final byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList)) {
                     if (mMetaTileEntity.onWrenchRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
                         mMetaTileEntity.markDirty();
@@ -925,11 +919,11 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 byte coverSide = aSide;
                 if (getCoverIDAtSide(aSide) == 0) coverSide = tSide;
 
-                if (getCoverIDAtSide(coverSide) == 0) {
+                final CoverInfo coverInfo = getCoverInfoAtSide(coverSide);
+
+                if (coverInfo.getCoverID() == 0) {
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
-                        if (GregTech_API.getCoverBehaviorNew(tCurrentItem)
-                                        .isCoverPlaceable(coverSide, tCurrentItem, this)
-                                && mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
+                        if (GregTech_API.getCoverBehaviorNew(tCurrentItem).isCoverPlaceable(coverSide, tCurrentItem, this) && mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
                             setCoverItemAtSide(coverSide, tCurrentItem);
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
@@ -978,7 +972,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
         try {
             if (!aPlayer.isSneaking() && hasValidMetaTileEntity()) {
-                boolean handled = mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
+                final boolean handled = mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
                 if (handled) {
                     mMetaTileEntity.markDirty();
                 }

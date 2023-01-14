@@ -42,6 +42,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
@@ -137,11 +139,9 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
 
     public void registerCovers(IMultiBlockController controller) {
         for (byte i : ALL_VALID_SIDES) {
-            final int coverId = getCoverIDAtSide(i);
-            if (coverId != 0) {
-                if (getCoverBehaviorAtSideNew(i).getTickRate(i, coverId, getComplexCoverDataAtSide(i), this) > 0) {
-                    controller.registerCoveredPartOnSide(i, this);
-                }
+            final CoverInfo coverInfo = getCoverInfoAtSide(i);
+            if(coverInfo.isValid() && coverInfo.getTickRate() > 0) {
+                controller.registerCoveredPartOnSide(i, this);
             }
         }
     }
@@ -152,19 +152,16 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         // TODO: Filter on tickable covers
         final IMultiBlockController tTarget = getTarget(true);
         if (tTarget != null) {
-            final int coverId = getCoverIDAtSide(aSide);
-            if (coverId != 0) {
-                if (getCoverBehaviorAtSideNew(aSide).getTickRate(aSide, coverId, getComplexCoverDataAtSide(aSide), this)
-                        > 0) {
-                    tTarget.registerCoveredPartOnSide(aSide, this);
-                }
+            final CoverInfo coverInfo = getCoverInfoAtSide(aSide);
+            if(coverInfo.isValid() && coverInfo.getTickRate() > 0) {
+                tTarget.registerCoveredPartOnSide(aSide, this);
             }
         }
     }
 
     public void unregisterCovers(IMultiBlockController controller) {
         for (byte i : ALL_VALID_SIDES) {
-            if (getCoverIDAtSide(i) != 0) {
+            if (getCoverInfoAtSide(i).isValid()) {
                 controller.unregisterCoveredPartOnSide(i, this);
             }
         }
