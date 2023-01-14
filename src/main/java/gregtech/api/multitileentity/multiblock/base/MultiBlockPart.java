@@ -19,7 +19,9 @@ import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DropDownWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -688,7 +690,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public boolean hasGui(byte aSide) {
         // UIs only for specific mode(s)
-        if (modeSelected(ITEM_IN, ITEM_OUT, FLUID_IN, FLUID_OUT) && mFacing == aSide) return true;
+        if (modeSelected(ITEM_IN, ITEM_OUT, FLUID_IN, FLUID_OUT)) return true;
 
         return false;
     }
@@ -700,16 +702,50 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         }
         final IItemHandlerModifiable inv = controller.getInventoryForGUI(this);
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < inv.getSlots(); rows++) {
-            int columnsToMake = Math.min(inv.getSlots() - rows * 4, 4);
+        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
+            int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(new SlotWidget(inv, rows * 4 + column)
                         .setPos(column * 18, rows * 18)
                         .setSize(18, 18));
             }
         }
-        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
-        builder.widget(new ButtonWidget());
+        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 18));
+        builder.widget(new DropDownWidget()
+                .addDropDownItemsSimple(
+                        controller.getInventoryNames(this),
+                        (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
+                            if (buttonWidget.getName().equals("all")) {
+                                mLockedInventory = "";
+                            } else {
+                                mLockedInventory = buttonWidget.getName();
+                            }
+                            setSelected.run();
+                        }),
+                        true)
+                .setSelected(findIndexOfInventory(controller))  
+                .setExpandedMaxHeight(60)
+                .setDirection(DropDownWidget.Direction.DOWN)
+                .setPos(58, 5)
+                .setSize(60, 11))
+                .widget(new FakeSyncWidget.StringSyncer(() -> mLockedInventory, val -> mLockedInventory = val));
+    }
+
+    protected int findIndexOfInventory(final IMultiBlockController controller) {
+        final List<String> invNames = controller.getInventoryNames(this);
+        // Check if Inventory has been locked preempitily
+        if (mLockedInventory.equals("")) {
+            return 0;
+        }
+
+        int index = 0;
+        for (int i = 1; i < invNames.size(); i++) {
+            if (mLockedInventory.equals(invNames.get(i))) {
+                index = i;
+            }
+        }
+
+        return index;
     }
 
     protected void addFluidInventory(Builder builder, UIBuildContext buildContext) {
@@ -749,5 +785,24 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         }
         System.out.println("MultiBlockPart::createWindow");
         return super.createWindow(buildContext);
+    }
+
+    @Override
+    protected int getGUIHeight() {
+        if (modeSelected(ITEM_IN, ITEM_OUT)) {
+            return super.getGUIHeight() + 11;
+        }
+        return super.getGUIHeight();
+    }
+    @Override
+    public void addGregTechLogo(Builder builder) {
+        if (modeSelected(ITEM_IN, ITEM_OUT)) {
+            builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(152, 74));
+        } else {
+            super.addGregTechLogo(builder);
+        }
     }
 }

@@ -908,6 +908,16 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
+    public List<String> getInventoryNames(MultiBlockPart aPart) {
+        List<String> inventoryNames = new ArrayList<String>();
+        inventoryNames.add("all");
+        for (String invName : getMultiBlockInventory(aPart).keySet()) {
+            inventoryNames.add(invName);
+        }
+        return inventoryNames;
+    }
+
+    @Override
     public String getInventoryName(MultiBlockPart aPart) {
         final StringBuilder str = new StringBuilder();
         str.append(getInventoryName());
@@ -1007,6 +1017,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                                         false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
                                 .setBackground(
                                         true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                .addTooltip(getLocalName())
                                 .setPos(0, -20))
                         .addTabButton(new TabButton(1)
                                 .setBackground(
@@ -1066,8 +1077,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     protected Widget getItemInventoryInputGUI() {
         final IItemHandlerModifiable inv = getInventoriesForInput();
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < inv.getSlots(); rows++) {
-            int columnsToMake = Math.min(inv.getSlots() - rows * 4, 4);
+        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
+            int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(new SlotWidget(inv, rows * 4 + column)
                         .setPos(column * 18, rows * 18)
@@ -1080,8 +1091,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     protected Widget getItemInventoryOutputGUI() {
         final IItemHandlerModifiable inv = getInventoriesForOutput();
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < inv.getSlots(); rows++) {
-            int columnsToMake = Math.min(inv.getSlots() - rows * 4, 4);
+        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
+            int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(new SlotWidget(inv, rows * 4 + column)
                         .setPos(column * 18, rows * 18)
