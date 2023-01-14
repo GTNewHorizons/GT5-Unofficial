@@ -990,8 +990,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public boolean onRightClick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
-        GT_UIInfos.openGTTileEntityUI(this, aPlayer);
+    public boolean hasGui(byte aSide) {
         return true;
     }
 
