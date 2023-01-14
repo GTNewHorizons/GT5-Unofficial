@@ -3347,7 +3347,15 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(Materials.Silver);
         nanite.mGeneratedItems.add(Materials.TranscendentMetal);
         nanite.mGeneratedItems.add(Materials.Neutronium);
+        nanite.mGeneratedItems.add(Materials.WhiteDwarfMatter);
         // -----
+
+        gear.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingot.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        toolHeadHammer.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        frame.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        frameGt.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);

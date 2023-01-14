@@ -102,7 +102,11 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
 
             RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Plate.get(0L), aMaterial.getMolten(L), aMaterial.getPlates(1), 32, 8);
+                    ItemList.Shape_Mold_Plate.get(0L),
+                    aMaterial.getMolten(L),
+                    aMaterial.getPlates(1),
+                    32,
+                    calculateRecipeEU(aMaterial, 8));
         }
 
         GT_ModHandler.addCraftingRecipe(
