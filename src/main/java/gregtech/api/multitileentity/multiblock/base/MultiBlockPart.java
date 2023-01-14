@@ -19,6 +19,8 @@ import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DropDownWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -74,6 +76,9 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     protected int mAllowedModes = NOTHING; // BITMASK - Modes allowed for this part
     protected byte mMode = 0; // Mode selected for this part
 
+    protected String mLockedInventory = GT_Values.E;
+    protected int mLockedInventoryIndex = 0;
+
     /**
      * What Part Tier is this part?  All Basic Casings are Tier 1, and will allow:
      *  Energy, Item, Fluid input/output.  Some of the more advanced modes can be set to require a higher tier part.
@@ -83,7 +88,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     }
 
     public String getLockedInventory() {
-        return null;
+        return mLockedInventory.equals("") ? null : mLockedInventory;
     }
 
     public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
@@ -182,6 +187,12 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
             mTargetPos = new ChunkCoordinates(
                     aNBT.getInteger(NBT.TARGET_X), aNBT.getShort(NBT.TARGET_Y), aNBT.getInteger(NBT.TARGET_Z));
         }
+        if (aNBT.hasKey(NBT.LOCKED_INVENTORY)) {
+            mLockedInventory = aNBT.getString(NBT.LOCKED_INVENTORY);
+        }
+        if (aNBT.hasKey(NBT.LOCKED_INVENTORY_INDEX)) {
+            mLockedInventoryIndex = aNBT.getInteger(NBT.LOCKED_INVENTORY_INDEX);
+        }
     }
 
     @Override
@@ -193,6 +204,12 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
             aNBT.setInteger(NBT.TARGET_X, mTargetPos.posX);
             aNBT.setShort(NBT.TARGET_Y, (short) mTargetPos.posY);
             aNBT.setInteger(NBT.TARGET_Z, mTargetPos.posZ);
+        }
+        if (mLockedInventory != null) {
+            aNBT.setString(NBT.LOCKED_INVENTORY, mLockedInventory);
+        }
+        if (mLockedInventoryIndex != 0) {
+            aNBT.setInteger(NBT.LOCKED_INVENTORY_INDEX, mLockedInventoryIndex);
         }
     }
 
@@ -729,7 +746,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public boolean hasGui(byte aSide) {
         // UIs only for specific mode(s)
-        if (modeSelected(ITEM_IN, ITEM_OUT, FLUID_IN, FLUID_OUT) && mFacing == aSide) return true;
+        if (modeSelected(ITEM_IN, ITEM_OUT, FLUID_IN, FLUID_OUT)) return true;
 
         return false;
     }
@@ -741,15 +758,42 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         }
         final IItemHandlerModifiable inv = controller.getInventoryForGUI(this);
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < inv.getSlots(); rows++) {
-            int columnsToMake = Math.min(inv.getSlots() - rows * 4, 4);
+        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
+            int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(new SlotWidget(inv, rows * 4 + column)
                         .setPos(column * 18, rows * 18)
                         .setSize(18, 18));
             }
         }
-        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
+        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 18));
+        DropDownWidget dropDown = new DropDownWidget();
+        builder.widget(dropDown.addDropDownItemsSimple(
+                        controller.getInventoryNames(this),
+                        (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
+                            if (getNameOfInventoryFromIndex(controller, index).equals("all")) {
+                                mLockedInventory = GT_Values.E;
+                                mLockedInventoryIndex = 0;
+                            } else {
+                                mLockedInventory = getNameOfInventoryFromIndex(controller, index);
+                                mLockedInventoryIndex = index;
+                            }
+                            setSelected.run();
+                        }),
+                        true)
+                .setSelected(mLockedInventoryIndex)
+                .setExpandedMaxHeight(60)
+                .setDirection(DropDownWidget.Direction.DOWN)
+                .setPos(53, 5)
+                .setSize(70, 11));
+    }
+
+    protected String getNameOfInventoryFromIndex(final IMultiBlockController controller, int index) {
+        final List<String> invNames = controller.getInventoryNames(this);
+        if (index > invNames.size()) {
+            return invNames.get(0);
+        }
+        return invNames.get(index);
     }
 
     protected void addFluidInventory(Builder builder, UIBuildContext buildContext) {
@@ -789,5 +833,25 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         }
         System.out.println("MultiBlockPart::createWindow");
         return super.createWindow(buildContext);
+    }
+
+    @Override
+    protected int getGUIHeight() {
+        if (modeSelected(ITEM_IN, ITEM_OUT)) {
+            return super.getGUIHeight() + 11;
+        }
+        return super.getGUIHeight();
+    }
+
+    @Override
+    public void addGregTechLogo(Builder builder) {
+        if (modeSelected(ITEM_IN, ITEM_OUT)) {
+            builder.widget(new DrawableWidget()
+                    .setDrawable(getGUITextureSet().getGregTechLogo())
+                    .setSize(17, 17)
+                    .setPos(152, 74));
+        } else {
+            super.addGregTechLogo(builder);
+        }
     }
 }
