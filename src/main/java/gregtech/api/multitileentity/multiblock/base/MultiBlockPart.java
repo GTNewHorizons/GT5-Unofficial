@@ -139,7 +139,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         for (byte i : ALL_VALID_SIDES) {
             final int coverId = getCoverIDAtSide(i);
             if (coverId != 0) {
-                if(getCoverBehaviorAtSideNew(i).getTickRate(i, coverId, getComplexCoverDataAtSide(i), this) > 0) {
+                if (getCoverBehaviorAtSideNew(i).getTickRate(i, coverId, getComplexCoverDataAtSide(i), this) > 0) {
                     controller.registerCoveredPartOnSide(i, this);
                 }
             }
@@ -154,7 +154,8 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         if (tTarget != null) {
             final int coverId = getCoverIDAtSide(aSide);
             if (coverId != 0) {
-                if(getCoverBehaviorAtSideNew(aSide).getTickRate(aSide, coverId, getComplexCoverDataAtSide(aSide), this) > 0) {
+                if (getCoverBehaviorAtSideNew(aSide).getTickRate(aSide, coverId, getComplexCoverDataAtSide(aSide), this)
+                        > 0) {
                     tTarget.registerCoveredPartOnSide(aSide, this);
                 }
             }
