@@ -14,21 +14,18 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
+import com.gtnewhorizons.modularui.api.screen.*;
 import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.ExpandTab;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TabButton;
 import com.gtnewhorizons.modularui.common.widget.TabContainer;
-import com.gtnewhorizons.modularui.api.screen.*;
-
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
@@ -987,32 +984,83 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         GT_UIInfos.openGTTileEntityUI(this, aPlayer);
         return true;
     }
-    
+
+    @Override
+    protected void addTitleTextStyle(ModularWindow.Builder builder, String title) {
+        // leave empty
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(new DrawableWidget()
+                .setDrawable(getGUITextureSet().getGregTechLogo())
+                .setSize(17, 17)
+                .setPos(148, 60));
+    }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new TabContainer().addTabButton(new TabButton(0).setBackground(
-            false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-        .setBackground(
-            true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-        .setPos(0, -28))
-                .addTabButton(new TabButton(1)
-                .setBackground(
-                    false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                .setBackground(
-                    true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                .setPos(28, -28))
-                .addTabButton(new TabButton(2)
-                .setBackground(
-                    false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                .setBackground(
-                    true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                .setPos(56, -28))
-                .addPage(new MultiChildWidget().addChild(new DrawableWidget()
-                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                        .setPos(7, 4)
-                        .setSize(143, 75)))
-                .addPage(new MultiChildWidget().addChild(getItemInventoryInputGUI()))
-                .addPage(new MultiChildWidget().addChild(getItemInventoryOutputGUI())));
+        builder.widget(new TabContainer()
+                        .setButtonSize(20, 24)
+                        .addTabButton(new TabButton(0)
+                                .setBackground(
+                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                .setBackground(
+                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                .setPos(0, -20))
+                        .addTabButton(new TabButton(1)
+                                .setBackground(
+                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                .setBackground(
+                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                .setPos(20, -20))
+                        .addTabButton(new TabButton(2)
+                                .setBackground(
+                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                .setBackground(
+                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                .setPos(40, -20))
+                        .addTabButton(new TabButton(3)
+                                .setBackground(
+                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                .setBackground(
+                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                .setPos(60, -20))
+                        .addTabButton(new TabButton(4)
+                                .setBackground(
+                                        false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                .setBackground(
+                                        true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
+                                .setPos(80, -20))
+                        .addPage(new MultiChildWidget()
+                                .addChild(new DrawableWidget()
+                                        .setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                                        .setPos(7, 4)
+                                        .setSize(160, 75)))
+                        .addPage(new MultiChildWidget().addChild(getItemInventoryInputGUI()))
+                        .addPage(new MultiChildWidget().addChild(getItemInventoryOutputGUI()))
+                        .addPage(new MultiChildWidget().addChild(getFluidInventoryInputGUI()))
+                        .addPage(new MultiChildWidget().addChild(getFluidInventoryOutputGUI())))
+                .widget(new ItemDrawable(getStackForm(1))
+                        .asWidget()
+                        .setSize(16, 16)
+                        .setPos(2, -16))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_ITEM_IN)
+                        .setSize(16, 16)
+                        .setPos(22, -16))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_ITEM_OUT)
+                        .setSize(16, 16)
+                        .setPos(42, -16))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_FLUID_IN)
+                        .setSize(16, 16)
+                        .setPos(62, -16))
+                .widget(new DrawableWidget()
+                        .setDrawable(GT_UITextures.PICTURE_FLUID_OUT)
+                        .setSize(16, 16)
+                        .setPos(82, -16));
     }
 
     protected Widget getItemInventoryInputGUI() {
@@ -1042,10 +1090,11 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         }
         return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
     }
-    
+
     protected IItemHandlerModifiable getInventoriesForInput() {
         return new ListItemHandler(multiBlockInputInventory.values());
     }
+
     protected IItemHandlerModifiable getInventoriesForOutput() {
         return new ListItemHandler(multiBlockOutputInventory.values());
     }
@@ -1057,7 +1106,6 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             int columnsToMake = Math.min(tanks.length - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
-                fluidSlot.setInteraction(true, false);
                 scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
             }
         }
