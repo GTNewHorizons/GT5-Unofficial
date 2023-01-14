@@ -740,25 +740,11 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
                 .setSize(70, 11));
     }
 
-    protected int findIndexOfInventory(final IMultiBlockController controller) {
-        final List<String> invNames = controller.getInventoryNames(this);
-        // Check if Inventory has been locked preempitily
-        if (mLockedInventory == null || mLockedInventory.equals(GT_Values.E)) {
-            return 0;
-        }
-
-        int index = 0;
-        for (int i = 1; i < invNames.size(); i++) {
-            if (mLockedInventory.equals(invNames.get(i))) {
-                index = i;
-            }
-        }
-
-        return index;
-    }
-
     protected String getNameOfInventoryFromIndex(final IMultiBlockController controller, int index) {
         final List<String> invNames = controller.getInventoryNames(this);
+        if (index > invNames.size()) {
+            return invNames.get(0);
+        }
         return invNames.get(index);
     }
 
