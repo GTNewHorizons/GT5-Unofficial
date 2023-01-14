@@ -734,6 +734,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
         try {
             return allowRightclick(aPlayer) && onRightClick(aPlayer, aSide, aX, aY, aZ);
         } catch (Throwable e) {
+            GT_FML_LOGGER.error("onBlockActivated Failed", e);
             e.printStackTrace(GT_Log.err);
             return true;
         }
