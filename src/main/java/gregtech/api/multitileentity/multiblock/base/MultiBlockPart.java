@@ -21,7 +21,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DropDownWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -719,8 +718,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         }
         builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 18));
         DropDownWidget dropDown = new DropDownWidget();
-        builder.widget(dropDown
-                .addDropDownItemsSimple(
+        builder.widget(dropDown.addDropDownItemsSimple(
                         controller.getInventoryNames(this),
                         (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
                             if (getNameOfInventoryFromIndex(controller, index).equals("all")) {
@@ -733,7 +731,7 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
                             setSelected.run();
                         }),
                         true)
-                .setSelected(mLockedInventoryIndex)  
+                .setSelected(mLockedInventoryIndex)
                 .setExpandedMaxHeight(60)
                 .setDirection(DropDownWidget.Direction.DOWN)
                 .setPos(53, 5)
@@ -794,13 +792,14 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         }
         return super.getGUIHeight();
     }
+
     @Override
     public void addGregTechLogo(Builder builder) {
         if (modeSelected(ITEM_IN, ITEM_OUT)) {
             builder.widget(new DrawableWidget()
-                .setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(152, 74));
+                    .setDrawable(getGUITextureSet().getGregTechLogo())
+                    .setSize(17, 17)
+                    .setPos(152, 74));
         } else {
             super.addGregTechLogo(builder);
         }

@@ -1,9 +1,8 @@
 package gregtech.api.multitileentity.interfaces;
 
-import java.util.List;
-
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
