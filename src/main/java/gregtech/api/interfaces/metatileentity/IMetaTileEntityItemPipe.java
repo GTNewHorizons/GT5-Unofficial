@@ -1,11 +1,11 @@
 package gregtech.api.interfaces.metatileentity;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GT_Utility;
 import java.util.Map;
-
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 
 public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
     /**
@@ -78,7 +78,9 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
                                 if (tItemPipe instanceof BaseMetaPipeEntity) {
                                     final IMetaTileEntity tMetaTileEntity = tItemPipe.getMetaTileEntity();
                                     if (tMetaTileEntity instanceof IMetaTileEntityItemPipe
-                                            && tItemPipe.getCoverInfoAtSide(oppositeSide).letsItemsOut(-2)) {
+                                            && tItemPipe
+                                                    .getCoverInfoAtSide(oppositeSide)
+                                                    .letsItemsOut(-2)) {
                                         scanPipes(
                                                 (IMetaTileEntityItemPipe) tMetaTileEntity,
                                                 aMap,

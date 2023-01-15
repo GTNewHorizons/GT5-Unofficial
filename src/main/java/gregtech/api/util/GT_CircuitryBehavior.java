@@ -1,11 +1,11 @@
 package gregtech.api.util;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
-
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 
 /**
  * Redstone Circuit Control Code

@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
@@ -16,8 +18,6 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 
 public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControlsWorkCover {
 

@@ -1142,7 +1142,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                                     final IBeeModifier mod = BeeManager.beeRoot
                                             .getBeekeepingMode(getWorld())
                                             .getBeeModifier();
-                                    final float tmod = getTerritoryModifier(null, 1f) * mod.getTerritoryModifier(null, 1f);
+                                    final float tmod =
+                                            getTerritoryModifier(null, 1f) * mod.getTerritoryModifier(null, 1f);
                                     final int[] t = Arrays.stream(genome.getTerritory())
                                             .map(i -> (int) ((float) i * tmod))
                                             .toArray();

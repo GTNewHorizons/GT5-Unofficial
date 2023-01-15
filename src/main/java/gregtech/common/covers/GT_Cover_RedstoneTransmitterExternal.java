@@ -1,13 +1,13 @@
 package gregtech.common.covers;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.covers.IControlsWorkCover;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.ISerializableObject;
 import net.minecraft.item.ItemStack;
-
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 
 public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirelessBase {
 

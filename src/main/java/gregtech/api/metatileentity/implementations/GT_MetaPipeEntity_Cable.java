@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
@@ -47,8 +49,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 
 public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTileEntityCable {
     public final float mThickNess;

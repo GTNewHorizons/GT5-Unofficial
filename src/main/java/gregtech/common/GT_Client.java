@@ -330,7 +330,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if (tTile instanceof ICoverable) {
             if (showCoverConnections) {
                 for (byte tSide : ALL_VALID_SIDES) {
-                    if (((ICoverable) tTile).getCoverIDAtSide(tSide) > 0) tConnections = (byte) (tConnections + (1 << tSide));
+                    if (((ICoverable) tTile).getCoverIDAtSide(tSide) > 0)
+                        tConnections = (byte) (tConnections + (1 << tSide));
                 }
             } else if (tTile instanceof BaseMetaPipeEntity) tConnections = ((BaseMetaPipeEntity) tTile).mConnections;
         }

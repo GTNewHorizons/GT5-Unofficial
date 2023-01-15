@@ -1,9 +1,9 @@
 package gregtech.api.interfaces.covers;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 
 /**
  * Marker interface for covers that might control whether the work can start on a {@link IMachineProgress}.

@@ -1,5 +1,7 @@
 package gregtech.api.threads;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 import gregtech.GT_Mod;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -9,8 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 
 public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
     protected GT_Runnable_Cable_Update(World aWorld, ChunkCoordinates aCoords) {
