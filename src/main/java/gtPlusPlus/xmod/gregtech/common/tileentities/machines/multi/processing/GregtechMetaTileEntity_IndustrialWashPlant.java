@@ -100,7 +100,7 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialWashPlant.class)
-                                    .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
+                                    .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
                                     .casingIndex(getCasingTextureIndex())
                                     .dot(1)
                                     .buildAndChain(onElementPass(
