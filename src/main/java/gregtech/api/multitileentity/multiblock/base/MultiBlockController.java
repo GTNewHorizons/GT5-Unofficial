@@ -339,9 +339,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     private boolean tickCovers() {
-        for (byte i : ALL_VALID_SIDES) {
+        for (byte side : ALL_VALID_SIDES) {
             // TODO: Tick controller covers, if any
-            final LinkedList<WeakReference<IMultiBlockPart>> coveredParts = this.registeredCoveredParts.get(i);
+            final LinkedList<WeakReference<IMultiBlockPart>> coveredParts = this.registeredCoveredParts.get(side);
             final Iterator<WeakReference<IMultiBlockPart>> it = coveredParts.iterator();
             while (it.hasNext()) {
                 final IMultiBlockPart part = (it.next()).get();
@@ -349,7 +349,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                     it.remove();
                     continue;
                 }
-                if (!part.tickCoverAtSide(i, mTickTimer)) it.remove();
+                if (!part.tickCoverAtSide(side, mTickTimer)) it.remove();
             }
         }
 
@@ -560,7 +560,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                     mIcons = new IIcon[6];
                     Arrays.fill(mIcons, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex].getIcon());
                     //                    Arrays.fill(mIcons, getTexture(aCasing);
-                    //                    for (int i = 0; i < 6; i++) {
+                    //                    for (byte i : ALL_VALID_SIDES) {
                     //                        mIcons[i] = aCasing.getIcon(i, aMeta);
                     //                    }
                 }

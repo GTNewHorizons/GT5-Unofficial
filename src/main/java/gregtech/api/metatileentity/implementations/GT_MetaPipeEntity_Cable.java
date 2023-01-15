@@ -48,6 +48,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTileEntityCable {
     public final float mThickNess;
     public final Materials mMaterial;
@@ -600,22 +602,22 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public void reloadLocks() {
         final BaseMetaPipeEntity pipe = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         if (pipe.getNode() != null) {
-            for (byte i = 0; i < 6; i++) {
-                if (isConnectedAtSide(i)) {
-                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(i);
+            for (byte tSide : ALL_VALID_SIDES) {
+                if (isConnectedAtSide(tSide)) {
+                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(tSide);
                     if (coverInfo.getCoverBehavior() instanceof GT_Cover_None) continue;
                     if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
-                        pipe.addToLock(pipe, i);
+                        pipe.addToLock(pipe, tSide);
                     } else {
-                        pipe.removeFromLock(pipe, i);
+                        pipe.removeFromLock(pipe, tSide);
                     }
                 }
             }
         } else {
             boolean dontAllow = false;
-            for (byte i = 0; i < 6; i++) {
-                if (isConnectedAtSide(i)) {
-                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(i);
+            for (byte tSide : ALL_VALID_SIDES) {
+                if (isConnectedAtSide(tSide)) {
+                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(tSide);
                     if (coverInfo.getCoverBehavior() instanceof GT_Cover_None) continue;
 
                     if (!letsIn(coverInfo) || !letsOut(coverInfo)) {

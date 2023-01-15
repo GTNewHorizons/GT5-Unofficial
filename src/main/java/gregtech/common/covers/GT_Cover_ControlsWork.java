@@ -17,6 +17,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControlsWorkCover {
 
     /**
@@ -168,8 +170,8 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControls
     @Override
     public boolean isCoverPlaceable(byte aSide, ItemStack aStack, ICoverable aTileEntity) {
         if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
-        for (byte i = 0; i < 6; i++) {
-            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof IControlsWorkCover) {
+        for (byte tSide : ALL_VALID_SIDES) {
+            if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover) {
                 return false;
             }
         }

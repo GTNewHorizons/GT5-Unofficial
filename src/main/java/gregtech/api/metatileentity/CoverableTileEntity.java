@@ -186,7 +186,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     /**
-     * Returns false if the cover/tile is no longer valid
+     * Returns false if the tile is no longer valid after ticking the cover
      */
     public boolean tickCoverAtSide(byte aSide, long aTickTimer) {
         final CoverInfo coverInfo = getCoverInfoAtSide(aSide);
@@ -389,7 +389,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     protected void onBaseTEDestroyed() {
-        for (byte side = 0; side < 6; ++side) {
+        for (byte side : ALL_VALID_SIDES) {
             final CoverInfo coverInfo = getCoverInfoAtSide(side);
             if (coverInfo.isValid()) coverInfo.onBaseTEDestroyed();
         }

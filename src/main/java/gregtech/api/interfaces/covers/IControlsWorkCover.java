@@ -3,6 +3,8 @@ package gregtech.api.interfaces.covers;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 /**
  * Marker interface for covers that might control whether the work can start on a {@link IMachineProgress}.
  */
@@ -15,9 +17,9 @@ public interface IControlsWorkCover {
      * @return true if the cover is the first (side) one
      **/
     static boolean makeSureOnlyOne(byte aMySide, ICoverable aTileEntity) {
-        for (byte i = 0; i < 6; i++) {
-            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof IControlsWorkCover && i < aMySide) {
-                aTileEntity.dropCover(i, i, true);
+        for (byte tSide : ALL_VALID_SIDES) {
+            if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover && tSide < aMySide) {
+                aTileEntity.dropCover(tSide, tSide, true);
                 aTileEntity.markDirty();
                 return false;
             }

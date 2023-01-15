@@ -7,6 +7,8 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.ISerializableObject;
 import net.minecraft.item.ItemStack;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirelessBase {
 
     /**
@@ -53,8 +55,8 @@ public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirel
     @Override
     public boolean isCoverPlaceable(byte aSide, ItemStack aStack, ICoverable aTileEntity) {
         if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
-        for (byte i = 0; i < 6; i++) {
-            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof IControlsWorkCover) {
+        for (byte tSide : ALL_VALID_SIDES) {
+            if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover) {
                 return false;
             }
         }

@@ -1,5 +1,6 @@
 package gregtech.api.multitileentity;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.OFFX;
 import static gregtech.api.enums.GT_Values.OFFY;
 import static gregtech.api.enums.GT_Values.OFFZ;
@@ -456,8 +457,8 @@ public class MultiTileEntityBlock extends Block
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte i = 0; i < 6; i++) {
-                    final Block facadeBlock = tile.getCoverInfoAtSide(i).getFacadeBlock();
+                for (byte tSide : ALL_VALID_SIDES) {
+                    final Block facadeBlock = tile.getCoverInfoAtSide(tSide).getFacadeBlock();
                     if (facadeBlock != null) {
                         return facadeBlock;
                     }
@@ -480,8 +481,8 @@ public class MultiTileEntityBlock extends Block
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte i = 0; i < 6; i++) {
-                    final CoverInfo coverInfo = tile.getCoverInfoAtSide(i);
+                for (byte tSide : ALL_VALID_SIDES) {
+                    final CoverInfo coverInfo = tile.getCoverInfoAtSide(tSide);
                     final Block facadeBlock = coverInfo.getFacadeBlock();
                     if (facadeBlock != null) {
                         return coverInfo.getFacadeMeta();

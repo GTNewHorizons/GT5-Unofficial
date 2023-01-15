@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.Textures.BlockIcons.PIPE_RESTRICTOR;
 
 import gregtech.GT_Mod;
@@ -390,7 +391,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
         if (pipeCapacityCheck()) {
             final byte tOffset = (byte) getBaseMetaTileEntity().getRandomNumber(6);
             byte tSide = 0;
-            for (byte i = 0; i < 6; i++) {
+            for (byte i : ALL_VALID_SIDES) {
                 tSide = (byte) ((i + tOffset) % 6);
                 if (isConnectedAtSide(tSide)
                         && (isInventoryEmpty() || (tSide != mLastReceivedFrom || aSender != getBaseMetaTileEntity()))) {
