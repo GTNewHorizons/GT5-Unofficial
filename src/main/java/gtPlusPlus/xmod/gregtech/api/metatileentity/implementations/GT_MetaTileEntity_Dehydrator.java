@@ -6,14 +6,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.core.lib.CORE;
 
 @SuppressWarnings("deprecation")
@@ -32,9 +30,6 @@ public class GT_MetaTileEntity_Dehydrator extends GT_MetaTileEntity_BasicMachine
         sDehydratorOverlays[9] = new CustomIcon("basicmachines/chemical_bath/OVERLAY_FRONT_ACTIVE");
         // 3 8
     }
-
-    private GT_Recipe_Map xRecipes;
-    private int xTankCapacity;
 
     public GT_MetaTileEntity_Dehydrator(
             int aID, String aName, String aNameRegional, int aTier, String aDescription, int aTankCapacity) {
@@ -57,8 +52,6 @@ public class GT_MetaTileEntity_Dehydrator extends GT_MetaTileEntity_BasicMachine
                 0,
                 "",
                 null);
-        xRecipes = GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes;
-        xTankCapacity = aTankCapacity;
     }
 
     public GT_MetaTileEntity_Dehydrator(
@@ -89,20 +82,6 @@ public class GT_MetaTileEntity_Dehydrator extends GT_MetaTileEntity_BasicMachine
                 false,
                 false,
                 0);
-    }
-
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Dehydrator(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.xRecipes,
-                this.xTankCapacity,
-                this.mAmperage,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName);
     }
 
     @Override
