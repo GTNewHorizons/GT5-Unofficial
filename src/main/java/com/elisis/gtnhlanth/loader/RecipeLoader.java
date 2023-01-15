@@ -607,11 +607,11 @@ public class RecipeLoader {
         // BEGIN Cerium
         // Cerium-rich mixture + 3HCl = CeCl3 + Monazite (to allow cerium processing without bastnazite/monazite)
         GT_Values.RA.addChemicalRecipe(
-                WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 2),
+                WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 15),
                 null,
-                Materials.HydrochloricAcid.getFluid(3000),
-                Materials.Water.getFluid(3000),
-                WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 4),
+                Materials.HydrochloricAcid.getFluid(750),
+                Materials.Water.getFluid(750),
+                WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 1),
                 Materials.Monazite.getDust(1),
                 300,
                 450);
