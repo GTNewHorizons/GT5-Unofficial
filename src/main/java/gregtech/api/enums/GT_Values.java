@@ -257,8 +257,9 @@ public class GT_Values {
     /**
      * NBT String Keys
      */
-    public static class NBT {
+    public static final class NBT {
         public static final String COLOR = "gt.color", // Integer
+                COVERS = "gt.covers", // String
                 CUSTOM_NAME = "name", // String
                 DISPAY = "gt.display", // String
                 FACING = "gt.facing", // Byte

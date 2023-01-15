@@ -35,9 +35,8 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasModes;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -137,11 +136,9 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
 
     public void registerCovers(IMultiBlockController controller) {
         for (byte i : ALL_VALID_SIDES) {
-            final int coverId = getCoverIDAtSide(i);
-            if (coverId != 0) {
-                if (getCoverBehaviorAtSideNew(i).getTickRate(i, coverId, getComplexCoverDataAtSide(i), this) > 0) {
-                    controller.registerCoveredPartOnSide(i, this);
-                }
+            final CoverInfo coverInfo = getCoverInfoAtSide(i);
+            if (coverInfo.isValid() && coverInfo.getTickRate() > 0) {
+                controller.registerCoveredPartOnSide(i, this);
             }
         }
     }
@@ -152,19 +149,16 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         // TODO: Filter on tickable covers
         final IMultiBlockController tTarget = getTarget(true);
         if (tTarget != null) {
-            final int coverId = getCoverIDAtSide(aSide);
-            if (coverId != 0) {
-                if (getCoverBehaviorAtSideNew(aSide).getTickRate(aSide, coverId, getComplexCoverDataAtSide(aSide), this)
-                        > 0) {
-                    tTarget.registerCoveredPartOnSide(aSide, this);
-                }
+            final CoverInfo coverInfo = getCoverInfoAtSide(aSide);
+            if (coverInfo.isValid() && coverInfo.getTickRate() > 0) {
+                tTarget.registerCoveredPartOnSide(aSide, this);
             }
         }
     }
 
     public void unregisterCovers(IMultiBlockController controller) {
         for (byte i : ALL_VALID_SIDES) {
-            if (getCoverIDAtSide(i) != 0) {
+            if (getCoverInfoAtSide(i).isValid()) {
                 controller.unregisterCoveredPartOnSide(i, this);
             }
         }
@@ -465,13 +459,10 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity
         final IMultiBlockController controller = getTarget(true);
         if (controller == null) return GT_Values.emptyFluidTankInfo;
 
-        final GT_CoverBehaviorBase<?> tCover = getCoverBehaviorAtSideNew(aSide);
-        final int coverId = getCoverIDAtSide(aSide);
-        final ISerializableObject complexCoverData = getComplexCoverDataAtSide(aSide);
+        final CoverInfo coverInfo = getCoverInfoAtSide(aSide);
 
-        if ((controller.isLiquidInput(aSide) && tCover.letsFluidIn(aSide, coverId, complexCoverData, null, controller))
-                || (controller.isLiquidOutput(aSide)
-                        && tCover.letsFluidOut(aSide, coverId, complexCoverData, null, controller)))
+        if ((controller.isLiquidInput(aSide) && coverInfo.letsFluidIn(null, controller))
+                || (controller.isLiquidOutput(aSide) && coverInfo.letsFluidOut(null, controller)))
             return controller.getTankInfo(this, aDirection);
 
         return GT_Values.emptyFluidTankInfo;

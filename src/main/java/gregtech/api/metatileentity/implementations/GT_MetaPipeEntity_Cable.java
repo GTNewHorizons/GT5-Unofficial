@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
@@ -26,6 +28,7 @@ import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
+import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.GT_Cover_SolarPanel;
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.tile.IEnergyEmitter;
@@ -231,14 +234,8 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     @Override
     public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
         if (!isConnectedAtSide(aSide) && aSide != 6) return 0;
-        if (!getBaseMetaTileEntity()
-                .getCoverBehaviorAtSideNew(aSide)
-                .letsEnergyIn(
-                        aSide,
-                        getBaseMetaTileEntity().getCoverIDAtSide(aSide),
-                        getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
-                        getBaseMetaTileEntity())) return 0;
-        HashSet<TileEntity> nul = null;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).letsEnergyIn()) return 0;
+        final HashSet<TileEntity> nul = null;
         return transferElectricity(aSide, aVoltage, aAmperage, nul);
     }
 
@@ -252,12 +249,12 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     @Override
     public long transferElectricity(byte aSide, long aVoltage, long aAmperage, HashSet<TileEntity> aAlreadyPassedSet) {
         if (!getBaseMetaTileEntity().isServerSide() || !isConnectedAtSide(aSide) && aSide != 6) return 0;
-        BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        final BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         if (!(tBase.getNode() instanceof PowerNode)) return 0;
-        PowerNode tNode = (PowerNode) tBase.getNode();
+        final PowerNode tNode = (PowerNode) tBase.getNode();
         if (tNode != null) {
             int tPlace = 0;
-            Node[] tToPower = new Node[tNode.mConsumers.size()];
+            final Node[] tToPower = new Node[tNode.mConsumers.size()];
             if (tNode.mHadVoltage) {
                 for (ConsumerNode consumer : tNode.mConsumers) {
                     if (consumer.needsEnergy()) tToPower[tPlace++] = consumer;
@@ -356,6 +353,16 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
             ISerializableObject aCoverVariable,
             ICoverable aTileEntity) {
         return coverBehavior.letsEnergyOut(aSide, aCoverID, aCoverVariable, aTileEntity);
+    }
+
+    @Override
+    public boolean letsIn(CoverInfo coverInfo) {
+        return coverInfo.letsEnergyIn();
+    }
+
+    @Override
+    public boolean letsOut(CoverInfo coverInfo) {
+        return coverInfo.letsEnergyOut();
     }
 
     @Override
@@ -472,8 +479,8 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
     @Override
     public String[] getInfoData() {
-        BaseMetaPipeEntity base = (BaseMetaPipeEntity) getBaseMetaTileEntity();
-        PowerNodePath path = (PowerNodePath) base.getNodePath();
+        final BaseMetaPipeEntity base = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        final PowerNodePath path = (PowerNodePath) base.getNodePath();
         long amps = 0;
         long volts = 0;
         if (path != null) {
@@ -562,7 +569,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
             Entity collider) {
         super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
         if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x2) != 0) {
-            AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+            final AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
             if (inputAABB.intersectsWith(aabb)) outputAABB.add(aabb);
         }
     }
@@ -593,32 +600,27 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
     @Override
     public void reloadLocks() {
-        BaseMetaPipeEntity pipe = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        final BaseMetaPipeEntity pipe = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         if (pipe.getNode() != null) {
-            for (byte i = 0; i < 6; i++) {
-                if (isConnectedAtSide(i)) {
-                    final GT_CoverBehaviorBase<?> coverBehavior = pipe.getCoverBehaviorAtSideNew(i);
-                    if (coverBehavior instanceof GT_Cover_None) continue;
-                    final int coverId = pipe.getCoverIDAtSide(i);
-                    ISerializableObject coverData = pipe.getComplexCoverDataAtSide(i);
-                    if (!letsIn(coverBehavior, i, coverId, coverData, pipe)
-                            || !letsOut(coverBehavior, i, coverId, coverData, pipe)) {
-                        pipe.addToLock(pipe, i);
+            for (byte tSide : ALL_VALID_SIDES) {
+                if (isConnectedAtSide(tSide)) {
+                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(tSide);
+                    if (coverInfo.getCoverBehavior() instanceof GT_Cover_None) continue;
+                    if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
+                        pipe.addToLock(pipe, tSide);
                     } else {
-                        pipe.removeFromLock(pipe, i);
+                        pipe.removeFromLock(pipe, tSide);
                     }
                 }
             }
         } else {
             boolean dontAllow = false;
-            for (byte i = 0; i < 6; i++) {
-                if (isConnectedAtSide(i)) {
-                    final GT_CoverBehaviorBase<?> coverBehavior = pipe.getCoverBehaviorAtSideNew(i);
-                    if (coverBehavior instanceof GT_Cover_None) continue;
-                    final int coverId = pipe.getCoverIDAtSide(i);
-                    ISerializableObject coverData = pipe.getComplexCoverDataAtSide(i);
-                    if (!letsIn(coverBehavior, i, coverId, coverData, pipe)
-                            || !letsOut(coverBehavior, i, coverId, coverData, pipe)) {
+            for (byte tSide : ALL_VALID_SIDES) {
+                if (isConnectedAtSide(tSide)) {
+                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(tSide);
+                    if (coverInfo.getCoverBehavior() instanceof GT_Cover_None) continue;
+
+                    if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
                         dontAllow = true;
                     }
                 }

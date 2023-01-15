@@ -70,9 +70,9 @@ public class GT_UIInfos {
                     side,
                     UIBuilder.of()
                             .container((player, world, x, y, z) -> {
-                                TileEntity te = world.getTileEntity(x, y, z);
+                                final TileEntity te = world.getTileEntity(x, y, z);
                                 if (!(te instanceof ICoverable)) return null;
-                                ICoverable gtTileEntity = (ICoverable) te;
+                                final ICoverable gtTileEntity = (ICoverable) te;
                                 GT_CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
                                 return createCoverContainer(
                                         player,
@@ -84,10 +84,10 @@ public class GT_UIInfos {
                             })
                             .gui((player, world, x, y, z) -> {
                                 if (!world.isRemote) return null;
-                                TileEntity te = world.getTileEntity(x, y, z);
+                                final TileEntity te = world.getTileEntity(x, y, z);
                                 if (!(te instanceof ICoverable)) return null;
-                                ICoverable gtTileEntity = (ICoverable) te;
-                                GT_CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
+                                final ICoverable gtTileEntity = (ICoverable) te;
+                                final GT_CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
                                 return createCoverGuiContainer(
                                         player,
                                         cover::createWindow,

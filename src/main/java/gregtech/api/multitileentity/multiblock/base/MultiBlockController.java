@@ -339,9 +339,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     private boolean tickCovers() {
-        for (byte i : ALL_VALID_SIDES) {
+        for (byte side : ALL_VALID_SIDES) {
             // TODO: Tick controller covers, if any
-            final LinkedList<WeakReference<IMultiBlockPart>> coveredParts = this.registeredCoveredParts.get(i);
+            final LinkedList<WeakReference<IMultiBlockPart>> coveredParts = this.registeredCoveredParts.get(side);
             final Iterator<WeakReference<IMultiBlockPart>> it = coveredParts.iterator();
             while (it.hasNext()) {
                 final IMultiBlockPart part = (it.next()).get();
@@ -349,7 +349,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                     it.remove();
                     continue;
                 }
-                if (!part.tickCoverAtSide(i, mTickTimer)) it.remove();
+                if (!part.tickCoverAtSide(side, mTickTimer)) it.remove();
             }
         }
 
@@ -560,7 +560,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                     mIcons = new IIcon[6];
                     Arrays.fill(mIcons, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex].getIcon());
                     //                    Arrays.fill(mIcons, getTexture(aCasing);
-                    //                    for (int i = 0; i < 6; i++) {
+                    //                    for (byte i : ALL_VALID_SIDES) {
                     //                        mIcons[i] = aCasing.getIcon(i, aMeta);
                     //                    }
                 }
@@ -964,11 +964,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public List<String> getInventoryNames(MultiBlockPart aPart) {
-        List<String> inventoryNames = new ArrayList<String>();
+        final List<String> inventoryNames = new ArrayList<>();
         inventoryNames.add("all");
-        for (String invName : getMultiBlockInventory(aPart).keySet()) {
-            inventoryNames.add(invName);
-        }
+        inventoryNames.addAll(getMultiBlockInventory(aPart).keySet());
         return inventoryNames;
     }
 
@@ -1132,7 +1130,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         final IItemHandlerModifiable inv = getInventoriesForInput();
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
-            int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
+            final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(new SlotWidget(inv, rows * 4 + column)
                         .setPos(column * 18, rows * 18)
@@ -1146,7 +1144,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         final IItemHandlerModifiable inv = getInventoriesForOutput();
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
-            int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
+            final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(new SlotWidget(inv, rows * 4 + column)
                         .setPos(column * 18, rows * 18)
@@ -1168,9 +1166,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         final IFluidTank[] tanks = mTanksInput;
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * 4 < tanks.length; rows++) {
-            int columnsToMake = Math.min(tanks.length - rows * 4, 4);
+            final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+                final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
                 scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
             }
         }
@@ -1181,9 +1179,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         final IFluidTank[] tanks = mTanksOutput;
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * 4 < tanks.length; rows++) {
-            int columnsToMake = Math.min(tanks.length - rows * 4, 4);
+            final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+                final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
                 fluidSlot.setInteraction(true, false);
                 scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
             }
