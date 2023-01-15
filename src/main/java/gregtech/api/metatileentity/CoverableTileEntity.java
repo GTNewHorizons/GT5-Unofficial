@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.NW;
@@ -22,7 +21,6 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -82,6 +80,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         GregTech_API.sNoBehavior,
         GregTech_API.sNoBehavior
     };
+
     @Deprecated
     protected int[] mCoverSides = new int[] {0, 0, 0, 0, 0, 0};
 
@@ -121,8 +120,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         if (aNBT.hasKey(GT_Values.NBT.COVERS)) {
             readCoverInfoNBT(aNBT);
-        }
-        else if (aNBT.hasKey("mCoverSides")) {
+        } else if (aNBT.hasKey("mCoverSides")) {
             readLegacyCoverInfoNBT(aNBT);
         }
     }
@@ -247,8 +245,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (worldObj == null || !worldObj.isRemote) return;
         for (byte i : ALL_VALID_SIDES) {
             final CoverInfo coverInfo = getCoverInfoAtSide(i);
-            if (coverInfo.isDataNeededOnClient())
-                NW.sendToServer(new GT_Packet_RequestCoverData(coverInfo, this));
+            if (coverInfo.isDataNeededOnClient()) NW.sendToServer(new GT_Packet_RequestCoverData(coverInfo, this));
         }
     }
 
@@ -291,16 +288,14 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public void setCoverDataAtSide(byte aSide, ISerializableObject aData) {
         final CoverInfo coverInfo = getCoverInfoAtSide(aSide);
-        if (coverInfo.isValid() && coverInfo.getCoverBehavior().cast(aData) != null)
-            coverInfo.setCoverData(aData);
+        if (coverInfo.isValid() && coverInfo.getCoverBehavior().cast(aData) != null) coverInfo.setCoverData(aData);
     }
 
     @Override
     @Deprecated
     public GT_CoverBehavior getCoverBehaviorAtSide(byte aSide) {
         final GT_CoverBehaviorBase<?> behavior = getCoverInfoAtSide(aSide).getCoverBehavior();
-        if (behavior instanceof GT_CoverBehavior)
-            return (GT_CoverBehavior) behavior;
+        if (behavior instanceof GT_CoverBehavior) return (GT_CoverBehavior) behavior;
         return GregTech_API.sNoBehavior;
     }
 
@@ -350,14 +345,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     public void setCoverInfoAtSide(byte aSide, CoverInfo coverInfo) {
-        if (aSide >= 0 && aSide < 6)
-            coverInfos[aSide] = coverInfo;
+        if (aSide >= 0 && aSide < 6) coverInfos[aSide] = coverInfo;
     }
 
+    @Override
     public CoverInfo getCoverInfoAtSide(byte aSide) {
         if (aSide >= 0 && aSide < 6) {
-            if (coverInfos[aSide] == null)
-                coverInfos[aSide] = new CoverInfo(aSide, this);
+            if (coverInfos[aSide] == null) coverInfos[aSide] = new CoverInfo(aSide, this);
             return coverInfos[aSide];
         }
         return null;
@@ -489,19 +483,20 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public void receiveCoverData(byte aCoverSide, int aCoverID, int aCoverData) {
         if (aCoverSide < 0 || aCoverSide >= 6) return;
         final CoverInfo oldCoverInfo = getCoverInfoAtSide(aCoverSide);
-        if(!oldCoverInfo.isValid()) return;
+        if (!oldCoverInfo.isValid()) return;
 
         setCoverIDAtSideNoUpdate(aCoverSide, aCoverID);
         setCoverDataAtSide(aCoverSide, aCoverData);
     }
 
     @Override
-    public void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
+    public void receiveCoverData(
+            byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
         if (aCoverSide < 0 || aCoverSide >= 6) return;
 
         final CoverInfo oldCoverInfo = getCoverInfoAtSide(aCoverSide);
 
-        if(!oldCoverInfo.isValid()) return;
+        if (!oldCoverInfo.isValid()) return;
         oldCoverInfo.preDataChanged(aCoverID, aCoverData);
         setCoverIDAtSideNoUpdate(aCoverSide, aCoverID, aCoverData);
 
@@ -532,18 +527,19 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final CoverInfo coverInfo = new CoverInfo(this, tNBT);
-            if(!coverInfo.isValid() || coverInfo.getCoverBehavior() == GregTech_API.sNoBehavior) continue;
+            if (!coverInfo.isValid() || coverInfo.getCoverBehavior() == GregTech_API.sNoBehavior) continue;
 
             final ItemStack coverStack = coverInfo.getDisplayStack();
             if (coverStack != null) {
                 currenttip.add(StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.cover",
-                    currentFacing == coverInfo.getSide()
-                    ? StatCollector.translateToLocal("GT5U.waila.cover.current_facing")
-                    : StatCollector.translateToLocal("GT5U.interface.coverTabs."
-                                                         + ForgeDirection.getOrientation(coverInfo.getSide()).toString().toLowerCase()),
-                    coverStack.getDisplayName()
-                ));
+                        "GT5U.waila.cover",
+                        currentFacing == coverInfo.getSide()
+                                ? StatCollector.translateToLocal("GT5U.waila.cover.current_facing")
+                                : StatCollector.translateToLocal("GT5U.interface.coverTabs."
+                                        + ForgeDirection.getOrientation(coverInfo.getSide())
+                                                .toString()
+                                                .toLowerCase()),
+                        coverStack.getDisplayName()));
                 final String behaviorDesc = coverInfo.getBehaviorDescription();
                 if (!Objects.equals(behaviorDesc, E)) currenttip.add(behaviorDesc);
             }
@@ -574,12 +570,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final CoverInfo coverInfo = new CoverInfo(null, tNBT);
-            if(!coverInfo.isValid() || coverInfo.getCoverBehavior() == GregTech_API.sNoBehavior) continue;
+            if (!coverInfo.isValid() || coverInfo.getCoverBehavior() == GregTech_API.sNoBehavior) continue;
 
             final ItemStack coverStack = coverInfo.getDisplayStack();
             if (coverStack != null) {
                 aList.add(String.format(
-                    "Cover on %s side: %s", getTranslation(FACES[coverInfo.getSide()]), coverStack.getDisplayName()));
+                        "Cover on %s side: %s",
+                        getTranslation(FACES[coverInfo.getSide()]), coverStack.getDisplayName()));
             }
         }
 
@@ -644,12 +641,21 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
                                     if (getCoverBehaviorAtSideNew(side).hasCoverGUI()) {
                                         if (isHovering()) {
-                                            backgrounds.add(flipHorizontally ? tabIconSet.getCoverTabHighlightFlipped() : tabIconSet.getCoverTabHighlight());
+                                            backgrounds.add(
+                                                    flipHorizontally
+                                                            ? tabIconSet.getCoverTabHighlightFlipped()
+                                                            : tabIconSet.getCoverTabHighlight());
                                         } else {
-                                            backgrounds.add(flipHorizontally ? tabIconSet.getCoverTabNormalFlipped() : tabIconSet.getCoverTabNormal());
+                                            backgrounds.add(
+                                                    flipHorizontally
+                                                            ? tabIconSet.getCoverTabNormalFlipped()
+                                                            : tabIconSet.getCoverTabNormal());
                                         }
                                     } else {
-                                        backgrounds.add(flipHorizontally ? tabIconSet.getCoverTabDisabledFlipped() : tabIconSet.getCoverTabDisabled());
+                                        backgrounds.add(
+                                                flipHorizontally
+                                                        ? tabIconSet.getCoverTabDisabledFlipped()
+                                                        : tabIconSet.getCoverTabDisabled());
                                     }
                                     return backgrounds.toArray(new IDrawable[] {});
                                 }
@@ -686,7 +692,12 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final List<String> tooltip = coverItem.getTooltip(Minecraft.getMinecraft().thePlayer, true);
         for (int i = 0; i < tooltip.size(); i++) {
             if (i == 0) {
-                tooltip.set(0, (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY) + StatCollector.translateToLocal(SIDE_TOOLTIPS[side]) + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET) + tooltip.get(0));
+                tooltip.set(
+                        0,
+                        (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
+                                + StatCollector.translateToLocal(SIDE_TOOLTIPS[side])
+                                + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
+                                + tooltip.get(0));
             } else {
                 tooltip.set(i, EnumChatFormatting.GRAY + tooltip.get(i));
             }
@@ -705,7 +716,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                     getWorld().provider.dimensionId,
                     widget.getContext().getPlayer().getEntityId(),
                     0);
-            GT_Values.NW.sendToPlayer(packet, (EntityPlayerMP) widget.getContext().getPlayer());
+            GT_Values.NW.sendToPlayer(
+                    packet, (EntityPlayerMP) widget.getContext().getPlayer());
         }
     }
 }

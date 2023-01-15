@@ -34,6 +34,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.covers.CoverInfo;
 import gregtech.common.render.GT_Renderer_Block;
 import gregtech.common.render.IRenderedBlock;
 import java.util.ArrayList;
@@ -450,16 +451,13 @@ public class MultiTileEntityBlock extends Block
             final byte aSide = (byte) side;
             final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
-                final Block facadeBlock = tile.getCoverBehaviorAtSideNew(aSide)
-                        .getFacadeBlock(
-                                aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
+                final Block facadeBlock = tile.getCoverInfoAtSide(aSide).getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
                 for (byte i = 0; i < 6; i++) {
-                    final Block facadeBlock = tile.getCoverBehaviorAtSideNew(i)
-                            .getFacadeBlock(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                    final Block facadeBlock = tile.getCoverInfoAtSide(i).getFacadeBlock();
                     if (facadeBlock != null) {
                         return facadeBlock;
                     }
@@ -476,22 +474,17 @@ public class MultiTileEntityBlock extends Block
             final byte aSide = (byte) side;
             final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
-                final Block facadeBlock = tile.getCoverBehaviorAtSideNew(aSide)
-                        .getFacadeBlock(
-                                aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
-                if (facadeBlock != null)
-                    return tile.getCoverBehaviorAtSideNew(aSide)
-                            .getFacadeMeta(
-                                    aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
+                final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
+                final Block facadeBlock = coverInfo.getFacadeBlock();
+                if (facadeBlock != null) return coverInfo.getFacadeMeta();
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
                 for (byte i = 0; i < 6; i++) {
-                    final Block facadeBlock = tile.getCoverBehaviorAtSideNew(i)
-                            .getFacadeBlock(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                    final CoverInfo coverInfo = tile.getCoverInfoAtSide(i);
+                    final Block facadeBlock = coverInfo.getFacadeBlock();
                     if (facadeBlock != null) {
-                        return tile.getCoverBehaviorAtSideNew(i)
-                                .getFacadeMeta(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                        return coverInfo.getFacadeMeta();
                     }
                 }
             }

@@ -331,8 +331,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         if (aSide == GT_Values.SIDE_UNKNOWN) return true;
         if (aSide >= 0 && aSide < 6) {
             if (isInvalid()) return false;
-            if (!getCoverBehaviorAtSideNew(aSide)
-                    .letsEnergyIn(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this)) return false;
+            if (!getCoverInfoAtSide(aSide).letsEnergyIn()) return false;
             if (isEnetInput()) return isEnergyInputSide(aSide);
         }
         return false;
@@ -343,9 +342,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         if (aSide == GT_Values.SIDE_UNKNOWN) return true;
         if (aSide >= 0 && aSide < 6) {
             if (isInvalid()) return false;
-            if (!getCoverBehaviorAtSideNew(aSide)
-                    .letsEnergyOut(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
-                return false;
+            if (!getCoverInfoAtSide(aSide).letsEnergyOut()) return false;
             if (isEnetOutput()) return isEnergyOutputSide(aSide);
         }
         return false;

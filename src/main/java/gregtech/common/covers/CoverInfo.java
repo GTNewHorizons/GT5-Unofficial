@@ -10,10 +10,11 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import java.lang.ref.WeakReference;
-
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
 
 public final class CoverInfo {
     private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d";
@@ -146,6 +147,7 @@ public final class CoverInfo {
     public void preDataChanged(int aCoverID, ISerializableObject aCoverData) {
         getCoverBehavior().preDataChanged(coverSide, coverID, aCoverID, coverData, aCoverData, coveredTile.get());
     }
+
     public void onDataChanged() {
         getCoverBehavior().onDataChanged(coverSide, coverID, coverData, coveredTile.get());
     }
@@ -155,8 +157,13 @@ public final class CoverInfo {
     }
 
     public ModularWindow createWindow(EntityPlayer player) {
-        final GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(player, coverID, coverSide, coveredTile.get(), true);
+        final GT_CoverUIBuildContext buildContext =
+                new GT_CoverUIBuildContext(player, coverID, coverSide, coveredTile.get(), true);
         return getCoverBehavior().createWindow(buildContext);
+    }
+
+    public boolean isGUIClickable() {
+        return getCoverBehavior().isGUIClickable(coverSide, coverID, coverData, coveredTile.get());
     }
 
     public boolean hasCoverGUI() {
@@ -165,5 +172,63 @@ public final class CoverInfo {
 
     public boolean useModularUI() {
         return getCoverBehavior().useModularUI();
+    }
+
+    public boolean letsItemsIn(int aSlot) {
+        return getCoverBehavior().letsItemsIn(coverSide, coverID, coverData, aSlot, coveredTile.get());
+    }
+
+    public boolean letsItemsOut(int aSlot) {
+        return getCoverBehavior().letsItemsOut(coverSide, coverID, coverData, aSlot, coveredTile.get());
+    }
+
+    public boolean letsFluidIn(Fluid aFluid) {
+        return letsFluidIn(aFluid, coveredTile.get());
+    }
+
+    public boolean letsFluidOut(Fluid aFluid) {
+        return letsFluidOut(aFluid, coveredTile.get());
+    }
+
+    public boolean letsFluidIn(Fluid aFluid, ICoverable tile) {
+        return getCoverBehavior().letsFluidIn(coverSide, coverID, coverData, aFluid, tile);
+    }
+
+    public boolean letsFluidOut(Fluid aFluid, ICoverable tile) {
+        return getCoverBehavior().letsFluidOut(coverSide, coverID, coverData, aFluid, tile);
+    }
+
+    public boolean letsEnergyIn() {
+        return getCoverBehavior().letsEnergyIn(coverSide, coverID, coverData, coveredTile.get());
+    }
+
+    public boolean letsEnergyOut() {
+        return getCoverBehavior().letsEnergyOut(coverSide, coverID, coverData, coveredTile.get());
+    }
+
+    public boolean alwaysLookConnected() {
+        return getCoverBehavior().alwaysLookConnected(coverSide, coverID, coverData, coveredTile.get());
+    }
+
+    public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        return getCoverBehavior()
+                .onCoverRightClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer, aX, aY, aZ);
+    }
+
+    public boolean onCoverShiftRightClick(EntityPlayer aPlayer) {
+        return getCoverBehavior().onCoverShiftRightClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer);
+    }
+
+    public ISerializableObject onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        return getCoverBehavior()
+                .onCoverScrewdriverClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer, aX, aY, aZ);
+    }
+
+    public Block getFacadeBlock() {
+        return getCoverBehavior().getFacadeBlock(coverSide, coverID, coverData, coveredTile.get());
+    }
+
+    public int getFacadeMeta() {
+        return getCoverBehavior().getFacadeMeta(coverSide, coverID, coverData, coveredTile.get());
     }
 }

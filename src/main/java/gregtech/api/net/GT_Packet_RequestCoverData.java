@@ -39,6 +39,7 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
         this.side = info.getSide();
         this.coverID = info.getCoverID();
     }
+
     public GT_Packet_RequestCoverData(int mX, short mY, int mZ, byte coverSide, int coverID) {
         super(false);
         this.mX = mX;

@@ -22,9 +22,8 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import java.util.*;
-
 import gregtech.common.covers.CoverInfo;
+import java.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -786,7 +785,8 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                final byte tSide = (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ) : aSide;
+                final byte tSide =
+                        (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ) : aSide;
                 return (getCoverInfoAtSide(tSide).hasCoverGUI());
             } else if (getCoverBehaviorAtSideNew(aSide).onCoverRightclickClient(aSide, this, aPlayer, aX, aY, aZ)) {
                 return true;
@@ -817,16 +817,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
                             setCoverDataAtSide(
                                     tSide,
-                                    getCoverBehaviorAtSideNew(tSide)
-                                            .onCoverScrewdriverClick(
-                                                    tSide,
-                                                    getCoverIDAtSide(tSide),
-                                                    getComplexCoverDataAtSide(tSide),
-                                                    this,
-                                                    aPlayer,
-                                                    0.5F,
-                                                    0.5F,
-                                                    0.5F));
+                                    getCoverInfoAtSide(tSide).onCoverScrewdriverClick(aPlayer, 0.5F, 0.5F, 0.5F));
                             mMetaTileEntity.onScrewdriverRightClick(tSide, aPlayer, aX, aY, aZ);
                             mMetaTileEntity.markDirty();
                             GT_Utility.sendSoundToPlayers(
@@ -835,17 +826,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                     } else {
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             setCoverDataAtSide(
-                                    aSide,
-                                    getCoverBehaviorAtSideNew(aSide)
-                                            .onCoverScrewdriverClick(
-                                                    aSide,
-                                                    getCoverIDAtSide(aSide),
-                                                    getComplexCoverDataAtSide(aSide),
-                                                    this,
-                                                    aPlayer,
-                                                    aX,
-                                                    aY,
-                                                    aZ));
+                                    aSide, getCoverInfoAtSide(aSide).onCoverScrewdriverClick(aPlayer, aX, aY, aZ));
                             mMetaTileEntity.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
                             mMetaTileEntity.markDirty();
                             GT_Utility.sendSoundToPlayers(
@@ -923,7 +904,9 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
                 if (coverInfo.getCoverID() == 0) {
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
-                        if (GregTech_API.getCoverBehaviorNew(tCurrentItem).isCoverPlaceable(coverSide, tCurrentItem, this) && mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
+                        if (GregTech_API.getCoverBehaviorNew(tCurrentItem)
+                                        .isCoverPlaceable(coverSide, tCurrentItem, this)
+                                && mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
                             setCoverItemAtSide(coverSide, tCurrentItem);
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
@@ -945,30 +928,14 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 }
             } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config or turn back.
                 aSide = (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ) : aSide;
-                return getCoverIDAtSide(aSide) > 0
-                        && getCoverBehaviorAtSideNew(aSide)
-                                .onCoverShiftRightClick(
-                                        aSide,
-                                        getCoverIDAtSide(aSide),
-                                        getComplexCoverDataAtSide(aSide),
-                                        this,
-                                        aPlayer);
+                final CoverInfo coverInfo = getCoverInfoAtSide(aSide);
+                return coverInfo.isValid() && coverInfo.onCoverShiftRightClick(aPlayer);
             }
 
-            if (getCoverBehaviorAtSideNew(aSide)
-                    .onCoverRightClick(
-                            aSide,
-                            getCoverIDAtSide(aSide),
-                            getComplexCoverDataAtSide(aSide),
-                            this,
-                            aPlayer,
-                            aX,
-                            aY,
-                            aZ)) return true;
+            if (getCoverInfoAtSide(aSide).onCoverRightClick(aPlayer, aX, aY, aZ)) return true;
         }
 
-        if (!getCoverBehaviorAtSideNew(aSide)
-                .isGUIClickable(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this)) return false;
+        if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
 
         try {
             if (!aPlayer.isSneaking() && hasValidMetaTileEntity()) {
@@ -1028,21 +995,9 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
      */
     @Override
     public int[] getAccessibleSlotsFromSide(int aSide) {
-        if (canAccessData()
-                && (getCoverBehaviorAtSideNew((byte) aSide)
-                                .letsItemsOut(
-                                        (byte) aSide,
-                                        getCoverIDAtSide((byte) aSide),
-                                        getComplexCoverDataAtSide((byte) aSide),
-                                        -1,
-                                        this)
-                        || getCoverBehaviorAtSideNew((byte) aSide)
-                                .letsItemsIn(
-                                        (byte) aSide,
-                                        getCoverIDAtSide((byte) aSide),
-                                        getComplexCoverDataAtSide((byte) aSide),
-                                        -1,
-                                        this))) return mMetaTileEntity.getAccessibleSlotsFromSide(aSide);
+        final CoverInfo coverInfo = getCoverInfoAtSide((byte) aSide);
+        if (canAccessData() && (coverInfo.letsItemsOut(-1) || coverInfo.letsItemsIn(-1)))
+            return mMetaTileEntity.getAccessibleSlotsFromSide(aSide);
         return GT_Values.emptyIntArray;
     }
 
@@ -1052,13 +1007,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
         return canAccessData()
-                && getCoverBehaviorAtSideNew((byte) aSide)
-                        .letsItemsIn(
-                                (byte) aSide,
-                                getCoverIDAtSide((byte) aSide),
-                                getComplexCoverDataAtSide((byte) aSide),
-                                aIndex,
-                                this)
+                && getCoverInfoAtSide((byte) aSide).letsItemsIn(aIndex)
                 && mMetaTileEntity.canInsertItem(aIndex, aStack, aSide);
     }
 
@@ -1200,30 +1149,18 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     private boolean canMoveFluidOnSide(ForgeDirection aSide, Fluid aFluid, boolean isFill) {
         if (aSide == ForgeDirection.UNKNOWN) return true;
 
-        IFluidHandler tTileEntity = getITankContainerAtSide((byte) aSide.ordinal());
+        final IFluidHandler tTileEntity = getITankContainerAtSide((byte) aSide.ordinal());
         // Only require a connection if there's something to connect to - Allows fluid cells & buckets to interact with
         // the pipe
         if (tTileEntity != null && !mMetaTileEntity.isConnectedAtSide((byte) aSide.ordinal())) return false;
 
         if (isFill
                 && mMetaTileEntity.isLiquidInput((byte) aSide.ordinal())
-                && getCoverBehaviorAtSideNew((byte) aSide.ordinal())
-                        .letsFluidIn(
-                                (byte) aSide.ordinal(),
-                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                getComplexCoverDataAtSide((byte) aSide.ordinal()),
-                                aFluid,
-                                this)) return true;
+                && getCoverInfoAtSide((byte) aSide.ordinal()).letsFluidIn(aFluid)) return true;
 
         if (!isFill
                 && mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal())
-                && getCoverBehaviorAtSideNew((byte) aSide.ordinal())
-                        .letsFluidOut(
-                                (byte) aSide.ordinal(),
-                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                getComplexCoverDataAtSide((byte) aSide.ordinal()),
-                                aFluid,
-                                this)) return true;
+                && getCoverInfoAtSide((byte) aSide.ordinal()).letsFluidOut(aFluid)) return true;
 
         return false;
     }
@@ -1275,24 +1212,11 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+        final CoverInfo coverInfo = getCoverInfoAtSide((byte) aSide.ordinal());
         if (canAccessData()
                 && (aSide == ForgeDirection.UNKNOWN
-                        || (mMetaTileEntity.isLiquidInput((byte) aSide.ordinal())
-                                && getCoverBehaviorAtSideNew((byte) aSide.ordinal())
-                                        .letsFluidIn(
-                                                (byte) aSide.ordinal(),
-                                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                                getComplexCoverDataAtSide((byte) aSide.ordinal()),
-                                                null,
-                                                this))
-                        || (mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal())
-                                && getCoverBehaviorAtSideNew((byte) aSide.ordinal())
-                                        .letsFluidOut(
-                                                (byte) aSide.ordinal(),
-                                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                                getComplexCoverDataAtSide((byte) aSide.ordinal()),
-                                                null,
-                                                this))
+                        || (mMetaTileEntity.isLiquidInput((byte) aSide.ordinal()) && coverInfo.letsFluidIn(null))
+                        || (mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal()) && coverInfo.letsFluidOut(null))
                 // Doesn't need to be connected to get Tank Info -- otherwise things can't connect
                 )) return mMetaTileEntity.getTankInfo(aSide);
         return new FluidTankInfo[] {};
@@ -1302,7 +1226,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     public boolean addStackToSlot(int aIndex, ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return true;
         if (aIndex < 0 || aIndex >= getSizeInventory()) return false;
-        ItemStack tStack = getStackInSlot(aIndex);
+        final ItemStack tStack = getStackInSlot(aIndex);
         if (GT_Utility.isStackInvalid(tStack)) {
             setInventorySlotContents(aIndex, aStack);
             return true;

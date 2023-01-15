@@ -749,9 +749,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                 return true;
             }
 
-            if (!getCoverBehaviorAtSideNew(aSide)
-                    .isGUIClickable(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
-                return false;
+            if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
         }
         if (isServerSide()) {
             if (!privateAccess() || aPlayer.getDisplayName().equalsIgnoreCase(getOwnerName())) {
@@ -828,9 +826,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                                 aY,
                                 aZ)) return true;
 
-                if (!getCoverBehaviorAtSideNew(aSide)
-                        .isGUIClickable(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
-                    return false;
+                if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
 
                 return openModularUi(aPlayer, aSide);
             }
@@ -1377,33 +1373,27 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
      */
 
     public boolean coverLetsFluidIn(byte aSide, Fluid aFluid) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsFluidIn(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), aFluid, this);
+        return getCoverInfoAtSide(aSide).letsFluidIn(aFluid);
     }
 
     public boolean coverLetsFluidOut(byte aSide, Fluid aFluid) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsFluidOut(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), aFluid, this);
+        return getCoverInfoAtSide(aSide).letsFluidOut(aFluid);
     }
 
     public boolean coverLetsEnergyIn(byte aSide) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsEnergyIn(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
+        return getCoverInfoAtSide(aSide).letsEnergyIn();
     }
 
     public boolean coverLetsEnergyOut(byte aSide) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsEnergyOut(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
+        return getCoverInfoAtSide(aSide).letsEnergyOut();
     }
 
     public boolean coverLetsItemsIn(byte aSide, int aSlot) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsItemsIn(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), aSlot, this);
+        return getCoverInfoAtSide(aSide).letsItemsIn(aSlot);
     }
 
     public boolean coverLetsItemsOut(byte aSide, int aSlot) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsItemsOut(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), aSlot, this);
+        return getCoverInfoAtSide(aSide).letsItemsOut(aSlot);
     }
 
     @Override
