@@ -18,6 +18,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Client;
+import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.GT_Cover_Drain;
 import gregtech.common.covers.GT_Cover_FluidRegulator;
 import java.util.ArrayList;
@@ -130,7 +131,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             byte aColorIndex,
             boolean aConnected,
             boolean aRedstone) {
-        float tThickNess = getThickNess();
+        final float tThickNess = getThickNess();
         if (mDisableInput == 0)
             return new ITexture[] {
                 aConnected
@@ -140,7 +141,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                                 Dyes.getModulation(aColorIndex, mMaterial.mRGBa))
             };
         byte tMask = 0;
-        byte[][] sRestrictionArray = {
+        final byte[][] sRestrictionArray = {
             {2, 3, 5, 4},
             {2, 3, 4, 5},
             {1, 0, 4, 5},
@@ -303,7 +304,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                 && aEntity instanceof EntityLivingBase) {
             for (FluidStack tFluid : mFluids) {
                 if (tFluid != null) {
-                    int tTemperature = tFluid.getFluid().getTemperature(tFluid);
+                    final int tTemperature = tFluid.getFluid().getTemperature(tFluid);
                     if (tTemperature > 320
                             && !isCoverOnSide(
                                     (BaseMetaPipeEntity) getBaseMetaTileEntity(), (EntityLivingBase) aEntity)) {
@@ -331,9 +332,9 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
             if (!GT_Mod.gregtechproxy.gt6Pipe || mCheckConnections) checkConnections();
 
-            boolean shouldDistribute = (oLastReceivedFrom == mLastReceivedFrom);
+            final boolean shouldDistribute = (oLastReceivedFrom == mLastReceivedFrom);
             for (int i = 0, j = aBaseMetaTileEntity.getRandomNumber(mPipeAmount); i < mPipeAmount; i++) {
-                int index = (i + j) % mPipeAmount;
+                final int index = (i + j) % mPipeAmount;
                 if (mFluids[index] != null && mFluids[index].amount <= 0) mFluids[index] = null;
                 if (mFluids[index] == null) continue;
 
@@ -354,7 +355,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         final FluidStack tFluid = mFluids[index];
 
         if (tFluid != null && tFluid.amount > 0) {
-            int tTemperature = tFluid.getFluid().getTemperature(tFluid);
+            final int tTemperature = tFluid.getFluid().getTemperature(tFluid);
             if (tTemperature > mHeatResistance) {
                 if (aBaseMetaTileEntity.getRandomNumber(100) == 0) {
                     // Poof
@@ -423,8 +424,8 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         if (tFluid == null) return;
 
         // Tank, From, Amount to receive
-        List<MutableTriple<IFluidHandler, ForgeDirection, Integer>> tTanks = new ArrayList<>();
-        int amount = tFluid.amount;
+        final List<MutableTriple<IFluidHandler, ForgeDirection, Integer>> tTanks = new ArrayList<>();
+        final int amount = tFluid.amount;
 
         for (byte aSide, i = 0, j = (byte) aBaseMetaTileEntity.getRandomNumber(6); i < 6; i++) {
             // Get a list of tanks accepting fluids, and what side they're on
@@ -436,22 +437,8 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             if (isConnectedAtSide(aSide)
                     && tTank != null
                     && (mLastReceivedFrom & (1 << aSide)) == 0
-                    && getBaseMetaTileEntity()
-                            .getCoverBehaviorAtSideNew(aSide)
-                            .letsFluidOut(
-                                    aSide,
-                                    getBaseMetaTileEntity().getCoverIDAtSide(aSide),
-                                    getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
-                                    tFluid.getFluid(),
-                                    getBaseMetaTileEntity())
-                    && (gTank == null
-                            || gTank.getCoverBehaviorAtSideNew(tSide)
-                                    .letsFluidIn(
-                                            tSide,
-                                            gTank.getCoverIDAtSide(tSide),
-                                            gTank.getComplexCoverDataAtSide(tSide),
-                                            tFluid.getFluid(),
-                                            gTank))) {
+                    && getBaseMetaTileEntity().getCoverInfoAtSide(aSide).letsFluidOut(tFluid.getFluid())
+                    && (gTank == null || gTank.getCoverInfoAtSide(tSide).letsFluidIn(tFluid.getFluid()))) {
                 if (tTank.fill(ForgeDirection.getOrientation(tSide), tFluid, false) > 0) {
                     tTanks.add(new MutableTriple<>(tTank, ForgeDirection.getOrientation(tSide), 0));
                 }
@@ -460,8 +447,9 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         }
 
         // How much of this fluid is available for distribution?
-        double tAmount = Math.max(1, Math.min(mCapacity * 10, tFluid.amount)), tNumTanks = tTanks.size();
-        FluidStack maxFluid = tFluid.copy();
+        final double tAmount = Math.max(1, Math.min(mCapacity * 10, tFluid.amount));
+        final double tNumTanks = tTanks.size();
+        final FluidStack maxFluid = tFluid.copy();
         maxFluid.amount = Integer.MAX_VALUE;
 
         double availableCapacity = 0;
@@ -473,16 +461,17 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
         // Now distribute
         for (MutableTriple<IFluidHandler, ForgeDirection, Integer> tEntry : tTanks) {
+            // Distribue fluids based on percentage available space at destination
             if (availableCapacity > tAmount)
-                tEntry.right = (int) Math.floor(tEntry.right
-                        * tAmount
-                        / availableCapacity); // Distribue fluids based on percentage available space at destination
-            if (tEntry.right == 0)
-                tEntry.right =
-                        (int) Math.min(1, tAmount); // If the percent is not enough to give at least 1L, try to give 1L
+                tEntry.right = (int) Math.floor(tEntry.right * tAmount / availableCapacity);
+
+            // If the percent is not enough to give at least 1L, try to give 1L
+            if (tEntry.right == 0) tEntry.right = (int) Math.min(1, tAmount);
+
             if (tEntry.right <= 0) continue;
 
-            int tFilledAmount = tEntry.left.fill(tEntry.middle, drainFromIndex(tEntry.right, false, index), false);
+            final int tFilledAmount =
+                    tEntry.left.fill(tEntry.middle, drainFromIndex(tEntry.right, false, index), false);
 
             if (tFilledAmount > 0) tEntry.left.fill(tEntry.middle, drainFromIndex(tFilledAmount, true, index), true);
 
@@ -494,8 +483,8 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     public boolean onWrenchRightClick(
             byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GT_Mod.gregtechproxy.gt6Pipe) {
-            byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
-            byte tMask = (byte) (1 << tSide);
+            final byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+            final byte tMask = (byte) (1 << tSide);
             if (aPlayer.isSneaking()) {
                 if (isInputDisabledAtSide(tSide)) {
                     mDisableInput &= ~tMask;
@@ -548,6 +537,16 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             ISerializableObject aCoverVariable,
             ICoverable aTileEntity) {
         return coverBehavior.letsFluidOut(aSide, aCoverID, aCoverVariable, null, aTileEntity);
+    }
+
+    @Override
+    public boolean letsIn(CoverInfo coverInfo) {
+        return coverInfo.letsFluidIn(null);
+    }
+
+    @Override
+    public boolean letsOut(CoverInfo coverInfo) {
+        return coverInfo.letsFluidOut(null);
     }
 
     @Override
@@ -706,7 +705,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
         if (!mFluids[index].isFluidEqual(aFluid)) return 0;
 
-        int space = getCapacity() / mPipeAmount - mFluids[index].amount;
+        final int space = getCapacity() / mPipeAmount - mFluids[index].amount;
         if (aFluid.amount <= space) {
             if (doFill) {
                 mFluids[index].amount += aFluid.amount;
@@ -745,7 +744,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             mFluids[index].amount -= used;
         }
 
-        FluidStack drained = mFluids[index].copy();
+        final FluidStack drained = mFluids[index].copy();
         drained.amount = used;
 
         if (mFluids[index].amount <= 0) {
@@ -808,7 +807,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     private AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        float tSpace = (1f - mThickNess) / 2;
+        final float tSpace = (1f - mThickNess) / 2;
         float tSide0 = tSpace;
         float tSide1 = 1f - tSpace;
         float tSide2 = tSpace;
@@ -841,7 +840,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             tSide1 = tSide3 = tSide5 = 1;
         }
 
-        byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
+        final byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
         if ((tConn & (1 << ForgeDirection.DOWN.ordinal())) != 0) tSide0 = 0f;
         if ((tConn & (1 << ForgeDirection.UP.ordinal())) != 0) tSide1 = 1f;
         if ((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) tSide2 = 0f;
@@ -864,7 +863,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             Entity collider) {
         super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
         if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x2) != 0) {
-            AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+            final AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
             if (inputAABB.intersectsWith(aabb)) outputAABB.add(aabb);
         }
     }

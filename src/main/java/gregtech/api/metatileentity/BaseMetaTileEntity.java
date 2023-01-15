@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
@@ -40,6 +41,7 @@ import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Pollution;
+import gregtech.common.covers.CoverInfo;
 import ic2.api.Direction;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -215,8 +217,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             loadMetaTileNBT(aNBT);
         }
 
-        if (mCoverData == null || mCoverData.length != 6) mCoverData = new ISerializableObject[6];
-        if (mCoverSides.length != 6) mCoverSides = new int[] {0, 0, 0, 0, 0, 0};
         if (mSidedRedstone.length != 6)
             if (hasValidMetaTileEntity() && mMetaTileEntity.hasSidedRedstoneOutputBehavior())
                 mSidedRedstone = new byte[] {0, 0, 0, 0, 0, 0};
@@ -375,7 +375,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         }
 
                         if (mMetaTileEntity.isEnetOutput() || mMetaTileEntity.isEnetInput()) {
-                            for (byte i = 0; i < 6; i++) {
+                            for (byte i : ALL_VALID_SIDES) {
                                 boolean temp = isEnergyInputSide(i);
                                 if (temp != mActiveEUInputs[i]) {
                                     mActiveEUInputs[i] = temp;
@@ -645,12 +645,12 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                             (short) yCoord,
                             zCoord,
                             mID,
-                            mCoverSides[0],
-                            mCoverSides[1],
-                            mCoverSides[2],
-                            mCoverSides[3],
-                            mCoverSides[4],
-                            mCoverSides[5],
+                            getCoverInfoAtSide((byte) 0).getCoverID(),
+                            getCoverInfoAtSide((byte) 1).getCoverID(),
+                            getCoverInfoAtSide((byte) 2).getCoverID(),
+                            getCoverInfoAtSide((byte) 3).getCoverID(),
+                            getCoverInfoAtSide((byte) 4).getCoverID(),
+                            getCoverInfoAtSide((byte) 5).getCoverID(),
                             oTextureData = (byte) ((mFacing & 7)
                                     | (mActive ? 8 : 0)
                                     | (mRedstone ? 16 : 0)
@@ -1136,7 +1136,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     public void generatePowerNodes() {
         if (isServerSide() && (isEnetInput() || isEnetOutput())) {
             final int time = MinecraftServer.getServer().getTickCounter();
-            for (byte i = 0; i < 6; i++) {
+            for (byte i : ALL_VALID_SIDES) {
                 if (outputsEnergyTo(i, false) || inputEnergyFrom(i, false)) {
                     final IGregTechTileEntity TE = getIGregTechTileEntityAtSide(i);
                     if (TE instanceof BaseMetaPipeEntity) {
@@ -1241,8 +1241,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
     private boolean isEnergyInputSide(byte aSide) {
         if (aSide >= 0 && aSide < 6) {
-            if (!getCoverBehaviorAtSideNew(aSide)
-                    .letsEnergyIn(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this)) return false;
+            if (!getCoverInfoAtSide(aSide).letsEnergyIn()) return false;
             if (isInvalid() || mReleaseEnergy) return false;
             if (canAccessData() && mMetaTileEntity.isElectric() && mMetaTileEntity.isEnetInput())
                 return mMetaTileEntity.isInputFacing(aSide);
@@ -1252,9 +1251,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
     private boolean isEnergyOutputSide(byte aSide) {
         if (aSide >= 0 && aSide < 6) {
-            if (!getCoverBehaviorAtSideNew(aSide)
-                    .letsEnergyOut(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
-                return false;
+            if (!getCoverInfoAtSide(aSide).letsEnergyOut()) return false;
             if (isInvalid() || mReleaseEnergy) return mReleaseEnergy;
             if (canAccessData() && mMetaTileEntity.isElectric() && mMetaTileEntity.isEnetOutput())
                 return mMetaTileEntity.isOutputFacing(aSide);
@@ -1449,9 +1446,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                 return true;
             }
 
-            if (!getCoverBehaviorAtSideNew(aSide)
-                    .isGUIClickable(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
-                return false;
+            if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
         }
 
         if (isServerSide()) {
@@ -1638,9 +1633,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                 aY,
                                 aZ)) return true;
 
-                if (!getCoverBehaviorAtSideNew(aSide)
-                        .isGUIClickable(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
-                    return false;
+                if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
 
                 if (isUpgradable() && tCurrentItem != null) {
                     if (ItemList.Upgrade_Muffler.isStackEqual(aPlayer.inventory.getCurrentItem())) {
@@ -1727,21 +1720,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
      */
     @Override
     public int[] getAccessibleSlotsFromSide(int aSide) {
-        if (canAccessData()
-                && (getCoverBehaviorAtSideNew((byte) aSide)
-                                .letsItemsOut(
-                                        (byte) aSide,
-                                        getCoverIDAtSide((byte) aSide),
-                                        getComplexCoverDataAtSide((byte) aSide),
-                                        -1,
-                                        this)
-                        || getCoverBehaviorAtSideNew((byte) aSide)
-                                .letsItemsIn(
-                                        (byte) aSide,
-                                        getCoverIDAtSide((byte) aSide),
-                                        getComplexCoverDataAtSide((byte) aSide),
-                                        -1,
-                                        this))) return mMetaTileEntity.getAccessibleSlotsFromSide(aSide);
+        final CoverInfo coverInfo = getCoverInfoAtSide((byte) aSide);
+        if (canAccessData() && (coverInfo.letsItemsOut(-1) || coverInfo.letsItemsIn(-1)))
+            return mMetaTileEntity.getAccessibleSlotsFromSide(aSide);
         return GT_Values.emptyIntArray;
     }
 
@@ -1752,13 +1733,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
         return canAccessData()
                 && (mRunningThroughTick || !mInputDisabled)
-                && getCoverBehaviorAtSideNew((byte) aSide)
-                        .letsItemsIn(
-                                (byte) aSide,
-                                getCoverIDAtSide((byte) aSide),
-                                getComplexCoverDataAtSide((byte) aSide),
-                                aIndex,
-                                this)
+                && getCoverInfoAtSide((byte) aSide).letsItemsIn(aIndex)
                 && mMetaTileEntity.canInsertItem(aIndex, aStack, aSide);
     }
 
@@ -1989,13 +1964,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                 && (mRunningThroughTick || !mInputDisabled)
                 && (aSide == ForgeDirection.UNKNOWN
                         || (mMetaTileEntity.isLiquidInput((byte) aSide.ordinal())
-                                && getCoverBehaviorAtSideNew((byte) aSide.ordinal())
-                                        .letsFluidIn(
-                                                (byte) aSide.ordinal(),
-                                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                                getComplexCoverDataAtSide((byte) aSide.ordinal()),
-                                                aFluid == null ? null : aFluid.getFluid(),
-                                                this)))) return mMetaTileEntity.fill(aSide, aFluid, doFill);
+                                && getCoverInfoAtSide((byte) aSide.ordinal())
+                                        .letsFluidIn(aFluid == null ? null : aFluid.getFluid()))))
+            return mMetaTileEntity.fill(aSide, aFluid, doFill);
         return 0;
     }
 
@@ -2006,17 +1977,14 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                 && (mRunningThroughTick || !mOutputDisabled)
                 && (aSide == ForgeDirection.UNKNOWN
                         || (mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal())
-                                && getCoverBehaviorAtSideNew((byte) aSide.ordinal())
+                                && getCoverInfoAtSide((byte) aSide.ordinal())
                                         .letsFluidOut(
-                                                (byte) aSide.ordinal(),
-                                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                                getComplexCoverDataAtSide((byte) aSide.ordinal()),
                                                 mMetaTileEntity.getFluid() == null
                                                         ? null
                                                         : mMetaTileEntity
                                                                 .getFluid()
-                                                                .getFluid(),
-                                                this)))) return mMetaTileEntity.drain(aSide, maxDrain, doDrain);
+                                                                .getFluid()))))
+            return mMetaTileEntity.drain(aSide, maxDrain, doDrain);
         return null;
     }
 
@@ -2027,13 +1995,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                 && (mRunningThroughTick || !mOutputDisabled)
                 && (aSide == ForgeDirection.UNKNOWN
                         || (mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal())
-                                && getCoverBehaviorAtSideNew((byte) aSide.ordinal())
-                                        .letsFluidOut(
-                                                (byte) aSide.ordinal(),
-                                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                                getComplexCoverDataAtSide((byte) aSide.ordinal()),
-                                                aFluid == null ? null : aFluid.getFluid(),
-                                                this)))) return mMetaTileEntity.drain(aSide, aFluid, doDrain);
+                                && getCoverInfoAtSide((byte) aSide.ordinal())
+                                        .letsFluidOut(aFluid == null ? null : aFluid.getFluid()))))
+            return mMetaTileEntity.drain(aSide, aFluid, doDrain);
         return null;
     }
 
@@ -2044,13 +2008,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                 && (mRunningThroughTick || !mInputDisabled)
                 && (aSide == ForgeDirection.UNKNOWN
                         || (mMetaTileEntity.isLiquidInput((byte) aSide.ordinal())
-                                && getCoverBehaviorAtSideNew((byte) aSide.ordinal())
-                                        .letsFluidIn(
-                                                (byte) aSide.ordinal(),
-                                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                                getComplexCoverDataAtSide((byte) aSide.ordinal()),
-                                                aFluid,
-                                                this)))) return mMetaTileEntity.canFill(aSide, aFluid);
+                                && getCoverInfoAtSide((byte) aSide.ordinal()).letsFluidIn(aFluid))))
+            return mMetaTileEntity.canFill(aSide, aFluid);
         return false;
     }
 
@@ -2061,13 +2020,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                 && (mRunningThroughTick || !mOutputDisabled)
                 && (aSide == ForgeDirection.UNKNOWN
                         || (mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal())
-                                && getCoverBehaviorAtSideNew((byte) aSide.ordinal())
-                                        .letsFluidOut(
-                                                (byte) aSide.ordinal(),
-                                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                                getComplexCoverDataAtSide((byte) aSide.ordinal()),
-                                                aFluid,
-                                                this)))) return mMetaTileEntity.canDrain(aSide, aFluid);
+                                && getCoverInfoAtSide((byte) aSide.ordinal()).letsFluidOut(aFluid))))
+            return mMetaTileEntity.canDrain(aSide, aFluid);
         return false;
     }
 
@@ -2078,21 +2032,10 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         if (canAccessData()
                 && (aSide == ForgeDirection.UNKNOWN
                         || (mMetaTileEntity.isLiquidInput(tSide)
-                                && getCoverBehaviorAtSideNew(tSide)
-                                        .letsFluidIn(
-                                                tSide,
-                                                getCoverIDAtSide(tSide),
-                                                getComplexCoverDataAtSide(tSide),
-                                                null,
-                                                this))
+                                && getCoverInfoAtSide(tSide).letsFluidIn(null))
                         || (mMetaTileEntity.isLiquidOutput(tSide)
-                                && getCoverBehaviorAtSideNew(tSide)
-                                        .letsFluidOut(
-                                                tSide,
-                                                getCoverIDAtSide(tSide),
-                                                getComplexCoverDataAtSide(tSide),
-                                                null,
-                                                this)))) return mMetaTileEntity.getTankInfo(aSide);
+                                && getCoverInfoAtSide(tSide).letsFluidOut(null))))
+            return mMetaTileEntity.getTankInfo(aSide);
         return new FluidTankInfo[] {};
     }
 
