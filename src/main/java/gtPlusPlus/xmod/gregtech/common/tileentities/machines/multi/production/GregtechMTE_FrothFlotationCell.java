@@ -66,7 +66,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
                 .addInfo("You can only ever process one type of material per controller")
                 .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
-                .beginStructureBlock(3, 9, 3, true)
+                .beginStructureBlock(7, 9, 7, true)
                 .addController("Front Center")
                 .addCasingInfo("Inconel Reinforced Casing", 68)
                 .addCasingInfo("Flotation Casing", 52)
@@ -132,7 +132,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMTE_FrothFlotationCell.class)
-                                    .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                                    .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
                                     .casingIndex(getCasingTextureId())
                                     .dot(1)
                                     .buildAndChain(
