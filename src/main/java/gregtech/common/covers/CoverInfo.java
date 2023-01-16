@@ -19,11 +19,12 @@ import net.minecraftforge.fluids.Fluid;
 public final class CoverInfo {
     private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d";
 
-    private byte coverSide = SIDE_UNKNOWN;
+    public static final CoverInfo EMPTY_INFO = new CoverInfo(SIDE_UNKNOWN, null);
+    private byte coverSide;
     private int coverID = 0;
     private GT_CoverBehaviorBase<?> coverBehavior = null;
     private ISerializableObject coverData = null;
-    private WeakReference<ICoverable> coveredTile;
+    private final WeakReference<ICoverable> coveredTile;
     private boolean needsUpdate = false;
 
     public CoverInfo(byte aSide, ICoverable aTile) {
