@@ -19,20 +19,55 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.MutableTriple;
 
 public class GT_ParallelHelper {
+    /**
+     * @mMachineMeta a MetaTileEntity Controller
+     */
     private GT_MetaTileEntity_MultiBlockBase mMachineMeta;
+    /**
+     * @mMachineMulti a MultiTileEntity Controller
+     */
     private MultiBlockController mMachineMulti;
+    /**
+     * @mRecipe Recipe used when trying to calculate parallels
+     */
     private GT_Recipe mRecipe;
+    /**
+     * @mAvailtableEUt EUt available to the multiblock (This should be the total eut available)
+     */
     private long mAvailableEUt;
+    /**
+     * @mCurrentParallel The current parallel possible for the multiblock
+     * @mMaxParallel The maximum possible parallel possible for the multiblock
+     * @mBatchModifier The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible parallel, but also duration
+     */
     private int mCurrentParallel = 0, mMaxParallel = 1, mBatchModifier = 1;
+    /**
+     * @mItemInputs The inputs of the multiblock for the current recipe check
+     * @mItemOutputs The outputs of the recipe with the applied parallel
+     */
     private ItemStack[] mItemInputs, mItemOutputs;
+    /**
+     * @mFluidInputs The inputs of the multiblock for the current recipe check
+     * @mFluidOutputs The outputs of the recipe with the applied parallel
+     */
     private FluidStack[] mFluidInputs, mFluidOutputs;
+    /**
+     * @mVoidProtection Does the multi have void protectio enabled
+     * @mConsume Should the Parallel Helper automatically consume for the multi
+     * @mBatchMode Is batch mode turned on?
+     * @mCalculateOutputs Should the Parallel Helper automatically calculate the outputs of the recipe with current parallel
+     * @mBuilt Has the Parallel Helper been built?
+     */
     private boolean mVoidProtection, mConsume, mBatchMode, mCalculateOutputs, mBuilt;
+    /**
+     * @mDurationMultiplier What is the duration multiplier with batch mode enabled
+     */
     private float mDurationMultiplier;
 
     public GT_ParallelHelper() {}
 
     /**
-     * Enables void protection on a metatile multiblock
+     * Enables void protection on a metatile multiblock. Experimental! Still needs to be worked on
      */
     public GT_ParallelHelper enableVoidProtection(GT_MetaTileEntity_MultiBlockBase aMachineMeta) {
         mVoidProtection = true;
@@ -41,7 +76,7 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * Enables void protection on a multitile multiblock
+     * Enables void protection on a multitile multiblock. Experimental! Still needs to be worked on
      */
     public GT_ParallelHelper enableVoidProtection(MultiBlockController aMachineMulti) {
         mVoidProtection = true;
@@ -108,19 +143,28 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * Enables the outputs to be calculated with its current Parallels, useful for
+     * Enables the outputs to be calculated with its current Parallels, useful if one isn't doing anything special with outputs
      */
     public GT_ParallelHelper enableOutputCalculation() {
         mCalculateOutputs = true;
         return this;
     }
 
+    /**
+     * Finishes the GT_ParallelHelper. Anything changed after this will not effect anything
+     */
     public GT_ParallelHelper build() {
+        if (mBuilt) {
+            throw new IllegalStateException("Tried to build twice");
+        }
         mBuilt = true;
-        doStuff();
+        determnieParallel();
         return this;
     }
 
+    /**
+     * @return The current parallels possible by the multiblock
+     */
     public int getCurrentParallel() {
         if (!mBuilt) {
             throw new IllegalStateException("Tried to get parallels before building");
@@ -128,6 +172,9 @@ public class GT_ParallelHelper {
         return mCurrentParallel;
     }
 
+    /**
+     * @return The duration multiplier if batch mode was enabled for the multiblock
+     */
     public float getDurationMultiplier() {
         if (!mBuilt) {
             throw new IllegalStateException("Tried to get duration multiplier before building");
@@ -138,6 +185,9 @@ public class GT_ParallelHelper {
         return 1;
     }
 
+    /**
+     * @return The ItemOutputs from the recipe
+     */
     public ItemStack[] getItemOutputs() {
         if (!mBuilt || !mCalculateOutputs) {
             throw new IllegalStateException(
@@ -146,6 +196,9 @@ public class GT_ParallelHelper {
         return mItemOutputs;
     }
 
+    /**
+     * @return The FluidOutputs from the recipe
+     */
     public FluidStack[] getFluidOutputs() {
         if (!mBuilt || !mCalculateOutputs) {
             throw new IllegalStateException(
@@ -154,7 +207,10 @@ public class GT_ParallelHelper {
         return mFluidOutputs;
     }
 
-    private void doStuff() {
+    /**
+     * Called by build(). Determines the parallels and everything else that needs to be done at build time
+     */
+    private void determnieParallel() {
         ItemStack[] tItemInputs = mConsume ? mItemInputs : mItemInputs.clone();
         FluidStack[] tFluidInputs = mConsume ? mFluidInputs : mFluidInputs.clone();
         boolean tMEOutputBus = false;
@@ -163,6 +219,7 @@ public class GT_ParallelHelper {
         int tMaxCurrentParallel = mMaxParallel;
         int tMaxParallelsFluids = mMaxParallel * mBatchModifier;
         int tMaxParallelsItems = mMaxParallel * mBatchModifier;
+        // Let's look at how many parallels we can get with void protection
         if (mVoidProtection) {
             for (GT_MetaTileEntity_Hatch tHatch : mMachineMeta.mOutputBusses) {
                 if (tHatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
@@ -179,11 +236,12 @@ public class GT_ParallelHelper {
             }
 
             if (!tMEOutputBus || !tMEOutputHatch) {
-                tMaxParallelsFluids = !tMEOutputHatch ? calculateMaxParallelsForHatches() : tMaxParallelsFluids;
-                tMaxParallelsItems = !tMEOutputHatch ? calculateMaxParallelsForBusses() : tMaxParallelsItems;
+                tMaxParallelsFluids = !tMEOutputHatch ? calculateMaxParallelsForHatches() : (tMaxParallelsFluids * mBatchModifier);
+                tMaxParallelsItems = !tMEOutputHatch ? calculateMaxParallelsForBusses() : (tMaxParallelsItems * mBatchModifier);
             }
         }
 
+        // Consume inputs to determine normal parallel
         while (mRecipe.isRecipeInputEqual(false, true, tFluidInputs, tItemInputs)
                 && mAvailableEUt > tCurrentUsage + mRecipe.mEUt
                 && mCurrentParallel < tMaxCurrentParallel
@@ -194,16 +252,20 @@ public class GT_ParallelHelper {
             mCurrentParallel++;
         }
 
+        // If Batch Mode is enabled determine how many extra parallels we can get
         if (mBatchMode) {
             int tExtraParallels = 0;
             while (mRecipe.isRecipeInputEqual(true, true, tFluidInputs, tItemInputs)
-                    && tExtraParallels <= mCurrentParallel * mBatchModifier) {
+                    && tExtraParallels <= mCurrentParallel * mBatchModifier
+                    && mCurrentParallel <= tMaxParallelsFluids
+                    && mCurrentParallel <= tMaxParallelsItems) {
                 tExtraParallels++;
             }
             mCurrentParallel += tExtraParallels;
             mDurationMultiplier = 1.0f + 128.0f / tExtraParallels;
         }
 
+        // If we want to calculate outputs we do it here
         if (mCalculateOutputs) {
             mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
             for (int i = 0; i < mRecipe.mOutputs.length; i++) {
@@ -222,6 +284,9 @@ public class GT_ParallelHelper {
         }
     }
 
+    /**
+     * Calculates the max parallel for fluids if void protection is turned on
+     */
     private int calculateMaxParallelsForHatches() {
         // For now we are gonna ignore MuTEs existence as there are no recipes for them
         if (mMachineMeta != null && mMachineMeta.mOutputHatches.size() >= mRecipe.mFluidOutputs.length) {
@@ -309,6 +374,9 @@ public class GT_ParallelHelper {
         return 0;
     }
 
+    /**
+     * Calculates the max parallels one can do with items if void protection is on
+     */
     private int calculateMaxParallelsForBusses() {
         // Same thing we are gonna ignore MuTEs existence for now. should be in theory the same later
 
@@ -382,11 +450,5 @@ public class GT_ParallelHelper {
             return aParallelQueue.element().left;
         }
         return 0;
-    }
-
-    private static int toStackCount(Entry<ItemStack, Integer> e) {
-        int tMaxStackSize = e.getKey().getMaxStackSize();
-        int tStackSize = e.getValue();
-        return (tStackSize + tMaxStackSize - 1) / tMaxStackSize;
     }
 }
