@@ -1,6 +1,8 @@
 package gregtech;
 
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
+import static gregtech.api.ModernMaterials.ModernMaterials.registerAllMaterials;
+import static gregtech.api.ModernMaterials.ModernMaterials.registerMaterial;
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 
 import appeng.api.AEApi;
@@ -19,6 +21,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.ConfigCategories;
@@ -208,6 +211,12 @@ public class GT_Mod implements IGT_Mod {
 
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
+
+        registerMaterial(new ModernMaterial("Iron"));
+        registerMaterial(new ModernMaterial("Copper"));
+
+        registerAllMaterials();
+
         Locale.setDefault(Locale.ENGLISH);
         if (GregTech_API.sPreloadStarted) {
             return;
