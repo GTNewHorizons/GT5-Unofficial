@@ -57,6 +57,10 @@ public class GT_ExoticEnergyInputHelper {
         return false;
     }
 
+    public static long getTotalEuMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
+        return getMaxWorkingInputAmpsMulti(hatches) * getAverageInputVoltageMulti(hatches);
+    }
+
     public static long getMaxInputVoltageMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         long rVoltage = 0;
         for (GT_MetaTileEntity_Hatch tHatch : hatches)
@@ -65,11 +69,31 @@ public class GT_ExoticEnergyInputHelper {
         return rVoltage;
     }
 
+    public static long getAverageInputVoltageMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
+        long rVoltage = 0;
+        if (hatches.size() <= 0) {
+            return rVoltage;
+        }
+        for (GT_MetaTileEntity_Hatch tHatch : hatches)
+            if (isValidMetaTileEntity(tHatch))
+                rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+        return rVoltage / hatches.size();
+    }
+
     public static long getMaxInputAmpsMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         long rAmp = 0;
         for (GT_MetaTileEntity_Hatch tHatch : hatches)
             if (isValidMetaTileEntity(tHatch))
                 rAmp += tHatch.getBaseMetaTileEntity().getInputAmperage();
+        return rAmp;
+    }
+
+    public static long getMaxWorkingInputAmpsMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
+        long rAmp = 0;
+        for (GT_MetaTileEntity_Hatch tHatch : hatches)
+            if (isValidMetaTileEntity(tHatch)) {
+                rAmp += tHatch.maxWorkingAmperesIn();
+            }
         return rAmp;
     }
 

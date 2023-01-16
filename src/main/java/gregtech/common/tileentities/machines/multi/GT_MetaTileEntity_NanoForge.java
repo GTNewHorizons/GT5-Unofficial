@@ -25,7 +25,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -253,9 +252,7 @@ public class GT_MetaTileEntity_NanoForge
         lEUt = 0;
         mOutputItems = null;
         mOutputFluids = null;
-        long tVoltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
-        long tAmps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
-        long tTotalEU = tVoltage * tAmps;
+        long tTotalEU = getMaxInputEu();
         GT_Recipe tRecipe =
                 map.findRecipe(getBaseMetaTileEntity(), null, false, false, tTotalEU, tFluidInputs, null, tItemInputs);
 

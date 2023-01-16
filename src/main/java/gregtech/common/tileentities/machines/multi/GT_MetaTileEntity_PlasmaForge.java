@@ -1098,10 +1098,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     protected boolean processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
 
         // Gets the EU input of the
-        long tVoltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
-        long tAmps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
-
-        long tTotalEU = tVoltage * tAmps;
+        long tTotalEU = GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList());
 
         // Hacky method to determine if double energy hatches are being used.
         if (getExoticAndNormalEnergyHatchList().get(0) instanceof GT_MetaTileEntity_Hatch_Energy) {
@@ -1279,15 +1276,15 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                     + GT_Utility.formatNumbers(-EU_per_tick) + EnumChatFormatting.RESET + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(
-                            GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
+                            GT_ExoticEnergyInputHelper.getAverageInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
                     + EnumChatFormatting.RESET + " EU/t(*" + EnumChatFormatting.YELLOW
                     + GT_Utility.formatNumbers(
-                            GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList()))
+                            GT_ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(getExoticAndNormalEnergyHatchList()))
                     + EnumChatFormatting.RESET + "A) " + StatCollector.translateToLocal("GT5U.machines.tier")
                     + ": " + EnumChatFormatting.YELLOW
                     + VN[
-                            GT_Utility.getTier(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(
-                                    getExoticAndNormalEnergyHatchList()))]
+                            GT_Utility.getTier(
+                                    GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList()))]
                     + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.EBF.heat") + ": " + EnumChatFormatting.GREEN
                     + GT_Utility.formatNumbers(mHeatingCapacity) + EnumChatFormatting.RESET + " K",
