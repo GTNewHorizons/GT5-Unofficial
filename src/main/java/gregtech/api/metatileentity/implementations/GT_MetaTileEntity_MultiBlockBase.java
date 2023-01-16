@@ -58,8 +58,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             mHardHammer = false,
             mSolderingTool = false,
             mCrowbar = false,
-            mRunningOnLoad = false,
-            mCheckAllHatches = false;
+            mRunningOnLoad = false;
     public boolean mStructureChanged = false;
     public int mPollution = 0,
             mProgresstime = 0,
