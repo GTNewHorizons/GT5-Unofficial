@@ -109,6 +109,20 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
             aNBT.setBoolean("mRedstone", mRedstone);
         }
+
+        // Backwards compat, in case of a revert... for now
+        writeOldCoverNBT(aNBT);
+    }
+
+    private  void writeOldCoverNBT(NBTTagCompound aNBT) {
+        boolean hasCover = false;
+        for (int i = 0; i < mCoverData.length; i++) {
+            if (mCoverSides[i] != 0 && mCoverData[i] != null) {
+                aNBT.setTag(COVER_DATA_NBT_KEYS[i], mCoverData[i].saveDataToNBT());
+                hasCover = true;
+            }
+        }
+        if (hasCover) aNBT.setIntArray("mCoverSides", mCoverSides);
     }
 
     protected void readCoverNBT(NBTTagCompound aNBT) {
@@ -354,7 +368,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             if (coverInfos[aSide] == null) coverInfos[aSide] = new CoverInfo(aSide, this);
             return coverInfos[aSide];
         }
-        return null;
+        return CoverInfo.EMPTY_INFO;
     }
 
     public void clearCoverInfoAtSide(byte aSide) {
