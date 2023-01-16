@@ -269,7 +269,6 @@ public class GT_ParallelHelper {
 
         float tRecipeEUt = mRecipe.mEUt * mEUtModifer;
         // Consume inputs to determine normal parallel
-        // while (mAvailableEUt > tCurrentUsage + mRecipe.mEUt * mEUtModifer && mCurrentParallel < mMaxParallel) {
         for (; mCurrentParallel < mMaxParallel && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
             if (mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
                 tCurrentUsage += tRecipeEUt;
