@@ -1986,7 +1986,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 "?\u2086Or\u2083(Hy⚶)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085۞\u2082";
         Diatomite.mChemicalFormula = "(SiO\u2082)\u2088Fe\u2082O\u2083(Al\u2082O\u2083)";
         EnrichedHolmium.mChemicalFormula = "Nq+\u2088Ho\u2082";
-        Grade1PurifiedWater.mChemicalFormula = "H₂O" ;
+        Grade1PurifiedWater.mChemicalFormula = "H₂O";
         Grade2PurifiedWater.mChemicalFormula = "H₂O";
         Grade3PurifiedWater.mChemicalFormula = "H₂O";
         Grade4PurifiedWater.mChemicalFormula = "H₂O";

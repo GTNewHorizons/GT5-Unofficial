@@ -158,7 +158,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 addItem(tLastID = 150, "Europium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot5.set(
                 addItem(tLastID = 152, "Americium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Ingot6.set(addItem(tLastID = 721, "Optically Enriched Crystalline Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Ingot6.set(
+                addItem(tLastID = 721, "Optically Enriched Crystalline Boule", "Raw Circuit", o));
 
         ItemList.Circuit_Silicon_Wafer.set(addItem(tLastID = 33, "Wafer", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer2.set(addItem(tLastID = 34, "Phosphorus doped Wafer", "Raw Circuit", o));
@@ -812,9 +813,11 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "BY THE POWERS OF NAUGHTINESS, I COMMAND THIS PARTICULAR STAR, TO BE REALLY, REALLY HOT",
                 SubTag.NO_UNIFICATION));
 
-        ItemList.Optical_Cpu_Containment_Housing.set(addItem(tLastID = 727, "Optical CPU Containment Housing", "CPU Housing", o));
+        ItemList.Optical_Cpu_Containment_Housing.set(
+                addItem(tLastID = 727, "Optical CPU Containment Housing", "CPU Housing", o));
         ItemList.Optically_Perfected_CPU.set(addItem(tLastID = 726, "Optically Perfected CPU", "Perfected CPU!", o));
-        ItemList.Optically_Compatible_Memory.set(addItem(tLastID = 725, "Optically Compatible Memory", "Its in the name!", o));
+        ItemList.Optically_Compatible_Memory.set(
+                addItem(tLastID = 725, "Optically Compatible Memory", "Its in the name!", o));
     }
 
     @Override
