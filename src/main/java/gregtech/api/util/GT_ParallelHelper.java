@@ -236,8 +236,13 @@ public class GT_ParallelHelper {
             }
 
             if (!tMEOutputBus || !tMEOutputHatch) {
-                tMaxParallelsFluids = !tMEOutputHatch ? calculateMaxParallelsForHatches() : (tMaxParallelsFluids * mBatchModifier);
-                tMaxParallelsItems = !tMEOutputHatch ? calculateMaxParallelsForBusses() : (tMaxParallelsItems * mBatchModifier);
+                if (!tMEOutputBus) {
+                    tMaxParallelsItems = calculateMaxParallelsForBusses();
+                }
+
+                if (!tMEOutputHatch) {
+                    tMaxParallelsFluids = calculateMaxParallelsForHatches();
+                }
             }
         }
 
