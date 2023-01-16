@@ -30,6 +30,7 @@ public class Preloader_DummyContainer extends DummyModContainer {
         meta.updateUrl = "";
         meta.screenshots = new String[0];
         meta.logoFile = "";
+        meta.parent = "miscutils";
         // meta.dependencies = (List<ArtifactVersion>) CORE_Preloader.DEPENDENCIES;
         Preloader_Logger.INFO("Initializing DummyModContainer");
     }

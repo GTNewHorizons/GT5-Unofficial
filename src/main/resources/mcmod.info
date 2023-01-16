@@ -30,8 +30,9 @@
 		"updateUrl": "https://github.com/draknyte1/GTplusplus/releases/latest",
 		"authorList": ["Alkalus/Draknyte1"],
 		"screenshots": [""],
-		"requiredMods": ["miscutils"],
-		"dependencies": ["miscutils"]
+		"parent": "miscutils",
+		"requiredMods": [],
+		"dependencies": []
 	}, {
 		"modid": "ToxicEverglades",
 		"name": "${modName} ToxicEverglades",
@@ -44,7 +45,8 @@
 		"updateUrl": "https://github.com/draknyte1/GTplusplus/releases/latest",
 		"authorList": ["Alkalus/Draknyte1"],
 		"screenshots": [""],
-		"requiredMods": ["miscutils"],
-		"dependencies": ["miscutils"]
+		"parent": "miscutils",
+		"requiredMods": [],
+		"dependencies": []
 	}]
 }
