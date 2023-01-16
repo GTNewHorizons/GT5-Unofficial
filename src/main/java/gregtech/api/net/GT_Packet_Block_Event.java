@@ -44,7 +44,7 @@ public class GT_Packet_Block_Event extends GT_Packet_New {
     @Override
     public void process(IBlockAccess aWorld) {
         if (aWorld != null) {
-            TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
+            final TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
             if (tTileEntity != null) tTileEntity.receiveClientEvent(mID, mValue);
         }
     }

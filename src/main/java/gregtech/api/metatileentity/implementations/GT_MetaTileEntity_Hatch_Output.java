@@ -230,19 +230,13 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity()
-                .getCoverBehaviorAtSideNew(aSide)
-                .isGUIClickable(
-                        aSide,
-                        getBaseMetaTileEntity().getCoverIDAtSide(aSide),
-                        getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
-                        getBaseMetaTileEntity())) return;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return;
         if (aPlayer.isSneaking()) {
             mMode = (byte) ((mMode + 9) % 10);
         } else {
             mMode = (byte) ((mMode + 1) % 10);
         }
-        String inBrackets;
+        final String inBrackets;
         switch (mMode) {
             case 0:
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("108", "Outputs misc. Fluids, Steam and Items"));
@@ -312,15 +306,9 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     private boolean tryToLockHatch(EntityPlayer aPlayer, byte aSide) {
-        if (!getBaseMetaTileEntity()
-                .getCoverBehaviorAtSideNew(aSide)
-                .isGUIClickable(
-                        aSide,
-                        getBaseMetaTileEntity().getCoverIDAtSide(aSide),
-                        getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
-                        getBaseMetaTileEntity())) return false;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return false;
         if (!isFluidLocked()) return false;
-        ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+        final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
         if (tCurrentItem == null) return false;
         FluidStack tFluid = FluidContainerRegistry.getFluidForFilledItem(tCurrentItem);
         if (tFluid == null && tCurrentItem.getItem() instanceof IFluidContainerItem)
@@ -432,7 +420,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     protected void onEmptyingContainerWhenEmpty() {
         if (this.lockedFluidName == null && this.mFluid != null && isFluidLocked()) {
             this.setLockedFluidName(this.mFluid.getFluid().getName());
-            EntityPlayer player;
+            final EntityPlayer player;
             if (playerThatLockedfluid == null || (player = playerThatLockedfluid.get()) == null) return;
             GT_Utility.sendChatToPlayer(
                     player,
@@ -496,7 +484,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
                         .setDefaultColor(COLOR_TEXT_WHITE.get())
                         .setPos(101, 20))
                 .widget(TextWidget.dynamicString(() -> {
-                            ItemStack lockedDisplayStack = mInventory[getLockedDisplaySlot()];
+                            final ItemStack lockedDisplayStack = mInventory[getLockedDisplaySlot()];
                             return lockedDisplayStack == null ? "None" : lockedDisplayStack.getDisplayName();
                         })
                         .setSynced(false)

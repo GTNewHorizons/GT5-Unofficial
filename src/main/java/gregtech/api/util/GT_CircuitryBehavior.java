@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -31,17 +33,17 @@ public abstract class GT_CircuitryBehavior {
     /**
      * returns if there is Redstone applied to any of the valid Inputs (OR)
      */
-    public static final boolean getAnyRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
-        for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing()
+    public static boolean getAnyRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
+        for (byte side : ALL_VALID_SIDES) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
                     && aRedstoneCircuitBlock
-                            .getCover(i)
+                            .getCover(side)
                             .letsRedstoneGoIn(
-                                    i,
-                                    aRedstoneCircuitBlock.getCoverID(i),
-                                    aRedstoneCircuitBlock.getCoverVariable(i),
+                                    side,
+                                    aRedstoneCircuitBlock.getCoverID(side),
+                                    aRedstoneCircuitBlock.getCoverVariable(side),
                                     aRedstoneCircuitBlock.getOwnTileEntity())) {
-                if (aRedstoneCircuitBlock.getInputRedstone(i) > 0) {
+                if (aRedstoneCircuitBlock.getInputRedstone(side) > 0) {
                     return true;
                 }
             }
@@ -52,17 +54,17 @@ public abstract class GT_CircuitryBehavior {
     /**
      * returns if there is Redstone applied to all the valid Inputs (AND)
      */
-    public static final boolean getAllRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
-        for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing()
+    public static boolean getAllRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
+        for (byte side : ALL_VALID_SIDES) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
                     && aRedstoneCircuitBlock
-                            .getCover(i)
+                            .getCover(side)
                             .letsRedstoneGoIn(
-                                    i,
-                                    aRedstoneCircuitBlock.getCoverID(i),
-                                    aRedstoneCircuitBlock.getCoverVariable(i),
+                                    side,
+                                    aRedstoneCircuitBlock.getCoverID(side),
+                                    aRedstoneCircuitBlock.getCoverVariable(side),
                                     aRedstoneCircuitBlock.getOwnTileEntity())) {
-                if (aRedstoneCircuitBlock.getInputRedstone(i) == 0) {
+                if (aRedstoneCircuitBlock.getInputRedstone(side) == 0) {
                     return false;
                 }
             }
@@ -73,18 +75,18 @@ public abstract class GT_CircuitryBehavior {
     /**
      * returns if there is Redstone applied to exactly one of the valid Inputs (XOR)
      */
-    public static final boolean getOneRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
+    public static boolean getOneRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         int tRedstoneAmount = 0;
-        for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing()
+        for (byte side : ALL_VALID_SIDES) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
                     && aRedstoneCircuitBlock
-                            .getCover(i)
+                            .getCover(side)
                             .letsRedstoneGoIn(
-                                    i,
-                                    aRedstoneCircuitBlock.getCoverID(i),
-                                    aRedstoneCircuitBlock.getCoverVariable(i),
+                                    side,
+                                    aRedstoneCircuitBlock.getCoverID(side),
+                                    aRedstoneCircuitBlock.getCoverVariable(side),
                                     aRedstoneCircuitBlock.getOwnTileEntity())) {
-                if (aRedstoneCircuitBlock.getInputRedstone(i) > 0) {
+                if (aRedstoneCircuitBlock.getInputRedstone(side) > 0) {
                     tRedstoneAmount++;
                 }
             }
@@ -95,18 +97,18 @@ public abstract class GT_CircuitryBehavior {
     /**
      * returns the strongest incoming RS-Power
      */
-    public static final byte getStrongestRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
+    public static byte getStrongestRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         byte tRedstoneAmount = 0;
-        for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing()
+        for (byte side : ALL_VALID_SIDES) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
                     && aRedstoneCircuitBlock
-                            .getCover(i)
+                            .getCover(side)
                             .letsRedstoneGoIn(
-                                    i,
-                                    aRedstoneCircuitBlock.getCoverID(i),
-                                    aRedstoneCircuitBlock.getCoverVariable(i),
+                                    side,
+                                    aRedstoneCircuitBlock.getCoverID(side),
+                                    aRedstoneCircuitBlock.getCoverVariable(side),
                                     aRedstoneCircuitBlock.getOwnTileEntity())) {
-                tRedstoneAmount = (byte) Math.max(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(i));
+                tRedstoneAmount = (byte) Math.max(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
         }
         return tRedstoneAmount;
@@ -119,20 +121,20 @@ public abstract class GT_CircuitryBehavior {
     /**
      * returns the weakest incoming non-zero RS-Power
      */
-    public static final byte getWeakestNonZeroRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
+    public static byte getWeakestNonZeroRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         if (!getAnyRedstone(aRedstoneCircuitBlock)) return 0;
         byte tRedstoneAmount = 15;
-        for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing()
+        for (byte side : ALL_VALID_SIDES) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
                     && aRedstoneCircuitBlock
-                            .getCover(i)
+                            .getCover(side)
                             .letsRedstoneGoIn(
-                                    i,
-                                    aRedstoneCircuitBlock.getCoverID(i),
-                                    aRedstoneCircuitBlock.getCoverVariable(i),
+                                    side,
+                                    aRedstoneCircuitBlock.getCoverID(side),
+                                    aRedstoneCircuitBlock.getCoverVariable(side),
                                     aRedstoneCircuitBlock.getOwnTileEntity())) {
-                if (aRedstoneCircuitBlock.getInputRedstone(i) > 0)
-                    tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(i));
+                if (aRedstoneCircuitBlock.getInputRedstone(side) > 0)
+                    tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
         }
         return tRedstoneAmount;
@@ -141,19 +143,19 @@ public abstract class GT_CircuitryBehavior {
     /**
      * returns the weakest incoming RS-Power
      */
-    public static final byte getWeakestRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
+    public static byte getWeakestRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         if (!getAnyRedstone(aRedstoneCircuitBlock)) return 0;
         byte tRedstoneAmount = 15;
-        for (byte i = 0; i < 6; i++) {
-            if (i != aRedstoneCircuitBlock.getOutputFacing()
+        for (byte side : ALL_VALID_SIDES) {
+            if (side != aRedstoneCircuitBlock.getOutputFacing()
                     && aRedstoneCircuitBlock
-                            .getCover(i)
+                            .getCover(side)
                             .letsRedstoneGoIn(
-                                    i,
-                                    aRedstoneCircuitBlock.getCoverID(i),
-                                    aRedstoneCircuitBlock.getCoverVariable(i),
+                                    side,
+                                    aRedstoneCircuitBlock.getCoverID(side),
+                                    aRedstoneCircuitBlock.getCoverVariable(side),
                                     aRedstoneCircuitBlock.getOwnTileEntity())) {
-                tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(i));
+                tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
         }
         return tRedstoneAmount;
