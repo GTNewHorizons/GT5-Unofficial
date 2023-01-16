@@ -267,15 +267,15 @@ public class GT_ParallelHelper {
             }
         }
 
+        float tRecipeEUt = mRecipe.mEUt * mEUtModifer;
         // Consume inputs to determine normal parallel
-        //while (mAvailableEUt > tCurrentUsage + mRecipe.mEUt * mEUtModifer && mCurrentParallel < mMaxParallel) {
-        for (; mCurrentParallel < mMaxParallel && tCurrentUsage < (mAvailableEUt - mRecipe.mEUt * mEUtModifer); mCurrentParallel++) {
+        // while (mAvailableEUt > tCurrentUsage + mRecipe.mEUt * mEUtModifer && mCurrentParallel < mMaxParallel) {
+        for (; mCurrentParallel < mMaxParallel && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
             if (mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
-                tCurrentUsage += mRecipe.mEUt * mEUtModifer;
+                tCurrentUsage += tRecipeEUt;
             } else {
                 break;
             }
-            
         }
 
         // If Batch Mode is enabled determine how many extra parallels we can get
