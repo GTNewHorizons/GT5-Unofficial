@@ -442,7 +442,7 @@ public class GT_Utility {
     public static byte getTier(long l) {
         byte i = -1;
         while (++i < V.length) if (l <= V[i]) return i;
-        return i;
+        return (byte) (V.length - 1);
     }
 
     public static String getColoredTierNameFromVoltage(long voltage) {
