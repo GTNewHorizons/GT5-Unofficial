@@ -3334,6 +3334,7 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(Materials.Silver);
         nanite.mGeneratedItems.add(Materials.TranscendentMetal);
         nanite.mGeneratedItems.add(Materials.Neutronium);
+        nanite.mGeneratedItems.add(Materials.Glowstone);
         // -----
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
