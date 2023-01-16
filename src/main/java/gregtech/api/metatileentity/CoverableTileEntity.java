@@ -114,7 +114,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         writeOldCoverNBT(aNBT);
     }
 
-    private  void writeOldCoverNBT(NBTTagCompound aNBT) {
+    private void writeOldCoverNBT(NBTTagCompound aNBT) {
         boolean hasCover = false;
         for (int i = 0; i < mCoverData.length; i++) {
             if (mCoverSides[i] != 0 && mCoverData[i] != null) {
