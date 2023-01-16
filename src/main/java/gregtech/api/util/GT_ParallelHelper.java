@@ -61,8 +61,9 @@ public class GT_ParallelHelper {
     private boolean mVoidProtection, mConsume, mBatchMode, mCalculateOutputs, mBuilt;
     /**
      * @mDurationMultiplier What is the duration multiplier with batch mode enabled
+     * @mEUtModifer Modifier which is applied on the recipe eut. Usefull for GT++ machines
      */
-    private float mDurationMultiplier;
+    private float mDurationMultiplier, mEUtModifer = 1;
 
     public GT_ParallelHelper() {}
 
@@ -113,6 +114,14 @@ public class GT_ParallelHelper {
      */
     public GT_ParallelHelper setAvailableEUt(long aAvailableEUt) {
         mAvailableEUt = aAvailableEUt;
+        return this;
+    }
+
+    /**
+     * Sets the modifier for recipe eut. 1 does nothing 0.9 is 10% less. 1.1 is 10% more
+     */
+    public GT_ParallelHelper setEUtModifier(float aEUtModifier) {
+        mEUtModifer = aEUtModifier;
         return this;
     }
 
@@ -211,14 +220,26 @@ public class GT_ParallelHelper {
      * Called by build(). Determines the parallels and everything else that needs to be done at build time
      */
     private void determnieParallel() {
-        ItemStack[] tItemInputs = mConsume ? mItemInputs : mItemInputs.clone();
-        FluidStack[] tFluidInputs = mConsume ? mFluidInputs : mFluidInputs.clone();
+        ItemStack[] tItemInputs = null;
+        FluidStack[] tFluidInputs = null;
         boolean tMEOutputBus = false;
         boolean tMEOutputHatch = false;
         long tCurrentUsage = 0;
-        int tMaxCurrentParallel = mMaxParallel;
-        int tMaxParallelsFluids = mMaxParallel * mBatchModifier;
-        int tMaxParallelsItems = mMaxParallel * mBatchModifier;
+        // see if people want to consume their inputs with the Parallel Helper or not
+        if (mConsume) {
+            tItemInputs = mItemInputs;
+            tFluidInputs = mFluidInputs;
+        } else {
+            tItemInputs = new ItemStack[mItemInputs.length];
+            for (int i = 0; i < mItemInputs.length; i++) {
+                tItemInputs[i] = mItemInputs[i].copy();
+            }
+
+            tFluidInputs = new FluidStack[mFluidInputs.length];
+            for (int i = 0; i < mFluidInputs.length; i++) {
+                tFluidInputs[i] = mFluidInputs[i].copy();
+            }
+        }
         // Let's look at how many parallels we can get with void protection
         if (mVoidProtection) {
             for (GT_MetaTileEntity_Hatch tHatch : mMachineMeta.mOutputBusses) {
@@ -237,37 +258,35 @@ public class GT_ParallelHelper {
 
             if (!tMEOutputBus || !tMEOutputHatch) {
                 if (!tMEOutputBus) {
-                    tMaxParallelsItems = calculateMaxParallelsForBusses();
+                    mMaxParallel = Math.min(calculateMaxParallelsForBusses(), mMaxParallel);
                 }
 
                 if (!tMEOutputHatch) {
-                    tMaxParallelsFluids = calculateMaxParallelsForHatches();
+                    mMaxParallel = Math.min(calculateMaxParallelsForHatches(), mMaxParallel);
                 }
             }
         }
 
         // Consume inputs to determine normal parallel
-        while (mRecipe.isRecipeInputEqual(false, true, tFluidInputs, tItemInputs)
-                && mAvailableEUt > tCurrentUsage + mRecipe.mEUt
-                && mCurrentParallel < tMaxCurrentParallel
-                && mCurrentParallel < tMaxParallelsFluids
-                && mCurrentParallel < tMaxParallelsItems) {
-            mRecipe.isRecipeInputEqual(true, true, tFluidInputs, tItemInputs);
-            tCurrentUsage += mRecipe.mEUt;
-            mCurrentParallel++;
+        //while (mAvailableEUt > tCurrentUsage + mRecipe.mEUt * mEUtModifer && mCurrentParallel < mMaxParallel) {
+        for (; mCurrentParallel < mMaxParallel && tCurrentUsage < (mAvailableEUt - mRecipe.mEUt * mEUtModifer); mCurrentParallel++) {
+            if (mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
+                tCurrentUsage += mRecipe.mEUt * mEUtModifer;
+            } else {
+                break;
+            }
+            
         }
 
         // If Batch Mode is enabled determine how many extra parallels we can get
         if (mBatchMode) {
             int tExtraParallels = 0;
             while (mRecipe.isRecipeInputEqual(true, true, tFluidInputs, tItemInputs)
-                    && tExtraParallels <= mCurrentParallel * mBatchModifier
-                    && mCurrentParallel <= tMaxParallelsFluids
-                    && mCurrentParallel <= tMaxParallelsItems) {
+                    && tExtraParallels < mCurrentParallel * mBatchModifier) {
                 tExtraParallels++;
             }
             mCurrentParallel += tExtraParallels;
-            mDurationMultiplier = 1.0f + 128.0f / tExtraParallels;
+            mDurationMultiplier = 1.0f + (float) mBatchModifier / tExtraParallels;
         }
 
         // If we want to calculate outputs we do it here
