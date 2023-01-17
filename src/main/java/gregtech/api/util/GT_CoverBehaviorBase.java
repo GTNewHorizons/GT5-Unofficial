@@ -62,7 +62,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             return createDataObject(((NBTTagInt) aNBT).func_150287_d());
         }
 
-        T ret = createDataObject();
+        final T ret = createDataObject();
         ret.loadDataFromNBT(aNBT);
         return ret;
     }

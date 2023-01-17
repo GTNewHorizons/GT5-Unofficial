@@ -15,6 +15,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
@@ -24,9 +25,10 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
 import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.net.GT_Packet_New;
-import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
@@ -34,7 +36,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.render.GT_MultiTexture;
 import gregtech.common.render.IRenderedBlock;
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
@@ -78,9 +80,10 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
     public Materials mMaterial = Materials._NULL;
     protected final boolean mIsTicking; // If this TileEntity is ticking at all
 
-    protected boolean mShouldRefresh =
-            true; // This Variable checks if this TileEntity should refresh when the Block is being set. That way you
+    // This Variable checks if this TileEntity should refresh when the Block is being set. That way you
     // can turn this check off any time you need it.
+    protected boolean mShouldRefresh = true;
+
     protected boolean mDoesBlockUpdate = false; // This Variable is for a buffered Block Update.
     protected boolean mForceFullSelectionBoxes = false; // This Variable is for forcing the Selection Box to be full.
     protected boolean mNeedsUpdate = false;
@@ -192,8 +195,6 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                 copyTextures();
             }
 
-            if (mCoverData == null || mCoverData.length != 6) mCoverData = new ISerializableObject[6];
-            if (mCoverSides.length != 6) mCoverSides = new int[] {0, 0, 0, 0, 0, 0};
             if (mSidedRedstone.length != 6) mSidedRedstone = new byte[] {15, 15, 15, 15, 15, 15};
 
             updateCoverBehavior();
@@ -252,7 +253,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
 
     @Override
     public boolean useModularUI() {
-        return true;
+        return false;
     }
 
     @Override
@@ -730,6 +731,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
         try {
             return allowRightclick(aPlayer) && onRightClick(aPlayer, aSide, aX, aY, aZ);
         } catch (Throwable e) {
+            GT_FML_LOGGER.error("onBlockActivated Failed", e);
             e.printStackTrace(GT_Log.err);
             return true;
         }
@@ -747,9 +749,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                 return true;
             }
 
-            if (!getCoverBehaviorAtSideNew(aSide)
-                    .isGUIClickable(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
-                return false;
+            if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
         }
         if (isServerSide()) {
             if (!privateAccess() || aPlayer.getDisplayName().equalsIgnoreCase(getOwnerName())) {
@@ -826,12 +826,27 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                                 aY,
                                 aZ)) return true;
 
-                if (!getCoverBehaviorAtSideNew(aSide)
-                        .isGUIClickable(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
-                    return false;
+                if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
+
+                return openModularUi(aPlayer, aSide);
             }
         }
         return false;
+    }
+
+    public boolean hasGui(byte aSide) {
+        return false;
+    }
+
+    boolean openModularUi(EntityPlayer aPlayer, byte aSide) {
+        if (!hasGui(aSide) || !isServerSide()) {
+            System.out.println("No GUI or Not Serverside");
+            return false;
+        }
+
+        GT_UIInfos.openGTTileEntityUI(this, aPlayer);
+        System.out.println("Trying to open a UI");
+        return true;
     }
 
     public boolean onWrenchRightClick(
@@ -955,56 +970,49 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
         return mLockUpgrade;
     }
 
-    public byte getTextureData() {
-        return 0;
-    }
-
     /**
      * @return a Packet containing all Data which has to be synchronised to the Client - Override as needed
      */
     public GT_Packet_New getClientDataPacket() {
-        return new GT_Packet_TileEntity(
+
+        final GT_Packet_MultiTileEntity packet = new GT_Packet_MultiTileEntity(
+                0,
                 xCoord,
                 (short) yCoord,
                 zCoord,
                 getMultiTileEntityRegistryID(),
                 getMultiTileEntityID(),
-                mCoverSides[0],
-                mCoverSides[1],
-                mCoverSides[2],
-                mCoverSides[3],
-                mCoverSides[4],
-                mCoverSides[5],
                 (byte) ((mFacing & 7) | (mRedstone ? 16 : 0)),
-                (byte) getTextureData(), /*getTexturePage()*/
-                (byte) 0, /*getUpdateData()*/
-                (byte) (((mSidedRedstone[0] > 0) ? 1 : 0)
-                        | ((mSidedRedstone[1] > 0) ? 2 : 0)
-                        | ((mSidedRedstone[2] > 0) ? 4 : 0)
-                        | ((mSidedRedstone[3] > 0) ? 8 : 0)
-                        | ((mSidedRedstone[4] > 0) ? 16 : 0)
-                        | ((mSidedRedstone[5] > 0) ? 32 : 0)),
                 mColor);
-    }
 
-    @Override
-    public Packet getDescriptionPacket() {
-        issueClientUpdate();
-        return null;
-    }
+        packet.setCoverData(
+                getCoverInfoAtSide((byte) 0).getCoverID(),
+                getCoverInfoAtSide((byte) 1).getCoverID(),
+                getCoverInfoAtSide((byte) 2).getCoverID(),
+                getCoverInfoAtSide((byte) 3).getCoverID(),
+                getCoverInfoAtSide((byte) 4).getCoverID(),
+                getCoverInfoAtSide((byte) 5).getCoverID());
 
-    @Override
-    public void getWailaBody(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(String.format(
-                "Facing: %s", ForgeDirection.getOrientation(getFrontFacing()).name()));
-    }
+        packet.setRedstoneData((byte) (((mSidedRedstone[0] > 0) ? 1 : 0)
+                | ((mSidedRedstone[1] > 0) ? 2 : 0)
+                | ((mSidedRedstone[2] > 0) ? 4 : 0)
+                | ((mSidedRedstone[3] > 0) ? 8 : 0)
+                | ((mSidedRedstone[4] > 0) ? 16 : 0)
+                | ((mSidedRedstone[5] > 0) ? 32 : 0)));
 
-    @Override
-    public void getWailaNBTData(
-            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        if (this instanceof IMTE_HasModes) {
+            final IMTE_HasModes mteModes = (IMTE_HasModes) this;
+            packet.setModes(mteModes.getMode(), mteModes.getAllowedModes());
+        }
+        if (this instanceof IMultiBlockPart) {
+            final IMultiBlockPart mtePart = (IMultiBlockPart) this;
+            if (mtePart.getTargetPos() != null) {
+                final ChunkCoordinates aTarget = mtePart.getTargetPos();
+                packet.setTargetPos(aTarget.posX, (short) aTarget.posY, aTarget.posZ);
+            }
+        }
+
+        return packet;
     }
 
     @Override
@@ -1017,10 +1025,6 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
             GT_Values.NW.sendToPlayer(tPacket, aPlayer);
         }
         sendCoverDataIfNeeded();
-    }
-
-    public void setTextureData(byte aValue) {
-        /*Do nothing*/
     }
 
     @Override
@@ -1037,10 +1041,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                     // mWorks =  ((aValue & 64) != 0);
                     break;
                 case GregTechTileClientEvents.CHANGE_CUSTOM_DATA:
-                    if ((aValue & 0x80) != 0) // Is texture index
-                    setTextureData((byte) (aValue & 0x7F));
-                    // else if (mMetaTileEntity instanceof GT_MetaTileEntity_Hatch)//is texture page and hatch
-                    //    ((GT_MetaTileEntity_Hatch) mMetaTileEntity).onTexturePageUpdate((byte) (aValue & 0x7F));
+                    // Nothing here, currently
                     break;
                 case GregTechTileClientEvents.CHANGE_COLOR:
                     if (aValue > 16 || aValue < 0) aValue = 0;
@@ -1072,6 +1073,26 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
             }
         }
         return true;
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        issueClientUpdate();
+        return null;
+    }
+
+    @Override
+    public void getWailaBody(
+            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        currenttip.add(String.format(
+                "Facing: %s", ForgeDirection.getOrientation(getFrontFacing()).name()));
+    }
+
+    @Override
+    public void getWailaNBTData(
+            EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
     @Override
@@ -1262,11 +1283,13 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
      */
     @Override
     public void openInventory() {
+        System.out.println("Open Inventory");
         /* Do nothing */
     }
 
     @Override
     public void closeInventory() {
+        System.out.println("Close Inventory");
         /* Do nothing */
     }
 
@@ -1350,33 +1373,27 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
      */
 
     public boolean coverLetsFluidIn(byte aSide, Fluid aFluid) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsFluidIn(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), aFluid, this);
+        return getCoverInfoAtSide(aSide).letsFluidIn(aFluid);
     }
 
     public boolean coverLetsFluidOut(byte aSide, Fluid aFluid) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsFluidOut(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), aFluid, this);
+        return getCoverInfoAtSide(aSide).letsFluidOut(aFluid);
     }
 
     public boolean coverLetsEnergyIn(byte aSide) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsEnergyIn(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
+        return getCoverInfoAtSide(aSide).letsEnergyIn();
     }
 
     public boolean coverLetsEnergyOut(byte aSide) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsEnergyOut(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
+        return getCoverInfoAtSide(aSide).letsEnergyOut();
     }
 
     public boolean coverLetsItemsIn(byte aSide, int aSlot) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsItemsIn(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), aSlot, this);
+        return getCoverInfoAtSide(aSide).letsItemsIn(aSlot);
     }
 
     public boolean coverLetsItemsOut(byte aSide, int aSlot) {
-        return getCoverBehaviorAtSideNew(aSide)
-                .letsItemsOut(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), aSlot, this);
+        return getCoverInfoAtSide(aSide).letsItemsOut(aSlot);
     }
 
     @Override

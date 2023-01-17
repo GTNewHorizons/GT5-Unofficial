@@ -3,6 +3,7 @@ package gregtech.api.net;
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.common.covers.CoverInfo;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
@@ -27,6 +28,16 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
 
     public GT_Packet_RequestCoverData() {
         super(true);
+    }
+
+    public GT_Packet_RequestCoverData(CoverInfo info, ICoverable tile) {
+        super(false);
+        this.mX = tile.getXCoord();
+        this.mY = tile.getYCoord();
+        this.mZ = tile.getZCoord();
+
+        this.side = info.getSide();
+        this.coverID = info.getCoverID();
     }
 
     public GT_Packet_RequestCoverData(int mX, short mY, int mZ, byte coverSide, int coverID) {
@@ -79,9 +90,9 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        if (mPlayer == null) // impossible, but who knows
-        return;
-        World world = DimensionManager.getWorld(mPlayer.dimension);
+        // impossible, but who knows
+        if (mPlayer == null) return;
+        final World world = DimensionManager.getWorld(mPlayer.dimension);
         if (world != null) {
             final TileEntity tile = world.getTileEntity(mX, mY, mZ);
             if (tile instanceof CoverableTileEntity) {
