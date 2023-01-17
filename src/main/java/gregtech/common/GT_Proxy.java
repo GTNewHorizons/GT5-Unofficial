@@ -2440,6 +2440,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             OrePrefixes.cellHydroCracked1, OrePrefixes.cellHydroCracked2, OrePrefixes.cellHydroCracked3
         };
         final Fluid uncrackedFluid;
+        // Hydrogen is much more expensive than Steam, they should not be used in similar quantities
+        final int hydrogenDivideAmount = 40;
         if (aMaterial.mFluid != null) {
             uncrackedFluid = aMaterial.mFluid;
         } else if (aMaterial.mGas != null) {
@@ -2456,26 +2458,26 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                             GT_OreDictUnificator.get(orePrefixes[i], aMaterial, 1L), ItemList.Cell_Empty.get(1L))
                     .asFluid();
 
-            int hydrogenAmount = 2 * i + 2;
+            int hydrogenAmount = i + 1;
             GT_Values.RA.addCrackingRecipe(
                     i + 1,
                     new FluidStack(uncrackedFluid, 1000),
-                    Materials.Hydrogen.getGas(hydrogenAmount * 800),
+                    Materials.Hydrogen.getGas(hydrogenAmount * 800 / hydrogenDivideAmount),
                     new FluidStack(crackedFluids[i], 1000),
                     20 + 20 * i,
                     240);
             GT_Values.RA.addChemicalRecipe(
                     Materials.Hydrogen.getCells(hydrogenAmount),
                     GT_Utility.getIntegratedCircuit(i + 1),
-                    new FluidStack(uncrackedFluid, 1000),
-                    new FluidStack(crackedFluids[i], 800),
+                    new FluidStack(uncrackedFluid, 1000 * hydrogenDivideAmount),
+                    new FluidStack(crackedFluids[i], 800 * hydrogenDivideAmount),
                     Materials.Empty.getCells(hydrogenAmount),
-                    160 + 80 * i,
+                    160 * hydrogenDivideAmount + 80 * i,
                     30);
             GT_Values.RA.addChemicalRecipe(
                     aMaterial.getCells(1),
                     GT_Utility.getIntegratedCircuit(i + 1),
-                    Materials.Hydrogen.getGas(hydrogenAmount * 1000),
+                    Materials.Hydrogen.getGas(hydrogenAmount * 1000 / hydrogenDivideAmount),
                     new FluidStack(crackedFluids[i], 800),
                     Materials.Empty.getCells(1),
                     160 + 80 * i,
