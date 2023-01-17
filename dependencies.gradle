@@ -8,10 +8,7 @@ dependencies {
     compile("com.github.GTNewHorizons:TinkersConstruct:1.9.11-GTNH:dev")
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.6:dev")
     compile("com.github.GTNewHorizons:CodeChickenCore:1.1.7:dev")
-    compile("com.github.GTNewHorizons:Galacticraft:3.0.62-GTNH:dev") {
-        exclude group:"com.github.GTNewHorizons", module:"SpongePoweredMixin"
-        exclude group:"com.github.GTNewHorizons", module:"SpongeMixins"
-    }
+    compile("com.github.GTNewHorizons:Galacticraft:3.0.63-GTNH:dev")
     compile("com.github.GTNewHorizons:ModularUI:1.0.38:dev")
     compile("com.github.GTNewHorizons:GalacticGregGT5:1.0.8:dev") {
         exclude group:"com.github.GTNewHorizons", module:"bartworks"

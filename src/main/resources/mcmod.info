@@ -16,7 +16,7 @@
 		"requiredMods": [],
 		"dependencies": [],
 		"dependants": [],
-		"useDependencyInformation": true
+		"useDependencyInformation": false
 	},{
 		"modid": "bartworkscrossmod",
 		"name": "BartWorks Mod Additions",
@@ -33,7 +33,7 @@
 		"requiredMods": [],
 		"dependencies": [],
 		"dependants": [],
-		"useDependencyInformation": true
+		"useDependencyInformation": false
 	},{
 		"modid": "bartworkscrossmodtgregworkscontainer",
 		"name": "BartWorks Mod Additions - TGregworks Container",
@@ -50,6 +50,6 @@
 		"requiredMods": [],
 		"dependencies": [],
 		"dependants": [],
-		"useDependencyInformation": true
+		"useDependencyInformation": false
 	}]
 }
