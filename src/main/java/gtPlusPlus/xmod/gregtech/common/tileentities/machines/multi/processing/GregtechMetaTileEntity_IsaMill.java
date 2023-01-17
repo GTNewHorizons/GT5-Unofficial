@@ -213,7 +213,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
                 this.mMillingBallBuses.clear();
             }
         }
-        if (aTick % 20 == 0) {
+        if (aTick % 20 == 0 && isMachineRunning()) {
             checkForEntities(aBaseMetaTileEntity, aTick);
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -255,15 +255,13 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
                         continue;
                     } else {
                         if (aFoundEntity.getHealth() > 0) {
-                            EntityUtils.doDamage(
-                                    aFoundEntity, mIsaMillDamageSource, (int) (aFoundEntity.getMaxHealth() / 5));
+                            EntityUtils.doDamage(aFoundEntity, mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
                             if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
                                 generateParticles(aFoundEntity);
                             }
                         }
                     }
-                }
-                if (aFoundEntity.getHealth() > 0) {
+                } else if (aFoundEntity.getHealth() > 0) {
                     EntityUtils.doDamage(
                             aFoundEntity, mIsaMillDamageSource, Math.max(1, (int) (aFoundEntity.getMaxHealth() / 3)));
                     if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
@@ -272,6 +270,12 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
                 }
             }
         }
+    }
+    // 20 armor points add 80% damage reduction, more points add more damage reduction
+    private int getPlayerDamageValue(EntityPlayer player, int damage) {
+        int armorValue = player.getTotalArmorValue();
+        int reducedDamage = (int) (damage - damage * (armorValue * 0.04));
+        return Math.max(reducedDamage, 0);
     }
 
     private static final AutoMap<EntityLivingBase> getEntities(AutoMap<BlockPos> aPositionsToCheck, World aWorld) {
