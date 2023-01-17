@@ -1100,11 +1100,6 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         // Gets the EU input of the
         long tTotalEU = GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList());
 
-        // Hacky method to determine if double energy hatches are being used.
-        if (getExoticAndNormalEnergyHatchList().get(0) instanceof GT_MetaTileEntity_Hatch_Energy) {
-            tTotalEU /= 2L;
-        }
-
         // Look up recipe. If not found it will return null.
         GT_Recipe tRecipe_0 = GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes.findRecipe(
                 getBaseMetaTileEntity(), false, tTotalEU, tFluids, tItems);
