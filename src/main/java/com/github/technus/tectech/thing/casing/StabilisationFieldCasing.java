@@ -33,7 +33,7 @@ public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
     private static IIcon textureTier8;
     private static final int MAX_BLOCK_TIER = 9;
 
-    private static final byte START_INDEX = 16;
+    private static final byte START_INDEX = 32;
 
     public StabilisationFieldCasing() {
         super(GT_Item_Casings_Stabilisation.class, "gt.stabilisation_field_generator", GT_Material_Casings.INSTANCE);

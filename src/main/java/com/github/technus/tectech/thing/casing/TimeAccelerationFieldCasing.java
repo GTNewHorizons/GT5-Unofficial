@@ -33,7 +33,7 @@ public class TimeAccelerationFieldCasing extends GT_Block_Casings_Abstract {
     private static IIcon textureTier8;
     private static final int MAX_BLOCK_TIER = 9;
 
-    private static final byte START_INDEX = 16;
+    private static final byte START_INDEX = 64;
 
     public TimeAccelerationFieldCasing() {
         super(
