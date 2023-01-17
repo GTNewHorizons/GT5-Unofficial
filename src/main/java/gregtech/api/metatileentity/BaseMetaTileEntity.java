@@ -411,7 +411,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                 return;
                             }
 
-                            if (getRandomNumber(1000) == 0 && isRainPossible()) {
+                            if (getRandomNumber(1000) == 0 && isRainPossible() && !mMetaTileEntity.isRainProof()) {
                                 final int precipitationHeightAtSide2 =
                                         worldObj.getPrecipitationHeight(xCoord, zCoord - 1);
                                 final int precipitationHeightAtSide3 =
