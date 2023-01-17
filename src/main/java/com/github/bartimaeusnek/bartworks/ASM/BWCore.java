@@ -54,6 +54,7 @@ public class BWCore extends DummyModContainer {
         metadata.version = "0.0.1";
         metadata.authorList.add("bartimaeusnek");
         metadata.dependants = this.getDependants();
+        metadata.parent = MainMod.MOD_ID;
     }
 
     @Subscribe
