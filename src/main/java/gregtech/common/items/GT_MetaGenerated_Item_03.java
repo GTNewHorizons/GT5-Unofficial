@@ -447,6 +447,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Board_Plastic_Advanced.set(addItem(tLastID = 106, "Plastic Circuit Board", "A good Board", o));
         ItemList.Circuit_Board_Bio_Ultra.set(
                 addItem(tLastID = 107, "Ultra Bio Mutated Circuit Board", "Bio genetic mutated Board", o));
+        ItemList.Circuit_Board_Optical.set(
+                addItem(tLastID = 728, "Optical Circuit Board", "Optically Infused Board", o));
 
         // Optical circuits
         ItemList.Circuit_OpticalProcessor.set(addItem(
