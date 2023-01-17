@@ -1451,7 +1451,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
                 .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
-                .addInfo("to be handled with conventional means. All EU requirements are handled directly by your")
+                .addInfo("to be handled with conventional means. All EU requirements are handled directly by")
                 .addInfo("your wireless EU network.")
                 .addInfo(GOLD + "--------------------------------------------------------------------------------")
                 .addInfo("This multiblock will constantly consume hydrogen and helium when it is not running a")
