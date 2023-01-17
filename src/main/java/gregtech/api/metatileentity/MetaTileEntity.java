@@ -752,12 +752,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     /**
-     * Flag if this MTE is shielded against rain or will explode in it
+     * Flag if this MTE will exploding when its raining
      *
-     * @return True if rain proof, else false
+     * @return True if this will explode in rain, else false
      */
-    public boolean isRainProof() {
-        return false;
+    public boolean willExplodeInRain() {
+        return true;
     }
 
     /**
