@@ -101,6 +101,11 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
     }
 
     @Override
+    public ConnectionType getConnectionType() {
+        return ConnectionType.LASER;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_DynamoTunnel(mName, mTier, Amperes, mDescription, mTextures);
     }

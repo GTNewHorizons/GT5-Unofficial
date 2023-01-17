@@ -99,6 +99,11 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
     }
 
     @Override
+    public ConnectionType getConnectionType() {
+        return ConnectionType.LASER;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_EnergyTunnel(mName, mTier, Amperes, mDescription, mTextures);
     }
