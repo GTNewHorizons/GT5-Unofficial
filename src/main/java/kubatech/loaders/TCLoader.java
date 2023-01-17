@@ -39,7 +39,7 @@ public class TCLoader {
         final ItemStack[] components = new ItemStack[] {
             // ItemList.LegendaryBlackTea.get(1),
             // ItemList.LegendaryButterflyTea.get(1),
-            // ItemList.LegendaryEarlGrayTea.get(1),
+            ItemList.LegendaryEarlGrayTea.get(1), // MApiary
             ItemList.LegendaryGreenTea.get(1), // EIG
             // ItemList.LegendaryLemonTea.get(1),
             // ItemList.LegendaryMilkTea.get(1),
