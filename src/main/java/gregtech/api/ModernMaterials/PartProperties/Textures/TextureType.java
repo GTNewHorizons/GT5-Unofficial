@@ -1,5 +1,9 @@
 package gregtech.api.ModernMaterials.PartProperties.Textures;
 
-public class TextureInfo {
+public enum TextureType {
+
+    Metallic,
+    Stone,
+    Custom;
 
 }

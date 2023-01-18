@@ -3,6 +3,9 @@ package gregtech;
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.ModernMaterials.ModernMaterials.registerAllMaterials;
 import static gregtech.api.ModernMaterials.ModernMaterials.registerMaterial;
+import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Custom;
+import static gregtech.api.ModernMaterials.PartsClasses.PartsEnum.Gear;
+import static gregtech.api.ModernMaterials.PartsClasses.PartsEnum.Ingot;
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 
 import appeng.api.AEApi;
@@ -22,6 +25,8 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
+import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.ConfigCategories;
@@ -73,6 +78,8 @@ import gregtech.loaders.preload.*;
 import gregtech.nei.IMCForNEI;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
+
+import java.awt.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -212,8 +219,15 @@ public class GT_Mod implements IGT_Mod {
     @Mod.EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
 
-        registerMaterial(new ModernMaterial("Iron"));
-        registerMaterial(new ModernMaterial("Copper"));
+        ModernMaterial iron = new ModernMaterial(new Color(0, 255, 255, 255), "Iron");
+        iron.addPart(Gear);
+        iron.addPart(Ingot);
+        iron.addAllParts();
+        registerMaterial(iron);
+
+        ModernMaterial copper = new ModernMaterial(new Color(255, 0, 0, 255), "Copper");
+        copper.addPart(new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"));
+        registerMaterial(copper);
 
         registerAllMaterials();
 

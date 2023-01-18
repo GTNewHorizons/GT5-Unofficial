@@ -1,6 +1,6 @@
 package gregtech.api.ModernMaterials.PartsClasses;
 
-public enum Parts {
+public enum PartsEnum {
 
     Ingot("% Ingot"),
 
@@ -13,13 +13,9 @@ public enum Parts {
     QuadruplePlate("Quadruple % Plate"),
     QuintuplePlate("Quintuple % Plate");
 
-    Parts(final String partName) {
+    PartsEnum(final String partName) {
         this.partName = partName;
     }
 
-    private final String partName;
-
-    public String getPartName() {
-        return partName;
-    }
+    public final String partName;
 }
