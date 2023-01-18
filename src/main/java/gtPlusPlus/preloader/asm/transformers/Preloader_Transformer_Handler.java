@@ -5,6 +5,7 @@ import static gtPlusPlus.preloader.asm.ClassesToTransform.*;
 import cpw.mods.fml.relauncher.CoreModManager;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.DevHelper;
 import gtPlusPlus.preloader.Preloader_Logger;
 import gtPlusPlus.preloader.asm.AsmConfig;
@@ -81,7 +82,9 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         if ((transformedName.equals(LWJGL_KEYBOARD)
                         || transformedName.equals(MINECRAFT_GAMESETTINGS_OBF)
                         || transformedName.equals(MINECRAFT_GAMESETTINGS))
-                && AsmConfig.enabledLwjglKeybindingFix) {
+                && AsmConfig.enabledLwjglKeybindingFix
+                // Do not transform if using lwjgl3
+                && !ReflectionUtils.doesClassExist("org.lwjgl.system.Platform")) {
             boolean isClientSettingsClass = false;
             if (!transformedName.equals("org.lwjgl.input.Keyboard")) {
                 isClientSettingsClass = true;
