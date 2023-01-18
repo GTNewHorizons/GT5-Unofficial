@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static gregtech.api.ModernMaterials.ModernMaterials.materialIdToMaterial;
+import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Custom;
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
 public class MaterialPart extends Item {
@@ -50,12 +51,13 @@ public class MaterialPart extends Item {
             CustomPartInfo customPartInfo = material.getPart(this.partsEnum);
             String path;
 
-            if (customPartInfo.isNotAnimated()) {
+            if (!customPartInfo.getTextureType().equals(Custom)) {
                 path = RES_PATH_BLOCK + "ModernMaterialsIcons/" + customPartInfo.getTextureType() + "/" + partName;
             } else {
                 path = RES_PATH_BLOCK + "ModernMaterialsIcons/" + customPartInfo.getTextureType() + "/" +
-                    material.getMaterialName().toLowerCase() + customPartInfo.getTextureName();
+                    material.getMaterialName().toLowerCase()  + "/" + customPartInfo.getTextureName();
             }
+
             animatedMaterialIconMap.put(materialID, register.registerIcon(path)); // todo probably inefficient?
         });
     }

@@ -220,9 +220,8 @@ public class GT_Mod implements IGT_Mod {
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
 
         ModernMaterial iron = new ModernMaterial(new Color(0, 255, 255, 255), "Iron");
-        iron.addPart(Gear);
-        iron.addPart(Ingot);
         iron.addAllParts();
+        iron.addPart(new CustomPartInfo(Gear).setTextureType(Custom));
         registerMaterial(iron);
 
         ModernMaterial copper = new ModernMaterial(new Color(255, 0, 0, 255), "Copper");
