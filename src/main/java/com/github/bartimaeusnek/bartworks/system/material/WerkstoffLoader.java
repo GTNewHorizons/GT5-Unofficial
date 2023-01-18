@@ -595,9 +595,17 @@ public class WerkstoffLoader {
             new short[] {0, 64, 0, 0},
             "Thorium 232",
             superscriptNumbers("Th232"),
-            new Werkstoff.Stats().setRadioactive(true),
+            new Werkstoff.Stats()
+                    .setRadioactive(true)
+                    .setBlastFurnace(true)
+                    .setMass(232)
+                    .setProtons(Element.Th.mProtons),
             Werkstoff.Types.ISOTOPE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust().enforceUnification(),
+            new Werkstoff.GenerationFeatures()
+                    .disable()
+                    .onlyDust()
+                    .addMetalItems()
+                    .enforceUnification(),
             30,
             TextureSet.SET_METALLIC
             // No Byproducts
