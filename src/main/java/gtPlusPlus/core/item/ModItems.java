@@ -1471,6 +1471,7 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.CINOBITE);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.LAFIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.TRINIUM_REINFORCED_STEEL);
+        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
 
         // Dense Plates
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.POTIN);
