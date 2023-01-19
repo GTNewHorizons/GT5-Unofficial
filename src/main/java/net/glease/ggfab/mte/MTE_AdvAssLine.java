@@ -18,7 +18,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.glease.ggfab.ConfigurationHandler;
 import net.glease.ggfab.GGConstants;
-import net.glease.ggfab.util.LaserHelper;
 import net.glease.ggfab.util.OverclockHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -29,7 +28,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -420,7 +418,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private void recordEnergySupplier(GT_MetaTileEntity_Hatch hatch) {
         if (!isValidMetaTileEntity(hatch))
             return;
-        inputEUt += hatch.maxEUInput() * LaserHelper.getAmperes(hatch);
+        inputEUt += hatch.maxEUInput() * hatch.maxWorkingAmperesIn();
         inputVoltage = Math.min(inputVoltage, hatch.maxEUInput());
         if (inputEUt < 0)
             inputEUt = Long.MAX_VALUE;
