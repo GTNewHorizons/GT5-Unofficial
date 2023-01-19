@@ -322,7 +322,9 @@ public class GT_TileEntity_MegaChemicalReactor
                             ofChain(
                                     TTEnabledEnergyHatchElement.INSTANCE.newAny(CASING_INDEX, 3),
                                     ofBlock(GregTech_API.sBlockCasings8, 0)))
-                    .addElement('c', ofBlock(GregTech_API.sBlockCasings4, 7))
+                    .addElement(
+                            'c',
+                            ofChain(ofBlock(GregTech_API.sBlockCasings4, 7), ofBlock(GregTech_API.sBlockCasings5, 13)))
                     .addElement(
                             'g',
                             BorosilicateGlass.ofBoroGlass(
