@@ -3180,6 +3180,16 @@ public class GT_MachineRecipeLoader implements Runnable {
                 ItemList.Hatch_Input_Multi_2x2_UV.get(1L),
                 600,
                 24);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                    GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.Neutronium, 1L),
+                    ItemList.Hull_MAX.get(1L),
+                    GT_Utility.getIntegratedCircuit(4)
+                },
+                Materials.Polybenzimidazole.getMolten(2304L),
+                ItemList.Hatch_Input_Multi_2x2_UHV.get(1L),
+                600,
+                24);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
