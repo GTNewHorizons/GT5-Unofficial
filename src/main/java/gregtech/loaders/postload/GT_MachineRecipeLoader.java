@@ -8884,7 +8884,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 4);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack(Blocks.sandstone, 1, 0),
-                GT_Utility.getIntegratedCircuit(1),
+                GT_Utility.getIntegratedCircuit(23),
                 new ItemStack(Blocks.sandstone, 1, 2),
                 50,
                 4);

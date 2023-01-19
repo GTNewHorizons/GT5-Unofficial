@@ -268,6 +268,31 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         return biome.rainfall > 0 && (biome.canSpawnLightningBolt() || biome.getEnableSnow());
     }
 
+    /**
+     * Check if this is exposed to rain
+     *
+     * @return True if exposed to rain, else false
+     */
+    public boolean isRainExposed() {
+        final int precipitationHeightAtSide2 = worldObj.getPrecipitationHeight(xCoord, zCoord - 1);
+        final int precipitationHeightAtSide3 = worldObj.getPrecipitationHeight(xCoord, zCoord + 1);
+        final int precipitationHeightAtSide4 = worldObj.getPrecipitationHeight(xCoord - 1, zCoord);
+        final int precipitationHeightAtSide5 = worldObj.getPrecipitationHeight(xCoord + 1, zCoord);
+        return (getCoverIDAtSide((byte) 1) == 0 && worldObj.getPrecipitationHeight(xCoord, zCoord) - 2 < yCoord)
+                || (getCoverIDAtSide((byte) 2) == 0
+                        && precipitationHeightAtSide2 - 1 < yCoord
+                        && precipitationHeightAtSide2 > -1)
+                || (getCoverIDAtSide((byte) 3) == 0
+                        && precipitationHeightAtSide3 - 1 < yCoord
+                        && precipitationHeightAtSide3 > -1)
+                || (getCoverIDAtSide((byte) 4) == 0
+                        && precipitationHeightAtSide4 - 1 < yCoord
+                        && precipitationHeightAtSide4 > -1)
+                || (getCoverIDAtSide((byte) 5) == 0
+                        && precipitationHeightAtSide5 - 1 < yCoord
+                        && precipitationHeightAtSide5 > -1);
+    }
+
     @Override
     public void updateEntity() {
         super.updateEntity();
@@ -411,67 +436,53 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                 return;
                             }
 
-                            if (getRandomNumber(1000) == 0 && isRainPossible()) {
-                                final int precipitationHeightAtSide2 =
-                                        worldObj.getPrecipitationHeight(xCoord, zCoord - 1);
-                                final int precipitationHeightAtSide3 =
-                                        worldObj.getPrecipitationHeight(xCoord, zCoord + 1);
-                                final int precipitationHeightAtSide4 =
-                                        worldObj.getPrecipitationHeight(xCoord - 1, zCoord);
-                                final int precipitationHeightAtSide5 =
-                                        worldObj.getPrecipitationHeight(xCoord + 1, zCoord);
-
-                                if ((getCoverIDAtSide((byte) 1) == 0
-                                                && worldObj.getPrecipitationHeight(xCoord, zCoord) - 2 < yCoord)
-                                        || (getCoverIDAtSide((byte) 2) == 0
-                                                && precipitationHeightAtSide2 - 1 < yCoord
-                                                && precipitationHeightAtSide2 > -1)
-                                        || (getCoverIDAtSide((byte) 3) == 0
-                                                && precipitationHeightAtSide3 - 1 < yCoord
-                                                && precipitationHeightAtSide3 > -1)
-                                        || (getCoverIDAtSide((byte) 4) == 0
-                                                && precipitationHeightAtSide4 - 1 < yCoord
-                                                && precipitationHeightAtSide4 > -1)
-                                        || (getCoverIDAtSide((byte) 5) == 0
-                                                && precipitationHeightAtSide5 - 1 < yCoord
-                                                && precipitationHeightAtSide5 > -1)) {
-                                    if (GregTech_API.sMachineRainExplosions && worldObj.isRaining()) {
-                                        if (getRandomNumber(10) == 0) {
-                                            try {
-                                                GT_Mod.achievements.issueAchievement(
-                                                        this.getWorldObj().getPlayerEntityByName(mOwnerName),
-                                                        "badweather");
-                                            } catch (Exception ignored) {
+                            if (GregTech_API.sMachineRainExplosions) {
+                                if (mMetaTileEntity.willExplodeInRain()) {
+                                    if (getRandomNumber(1000) == 0 && isRainPossible()) {
+                                        if (isRainExposed()) {
+                                            if (worldObj.isRaining()) {
+                                                if (getRandomNumber(10) == 0) {
+                                                    try {
+                                                        GT_Mod.achievements.issueAchievement(
+                                                                this.getWorldObj()
+                                                                        .getPlayerEntityByName(mOwnerName),
+                                                                "badweather");
+                                                    } catch (Exception ignored) {
+                                                    }
+                                                    GT_Log.exp.println("Machine at: " + this.getXCoord() + " | "
+                                                            + this.getYCoord() + " | " + this.getZCoord() + " DIMID: "
+                                                            + this.worldObj.provider.dimensionId
+                                                            + " explosion due to rain!");
+                                                    doEnergyExplosion();
+                                                } else {
+                                                    GT_Log.exp.println("Machine at: " + this.getXCoord() + " | "
+                                                            + this.getYCoord() + " | " + this.getZCoord() + " DIMID: "
+                                                            + this.worldObj.provider.dimensionId
+                                                            + "  set to Fire due to rain!");
+                                                    setOnFire();
+                                                }
                                             }
-                                            GT_Log.exp.println("Machine at: " + this.getXCoord() + " | "
-                                                    + this.getYCoord() + " | " + this.getZCoord() + " DIMID: "
-                                                    + this.worldObj.provider.dimensionId + " explosion due to rain!");
-                                            doEnergyExplosion();
-                                        } else {
-                                            GT_Log.exp.println("Machine at: " + this.getXCoord() + " | "
-                                                    + this.getYCoord() + " | " + this.getZCoord() + " DIMID: "
-                                                    + this.worldObj.provider.dimensionId
-                                                    + "  set to Fire due to rain!");
-                                            setOnFire();
+                                            if (!hasValidMetaTileEntity()) {
+                                                mRunningThroughTick = false;
+                                                return;
+                                            }
+                                            if (GregTech_API.sMachineThunderExplosions
+                                                    && worldObj.isThundering()
+                                                    && getRandomNumber(3) == 0) {
+                                                try {
+                                                    GT_Mod.achievements.issueAchievement(
+                                                            this.getWorldObj().getPlayerEntityByName(mOwnerName),
+                                                            "badweather");
+                                                } catch (Exception ignored) {
+                                                }
+                                                GT_Log.exp.println(
+                                                        "Machine at: " + this.getXCoord() + " | " + this.getYCoord()
+                                                                + " | " + this.getZCoord() + " DIMID: "
+                                                                + this.worldObj.provider.dimensionId
+                                                                + " explosion due to Thunderstorm!");
+                                                doEnergyExplosion();
+                                            }
                                         }
-                                    }
-                                    if (!hasValidMetaTileEntity()) {
-                                        mRunningThroughTick = false;
-                                        return;
-                                    }
-                                    if (GregTech_API.sMachineThunderExplosions
-                                            && worldObj.isThundering()
-                                            && getRandomNumber(3) == 0) {
-                                        try {
-                                            GT_Mod.achievements.issueAchievement(
-                                                    this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
-                                        } catch (Exception ignored) {
-                                        }
-                                        GT_Log.exp.println("Machine at: " + this.getXCoord() + " | " + this.getYCoord()
-                                                + " | " + this.getZCoord() + " DIMID: "
-                                                + this.worldObj.provider.dimensionId
-                                                + " explosion due to Thunderstorm!");
-                                        doEnergyExplosion();
                                     }
                                 }
                             }
