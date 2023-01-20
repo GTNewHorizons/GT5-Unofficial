@@ -226,10 +226,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 }
 
                 // Only added if IC2 Forge Hammer is enabled in Recipes.cfg: B:ic2forgehammer_true=false
-//                GT_ModHandler.addShapelessCraftingRecipe(
-//                        GT_Utility.copyAmount(1L, aStack), DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED, new Object[] {
-//                            gregtech.api.enums.ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack
-//                        });
+                //                GT_ModHandler.addShapelessCraftingRecipe(
+                //                        GT_Utility.copyAmount(1L, aStack), DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED, new
+                // Object[] {
+                //                            gregtech.api.enums.ToolDictNames.craftingToolForgeHammer, aPlateStack,
+                // aPlateStack
+                //                        });
             }
 
             RA.addBenderRecipe(

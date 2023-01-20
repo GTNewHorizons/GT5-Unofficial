@@ -816,10 +816,10 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 SubTag.NO_UNIFICATION));
 
         ItemList.Optical_Cpu_Containment_Housing.set(
-            addItem(tLastID = 727, "Optical CPU Containment Housing", "CPU Housing", o));
+                addItem(tLastID = 727, "Optical CPU Containment Housing", "CPU Housing", o));
         ItemList.Optically_Perfected_CPU.set(addItem(tLastID = 726, "Optically Perfected CPU", "Perfected CPU!", o));
         ItemList.Optically_Compatible_Memory.set(
-            addItem(tLastID = 725, "Optically Compatible Memory", "Its in the name!", o));
+                addItem(tLastID = 725, "Optically Compatible Memory", "Its in the name!", o));
 
         int whiteDwarfIDs = 729;
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(addItem(
@@ -916,7 +916,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 whiteDwarfIDs,
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
-
     }
 
     @Override
