@@ -9,7 +9,7 @@ dependencies {
     compile("com.github.GTNewHorizons:NotEnoughItems:2.3.12-GTNH:dev")
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.4:dev")
     compile("com.github.GTNewHorizons:GTNHLib:0.0.8:dev")
-    compile("com.github.GTNewHorizons:ModularUI:1.0.33:dev")
+    compile("com.github.GTNewHorizons:ModularUI:1.0.45:dev")
     compile("com.github.GTNewHorizons:waila:1.5.21:dev")
 
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
