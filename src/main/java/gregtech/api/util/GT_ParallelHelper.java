@@ -240,6 +240,9 @@ public class GT_ParallelHelper {
                 tFluidInputs[i] = mFluidInputs[i].copy();
             }
         }
+        if (mBatchMode) {
+            mMaxParallel *= mBatchModifier;
+        }
         // Let's look at how many parallels we can get with void protection
         if (mVoidProtection) {
             for (GT_MetaTileEntity_Hatch tHatch : mMachineMeta.mOutputBusses) {
@@ -255,21 +258,20 @@ public class GT_ParallelHelper {
                     break;
                 }
             }
+            if (!tMEOutputBus) {
+                mMaxParallel = Math.min(calculateMaxParallelsForBusses(), mMaxParallel);
+            }
 
-            if (!tMEOutputBus || !tMEOutputHatch) {
-                if (!tMEOutputBus) {
-                    mMaxParallel = Math.min(calculateMaxParallelsForBusses(), mMaxParallel);
-                }
-
-                if (!tMEOutputHatch) {
-                    mMaxParallel = Math.min(calculateMaxParallelsForHatches(), mMaxParallel);
-                }
+            if (!tMEOutputHatch) {
+                mMaxParallel = Math.min(calculateMaxParallelsForHatches(), mMaxParallel);
             }
         }
 
         float tRecipeEUt = mRecipe.mEUt * mEUtModifer;
         // Consume inputs to determine normal parallel
-        for (; mCurrentParallel < mMaxParallel && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
+        for (;
+                mCurrentParallel < mMaxParallel / mBatchModifier && tCurrentUsage < (mAvailableEUt - tRecipeEUt);
+                mCurrentParallel++) {
             if (mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
                 tCurrentUsage += tRecipeEUt;
             } else {
