@@ -17,6 +17,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
+import gregtech.common.covers.CoverInfo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -581,43 +582,15 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int aSide) {
-        TIntList tList = new TIntArrayList();
-        IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
-        boolean tSkip = tTileEntity
-                        .getCoverBehaviorAtSideNew((byte) aSide)
-                        .letsItemsIn(
-                                (byte) aSide,
-                                tTileEntity.getCoverIDAtSide((byte) aSide),
-                                tTileEntity.getComplexCoverDataAtSide((byte) aSide),
-                                -2,
-                                tTileEntity)
-                || tTileEntity
-                        .getCoverBehaviorAtSideNew((byte) aSide)
-                        .letsItemsOut(
-                                (byte) aSide,
-                                tTileEntity.getCoverIDAtSide((byte) aSide),
-                                tTileEntity.getComplexCoverDataAtSide((byte) aSide),
-                                -2,
-                                tTileEntity);
-        for (int i = 0; i < getSizeInventory(); i++)
-            if (isValidSlot(i)
-                    && (tSkip
-                            || tTileEntity
-                                    .getCoverBehaviorAtSideNew((byte) aSide)
-                                    .letsItemsOut(
-                                            (byte) aSide,
-                                            tTileEntity.getCoverIDAtSide((byte) aSide),
-                                            tTileEntity.getComplexCoverDataAtSide((byte) aSide),
-                                            i,
-                                            tTileEntity)
-                            || tTileEntity
-                                    .getCoverBehaviorAtSideNew((byte) aSide)
-                                    .letsItemsIn(
-                                            (byte) aSide,
-                                            tTileEntity.getCoverIDAtSide((byte) aSide),
-                                            tTileEntity.getComplexCoverDataAtSide((byte) aSide),
-                                            i,
-                                            tTileEntity))) tList.add(i);
+        final TIntList tList = new TIntArrayList();
+        final IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
+        final CoverInfo tileCoverInfo = tTileEntity.getCoverInfoAtSide((byte) aSide);
+        final boolean tSkip = tileCoverInfo.letsItemsIn(-2) || tileCoverInfo.letsItemsOut(-2);
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (isValidSlot(i) && (tSkip || tileCoverInfo.letsItemsOut(i) || tileCoverInfo.letsItemsIn(i))) {
+                tList.add(i);
+            }
+        }
         return tList.toArray();
     }
 
@@ -910,7 +883,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         //  If both are colored they must be the same color to connect.
         if (tTileEntity instanceof IColoredTileEntity) {
             if (getBaseMetaTileEntity().getColorization() >= 0) {
-                byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
+                final byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
                 if (tColor >= 0 && tColor != getBaseMetaTileEntity().getColorization()) return false;
             }
         }
@@ -926,21 +899,19 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null || !baseMetaTile.isServerSide()) return 0;
 
-        final GT_CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverBehaviorAtSideNew(aSide);
-        final int coverId = baseMetaTile.getCoverIDAtSide(aSide);
-        ISerializableObject coverData = baseMetaTile.getComplexCoverDataAtSide(aSide);
+        final CoverInfo coverInfo = baseMetaTile.getCoverInfoAtSide(aSide);
 
-        boolean alwaysLookConnected = coverBehavior.alwaysLookConnected(aSide, coverId, coverData, baseMetaTile);
-        boolean letsIn = letsIn(coverBehavior, aSide, coverId, coverData, baseMetaTile);
-        boolean letsOut = letsOut(coverBehavior, aSide, coverId, coverData, baseMetaTile);
+        final boolean alwaysLookConnected = coverInfo.alwaysLookConnected();
+        final boolean letsIn = letsIn(coverInfo);
+        final boolean letsOut = letsOut(coverInfo);
 
         // Careful - tTileEntity might be null, and that's ok -- so handle it
-        TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(aSide);
+        final TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(aSide);
         if (!connectableColor(tTileEntity)) return 0;
 
         if ((alwaysLookConnected || letsIn || letsOut)) {
             // Are we trying to connect to a pipe? let's do it!
-            IMetaTileEntity tPipe = tTileEntity instanceof IGregTechTileEntity
+            final IMetaTileEntity tPipe = tTileEntity instanceof IGregTechTileEntity
                     ? ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
                     : null;
             if (getClass().isInstance(tPipe)
@@ -1006,8 +977,16 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return false;
     }
 
+    public boolean letsIn(CoverInfo coverInfo) {
+        return false;
+    }
+
     public boolean letsOut(
             GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        return false;
+    }
+
+    public boolean letsOut(CoverInfo coverInfo) {
         return false;
     }
 

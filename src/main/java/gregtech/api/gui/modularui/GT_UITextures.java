@@ -347,4 +347,8 @@ public class GT_UITextures {
     public static final UITexture PICTURE_SQUARE_LIGHT_GRAY =
             UITexture.fullImage(MODID, "gui/picture/square_light_gray");
     public static final UITexture PICTURE_GAUGE = UITexture.fullImage(MODID, "gui/picture/gauge");
+    public static final UITexture PICTURE_ITEM_IN = UITexture.fullImage(MODID, "gui/picture/item_in");
+    public static final UITexture PICTURE_ITEM_OUT = UITexture.fullImage(MODID, "gui/picture/item_out");
+    public static final UITexture PICTURE_FLUID_IN = UITexture.fullImage(MODID, "gui/picture/fluid_in");
+    public static final UITexture PICTURE_FLUID_OUT = UITexture.fullImage(MODID, "gui/picture/fluid_out");
 }
