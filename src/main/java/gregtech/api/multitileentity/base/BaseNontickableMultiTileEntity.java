@@ -4,7 +4,6 @@ import static gregtech.api.enums.GT_Values.NW;
 
 import gregtech.api.net.GT_Packet_SendCoverData;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
 
@@ -38,11 +37,13 @@ public abstract class BaseNontickableMultiTileEntity extends BaseMultiTileEntity
             super.issueCoverUpdate(aSide);
         } else {
             // Otherwise, send the data right away
-            final CoverInfo coverInfo = getCoverInfoAtSide(aSide);
-            NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_SendCoverData(coverInfo, this), xCoord, zCoord);
-
+            NW.sendPacketToAllPlayersInRange(
+                    worldObj,
+                    new GT_Packet_SendCoverData(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this),
+                    xCoord,
+                    zCoord);
             // Just in case
-            coverInfo.setNeedsUpdate(false);
+            mCoverNeedUpdate[aSide] = false;
         }
     }
 

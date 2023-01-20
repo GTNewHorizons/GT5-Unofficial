@@ -1,6 +1,5 @@
 package gregtech.api.multitileentity;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.OFFX;
 import static gregtech.api.enums.GT_Values.OFFY;
 import static gregtech.api.enums.GT_Values.OFFZ;
@@ -21,6 +20,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetBlockHardness;
@@ -35,7 +35,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.covers.CoverInfo;
 import gregtech.common.render.GT_Renderer_Block;
 import gregtech.common.render.IRenderedBlock;
 import java.util.ArrayList;
@@ -452,13 +451,16 @@ public class MultiTileEntityBlock extends Block
             final byte aSide = (byte) side;
             final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
-                final Block facadeBlock = tile.getCoverInfoAtSide(aSide).getFacadeBlock();
+                final Block facadeBlock = tile.getCoverBehaviorAtSideNew(aSide)
+                        .getFacadeBlock(
+                                aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
                 if (facadeBlock != null) return facadeBlock;
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte tSide : ALL_VALID_SIDES) {
-                    final Block facadeBlock = tile.getCoverInfoAtSide(tSide).getFacadeBlock();
+                for (byte i = 0; i < 6; i++) {
+                    final Block facadeBlock = tile.getCoverBehaviorAtSideNew(i)
+                            .getFacadeBlock(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
                     if (facadeBlock != null) {
                         return facadeBlock;
                     }
@@ -475,17 +477,22 @@ public class MultiTileEntityBlock extends Block
             final byte aSide = (byte) side;
             final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
-                final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
-                final Block facadeBlock = coverInfo.getFacadeBlock();
-                if (facadeBlock != null) return coverInfo.getFacadeMeta();
+                final Block facadeBlock = tile.getCoverBehaviorAtSideNew(aSide)
+                        .getFacadeBlock(
+                                aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
+                if (facadeBlock != null)
+                    return tile.getCoverBehaviorAtSideNew(aSide)
+                            .getFacadeMeta(
+                                    aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte tSide : ALL_VALID_SIDES) {
-                    final CoverInfo coverInfo = tile.getCoverInfoAtSide(tSide);
-                    final Block facadeBlock = coverInfo.getFacadeBlock();
+                for (byte i = 0; i < 6; i++) {
+                    final Block facadeBlock = tile.getCoverBehaviorAtSideNew(i)
+                            .getFacadeBlock(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
                     if (facadeBlock != null) {
-                        return coverInfo.getFacadeMeta();
+                        return tile.getCoverBehaviorAtSideNew(i)
+                                .getFacadeMeta(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
                     }
                 }
             }
@@ -664,47 +671,59 @@ public class MultiTileEntityBlock extends Block
         return aTileEntity instanceof IMultiTileEntity ? ((IMultiTileEntity) aTileEntity).getPickBlock(aTarget) : null;
     }
 
-    public final IMultiTileEntity receiveMultiTileEntityData(
-            IBlockAccess aWorld, int aX, short aY, int aZ, short aRID, short aID) {
-        if (!(aWorld instanceof World)) return null;
+    public final void receiveMultiTileEntityData(
+            IBlockAccess aWorld,
+            int aX,
+            short aY,
+            int aZ,
+            short aRID,
+            short aID,
+            int aCover0,
+            int aCover1,
+            int aCover2,
+            int aCover3,
+            int aCover4,
+            int aCover5,
+            byte aTextureData,
+            byte aTexturePage,
+            byte aUpdateData,
+            byte aRedstoneData,
+            byte aColorData) {
+        if (!(aWorld instanceof World)) return;
+        final IMultiTileEntity te;
+
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         if (!(aTileEntity instanceof IMultiTileEntity)
                 || ((IMultiTileEntity) aTileEntity).getMultiTileEntityRegistryID() != aRID
                 || ((IMultiTileEntity) aTileEntity).getMultiTileEntityID() != aID) {
             final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(aRID);
-            if (tRegistry == null) return null;
+            if (tRegistry == null) return;
 
             aTileEntity = tRegistry.getNewTileEntity((World) aWorld, aX, aY, aZ, aID);
-            if (!(aTileEntity instanceof IMultiTileEntity)) return null;
-
+            if (!(aTileEntity instanceof IMultiTileEntity)) return;
             setTileEntity((World) aWorld, aX, aY, aZ, aTileEntity, false);
         }
-        return ((IMultiTileEntity) aTileEntity);
-    }
+        te = (IMultiTileEntity) aTileEntity;
 
-    public void receiveCoverData(
-            IMultiTileEntity mte, int aCover0, int aCover1, int aCover2, int aCover3, int aCover4, int aCover5) {
         boolean updated;
-        updated = mte.setCoverIDAtSideNoUpdate((byte) 0, aCover0);
-        updated |= mte.setCoverIDAtSideNoUpdate((byte) 1, aCover1);
-        updated |= mte.setCoverIDAtSideNoUpdate((byte) 2, aCover2);
-        updated |= mte.setCoverIDAtSideNoUpdate((byte) 3, aCover3);
-        updated |= mte.setCoverIDAtSideNoUpdate((byte) 4, aCover4);
-        updated |= mte.setCoverIDAtSideNoUpdate((byte) 5, aCover5);
+        updated = te.setCoverIDAtSideNoUpdate((byte) 0, aCover0);
+        updated |= te.setCoverIDAtSideNoUpdate((byte) 1, aCover1);
+        updated |= te.setCoverIDAtSideNoUpdate((byte) 2, aCover2);
+        updated |= te.setCoverIDAtSideNoUpdate((byte) 3, aCover3);
+        updated |= te.setCoverIDAtSideNoUpdate((byte) 4, aCover4);
+        updated |= te.setCoverIDAtSideNoUpdate((byte) 5, aCover5);
 
         if (updated) {
-            mte.issueBlockUpdate();
+            te.issueBlockUpdate();
         }
+
+        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
+        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
+        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aTexturePage | 0x80);
+        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
+        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
     }
-    //
-    //        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
-    //
-    //        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
-    //        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aTexturePage | 0x80);
-    //
-    //        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
-    //        te.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
 
     @Override
     public final TileEntity createTileEntity(World aWorld, int aMeta) {

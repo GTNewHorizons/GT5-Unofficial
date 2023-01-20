@@ -1,7 +1,5 @@
 package gregtech.api.interfaces.covers;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 
@@ -17,9 +15,9 @@ public interface IControlsWorkCover {
      * @return true if the cover is the first (side) one
      **/
     static boolean makeSureOnlyOne(byte aMySide, ICoverable aTileEntity) {
-        for (byte tSide : ALL_VALID_SIDES) {
-            if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover && tSide < aMySide) {
-                aTileEntity.dropCover(tSide, tSide, true);
+        for (byte i = 0; i < 6; i++) {
+            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof IControlsWorkCover && i < aMySide) {
+                aTileEntity.dropCover(i, i, true);
                 aTileEntity.markDirty();
                 return false;
             }

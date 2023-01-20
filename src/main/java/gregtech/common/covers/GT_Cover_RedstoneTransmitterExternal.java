@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.covers.IControlsWorkCover;
@@ -55,8 +53,8 @@ public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirel
     @Override
     public boolean isCoverPlaceable(byte aSide, ItemStack aStack, ICoverable aTileEntity) {
         if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
-        for (byte tSide : ALL_VALID_SIDES) {
-            if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover) {
+        for (byte i = 0; i < 6; i++) {
+            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof IControlsWorkCover) {
                 return false;
             }
         }

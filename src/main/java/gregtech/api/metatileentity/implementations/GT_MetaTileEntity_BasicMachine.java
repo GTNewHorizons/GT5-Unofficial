@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
@@ -528,8 +527,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             }
             return true;
         }
-        for (byte tSide : ALL_VALID_SIDES) {
-            if (aBaseMetaTileEntity.getAirAtSide(tSide)) {
+        for (byte i = 0; i < 6; i++) {
+            if (aBaseMetaTileEntity.getAirAtSide(i)) {
                 if (useModularUI()) {
                     GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
                 } else {

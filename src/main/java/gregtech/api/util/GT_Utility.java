@@ -798,11 +798,11 @@ public class GT_Utility {
                 || aMaxStackTransfer == 0) return 0;
 
         // find where to take from
-        final int[] tGrabSlots = new int[aTileEntity1.getSizeInventory()];
+        int[] tGrabSlots = new int[aTileEntity1.getSizeInventory()];
         int tGrabSlotsSize = 0;
         if (aTileEntity1 instanceof ISidedInventory) {
             for (int i : ((ISidedInventory) aTileEntity1).getAccessibleSlotsFromSide(aGrabFrom)) {
-                final ItemStack s = aTileEntity1.getStackInSlot(i);
+                ItemStack s = aTileEntity1.getStackInSlot(i);
                 if (s == null
                         || !isAllowedToTakeFromSlot(aTileEntity1, i, aGrabFrom, s)
                         || s.stackSize < aMinMoveAtOnce
@@ -839,15 +839,15 @@ public class GT_Utility {
 
         // if target is an inventory, e.g. chest, machine, drawers...
         if (aTileEntity2 instanceof IInventory) {
-            final IInventory tPutInventory = (IInventory) aTileEntity2;
+            IInventory tPutInventory = (IInventory) aTileEntity2;
 
             // partially filled slot spare space mapping.
             // value is the sum of all spare space left not counting completely empty slot
-            final HashMap<ItemId, Integer> tPutItems = new HashMap<>(tPutInventory.getSizeInventory());
+            HashMap<ItemId, Integer> tPutItems = new HashMap<>(tPutInventory.getSizeInventory());
             // partially filled slot contents
-            final HashMap<ItemId, List<ItemStack>> tPutItemStacks = new HashMap<>(tPutInventory.getSizeInventory());
+            HashMap<ItemId, List<ItemStack>> tPutItemStacks = new HashMap<>(tPutInventory.getSizeInventory());
             // completely empty slots
-            final List<Integer> tPutFreeSlots = new ArrayList<>(tPutInventory.getSizeInventory());
+            List<Integer> tPutFreeSlots = new ArrayList<>(tPutInventory.getSizeInventory());
 
             // find possible target slots
             int[] accessibleSlots = null;
@@ -895,28 +895,28 @@ public class GT_Utility {
             // go over source stacks one by one
             int tStacksMoved = 0, tTotalItemsMoved = 0;
             for (int j = 0; j < tGrabSlotsSize; j++) {
-                final int grabSlot = tGrabSlots[j];
+                int grabSlot = tGrabSlots[j];
                 int tMovedItems;
                 int tStackSize;
                 do {
                     tMovedItems = 0;
-                    final ItemStack tGrabStack = aTileEntity1.getStackInSlot(grabSlot);
+                    ItemStack tGrabStack = aTileEntity1.getStackInSlot(grabSlot);
                     if (tGrabStack == null) break;
                     tStackSize = tGrabStack.stackSize;
-                    final ItemId sID = ItemId.createNoCopy(tGrabStack);
+                    ItemId sID = ItemId.createNoCopy(tGrabStack);
 
                     if (tPutItems.containsKey(sID)) {
                         // there is a partially filled slot, try merging
-                        final int canPut = Math.min(tPutItems.get(sID), aMaxMoveAtOnce);
+                        int canPut = Math.min(tPutItems.get(sID), aMaxMoveAtOnce);
                         if (canPut >= aMinMoveAtOnce) {
-                            final List<ItemStack> putStack = tPutItemStacks.get(sID);
+                            List<ItemStack> putStack = tPutItemStacks.get(sID);
                             if (!putStack.isEmpty()) {
                                 // can move, do merge
                                 int toPut = Math.min(canPut, tStackSize);
                                 tMovedItems = toPut;
                                 for (int i = 0; i < putStack.size(); i++) {
-                                    final ItemStack s = putStack.get(i);
-                                    final int sToPut = Math.min(
+                                    ItemStack s = putStack.get(i);
+                                    int sToPut = Math.min(
                                             Math.min(
                                                     Math.min(toPut, s.getMaxStackSize() - s.stackSize),
                                                     tPutInventory.getInventoryStackLimit() - s.stackSize),
@@ -953,10 +953,10 @@ public class GT_Utility {
                     // still stuff to move & have completely empty slots
                     if (tStackSize > 0 && !tPutFreeSlots.isEmpty()) {
                         for (int i = 0; i < tPutFreeSlots.size(); i++) {
-                            final int tPutSlot = tPutFreeSlots.get(i);
+                            int tPutSlot = tPutFreeSlots.get(i);
                             if (isAllowedToPutIntoSlot(tPutInventory, tPutSlot, aPutTo, tGrabStack, (byte) 64)) {
                                 // allowed, now do moving
-                                final int tMoved = moveStackFromSlotAToSlotB(
+                                int tMoved = moveStackFromSlotAToSlotB(
                                         aTileEntity1,
                                         tPutInventory,
                                         grabSlot,
@@ -966,15 +966,15 @@ public class GT_Utility {
                                         (byte) (aMaxMoveAtOnce - tMovedItems),
                                         aMinMoveAtOnce);
                                 if (tMoved > 0) {
-                                    final ItemStack s = tPutInventory.getStackInSlot(tPutSlot);
+                                    ItemStack s = tPutInventory.getStackInSlot(tPutSlot);
                                     if (s != null) {
                                         // s might be null if tPutInventory is very special, e.g. infinity chest
                                         // if s is null, we will not mark this slot as target candidate for anything
-                                        final int spare =
+                                        int spare =
                                                 Math.min(s.getMaxStackSize(), tPutInventory.getInventoryStackLimit())
                                                         - s.stackSize;
                                         if (spare > 0) {
-                                            final ItemId ssID = ItemId.createNoCopy(s);
+                                            ItemId ssID = ItemId.createNoCopy(s);
                                             // add back to spare space count
                                             tPutItems.merge(ssID, spare, Integer::sum);
                                             // add to partially filled slot list
@@ -1007,7 +1007,7 @@ public class GT_Utility {
 
             // check if source is a double chest, if yes, try move from the adjacent as well
             if (aDoCheckChests && aTileEntity1 instanceof TileEntityChest) {
-                final int tAmount = moveFromAdjacentChests(
+                int tAmount = moveFromAdjacentChests(
                         (TileEntityChest) aTileEntity1,
                         aTileEntity2,
                         aGrabFrom,
@@ -1024,7 +1024,7 @@ public class GT_Utility {
 
             // check if target is a double chest, if yes, try move to the adjacent as well
             if (aDoCheckChests && aTileEntity2 instanceof TileEntityChest) {
-                final int tAmount = moveToAdjacentChests(
+                int tAmount = moveToAdjacentChests(
                         aTileEntity1,
                         (TileEntityChest) aTileEntity2,
                         aGrabFrom,
@@ -1044,9 +1044,9 @@ public class GT_Utility {
         // there should be a function to transfer more than 1 stack in a pipe
         // however I do not see any ways to improve it. too much work for what it is worth
         int tTotalItemsMoved = 0;
-        final int tGrabInventorySize = tGrabSlots.length;
+        int tGrabInventorySize = tGrabSlots.length;
         for (int i = 0; i < tGrabInventorySize; i++) {
-            final int tMoved = moveStackIntoPipe(
+            int tMoved = moveStackIntoPipe(
                     aTileEntity1,
                     aTileEntity2,
                     tGrabSlots,
@@ -3380,8 +3380,12 @@ public class GT_Utility {
                 if (tTileEntity instanceof ICoverable) {
                     rEUAmount += 300;
                     final String tString = ((ICoverable) tTileEntity)
-                            .getCoverInfoAtSide((byte) aSide)
-                            .getBehaviorDescription();
+                            .getCoverBehaviorAtSideNew((byte) aSide)
+                            .getDescription(
+                                    (byte) aSide,
+                                    ((ICoverable) tTileEntity).getCoverIDAtSide((byte) aSide),
+                                    ((ICoverable) tTileEntity).getComplexCoverDataAtSide((byte) aSide),
+                                    (ICoverable) tTileEntity);
                     if (tString != null && !tString.equals(E)) tList.add(tString);
                 }
             } catch (Throwable e) {

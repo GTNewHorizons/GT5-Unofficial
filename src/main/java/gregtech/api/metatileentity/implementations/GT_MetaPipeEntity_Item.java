@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.Textures.BlockIcons.PIPE_RESTRICTOR;
 
 import gregtech.GT_Mod;
@@ -21,7 +20,6 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GT_Client;
-import gregtech.common.covers.CoverInfo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -266,7 +264,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
             if (oLastReceivedFrom == mLastReceivedFrom) {
                 doTickProfilingInThisTick = false;
 
-                final ArrayList<IMetaTileEntityItemPipe> tPipeList = new ArrayList<>();
+                ArrayList<IMetaTileEntityItemPipe> tPipeList = new ArrayList<IMetaTileEntityItemPipe>();
 
                 for (boolean temp = true; temp && !isInventoryEmpty() && pipeCapacityCheck(); ) {
                     temp = false;
@@ -292,7 +290,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     public boolean onWrenchRightClick(
             byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GT_Mod.gregtechproxy.gt6Pipe) {
-            final byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+            byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
             if (isConnectedAtSide(tSide)) {
                 disconnect(tSide);
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("215", "Disconnected"));
@@ -337,16 +335,6 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     @Override
-    public boolean letsIn(CoverInfo coverInfo) {
-        return coverInfo.letsItemsOut(-1);
-    }
-
-    @Override
-    public boolean letsOut(CoverInfo coverInfo) {
-        return coverInfo.letsItemsOut(-1);
-    }
-
-    @Override
     public boolean canConnect(byte aSide, TileEntity tTileEntity) {
         if (tTileEntity == null) return false;
 
@@ -366,7 +354,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
             connectable = true;
         }
         if (tTileEntity instanceof ISidedInventory) {
-            final int[] tSlots = ((ISidedInventory) tTileEntity).getAccessibleSlotsFromSide(tSide);
+            int[] tSlots = ((ISidedInventory) tTileEntity).getAccessibleSlotsFromSide(tSide);
             if (tSlots == null || tSlots.length <= 0) return false;
             connectable = true;
         }
@@ -389,9 +377,8 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     @Override
     public boolean sendItemStack(Object aSender) {
         if (pipeCapacityCheck()) {
-            final byte tOffset = (byte) getBaseMetaTileEntity().getRandomNumber(6);
-            byte tSide = 0;
-            for (byte i : ALL_VALID_SIDES) {
+            byte tOffset = (byte) getBaseMetaTileEntity().getRandomNumber(6), tSide = 0;
+            for (byte i = 0; i < 6; i++) {
                 tSide = (byte) ((i + tOffset) % 6);
                 if (isConnectedAtSide(tSide)
                         && (isInventoryEmpty() || (tSide != mLastReceivedFrom || aSender != getBaseMetaTileEntity()))) {
@@ -404,8 +391,15 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
 
     @Override
     public boolean insertItemStackIntoTileEntity(Object aSender, byte aSide) {
-        if (getBaseMetaTileEntity().getCoverInfoAtSide(aSide).letsItemsOut(-1)) {
-            final TileEntity tInventory = getBaseMetaTileEntity().getTileEntityAtSide(aSide);
+        if (getBaseMetaTileEntity()
+                .getCoverBehaviorAtSideNew(aSide)
+                .letsItemsOut(
+                        aSide,
+                        getBaseMetaTileEntity().getCoverIDAtSide(aSide),
+                        getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
+                        -1,
+                        getBaseMetaTileEntity())) {
+            TileEntity tInventory = getBaseMetaTileEntity().getTileEntityAtSide(aSide);
             if (tInventory != null && !(tInventory instanceof BaseMetaPipeEntity)) {
                 if ((!(tInventory instanceof TileEntityHopper) && !(tInventory instanceof TileEntityDispenser))
                         || getBaseMetaTileEntity().getMetaIDAtSide(aSide) != GT_Utility.getOppositeSide(aSide)) {
@@ -465,9 +459,23 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
 
     @Override
     public int[] getAccessibleSlotsFromSide(int aSide) {
-        final IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
-        final CoverInfo coverInfo = tTileEntity.getCoverInfoAtSide((byte) aSide);
-        final boolean tAllow = coverInfo.letsItemsIn(-2) || coverInfo.letsItemsOut(-2);
+        IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
+        boolean tAllow = tTileEntity
+                        .getCoverBehaviorAtSideNew((byte) aSide)
+                        .letsItemsIn(
+                                (byte) aSide,
+                                tTileEntity.getCoverIDAtSide((byte) aSide),
+                                tTileEntity.getComplexCoverDataAtSide((byte) aSide),
+                                -2,
+                                tTileEntity)
+                || tTileEntity
+                        .getCoverBehaviorAtSideNew((byte) aSide)
+                        .letsItemsOut(
+                                (byte) aSide,
+                                tTileEntity.getCoverIDAtSide((byte) aSide),
+                                tTileEntity.getComplexCoverDataAtSide((byte) aSide),
+                                -2,
+                                tTileEntity);
         if (tAllow) {
             if (cacheSides == null) cacheSides = super.getAccessibleSlotsFromSide(aSide);
             return cacheSides;
@@ -526,7 +534,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     private AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        final float tSpace = (1f - mThickNess) / 2;
+        float tSpace = (1f - mThickNess) / 2;
         float tSide0 = tSpace;
         float tSide1 = 1f - tSpace;
         float tSide2 = tSpace;
@@ -559,7 +567,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
             tSide1 = tSide3 = tSide5 = 1;
         }
 
-        final byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
+        byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
         if ((tConn & (1 << ForgeDirection.DOWN.ordinal())) != 0) tSide0 = 0f;
         if ((tConn & (1 << ForgeDirection.UP.ordinal())) != 0) tSide1 = 1f;
         if ((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) tSide2 = 0f;
@@ -582,7 +590,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
             Entity collider) {
         super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
         if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x2) != 0) {
-            final AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+            AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
             if (inputAABB.intersectsWith(aabb)) outputAABB.add(aabb);
         }
     }

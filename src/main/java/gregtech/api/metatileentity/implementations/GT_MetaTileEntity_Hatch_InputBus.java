@@ -197,7 +197,13 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return;
+        if (!getBaseMetaTileEntity()
+                .getCoverBehaviorAtSideNew(aSide)
+                .isGUIClickable(
+                        aSide,
+                        getBaseMetaTileEntity().getCoverIDAtSide(aSide),
+                        getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
+                        getBaseMetaTileEntity())) return;
         if (aPlayer.isSneaking()) {
             if (disableSort) {
                 disableSort = false;

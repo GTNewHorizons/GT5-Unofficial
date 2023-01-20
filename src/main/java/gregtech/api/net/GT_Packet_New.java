@@ -13,9 +13,9 @@ public abstract class GT_Packet_New extends GT_Packet {
     @Override
     @Deprecated
     public final byte[] encode() {
-        final ByteBuf tOut = Unpooled.buffer();
+        ByteBuf tOut = Unpooled.buffer();
         encode(tOut);
-        final byte[] bytes = new byte[tOut.readableBytes()];
+        byte[] bytes = new byte[tOut.readableBytes()];
         tOut.readBytes(bytes);
         return bytes;
     }

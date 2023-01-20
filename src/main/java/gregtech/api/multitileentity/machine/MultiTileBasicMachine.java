@@ -3,8 +3,6 @@ package gregtech.api.multitileentity.machine;
 import static com.google.common.primitives.Ints.saturatedCast;
 import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
 
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.Textures;
@@ -34,11 +32,10 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     protected boolean mActive = false;
     protected long mStoredEnergy = 0;
     protected FluidTankGT[] mTanksInput = GT_Values.emptyFluidTankGT, mTanksOutput = GT_Values.emptyFluidTankGT;
+    protected ItemStack[] mOutputItems = GT_Values.emptyItemStackArray;
     protected FluidStack[] mOutputFluids = GT_Values.emptyFluidStack;
 
-    protected final IItemHandlerModifiable mInputInventory = new ItemStackHandler(17);
-    protected final IItemHandlerModifiable mOutputInventory = new ItemStackHandler(15);
-    protected boolean mOutputInventoryChanged = false;
+    protected ItemStack[] mInventory = GT_Values.emptyItemStackArray;
 
     @Override
     public String getTileEntityName() {
@@ -50,43 +47,6 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         super.writeMultiTileNBT(aNBT);
         if (mParallel > 0) aNBT.setInteger(NBT.PARALLEL, mParallel);
         if (mActive) aNBT.setBoolean(NBT.ACTIVE, mActive);
-        if (mInputInventory != null && mInputInventory.getSlots() > 0)
-            writeInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
-        if (mOutputInventory != null && mOutputInventory.getSlots() > 0)
-            writeInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
-        for (int i = 0; i < mTanksInput.length; i++) mTanksInput[i].writeToNBT(aNBT, NBT.TANK_IN + i);
-        for (int i = 0; i < mTanksOutput.length; i++) mTanksOutput[i].writeToNBT(aNBT, NBT.TANK_OUT + i);
-        if (mOutputFluids != null && mOutputFluids.length > 0) writeFluids(aNBT, mOutputFluids, NBT.FLUID_OUT);
-    }
-
-    protected void writeFluids(NBTTagCompound aNBT, FluidStack[] fluids, String fluidListTag) {
-        if (fluids != null && fluids.length > 0) {
-            final NBTTagList tList = new NBTTagList();
-            for (final FluidStack tFluid : fluids) {
-                if (tFluid != null) {
-                    final NBTTagCompound tag = new NBTTagCompound();
-                    tFluid.writeToNBT(tag);
-                    tList.appendTag(tag);
-                }
-            }
-            aNBT.setTag(fluidListTag, tList);
-        }
-    }
-
-    protected void writeInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
-        if (inv != null && inv.getSlots() > 0) {
-            final NBTTagList tList = new NBTTagList();
-            for (int tSlot = 0; tSlot < inv.getSlots(); tSlot++) {
-                final ItemStack tStack = inv.getStackInSlot(tSlot);
-                if (tStack != null) {
-                    final NBTTagCompound tag = new NBTTagCompound();
-                    tag.setByte("s", (byte) tSlot);
-                    tStack.writeToNBT(tag);
-                    tList.appendTag(tag);
-                }
-            }
-            aNBT.setTag(invListTag, tList);
-        }
     }
 
     @Override
@@ -95,10 +55,15 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         if (aNBT.hasKey(NBT.PARALLEL)) mParallel = Math.max(1, aNBT.getInteger(NBT.PARALLEL));
         if (aNBT.hasKey(NBT.ACTIVE)) mActive = aNBT.getBoolean(NBT.ACTIVE);
 
-        /* Inventories */
-        loadInventory(aNBT, NBT.INV_INPUT_SIZE, NBT.INV_INPUT_LIST);
-        loadInventory(aNBT, NBT.INV_OUTPUT_SIZE, NBT.INV_OUTPUT_LIST);
-
+        mInventory = getDefaultInventory(aNBT);
+        if (mInventory != null) {
+            final NBTTagList tList = aNBT.getTagList(NBT.INV_LIST, 10);
+            for (int i = 0; i < tList.tagCount(); i++) {
+                final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
+                final int tSlot = tNBT.getShort("s");
+                if (tSlot >= 0 && tSlot < mInventory.length) mInventory[tSlot] = GT_Utility.loadItem(tNBT);
+            }
+        }
         /* Tanks */
         long tCapacity = 1000;
         if (aNBT.hasKey(NBT.TANK_CAPACITY)) tCapacity = saturatedCast(aNBT.getLong(NBT.TANK_CAPACITY));
@@ -106,6 +71,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         mTanksInput = new FluidTankGT[getFluidInputCount()];
         mTanksOutput = new FluidTankGT[getFluidOutputCount()];
         mOutputFluids = new FluidStack[getFluidOutputCount()];
+        mOutputItems = new ItemStack[getItemOutputCount()];
 
         // TODO: See if we need the adjustable map here `.setCapacity(mRecipes, mParallel * 2L)` in place of the
         // `setCapacityMultiplier`
@@ -117,18 +83,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
             mTanksOutput[i] = new FluidTankGT().readFromNBT(aNBT, NBT.TANK_OUT + i);
         for (int i = 0; i < mOutputFluids.length; i++)
             mOutputFluids[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag(NBT.FLUID_OUT + "." + i));
-    }
-
-    protected void loadInventory(NBTTagCompound aNBT, String sizeTag, String invListTag) {
-        final IItemHandlerModifiable inv = mInputInventory;
-        if (inv != null) {
-            final NBTTagList tList = aNBT.getTagList(invListTag, 10);
-            for (int i = 0; i < tList.tagCount(); i++) {
-                final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-                final int tSlot = tNBT.getShort("s");
-                if (tSlot >= 0 && tSlot < inv.getSlots()) inv.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
-            }
-        }
+        for (int i = 0; i < mOutputItems.length; i++)
+            mOutputItems[i] = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(NBT.INV_OUT + "." + i));
     }
 
     @Override
@@ -192,14 +148,19 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
      * The number of fluid (input) slots available for this machine
      */
     public int getFluidInputCount() {
-        return 7;
+        return 2;
     }
 
     /**
      * The number of fluid (output) slots available for this machine
      */
     public int getFluidOutputCount() {
-        return 3;
+        return 2;
+    }
+
+    public ItemStack[] getDefaultInventory(NBTTagCompound aNBT) {
+        final int tSize = Math.max(0, aNBT.getShort(NBT.INV_SIZE));
+        return tSize > 0 ? new ItemStack[tSize] : GT_Values.emptyItemStackArray;
     }
 
     @Override
@@ -331,7 +292,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         if (aSide == GT_Values.SIDE_UNKNOWN) return true;
         if (aSide >= 0 && aSide < 6) {
             if (isInvalid()) return false;
-            if (!getCoverInfoAtSide(aSide).letsEnergyIn()) return false;
+            if (!getCoverBehaviorAtSideNew(aSide)
+                    .letsEnergyIn(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this)) return false;
             if (isEnetInput()) return isEnergyInputSide(aSide);
         }
         return false;
@@ -342,7 +304,9 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         if (aSide == GT_Values.SIDE_UNKNOWN) return true;
         if (aSide >= 0 && aSide < 6) {
             if (isInvalid()) return false;
-            if (!getCoverInfoAtSide(aSide).letsEnergyOut()) return false;
+            if (!getCoverBehaviorAtSideNew(aSide)
+                    .letsEnergyOut(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
+                return false;
             if (isEnetOutput()) return isEnergyOutputSide(aSide);
         }
         return false;
@@ -354,17 +318,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
 
     @Override
     public boolean hasInventoryBeenModified() {
-        // True if the input inventory has changed
         return mInventoryChanged;
-    }
-
-    public void markOutputInventoryBeenModified() {
-        mOutputInventoryChanged = true;
-    }
-
-    public boolean hasOutputInventoryBeenModified() {
-        // True if the output inventory has changed
-        return mOutputInventoryChanged;
     }
 
     @Override
@@ -375,5 +329,19 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     @Override
     public int getInventoryStackLimit() {
         return 64;
+    }
+
+    /**
+     * The number of item (input) slots available for this machine
+     */
+    public int getItemInputCount() {
+        return 2;
+    }
+
+    /**
+     * The number of item (output) slots available for this machine
+     */
+    public int getItemOutputCount() {
+        return 2;
     }
 }

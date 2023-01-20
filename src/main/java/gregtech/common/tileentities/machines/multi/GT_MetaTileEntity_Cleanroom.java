@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
@@ -46,7 +45,6 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         return new GT_MetaTileEntity_Cleanroom(mName);
     }
 
-    @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Cleanroom")
@@ -106,7 +104,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         int mDoorCount = 0;
         int mHullCount = 0;
         int mPlascreteCount = 0;
-        final HashMap<String, Integer> otherBlocks = new HashMap<>();
+        HashMap<String, Integer> otherBlocks = new HashMap<>();
         boolean doorState = false;
         this.mUpdate = 100;
 
@@ -114,8 +112,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             GT_Log.out.println("Cleanroom: Checking machine");
         }
         for (int i = 1; i < 8; i++) {
-            final Block tBlock = aBaseMetaTileEntity.getBlockOffset(i, 0, 0);
-            final int tMeta = aBaseMetaTileEntity.getMetaIDOffset(i, 0, 0);
+            Block tBlock = aBaseMetaTileEntity.getBlockOffset(i, 0, 0);
+            int tMeta = aBaseMetaTileEntity.getMetaIDOffset(i, 0, 0);
             if (tBlock != GregTech_API.sBlockCasings3 || tMeta != 11) {
                 if (tBlock == GregTech_API.sBlockReinforced || tMeta == 2) {
                     x = i;
@@ -129,8 +127,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             }
         }
         for (int i = 1; i < 8; i++) {
-            final Block tBlock = aBaseMetaTileEntity.getBlockOffset(0, 0, i);
-            final int tMeta = aBaseMetaTileEntity.getMetaIDOffset(0, 0, i);
+            Block tBlock = aBaseMetaTileEntity.getBlockOffset(0, 0, i);
+            int tMeta = aBaseMetaTileEntity.getMetaIDOffset(0, 0, i);
             if (tBlock != GregTech_API.sBlockCasings3 || tMeta != 11) {
                 if (tBlock == GregTech_API.sBlockReinforced || tMeta == 2) {
                     z = i;
@@ -147,8 +145,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         for (int i = -x + 1; i < x; i++) {
             for (int j = -z + 1; j < z; j++) {
                 if (i == 0 && j == 0) continue;
-                final Block tBlock = aBaseMetaTileEntity.getBlockOffset(j, 0, i);
-                final int tMeta = aBaseMetaTileEntity.getMetaIDOffset(j, 0, i);
+                Block tBlock = aBaseMetaTileEntity.getBlockOffset(j, 0, i);
+                int tMeta = aBaseMetaTileEntity.getMetaIDOffset(j, 0, i);
                 if (tBlock != GregTech_API.sBlockCasings3 && tMeta != 11) {
                     return false;
                 }
@@ -156,8 +154,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         }
 
         for (int i = -1; i > -16; i--) {
-            final Block tBlock = aBaseMetaTileEntity.getBlockOffset(x, i, z);
-            final int tMeta = aBaseMetaTileEntity.getMetaIDOffset(x, i, z);
+            Block tBlock = aBaseMetaTileEntity.getBlockOffset(x, i, z);
+            int tMeta = aBaseMetaTileEntity.getMetaIDOffset(x, i, z);
             if (tBlock != GregTech_API.sBlockReinforced || tMeta != 2) {
                 y = i + 1;
                 break;
@@ -195,7 +193,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                         } else if (tBlock == GregTech_API.sBlockReinforced && tMeta == 2) {
                             mPlascreteCount++;
                         } else {
-                            final IGregTechTileEntity tTileEntity =
+                            IGregTechTileEntity tTileEntity =
                                     aBaseMetaTileEntity.getIGregTechTileEntityOffset(dX, dY, dZ);
                             if ((!this.addMaintenanceToMachineList(tTileEntity, 210))
                                     && (!this.addEnergyInputToMachineList(tTileEntity, 210))) {
@@ -211,7 +209,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                                     mDoorCount++;
                                 } else {
                                     if (tTileEntity != null) {
-                                        final IMetaTileEntity aMetaTileEntity = tTileEntity.getMetaTileEntity();
+                                        IMetaTileEntity aMetaTileEntity = tTileEntity.getMetaTileEntity();
                                         if (aMetaTileEntity == null) {
                                             if (debugCleanroom) {
                                                 GT_Log.out.println("Cleanroom: Missing block? Not a aMetaTileEntity");
@@ -257,9 +255,9 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             return false;
         }
         if (mPlascreteCount < 20) return false;
-        final float ratio = (((float) mPlascreteCount) / 100f);
+        float ratio = (((float) mPlascreteCount) / 100f);
         for (Map.Entry<String, Integer> e : otherBlocks.entrySet()) {
-            final ConfigEntry ce = config.get(e.getKey());
+            ConfigEntry ce = config.get(e.getKey());
             if (ce.allowedCount > 0) { // count has priority
                 if (e.getValue() > ce.allowedCount) return false;
             } else if (e.getValue() > ratio * ce.percentage) return false;
@@ -270,9 +268,9 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         if (doorState) {
             this.mEfficiency = Math.max(0, this.mEfficiency - 200);
         }
-        for (byte tSide : ALL_VALID_SIDES) {
-            final byte t = (byte) Math.max(1, (byte) (15 / (10000f / this.mEfficiency)));
-            aBaseMetaTileEntity.setInternalOutputRedstoneSignal(tSide, t);
+        for (byte i = 0; i < 6; i++) {
+            byte t = (byte) Math.max(1, (byte) (15 / (10000f / this.mEfficiency)));
+            aBaseMetaTileEntity.setInternalOutputRedstoneSignal(i, t);
         }
         this.mHeight = -y;
         return true;
@@ -432,7 +430,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     public static void loadConfig(Configuration cfg) {
         if (!cfg.hasCategory(category)) setDefaultConfigValues(cfg);
         for (ConfigCategory cc : cfg.getCategory(category).getChildren()) {
-            final String name = cc.get("Name").getString();
+            String name = cc.get("Name").getString();
             if (cc.containsKey("Count")) {
                 if (cc.containsKey("Meta"))
                     config.put(

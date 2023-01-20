@@ -2191,16 +2191,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                     GT_MetaGenerated_Tool_01.AXE, 1, Materials.Flint, Materials.Wood, null)));
                 }
             }
-            final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
+            boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
             if (aEvent.player.ticksExisted % 120 == 0) {
                 int tCount = 64;
                 for (int i = 0; i < 36; i++) {
-                    final ItemStack tStack;
+                    ItemStack tStack;
                     if ((tStack = aEvent.player.inventory.getStackInSlot(i)) != null) {
                         if (!aEvent.player.capabilities.isCreativeMode) {
                             GT_Utility.applyRadioactivity(
                                     aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
-                            final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
+                            float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
                             if (tHeat != 0.0F) {
                                 if (tHeat > 0.0F) {
                                     GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
@@ -2218,12 +2218,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     }
                 }
                 for (int i = 0; i < 4; i++) {
-                    final ItemStack tStack;
+                    ItemStack tStack;
                     if ((tStack = aEvent.player.inventory.armorInventory[i]) != null) {
                         if (!aEvent.player.capabilities.isCreativeMode) {
                             GT_Utility.applyRadioactivity(
                                     aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
-                            final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
+                            float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
                             if (tHeat != 0.0F) {
                                 if (tHeat > 0.0F) {
                                     GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
@@ -2257,12 +2257,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         if (aID >= 1000) {
             return null;
         }
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof IGregTechTileEntity)) {
             if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE + 6) {
                 return null;
             }
-            final IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+            IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
             if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
                 return tMetaTileEntity.getServerGUI(aID, aPlayer.inventory, (IGregTechTileEntity) tTileEntity);
             }
@@ -2275,12 +2275,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         if (aID >= 1000) {
             return null;
         }
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof IGregTechTileEntity)) {
-            final IGregTechTileEntity tile = (IGregTechTileEntity) tTileEntity;
+            IGregTechTileEntity tile = (IGregTechTileEntity) tTileEntity;
 
             if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE + 6) {
-                final byte side = (byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
+                byte side = (byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
                 GT_CoverBehaviorBase<?> cover = tile.getCoverBehaviorAtSideNew(side);
 
                 if (cover.hasCoverGUI() && !cover.useModularUI()) {
@@ -2294,7 +2294,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 }
                 return null;
             }
-            final IMetaTileEntity tMetaTileEntity = tile.getMetaTileEntity();
+            IMetaTileEntity tMetaTileEntity = tile.getMetaTileEntity();
             if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
                 return tMetaTileEntity.getClientGUI(aID, aPlayer.inventory, tile);
             }
@@ -2315,16 +2315,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         }
         int rFuelValue = 0;
         if ((aFuel.getItem() instanceof GT_MetaGenerated_Item)) {
-            final Short tFuelValue =
-                    ((GT_MetaGenerated_Item) aFuel.getItem()).mBurnValues.get((short) aFuel.getItemDamage());
+            Short tFuelValue = ((GT_MetaGenerated_Item) aFuel.getItem()).mBurnValues.get((short) aFuel.getItemDamage());
             if (tFuelValue != null) {
                 rFuelValue = Math.max(rFuelValue, tFuelValue);
             }
         }
-        final NBTTagCompound tNBT = aFuel.getTagCompound();
+        NBTTagCompound tNBT = aFuel.getTagCompound();
         if (tNBT != null) {
             // See if we have something defined by NBT
-            final short tValue = tNBT.getShort("GT.ItemFuelValue");
+            short tValue = tNBT.getShort("GT.ItemFuelValue");
             rFuelValue = Math.max(rFuelValue, tValue);
         } else {
             // If not check the ore dict

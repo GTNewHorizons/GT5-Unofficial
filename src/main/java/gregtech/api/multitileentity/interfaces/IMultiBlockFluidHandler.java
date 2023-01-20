@@ -5,7 +5,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
 
 public interface IMultiBlockFluidHandler {
     int fill(MultiBlockPart aPart, ForgeDirection aDirection, FluidStack aFluid, boolean aDoFill);
@@ -19,6 +18,4 @@ public interface IMultiBlockFluidHandler {
     boolean canDrain(MultiBlockPart aPart, ForgeDirection aDirection, Fluid aFluid);
 
     FluidTankInfo[] getTankInfo(MultiBlockPart aPart, ForgeDirection aDirection);
-
-    IFluidTank[] getFluidTanksForGUI(MultiBlockPart aPart);
 }

@@ -287,14 +287,4 @@ public interface IMultiTileEntity
         /** Adds ToolTips to the Item. */
         void addToolTips(List<String> aList, ItemStack aStack, boolean aF3_H);
     }
-
-    interface IMTE_HasModes extends IMultiTileEntity {
-        byte getMode();
-
-        void setMode(byte aMode);
-
-        int getAllowedModes();
-
-        void setAllowedModes(int aAllowedModes);
-    }
 }

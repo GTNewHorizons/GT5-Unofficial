@@ -5,7 +5,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -38,17 +37,6 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
         this.coverData = coverData;
     }
 
-    public GT_Packet_SendCoverData(CoverInfo info, ICoverable tile) {
-        super(false);
-        this.mX = tile.getXCoord();
-        this.mY = tile.getYCoord();
-        this.mZ = tile.getZCoord();
-
-        this.side = info.getSide();
-        this.coverID = info.getCoverID();
-        this.coverData = info.getCoverData();
-    }
-
     public GT_Packet_SendCoverData(byte coverSide, int coverID, ISerializableObject coverData, ICoverable tile) {
         super(false);
         this.mX = tile.getXCoord();
@@ -78,7 +66,7 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
 
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
-        final int coverId;
+        int coverId;
         return new GT_Packet_SendCoverData(
                 aData.readInt(),
                 aData.readShort(),
@@ -91,7 +79,7 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
     @Override
     public void process(IBlockAccess aWorld) {
         if (aWorld != null) {
-            final TileEntity tile = aWorld.getTileEntity(mX, mY, mZ);
+            TileEntity tile = aWorld.getTileEntity(mX, mY, mZ);
             if (tile instanceof CoverableTileEntity && !((CoverableTileEntity) tile).isDead()) {
                 ((CoverableTileEntity) tile).receiveCoverData(side, coverID, coverData, null);
             }

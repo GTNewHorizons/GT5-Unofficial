@@ -257,9 +257,8 @@ public class GT_Values {
     /**
      * NBT String Keys
      */
-    public static final class NBT {
+    public static class NBT {
         public static final String COLOR = "gt.color", // Integer
-                COVERS = "gt.covers", // String
                 CUSTOM_NAME = "name", // String
                 DISPAY = "gt.display", // String
                 FACING = "gt.facing", // Byte
@@ -275,15 +274,14 @@ public class GT_Values {
                 // Machines
                 ACTIVE = "gt.active", // Boolean
                 FLUID_OUT = "gt.fluidout", // Output Fluid
+                INV_OUT = "gt.invout", // ItemStack
                 PARALLEL = "gt.parallel", // Number
                 TANK_CAPACITY = "gt.tankcap", // Number
                 TANK_IN = "gt.tank.in.", // FluidStack
                 TANK_OUT = "gt.tank.out.", // FluidStack
                 TEXTURE = "gt.texture", // String
-                INV_INPUT_SIZE = "gt.invsize.in", // Number
-                INV_OUTPUT_SIZE = "gt.invsize.out", // Number
-                INV_INPUT_LIST = "gt.invlist.in", // NBT List
-                INV_OUTPUT_LIST = "gt.invlist.out", // NBT List
+                INV_SIZE = "gt.invsize", // Number
+                INV_LIST = "gt.invlist", // NBT List
 
                 // MultiBlock
                 STRUCTURE_OK = "gt.structure.ok",
@@ -293,8 +291,6 @@ public class GT_Values {
                 TARGET_X = "gt.target.x", // Number
                 TARGET_Y = "gt.target.y", // Number
                 TARGET_Z = "gt.target.z", // Number
-                LOCKED_INVENTORY = "gt.locked.inventory", // String
-                LOCKED_INVENTORY_INDEX = "gt.locked.inventory.index", // Number
                 empty_ = "";
     }
 

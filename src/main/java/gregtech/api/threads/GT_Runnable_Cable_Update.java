@@ -1,7 +1,5 @@
 package gregtech.api.threads;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-
 import gregtech.GT_Mod;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -52,10 +50,10 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
                 if (tTileEntity instanceof BaseMetaPipeEntity
                         && ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
                     ChunkCoordinates tCoords;
-                    for (byte tSide : ALL_VALID_SIDES) {
+                    for (byte i = 0; i < 6; i++) {
                         if (((GT_MetaPipeEntity_Cable) ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity())
-                                .isConnectedAtSide(tSide)) {
-                            final ForgeDirection offset = ForgeDirection.getOrientation(tSide);
+                                .isConnectedAtSide(i)) {
+                            ForgeDirection offset = ForgeDirection.getOrientation(i);
                             if (visited.add(
                                     tCoords = new ChunkCoordinates(
                                             aCoords.posX + offset.offsetX,

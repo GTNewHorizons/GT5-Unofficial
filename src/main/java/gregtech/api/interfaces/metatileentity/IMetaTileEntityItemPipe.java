@@ -1,7 +1,5 @@
 package gregtech.api.interfaces.metatileentity;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GT_Utility;
@@ -58,29 +56,39 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
             aStep += aMetaTileEntity.getStepSize();
             if (aIgnoreCapacity || aMetaTileEntity.pipeCapacityCheck())
                 if (aMap.get(aMetaTileEntity) == null || aMap.get(aMetaTileEntity) > aStep) {
-                    final IGregTechTileEntity aBaseMetaTileEntity = aMetaTileEntity.getBaseMetaTileEntity();
+                    IGregTechTileEntity aBaseMetaTileEntity = aMetaTileEntity.getBaseMetaTileEntity();
                     aMap.put(aMetaTileEntity, aStep);
-                    byte oppositeSide;
-                    for (byte side : ALL_VALID_SIDES) {
+                    for (byte i = 0, j = 0; i < 6; i++) {
                         if (aMetaTileEntity instanceof IConnectable
-                                && !((IConnectable) aMetaTileEntity).isConnectedAtSide(side)) continue;
-                        oppositeSide = GT_Utility.getOppositeSide(side);
+                                && !((IConnectable) aMetaTileEntity).isConnectedAtSide(i)) continue;
+                        j = GT_Utility.getOppositeSide(i);
                         if (aSuckItems) {
-                            if (aBaseMetaTileEntity.getCoverInfoAtSide(side).letsItemsIn(-2)) {
-                                final IGregTechTileEntity tItemPipe =
-                                        aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
+                            if (aBaseMetaTileEntity
+                                    .getCoverBehaviorAtSideNew(i)
+                                    .letsItemsIn(
+                                            i,
+                                            aBaseMetaTileEntity.getCoverIDAtSide(i),
+                                            aBaseMetaTileEntity.getComplexCoverDataAtSide(i),
+                                            -2,
+                                            aBaseMetaTileEntity)) {
+                                IGregTechTileEntity tItemPipe = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(i);
                                 if (aBaseMetaTileEntity.getColorization() >= 0) {
-                                    final byte tColor = tItemPipe.getColorization();
+                                    byte tColor = tItemPipe.getColorization();
                                     if (tColor >= 0 && tColor != aBaseMetaTileEntity.getColorization()) {
                                         continue;
                                     }
                                 }
                                 if (tItemPipe instanceof BaseMetaPipeEntity) {
-                                    final IMetaTileEntity tMetaTileEntity = tItemPipe.getMetaTileEntity();
+                                    IMetaTileEntity tMetaTileEntity = tItemPipe.getMetaTileEntity();
                                     if (tMetaTileEntity instanceof IMetaTileEntityItemPipe
                                             && tItemPipe
-                                                    .getCoverInfoAtSide(oppositeSide)
-                                                    .letsItemsOut(-2)) {
+                                                    .getCoverBehaviorAtSideNew(j)
+                                                    .letsItemsOut(
+                                                            j,
+                                                            tItemPipe.getCoverIDAtSide(j),
+                                                            tItemPipe.getComplexCoverDataAtSide(j),
+                                                            -2,
+                                                            tItemPipe)) {
                                         scanPipes(
                                                 (IMetaTileEntityItemPipe) tMetaTileEntity,
                                                 aMap,
@@ -91,22 +99,33 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
                                 }
                             }
                         } else {
-                            if (aBaseMetaTileEntity.getCoverInfoAtSide(side).letsItemsOut(-2)) {
-                                final IGregTechTileEntity tItemPipe =
-                                        aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
+                            if (aBaseMetaTileEntity
+                                    .getCoverBehaviorAtSideNew(i)
+                                    .letsItemsOut(
+                                            i,
+                                            aBaseMetaTileEntity.getCoverIDAtSide(i),
+                                            aBaseMetaTileEntity.getComplexCoverDataAtSide(i),
+                                            -2,
+                                            aBaseMetaTileEntity)) {
+                                IGregTechTileEntity tItemPipe = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(i);
                                 if (tItemPipe != null) {
                                     if (aBaseMetaTileEntity.getColorization() >= 0) {
-                                        final byte tColor = tItemPipe.getColorization();
+                                        byte tColor = tItemPipe.getColorization();
                                         if (tColor >= 0 && tColor != aBaseMetaTileEntity.getColorization()) {
                                             continue;
                                         }
                                     }
                                     if (tItemPipe instanceof BaseMetaPipeEntity) {
-                                        final IMetaTileEntity tMetaTileEntity = tItemPipe.getMetaTileEntity();
+                                        IMetaTileEntity tMetaTileEntity = tItemPipe.getMetaTileEntity();
                                         if (tMetaTileEntity instanceof IMetaTileEntityItemPipe
                                                 && tItemPipe
-                                                        .getCoverInfoAtSide(oppositeSide)
-                                                        .letsItemsIn(-2)) {
+                                                        .getCoverBehaviorAtSideNew(j)
+                                                        .letsItemsIn(
+                                                                j,
+                                                                tItemPipe.getCoverIDAtSide(j),
+                                                                tItemPipe.getComplexCoverDataAtSide(j),
+                                                                -2,
+                                                                tItemPipe)) {
                                             scanPipes(
                                                     (IMetaTileEntityItemPipe) tMetaTileEntity,
                                                     aMap,
