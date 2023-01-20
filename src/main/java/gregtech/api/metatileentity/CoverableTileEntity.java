@@ -508,6 +508,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (!oldCoverInfo.isValid()) return;
         oldCoverInfo.preDataChanged(aCoverID, aCoverData);
         setCoverIDAtSideNoUpdate(aCoverSide, aCoverID, aCoverData);
+        setCoverDataAtSide(aCoverSide, aCoverData);
 
         if (isClientSide()) {
             getCoverInfoAtSide(aCoverSide).onDataChanged();
