@@ -1376,6 +1376,15 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Input_Multi_2x2_UV.set(new GT_MetaTileEntity_Hatch_MultiInput(
                         713, 4, "hatch.multi.input.tier.05", "Quadruple Input Hatch (UV)", 8)
                 .getStackForm(1L));
+        ItemList.Hatch_Input_Multi_2x2_UHV.set(new GT_MetaTileEntity_Hatch_MultiInput(
+                        714, 4, "hatch.multi.input.tier.06", "Quadruple Input Hatch (UHV)", 9)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_Multi_2x2_UEV.set(new GT_MetaTileEntity_Hatch_MultiInput(
+                        715, 4, "hatch.multi.input.tier.07", "Quadruple Input Hatch (UEV)", 10)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_Multi_2x2_UIV.set(new GT_MetaTileEntity_Hatch_MultiInput(
+                        716, 4, "hatch.multi.input.tier.08", "Quadruple Input Hatch (UIV)", 11)
+                .getStackForm(1L));
 
         ItemList.Hatch_Output_ULV.set(
                 new GT_MetaTileEntity_Hatch_Output(60, "hatch.output.tier.00", "Output Hatch (ULV)", 0)

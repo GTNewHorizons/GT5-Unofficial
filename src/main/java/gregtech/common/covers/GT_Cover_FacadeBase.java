@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -120,6 +122,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
     public void placeCover(byte aSide, ItemStack aCover, ICoverable aTileEntity) {
         aTileEntity.setCoverIdAndDataAtSide(
                 aSide, GT_Utility.stackToInt(aCover), new FacadeData(GT_Utility.copyAmount(1, aCover), 0));
+
         if (aTileEntity.isClientSide())
             GT_RenderingWorld.getInstance()
                     .register(
@@ -193,7 +196,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
     @Override
     protected void onDroppedImpl(byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
         if (aTileEntity.isClientSide()) {
-            for (byte i = 0; i < 6; i++) {
+            for (byte i : ALL_VALID_SIDES) {
                 if (i == aSide) continue;
                 // since we do not allow multiple type of facade per block, this check would be enough.
                 if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof GT_Cover_FacadeBase) return;
@@ -231,23 +234,20 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         // to render it correctly require changing GT_Block_Machine to render in both pass, which is not really a good
         // idea...
         if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
-        Block targetBlock = getTargetBlock(aStack);
+        final Block targetBlock = getTargetBlock(aStack);
         if (targetBlock == null) return false;
         // we allow one single type of facade on the same block for now
         // otherwise it's not clear which block this block should impersonate
         // this restriction can be lifted later by specifying a certain facade as dominate one as an extension to this
         // class
-        for (byte i = 0; i < 6; i++) {
+        for (byte i : ALL_VALID_SIDES) {
             if (i == aSide) continue;
-            GT_CoverBehaviorBase<?> behavior = aTileEntity.getCoverBehaviorAtSideNew(i);
-            if (behavior == null) continue;
-            Block facadeBlock = behavior.getFacadeBlock(
-                    i, aTileEntity.getCoverIDAtSide(i), aTileEntity.getComplexCoverDataAtSide(i), aTileEntity);
+            final CoverInfo coverInfo = aTileEntity.getCoverInfoAtSide(i);
+            if (!coverInfo.isValid()) continue;
+            final Block facadeBlock = coverInfo.getFacadeBlock();
             if (facadeBlock == null) continue;
             if (facadeBlock != targetBlock) return false;
-            if (behavior.getFacadeMeta(
-                            i, aTileEntity.getCoverIDAtSide(i), aTileEntity.getComplexCoverDataAtSide(i), aTileEntity)
-                    != getTargetMeta(aStack)) return false;
+            if (coverInfo.getFacadeMeta() != getTargetMeta(aStack)) return false;
         }
         return true;
     }
@@ -272,7 +272,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         @Nonnull
         @Override
         public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
+            final NBTTagCompound tag = new NBTTagCompound();
             if (mStack != null) tag.setTag("mStack", mStack.writeToNBT(new NBTTagCompound()));
             tag.setByte("mFlags", (byte) mFlags);
             return tag;
@@ -286,7 +286,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
 
         @Override
         public void loadDataFromNBT(NBTBase aNBT) {
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
+            final NBTTagCompound tag = (NBTTagCompound) aNBT;
             mStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mStack"));
             mFlags = tag.getByte("mFlags");
         }

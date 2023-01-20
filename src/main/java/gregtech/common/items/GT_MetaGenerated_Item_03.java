@@ -158,12 +158,16 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 addItem(tLastID = 150, "Europium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot5.set(
                 addItem(tLastID = 152, "Americium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Ingot6.set(
+                addItem(tLastID = 721, "Optically Enriched Crystalline Boule", "Raw Circuit", o));
 
         ItemList.Circuit_Silicon_Wafer.set(addItem(tLastID = 33, "Wafer", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer2.set(addItem(tLastID = 34, "Phosphorus doped Wafer", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer3.set(addItem(tLastID = 35, "Naquadah doped Wafer", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer4.set(addItem(tLastID = 151, "Europium doped Wafer", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer5.set(addItem(tLastID = 153, "Americium doped Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer6.set(addItem(tLastID = 722, "Photonically Prepared Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer7.set(addItem(tLastID = 723, "Photonically Enhanced Wafer", "Raw Circuit", o));
 
         ItemList.Circuit_Wafer_ILC.set(addItem(tLastID = 36, "Integrated Logic Circuit (Wafer)", "Raw Circuit", o));
         ItemList.Circuit_Chip_ILC.set(addItem(tLastID = 37, "Integrated Logic Circuit", "Integrated Circuit", o));
@@ -239,6 +243,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 addItem(tLastID = 74, "Raw Crystal Chip Parts", "Raw Crystal Processor Parts", o));
         ItemList.Circuit_Chip_Biocell.set(addItem(tLastID = 76, "Biocells", "Mutated Raw inteligence", o));
         ItemList.Circuit_Chip_BioCPU.set(addItem(tLastID = 77, "Bio Processing Unit", "Bio CPU", o));
+        ItemList.Circuit_Chip_Optical.set(addItem(tLastID = 724, "Raw Exposed Optical Chip", "Raw Optical Chip", o));
 
         // Nand Chip
         ItemList.NandChip.set(addItem(
@@ -442,6 +447,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Board_Plastic_Advanced.set(addItem(tLastID = 106, "Plastic Circuit Board", "A good Board", o));
         ItemList.Circuit_Board_Bio_Ultra.set(
                 addItem(tLastID = 107, "Ultra Bio Mutated Circuit Board", "Bio genetic mutated Board", o));
+        ItemList.Circuit_Board_Optical.set(
+                addItem(tLastID = 728, "Optical Circuit Board", "Optically Infused Board", o));
 
         // Optical circuits
         ItemList.Circuit_OpticalProcessor.set(addItem(
@@ -903,6 +910,12 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 whiteDwarfIDs,
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
+
+        ItemList.Optical_Cpu_Containment_Housing.set(
+                addItem(tLastID = 727, "Optical CPU Containment Housing", "CPU Housing", o));
+        ItemList.Optically_Perfected_CPU.set(addItem(tLastID = 726, "Optically Perfected CPU", "Perfected CPU!", o));
+        ItemList.Optically_Compatible_Memory.set(
+                addItem(tLastID = 725, "Optically Compatible Memory", "Its in the name!", o));
     }
 
     @Override
