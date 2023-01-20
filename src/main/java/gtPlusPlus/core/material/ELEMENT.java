@@ -925,7 +925,7 @@ public final class ELEMENT {
                 73,
                 87,
                 true,
-                "§",
+                "Rt*",
                 0); // Not a GT Inherited Material
         public static final Material DRAGON_METAL = new Material(
                 "Dragonblood",
