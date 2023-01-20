@@ -10770,7 +10770,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new int[] {2000, 1000},
                 2000,
                 (int) GT_Values.VP[3]);
-        
+
         // Uranium Enrichment in Centrifuge by adding Fluorine (Uranium Hexafluoride)
         GT_Values.RA.addCentrifugeRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1L),
