@@ -10758,18 +10758,34 @@ public class GT_MachineRecipeLoader implements Runnable {
                 500);
         GT_Values.RA.addCentrifugeRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1L),
-                GT_Values.NI,
+                GT_Utility.getIntegratedCircuit(10),
                 GT_Values.NF,
                 GT_Values.NF,
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium235, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium235, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Plutonium, 1L),
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
                 GT_Values.NI,
-                new int[] {2000, 200},
-                800,
-                320);
+                new int[] {2000, 1000},
+                2000,
+                (int) GT_Values.VP[3]);
+        
+        // Uranium Enrichment in Centrifuge by adding Fluorine (Uranium Hexafluoride)
+        GT_Values.RA.addCentrifugeRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1L),
+                GT_Values.NI,
+                Materials.Fluorine.getGas(4000),
+                GT_Values.NF,
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L),
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                GT_Values.NI,
+                new int[] {10000},
+                4000,
+                (int) GT_Values.VP[4]);
         GT_Values.RA.addCentrifugeRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1L),
                 GT_Values.NI,
