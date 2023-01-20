@@ -24,6 +24,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
+import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.*;
 import gregtech.api.events.BlockScanningEvent;
@@ -2654,39 +2655,81 @@ public class GT_Utility {
     }
 
     public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sFrostHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sFrostHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
         return true;
     }
 
     public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sHeatHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sHeatHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
+
         return true;
     }
 
     public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sBioHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sBioHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
         return true;
     }
 
     public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sRadioHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sRadioHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
         return true;
     }
 
     public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sElectroHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sElectroHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
         return true;
     }
 
     public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++)
-            if (!isStackInList(aEntity.getEquipmentInSlot(i), GregTech_API.sGasHazmatList)) return false;
+        for (byte i = 1; i < 5; i++) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!isStackInList(tStack, GregTech_API.sGasHazmatList) && !hasHazmatEnchant(tStack)) {
+                return false;
+            }
+        }
         return true;
+    }
+
+    public static boolean hasHazmatEnchant(ItemStack aStack) {
+        if (aStack == null) return false;
+        Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(aStack);
+        Integer tLevel = tEnchantments.get(Enchantment_Hazmat.INSTANCE.effectId);
+
+        if (tLevel != null && tLevel.intValue() >= 1) {
+            return true;
+        }
+        return false;
     }
 
     public static float getHeatDamageFromItem(ItemStack aStack) {

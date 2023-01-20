@@ -2981,6 +2981,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     }
 
     public static boolean providesProtection(ItemStack aStack) {
+
+        if (GT_Utility.hasHazmatEnchant(aStack)) return true;
+
         boolean isGas = GT_Utility.isStackInList(aStack, GregTech_API.sGasHazmatList);
         boolean isBio = GT_Utility.isStackInList(aStack, GregTech_API.sBioHazmatList);
         boolean isFrost = GT_Utility.isStackInList(aStack, GregTech_API.sFrostHazmatList);
