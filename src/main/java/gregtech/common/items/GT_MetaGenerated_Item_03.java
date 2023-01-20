@@ -808,7 +808,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "BY THE POWERS OF NAUGHTINESS, I COMMAND THIS PARTICULAR STAR, TO BE REALLY, REALLY HOT",
                 SubTag.NO_UNIFICATION));
 
-        int whiteDwarfIDs = 721;
+        int whiteDwarfIDs = 729;
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(addItem(
                 whiteDwarfIDs++, "White Dwarf Extruder Shape (Plate)", "Ultra Strong Stellar Shape for making Plates"));
         ItemList.White_Dwarf_Shape_Extruder_Rod.set(addItem(
