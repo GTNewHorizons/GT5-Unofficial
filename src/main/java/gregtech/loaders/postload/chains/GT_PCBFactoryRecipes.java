@@ -595,7 +595,7 @@ public class GT_PCBFactoryRecipes {
                             GT_OreDictUnificator.get(
                                     OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
                             GT_ModHandler.getModItem(
-                                    "miscutils", "itemFoilChromaticGlass", (long) ((Math.sqrt(tier - 6))))
+                                    "miscutils", "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6))))
                         },
                         new FluidStack[] {
                             Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
@@ -626,7 +626,7 @@ public class GT_PCBFactoryRecipes {
                             GT_OreDictUnificator.get(
                                     OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
                             GT_ModHandler.getModItem(
-                                    "miscutils", "itemFoilChromaticGlass", (long) ((Math.sqrt(tier - 6))))
+                                    "miscutils", "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6))))
                         },
                         new FluidStack[] {
                             Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
@@ -657,7 +657,7 @@ public class GT_PCBFactoryRecipes {
                             GT_OreDictUnificator.get(
                                     OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
                             GT_ModHandler.getModItem(
-                                    "miscutils", "itemFoilChromaticGlass", (long) ((Math.sqrt(tier - 6))))
+                                    "miscutils", "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6))))
                         },
                         new FluidStack[] {
                             Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
