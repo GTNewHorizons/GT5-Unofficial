@@ -160,7 +160,8 @@ public class GT_RecipeRegistrator {
                 || !aData.hasValidMaterialData()
                 || !aData.mMaterial.mMaterial.mAutoGenerateRecycleRecipes
                 || aData.mMaterial.mAmount <= 0
-                || GT_Utility.getFluidForFilledItem(aStack, false) != null) return;
+                || GT_Utility.getFluidForFilledItem(aStack, false) != null
+                || aData.mMaterial.mMaterial.mSubTags.contains(SubTag.NO_RECIPES)) return;
         registerReverseMacerating(GT_Utility.copyAmount(1, aStack), aData, aData.mPrefix == null);
         registerReverseSmelting(
                 GT_Utility.copyAmount(1, aStack), aData.mMaterial.mMaterial, aData.mMaterial.mAmount, true);

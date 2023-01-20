@@ -2018,6 +2018,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SubTag.ELECTROMAGNETIC_SEPERATION_GOLD.addTo(
                 Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
 
+        SubTag.NO_RECIPES.addTo(MagnetohydrodynamicallyConstrainedStarMatter);
+
         SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
                 YellowLimonite,
                 BrownLimonite,

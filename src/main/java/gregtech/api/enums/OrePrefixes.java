@@ -4183,8 +4183,16 @@ public enum OrePrefixes {
     }
 
     public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        if (aMaterial != null
-                && (aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased)
+
+        if (aMaterial == null) {
+            return;
+        }
+
+        if (aMaterial.contains(SubTag.NO_RECIPES)) {
+            return;
+        }
+
+        if ((aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased)
                 && GT_Utility.isStackValid(aStack)) {
             // if (Materials.mPreventableComponents.contains(this) && !this.mDynamicItems.contains(aMaterial)) return;
             for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
